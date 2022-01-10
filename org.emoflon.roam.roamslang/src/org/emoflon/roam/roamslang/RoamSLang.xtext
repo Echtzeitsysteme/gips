@@ -1,0 +1,248 @@
+grammar org.emoflon.roam.roamslang.RoamSLang with org.emoflon.ibex.gt.editor.GT
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+import "http://www.emoflon.org/ibex/gt/editor/GT" as GT
+
+generate roamSLang "http://www.emoflon.org/roam/roamslang/RoamSLang"
+
+@Override 
+EditorGTFile: {EditorGTFile} 
+	(imports+=EditorImport)*
+  	(patterns+=EditorPattern |
+  	conditions+=EditorCondition |
+  	mappings += RoamMapping |
+  	constraints += RoamConstraint |
+  	objectives += RoamObjective)*
+  	(globalObjective = RoamGlobalObjective)?	
+;
+
+
+RoamMapping :
+	'mapping' name=ID 'with' rule=[GT::EditorPattern|ID] ';'
+;
+
+RoamConstraint : 
+	'constraint' '->' RoamConstraintContext '{'
+		expr = RoamBoolExpr
+	'}'
+;
+
+RoamConstraintContext:
+	context = [RoamMapping|ID] | 'class::' context = [ecore::EClassifier]
+;
+
+RoamObjective : 
+	'objective' '->' context=[RoamMapping|ID] '{'
+		expr = RoamArithmeticExpr
+	'}'
+;
+
+RoamGlobalObjective :
+	'global' 'objective' ':' objectiveGoal = RoamObjectiveGoal '{'
+		expr = RoamArithmeticExpr
+		(s += RoamStream)*
+	'}'
+;
+
+enum RoamObjectiveGoal:
+	MIN = 'min' | MAX = 'max'
+;
+
+RoamAttributeExpr:
+	RoamContextAttributeExpr | RoamMappingAttributeExpr //| RoamStreamAttributeExpression
+;
+
+RoamContextAttributeExpr:
+	'self' '.' expr = RoamNodeAttributeExpr
+;
+
+RoamMappingAttributeExpr:
+	mapping=[RoamMapping|ID] '.' expr = RoamNodeAttributeExpr
+;
+
+
+RoamNodeAttributeExpr:
+	node=[GT::EditorNode|ID] '.' expr = RoamFeatureExpr
+;
+
+RoamFeatureExpr:
+	RoamFeatureLit({RoamFeatureNavigation.left=current} ('.' right=RoamFeatureLit))*
+;
+
+RoamFeatureLit returns RoamFeatureExpr: {RoamFeatureLit}
+	feature=[ecore::EStructuralFeature|ID]
+;
+
+//RoamStreamAttributeExpression:
+//	(var=[RoamStreamSetExpr|ID] | var= [RoamStreamArithmeticExpr|ID]) '.' expr += RoamFeature ('.' expr += RoamFeature)*
+//;
+
+RoamStream:
+	set = (RoamAttributeExpr ) '.' expr = RoamStreamExpr
+;
+
+RoamStreamExpr:
+	RoamStreamLit({RoamStreamNavigation.left=current} ('.' right=RoamStreamLit))*
+;
+
+RoamStreamLit returns RoamStreamExpr:
+	{RoamSelect} 'typesOf' '(' type=[ecore::EClassifier] ')' |
+	{RoamStreamSet} operator=RoamStreamSetOperator '(' name=ID '?' predicate=RoamBoolExpr ')' |
+	{RoamStreamArithmetic} operator=RoamStreamArithmeticOperator '(' name=ID '|' operation=RoamArithmeticExpr ')' |
+	{RoamStreamBoolExpr} operator=RoamStreamBooleanOperator '()'
+;
+//
+//RoamStreamExpr:
+//	RoamSelectExpr | RoamStreamSetExpr // | RoamStreamArithmeticExpr | RoamStreamBoolExpr
+//;
+//
+//RoamSelectExpr returns RoamStreamExpr: {RoamSelectExpr}
+//	'typesOf' '(' type=[ecore::EClassifier] ')'
+//;
+//
+//RoamStreamSetExpr returns RoamStreamExpr: {RoamStreamSetExpr}
+//	operator=RoamStreamSetOperator '(' name=ID '|' predicate=RoamBoolExpr ')'	
+//;
+
+//RoamStreamArithmeticExpr returns RoamStreamExpr: {RoamStreamArithmeticExpr}
+//	operator=RoamStreamArithmeticOperator '(' name=ID '|' predicate=RoamArithmeticExpr ')'
+//;
+//
+//RoamStreamBoolExpr returns RoamStreamExpr: {RoamStreamBoolExpr}
+//	operator=RoamStreamBooleanOperator '()'	
+//;
+
+enum RoamStreamSetOperator:
+	FILTER='filter'
+;
+
+enum RoamStreamArithmeticOperator:
+	SUM = 'sum' |
+	count = 'count'
+;
+
+enum RoamStreamBooleanOperator:
+	EXISTS = 'exists' |
+	NOTEXISTS = 'notExists'
+;
+
+RoamArithmeticExpr:
+	RoamBinaryArithmeticExpr
+;
+
+RoamBinaryArithmeticExpr returns RoamArithmeticExpr:
+	RoamUnaryArithmeticExpr({RoamBinaryArithmeticExpr.left = current} operator=RoamArithmeticBinaryOperator right=RoamUnaryArithmeticExpr)*
+;
+
+RoamUnaryArithmeticExpr returns RoamArithmeticExpr: {RoamUnaryArithmeticExpr}
+	(negative?='-') (operator=RoamArithmeticUnaryOperator'(' | '(') operand=RoamArithmeticExpr')' | RoamExpressionOperand
+;
+
+RoamExpressionOperand:
+	ArithmeticLiteral | BooleanLiteral | StringLiteral | EnumLiteral | RoamAttributeExpr //| RoamStream //|RoamStreamAttributeExpression
+;
+
+ArithmeticLiteral:
+	value = (DoubleLiteral | IntegerLiteral)
+;
+
+enum RoamArithmeticBinaryOperator:
+	PLUS='+' 	|
+	MINUS='-' 	|
+	MULT='*'|
+ 	DIV='/' 	|
+ 	POW='^'	
+;
+
+enum RoamArithmeticUnaryOperator:
+	NONE='$NO_OP'     |
+	ABS='abs'	|
+	SQRT='sqrt' |
+	sin='sin'	|
+	cos='cos'	
+;
+
+RoamBoolExpr:
+	RoamBinaryBoolExpr
+;
+
+RoamBinaryBoolExpr returns RoamBoolExpr:
+	RoamUnaryBoolExpr({RoamBinaryBoolExpr.left = current} operator=RoamBoolBinaryOperator right=RoamUnaryBoolExpr)*
+;
+
+RoamUnaryBoolExpr returns RoamBoolExpr: {RoamUnaryBoolExpr}
+	(operator=RoamBoolUnaryOperator '(' | '(') operand=RoamBoolExpr')' | RoamRelExpr | RoamExpressionOperand
+;
+
+BooleanLiteral:
+	value = BOOLEAN
+;
+
+enum RoamBoolBinaryOperator:
+	AND='&' 	|
+	OR='|'	
+;
+
+enum RoamBoolUnaryOperator:
+	NONE='$NO_OP'     |
+	NOT='!'	
+;
+
+RoamRelExpr:
+	left=RoamArithmeticExpr operator=RoamRelOperator right=RoamArithmeticExpr
+;
+
+enum RoamRelOperator:
+  GREATER='>' |
+  GREATER_OR_EQUAL='>=' |
+  EQUAL='==' |
+  UNEQUAL='!=' |
+  SMALLER_OR_EQUAL='<=' |
+  SMALLER='<'
+;
+
+StringLiteral:
+	value = STRING
+;
+
+DoubleLiteral:
+	Double
+;
+
+IntegerLiteral:
+	Integer
+;
+
+EnumLiteral:
+	'enum::' value = [ecore::EEnumLiteral]
+;
+
+Double returns ecore::EDouble:
+	('-')?INT '.' INT
+;
+
+Integer returns ecore::EInt:
+	(('-')? INT)
+;
+
+@Override
+terminal INT returns ecore::EInt:
+	'0'..'9' ('0'..'9')*
+;
+
+@Override
+terminal STRING returns ecore::EString:
+	'"' ( '""' | !('"') )* '"'
+;
+
+BOOLEAN returns ecore::EBoolean:
+	TRUE | FALSE
+;
+
+terminal TRUE returns ecore::EBoolean:
+	'true'
+;
+
+terminal FALSE returns ecore::EBoolean:
+	'false'
+;

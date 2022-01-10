@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.emoflon.roam.roamslang.ui
+Bundle-ManifestVersion: 2
+Bundle-Name: org.emoflon.roam.roamslang.ui
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: org.emoflon.roam.roamslang.ui; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.emoflon.roam.roamslang,
+ org.emoflon.roam.roamslang.ide,
+ org.eclipse.xtext.ui,
+ org.eclipse.xtext.ui.shared,
+ org.eclipse.xtext.ui.codetemplates.ui,
+ org.eclipse.ui.editors;bundle-version="3.5.0",
+ org.eclipse.ui.ide;bundle-version="3.5.0",
+ org.eclipse.ui,
+ org.eclipse.compare,
+ org.eclipse.xtext.builder,
+ org.emoflon.ibex.gt.editor,
+ org.emoflon.ibex.gt.editor.ui
+Import-Package: org.apache.log4j
+Bundle-RequiredExecutionEnvironment: JavaSE-16
+Export-Package: org.emoflon.roam.roamslang.ui.quickfix,
+ org.emoflon.roam.roamslang.ui.internal,
+ org.emoflon.roam.roamslang.ui.contentassist
+Bundle-Activator: org.emoflon.roam.roamslang.ui.internal.RoamslangActivator

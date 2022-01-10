@@ -31,20 +31,28 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="objectiveGoal" eType="#//RoamObjectiveGoal"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//RoamArithmeticExpr"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="s" upperBound="-1" eType="#//RoamStream"
-        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="RoamObjectiveGoal">
     <eLiterals name="MIN" literal="min"/>
     <eLiterals name="MAX" value="1" literal="max"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RoamAttributeExpr" eSuperTypes="#//RoamExpressionOperand">
+  <eClassifiers xsi:type="ecore:EClass" name="RoamAttributeExpr" eSuperTypes="#//RoamExpressionOperand #//RoamBoolExpr"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RoamContextExpr" eSuperTypes="#//RoamAttributeExpr"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RoamContextAttributeExpr" eSuperTypes="#//RoamContextExpr">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//RoamNodeAttributeExpr"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RoamContextAttributeExpr" eSuperTypes="#//RoamAttributeExpr"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RoamContextVariableExpr" eSuperTypes="#//RoamContextExpr">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operation" eType="#//RoamContextOperation"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="RoamContextOperation">
+    <eLiterals name="VALUE" literal="value()"/>
+    <eLiterals name="MAPPED" value="1" literal="isMapped()"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamMappingAttributeExpr" eSuperTypes="#//RoamAttributeExpr">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" eType="#//RoamMapping"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//RoamNodeAttributeExpr"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamNodeAttributeExpr">
     <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorNode"/>
@@ -52,13 +60,23 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamFeatureExpr"/>
-  <eClassifiers xsi:type="ecore:EClass" name="RoamStream">
+  <eClassifiers xsi:type="ecore:EClass" name="RoamLambdaAttributeExpression" eSuperTypes="#//RoamAttributeExpr">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//RoamLambdaExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//RoamFeatureExpr"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoamStream" eSuperTypes="#//RoamExpressionOperand">
     <eStructuralFeatures xsi:type="ecore:EReference" name="set" eType="#//RoamAttributeExpr"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//RoamStreamExpr"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamStreamExpr"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RoamLambdaExpression">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//RoamBoolExpr"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="RoamStreamSetOperator">
     <eLiterals name="FILTER" literal="filter"/>
   </eClassifiers>
@@ -71,7 +89,7 @@
     <eLiterals name="NOTEXISTS" value="1" literal="notExists"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamArithmeticExpr"/>
-  <eClassifiers xsi:type="ecore:EClass" name="RoamExpressionOperand" eSuperTypes="#//RoamArithmeticExpr #//RoamBoolExpr"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RoamExpressionOperand" eSuperTypes="#//RoamArithmeticExpr"/>
   <eClassifiers xsi:type="ecore:EClass" name="ArithmeticLiteral" eSuperTypes="#//RoamExpressionOperand">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
@@ -90,7 +108,7 @@
     <eLiterals name="cos" value="4" literal="cos"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamBoolExpr"/>
-  <eClassifiers xsi:type="ecore:EClass" name="BooleanLiteral" eSuperTypes="#//RoamExpressionOperand">
+  <eClassifiers xsi:type="ecore:EClass" name="BooleanLiteral" eSuperTypes="#//RoamBoolExpr">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="RoamBoolBinaryOperator">
@@ -116,10 +134,10 @@
     <eLiterals name="SMALLER_OR_EQUAL" value="4" literal="&lt;="/>
     <eLiterals name="SMALLER" value="5" literal="&lt;"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="StringLiteral" eSuperTypes="#//RoamExpressionOperand">
+  <eClassifiers xsi:type="ecore:EClass" name="StringLiteral">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EnumLiteral" eSuperTypes="#//RoamExpressionOperand">
+  <eClassifiers xsi:type="ecore:EClass" name="EnumLiteral">
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EEnumLiteral"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamFeatureNavigation" eSuperTypes="#//RoamFeatureExpr">
@@ -142,14 +160,12 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamStreamSet" eSuperTypes="#//RoamStreamExpr">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//RoamStreamSetOperator"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="predicate" eType="#//RoamBoolExpr"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lambda" eType="#//RoamLambdaExpression"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamStreamArithmetic" eSuperTypes="#//RoamStreamExpr">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//RoamStreamArithmeticOperator"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operation" eType="#//RoamArithmeticExpr"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lambda" eType="#//RoamLambdaExpression"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamStreamBoolExpr" eSuperTypes="#//RoamStreamExpr">

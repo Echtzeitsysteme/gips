@@ -40,7 +40,6 @@ RoamObjective :
 RoamGlobalObjective :
 	'global' 'objective' ':' objectiveGoal = RoamObjectiveGoal '{'
 		expr = RoamArithmeticExpr
-		(s += RoamStream)*
 	'}'
 ;
 
@@ -49,15 +48,28 @@ enum RoamObjectiveGoal:
 ;
 
 RoamAttributeExpr:
-	RoamContextAttributeExpr | RoamMappingAttributeExpr //| RoamStreamAttributeExpression
+	RoamContextExpr | RoamMappingAttributeExpr | RoamLambdaAttributeExpression
+;
+
+RoamContextExpr:
+	'self' '.' RoamContextAttributeExpr | RoamContextVariableExpr
 ;
 
 RoamContextAttributeExpr:
-	'self' '.' expr = RoamNodeAttributeExpr
+	expr = RoamNodeAttributeExpr
+;
+
+RoamContextVariableExpr:
+	operation = RoamContextOperation
+;
+
+enum RoamContextOperation:
+	VALUE = 'value()' |
+ 	MAPPED = 'isMapped()'
 ;
 
 RoamMappingAttributeExpr:
-	mapping=[RoamMapping|ID] '.' expr = RoamNodeAttributeExpr
+	'mappings' '.' mapping=[RoamMapping|ID] '.' expr = RoamNodeAttributeExpr
 ;
 
 
@@ -73,9 +85,9 @@ RoamFeatureLit returns RoamFeatureExpr: {RoamFeatureLit}
 	feature=[ecore::EStructuralFeature|ID]
 ;
 
-//RoamStreamAttributeExpression:
-//	(var=[RoamStreamSetExpr|ID] | var= [RoamStreamArithmeticExpr|ID]) '.' expr += RoamFeature ('.' expr += RoamFeature)*
-//;
+RoamLambdaAttributeExpression:
+	var=[RoamLambdaExpression|ID] '.' expr = RoamFeatureExpr
+;
 
 RoamStream:
 	set = (RoamAttributeExpr ) '.' expr = RoamStreamExpr
@@ -87,30 +99,14 @@ RoamStreamExpr:
 
 RoamStreamLit returns RoamStreamExpr:
 	{RoamSelect} 'typesOf' '(' type=[ecore::EClassifier] ')' |
-	{RoamStreamSet} operator=RoamStreamSetOperator '(' name=ID '?' predicate=RoamBoolExpr ')' |
-	{RoamStreamArithmetic} operator=RoamStreamArithmeticOperator '(' name=ID '|' operation=RoamArithmeticExpr ')' |
+	{RoamStreamSet} operator=RoamStreamSetOperator lambda = RoamLambdaExpression |
+	{RoamStreamArithmetic} operator=RoamStreamArithmeticOperator lambda = RoamLambdaExpression |
 	{RoamStreamBoolExpr} operator=RoamStreamBooleanOperator '()'
 ;
-//
-//RoamStreamExpr:
-//	RoamSelectExpr | RoamStreamSetExpr // | RoamStreamArithmeticExpr | RoamStreamBoolExpr
-//;
-//
-//RoamSelectExpr returns RoamStreamExpr: {RoamSelectExpr}
-//	'typesOf' '(' type=[ecore::EClassifier] ')'
-//;
-//
-//RoamStreamSetExpr returns RoamStreamExpr: {RoamStreamSetExpr}
-//	operator=RoamStreamSetOperator '(' name=ID '|' predicate=RoamBoolExpr ')'	
-//;
 
-//RoamStreamArithmeticExpr returns RoamStreamExpr: {RoamStreamArithmeticExpr}
-//	operator=RoamStreamArithmeticOperator '(' name=ID '|' predicate=RoamArithmeticExpr ')'
-//;
-//
-//RoamStreamBoolExpr returns RoamStreamExpr: {RoamStreamBoolExpr}
-//	operator=RoamStreamBooleanOperator '()'	
-//;
+RoamLambdaExpression:
+	'(' name=ID '|' expr=RoamBoolExpr ')'
+;
 
 enum RoamStreamSetOperator:
 	FILTER='filter'
@@ -126,11 +122,8 @@ enum RoamStreamBooleanOperator:
 	NOTEXISTS = 'notExists'
 ;
 
-RoamArithmeticExpr:
-	RoamBinaryArithmeticExpr
-;
 
-RoamBinaryArithmeticExpr returns RoamArithmeticExpr:
+RoamArithmeticExpr returns RoamArithmeticExpr:
 	RoamUnaryArithmeticExpr({RoamBinaryArithmeticExpr.left = current} operator=RoamArithmeticBinaryOperator right=RoamUnaryArithmeticExpr)*
 ;
 
@@ -139,7 +132,7 @@ RoamUnaryArithmeticExpr returns RoamArithmeticExpr: {RoamUnaryArithmeticExpr}
 ;
 
 RoamExpressionOperand:
-	ArithmeticLiteral | BooleanLiteral | StringLiteral | EnumLiteral | RoamAttributeExpr //| RoamStream //|RoamStreamAttributeExpression
+	RoamStream | RoamAttributeExpr | ArithmeticLiteral  //| RoamStream //|RoamStreamAttributeExpression //| StringLiteral | EnumLiteral |
 ;
 
 ArithmeticLiteral:
@@ -162,16 +155,12 @@ enum RoamArithmeticUnaryOperator:
 	cos='cos'	
 ;
 
-RoamBoolExpr:
-	RoamBinaryBoolExpr
-;
-
-RoamBinaryBoolExpr returns RoamBoolExpr:
+RoamBoolExpr returns RoamBoolExpr:
 	RoamUnaryBoolExpr({RoamBinaryBoolExpr.left = current} operator=RoamBoolBinaryOperator right=RoamUnaryBoolExpr)*
 ;
 
 RoamUnaryBoolExpr returns RoamBoolExpr: {RoamUnaryBoolExpr}
-	(operator=RoamBoolUnaryOperator '(' | '(') operand=RoamBoolExpr')' | RoamRelExpr | RoamExpressionOperand
+	(operator=RoamBoolUnaryOperator '(' | '(') operand=RoamBoolExpr')' | RoamRelExpr | RoamAttributeExpr | BooleanLiteral
 ;
 
 BooleanLiteral:

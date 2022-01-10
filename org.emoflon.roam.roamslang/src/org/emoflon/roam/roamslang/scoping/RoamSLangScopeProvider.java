@@ -3,6 +3,34 @@
  */
 package org.emoflon.roam.roamslang.scoping;
 
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.xtext.scoping.IScope;
+import org.eclipse.xtext.scoping.Scopes;
+import org.emoflon.ibex.gt.editor.utils.GTEditorModelUtils;
+import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
+import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
+import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
+import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamFeatureLit;
+import org.emoflon.roam.roamslang.roamSLang.RoamFeatureNavigation;
+import org.emoflon.roam.roamslang.roamSLang.RoamLambdaAttributeExpression;
+import org.emoflon.roam.roamslang.roamSLang.RoamMappingContext;
+import org.emoflon.roam.roamslang.roamSLang.RoamNodeAttributeExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamObjective;
+import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
+import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
+import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
+import org.emoflon.roam.roamslang.roamSLang.impl.EditorGTFileImpl;
+import org.emoflon.roam.roamslang.roamSLang.impl.RoamConstraintImpl;
+import org.emoflon.roam.roamslang.roamSLang.impl.RoamObjectiveImpl;
+
+import com.google.common.collect.Lists;
 
 /**
  * This class contains custom scoping description.
@@ -11,5 +39,99 @@ package org.emoflon.roam.roamslang.scoping;
  * on how and when to use it.
  */
 public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
+	
+	@Override
+	public IScope getScope(EObject context, EReference reference) {
+		try {
+			return getScopeInternal(context, reference);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return super.getScope(context, reference);
+		}
+	}
+	
+	public IScope getScopeInternal(EObject context, EReference reference) throws Exception{
+		if(RoamSLangScopeContextUtil.isRoamMapping(context, reference)) {
+			return scopeForRoamMapping((RoamMapping) context, reference);
+		} else if(RoamSLangScopeContextUtil.isRoamMappingContext(context, reference)) {
+			return scopeForRoamMappingContext((RoamMappingContext) context, reference);
+		} else if(RoamSLangScopeContextUtil.isRoamTypeContext(context, reference)) {
+			return scopeForRoamTypeContext((RoamTypeContext) context, reference);
+		} else if(RoamSLangScopeContextUtil.isRoamMappingAttributeExpr(context, reference)) {
+			return scopeForRoamMappingAttributeExpr((RoamMappingAttributeExpr) context, reference);
+		} else if(RoamSLangScopeContextUtil.isRoamNodeAttributeExpr(context, reference)) {
+			return scopeForRoamNodeAttributeExpr((RoamNodeAttributeExpr) context, reference);
+		} else if(RoamSLangScopeContextUtil.isRoamFeatureLit(context, reference)) {
+			return scopeForRoamFeatureLit((RoamFeatureLit) context, reference);
+		}
+		
+		else {
+			return super.getScope(context, reference);
+		}
+	}
+	
+	public IScope scopeForRoamMapping(RoamMapping context, EReference reference) {
+		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
+		return Scopes.scopeFor(editorFile.getPatterns());
+	}
+	
+	public IScope scopeForRoamMappingContext(RoamMappingContext context, EReference reference) {
+		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
+		return Scopes.scopeFor(editorFile.getMappings());
+	}
+	
+	public IScope scopeForRoamTypeContext(RoamTypeContext context, EReference reference) {
+		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
+		return Scopes.scopeFor(GTEditorModelUtils.getClasses(editorFile));
+	}
+	
+	public IScope scopeForRoamMappingAttributeExpr(RoamMappingAttributeExpr context, EReference reference) {
+		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
+		return Scopes.scopeFor(editorFile.getMappings());
+	}
+	
+	public IScope scopeForRoamNodeAttributeExpr(RoamNodeAttributeExpr context, EReference reference) {
+		if(context.eContainer() instanceof RoamMappingAttributeExpr parent) {
+			return Scopes.scopeFor(parent.getMapping().getRule().getNodes());
+		} else {
+			EObject contextType = null;
+			RoamConstraint parent = GTEditorPatternUtils.getContainer(context, RoamConstraintImpl.class);
+			if(parent != null) {
+				contextType = parent.getContext();
+			} else {
+				RoamObjective parentAlt = GTEditorPatternUtils.getContainer(context, RoamObjectiveImpl.class);
+				if(parentAlt != null) {
+					contextType = parentAlt.getContext();
+				} else {
+					return super.getScope(context, reference);
+				}
+			}
+			
+			if(contextType instanceof RoamMappingContext mappingContext) {
+				return Scopes.scopeFor(mappingContext.getMapping().getRule().getNodes());
+			} else {
+				RoamTypeContext typeContext = (RoamTypeContext) contextType;
+				List<EClass> contextTypes = new LinkedList<>();
+				contextTypes.add((EClass)typeContext.getType());
+				return Scopes.scopeFor(contextTypes); 
+			}
+		}
+	}
+	
+	public IScope scopeForRoamFeatureLit(RoamFeatureLit context, EReference reference) {
+		if(context.eContainer() instanceof RoamNodeAttributeExpr nodeExpr) {
+			return Scopes.scopeFor(nodeExpr.getNode().getType().getEAllStructuralFeatures());
+		} else if(context.eContainer() instanceof RoamLambdaAttributeExpression lambdaExpr) {
+			//TODO: This is quite complicated since we have to navigate backwards, until we find the root stream operand and derive the current type by navigating forwards.
+			return super.getScope(context, reference);
+		} else {
+			RoamFeatureNavigation parentExpr = (RoamFeatureNavigation) context.eContainer();
+			RoamFeatureLit parent = (RoamFeatureLit) parentExpr.getLeft();
+			if(parent.getFeature().getEType() instanceof EClass clazz) {
+				return Scopes.scopeFor(clazz.getEAllStructuralFeatures());
+			}
+			return super.getScope(context, reference);
+		}
+	}
 
 }

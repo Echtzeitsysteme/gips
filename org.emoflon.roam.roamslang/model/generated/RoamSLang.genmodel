@@ -65,14 +65,22 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamMapping/name"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamMapping/rule"/>
     </genClasses>
-    <genClasses ecoreClass="RoamSLang.ecore#//RoamConstraint"/>
-    <genClasses ecoreClass="RoamSLang.ecore#//RoamConstraintContext">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamConstraintContext/expr"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamConstraintContext/context"/>
+    <genClasses ecoreClass="RoamSLang.ecore#//RoamConstraint">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamConstraint/context"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamConstraint/expr"/>
     </genClasses>
     <genClasses ecoreClass="RoamSLang.ecore#//RoamObjective">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamObjective/context"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamObjective/context"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamObjective/expr"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamSLang.ecore#//RoamMappingContext">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamMappingContext/mapping"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamSLang.ecore#//RoamTypeContext">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamTypeContext/type"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamSLang.ecore#//RoamObjectiveExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamObjectiveExpression/objective"/>
     </genClasses>
     <genClasses ecoreClass="RoamSLang.ecore#//RoamGlobalObjective">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamGlobalObjective/objectiveGoal"/>
@@ -110,23 +118,23 @@
     </genClasses>
     <genClasses ecoreClass="RoamSLang.ecore#//RoamArithmeticExpr"/>
     <genClasses ecoreClass="RoamSLang.ecore#//RoamExpressionOperand"/>
-    <genClasses ecoreClass="RoamSLang.ecore#//ArithmeticLiteral">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//ArithmeticLiteral/value"/>
+    <genClasses ecoreClass="RoamSLang.ecore#//RoamArithmeticLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamArithmeticLiteral/value"/>
     </genClasses>
     <genClasses ecoreClass="RoamSLang.ecore#//RoamBoolExpr"/>
-    <genClasses ecoreClass="RoamSLang.ecore#//BooleanLiteral">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//BooleanLiteral/value"/>
+    <genClasses ecoreClass="RoamSLang.ecore#//RoamBooleanLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamBooleanLiteral/value"/>
     </genClasses>
     <genClasses ecoreClass="RoamSLang.ecore#//RoamRelExpr">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamRelExpr/left"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamRelExpr/operator"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamRelExpr/right"/>
     </genClasses>
-    <genClasses ecoreClass="RoamSLang.ecore#//StringLiteral">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//StringLiteral/value"/>
+    <genClasses ecoreClass="RoamSLang.ecore#//RoamStringLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamStringLiteral/value"/>
     </genClasses>
-    <genClasses ecoreClass="RoamSLang.ecore#//EnumLiteral">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//EnumLiteral/value"/>
+    <genClasses ecoreClass="RoamSLang.ecore#//RoamEnumLiteral">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamEnumLiteral/value"/>
     </genClasses>
     <genClasses ecoreClass="RoamSLang.ecore#//RoamFeatureNavigation">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamFeatureNavigation/left"/>

@@ -16,16 +16,26 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rule" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorPattern"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RoamConstraint"/>
-  <eClassifiers xsi:type="ecore:EClass" name="RoamConstraintContext" eSuperTypes="#//RoamConstraint">
+  <eClassifiers xsi:type="ecore:EClass" name="RoamConstraint">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//RoamBoolExpr"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamObjective">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="#//RoamMapping"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//RoamArithmeticExpr"
         containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoamMappingContext">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" eType="#//RoamMapping"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoamTypeContext">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoamObjectiveExpression" eSuperTypes="#//RoamExpressionOperand">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="objective" eType="#//RoamObjective"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamGlobalObjective">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="objectiveGoal" eType="#//RoamObjectiveGoal"/>
@@ -90,7 +100,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamArithmeticExpr"/>
   <eClassifiers xsi:type="ecore:EClass" name="RoamExpressionOperand" eSuperTypes="#//RoamArithmeticExpr"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ArithmeticLiteral" eSuperTypes="#//RoamExpressionOperand">
+  <eClassifiers xsi:type="ecore:EClass" name="RoamArithmeticLiteral" eSuperTypes="#//RoamExpressionOperand">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="RoamArithmeticBinaryOperator">
@@ -108,7 +118,7 @@
     <eLiterals name="cos" value="4" literal="cos"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamBoolExpr"/>
-  <eClassifiers xsi:type="ecore:EClass" name="BooleanLiteral" eSuperTypes="#//RoamBoolExpr">
+  <eClassifiers xsi:type="ecore:EClass" name="RoamBooleanLiteral" eSuperTypes="#//RoamBoolExpr">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="RoamBoolBinaryOperator">
@@ -134,10 +144,10 @@
     <eLiterals name="SMALLER_OR_EQUAL" value="4" literal="&lt;="/>
     <eLiterals name="SMALLER" value="5" literal="&lt;"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="StringLiteral">
+  <eClassifiers xsi:type="ecore:EClass" name="RoamStringLiteral">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EnumLiteral">
+  <eClassifiers xsi:type="ecore:EClass" name="RoamEnumLiteral">
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EEnumLiteral"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamFeatureNavigation" eSuperTypes="#//RoamFeatureExpr">

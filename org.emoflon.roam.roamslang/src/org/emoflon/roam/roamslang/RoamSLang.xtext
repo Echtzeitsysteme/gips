@@ -22,19 +22,27 @@ RoamMapping :
 ;
 
 RoamConstraint : 
-	'constraint' '->' RoamConstraintContext '{'
+	'constraint' '->' context=(RoamMappingContext | RoamTypeContext) '{'
 		expr = RoamBoolExpr
 	'}'
 ;
 
-RoamConstraintContext:
-	context = [RoamMapping|ID] | 'class::' context = [ecore::EClassifier]
-;
-
 RoamObjective : 
-	'objective' '->' context=[RoamMapping|ID] '{'
+	'objective' '->' context=(RoamMappingContext | RoamTypeContext) '{'
 		expr = RoamArithmeticExpr
 	'}'
+;
+
+RoamMappingContext:
+	'mapping::' mapping = [RoamMapping|ID]
+;
+
+RoamTypeContext:
+	'class::' type = [ecore::EClassifier]
+;
+
+RoamObjectiveExpression:
+	objective=[RoamObjective|ID]
 ;
 
 RoamGlobalObjective :
@@ -132,11 +140,11 @@ RoamUnaryArithmeticExpr returns RoamArithmeticExpr: {RoamUnaryArithmeticExpr}
 ;
 
 RoamExpressionOperand:
-	RoamStream | RoamAttributeExpr | ArithmeticLiteral  //| RoamStream //|RoamStreamAttributeExpression //| StringLiteral | EnumLiteral |
+	RoamStream | RoamAttributeExpr | RoamObjectiveExpression | RoamArithmeticLiteral  //| RoamStream //|RoamStreamAttributeExpression //| StringLiteral | EnumLiteral |
 ;
 
-ArithmeticLiteral:
-	value = (DoubleLiteral | IntegerLiteral)
+RoamArithmeticLiteral:
+	value = (RoamDoubleLiteral | RoamIntegerLiteral)
 ;
 
 enum RoamArithmeticBinaryOperator:
@@ -160,11 +168,11 @@ RoamBoolExpr returns RoamBoolExpr:
 ;
 
 RoamUnaryBoolExpr returns RoamBoolExpr: {RoamUnaryBoolExpr}
-	(operator=RoamBoolUnaryOperator '(' | '(') operand=RoamBoolExpr')' | RoamRelExpr | RoamAttributeExpr | BooleanLiteral
+	(operator=RoamBoolUnaryOperator '(' | '(') operand=RoamBoolExpr')' | RoamRelExpr | RoamAttributeExpr | RoamBooleanLiteral
 ;
 
-BooleanLiteral:
-	value = BOOLEAN
+RoamBooleanLiteral:
+	value = RoamBOOLEAN
 ;
 
 enum RoamBoolBinaryOperator:
@@ -190,27 +198,27 @@ enum RoamRelOperator:
   SMALLER='<'
 ;
 
-StringLiteral:
+RoamStringLiteral:
 	value = STRING
 ;
 
-DoubleLiteral:
-	Double
+RoamDoubleLiteral:
+	RoamDouble
 ;
 
-IntegerLiteral:
-	Integer
+RoamIntegerLiteral:
+	RoamInteger
 ;
 
-EnumLiteral:
+RoamEnumLiteral:
 	'enum::' value = [ecore::EEnumLiteral]
 ;
 
-Double returns ecore::EDouble:
+RoamDouble returns ecore::EDouble:
 	('-')?INT '.' INT
 ;
 
-Integer returns ecore::EInt:
+RoamInteger returns ecore::EInt:
 	(('-')? INT)
 ;
 
@@ -224,7 +232,7 @@ terminal STRING returns ecore::EString:
 	'"' ( '""' | !('"') )* '"'
 ;
 
-BOOLEAN returns ecore::EBoolean:
+RoamBOOLEAN returns ecore::EBoolean:
 	TRUE | FALSE
 ;
 

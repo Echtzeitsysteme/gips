@@ -16,7 +16,6 @@ EditorGTFile: {EditorGTFile}
   	(globalObjective = RoamGlobalObjective)?	
 ;
 
-
 RoamMapping :
 	'mapping' name=ID 'with' rule=[GT::EditorPattern|ID] ';'
 ;
@@ -46,9 +45,9 @@ RoamObjectiveExpression:
 ;
 
 RoamGlobalObjective :
-	'global' 'objective' ':' objectiveGoal = RoamObjectiveGoal '{'
+	'global' 'objective' ':' objectiveGoal = RoamObjectiveGoal ('{'
 		expr = RoamArithmeticExpr
-	'}'
+	'}')?
 ;
 
 enum RoamObjectiveGoal:

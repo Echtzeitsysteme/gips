@@ -7,6 +7,12 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.emoflon.roam.roamslang.roamSLang.EditorGTFile
+import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.eclipse.emf.ecore.xmi.XMIResource
 
 /**
  * Generates code from your model files on save.
@@ -16,10 +22,25 @@ import org.eclipse.xtext.generator.IGeneratorContext
 class RoamSLangGenerator extends AbstractGenerator {
 
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-//		fsa.generateFile('greetings.txt', 'People to greet: ' + 
-//			resource.allContents
-//				.filter(Greeting)
-//				.map[name]
-//				.join(', '))
+		// extract model out of the resource
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl())
+		val rs = new ResourceSetImpl;
+		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl())
+		val model = resource.contents.get(0) as EditorGTFile;
+		val output = rs.createResource(URI.createURI(resource.URI.trimFileExtension+".xmi"))
+		// add model and resolve
+		output.contents.add(model)
+		EcoreUtil.resolveAll(output)
+		
+		// configure save options
+		val saveOptions = (output as XMIResource).getDefaultSaveOptions()
+		saveOptions.put(XMIResource.OPTION_ENCODING,"UTF-8");
+		saveOptions.put(XMIResource.OPTION_USE_XMI_TYPE, Boolean.TRUE);
+		saveOptions.put(XMIResource.OPTION_SAVE_TYPE_INFORMATION,Boolean.TRUE);
+		saveOptions.put(XMIResource.OPTION_SCHEMA_LOCATION_IMPLEMENTATION, Boolean.TRUE);
+		// save output
+		(output as XMIResource).save(saveOptions)
+		System.out.println("Xtext model saved to: "+output.URI.path)
 	}
 }
+ 

@@ -28,7 +28,7 @@ RoamConstraint :
 ;
 
 RoamObjective : 
-	'objective' '->' context=(RoamMappingContext | RoamTypeContext) '{'
+	'objective' name=ID '->' context=(RoamMappingContext | RoamTypeContext) '{'
 		expr = RoamArithmeticExpr
 	'}'
 ;

@@ -70,6 +70,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamConstraint/expr"/>
     </genClasses>
     <genClasses ecoreClass="RoamSLang.ecore#//RoamObjective">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamObjective/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamObjective/context"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamObjective/expr"/>
     </genClasses>

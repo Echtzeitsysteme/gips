@@ -1,3 +1,4 @@
 src-gen
 xtend-gen
 bin
+!/**/.gitkeep

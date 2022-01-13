@@ -110,6 +110,23 @@
     <eLiterals name="sin" value="3" literal="sin"/>
     <eLiterals name="cos" value="4" literal="cos"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoamStreamExpr"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RoamLambdaExpression">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//RoamBoolExpr"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="RoamStreamSetOperator">
+    <eLiterals name="FILTER" literal="filter"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="RoamStreamArithmeticOperator">
+    <eLiterals name="SUM" literal="sum"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="RoamStreamNoArgOperator">
+    <eLiterals name="EXISTS" literal="exists()"/>
+    <eLiterals name="NOTEXISTS" value="1" literal="notExists()"/>
+    <eLiterals name="count" value="2" literal="count()"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamBinaryBoolExpr" eSuperTypes="#//RoamBoolExpr">
     <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//RoamBoolExpr"
         containment="true"/>
@@ -124,6 +141,13 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamMappingAttributeExpr" eSuperTypes="#//RoamAttributeExpr">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" eType="#//RoamMapping"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//RoamStreamExpr"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoamLambdaAttributeExpression" eSuperTypes="#//RoamAttributeExpr">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//RoamLambdaExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamContextExpr" eSuperTypes="#//RoamAttributeExpr">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
@@ -150,5 +174,27 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//RoamArithmeticUnaryOperator"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="operand" eType="#//RoamArithmeticExpr"
         containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoamStreamNavigation" eSuperTypes="#//RoamStreamExpr">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//RoamStreamExpr"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//RoamStreamExpr"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoamSelect" eSuperTypes="#//RoamStreamExpr">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoamStreamSet" eSuperTypes="#//RoamStreamExpr">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//RoamStreamSetOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lambda" eType="#//RoamLambdaExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoamStreamArithmetic" eSuperTypes="#//RoamStreamExpr">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//RoamStreamArithmeticOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lambda" eType="#//RoamLambdaExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoamStreamBoolExpr" eSuperTypes="#//RoamStreamExpr">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//RoamStreamNoArgOperator"/>
   </eClassifiers>
 </ecore:EPackage>

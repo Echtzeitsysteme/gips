@@ -126,7 +126,7 @@ enum RoamContextOperation:
 ;
 
 RoamNodeAttributeExpr: {RoamNodeAttributeExpr}
-	'nodes.' node=[GT::EditorNode|ID] '.' expr = RoamFeatureExpr
+	'nodes().' node=[GT::EditorNode|ID] '.' expr = RoamFeatureExpr
 ;
 
 RoamFeatureExpr:

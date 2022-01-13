@@ -138,7 +138,7 @@ RoamFeatureNavigation returns RoamFeatureExpr:
 ;
 
 RoamFeatureLit returns RoamFeatureExpr: {RoamFeatureLit}
-	feature = [ecore::EStructuralFeature|ID]
+	feature = [ecore::EStructuralFeature]
 ;
 
 RoamArithmeticExpr:

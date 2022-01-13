@@ -112,7 +112,6 @@
     </genClasses>
     <genClasses ecoreClass="RoamSLang.ecore#//RoamMappingAttributeExpr">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamMappingAttributeExpr/mapping"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamMappingAttributeExpr/expr"/>
     </genClasses>
     <genClasses ecoreClass="RoamSLang.ecore#//RoamContextExpr">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamContextExpr/expr"/>

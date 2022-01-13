@@ -124,8 +124,6 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamMappingAttributeExpr" eSuperTypes="#//RoamAttributeExpr">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" eType="#//RoamMapping"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//RoamNodeAttributeExpr"
-        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamContextExpr" eSuperTypes="#//RoamAttributeExpr">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"

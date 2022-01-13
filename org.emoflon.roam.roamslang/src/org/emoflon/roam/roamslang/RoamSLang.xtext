@@ -22,7 +22,7 @@ RoamMapping :
 
 RoamConstraint : 
 	'constraint' '->' context=(RoamMappingContext | RoamTypeContext) '{'
-		expr = RoamBoolExpr
+		expr = RoamBool
 	'}'
 ;
 
@@ -54,20 +54,70 @@ enum RoamObjectiveGoal:
 	MIN = 'min' | MAX = 'max'
 ;
 
+RoamBool:
+	expr=RoamBoolExpr
+;
+
+RoamBoolExpr:
+	RoamBinaryBoolExpr
+;
+
+RoamBinaryBoolExpr returns RoamBoolExpr:
+	RoamUnaryBoolExpr({RoamBinaryBoolExpr.left = current} operator=RoamBoolBinaryOperator right=RoamUnaryBoolExpr)*
+;
+
+RoamUnaryBoolExpr returns RoamBoolExpr: {RoamUnaryBoolExpr}
+	(operator=RoamBoolUnaryOperator '(' operand=RoamBoolExpr ')' ) | RoamBooleanLiteral | RoamRelExpr
+;
+
+//RoamBoolLit returns RoamBoolExpr:
+//	RoamRelExpr  |  RoamAttributeExpr |  RoamBooleanLiteral
+//;
+
+RoamBooleanLiteral:
+	value = RoamBOOLEAN
+;
+
+enum RoamBoolBinaryOperator:
+	AND='&' 	|
+	OR='|'	
+;
+
+enum RoamBoolUnaryOperator:
+	NOT = '!'
+;
+
+RoamRelExpr:
+	left=RoamArithmeticExpr (operator=RoamRelOperator right=RoamArithmeticExpr)?
+;
+
+enum RoamRelOperator:
+  GREATER='>' |
+  GREATER_OR_EQUAL='>=' |
+  EQUAL='==' |
+  UNEQUAL='!=' |
+  SMALLER_OR_EQUAL='<=' |
+  SMALLER='<'
+;
+
 RoamAttributeExpr:
-	RoamContextExpr | RoamMappingAttributeExpr | RoamLambdaAttributeExpression
+	RoamMappingAttributeExpr |  RoamContextExpr //| RoamLambdaAttributeExpression
 ;
 
-RoamContextExpr:
-	'self' '.' RoamContextAttributeExpr | RoamContextVariableExpr
+RoamMappingAttributeExpr returns RoamAttributeExpr: {RoamMappingAttributeExpr}
+	'mappings.' mapping=[RoamMapping|ID] '.' expr = RoamNodeAttributeExpr
 ;
 
-RoamContextAttributeExpr:
-	expr = RoamNodeAttributeExpr
+//RoamLambdaAttributeExpression returns RoamAttributeExpr: {RoamLambdaAttributeExpression}
+//	var=[RoamLambdaExpression|ID] '.' expr = RoamFeatureExpr
+//;
+
+RoamContextExpr returns RoamAttributeExpr: {RoamContextExpr}
+	'self.' (expr = RoamNodeAttributeExpr | expr = RoamContextOperationExpression | expr = RoamFeatureExpr)
 ;
 
-RoamContextVariableExpr:
-	operation = RoamContextOperation
+RoamContextOperationExpression:
+	operation=RoamContextOperation
 ;
 
 enum RoamContextOperation:
@@ -75,62 +125,27 @@ enum RoamContextOperation:
  	MAPPED = 'isMapped()'
 ;
 
-RoamMappingAttributeExpr:
-	'mappings' '.' mapping=[RoamMapping|ID] '.' expr = RoamNodeAttributeExpr
-;
-
-
-RoamNodeAttributeExpr:
-	node=[GT::EditorNode|ID] '.' expr = RoamFeatureExpr
+RoamNodeAttributeExpr: {RoamNodeAttributeExpr}
+	'nodes.' node=[GT::EditorNode|ID] '.' expr = RoamFeatureExpr
 ;
 
 RoamFeatureExpr:
-	RoamFeatureLit({RoamFeatureNavigation.left=current} ('.' right=RoamFeatureLit))*
+	RoamFeatureNavigation
+;
+
+RoamFeatureNavigation returns RoamFeatureExpr:
+	RoamFeatureLit ({RoamFeatureNavigation.left=current} '.' right=RoamFeatureNavigation)?
 ;
 
 RoamFeatureLit returns RoamFeatureExpr: {RoamFeatureLit}
-	feature=[ecore::EStructuralFeature|ID]
+	feature = [ecore::EStructuralFeature|ID]
 ;
 
-RoamLambdaAttributeExpression:
-	var=[RoamLambdaExpression|ID] '.' expr = RoamFeatureExpr
+RoamArithmeticExpr:
+	RoamBinaryArithmeticExpr
 ;
 
-RoamStream:
-	set = (RoamAttributeExpr ) '.' expr = RoamStreamExpr
-;
-
-RoamStreamExpr:
-	RoamStreamLit({RoamStreamNavigation.left=current} ('.' right=RoamStreamLit))*
-;
-
-RoamStreamLit returns RoamStreamExpr:
-	{RoamSelect} 'typesOf' '(' type=[ecore::EClassifier] ')' |
-	{RoamStreamSet} operator=RoamStreamSetOperator lambda = RoamLambdaExpression |
-	{RoamStreamArithmetic} operator=RoamStreamArithmeticOperator lambda = RoamLambdaExpression |
-	{RoamStreamBoolExpr} operator=RoamStreamBooleanOperator '()'
-;
-
-RoamLambdaExpression:
-	'(' name=ID '|' expr=RoamBoolExpr ')'
-;
-
-enum RoamStreamSetOperator:
-	FILTER='filter'
-;
-
-enum RoamStreamArithmeticOperator:
-	SUM = 'sum' |
-	count = 'count'
-;
-
-enum RoamStreamBooleanOperator:
-	EXISTS = 'exists' |
-	NOTEXISTS = 'notExists'
-;
-
-
-RoamArithmeticExpr returns RoamArithmeticExpr:
+RoamBinaryArithmeticExpr returns RoamArithmeticExpr:
 	RoamUnaryArithmeticExpr({RoamBinaryArithmeticExpr.left = current} operator=RoamArithmeticBinaryOperator right=RoamUnaryArithmeticExpr)*
 ;
 
@@ -139,7 +154,7 @@ RoamUnaryArithmeticExpr returns RoamArithmeticExpr: {RoamUnaryArithmeticExpr}
 ;
 
 RoamExpressionOperand:
-	RoamStream | RoamAttributeExpr | RoamObjectiveExpression | RoamArithmeticLiteral  //| RoamStream //|RoamStreamAttributeExpression //| StringLiteral | EnumLiteral |
+	RoamAttributeExpr | RoamObjectiveExpression | RoamArithmeticLiteral // | RoamStream
 ;
 
 RoamArithmeticLiteral:
@@ -162,44 +177,40 @@ enum RoamArithmeticUnaryOperator:
 	cos='cos'	
 ;
 
-RoamBoolExpr returns RoamBoolExpr:
-	RoamUnaryBoolExpr({RoamBinaryBoolExpr.left = current} operator=RoamBoolBinaryOperator right=RoamUnaryBoolExpr)*
-;
-
-RoamUnaryBoolExpr returns RoamBoolExpr: {RoamUnaryBoolExpr}
-	(operator=RoamBoolUnaryOperator '(' | '(') operand=RoamBoolExpr')' | RoamRelExpr | RoamAttributeExpr | RoamBooleanLiteral
-;
-
-RoamBooleanLiteral:
-	value = RoamBOOLEAN
-;
-
-enum RoamBoolBinaryOperator:
-	AND='&' 	|
-	OR='|'	
-;
-
-enum RoamBoolUnaryOperator:
-	NONE='$NO_OP'     |
-	NOT='!'	
-;
-
-RoamRelExpr:
-	left=RoamArithmeticExpr operator=RoamRelOperator right=RoamArithmeticExpr
-;
-
-enum RoamRelOperator:
-  GREATER='>' |
-  GREATER_OR_EQUAL='>=' |
-  EQUAL='==' |
-  UNEQUAL='!=' |
-  SMALLER_OR_EQUAL='<=' |
-  SMALLER='<'
-;
-
-RoamStringLiteral:
-	value = STRING
-;
+//
+//
+//RoamStream:
+//	set = (RoamAttributeExpr ) '.' expr = RoamStreamExpr
+//;
+//
+//RoamStreamExpr:
+//	RoamStreamLit({RoamStreamNavigation.left=current} ('.' right=RoamStreamLit))*
+//;
+//
+//RoamStreamLit returns RoamStreamExpr:
+//	{RoamSelect} 'typesOf' '(' type=[ecore::EClassifier] ')' |
+//	{RoamStreamSet} operator=RoamStreamSetOperator lambda = RoamLambdaExpression |
+//	{RoamStreamArithmetic} operator=RoamStreamArithmeticOperator lambda = RoamLambdaExpression |
+//	{RoamStreamBoolExpr} operator=RoamStreamBooleanOperator '()'
+//;
+//
+//RoamLambdaExpression:
+//	'(' name=ID '|' expr=RoamBoolExpr ')'
+//;
+//
+//enum RoamStreamSetOperator:
+//	FILTER='filter'
+//;
+//
+//enum RoamStreamArithmeticOperator:
+//	SUM = 'sum' |
+//	count = 'count'
+//;
+//
+//enum RoamStreamBooleanOperator:
+//	EXISTS = 'exists' |
+//	NOTEXISTS = 'notExists'
+//;
 
 RoamDoubleLiteral:
 	RoamDouble
@@ -209,9 +220,13 @@ RoamIntegerLiteral:
 	RoamInteger
 ;
 
-RoamEnumLiteral:
-	'enum::' value = [ecore::EEnumLiteral]
-;
+//RoamStringLiteral:
+//	value = STRING
+//;
+
+//RoamEnumLiteral:
+//	'enum::' value = [ecore::EEnumLiteral]
+//;
 
 RoamDouble returns ecore::EDouble:
 	('-')?INT '.' INT

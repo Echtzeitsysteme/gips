@@ -40,6 +40,7 @@ import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.impl.EditorGTFileImpl;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamConstraintImpl;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamContextExprImpl;
+import org.emoflon.roam.roamslang.roamSLang.impl.RoamMappingAttributeExprImpl;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamObjectiveImpl;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamSelectImpl;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamStreamArithmeticImpl;
@@ -155,7 +156,9 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 	}
 	
 	public IScope scopeForRoamLambdaAttributeExpression(RoamLambdaAttributeExpression context, EReference reference) {
-		RoamStreamExpr parent = (RoamStreamExpr) RoamSLangScopeContextUtil.getContainer(context, Set.of(RoamStreamNavigationImpl.class, RoamStreamSetImpl.class, RoamSelectImpl.class, RoamStreamArithmeticImpl.class));
+		Set<Class<?>> classes =  Set.of(RoamContextExprImpl.class, RoamMappingAttributeExprImpl.class, RoamStreamNavigationImpl.class, 
+				RoamStreamSetImpl.class, RoamSelectImpl.class, RoamStreamArithmeticImpl.class);
+		EObject parent = (EObject) RoamSLangScopeContextUtil.getContainer(context, classes);
 		if(parent == null) {
 			return super.getScope(context, reference);
 		}
@@ -172,10 +175,10 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 				if(nav.getLeft() instanceof RoamSelect select) {
 					return Scopes.scopeFor(((EClass)select.getType()).getEAllStructuralFeatures());
 				} else {
-					parent = (RoamStreamExpr) RoamSLangScopeContextUtil.getContainer(parent, Set.of(RoamStreamNavigationImpl.class, RoamStreamSetImpl.class, RoamSelectImpl.class, RoamStreamArithmeticImpl.class));
+					parent = (EObject) RoamSLangScopeContextUtil.getContainer(parent, classes);
 				}
 			} else {
-				parent = (RoamStreamExpr) RoamSLangScopeContextUtil.getContainer(parent, Set.of(RoamStreamNavigationImpl.class, RoamStreamSetImpl.class, RoamSelectImpl.class, RoamStreamArithmeticImpl.class));
+				parent = (EObject) RoamSLangScopeContextUtil.getContainer(parent, classes);
 			}
 			
 		}

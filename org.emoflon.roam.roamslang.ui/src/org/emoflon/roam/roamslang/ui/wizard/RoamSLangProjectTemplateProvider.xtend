@@ -25,20 +25,16 @@ class RoamSLangProjectTemplateProvider implements IProjectTemplateProvider {
 	}
 }
 
-@ProjectTemplate(label="Hello World", icon="project_template.png", description="<p><b>Hello World</b></p>
-<p>This is a parameterized hello world for RoamSLang. You can set a parameter to modify the content in the generated file
-and a parameter to set the package the file is created in.</p>")
+@ProjectTemplate(label="iflye example", icon="project_template.png", description="<p><b>iflye example</b></p>
+<p>This is a hello world example for RoamSLang using the iflye framework.</p>")
 final class HelloWorldProject {
 	val advanced = check("Advanced:", false)
 	val advancedGroup = group("Properties")
-	val name = combo("Name:", #["Xtext", "World", "Foo", "Bar"], "The name to say 'Hello' to", advancedGroup)
-	val path = text("Package:", "mydsl", "The package path to place the files in", advancedGroup)
+	val path = text("Package:", "rslang", "The package path to place the files in", advancedGroup)
 
 	override protected updateVariables() {
-		name.enabled = advanced.value
 		path.enabled = advanced.value
 		if (!advanced.value) {
-			name.value = "Xtext"
 			path.value = "rslang"
 		}
 	}
@@ -58,10 +54,33 @@ final class HelloWorldProject {
 			builderIds += #[JavaCore.BUILDER_ID, XtextProjectHelper.BUILDER_ID]
 			folders += "src"
 			addFile('''src/«path»/Model.rslang''', '''
-				/*
-				 * This is an example model
-				 */
-				Hello «name»!
+				import "platform:/resource/network.model/model/Model.ecore"
+				// ^import a metamodel here
+				// you need a working iflye workspace to use this metamodel
+				// check out: https://github.com/Echtzeitsysteme/iflye
+				
+				// specify an example rule
+				rule serverRule {
+					-- node : Server
+				}
+				
+				// create a mapping on the rule
+				mapping mapServer with serverRule;
+				
+				// create a constraint on the mapping
+				constraint -> mapping::mapServer {
+					1 != 2
+				}
+				
+				// create an objective for the mapping
+				objective serverObj -> mapping::mapServer {
+					1
+				}
+				
+				// create an overall objective
+				global objective : min {
+					2 * serverObj
+				}
 			''')
 		])
 	}

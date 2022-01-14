@@ -136,6 +136,7 @@
     </genClasses>
     <genClasses ecoreClass="RoamSLang.ecore#//RoamContextExpr">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamContextExpr/expr"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamContextExpr/stream"/>
     </genClasses>
     <genClasses ecoreClass="RoamSLang.ecore#//RoamFeatureNavigation">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamFeatureNavigation/left"/>

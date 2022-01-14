@@ -85,8 +85,13 @@
     <eLiterals name="VALUE" literal="value()"/>
     <eLiterals name="MAPPED" value="1" literal="isMapped()"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoamTypeCast">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamNodeAttributeExpr">
     <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorNode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeCast" eType="#//RoamTypeCast"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//RoamFeatureExpr"
         containment="true"/>
   </eClassifiers>
@@ -150,6 +155,8 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamContextExpr" eSuperTypes="#//RoamAttributeExpr">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeCast" eType="#//RoamTypeCast"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="stream" eType="#//RoamStreamExpr"
@@ -163,6 +170,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamFeatureLit" eSuperTypes="#//RoamFeatureExpr">
     <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeCast" eType="#//RoamTypeCast"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoamBinaryArithmeticExpr" eSuperTypes="#//RoamArithmeticExpr">
     <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//RoamArithmeticExpr"

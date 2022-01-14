@@ -8,6 +8,7 @@ import org.emoflon.roam.roamslang.roamSLang.RoamMappingContext;
 import org.emoflon.roam.roamslang.roamSLang.RoamNodeAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamSLangPackage;
 import org.emoflon.roam.roamslang.roamSLang.RoamSelect;
+import org.emoflon.roam.roamslang.roamSLang.RoamTypeCast;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
 import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureExpr;
@@ -69,6 +70,10 @@ public final class RoamSLangScopeContextUtil {
 	
 	public static boolean isRoamFeatureLit(final EObject context, final EReference reference) {
 		return context instanceof RoamFeatureLit;
+	}
+	
+	public static boolean isRoamTypeCast(final EObject context, final EReference reference) {
+		return context instanceof RoamTypeCast;
 	}
 	
 	

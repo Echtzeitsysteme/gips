@@ -113,7 +113,7 @@ RoamLambdaAttributeExpression returns RoamAttributeExpr: {RoamLambdaAttributeExp
 ;
 
 RoamContextExpr returns RoamAttributeExpr: {RoamContextExpr}
-	'self' ('.' (expr = RoamNodeAttributeExpr | expr = RoamContextOperationExpression | expr = RoamFeatureExpr) ('->' stream = RoamStreamExpr)?)?
+	'self' ('.' typeCast=RoamTypeCast)? ('.' (expr = RoamNodeAttributeExpr | expr = RoamContextOperationExpression | expr = RoamFeatureExpr) ('->' stream = RoamStreamExpr)?)?
 ;
 
 RoamContextOperationExpression:
@@ -125,8 +125,12 @@ enum RoamContextOperation:
  	MAPPED = 'isMapped()'
 ;
 
+RoamTypeCast:
+	'toType(' type=[ecore::EClass] ')'
+;
+
 RoamNodeAttributeExpr: {RoamNodeAttributeExpr}
-	'nodes().' node=[GT::EditorNode|ID] ('.' expr = RoamFeatureExpr)?
+	'nodes().' node=[GT::EditorNode|ID] ('.' typeCast=RoamTypeCast)? ('.' expr = RoamFeatureExpr)?
 ;
 
 RoamFeatureExpr:
@@ -138,7 +142,7 @@ RoamFeatureNavigation returns RoamFeatureExpr:
 ;
 
 RoamFeatureLit returns RoamFeatureExpr: {RoamFeatureLit}
-	feature = [ecore::EStructuralFeature]
+	feature = [ecore::EStructuralFeature] ('.' typeCast=RoamTypeCast)?
 ;
 
 RoamArithmeticExpr:

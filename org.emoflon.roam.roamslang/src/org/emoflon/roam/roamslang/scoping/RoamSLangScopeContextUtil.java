@@ -10,6 +10,7 @@ import org.emoflon.roam.roamslang.roamSLang.RoamSLangPackage;
 import org.emoflon.roam.roamslang.roamSLang.RoamSelect;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
 import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamFeatureExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureLit;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureNavigation;
 import org.emoflon.roam.roamslang.roamSLang.RoamLambdaAttributeExpression;
@@ -78,5 +79,15 @@ public final class RoamSLangScopeContextUtil {
 		} while (current !=null && !(classes.contains(current.getClass())));
 		
 		return current;
+	}
+	
+	public static RoamFeatureExpr findLeafExpression(final RoamFeatureExpr expr) {
+		if(expr instanceof RoamFeatureLit) {
+			return expr;
+		} else if (expr instanceof RoamFeatureNavigation nav) {
+			return findLeafExpression(nav.getRight());
+		} else {
+			return null;
+		}
 	}
 }

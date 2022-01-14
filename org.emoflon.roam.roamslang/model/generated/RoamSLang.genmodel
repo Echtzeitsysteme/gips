@@ -102,8 +102,12 @@
     <genClasses ecoreClass="RoamSLang.ecore#//RoamContextOperationExpression">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamContextOperationExpression/operation"/>
     </genClasses>
+    <genClasses ecoreClass="RoamSLang.ecore#//RoamTypeCast">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamTypeCast/type"/>
+    </genClasses>
     <genClasses ecoreClass="RoamSLang.ecore#//RoamNodeAttributeExpr">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamNodeAttributeExpr/node"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamNodeAttributeExpr/typeCast"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamNodeAttributeExpr/expr"/>
     </genClasses>
     <genClasses ecoreClass="RoamSLang.ecore#//RoamFeatureExpr"/>
@@ -135,6 +139,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamLambdaAttributeExpression/expr"/>
     </genClasses>
     <genClasses ecoreClass="RoamSLang.ecore#//RoamContextExpr">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamContextExpr/typeCast"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamContextExpr/expr"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamContextExpr/stream"/>
     </genClasses>
@@ -144,6 +149,7 @@
     </genClasses>
     <genClasses ecoreClass="RoamSLang.ecore#//RoamFeatureLit">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamFeatureLit/feature"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamFeatureLit/typeCast"/>
     </genClasses>
     <genClasses ecoreClass="RoamSLang.ecore#//RoamBinaryArithmeticExpr">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamBinaryArithmeticExpr/left"/>

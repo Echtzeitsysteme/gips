@@ -101,16 +101,16 @@ enum RoamRelOperator:
 ;
 
 RoamAttributeExpr:
-	RoamMappingAttributeExpr |  RoamContextExpr //| RoamLambdaAttributeExpression
+	RoamMappingAttributeExpr |  RoamContextExpr | RoamLambdaAttributeExpression
 ;
 
 RoamMappingAttributeExpr returns RoamAttributeExpr: {RoamMappingAttributeExpr}
-	'mappings.' mapping=[RoamMapping|ID] '.' //expr = RoamNodeAttributeExpr
+	'mappings.' mapping=[RoamMapping|ID] '.' expr = RoamStreamExpr
 ;
 
-//RoamLambdaAttributeExpression returns RoamAttributeExpr: {RoamLambdaAttributeExpression}
-//	var=[RoamLambdaExpression|ID] '.' expr = RoamFeatureExpr
-//;
+RoamLambdaAttributeExpression returns RoamAttributeExpr: {RoamLambdaAttributeExpression}
+	var=[RoamLambdaExpression|ID] '.' (expr = RoamNodeAttributeExpr | expr = RoamContextOperationExpression | expr = RoamFeatureExpr)
+;
 
 RoamContextExpr returns RoamAttributeExpr: {RoamContextExpr}
 	'self.' (expr = RoamNodeAttributeExpr | expr = RoamContextOperationExpression | expr = RoamFeatureExpr)
@@ -126,7 +126,7 @@ enum RoamContextOperation:
 ;
 
 RoamNodeAttributeExpr: {RoamNodeAttributeExpr}
-	'nodes.' node=[GT::EditorNode|ID] '.' expr = RoamFeatureExpr
+	'nodes().' node=[GT::EditorNode|ID] '.' expr = RoamFeatureExpr
 ;
 
 RoamFeatureExpr:
@@ -138,7 +138,7 @@ RoamFeatureNavigation returns RoamFeatureExpr:
 ;
 
 RoamFeatureLit returns RoamFeatureExpr: {RoamFeatureLit}
-	feature = [ecore::EStructuralFeature|ID]
+	feature = [ecore::EStructuralFeature]
 ;
 
 RoamArithmeticExpr:
@@ -154,7 +154,7 @@ RoamUnaryArithmeticExpr returns RoamArithmeticExpr: {RoamUnaryArithmeticExpr}
 ;
 
 RoamExpressionOperand:
-	RoamAttributeExpr | RoamObjectiveExpression | RoamArithmeticLiteral // | RoamStream
+	RoamAttributeExpr | RoamObjectiveExpression | RoamArithmeticLiteral
 ;
 
 RoamArithmeticLiteral:
@@ -177,40 +177,38 @@ enum RoamArithmeticUnaryOperator:
 	cos='cos'	
 ;
 
-//
-//
-//RoamStream:
-//	set = (RoamAttributeExpr ) '.' expr = RoamStreamExpr
-//;
-//
-//RoamStreamExpr:
-//	RoamStreamLit({RoamStreamNavigation.left=current} ('.' right=RoamStreamLit))*
-//;
-//
-//RoamStreamLit returns RoamStreamExpr:
-//	{RoamSelect} 'typesOf' '(' type=[ecore::EClassifier] ')' |
-//	{RoamStreamSet} operator=RoamStreamSetOperator lambda = RoamLambdaExpression |
-//	{RoamStreamArithmetic} operator=RoamStreamArithmeticOperator lambda = RoamLambdaExpression |
-//	{RoamStreamBoolExpr} operator=RoamStreamBooleanOperator '()'
-//;
-//
-//RoamLambdaExpression:
-//	'(' name=ID '|' expr=RoamBoolExpr ')'
-//;
-//
-//enum RoamStreamSetOperator:
-//	FILTER='filter'
-//;
-//
-//enum RoamStreamArithmeticOperator:
-//	SUM = 'sum' |
-//	count = 'count'
-//;
-//
-//enum RoamStreamBooleanOperator:
-//	EXISTS = 'exists' |
-//	NOTEXISTS = 'notExists'
-//;
+RoamStreamExpr:
+	RoamStreamNavigation
+;
+
+RoamStreamNavigation returns RoamStreamExpr:
+	RoamStreamLit({RoamStreamNavigation.left=current}'.' right=RoamStreamNavigation)?
+;
+
+RoamStreamLit returns RoamStreamExpr:
+	{RoamSelect} 'typesOf' '(' type=[ecore::EClassifier] ')' |
+	{RoamStreamSet} operator=RoamStreamSetOperator lambda = RoamLambdaExpression |
+	{RoamStreamArithmetic} operator=RoamStreamArithmeticOperator lambda = RoamLambdaExpression |
+	{RoamStreamBoolExpr} operator=RoamStreamNoArgOperator
+;
+
+RoamLambdaExpression:
+	'(' name=ID '|' expr=RoamBoolExpr ')'
+;
+
+enum RoamStreamSetOperator:
+	FILTER='filter'
+;
+
+enum RoamStreamArithmeticOperator:
+	SUM = 'sum'
+;
+
+enum RoamStreamNoArgOperator:
+	EXISTS = 'exists()' |
+	NOTEXISTS = 'notExists()' |
+	count = 'count()'
+;
 
 RoamDoubleLiteral:
 	RoamDouble

@@ -149,10 +149,30 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 				return Scopes.scopeFor(((EClass) select.getType()).getEAllStructuralFeatures());
 			} else if (parent instanceof RoamMappingAttributeExpr mapping) {
 				return Scopes.scopeFor(mapping.getMapping().getRule().getNodes());
-//				return super.getScope(context, reference);
 			} else if (parent instanceof RoamContextExpr contextExpr) {
-				// TODO
-				return super.getScope(context, reference);
+				if(contextExpr.getExpr() != null) {
+					if(contextExpr.getExpr() instanceof RoamNodeAttributeExpr nodeExpr) {
+						RoamFeatureExpr expr = RoamSLangScopeContextUtil.findLeafExpression(nodeExpr.getExpr());
+						if(expr instanceof RoamFeatureLit lit) {
+							EClass clazz = (EClass) lit.getFeature().getEType();
+							return Scopes.scopeFor(clazz.getEAllStructuralFeatures());
+						} else {
+							return super.getScope(context, reference);
+						}
+					} else if(contextExpr.getExpr() instanceof RoamFeatureExpr featExpr) {
+						RoamFeatureExpr expr = RoamSLangScopeContextUtil.findLeafExpression(featExpr);
+						if(expr instanceof RoamFeatureLit lit) {
+							EClass clazz = (EClass) lit.getFeature().getEType();
+							return Scopes.scopeFor(clazz.getEAllStructuralFeatures());
+						} else {
+							return super.getScope(context, reference);
+						}
+					} else {
+						return super.getScope(context, reference);
+					}
+				} else {
+					return super.getScope(context, reference);
+				}
 			} else if (parent instanceof RoamStreamNavigation nav) {
 				if (nav.getLeft()instanceof RoamSelect select) {
 					return Scopes.scopeFor(((EClass) select.getType()).getEAllStructuralFeatures());
@@ -162,10 +182,11 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 			} else {
 				parent = (EObject) RoamSLangScopeContextUtil.getContainer(parent, classes);
 			}
-
+			// TODO: Traverese nested stream expressions recursively to derive the current type
 		}
-
-		return null;
+		
+		// TODO: For now we'll exit this gracefully if anything unexpected occurs
+		return super.getScope(context, reference);
 	}
 
 	public IScope scopeForRoamSelect(RoamSelect context, EReference reference) {

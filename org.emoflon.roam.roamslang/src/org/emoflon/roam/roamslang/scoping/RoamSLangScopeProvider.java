@@ -16,6 +16,7 @@ import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
 import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
 import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
 import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamFeatureExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureLit;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureNavigation;
 import org.emoflon.roam.roamslang.roamSLang.RoamLambdaAttributeExpression;
@@ -31,6 +32,7 @@ import org.emoflon.roam.roamslang.roamSLang.impl.EditorGTFileImpl;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamConstraintImpl;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamContextExprImpl;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamMappingAttributeExprImpl;
+import org.emoflon.roam.roamslang.roamSLang.impl.RoamNodeAttributeExprImpl;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamObjectiveImpl;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamSelectImpl;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamStreamArithmeticImpl;
@@ -167,32 +169,38 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 	}
 
 	public IScope scopeForRoamSelect(RoamSelect context, EReference reference) {
-		Set<Class<?>> classes = Set.of(RoamContextExprImpl.class, RoamMappingAttributeExprImpl.class);
+		Set<Class<?>> classes = Set.of(RoamContextExprImpl.class, RoamMappingAttributeExprImpl.class, RoamNodeAttributeExprImpl.class);
 		EObject parent = (EObject) RoamSLangScopeContextUtil.getContainer(context, classes);
-		if (parent instanceof RoamMappingAttributeExpr mapping) {
+		if(parent instanceof RoamMappingAttributeExpr mapping) {
 			// TODO: Find all rules that refine the rule that corresponds to this mapping
-//			return Scopes.scopeFor(List.of(mapping.getMapping().getRule()));
+			// TODO: Deactivated for now, since we do not support rule inheritance in any meaningful way
+			// return Scopes.scopeFor(List.of(mapping.getMapping().getRule()));
 			return super.getScope(context, reference);
 		} else if (parent instanceof RoamContextExpr contextExpr) {
-			classes = Set.of(RoamConstraintImpl.class, RoamObjectiveImpl.class);
-			EObject container = (EObject) RoamSLangScopeContextUtil.getContainer(context, classes);
-			EObject contextType = null;
-			if (container instanceof RoamConstraint constraint) {
-				contextType = constraint.getContext();
-			} else if (container instanceof RoamObjective objective) {
-				contextType = objective.getContext();
-			} else {
-				return super.getScope(context, reference);
-			}
-			if (contextType instanceof RoamMappingContext mapping) {
-				// TODO: Find all rules that refine the rule that corresponds to this mapping
-//				return Scopes.scopeFor(List.of(mapping.getMapping().getRule()));
-				return super.getScope(context, reference);
-			} else if (contextType instanceof RoamTypeContext type) {
-				EClass clazz = (EClass) type.getType();
-				EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
-				return Scopes.scopeFor(GTEditorModelUtils.getClasses(editorFile).stream()
-						.filter(c -> c.getEAllSuperTypes().contains(clazz)).collect(Collectors.toSet()));
+			if(contextExpr.getExpr() != null) {
+				if(contextExpr.getExpr() instanceof RoamNodeAttributeExpr nodeExpr) {
+					RoamFeatureExpr expr = RoamSLangScopeContextUtil.findLeafExpression(nodeExpr.getExpr());
+					if(expr instanceof RoamFeatureLit lit) {
+						EClass clazz = (EClass) lit.getFeature().getEType();
+						EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
+						return Scopes.scopeFor(GTEditorModelUtils.getClasses(editorFile).stream()
+								.filter(c -> c.getEAllSuperTypes().contains(clazz)).collect(Collectors.toSet()));
+					} else {
+						return super.getScope(context, reference);
+					}
+				} else if(contextExpr.getExpr() instanceof RoamFeatureExpr featExpr) {
+					RoamFeatureExpr expr = RoamSLangScopeContextUtil.findLeafExpression(featExpr);
+					if(expr instanceof RoamFeatureLit lit) {
+						EClass clazz = (EClass) lit.getFeature().getEType();
+						EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
+						return Scopes.scopeFor(GTEditorModelUtils.getClasses(editorFile).stream()
+								.filter(c -> c.getEAllSuperTypes().contains(clazz)).collect(Collectors.toSet()));
+					} else {
+						return super.getScope(context, reference);
+					}
+				} else {
+					return super.getScope(context, reference);
+				}
 			} else {
 				return super.getScope(context, reference);
 			}

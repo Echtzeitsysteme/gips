@@ -21,13 +21,13 @@ import static org.eclipse.core.runtime.IStatus.*
  */
 class RoamSLangProjectTemplateProvider implements IProjectTemplateProvider {
 	override getProjectTemplates() {
-		#[new HelloWorldProject]
+		#[new SimpleIflyeProject, new CompleteIflyeProject]
 	}
 }
 
-@ProjectTemplate(label="iflye example", icon="project_template.png", description="<p><b>iflye example</b></p>
+@ProjectTemplate(label="simple iflye example", icon="project_template.png", description="<p><b>simple iflye example</b></p>
 <p>This is a hello world example for RoamSLang using the iflye framework.</p>")
-final class HelloWorldProject {
+final class SimpleIflyeProject {
 	val advanced = check("Advanced:", false)
 	val advancedGroup = group("Properties")
 	val path = text("Package:", "rslang", "The package path to place the files in", advancedGroup)
@@ -80,6 +80,225 @@ final class HelloWorldProject {
 				// create an overall objective
 				global objective : min {
 					2 * serverObj
+				}
+			''')
+		])
+	}
+}
+
+@ProjectTemplate(label="complete iflye example", icon="project_template.png", description="<p><b>complete iflye example</b></p>
+<p>This is a draft for the complete example for RoamSLang using the iflye framework.</p>")
+final class CompleteIflyeProject {
+	val advanced = check("Advanced:", false)
+	val advancedGroup = group("Properties")
+	val path = text("Package:", "rslang", "The package path to place the files in", advancedGroup)
+
+	override protected updateVariables() {
+		path.enabled = advanced.value
+		if (!advanced.value) {
+			path.value = "rslang"
+		}
+	}
+
+	override protected validate() {
+		if (path.value.matches('[a-z][a-z0-9_]*(/[a-z][a-z0-9_]*)*'))
+			null
+		else
+			new Status(ERROR, "Wizard", "'" + path + "' is not a valid package name")
+	}
+
+	override generateProjects(IProjectGenerator generator) {
+		generator.generate(new PluginProjectFactory => [
+			projectName = projectInfo.projectName
+			location = projectInfo.locationPath
+			projectNatures += #[JavaCore.NATURE_ID, "org.eclipse.pde.PluginNature", XtextProjectHelper.NATURE_ID]
+			builderIds += #[JavaCore.BUILDER_ID, XtextProjectHelper.BUILDER_ID]
+			folders += "src"
+			addFile('''src/«path»/Model.rslang''', '''
+				import "platform:/resource/network.model/model/Model.ecore"
+				// ^import a metamodel here
+				// you need a working iflye workspace to use this metamodel
+				// check out: https://github.com/Echtzeitsysteme/iflye
+				
+				rule serverMatchPositive {
+					root: Root {
+						-networks -> substrateNetwork
+						-networks -> virtualNetwork
+					}
+					
+					substrateNode: SubstrateServer {
+						.residualCpu := substrateNode.residualCpu - virtualNode.cpu
+						.residualMemory := substrateNode.residualMemory - virtualNode.memory
+						.residualStorage := substrateNode.residualStorage - virtualNode.storage
+						++ -guestServers -> virtualNode
+					}
+					
+					virtualNode: VirtualServer {
+						++ -host -> substrateNode
+					}
+					
+					substrateNetwork: SubstrateNetwork {
+						-nodes -> substrateNode
+					}
+					
+					virtualNetwork: VirtualNetwork {
+						-nodes -> virtualNode
+					}
+					
+					# virtualNode.cpu <= substrateNode.residualCpu
+					# virtualNode.memory <= substrateNode.residualMemory
+					# virtualNode.storage <= substrateNode.residualStorage
+				}
+				
+				rule switchNodeMatchPositive {
+					root: Root {
+						-networks -> substrateNetwork
+						-networks -> virtualNetwork
+					}
+					
+					substrateNode: SubstrateNode {
+						++ -guestSwitches -> virtualSwitch
+					}
+					
+					virtualSwitch : VirtualSwitch {
+						++ -host -> substrateNode
+					}
+					
+					substrateNetwork: SubstrateNetwork {
+						-nodes -> substrateNode
+					}
+					
+					virtualNetwork: VirtualNetwork {
+						-nodes -> virtualSwitch
+					}
+				}
+				
+				rule linkPathMatchPositive {
+					root: Root {
+						-networks -> substrateNetwork
+						-networks -> virtualNetwork
+					}
+					
+					substratePath: SubstratePath {
+						++ -guestLinks -> virtualLink
+						.residualBandwidth := substratePath.residualBandwidth - virtualLink.bandwidth
+						
+						// Update all substrate links
+						forEach links->l {
+							iterator::l.residualBandwidth := iterator::l.residualBandwidth - virtualLink.bandwidth
+						}
+					}
+					
+					virtualLink: VirtualLink {
+						++ -host -> substratePath
+					}
+					
+					substrateNetwork: SubstrateNetwork {
+						-paths -> substratePath
+					}
+					
+					virtualNetwork: VirtualNetwork {
+						-links -> virtualLink
+					}
+					
+					# virtualLink.bandwidth <= substratePath.residualBandwidth
+					
+					// Explicitly exclude substrate paths with a residual bandwidth equals to 0
+					# substratePath.residualBandwidth > 0
+				}
+				
+				rule linkServerMatchPositive {
+					root: Root {
+						-networks -> substrateNetwork
+						-networks -> virtualNetwork
+					}
+					
+					substrateServer: SubstrateServer {
+						++ -guestLinks -> virtualLink
+					}
+					
+					virtualLink: VirtualLink {
+						++ -host -> substrateServer
+					}
+					
+					substrateNetwork: SubstrateNetwork {
+						-nodes -> substrateServer
+					}
+					
+					virtualNetwork: VirtualNetwork {
+						-links -> virtualLink
+					}
+				}
+				
+				//
+				// RoamSLang starts here!
+				//
+				
+				// Server 2 Server
+				mapping srv2srv with serverMatchPositive;
+				constraint -> mapping::srv2srv {
+					mappings.srv2srv->filter(match | match.nodes().virtualNode == self.nodes().virtualNode)->count() == 1
+				}
+				objective srvObj -> mapping::srv2srv {
+				    self.nodes().substrateNode.residualCpu / self.nodes().substrateNode.cpu + 
+				    self.nodes().substrateNode.residualMemory / self.nodes().substrateNode.memory + 
+				    self.nodes().substrateNode.residualStorage / self.nodes().substrateNode.storage
+				}
+				
+				constraint -> class::SubstrateServer {
+					mappings.srv2srv->filter(match | match.nodes().substrateNode == self)->sum(match | match.nodes().virtualNode.cpu) <= self.residualCpu &
+				    mappings.srv2srv->filter(match | match.nodes().substrateNode == self)->sum(match | match.nodes().virtualNode.memory) <= self.residualMemory &
+				    mappings.srv2srv->filter(match | match.nodes().substrateNode == self)->sum(match | match.nodes().virtualNode.storage) <= self.residualStorage
+				}
+				
+				// Switch 2 Node
+				mapping sw2node with switchNodeMatchPositive;
+				constraint -> mapping::sw2node {
+					mappings.sw2node->filter(match | match.nodes().virtualSwitch == self.nodes().virtualSwitch)->count() == 1
+				}
+				//objective swObj -> mapping::sw2node {
+				//	0
+				//}
+				
+				// Link 2 Path
+				mapping l2p with linkPathMatchPositive;
+				constraint -> mapping::l2p {
+					mappings.srv2srv->filter(match | match.nodes().substrateNode == self.nodes().virtualLink.source.toType(VirtualServer).host)->count() +
+					mappings.sw2node->filter(match | match.nodes().substrateNode == self.nodes().virtualLink.source.toType(VirtualSwitch).host)->count() == 1 &
+					mappings.srv2srv->filter(match | match.nodes().substrateNode == self.nodes().virtualLink.target.toType(VirtualServer).host)->count() +
+					mappings.sw2node->filter(match | match.nodes().substrateNode == self.nodes().virtualLink.target.toType(VirtualSwitch).host)->count() == 1
+				}
+				constraint -> mapping::l2p {
+					mappings.l2p->filter(match | match.nodes().virtualLink == self.nodes().virtualLink)->count() +
+					mappings.l2s->filter(match | match.nodes().virtualLink == self.nodes().virtualLink)->count() == 1
+				}
+				objective lpObj -> mapping::l2p {
+					self.nodes().virtualLink.bandwidth * self.nodes().substratePath.hops
+				}
+				
+				constraint -> class::SubstratePath {
+					mappings.l2p->filter(match | match.nodes().substratePath == self)->sum(match | match.nodes().virtualLink.bandwidth) <= self.residualBandwidth
+				}
+				
+				// Link 2 Server
+				mapping l2s with linkServerMatchPositive;
+				constraint -> mapping::l2s {
+					mappings.srv2srv->filter(match | match.nodes().substrateNode == self.nodes().virtualLink.source.toType(VirtualServer).host & match.nodes().virtualNode == self.nodes().virtualLink.source)->count() +
+					mappings.sw2node->filter(match | match.nodes().substrateNode == self.nodes().virtualLink.source.toType(VirtualSwitch).host & match.nodes().virtualSwitch == self.nodes().virtualLink.source)->count() == 1 &
+					mappings.srv2srv->filter(match | match.nodes().substrateNode == self.nodes().virtualLink.target.toType(VirtualServer).host & match.nodes().virtualNode == self.nodes().virtualLink.target)->count() +
+					mappings.sw2node->filter(match | match.nodes().substrateNode == self.nodes().virtualLink.target.toType(VirtualSwitch).host & match.nodes().virtualSwitch == self.nodes().virtualLink.target)->count() == 1
+				}
+				constraint -> mapping::l2s {
+					mappings.l2s->filter(match | match.nodes().virtualLink == self.nodes().virtualLink)->count() +
+					mappings.l2p->filter(match | match.nodes().virtualLink == self.nodes().virtualLink)->count() == 1
+				}
+				//objective lsObj -> mapping::l2s {
+				//	0
+				//}
+				
+				// Global objective
+				global objective : min {
+					srvObj + lpObj
 				}
 			''')
 		])

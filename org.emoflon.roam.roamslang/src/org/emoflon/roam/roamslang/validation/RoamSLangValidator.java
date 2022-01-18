@@ -3,6 +3,16 @@
  */
 package org.emoflon.roam.roamslang.validation;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.eclipse.xtext.validation.Check;
+import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
+import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
+import org.emoflon.roam.roamslang.roamSLang.RoamObjective;
+import org.emoflon.roam.roamslang.roamSLang.RoamSLangPackage;
 
 /**
  * This class contains custom validation rules. 
@@ -11,15 +21,179 @@ package org.emoflon.roam.roamslang.validation;
  */
 public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	
-//	public static final String INVALID_NAME = "invalidName";
-//
+	/**
+	 * The list of invalid mapping names. Will be filled in the static block.
+	 */
+	public static Set<String> INVALID_MAPPING_NAMES = new HashSet<String>();
+	
+	static {
+		final String[] invalidNames = new String[] {
+				"clone",
+				"equals",
+				"finalize",
+				"getClass",
+				"hashCode",
+				"notify",
+				"notifyAll",
+				"toString",
+				"wait",
+				"abstract",
+				"assert",
+				"boolean",
+				"break",
+				"byte",
+				"case",
+				"catch",
+				"char",
+				"class",
+				"const",
+				"continue",
+				"default",
+				"do",
+				"double",
+				"EAttribute",
+				"EBoolean",
+				"EDataType",
+				"EClass",
+				"EClassifier",
+				"EDouble",
+				"EFloat",
+				"EInt",
+				"else",
+				"enum",
+				"EPackage",
+				"EReference",
+				"EString",
+				"extends",
+				"final",
+				"finally",
+				"float",
+				"for",
+				"goto",
+				"if",
+				"implements",
+				"import",
+				"instanceof",
+				"int",
+				"interface",
+				"long",
+				"native",
+				"new",
+				"package",
+				"private",
+				"protected",
+				"public",
+				"return",
+				"short",
+				"static",
+				"strictfp",
+				"super",
+				"switch",
+				"synchronized",
+				"this",
+				"throw",
+				"throws",
+				"transient",
+				"try",
+				"void",
+				"volatile",
+				"while",
+				
+				// New values
+				"mapping",
+				"objective",
+				"global objective",
+				"global",
+				"min",
+				"max",
+				"constraint"
+		};
+		INVALID_MAPPING_NAMES.addAll(Arrays.asList(invalidNames));
+	}
+	
+	static String CODE_PREFIX = "org.emoflon.roam.roamslang.";
+
+	// General errors for named elements.
+	public static String NAME_BLOCKED = CODE_PREFIX + "name.blocked";
+	public static String NAME_EXPECT_CAMEL_CASE = CODE_PREFIX + "name.expectCamelCase";
+	public static String NAME_EXPECT_LOWER_CASE = CODE_PREFIX + "name.expectLowerCase";
+	public static String NAME_EXPECT_UNIQUE = CODE_PREFIX + "name.expectUnique";
+
+	// TODO: Duplicates:
+	public static String MAPPING_SAME_NAME_MESSAGE = "You can not give multiple mappings an identical name.";
+	public static String OBJECTIVE_SAME_NAME_MESSAGE = "You cannot give multiple objectives an identical name.";
+	
+	public static String GLOBAL_OBJECTIVE_IS_NULL = "You need to specify a global objective.";
+	
+	public static String MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Mapping '%s' must not be declared %s.";
+	public static String MAPPING_NAME_FORBIDDEN_MESSAGE = "Mappings cannot be be named '%s'. Use a different name.";
+	public static String MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Mapping name '%s' contains underscores. Use camelCase instead.";
+	public static String MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Mapping '%s' should start with a lower case character.";
+
+	
 //	@Check
-//	public void checkGreetingStartsWithCapital(Greeting greeting) {
-//		if (!Character.isUpperCase(greeting.getName().charAt(0))) {
-//			warning("Name should start with a capital",
-//					RoamSLangPackage.Literals.GREETING__NAME,
-//					INVALID_NAME);
+//	public void checkMappingNameDuplicates(final EditorGTFile file) {
+//		final Set<String> knownNames = new HashSet<String>();
+//		for(final RoamMapping act : file.getMappings()) {
+//			if (knownNames.add(act.getName())) {
+//				error(MAPPING_SAME_NAME_MESSAGE, RoamSLangPackage.Literals.ROAM_MAPPING__NAME);
+//			}
 //		}
 //	}
+//	
+//	@Check
+//	public void checkObjectiveNameDuplicates(final EditorGTFile file) {
+//		final Set<String> knownNames = new HashSet<String>();
+//		for(final RoamObjective act : file.getObjectives()) {
+//			if (knownNames.add(act.getName())) {
+//				error(OBJECTIVE_SAME_NAME_MESSAGE, RoamSLangPackage.Literals.ROAM_OBJECTIVE__NAME);
+//			}
+//		}
+//	}
+//	
+//	// TODO: Is this really necessary?
+//	@Check
+//	public void checkGlobalObjectiveNotNull(final EditorGTFile file) {
+//		if (file.getGlobalObjective() == null) {
+//			error(GLOBAL_OBJECTIVE_IS_NULL, RoamSLangPackage.Literals.ROAM_GLOBAL_OBJECTIVE.getEIDAttribute());
+//			// TODO: ^I'm not quite sure about the last parameter
+//		}
+//	}
+
+	@Check
+	public void checkMapping(final RoamMapping mapping) {
+		checkMappingNameValid(mapping);
+		checkMappingNameUnique(mapping);
+	}
+	
+	public void checkMappingNameValid(final RoamMapping mapping) {
+		if (mapping.getName() == null) {
+			return;
+		}
+		
+		if (INVALID_MAPPING_NAMES.contains(mapping.getName())) {
+			error(String.format(MAPPING_NAME_FORBIDDEN_MESSAGE, mapping.getName()), RoamSLangPackage.Literals.ROAM_MAPPING__NAME, NAME_EXPECT_UNIQUE);
+		} else {
+			// The mapping name should be lowerCamelCase.
+			if (mapping.getName().contains("_")) {
+				warning(String.format(MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE, mapping.getName()), RoamSLangPackage.Literals.ROAM_MAPPING__NAME, NAME_BLOCKED);
+			} else {
+				// The mapping name should start with a lower case character.
+				if (!Character.isLowerCase(mapping.getName().charAt(0))) {
+					warning(String.format(MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE, mapping.getName()), RoamSLangPackage.Literals.ROAM_MAPPING__NAME, NAME_EXPECT_LOWER_CASE);
+				}
+			}
+		}
+	}
+	
+	public void checkMappingNameUnique(final RoamMapping mapping) {
+		final EditorGTFile container = (EditorGTFile) mapping.eContainer();
+		final int count = (int) container.getMappings().stream().filter(
+				m -> m.getName() != null && m.getName().equals(mapping.getName())
+				).count();
+		if (count != 1) {
+			error(String.format(MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE, mapping.getName(), getTimes(count)), RoamSLangPackage.Literals.ROAM_MAPPING__NAME, NAME_EXPECT_UNIQUE);
+		}
+	}
 	
 }

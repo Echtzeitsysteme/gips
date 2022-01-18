@@ -3,13 +3,14 @@
  */
 package org.emoflon.roam.roamslang.validation;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.xtext.validation.Check;
 import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
+import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticLiteral;
+import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
 import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjective;
 import org.emoflon.roam.roamslang.roamSLang.RoamSLangPackage;
@@ -22,9 +23,9 @@ import org.emoflon.roam.roamslang.roamSLang.RoamSLangPackage;
 public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	
 	/**
-	 * The list of invalid mapping names. Will be filled in the static block.
+	 * The list of invalid mapping/objective names. Will be filled in the static block.
 	 */
-	public static Set<String> INVALID_MAPPING_NAMES = new HashSet<String>();
+	public static Set<String> INVALID_NAMES = new HashSet<String>();
 	
 	static {
 		final String[] invalidNames = new String[] {
@@ -108,7 +109,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 				"max",
 				"constraint"
 		};
-		INVALID_MAPPING_NAMES.addAll(Arrays.asList(invalidNames));
+		INVALID_NAMES.addAll(Arrays.asList(invalidNames));
 	}
 	
 	static String CODE_PREFIX = "org.emoflon.roam.roamslang.";
@@ -118,47 +119,35 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	public static String NAME_EXPECT_CAMEL_CASE = CODE_PREFIX + "name.expectCamelCase";
 	public static String NAME_EXPECT_LOWER_CASE = CODE_PREFIX + "name.expectLowerCase";
 	public static String NAME_EXPECT_UNIQUE = CODE_PREFIX + "name.expectUnique";
-
-	// TODO: Duplicates:
-	public static String MAPPING_SAME_NAME_MESSAGE = "You can not give multiple mappings an identical name.";
-	public static String OBJECTIVE_SAME_NAME_MESSAGE = "You cannot give multiple objectives an identical name.";
+	
+	public static String GLOBA_OBJJECTIVE_DOES_NOT_EXIST = CODE_PREFIX + "objective.global.doesNotExist";
 	
 	public static String GLOBAL_OBJECTIVE_IS_NULL = "You need to specify a global objective.";
 	
-	public static String MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Mapping '%s' must not be declared %s.";
+	public static String MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Mapping '%s' must not be declared '%s'.";
 	public static String MAPPING_NAME_FORBIDDEN_MESSAGE = "Mappings cannot be be named '%s'. Use a different name.";
 	public static String MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Mapping name '%s' contains underscores. Use camelCase instead.";
 	public static String MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Mapping '%s' should start with a lower case character.";
 
+	public static String OBJECTIVE_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Objective '%s' must not be declared '%s'";
+	public static String OBJECTIVE_NAME_FORBIDDEN_MESSAGE = "Objectives cannot be be named '%s'. Use a different name.";
+	public static String OBJECTIVE_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Objective name '%s' contains underscores. Use camelCase instead.";
+	public static String OBJECTIVE_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Objective '%s' should start with a lower case character.";
 	
-//	@Check
-//	public void checkMappingNameDuplicates(final EditorGTFile file) {
-//		final Set<String> knownNames = new HashSet<String>();
-//		for(final RoamMapping act : file.getMappings()) {
-//			if (knownNames.add(act.getName())) {
-//				error(MAPPING_SAME_NAME_MESSAGE, RoamSLangPackage.Literals.ROAM_MAPPING__NAME);
-//			}
-//		}
-//	}
-//	
-//	@Check
-//	public void checkObjectiveNameDuplicates(final EditorGTFile file) {
-//		final Set<String> knownNames = new HashSet<String>();
-//		for(final RoamObjective act : file.getObjectives()) {
-//			if (knownNames.add(act.getName())) {
-//				error(OBJECTIVE_SAME_NAME_MESSAGE, RoamSLangPackage.Literals.ROAM_OBJECTIVE__NAME);
-//			}
-//		}
-//	}
-//	
-//	// TODO: Is this really necessary?
-//	@Check
-//	public void checkGlobalObjectiveNotNull(final EditorGTFile file) {
-//		if (file.getGlobalObjective() == null) {
-//			error(GLOBAL_OBJECTIVE_IS_NULL, RoamSLangPackage.Literals.ROAM_GLOBAL_OBJECTIVE.getEIDAttribute());
-//			// TODO: ^I'm not quite sure about the last parameter
-//		}
-//	}
+	public static String OBJECTIVE_VALUE_IS_ZERO_MESSAGE = "Objective '%s' can be removed because its value is 0.";
+	
+	// TODO: Is this really necessary? Isn't the global objective optional?
+	@Check
+	public void checkGlobalObjectiveNotNull(final EditorGTFile file) {
+		if (file.getGlobalObjective() == null) {
+			error(
+					GLOBAL_OBJECTIVE_IS_NULL,
+					RoamSLangPackage.Literals.ROAM_GLOBAL_OBJECTIVE.eContainingFeature(),
+					// TODO: ^I'm not quite sure about the second parameter
+					GLOBA_OBJJECTIVE_DOES_NOT_EXIST
+			);
+		}
+	}
 
 	@Check
 	public void checkMapping(final RoamMapping mapping) {
@@ -171,16 +160,28 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return;
 		}
 		
-		if (INVALID_MAPPING_NAMES.contains(mapping.getName())) {
-			error(String.format(MAPPING_NAME_FORBIDDEN_MESSAGE, mapping.getName()), RoamSLangPackage.Literals.ROAM_MAPPING__NAME, NAME_EXPECT_UNIQUE);
+		if (INVALID_NAMES.contains(mapping.getName())) {
+			error(
+					String.format(MAPPING_NAME_FORBIDDEN_MESSAGE, mapping.getName()),
+					RoamSLangPackage.Literals.ROAM_MAPPING__NAME,
+					NAME_EXPECT_UNIQUE
+			);
 		} else {
 			// The mapping name should be lowerCamelCase.
 			if (mapping.getName().contains("_")) {
-				warning(String.format(MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE, mapping.getName()), RoamSLangPackage.Literals.ROAM_MAPPING__NAME, NAME_BLOCKED);
+				warning(
+						String.format(MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE, mapping.getName()),
+						RoamSLangPackage.Literals.ROAM_MAPPING__NAME,
+						NAME_BLOCKED
+				);
 			} else {
 				// The mapping name should start with a lower case character.
 				if (!Character.isLowerCase(mapping.getName().charAt(0))) {
-					warning(String.format(MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE, mapping.getName()), RoamSLangPackage.Literals.ROAM_MAPPING__NAME, NAME_EXPECT_LOWER_CASE);
+					warning(
+							String.format(MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE, mapping.getName()),
+							RoamSLangPackage.Literals.ROAM_MAPPING__NAME,
+							NAME_EXPECT_LOWER_CASE
+					);
 				}
 			}
 		}
@@ -192,7 +193,81 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 				m -> m.getName() != null && m.getName().equals(mapping.getName())
 				).count();
 		if (count != 1) {
-			error(String.format(MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE, mapping.getName(), getTimes(count)), RoamSLangPackage.Literals.ROAM_MAPPING__NAME, NAME_EXPECT_UNIQUE);
+			error(
+					String.format(MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE, mapping.getName(), getTimes(count)),
+					RoamSLangPackage.Literals.ROAM_MAPPING__NAME,
+					NAME_EXPECT_UNIQUE
+			);
+		}
+	}
+	
+	@Check
+	public void checkConstraint(final RoamConstraint constraint) {
+		// TODO
+	}
+	
+	@Check
+	public void checkObjective(final RoamObjective objective) {
+		checkObjectiveNameValid(objective);
+		checkObjectiveNameUnique(objective);
+		checkObjectiveIsNotUseless(objective);
+	}
+	
+	public void checkObjectiveNameValid(final RoamObjective objective) {
+		if (objective.getName() == null) {
+			return;
+		}
+		
+		if (INVALID_NAMES.contains(objective.getName())) {
+			error(
+					String.format(OBJECTIVE_NAME_FORBIDDEN_MESSAGE, objective.getName()),
+					RoamSLangPackage.Literals.ROAM_OBJECTIVE__NAME,
+					NAME_BLOCKED
+			);
+		} else {
+			// The objective name should be lowerCamelCase.
+			if (objective.getName().contains("_")) {
+				warning(
+						String.format(OBJECTIVE_NAME_CONTAINS_UNDERSCORES_MESSAGE, objective.getName()),
+						RoamSLangPackage.Literals.ROAM_OBJECTIVE__NAME,
+						NAME_BLOCKED
+				);
+			} else {
+				// The objective name should start with a lower case character.
+				if (!Character.isLowerCase(objective.getName().charAt(0))) {
+					warning(
+							String.format(OBJECTIVE_NAME_STARTS_WITH_LOWER_CASE_MESSAGE, objective.getName()),
+							RoamSLangPackage.Literals.ROAM_OBJECTIVE__NAME,
+							NAME_EXPECT_LOWER_CASE
+					);
+				}
+			}
+		}
+	}
+	
+	public void checkObjectiveNameUnique(final RoamObjective objective) {
+		final EditorGTFile container = (EditorGTFile) objective.eContainer();
+		final int count = (int) container.getObjectives().stream().filter(
+				o -> o.getName() != null && o.getName().equals(objective.getName())
+				).count();
+		if (count != 1) {
+			error(
+					String.format(OBJECTIVE_NAME_MULTIPLE_DECLARATIONS_MESSAGE, objective.getName(), getTimes(count)),
+					RoamSLangPackage.Literals.ROAM_OBJECTIVE__NAME,
+					NAME_EXPECT_UNIQUE
+			);
+		}
+	}
+	
+	public void checkObjectiveIsNotUseless(final RoamObjective objective) {
+		if (objective.getExpr() instanceof RoamArithmeticLiteral) {
+			final RoamArithmeticLiteral lit = (RoamArithmeticLiteral) objective.getExpr();
+			if (lit.getValue() != null && lit.getValue().equals("0")) {
+				warning(
+						String.format(OBJECTIVE_VALUE_IS_ZERO_MESSAGE, objective.getName()),
+						RoamSLangPackage.Literals.ROAM_OBJECTIVE__EXPR
+				);
+			}
 		}
 	}
 	

@@ -9,11 +9,21 @@ import java.util.Set;
 
 import org.eclipse.xtext.validation.Check;
 import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
+import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticLiteral;
+import org.emoflon.roam.roamslang.roamSLang.RoamBinaryArithmeticExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamBinaryBoolExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamBoolExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
+import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamExpressionOperand;
 import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
+import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjective;
 import org.emoflon.roam.roamslang.roamSLang.RoamSLangPackage;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamBoolExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamNoArgOperator;
+import org.emoflon.roam.roamslang.roamSLang.RoamUnaryArithmeticExpr;
 
 /**
  * This class contains custom validation rules. 
@@ -137,6 +147,11 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	public static String OBJECTIVE_VALUE_IS_ZERO_MESSAGE = "Objective '%s' can be removed because its value is 0.";
 	
 	// TODO: Is this really necessary? Isn't the global objective optional?
+	/**
+	 * Checks if a global objective is specified in a given file.
+	 * 
+	 * @param file File to check existence of a global objective for.
+	 */
 	@Check
 	public void checkGlobalObjectiveNotNull(final EditorGTFile file) {
 		if (file.getGlobalObjective() == null) {
@@ -149,12 +164,23 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 	}
 
+	/**
+	 * Runs checks for all Roam mappings.
+	 * 
+	 * @param mapping Input Roam mapping to check.
+	 */
 	@Check
 	public void checkMapping(final RoamMapping mapping) {
 		checkMappingNameValid(mapping);
 		checkMappingNameUnique(mapping);
 	}
 	
+	/**
+	 * Checks for validity of a mapping name. The name must not be on the list of invalid names,
+	 * the name should be in lowerCamelCase, and the name should start with a lower case character.
+	 * 
+	 * @param mapping Roam mapping to check.
+	 */
 	public void checkMappingNameValid(final RoamMapping mapping) {
 		if (mapping.getName() == null) {
 			return;
@@ -187,6 +213,11 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 	}
 	
+	/**
+	 * Checks the uniqueness of the name of a given Roam mapping.
+	 * 
+	 * @param mapping Roam mapping to check uniqueness of the name for.
+	 */
 	public void checkMappingNameUnique(final RoamMapping mapping) {
 		final EditorGTFile container = (EditorGTFile) mapping.eContainer();
 		final int count = (int) container.getMappings().stream().filter(
@@ -201,18 +232,35 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 	}
 	
+	/**
+	 * Runs all checks for a given constraints.
+	 * 
+	 * @param constraint Roam constraint to check.
+	 */
 	@Check
 	public void checkConstraint(final RoamConstraint constraint) {
 		// TODO
 	}
 	
+	/**
+	 * Runs all checks for a given objective.
+	 * 
+	 * @param objective Roam objective to check.
+	 */
 	@Check
 	public void checkObjective(final RoamObjective objective) {
 		checkObjectiveNameValid(objective);
 		checkObjectiveNameUnique(objective);
 		checkObjectiveIsNotUseless(objective);
+		checkObjectiveExpressionType(objective);
 	}
 	
+	/**
+	 * Checks for validity of an objective name. The name must not be on the list of invalid names,
+	 * the name should be in lowerCamelCase, and the name should start with a lower case character.
+	 * 
+	 * @param objective Roam objective to check.
+	 */
 	public void checkObjectiveNameValid(final RoamObjective objective) {
 		if (objective.getName() == null) {
 			return;
@@ -245,6 +293,11 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 	}
 	
+	/**
+	 * Checks the uniqueness of the name of a given Roam objective.
+	 * 
+	 * @param objective Roam objective to check uniqueness of the name for.
+	 */
 	public void checkObjectiveNameUnique(final RoamObjective objective) {
 		final EditorGTFile container = (EditorGTFile) objective.eContainer();
 		final int count = (int) container.getObjectives().stream().filter(
@@ -259,6 +312,11 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 	}
 	
+	/**
+	 * Checks a given Roam objective for uselessness, i.e, if the objective is '0'.
+	 * 
+	 * @param objective Roam objective to check for uselessness.
+	 */
 	public void checkObjectiveIsNotUseless(final RoamObjective objective) {
 		if (objective.getExpr() instanceof RoamArithmeticLiteral) {
 			final RoamArithmeticLiteral lit = (RoamArithmeticLiteral) objective.getExpr();
@@ -269,6 +327,65 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 				);
 			}
 		}
+	}
+	
+	public void checkObjectiveExpressionType(final RoamObjective objective) {		
+		// TODO: Check if expression of the objective is a bool
+//		if(objective.getExpr() instanceof RoamBoolExpr) {
+//			error(
+//					"The expression of the objective is of type bool which is not supported",
+//					RoamSLangPackage.Literals.ROAM_OBJECTIVE__EXPR
+//			);
+//		}
+		
+		if(objective.getExpr() instanceof RoamMappingAttributeExpr) {
+			final RoamMappingAttributeExpr mappingExpr = (RoamMappingAttributeExpr) objective.getExpr();
+			if (mappingExpr.getExpr() instanceof RoamStreamBoolExpr) {
+				final RoamStreamBoolExpr boolExpr = (RoamStreamBoolExpr) mappingExpr.getExpr();
+				if (boolExpr.getOperator().getValue() == RoamStreamNoArgOperator.EXISTS_VALUE) {
+					error(
+							"Bool error.",
+							RoamSLangPackage.Literals.ROAM_OBJECTIVE__EXPR
+					);
+				}
+			}
+		}
+	}
+	
+	@Check
+	public void checkArithmeticExpression(final RoamArithmeticExpr expression) {
+		if (expression instanceof RoamUnaryArithmeticExpr) {
+			final RoamUnaryArithmeticExpr unary = (RoamUnaryArithmeticExpr) expression;
+			// TODO
+		} else if (expression instanceof RoamBinaryArithmeticExpr) {
+			final RoamBinaryArithmeticExpr binary = (RoamBinaryArithmeticExpr) expression;
+			if(binary.getLeft() instanceof RoamStreamBoolExpr && !(binary.getRight() instanceof RoamStreamBoolExpr)) {
+				error("test1", RoamSLangPackage.Literals.ROAM_BINARY_ARITHMETIC_EXPR__LEFT);
+			} else if(!(binary.getLeft() instanceof RoamStreamBoolExpr) && binary.getRight() instanceof RoamStreamBoolExpr) {
+				error("test2", RoamSLangPackage.Literals.ROAM_BINARY_ARITHMETIC_EXPR__RIGHT);
+			} 
+			
+//			if (binary.getLeft() instanceof RoamBinaryBoolExpr || binary.getLeft() instanceof RoamStreamBoolExpr) {
+//				error(
+//						"Left side is a bool.",
+//						RoamSLangPackage.Literals.ROAM_BINARY_ARITHMETIC_EXPR__LEFT
+//				);
+//			}
+//			if (binary.getRight() instanceof RoamBinaryBoolExpr || binary.getRight() instanceof RoamStreamBoolExpr) {
+//				error(
+//						"Right side is a bool.",
+//						RoamSLangPackage.Literals.ROAM_BINARY_ARITHMETIC_EXPR__LEFT
+//				);
+//			}
+//			
+		} else if (expression instanceof RoamExpressionOperand) {
+			final RoamExpressionOperand op = (RoamExpressionOperand) expression;
+			if (op instanceof RoamContextExpr) {
+				final RoamContextExpr cexpr = (RoamContextExpr) op;
+				// TODO
+			}
+		}
+		// TODO: Finish this method.
 	}
 	
 }

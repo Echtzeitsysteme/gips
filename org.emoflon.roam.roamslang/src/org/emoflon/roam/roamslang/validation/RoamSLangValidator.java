@@ -11,8 +11,10 @@ import org.eclipse.xtext.validation.Check;
 import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
 import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticLiteral;
+import org.emoflon.roam.roamslang.roamSLang.RoamAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamBinaryArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamBinaryBoolExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamBool;
 import org.emoflon.roam.roamslang.roamSLang.RoamBoolExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
 import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
@@ -20,10 +22,13 @@ import org.emoflon.roam.roamslang.roamSLang.RoamExpressionOperand;
 import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
 import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjective;
+import org.emoflon.roam.roamslang.roamSLang.RoamObjectiveExpression;
+import org.emoflon.roam.roamslang.roamSLang.RoamRelExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamSLangPackage;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamBoolExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamNoArgOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamUnaryArithmeticExpr;
+import org.emoflon.roam.roamslang.roamSLang.impl.RoamRelExprImpl;
 
 /**
  * This class contains custom validation rules. 
@@ -387,5 +392,63 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 		// TODO: Finish this method.
 	}
+	
+	@Check
+	public void checkUnaryExpression(final RoamUnaryArithmeticExpr expression) {
+		// TODO
+		System.out.println("Checking unary expr: " + expression);
+		
+		if (expression.getOperand() instanceof RoamArithmeticLiteral) {
+			final RoamArithmeticLiteral lit = (RoamArithmeticLiteral) expression.getOperand();
+//			lit.get
+		} else if (expression.getOperand() instanceof RoamAttributeExpr) {
+			final RoamAttributeExpr att = (RoamAttributeExpr) expression.getOperand();
+		} else if (expression.getOperand() instanceof RoamObjectiveExpression) {
+			final RoamObjectiveExpression obj = (RoamObjectiveExpression) expression.getOperand();
+		}
+		
+	}
+	
+	// TODO: Is this even necessary?
+	@Check
+	public void checkArithmeticLiteralParsable(final RoamArithmeticLiteral literal) {
+		try {
+			Double.valueOf(literal.getValue());
+		} catch (final NumberFormatException ex) {
+			error(
+					"Literal not parsable.",
+					RoamSLangPackage.Literals.ROAM_ARITHMETIC_LITERAL__VALUE
+			);
+		}
+	}
+	
+	@Check
+	public void checkRoamRelExpr(final RoamRelExpr expr) {
+		// TODO
+		// RHS == null and the container is contained in a constraint -> error
+		if (expr.getRight() == null && expr.eContainer() instanceof RoamBool) {
+			final RoamBool container = (RoamBool) expr.eContainer();
+			if (container.eContainer() instanceof RoamConstraint) {
+				error(
+						"RHS is null.",
+						RoamSLangPackage.Literals.ROAM_REL_EXPR__RIGHT
+				);
+			}
+
+		}
+		
+		// One of the two sides must be a constant
+		if (expr.getLeft() instanceof RoamMappingAttributeExpr && expr.getRight() instanceof RoamMappingAttributeExpr) {
+			error(
+					"One of the two sides of this expression must be a constant.",
+					RoamSLangPackage.Literals.ROAM_REL_EXPR__RIGHT
+			);
+		}
+	}
+	
+//	@Check
+//	public void checkRoamBoolExpr(final RoamBoolExpr expr) {
+//		// TODO
+//	}
 	
 }

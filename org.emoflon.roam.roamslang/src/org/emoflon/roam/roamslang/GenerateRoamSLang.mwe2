@@ -21,13 +21,13 @@ Workflow {
 				baseName = "org.emoflon.roam.roamslang"
 				rootPath = rootPath
 				runtimeTest = {
-					enabled = false
+					enabled = true
 				}
 				eclipsePlugin = {
 					enabled = true
 				}
 				eclipsePluginTest = {
-					enabled = false
+					enabled = true
 				}
 				createEclipseMetaData = true
 			}

@@ -5,19 +5,102 @@
     editDirectory="/org.emoflon.roam.intermediate.edit/src-gen" editorDirectory="/org.emoflon.roam.intermediate.editor/src-gen"
     modelPluginID="org.emoflon.roam.intermediate" modelName="RoamIntermediate" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0"
-    copyrightFields="false" usedGenPackages="../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.genmodel#//IBeXPatternModel" 
+    copyrightFields="false" usedGenPackages="../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.genmodel#//IBeXPatternModel"
     operationReflection="true" importOrganizing="true">
   <foreignModel>RoamIntermediate.ecore</foreignModel>
   <testsDirectory xsi:nil="true"/>
   <genPackages prefix="RoamIntermediate" basePackage="org.emoflon.roam.intermediate"
       disposableProviderFactory="true" ecorePackage="RoamIntermediate.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="RoamIntermediate.ecore#//RelationalOperator">
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//RelationalOperator/Less"/>
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//RelationalOperator/LessOrEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//RelationalOperator/Equal"/>
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//RelationalOperator/GreaterOrEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//RelationalOperator/Greater"/>
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//RelationalOperator/NotEqual"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="RoamIntermediate.ecore#//IntermediateBinaryArithmeticOperator">
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//IntermediateBinaryArithmeticOperator/ADD"/>
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//IntermediateBinaryArithmeticOperator/SUBTRACT"/>
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//IntermediateBinaryArithmeticOperator/MULTIPLY"/>
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//IntermediateBinaryArithmeticOperator/DIVIDE"/>
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//IntermediateBinaryArithmeticOperator/POW"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="RoamIntermediate.ecore#//IntermediateUnaryArithmeticOperator">
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//IntermediateUnaryArithmeticOperator/BRACKET"/>
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//IntermediateUnaryArithmeticOperator/NEGATE"/>
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//IntermediateUnaryArithmeticOperator/ABSOLUTE"/>
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//IntermediateUnaryArithmeticOperator/SINE"/>
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//IntermediateUnaryArithmeticOperator/COSINE"/>
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//IntermediateUnaryArithmeticOperator/SQRT"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="RoamIntermediate.ecore#//IntermediateBinaryBoolOperator">
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//IntermediateBinaryBoolOperator/AND"/>
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//IntermediateBinaryBoolOperator/OR"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="RoamIntermediate.ecore#//IntermediateUnaryBoolOperator">
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//IntermediateUnaryBoolOperator/NOT"/>
+    </genEnums>
     <genClasses ecoreClass="RoamIntermediate.ecore#//RoamIntermediateModel">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//RoamIntermediateModel/variables"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//RoamIntermediateModel/constraints"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//RoamIntermediateModel/ibexModel"/>
     </genClasses>
-    <genClasses ecoreClass="RoamIntermediate.ecore#//Variable">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//Variable/name"/>
+    <genClasses image="false" ecoreClass="RoamIntermediate.ecore#//VariableSet">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//VariableSet/name"/>
     </genClasses>
-    <genClasses ecoreClass="RoamIntermediate.ecore#//Mapping"/>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//Mapping">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//Mapping/rule"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RoamIntermediate.ecore#//Constraint">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//Constraint/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//Constraint/lhsConstant"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//Constraint/rhsExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//Constraint/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//IntermediateArithmeticExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//IntermediateArithmeticExpression/type"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//IntermediateBinaryArithmeticExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//IntermediateBinaryArithmeticExpression/lhs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//IntermediateBinaryArithmeticExpression/rhs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//IntermediateBinaryArithmeticExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//IntermediateUnaryArithmeticExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//IntermediateUnaryArithmeticExpression/expression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//IntermediateUnaryArithmeticExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//IntermediateSumExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//IntermediateSumExpression/expression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//IntermediateSumExpression/condition"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//IntermediateVariableSumExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//IntermediateVariableSumExpression/variable"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//IntermediateTypeSumExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//IntermediateTypeSumExpression/objType"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RoamIntermediate.ecore#//IntermediateArithmeticValue"/>
+    <genClasses image="false" ecoreClass="RoamIntermediate.ecore#//IntermediateArithmeticLiteral"/>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//IntermediateIntegerLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//IntermediateIntegerLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//IntermediateDoubleLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//IntermediateDoubleLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//IntermediateBoolExpression"/>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//IntermediateBoolBinaryExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//IntermediateBoolBinaryExpression/lhs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//IntermediateBoolBinaryExpression/rhs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//IntermediateBoolBinaryExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//IntermediateBoolUnaryExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//IntermediateBoolUnaryExpression/expression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//IntermediateBoolUnaryExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//IntermediateBoolValue"/>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//IntermediateBoolLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//IntermediateBoolLiteral/value"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -42,13 +42,13 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rhs" lowerBound="1" eType="#//IntermediateArithmeticExpression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//IntermediateBinaryOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//IntermediateBinaryArithmeticOperator"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IntermediateUnaryArithmeticExpression"
       eSuperTypes="#//IntermediateArithmeticExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
         eType="#//IntermediateArithmeticExpression" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//IntermediateUnaryOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//IntermediateUnaryArithmeticOperator"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IntermediateSumExpression" eSuperTypes="#//IntermediateArithmeticExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
@@ -61,7 +61,8 @@
         eType="#//VariableSet"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IntermediateTypeSumExpression" eSuperTypes="#//IntermediateSumExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="objType" lowerBound="1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IntermediateArithmeticValue" abstract="true"
       eSuperTypes="#//IntermediateArithmeticExpression"/>
@@ -73,14 +74,14 @@
   <eClassifiers xsi:type="ecore:EClass" name="IntermediateDoubleLiteral" eSuperTypes="#//IntermediateArithmeticLiteral">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="IntermediateBinaryOperator">
+  <eClassifiers xsi:type="ecore:EEnum" name="IntermediateBinaryArithmeticOperator">
     <eLiterals name="ADD"/>
     <eLiterals name="SUBTRACT" value="1"/>
     <eLiterals name="MULTIPLY" value="2"/>
     <eLiterals name="DIVIDE" value="3"/>
     <eLiterals name="POW" value="4"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="IntermediateUnaryOperator">
+  <eClassifiers xsi:type="ecore:EEnum" name="IntermediateUnaryArithmeticOperator">
     <eLiterals name="BRACKET"/>
     <eLiterals name="NEGATE" value="1"/>
     <eLiterals name="ABSOLUTE" value="2"/>
@@ -89,10 +90,27 @@
     <eLiterals name="SQRT" value="5"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IntermediateBoolExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="IntermediateBoolBinaryExpression" eSuperTypes="#//IntermediateBoolExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="IntermediateBoolUnaryExpression" eSuperTypes="#//IntermediateBoolExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IntermediateBoolBinaryExpression" eSuperTypes="#//IntermediateBoolExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lhs" lowerBound="1" eType="#//IntermediateBoolExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rhs" lowerBound="1" eType="#//IntermediateBoolExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//IntermediateBinaryBoolOperator"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IntermediateBoolUnaryExpression" eSuperTypes="#//IntermediateBoolExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
+        eType="#//IntermediateBoolExpression" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//IntermediateUnaryBoolOperator"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IntermediateBoolValue" eSuperTypes="#//IntermediateBoolExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="IntermediateBoolLiteral" eSuperTypes="#//IntermediateBoolValue">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="IntermediateBinaryBoolOperator">
+    <eLiterals name="AND"/>
+    <eLiterals name="OR" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="IntermediateUnaryBoolOperator">
+    <eLiterals name="NOT"/>
   </eClassifiers>
 </ecore:EPackage>

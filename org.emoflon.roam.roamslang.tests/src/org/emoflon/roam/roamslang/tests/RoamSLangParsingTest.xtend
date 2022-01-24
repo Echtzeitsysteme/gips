@@ -6,6 +6,7 @@ package org.emoflon.roam.roamslang.tests
 import com.google.inject.Inject
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
+import org.eclipse.xtext.testing.validation.ValidationTestHelper
 import org.eclipse.xtext.testing.util.ParseHelper
 import org.emoflon.roam.roamslang.roamSLang.EditorGTFile
 import org.junit.jupiter.api.Assertions
@@ -15,28 +16,45 @@ import org.junit.jupiter.api.^extension.ExtendWith
 @ExtendWith(InjectionExtension)
 @InjectWith(RoamSLangInjectorProvider)
 class RoamSLangParsingTest {
+	
+	//
+	// Variables and constants
+	//
+	
+	public static val ecoreImport = 'http://www.eclipse.org/emf/2002/Ecore'
+	
 	@Inject
 	ParseHelper<EditorGTFile> parseHelper
+	
+	@Inject extension ValidationTestHelper validationHelper
+	
+	//
+	// Tests
+	//
 	
 	@Test
 	def void loadModel() {
 		val result = parseHelper.parse('''
-			Hello Xtext!
+			import "«ecoreImport»"
+			rule testRule {
+				package: EPackage
+			}
 		''')
 		Assertions.assertNotNull(result)
-		// TODO: Resolve this access error
-//		val errors = result.eResource.errors
-//		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
+		val errors = result.eResource.errors
+		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
 	}
 	
 	@Test
 	def void testNonEmptyMappings() {
 		val result = parseHelper.parse('''
-			rule testRule {
-				
+			import "«ecoreImport»"
+			pattern testPattern {
+				p: EPackage
 			}
-			mapping map with testRule;
+			mapping map with testPattern;
 		''')
+		assertValid(result)
 		Assertions.assertNotNull(result)
 		val mappings = result.mappings
 		Assertions.assertFalse(mappings.isEmpty)
@@ -45,14 +63,16 @@ class RoamSLangParsingTest {
 	@Test
 	def void testNonEmptyConstraints() {
 		val result = parseHelper.parse('''
-			rule testRule {
-				
+			import "«ecoreImport»"
+			pattern testPattern {
+				p: EPackage
 			}
-			mapping map with testRule;
+			mapping map with testPattern;
 			constraint -> mapping::map {
 				1 != 2
 			}
 		''')
+		assertValid(result)
 		Assertions.assertNotNull(result)
 		val constraints = result.constraints
 		Assertions.assertFalse(constraints.isEmpty)
@@ -61,14 +81,16 @@ class RoamSLangParsingTest {
 	@Test
 	def void testNonEmptyObjectives() {
 		val result = parseHelper.parse('''
-			rule testRule {
-				
+			import "«ecoreImport»"
+			pattern testPattern {
+				p: EPackage
 			}
-			mapping map with testRule;
+			mapping map with testPattern;
 			objective obj -> mapping::map {
 				1
 			}
 		''')
+		assertValid(result)
 		Assertions.assertNotNull(result)
 		val objectives = result.objectives
 		Assertions.assertFalse(objectives.isEmpty)
@@ -77,10 +99,11 @@ class RoamSLangParsingTest {
 	@Test
 	def void testNonEmptyGlobalObjectives() {
 		val result = parseHelper.parse('''
-			rule testRule {
-				
+			import "«ecoreImport»"
+			pattern testPattern {
+				p: EPackage
 			}
-			mapping map with testRule;
+			mapping map with testPattern;
 			objective obj -> mapping::map {
 				1
 			}
@@ -88,7 +111,18 @@ class RoamSLangParsingTest {
 				2 * obj
 			}
 		''')
+		assertValid(result)
 		Assertions.assertNotNull(result)
 		Assertions.assertNotNull(result.globalObjective)
+	}
+	
+	//
+	// Utility methods
+	//
+	
+	def void assertValid(EditorGTFile file) {
+		Assertions.assertNotNull(file)
+		this.validationHelper.assertNoIssues(file)
+		// TODO: call assertFile(...) here?
 	}
 }

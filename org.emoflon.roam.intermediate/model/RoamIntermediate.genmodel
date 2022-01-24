@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    modelDirectory="/org.emoflon.roam.intermediate/src-gen" creationIcons="false"
+    editDirectory="/org.emoflon.roam.intermediate.edit/src-gen" editorDirectory="/org.emoflon.roam.intermediate.editor/src-gen"
+    modelPluginID="org.emoflon.roam.intermediate" modelName="RoamIntermediate" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0"
+    copyrightFields="false" usedGenPackages="../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.genmodel#//IBeXPatternModel" 
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>RoamIntermediate.ecore</foreignModel>
+  <testsDirectory xsi:nil="true"/>
+  <genPackages prefix="RoamIntermediate" basePackage="org.emoflon.roam.intermediate"
+      disposableProviderFactory="true" ecorePackage="RoamIntermediate.ecore#/">
+    <genClasses ecoreClass="RoamIntermediate.ecore#//RoamIntermediateModel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//RoamIntermediateModel/variables"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//RoamIntermediateModel/ibexModel"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//Variable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//Variable/name"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//Mapping"/>
+  </genPackages>
+</genmodel:GenModel>

@@ -4,12 +4,95 @@
     nsPrefix="RoamIntermediate">
   <eClassifiers xsi:type="ecore:EClass" name="RoamIntermediateModel">
     <eStructuralFeatures xsi:type="ecore:EReference" name="variables" upperBound="-1"
-        eType="#//Variable" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ibexModel" lowerBound="1" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXModel"
+        eType="#//VariableSet" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="constraints" upperBound="-1"
+        eType="#//Constraint" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ibexModel" lowerBound="1"
+        eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXModel"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Variable">
+  <eClassifiers xsi:type="ecore:EClass" name="VariableSet" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Mapping" eSuperTypes="#//Variable"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Mapping" eSuperTypes="#//VariableSet">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rule" lowerBound="1" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXRule"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Constraint" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lhsConstant" lowerBound="1"
+        eType="#//IntermediateArithmeticValue" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rhsExpression" lowerBound="1"
+        eType="#//IntermediateArithmeticExpression" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//RelationalOperator"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="RelationalOperator">
+    <eLiterals name="Less"/>
+    <eLiterals name="LessOrEqual" value="1"/>
+    <eLiterals name="Equal" value="2"/>
+    <eLiterals name="GreaterOrEqual" value="3"/>
+    <eLiterals name="Greater" value="4"/>
+    <eLiterals name="NotEqual" value="5"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IntermediateArithmeticExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EDataType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IntermediateBinaryArithmeticExpression"
+      eSuperTypes="#//IntermediateArithmeticExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lhs" lowerBound="1" eType="#//IntermediateArithmeticExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rhs" lowerBound="1" eType="#//IntermediateArithmeticExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//IntermediateBinaryOperator"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IntermediateUnaryArithmeticExpression"
+      eSuperTypes="#//IntermediateArithmeticExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
+        eType="#//IntermediateArithmeticExpression" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//IntermediateUnaryOperator"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IntermediateSumExpression" eSuperTypes="#//IntermediateArithmeticExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
+        eType="#//IntermediateArithmeticExpression" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="condition" eType="#//IntermediateBoolExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IntermediateVariableSumExpression" eSuperTypes="#//IntermediateSumExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variable" lowerBound="1"
+        eType="#//VariableSet"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IntermediateTypeSumExpression" eSuperTypes="#//IntermediateSumExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IntermediateArithmeticValue" abstract="true"
+      eSuperTypes="#//IntermediateArithmeticExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IntermediateArithmeticLiteral" abstract="true"
+      eSuperTypes="#//IntermediateArithmeticValue"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IntermediateIntegerLiteral" eSuperTypes="#//IntermediateArithmeticLiteral">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IntermediateDoubleLiteral" eSuperTypes="#//IntermediateArithmeticLiteral">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="IntermediateBinaryOperator">
+    <eLiterals name="ADD"/>
+    <eLiterals name="SUBTRACT" value="1"/>
+    <eLiterals name="MULTIPLY" value="2"/>
+    <eLiterals name="DIVIDE" value="3"/>
+    <eLiterals name="POW" value="4"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="IntermediateUnaryOperator">
+    <eLiterals name="BRACKET"/>
+    <eLiterals name="NEGATE" value="1"/>
+    <eLiterals name="ABSOLUTE" value="2"/>
+    <eLiterals name="SINE" value="3"/>
+    <eLiterals name="COSINE" value="4"/>
+    <eLiterals name="SQRT" value="5"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IntermediateBoolExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IntermediateBoolBinaryExpression" eSuperTypes="#//IntermediateBoolExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IntermediateBoolUnaryExpression" eSuperTypes="#//IntermediateBoolExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IntermediateBoolValue" eSuperTypes="#//IntermediateBoolExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IntermediateBoolLiteral" eSuperTypes="#//IntermediateBoolValue">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
 </ecore:EPackage>

@@ -55,7 +55,6 @@ class RoamSLangParsingTest {
 			mapping map with testPattern;
 		''')
 		assertValid(result)
-		Assertions.assertNotNull(result)
 		val mappings = result.mappings
 		Assertions.assertFalse(mappings.isEmpty)
 	}
@@ -73,7 +72,6 @@ class RoamSLangParsingTest {
 			}
 		''')
 		assertValid(result)
-		Assertions.assertNotNull(result)
 		val constraints = result.constraints
 		Assertions.assertFalse(constraints.isEmpty)
 	}
@@ -91,7 +89,6 @@ class RoamSLangParsingTest {
 			}
 		''')
 		assertValid(result)
-		Assertions.assertNotNull(result)
 		val objectives = result.objectives
 		Assertions.assertFalse(objectives.isEmpty)
 	}
@@ -112,8 +109,75 @@ class RoamSLangParsingTest {
 			}
 		''')
 		assertValid(result)
-		Assertions.assertNotNull(result)
 		Assertions.assertNotNull(result.globalObjective)
+	}
+	
+	// Wrong naming / uniqueness tests
+	@Test
+	def void testMappingNameNotUnique() {
+		val result = parseHelper.parse('''
+			import "«ecoreImport»"
+			pattern testPattern {
+				p: EPackage
+			}
+			mapping map with testPattern;
+			mapping map with testPattern;
+		''')
+		assertInvalid(result, 1, 0)
+	}
+	
+	@Test
+	def void testObjectiveNameNotUnique() {
+		val result = parseHelper.parse('''
+			import "«ecoreImport»"
+			pattern testPattern {
+				p: EPackage
+			}
+			mapping map with testPattern;
+			objective o -> mapping::map {
+				1
+			}
+			objective 0 -> mapping::map {
+				2
+			}
+		''')
+		assertInvalid(result, 1, 0)
+	}
+	
+	@Test
+	def void testGlobalObjectiveNotUnique() {
+		val result = parseHelper.parse('''
+			import "«ecoreImport»"
+			pattern testPattern {
+				p: EPackage
+			}
+			mapping map with testPattern;
+			objective o -> mapping::map {
+				1
+			}
+			global objective : min {
+				2*o
+			}
+			global objective : min {
+				2*o
+			}
+		''')
+		assertInvalid(result, 1, 0)
+	}
+	
+	@Test
+	def void testObjectiveIsUselessWarning() {
+		val result = parseHelper.parse('''
+			import "«ecoreImport»"
+			pattern testPattern {
+				p: EPackage
+			}
+			mapping map with testPattern;
+			objective o -> mapping::map {
+				0
+			}
+		''')
+		assertInvalid(result, 0, 1)
 	}
 	
 	//
@@ -123,6 +187,30 @@ class RoamSLangParsingTest {
 	def void assertValid(EditorGTFile file) {
 		Assertions.assertNotNull(file)
 		this.validationHelper.assertNoIssues(file)
-		// TODO: call assertFile(...) here?
+		assertFile(file)
 	}
+	
+	static def void assertValidResource(EditorGTFile file) {
+		Assertions.assertNotNull(file)
+		Assertions.assertTrue(file.eResource.errors.isEmpty)
+		Assertions.assertTrue(file.eResource.warnings.isEmpty)
+	}
+	
+	static def void assertFile(EditorGTFile file) {
+		assertValidResource(file)
+		Assertions.assertEquals(1, file.imports.size)
+		Assertions.assertEquals(ecoreImport, file.imports.get(0).name)
+	}
+	
+	def void assertInvalid(EditorGTFile file, int noOfErr, int noOfWarn) {
+		Assertions.assertNotNull(file)
+		assertInvalidResource(file, noOfErr, noOfWarn)
+	}
+	
+	static def void assertInvalidResource(EditorGTFile file, int noOfErr, int noOfWarn) {
+		Assertions.assertNotNull(file)
+		Assertions.assertEquals(noOfErr, file.eResource.errors.size)
+		Assertions.assertEquals(noOfWarn, file.eResource.warnings.size)
+	}
+	
 }

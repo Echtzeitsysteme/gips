@@ -33,6 +33,7 @@
     <eLiterals name="Greater" value="4"/>
     <eLiterals name="NotEqual" value="5"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Iterator" abstract="true" interface="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="IntermediateArithmeticExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EDataType"/>
   </eClassifiers>
@@ -50,7 +51,8 @@
         eType="#//IntermediateArithmeticExpression" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//IntermediateUnaryArithmeticOperator"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IntermediateSumExpression" eSuperTypes="#//IntermediateArithmeticExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="IntermediateSumExpression" abstract="true"
+      eSuperTypes="#//Iterator #//IntermediateArithmeticExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
         eType="#//IntermediateArithmeticExpression" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="condition" eType="#//IntermediateBoolExpression"
@@ -89,7 +91,7 @@
     <eLiterals name="COSINE" value="4"/>
     <eLiterals name="SQRT" value="5"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IntermediateBoolExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IntermediateBoolExpression" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="IntermediateBoolBinaryExpression" eSuperTypes="#//IntermediateBoolExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="lhs" lowerBound="1" eType="#//IntermediateBoolExpression"
         containment="true"/>
@@ -112,5 +114,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="IntermediateUnaryBoolOperator">
     <eLiterals name="NOT"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IntermediateValueExpression" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EDataType"/>
   </eClassifiers>
 </ecore:EPackage>

@@ -463,8 +463,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRoamIntermediateModel_Variables() {
-		return (EReference) roamIntermediateModelEClass.getEStructuralFeatures().get(0);
+	public EAttribute getRoamIntermediateModel_Name() {
+		return (EAttribute) roamIntermediateModelEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -472,7 +472,7 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRoamIntermediateModel_Constraints() {
+	public EReference getRoamIntermediateModel_Variables() {
 		return (EReference) roamIntermediateModelEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -481,8 +481,17 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRoamIntermediateModel_IbexModel() {
+	public EReference getRoamIntermediateModel_Constraints() {
 		return (EReference) roamIntermediateModelEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRoamIntermediateModel_IbexModel() {
+		return (EReference) roamIntermediateModelEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -1361,6 +1370,7 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 
 		// Create classes and their features
 		roamIntermediateModelEClass = createEClass(ROAM_INTERMEDIATE_MODEL);
+		createEAttribute(roamIntermediateModelEClass, ROAM_INTERMEDIATE_MODEL__NAME);
 		createEReference(roamIntermediateModelEClass, ROAM_INTERMEDIATE_MODEL__VARIABLES);
 		createEReference(roamIntermediateModelEClass, ROAM_INTERMEDIATE_MODEL__CONSTRAINTS);
 		createEReference(roamIntermediateModelEClass, ROAM_INTERMEDIATE_MODEL__IBEX_MODEL);
@@ -1565,6 +1575,9 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		// Initialize classes, features, and operations; add parameters
 		initEClass(roamIntermediateModelEClass, RoamIntermediateModel.class, "RoamIntermediateModel", !IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getRoamIntermediateModel_Name(), ecorePackage.getEString(), "name", null, 0, 1,
+				RoamIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRoamIntermediateModel_Variables(), this.getVariableSet(), null, "variables", null, 0, -1,
 				RoamIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

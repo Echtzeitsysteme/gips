@@ -52,6 +52,7 @@
       <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//StreamOperator/FILTER"/>
     </genEnums>
     <genClasses ecoreClass="RoamIntermediate.ecore#//RoamIntermediateModel">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//RoamIntermediateModel/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//RoamIntermediateModel/variables"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//RoamIntermediateModel/constraints"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//RoamIntermediateModel/ibexModel"/>

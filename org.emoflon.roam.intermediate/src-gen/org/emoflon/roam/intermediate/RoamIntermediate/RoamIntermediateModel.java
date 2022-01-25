@@ -17,6 +17,7 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getName <em>Name</em>}</li>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getVariables <em>Variables</em>}</li>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getConstraints <em>Constraints</em>}</li>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getIbexModel <em>Ibex Model</em>}</li>
@@ -27,6 +28,28 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
  * @generated
  */
 public interface RoamIntermediateModel extends EObject {
+	/**
+	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Name</em>' attribute.
+	 * @see #setName(String)
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getRoamIntermediateModel_Name()
+	 * @model
+	 * @generated
+	 */
+	String getName();
+
+	/**
+	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getName <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Name</em>' attribute.
+	 * @see #getName()
+	 * @generated
+	 */
+	void setName(String value);
+
 	/**
 	 * Returns the value of the '<em><b>Variables</b></em>' containment reference list.
 	 * The list contents are of type {@link org.emoflon.roam.intermediate.RoamIntermediate.VariableSet}.

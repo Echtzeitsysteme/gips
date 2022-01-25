@@ -69,13 +69,22 @@ public interface RoamIntermediatePackage extends EPackage {
 	int ROAM_INTERMEDIATE_MODEL = 0;
 
 	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROAM_INTERMEDIATE_MODEL__NAME = 0;
+
+	/**
 	 * The feature id for the '<em><b>Variables</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ROAM_INTERMEDIATE_MODEL__VARIABLES = 0;
+	int ROAM_INTERMEDIATE_MODEL__VARIABLES = 1;
 
 	/**
 	 * The feature id for the '<em><b>Constraints</b></em>' containment reference list.
@@ -84,7 +93,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROAM_INTERMEDIATE_MODEL__CONSTRAINTS = 1;
+	int ROAM_INTERMEDIATE_MODEL__CONSTRAINTS = 2;
 
 	/**
 	 * The feature id for the '<em><b>Ibex Model</b></em>' containment reference.
@@ -93,7 +102,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROAM_INTERMEDIATE_MODEL__IBEX_MODEL = 2;
+	int ROAM_INTERMEDIATE_MODEL__IBEX_MODEL = 3;
 
 	/**
 	 * The number of structural features of the '<em>Model</em>' class.
@@ -102,7 +111,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROAM_INTERMEDIATE_MODEL_FEATURE_COUNT = 3;
+	int ROAM_INTERMEDIATE_MODEL_FEATURE_COUNT = 4;
 
 	/**
 	 * The number of operations of the '<em>Model</em>' class.
@@ -1995,6 +2004,17 @@ public interface RoamIntermediatePackage extends EPackage {
 	EClass getRoamIntermediateModel();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getName()
+	 * @see #getRoamIntermediateModel()
+	 * @generated
+	 */
+	EAttribute getRoamIntermediateModel_Name();
+
+	/**
 	 * Returns the meta object for the containment reference list '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getVariables <em>Variables</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3049,6 +3069,14 @@ public interface RoamIntermediatePackage extends EPackage {
 		 * @generated
 		 */
 		EClass ROAM_INTERMEDIATE_MODEL = eINSTANCE.getRoamIntermediateModel();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ROAM_INTERMEDIATE_MODEL__NAME = eINSTANCE.getRoamIntermediateModel_Name();
 
 		/**
 		 * The meta object literal for the '<em><b>Variables</b></em>' containment reference list feature.

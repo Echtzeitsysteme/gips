@@ -6,7 +6,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPatternModelPackage;
 import org.emoflon.roam.build.transformation.RoamToIntermediate;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
 import org.emoflon.roam.roamslang.generator.RoamBuilderExtension;
@@ -28,8 +27,8 @@ public class RoamProjectBuilder implements RoamBuilderExtension {
 		// create intermediate grapel model and ibex patterns
 		EditorGTFile roamSlangFile = (EditorGTFile) resource.getContents().get(0);
 		// use transformer to create intermediate roam model out of the roamSlang file
-		RoamToIntermediate transformer = new RoamToIntermediate();
-		RoamIntermediateModel model = transformer.transform(roamSlangFile);
+		RoamToIntermediate transformer = new RoamToIntermediate(roamSlangFile);
+		RoamIntermediateModel model = transformer.transform();
 		model.setName(resource.getURI().trimFileExtension().lastSegment());
 		IBeXModel ibexModel = model.getIbexModel();
 

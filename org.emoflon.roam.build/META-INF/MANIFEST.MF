@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Roam::Build
+Bundle-SymbolicName: org.emoflon.roam.build;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.emoflon.roam.build
+Bundle-RequiredExecutionEnvironment: JavaSE-16
+Require-Bundle: org.emoflon.roam.intermediate;bundle-version="0.1.0",
+ org.emoflon.roam.roamslang;bundle-version="1.0.0",
+ org.eclipse.core.resources

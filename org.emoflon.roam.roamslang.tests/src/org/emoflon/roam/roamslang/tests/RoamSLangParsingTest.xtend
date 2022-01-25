@@ -12,6 +12,8 @@ import org.emoflon.roam.roamslang.roamSLang.EditorGTFile
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
+import org.emoflon.roam.roamslang.roamSLang.RoamMappingContext
+import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext
 
 @ExtendWith(InjectionExtension)
 @InjectWith(RoamSLangInjectorProvider)
@@ -178,6 +180,104 @@ class RoamSLangParsingTest {
 			}
 		''')
 		assertInvalid(result, 0, 1)
+	}
+	
+	@Test
+	def void testMappingFromRule() {
+		val result = parseHelper.parse('''
+			import "«ecoreImport»"
+			rule testRule {
+				c: EClassifier {
+					.name := "Test"
+				}
+			}
+			mapping map with testRule;
+		''')
+		assertValid(result)
+		Assertions.assertFalse(result.mappings.isEmpty)
+		Assertions.assertEquals(1, result.mappings.size)
+		val map = result.mappings.get(0)
+		Assertions.assertEquals("testRule", map.rule.name)
+		Assertions.assertEquals("map", map.name)
+	}
+	
+	@Test
+	def void testConstraintOnMapping() {
+		val result = parseHelper.parse('''
+			import "«ecoreImport»"
+			rule testRule {
+				c: EClassifier {
+					.name := "Test"
+				}
+			}
+			mapping map with testRule;
+			constraint -> mapping::map {
+				1 != 2
+			}
+		''')
+		assertValid(result)
+		Assertions.assertFalse(result.constraints.isEmpty)
+		Assertions.assertEquals(1, result.constraints.size)
+		val cstr = result.constraints.get(0)
+		val mappingContext = cstr.context as RoamMappingContext
+		Assertions.assertEquals("map", mappingContext.mapping.name)
+	}
+	
+	@Test
+	def void testObjectiveOnMapping() {
+		val result = parseHelper.parse('''
+			import "«ecoreImport»"
+			rule testRule {
+				c: EClassifier {
+					.name := "Test"
+				}
+			}
+			mapping map with testRule;
+			objective obj -> mapping::map {
+				3
+			}
+		''')
+		assertValid(result)
+		Assertions.assertFalse(result.objectives.isEmpty)
+		Assertions.assertEquals(1, result.objectives.size)
+		val obj = result.objectives.get(0)
+		val mappingContext = obj.context as RoamMappingContext
+		Assertions.assertEquals("map", mappingContext.mapping.name)
+	}
+	
+	@Test
+	def void testObjectiveOnClass() {
+		val result = parseHelper.parse('''
+			import "«ecoreImport»"
+			objective obj -> class::EClass {
+				3
+			}
+		''')
+		assertValid(result)
+		Assertions.assertFalse(result.objectives.isEmpty)
+		Assertions.assertEquals(1, result.objectives.size)
+		val obj = result.objectives.get(0)
+		val typeContext = obj.context as RoamTypeContext
+		Assertions.assertEquals("EClass", typeContext.type.name)
+	}
+	
+	@Test
+	def void testGlobalObjectiveGoal() {
+		val result = parseHelper.parse('''
+			import "«ecoreImport»"
+			objective obja -> class::EClass {
+				3
+			}
+			global objective : min {
+				obja
+			}
+		''')
+		assertValid(result)
+		Assertions.assertFalse(result.objectives.isEmpty)
+		Assertions.assertEquals(1, result.objectives.size)
+		val gobj = result.globalObjective
+		Assertions.assertNotNull(gobj)
+		Assertions.assertEquals("MIN", gobj.objectiveGoal.getName)
 	}
 	
 	//

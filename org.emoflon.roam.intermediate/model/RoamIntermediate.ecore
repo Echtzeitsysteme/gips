@@ -14,6 +14,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="VariableSet" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Type" eSuperTypes="#//VariableSet">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Mapping" eSuperTypes="#//VariableSet">
     <eStructuralFeatures xsi:type="ecore:EReference" name="rule" lowerBound="1" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXRule"/>
   </eClassifiers>
@@ -58,19 +61,25 @@
         eType="#//ArithmeticExpression" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//UnaryArithmeticOperator"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ArithmeticStreamExpression" eSuperTypes="#//ArithmeticExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stream" eType="#//StreamExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//StreamArithmeticOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operation" eType="#//ArithmeticExpression"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SumExpression" abstract="true" eSuperTypes="#//Iterator #//ArithmeticExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
         eType="#//ArithmeticExpression" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="condition" eType="#//BoolExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="VariableSumExpression" eSuperTypes="#//SumExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="variable" lowerBound="1"
-        eType="#//VariableSet"/>
+  <eClassifiers xsi:type="ecore:EClass" name="MappingSumExpression" eSuperTypes="#//SumExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" lowerBound="1"
+        eType="#//Mapping"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TypeSumExpression" eSuperTypes="#//SumExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="objType" lowerBound="1"
-        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="#//Type"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ArithmeticValue" abstract="true" eSuperTypes="#//ArithmeticExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" lowerBound="1" eType="#//ValueExpression"
@@ -99,6 +108,9 @@
     <eLiterals name="COSINE" value="4"/>
     <eLiterals name="SQRT" value="5"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="StreamArithmeticOperator">
+    <eLiterals name="COUNT"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BoolExpression" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="BoolBinaryExpression" eSuperTypes="#//BoolExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="lhs" lowerBound="1" eType="#//BoolExpression"
@@ -116,6 +128,11 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" lowerBound="1" eType="#//ValueExpression"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BoolStreamExpression" eSuperTypes="#//BoolExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stream" lowerBound="1"
+        eType="#//StreamExpression" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//StreamBoolOperator"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BoolLiteral" eSuperTypes="#//BoolExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="literal" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
@@ -125,6 +142,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="UnaryBoolOperator">
     <eLiterals name="NOT"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="StreamBoolOperator">
+    <eLiterals name="EXISTS"/>
+    <eLiterals name="NOTEXISTS"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ValueExpression" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
@@ -158,5 +179,20 @@
   <eClassifiers xsi:type="ecore:EClass" name="IteratorFeatureValue" eSuperTypes="#//IteratorValue">
     <eStructuralFeatures xsi:type="ecore:EReference" name="featureExpression" eType="#//FeatureExpression"
         containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StreamExpression" eSuperTypes="#//Iterator">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="current" lowerBound="1"
+        eType="#//StreamOperation" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="child" lowerBound="1" eType="#//StreamExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StreamOperation" eSuperTypes="#//StreamExpression">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//StreamOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="predicate" eType="#//BoolExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="StreamOperator">
+    <eLiterals name="FILTER"/>
   </eClassifiers>
 </ecore:EPackage>

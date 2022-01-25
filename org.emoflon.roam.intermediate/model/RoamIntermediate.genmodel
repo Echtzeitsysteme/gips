@@ -34,12 +34,22 @@
       <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//UnaryArithmeticOperator/COSINE"/>
       <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//UnaryArithmeticOperator/SQRT"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="RoamIntermediate.ecore#//StreamArithmeticOperator">
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//StreamArithmeticOperator/COUNT"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="RoamIntermediate.ecore#//BinaryBoolOperator">
       <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//BinaryBoolOperator/AND"/>
       <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//BinaryBoolOperator/OR"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="RoamIntermediate.ecore#//UnaryBoolOperator">
       <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//UnaryBoolOperator/NOT"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="RoamIntermediate.ecore#//StreamBoolOperator">
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//StreamBoolOperator/EXISTS"/>
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//StreamBoolOperator/NOTEXISTS"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="RoamIntermediate.ecore#//StreamOperator">
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//StreamOperator/FILTER"/>
     </genEnums>
     <genClasses ecoreClass="RoamIntermediate.ecore#//RoamIntermediateModel">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//RoamIntermediateModel/variables"/>
@@ -48,6 +58,9 @@
     </genClasses>
     <genClasses image="false" ecoreClass="RoamIntermediate.ecore#//VariableSet">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//VariableSet/name"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//Type">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//Type/type"/>
     </genClasses>
     <genClasses ecoreClass="RoamIntermediate.ecore#//Mapping">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//Mapping/rule"/>
@@ -78,15 +91,20 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//UnaryArithmeticExpression/expression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//UnaryArithmeticExpression/operator"/>
     </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//ArithmeticStreamExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//ArithmeticStreamExpression/stream"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//ArithmeticStreamExpression/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//ArithmeticStreamExpression/operation"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="RoamIntermediate.ecore#//SumExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//SumExpression/expression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//SumExpression/condition"/>
     </genClasses>
-    <genClasses ecoreClass="RoamIntermediate.ecore#//VariableSumExpression">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//VariableSumExpression/variable"/>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//MappingSumExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//MappingSumExpression/mapping"/>
     </genClasses>
     <genClasses ecoreClass="RoamIntermediate.ecore#//TypeSumExpression">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//TypeSumExpression/objType"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//TypeSumExpression/type"/>
     </genClasses>
     <genClasses image="false" ecoreClass="RoamIntermediate.ecore#//ArithmeticValue">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//ArithmeticValue/value"/>
@@ -110,6 +128,10 @@
     </genClasses>
     <genClasses ecoreClass="RoamIntermediate.ecore#//BoolValue">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//BoolValue/value"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//BoolStreamExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//BoolStreamExpression/stream"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//BoolStreamExpression/operator"/>
     </genClasses>
     <genClasses ecoreClass="RoamIntermediate.ecore#//BoolLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//BoolLiteral/literal"/>
@@ -142,6 +164,15 @@
     </genClasses>
     <genClasses ecoreClass="RoamIntermediate.ecore#//IteratorFeatureValue">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//IteratorFeatureValue/featureExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//StreamExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//StreamExpression/returnType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//StreamExpression/current"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//StreamExpression/child"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//StreamOperation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//StreamOperation/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//StreamOperation/predicate"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

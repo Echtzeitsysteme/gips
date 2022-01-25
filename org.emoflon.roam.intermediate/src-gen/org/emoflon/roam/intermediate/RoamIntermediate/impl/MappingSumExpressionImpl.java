@@ -9,40 +9,40 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
+import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.Type;
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Type Sum Expression</b></em>'.
+ * An implementation of the model object '<em><b>Mapping Sum Expression</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeSumExpressionImpl#getType <em>Type</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingSumExpressionImpl#getMapping <em>Mapping</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumExpression {
+public class MappingSumExpressionImpl extends SumExpressionImpl implements MappingSumExpression {
 	/**
-	 * The cached value of the '{@link #getType() <em>Type</em>}' reference.
+	 * The cached value of the '{@link #getMapping() <em>Mapping</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getType()
+	 * @see #getMapping()
 	 * @generated
 	 * @ordered
 	 */
-	protected Type type;
+	protected Mapping mapping;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected TypeSumExpressionImpl() {
+	protected MappingSumExpressionImpl() {
 		super();
 	}
 
@@ -53,7 +53,7 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.TYPE_SUM_EXPRESSION;
+		return RoamIntermediatePackage.Literals.MAPPING_SUM_EXPRESSION;
 	}
 
 	/**
@@ -61,17 +61,17 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Type getType() {
-		if (type != null && type.eIsProxy()) {
-			InternalEObject oldType = (InternalEObject) type;
-			type = (Type) eResolveProxy(oldType);
-			if (type != oldType) {
+	public Mapping getMapping() {
+		if (mapping != null && mapping.eIsProxy()) {
+			InternalEObject oldMapping = (InternalEObject) mapping;
+			mapping = (Mapping) eResolveProxy(oldMapping);
+			if (mapping != oldMapping) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.TYPE_SUM_EXPRESSION__TYPE, oldType, type));
+							RoamIntermediatePackage.MAPPING_SUM_EXPRESSION__MAPPING, oldMapping, mapping));
 			}
 		}
-		return type;
+		return mapping;
 	}
 
 	/**
@@ -79,8 +79,8 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Type basicGetType() {
-		return type;
+	public Mapping basicGetMapping() {
+		return mapping;
 	}
 
 	/**
@@ -88,12 +88,12 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setType(Type newType) {
-		Type oldType = type;
-		type = newType;
+	public void setMapping(Mapping newMapping) {
+		Mapping oldMapping = mapping;
+		mapping = newMapping;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE_SUM_EXPRESSION__TYPE,
-					oldType, type));
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					RoamIntermediatePackage.MAPPING_SUM_EXPRESSION__MAPPING, oldMapping, mapping));
 	}
 
 	/**
@@ -104,10 +104,10 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE_SUM_EXPRESSION__TYPE:
+		case RoamIntermediatePackage.MAPPING_SUM_EXPRESSION__MAPPING:
 			if (resolve)
-				return getType();
-			return basicGetType();
+				return getMapping();
+			return basicGetMapping();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -120,8 +120,8 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE_SUM_EXPRESSION__TYPE:
-			setType((Type) newValue);
+		case RoamIntermediatePackage.MAPPING_SUM_EXPRESSION__MAPPING:
+			setMapping((Mapping) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -135,8 +135,8 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE_SUM_EXPRESSION__TYPE:
-			setType((Type) null);
+		case RoamIntermediatePackage.MAPPING_SUM_EXPRESSION__MAPPING:
+			setMapping((Mapping) null);
 			return;
 		}
 		super.eUnset(featureID);
@@ -150,10 +150,10 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE_SUM_EXPRESSION__TYPE:
-			return type != null;
+		case RoamIntermediatePackage.MAPPING_SUM_EXPRESSION__MAPPING:
+			return mapping != null;
 		}
 		return super.eIsSet(featureID);
 	}
 
-} //TypeSumExpressionImpl
+} //MappingSumExpressionImpl

@@ -80,6 +80,15 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case RoamIntermediatePackage.TYPE: {
+			Type type = (Type) theEObject;
+			T result = caseType(type);
+			if (result == null)
+				result = caseVariableSet(type);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case RoamIntermediatePackage.MAPPING: {
 			Mapping mapping = (Mapping) theEObject;
 			T result = caseMapping(mapping);
@@ -157,6 +166,15 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case RoamIntermediatePackage.ARITHMETIC_STREAM_EXPRESSION: {
+			ArithmeticStreamExpression arithmeticStreamExpression = (ArithmeticStreamExpression) theEObject;
+			T result = caseArithmeticStreamExpression(arithmeticStreamExpression);
+			if (result == null)
+				result = caseArithmeticExpression(arithmeticStreamExpression);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case RoamIntermediatePackage.SUM_EXPRESSION: {
 			SumExpression sumExpression = (SumExpression) theEObject;
 			T result = caseSumExpression(sumExpression);
@@ -168,15 +186,15 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.VARIABLE_SUM_EXPRESSION: {
-			VariableSumExpression variableSumExpression = (VariableSumExpression) theEObject;
-			T result = caseVariableSumExpression(variableSumExpression);
+		case RoamIntermediatePackage.MAPPING_SUM_EXPRESSION: {
+			MappingSumExpression mappingSumExpression = (MappingSumExpression) theEObject;
+			T result = caseMappingSumExpression(mappingSumExpression);
 			if (result == null)
-				result = caseSumExpression(variableSumExpression);
+				result = caseSumExpression(mappingSumExpression);
 			if (result == null)
-				result = caseIterator(variableSumExpression);
+				result = caseIterator(mappingSumExpression);
 			if (result == null)
-				result = caseArithmeticExpression(variableSumExpression);
+				result = caseArithmeticExpression(mappingSumExpression);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -264,6 +282,15 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 			T result = caseBoolValue(boolValue);
 			if (result == null)
 				result = caseBoolExpression(boolValue);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.BOOL_STREAM_EXPRESSION: {
+			BoolStreamExpression boolStreamExpression = (BoolStreamExpression) theEObject;
+			T result = caseBoolStreamExpression(boolStreamExpression);
+			if (result == null)
+				result = caseBoolExpression(boolStreamExpression);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -358,6 +385,26 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case RoamIntermediatePackage.STREAM_EXPRESSION: {
+			StreamExpression streamExpression = (StreamExpression) theEObject;
+			T result = caseStreamExpression(streamExpression);
+			if (result == null)
+				result = caseIterator(streamExpression);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.STREAM_OPERATION: {
+			StreamOperation streamOperation = (StreamOperation) theEObject;
+			T result = caseStreamOperation(streamOperation);
+			if (result == null)
+				result = caseStreamExpression(streamOperation);
+			if (result == null)
+				result = caseIterator(streamOperation);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		default:
 			return defaultCase(theEObject);
 		}
@@ -390,6 +437,21 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseVariableSet(VariableSet object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Type</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Type</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseType(Type object) {
 		return null;
 	}
 
@@ -529,6 +591,21 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Arithmetic Stream Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Arithmetic Stream Expression</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseArithmeticStreamExpression(ArithmeticStreamExpression object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Sum Expression</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -544,17 +621,17 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Variable Sum Expression</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Mapping Sum Expression</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Variable Sum Expression</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Mapping Sum Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseVariableSumExpression(VariableSumExpression object) {
+	public T caseMappingSumExpression(MappingSumExpression object) {
 		return null;
 	}
 
@@ -690,6 +767,21 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseBoolValue(BoolValue object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Bool Stream Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Bool Stream Expression</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseBoolStreamExpression(BoolStreamExpression object) {
 		return null;
 	}
 
@@ -840,6 +932,36 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseIteratorFeatureValue(IteratorFeatureValue object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Stream Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Stream Expression</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseStreamExpression(StreamExpression object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Stream Operation</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Stream Operation</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseStreamOperation(StreamOperation object) {
 		return null;
 	}
 

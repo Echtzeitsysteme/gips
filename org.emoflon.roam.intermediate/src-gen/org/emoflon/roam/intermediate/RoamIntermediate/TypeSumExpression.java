@@ -2,8 +2,6 @@
  */
 package org.emoflon.roam.intermediate.RoamIntermediate;
 
-import org.eclipse.emf.ecore.EClass;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Type Sum Expression</b></em>'.
@@ -13,7 +11,7 @@ import org.eclipse.emf.ecore.EClass;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression#getObjType <em>Obj Type</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression#getType <em>Type</em>}</li>
  * </ul>
  *
  * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getTypeSumExpression()
@@ -22,25 +20,25 @@ import org.eclipse.emf.ecore.EClass;
  */
 public interface TypeSumExpression extends SumExpression {
 	/**
-	 * Returns the value of the '<em><b>Obj Type</b></em>' reference.
+	 * Returns the value of the '<em><b>Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Obj Type</em>' reference.
-	 * @see #setObjType(EClass)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getTypeSumExpression_ObjType()
+	 * @return the value of the '<em>Type</em>' reference.
+	 * @see #setType(Type)
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getTypeSumExpression_Type()
 	 * @model required="true"
 	 * @generated
 	 */
-	EClass getObjType();
+	Type getType();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression#getObjType <em>Obj Type</em>}' reference.
+	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression#getType <em>Type</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Obj Type</em>' reference.
-	 * @see #getObjType()
+	 * @param value the new value of the '<em>Type</em>' reference.
+	 * @see #getType()
 	 * @generated
 	 */
-	void setObjType(EClass value);
+	void setType(Type value);
 
 } // TypeSumExpression

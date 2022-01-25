@@ -32,6 +32,15 @@ public interface RoamIntermediateFactory extends EFactory {
 	RoamIntermediateModel createRoamIntermediateModel();
 
 	/**
+	 * Returns a new object of class '<em>Type</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Type</em>'.
+	 * @generated
+	 */
+	Type createType();
+
+	/**
 	 * Returns a new object of class '<em>Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -86,13 +95,22 @@ public interface RoamIntermediateFactory extends EFactory {
 	UnaryArithmeticExpression createUnaryArithmeticExpression();
 
 	/**
-	 * Returns a new object of class '<em>Variable Sum Expression</em>'.
+	 * Returns a new object of class '<em>Arithmetic Stream Expression</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Variable Sum Expression</em>'.
+	 * @return a new object of class '<em>Arithmetic Stream Expression</em>'.
 	 * @generated
 	 */
-	VariableSumExpression createVariableSumExpression();
+	ArithmeticStreamExpression createArithmeticStreamExpression();
+
+	/**
+	 * Returns a new object of class '<em>Mapping Sum Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Mapping Sum Expression</em>'.
+	 * @generated
+	 */
+	MappingSumExpression createMappingSumExpression();
 
 	/**
 	 * Returns a new object of class '<em>Type Sum Expression</em>'.
@@ -147,6 +165,15 @@ public interface RoamIntermediateFactory extends EFactory {
 	 * @generated
 	 */
 	BoolValue createBoolValue();
+
+	/**
+	 * Returns a new object of class '<em>Bool Stream Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Bool Stream Expression</em>'.
+	 * @generated
+	 */
+	BoolStreamExpression createBoolStreamExpression();
 
 	/**
 	 * Returns a new object of class '<em>Bool Literal</em>'.
@@ -228,6 +255,24 @@ public interface RoamIntermediateFactory extends EFactory {
 	 * @generated
 	 */
 	IteratorFeatureValue createIteratorFeatureValue();
+
+	/**
+	 * Returns a new object of class '<em>Stream Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Stream Expression</em>'.
+	 * @generated
+	 */
+	StreamExpression createStreamExpression();
+
+	/**
+	 * Returns a new object of class '<em>Stream Operation</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Stream Operation</em>'.
+	 * @generated
+	 */
+	StreamOperation createStreamOperation();
 
 	/**
 	 * Returns the package supported by this factory.

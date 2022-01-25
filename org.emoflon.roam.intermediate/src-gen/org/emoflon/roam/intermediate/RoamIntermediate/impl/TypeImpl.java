@@ -10,39 +10,38 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet;
-import org.emoflon.roam.intermediate.RoamIntermediate.VariableSumExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.Type;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Variable Sum Expression</b></em>'.
+ * An implementation of the model object '<em><b>Type</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.VariableSumExpressionImpl#getVariable <em>Variable</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeImpl#getType <em>Type</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class VariableSumExpressionImpl extends SumExpressionImpl implements VariableSumExpression {
+public class TypeImpl extends VariableSetImpl implements Type {
 	/**
-	 * The cached value of the '{@link #getVariable() <em>Variable</em>}' reference.
+	 * The cached value of the '{@link #getType() <em>Type</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getVariable()
+	 * @see #getType()
 	 * @generated
 	 * @ordered
 	 */
-	protected VariableSet variable;
+	protected EClass type;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected VariableSumExpressionImpl() {
+	protected TypeImpl() {
 		super();
 	}
 
@@ -53,7 +52,7 @@ public class VariableSumExpressionImpl extends SumExpressionImpl implements Vari
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.VARIABLE_SUM_EXPRESSION;
+		return RoamIntermediatePackage.Literals.TYPE;
 	}
 
 	/**
@@ -61,17 +60,17 @@ public class VariableSumExpressionImpl extends SumExpressionImpl implements Vari
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public VariableSet getVariable() {
-		if (variable != null && variable.eIsProxy()) {
-			InternalEObject oldVariable = (InternalEObject) variable;
-			variable = (VariableSet) eResolveProxy(oldVariable);
-			if (variable != oldVariable) {
+	public EClass getType() {
+		if (type != null && type.eIsProxy()) {
+			InternalEObject oldType = (InternalEObject) type;
+			type = (EClass) eResolveProxy(oldType);
+			if (type != oldType) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.VARIABLE_SUM_EXPRESSION__VARIABLE, oldVariable, variable));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, RoamIntermediatePackage.TYPE__TYPE,
+							oldType, type));
 			}
 		}
-		return variable;
+		return type;
 	}
 
 	/**
@@ -79,8 +78,8 @@ public class VariableSumExpressionImpl extends SumExpressionImpl implements Vari
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public VariableSet basicGetVariable() {
-		return variable;
+	public EClass basicGetType() {
+		return type;
 	}
 
 	/**
@@ -88,12 +87,11 @@ public class VariableSumExpressionImpl extends SumExpressionImpl implements Vari
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setVariable(VariableSet newVariable) {
-		VariableSet oldVariable = variable;
-		variable = newVariable;
+	public void setType(EClass newType) {
+		EClass oldType = type;
+		type = newType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.VARIABLE_SUM_EXPRESSION__VARIABLE, oldVariable, variable));
+			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE__TYPE, oldType, type));
 	}
 
 	/**
@@ -104,10 +102,10 @@ public class VariableSumExpressionImpl extends SumExpressionImpl implements Vari
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.VARIABLE_SUM_EXPRESSION__VARIABLE:
+		case RoamIntermediatePackage.TYPE__TYPE:
 			if (resolve)
-				return getVariable();
-			return basicGetVariable();
+				return getType();
+			return basicGetType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -120,8 +118,8 @@ public class VariableSumExpressionImpl extends SumExpressionImpl implements Vari
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.VARIABLE_SUM_EXPRESSION__VARIABLE:
-			setVariable((VariableSet) newValue);
+		case RoamIntermediatePackage.TYPE__TYPE:
+			setType((EClass) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -135,8 +133,8 @@ public class VariableSumExpressionImpl extends SumExpressionImpl implements Vari
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.VARIABLE_SUM_EXPRESSION__VARIABLE:
-			setVariable((VariableSet) null);
+		case RoamIntermediatePackage.TYPE__TYPE:
+			setType((EClass) null);
 			return;
 		}
 		super.eUnset(featureID);
@@ -150,10 +148,10 @@ public class VariableSumExpressionImpl extends SumExpressionImpl implements Vari
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.VARIABLE_SUM_EXPRESSION__VARIABLE:
-			return variable != null;
+		case RoamIntermediatePackage.TYPE__TYPE:
+			return type != null;
 		}
 		return super.eIsSet(featureID);
 	}
 
-} //VariableSumExpressionImpl
+} //TypeImpl

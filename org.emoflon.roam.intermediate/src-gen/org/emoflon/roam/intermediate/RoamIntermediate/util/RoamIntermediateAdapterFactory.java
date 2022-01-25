@@ -77,6 +77,11 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseType(Type object) {
+			return createTypeAdapter();
+		}
+
+		@Override
 		public Adapter caseMapping(Mapping object) {
 			return createMappingAdapter();
 		}
@@ -122,13 +127,18 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseArithmeticStreamExpression(ArithmeticStreamExpression object) {
+			return createArithmeticStreamExpressionAdapter();
+		}
+
+		@Override
 		public Adapter caseSumExpression(SumExpression object) {
 			return createSumExpressionAdapter();
 		}
 
 		@Override
-		public Adapter caseVariableSumExpression(VariableSumExpression object) {
-			return createVariableSumExpressionAdapter();
+		public Adapter caseMappingSumExpression(MappingSumExpression object) {
+			return createMappingSumExpressionAdapter();
 		}
 
 		@Override
@@ -174,6 +184,11 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseBoolValue(BoolValue object) {
 			return createBoolValueAdapter();
+		}
+
+		@Override
+		public Adapter caseBoolStreamExpression(BoolStreamExpression object) {
+			return createBoolStreamExpressionAdapter();
 		}
 
 		@Override
@@ -227,6 +242,16 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseStreamExpression(StreamExpression object) {
+			return createStreamExpressionAdapter();
+		}
+
+		@Override
+		public Adapter caseStreamOperation(StreamOperation object) {
+			return createStreamOperationAdapter();
+		}
+
+		@Override
 		public Adapter defaultCase(EObject object) {
 			return createEObjectAdapter();
 		}
@@ -270,6 +295,20 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createVariableSetAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.Type <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Type
+	 * @generated
+	 */
+	public Adapter createTypeAdapter() {
 		return null;
 	}
 
@@ -400,6 +439,20 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticStreamExpression <em>Arithmetic Stream Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticStreamExpression
+	 * @generated
+	 */
+	public Adapter createArithmeticStreamExpressionAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression <em>Sum Expression</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -414,16 +467,16 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.VariableSumExpression <em>Variable Sum Expression</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression <em>Mapping Sum Expression</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.VariableSumExpression
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression
 	 * @generated
 	 */
-	public Adapter createVariableSumExpressionAdapter() {
+	public Adapter createMappingSumExpressionAdapter() {
 		return null;
 	}
 
@@ -550,6 +603,20 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createBoolValueAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression <em>Bool Stream Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression
+	 * @generated
+	 */
+	public Adapter createBoolStreamExpressionAdapter() {
 		return null;
 	}
 
@@ -690,6 +757,34 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createIteratorFeatureValueAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression <em>Stream Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression
+	 * @generated
+	 */
+	public Adapter createStreamExpressionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation <em>Stream Operation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation
+	 * @generated
+	 */
+	public Adapter createStreamOperationAdapter() {
 		return null;
 	}
 

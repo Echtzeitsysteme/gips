@@ -176,6 +176,15 @@ public interface RoamIntermediateFactory extends EFactory {
 	BoolStreamExpression createBoolStreamExpression();
 
 	/**
+	 * Returns a new object of class '<em>Relational Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Relational Expression</em>'.
+	 * @generated
+	 */
+	RelationalExpression createRelationalExpression();
+
+	/**
 	 * Returns a new object of class '<em>Bool Literal</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

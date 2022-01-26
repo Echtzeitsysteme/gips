@@ -91,6 +91,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 			return createBoolValue();
 		case RoamIntermediatePackage.BOOL_STREAM_EXPRESSION:
 			return createBoolStreamExpression();
+		case RoamIntermediatePackage.RELATIONAL_EXPRESSION:
+			return createRelationalExpression();
 		case RoamIntermediatePackage.BOOL_LITERAL:
 			return createBoolLiteral();
 		case RoamIntermediatePackage.CONTEXT_TYPE_VALUE:
@@ -344,6 +346,16 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	public BoolStreamExpression createBoolStreamExpression() {
 		BoolStreamExpressionImpl boolStreamExpression = new BoolStreamExpressionImpl();
 		return boolStreamExpression;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public RelationalExpression createRelationalExpression() {
+		RelationalExpressionImpl relationalExpression = new RelationalExpressionImpl();
+		return relationalExpression;
 	}
 
 	/**

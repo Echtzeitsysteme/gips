@@ -147,6 +147,11 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseArithmeticValueExpression(ArithmeticValueExpression object) {
+			return createArithmeticValueExpressionAdapter();
+		}
+
+		@Override
 		public Adapter caseArithmeticValue(ArithmeticValue object) {
 			return createArithmeticValueAdapter();
 		}
@@ -182,6 +187,11 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseBoolValueExpression(BoolValueExpression object) {
+			return createBoolValueExpressionAdapter();
+		}
+
+		@Override
 		public Adapter caseBoolValue(BoolValue object) {
 			return createBoolValueAdapter();
 		}
@@ -189,6 +199,11 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseBoolStreamExpression(BoolStreamExpression object) {
 			return createBoolStreamExpressionAdapter();
+		}
+
+		@Override
+		public Adapter caseRelationalExpression(RelationalExpression object) {
+			return createRelationalExpressionAdapter();
 		}
 
 		@Override
@@ -495,6 +510,20 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValueExpression <em>Arithmetic Value Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValueExpression
+	 * @generated
+	 */
+	public Adapter createArithmeticValueExpressionAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue <em>Arithmetic Value</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -593,6 +622,20 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolValueExpression <em>Bool Value Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolValueExpression
+	 * @generated
+	 */
+	public Adapter createBoolValueExpressionAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolValue <em>Bool Value</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -617,6 +660,20 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createBoolStreamExpressionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression <em>Relational Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression
+	 * @generated
+	 */
+	public Adapter createRelationalExpressionAdapter() {
 		return null;
 	}
 

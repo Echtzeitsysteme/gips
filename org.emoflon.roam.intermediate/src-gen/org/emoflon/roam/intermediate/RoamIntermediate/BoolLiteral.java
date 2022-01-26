@@ -18,7 +18,7 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * @model
  * @generated
  */
-public interface BoolLiteral extends BoolExpression {
+public interface BoolLiteral extends BoolValueExpression {
 	/**
 	 * Returns the value of the '<em><b>Literal</b></em>' attribute.
 	 * <!-- begin-user-doc -->

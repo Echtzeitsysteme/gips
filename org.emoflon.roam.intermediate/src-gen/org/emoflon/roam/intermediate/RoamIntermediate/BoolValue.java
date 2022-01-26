@@ -18,7 +18,7 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * @model
  * @generated
  */
-public interface BoolValue extends BoolExpression {
+public interface BoolValue extends BoolValueExpression {
 	/**
 	 * Returns the value of the '<em><b>Value</b></em>' containment reference.
 	 * <!-- begin-user-doc -->

@@ -4,23 +4,24 @@ package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral;
+import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValueExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Arithmetic Literal</b></em>'.
+ * An implementation of the model object '<em><b>Arithmetic Value Expression</b></em>'.
  * <!-- end-user-doc -->
  *
  * @generated
  */
-public abstract class ArithmeticLiteralImpl extends ArithmeticValueExpressionImpl implements ArithmeticLiteral {
+public abstract class ArithmeticValueExpressionImpl extends ArithmeticExpressionImpl
+		implements ArithmeticValueExpression {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ArithmeticLiteralImpl() {
+	protected ArithmeticValueExpressionImpl() {
 		super();
 	}
 
@@ -31,7 +32,7 @@ public abstract class ArithmeticLiteralImpl extends ArithmeticValueExpressionImp
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.ARITHMETIC_LITERAL;
+		return RoamIntermediatePackage.Literals.ARITHMETIC_VALUE_EXPRESSION;
 	}
 
-} //ArithmeticLiteralImpl
+} //ArithmeticValueExpressionImpl

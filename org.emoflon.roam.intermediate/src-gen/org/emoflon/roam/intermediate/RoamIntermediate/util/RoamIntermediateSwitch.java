@@ -212,9 +212,20 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case RoamIntermediatePackage.ARITHMETIC_VALUE_EXPRESSION: {
+			ArithmeticValueExpression arithmeticValueExpression = (ArithmeticValueExpression) theEObject;
+			T result = caseArithmeticValueExpression(arithmeticValueExpression);
+			if (result == null)
+				result = caseArithmeticExpression(arithmeticValueExpression);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case RoamIntermediatePackage.ARITHMETIC_VALUE: {
 			ArithmeticValue arithmeticValue = (ArithmeticValue) theEObject;
 			T result = caseArithmeticValue(arithmeticValue);
+			if (result == null)
+				result = caseArithmeticValueExpression(arithmeticValue);
 			if (result == null)
 				result = caseArithmeticExpression(arithmeticValue);
 			if (result == null)
@@ -224,6 +235,8 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 		case RoamIntermediatePackage.ARITHMETIC_LITERAL: {
 			ArithmeticLiteral arithmeticLiteral = (ArithmeticLiteral) theEObject;
 			T result = caseArithmeticLiteral(arithmeticLiteral);
+			if (result == null)
+				result = caseArithmeticValueExpression(arithmeticLiteral);
 			if (result == null)
 				result = caseArithmeticExpression(arithmeticLiteral);
 			if (result == null)
@@ -236,6 +249,8 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 			if (result == null)
 				result = caseArithmeticLiteral(integerLiteral);
 			if (result == null)
+				result = caseArithmeticValueExpression(integerLiteral);
+			if (result == null)
 				result = caseArithmeticExpression(integerLiteral);
 			if (result == null)
 				result = defaultCase(theEObject);
@@ -246,6 +261,8 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 			T result = caseDoubleLiteral(doubleLiteral);
 			if (result == null)
 				result = caseArithmeticLiteral(doubleLiteral);
+			if (result == null)
+				result = caseArithmeticValueExpression(doubleLiteral);
 			if (result == null)
 				result = caseArithmeticExpression(doubleLiteral);
 			if (result == null)
@@ -277,9 +294,20 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case RoamIntermediatePackage.BOOL_VALUE_EXPRESSION: {
+			BoolValueExpression boolValueExpression = (BoolValueExpression) theEObject;
+			T result = caseBoolValueExpression(boolValueExpression);
+			if (result == null)
+				result = caseBoolExpression(boolValueExpression);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case RoamIntermediatePackage.BOOL_VALUE: {
 			BoolValue boolValue = (BoolValue) theEObject;
 			T result = caseBoolValue(boolValue);
+			if (result == null)
+				result = caseBoolValueExpression(boolValue);
 			if (result == null)
 				result = caseBoolExpression(boolValue);
 			if (result == null)
@@ -290,7 +318,20 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 			BoolStreamExpression boolStreamExpression = (BoolStreamExpression) theEObject;
 			T result = caseBoolStreamExpression(boolStreamExpression);
 			if (result == null)
+				result = caseBoolValueExpression(boolStreamExpression);
+			if (result == null)
 				result = caseBoolExpression(boolStreamExpression);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.RELATIONAL_EXPRESSION: {
+			RelationalExpression relationalExpression = (RelationalExpression) theEObject;
+			T result = caseRelationalExpression(relationalExpression);
+			if (result == null)
+				result = caseBoolValueExpression(relationalExpression);
+			if (result == null)
+				result = caseBoolExpression(relationalExpression);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -298,6 +339,8 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 		case RoamIntermediatePackage.BOOL_LITERAL: {
 			BoolLiteral boolLiteral = (BoolLiteral) theEObject;
 			T result = caseBoolLiteral(boolLiteral);
+			if (result == null)
+				result = caseBoolValueExpression(boolLiteral);
 			if (result == null)
 				result = caseBoolExpression(boolLiteral);
 			if (result == null)
@@ -651,6 +694,21 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Arithmetic Value Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Arithmetic Value Expression</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseArithmeticValueExpression(ArithmeticValueExpression object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Arithmetic Value</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -756,6 +814,21 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Bool Value Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Bool Value Expression</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseBoolValueExpression(BoolValueExpression object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Bool Value</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -782,6 +855,21 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseBoolStreamExpression(BoolStreamExpression object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Relational Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Relational Expression</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseRelationalExpression(RelationalExpression object) {
 		return null;
 	}
 

@@ -27,7 +27,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression;
  *
  * @generated
  */
-public class BoolValueImpl extends BoolExpressionImpl implements BoolValue {
+public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue {
 	/**
 	 * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
 	 * <!-- begin-user-doc -->

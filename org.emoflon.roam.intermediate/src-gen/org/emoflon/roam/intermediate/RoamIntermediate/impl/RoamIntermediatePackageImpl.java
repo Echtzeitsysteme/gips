@@ -16,6 +16,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticStreamExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValueExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator;
 import org.emoflon.roam.intermediate.RoamIntermediate.BinaryBoolOperator;
@@ -25,6 +26,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral;
 import org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.BoolValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.BoolValueExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.Context;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode;
@@ -41,6 +43,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.IteratorValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateFactory;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
@@ -184,6 +187,13 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass arithmeticValueExpressionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass arithmeticValueEClass = null;
 
 	/**
@@ -233,6 +243,13 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass boolValueExpressionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass boolValueEClass = null;
 
 	/**
@@ -241,6 +258,13 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * @generated
 	 */
 	private EClass boolStreamExpressionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass relationalExpressionEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -832,6 +856,15 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getArithmeticValueExpression() {
+		return arithmeticValueExpressionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getArithmeticValue() {
 		return arithmeticValueEClass;
 	}
@@ -967,6 +1000,15 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getBoolValueExpression() {
+		return boolValueExpressionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getBoolValue() {
 		return boolValueEClass;
 	}
@@ -1005,6 +1047,42 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 */
 	public EAttribute getBoolStreamExpression_Operator() {
 		return (EAttribute) boolStreamExpressionEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getRelationalExpression() {
+		return relationalExpressionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getRelationalExpression_Operator() {
+		return (EAttribute) relationalExpressionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRelationalExpression_Lhs() {
+		return (EReference) relationalExpressionEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRelationalExpression_Rhs() {
+		return (EReference) relationalExpressionEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -1427,6 +1505,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		typeSumExpressionEClass = createEClass(TYPE_SUM_EXPRESSION);
 		createEReference(typeSumExpressionEClass, TYPE_SUM_EXPRESSION__TYPE);
 
+		arithmeticValueExpressionEClass = createEClass(ARITHMETIC_VALUE_EXPRESSION);
+
 		arithmeticValueEClass = createEClass(ARITHMETIC_VALUE);
 		createEReference(arithmeticValueEClass, ARITHMETIC_VALUE__VALUE);
 
@@ -1449,12 +1529,19 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		createEReference(boolUnaryExpressionEClass, BOOL_UNARY_EXPRESSION__EXPRESSION);
 		createEAttribute(boolUnaryExpressionEClass, BOOL_UNARY_EXPRESSION__OPERATOR);
 
+		boolValueExpressionEClass = createEClass(BOOL_VALUE_EXPRESSION);
+
 		boolValueEClass = createEClass(BOOL_VALUE);
 		createEReference(boolValueEClass, BOOL_VALUE__VALUE);
 
 		boolStreamExpressionEClass = createEClass(BOOL_STREAM_EXPRESSION);
 		createEReference(boolStreamExpressionEClass, BOOL_STREAM_EXPRESSION__STREAM);
 		createEAttribute(boolStreamExpressionEClass, BOOL_STREAM_EXPRESSION__OPERATOR);
+
+		relationalExpressionEClass = createEClass(RELATIONAL_EXPRESSION);
+		createEAttribute(relationalExpressionEClass, RELATIONAL_EXPRESSION__OPERATOR);
+		createEReference(relationalExpressionEClass, RELATIONAL_EXPRESSION__LHS);
+		createEReference(relationalExpressionEClass, RELATIONAL_EXPRESSION__RHS);
 
 		boolLiteralEClass = createEClass(BOOL_LITERAL);
 		createEAttribute(boolLiteralEClass, BOOL_LITERAL__LITERAL);
@@ -1554,15 +1641,18 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		sumExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
 		mappingSumExpressionEClass.getESuperTypes().add(this.getSumExpression());
 		typeSumExpressionEClass.getESuperTypes().add(this.getSumExpression());
-		arithmeticValueEClass.getESuperTypes().add(this.getArithmeticExpression());
-		arithmeticLiteralEClass.getESuperTypes().add(this.getArithmeticExpression());
+		arithmeticValueExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
+		arithmeticValueEClass.getESuperTypes().add(this.getArithmeticValueExpression());
+		arithmeticLiteralEClass.getESuperTypes().add(this.getArithmeticValueExpression());
 		integerLiteralEClass.getESuperTypes().add(this.getArithmeticLiteral());
 		doubleLiteralEClass.getESuperTypes().add(this.getArithmeticLiteral());
 		boolBinaryExpressionEClass.getESuperTypes().add(this.getBoolExpression());
 		boolUnaryExpressionEClass.getESuperTypes().add(this.getBoolExpression());
-		boolValueEClass.getESuperTypes().add(this.getBoolExpression());
-		boolStreamExpressionEClass.getESuperTypes().add(this.getBoolExpression());
-		boolLiteralEClass.getESuperTypes().add(this.getBoolExpression());
+		boolValueExpressionEClass.getESuperTypes().add(this.getBoolExpression());
+		boolValueEClass.getESuperTypes().add(this.getBoolValueExpression());
+		boolStreamExpressionEClass.getESuperTypes().add(this.getBoolValueExpression());
+		relationalExpressionEClass.getESuperTypes().add(this.getBoolValueExpression());
+		boolLiteralEClass.getESuperTypes().add(this.getBoolValueExpression());
 		contextTypeValueEClass.getESuperTypes().add(this.getValueExpression());
 		contextMappingNodeEClass.getESuperTypes().add(this.getValueExpression());
 		iteratorValueEClass.getESuperTypes().add(this.getValueExpression());
@@ -1692,6 +1782,9 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(arithmeticValueExpressionEClass, ArithmeticValueExpression.class, "ArithmeticValueExpression",
+				IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
 		initEClass(arithmeticValueEClass, ArithmeticValue.class, "ArithmeticValue", IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getArithmeticValue_Value(), this.getValueExpression(), null, "value", null, 1, 1,
@@ -1736,6 +1829,9 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 				BoolUnaryExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(boolValueExpressionEClass, BoolValueExpression.class, "BoolValueExpression", IS_ABSTRACT,
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
 		initEClass(boolValueEClass, BoolValue.class, "BoolValue", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getBoolValue_Value(), this.getValueExpression(), null, "value", null, 1, 1, BoolValue.class,
@@ -1750,6 +1846,18 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		initEAttribute(getBoolStreamExpression_Operator(), this.getStreamBoolOperator(), "operator", null, 0, 1,
 				BoolStreamExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(relationalExpressionEClass, RelationalExpression.class, "RelationalExpression", !IS_ABSTRACT,
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getRelationalExpression_Operator(), this.getRelationalOperator(), "operator", null, 0, 1,
+				RelationalExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRelationalExpression_Lhs(), this.getArithmeticExpression(), null, "lhs", null, 1, 1,
+				RelationalExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRelationalExpression_Rhs(), this.getArithmeticExpression(), null, "rhs", null, 1, 1,
+				RelationalExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(boolLiteralEClass, BoolLiteral.class, "BoolLiteral", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);

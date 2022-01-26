@@ -29,7 +29,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression;
  *
  * @generated
  */
-public class BoolStreamExpressionImpl extends BoolExpressionImpl implements BoolStreamExpression {
+public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements BoolStreamExpression {
 	/**
 	 * The cached value of the '{@link #getStream() <em>Stream</em>}' containment reference.
 	 * <!-- begin-user-doc -->

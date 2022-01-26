@@ -24,7 +24,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  *
  * @generated
  */
-public class BoolLiteralImpl extends BoolExpressionImpl implements BoolLiteral {
+public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLiteral {
 	/**
 	 * The default value of the '{@link #isLiteral() <em>Literal</em>}' attribute.
 	 * <!-- begin-user-doc -->

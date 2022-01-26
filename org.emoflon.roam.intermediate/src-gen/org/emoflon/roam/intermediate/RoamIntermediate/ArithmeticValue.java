@@ -18,7 +18,7 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * @model abstract="true"
  * @generated
  */
-public interface ArithmeticValue extends ArithmeticExpression {
+public interface ArithmeticValue extends ArithmeticValueExpression {
 	/**
 	 * Returns the value of the '<em><b>Value</b></em>' containment reference.
 	 * <!-- begin-user-doc -->

@@ -19,7 +19,7 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * @model
  * @generated
  */
-public interface BoolStreamExpression extends BoolExpression {
+public interface BoolStreamExpression extends BoolValueExpression {
 	/**
 	 * Returns the value of the '<em><b>Stream</b></em>' containment reference.
 	 * <!-- begin-user-doc -->

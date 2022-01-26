@@ -107,6 +107,7 @@
     <genClasses ecoreClass="RoamIntermediate.ecore#//TypeSumExpression">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//TypeSumExpression/type"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="RoamIntermediate.ecore#//ArithmeticValueExpression"/>
     <genClasses image="false" ecoreClass="RoamIntermediate.ecore#//ArithmeticValue">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//ArithmeticValue/value"/>
     </genClasses>
@@ -127,12 +128,18 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//BoolUnaryExpression/expression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//BoolUnaryExpression/operator"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="RoamIntermediate.ecore#//BoolValueExpression"/>
     <genClasses ecoreClass="RoamIntermediate.ecore#//BoolValue">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//BoolValue/value"/>
     </genClasses>
     <genClasses ecoreClass="RoamIntermediate.ecore#//BoolStreamExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//BoolStreamExpression/stream"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//BoolStreamExpression/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//RelationalExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//RelationalExpression/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//RelationalExpression/lhs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//RelationalExpression/rhs"/>
     </genClasses>
     <genClasses ecoreClass="RoamIntermediate.ecore#//BoolLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//BoolLiteral/literal"/>

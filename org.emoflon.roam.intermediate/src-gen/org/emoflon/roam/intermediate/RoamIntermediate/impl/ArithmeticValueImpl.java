@@ -27,7 +27,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression;
  *
  * @generated
  */
-public abstract class ArithmeticValueImpl extends ArithmeticExpressionImpl implements ArithmeticValue {
+public abstract class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implements ArithmeticValue {
 	/**
 	 * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
 	 * <!-- begin-user-doc -->

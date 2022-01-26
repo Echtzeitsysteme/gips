@@ -12,5 +12,5 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * @model abstract="true"
  * @generated
  */
-public interface ArithmeticLiteral extends ArithmeticExpression {
+public interface ArithmeticLiteral extends ArithmeticValueExpression {
 } // ArithmeticLiteral

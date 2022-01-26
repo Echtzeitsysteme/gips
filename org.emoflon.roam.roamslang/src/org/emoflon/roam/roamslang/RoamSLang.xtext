@@ -70,12 +70,8 @@ RoamUnaryBoolExpr returns RoamBoolExpr: {RoamUnaryBoolExpr}
 	(operator=RoamBoolUnaryOperator '(' operand=RoamBoolExpr ')' ) | RoamBooleanLiteral | RoamRelExpr
 ;
 
-//RoamBoolLit returns RoamBoolExpr:
-//	RoamRelExpr  |  RoamAttributeExpr |  RoamBooleanLiteral
-//;
-
 RoamBooleanLiteral:
-	value = RoamBOOLEAN
+	literal = RoamBoolean
 ;
 
 enum RoamBoolBinaryOperator:
@@ -146,15 +142,27 @@ RoamFeatureLit returns RoamFeatureExpr: {RoamFeatureLit}
 ;
 
 RoamArithmeticExpr:
-	RoamBinaryArithmeticExpr
+	RoamSumArithmeticExpr
 ;
 
-RoamBinaryArithmeticExpr returns RoamArithmeticExpr:
-	RoamUnaryArithmeticExpr({RoamBinaryArithmeticExpr.left = current} operator=RoamArithmeticBinaryOperator right=RoamUnaryArithmeticExpr)*
+RoamSumArithmeticExpr returns RoamArithmeticExpr:
+	RoamProductArithmeticExpr({RoamSumArithmeticExpr.left = current} operator=RoamSumOperator right=RoamProductArithmeticExpr)*
+;
+
+RoamProductArithmeticExpr returns RoamArithmeticExpr:
+	RoamExpArithmeticExpr({RoamProductArithmeticExpr.left = current} operator=RoamProductOperator right=RoamExpArithmeticExpr)*
+;
+
+RoamExpArithmeticExpr returns RoamArithmeticExpr:
+	RoamUnaryArithmeticExpr({RoamExpArithmeticExpr.left = current} operator=RoamExpOperator right=RoamUnaryArithmeticExpr)*
 ;
 
 RoamUnaryArithmeticExpr returns RoamArithmeticExpr: {RoamUnaryArithmeticExpr}
-	(negative?='-') (operator=RoamArithmeticUnaryOperator'(' | '(') operand=RoamArithmeticExpr')' | RoamExpressionOperand
+	operator=RoamArithmeticUnaryOperator  '(' operand=RoamBracketExpr ')' | RoamBracketExpr
+;
+
+RoamBracketExpr returns RoamArithmeticExpr: {RoamBracketExpr}
+	'(' operand=RoamArithmeticExpr ')' | RoamExpressionOperand
 ;
 
 RoamExpressionOperand:
@@ -165,16 +173,22 @@ RoamArithmeticLiteral:
 	value = (RoamDoubleLiteral | RoamIntegerLiteral)
 ;
 
-enum RoamArithmeticBinaryOperator:
-	PLUS='+' 	|
-	MINUS='-' 	|
-	MULT='*'|
- 	DIV='/' 	|
+enum RoamProductOperator:
+	MULT='*' |
+ 	DIV='/'  
+;
+
+enum RoamExpOperator:
  	POW='^'	
 ;
 
+enum RoamSumOperator:
+	PLUS='+' 	|
+	MINUS='-' 	
+;
+
 enum RoamArithmeticUnaryOperator:
-	NONE='$NO_OP'     |
+	NEG='-'	|
 	ABS='abs'	|
 	SQRT='sqrt' |
 	sin='sin'	|
@@ -222,14 +236,6 @@ RoamIntegerLiteral:
 	RoamInteger
 ;
 
-//RoamStringLiteral:
-//	value = STRING
-//;
-
-//RoamEnumLiteral:
-//	'enum::' value = [ecore::EEnumLiteral]
-//;
-
 RoamDouble returns ecore::EDouble:
 	('-')?INT '.' INT
 ;
@@ -243,12 +249,7 @@ terminal INT returns ecore::EInt:
 	'0'..'9' ('0'..'9')*
 ;
 
-@Override
-terminal STRING returns ecore::EString:
-	'"' ( '""' | !('"') )* '"'
-;
-
-RoamBOOLEAN returns ecore::EBoolean:
+RoamBoolean returns ecore::EBoolean:
 	TRUE | FALSE
 ;
 

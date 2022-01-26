@@ -24,6 +24,7 @@ import org.emoflon.roam.roamslang.roamSLang.RoamBooleanLiteral;
 import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
 import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamExpressionOperand;
+import org.emoflon.roam.roamslang.roamSLang.RoamLambdaAttributeExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
 import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjective;
@@ -458,7 +459,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 //		// TODO
 //	}
 	
-	public Class<? extends EObject> getEvalTypeFromBoolExpr (final RoamBoolExpr expr) {
+	public leafType getEvalTypeFromBoolExpr (final RoamBoolExpr expr) {
 		if (expr instanceof RoamBooleanLiteral) {
 			// TODO: What to return here?
 		} else if (expr instanceof RoamBinaryBoolExpr) {
@@ -483,7 +484,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 //		return expr.getClass();
 	}
 	
-	public Class<? extends EObject> getEvalTypeFromArithExpr(final RoamArithmeticExpr expr) {
+	public leafType getEvalTypeFromArithExpr(final RoamArithmeticExpr expr) {
 		if (expr instanceof RoamBinaryArithmeticExpr) {
 			final RoamBinaryArithmeticExpr arithExpr = (RoamBinaryArithmeticExpr) expr;
 			return getEvalLeftRightSide(arithExpr.getLeft(), arithExpr.getRight());
@@ -498,13 +499,13 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		throw new IllegalStateException("Instance type not found.");
 	}
 	
-	public Class<? extends EObject> getEvalTypeFromExprOp(final RoamExpressionOperand op) {
+	public leafType getEvalTypeFromExprOp(final RoamExpressionOperand op) {
 		if (op instanceof RoamArithmeticLiteral) {
-			
+			return getEvalTypeFromArithLit((RoamArithmeticLiteral) op);
 		} else if (op instanceof RoamAttributeExpr) {
-			
+			return getEvalTypeFromAttrExpr((RoamAttributeExpr) op);
 		} else if (op instanceof RoamObjectiveExpression) {
-			
+			return leafType.OBJECTIVE;
 		}
 		
 		// TODO
@@ -512,8 +513,24 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		throw new IllegalStateException("Instance type not found.");
 	}
 	
-//	public Class<? extends EObject> getEvalTypeFromArithLit(final RoamArithmeticLiteral lit) {
-	public EDataType getEvalTypeFromArithLit(final RoamArithmeticLiteral lit) {
+	public leafType getEvalTypeFromAttrExpr(final RoamAttributeExpr expr) {
+		if (expr instanceof RoamMappingAttributeExpr) {
+			final RoamMappingAttributeExpr mapExpr = (RoamMappingAttributeExpr) expr;
+			// TODO
+		} else if (expr instanceof RoamContextExpr) {
+			final RoamContextExpr conExpr = (RoamContextExpr) expr;
+			// TODO
+		} else if (expr instanceof RoamLambdaAttributeExpression) {
+			final RoamLambdaAttributeExpression lambExpr = (RoamLambdaAttributeExpression) expr;
+			// TODO
+		}
+		
+		// TODO
+		
+		throw new IllegalStateException("Instance type not found.");
+	}
+	
+	public leafType getEvalTypeFromArithLit(final RoamArithmeticLiteral lit) {
 //		if (lit instanceof RoamDoubleLiteral) {
 //			
 //		}
@@ -522,21 +539,19 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		final String val = lit.getValue();
 		try {
 			Integer.valueOf(val);
-//			return Integer.class;
-			return EcorePackage.Literals.EINT;
+			return leafType.INTEGER;
 		} catch(final NumberFormatException ex) {
 			// No int
 		}
 		try {
 			Double.valueOf(val);
-//			return Double.class;
-			return EcorePackage.Literals.EDOUBLE;
+			return leafType.DOUBLE;
 		} catch(final NumberFormatException ex) {
 			throw new IllegalStateException("Instance type not found.");
 		}
 	}
 	
-	public Class<? extends EObject> getEvalTypeDelegate(final EObject e) {
+	public leafType getEvalTypeDelegate(final EObject e) {
 		if (e instanceof RoamBoolExpr) {
 			return getEvalTypeFromBoolExpr((RoamBoolExpr) e);
 		} else if (e instanceof RoamArithmeticExpr) {
@@ -549,14 +564,26 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		return null;
 	}
 	
-	public Class<? extends EObject> getEvalLeftRightSide(final EObject left, final EObject right) {
-		final Class<? extends EObject> lhs = getEvalTypeDelegate(left);
-		final Class<? extends EObject> rhs = getEvalTypeDelegate(right);
+	public leafType getEvalLeftRightSide(final EObject left, final EObject right) {
+		final leafType lhs = getEvalTypeDelegate(left);
+		final leafType rhs = getEvalTypeDelegate(right);
 		if (lhs.equals(rhs)) {
 			return lhs;
 		} else {
 			throw new IllegalStateException("Expression does not evaluate correctly.");
 		}
+	}
+	
+	/**
+	 * Enumeration for the type of the leaf.
+	 */
+	protected enum leafType {
+		BOOLEAN, // RoamBooleanLiteral
+		INTEGER,
+		DOUBLE,
+		OBJECTIVE, // RoamObjective
+		MAPPING, // RoamMapping
+		ERROR // If leaf type can not be evaluated, e.g.: '1 + true'
 	}
 	
 }

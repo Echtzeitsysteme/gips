@@ -71,6 +71,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//Constraint/lhsConstant"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//Constraint/rhsExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//Constraint/operator"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//Constraint/elementwise"/>
     </genClasses>
     <genClasses ecoreClass="RoamIntermediate.ecore#//TypeConstraint">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//TypeConstraint/modelType"/>

@@ -298,13 +298,22 @@ public interface RoamIntermediatePackage extends EPackage {
 	int CONSTRAINT__OPERATOR = 3;
 
 	/**
+	 * The feature id for the '<em><b>Elementwise</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONSTRAINT__ELEMENTWISE = 4;
+
+	/**
 	 * The number of structural features of the '<em>Constraint</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONSTRAINT_FEATURE_COUNT = 4;
+	int CONSTRAINT_FEATURE_COUNT = 5;
 
 	/**
 	 * The number of operations of the '<em>Constraint</em>' class.
@@ -390,13 +399,22 @@ public interface RoamIntermediatePackage extends EPackage {
 	int TYPE_CONSTRAINT__OPERATOR = CONTEXT_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Elementwise</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_CONSTRAINT__ELEMENTWISE = CONTEXT_FEATURE_COUNT + 4;
+
+	/**
 	 * The feature id for the '<em><b>Model Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT__MODEL_TYPE = CONTEXT_FEATURE_COUNT + 4;
+	int TYPE_CONSTRAINT__MODEL_TYPE = CONTEXT_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Type Constraint</em>' class.
@@ -405,7 +423,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 5;
+	int TYPE_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of operations of the '<em>Type Constraint</em>' class.
@@ -463,13 +481,22 @@ public interface RoamIntermediatePackage extends EPackage {
 	int MAPPING_CONSTRAINT__OPERATOR = CONTEXT_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Elementwise</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MAPPING_CONSTRAINT__ELEMENTWISE = CONTEXT_FEATURE_COUNT + 4;
+
+	/**
 	 * The feature id for the '<em><b>Mapping</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT__MAPPING = CONTEXT_FEATURE_COUNT + 4;
+	int MAPPING_CONSTRAINT__MAPPING = CONTEXT_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Mapping Constraint</em>' class.
@@ -478,7 +505,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 5;
+	int MAPPING_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of operations of the '<em>Mapping Constraint</em>' class.
@@ -2285,6 +2312,17 @@ public interface RoamIntermediatePackage extends EPackage {
 	EAttribute getConstraint_Operator();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#isElementwise <em>Elementwise</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Elementwise</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Constraint#isElementwise()
+	 * @see #getConstraint()
+	 * @generated
+	 */
+	EAttribute getConstraint_Elementwise();
+
+	/**
 	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint <em>Type Constraint</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3380,6 +3418,14 @@ public interface RoamIntermediatePackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CONSTRAINT__OPERATOR = eINSTANCE.getConstraint_Operator();
+
+		/**
+		 * The meta object literal for the '<em><b>Elementwise</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONSTRAINT__ELEMENTWISE = eINSTANCE.getConstraint_Elementwise();
 
 		/**
 		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl <em>Type Constraint</em>}' class.

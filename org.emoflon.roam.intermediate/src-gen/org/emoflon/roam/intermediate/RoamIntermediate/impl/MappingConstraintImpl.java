@@ -31,6 +31,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingConstraintImpl#getLhsConstant <em>Lhs Constant</em>}</li>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingConstraintImpl#getRhsExpression <em>Rhs Expression</em>}</li>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingConstraintImpl#getOperator <em>Operator</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingConstraintImpl#isElementwise <em>Elementwise</em>}</li>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingConstraintImpl#getMapping <em>Mapping</em>}</li>
  * </ul>
  *
@@ -96,6 +97,26 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 	 * @ordered
 	 */
 	protected RelationalOperator operator = OPERATOR_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isElementwise() <em>Elementwise</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isElementwise()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean ELEMENTWISE_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isElementwise() <em>Elementwise</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isElementwise()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean elementwise = ELEMENTWISE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getMapping() <em>Mapping</em>}' reference.
@@ -277,6 +298,28 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isElementwise() {
+		return elementwise;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setElementwise(boolean newElementwise) {
+		boolean oldElementwise = elementwise;
+		elementwise = newElementwise;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					RoamIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE, oldElementwise, elementwise));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Mapping getMapping() {
 		if (mapping != null && mapping.eIsProxy()) {
 			InternalEObject oldMapping = (InternalEObject) mapping;
@@ -344,6 +387,8 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 			return getRhsExpression();
 		case RoamIntermediatePackage.MAPPING_CONSTRAINT__OPERATOR:
 			return getOperator();
+		case RoamIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE:
+			return isElementwise();
 		case RoamIntermediatePackage.MAPPING_CONSTRAINT__MAPPING:
 			if (resolve)
 				return getMapping();
@@ -372,6 +417,9 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 		case RoamIntermediatePackage.MAPPING_CONSTRAINT__OPERATOR:
 			setOperator((RelationalOperator) newValue);
 			return;
+		case RoamIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE:
+			setElementwise((Boolean) newValue);
+			return;
 		case RoamIntermediatePackage.MAPPING_CONSTRAINT__MAPPING:
 			setMapping((Mapping) newValue);
 			return;
@@ -399,6 +447,9 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 		case RoamIntermediatePackage.MAPPING_CONSTRAINT__OPERATOR:
 			setOperator(OPERATOR_EDEFAULT);
 			return;
+		case RoamIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE:
+			setElementwise(ELEMENTWISE_EDEFAULT);
+			return;
 		case RoamIntermediatePackage.MAPPING_CONSTRAINT__MAPPING:
 			setMapping((Mapping) null);
 			return;
@@ -422,6 +473,8 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 			return rhsExpression != null;
 		case RoamIntermediatePackage.MAPPING_CONSTRAINT__OPERATOR:
 			return operator != OPERATOR_EDEFAULT;
+		case RoamIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE:
+			return elementwise != ELEMENTWISE_EDEFAULT;
 		case RoamIntermediatePackage.MAPPING_CONSTRAINT__MAPPING:
 			return mapping != null;
 		}
@@ -445,6 +498,8 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 				return RoamIntermediatePackage.CONSTRAINT__RHS_EXPRESSION;
 			case RoamIntermediatePackage.MAPPING_CONSTRAINT__OPERATOR:
 				return RoamIntermediatePackage.CONSTRAINT__OPERATOR;
+			case RoamIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE:
+				return RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE;
 			default:
 				return -1;
 			}
@@ -469,6 +524,8 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 				return RoamIntermediatePackage.MAPPING_CONSTRAINT__RHS_EXPRESSION;
 			case RoamIntermediatePackage.CONSTRAINT__OPERATOR:
 				return RoamIntermediatePackage.MAPPING_CONSTRAINT__OPERATOR;
+			case RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE:
+				return RoamIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE;
 			default:
 				return -1;
 			}
@@ -491,6 +548,8 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 		result.append(name);
 		result.append(", operator: ");
 		result.append(operator);
+		result.append(", elementwise: ");
+		result.append(elementwise);
 		result.append(')');
 		return result.toString();
 	}

@@ -622,6 +622,15 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getConstraint_Elementwise() {
+		return (EAttribute) constraintEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getTypeConstraint() {
 		return typeConstraintEClass;
 	}
@@ -1467,6 +1476,7 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		createEReference(constraintEClass, CONSTRAINT__LHS_CONSTANT);
 		createEReference(constraintEClass, CONSTRAINT__RHS_EXPRESSION);
 		createEAttribute(constraintEClass, CONSTRAINT__OPERATOR);
+		createEAttribute(constraintEClass, CONSTRAINT__ELEMENTWISE);
 
 		typeConstraintEClass = createEClass(TYPE_CONSTRAINT);
 		createEReference(typeConstraintEClass, TYPE_CONSTRAINT__MODEL_TYPE);
@@ -1705,6 +1715,9 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConstraint_Operator(), this.getRelationalOperator(), "operator", null, 0, 1, Constraint.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getConstraint_Elementwise(), ecorePackage.getEBoolean(), "elementwise", null, 0, 1,
+				Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
 
 		initEClass(typeConstraintEClass, TypeConstraint.class, "TypeConstraint", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);

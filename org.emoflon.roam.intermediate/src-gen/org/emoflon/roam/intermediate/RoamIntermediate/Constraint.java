@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#getLhsConstant <em>Lhs Constant</em>}</li>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#getRhsExpression <em>Rhs Expression</em>}</li>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#getOperator <em>Operator</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#isElementwise <em>Elementwise</em>}</li>
  * </ul>
  *
  * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getConstraint()
@@ -114,5 +115,27 @@ public interface Constraint extends EObject {
 	 * @generated
 	 */
 	void setOperator(RelationalOperator value);
+
+	/**
+	 * Returns the value of the '<em><b>Elementwise</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Elementwise</em>' attribute.
+	 * @see #setElementwise(boolean)
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getConstraint_Elementwise()
+	 * @model
+	 * @generated
+	 */
+	boolean isElementwise();
+
+	/**
+	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#isElementwise <em>Elementwise</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Elementwise</em>' attribute.
+	 * @see #isElementwise()
+	 * @generated
+	 */
+	void setElementwise(boolean value);
 
 } // Constraint

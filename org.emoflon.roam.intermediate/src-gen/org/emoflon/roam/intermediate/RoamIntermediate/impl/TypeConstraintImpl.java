@@ -30,6 +30,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl#getLhsConstant <em>Lhs Constant</em>}</li>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl#getRhsExpression <em>Rhs Expression</em>}</li>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl#getOperator <em>Operator</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl#isElementwise <em>Elementwise</em>}</li>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl#getModelType <em>Model Type</em>}</li>
  * </ul>
  *
@@ -95,6 +96,26 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * @ordered
 	 */
 	protected RelationalOperator operator = OPERATOR_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isElementwise() <em>Elementwise</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isElementwise()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean ELEMENTWISE_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isElementwise() <em>Elementwise</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isElementwise()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean elementwise = ELEMENTWISE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getModelType() <em>Model Type</em>}' reference.
@@ -274,6 +295,28 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isElementwise() {
+		return elementwise;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setElementwise(boolean newElementwise) {
+		boolean oldElementwise = elementwise;
+		elementwise = newElementwise;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE,
+					oldElementwise, elementwise));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getModelType() {
 		if (modelType != null && modelType.eIsProxy()) {
 			InternalEObject oldModelType = (InternalEObject) modelType;
@@ -341,6 +384,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 			return getRhsExpression();
 		case RoamIntermediatePackage.TYPE_CONSTRAINT__OPERATOR:
 			return getOperator();
+		case RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE:
+			return isElementwise();
 		case RoamIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE:
 			if (resolve)
 				return getModelType();
@@ -369,6 +414,9 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		case RoamIntermediatePackage.TYPE_CONSTRAINT__OPERATOR:
 			setOperator((RelationalOperator) newValue);
 			return;
+		case RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE:
+			setElementwise((Boolean) newValue);
+			return;
 		case RoamIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE:
 			setModelType((EClass) newValue);
 			return;
@@ -396,6 +444,9 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		case RoamIntermediatePackage.TYPE_CONSTRAINT__OPERATOR:
 			setOperator(OPERATOR_EDEFAULT);
 			return;
+		case RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE:
+			setElementwise(ELEMENTWISE_EDEFAULT);
+			return;
 		case RoamIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE:
 			setModelType((EClass) null);
 			return;
@@ -419,6 +470,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 			return rhsExpression != null;
 		case RoamIntermediatePackage.TYPE_CONSTRAINT__OPERATOR:
 			return operator != OPERATOR_EDEFAULT;
+		case RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE:
+			return elementwise != ELEMENTWISE_EDEFAULT;
 		case RoamIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE:
 			return modelType != null;
 		}
@@ -442,6 +495,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 				return RoamIntermediatePackage.CONSTRAINT__RHS_EXPRESSION;
 			case RoamIntermediatePackage.TYPE_CONSTRAINT__OPERATOR:
 				return RoamIntermediatePackage.CONSTRAINT__OPERATOR;
+			case RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE:
+				return RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE;
 			default:
 				return -1;
 			}
@@ -466,6 +521,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 				return RoamIntermediatePackage.TYPE_CONSTRAINT__RHS_EXPRESSION;
 			case RoamIntermediatePackage.CONSTRAINT__OPERATOR:
 				return RoamIntermediatePackage.TYPE_CONSTRAINT__OPERATOR;
+			case RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE:
+				return RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE;
 			default:
 				return -1;
 			}
@@ -488,6 +545,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		result.append(name);
 		result.append(", operator: ");
 		result.append(operator);
+		result.append(", elementwise: ");
+		result.append(elementwise);
 		result.append(')');
 		return result.toString();
 	}

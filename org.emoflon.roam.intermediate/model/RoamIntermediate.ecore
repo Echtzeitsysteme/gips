@@ -28,6 +28,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="rhsExpression" lowerBound="1"
         eType="#//ArithmeticExpression" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//RelationalOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementwise" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TypeConstraint" eSuperTypes="#//Context #//Constraint">
     <eStructuralFeatures xsi:type="ecore:EReference" name="modelType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>

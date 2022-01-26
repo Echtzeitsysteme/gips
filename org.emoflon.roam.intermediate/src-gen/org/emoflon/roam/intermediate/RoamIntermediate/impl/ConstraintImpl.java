@@ -29,6 +29,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ConstraintImpl#getLhsConstant <em>Lhs Constant</em>}</li>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ConstraintImpl#getRhsExpression <em>Rhs Expression</em>}</li>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ConstraintImpl#getOperator <em>Operator</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ConstraintImpl#isElementwise <em>Elementwise</em>}</li>
  * </ul>
  *
  * @generated
@@ -93,6 +94,26 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * @ordered
 	 */
 	protected RelationalOperator operator = OPERATOR_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isElementwise() <em>Elementwise</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isElementwise()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean ELEMENTWISE_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isElementwise() <em>Elementwise</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isElementwise()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean elementwise = ELEMENTWISE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -262,6 +283,28 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isElementwise() {
+		return elementwise;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setElementwise(boolean newElementwise) {
+		boolean oldElementwise = elementwise;
+		elementwise = newElementwise;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE,
+					oldElementwise, elementwise));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -289,6 +332,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 			return getRhsExpression();
 		case RoamIntermediatePackage.CONSTRAINT__OPERATOR:
 			return getOperator();
+		case RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE:
+			return isElementwise();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -312,6 +357,9 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 			return;
 		case RoamIntermediatePackage.CONSTRAINT__OPERATOR:
 			setOperator((RelationalOperator) newValue);
+			return;
+		case RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE:
+			setElementwise((Boolean) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -337,6 +385,9 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 		case RoamIntermediatePackage.CONSTRAINT__OPERATOR:
 			setOperator(OPERATOR_EDEFAULT);
 			return;
+		case RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE:
+			setElementwise(ELEMENTWISE_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -357,6 +408,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 			return rhsExpression != null;
 		case RoamIntermediatePackage.CONSTRAINT__OPERATOR:
 			return operator != OPERATOR_EDEFAULT;
+		case RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE:
+			return elementwise != ELEMENTWISE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -376,6 +429,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 		result.append(name);
 		result.append(", operator: ");
 		result.append(operator);
+		result.append(", elementwise: ");
+		result.append(elementwise);
 		result.append(')');
 		return result.toString();
 	}

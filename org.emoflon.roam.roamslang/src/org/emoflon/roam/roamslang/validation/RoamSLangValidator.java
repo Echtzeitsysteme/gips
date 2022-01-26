@@ -7,6 +7,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage.Literals;
+import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.xtext.validation.Check;
 import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
 import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticExpr;
@@ -16,6 +20,7 @@ import org.emoflon.roam.roamslang.roamSLang.RoamBinaryArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamBinaryBoolExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamBool;
 import org.emoflon.roam.roamslang.roamSLang.RoamBoolExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamBooleanLiteral;
 import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
 import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamExpressionOperand;
@@ -28,7 +33,9 @@ import org.emoflon.roam.roamslang.roamSLang.RoamSLangPackage;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamBoolExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamNoArgOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamUnaryArithmeticExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamUnaryBoolExpr;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamRelExprImpl;
+import org.emoflon.roam.roamslang.services.RoamSLangGrammarAccess.RoamDoubleLiteralElements;
 
 /**
  * This class contains custom validation rules. 
@@ -357,57 +364,57 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 	}
 	
-	@Check
-	public void checkArithmeticExpression(final RoamArithmeticExpr expression) {
-		if (expression instanceof RoamUnaryArithmeticExpr) {
-			final RoamUnaryArithmeticExpr unary = (RoamUnaryArithmeticExpr) expression;
-			// TODO
-		} else if (expression instanceof RoamBinaryArithmeticExpr) {
-			final RoamBinaryArithmeticExpr binary = (RoamBinaryArithmeticExpr) expression;
-			if(binary.getLeft() instanceof RoamStreamBoolExpr && !(binary.getRight() instanceof RoamStreamBoolExpr)) {
-				error("test1", RoamSLangPackage.Literals.ROAM_BINARY_ARITHMETIC_EXPR__LEFT);
-			} else if(!(binary.getLeft() instanceof RoamStreamBoolExpr) && binary.getRight() instanceof RoamStreamBoolExpr) {
-				error("test2", RoamSLangPackage.Literals.ROAM_BINARY_ARITHMETIC_EXPR__RIGHT);
-			} 
-			
-//			if (binary.getLeft() instanceof RoamBinaryBoolExpr || binary.getLeft() instanceof RoamStreamBoolExpr) {
-//				error(
-//						"Left side is a bool.",
-//						RoamSLangPackage.Literals.ROAM_BINARY_ARITHMETIC_EXPR__LEFT
-//				);
-//			}
-//			if (binary.getRight() instanceof RoamBinaryBoolExpr || binary.getRight() instanceof RoamStreamBoolExpr) {
-//				error(
-//						"Right side is a bool.",
-//						RoamSLangPackage.Literals.ROAM_BINARY_ARITHMETIC_EXPR__LEFT
-//				);
-//			}
+//	@Check
+//	public void checkArithmeticExpression(final RoamArithmeticExpr expression) {
+//		if (expression instanceof RoamUnaryArithmeticExpr) {
+//			final RoamUnaryArithmeticExpr unary = (RoamUnaryArithmeticExpr) expression;
+//			// TODO
+//		} else if (expression instanceof RoamBinaryArithmeticExpr) {
+//			final RoamBinaryArithmeticExpr binary = (RoamBinaryArithmeticExpr) expression;
+//			if(binary.getLeft() instanceof RoamStreamBoolExpr && !(binary.getRight() instanceof RoamStreamBoolExpr)) {
+//				error("test1", RoamSLangPackage.Literals.ROAM_BINARY_ARITHMETIC_EXPR__LEFT);
+//			} else if(!(binary.getLeft() instanceof RoamStreamBoolExpr) && binary.getRight() instanceof RoamStreamBoolExpr) {
+//				error("test2", RoamSLangPackage.Literals.ROAM_BINARY_ARITHMETIC_EXPR__RIGHT);
+//			} 
 //			
-		} else if (expression instanceof RoamExpressionOperand) {
-			final RoamExpressionOperand op = (RoamExpressionOperand) expression;
-			if (op instanceof RoamContextExpr) {
-				final RoamContextExpr cexpr = (RoamContextExpr) op;
-				// TODO
-			}
-		}
-		// TODO: Finish this method.
-	}
+////			if (binary.getLeft() instanceof RoamBinaryBoolExpr || binary.getLeft() instanceof RoamStreamBoolExpr) {
+////				error(
+////						"Left side is a bool.",
+////						RoamSLangPackage.Literals.ROAM_BINARY_ARITHMETIC_EXPR__LEFT
+////				);
+////			}
+////			if (binary.getRight() instanceof RoamBinaryBoolExpr || binary.getRight() instanceof RoamStreamBoolExpr) {
+////				error(
+////						"Right side is a bool.",
+////						RoamSLangPackage.Literals.ROAM_BINARY_ARITHMETIC_EXPR__LEFT
+////				);
+////			}
+////			
+//		} else if (expression instanceof RoamExpressionOperand) {
+//			final RoamExpressionOperand op = (RoamExpressionOperand) expression;
+//			if (op instanceof RoamContextExpr) {
+//				final RoamContextExpr cexpr = (RoamContextExpr) op;
+//				// TODO
+//			}
+//		}
+//		// TODO: Finish this method.
+//	}
 	
-	@Check
-	public void checkUnaryExpression(final RoamUnaryArithmeticExpr expression) {
-		// TODO
-		System.out.println("Checking unary expr: " + expression);
-		
-		if (expression.getOperand() instanceof RoamArithmeticLiteral) {
-			final RoamArithmeticLiteral lit = (RoamArithmeticLiteral) expression.getOperand();
-//			lit.get
-		} else if (expression.getOperand() instanceof RoamAttributeExpr) {
-			final RoamAttributeExpr att = (RoamAttributeExpr) expression.getOperand();
-		} else if (expression.getOperand() instanceof RoamObjectiveExpression) {
-			final RoamObjectiveExpression obj = (RoamObjectiveExpression) expression.getOperand();
-		}
-		
-	}
+//	@Check
+//	public void checkUnaryExpression(final RoamUnaryArithmeticExpr expression) {
+//		// TODO
+//		System.out.println("Checking unary expr: " + expression);
+//		
+//		if (expression.getOperand() instanceof RoamArithmeticLiteral) {
+//			final RoamArithmeticLiteral lit = (RoamArithmeticLiteral) expression.getOperand();
+////			lit.get
+//		} else if (expression.getOperand() instanceof RoamAttributeExpr) {
+//			final RoamAttributeExpr att = (RoamAttributeExpr) expression.getOperand();
+//		} else if (expression.getOperand() instanceof RoamObjectiveExpression) {
+//			final RoamObjectiveExpression obj = (RoamObjectiveExpression) expression.getOperand();
+//		}
+//		
+//	}
 	
 	// TODO: Is this even necessary?
 	@Check
@@ -422,33 +429,134 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 	}
 	
-	@Check
-	public void checkRoamRelExpr(final RoamRelExpr expr) {
-		// TODO
-		// RHS == null and the container is contained in a constraint -> error
-		if (expr.getRight() == null && expr.eContainer() instanceof RoamBool) {
-			final RoamBool container = (RoamBool) expr.eContainer();
-			if (container.eContainer() instanceof RoamConstraint) {
-				error(
-						"RHS is null.",
-						RoamSLangPackage.Literals.ROAM_REL_EXPR__RIGHT
-				);
-			}
-
-		}
-		
-		// One of the two sides must be a constant
-		if (expr.getLeft() instanceof RoamMappingAttributeExpr && expr.getRight() instanceof RoamMappingAttributeExpr) {
-			error(
-					"One of the two sides of this expression must be a constant.",
-					RoamSLangPackage.Literals.ROAM_REL_EXPR__RIGHT
-			);
-		}
-	}
+//	@Check
+//	public void checkRoamRelExpr(final RoamRelExpr expr) {
+//		// TODO
+//		// RHS == null and the container is contained in a constraint -> error
+//		if (expr.getRight() == null && expr.eContainer() instanceof RoamBool) {
+//			final RoamBool container = (RoamBool) expr.eContainer();
+//			if (container.eContainer() instanceof RoamConstraint) {
+//				error(
+//						"RHS is null.",
+//						RoamSLangPackage.Literals.ROAM_REL_EXPR__RIGHT
+//				);
+//			}
+//
+//		}
+//		
+//		// One of the two sides must be a constant
+//		if (expr.getLeft() instanceof RoamMappingAttributeExpr && expr.getRight() instanceof RoamMappingAttributeExpr) {
+//			error(
+//					"One of the two sides of this expression must be a constant.",
+//					RoamSLangPackage.Literals.ROAM_REL_EXPR__RIGHT
+//			);
+//		}
+//	}
 	
 //	@Check
 //	public void checkRoamBoolExpr(final RoamBoolExpr expr) {
 //		// TODO
 //	}
+	
+	public Class<? extends EObject> getEvalTypeFromBoolExpr (final RoamBoolExpr expr) {
+		if (expr instanceof RoamBooleanLiteral) {
+			// TODO: What to return here?
+		} else if (expr instanceof RoamBinaryBoolExpr) {
+			final RoamBinaryBoolExpr boolExpr = (RoamBinaryBoolExpr) expr;
+			return getEvalLeftRightSide(boolExpr.getLeft(), boolExpr.getRight());			
+		} else if (expr instanceof RoamUnaryBoolExpr) {
+			final RoamUnaryBoolExpr boolExpr = (RoamUnaryBoolExpr) expr;
+			return getEvalTypeDelegate(boolExpr);
+		} else if (expr instanceof RoamRelExpr) {
+			final RoamRelExpr relExpr = (RoamRelExpr) expr;
+			if (relExpr.getRight() == null) {
+				return getEvalTypeDelegate(relExpr.getLeft());
+			} else {
+				// If lhs and rhs are set, the expression must evaluate to a boolean.
+				return getEvalLeftRightSide(relExpr.getLeft(), relExpr.getRight());
+			}
+		}
+
+		throw new IllegalStateException("Instance type not found.");
+		
+//		return null;
+//		return expr.getClass();
+	}
+	
+	public Class<? extends EObject> getEvalTypeFromArithExpr(final RoamArithmeticExpr expr) {
+		if (expr instanceof RoamBinaryArithmeticExpr) {
+			final RoamBinaryArithmeticExpr arithExpr = (RoamBinaryArithmeticExpr) expr;
+			return getEvalLeftRightSide(arithExpr.getLeft(), arithExpr.getRight());
+		} else if (expr instanceof RoamUnaryArithmeticExpr) {
+			return getEvalTypeFromArithExpr(((RoamUnaryArithmeticExpr) expr).getOperand());
+		} else if (expr instanceof RoamExpressionOperand) {
+			
+		}
+		
+		// TODO
+		
+		throw new IllegalStateException("Instance type not found.");
+	}
+	
+	public Class<? extends EObject> getEvalTypeFromExprOp(final RoamExpressionOperand op) {
+		if (op instanceof RoamArithmeticLiteral) {
+			
+		} else if (op instanceof RoamAttributeExpr) {
+			
+		} else if (op instanceof RoamObjectiveExpression) {
+			
+		}
+		
+		// TODO
+		
+		throw new IllegalStateException("Instance type not found.");
+	}
+	
+//	public Class<? extends EObject> getEvalTypeFromArithLit(final RoamArithmeticLiteral lit) {
+	public EDataType getEvalTypeFromArithLit(final RoamArithmeticLiteral lit) {
+//		if (lit instanceof RoamDoubleLiteral) {
+//			
+//		}
+		// TODO: ^There is no 'RoamDoubleLiteral' or 'RoamIntegerLiteral'
+		
+		final String val = lit.getValue();
+		try {
+			Integer.valueOf(val);
+//			return Integer.class;
+			return EcorePackage.Literals.EINT;
+		} catch(final NumberFormatException ex) {
+			// No int
+		}
+		try {
+			Double.valueOf(val);
+//			return Double.class;
+			return EcorePackage.Literals.EDOUBLE;
+		} catch(final NumberFormatException ex) {
+			throw new IllegalStateException("Instance type not found.");
+		}
+	}
+	
+	public Class<? extends EObject> getEvalTypeDelegate(final EObject e) {
+		if (e instanceof RoamBoolExpr) {
+			return getEvalTypeFromBoolExpr((RoamBoolExpr) e);
+		} else if (e instanceof RoamArithmeticExpr) {
+			return getEvalTypeFromArithExpr((RoamArithmeticExpr) e);
+		} else if (e instanceof RoamBool) {
+			return getEvalTypeFromBoolExpr(((RoamBool) e).getExpr());
+		}
+		
+		// TODO:
+		return null;
+	}
+	
+	public Class<? extends EObject> getEvalLeftRightSide(final EObject left, final EObject right) {
+		final Class<? extends EObject> lhs = getEvalTypeDelegate(left);
+		final Class<? extends EObject> rhs = getEvalTypeDelegate(right);
+		if (lhs.equals(rhs)) {
+			return lhs;
+		} else {
+			throw new IllegalStateException("Expression does not evaluate correctly.");
+		}
+	}
 	
 }

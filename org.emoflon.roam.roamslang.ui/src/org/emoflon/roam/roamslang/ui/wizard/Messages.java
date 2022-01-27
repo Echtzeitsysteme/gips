@@ -12,6 +12,8 @@ public class Messages extends NLS {
 	public static String SimpleIflyeProject_Description;
 	public static String CompleteIflyeProject_Label;
 	public static String CompleteIflyeProject_Description;
+	public static String HelloWorldProject_Label;
+	public static String HelloWorldProject_Description;
 	
 	static {
 	// initialize resource bundle

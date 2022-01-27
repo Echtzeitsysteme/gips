@@ -12,7 +12,7 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * </p>
  * <ul>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getExpression <em>Expression</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getCondition <em>Condition</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getFilter <em>Filter</em>}</li>
  * </ul>
  *
  * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getSumExpression()
@@ -43,25 +43,25 @@ public interface SumExpression extends Iterator, ArithmeticExpression {
 	void setExpression(ArithmeticExpression value);
 
 	/**
-	 * Returns the value of the '<em><b>Condition</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Filter</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Condition</em>' containment reference.
-	 * @see #setCondition(BoolExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getSumExpression_Condition()
+	 * @return the value of the '<em>Filter</em>' containment reference.
+	 * @see #setFilter(StreamExpression)
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getSumExpression_Filter()
 	 * @model containment="true"
 	 * @generated
 	 */
-	BoolExpression getCondition();
+	StreamExpression getFilter();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getCondition <em>Condition</em>}' containment reference.
+	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getFilter <em>Filter</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Condition</em>' containment reference.
-	 * @see #getCondition()
+	 * @param value the new value of the '<em>Filter</em>' containment reference.
+	 * @see #getFilter()
 	 * @generated
 	 */
-	void setCondition(BoolExpression value);
+	void setFilter(StreamExpression value);
 
 } // SumExpression

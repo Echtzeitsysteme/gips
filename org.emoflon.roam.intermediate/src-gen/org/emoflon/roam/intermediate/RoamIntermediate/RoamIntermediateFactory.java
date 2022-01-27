@@ -68,15 +68,6 @@ public interface RoamIntermediateFactory extends EFactory {
 	MappingConstraint createMappingConstraint();
 
 	/**
-	 * Returns a new object of class '<em>Arithmetic Expression</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Arithmetic Expression</em>'.
-	 * @generated
-	 */
-	ArithmeticExpression createArithmeticExpression();
-
-	/**
 	 * Returns a new object of class '<em>Binary Arithmetic Expression</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -120,6 +111,15 @@ public interface RoamIntermediateFactory extends EFactory {
 	 * @generated
 	 */
 	TypeSumExpression createTypeSumExpression();
+
+	/**
+	 * Returns a new object of class '<em>Arithmetic Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Arithmetic Value</em>'.
+	 * @generated
+	 */
+	ArithmeticValue createArithmeticValue();
 
 	/**
 	 * Returns a new object of class '<em>Integer Literal</em>'.
@@ -275,13 +275,22 @@ public interface RoamIntermediateFactory extends EFactory {
 	StreamExpression createStreamExpression();
 
 	/**
-	 * Returns a new object of class '<em>Stream Operation</em>'.
+	 * Returns a new object of class '<em>Stream Filter Operation</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Stream Operation</em>'.
+	 * @return a new object of class '<em>Stream Filter Operation</em>'.
 	 * @generated
 	 */
-	StreamOperation createStreamOperation();
+	StreamFilterOperation createStreamFilterOperation();
+
+	/**
+	 * Returns a new object of class '<em>Stream Select Operation</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Stream Select Operation</em>'.
+	 * @generated
+	 */
+	StreamSelectOperation createStreamSelectOperation();
 
 	/**
 	 * Returns the package supported by this factory.

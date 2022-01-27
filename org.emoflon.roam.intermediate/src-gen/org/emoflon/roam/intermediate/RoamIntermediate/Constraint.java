@@ -52,12 +52,12 @@ public interface Constraint extends EObject {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Lhs Constant</em>' containment reference.
-	 * @see #setLhsConstant(ArithmeticValue)
+	 * @see #setLhsConstant(ArithmeticValueExpression)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getConstraint_LhsConstant()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
-	ArithmeticValue getLhsConstant();
+	ArithmeticValueExpression getLhsConstant();
 
 	/**
 	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#getLhsConstant <em>Lhs Constant</em>}' containment reference.
@@ -67,7 +67,7 @@ public interface Constraint extends EObject {
 	 * @see #getLhsConstant()
 	 * @generated
 	 */
-	void setLhsConstant(ArithmeticValue value);
+	void setLhsConstant(ArithmeticValueExpression value);
 
 	/**
 	 * Returns the value of the '<em><b>Rhs Expression</b></em>' containment reference.

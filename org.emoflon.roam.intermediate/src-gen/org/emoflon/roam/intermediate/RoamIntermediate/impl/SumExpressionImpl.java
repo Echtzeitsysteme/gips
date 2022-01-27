@@ -13,8 +13,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.SumExpression;
 
 /**
@@ -27,7 +27,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.SumExpression;
  * <ul>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.SumExpressionImpl#getReturnType <em>Return Type</em>}</li>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.SumExpressionImpl#getExpression <em>Expression</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.SumExpressionImpl#getCondition <em>Condition</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.SumExpressionImpl#getFilter <em>Filter</em>}</li>
  * </ul>
  *
  * @generated
@@ -54,14 +54,14 @@ public abstract class SumExpressionImpl extends MinimalEObjectImpl.Container imp
 	protected ArithmeticExpression expression;
 
 	/**
-	 * The cached value of the '{@link #getCondition() <em>Condition</em>}' containment reference.
+	 * The cached value of the '{@link #getFilter() <em>Filter</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getCondition()
+	 * @see #getFilter()
 	 * @generated
 	 * @ordered
 	 */
-	protected BoolExpression condition;
+	protected StreamExpression filter;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -177,8 +177,8 @@ public abstract class SumExpressionImpl extends MinimalEObjectImpl.Container imp
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public BoolExpression getCondition() {
-		return condition;
+	public StreamExpression getFilter() {
+		return filter;
 	}
 
 	/**
@@ -186,12 +186,12 @@ public abstract class SumExpressionImpl extends MinimalEObjectImpl.Container imp
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetCondition(BoolExpression newCondition, NotificationChain msgs) {
-		BoolExpression oldCondition = condition;
-		condition = newCondition;
+	public NotificationChain basicSetFilter(StreamExpression newFilter, NotificationChain msgs) {
+		StreamExpression oldFilter = filter;
+		filter = newFilter;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.SUM_EXPRESSION__CONDITION, oldCondition, newCondition);
+					RoamIntermediatePackage.SUM_EXPRESSION__FILTER, oldFilter, newFilter);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -205,21 +205,21 @@ public abstract class SumExpressionImpl extends MinimalEObjectImpl.Container imp
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setCondition(BoolExpression newCondition) {
-		if (newCondition != condition) {
+	public void setFilter(StreamExpression newFilter) {
+		if (newFilter != filter) {
 			NotificationChain msgs = null;
-			if (condition != null)
-				msgs = ((InternalEObject) condition).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.SUM_EXPRESSION__CONDITION, null, msgs);
-			if (newCondition != null)
-				msgs = ((InternalEObject) newCondition).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.SUM_EXPRESSION__CONDITION, null, msgs);
-			msgs = basicSetCondition(newCondition, msgs);
+			if (filter != null)
+				msgs = ((InternalEObject) filter).eInverseRemove(this,
+						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.SUM_EXPRESSION__FILTER, null, msgs);
+			if (newFilter != null)
+				msgs = ((InternalEObject) newFilter).eInverseAdd(this,
+						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.SUM_EXPRESSION__FILTER, null, msgs);
+			msgs = basicSetFilter(newFilter, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.SUM_EXPRESSION__CONDITION,
-					newCondition, newCondition));
+			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.SUM_EXPRESSION__FILTER,
+					newFilter, newFilter));
 	}
 
 	/**
@@ -232,8 +232,8 @@ public abstract class SumExpressionImpl extends MinimalEObjectImpl.Container imp
 		switch (featureID) {
 		case RoamIntermediatePackage.SUM_EXPRESSION__EXPRESSION:
 			return basicSetExpression(null, msgs);
-		case RoamIntermediatePackage.SUM_EXPRESSION__CONDITION:
-			return basicSetCondition(null, msgs);
+		case RoamIntermediatePackage.SUM_EXPRESSION__FILTER:
+			return basicSetFilter(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -252,8 +252,8 @@ public abstract class SumExpressionImpl extends MinimalEObjectImpl.Container imp
 			return basicGetReturnType();
 		case RoamIntermediatePackage.SUM_EXPRESSION__EXPRESSION:
 			return getExpression();
-		case RoamIntermediatePackage.SUM_EXPRESSION__CONDITION:
-			return getCondition();
+		case RoamIntermediatePackage.SUM_EXPRESSION__FILTER:
+			return getFilter();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -272,8 +272,8 @@ public abstract class SumExpressionImpl extends MinimalEObjectImpl.Container imp
 		case RoamIntermediatePackage.SUM_EXPRESSION__EXPRESSION:
 			setExpression((ArithmeticExpression) newValue);
 			return;
-		case RoamIntermediatePackage.SUM_EXPRESSION__CONDITION:
-			setCondition((BoolExpression) newValue);
+		case RoamIntermediatePackage.SUM_EXPRESSION__FILTER:
+			setFilter((StreamExpression) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -293,8 +293,8 @@ public abstract class SumExpressionImpl extends MinimalEObjectImpl.Container imp
 		case RoamIntermediatePackage.SUM_EXPRESSION__EXPRESSION:
 			setExpression((ArithmeticExpression) null);
 			return;
-		case RoamIntermediatePackage.SUM_EXPRESSION__CONDITION:
-			setCondition((BoolExpression) null);
+		case RoamIntermediatePackage.SUM_EXPRESSION__FILTER:
+			setFilter((StreamExpression) null);
 			return;
 		}
 		super.eUnset(featureID);
@@ -312,8 +312,8 @@ public abstract class SumExpressionImpl extends MinimalEObjectImpl.Container imp
 			return returnType != null;
 		case RoamIntermediatePackage.SUM_EXPRESSION__EXPRESSION:
 			return expression != null;
-		case RoamIntermediatePackage.SUM_EXPRESSION__CONDITION:
-			return condition != null;
+		case RoamIntermediatePackage.SUM_EXPRESSION__FILTER:
+			return filter != null;
 		}
 		return super.eIsSet(featureID);
 	}

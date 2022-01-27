@@ -15,7 +15,7 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * </ul>
  *
  * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getArithmeticValue()
- * @model abstract="true"
+ * @model
  * @generated
  */
 public interface ArithmeticValue extends ArithmeticValueExpression {

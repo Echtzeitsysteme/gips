@@ -67,8 +67,6 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 			return createTypeConstraint();
 		case RoamIntermediatePackage.MAPPING_CONSTRAINT:
 			return createMappingConstraint();
-		case RoamIntermediatePackage.ARITHMETIC_EXPRESSION:
-			return createArithmeticExpression();
 		case RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION:
 			return createBinaryArithmeticExpression();
 		case RoamIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION:
@@ -79,6 +77,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 			return createMappingSumExpression();
 		case RoamIntermediatePackage.TYPE_SUM_EXPRESSION:
 			return createTypeSumExpression();
+		case RoamIntermediatePackage.ARITHMETIC_VALUE:
+			return createArithmeticValue();
 		case RoamIntermediatePackage.INTEGER_LITERAL:
 			return createIntegerLiteral();
 		case RoamIntermediatePackage.DOUBLE_LITERAL:
@@ -113,8 +113,10 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 			return createIteratorFeatureValue();
 		case RoamIntermediatePackage.STREAM_EXPRESSION:
 			return createStreamExpression();
-		case RoamIntermediatePackage.STREAM_OPERATION:
-			return createStreamOperation();
+		case RoamIntermediatePackage.STREAM_FILTER_OPERATION:
+			return createStreamFilterOperation();
+		case RoamIntermediatePackage.STREAM_SELECT_OPERATION:
+			return createStreamSelectOperation();
 		default:
 			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -142,8 +144,6 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 			return createUnaryBoolOperatorFromString(eDataType, initialValue);
 		case RoamIntermediatePackage.STREAM_BOOL_OPERATOR:
 			return createStreamBoolOperatorFromString(eDataType, initialValue);
-		case RoamIntermediatePackage.STREAM_OPERATOR:
-			return createStreamOperatorFromString(eDataType, initialValue);
 		default:
 			throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -171,8 +171,6 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 			return convertUnaryBoolOperatorToString(eDataType, instanceValue);
 		case RoamIntermediatePackage.STREAM_BOOL_OPERATOR:
 			return convertStreamBoolOperatorToString(eDataType, instanceValue);
-		case RoamIntermediatePackage.STREAM_OPERATOR:
-			return convertStreamOperatorToString(eDataType, instanceValue);
 		default:
 			throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -233,16 +231,6 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ArithmeticExpression createArithmeticExpression() {
-		ArithmeticExpressionImpl arithmeticExpression = new ArithmeticExpressionImpl();
-		return arithmeticExpression;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public BinaryArithmeticExpression createBinaryArithmeticExpression() {
 		BinaryArithmeticExpressionImpl binaryArithmeticExpression = new BinaryArithmeticExpressionImpl();
 		return binaryArithmeticExpression;
@@ -286,6 +274,16 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	public TypeSumExpression createTypeSumExpression() {
 		TypeSumExpressionImpl typeSumExpression = new TypeSumExpressionImpl();
 		return typeSumExpression;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ArithmeticValue createArithmeticValue() {
+		ArithmeticValueImpl arithmeticValue = new ArithmeticValueImpl();
+		return arithmeticValue;
 	}
 
 	/**
@@ -463,9 +461,19 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public StreamOperation createStreamOperation() {
-		StreamOperationImpl streamOperation = new StreamOperationImpl();
-		return streamOperation;
+	public StreamFilterOperation createStreamFilterOperation() {
+		StreamFilterOperationImpl streamFilterOperation = new StreamFilterOperationImpl();
+		return streamFilterOperation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public StreamSelectOperation createStreamSelectOperation() {
+		StreamSelectOperationImpl streamSelectOperation = new StreamSelectOperationImpl();
+		return streamSelectOperation;
 	}
 
 	/**
@@ -619,28 +627,6 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	 * @generated
 	 */
 	public String convertStreamBoolOperatorToString(EDataType eDataType, Object instanceValue) {
-		return instanceValue == null ? null : instanceValue.toString();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public StreamOperator createStreamOperatorFromString(EDataType eDataType, String initialValue) {
-		StreamOperator result = StreamOperator.get(initialValue);
-		if (result == null)
-			throw new IllegalArgumentException(
-					"The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-		return result;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertStreamOperatorToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 

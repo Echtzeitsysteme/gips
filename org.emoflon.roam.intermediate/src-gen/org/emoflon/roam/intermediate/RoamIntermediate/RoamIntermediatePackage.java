@@ -793,13 +793,13 @@ public interface RoamIntermediatePackage extends EPackage {
 	int SUM_EXPRESSION__EXPRESSION = ITERATOR_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Condition</b></em>' containment reference.
+	 * The feature id for the '<em><b>Filter</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SUM_EXPRESSION__CONDITION = ITERATOR_FEATURE_COUNT + 2;
+	int SUM_EXPRESSION__FILTER = ITERATOR_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Sum Expression</em>' class.
@@ -848,13 +848,13 @@ public interface RoamIntermediatePackage extends EPackage {
 	int MAPPING_SUM_EXPRESSION__EXPRESSION = SUM_EXPRESSION__EXPRESSION;
 
 	/**
-	 * The feature id for the '<em><b>Condition</b></em>' containment reference.
+	 * The feature id for the '<em><b>Filter</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_SUM_EXPRESSION__CONDITION = SUM_EXPRESSION__CONDITION;
+	int MAPPING_SUM_EXPRESSION__FILTER = SUM_EXPRESSION__FILTER;
 
 	/**
 	 * The feature id for the '<em><b>Mapping</b></em>' reference.
@@ -912,13 +912,13 @@ public interface RoamIntermediatePackage extends EPackage {
 	int TYPE_SUM_EXPRESSION__EXPRESSION = SUM_EXPRESSION__EXPRESSION;
 
 	/**
-	 * The feature id for the '<em><b>Condition</b></em>' containment reference.
+	 * The feature id for the '<em><b>Filter</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_SUM_EXPRESSION__CONDITION = SUM_EXPRESSION__CONDITION;
+	int TYPE_SUM_EXPRESSION__FILTER = SUM_EXPRESSION__FILTER;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -1988,59 +1988,14 @@ public interface RoamIntermediatePackage extends EPackage {
 	int STREAM_EXPRESSION_OPERATION_COUNT = ITERATOR_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamOperationImpl <em>Stream Operation</em>}' class.
+	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation <em>Stream Operation</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamOperationImpl
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamOperation()
 	 * @generated
 	 */
 	int STREAM_OPERATION = 39;
-
-	/**
-	 * The feature id for the '<em><b>Return Type</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int STREAM_OPERATION__RETURN_TYPE = STREAM_EXPRESSION__RETURN_TYPE;
-
-	/**
-	 * The feature id for the '<em><b>Current</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int STREAM_OPERATION__CURRENT = STREAM_EXPRESSION__CURRENT;
-
-	/**
-	 * The feature id for the '<em><b>Child</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int STREAM_OPERATION__CHILD = STREAM_EXPRESSION__CHILD;
-
-	/**
-	 * The feature id for the '<em><b>Operator</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int STREAM_OPERATION__OPERATOR = STREAM_EXPRESSION_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Predicate</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int STREAM_OPERATION__PREDICATE = STREAM_EXPRESSION_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Stream Operation</em>' class.
@@ -2049,7 +2004,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STREAM_OPERATION_FEATURE_COUNT = STREAM_EXPRESSION_FEATURE_COUNT + 2;
+	int STREAM_OPERATION_FEATURE_COUNT = 0;
 
 	/**
 	 * The number of operations of the '<em>Stream Operation</em>' class.
@@ -2058,7 +2013,81 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STREAM_OPERATION_OPERATION_COUNT = STREAM_EXPRESSION_OPERATION_COUNT + 0;
+	int STREAM_OPERATION_OPERATION_COUNT = 0;
+
+	/**
+	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamFilterOperationImpl <em>Stream Filter Operation</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamFilterOperationImpl
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamFilterOperation()
+	 * @generated
+	 */
+	int STREAM_FILTER_OPERATION = 40;
+
+	/**
+	 * The feature id for the '<em><b>Predicate</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STREAM_FILTER_OPERATION__PREDICATE = STREAM_OPERATION_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Stream Filter Operation</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STREAM_FILTER_OPERATION_FEATURE_COUNT = STREAM_OPERATION_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Stream Filter Operation</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STREAM_FILTER_OPERATION_OPERATION_COUNT = STREAM_OPERATION_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamSelectOperationImpl <em>Stream Select Operation</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamSelectOperationImpl
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamSelectOperation()
+	 * @generated
+	 */
+	int STREAM_SELECT_OPERATION = 41;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STREAM_SELECT_OPERATION__TYPE = STREAM_OPERATION_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Stream Select Operation</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STREAM_SELECT_OPERATION_FEATURE_COUNT = STREAM_OPERATION_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Stream Select Operation</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STREAM_SELECT_OPERATION_OPERATION_COUNT = STREAM_OPERATION_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator <em>Relational Operator</em>}' enum.
@@ -2068,7 +2097,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getRelationalOperator()
 	 * @generated
 	 */
-	int RELATIONAL_OPERATOR = 40;
+	int RELATIONAL_OPERATOR = 42;
 
 	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator <em>Binary Arithmetic Operator</em>}' enum.
@@ -2078,7 +2107,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBinaryArithmeticOperator()
 	 * @generated
 	 */
-	int BINARY_ARITHMETIC_OPERATOR = 41;
+	int BINARY_ARITHMETIC_OPERATOR = 43;
 
 	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator <em>Unary Arithmetic Operator</em>}' enum.
@@ -2088,7 +2117,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getUnaryArithmeticOperator()
 	 * @generated
 	 */
-	int UNARY_ARITHMETIC_OPERATOR = 42;
+	int UNARY_ARITHMETIC_OPERATOR = 44;
 
 	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamArithmeticOperator <em>Stream Arithmetic Operator</em>}' enum.
@@ -2098,7 +2127,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamArithmeticOperator()
 	 * @generated
 	 */
-	int STREAM_ARITHMETIC_OPERATOR = 43;
+	int STREAM_ARITHMETIC_OPERATOR = 45;
 
 	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryBoolOperator <em>Binary Bool Operator</em>}' enum.
@@ -2108,7 +2137,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBinaryBoolOperator()
 	 * @generated
 	 */
-	int BINARY_BOOL_OPERATOR = 44;
+	int BINARY_BOOL_OPERATOR = 46;
 
 	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryBoolOperator <em>Unary Bool Operator</em>}' enum.
@@ -2118,7 +2147,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getUnaryBoolOperator()
 	 * @generated
 	 */
-	int UNARY_BOOL_OPERATOR = 45;
+	int UNARY_BOOL_OPERATOR = 47;
 
 	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamBoolOperator <em>Stream Bool Operator</em>}' enum.
@@ -2128,17 +2157,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamBoolOperator()
 	 * @generated
 	 */
-	int STREAM_BOOL_OPERATOR = 46;
-
-	/**
-	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamOperator <em>Stream Operator</em>}' enum.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamOperator
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamOperator()
-	 * @generated
-	 */
-	int STREAM_OPERATOR = 47;
+	int STREAM_BOOL_OPERATOR = 48;
 
 	/**
 	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel <em>Model</em>}'.
@@ -2545,15 +2564,15 @@ public interface RoamIntermediatePackage extends EPackage {
 	EReference getSumExpression_Expression();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getCondition <em>Condition</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getFilter <em>Filter</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Condition</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getCondition()
+	 * @return the meta object for the containment reference '<em>Filter</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getFilter()
 	 * @see #getSumExpression()
 	 * @generated
 	 */
-	EReference getSumExpression_Condition();
+	EReference getSumExpression_Filter();
 
 	/**
 	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression <em>Mapping Sum Expression</em>}'.
@@ -3157,26 +3176,46 @@ public interface RoamIntermediatePackage extends EPackage {
 	EClass getStreamOperation();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation#getOperator <em>Operator</em>}'.
+	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation <em>Stream Filter Operation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Operator</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation#getOperator()
-	 * @see #getStreamOperation()
+	 * @return the meta object for class '<em>Stream Filter Operation</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation
 	 * @generated
 	 */
-	EAttribute getStreamOperation_Operator();
+	EClass getStreamFilterOperation();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation#getPredicate <em>Predicate</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation#getPredicate <em>Predicate</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference '<em>Predicate</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation#getPredicate()
-	 * @see #getStreamOperation()
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation#getPredicate()
+	 * @see #getStreamFilterOperation()
 	 * @generated
 	 */
-	EReference getStreamOperation_Predicate();
+	EReference getStreamFilterOperation_Predicate();
+
+	/**
+	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation <em>Stream Select Operation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Stream Select Operation</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation
+	 * @generated
+	 */
+	EClass getStreamSelectOperation();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Type</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation#getType()
+	 * @see #getStreamSelectOperation()
+	 * @generated
+	 */
+	EReference getStreamSelectOperation_Type();
 
 	/**
 	 * Returns the meta object for enum '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator <em>Relational Operator</em>}'.
@@ -3247,16 +3286,6 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 */
 	EEnum getStreamBoolOperator();
-
-	/**
-	 * Returns the meta object for enum '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamOperator <em>Stream Operator</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for enum '<em>Stream Operator</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamOperator
-	 * @generated
-	 */
-	EEnum getStreamOperator();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -3614,12 +3643,12 @@ public interface RoamIntermediatePackage extends EPackage {
 		EReference SUM_EXPRESSION__EXPRESSION = eINSTANCE.getSumExpression_Expression();
 
 		/**
-		 * The meta object literal for the '<em><b>Condition</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Filter</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference SUM_EXPRESSION__CONDITION = eINSTANCE.getSumExpression_Condition();
+		EReference SUM_EXPRESSION__FILTER = eINSTANCE.getSumExpression_Filter();
 
 		/**
 		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingSumExpressionImpl <em>Mapping Sum Expression</em>}' class.
@@ -4122,22 +4151,24 @@ public interface RoamIntermediatePackage extends EPackage {
 		EReference STREAM_EXPRESSION__CHILD = eINSTANCE.getStreamExpression_Child();
 
 		/**
-		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamOperationImpl <em>Stream Operation</em>}' class.
+		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation <em>Stream Operation</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamOperationImpl
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation
 		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamOperation()
 		 * @generated
 		 */
 		EClass STREAM_OPERATION = eINSTANCE.getStreamOperation();
 
 		/**
-		 * The meta object literal for the '<em><b>Operator</b></em>' attribute feature.
+		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamFilterOperationImpl <em>Stream Filter Operation</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamFilterOperationImpl
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamFilterOperation()
 		 * @generated
 		 */
-		EAttribute STREAM_OPERATION__OPERATOR = eINSTANCE.getStreamOperation_Operator();
+		EClass STREAM_FILTER_OPERATION = eINSTANCE.getStreamFilterOperation();
 
 		/**
 		 * The meta object literal for the '<em><b>Predicate</b></em>' containment reference feature.
@@ -4145,7 +4176,25 @@ public interface RoamIntermediatePackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference STREAM_OPERATION__PREDICATE = eINSTANCE.getStreamOperation_Predicate();
+		EReference STREAM_FILTER_OPERATION__PREDICATE = eINSTANCE.getStreamFilterOperation_Predicate();
+
+		/**
+		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamSelectOperationImpl <em>Stream Select Operation</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamSelectOperationImpl
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamSelectOperation()
+		 * @generated
+		 */
+		EClass STREAM_SELECT_OPERATION = eINSTANCE.getStreamSelectOperation();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference STREAM_SELECT_OPERATION__TYPE = eINSTANCE.getStreamSelectOperation_Type();
 
 		/**
 		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator <em>Relational Operator</em>}' enum.
@@ -4216,16 +4265,6 @@ public interface RoamIntermediatePackage extends EPackage {
 		 * @generated
 		 */
 		EEnum STREAM_BOOL_OPERATOR = eINSTANCE.getStreamBoolOperator();
-
-		/**
-		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamOperator <em>Stream Operator</em>}' enum.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamOperator
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamOperator()
-		 * @generated
-		 */
-		EEnum STREAM_OPERATOR = eINSTANCE.getStreamOperator();
 
 	}
 

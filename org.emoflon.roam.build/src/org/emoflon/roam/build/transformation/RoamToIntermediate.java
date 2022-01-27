@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
@@ -13,11 +14,22 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
+import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral;
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateFactory;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
+import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation;
+import org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation;
+import org.emoflon.roam.intermediate.RoamIntermediate.StreamOperator;
+import org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation;
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
 import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
 import org.emoflon.roam.roamslang.roamSLang.RoamAttributeExpr;
@@ -28,10 +40,12 @@ import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamMappingContext;
 import org.emoflon.roam.roamslang.roamSLang.RoamRelExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamSelect;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamBoolExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamNavigation;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamNoArgOperator;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamSet;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
 
 public class RoamToIntermediate {
@@ -94,7 +108,7 @@ public class RoamToIntermediate {
 				if(relExpr.getRight() == null) {
 					if(relExpr.getLeft() instanceof RoamAttributeExpr eAttributeExpr) {
 						if(eAttributeExpr instanceof RoamMappingAttributeExpr eMappingAttribute && eMappingAttribute.getExpr() != null) {
-							setConstraintCondition(constraint, eMappingAttribute.getExpr());
+							setUnaryConstraintCondition((MappingConstraint) constraint, eMappingAttribute.getExpr());
 						} else if(eAttributeExpr instanceof RoamContextExpr eContextAttribute) {
 							//TODO
 						} else {
@@ -125,16 +139,84 @@ public class RoamToIntermediate {
 		}
 	}
 	
-	protected void setConstraintCondition(final Constraint constraint, final RoamStreamExpr streamExpr) throws Exception{
+	/*	Translates a simple unary boolean operation (i.e., <stream>.exists() and <stream>.notExists()), 
+	 *  which was defined on a stream of mapping variables, into an ILP constraint. 
+	 *  E.g.: <stream>.notExists() ==> Sum(Set of Variables) = 0 
+	 */
+	protected void setUnaryConstraintCondition(final MappingConstraint constraint, final RoamStreamExpr streamExpr) throws Exception{
 		RoamStreamExpr terminalExpr = getTerminalStreamExpression(streamExpr);
 		if(terminalExpr instanceof RoamStreamBoolExpr streamBool) {
-			if(streamBool.getOperator() == RoamStreamNoArgOperator.COUNT) {
-				throw new IllegalArgumentException("Some constrains contain invalid values within boolean expressions, e.g., arithmetic values instead of boolean values.");
-			} else {
-				//TODO
+			switch(streamBool.getOperator()) {
+				case COUNT -> {
+					throw new IllegalArgumentException("Some constrains contain invalid values within boolean expressions, e.g., arithmetic values instead of boolean values.");
+				}
+				case EXISTS -> {
+					
+				}
+				case NOTEXISTS -> {
+					constraint.setElementwise(true);
+					IntegerLiteral constZero = factory.createIntegerLiteral();
+					constZero.setLiteral(0);
+					constraint.setLhsConstant(constZero);
+					constraint.setOperator(RelationalOperator.EQUAL);
+					constraint.setRhsExpression(createSumFromStreamExpression(constraint, streamExpr));
+				}
+				default -> {
+					throw new UnsupportedOperationException("Unknown stream operator: "+streamBool.getOperator());
+				}
 			}
 		} else {
 			throw new IllegalArgumentException("Some constrains contain invalid values within boolean expressions, e.g., arithmetic values instead of boolean values.");
+		}
+	}
+	
+	protected MappingSumExpression createSumFromStreamExpression(final MappingConstraint constraint, final RoamStreamExpr streamExpr) throws Exception {
+		MappingSumExpression mapSum = factory.createMappingSumExpression();
+		mapSum.setMapping(constraint.getMapping());
+		mapSum.setReturnType(EcorePackage.Literals.EINT);
+		// Simple expression: Just add all filtered (!) mapping variable values v={0,1}
+		ArithmeticValue val = factory.createArithmeticValue();
+		IteratorValue itr = factory.createIteratorValue();
+		itr.setIterator(mapSum);
+		val.setValue(itr);
+		val.setReturnType(EcorePackage.Literals.EINT);
+		mapSum.setExpression(val);
+		// Create filter expression
+		mapSum.setFilter(createFilterFromStream(streamExpr));
+		return mapSum;
+	}
+	
+	protected StreamExpression createFilterFromStream(final RoamStreamExpr streamExpr) throws Exception{
+		StreamExpression expr = factory.createStreamExpression();
+		if(streamExpr instanceof RoamStreamNavigation nav) {
+			expr.setCurrent(createStreamFilterOperation(nav.getLeft()));
+			if(!(nav.getRight() instanceof RoamSelect || nav.getRight() instanceof RoamStreamSet)) {
+				throw new IllegalArgumentException("Stream expression <"+nav.getRight()+"> is not a valid filter operation.");
+			} else {
+				expr.setChild(createFilterFromStream(nav.getRight()));
+				return expr;
+			}
+		} else if(streamExpr instanceof RoamSelect select) {
+			expr.setCurrent(createStreamFilterOperation(select));
+			return expr;
+		} else {
+			RoamStreamSet set = (RoamStreamSet) streamExpr;
+			expr.setCurrent(createStreamFilterOperation(set));
+			return expr;
+		}
+	}
+	
+	protected StreamOperation createStreamFilterOperation(final RoamStreamExpr streamExpr) throws Exception{
+		if(streamExpr instanceof RoamSelect select) {
+			StreamSelectOperation op = factory.createStreamSelectOperation();
+			op.setType((EClass) select.getType());
+			return op;
+		} else if (streamExpr instanceof RoamStreamSet set){
+			StreamFilterOperation op = factory.createStreamFilterOperation();
+//			TOOD: create predicate
+			return op;
+		} else {
+			throw new IllegalArgumentException("Stream expression <"+streamExpr+"> is not a valid filter operation.");
 		}
 	}
 	

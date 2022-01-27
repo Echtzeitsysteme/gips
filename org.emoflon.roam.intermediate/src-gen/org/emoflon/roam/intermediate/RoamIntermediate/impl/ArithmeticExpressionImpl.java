@@ -27,7 +27,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  *
  * @generated
  */
-public class ArithmeticExpressionImpl extends MinimalEObjectImpl.Container implements ArithmeticExpression {
+public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Container implements ArithmeticExpression {
 	/**
 	 * The cached value of the '{@link #getReturnType() <em>Return Type</em>}' reference.
 	 * <!-- begin-user-doc -->

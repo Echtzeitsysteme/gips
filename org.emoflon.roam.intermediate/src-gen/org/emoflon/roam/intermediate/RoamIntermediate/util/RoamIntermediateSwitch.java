@@ -441,9 +441,23 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 			StreamOperation streamOperation = (StreamOperation) theEObject;
 			T result = caseStreamOperation(streamOperation);
 			if (result == null)
-				result = caseStreamExpression(streamOperation);
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.STREAM_FILTER_OPERATION: {
+			StreamFilterOperation streamFilterOperation = (StreamFilterOperation) theEObject;
+			T result = caseStreamFilterOperation(streamFilterOperation);
 			if (result == null)
-				result = caseIterator(streamOperation);
+				result = caseStreamOperation(streamFilterOperation);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.STREAM_SELECT_OPERATION: {
+			StreamSelectOperation streamSelectOperation = (StreamSelectOperation) theEObject;
+			T result = caseStreamSelectOperation(streamSelectOperation);
+			if (result == null)
+				result = caseStreamOperation(streamSelectOperation);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -1050,6 +1064,36 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseStreamOperation(StreamOperation object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Stream Filter Operation</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Stream Filter Operation</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseStreamFilterOperation(StreamFilterOperation object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Stream Select Operation</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Stream Select Operation</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseStreamSelectOperation(StreamSelectOperation object) {
 		return null;
 	}
 

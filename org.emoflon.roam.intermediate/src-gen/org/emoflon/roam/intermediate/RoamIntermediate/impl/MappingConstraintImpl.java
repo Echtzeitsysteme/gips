@@ -12,7 +12,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValueExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
@@ -66,7 +66,7 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 	 * @generated
 	 * @ordered
 	 */
-	protected ArithmeticValue lhsConstant;
+	protected ArithmeticValueExpression lhsConstant;
 
 	/**
 	 * The cached value of the '{@link #getRhsExpression() <em>Rhs Expression</em>}' containment reference.
@@ -174,7 +174,7 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ArithmeticValue getLhsConstant() {
+	public ArithmeticValueExpression getLhsConstant() {
 		return lhsConstant;
 	}
 
@@ -183,8 +183,8 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetLhsConstant(ArithmeticValue newLhsConstant, NotificationChain msgs) {
-		ArithmeticValue oldLhsConstant = lhsConstant;
+	public NotificationChain basicSetLhsConstant(ArithmeticValueExpression newLhsConstant, NotificationChain msgs) {
+		ArithmeticValueExpression oldLhsConstant = lhsConstant;
 		lhsConstant = newLhsConstant;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
@@ -202,7 +202,7 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setLhsConstant(ArithmeticValue newLhsConstant) {
+	public void setLhsConstant(ArithmeticValueExpression newLhsConstant) {
 		if (newLhsConstant != lhsConstant) {
 			NotificationChain msgs = null;
 			if (lhsConstant != null)
@@ -409,7 +409,7 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 			setName((String) newValue);
 			return;
 		case RoamIntermediatePackage.MAPPING_CONSTRAINT__LHS_CONSTANT:
-			setLhsConstant((ArithmeticValue) newValue);
+			setLhsConstant((ArithmeticValueExpression) newValue);
 			return;
 		case RoamIntermediatePackage.MAPPING_CONSTRAINT__RHS_EXPRESSION:
 			setRhsExpression((ArithmeticExpression) newValue);
@@ -439,7 +439,7 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 			setName(NAME_EDEFAULT);
 			return;
 		case RoamIntermediatePackage.MAPPING_CONSTRAINT__LHS_CONSTANT:
-			setLhsConstant((ArithmeticValue) null);
+			setLhsConstant((ArithmeticValueExpression) null);
 			return;
 		case RoamIntermediatePackage.MAPPING_CONSTRAINT__RHS_EXPRESSION:
 			setRhsExpression((ArithmeticExpression) null);

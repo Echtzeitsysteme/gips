@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  * </ul>
  *
  * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getArithmeticExpression()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface ArithmeticExpression extends EObject {

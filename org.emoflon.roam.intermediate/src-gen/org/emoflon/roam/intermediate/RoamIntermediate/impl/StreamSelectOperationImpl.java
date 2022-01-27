@@ -9,41 +9,41 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Arithmetic Value</b></em>'.
+ * An implementation of the model object '<em><b>Stream Select Operation</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticValueImpl#getValue <em>Value</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamSelectOperationImpl#getType <em>Type</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implements ArithmeticValue {
+public class StreamSelectOperationImpl extends MinimalEObjectImpl.Container implements StreamSelectOperation {
 	/**
-	 * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
+	 * The cached value of the '{@link #getType() <em>Type</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getValue()
+	 * @see #getType()
 	 * @generated
 	 * @ordered
 	 */
-	protected ValueExpression value;
+	protected EClass type;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ArithmeticValueImpl() {
+	protected StreamSelectOperationImpl() {
 		super();
 	}
 
@@ -54,7 +54,7 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.ARITHMETIC_VALUE;
+		return RoamIntermediatePackage.Literals.STREAM_SELECT_OPERATION;
 	}
 
 	/**
@@ -62,8 +62,8 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ValueExpression getValue() {
-		return value;
+	public EClass getType() {
+		return type;
 	}
 
 	/**
@@ -71,12 +71,12 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetValue(ValueExpression newValue, NotificationChain msgs) {
-		ValueExpression oldValue = value;
-		value = newValue;
+	public NotificationChain basicSetType(EClass newType, NotificationChain msgs) {
+		EClass oldType = type;
+		type = newType;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ARITHMETIC_VALUE__VALUE, oldValue, newValue);
+					RoamIntermediatePackage.STREAM_SELECT_OPERATION__TYPE, oldType, newType);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -90,21 +90,21 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setValue(ValueExpression newValue) {
-		if (newValue != value) {
+	public void setType(EClass newType) {
+		if (newType != type) {
 			NotificationChain msgs = null;
-			if (value != null)
-				msgs = ((InternalEObject) value).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.ARITHMETIC_VALUE__VALUE, null, msgs);
-			if (newValue != null)
-				msgs = ((InternalEObject) newValue).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.ARITHMETIC_VALUE__VALUE, null, msgs);
-			msgs = basicSetValue(newValue, msgs);
+			if (type != null)
+				msgs = ((InternalEObject) type).eInverseRemove(this,
+						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.STREAM_SELECT_OPERATION__TYPE, null, msgs);
+			if (newType != null)
+				msgs = ((InternalEObject) newType).eInverseAdd(this,
+						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.STREAM_SELECT_OPERATION__TYPE, null, msgs);
+			msgs = basicSetType(newType, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.ARITHMETIC_VALUE__VALUE,
-					newValue, newValue));
+			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.STREAM_SELECT_OPERATION__TYPE,
+					newType, newType));
 	}
 
 	/**
@@ -115,8 +115,8 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ARITHMETIC_VALUE__VALUE:
-			return basicSetValue(null, msgs);
+		case RoamIntermediatePackage.STREAM_SELECT_OPERATION__TYPE:
+			return basicSetType(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -129,8 +129,8 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ARITHMETIC_VALUE__VALUE:
-			return getValue();
+		case RoamIntermediatePackage.STREAM_SELECT_OPERATION__TYPE:
+			return getType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -143,8 +143,8 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ARITHMETIC_VALUE__VALUE:
-			setValue((ValueExpression) newValue);
+		case RoamIntermediatePackage.STREAM_SELECT_OPERATION__TYPE:
+			setType((EClass) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -158,8 +158,8 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ARITHMETIC_VALUE__VALUE:
-			setValue((ValueExpression) null);
+		case RoamIntermediatePackage.STREAM_SELECT_OPERATION__TYPE:
+			setType((EClass) null);
 			return;
 		}
 		super.eUnset(featureID);
@@ -173,10 +173,10 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ARITHMETIC_VALUE__VALUE:
-			return value != null;
+		case RoamIntermediatePackage.STREAM_SELECT_OPERATION__TYPE:
+			return type != null;
 		}
 		return super.eIsSet(featureID);
 	}
 
-} //ArithmeticValueImpl
+} //StreamSelectOperationImpl

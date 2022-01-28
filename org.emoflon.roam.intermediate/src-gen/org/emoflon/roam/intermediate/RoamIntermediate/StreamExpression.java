@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EClassifier;
  * @model
  * @generated
  */
-public interface StreamExpression extends Iterator {
+public interface StreamExpression extends SetOperation {
 	/**
 	 * Returns the value of the '<em><b>Return Type</b></em>' reference.
 	 * <!-- begin-user-doc -->

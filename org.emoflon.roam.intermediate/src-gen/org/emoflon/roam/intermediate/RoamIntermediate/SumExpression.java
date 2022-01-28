@@ -19,7 +19,7 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * @model abstract="true"
  * @generated
  */
-public interface SumExpression extends Iterator, ArithmeticExpression {
+public interface SumExpression extends ArithmeticExpression, SetOperation {
 	/**
 	 * Returns the value of the '<em><b>Expression</b></em>' containment reference.
 	 * <!-- begin-user-doc -->

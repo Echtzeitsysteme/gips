@@ -92,6 +92,11 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseContext(Context object) {
+			return createContextAdapter();
+		}
+
+		@Override
 		public Adapter caseTypeConstraint(TypeConstraint object) {
 			return createTypeConstraintAdapter();
 		}
@@ -99,16 +104,6 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseMappingConstraint(MappingConstraint object) {
 			return createMappingConstraintAdapter();
-		}
-
-		@Override
-		public Adapter caseContext(Context object) {
-			return createContextAdapter();
-		}
-
-		@Override
-		public Adapter caseIterator(Iterator object) {
-			return createIteratorAdapter();
 		}
 
 		@Override
@@ -129,6 +124,11 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseArithmeticStreamExpression(ArithmeticStreamExpression object) {
 			return createArithmeticStreamExpressionAdapter();
+		}
+
+		@Override
+		public Adapter caseSetOperation(SetOperation object) {
+			return createSetOperationAdapter();
 		}
 
 		@Override
@@ -222,13 +222,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
-		public Adapter caseContextMappingNode(ContextMappingNode object) {
-			return createContextMappingNodeAdapter();
+		public Adapter caseContextMappingValue(ContextMappingValue object) {
+			return createContextMappingValueAdapter();
 		}
 
 		@Override
-		public Adapter caseIteratorValue(IteratorValue object) {
-			return createIteratorValueAdapter();
+		public Adapter caseContextMappingNode(ContextMappingNode object) {
+			return createContextMappingNodeAdapter();
 		}
 
 		@Override
@@ -252,8 +252,38 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
-		public Adapter caseIteratorFeatureValue(IteratorFeatureValue object) {
-			return createIteratorFeatureValueAdapter();
+		public Adapter caseIterator(Iterator object) {
+			return createIteratorAdapter();
+		}
+
+		@Override
+		public Adapter caseIteratorMappingValue(IteratorMappingValue object) {
+			return createIteratorMappingValueAdapter();
+		}
+
+		@Override
+		public Adapter caseIteratorMappingFeatureValue(IteratorMappingFeatureValue object) {
+			return createIteratorMappingFeatureValueAdapter();
+		}
+
+		@Override
+		public Adapter caseIteratorMappingNodeValue(IteratorMappingNodeValue object) {
+			return createIteratorMappingNodeValueAdapter();
+		}
+
+		@Override
+		public Adapter caseIteratorMappingNodeFeatureValue(IteratorMappingNodeFeatureValue object) {
+			return createIteratorMappingNodeFeatureValueAdapter();
+		}
+
+		@Override
+		public Adapter caseIteratorTypeValue(IteratorTypeValue object) {
+			return createIteratorTypeValueAdapter();
+		}
+
+		@Override
+		public Adapter caseIteratorTypeFeatureValue(IteratorTypeFeatureValue object) {
+			return createIteratorTypeFeatureValueAdapter();
 		}
 
 		@Override
@@ -422,6 +452,90 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue <em>Iterator Mapping Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue
+	 * @generated
+	 */
+	public Adapter createIteratorMappingValueAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue <em>Iterator Mapping Feature Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue
+	 * @generated
+	 */
+	public Adapter createIteratorMappingFeatureValueAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue <em>Iterator Mapping Node Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue
+	 * @generated
+	 */
+	public Adapter createIteratorMappingNodeValueAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue <em>Iterator Mapping Node Feature Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue
+	 * @generated
+	 */
+	public Adapter createIteratorMappingNodeFeatureValueAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue <em>Iterator Type Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue
+	 * @generated
+	 */
+	public Adapter createIteratorTypeValueAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue <em>Iterator Type Feature Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue
+	 * @generated
+	 */
+	public Adapter createIteratorTypeFeatureValueAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression <em>Arithmetic Expression</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -474,6 +588,20 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createArithmeticStreamExpressionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.SetOperation <em>Set Operation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.SetOperation
+	 * @generated
+	 */
+	public Adapter createSetOperationAdapter() {
 		return null;
 	}
 
@@ -730,6 +858,20 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue <em>Context Mapping Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue
+	 * @generated
+	 */
+	public Adapter createContextMappingValueAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode <em>Context Mapping Node</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -740,20 +882,6 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createContextMappingNodeAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorValue <em>Iterator Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorValue
-	 * @generated
-	 */
-	public Adapter createIteratorValueAdapter() {
 		return null;
 	}
 
@@ -810,20 +938,6 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createContextMappingNodeFeatureValueAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorFeatureValue <em>Iterator Feature Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorFeatureValue
-	 * @generated
-	 */
-	public Adapter createIteratorFeatureValueAdapter() {
 		return null;
 	}
 

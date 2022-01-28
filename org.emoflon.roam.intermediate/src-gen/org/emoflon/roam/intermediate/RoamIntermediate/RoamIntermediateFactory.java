@@ -203,6 +203,15 @@ public interface RoamIntermediateFactory extends EFactory {
 	ContextTypeValue createContextTypeValue();
 
 	/**
+	 * Returns a new object of class '<em>Context Mapping Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Context Mapping Value</em>'.
+	 * @generated
+	 */
+	ContextMappingValue createContextMappingValue();
+
+	/**
 	 * Returns a new object of class '<em>Context Mapping Node</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -210,15 +219,6 @@ public interface RoamIntermediateFactory extends EFactory {
 	 * @generated
 	 */
 	ContextMappingNode createContextMappingNode();
-
-	/**
-	 * Returns a new object of class '<em>Iterator Value</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Iterator Value</em>'.
-	 * @generated
-	 */
-	IteratorValue createIteratorValue();
 
 	/**
 	 * Returns a new object of class '<em>Feature Expression</em>'.
@@ -257,13 +257,58 @@ public interface RoamIntermediateFactory extends EFactory {
 	ContextMappingNodeFeatureValue createContextMappingNodeFeatureValue();
 
 	/**
-	 * Returns a new object of class '<em>Iterator Feature Value</em>'.
+	 * Returns a new object of class '<em>Iterator Mapping Value</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Iterator Feature Value</em>'.
+	 * @return a new object of class '<em>Iterator Mapping Value</em>'.
 	 * @generated
 	 */
-	IteratorFeatureValue createIteratorFeatureValue();
+	IteratorMappingValue createIteratorMappingValue();
+
+	/**
+	 * Returns a new object of class '<em>Iterator Mapping Feature Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Iterator Mapping Feature Value</em>'.
+	 * @generated
+	 */
+	IteratorMappingFeatureValue createIteratorMappingFeatureValue();
+
+	/**
+	 * Returns a new object of class '<em>Iterator Mapping Node Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Iterator Mapping Node Value</em>'.
+	 * @generated
+	 */
+	IteratorMappingNodeValue createIteratorMappingNodeValue();
+
+	/**
+	 * Returns a new object of class '<em>Iterator Mapping Node Feature Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Iterator Mapping Node Feature Value</em>'.
+	 * @generated
+	 */
+	IteratorMappingNodeFeatureValue createIteratorMappingNodeFeatureValue();
+
+	/**
+	 * Returns a new object of class '<em>Iterator Type Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Iterator Type Value</em>'.
+	 * @generated
+	 */
+	IteratorTypeValue createIteratorTypeValue();
+
+	/**
+	 * Returns a new object of class '<em>Iterator Type Feature Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Iterator Type Feature Value</em>'.
+	 * @generated
+	 */
+	IteratorTypeFeatureValue createIteratorTypeFeatureValue();
 
 	/**
 	 * Returns a new object of class '<em>Stream Expression</em>'.

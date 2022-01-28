@@ -97,10 +97,10 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 			return createBoolLiteral();
 		case RoamIntermediatePackage.CONTEXT_TYPE_VALUE:
 			return createContextTypeValue();
+		case RoamIntermediatePackage.CONTEXT_MAPPING_VALUE:
+			return createContextMappingValue();
 		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE:
 			return createContextMappingNode();
-		case RoamIntermediatePackage.ITERATOR_VALUE:
-			return createIteratorValue();
 		case RoamIntermediatePackage.FEATURE_EXPRESSION:
 			return createFeatureExpression();
 		case RoamIntermediatePackage.FEATURE_LITERAL:
@@ -109,8 +109,18 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 			return createContextTypeFeatureValue();
 		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE:
 			return createContextMappingNodeFeatureValue();
-		case RoamIntermediatePackage.ITERATOR_FEATURE_VALUE:
-			return createIteratorFeatureValue();
+		case RoamIntermediatePackage.ITERATOR_MAPPING_VALUE:
+			return createIteratorMappingValue();
+		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE:
+			return createIteratorMappingFeatureValue();
+		case RoamIntermediatePackage.ITERATOR_MAPPING_NODE_VALUE:
+			return createIteratorMappingNodeValue();
+		case RoamIntermediatePackage.ITERATOR_MAPPING_NODE_FEATURE_VALUE:
+			return createIteratorMappingNodeFeatureValue();
+		case RoamIntermediatePackage.ITERATOR_TYPE_VALUE:
+			return createIteratorTypeValue();
+		case RoamIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE:
+			return createIteratorTypeFeatureValue();
 		case RoamIntermediatePackage.STREAM_EXPRESSION:
 			return createStreamExpression();
 		case RoamIntermediatePackage.STREAM_FILTER_OPERATION:
@@ -381,9 +391,9 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ContextMappingNode createContextMappingNode() {
-		ContextMappingNodeImpl contextMappingNode = new ContextMappingNodeImpl();
-		return contextMappingNode;
+	public ContextMappingValue createContextMappingValue() {
+		ContextMappingValueImpl contextMappingValue = new ContextMappingValueImpl();
+		return contextMappingValue;
 	}
 
 	/**
@@ -391,9 +401,9 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public IteratorValue createIteratorValue() {
-		IteratorValueImpl iteratorValue = new IteratorValueImpl();
-		return iteratorValue;
+	public ContextMappingNode createContextMappingNode() {
+		ContextMappingNodeImpl contextMappingNode = new ContextMappingNodeImpl();
+		return contextMappingNode;
 	}
 
 	/**
@@ -441,9 +451,59 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public IteratorFeatureValue createIteratorFeatureValue() {
-		IteratorFeatureValueImpl iteratorFeatureValue = new IteratorFeatureValueImpl();
-		return iteratorFeatureValue;
+	public IteratorMappingValue createIteratorMappingValue() {
+		IteratorMappingValueImpl iteratorMappingValue = new IteratorMappingValueImpl();
+		return iteratorMappingValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public IteratorMappingFeatureValue createIteratorMappingFeatureValue() {
+		IteratorMappingFeatureValueImpl iteratorMappingFeatureValue = new IteratorMappingFeatureValueImpl();
+		return iteratorMappingFeatureValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public IteratorMappingNodeValue createIteratorMappingNodeValue() {
+		IteratorMappingNodeValueImpl iteratorMappingNodeValue = new IteratorMappingNodeValueImpl();
+		return iteratorMappingNodeValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public IteratorMappingNodeFeatureValue createIteratorMappingNodeFeatureValue() {
+		IteratorMappingNodeFeatureValueImpl iteratorMappingNodeFeatureValue = new IteratorMappingNodeFeatureValueImpl();
+		return iteratorMappingNodeFeatureValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public IteratorTypeValue createIteratorTypeValue() {
+		IteratorTypeValueImpl iteratorTypeValue = new IteratorTypeValueImpl();
+		return iteratorTypeValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public IteratorTypeFeatureValue createIteratorTypeFeatureValue() {
+		IteratorTypeFeatureValueImpl iteratorTypeFeatureValue = new IteratorTypeFeatureValueImpl();
+		return iteratorTypeFeatureValue;
 	}
 
 	/**

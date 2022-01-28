@@ -30,6 +30,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//RelationalOperator"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementwise" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Context" abstract="true" interface="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="TypeConstraint" eSuperTypes="#//Context #//Constraint">
     <eStructuralFeatures xsi:type="ecore:EReference" name="modelType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
   </eClassifiers>
@@ -45,8 +46,6 @@
     <eLiterals name="Greater" value="4"/>
     <eLiterals name="NotEqual" value="5"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Context" abstract="true" interface="true"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Iterator" abstract="true" interface="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="ArithmeticExpression" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" lowerBound="1"
         eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EDataType"/>
@@ -70,7 +69,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="operation" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SumExpression" abstract="true" eSuperTypes="#//Iterator #//ArithmeticExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="SetOperation" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SumExpression" abstract="true" eSuperTypes="#//ArithmeticExpression #//SetOperation">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
         eType="#//ArithmeticExpression" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="filter" eType="#//StreamExpression"
@@ -166,12 +166,12 @@
   <eClassifiers xsi:type="ecore:EClass" name="ContextTypeValue" eSuperTypes="#//ValueExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="typeContext" eType="#//TypeConstraint"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContextMappingValue" eSuperTypes="#//ValueExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//MappingConstraint"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContextMappingNode" eSuperTypes="#//ValueExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//MappingConstraint"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXNode"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IteratorValue" eSuperTypes="#//ValueExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="iterator" eType="#//Iterator"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FeatureExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="current" lowerBound="1"
@@ -189,11 +189,33 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="featureExpression" eType="#//FeatureExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IteratorFeatureValue" eSuperTypes="#//IteratorValue">
+  <eClassifiers xsi:type="ecore:EClass" name="Iterator" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stream" eType="#//SetOperation"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IteratorMappingValue" eSuperTypes="#//ValueExpression #//Iterator">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//MappingConstraint"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IteratorMappingFeatureValue" eSuperTypes="#//ValueExpression #//Iterator">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//MappingConstraint"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="featureExpression" eType="#//FeatureExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="StreamExpression" eSuperTypes="#//Iterator">
+  <eClassifiers xsi:type="ecore:EClass" name="IteratorMappingNodeValue" eSuperTypes="#//ValueExpression #//Iterator">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//MappingConstraint"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXNode"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IteratorMappingNodeFeatureValue" eSuperTypes="#//IteratorMappingNodeValue">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureExpression" eType="#//FeatureExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IteratorTypeValue" eSuperTypes="#//ValueExpression #//Iterator">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeContext" eType="#//TypeConstraint"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IteratorTypeFeatureValue" eSuperTypes="#//IteratorTypeValue">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureExpression" eType="#//FeatureExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StreamExpression" eSuperTypes="#//SetOperation">
     <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="current" lowerBound="1"
         eType="#//StreamOperation" containment="true"/>

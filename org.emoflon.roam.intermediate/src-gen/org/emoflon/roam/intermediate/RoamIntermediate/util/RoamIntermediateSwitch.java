@@ -105,6 +105,13 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case RoamIntermediatePackage.CONTEXT: {
+			Context context = (Context) theEObject;
+			T result = caseContext(context);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case RoamIntermediatePackage.TYPE_CONSTRAINT: {
 			TypeConstraint typeConstraint = (TypeConstraint) theEObject;
 			T result = caseTypeConstraint(typeConstraint);
@@ -123,20 +130,6 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = caseContext(mappingConstraint);
 			if (result == null)
 				result = caseConstraint(mappingConstraint);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case RoamIntermediatePackage.CONTEXT: {
-			Context context = (Context) theEObject;
-			T result = caseContext(context);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case RoamIntermediatePackage.ITERATOR: {
-			Iterator iterator = (Iterator) theEObject;
-			T result = caseIterator(iterator);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -175,13 +168,20 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case RoamIntermediatePackage.SET_OPERATION: {
+			SetOperation setOperation = (SetOperation) theEObject;
+			T result = caseSetOperation(setOperation);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case RoamIntermediatePackage.SUM_EXPRESSION: {
 			SumExpression sumExpression = (SumExpression) theEObject;
 			T result = caseSumExpression(sumExpression);
 			if (result == null)
-				result = caseIterator(sumExpression);
-			if (result == null)
 				result = caseArithmeticExpression(sumExpression);
+			if (result == null)
+				result = caseSetOperation(sumExpression);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -192,9 +192,9 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 			if (result == null)
 				result = caseSumExpression(mappingSumExpression);
 			if (result == null)
-				result = caseIterator(mappingSumExpression);
-			if (result == null)
 				result = caseArithmeticExpression(mappingSumExpression);
+			if (result == null)
+				result = caseSetOperation(mappingSumExpression);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -205,9 +205,9 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 			if (result == null)
 				result = caseSumExpression(typeSumExpression);
 			if (result == null)
-				result = caseIterator(typeSumExpression);
-			if (result == null)
 				result = caseArithmeticExpression(typeSumExpression);
+			if (result == null)
+				result = caseSetOperation(typeSumExpression);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -363,20 +363,20 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case RoamIntermediatePackage.CONTEXT_MAPPING_VALUE: {
+			ContextMappingValue contextMappingValue = (ContextMappingValue) theEObject;
+			T result = caseContextMappingValue(contextMappingValue);
+			if (result == null)
+				result = caseValueExpression(contextMappingValue);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE: {
 			ContextMappingNode contextMappingNode = (ContextMappingNode) theEObject;
 			T result = caseContextMappingNode(contextMappingNode);
 			if (result == null)
 				result = caseValueExpression(contextMappingNode);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case RoamIntermediatePackage.ITERATOR_VALUE: {
-			IteratorValue iteratorValue = (IteratorValue) theEObject;
-			T result = caseIteratorValue(iteratorValue);
-			if (result == null)
-				result = caseValueExpression(iteratorValue);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -417,13 +417,79 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.ITERATOR_FEATURE_VALUE: {
-			IteratorFeatureValue iteratorFeatureValue = (IteratorFeatureValue) theEObject;
-			T result = caseIteratorFeatureValue(iteratorFeatureValue);
+		case RoamIntermediatePackage.ITERATOR: {
+			Iterator iterator = (Iterator) theEObject;
+			T result = caseIterator(iterator);
 			if (result == null)
-				result = caseIteratorValue(iteratorFeatureValue);
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.ITERATOR_MAPPING_VALUE: {
+			IteratorMappingValue iteratorMappingValue = (IteratorMappingValue) theEObject;
+			T result = caseIteratorMappingValue(iteratorMappingValue);
 			if (result == null)
-				result = caseValueExpression(iteratorFeatureValue);
+				result = caseValueExpression(iteratorMappingValue);
+			if (result == null)
+				result = caseIterator(iteratorMappingValue);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE: {
+			IteratorMappingFeatureValue iteratorMappingFeatureValue = (IteratorMappingFeatureValue) theEObject;
+			T result = caseIteratorMappingFeatureValue(iteratorMappingFeatureValue);
+			if (result == null)
+				result = caseValueExpression(iteratorMappingFeatureValue);
+			if (result == null)
+				result = caseIterator(iteratorMappingFeatureValue);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.ITERATOR_MAPPING_NODE_VALUE: {
+			IteratorMappingNodeValue iteratorMappingNodeValue = (IteratorMappingNodeValue) theEObject;
+			T result = caseIteratorMappingNodeValue(iteratorMappingNodeValue);
+			if (result == null)
+				result = caseValueExpression(iteratorMappingNodeValue);
+			if (result == null)
+				result = caseIterator(iteratorMappingNodeValue);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.ITERATOR_MAPPING_NODE_FEATURE_VALUE: {
+			IteratorMappingNodeFeatureValue iteratorMappingNodeFeatureValue = (IteratorMappingNodeFeatureValue) theEObject;
+			T result = caseIteratorMappingNodeFeatureValue(iteratorMappingNodeFeatureValue);
+			if (result == null)
+				result = caseIteratorMappingNodeValue(iteratorMappingNodeFeatureValue);
+			if (result == null)
+				result = caseValueExpression(iteratorMappingNodeFeatureValue);
+			if (result == null)
+				result = caseIterator(iteratorMappingNodeFeatureValue);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.ITERATOR_TYPE_VALUE: {
+			IteratorTypeValue iteratorTypeValue = (IteratorTypeValue) theEObject;
+			T result = caseIteratorTypeValue(iteratorTypeValue);
+			if (result == null)
+				result = caseValueExpression(iteratorTypeValue);
+			if (result == null)
+				result = caseIterator(iteratorTypeValue);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE: {
+			IteratorTypeFeatureValue iteratorTypeFeatureValue = (IteratorTypeFeatureValue) theEObject;
+			T result = caseIteratorTypeFeatureValue(iteratorTypeFeatureValue);
+			if (result == null)
+				result = caseIteratorTypeValue(iteratorTypeFeatureValue);
+			if (result == null)
+				result = caseValueExpression(iteratorTypeFeatureValue);
+			if (result == null)
+				result = caseIterator(iteratorTypeFeatureValue);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -432,7 +498,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 			StreamExpression streamExpression = (StreamExpression) theEObject;
 			T result = caseStreamExpression(streamExpression);
 			if (result == null)
-				result = caseIterator(streamExpression);
+				result = caseSetOperation(streamExpression);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -603,6 +669,96 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator Mapping Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator Mapping Value</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIteratorMappingValue(IteratorMappingValue object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator Mapping Feature Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator Mapping Feature Value</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIteratorMappingFeatureValue(IteratorMappingFeatureValue object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator Mapping Node Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator Mapping Node Value</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIteratorMappingNodeValue(IteratorMappingNodeValue object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator Mapping Node Feature Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator Mapping Node Feature Value</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIteratorMappingNodeFeatureValue(IteratorMappingNodeFeatureValue object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator Type Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator Type Value</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIteratorTypeValue(IteratorTypeValue object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator Type Feature Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator Type Feature Value</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIteratorTypeFeatureValue(IteratorTypeFeatureValue object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Arithmetic Expression</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -659,6 +815,21 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseArithmeticStreamExpression(ArithmeticStreamExpression object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Set Operation</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Set Operation</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSetOperation(SetOperation object) {
 		return null;
 	}
 
@@ -933,6 +1104,21 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Context Mapping Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Context Mapping Value</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseContextMappingValue(ContextMappingValue object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Context Mapping Node</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -944,21 +1130,6 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseContextMappingNode(ContextMappingNode object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Iterator Value</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Iterator Value</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseIteratorValue(IteratorValue object) {
 		return null;
 	}
 
@@ -1019,21 +1190,6 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseContextMappingNodeFeatureValue(ContextMappingNodeFeatureValue object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Iterator Feature Value</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Iterator Feature Value</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseIteratorFeatureValue(IteratorFeatureValue object) {
 		return null;
 	}
 

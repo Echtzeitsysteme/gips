@@ -166,19 +166,19 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	
 	public static String OBJECTIVE_VALUE_IS_ZERO_MESSAGE = "Objective '%s' can be removed because its value is 0.";
 	
-	// TODO: Is this really necessary? Isn't the global objective optional?
 	/**
-	 * Checks if a global objective is specified in a given file.
+	 * Checks if a global objective is specified in a given file. This must hold if there is any
+	 * local objective defined.
 	 * 
 	 * @param file File to check existence of a global objective for.
 	 */
 	@Check
 	public void checkGlobalObjectiveNotNull(final EditorGTFile file) {
-		if (file.getGlobalObjective() == null) {
+		if (file.getObjectives() != null && !file.getObjectives().isEmpty() && file.getGlobalObjective() == null) {
 			error(
 					GLOBAL_OBJECTIVE_IS_NULL,
-					RoamSLangPackage.Literals.ROAM_GLOBAL_OBJECTIVE.eContainingFeature(),
-					// TODO: ^I'm not quite sure about the second parameter
+					// TODO: I'm not quite sure about the second parameter:
+					RoamSLangPackage.Literals.EDITOR_GT_FILE__GLOBAL_OBJECTIVE,
 					GLOBA_OBJJECTIVE_DOES_NOT_EXIST
 			);
 		}

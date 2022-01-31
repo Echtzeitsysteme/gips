@@ -16,23 +16,26 @@ import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
 import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticLiteral;
 import org.emoflon.roam.roamslang.roamSLang.RoamAttributeExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamBinaryArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamBinaryBoolExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamBool;
 import org.emoflon.roam.roamslang.roamSLang.RoamBoolExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamBooleanLiteral;
+import org.emoflon.roam.roamslang.roamSLang.RoamBracketExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
 import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamExpArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamExpressionOperand;
 import org.emoflon.roam.roamslang.roamSLang.RoamLambdaAttributeExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
 import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjective;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjectiveExpression;
+import org.emoflon.roam.roamslang.roamSLang.RoamProductArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamRelExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamSLangPackage;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamBoolExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamNoArgOperator;
+import org.emoflon.roam.roamslang.roamSLang.RoamSumArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamUnaryArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamUnaryBoolExpr;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamRelExprImpl;
@@ -479,16 +482,26 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 
 		throw new IllegalStateException("Instance type not found.");
-		
-//		return null;
-//		return expr.getClass();
 	}
 	
 	public leafType getEvalTypeFromArithExpr(final RoamArithmeticExpr expr) {
-		if (expr instanceof RoamBinaryArithmeticExpr) {
-			final RoamBinaryArithmeticExpr arithExpr = (RoamBinaryArithmeticExpr) expr;
-			return getEvalLeftRightSide(arithExpr.getLeft(), arithExpr.getRight());
+		if (expr instanceof RoamBracketExpr) {
+			final RoamBracketExpr brack = (RoamBracketExpr) expr;
+			return getEvalTypeFromArithExpr(brack.getOperand());
+		} else if (expr instanceof RoamExpArithmeticExpr) {
+			final RoamExpArithmeticExpr exp = (RoamExpArithmeticExpr) expr;
+			// TODO: Check if return type is compatible with operator
+			return getEvalLeftRightSide(exp.getLeft(), exp.getRight());
+		} else if (expr instanceof RoamProductArithmeticExpr) {
+			final RoamProductArithmeticExpr prod = (RoamProductArithmeticExpr) expr;
+			// TODO: Check if return type is compatible with operator
+			return getEvalLeftRightSide(prod.getLeft(), prod.getRight());
+		} else if (expr instanceof RoamSumArithmeticExpr) {
+			final RoamSumArithmeticExpr sum = (RoamSumArithmeticExpr) expr;
+			// TODO: Check if return type is compatible with operator
+			return getEvalLeftRightSide(sum.getLeft(), sum.getRight());
 		} else if (expr instanceof RoamUnaryArithmeticExpr) {
+			// TODO: Check if return type is compatible with operator
 			return getEvalTypeFromArithExpr(((RoamUnaryArithmeticExpr) expr).getOperand());
 		} else if (expr instanceof RoamExpressionOperand) {
 			

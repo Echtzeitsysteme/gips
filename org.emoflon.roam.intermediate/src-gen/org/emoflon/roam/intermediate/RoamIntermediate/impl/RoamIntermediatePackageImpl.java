@@ -651,35 +651,17 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getConstraint_LhsConstant() {
-		return (EReference) constraintEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getConstraint_RhsExpression() {
-		return (EReference) constraintEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getConstraint_Operator() {
-		return (EAttribute) constraintEClass.getEStructuralFeatures().get(3);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EAttribute getConstraint_Elementwise() {
-		return (EAttribute) constraintEClass.getEStructuralFeatures().get(4);
+		return (EAttribute) constraintEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getConstraint_Expression() {
+		return (EReference) constraintEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -1664,10 +1646,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 
 		constraintEClass = createEClass(CONSTRAINT);
 		createEAttribute(constraintEClass, CONSTRAINT__NAME);
-		createEReference(constraintEClass, CONSTRAINT__LHS_CONSTANT);
-		createEReference(constraintEClass, CONSTRAINT__RHS_EXPRESSION);
-		createEAttribute(constraintEClass, CONSTRAINT__OPERATOR);
 		createEAttribute(constraintEClass, CONSTRAINT__ELEMENTWISE);
+		createEReference(constraintEClass, CONSTRAINT__EXPRESSION);
 
 		contextEClass = createEClass(CONTEXT);
 
@@ -1932,17 +1912,12 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 				IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getConstraint_Name(), ecorePackage.getEString(), "name", null, 0, 1, Constraint.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getConstraint_LhsConstant(), this.getArithmeticValueExpression(), null, "lhsConstant", null, 1,
-				1, Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getConstraint_RhsExpression(), this.getArithmeticExpression(), null, "rhsExpression", null, 1, 1,
-				Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getConstraint_Operator(), this.getRelationalOperator(), "operator", null, 0, 1, Constraint.class,
-				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConstraint_Elementwise(), ecorePackage.getEBoolean(), "elementwise", null, 0, 1,
 				Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
 				!IS_DERIVED, IS_ORDERED);
+		initEReference(getConstraint_Expression(), this.getRelationalExpression(), null, "expression", null, 1, 1,
+				Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(contextEClass, Context.class, "Context", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

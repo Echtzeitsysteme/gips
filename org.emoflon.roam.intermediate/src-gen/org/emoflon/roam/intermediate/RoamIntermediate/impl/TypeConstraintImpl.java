@@ -10,11 +10,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValueExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator;
+import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
 
@@ -27,10 +24,8 @@ import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
  * </p>
  * <ul>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl#getLhsConstant <em>Lhs Constant</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl#getRhsExpression <em>Rhs Expression</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl#getOperator <em>Operator</em>}</li>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl#isElementwise <em>Elementwise</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl#getExpression <em>Expression</em>}</li>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl#getModelType <em>Model Type</em>}</li>
  * </ul>
  *
@@ -58,46 +53,6 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getLhsConstant() <em>Lhs Constant</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getLhsConstant()
-	 * @generated
-	 * @ordered
-	 */
-	protected ArithmeticValueExpression lhsConstant;
-
-	/**
-	 * The cached value of the '{@link #getRhsExpression() <em>Rhs Expression</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getRhsExpression()
-	 * @generated
-	 * @ordered
-	 */
-	protected ArithmeticExpression rhsExpression;
-
-	/**
-	 * The default value of the '{@link #getOperator() <em>Operator</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getOperator()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final RelationalOperator OPERATOR_EDEFAULT = RelationalOperator.LESS;
-
-	/**
-	 * The cached value of the '{@link #getOperator() <em>Operator</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getOperator()
-	 * @generated
-	 * @ordered
-	 */
-	protected RelationalOperator operator = OPERATOR_EDEFAULT;
-
-	/**
 	 * The default value of the '{@link #isElementwise() <em>Elementwise</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -116,6 +71,16 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * @ordered
 	 */
 	protected boolean elementwise = ELEMENTWISE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getExpression()
+	 * @generated
+	 * @ordered
+	 */
+	protected RelationalExpression expression;
 
 	/**
 	 * The cached value of the '{@link #getModelType() <em>Model Type</em>}' reference.
@@ -173,128 +138,6 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ArithmeticValueExpression getLhsConstant() {
-		return lhsConstant;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetLhsConstant(ArithmeticValueExpression newLhsConstant, NotificationChain msgs) {
-		ArithmeticValueExpression oldLhsConstant = lhsConstant;
-		lhsConstant = newLhsConstant;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.TYPE_CONSTRAINT__LHS_CONSTANT, oldLhsConstant, newLhsConstant);
-			if (msgs == null)
-				msgs = notification;
-			else
-				msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setLhsConstant(ArithmeticValueExpression newLhsConstant) {
-		if (newLhsConstant != lhsConstant) {
-			NotificationChain msgs = null;
-			if (lhsConstant != null)
-				msgs = ((InternalEObject) lhsConstant).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.TYPE_CONSTRAINT__LHS_CONSTANT, null, msgs);
-			if (newLhsConstant != null)
-				msgs = ((InternalEObject) newLhsConstant).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.TYPE_CONSTRAINT__LHS_CONSTANT, null, msgs);
-			msgs = basicSetLhsConstant(newLhsConstant, msgs);
-			if (msgs != null)
-				msgs.dispatch();
-		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE_CONSTRAINT__LHS_CONSTANT,
-					newLhsConstant, newLhsConstant));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public ArithmeticExpression getRhsExpression() {
-		return rhsExpression;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetRhsExpression(ArithmeticExpression newRhsExpression, NotificationChain msgs) {
-		ArithmeticExpression oldRhsExpression = rhsExpression;
-		rhsExpression = newRhsExpression;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.TYPE_CONSTRAINT__RHS_EXPRESSION, oldRhsExpression, newRhsExpression);
-			if (msgs == null)
-				msgs = notification;
-			else
-				msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setRhsExpression(ArithmeticExpression newRhsExpression) {
-		if (newRhsExpression != rhsExpression) {
-			NotificationChain msgs = null;
-			if (rhsExpression != null)
-				msgs = ((InternalEObject) rhsExpression).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.TYPE_CONSTRAINT__RHS_EXPRESSION, null, msgs);
-			if (newRhsExpression != null)
-				msgs = ((InternalEObject) newRhsExpression).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.TYPE_CONSTRAINT__RHS_EXPRESSION, null, msgs);
-			msgs = basicSetRhsExpression(newRhsExpression, msgs);
-			if (msgs != null)
-				msgs.dispatch();
-		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.TYPE_CONSTRAINT__RHS_EXPRESSION, newRhsExpression, newRhsExpression));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public RelationalOperator getOperator() {
-		return operator;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setOperator(RelationalOperator newOperator) {
-		RelationalOperator oldOperator = operator;
-		operator = newOperator == null ? OPERATOR_EDEFAULT : newOperator;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE_CONSTRAINT__OPERATOR,
-					oldOperator, operator));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public boolean isElementwise() {
 		return elementwise;
 	}
@@ -310,6 +153,56 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE,
 					oldElementwise, elementwise));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public RelationalExpression getExpression() {
+		return expression;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetExpression(RelationalExpression newExpression, NotificationChain msgs) {
+		RelationalExpression oldExpression = expression;
+		expression = newExpression;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION, oldExpression, newExpression);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setExpression(RelationalExpression newExpression) {
+		if (newExpression != expression) {
+			NotificationChain msgs = null;
+			if (expression != null)
+				msgs = ((InternalEObject) expression).eInverseRemove(this,
+						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION, null, msgs);
+			if (newExpression != null)
+				msgs = ((InternalEObject) newExpression).eInverseAdd(this,
+						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION, null, msgs);
+			msgs = basicSetExpression(newExpression, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION,
+					newExpression, newExpression));
 	}
 
 	/**
@@ -360,10 +253,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__LHS_CONSTANT:
-			return basicSetLhsConstant(null, msgs);
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__RHS_EXPRESSION:
-			return basicSetRhsExpression(null, msgs);
+		case RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
+			return basicSetExpression(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -378,14 +269,10 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		switch (featureID) {
 		case RoamIntermediatePackage.TYPE_CONSTRAINT__NAME:
 			return getName();
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__LHS_CONSTANT:
-			return getLhsConstant();
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__RHS_EXPRESSION:
-			return getRhsExpression();
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__OPERATOR:
-			return getOperator();
 		case RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE:
 			return isElementwise();
+		case RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
+			return getExpression();
 		case RoamIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE:
 			if (resolve)
 				return getModelType();
@@ -405,17 +292,11 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		case RoamIntermediatePackage.TYPE_CONSTRAINT__NAME:
 			setName((String) newValue);
 			return;
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__LHS_CONSTANT:
-			setLhsConstant((ArithmeticValueExpression) newValue);
-			return;
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__RHS_EXPRESSION:
-			setRhsExpression((ArithmeticExpression) newValue);
-			return;
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__OPERATOR:
-			setOperator((RelationalOperator) newValue);
-			return;
 		case RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE:
 			setElementwise((Boolean) newValue);
+			return;
+		case RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
+			setExpression((RelationalExpression) newValue);
 			return;
 		case RoamIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE:
 			setModelType((EClass) newValue);
@@ -435,17 +316,11 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		case RoamIntermediatePackage.TYPE_CONSTRAINT__NAME:
 			setName(NAME_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__LHS_CONSTANT:
-			setLhsConstant((ArithmeticValueExpression) null);
-			return;
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__RHS_EXPRESSION:
-			setRhsExpression((ArithmeticExpression) null);
-			return;
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__OPERATOR:
-			setOperator(OPERATOR_EDEFAULT);
-			return;
 		case RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE:
 			setElementwise(ELEMENTWISE_EDEFAULT);
+			return;
+		case RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
+			setExpression((RelationalExpression) null);
 			return;
 		case RoamIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE:
 			setModelType((EClass) null);
@@ -464,14 +339,10 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		switch (featureID) {
 		case RoamIntermediatePackage.TYPE_CONSTRAINT__NAME:
 			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__LHS_CONSTANT:
-			return lhsConstant != null;
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__RHS_EXPRESSION:
-			return rhsExpression != null;
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__OPERATOR:
-			return operator != OPERATOR_EDEFAULT;
 		case RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE:
 			return elementwise != ELEMENTWISE_EDEFAULT;
+		case RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
+			return expression != null;
 		case RoamIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE:
 			return modelType != null;
 		}
@@ -489,14 +360,10 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 			switch (derivedFeatureID) {
 			case RoamIntermediatePackage.TYPE_CONSTRAINT__NAME:
 				return RoamIntermediatePackage.CONSTRAINT__NAME;
-			case RoamIntermediatePackage.TYPE_CONSTRAINT__LHS_CONSTANT:
-				return RoamIntermediatePackage.CONSTRAINT__LHS_CONSTANT;
-			case RoamIntermediatePackage.TYPE_CONSTRAINT__RHS_EXPRESSION:
-				return RoamIntermediatePackage.CONSTRAINT__RHS_EXPRESSION;
-			case RoamIntermediatePackage.TYPE_CONSTRAINT__OPERATOR:
-				return RoamIntermediatePackage.CONSTRAINT__OPERATOR;
 			case RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE:
 				return RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE;
+			case RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
+				return RoamIntermediatePackage.CONSTRAINT__EXPRESSION;
 			default:
 				return -1;
 			}
@@ -515,14 +382,10 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 			switch (baseFeatureID) {
 			case RoamIntermediatePackage.CONSTRAINT__NAME:
 				return RoamIntermediatePackage.TYPE_CONSTRAINT__NAME;
-			case RoamIntermediatePackage.CONSTRAINT__LHS_CONSTANT:
-				return RoamIntermediatePackage.TYPE_CONSTRAINT__LHS_CONSTANT;
-			case RoamIntermediatePackage.CONSTRAINT__RHS_EXPRESSION:
-				return RoamIntermediatePackage.TYPE_CONSTRAINT__RHS_EXPRESSION;
-			case RoamIntermediatePackage.CONSTRAINT__OPERATOR:
-				return RoamIntermediatePackage.TYPE_CONSTRAINT__OPERATOR;
 			case RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE:
 				return RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE;
+			case RoamIntermediatePackage.CONSTRAINT__EXPRESSION:
+				return RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION;
 			default:
 				return -1;
 			}
@@ -543,8 +406,6 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (name: ");
 		result.append(name);
-		result.append(", operator: ");
-		result.append(operator);
 		result.append(", elementwise: ");
 		result.append(elementwise);
 		result.append(')');

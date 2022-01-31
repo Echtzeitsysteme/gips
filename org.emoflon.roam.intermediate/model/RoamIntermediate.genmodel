@@ -65,10 +65,8 @@
     </genClasses>
     <genClasses image="false" ecoreClass="RoamIntermediate.ecore#//Constraint">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//Constraint/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//Constraint/lhsConstant"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//Constraint/rhsExpression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//Constraint/operator"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//Constraint/elementwise"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//Constraint/expression"/>
     </genClasses>
     <genClasses image="false" ecoreClass="RoamIntermediate.ecore#//Context"/>
     <genClasses ecoreClass="RoamIntermediate.ecore#//TypeConstraint">

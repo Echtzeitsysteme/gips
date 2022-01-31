@@ -23,12 +23,9 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Constraint" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="lhsConstant" lowerBound="1"
-        eType="#//ArithmeticValueExpression" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="rhsExpression" lowerBound="1"
-        eType="#//ArithmeticExpression" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//RelationalOperator"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementwise" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
+        eType="#//RelationalExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Context" abstract="true" interface="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="TypeConstraint" eSuperTypes="#//Context #//Constraint">

@@ -271,40 +271,22 @@ public interface RoamIntermediatePackage extends EPackage {
 	int CONSTRAINT__NAME = 0;
 
 	/**
-	 * The feature id for the '<em><b>Lhs Constant</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CONSTRAINT__LHS_CONSTANT = 1;
-
-	/**
-	 * The feature id for the '<em><b>Rhs Expression</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CONSTRAINT__RHS_EXPRESSION = 2;
-
-	/**
-	 * The feature id for the '<em><b>Operator</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CONSTRAINT__OPERATOR = 3;
-
-	/**
 	 * The feature id for the '<em><b>Elementwise</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONSTRAINT__ELEMENTWISE = 4;
+	int CONSTRAINT__ELEMENTWISE = 1;
+
+	/**
+	 * The feature id for the '<em><b>Expression</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONSTRAINT__EXPRESSION = 2;
 
 	/**
 	 * The number of structural features of the '<em>Constraint</em>' class.
@@ -313,7 +295,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONSTRAINT_FEATURE_COUNT = 5;
+	int CONSTRAINT_FEATURE_COUNT = 3;
 
 	/**
 	 * The number of operations of the '<em>Constraint</em>' class.
@@ -372,40 +354,22 @@ public interface RoamIntermediatePackage extends EPackage {
 	int TYPE_CONSTRAINT__NAME = CONTEXT_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Lhs Constant</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TYPE_CONSTRAINT__LHS_CONSTANT = CONTEXT_FEATURE_COUNT + 1;
-
-	/**
-	 * The feature id for the '<em><b>Rhs Expression</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TYPE_CONSTRAINT__RHS_EXPRESSION = CONTEXT_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Operator</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TYPE_CONSTRAINT__OPERATOR = CONTEXT_FEATURE_COUNT + 3;
-
-	/**
 	 * The feature id for the '<em><b>Elementwise</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT__ELEMENTWISE = CONTEXT_FEATURE_COUNT + 4;
+	int TYPE_CONSTRAINT__ELEMENTWISE = CONTEXT_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Expression</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_CONSTRAINT__EXPRESSION = CONTEXT_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Model Type</b></em>' reference.
@@ -414,7 +378,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT__MODEL_TYPE = CONTEXT_FEATURE_COUNT + 5;
+	int TYPE_CONSTRAINT__MODEL_TYPE = CONTEXT_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Type Constraint</em>' class.
@@ -423,7 +387,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 6;
+	int TYPE_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Type Constraint</em>' class.
@@ -454,40 +418,22 @@ public interface RoamIntermediatePackage extends EPackage {
 	int MAPPING_CONSTRAINT__NAME = CONTEXT_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Lhs Constant</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MAPPING_CONSTRAINT__LHS_CONSTANT = CONTEXT_FEATURE_COUNT + 1;
-
-	/**
-	 * The feature id for the '<em><b>Rhs Expression</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MAPPING_CONSTRAINT__RHS_EXPRESSION = CONTEXT_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Operator</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MAPPING_CONSTRAINT__OPERATOR = CONTEXT_FEATURE_COUNT + 3;
-
-	/**
 	 * The feature id for the '<em><b>Elementwise</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT__ELEMENTWISE = CONTEXT_FEATURE_COUNT + 4;
+	int MAPPING_CONSTRAINT__ELEMENTWISE = CONTEXT_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Expression</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MAPPING_CONSTRAINT__EXPRESSION = CONTEXT_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Mapping</b></em>' reference.
@@ -496,7 +442,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT__MAPPING = CONTEXT_FEATURE_COUNT + 5;
+	int MAPPING_CONSTRAINT__MAPPING = CONTEXT_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Mapping Constraint</em>' class.
@@ -505,7 +451,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 6;
+	int MAPPING_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Mapping Constraint</em>' class.
@@ -2655,39 +2601,6 @@ public interface RoamIntermediatePackage extends EPackage {
 	EAttribute getConstraint_Name();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#getLhsConstant <em>Lhs Constant</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Lhs Constant</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Constraint#getLhsConstant()
-	 * @see #getConstraint()
-	 * @generated
-	 */
-	EReference getConstraint_LhsConstant();
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#getRhsExpression <em>Rhs Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Rhs Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Constraint#getRhsExpression()
-	 * @see #getConstraint()
-	 * @generated
-	 */
-	EReference getConstraint_RhsExpression();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#getOperator <em>Operator</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Operator</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Constraint#getOperator()
-	 * @see #getConstraint()
-	 * @generated
-	 */
-	EAttribute getConstraint_Operator();
-
-	/**
 	 * Returns the meta object for the attribute '{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#isElementwise <em>Elementwise</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2697,6 +2610,17 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getConstraint_Elementwise();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#getExpression <em>Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Expression</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Constraint#getExpression()
+	 * @see #getConstraint()
+	 * @generated
+	 */
+	EReference getConstraint_Expression();
 
 	/**
 	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.Context <em>Context</em>}'.
@@ -3930,36 +3854,20 @@ public interface RoamIntermediatePackage extends EPackage {
 		EAttribute CONSTRAINT__NAME = eINSTANCE.getConstraint_Name();
 
 		/**
-		 * The meta object literal for the '<em><b>Lhs Constant</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference CONSTRAINT__LHS_CONSTANT = eINSTANCE.getConstraint_LhsConstant();
-
-		/**
-		 * The meta object literal for the '<em><b>Rhs Expression</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference CONSTRAINT__RHS_EXPRESSION = eINSTANCE.getConstraint_RhsExpression();
-
-		/**
-		 * The meta object literal for the '<em><b>Operator</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute CONSTRAINT__OPERATOR = eINSTANCE.getConstraint_Operator();
-
-		/**
 		 * The meta object literal for the '<em><b>Elementwise</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EAttribute CONSTRAINT__ELEMENTWISE = eINSTANCE.getConstraint_Elementwise();
+
+		/**
+		 * The meta object literal for the '<em><b>Expression</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CONSTRAINT__EXPRESSION = eINSTANCE.getConstraint_Expression();
 
 		/**
 		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.Context <em>Context</em>}' class.

@@ -28,7 +28,14 @@ public class RoamProjectBuilder implements RoamBuilderExtension {
 		EditorGTFile roamSlangFile = (EditorGTFile) resource.getContents().get(0);
 		// use transformer to create intermediate roam model out of the roamSlang file
 		RoamToIntermediate transformer = new RoamToIntermediate(roamSlangFile);
-		RoamIntermediateModel model = transformer.transform();
+		RoamIntermediateModel model = null;
+		try {
+			model = transformer.transform();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return;
+		}
 		model.setName(resource.getURI().trimFileExtension().lastSegment());
 		IBeXModel ibexModel = model.getIbexModel();
 

@@ -21,7 +21,6 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface Iterator extends EObject {
-
 	/**
 	 * Returns the value of the '<em><b>Stream</b></em>' reference.
 	 * <!-- begin-user-doc -->
@@ -43,4 +42,5 @@ public interface Iterator extends EObject {
 	 * @generated
 	 */
 	void setStream(SetOperation value);
+
 } // Iterator

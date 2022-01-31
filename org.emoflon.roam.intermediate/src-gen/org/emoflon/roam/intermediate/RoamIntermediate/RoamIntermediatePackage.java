@@ -517,66 +517,6 @@ public interface RoamIntermediatePackage extends EPackage {
 	int MAPPING_CONSTRAINT_OPERATION_COUNT = CONTEXT_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorImpl <em>Iterator</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIterator()
-	 * @generated
-	 */
-	int ITERATOR = 37;
-
-	/**
-	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingValueImpl <em>Iterator Mapping Value</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingValue()
-	 * @generated
-	 */
-	int ITERATOR_MAPPING_VALUE = 38;
-
-	/**
-	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeValueImpl <em>Iterator Mapping Node Value</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingNodeValue()
-	 * @generated
-	 */
-	int ITERATOR_MAPPING_NODE_VALUE = 40;
-
-	/**
-	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeFeatureValueImpl <em>Iterator Mapping Node Feature Value</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeFeatureValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingNodeFeatureValue()
-	 * @generated
-	 */
-	int ITERATOR_MAPPING_NODE_FEATURE_VALUE = 41;
-
-	/**
-	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeValueImpl <em>Iterator Type Value</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorTypeValue()
-	 * @generated
-	 */
-	int ITERATOR_TYPE_VALUE = 42;
-
-	/**
-	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeFeatureValueImpl <em>Iterator Type Feature Value</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeFeatureValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorTypeFeatureValue()
-	 * @generated
-	 */
-	int ITERATOR_TYPE_FEATURE_VALUE = 43;
-
-	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticExpressionImpl <em>Arithmetic Expression</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1938,6 +1878,16 @@ public interface RoamIntermediatePackage extends EPackage {
 	int CONTEXT_MAPPING_NODE_FEATURE_VALUE_OPERATION_COUNT = CONTEXT_MAPPING_NODE_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorImpl <em>Iterator</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorImpl
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIterator()
+	 * @generated
+	 */
+	int ITERATOR = 37;
+
+	/**
 	 * The feature id for the '<em><b>Stream</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1963,6 +1913,16 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @ordered
 	 */
 	int ITERATOR_OPERATION_COUNT = 0;
+
+	/**
+	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingValueImpl <em>Iterator Mapping Value</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingValueImpl
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingValue()
+	 * @generated
+	 */
+	int ITERATOR_MAPPING_VALUE = 38;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -2074,6 +2034,16 @@ public interface RoamIntermediatePackage extends EPackage {
 	int ITERATOR_MAPPING_FEATURE_VALUE_OPERATION_COUNT = VALUE_EXPRESSION_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeValueImpl <em>Iterator Mapping Node Value</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeValueImpl
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingNodeValue()
+	 * @generated
+	 */
+	int ITERATOR_MAPPING_NODE_VALUE = 40;
+
+	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2126,6 +2096,16 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @ordered
 	 */
 	int ITERATOR_MAPPING_NODE_VALUE_OPERATION_COUNT = VALUE_EXPRESSION_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeFeatureValueImpl <em>Iterator Mapping Node Feature Value</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeFeatureValueImpl
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingNodeFeatureValue()
+	 * @generated
+	 */
+	int ITERATOR_MAPPING_NODE_FEATURE_VALUE = 41;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -2191,6 +2171,16 @@ public interface RoamIntermediatePackage extends EPackage {
 	int ITERATOR_MAPPING_NODE_FEATURE_VALUE_OPERATION_COUNT = ITERATOR_MAPPING_NODE_VALUE_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeValueImpl <em>Iterator Type Value</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeValueImpl
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorTypeValue()
+	 * @generated
+	 */
+	int ITERATOR_TYPE_VALUE = 42;
+
+	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2234,6 +2224,16 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @ordered
 	 */
 	int ITERATOR_TYPE_VALUE_OPERATION_COUNT = VALUE_EXPRESSION_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeFeatureValueImpl <em>Iterator Type Feature Value</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeFeatureValueImpl
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorTypeFeatureValue()
+	 * @generated
+	 */
+	int ITERATOR_TYPE_FEATURE_VALUE = 43;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -2699,6 +2699,16 @@ public interface RoamIntermediatePackage extends EPackage {
 	EAttribute getConstraint_Elementwise();
 
 	/**
+	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.Context <em>Context</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Context</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Context
+	 * @generated
+	 */
+	EClass getContext();
+
+	/**
 	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint <em>Type Constraint</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2739,185 +2749,6 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 */
 	EReference getMappingConstraint_Mapping();
-
-	/**
-	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.Context <em>Context</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Context</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Context
-	 * @generated
-	 */
-	EClass getContext();
-
-	/**
-	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.Iterator <em>Iterator</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Iterator</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Iterator
-	 * @generated
-	 */
-	EClass getIterator();
-
-	/**
-	 * Returns the meta object for the reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.Iterator#getStream <em>Stream</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Stream</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Iterator#getStream()
-	 * @see #getIterator()
-	 * @generated
-	 */
-	EReference getIterator_Stream();
-
-	/**
-	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue <em>Iterator Mapping Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Iterator Mapping Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue
-	 * @generated
-	 */
-	EClass getIteratorMappingValue();
-
-	/**
-	 * Returns the meta object for the reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue#getMappingContext <em>Mapping Context</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Mapping Context</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue#getMappingContext()
-	 * @see #getIteratorMappingValue()
-	 * @generated
-	 */
-	EReference getIteratorMappingValue_MappingContext();
-
-	/**
-	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue <em>Iterator Mapping Feature Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Iterator Mapping Feature Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue
-	 * @generated
-	 */
-	EClass getIteratorMappingFeatureValue();
-
-	/**
-	 * Returns the meta object for the reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue#getMappingContext <em>Mapping Context</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Mapping Context</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue#getMappingContext()
-	 * @see #getIteratorMappingFeatureValue()
-	 * @generated
-	 */
-	EReference getIteratorMappingFeatureValue_MappingContext();
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue#getFeatureExpression <em>Feature Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Feature Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue#getFeatureExpression()
-	 * @see #getIteratorMappingFeatureValue()
-	 * @generated
-	 */
-	EReference getIteratorMappingFeatureValue_FeatureExpression();
-
-	/**
-	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue <em>Iterator Mapping Node Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Iterator Mapping Node Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue
-	 * @generated
-	 */
-	EClass getIteratorMappingNodeValue();
-
-	/**
-	 * Returns the meta object for the reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue#getMappingContext <em>Mapping Context</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Mapping Context</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue#getMappingContext()
-	 * @see #getIteratorMappingNodeValue()
-	 * @generated
-	 */
-	EReference getIteratorMappingNodeValue_MappingContext();
-
-	/**
-	 * Returns the meta object for the reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue#getNode <em>Node</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Node</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue#getNode()
-	 * @see #getIteratorMappingNodeValue()
-	 * @generated
-	 */
-	EReference getIteratorMappingNodeValue_Node();
-
-	/**
-	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue <em>Iterator Mapping Node Feature Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Iterator Mapping Node Feature Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue
-	 * @generated
-	 */
-	EClass getIteratorMappingNodeFeatureValue();
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue#getFeatureExpression <em>Feature Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Feature Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue#getFeatureExpression()
-	 * @see #getIteratorMappingNodeFeatureValue()
-	 * @generated
-	 */
-	EReference getIteratorMappingNodeFeatureValue_FeatureExpression();
-
-	/**
-	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue <em>Iterator Type Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Iterator Type Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue
-	 * @generated
-	 */
-	EClass getIteratorTypeValue();
-
-	/**
-	 * Returns the meta object for the reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue#getTypeContext <em>Type Context</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Type Context</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue#getTypeContext()
-	 * @see #getIteratorTypeValue()
-	 * @generated
-	 */
-	EReference getIteratorTypeValue_TypeContext();
-
-	/**
-	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue <em>Iterator Type Feature Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Iterator Type Feature Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue
-	 * @generated
-	 */
-	EClass getIteratorTypeFeatureValue();
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue#getFeatureExpression <em>Feature Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Feature Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue#getFeatureExpression()
-	 * @see #getIteratorTypeFeatureValue()
-	 * @generated
-	 */
-	EReference getIteratorTypeFeatureValue_FeatureExpression();
 
 	/**
 	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression <em>Arithmetic Expression</em>}'.
@@ -3628,6 +3459,175 @@ public interface RoamIntermediatePackage extends EPackage {
 	EReference getContextMappingNodeFeatureValue_FeatureExpression();
 
 	/**
+	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.Iterator <em>Iterator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Iterator</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Iterator
+	 * @generated
+	 */
+	EClass getIterator();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.Iterator#getStream <em>Stream</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Stream</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Iterator#getStream()
+	 * @see #getIterator()
+	 * @generated
+	 */
+	EReference getIterator_Stream();
+
+	/**
+	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue <em>Iterator Mapping Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Iterator Mapping Value</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue
+	 * @generated
+	 */
+	EClass getIteratorMappingValue();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue#getMappingContext <em>Mapping Context</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Mapping Context</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue#getMappingContext()
+	 * @see #getIteratorMappingValue()
+	 * @generated
+	 */
+	EReference getIteratorMappingValue_MappingContext();
+
+	/**
+	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue <em>Iterator Mapping Feature Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Iterator Mapping Feature Value</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue
+	 * @generated
+	 */
+	EClass getIteratorMappingFeatureValue();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue#getMappingContext <em>Mapping Context</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Mapping Context</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue#getMappingContext()
+	 * @see #getIteratorMappingFeatureValue()
+	 * @generated
+	 */
+	EReference getIteratorMappingFeatureValue_MappingContext();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue#getFeatureExpression <em>Feature Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Feature Expression</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue#getFeatureExpression()
+	 * @see #getIteratorMappingFeatureValue()
+	 * @generated
+	 */
+	EReference getIteratorMappingFeatureValue_FeatureExpression();
+
+	/**
+	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue <em>Iterator Mapping Node Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Iterator Mapping Node Value</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue
+	 * @generated
+	 */
+	EClass getIteratorMappingNodeValue();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue#getMappingContext <em>Mapping Context</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Mapping Context</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue#getMappingContext()
+	 * @see #getIteratorMappingNodeValue()
+	 * @generated
+	 */
+	EReference getIteratorMappingNodeValue_MappingContext();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue#getNode <em>Node</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Node</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue#getNode()
+	 * @see #getIteratorMappingNodeValue()
+	 * @generated
+	 */
+	EReference getIteratorMappingNodeValue_Node();
+
+	/**
+	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue <em>Iterator Mapping Node Feature Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Iterator Mapping Node Feature Value</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue
+	 * @generated
+	 */
+	EClass getIteratorMappingNodeFeatureValue();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue#getFeatureExpression <em>Feature Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Feature Expression</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue#getFeatureExpression()
+	 * @see #getIteratorMappingNodeFeatureValue()
+	 * @generated
+	 */
+	EReference getIteratorMappingNodeFeatureValue_FeatureExpression();
+
+	/**
+	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue <em>Iterator Type Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Iterator Type Value</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue
+	 * @generated
+	 */
+	EClass getIteratorTypeValue();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue#getTypeContext <em>Type Context</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Type Context</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue#getTypeContext()
+	 * @see #getIteratorTypeValue()
+	 * @generated
+	 */
+	EReference getIteratorTypeValue_TypeContext();
+
+	/**
+	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue <em>Iterator Type Feature Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Iterator Type Feature Value</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue
+	 * @generated
+	 */
+	EClass getIteratorTypeFeatureValue();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue#getFeatureExpression <em>Feature Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Feature Expression</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue#getFeatureExpression()
+	 * @see #getIteratorTypeFeatureValue()
+	 * @generated
+	 */
+	EReference getIteratorTypeFeatureValue_FeatureExpression();
+
+	/**
 	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression <em>Stream Expression</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3962,6 +3962,16 @@ public interface RoamIntermediatePackage extends EPackage {
 		EAttribute CONSTRAINT__ELEMENTWISE = eINSTANCE.getConstraint_Elementwise();
 
 		/**
+		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.Context <em>Context</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.Context
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContext()
+		 * @generated
+		 */
+		EClass CONTEXT = eINSTANCE.getContext();
+
+		/**
 		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl <em>Type Constraint</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3996,163 +4006,6 @@ public interface RoamIntermediatePackage extends EPackage {
 		 * @generated
 		 */
 		EReference MAPPING_CONSTRAINT__MAPPING = eINSTANCE.getMappingConstraint_Mapping();
-
-		/**
-		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.Context <em>Context</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.Context
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContext()
-		 * @generated
-		 */
-		EClass CONTEXT = eINSTANCE.getContext();
-
-		/**
-		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorImpl <em>Iterator</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIterator()
-		 * @generated
-		 */
-		EClass ITERATOR = eINSTANCE.getIterator();
-
-		/**
-		 * The meta object literal for the '<em><b>Stream</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference ITERATOR__STREAM = eINSTANCE.getIterator_Stream();
-
-		/**
-		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingValueImpl <em>Iterator Mapping Value</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingValue()
-		 * @generated
-		 */
-		EClass ITERATOR_MAPPING_VALUE = eINSTANCE.getIteratorMappingValue();
-
-		/**
-		 * The meta object literal for the '<em><b>Mapping Context</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference ITERATOR_MAPPING_VALUE__MAPPING_CONTEXT = eINSTANCE.getIteratorMappingValue_MappingContext();
-
-		/**
-		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingFeatureValueImpl <em>Iterator Mapping Feature Value</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingFeatureValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingFeatureValue()
-		 * @generated
-		 */
-		EClass ITERATOR_MAPPING_FEATURE_VALUE = eINSTANCE.getIteratorMappingFeatureValue();
-
-		/**
-		 * The meta object literal for the '<em><b>Mapping Context</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference ITERATOR_MAPPING_FEATURE_VALUE__MAPPING_CONTEXT = eINSTANCE
-				.getIteratorMappingFeatureValue_MappingContext();
-
-		/**
-		 * The meta object literal for the '<em><b>Feature Expression</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION = eINSTANCE
-				.getIteratorMappingFeatureValue_FeatureExpression();
-
-		/**
-		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeValueImpl <em>Iterator Mapping Node Value</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingNodeValue()
-		 * @generated
-		 */
-		EClass ITERATOR_MAPPING_NODE_VALUE = eINSTANCE.getIteratorMappingNodeValue();
-
-		/**
-		 * The meta object literal for the '<em><b>Mapping Context</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference ITERATOR_MAPPING_NODE_VALUE__MAPPING_CONTEXT = eINSTANCE
-				.getIteratorMappingNodeValue_MappingContext();
-
-		/**
-		 * The meta object literal for the '<em><b>Node</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference ITERATOR_MAPPING_NODE_VALUE__NODE = eINSTANCE.getIteratorMappingNodeValue_Node();
-
-		/**
-		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeFeatureValueImpl <em>Iterator Mapping Node Feature Value</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeFeatureValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingNodeFeatureValue()
-		 * @generated
-		 */
-		EClass ITERATOR_MAPPING_NODE_FEATURE_VALUE = eINSTANCE.getIteratorMappingNodeFeatureValue();
-
-		/**
-		 * The meta object literal for the '<em><b>Feature Expression</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference ITERATOR_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION = eINSTANCE
-				.getIteratorMappingNodeFeatureValue_FeatureExpression();
-
-		/**
-		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeValueImpl <em>Iterator Type Value</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorTypeValue()
-		 * @generated
-		 */
-		EClass ITERATOR_TYPE_VALUE = eINSTANCE.getIteratorTypeValue();
-
-		/**
-		 * The meta object literal for the '<em><b>Type Context</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference ITERATOR_TYPE_VALUE__TYPE_CONTEXT = eINSTANCE.getIteratorTypeValue_TypeContext();
-
-		/**
-		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeFeatureValueImpl <em>Iterator Type Feature Value</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeFeatureValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorTypeFeatureValue()
-		 * @generated
-		 */
-		EClass ITERATOR_TYPE_FEATURE_VALUE = eINSTANCE.getIteratorTypeFeatureValue();
-
-		/**
-		 * The meta object literal for the '<em><b>Feature Expression</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION = eINSTANCE
-				.getIteratorTypeFeatureValue_FeatureExpression();
 
 		/**
 		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticExpressionImpl <em>Arithmetic Expression</em>}' class.
@@ -4749,6 +4602,153 @@ public interface RoamIntermediatePackage extends EPackage {
 		 */
 		EReference CONTEXT_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION = eINSTANCE
 				.getContextMappingNodeFeatureValue_FeatureExpression();
+
+		/**
+		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorImpl <em>Iterator</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorImpl
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIterator()
+		 * @generated
+		 */
+		EClass ITERATOR = eINSTANCE.getIterator();
+
+		/**
+		 * The meta object literal for the '<em><b>Stream</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ITERATOR__STREAM = eINSTANCE.getIterator_Stream();
+
+		/**
+		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingValueImpl <em>Iterator Mapping Value</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingValueImpl
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingValue()
+		 * @generated
+		 */
+		EClass ITERATOR_MAPPING_VALUE = eINSTANCE.getIteratorMappingValue();
+
+		/**
+		 * The meta object literal for the '<em><b>Mapping Context</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ITERATOR_MAPPING_VALUE__MAPPING_CONTEXT = eINSTANCE.getIteratorMappingValue_MappingContext();
+
+		/**
+		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingFeatureValueImpl <em>Iterator Mapping Feature Value</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingFeatureValueImpl
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingFeatureValue()
+		 * @generated
+		 */
+		EClass ITERATOR_MAPPING_FEATURE_VALUE = eINSTANCE.getIteratorMappingFeatureValue();
+
+		/**
+		 * The meta object literal for the '<em><b>Mapping Context</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ITERATOR_MAPPING_FEATURE_VALUE__MAPPING_CONTEXT = eINSTANCE
+				.getIteratorMappingFeatureValue_MappingContext();
+
+		/**
+		 * The meta object literal for the '<em><b>Feature Expression</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION = eINSTANCE
+				.getIteratorMappingFeatureValue_FeatureExpression();
+
+		/**
+		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeValueImpl <em>Iterator Mapping Node Value</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeValueImpl
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingNodeValue()
+		 * @generated
+		 */
+		EClass ITERATOR_MAPPING_NODE_VALUE = eINSTANCE.getIteratorMappingNodeValue();
+
+		/**
+		 * The meta object literal for the '<em><b>Mapping Context</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ITERATOR_MAPPING_NODE_VALUE__MAPPING_CONTEXT = eINSTANCE
+				.getIteratorMappingNodeValue_MappingContext();
+
+		/**
+		 * The meta object literal for the '<em><b>Node</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ITERATOR_MAPPING_NODE_VALUE__NODE = eINSTANCE.getIteratorMappingNodeValue_Node();
+
+		/**
+		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeFeatureValueImpl <em>Iterator Mapping Node Feature Value</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeFeatureValueImpl
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingNodeFeatureValue()
+		 * @generated
+		 */
+		EClass ITERATOR_MAPPING_NODE_FEATURE_VALUE = eINSTANCE.getIteratorMappingNodeFeatureValue();
+
+		/**
+		 * The meta object literal for the '<em><b>Feature Expression</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ITERATOR_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION = eINSTANCE
+				.getIteratorMappingNodeFeatureValue_FeatureExpression();
+
+		/**
+		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeValueImpl <em>Iterator Type Value</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeValueImpl
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorTypeValue()
+		 * @generated
+		 */
+		EClass ITERATOR_TYPE_VALUE = eINSTANCE.getIteratorTypeValue();
+
+		/**
+		 * The meta object literal for the '<em><b>Type Context</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ITERATOR_TYPE_VALUE__TYPE_CONTEXT = eINSTANCE.getIteratorTypeValue_TypeContext();
+
+		/**
+		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeFeatureValueImpl <em>Iterator Type Feature Value</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeFeatureValueImpl
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorTypeFeatureValue()
+		 * @generated
+		 */
+		EClass ITERATOR_TYPE_FEATURE_VALUE = eINSTANCE.getIteratorTypeFeatureValue();
+
+		/**
+		 * The meta object literal for the '<em><b>Feature Expression</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION = eINSTANCE
+				.getIteratorTypeFeatureValue_FeatureExpression();
 
 		/**
 		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamExpressionImpl <em>Stream Expression</em>}' class.

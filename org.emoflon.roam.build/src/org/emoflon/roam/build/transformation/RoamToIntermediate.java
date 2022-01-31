@@ -15,7 +15,10 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
+import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator;
 import org.emoflon.roam.intermediate.RoamIntermediate.BinaryBoolOperator;
 import org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression;
@@ -28,6 +31,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureV
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral;
 import org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.FeatureLiteral;
 import org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral;
@@ -36,7 +40,6 @@ import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeature
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression;
@@ -49,6 +52,8 @@ import org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation;
 import org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation;
 import org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation;
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator;
 import org.emoflon.roam.intermediate.RoamIntermediate.UnaryBoolOperator;
 import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression;
 import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
@@ -57,11 +62,12 @@ import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticLiteral;
 import org.emoflon.roam.roamslang.roamSLang.RoamAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamBinaryBoolExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamBoolExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamBoolUnaryOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamBooleanLiteral;
+import org.emoflon.roam.roamslang.roamSLang.RoamBracketExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
 import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamContextOperationExpression;
+import org.emoflon.roam.roamslang.roamSLang.RoamExpArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamExpressionOperand;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureLit;
@@ -71,17 +77,18 @@ import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamMappingContext;
 import org.emoflon.roam.roamslang.roamSLang.RoamNodeAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjectiveExpression;
+import org.emoflon.roam.roamslang.roamSLang.RoamProductArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamRelExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamSelect;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamBoolExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamNavigation;
-import org.emoflon.roam.roamslang.roamSLang.RoamStreamNoArgOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamSet;
+import org.emoflon.roam.roamslang.roamSLang.RoamSumArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
+import org.emoflon.roam.roamslang.roamSLang.RoamUnaryArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamUnaryBoolExpr;
 import org.emoflon.roam.roamslang.scoping.RoamSLangScopeContextUtil;
-import org.emoflon.roam.roamslang.services.RoamSLangGrammarAccess.RoamStreamExprElements;
 
 public class RoamToIntermediate {
 	protected RoamIntermediateFactory factory = RoamIntermediateFactory.eINSTANCE;
@@ -297,7 +304,8 @@ public class RoamToIntermediate {
 				default:
 					throw new UnsupportedOperationException("Unknown bool operator: "+eRelBool.getOperator());
 				}
-				//TODO: Transform arithmetic expressions
+				relExpr.setLhs(transformArithmeticExpression(eRelBool.getLeft()));
+				relExpr.setRhs(transformArithmeticExpression(eRelBool.getRight()));
 				return relExpr;
 			}
 		} else if(eBool instanceof RoamBinaryBoolExpr eBinBool) {
@@ -330,9 +338,112 @@ public class RoamToIntermediate {
 		}
 	}
 	
+	protected ArithmeticExpression transformArithmeticExpression(final RoamArithmeticExpr eArithmetic) throws Exception{
+		if(eArithmetic instanceof RoamSumArithmeticExpr sumExpr) {
+			BinaryArithmeticExpression binExpr = factory.createBinaryArithmeticExpression();
+			switch(sumExpr.getOperator()) {
+				case MINUS -> {
+					binExpr.setOperator(BinaryArithmeticOperator.SUBTRACT);
+				}
+				case PLUS -> {
+					binExpr.setOperator(BinaryArithmeticOperator.ADD);
+				}
+				default -> {
+					throw new UnsupportedOperationException("Unknown arithmetic operator: "+sumExpr.getOperator());
+				}
+			}
+			binExpr.setLhs(transformArithmeticExpression(sumExpr.getLeft()));
+			binExpr.setRhs(transformArithmeticExpression(sumExpr.getRight()));
+			return binExpr;
+		} else if(eArithmetic instanceof RoamProductArithmeticExpr prodExpr) {
+			BinaryArithmeticExpression binExpr = factory.createBinaryArithmeticExpression();
+			switch(prodExpr.getOperator()) {
+				case MULT -> {
+					binExpr.setOperator(BinaryArithmeticOperator.MULTIPLY);
+				}
+				case DIV -> {
+					binExpr.setOperator(BinaryArithmeticOperator.DIVIDE);
+				}
+				default -> {
+					throw new UnsupportedOperationException("Unknown arithmetic operator: "+prodExpr.getOperator());
+				}
+			}
+			binExpr.setLhs(transformArithmeticExpression(prodExpr.getLeft()));
+			binExpr.setRhs(transformArithmeticExpression(prodExpr.getRight()));
+			return binExpr;
+		} else if(eArithmetic instanceof RoamExpArithmeticExpr expExpr) {
+			BinaryArithmeticExpression binExpr = factory.createBinaryArithmeticExpression();
+			switch(expExpr.getOperator()) {
+				case POW -> {
+					binExpr.setOperator(BinaryArithmeticOperator.POW);
+				}
+				default -> {
+					throw new UnsupportedOperationException("Unknown arithmetic operator: "+expExpr.getOperator());
+				}
+			}
+			binExpr.setLhs(transformArithmeticExpression(expExpr.getLeft()));
+			binExpr.setRhs(transformArithmeticExpression(expExpr.getRight()));
+			return binExpr;
+		} else if(eArithmetic instanceof RoamUnaryArithmeticExpr unaryExpr) {
+			UnaryArithmeticExpression unExpr = factory.createUnaryArithmeticExpression();
+			switch(unaryExpr.getOperator()) {
+				case ABS -> {
+					unExpr.setOperator(UnaryArithmeticOperator.ABSOLUTE);
+				}
+				case COS -> {
+					unExpr.setOperator(UnaryArithmeticOperator.COSINE);
+				}
+				case NEG -> {
+					unExpr.setOperator(UnaryArithmeticOperator.NEGATE);
+				}
+				case SIN -> {
+					unExpr.setOperator(UnaryArithmeticOperator.SINE);
+				}
+				case SQRT -> {
+					unExpr.setOperator(UnaryArithmeticOperator.SQRT);
+				}
+				default -> {
+					throw new UnsupportedOperationException("Unknown arithmetic operator: "+unaryExpr.getOperator());
+				}
+			}
+			unExpr.setExpression(transformArithmeticExpression(unaryExpr.getOperand()));
+			return unExpr;
+		} else if(eArithmetic instanceof RoamBracketExpr bracketExpr) {
+			UnaryArithmeticExpression unExpr = factory.createUnaryArithmeticExpression();
+			unExpr.setOperator(UnaryArithmeticOperator.BRACKET);
+			unExpr.setExpression(transformArithmeticExpression(bracketExpr.getOperand()));
+			return unExpr;
+		} else { // CASE: RoamExpressionOperand -> i.e., a literal from the perspective of an arithmetic expression
+			if(eArithmetic instanceof RoamArithmeticLiteral lit) {
+				try {
+					int value = Integer.parseInt(lit.getValue());
+					IntegerLiteral intLit = factory.createIntegerLiteral();
+					intLit.setLiteral(value);
+					return intLit;
+				} catch(Exception e) {
+					try {
+						double dValue = Double.parseDouble(lit.getValue());
+						DoubleLiteral doubleLit = factory.createDoubleLiteral();
+						doubleLit.setLiteral(dValue);
+						return doubleLit;
+					} catch(Exception e2) {
+						throw new IllegalArgumentException("Value <"+lit.getValue()+"> can't be parsed to neither integer nor double value.");
+					}
+				} 
+ 			} else if(eArithmetic instanceof RoamObjectiveExpression objExpr) {
+				//TODO: Objectives and Objective Expressions currently not modeled
+				throw new UnsupportedOperationException("References to objective function values not yet implemented.");
+			} else {
+				ArithmeticValue aValue = factory.createArithmeticValue();
+				aValue.setValue(transformAttributeToValueExpression((RoamAttributeExpr) eArithmetic));
+				return aValue;
+			}
+		}
+	}
+	
 	protected ValueExpression transformAttributeToValueExpression(final RoamAttributeExpr eAttribute) throws Exception {
 		if(eAttribute instanceof RoamMappingAttributeExpr eMapping) {
-			//TODO:
+			//TODO: We could support this to a limited degree in the future.
 			throw new UnsupportedOperationException("Nested Mapping access operations not yet supported.");
 		} else if(eAttribute instanceof RoamContextExpr eContext) {
 			EObject contextType = RoamSLangScopeContextUtil.getContextType(eContext);
@@ -360,7 +471,6 @@ public class RoamToIntermediate {
 						throw new UnsupportedOperationException("Node and ILP variable (e.g., .value(), .isMapped()) expressions are not applicable to model objects.");
 					}
 				} else {
-					RoamMappingContext mappingContext = (RoamMappingContext) contextType;
 					MappingConstraint mc = (MappingConstraint) constraint;
 					if(eContext.getExpr() instanceof RoamNodeAttributeExpr eNodeExpr) {
 						if(eNodeExpr.getExpr() == null) {
@@ -398,11 +508,11 @@ public class RoamToIntermediate {
 					}
 				}
 			} else {
-				//TODO:
+				//TODO: We could support this to a limited degree in the future.
+				//Case: The context expression is followed by some stream expression
 				throw new UnsupportedOperationException("Nested stream operations not yet supported.");
 			}
 		} else {
-			//TODO: Translate lambda expressions...
 			RoamLambdaAttributeExpression eLambda = (RoamLambdaAttributeExpression) eAttribute;
 			RoamAttributeExpr streamRoot = RoamSLangScopeContextUtil.getStreamRootContainer(eLambda);
 			RoamStreamExpr streamIteratorContainer = RoamSLangScopeContextUtil.getStreamIteratorContainer(eLambda);

@@ -7,10 +7,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage.Literals;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.xtext.validation.Check;
 import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
 import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticExpr;
@@ -23,23 +20,30 @@ import org.emoflon.roam.roamslang.roamSLang.RoamBooleanLiteral;
 import org.emoflon.roam.roamslang.roamSLang.RoamBracketExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
 import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamContextOperation;
+import org.emoflon.roam.roamslang.roamSLang.RoamContextOperationExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamExpArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamExpressionOperand;
+import org.emoflon.roam.roamslang.roamSLang.RoamFeatureExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamFeatureLit;
+import org.emoflon.roam.roamslang.roamSLang.RoamFeatureNavigation;
 import org.emoflon.roam.roamslang.roamSLang.RoamLambdaAttributeExpression;
+import org.emoflon.roam.roamslang.roamSLang.RoamLambdaExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
 import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamNodeAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjective;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjectiveExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamProductArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamRelExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamSLangPackage;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamBoolExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamNoArgOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamSumArithmeticExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamTypeCast;
 import org.emoflon.roam.roamslang.roamSLang.RoamUnaryArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamUnaryBoolExpr;
-import org.emoflon.roam.roamslang.roamSLang.impl.RoamRelExprImpl;
-import org.emoflon.roam.roamslang.services.RoamSLangGrammarAccess.RoamDoubleLiteralElements;
 
 /**
  * This class contains custom validation rules. 
@@ -504,7 +508,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			// TODO: Check if return type is compatible with operator
 			return getEvalTypeFromArithExpr(((RoamUnaryArithmeticExpr) expr).getOperand());
 		} else if (expr instanceof RoamExpressionOperand) {
-			
+			return getEvalTypeFromExprOp((RoamExpressionOperand) expr);
 		}
 		
 		// TODO
@@ -529,18 +533,96 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	public leafType getEvalTypeFromAttrExpr(final RoamAttributeExpr expr) {
 		if (expr instanceof RoamMappingAttributeExpr) {
 			final RoamMappingAttributeExpr mapExpr = (RoamMappingAttributeExpr) expr;
-			// TODO
+			return getEvalTypeFromStreamExpr(mapExpr.getExpr());
 		} else if (expr instanceof RoamContextExpr) {
 			final RoamContextExpr conExpr = (RoamContextExpr) expr;
-			// TODO
+			return getEvalTypeFromContextExpr(conExpr);
 		} else if (expr instanceof RoamLambdaAttributeExpression) {
 			final RoamLambdaAttributeExpression lambExpr = (RoamLambdaAttributeExpression) expr;
-			// TODO
+			return getEvalTypeFromLambdaAttrExpr(lambExpr);
 		}
 		
 		// TODO
 		
 		throw new IllegalStateException("Instance type not found.");
+	}
+	
+	public leafType getEvalTypeFromStreamExpr(final RoamStreamExpr expr) {
+		// TODO
+		return null;
+	}
+	
+	public leafType getEvalTypeFromLambdaAttrExpr(final RoamLambdaAttributeExpression expr) {
+		final EObject innerExpr = expr.getExpr();
+		if (innerExpr instanceof RoamNodeAttributeExpr) {
+			// TODO
+			getEvalTypeFromNodeAttrExpr((RoamNodeAttributeExpr) innerExpr);
+		} else if (innerExpr instanceof RoamContextOperationExpression) {
+			// TODO
+			getEvalTypeFromContextOpExpr((RoamContextOperationExpression) innerExpr);
+		} else if (innerExpr instanceof RoamFeatureExpr) {
+			// TODO
+			getEvalTypeFromFeatureExpr((RoamFeatureExpr) innerExpr);
+		}
+		
+		final RoamLambdaExpression lambdaExpr = expr.getVar();
+		// TODO
+		return null;
+	}
+	
+	public leafType getEvalTypeFromContextExpr(final RoamContextExpr expr) {
+//		final leafType exprType = getEvalTypeFromContextExpr(expr.getExpr());
+		// TODO
+		return null;
+	}
+	
+	public leafType getEvalTypeFromContextOpExpr(final RoamContextOperationExpression expr) {
+		final int val = expr.getOperation().getValue();
+		if (val == RoamContextOperation.MAPPED_VALUE) {
+			return leafType.BOOLEAN;
+		} else if (val == RoamContextOperation.VALUE_VALUE) {
+			return leafType.INTEGER;
+		}
+		
+		// TODO
+		
+		throw new IllegalStateException("Value type not found.");
+	}
+	
+	public leafType getEvalTypeFromNodeAttrExpr(final RoamNodeAttributeExpr expr) {
+		expr.getNode(); // <- not optional
+		expr.getTypeCast(); // <- optional
+		expr.getExpr(); // <- optional
+		
+		// TODO
+		return null;
+	}
+	
+	public leafType getEvalTypeFromFeatureExpr(final RoamFeatureExpr expr) {
+		if (expr instanceof RoamFeatureNavigation) {
+			final RoamFeatureNavigation nav = (RoamFeatureNavigation) expr;
+			getEvalTypeFromFeatureExpr(nav.getLeft());
+			getEvalTypeFromFeatureExpr(nav.getRight());
+			// TODO
+		} else if (expr instanceof RoamFeatureLit) {
+			final RoamFeatureLit lit = (RoamFeatureLit) expr;
+			lit.getFeature(); // <- not optional
+			lit.getTypeCast(); // <- optional
+		}
+		
+		// TODO
+		return null;
+	}
+	
+	/**
+	 * Returns the evaluation type from a given RoamTypeCast (EClass) or null if cast isn't set
+	 * (because it is optional).
+	 * 
+	 * @param cast RoamTypeCast to check.
+	 * @return leafType EClass or null if cast not set.
+	 */
+	public leafType getEvalTypeFromTypeCast(final RoamTypeCast cast) {
+		return (cast != null && cast.getType() != null) ? leafType.ECLASS : null;
 	}
 	
 	public leafType getEvalTypeFromArithLit(final RoamArithmeticLiteral lit) {
@@ -596,6 +678,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		DOUBLE,
 		OBJECTIVE, // RoamObjective
 		MAPPING, // RoamMapping
+		ECLASS, // EClass for casts
 		ERROR // If leaf type can not be evaluated, e.g.: '1 + true'
 	}
 	

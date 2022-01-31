@@ -37,9 +37,13 @@ import org.emoflon.roam.roamslang.roamSLang.RoamObjectiveExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamProductArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamRelExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamSLangPackage;
+import org.emoflon.roam.roamslang.roamSLang.RoamSelect;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamArithmetic;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamBoolExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamNavigation;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamNoArgOperator;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamSet;
 import org.emoflon.roam.roamslang.roamSLang.RoamSumArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeCast;
 import org.emoflon.roam.roamslang.roamSLang.RoamUnaryArithmeticExpr;
@@ -259,7 +263,25 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	 */
 	@Check
 	public void checkConstraint(final RoamConstraint constraint) {
-		// TODO
+		if (leafType.BOOLEAN != getEvalTypeFromBoolExpr(constraint.getExpr().getExpr())) {
+			error(
+					"Constraint does not evaluate to a boolean",
+					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR
+			);
+		}
+		
+		checkConstraintIsLiteratl(constraint);
+	}
+	
+	public void checkConstraintIsLiteratl(final RoamConstraint constraint) {
+		if (constraint.getExpr().getExpr() instanceof RoamBooleanLiteral) {
+			final RoamBooleanLiteral lit = (RoamBooleanLiteral) constraint.getExpr().getExpr();
+			final String warning = String.valueOf(lit.isLiteral());
+			warning(
+					"Constraint is always " + warning + ".",
+					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR
+			);
+		}
 	}
 	
 	/**
@@ -272,7 +294,14 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		checkObjectiveNameValid(objective);
 		checkObjectiveNameUnique(objective);
 		checkObjectiveIsNotUseless(objective);
-		checkObjectiveExpressionType(objective);
+		
+		final leafType eval = getEvalTypeFromArithExpr(objective.getExpr());
+		if (eval != leafType.INTEGER && eval != leafType.DOUBLE) {
+			error(
+					"Objective does not evaluate to an integer or double.",
+					RoamSLangPackage.Literals.ROAM_OBJECTIVE__EXPR
+			);
+		}
 	}
 	
 	/**
@@ -349,81 +378,6 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 	}
 	
-	public void checkObjectiveExpressionType(final RoamObjective objective) {		
-		// TODO: Check if expression of the objective is a bool
-//		if(objective.getExpr() instanceof RoamBoolExpr) {
-//			error(
-//					"The expression of the objective is of type bool which is not supported",
-//					RoamSLangPackage.Literals.ROAM_OBJECTIVE__EXPR
-//			);
-//		}
-		
-		if(objective.getExpr() instanceof RoamMappingAttributeExpr) {
-			final RoamMappingAttributeExpr mappingExpr = (RoamMappingAttributeExpr) objective.getExpr();
-			if (mappingExpr.getExpr() instanceof RoamStreamBoolExpr) {
-				final RoamStreamBoolExpr boolExpr = (RoamStreamBoolExpr) mappingExpr.getExpr();
-				if (boolExpr.getOperator().getValue() == RoamStreamNoArgOperator.EXISTS_VALUE) {
-					error(
-							"Bool error.",
-							RoamSLangPackage.Literals.ROAM_OBJECTIVE__EXPR
-					);
-				}
-			}
-		}
-	}
-	
-//	@Check
-//	public void checkArithmeticExpression(final RoamArithmeticExpr expression) {
-//		if (expression instanceof RoamUnaryArithmeticExpr) {
-//			final RoamUnaryArithmeticExpr unary = (RoamUnaryArithmeticExpr) expression;
-//			// TODO
-//		} else if (expression instanceof RoamBinaryArithmeticExpr) {
-//			final RoamBinaryArithmeticExpr binary = (RoamBinaryArithmeticExpr) expression;
-//			if(binary.getLeft() instanceof RoamStreamBoolExpr && !(binary.getRight() instanceof RoamStreamBoolExpr)) {
-//				error("test1", RoamSLangPackage.Literals.ROAM_BINARY_ARITHMETIC_EXPR__LEFT);
-//			} else if(!(binary.getLeft() instanceof RoamStreamBoolExpr) && binary.getRight() instanceof RoamStreamBoolExpr) {
-//				error("test2", RoamSLangPackage.Literals.ROAM_BINARY_ARITHMETIC_EXPR__RIGHT);
-//			} 
-//			
-////			if (binary.getLeft() instanceof RoamBinaryBoolExpr || binary.getLeft() instanceof RoamStreamBoolExpr) {
-////				error(
-////						"Left side is a bool.",
-////						RoamSLangPackage.Literals.ROAM_BINARY_ARITHMETIC_EXPR__LEFT
-////				);
-////			}
-////			if (binary.getRight() instanceof RoamBinaryBoolExpr || binary.getRight() instanceof RoamStreamBoolExpr) {
-////				error(
-////						"Right side is a bool.",
-////						RoamSLangPackage.Literals.ROAM_BINARY_ARITHMETIC_EXPR__LEFT
-////				);
-////			}
-////			
-//		} else if (expression instanceof RoamExpressionOperand) {
-//			final RoamExpressionOperand op = (RoamExpressionOperand) expression;
-//			if (op instanceof RoamContextExpr) {
-//				final RoamContextExpr cexpr = (RoamContextExpr) op;
-//				// TODO
-//			}
-//		}
-//		// TODO: Finish this method.
-//	}
-	
-//	@Check
-//	public void checkUnaryExpression(final RoamUnaryArithmeticExpr expression) {
-//		// TODO
-//		System.out.println("Checking unary expr: " + expression);
-//		
-//		if (expression.getOperand() instanceof RoamArithmeticLiteral) {
-//			final RoamArithmeticLiteral lit = (RoamArithmeticLiteral) expression.getOperand();
-////			lit.get
-//		} else if (expression.getOperand() instanceof RoamAttributeExpr) {
-//			final RoamAttributeExpr att = (RoamAttributeExpr) expression.getOperand();
-//		} else if (expression.getOperand() instanceof RoamObjectiveExpression) {
-//			final RoamObjectiveExpression obj = (RoamObjectiveExpression) expression.getOperand();
-//		}
-//		
-//	}
-	
 	// TODO: Is this even necessary?
 	@Check
 	public void checkArithmeticLiteralParsable(final RoamArithmeticLiteral literal) {
@@ -437,55 +391,32 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 	}
 	
-//	@Check
-//	public void checkRoamRelExpr(final RoamRelExpr expr) {
-//		// TODO
-//		// RHS == null and the container is contained in a constraint -> error
-//		if (expr.getRight() == null && expr.eContainer() instanceof RoamBool) {
-//			final RoamBool container = (RoamBool) expr.eContainer();
-//			if (container.eContainer() instanceof RoamConstraint) {
-//				error(
-//						"RHS is null.",
-//						RoamSLangPackage.Literals.ROAM_REL_EXPR__RIGHT
-//				);
-//			}
-//
-//		}
-//		
-//		// One of the two sides must be a constant
-//		if (expr.getLeft() instanceof RoamMappingAttributeExpr && expr.getRight() instanceof RoamMappingAttributeExpr) {
-//			error(
-//					"One of the two sides of this expression must be a constant.",
-//					RoamSLangPackage.Literals.ROAM_REL_EXPR__RIGHT
-//			);
-//		}
-//	}
-	
-//	@Check
-//	public void checkRoamBoolExpr(final RoamBoolExpr expr) {
-//		// TODO
-//	}
-	
 	public leafType getEvalTypeFromBoolExpr (final RoamBoolExpr expr) {
 		if (expr instanceof RoamBooleanLiteral) {
-			// TODO: What to return here?
+			return leafType.BOOLEAN;
 		} else if (expr instanceof RoamBinaryBoolExpr) {
 			final RoamBinaryBoolExpr boolExpr = (RoamBinaryBoolExpr) expr;
+			// TODO: Check if return type is compatible with operator
 			return getEvalLeftRightSide(boolExpr.getLeft(), boolExpr.getRight());			
 		} else if (expr instanceof RoamUnaryBoolExpr) {
 			final RoamUnaryBoolExpr boolExpr = (RoamUnaryBoolExpr) expr;
+			// TODO: Check if return type is compatible with operator
+			boolExpr.getOperator();
 			return getEvalTypeDelegate(boolExpr);
 		} else if (expr instanceof RoamRelExpr) {
 			final RoamRelExpr relExpr = (RoamRelExpr) expr;
 			if (relExpr.getRight() == null) {
+				// TODO: Check if return type is compatible with operator
+				relExpr.getOperator();
 				return getEvalTypeDelegate(relExpr.getLeft());
 			} else {
 				// If lhs and rhs are set, the expression must evaluate to a boolean.
+				// TODO: Check if return type is compatible with operator
 				return getEvalLeftRightSide(relExpr.getLeft(), relExpr.getRight());
 			}
 		}
 
-		throw new IllegalStateException("Instance type not found.");
+		return leafType.ERROR;
 	}
 	
 	public leafType getEvalTypeFromArithExpr(final RoamArithmeticExpr expr) {
@@ -495,6 +426,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		} else if (expr instanceof RoamExpArithmeticExpr) {
 			final RoamExpArithmeticExpr exp = (RoamExpArithmeticExpr) expr;
 			// TODO: Check if return type is compatible with operator
+//			RoamExpOperator.VALUES.contains(exp.getOperator());
 			return getEvalLeftRightSide(exp.getLeft(), exp.getRight());
 		} else if (expr instanceof RoamProductArithmeticExpr) {
 			final RoamProductArithmeticExpr prod = (RoamProductArithmeticExpr) expr;
@@ -511,9 +443,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return getEvalTypeFromExprOp((RoamExpressionOperand) expr);
 		}
 		
-		// TODO
-		
-		throw new IllegalStateException("Instance type not found.");
+		return leafType.ERROR;
 	}
 	
 	public leafType getEvalTypeFromExprOp(final RoamExpressionOperand op) {
@@ -525,9 +455,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return leafType.OBJECTIVE;
 		}
 		
-		// TODO
-		
-		throw new IllegalStateException("Instance type not found.");
+		return leafType.ERROR;
 	}
 	
 	public leafType getEvalTypeFromAttrExpr(final RoamAttributeExpr expr) {
@@ -542,14 +470,44 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return getEvalTypeFromLambdaAttrExpr(lambExpr);
 		}
 		
-		// TODO
-		
-		throw new IllegalStateException("Instance type not found.");
+		return leafType.ERROR;
 	}
 	
 	public leafType getEvalTypeFromStreamExpr(final RoamStreamExpr expr) {
-		// TODO
-		return null;
+		if (expr instanceof RoamStreamNavigation) {
+			final RoamStreamNavigation nav = (RoamStreamNavigation) expr;
+			return getEvalLeftRightSide(nav.getLeft(), nav.getRight());
+		} else if (expr instanceof RoamStreamSet) {
+			final RoamStreamSet set = (RoamStreamSet) expr;
+			set.getLambda();
+			set.getOperator(); // operator is always a filter -> output is a set
+			// TODO
+		} else if (expr instanceof RoamStreamArithmetic) {
+			final RoamStreamArithmetic arith = (RoamStreamArithmetic) expr;
+			arith.getLambda();
+			arith.getOperator(); // operator is always an integer/a double
+			// TODO
+		} else if (expr instanceof RoamStreamBoolExpr) {
+			final RoamStreamBoolExpr boolExpr = (RoamStreamBoolExpr) expr;
+			return getEvalTypeFromStreamNoArgOp(boolExpr.getOperator());
+		} else if (expr instanceof RoamSelect) {
+			final RoamSelect sel = (RoamSelect) expr;
+			sel.getType(); // EClassifier
+			// TODO
+		}
+		
+		return leafType.ERROR;
+	}
+	
+	public leafType getEvalTypeFromStreamNoArgOp(final RoamStreamNoArgOperator op) {
+		final int val = op.getValue();
+		if (val == RoamStreamNoArgOperator.COUNT_VALUE) {
+			return leafType.INTEGER;
+		} else if (val == RoamStreamNoArgOperator.EXISTS_VALUE || val == RoamStreamNoArgOperator.NOTEXISTS_VALUE) {
+			return leafType.BOOLEAN;
+		}
+		
+		return leafType.ERROR;
 	}
 	
 	public leafType getEvalTypeFromLambdaAttrExpr(final RoamLambdaAttributeExpression expr) {
@@ -567,11 +525,16 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		
 		final RoamLambdaExpression lambdaExpr = expr.getVar();
 		// TODO
-		return null;
+		return leafType.ERROR;
 	}
 	
 	public leafType getEvalTypeFromContextExpr(final RoamContextExpr expr) {
 //		final leafType exprType = getEvalTypeFromContextExpr(expr.getExpr());
+		expr.getExpr(); // <- (not) optional?
+		expr.getTypeCast(); // <- optional
+		expr.getStream(); // <- optional
+		// ^All optional?
+		
 		// TODO
 		return null;
 	}
@@ -584,9 +547,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return leafType.INTEGER;
 		}
 		
-		// TODO
-		
-		throw new IllegalStateException("Value type not found.");
+		return leafType.ERROR;
 	}
 	
 	public leafType getEvalTypeFromNodeAttrExpr(final RoamNodeAttributeExpr expr) {
@@ -642,7 +603,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			Double.valueOf(val);
 			return leafType.DOUBLE;
 		} catch(final NumberFormatException ex) {
-			throw new IllegalStateException("Instance type not found.");
+			return leafType.ERROR;
 		}
 	}
 	
@@ -655,17 +616,24 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return getEvalTypeFromBoolExpr(((RoamBool) e).getExpr());
 		}
 		
-		// TODO:
-		return null;
+		return leafType.ERROR;
 	}
 	
+	/**
+	 * Evaluates the two given types and returns their type if they match. Else, the method
+	 * returns the error value.
+	 * 
+	 * @param left First type to evaluate.
+	 * @param right Second type to evaluate.
+	 * @return Type or error if types do not match.
+	 */
 	public leafType getEvalLeftRightSide(final EObject left, final EObject right) {
 		final leafType lhs = getEvalTypeDelegate(left);
 		final leafType rhs = getEvalTypeDelegate(right);
 		if (lhs.equals(rhs)) {
 			return lhs;
 		} else {
-			throw new IllegalStateException("Expression does not evaluate correctly.");
+			return leafType.ERROR;
 		}
 	}
 	

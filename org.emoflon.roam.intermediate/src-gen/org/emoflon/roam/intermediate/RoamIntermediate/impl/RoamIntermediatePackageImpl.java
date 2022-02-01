@@ -1164,7 +1164,7 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getValueExpression_Type() {
+	public EReference getValueExpression_ReturnType() {
 		return (EReference) valueExpressionEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -1676,16 +1676,6 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 
 		setOperationEClass = createEClass(SET_OPERATION);
 
-		sumExpressionEClass = createEClass(SUM_EXPRESSION);
-		createEReference(sumExpressionEClass, SUM_EXPRESSION__EXPRESSION);
-		createEReference(sumExpressionEClass, SUM_EXPRESSION__FILTER);
-
-		mappingSumExpressionEClass = createEClass(MAPPING_SUM_EXPRESSION);
-		createEReference(mappingSumExpressionEClass, MAPPING_SUM_EXPRESSION__MAPPING);
-
-		typeSumExpressionEClass = createEClass(TYPE_SUM_EXPRESSION);
-		createEReference(typeSumExpressionEClass, TYPE_SUM_EXPRESSION__TYPE);
-
 		arithmeticValueExpressionEClass = createEClass(ARITHMETIC_VALUE_EXPRESSION);
 
 		arithmeticValueEClass = createEClass(ARITHMETIC_VALUE);
@@ -1728,7 +1718,17 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		createEAttribute(boolLiteralEClass, BOOL_LITERAL__LITERAL);
 
 		valueExpressionEClass = createEClass(VALUE_EXPRESSION);
-		createEReference(valueExpressionEClass, VALUE_EXPRESSION__TYPE);
+		createEReference(valueExpressionEClass, VALUE_EXPRESSION__RETURN_TYPE);
+
+		sumExpressionEClass = createEClass(SUM_EXPRESSION);
+		createEReference(sumExpressionEClass, SUM_EXPRESSION__EXPRESSION);
+		createEReference(sumExpressionEClass, SUM_EXPRESSION__FILTER);
+
+		mappingSumExpressionEClass = createEClass(MAPPING_SUM_EXPRESSION);
+		createEReference(mappingSumExpressionEClass, MAPPING_SUM_EXPRESSION__MAPPING);
+
+		typeSumExpressionEClass = createEClass(TYPE_SUM_EXPRESSION);
+		createEReference(typeSumExpressionEClass, TYPE_SUM_EXPRESSION__TYPE);
 
 		contextTypeValueEClass = createEClass(CONTEXT_TYPE_VALUE);
 		createEReference(contextTypeValueEClass, CONTEXT_TYPE_VALUE__TYPE_CONTEXT);
@@ -1842,10 +1842,6 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		binaryArithmeticExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
 		unaryArithmeticExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
 		arithmeticStreamExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
-		sumExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
-		sumExpressionEClass.getESuperTypes().add(this.getSetOperation());
-		mappingSumExpressionEClass.getESuperTypes().add(this.getSumExpression());
-		typeSumExpressionEClass.getESuperTypes().add(this.getSumExpression());
 		arithmeticValueExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
 		arithmeticValueEClass.getESuperTypes().add(this.getArithmeticValueExpression());
 		arithmeticLiteralEClass.getESuperTypes().add(this.getArithmeticValueExpression());
@@ -1858,6 +1854,10 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		boolStreamExpressionEClass.getESuperTypes().add(this.getBoolValueExpression());
 		relationalExpressionEClass.getESuperTypes().add(this.getBoolValueExpression());
 		boolLiteralEClass.getESuperTypes().add(this.getBoolValueExpression());
+		sumExpressionEClass.getESuperTypes().add(this.getValueExpression());
+		sumExpressionEClass.getESuperTypes().add(this.getSetOperation());
+		mappingSumExpressionEClass.getESuperTypes().add(this.getSumExpression());
+		typeSumExpressionEClass.getESuperTypes().add(this.getSumExpression());
 		contextTypeValueEClass.getESuperTypes().add(this.getValueExpression());
 		contextMappingValueEClass.getESuperTypes().add(this.getValueExpression());
 		contextMappingNodeEClass.getESuperTypes().add(this.getValueExpression());
@@ -1975,27 +1975,6 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		initEClass(setOperationEClass, SetOperation.class, "SetOperation", IS_ABSTRACT, IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(sumExpressionEClass, SumExpression.class, "SumExpression", IS_ABSTRACT, !IS_INTERFACE,
-				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getSumExpression_Expression(), this.getArithmeticExpression(), null, "expression", null, 1, 1,
-				SumExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getSumExpression_Filter(), this.getStreamExpression(), null, "filter", null, 0, 1,
-				SumExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(mappingSumExpressionEClass, MappingSumExpression.class, "MappingSumExpression", !IS_ABSTRACT,
-				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getMappingSumExpression_Mapping(), this.getMapping(), null, "mapping", null, 1, 1,
-				MappingSumExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
-				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(typeSumExpressionEClass, TypeSumExpression.class, "TypeSumExpression", !IS_ABSTRACT, !IS_INTERFACE,
-				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getTypeSumExpression_Type(), this.getType(), null, "type", null, 1, 1, TypeSumExpression.class,
-				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
-				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
 		initEClass(arithmeticValueExpressionEClass, ArithmeticValueExpression.class, "ArithmeticValueExpression",
 				IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -2080,9 +2059,30 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 
 		initEClass(valueExpressionEClass, ValueExpression.class, "ValueExpression", IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getValueExpression_Type(), ecorePackage.getEClassifier(), null, "type", null, 0, 1,
+		initEReference(getValueExpression_ReturnType(), ecorePackage.getEClassifier(), null, "returnType", null, 0, 1,
 				ValueExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(sumExpressionEClass, SumExpression.class, "SumExpression", IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getSumExpression_Expression(), this.getArithmeticExpression(), null, "expression", null, 1, 1,
+				SumExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSumExpression_Filter(), this.getStreamExpression(), null, "filter", null, 0, 1,
+				SumExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(mappingSumExpressionEClass, MappingSumExpression.class, "MappingSumExpression", !IS_ABSTRACT,
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getMappingSumExpression_Mapping(), this.getMapping(), null, "mapping", null, 1, 1,
+				MappingSumExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(typeSumExpressionEClass, TypeSumExpression.class, "TypeSumExpression", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getTypeSumExpression_Type(), this.getType(), null, "type", null, 1, 1, TypeSumExpression.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(contextTypeValueEClass, ContextTypeValue.class, "ContextTypeValue", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);

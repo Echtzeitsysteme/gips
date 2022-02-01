@@ -4,6 +4,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.emoflon.roam.build.transformation.RoamTransformationData;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValueExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral;
@@ -37,10 +38,7 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 		if(eRelational.getRight() == null) {
 			if(eRelational.getLeft() instanceof RoamAttributeExpr eAttributeExpr) {
 				if(eAttributeExpr instanceof RoamMappingAttributeExpr eMappingAttribute && eMappingAttribute.getExpr() != null) {
-					//TODO: This solution is not that elegant. We'll make this nicer later...
-					RoamMappingContext mappingContext = RoamSLangFactory.eINSTANCE.createRoamMappingContext();
-					mappingContext.setMapping(eMappingAttribute.getMapping());
-					return createUnaryConstraintCondition(mappingContext, eMappingAttribute.getExpr());
+					return createUnaryConstraintCondition(eMappingAttribute);
 				} else if(eAttributeExpr instanceof RoamContextExpr eContextAttribute) {
 					if(eContextAttribute.getExpr() == null && eContextAttribute.getStream() == null) {
 						throw new IllegalArgumentException("Some constrains contain invalid values within boolean expressions, e.g., entire matches, ILP variables or objects.");
@@ -135,8 +133,8 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 	 *  which was defined on a stream of mapping variables, into an ILP constraint. 
 	 *  E.g.: <stream>.notExists() ==> Sum(Set of Variables) = 0 
 	 */
-	protected RelationalExpression createUnaryConstraintCondition(final EObject contextExpressionType, final RoamStreamExpr streamExpr) throws Exception{
-		RoamStreamExpr terminalExpr = RoamTransformationUtils.getTerminalStreamExpression(streamExpr);
+	protected RelationalExpression createUnaryConstraintCondition(final RoamMappingAttributeExpr eMappingAttribute) throws Exception{
+		RoamStreamExpr terminalExpr = RoamTransformationUtils.getTerminalStreamExpression(eMappingAttribute.getExpr());
 		if(terminalExpr instanceof RoamStreamBoolExpr streamBool) {
 			switch(streamBool.getOperator()) {
 				case COUNT -> {
@@ -148,17 +146,10 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 					constZero.setLiteral(0);
 					expr.setLhs(constZero);
 					expr.setOperator(RelationalOperator.GREATER);
-					if(contextExpressionType instanceof RoamMappingContext roamMapping) {
-						expr.setRhs(createSumFromStreamExpression(roamMapping, streamExpr));
-					} else if(contextExpressionType instanceof RoamTypeContext roamType) {
-						// CASE: Some stream expression invoked upon model elements, either through type context or through match nodes of a mapping context.
-						// TODO: This only makes sense if we're allowing nested stream expressions. Otherwise, one can not define a meaningful invariant on ILP variables, 
-						// only simple boolean expressions that can be evaluated during ILP build time. -> Since constraints of this kind should be checked using patterns, 
-						// we'll implement this feature some time in the future.
-						throw new UnsupportedOperationException("Nested stream expressions and checking model preconditions within constraints are not yet supported. Instead, rules or patterns should be used for checking model preconditions.");
-					} else {
-						throw new UnsupportedOperationException("Unknown context type: "+contextExpressionType);
-					}
+					SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
+					ArithmeticValue val = factory.createArithmeticValue();
+					val.setValue(transformer.transform(eMappingAttribute));
+					expr.setRhs(val);
 					return expr;
 				}
 				case NOTEXISTS -> {
@@ -167,17 +158,10 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 					constZero.setLiteral(0);
 					expr.setLhs(constZero);
 					expr.setOperator(RelationalOperator.EQUAL);
-					if(contextExpressionType instanceof RoamMappingContext roamMapping) {
-						expr.setRhs(createSumFromStreamExpression(roamMapping, streamExpr));
-					} else if(contextExpressionType instanceof RoamTypeContext roamType) {
-						// CASE: Some stream expression invoked upon model elements, either through type context or through match nodes of a mapping context.
-						// TODO: This only makes sense if we're allowing nested stream expressions. Otherwise, one can not define a meaningful invariant on ILP variables, 
-						// only simple boolean expressions that can be evaluated during ILP build time. -> Since constraints of this kind should be checked using patterns, 
-						// we'll implement this feature some time in the future.
-						throw new UnsupportedOperationException("Nested stream expressions and checking model preconditions within constraints are not yet supported. Instead, rules or patterns should be used for checking model preconditions.");
-					} else {
-						throw new UnsupportedOperationException("Unknown context type: "+contextExpressionType);
-					}
+					SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
+					ArithmeticValue val = factory.createArithmeticValue();
+					val.setValue(transformer.transform(eMappingAttribute));
+					expr.setRhs(val);
 					return expr;
 				}
 				default -> {
@@ -188,27 +172,5 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 			throw new IllegalArgumentException("Some constrains contain invalid values within boolean expressions, e.g., arithmetic values instead of boolean values.");
 		}
 	}
-	
-	protected MappingSumExpression createSumFromStreamExpression(final RoamMappingContext contextExpressionType, final RoamStreamExpr streamExpr) throws Exception {
-		MappingSumExpression mapSum = factory.createMappingSumExpression();
-		Mapping mapping = data.eMapping2Mapping().get(contextExpressionType.getMapping());
-		data.eStream2SetOp().put(streamExpr, mapSum);
-		mapSum.setMapping(mapping);
-		mapSum.setReturnType(EcorePackage.Literals.EINT);
-		// Simple expression: Just add all filtered (!) mapping variable values v={0,1}
-		ArithmeticValue val = factory.createArithmeticValue();
-		IteratorMappingValue itr = factory.createIteratorMappingValue();
-//		TODO: Is this next line necessary?
-		itr.setMappingContext(((MappingConstraint) context));
-		itr.setStream(mapSum);
-		val.setValue(itr);
-		val.setReturnType(EcorePackage.Literals.EINT);
-		mapSum.setExpression(val);
-		// Create filter expression
-		StreamExpressionTransformer transformer = transformerFactory.createStreamTransformer(mapSum);
-		mapSum.setFilter(transformer.transform(streamExpr));
-		return mapSum;
-	}
-	
 
 }

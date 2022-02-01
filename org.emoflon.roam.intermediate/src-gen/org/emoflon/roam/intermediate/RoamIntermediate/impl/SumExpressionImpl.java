@@ -29,7 +29,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.SumExpression;
  *
  * @generated
  */
-public abstract class SumExpressionImpl extends ArithmeticExpressionImpl implements SumExpression {
+public abstract class SumExpressionImpl extends ValueExpressionImpl implements SumExpression {
 	/**
 	 * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference.
 	 * <!-- begin-user-doc -->

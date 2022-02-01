@@ -14,9 +14,7 @@ public class TransformerFactory {
 	}
 	
 	public BooleanExpressionTransformer createBooleanTransformer(final EObject context) throws Exception{
-		if(context instanceof Constraint constraint) {
-			return new BooleanInConstraintTransformer(data, constraint, this);
-		} else if(context instanceof StreamExpression streamExpr) {
+		if(context instanceof StreamExpression streamExpr) {
 			return new BooleanInStreamTransformer(data, streamExpr, this);
 		} else {
 			throw new IllegalArgumentException("Transforming boolean expressions within the given context is undefined. Context: "+context);
@@ -38,7 +36,9 @@ public class TransformerFactory {
 			return new ArithmeticInConstraintTransformer(data, constraint, this);
 		} else if(context instanceof StreamExpression streamExpr) {
 			return new ArithmeticInStreamTransformer(data, streamExpr, this);
-		} else {
+		} else if(context instanceof SumExpression sumExpr) {
+			return new ArithmeticInSumTransformer(data, sumExpr, this);
+		}else {
 			throw new IllegalArgumentException("Transforming arithmetic expressions within the given context is undefined. Context: "+context);
 		}
 	}
@@ -61,6 +61,14 @@ public class TransformerFactory {
 		} else {
 			throw new IllegalArgumentException("Transforming arithmetic expressions within the given context is undefined. Context: "+context);
 		}
-	} 
+	}
+	
+	public SumExpressionTransformer createSumTransformer(final EObject context) throws Exception {
+		if(context instanceof Constraint constraint) {
+			return new SumInConstraintTransformer(data, constraint, this);
+		} else {
+			throw new IllegalArgumentException("Transforming arithmetic expressions within the given context is undefined. Context: "+context);
+		}
+	}
 
 }

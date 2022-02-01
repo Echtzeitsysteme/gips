@@ -73,10 +73,6 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 			return createUnaryArithmeticExpression();
 		case RoamIntermediatePackage.ARITHMETIC_STREAM_EXPRESSION:
 			return createArithmeticStreamExpression();
-		case RoamIntermediatePackage.MAPPING_SUM_EXPRESSION:
-			return createMappingSumExpression();
-		case RoamIntermediatePackage.TYPE_SUM_EXPRESSION:
-			return createTypeSumExpression();
 		case RoamIntermediatePackage.ARITHMETIC_VALUE:
 			return createArithmeticValue();
 		case RoamIntermediatePackage.INTEGER_LITERAL:
@@ -95,6 +91,10 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 			return createRelationalExpression();
 		case RoamIntermediatePackage.BOOL_LITERAL:
 			return createBoolLiteral();
+		case RoamIntermediatePackage.MAPPING_SUM_EXPRESSION:
+			return createMappingSumExpression();
+		case RoamIntermediatePackage.TYPE_SUM_EXPRESSION:
+			return createTypeSumExpression();
 		case RoamIntermediatePackage.CONTEXT_TYPE_VALUE:
 			return createContextTypeValue();
 		case RoamIntermediatePackage.CONTEXT_MAPPING_VALUE:

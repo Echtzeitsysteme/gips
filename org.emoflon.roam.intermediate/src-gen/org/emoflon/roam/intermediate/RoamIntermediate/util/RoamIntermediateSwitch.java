@@ -175,43 +175,6 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.SUM_EXPRESSION: {
-			SumExpression sumExpression = (SumExpression) theEObject;
-			T result = caseSumExpression(sumExpression);
-			if (result == null)
-				result = caseArithmeticExpression(sumExpression);
-			if (result == null)
-				result = caseSetOperation(sumExpression);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case RoamIntermediatePackage.MAPPING_SUM_EXPRESSION: {
-			MappingSumExpression mappingSumExpression = (MappingSumExpression) theEObject;
-			T result = caseMappingSumExpression(mappingSumExpression);
-			if (result == null)
-				result = caseSumExpression(mappingSumExpression);
-			if (result == null)
-				result = caseArithmeticExpression(mappingSumExpression);
-			if (result == null)
-				result = caseSetOperation(mappingSumExpression);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case RoamIntermediatePackage.TYPE_SUM_EXPRESSION: {
-			TypeSumExpression typeSumExpression = (TypeSumExpression) theEObject;
-			T result = caseTypeSumExpression(typeSumExpression);
-			if (result == null)
-				result = caseSumExpression(typeSumExpression);
-			if (result == null)
-				result = caseArithmeticExpression(typeSumExpression);
-			if (result == null)
-				result = caseSetOperation(typeSumExpression);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
 		case RoamIntermediatePackage.ARITHMETIC_VALUE_EXPRESSION: {
 			ArithmeticValueExpression arithmeticValueExpression = (ArithmeticValueExpression) theEObject;
 			T result = caseArithmeticValueExpression(arithmeticValueExpression);
@@ -350,6 +313,43 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 		case RoamIntermediatePackage.VALUE_EXPRESSION: {
 			ValueExpression valueExpression = (ValueExpression) theEObject;
 			T result = caseValueExpression(valueExpression);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.SUM_EXPRESSION: {
+			SumExpression sumExpression = (SumExpression) theEObject;
+			T result = caseSumExpression(sumExpression);
+			if (result == null)
+				result = caseValueExpression(sumExpression);
+			if (result == null)
+				result = caseSetOperation(sumExpression);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.MAPPING_SUM_EXPRESSION: {
+			MappingSumExpression mappingSumExpression = (MappingSumExpression) theEObject;
+			T result = caseMappingSumExpression(mappingSumExpression);
+			if (result == null)
+				result = caseSumExpression(mappingSumExpression);
+			if (result == null)
+				result = caseValueExpression(mappingSumExpression);
+			if (result == null)
+				result = caseSetOperation(mappingSumExpression);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.TYPE_SUM_EXPRESSION: {
+			TypeSumExpression typeSumExpression = (TypeSumExpression) theEObject;
+			T result = caseTypeSumExpression(typeSumExpression);
+			if (result == null)
+				result = caseSumExpression(typeSumExpression);
+			if (result == null)
+				result = caseValueExpression(typeSumExpression);
+			if (result == null)
+				result = caseSetOperation(typeSumExpression);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;

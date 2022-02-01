@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression#getType <em>Type</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression#getReturnType <em>Return Type</em>}</li>
  * </ul>
  *
  * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getValueExpression()
@@ -23,25 +23,25 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface ValueExpression extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Type</b></em>' reference.
+	 * Returns the value of the '<em><b>Return Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Type</em>' reference.
-	 * @see #setType(EClassifier)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getValueExpression_Type()
+	 * @return the value of the '<em>Return Type</em>' reference.
+	 * @see #setReturnType(EClassifier)
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getValueExpression_ReturnType()
 	 * @model
 	 * @generated
 	 */
-	EClassifier getType();
+	EClassifier getReturnType();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression#getType <em>Type</em>}' reference.
+	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression#getReturnType <em>Return Type</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Type</em>' reference.
-	 * @see #getType()
+	 * @param value the new value of the '<em>Return Type</em>' reference.
+	 * @see #getReturnType()
 	 * @generated
 	 */
-	void setType(EClassifier value);
+	void setReturnType(EClassifier value);
 
 } // ValueExpression

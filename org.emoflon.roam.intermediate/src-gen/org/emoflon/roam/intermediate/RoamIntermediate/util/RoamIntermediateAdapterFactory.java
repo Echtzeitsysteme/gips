@@ -132,21 +132,6 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
-		public Adapter caseSumExpression(SumExpression object) {
-			return createSumExpressionAdapter();
-		}
-
-		@Override
-		public Adapter caseMappingSumExpression(MappingSumExpression object) {
-			return createMappingSumExpressionAdapter();
-		}
-
-		@Override
-		public Adapter caseTypeSumExpression(TypeSumExpression object) {
-			return createTypeSumExpressionAdapter();
-		}
-
-		@Override
 		public Adapter caseArithmeticValueExpression(ArithmeticValueExpression object) {
 			return createArithmeticValueExpressionAdapter();
 		}
@@ -214,6 +199,21 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseValueExpression(ValueExpression object) {
 			return createValueExpressionAdapter();
+		}
+
+		@Override
+		public Adapter caseSumExpression(SumExpression object) {
+			return createSumExpressionAdapter();
+		}
+
+		@Override
+		public Adapter caseMappingSumExpression(MappingSumExpression object) {
+			return createMappingSumExpressionAdapter();
+		}
+
+		@Override
+		public Adapter caseTypeSumExpression(TypeSumExpression object) {
+			return createTypeSumExpressionAdapter();
 		}
 
 		@Override

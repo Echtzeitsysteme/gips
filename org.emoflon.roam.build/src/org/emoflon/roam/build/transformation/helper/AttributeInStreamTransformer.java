@@ -51,7 +51,7 @@ public class AttributeInStreamTransformer extends TransformationContext<StreamEx
 				if(contextType instanceof RoamTypeContext typeContext) {
 					TypeConstraint tc = (TypeConstraint) constraint;
 					ContextTypeValue typeValue = factory.createContextTypeValue();
-					typeValue.setType(tc.getModelType());
+					typeValue.setReturnType(tc.getModelType());
 					typeValue.setTypeContext(tc);
 					return typeValue;
 				} else {
@@ -63,7 +63,7 @@ public class AttributeInStreamTransformer extends TransformationContext<StreamEx
 						TypeConstraint tc = (TypeConstraint) constraint;
 						ContextTypeFeatureValue featureValue = factory.createContextTypeFeatureValue();
 						featureValue.setTypeContext(tc);
-						featureValue.setType(tc.getModelType());
+						featureValue.setReturnType(tc.getModelType());
 						featureValue.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eFeature));
 						return featureValue;
 					} else {
@@ -76,13 +76,13 @@ public class AttributeInStreamTransformer extends TransformationContext<StreamEx
 							ContextMappingNode nodeValue = factory.createContextMappingNode();
 							nodeValue.setMappingContext(mc);
 							nodeValue.setNode(data.eNode2Node().get(eNodeExpr.getNode()));
-							nodeValue.setType(nodeValue.getNode().getType());
+							nodeValue.setReturnType(nodeValue.getNode().getType());
 							return nodeValue;
 						} else {
 							ContextMappingNodeFeatureValue featureValue = factory.createContextMappingNodeFeatureValue();
 							featureValue.setMappingContext(mc);
 							featureValue.setNode(data.eNode2Node().get(eNodeExpr.getNode()));
-							featureValue.setType(featureValue.getNode().getType());
+							featureValue.setReturnType(featureValue.getNode().getType());
 							featureValue.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eNodeExpr.getExpr()));
 							return featureValue;
 						}
@@ -128,14 +128,14 @@ public class AttributeInStreamTransformer extends TransformationContext<StreamEx
 					if(eNodeAttribute.getExpr() == null) {
 						IteratorMappingNodeValue mappingNode = factory.createIteratorMappingNodeValue();
 						mappingNode.setNode(data.eNode2Node().get(eNodeAttribute.getNode()));
-						mappingNode.setType(mappingNode.getNode().getType());
+						mappingNode.setReturnType(mappingNode.getNode().getType());
 						mappingNode.setMappingContext((MappingConstraint) data.eMapping2Mapping().get(eMappingAttribute.getMapping()));
 						mappingNode.setStream(data.eStream2SetOp().get(streamIteratorContainer));
 						return mappingNode;
 					} else {
 						IteratorMappingNodeFeatureValue mappingFeature = factory.createIteratorMappingNodeFeatureValue();
 						mappingFeature.setNode(data.eNode2Node().get(eNodeAttribute.getNode()));
-						mappingFeature.setType(mappingFeature.getNode().getType());
+						mappingFeature.setReturnType(mappingFeature.getNode().getType());
 						mappingFeature.setMappingContext((MappingConstraint) data.eMapping2Mapping().get(eMappingAttribute.getMapping()));
 						mappingFeature.setStream(data.eStream2SetOp().get(streamIteratorContainer));
 						mappingFeature.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eNodeAttribute.getExpr()));
@@ -158,7 +158,7 @@ public class AttributeInStreamTransformer extends TransformationContext<StreamEx
 							IteratorMappingValue mappingValue = factory.createIteratorMappingValue();
 							mappingValue.setMappingContext((MappingConstraint) data.eMapping2Mapping().get(eMappingAttribute.getMapping()));
 							mappingValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
-							mappingValue.setType(EcorePackage.Literals.EINT);
+							mappingValue.setReturnType(EcorePackage.Literals.EINT);
 							return mappingValue;
 						}
 						default -> {
@@ -180,14 +180,14 @@ public class AttributeInStreamTransformer extends TransformationContext<StreamEx
 						mappingFeatureValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
 						mappingFeatureValue.setMappingContext((MappingConstraint) data.eConstraint2Constraint().get(eMappingContext.eContainer()));
 						RoamFeatureLit rootFeatureType = (RoamFeatureLit) RoamSLangScopeContextUtil.findLeafExpression(eNodeExpr.getExpr());
-						mappingFeatureValue.setType(rootFeatureType.getFeature().getEType());
+						mappingFeatureValue.setReturnType(rootFeatureType.getFeature().getEType());
 						mappingFeatureValue.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eFeature));
 						return mappingFeatureValue;
 					} else if(contextType instanceof RoamTypeContext eTypeContext && eContext.getExpr() instanceof RoamFeatureExpr eRootFeature) {
 						IteratorTypeFeatureValue typeFeatureValue = factory.createIteratorTypeFeatureValue();
 						typeFeatureValue.setTypeContext((TypeConstraint) data.eConstraint2Constraint().get(eTypeContext.eContainer()));
 						RoamFeatureLit rootFeatureType = (RoamFeatureLit) RoamSLangScopeContextUtil.findLeafExpression(eRootFeature);
-						typeFeatureValue.setType(rootFeatureType.getFeature().getEType());
+						typeFeatureValue.setReturnType(rootFeatureType.getFeature().getEType());
 						typeFeatureValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
 						typeFeatureValue.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eFeature));
 						return typeFeatureValue;

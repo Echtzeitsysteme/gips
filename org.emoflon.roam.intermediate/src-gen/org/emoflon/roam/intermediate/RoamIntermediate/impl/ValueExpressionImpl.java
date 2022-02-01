@@ -22,21 +22,21 @@ import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ValueExpressionImpl#getType <em>Type</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ValueExpressionImpl#getReturnType <em>Return Type</em>}</li>
  * </ul>
  *
  * @generated
  */
 public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container implements ValueExpression {
 	/**
-	 * The cached value of the '{@link #getType() <em>Type</em>}' reference.
+	 * The cached value of the '{@link #getReturnType() <em>Return Type</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getType()
+	 * @see #getReturnType()
 	 * @generated
 	 * @ordered
 	 */
-	protected EClassifier type;
+	protected EClassifier returnType;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -62,17 +62,17 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClassifier getType() {
-		if (type != null && type.eIsProxy()) {
-			InternalEObject oldType = (InternalEObject) type;
-			type = (EClassifier) eResolveProxy(oldType);
-			if (type != oldType) {
+	public EClassifier getReturnType() {
+		if (returnType != null && returnType.eIsProxy()) {
+			InternalEObject oldReturnType = (InternalEObject) returnType;
+			returnType = (EClassifier) eResolveProxy(oldReturnType);
+			if (returnType != oldReturnType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.VALUE_EXPRESSION__TYPE, oldType, type));
+							RoamIntermediatePackage.VALUE_EXPRESSION__RETURN_TYPE, oldReturnType, returnType));
 			}
 		}
-		return type;
+		return returnType;
 	}
 
 	/**
@@ -80,8 +80,8 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClassifier basicGetType() {
-		return type;
+	public EClassifier basicGetReturnType() {
+		return returnType;
 	}
 
 	/**
@@ -89,12 +89,12 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setType(EClassifier newType) {
-		EClassifier oldType = type;
-		type = newType;
+	public void setReturnType(EClassifier newReturnType) {
+		EClassifier oldReturnType = returnType;
+		returnType = newReturnType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.VALUE_EXPRESSION__TYPE,
-					oldType, type));
+			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.VALUE_EXPRESSION__RETURN_TYPE,
+					oldReturnType, returnType));
 	}
 
 	/**
@@ -105,10 +105,10 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.VALUE_EXPRESSION__TYPE:
+		case RoamIntermediatePackage.VALUE_EXPRESSION__RETURN_TYPE:
 			if (resolve)
-				return getType();
-			return basicGetType();
+				return getReturnType();
+			return basicGetReturnType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -121,8 +121,8 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.VALUE_EXPRESSION__TYPE:
-			setType((EClassifier) newValue);
+		case RoamIntermediatePackage.VALUE_EXPRESSION__RETURN_TYPE:
+			setReturnType((EClassifier) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -136,8 +136,8 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.VALUE_EXPRESSION__TYPE:
-			setType((EClassifier) null);
+		case RoamIntermediatePackage.VALUE_EXPRESSION__RETURN_TYPE:
+			setReturnType((EClassifier) null);
 			return;
 		}
 		super.eUnset(featureID);
@@ -151,8 +151,8 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.VALUE_EXPRESSION__TYPE:
-			return type != null;
+		case RoamIntermediatePackage.VALUE_EXPRESSION__RETURN_TYPE:
+			return returnType != null;
 		}
 		return super.eIsSet(featureID);
 	}

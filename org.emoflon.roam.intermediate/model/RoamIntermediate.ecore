@@ -67,19 +67,6 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SetOperation" abstract="true" interface="true"/>
-  <eClassifiers xsi:type="ecore:EClass" name="SumExpression" abstract="true" eSuperTypes="#//ArithmeticExpression #//SetOperation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
-        eType="#//ArithmeticExpression" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="filter" eType="#//StreamExpression"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="MappingSumExpression" eSuperTypes="#//SumExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" lowerBound="1"
-        eType="#//Mapping"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TypeSumExpression" eSuperTypes="#//SumExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="#//Type"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ArithmeticValueExpression" abstract="true"
       eSuperTypes="#//ArithmeticExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="ArithmeticValue" eSuperTypes="#//ArithmeticValueExpression">
@@ -158,7 +145,20 @@
     <eLiterals name="NOTEXISTS"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ValueExpression" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SumExpression" abstract="true" eSuperTypes="#//ValueExpression #//SetOperation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
+        eType="#//ArithmeticExpression" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="filter" eType="#//StreamExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MappingSumExpression" eSuperTypes="#//SumExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" lowerBound="1"
+        eType="#//Mapping"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TypeSumExpression" eSuperTypes="#//SumExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="#//Type"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContextTypeValue" eSuperTypes="#//ValueExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="typeContext" eType="#//TypeConstraint"/>

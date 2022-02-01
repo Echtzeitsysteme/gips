@@ -459,17 +459,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return leafType.INTEGER;
 		}
 
-		// Case: right is a StreamNavigation
-		if (right instanceof RoamStreamNavigation) {
-			return getEvalTypeFromStreamNav((RoamStreamNavigation) right);
-		}
-
-		// Case: right is a StreamSet
-		if (right instanceof RoamStreamSet) {
-			return getEvalTypeFromStreamSet((RoamStreamSet) right);
-		}
-
-		throw new UnsupportedOperationException("Not yet implemented.");
+		// Case: else
+		return getEvalTypeFromStreamExpr(right);
 	}
 
 	public leafType getEvalTypeFromStreamNoArgOp(final RoamStreamNoArgOperator op) {
@@ -509,7 +500,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 
 		final RoamLambdaExpression lambdaExpr = expr.getVar();
 		// TODO
-		return leafType.ERROR;
+//		return leafType.ERROR;
+		throw new UnsupportedOperationException("Not yet implemented.");
 	}
 
 	public leafType getEvalTypeFromContextExpr(final RoamContextExpr expr) {
@@ -693,34 +685,51 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	}
 
 	public leafType combine(final leafType left, final leafType right, final RoamProductOperator op) {
+		// return type must be integer or double
+		return intOrDouble(left, right);
+	}
+
+	public leafType combine(final leafType left, final leafType right, final RoamSumOperator op) {
+		// return type must be integer or double
+		return intOrDouble(left, right);
+	}
+
+	public leafType combine(final leafType operand, final RoamArithmeticUnaryOperator op) {
+		// TODO
+//		return leafType.ERROR;
+		throw new UnsupportedOperationException("Not yet implemented.");
+	}
+
+	public leafType combine(final leafType left, final leafType right, final RoamBoolBinaryOperator op) {
+		// TODO
+//		return leafType.ERROR;
+//		throw new UnsupportedOperationException("Not yet implemented.");
+
+		if (left == leafType.BOOLEAN && right == leafType.BOOLEAN) {
+			return leafType.BOOLEAN;
+		} else {
+			throw new UnsupportedOperationException("Not yet implemented.");
+			// TODO
+			// return leafType.ERROR;
+		}
+	}
+
+	public leafType combine(final leafType left, final RoamBoolUnaryOperator op) {
+		// TODO
+//		return leafType.ERROR;
+		throw new UnsupportedOperationException("Not yet implemented.");
+	}
+
+	public leafType intOrDouble(final leafType left, final leafType right) {
 		if (left == leafType.INTEGER && right == leafType.INTEGER) {
 			return leafType.INTEGER;
 		} else if ((left == leafType.INTEGER && right == leafType.DOUBLE) //
 				|| (left == leafType.DOUBLE && right == leafType.INTEGER) //
 				|| (left == leafType.DOUBLE && right == leafType.DOUBLE)) {
 			return leafType.DOUBLE;
-		} else {
-			return leafType.ERROR;
 		}
-	}
 
-	public leafType combine(final leafType left, final leafType right, final RoamSumOperator op) {
-		// TODO
-		return leafType.ERROR;
-	}
-
-	public leafType combine(final leafType operand, final RoamArithmeticUnaryOperator op) {
-		// TODO
-		return leafType.ERROR;
-	}
-
-	public leafType combine(final leafType left, final leafType right, final RoamBoolBinaryOperator op) {
-		// TODO
-		return leafType.ERROR;
-	}
-
-	public leafType combine(final leafType left, final RoamBoolUnaryOperator op) {
-		// TODO
+//		throw new UnsupportedOperationException("Not yet implemented.");
 		return leafType.ERROR;
 	}
 

@@ -30,7 +30,8 @@ public class StreamInSumTransformer extends TransformationContext<SumExpression>
 		if(streamExpr instanceof RoamStreamNavigation nav) {
 			expr.setCurrent(createStreamFilterOperation(expr, nav.getLeft()));
 			if(!(nav.getRight() instanceof RoamSelect || nav.getRight() instanceof RoamStreamSet)) {
-				throw new IllegalArgumentException("Stream expression <"+nav.getRight()+"> is not a valid filter operation.");
+//				throw new IllegalArgumentException("Stream expression <"+nav.getRight()+"> is not a valid filter operation.");
+				return expr;
 			} else {
 				expr.setChild(createFilterForSum(nav.getRight()));
 				return expr;

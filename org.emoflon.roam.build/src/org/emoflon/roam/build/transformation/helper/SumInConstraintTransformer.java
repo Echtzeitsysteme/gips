@@ -32,7 +32,7 @@ public class SumInConstraintTransformer extends TransformationContext<Constraint
 		ArithmeticValue val = factory.createArithmeticValue();
 		IteratorMappingValue itr = factory.createIteratorMappingValue();
 //		TODO: Is this next line necessary?
-		itr.setMappingContext(((MappingConstraint) context));
+		itr.setMappingContext(mapping);
 		itr.setStream(mapSum);
 		val.setValue(itr);
 		val.setReturnType(EcorePackage.Literals.EINT);

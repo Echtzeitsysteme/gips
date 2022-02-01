@@ -24,12 +24,12 @@ public interface IteratorTypeValue extends ValueExpression, Iterator {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Type Context</em>' reference.
-	 * @see #setTypeContext(TypeConstraint)
+	 * @see #setTypeContext(Type)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorTypeValue_TypeContext()
 	 * @model
 	 * @generated
 	 */
-	TypeConstraint getTypeContext();
+	Type getTypeContext();
 
 	/**
 	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue#getTypeContext <em>Type Context</em>}' reference.
@@ -39,6 +39,6 @@ public interface IteratorTypeValue extends ValueExpression, Iterator {
 	 * @see #getTypeContext()
 	 * @generated
 	 */
-	void setTypeContext(TypeConstraint value);
+	void setTypeContext(Type value);
 
 } // IteratorTypeValue

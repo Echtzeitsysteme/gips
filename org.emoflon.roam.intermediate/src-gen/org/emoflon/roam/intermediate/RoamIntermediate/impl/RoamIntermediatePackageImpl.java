@@ -2108,10 +2108,10 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		initEClass(featureExpressionEClass, FeatureExpression.class, "FeatureExpression", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getFeatureExpression_Current(), this.getFeatureLiteral(), null, "current", null, 1, 1,
-				FeatureExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				FeatureExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getFeatureExpression_Child(), this.getFeatureExpression(), null, "child", null, 1, 1,
-				FeatureExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				FeatureExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(featureLiteralEClass, FeatureLiteral.class, "FeatureLiteral", !IS_ABSTRACT, !IS_INTERFACE,
@@ -2139,24 +2139,24 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 
 		initEClass(iteratorMappingValueEClass, IteratorMappingValue.class, "IteratorMappingValue", !IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getIteratorMappingValue_MappingContext(), this.getMappingConstraint(), null, "mappingContext",
-				null, 0, 1, IteratorMappingValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+		initEReference(getIteratorMappingValue_MappingContext(), this.getMapping(), null, "mappingContext", null, 0, 1,
+				IteratorMappingValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(iteratorMappingFeatureValueEClass, IteratorMappingFeatureValue.class, "IteratorMappingFeatureValue",
 				!IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getIteratorMappingFeatureValue_MappingContext(), this.getMappingConstraint(), null,
-				"mappingContext", null, 0, 1, IteratorMappingFeatureValue.class, !IS_TRANSIENT, !IS_VOLATILE,
-				IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getIteratorMappingFeatureValue_MappingContext(), this.getMapping(), null, "mappingContext", null,
+				0, 1, IteratorMappingFeatureValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getIteratorMappingFeatureValue_FeatureExpression(), this.getFeatureExpression(), null,
 				"featureExpression", null, 0, 1, IteratorMappingFeatureValue.class, !IS_TRANSIENT, !IS_VOLATILE,
 				IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(iteratorMappingNodeValueEClass, IteratorMappingNodeValue.class, "IteratorMappingNodeValue",
 				!IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getIteratorMappingNodeValue_MappingContext(), this.getMappingConstraint(), null,
-				"mappingContext", null, 0, 1, IteratorMappingNodeValue.class, !IS_TRANSIENT, !IS_VOLATILE,
-				IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getIteratorMappingNodeValue_MappingContext(), this.getMapping(), null, "mappingContext", null, 0,
+				1, IteratorMappingNodeValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getIteratorMappingNodeValue_Node(), theIBeXPatternModelPackage.getIBeXNode(), null, "node", null,
 				0, 1, IteratorMappingNodeValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2169,7 +2169,7 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 
 		initEClass(iteratorTypeValueEClass, IteratorTypeValue.class, "IteratorTypeValue", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getIteratorTypeValue_TypeContext(), this.getTypeConstraint(), null, "typeContext", null, 0, 1,
+		initEReference(getIteratorTypeValue_TypeContext(), this.getType(), null, "typeContext", null, 0, 1,
 				IteratorTypeValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

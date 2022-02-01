@@ -16,7 +16,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.SumExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamAttributeExpr;
@@ -32,10 +32,9 @@ import org.emoflon.roam.roamslang.roamSLang.RoamStreamExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
 import org.emoflon.roam.roamslang.scoping.RoamSLangScopeContextUtil;
 
-public class AttributeInStreamTransformer extends TransformationContext<StreamExpression>
-		implements AttributeExpressionTransformer {
+public class AttributeInSumTransformer extends TransformationContext<SumExpression> implements AttributeExpressionTransformer {
 
-	protected AttributeInStreamTransformer(RoamTransformationData data, StreamExpression context,
+	protected AttributeInSumTransformer(RoamTransformationData data, SumExpression context,
 			TransformerFactory factory) {
 		super(data, context, factory);
 	}

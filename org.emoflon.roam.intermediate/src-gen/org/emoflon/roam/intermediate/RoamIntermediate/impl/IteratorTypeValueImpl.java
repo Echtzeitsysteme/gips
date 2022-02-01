@@ -13,7 +13,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.Iterator;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation;
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.Type;
 
 /**
  * <!-- begin-user-doc -->
@@ -48,7 +48,7 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	 * @generated
 	 * @ordered
 	 */
-	protected TypeConstraint typeContext;
+	protected Type typeContext;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -114,10 +114,10 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public TypeConstraint getTypeContext() {
+	public Type getTypeContext() {
 		if (typeContext != null && typeContext.eIsProxy()) {
 			InternalEObject oldTypeContext = (InternalEObject) typeContext;
-			typeContext = (TypeConstraint) eResolveProxy(oldTypeContext);
+			typeContext = (Type) eResolveProxy(oldTypeContext);
 			if (typeContext != oldTypeContext) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
@@ -132,7 +132,7 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public TypeConstraint basicGetTypeContext() {
+	public Type basicGetTypeContext() {
 		return typeContext;
 	}
 
@@ -141,8 +141,8 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setTypeContext(TypeConstraint newTypeContext) {
-		TypeConstraint oldTypeContext = typeContext;
+	public void setTypeContext(Type newTypeContext) {
+		Type oldTypeContext = typeContext;
 		typeContext = newTypeContext;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -181,7 +181,7 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 			setStream((SetOperation) newValue);
 			return;
 		case RoamIntermediatePackage.ITERATOR_TYPE_VALUE__TYPE_CONTEXT:
-			setTypeContext((TypeConstraint) newValue);
+			setTypeContext((Type) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -199,7 +199,7 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 			setStream((SetOperation) null);
 			return;
 		case RoamIntermediatePackage.ITERATOR_TYPE_VALUE__TYPE_CONTEXT:
-			setTypeContext((TypeConstraint) null);
+			setTypeContext((Type) null);
 			return;
 		}
 		super.eUnset(featureID);

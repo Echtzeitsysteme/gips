@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.Iterator;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation;
 
@@ -51,7 +51,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 	 * @generated
 	 * @ordered
 	 */
-	protected MappingConstraint mappingContext;
+	protected Mapping mappingContext;
 
 	/**
 	 * The cached value of the '{@link #getFeatureExpression() <em>Feature Expression</em>}' containment reference.
@@ -127,10 +127,10 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public MappingConstraint getMappingContext() {
+	public Mapping getMappingContext() {
 		if (mappingContext != null && mappingContext.eIsProxy()) {
 			InternalEObject oldMappingContext = (InternalEObject) mappingContext;
-			mappingContext = (MappingConstraint) eResolveProxy(oldMappingContext);
+			mappingContext = (Mapping) eResolveProxy(oldMappingContext);
 			if (mappingContext != oldMappingContext) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
@@ -146,7 +146,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public MappingConstraint basicGetMappingContext() {
+	public Mapping basicGetMappingContext() {
 		return mappingContext;
 	}
 
@@ -155,8 +155,8 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMappingContext(MappingConstraint newMappingContext) {
-		MappingConstraint oldMappingContext = mappingContext;
+	public void setMappingContext(Mapping newMappingContext) {
+		Mapping oldMappingContext = mappingContext;
 		mappingContext = newMappingContext;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -268,7 +268,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 			setStream((SetOperation) newValue);
 			return;
 		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__MAPPING_CONTEXT:
-			setMappingContext((MappingConstraint) newValue);
+			setMappingContext((Mapping) newValue);
 			return;
 		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION:
 			setFeatureExpression((FeatureExpression) newValue);
@@ -289,7 +289,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 			setStream((SetOperation) null);
 			return;
 		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__MAPPING_CONTEXT:
-			setMappingContext((MappingConstraint) null);
+			setMappingContext((Mapping) null);
 			return;
 		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION:
 			setFeatureExpression((FeatureExpression) null);

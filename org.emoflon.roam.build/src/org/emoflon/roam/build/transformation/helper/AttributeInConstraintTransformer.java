@@ -1,5 +1,6 @@
 package org.emoflon.roam.build.transformation.helper;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.emoflon.roam.build.transformation.RoamTransformationData;
@@ -153,14 +154,14 @@ public class AttributeInConstraintTransformer extends TransformationContext<Cons
 						IteratorMappingNodeValue mappingNode = factory.createIteratorMappingNodeValue();
 						mappingNode.setNode(data.eNode2Node().get(eNodeAttribute.getNode()));
 						mappingNode.setReturnType(mappingNode.getNode().getType());
-						mappingNode.setMappingContext((MappingConstraint) data.eMapping2Mapping().get(eMappingAttribute.getMapping()));
+						mappingNode.setMappingContext(data.eMapping2Mapping().get(eMappingAttribute.getMapping()));
 						mappingNode.setStream(data.eStream2SetOp().get(streamIteratorContainer));
 						return mappingNode;
 					} else {
 						IteratorMappingNodeFeatureValue mappingFeature = factory.createIteratorMappingNodeFeatureValue();
 						mappingFeature.setNode(data.eNode2Node().get(eNodeAttribute.getNode()));
 						mappingFeature.setReturnType(mappingFeature.getNode().getType());
-						mappingFeature.setMappingContext((MappingConstraint) data.eMapping2Mapping().get(eMappingAttribute.getMapping()));
+						mappingFeature.setMappingContext(data.eMapping2Mapping().get(eMappingAttribute.getMapping()));
 						mappingFeature.setStream(data.eStream2SetOp().get(streamIteratorContainer));
 						mappingFeature.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eNodeAttribute.getExpr()));
 						return mappingFeature;
@@ -180,7 +181,7 @@ public class AttributeInConstraintTransformer extends TransformationContext<Cons
 							// TODO: Review this feature!
 							// On a serious note: Accessing ILP variable values should not be allowed in filter stream expressions since it is impractical.
 							IteratorMappingValue mappingValue = factory.createIteratorMappingValue();
-							mappingValue.setMappingContext((MappingConstraint) data.eMapping2Mapping().get(eMappingAttribute.getMapping()));
+							mappingValue.setMappingContext(data.eMapping2Mapping().get(eMappingAttribute.getMapping()));
 							mappingValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
 							mappingValue.setReturnType(EcorePackage.Literals.EINT);
 							return mappingValue;
@@ -202,14 +203,14 @@ public class AttributeInConstraintTransformer extends TransformationContext<Cons
 					if(contextType instanceof RoamMappingContext eMappingContext && eContext.getExpr() instanceof RoamNodeAttributeExpr eNodeExpr && eNodeExpr.getExpr() != null) {
 						IteratorMappingFeatureValue mappingFeatureValue = factory.createIteratorMappingFeatureValue();
 						mappingFeatureValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
-						mappingFeatureValue.setMappingContext((MappingConstraint) data.eConstraint2Constraint().get(eMappingContext.eContainer()));
+						mappingFeatureValue.setMappingContext(data.eMapping2Mapping().get(eMappingContext.getMapping()));
 						RoamFeatureLit rootFeatureType = (RoamFeatureLit) RoamSLangScopeContextUtil.findLeafExpression(eNodeExpr.getExpr());
 						mappingFeatureValue.setReturnType(rootFeatureType.getFeature().getEType());
 						mappingFeatureValue.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eFeature));
 						return mappingFeatureValue;
 					} else if(contextType instanceof RoamTypeContext eTypeContext && eContext.getExpr() instanceof RoamFeatureExpr eRootFeature) {
 						IteratorTypeFeatureValue typeFeatureValue = factory.createIteratorTypeFeatureValue();
-						typeFeatureValue.setTypeContext((TypeConstraint) data.eConstraint2Constraint().get(eTypeContext.eContainer()));
+						typeFeatureValue.setTypeContext(data.getType((EClass) eTypeContext.getType()));
 						RoamFeatureLit rootFeatureType = (RoamFeatureLit) RoamSLangScopeContextUtil.findLeafExpression(eRootFeature);
 						typeFeatureValue.setReturnType(rootFeatureType.getFeature().getEType());
 						typeFeatureValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));

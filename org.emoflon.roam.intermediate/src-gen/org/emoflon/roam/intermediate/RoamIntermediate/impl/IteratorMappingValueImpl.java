@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.emoflon.roam.intermediate.RoamIntermediate.Iterator;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation;
 
@@ -48,7 +48,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 	 * @generated
 	 * @ordered
 	 */
-	protected MappingConstraint mappingContext;
+	protected Mapping mappingContext;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -114,10 +114,10 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public MappingConstraint getMappingContext() {
+	public Mapping getMappingContext() {
 		if (mappingContext != null && mappingContext.eIsProxy()) {
 			InternalEObject oldMappingContext = (InternalEObject) mappingContext;
-			mappingContext = (MappingConstraint) eResolveProxy(oldMappingContext);
+			mappingContext = (Mapping) eResolveProxy(oldMappingContext);
 			if (mappingContext != oldMappingContext) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
@@ -133,7 +133,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public MappingConstraint basicGetMappingContext() {
+	public Mapping basicGetMappingContext() {
 		return mappingContext;
 	}
 
@@ -142,8 +142,8 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMappingContext(MappingConstraint newMappingContext) {
-		MappingConstraint oldMappingContext = mappingContext;
+	public void setMappingContext(Mapping newMappingContext) {
+		Mapping oldMappingContext = mappingContext;
 		mappingContext = newMappingContext;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -183,7 +183,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 			setStream((SetOperation) newValue);
 			return;
 		case RoamIntermediatePackage.ITERATOR_MAPPING_VALUE__MAPPING_CONTEXT:
-			setMappingContext((MappingConstraint) newValue);
+			setMappingContext((Mapping) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -201,7 +201,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 			setStream((SetOperation) null);
 			return;
 		case RoamIntermediatePackage.ITERATOR_MAPPING_VALUE__MAPPING_CONTEXT:
-			setMappingContext((MappingConstraint) null);
+			setMappingContext((Mapping) null);
 			return;
 		}
 		super.eUnset(featureID);

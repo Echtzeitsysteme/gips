@@ -1632,7 +1632,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	int FEATURE_EXPRESSION = 33;
 
 	/**
-	 * The feature id for the '<em><b>Current</b></em>' reference.
+	 * The feature id for the '<em><b>Current</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1641,7 +1641,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	int FEATURE_EXPRESSION__CURRENT = 0;
 
 	/**
-	 * The feature id for the '<em><b>Child</b></em>' reference.
+	 * The feature id for the '<em><b>Child</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -3298,10 +3298,10 @@ public interface RoamIntermediatePackage extends EPackage {
 	EClass getFeatureExpression();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression#getCurrent <em>Current</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression#getCurrent <em>Current</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Current</em>'.
+	 * @return the meta object for the containment reference '<em>Current</em>'.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression#getCurrent()
 	 * @see #getFeatureExpression()
 	 * @generated
@@ -3309,10 +3309,10 @@ public interface RoamIntermediatePackage extends EPackage {
 	EReference getFeatureExpression_Current();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression#getChild <em>Child</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression#getChild <em>Child</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Child</em>'.
+	 * @return the meta object for the containment reference '<em>Child</em>'.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression#getChild()
 	 * @see #getFeatureExpression()
 	 * @generated
@@ -4440,7 +4440,7 @@ public interface RoamIntermediatePackage extends EPackage {
 		EClass FEATURE_EXPRESSION = eINSTANCE.getFeatureExpression();
 
 		/**
-		 * The meta object literal for the '<em><b>Current</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Current</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -4448,7 +4448,7 @@ public interface RoamIntermediatePackage extends EPackage {
 		EReference FEATURE_EXPRESSION__CURRENT = eINSTANCE.getFeatureExpression_Current();
 
 		/**
-		 * The meta object literal for the '<em><b>Child</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Child</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

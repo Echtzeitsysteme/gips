@@ -58,6 +58,8 @@ public class TransformerFactory {
 			return new AttributeInConstraintTransformer(data, constraint, this);
 		} else if(context instanceof StreamExpression streamExpr) {
 			return new AttributeInStreamTransformer(data, streamExpr, this);
+		} else if(context instanceof SumExpression sumExpr) {
+			return new AttributeInSumTransformer(data, sumExpr, this);
 		} else {
 			throw new IllegalArgumentException("Transforming arithmetic expressions within the given context is undefined. Context: "+context);
 		}

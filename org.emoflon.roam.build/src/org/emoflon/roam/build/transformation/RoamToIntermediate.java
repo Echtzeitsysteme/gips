@@ -49,6 +49,8 @@ public class RoamToIntermediate {
 		transformMappings();
 		transformConstraints();
 		
+		//add all required data types
+		data.model().getVariables().addAll(data.eType2Type().values());
 		return data.model();
 	}
 	
@@ -87,7 +89,7 @@ public class RoamToIntermediate {
 				//TODO: For now we'll generate a constraint for each context element. In the future, this should be optimized.
 				constraint.setElementwise(true);
 				data.model().getConstraints().add(constraint);
-				data.eConstraint2Constraint().put(eConstraint, constraint);
+				data.eConstraint2Constraint().put(eSubConstraint, constraint);
 				
 				RelationalExpressionTransformer transformer = transformationFactory.createRelationalTransformer(constraint);
 				constraint.setExpression(transformer.transform((RoamRelExpr) boolExpr));
@@ -106,6 +108,7 @@ public class RoamToIntermediate {
 			TypeConstraint constraint = factory.createTypeConstraint();
 			constraint.setName("TypeConstraint"+counter+"On"+type.getType().getName());
 			constraint.setModelType((EClass) type.getType());
+			data.getType((EClass) type.getType());
 			return constraint;
 		}
 	}
@@ -118,7 +121,7 @@ public class RoamToIntermediate {
 				if(rule.getName().equals(ePattern.getName())) {
 					data.ePattern2Rule().put(ePattern, rule);
 					for(EditorNode eNode : ePattern.getNodes()) {
-						for(IBeXNode node : toContextPattern(rule.getLhs()).getLocalNodes()) {
+						for(IBeXNode node : toContextPattern(rule.getLhs()).getSignatureNodes()) {
 							if(eNode.getName().equals(node.getName())) {
 								data.eNode2Node().put(eNode, node);
 							}

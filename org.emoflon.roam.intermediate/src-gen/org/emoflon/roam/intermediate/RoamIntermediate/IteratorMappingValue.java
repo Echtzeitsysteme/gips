@@ -24,12 +24,12 @@ public interface IteratorMappingValue extends ValueExpression, Iterator {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Mapping Context</em>' reference.
-	 * @see #setMappingContext(MappingConstraint)
+	 * @see #setMappingContext(Mapping)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorMappingValue_MappingContext()
 	 * @model
 	 * @generated
 	 */
-	MappingConstraint getMappingContext();
+	Mapping getMappingContext();
 
 	/**
 	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue#getMappingContext <em>Mapping Context</em>}' reference.
@@ -39,6 +39,6 @@ public interface IteratorMappingValue extends ValueExpression, Iterator {
 	 * @see #getMappingContext()
 	 * @generated
 	 */
-	void setMappingContext(MappingConstraint value);
+	void setMappingContext(Mapping value);
 
 } // IteratorMappingValue

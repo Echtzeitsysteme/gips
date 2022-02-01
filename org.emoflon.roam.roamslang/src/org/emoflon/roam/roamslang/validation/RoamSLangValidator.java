@@ -50,102 +50,34 @@ import org.emoflon.roam.roamslang.roamSLang.RoamUnaryArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamUnaryBoolExpr;
 
 /**
- * This class contains custom validation rules. 
+ * This class contains custom validation rules.
  *
- * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
+ * See
+ * https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 public class RoamSLangValidator extends AbstractRoamSLangValidator {
-	
+
 	/**
-	 * The list of invalid mapping/objective names. Will be filled in the static block.
+	 * The list of invalid mapping/objective names. Will be filled in the static
+	 * block.
 	 */
 	public static Set<String> INVALID_NAMES = new HashSet<String>();
-	
+
 	static {
-		final String[] invalidNames = new String[] {
-				"clone",
-				"equals",
-				"finalize",
-				"getClass",
-				"hashCode",
-				"notify",
-				"notifyAll",
-				"toString",
-				"wait",
-				"abstract",
-				"assert",
-				"boolean",
-				"break",
-				"byte",
-				"case",
-				"catch",
-				"char",
-				"class",
-				"const",
-				"continue",
-				"default",
-				"do",
-				"double",
-				"EAttribute",
-				"EBoolean",
-				"EDataType",
-				"EClass",
-				"EClassifier",
-				"EDouble",
-				"EFloat",
-				"EInt",
-				"else",
-				"enum",
-				"EPackage",
-				"EReference",
-				"EString",
-				"extends",
-				"final",
-				"finally",
-				"float",
-				"for",
-				"goto",
-				"if",
-				"implements",
-				"import",
-				"instanceof",
-				"int",
-				"interface",
-				"long",
-				"native",
-				"new",
-				"package",
-				"private",
-				"protected",
-				"public",
-				"return",
-				"short",
-				"static",
-				"strictfp",
-				"super",
-				"switch",
-				"synchronized",
-				"this",
-				"throw",
-				"throws",
-				"transient",
-				"try",
-				"void",
-				"volatile",
-				"while",
-				
+		final String[] invalidNames = new String[] { "clone", "equals", "finalize", "getClass", "hashCode", "notify",
+				"notifyAll", "toString", "wait", "abstract", "assert", "boolean", "break", "byte", "case", "catch",
+				"char", "class", "const", "continue", "default", "do", "double", "EAttribute", "EBoolean", "EDataType",
+				"EClass", "EClassifier", "EDouble", "EFloat", "EInt", "else", "enum", "EPackage", "EReference",
+				"EString", "extends", "final", "finally", "float", "for", "goto", "if", "implements", "import",
+				"instanceof", "int", "interface", "long", "native", "new", "package", "private", "protected", "public",
+				"return", "short", "static", "strictfp", "super", "switch", "synchronized", "this", "throw", "throws",
+				"transient", "try", "void", "volatile", "while",
+
 				// New values
-				"mapping",
-				"objective",
-				"global objective",
-				"global",
-				"min",
-				"max",
-				"constraint"
-		};
+				"mapping", "objective", "global objective", "global", "min", "max", "constraint" };
 		INVALID_NAMES.addAll(Arrays.asList(invalidNames));
 	}
-	
+
 	static String CODE_PREFIX = "org.emoflon.roam.roamslang.";
 
 	// General errors for named elements.
@@ -153,11 +85,11 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	public static String NAME_EXPECT_CAMEL_CASE = CODE_PREFIX + "name.expectCamelCase";
 	public static String NAME_EXPECT_LOWER_CASE = CODE_PREFIX + "name.expectLowerCase";
 	public static String NAME_EXPECT_UNIQUE = CODE_PREFIX + "name.expectUnique";
-	
+
 	public static String GLOBA_OBJJECTIVE_DOES_NOT_EXIST = CODE_PREFIX + "objective.global.doesNotExist";
-	
+
 	public static String GLOBAL_OBJECTIVE_IS_NULL = "You need to specify a global objective.";
-	
+
 	public static String MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Mapping '%s' must not be declared '%s'.";
 	public static String MAPPING_NAME_FORBIDDEN_MESSAGE = "Mappings cannot be be named '%s'. Use a different name.";
 	public static String MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Mapping name '%s' contains underscores. Use camelCase instead.";
@@ -167,24 +99,22 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	public static String OBJECTIVE_NAME_FORBIDDEN_MESSAGE = "Objectives cannot be be named '%s'. Use a different name.";
 	public static String OBJECTIVE_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Objective name '%s' contains underscores. Use camelCase instead.";
 	public static String OBJECTIVE_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Objective '%s' should start with a lower case character.";
-	
+
 	public static String OBJECTIVE_VALUE_IS_ZERO_MESSAGE = "Objective '%s' can be removed because its value is 0.";
-	
+
 	/**
-	 * Checks if a global objective is specified in a given file. This must hold if there is any
-	 * local objective defined.
+	 * Checks if a global objective is specified in a given file. This must hold if
+	 * there is any local objective defined.
 	 * 
 	 * @param file File to check existence of a global objective for.
 	 */
 	@Check
 	public void checkGlobalObjectiveNotNull(final EditorGTFile file) {
 		if (file.getObjectives() != null && !file.getObjectives().isEmpty() && file.getGlobalObjective() == null) {
-			error(
-					GLOBAL_OBJECTIVE_IS_NULL,
+			error(GLOBAL_OBJECTIVE_IS_NULL, //
 					// TODO: I'm not quite sure about the second parameter:
-					RoamSLangPackage.Literals.EDITOR_GT_FILE__GLOBAL_OBJECTIVE,
-					GLOBA_OBJJECTIVE_DOES_NOT_EXIST
-			);
+					RoamSLangPackage.Literals.EDITOR_GT_FILE__GLOBAL_OBJECTIVE, //
+					GLOBA_OBJJECTIVE_DOES_NOT_EXIST); //
 		}
 	}
 
@@ -198,10 +128,11 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		checkMappingNameValid(mapping);
 		checkMappingNameUnique(mapping);
 	}
-	
+
 	/**
-	 * Checks for validity of a mapping name. The name must not be on the list of invalid names,
-	 * the name should be in lowerCamelCase, and the name should start with a lower case character.
+	 * Checks for validity of a mapping name. The name must not be on the list of
+	 * invalid names, the name should be in lowerCamelCase, and the name should
+	 * start with a lower case character.
 	 * 
 	 * @param mapping Roam mapping to check.
 	 */
@@ -209,34 +140,33 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		if (mapping.getName() == null) {
 			return;
 		}
-		
+
 		if (INVALID_NAMES.contains(mapping.getName())) {
-			error(
-					String.format(MAPPING_NAME_FORBIDDEN_MESSAGE, mapping.getName()),
-					RoamSLangPackage.Literals.ROAM_MAPPING__NAME,
-					NAME_EXPECT_UNIQUE
+			error( //
+					String.format(MAPPING_NAME_FORBIDDEN_MESSAGE, mapping.getName()), //
+					RoamSLangPackage.Literals.ROAM_MAPPING__NAME, //
+					NAME_EXPECT_UNIQUE //
 			);
 		} else {
 			// The mapping name should be lowerCamelCase.
 			if (mapping.getName().contains("_")) {
-				warning(
-						String.format(MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE, mapping.getName()),
-						RoamSLangPackage.Literals.ROAM_MAPPING__NAME,
-						NAME_BLOCKED
+				warning( //
+						String.format(MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE, mapping.getName()), //
+						RoamSLangPackage.Literals.ROAM_MAPPING__NAME, //
+						NAME_BLOCKED //
 				);
 			} else {
 				// The mapping name should start with a lower case character.
 				if (!Character.isLowerCase(mapping.getName().charAt(0))) {
-					warning(
-							String.format(MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE, mapping.getName()),
-							RoamSLangPackage.Literals.ROAM_MAPPING__NAME,
-							NAME_EXPECT_LOWER_CASE
+					warning( //
+							String.format(MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE, mapping.getName()), //
+							RoamSLangPackage.Literals.ROAM_MAPPING__NAME, NAME_EXPECT_LOWER_CASE //
 					);
 				}
 			}
 		}
 	}
-	
+
 	/**
 	 * Checks the uniqueness of the name of a given Roam mapping.
 	 * 
@@ -244,18 +174,17 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	 */
 	public void checkMappingNameUnique(final RoamMapping mapping) {
 		final EditorGTFile container = (EditorGTFile) mapping.eContainer();
-		final int count = (int) container.getMappings().stream().filter(
-				m -> m.getName() != null && m.getName().equals(mapping.getName())
-				).count();
+		final int count = (int) container.getMappings().stream()
+				.filter(m -> m.getName() != null && m.getName().equals(mapping.getName())).count();
 		if (count != 1) {
-			error(
-					String.format(MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE, mapping.getName(), getTimes(count)),
-					RoamSLangPackage.Literals.ROAM_MAPPING__NAME,
-					NAME_EXPECT_UNIQUE
+			error( //
+					String.format(MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE, mapping.getName(), getTimes(count)), //
+					RoamSLangPackage.Literals.ROAM_MAPPING__NAME, //
+					NAME_EXPECT_UNIQUE //
 			);
 		}
 	}
-	
+
 	/**
 	 * Runs all checks for a given constraints.
 	 * 
@@ -264,26 +193,26 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	@Check
 	public void checkConstraint(final RoamConstraint constraint) {
 		if (leafType.BOOLEAN != getEvalTypeFromBoolExpr(constraint.getExpr().getExpr())) {
-			error(
-					"Constraint does not evaluate to a boolean",
-					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR
+			error( //
+					"Constraint does not evaluate to a boolean", //
+					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR //
 			);
 		}
-		
+
 		checkConstraintIsLiteratl(constraint);
 	}
-	
+
 	public void checkConstraintIsLiteratl(final RoamConstraint constraint) {
 		if (constraint.getExpr().getExpr() instanceof RoamBooleanLiteral) {
 			final RoamBooleanLiteral lit = (RoamBooleanLiteral) constraint.getExpr().getExpr();
 			final String warning = String.valueOf(lit.isLiteral());
-			warning(
-					"Constraint is always " + warning + ".",
-					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR
+			warning( //
+					"Constraint is always " + warning + ".", //
+					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR //
 			);
 		}
 	}
-	
+
 	/**
 	 * Runs all checks for a given objective.
 	 * 
@@ -294,19 +223,20 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		checkObjectiveNameValid(objective);
 		checkObjectiveNameUnique(objective);
 		checkObjectiveIsNotUseless(objective);
-		
+
 		final leafType eval = getEvalTypeFromArithExpr(objective.getExpr());
 		if (eval != leafType.INTEGER && eval != leafType.DOUBLE) {
-			error(
-					"Objective does not evaluate to an integer or double.",
-					RoamSLangPackage.Literals.ROAM_OBJECTIVE__EXPR
+			error( //
+					"Objective does not evaluate to an integer or double.", //
+					RoamSLangPackage.Literals.ROAM_OBJECTIVE__EXPR //
 			);
 		}
 	}
-	
+
 	/**
-	 * Checks for validity of an objective name. The name must not be on the list of invalid names,
-	 * the name should be in lowerCamelCase, and the name should start with a lower case character.
+	 * Checks for validity of an objective name. The name must not be on the list of
+	 * invalid names, the name should be in lowerCamelCase, and the name should
+	 * start with a lower case character.
 	 * 
 	 * @param objective Roam objective to check.
 	 */
@@ -314,34 +244,34 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		if (objective.getName() == null) {
 			return;
 		}
-		
+
 		if (INVALID_NAMES.contains(objective.getName())) {
-			error(
-					String.format(OBJECTIVE_NAME_FORBIDDEN_MESSAGE, objective.getName()),
-					RoamSLangPackage.Literals.ROAM_OBJECTIVE__NAME,
-					NAME_BLOCKED
+			error( //
+					String.format(OBJECTIVE_NAME_FORBIDDEN_MESSAGE, objective.getName()), //
+					RoamSLangPackage.Literals.ROAM_OBJECTIVE__NAME, //
+					NAME_BLOCKED //
 			);
 		} else {
 			// The objective name should be lowerCamelCase.
 			if (objective.getName().contains("_")) {
-				warning(
-						String.format(OBJECTIVE_NAME_CONTAINS_UNDERSCORES_MESSAGE, objective.getName()),
-						RoamSLangPackage.Literals.ROAM_OBJECTIVE__NAME,
-						NAME_BLOCKED
+				warning( //
+						String.format(OBJECTIVE_NAME_CONTAINS_UNDERSCORES_MESSAGE, objective.getName()), //
+						RoamSLangPackage.Literals.ROAM_OBJECTIVE__NAME, //
+						NAME_BLOCKED //
 				);
 			} else {
 				// The objective name should start with a lower case character.
 				if (!Character.isLowerCase(objective.getName().charAt(0))) {
-					warning(
-							String.format(OBJECTIVE_NAME_STARTS_WITH_LOWER_CASE_MESSAGE, objective.getName()),
-							RoamSLangPackage.Literals.ROAM_OBJECTIVE__NAME,
-							NAME_EXPECT_LOWER_CASE
+					warning( //
+							String.format(OBJECTIVE_NAME_STARTS_WITH_LOWER_CASE_MESSAGE, objective.getName()), //
+							RoamSLangPackage.Literals.ROAM_OBJECTIVE__NAME, //
+							NAME_EXPECT_LOWER_CASE //
 					);
 				}
 			}
 		}
 	}
-	
+
 	/**
 	 * Checks the uniqueness of the name of a given Roam objective.
 	 * 
@@ -349,18 +279,17 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	 */
 	public void checkObjectiveNameUnique(final RoamObjective objective) {
 		final EditorGTFile container = (EditorGTFile) objective.eContainer();
-		final int count = (int) container.getObjectives().stream().filter(
-				o -> o.getName() != null && o.getName().equals(objective.getName())
-				).count();
+		final int count = (int) container.getObjectives().stream()
+				.filter(o -> o.getName() != null && o.getName().equals(objective.getName())).count();
 		if (count != 1) {
-			error(
-					String.format(OBJECTIVE_NAME_MULTIPLE_DECLARATIONS_MESSAGE, objective.getName(), getTimes(count)),
-					RoamSLangPackage.Literals.ROAM_OBJECTIVE__NAME,
-					NAME_EXPECT_UNIQUE
+			error( //
+					String.format(OBJECTIVE_NAME_MULTIPLE_DECLARATIONS_MESSAGE, objective.getName(), getTimes(count)), //
+					RoamSLangPackage.Literals.ROAM_OBJECTIVE__NAME, //
+					NAME_EXPECT_UNIQUE //
 			);
 		}
 	}
-	
+
 	/**
 	 * Checks a given Roam objective for uselessness, i.e, if the objective is '0'.
 	 * 
@@ -370,34 +299,34 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		if (objective.getExpr() instanceof RoamArithmeticLiteral) {
 			final RoamArithmeticLiteral lit = (RoamArithmeticLiteral) objective.getExpr();
 			if (lit.getValue() != null && lit.getValue().equals("0")) {
-				warning(
-						String.format(OBJECTIVE_VALUE_IS_ZERO_MESSAGE, objective.getName()),
-						RoamSLangPackage.Literals.ROAM_OBJECTIVE__EXPR
+				warning( //
+						String.format(OBJECTIVE_VALUE_IS_ZERO_MESSAGE, objective.getName()), //
+						RoamSLangPackage.Literals.ROAM_OBJECTIVE__EXPR //
 				);
 			}
 		}
 	}
-	
+
 	// TODO: Is this even necessary?
 	@Check
 	public void checkArithmeticLiteralParsable(final RoamArithmeticLiteral literal) {
 		try {
 			Double.valueOf(literal.getValue());
 		} catch (final NumberFormatException ex) {
-			error(
-					"Literal not parsable.",
-					RoamSLangPackage.Literals.ROAM_ARITHMETIC_LITERAL__VALUE
+			error( //
+					"Literal not parsable.", //
+					RoamSLangPackage.Literals.ROAM_ARITHMETIC_LITERAL__VALUE //
 			);
 		}
 	}
-	
-	public leafType getEvalTypeFromBoolExpr (final RoamBoolExpr expr) {
+
+	public leafType getEvalTypeFromBoolExpr(final RoamBoolExpr expr) {
 		if (expr instanceof RoamBooleanLiteral) {
 			return leafType.BOOLEAN;
 		} else if (expr instanceof RoamBinaryBoolExpr) {
 			final RoamBinaryBoolExpr boolExpr = (RoamBinaryBoolExpr) expr;
 			// TODO: Check if return type is compatible with operator
-			return getEvalLeftRightSide(boolExpr.getLeft(), boolExpr.getRight());			
+			return getEvalLeftRightSide(boolExpr.getLeft(), boolExpr.getRight());
 		} else if (expr instanceof RoamUnaryBoolExpr) {
 			final RoamUnaryBoolExpr boolExpr = (RoamUnaryBoolExpr) expr;
 			// TODO: Check if return type is compatible with operator
@@ -418,7 +347,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 
 		return leafType.ERROR;
 	}
-	
+
 	public leafType getEvalTypeFromArithExpr(final RoamArithmeticExpr expr) {
 		if (expr instanceof RoamBracketExpr) {
 			final RoamBracketExpr brack = (RoamBracketExpr) expr;
@@ -442,10 +371,10 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		} else if (expr instanceof RoamExpressionOperand) {
 			return getEvalTypeFromExprOp((RoamExpressionOperand) expr);
 		}
-		
+
 		return leafType.ERROR;
 	}
-	
+
 	public leafType getEvalTypeFromExprOp(final RoamExpressionOperand op) {
 		if (op instanceof RoamArithmeticLiteral) {
 			return getEvalTypeFromArithLit((RoamArithmeticLiteral) op);
@@ -454,10 +383,10 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		} else if (op instanceof RoamObjectiveExpression) {
 			return leafType.OBJECTIVE;
 		}
-		
+
 		return leafType.ERROR;
 	}
-	
+
 	public leafType getEvalTypeFromAttrExpr(final RoamAttributeExpr expr) {
 		if (expr instanceof RoamMappingAttributeExpr) {
 			final RoamMappingAttributeExpr mapExpr = (RoamMappingAttributeExpr) expr;
@@ -469,10 +398,10 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			final RoamLambdaAttributeExpression lambExpr = (RoamLambdaAttributeExpression) expr;
 			return getEvalTypeFromLambdaAttrExpr(lambExpr);
 		}
-		
+
 		return leafType.ERROR;
 	}
-	
+
 	public leafType getEvalTypeFromStreamExpr(final RoamStreamExpr expr) {
 		if (expr instanceof RoamStreamNavigation) {
 			final RoamStreamNavigation nav = (RoamStreamNavigation) expr;
@@ -495,10 +424,10 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			sel.getType(); // EClassifier
 			// TODO
 		}
-		
+
 		return leafType.ERROR;
 	}
-	
+
 	public leafType getEvalTypeFromStreamNoArgOp(final RoamStreamNoArgOperator op) {
 		final int val = op.getValue();
 		if (val == RoamStreamNoArgOperator.COUNT_VALUE) {
@@ -506,10 +435,10 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		} else if (val == RoamStreamNoArgOperator.EXISTS_VALUE || val == RoamStreamNoArgOperator.NOTEXISTS_VALUE) {
 			return leafType.BOOLEAN;
 		}
-		
+
 		return leafType.ERROR;
 	}
-	
+
 	public leafType getEvalTypeFromLambdaAttrExpr(final RoamLambdaAttributeExpression expr) {
 		final EObject innerExpr = expr.getExpr();
 		if (innerExpr instanceof RoamNodeAttributeExpr) {
@@ -522,23 +451,23 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			// TODO
 			getEvalTypeFromFeatureExpr((RoamFeatureExpr) innerExpr);
 		}
-		
+
 		final RoamLambdaExpression lambdaExpr = expr.getVar();
 		// TODO
 		return leafType.ERROR;
 	}
-	
+
 	public leafType getEvalTypeFromContextExpr(final RoamContextExpr expr) {
 //		final leafType exprType = getEvalTypeFromContextExpr(expr.getExpr());
 		expr.getExpr(); // <- (not) optional?
 		expr.getTypeCast(); // <- optional
 		expr.getStream(); // <- optional
 		// ^All optional?
-		
+
 		// TODO
 		return null;
 	}
-	
+
 	public leafType getEvalTypeFromContextOpExpr(final RoamContextOperationExpression expr) {
 		final int val = expr.getOperation().getValue();
 		if (val == RoamContextOperation.MAPPED_VALUE) {
@@ -546,19 +475,19 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		} else if (val == RoamContextOperation.VALUE_VALUE) {
 			return leafType.INTEGER;
 		}
-		
+
 		return leafType.ERROR;
 	}
-	
+
 	public leafType getEvalTypeFromNodeAttrExpr(final RoamNodeAttributeExpr expr) {
 		expr.getNode(); // <- not optional
 		expr.getTypeCast(); // <- optional
 		expr.getExpr(); // <- optional
-		
+
 		// TODO
 		return null;
 	}
-	
+
 	public leafType getEvalTypeFromFeatureExpr(final RoamFeatureExpr expr) {
 		if (expr instanceof RoamFeatureNavigation) {
 			final RoamFeatureNavigation nav = (RoamFeatureNavigation) expr;
@@ -570,14 +499,14 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			lit.getFeature(); // <- not optional
 			lit.getTypeCast(); // <- optional
 		}
-		
+
 		// TODO
 		return null;
 	}
-	
+
 	/**
-	 * Returns the evaluation type from a given RoamTypeCast (EClass) or null if cast isn't set
-	 * (because it is optional).
+	 * Returns the evaluation type from a given RoamTypeCast (EClass) or null if
+	 * cast isn't set (because it is optional).
 	 * 
 	 * @param cast RoamTypeCast to check.
 	 * @return leafType EClass or null if cast not set.
@@ -585,28 +514,28 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	public leafType getEvalTypeFromTypeCast(final RoamTypeCast cast) {
 		return (cast != null && cast.getType() != null) ? leafType.ECLASS : null;
 	}
-	
+
 	public leafType getEvalTypeFromArithLit(final RoamArithmeticLiteral lit) {
 //		if (lit instanceof RoamDoubleLiteral) {
 //			
 //		}
 		// TODO: ^There is no 'RoamDoubleLiteral' or 'RoamIntegerLiteral'
-		
+
 		final String val = lit.getValue();
 		try {
 			Integer.valueOf(val);
 			return leafType.INTEGER;
-		} catch(final NumberFormatException ex) {
+		} catch (final NumberFormatException ex) {
 			// No int
 		}
 		try {
 			Double.valueOf(val);
 			return leafType.DOUBLE;
-		} catch(final NumberFormatException ex) {
+		} catch (final NumberFormatException ex) {
 			return leafType.ERROR;
 		}
 	}
-	
+
 	public leafType getEvalTypeDelegate(final EObject e) {
 		if (e instanceof RoamBoolExpr) {
 			return getEvalTypeFromBoolExpr((RoamBoolExpr) e);
@@ -615,15 +544,15 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		} else if (e instanceof RoamBool) {
 			return getEvalTypeFromBoolExpr(((RoamBool) e).getExpr());
 		}
-		
+
 		return leafType.ERROR;
 	}
-	
+
 	/**
-	 * Evaluates the two given types and returns their type if they match. Else, the method
-	 * returns the error value.
+	 * Evaluates the two given types and returns their type if they match. Else, the
+	 * method returns the error value.
 	 * 
-	 * @param left First type to evaluate.
+	 * @param left  First type to evaluate.
 	 * @param right Second type to evaluate.
 	 * @return Type or error if types do not match.
 	 */
@@ -636,18 +565,18 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return leafType.ERROR;
 		}
 	}
-	
+
 	/**
 	 * Enumeration for the type of the leaf.
 	 */
 	protected enum leafType {
 		BOOLEAN, // RoamBooleanLiteral
-		INTEGER,
-		DOUBLE,
+		INTEGER, //
+		DOUBLE, //
 		OBJECTIVE, // RoamObjective
 		MAPPING, // RoamMapping
 		ECLASS, // EClass for casts
 		ERROR // If leaf type can not be evaluated, e.g.: '1 + true'
 	}
-	
+
 }

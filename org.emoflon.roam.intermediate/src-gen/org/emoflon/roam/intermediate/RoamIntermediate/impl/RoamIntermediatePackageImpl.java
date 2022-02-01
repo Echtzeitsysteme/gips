@@ -37,6 +37,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral;
 import org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.FeatureLiteral;
+import org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective;
 import org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral;
 import org.emoflon.roam.intermediate.RoamIntermediate.Iterator;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue;
@@ -47,7 +48,9 @@ import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
 import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateFactory;
@@ -63,6 +66,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation;
 import org.emoflon.roam.intermediate.RoamIntermediate.SumExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.Type;
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective;
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator;
@@ -117,6 +121,20 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass objectiveEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass globalObjectiveEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass contextEClass = null;
 
 	/**
@@ -132,6 +150,20 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * @generated
 	 */
 	private EClass mappingConstraintEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass mappingObjectiveEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass typeObjectiveEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -570,8 +602,26 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRoamIntermediateModel_IbexModel() {
+	public EReference getRoamIntermediateModel_Objectives() {
 		return (EReference) roamIntermediateModelEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRoamIntermediateModel_GlobalObjective() {
+		return (EReference) roamIntermediateModelEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRoamIntermediateModel_IbexModel() {
+		return (EReference) roamIntermediateModelEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -669,6 +719,60 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getObjective() {
+		return objectiveEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getObjective_Name() {
+		return (EAttribute) objectiveEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getObjective_Elementwise() {
+		return (EAttribute) objectiveEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getObjective_Expression() {
+		return (EReference) objectiveEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGlobalObjective() {
+		return globalObjectiveEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGlobalObjective_Expression() {
+		return (EReference) globalObjectiveEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getContext() {
 		return contextEClass;
 	}
@@ -707,6 +811,42 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 */
 	public EReference getMappingConstraint_Mapping() {
 		return (EReference) mappingConstraintEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getMappingObjective() {
+		return mappingObjectiveEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getMappingObjective_Mapping() {
+		return (EReference) mappingObjectiveEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getTypeObjective() {
+		return typeObjectiveEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTypeObjective_ModelType() {
+		return (EReference) typeObjectiveEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -1633,6 +1773,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		createEAttribute(roamIntermediateModelEClass, ROAM_INTERMEDIATE_MODEL__NAME);
 		createEReference(roamIntermediateModelEClass, ROAM_INTERMEDIATE_MODEL__VARIABLES);
 		createEReference(roamIntermediateModelEClass, ROAM_INTERMEDIATE_MODEL__CONSTRAINTS);
+		createEReference(roamIntermediateModelEClass, ROAM_INTERMEDIATE_MODEL__OBJECTIVES);
+		createEReference(roamIntermediateModelEClass, ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE);
 		createEReference(roamIntermediateModelEClass, ROAM_INTERMEDIATE_MODEL__IBEX_MODEL);
 
 		variableSetEClass = createEClass(VARIABLE_SET);
@@ -1649,6 +1791,14 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		createEAttribute(constraintEClass, CONSTRAINT__ELEMENTWISE);
 		createEReference(constraintEClass, CONSTRAINT__EXPRESSION);
 
+		objectiveEClass = createEClass(OBJECTIVE);
+		createEAttribute(objectiveEClass, OBJECTIVE__NAME);
+		createEAttribute(objectiveEClass, OBJECTIVE__ELEMENTWISE);
+		createEReference(objectiveEClass, OBJECTIVE__EXPRESSION);
+
+		globalObjectiveEClass = createEClass(GLOBAL_OBJECTIVE);
+		createEReference(globalObjectiveEClass, GLOBAL_OBJECTIVE__EXPRESSION);
+
 		contextEClass = createEClass(CONTEXT);
 
 		typeConstraintEClass = createEClass(TYPE_CONSTRAINT);
@@ -1656,6 +1806,12 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 
 		mappingConstraintEClass = createEClass(MAPPING_CONSTRAINT);
 		createEReference(mappingConstraintEClass, MAPPING_CONSTRAINT__MAPPING);
+
+		mappingObjectiveEClass = createEClass(MAPPING_OBJECTIVE);
+		createEReference(mappingObjectiveEClass, MAPPING_OBJECTIVE__MAPPING);
+
+		typeObjectiveEClass = createEClass(TYPE_OBJECTIVE);
+		createEReference(typeObjectiveEClass, TYPE_OBJECTIVE__MODEL_TYPE);
 
 		arithmeticExpressionEClass = createEClass(ARITHMETIC_EXPRESSION);
 		createEReference(arithmeticExpressionEClass, ARITHMETIC_EXPRESSION__RETURN_TYPE);
@@ -1839,6 +1995,10 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		typeConstraintEClass.getESuperTypes().add(this.getConstraint());
 		mappingConstraintEClass.getESuperTypes().add(this.getContext());
 		mappingConstraintEClass.getESuperTypes().add(this.getConstraint());
+		mappingObjectiveEClass.getESuperTypes().add(this.getContext());
+		mappingObjectiveEClass.getESuperTypes().add(this.getObjective());
+		typeObjectiveEClass.getESuperTypes().add(this.getContext());
+		typeObjectiveEClass.getESuperTypes().add(this.getObjective());
 		binaryArithmeticExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
 		unaryArithmeticExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
 		arithmeticStreamExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
@@ -1889,6 +2049,12 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		initEReference(getRoamIntermediateModel_Constraints(), this.getConstraint(), null, "constraints", null, 0, -1,
 				RoamIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRoamIntermediateModel_Objectives(), this.getObjective(), null, "objectives", null, 0, -1,
+				RoamIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRoamIntermediateModel_GlobalObjective(), this.getGlobalObjective(), null, "globalObjective",
+				null, 0, 1, RoamIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRoamIntermediateModel_IbexModel(), theIBeXPatternModelPackage.getIBeXModel(), null,
 				"ibexModel", null, 1, 1, RoamIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
 				IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1919,11 +2085,28 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 				Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(objectiveEClass, Objective.class, "Objective", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getObjective_Name(), ecorePackage.getEString(), "name", null, 0, 1, Objective.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getObjective_Elementwise(), ecorePackage.getEBoolean(), "elementwise", null, 0, 1,
+				Objective.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
+		initEReference(getObjective_Expression(), this.getArithmeticExpression(), null, "expression", null, 0, 1,
+				Objective.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(globalObjectiveEClass, GlobalObjective.class, "GlobalObjective", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGlobalObjective_Expression(), this.getArithmeticExpression(), null, "expression", null, 0, 1,
+				GlobalObjective.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(contextEClass, Context.class, "Context", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(typeConstraintEClass, TypeConstraint.class, "TypeConstraint", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getTypeConstraint_ModelType(), ecorePackage.getEClass(), null, "modelType", null, 0, 1,
+		initEReference(getTypeConstraint_ModelType(), this.getType(), null, "modelType", null, 0, 1,
 				TypeConstraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -1932,6 +2115,18 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		initEReference(getMappingConstraint_Mapping(), this.getMapping(), null, "mapping", null, 1, 1,
 				MappingConstraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(mappingObjectiveEClass, MappingObjective.class, "MappingObjective", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getMappingObjective_Mapping(), this.getMapping(), null, "mapping", null, 1, 1,
+				MappingObjective.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(typeObjectiveEClass, TypeObjective.class, "TypeObjective", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getTypeObjective_ModelType(), this.getType(), null, "modelType", null, 0, 1, TypeObjective.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(arithmeticExpressionEClass, ArithmeticExpression.class, "ArithmeticExpression", IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

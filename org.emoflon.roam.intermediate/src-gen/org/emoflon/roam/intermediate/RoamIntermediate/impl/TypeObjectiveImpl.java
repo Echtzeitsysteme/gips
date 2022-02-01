@@ -10,29 +10,30 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
+
+import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 import org.emoflon.roam.intermediate.RoamIntermediate.Type;
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Type Constraint</b></em>'.
+ * An implementation of the model object '<em><b>Type Objective</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl#isElementwise <em>Elementwise</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl#getExpression <em>Expression</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl#getModelType <em>Model Type</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeObjectiveImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeObjectiveImpl#isElementwise <em>Elementwise</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeObjectiveImpl#getExpression <em>Expression</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeObjectiveImpl#getModelType <em>Model Type</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements TypeConstraint {
+public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements TypeObjective {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -81,7 +82,7 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * @generated
 	 * @ordered
 	 */
-	protected RelationalExpression expression;
+	protected ArithmeticExpression expression;
 
 	/**
 	 * The cached value of the '{@link #getModelType() <em>Model Type</em>}' reference.
@@ -98,7 +99,7 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected TypeConstraintImpl() {
+	protected TypeObjectiveImpl() {
 		super();
 	}
 
@@ -109,7 +110,7 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.TYPE_CONSTRAINT;
+		return RoamIntermediatePackage.Literals.TYPE_OBJECTIVE;
 	}
 
 	/**
@@ -130,8 +131,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE_CONSTRAINT__NAME,
-					oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE_OBJECTIVE__NAME, oldName,
+					name));
 	}
 
 	/**
@@ -152,7 +153,7 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		boolean oldElementwise = elementwise;
 		elementwise = newElementwise;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE,
+			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE,
 					oldElementwise, elementwise));
 	}
 
@@ -161,7 +162,7 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public RelationalExpression getExpression() {
+	public ArithmeticExpression getExpression() {
 		return expression;
 	}
 
@@ -170,12 +171,12 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetExpression(RelationalExpression newExpression, NotificationChain msgs) {
-		RelationalExpression oldExpression = expression;
+	public NotificationChain basicSetExpression(ArithmeticExpression newExpression, NotificationChain msgs) {
+		ArithmeticExpression oldExpression = expression;
 		expression = newExpression;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION, oldExpression, newExpression);
+					RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION, oldExpression, newExpression);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -189,20 +190,20 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setExpression(RelationalExpression newExpression) {
+	public void setExpression(ArithmeticExpression newExpression) {
 		if (newExpression != expression) {
 			NotificationChain msgs = null;
 			if (expression != null)
 				msgs = ((InternalEObject) expression).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION, null, msgs);
+						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION, null, msgs);
 			if (newExpression != null)
 				msgs = ((InternalEObject) newExpression).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION, null, msgs);
+						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION, null, msgs);
 			msgs = basicSetExpression(newExpression, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION,
+			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION,
 					newExpression, newExpression));
 	}
 
@@ -218,7 +219,7 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 			if (modelType != oldModelType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE, oldModelType, modelType));
+							RoamIntermediatePackage.TYPE_OBJECTIVE__MODEL_TYPE, oldModelType, modelType));
 			}
 		}
 		return modelType;
@@ -242,7 +243,7 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		Type oldModelType = modelType;
 		modelType = newModelType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE,
+			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE_OBJECTIVE__MODEL_TYPE,
 					oldModelType, modelType));
 	}
 
@@ -254,7 +255,7 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
+		case RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION:
 			return basicSetExpression(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -268,13 +269,13 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__NAME:
+		case RoamIntermediatePackage.TYPE_OBJECTIVE__NAME:
 			return getName();
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE:
+		case RoamIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE:
 			return isElementwise();
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
+		case RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION:
 			return getExpression();
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE:
+		case RoamIntermediatePackage.TYPE_OBJECTIVE__MODEL_TYPE:
 			if (resolve)
 				return getModelType();
 			return basicGetModelType();
@@ -290,16 +291,16 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__NAME:
+		case RoamIntermediatePackage.TYPE_OBJECTIVE__NAME:
 			setName((String) newValue);
 			return;
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE:
+		case RoamIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE:
 			setElementwise((Boolean) newValue);
 			return;
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
-			setExpression((RelationalExpression) newValue);
+		case RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION:
+			setExpression((ArithmeticExpression) newValue);
 			return;
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE:
+		case RoamIntermediatePackage.TYPE_OBJECTIVE__MODEL_TYPE:
 			setModelType((Type) newValue);
 			return;
 		}
@@ -314,16 +315,16 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__NAME:
+		case RoamIntermediatePackage.TYPE_OBJECTIVE__NAME:
 			setName(NAME_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE:
+		case RoamIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE:
 			setElementwise(ELEMENTWISE_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
-			setExpression((RelationalExpression) null);
+		case RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION:
+			setExpression((ArithmeticExpression) null);
 			return;
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE:
+		case RoamIntermediatePackage.TYPE_OBJECTIVE__MODEL_TYPE:
 			setModelType((Type) null);
 			return;
 		}
@@ -338,13 +339,13 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__NAME:
+		case RoamIntermediatePackage.TYPE_OBJECTIVE__NAME:
 			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE:
+		case RoamIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE:
 			return elementwise != ELEMENTWISE_EDEFAULT;
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
+		case RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION:
 			return expression != null;
-		case RoamIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE:
+		case RoamIntermediatePackage.TYPE_OBJECTIVE__MODEL_TYPE:
 			return modelType != null;
 		}
 		return super.eIsSet(featureID);
@@ -357,14 +358,14 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == Constraint.class) {
+		if (baseClass == Objective.class) {
 			switch (derivedFeatureID) {
-			case RoamIntermediatePackage.TYPE_CONSTRAINT__NAME:
-				return RoamIntermediatePackage.CONSTRAINT__NAME;
-			case RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE:
-				return RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE;
-			case RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
-				return RoamIntermediatePackage.CONSTRAINT__EXPRESSION;
+			case RoamIntermediatePackage.TYPE_OBJECTIVE__NAME:
+				return RoamIntermediatePackage.OBJECTIVE__NAME;
+			case RoamIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE:
+				return RoamIntermediatePackage.OBJECTIVE__ELEMENTWISE;
+			case RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION:
+				return RoamIntermediatePackage.OBJECTIVE__EXPRESSION;
 			default:
 				return -1;
 			}
@@ -379,14 +380,14 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == Constraint.class) {
+		if (baseClass == Objective.class) {
 			switch (baseFeatureID) {
-			case RoamIntermediatePackage.CONSTRAINT__NAME:
-				return RoamIntermediatePackage.TYPE_CONSTRAINT__NAME;
-			case RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE:
-				return RoamIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE;
-			case RoamIntermediatePackage.CONSTRAINT__EXPRESSION:
-				return RoamIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION;
+			case RoamIntermediatePackage.OBJECTIVE__NAME:
+				return RoamIntermediatePackage.TYPE_OBJECTIVE__NAME;
+			case RoamIntermediatePackage.OBJECTIVE__ELEMENTWISE:
+				return RoamIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE;
+			case RoamIntermediatePackage.OBJECTIVE__EXPRESSION:
+				return RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION;
 			default:
 				return -1;
 			}
@@ -413,4 +414,4 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		return result.toString();
 	}
 
-} //TypeConstraintImpl
+} //TypeObjectiveImpl

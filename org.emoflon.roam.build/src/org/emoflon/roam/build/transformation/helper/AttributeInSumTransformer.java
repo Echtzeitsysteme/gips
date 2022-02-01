@@ -51,7 +51,7 @@ public class AttributeInSumTransformer extends TransformationContext<SumExpressi
 				if(contextType instanceof RoamTypeContext typeContext) {
 					TypeConstraint tc = (TypeConstraint) constraint;
 					ContextTypeValue typeValue = factory.createContextTypeValue();
-					typeValue.setReturnType(tc.getModelType());
+					typeValue.setReturnType(tc.getModelType().getType());
 					typeValue.setTypeContext(tc);
 					return typeValue;
 				} else {
@@ -63,7 +63,7 @@ public class AttributeInSumTransformer extends TransformationContext<SumExpressi
 						TypeConstraint tc = (TypeConstraint) constraint;
 						ContextTypeFeatureValue featureValue = factory.createContextTypeFeatureValue();
 						featureValue.setTypeContext(tc);
-						featureValue.setReturnType(tc.getModelType());
+						featureValue.setReturnType(tc.getModelType().getType());
 						featureValue.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eFeature));
 						return featureValue;
 					} else {

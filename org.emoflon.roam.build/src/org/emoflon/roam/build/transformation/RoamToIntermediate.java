@@ -20,6 +20,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateFactory;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
+import org.emoflon.roam.intermediate.RoamIntermediate.Type;
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
 import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
 import org.emoflon.roam.roamslang.roamSLang.RoamBoolExpr;
@@ -107,8 +108,8 @@ public class RoamToIntermediate {
 			RoamTypeContext type = (RoamTypeContext) eConstraint.getContext();
 			TypeConstraint constraint = factory.createTypeConstraint();
 			constraint.setName("TypeConstraint"+counter+"On"+type.getType().getName());
-			constraint.setModelType((EClass) type.getType());
-			data.getType((EClass) type.getType());
+			Type varType = data.getType((EClass) type.getType());
+			constraint.setModelType(varType);
 			return constraint;
 		}
 	}

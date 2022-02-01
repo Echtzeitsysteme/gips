@@ -52,6 +52,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//RoamIntermediateModel/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//RoamIntermediateModel/variables"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//RoamIntermediateModel/constraints"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//RoamIntermediateModel/objectives"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//RoamIntermediateModel/globalObjective"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//RoamIntermediateModel/ibexModel"/>
     </genClasses>
     <genClasses image="false" ecoreClass="RoamIntermediate.ecore#//VariableSet">
@@ -68,12 +70,26 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//Constraint/elementwise"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//Constraint/expression"/>
     </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//Objective">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//Objective/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//Objective/elementwise"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//Objective/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//GlobalObjective">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//GlobalObjective/expression"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="RoamIntermediate.ecore#//Context"/>
     <genClasses ecoreClass="RoamIntermediate.ecore#//TypeConstraint">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//TypeConstraint/modelType"/>
     </genClasses>
     <genClasses ecoreClass="RoamIntermediate.ecore#//MappingConstraint">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//MappingConstraint/mapping"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//MappingObjective">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//MappingObjective/mapping"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//TypeObjective">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//TypeObjective/modelType"/>
     </genClasses>
     <genClasses ecoreClass="RoamIntermediate.ecore#//ArithmeticExpression">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//ArithmeticExpression/returnType"/>

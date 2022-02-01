@@ -63,10 +63,18 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 			return createType();
 		case RoamIntermediatePackage.MAPPING:
 			return createMapping();
+		case RoamIntermediatePackage.OBJECTIVE:
+			return createObjective();
+		case RoamIntermediatePackage.GLOBAL_OBJECTIVE:
+			return createGlobalObjective();
 		case RoamIntermediatePackage.TYPE_CONSTRAINT:
 			return createTypeConstraint();
 		case RoamIntermediatePackage.MAPPING_CONSTRAINT:
 			return createMappingConstraint();
+		case RoamIntermediatePackage.MAPPING_OBJECTIVE:
+			return createMappingObjective();
+		case RoamIntermediatePackage.TYPE_OBJECTIVE:
+			return createTypeObjective();
 		case RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION:
 			return createBinaryArithmeticExpression();
 		case RoamIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION:
@@ -221,6 +229,26 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Objective createObjective() {
+		ObjectiveImpl objective = new ObjectiveImpl();
+		return objective;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public GlobalObjective createGlobalObjective() {
+		GlobalObjectiveImpl globalObjective = new GlobalObjectiveImpl();
+		return globalObjective;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public TypeConstraint createTypeConstraint() {
 		TypeConstraintImpl typeConstraint = new TypeConstraintImpl();
 		return typeConstraint;
@@ -234,6 +262,26 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	public MappingConstraint createMappingConstraint() {
 		MappingConstraintImpl mappingConstraint = new MappingConstraintImpl();
 		return mappingConstraint;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public MappingObjective createMappingObjective() {
+		MappingObjectiveImpl mappingObjective = new MappingObjectiveImpl();
+		return mappingObjective;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public TypeObjective createTypeObjective() {
+		TypeObjectiveImpl typeObjective = new TypeObjectiveImpl();
+		return typeObjective;
 	}
 
 	/**

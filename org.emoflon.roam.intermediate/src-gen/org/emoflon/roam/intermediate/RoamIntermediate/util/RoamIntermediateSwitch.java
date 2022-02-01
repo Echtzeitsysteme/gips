@@ -105,6 +105,20 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case RoamIntermediatePackage.OBJECTIVE: {
+			Objective objective = (Objective) theEObject;
+			T result = caseObjective(objective);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.GLOBAL_OBJECTIVE: {
+			GlobalObjective globalObjective = (GlobalObjective) theEObject;
+			T result = caseGlobalObjective(globalObjective);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case RoamIntermediatePackage.CONTEXT: {
 			Context context = (Context) theEObject;
 			T result = caseContext(context);
@@ -130,6 +144,28 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = caseContext(mappingConstraint);
 			if (result == null)
 				result = caseConstraint(mappingConstraint);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.MAPPING_OBJECTIVE: {
+			MappingObjective mappingObjective = (MappingObjective) theEObject;
+			T result = caseMappingObjective(mappingObjective);
+			if (result == null)
+				result = caseContext(mappingObjective);
+			if (result == null)
+				result = caseObjective(mappingObjective);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.TYPE_OBJECTIVE: {
+			TypeObjective typeObjective = (TypeObjective) theEObject;
+			T result = caseTypeObjective(typeObjective);
+			if (result == null)
+				result = caseContext(typeObjective);
+			if (result == null)
+				result = caseObjective(typeObjective);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -609,6 +645,36 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Objective</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Objective</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseObjective(Objective object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Global Objective</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Global Objective</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGlobalObjective(GlobalObjective object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Context</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -650,6 +716,36 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseMappingConstraint(MappingConstraint object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Mapping Objective</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Mapping Objective</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseMappingObjective(MappingObjective object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Type Objective</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Type Objective</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseTypeObjective(TypeObjective object) {
 		return null;
 	}
 

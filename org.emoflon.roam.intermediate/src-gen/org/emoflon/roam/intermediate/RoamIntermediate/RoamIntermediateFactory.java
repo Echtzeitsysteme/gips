@@ -50,6 +50,24 @@ public interface RoamIntermediateFactory extends EFactory {
 	Mapping createMapping();
 
 	/**
+	 * Returns a new object of class '<em>Objective</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Objective</em>'.
+	 * @generated
+	 */
+	Objective createObjective();
+
+	/**
+	 * Returns a new object of class '<em>Global Objective</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Global Objective</em>'.
+	 * @generated
+	 */
+	GlobalObjective createGlobalObjective();
+
+	/**
 	 * Returns a new object of class '<em>Type Constraint</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -66,6 +84,24 @@ public interface RoamIntermediateFactory extends EFactory {
 	 * @generated
 	 */
 	MappingConstraint createMappingConstraint();
+
+	/**
+	 * Returns a new object of class '<em>Mapping Objective</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Mapping Objective</em>'.
+	 * @generated
+	 */
+	MappingObjective createMappingObjective();
+
+	/**
+	 * Returns a new object of class '<em>Type Objective</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Type Objective</em>'.
+	 * @generated
+	 */
+	TypeObjective createTypeObjective();
 
 	/**
 	 * Returns a new object of class '<em>Binary Arithmetic Expression</em>'.

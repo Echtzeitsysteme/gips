@@ -8,6 +8,10 @@
         eType="#//VariableSet" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="constraints" upperBound="-1"
         eType="#//Constraint" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="objectives" upperBound="-1"
+        eType="#//Objective" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="globalObjective" eType="#//GlobalObjective"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ibexModel" lowerBound="1"
         eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXModel"
         containment="true"/>
@@ -27,13 +31,30 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
         eType="#//RelationalExpression" containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Objective">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementwise" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//ArithmeticExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GlobalObjective">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//ArithmeticExpression"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Context" abstract="true" interface="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="TypeConstraint" eSuperTypes="#//Context #//Constraint">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="modelType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="modelType" eType="#//Type"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MappingConstraint" eSuperTypes="#//Context #//Constraint">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" lowerBound="1"
         eType="#//Mapping"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MappingObjective" eSuperTypes="#//Context #//Objective">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" lowerBound="1"
+        eType="#//Mapping"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TypeObjective" eSuperTypes="#//Context #//Objective">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="modelType" eType="#//Type"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="RelationalOperator">
     <eLiterals name="Less"/>

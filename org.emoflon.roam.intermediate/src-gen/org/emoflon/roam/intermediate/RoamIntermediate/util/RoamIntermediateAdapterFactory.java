@@ -92,6 +92,16 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseObjective(Objective object) {
+			return createObjectiveAdapter();
+		}
+
+		@Override
+		public Adapter caseGlobalObjective(GlobalObjective object) {
+			return createGlobalObjectiveAdapter();
+		}
+
+		@Override
 		public Adapter caseContext(Context object) {
 			return createContextAdapter();
 		}
@@ -104,6 +114,16 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseMappingConstraint(MappingConstraint object) {
 			return createMappingConstraintAdapter();
+		}
+
+		@Override
+		public Adapter caseMappingObjective(MappingObjective object) {
+			return createMappingObjectiveAdapter();
+		}
+
+		@Override
+		public Adapter caseTypeObjective(TypeObjective object) {
+			return createTypeObjectiveAdapter();
 		}
 
 		@Override
@@ -396,6 +416,34 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective <em>Objective</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Objective
+	 * @generated
+	 */
+	public Adapter createObjectiveAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective <em>Global Objective</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective
+	 * @generated
+	 */
+	public Adapter createGlobalObjectiveAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.Context <em>Context</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -434,6 +482,34 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createMappingConstraintAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective <em>Mapping Objective</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective
+	 * @generated
+	 */
+	public Adapter createMappingObjectiveAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective <em>Type Objective</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective
+	 * @generated
+	 */
+	public Adapter createTypeObjectiveAdapter() {
 		return null;
 	}
 

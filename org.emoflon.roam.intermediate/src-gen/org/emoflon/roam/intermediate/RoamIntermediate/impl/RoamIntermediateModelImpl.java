@@ -21,6 +21,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
 
 import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective;
+import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet;
@@ -36,6 +38,8 @@ import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet;
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getVariables <em>Variables</em>}</li>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getConstraints <em>Constraints</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getObjectives <em>Objectives</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getGlobalObjective <em>Global Objective</em>}</li>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getIbexModel <em>Ibex Model</em>}</li>
  * </ul>
  *
@@ -81,6 +85,26 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	 * @ordered
 	 */
 	protected EList<Constraint> constraints;
+
+	/**
+	 * The cached value of the '{@link #getObjectives() <em>Objectives</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getObjectives()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Objective> objectives;
+
+	/**
+	 * The cached value of the '{@link #getGlobalObjective() <em>Global Objective</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getGlobalObjective()
+	 * @generated
+	 * @ordered
+	 */
+	protected GlobalObjective globalObjective;
 
 	/**
 	 * The cached value of the '{@link #getIbexModel() <em>Ibex Model</em>}' containment reference.
@@ -164,6 +188,73 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<Objective> getObjectives() {
+		if (objectives == null) {
+			objectives = new EObjectContainmentEList<Objective>(Objective.class, this,
+					RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__OBJECTIVES);
+		}
+		return objectives;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public GlobalObjective getGlobalObjective() {
+		return globalObjective;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetGlobalObjective(GlobalObjective newGlobalObjective, NotificationChain msgs) {
+		GlobalObjective oldGlobalObjective = globalObjective;
+		globalObjective = newGlobalObjective;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE, oldGlobalObjective,
+					newGlobalObjective);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setGlobalObjective(GlobalObjective newGlobalObjective) {
+		if (newGlobalObjective != globalObjective) {
+			NotificationChain msgs = null;
+			if (globalObjective != null)
+				msgs = ((InternalEObject) globalObjective).eInverseRemove(this,
+						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE,
+						null, msgs);
+			if (newGlobalObjective != null)
+				msgs = ((InternalEObject) newGlobalObjective).eInverseAdd(this,
+						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE,
+						null, msgs);
+			msgs = basicSetGlobalObjective(newGlobalObjective, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE, newGlobalObjective,
+					newGlobalObjective));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public IBeXModel getIbexModel() {
 		return ibexModel;
 	}
@@ -223,6 +314,10 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 			return ((InternalEList<?>) getVariables()).basicRemove(otherEnd, msgs);
 		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__CONSTRAINTS:
 			return ((InternalEList<?>) getConstraints()).basicRemove(otherEnd, msgs);
+		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__OBJECTIVES:
+			return ((InternalEList<?>) getObjectives()).basicRemove(otherEnd, msgs);
+		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE:
+			return basicSetGlobalObjective(null, msgs);
 		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__IBEX_MODEL:
 			return basicSetIbexModel(null, msgs);
 		}
@@ -243,6 +338,10 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 			return getVariables();
 		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__CONSTRAINTS:
 			return getConstraints();
+		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__OBJECTIVES:
+			return getObjectives();
+		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE:
+			return getGlobalObjective();
 		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__IBEX_MODEL:
 			return getIbexModel();
 		}
@@ -269,6 +368,13 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 			getConstraints().clear();
 			getConstraints().addAll((Collection<? extends Constraint>) newValue);
 			return;
+		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__OBJECTIVES:
+			getObjectives().clear();
+			getObjectives().addAll((Collection<? extends Objective>) newValue);
+			return;
+		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE:
+			setGlobalObjective((GlobalObjective) newValue);
+			return;
 		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__IBEX_MODEL:
 			setIbexModel((IBeXModel) newValue);
 			return;
@@ -293,6 +399,12 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__CONSTRAINTS:
 			getConstraints().clear();
 			return;
+		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__OBJECTIVES:
+			getObjectives().clear();
+			return;
+		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE:
+			setGlobalObjective((GlobalObjective) null);
+			return;
 		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__IBEX_MODEL:
 			setIbexModel((IBeXModel) null);
 			return;
@@ -314,6 +426,10 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 			return variables != null && !variables.isEmpty();
 		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__CONSTRAINTS:
 			return constraints != null && !constraints.isEmpty();
+		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__OBJECTIVES:
+			return objectives != null && !objectives.isEmpty();
+		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE:
+			return globalObjective != null;
 		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__IBEX_MODEL:
 			return ibexModel != null;
 		}

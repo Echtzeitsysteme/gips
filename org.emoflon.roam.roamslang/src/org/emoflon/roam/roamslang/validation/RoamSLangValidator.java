@@ -201,7 +201,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	 */
 	@Check
 	public void checkConstraint(final RoamConstraint constraint) {
-		if (leafType.BOOLEAN != getEvalTypeFromBoolExpr(constraint.getExpr().getExpr())) {
+		if (LeafType.BOOLEAN != getEvalTypeFromBoolExpr(constraint.getExpr().getExpr())) {
 			error( //
 					"Constraint does not evaluate to a boolean", //
 					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR //
@@ -238,8 +238,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		checkObjectiveNameUnique(objective);
 		checkObjectiveIsNotUseless(objective);
 
-		final leafType eval = getEvalTypeFromArithExpr(objective.getExpr());
-		if (eval != leafType.INTEGER && eval != leafType.DOUBLE) {
+		final LeafType eval = getEvalTypeFromArithExpr(objective.getExpr());
+		if (eval != LeafType.INTEGER && eval != LeafType.DOUBLE) {
 			error( //
 					"Objective does not evaluate to an integer or double.", //
 					RoamSLangPackage.Literals.ROAM_OBJECTIVE__EXPR //
@@ -334,9 +334,9 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 	}
 
-	public leafType getEvalTypeFromBoolExpr(final RoamBoolExpr expr) {
+	public LeafType getEvalTypeFromBoolExpr(final RoamBoolExpr expr) {
 		if (expr instanceof RoamBooleanLiteral) {
-			return leafType.BOOLEAN;
+			return LeafType.BOOLEAN;
 		} else if (expr instanceof RoamBinaryBoolExpr) {
 			final RoamBinaryBoolExpr boolExpr = (RoamBinaryBoolExpr) expr;
 			return getEvalLeftRightSideOp(boolExpr.getLeft(), boolExpr.getRight(), boolExpr.getOperator());
@@ -345,56 +345,56 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return getEvalLEftRightSideOp(boolExpr.getOperand(), boolExpr.getOperator());
 		} else if (expr instanceof RoamRelExpr) {
 			final RoamRelExpr relExpr = (RoamRelExpr) expr;
-			final leafType leftType = getEvalTypeDelegate(relExpr.getLeft());
-			final leafType rightType = getEvalTypeDelegate(relExpr.getRight());
+			final LeafType leftType = getEvalTypeDelegate(relExpr.getLeft());
+			final LeafType rightType = getEvalTypeDelegate(relExpr.getRight());
 			return combine(leftType, rightType, relExpr.getOperator());
 		}
 
-		return leafType.ERROR;
+		return LeafType.ERROR;
 	}
 
-	public leafType getEvalTypeFromArithExpr(final RoamArithmeticExpr expr) {
+	public LeafType getEvalTypeFromArithExpr(final RoamArithmeticExpr expr) {
 		if (expr instanceof RoamBracketExpr) {
 			final RoamBracketExpr brack = (RoamBracketExpr) expr;
 			return getEvalTypeFromArithExpr(brack.getOperand());
 		} else if (expr instanceof RoamExpArithmeticExpr) {
 			final RoamExpArithmeticExpr exp = (RoamExpArithmeticExpr) expr;
-			final leafType leftType = getEvalTypeDelegate(exp.getLeft());
-			final leafType rightType = getEvalTypeDelegate(exp.getRight());
+			final LeafType leftType = getEvalTypeDelegate(exp.getLeft());
+			final LeafType rightType = getEvalTypeDelegate(exp.getRight());
 			return combine(leftType, rightType, exp.getOperator());
 		} else if (expr instanceof RoamProductArithmeticExpr) {
 			final RoamProductArithmeticExpr prod = (RoamProductArithmeticExpr) expr;
-			final leafType leftType = getEvalTypeDelegate(prod.getLeft());
-			final leafType rightType = getEvalTypeDelegate(prod.getRight());
+			final LeafType leftType = getEvalTypeDelegate(prod.getLeft());
+			final LeafType rightType = getEvalTypeDelegate(prod.getRight());
 			return combine(leftType, rightType, prod.getOperator());
 		} else if (expr instanceof RoamSumArithmeticExpr) {
 			final RoamSumArithmeticExpr sum = (RoamSumArithmeticExpr) expr;
-			final leafType leftType = getEvalTypeDelegate(sum.getLeft());
-			final leafType rightType = getEvalTypeDelegate(sum.getRight());
+			final LeafType leftType = getEvalTypeDelegate(sum.getLeft());
+			final LeafType rightType = getEvalTypeDelegate(sum.getRight());
 			return combine(leftType, rightType, sum.getOperator());
 		} else if (expr instanceof RoamUnaryArithmeticExpr) {
-			final leafType operand = getEvalTypeFromArithExpr(((RoamUnaryArithmeticExpr) expr).getOperand());
+			final LeafType operand = getEvalTypeFromArithExpr(((RoamUnaryArithmeticExpr) expr).getOperand());
 			return combine(operand, ((RoamUnaryArithmeticExpr) expr).getOperator());
 		} else if (expr instanceof RoamExpressionOperand) {
 			return getEvalTypeFromExprOp((RoamExpressionOperand) expr);
 		}
 
-		return leafType.ERROR;
+		return LeafType.ERROR;
 	}
 
-	public leafType getEvalTypeFromExprOp(final RoamExpressionOperand op) {
+	public LeafType getEvalTypeFromExprOp(final RoamExpressionOperand op) {
 		if (op instanceof RoamArithmeticLiteral) {
 			return getEvalTypeFromArithLit((RoamArithmeticLiteral) op);
 		} else if (op instanceof RoamAttributeExpr) {
 			return getEvalTypeFromAttrExpr((RoamAttributeExpr) op);
 		} else if (op instanceof RoamObjectiveExpression) {
-			return leafType.OBJECTIVE;
+			return LeafType.OBJECTIVE;
 		}
 
-		return leafType.ERROR;
+		return LeafType.ERROR;
 	}
 
-	public leafType getEvalTypeFromAttrExpr(final RoamAttributeExpr expr) {
+	public LeafType getEvalTypeFromAttrExpr(final RoamAttributeExpr expr) {
 		if (expr instanceof RoamMappingAttributeExpr) {
 			final RoamMappingAttributeExpr mapExpr = (RoamMappingAttributeExpr) expr;
 			return getEvalTypeFromStreamExpr(mapExpr.getExpr());
@@ -406,10 +406,10 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return getEvalTypeFromLambdaAttrExpr(lambExpr);
 		}
 
-		return leafType.ERROR;
+		return LeafType.ERROR;
 	}
 
-	public leafType getEvalTypeFromStreamExpr(final RoamStreamExpr expr) {
+	public LeafType getEvalTypeFromStreamExpr(final RoamStreamExpr expr) {
 		if (expr instanceof RoamStreamNavigation) {
 			final RoamStreamNavigation nav = (RoamStreamNavigation) expr;
 			return getEvalTypeFromStreamNav(nav);
@@ -418,13 +418,13 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			set.getLambda();
 			set.getOperator(); // operator is always a filter -> output is a set
 			// TODO: Check subs & finish
-			return leafType.SET;
+			return LeafType.SET;
 		} else if (expr instanceof RoamStreamArithmetic) { // .sum(...)
 			final RoamStreamArithmetic arith = (RoamStreamArithmetic) expr;
 			arith.getLambda();
 			arith.getOperator(); // operator is always an integer/a double
 			// TODO: Check subs & finish
-			return leafType.DOUBLE;
+			return LeafType.DOUBLE;
 		} else if (expr instanceof RoamStreamBoolExpr) { // .exists(); .notExists(); .count()
 			final RoamStreamBoolExpr boolExpr = (RoamStreamBoolExpr) expr;
 			return getEvalTypeFromStreamNoArgOp(boolExpr.getOperator());
@@ -436,47 +436,47 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			throw new UnsupportedOperationException("Not yet implemented.");
 		}
 
-		return leafType.ERROR;
+		return LeafType.ERROR;
 	}
 
-	public leafType getEvalTypeFromStreamNav(final RoamStreamNavigation nav) {
+	public LeafType getEvalTypeFromStreamNav(final RoamStreamNavigation nav) {
 		final RoamStreamExpr left = nav.getLeft();
 		final RoamStreamExpr right = nav.getRight();
 
-		final leafType lhs = getEvalTypeFromStreamExpr(left);
+		final LeafType lhs = getEvalTypeFromStreamExpr(left);
 
 		// Case: lhs is a stream set and rhs is a stream boolean expression (NOT
 		// count()) = boolean
 		if (left instanceof RoamStreamSet && right instanceof RoamStreamBoolExpr //
 				&& ((RoamStreamBoolExpr) right).getOperator().getValue() != RoamStreamNoArgOperator.COUNT_VALUE) {
-			return leafType.BOOLEAN;
+			return LeafType.BOOLEAN;
 		}
 
 		// Case: lhs is a stream set and rhs is a stream boolean expression (count()) =
 		// integer
-		if (left instanceof RoamStreamSet && lhs == leafType.SET && right instanceof RoamStreamBoolExpr
+		if (left instanceof RoamStreamSet && lhs == LeafType.SET && right instanceof RoamStreamBoolExpr
 				&& ((RoamStreamBoolExpr) right).getOperator().getValue() == RoamStreamNoArgOperator.COUNT_VALUE) {
-			return leafType.INTEGER;
+			return LeafType.INTEGER;
 		}
 
 		// Case: else
 		return getEvalTypeFromStreamExpr(right);
 	}
 
-	public leafType getEvalTypeFromStreamNoArgOp(final RoamStreamNoArgOperator op) {
+	public LeafType getEvalTypeFromStreamNoArgOp(final RoamStreamNoArgOperator op) {
 		final int val = op.getValue();
 		if (val == RoamStreamNoArgOperator.COUNT_VALUE) {
-			return leafType.INTEGER;
+			return LeafType.INTEGER;
 		} else if (val == RoamStreamNoArgOperator.EXISTS_VALUE || val == RoamStreamNoArgOperator.NOTEXISTS_VALUE) {
-			return leafType.BOOLEAN;
+			return LeafType.BOOLEAN;
 		}
 
-		return leafType.ERROR;
+		return LeafType.ERROR;
 	}
 
-	public leafType getEvalTypeFromStreamSet(final RoamStreamSet set) {
+	public LeafType getEvalTypeFromStreamSet(final RoamStreamSet set) {
 		if (set.getOperator().getValue() == RoamStreamSetOperator.FILTER_VALUE) {
-			return leafType.SET;
+			return LeafType.SET;
 		}
 
 		// TODO: Check lambda expression
@@ -485,7 +485,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
-	public leafType getEvalTypeFromLambdaAttrExpr(final RoamLambdaAttributeExpression expr) {
+	public LeafType getEvalTypeFromLambdaAttrExpr(final RoamLambdaAttributeExpression expr) {
 		final EObject innerExpr = expr.getExpr();
 		if (innerExpr instanceof RoamNodeAttributeExpr) {
 			// TODO
@@ -504,7 +504,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		throw new UnsupportedOperationException("Not yet implemented.");
 	}
 
-	public leafType getEvalTypeFromContextExpr(final RoamContextExpr expr) {
+	public LeafType getEvalTypeFromContextExpr(final RoamContextExpr expr) {
 //		final leafType exprType = getEvalTypeFromContextExpr(expr.getExpr());
 //		expr.getExpr(); // <- (not) optional?
 //		expr.getTypeCast(); // <- optional
@@ -529,27 +529,27 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		return null;
 	}
 
-	public leafType getEvalTypeFromContextOpExpr(final RoamContextOperationExpression expr) {
+	public LeafType getEvalTypeFromContextOpExpr(final RoamContextOperationExpression expr) {
 		final int val = expr.getOperation().getValue();
 		if (val == RoamContextOperation.MAPPED_VALUE) {
-			return leafType.BOOLEAN;
+			return LeafType.BOOLEAN;
 		} else if (val == RoamContextOperation.VALUE_VALUE) {
-			return leafType.INTEGER;
+			return LeafType.INTEGER;
 		}
 
-		return leafType.ERROR;
+		return LeafType.ERROR;
 	}
 
-	public leafType getEvalTypeFromNodeAttrExpr(final RoamNodeAttributeExpr expr) {
+	public LeafType getEvalTypeFromNodeAttrExpr(final RoamNodeAttributeExpr expr) {
 		expr.getNode(); // <- not optional
 		expr.getTypeCast(); // <- optional
 		expr.getExpr(); // <- optional
 
-		// TODO
-		return null;
+		// TODO: Node + type cast
+		return getEvalTypeFromFeatureExpr(expr.getExpr());
 	}
 
-	public leafType getEvalTypeFromFeatureExpr(final RoamFeatureExpr expr) {
+	public LeafType getEvalTypeFromFeatureExpr(final RoamFeatureExpr expr) {
 		if (expr instanceof RoamFeatureNavigation) {
 			final RoamFeatureNavigation nav = (RoamFeatureNavigation) expr;
 			getEvalTypeFromFeatureExpr(nav.getLeft());
@@ -562,14 +562,14 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			lit.getFeature().getEType();// instanceof ELong;
 			final EClassifier ecl = lit.getFeature().getEType();
 			if (ecl.getName().equals("ELong") || ecl.getName().equals("EDouble")) {
-				return leafType.DOUBLE;
+				return LeafType.DOUBLE;
 			} else if (ecl.getName().equals("EInt")) {
-				return leafType.INTEGER;
+				return LeafType.INTEGER;
 			} else if (ecl.getName().equals("EString")) {
-				return leafType.STRING;
+				return LeafType.STRING;
 			} else {
 //				throw new UnsupportedOperationException("Not yet implemented");
-				return leafType.ECLASS;
+				return LeafType.ECLASS;
 			}
 
 			// TODO
@@ -586,11 +586,11 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	 * @param cast RoamTypeCast to check.
 	 * @return leafType EClass or null if cast not set.
 	 */
-	public leafType getEvalTypeFromTypeCast(final RoamTypeCast cast) {
-		return (cast != null && cast.getType() != null) ? leafType.ECLASS : null;
+	public LeafType getEvalTypeFromTypeCast(final RoamTypeCast cast) {
+		return (cast != null && cast.getType() != null) ? LeafType.ECLASS : null;
 	}
 
-	public leafType getEvalTypeFromArithLit(final RoamArithmeticLiteral lit) {
+	public LeafType getEvalTypeFromArithLit(final RoamArithmeticLiteral lit) {
 //		if (lit instanceof RoamDoubleLiteral) {
 //			
 //		}
@@ -599,19 +599,19 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		final String val = lit.getValue();
 		try {
 			Integer.valueOf(val);
-			return leafType.INTEGER;
+			return LeafType.INTEGER;
 		} catch (final NumberFormatException ex) {
 			// No int
 		}
 		try {
 			Double.valueOf(val);
-			return leafType.DOUBLE;
+			return LeafType.DOUBLE;
 		} catch (final NumberFormatException ex) {
-			return leafType.ERROR;
+			return LeafType.ERROR;
 		}
 	}
 
-	public leafType getEvalTypeDelegate(final EObject e) {
+	public LeafType getEvalTypeDelegate(final EObject e) {
 		if (e == null) {
 			return null;
 		}
@@ -628,115 +628,114 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return getEvalTypeFromStreamExpr((RoamStreamBoolExpr) e);
 		}
 
-		return leafType.ERROR;
+		return LeafType.ERROR;
 	}
 
-	public leafType getEvalLeftRightSideOp(final RoamRelExpr left, final RoamRelExpr right, final RoamRelOperator op) {
+	public LeafType getEvalLeftRightSideOp(final RoamRelExpr left, final RoamRelExpr right, final RoamRelOperator op) {
 		if (right == null) {
-			final leafType leftType = getEvalTypeFromArithExpr(left.getLeft());
-			final leafType rightType = getEvalTypeFromArithExpr(left.getRight());
+			final LeafType leftType = getEvalTypeFromArithExpr(left.getLeft());
+			final LeafType rightType = getEvalTypeFromArithExpr(left.getRight());
 			return combine(leftType, rightType, left.getOperator());
 		} else {
-			final leafType leftType = getEvalTypeDelegate(left);
-			final leafType rightType = getEvalTypeDelegate(right);
+			final LeafType leftType = getEvalTypeDelegate(left);
+			final LeafType rightType = getEvalTypeDelegate(right);
 			return combine(leftType, rightType, op);
 		}
 	}
 
-	public leafType getEvalLeftRightSideOp(final RoamBoolExpr left, final RoamBoolExpr right,
+	public LeafType getEvalLeftRightSideOp(final RoamBoolExpr left, final RoamBoolExpr right,
 			final RoamBoolBinaryOperator op) {
 		if (right == null) {
 			throw new UnsupportedOperationException("Not yet implemented.");
 		} else {
-			final leafType leftType = getEvalTypeDelegate(left);
-			final leafType rightType = getEvalTypeDelegate(right);
+			final LeafType leftType = getEvalTypeDelegate(left);
+			final LeafType rightType = getEvalTypeDelegate(right);
 			return combine(leftType, rightType, op);
 		}
 	}
 
-	public leafType getEvalLEftRightSideOp(final RoamBoolExpr operand, final RoamBoolUnaryOperator op) {
-		final leafType opType = getEvalTypeDelegate(operand);
+	public LeafType getEvalLEftRightSideOp(final RoamBoolExpr operand, final RoamBoolUnaryOperator op) {
+		final LeafType opType = getEvalTypeDelegate(operand);
 		return combine(opType, op);
 	}
 
-	public leafType combine(final leafType left, final leafType right, final RoamRelOperator op) {
+	public LeafType combine(final LeafType left, final LeafType right, final RoamRelOperator op) {
 		// Case: right side is null and operator did not change from default
 		if (left != null && right == null && op == RoamRelOperator.GREATER) {
 			return left;
 		}
 
 		// Case: Comparing numbers
-		if ((left == leafType.INTEGER || left == leafType.DOUBLE)
-				&& (right == leafType.INTEGER || right == leafType.DOUBLE)) {
-			return leafType.BOOLEAN;
+		if ((left == LeafType.INTEGER || left == LeafType.DOUBLE)
+				&& (right == LeafType.INTEGER || right == LeafType.DOUBLE)) {
+			return LeafType.BOOLEAN;
 		} else {
-			return leafType.ERROR;
+			return LeafType.ERROR;
 		}
 	}
 
-	public leafType combine(final leafType left, final leafType right, final RoamExpOperator op) {
-		if ((left == leafType.INTEGER || left == leafType.DOUBLE)
-				&& (right == leafType.INTEGER || right == leafType.DOUBLE)) {
-			return leafType.DOUBLE;
+	public LeafType combine(final LeafType left, final LeafType right, final RoamExpOperator op) {
+		if ((left == LeafType.INTEGER || left == LeafType.DOUBLE)
+				&& (right == LeafType.INTEGER || right == LeafType.DOUBLE)) {
+			return LeafType.DOUBLE;
 			// TODO: ^isn't there also an integer possible here?
 		} else {
-			return leafType.ERROR;
+			return LeafType.ERROR;
 		}
 	}
 
-	public leafType combine(final leafType left, final leafType right, final RoamProductOperator op) {
+	public LeafType combine(final LeafType left, final LeafType right, final RoamProductOperator op) {
 		// return type must be integer or double
 		return intOrDouble(left, right);
 	}
 
-	public leafType combine(final leafType left, final leafType right, final RoamSumOperator op) {
+	public LeafType combine(final LeafType left, final LeafType right, final RoamSumOperator op) {
 		// return type must be integer or double
 		return intOrDouble(left, right);
 	}
 
-	public leafType combine(final leafType operand, final RoamArithmeticUnaryOperator op) {
-		// TODO
-//		return leafType.ERROR;
-		throw new UnsupportedOperationException("Not yet implemented.");
-	}
+	public LeafType combine(final LeafType operand, final RoamArithmeticUnaryOperator op) {
+		// Case: Operand is not a number
+		if (operand != LeafType.INTEGER && operand != LeafType.DOUBLE) {
+			return LeafType.ERROR;
+		}
 
-	public leafType combine(final leafType left, final leafType right, final RoamBoolBinaryOperator op) {
-		// TODO
-//		return leafType.ERROR;
-//		throw new UnsupportedOperationException("Not yet implemented.");
-
-		if (left == leafType.BOOLEAN && right == leafType.BOOLEAN) {
-			return leafType.BOOLEAN;
+		// Case: ABS and NEG do not change the type
+		if (op == RoamArithmeticUnaryOperator.ABS || op == RoamArithmeticUnaryOperator.NEG) {
+			return operand;
+		} else if (op == RoamArithmeticUnaryOperator.SQRT || op == RoamArithmeticUnaryOperator.SIN
+				|| op == RoamArithmeticUnaryOperator.COS) {
+			// Case: SQRT, SIN, and COS change the type to double
+			return LeafType.DOUBLE;
 		} else {
 			throw new UnsupportedOperationException("Not yet implemented.");
-			// TODO
-			// return leafType.ERROR;
 		}
 	}
 
-	public leafType combine(final leafType left, final RoamBoolUnaryOperator op) {
-		// TODO
-//		return leafType.ERROR;
-		throw new UnsupportedOperationException("Not yet implemented.");
+	public LeafType combine(final LeafType left, final LeafType right, final RoamBoolBinaryOperator op) {
+		return (left == LeafType.BOOLEAN && right == LeafType.BOOLEAN) ? LeafType.BOOLEAN : LeafType.ERROR;
 	}
 
-	public leafType intOrDouble(final leafType left, final leafType right) {
-		if (left == leafType.INTEGER && right == leafType.INTEGER) {
-			return leafType.INTEGER;
-		} else if ((left == leafType.INTEGER && right == leafType.DOUBLE) //
-				|| (left == leafType.DOUBLE && right == leafType.INTEGER) //
-				|| (left == leafType.DOUBLE && right == leafType.DOUBLE)) {
-			return leafType.DOUBLE;
+	public LeafType combine(final LeafType left, final RoamBoolUnaryOperator op) {
+		return left == LeafType.BOOLEAN ? LeafType.BOOLEAN : LeafType.ERROR;
+	}
+
+	public LeafType intOrDouble(final LeafType left, final LeafType right) {
+		if (left == LeafType.INTEGER && right == LeafType.INTEGER) {
+			return LeafType.INTEGER;
+		} else if ((left == LeafType.INTEGER && right == LeafType.DOUBLE) //
+				|| (left == LeafType.DOUBLE && right == LeafType.INTEGER) //
+				|| (left == LeafType.DOUBLE && right == LeafType.DOUBLE)) {
+			return LeafType.DOUBLE;
 		}
 
-//		throw new UnsupportedOperationException("Not yet implemented.");
-		return leafType.ERROR;
+		return LeafType.ERROR;
 	}
 
 	/**
 	 * Enumeration for the type of the leaf.
 	 */
-	protected enum leafType {
+	protected enum LeafType {
 		BOOLEAN, // RoamBooleanLiteral
 		INTEGER, //
 		DOUBLE, //

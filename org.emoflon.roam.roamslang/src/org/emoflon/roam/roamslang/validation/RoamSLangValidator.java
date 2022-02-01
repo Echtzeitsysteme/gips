@@ -620,18 +620,6 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		return LeafType.ERROR;
 	}
 
-	public LeafType getEvalLeftRightSideOp(final RoamRelExpr left, final RoamRelExpr right, final RoamRelOperator op) {
-		if (right == null) {
-			final LeafType leftType = getEvalTypeFromArithExpr(left.getLeft());
-			final LeafType rightType = getEvalTypeFromArithExpr(left.getRight());
-			return combine(leftType, rightType, left.getOperator());
-		} else {
-			final LeafType leftType = getEvalTypeDelegate(left);
-			final LeafType rightType = getEvalTypeDelegate(right);
-			return combine(leftType, rightType, op);
-		}
-	}
-
 	public LeafType getEvalLeftRightSideOp(final RoamBoolExpr left, final RoamBoolExpr right,
 			final RoamBoolBinaryOperator op) {
 		if (right == null) {
@@ -722,9 +710,21 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	}
 
 	public void validateLambdaExpr(final RoamLambdaExpression expr) {
+		// Check return type
 		if (getEvalTypeFromBoolExpr(expr.getExpr()) != LeafType.BOOLEAN) {
 			error( //
 					"Lambda expression does not evaluate to boolean.", //
+					RoamSLangPackage.Literals.ROAM_LAMBDA_EXPRESSION__EXPR //
+			);
+		}
+
+		// Check if literal is constant
+		if (expr.getExpr() instanceof RoamBooleanLiteral) {
+			final RoamBooleanLiteral lit = (RoamBooleanLiteral) expr.getExpr();
+			final String warning = String.valueOf(lit.isLiteral());
+			warning( //
+					"Lambda expression is always " + warning + ".", //
+					expr, //
 					RoamSLangPackage.Literals.ROAM_LAMBDA_EXPRESSION__EXPR //
 			);
 		}

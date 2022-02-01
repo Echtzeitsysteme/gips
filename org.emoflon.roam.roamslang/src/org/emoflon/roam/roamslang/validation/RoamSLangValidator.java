@@ -415,15 +415,13 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return getEvalTypeFromStreamNav(nav);
 		} else if (expr instanceof RoamStreamSet) { // .filter(...)
 			final RoamStreamSet set = (RoamStreamSet) expr;
-			set.getLambda();
-			set.getOperator(); // operator is always a filter -> output is a set
-			// TODO: Check subs & finish
+			// set.getOperator(); // operator is always a filter -> output is a set
+			validateLambdaExpr(set.getLambda());
 			return LeafType.SET;
 		} else if (expr instanceof RoamStreamArithmetic) { // .sum(...)
 			final RoamStreamArithmetic arith = (RoamStreamArithmetic) expr;
-			arith.getLambda();
 			arith.getOperator(); // operator is always an integer/a double
-			// TODO: Check subs & finish
+			validateLambdaExpr(arith.getLambda());
 			return LeafType.DOUBLE;
 		} else if (expr instanceof RoamStreamBoolExpr) { // .exists(); .notExists(); .count()
 			final RoamStreamBoolExpr boolExpr = (RoamStreamBoolExpr) expr;
@@ -475,32 +473,25 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	}
 
 	public LeafType getEvalTypeFromStreamSet(final RoamStreamSet set) {
+		validateLambdaExpr(set.getLambda());
 		if (set.getOperator().getValue() == RoamStreamSetOperator.FILTER_VALUE) {
 			return LeafType.SET;
 		}
-
-		// TODO: Check lambda expression
-//		getEvalTypeFromLambdaAttrExpr(set.getLambda());
 
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
 	public LeafType getEvalTypeFromLambdaAttrExpr(final RoamLambdaAttributeExpression expr) {
+		validateLambdaExpr(expr.getVar());
 		final EObject innerExpr = expr.getExpr();
 		if (innerExpr instanceof RoamNodeAttributeExpr) {
-			// TODO
-			getEvalTypeFromNodeAttrExpr((RoamNodeAttributeExpr) innerExpr);
+			return getEvalTypeFromNodeAttrExpr((RoamNodeAttributeExpr) innerExpr);
 		} else if (innerExpr instanceof RoamContextOperationExpression) {
-			// TODO
-			getEvalTypeFromContextOpExpr((RoamContextOperationExpression) innerExpr);
+			return getEvalTypeFromContextOpExpr((RoamContextOperationExpression) innerExpr);
 		} else if (innerExpr instanceof RoamFeatureExpr) {
-			// TODO
-			getEvalTypeFromFeatureExpr((RoamFeatureExpr) innerExpr);
+			return getEvalTypeFromFeatureExpr((RoamFeatureExpr) innerExpr);
 		}
 
-		final RoamLambdaExpression lambdaExpr = expr.getVar();
-		// TODO
-//		return leafType.ERROR;
 		throw new UnsupportedOperationException("Not yet implemented.");
 	}
 
@@ -568,11 +559,9 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			} else if (ecl.getName().equals("EString")) {
 				return LeafType.STRING;
 			} else {
-//				throw new UnsupportedOperationException("Not yet implemented");
+				// throw new UnsupportedOperationException("Not yet implemented");
 				return LeafType.ECLASS;
 			}
-
-			// TODO
 		}
 
 		// TODO
@@ -730,6 +719,15 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 
 		return LeafType.ERROR;
+	}
+
+	public void validateLambdaExpr(final RoamLambdaExpression expr) {
+		if (getEvalTypeFromBoolExpr(expr.getExpr()) != LeafType.BOOLEAN) {
+			error( //
+					"Lambda expression does not evaluate to boolean.", //
+					RoamSLangPackage.Literals.ROAM_LAMBDA_EXPRESSION__EXPR //
+			);
+		}
 	}
 
 	/**

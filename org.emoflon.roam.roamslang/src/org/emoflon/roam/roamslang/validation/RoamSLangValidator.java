@@ -345,22 +345,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return getEvalLEftRightSideOp(boolExpr.getOperand(), boolExpr.getOperator());
 		} else if (expr instanceof RoamRelExpr) {
 			final RoamRelExpr relExpr = (RoamRelExpr) expr;
-//			if (relExpr.getRight() == null) {
-//				// TODO: Check if return type is compatible with operator
-//				relExpr.getOperator();
-//				return getEvalTypeDelegate(relExpr.getLeft());
-//			} else {
-//				// If lhs and rhs are set, the expression must evaluate to a boolean.
-//				// TODO: Check if return type is compatible with operator
-//				relExpr.getOperator();
-//				return getEvalLeftRightSide(relExpr.getLeft(), relExpr.getRight());
-//			}
-
-//			System.out.println("test");
-//			return leafType.ERROR;
 			final leafType leftType = getEvalTypeDelegate(relExpr.getLeft());
 			final leafType rightType = getEvalTypeDelegate(relExpr.getRight());
-//			relExpr.getOperator();
 			return combine(leftType, rightType, relExpr.getOperator());
 		}
 
@@ -426,27 +412,64 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	public leafType getEvalTypeFromStreamExpr(final RoamStreamExpr expr) {
 		if (expr instanceof RoamStreamNavigation) {
 			final RoamStreamNavigation nav = (RoamStreamNavigation) expr;
-			return getEvalLeftRightSide(nav.getLeft(), nav.getRight());
-		} else if (expr instanceof RoamStreamSet) {
+			return getEvalTypeFromStreamNav(nav);
+		} else if (expr instanceof RoamStreamSet) { // .filter(...)
 			final RoamStreamSet set = (RoamStreamSet) expr;
 			set.getLambda();
 			set.getOperator(); // operator is always a filter -> output is a set
-			// TODO
-		} else if (expr instanceof RoamStreamArithmetic) {
+			// TODO: Check subs & finish
+			return leafType.SET;
+		} else if (expr instanceof RoamStreamArithmetic) { // .sum(...)
 			final RoamStreamArithmetic arith = (RoamStreamArithmetic) expr;
 			arith.getLambda();
 			arith.getOperator(); // operator is always an integer/a double
-			// TODO
-		} else if (expr instanceof RoamStreamBoolExpr) {
+			// TODO: Check subs & finish
+			return leafType.DOUBLE;
+		} else if (expr instanceof RoamStreamBoolExpr) { // .exists(); .notExists(); .count()
 			final RoamStreamBoolExpr boolExpr = (RoamStreamBoolExpr) expr;
 			return getEvalTypeFromStreamNoArgOp(boolExpr.getOperator());
 		} else if (expr instanceof RoamSelect) {
 			final RoamSelect sel = (RoamSelect) expr;
 			sel.getType(); // EClassifier
 			// TODO
+//			return leafType.ECLASS;
+			throw new UnsupportedOperationException("Not yet implemented.");
 		}
 
 		return leafType.ERROR;
+	}
+
+	public leafType getEvalTypeFromStreamNav(final RoamStreamNavigation nav) {
+		final RoamStreamExpr left = nav.getLeft();
+		final RoamStreamExpr right = nav.getRight();
+
+		final leafType lhs = getEvalTypeFromStreamExpr(left);
+
+		// Case: lhs is a stream set and rhs is a stream boolean expression (NOT
+		// count()) = boolean
+		if (left instanceof RoamStreamSet && right instanceof RoamStreamBoolExpr //
+				&& ((RoamStreamBoolExpr) right).getOperator().getValue() != RoamStreamNoArgOperator.COUNT_VALUE) {
+			return leafType.BOOLEAN;
+		}
+
+		// Case: lhs is a stream set and rhs is a stream boolean expression (count()) =
+		// integer
+		if (left instanceof RoamStreamSet && lhs == leafType.SET && right instanceof RoamStreamBoolExpr
+				&& ((RoamStreamBoolExpr) right).getOperator().getValue() == RoamStreamNoArgOperator.COUNT_VALUE) {
+			return leafType.INTEGER;
+		}
+
+		// Case: right is a StreamNavigation
+		if (right instanceof RoamStreamNavigation) {
+			return getEvalTypeFromStreamNav((RoamStreamNavigation) right);
+		}
+
+		// Case: right is a StreamSet
+		if (right instanceof RoamStreamSet) {
+			return getEvalTypeFromStreamSet((RoamStreamSet) right);
+		}
+
+		throw new UnsupportedOperationException("Not yet implemented.");
 	}
 
 	public leafType getEvalTypeFromStreamNoArgOp(final RoamStreamNoArgOperator op) {
@@ -616,38 +639,6 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		return leafType.ERROR;
 	}
 
-	/**
-	 * Evaluates the two given types and returns their type if they match. Else, the
-	 * method returns the error value.
-	 * 
-	 * @param left  First type to evaluate.
-	 * @param right Second type to evaluate.
-	 * @return Type or error if types do not match.
-	 */
-	@Deprecated
-	public leafType getEvalLeftRightSide(final EObject left, final EObject right) {
-		// Case: lhs is a stream set and rhs is a stream boolean expression (NOT
-		// count()) = boolean
-		if (left instanceof RoamStreamSet && right instanceof RoamStreamBoolExpr //
-				&& ((RoamStreamBoolExpr) right).getOperator().getValue() != RoamStreamNoArgOperator.COUNT_VALUE) {
-			return leafType.BOOLEAN;
-		}
-
-		final leafType lhs = getEvalTypeDelegate(left);
-		final leafType rhs = getEvalTypeDelegate(right);
-
-		if (left instanceof RoamStreamSet && lhs == leafType.SET && right instanceof RoamStreamBoolExpr
-				&& ((RoamStreamBoolExpr) right).getOperator().getValue() == RoamStreamNoArgOperator.COUNT_VALUE) {
-			return leafType.INTEGER;
-		}
-
-		if (lhs.equals(rhs)) {
-			return lhs;
-		} else {
-			return leafType.ERROR;
-		}
-	}
-
 	public leafType getEvalLeftRightSideOp(final RoamRelExpr left, final RoamRelExpr right, final RoamRelOperator op) {
 		if (right == null) {
 			final leafType leftType = getEvalTypeFromArithExpr(left.getLeft());
@@ -675,25 +666,6 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		final leafType opType = getEvalTypeDelegate(operand);
 		return combine(opType, op);
 	}
-
-//	public leafType getEvalFromRelExpr(final RoamRelExpr expr) {
-//		
-//		
-//		// TODO
-//		return leafType.ERROR;
-//	}
-
-//	public leafType getEvalLeftRightSideOp(final RoamArithmeticExpr left, final RoamArithmeticExpr right,
-//			RoamRelOperator op) {
-//		if (right == null) {
-//
-//		} else {
-//
-//		}
-//
-//		// TODO
-//		return leafType.ERROR;
-//	}
 
 	public leafType combine(final leafType left, final leafType right, final RoamRelOperator op) {
 		// Case: right side is null and operator did not change from default

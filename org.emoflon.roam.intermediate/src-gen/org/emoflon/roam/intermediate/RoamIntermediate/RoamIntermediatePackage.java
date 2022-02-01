@@ -399,13 +399,22 @@ public interface RoamIntermediatePackage extends EPackage {
 	int GLOBAL_OBJECTIVE__EXPRESSION = 0;
 
 	/**
+	 * The feature id for the '<em><b>Target</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_OBJECTIVE__TARGET = 1;
+
+	/**
 	 * The number of structural features of the '<em>Global Objective</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int GLOBAL_OBJECTIVE_FEATURE_COUNT = 1;
+	int GLOBAL_OBJECTIVE_FEATURE_COUNT = 2;
 
 	/**
 	 * The number of operations of the '<em>Global Objective</em>' class.
@@ -1860,6 +1869,52 @@ public interface RoamIntermediatePackage extends EPackage {
 	int CONTEXT_MAPPING_NODE_OPERATION_COUNT = VALUE_EXPRESSION_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ObjectiveFunctionValueImpl <em>Objective Function Value</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ObjectiveFunctionValueImpl
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getObjectiveFunctionValue()
+	 * @generated
+	 */
+	int OBJECTIVE_FUNCTION_VALUE = 37;
+
+	/**
+	 * The feature id for the '<em><b>Return Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OBJECTIVE_FUNCTION_VALUE__RETURN_TYPE = VALUE_EXPRESSION__RETURN_TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Objective</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OBJECTIVE_FUNCTION_VALUE__OBJECTIVE = VALUE_EXPRESSION_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Objective Function Value</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OBJECTIVE_FUNCTION_VALUE_FEATURE_COUNT = VALUE_EXPRESSION_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Objective Function Value</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OBJECTIVE_FUNCTION_VALUE_OPERATION_COUNT = VALUE_EXPRESSION_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.FeatureExpressionImpl <em>Feature Expression</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1867,7 +1922,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getFeatureExpression()
 	 * @generated
 	 */
-	int FEATURE_EXPRESSION = 37;
+	int FEATURE_EXPRESSION = 38;
 
 	/**
 	 * The feature id for the '<em><b>Current</b></em>' containment reference.
@@ -1913,7 +1968,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getFeatureLiteral()
 	 * @generated
 	 */
-	int FEATURE_LITERAL = 38;
+	int FEATURE_LITERAL = 39;
 
 	/**
 	 * The feature id for the '<em><b>Feature</b></em>' reference.
@@ -1950,7 +2005,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextTypeFeatureValue()
 	 * @generated
 	 */
-	int CONTEXT_TYPE_FEATURE_VALUE = 39;
+	int CONTEXT_TYPE_FEATURE_VALUE = 40;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -2005,7 +2060,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextMappingNodeFeatureValue()
 	 * @generated
 	 */
-	int CONTEXT_MAPPING_NODE_FEATURE_VALUE = 40;
+	int CONTEXT_MAPPING_NODE_FEATURE_VALUE = 41;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -2069,7 +2124,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIterator()
 	 * @generated
 	 */
-	int ITERATOR = 41;
+	int ITERATOR = 42;
 
 	/**
 	 * The feature id for the '<em><b>Stream</b></em>' reference.
@@ -2106,7 +2161,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingValue()
 	 * @generated
 	 */
-	int ITERATOR_MAPPING_VALUE = 42;
+	int ITERATOR_MAPPING_VALUE = 43;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -2161,7 +2216,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingFeatureValue()
 	 * @generated
 	 */
-	int ITERATOR_MAPPING_FEATURE_VALUE = 43;
+	int ITERATOR_MAPPING_FEATURE_VALUE = 44;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -2225,7 +2280,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingNodeValue()
 	 * @generated
 	 */
-	int ITERATOR_MAPPING_NODE_VALUE = 44;
+	int ITERATOR_MAPPING_NODE_VALUE = 45;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -2289,7 +2344,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingNodeFeatureValue()
 	 * @generated
 	 */
-	int ITERATOR_MAPPING_NODE_FEATURE_VALUE = 45;
+	int ITERATOR_MAPPING_NODE_FEATURE_VALUE = 46;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -2362,7 +2417,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorTypeValue()
 	 * @generated
 	 */
-	int ITERATOR_TYPE_VALUE = 46;
+	int ITERATOR_TYPE_VALUE = 47;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -2417,7 +2472,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorTypeFeatureValue()
 	 * @generated
 	 */
-	int ITERATOR_TYPE_FEATURE_VALUE = 47;
+	int ITERATOR_TYPE_FEATURE_VALUE = 48;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -2481,7 +2536,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamExpression()
 	 * @generated
 	 */
-	int STREAM_EXPRESSION = 48;
+	int STREAM_EXPRESSION = 49;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -2536,7 +2591,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamOperation()
 	 * @generated
 	 */
-	int STREAM_OPERATION = 49;
+	int STREAM_OPERATION = 50;
 
 	/**
 	 * The number of structural features of the '<em>Stream Operation</em>' class.
@@ -2564,7 +2619,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamFilterOperation()
 	 * @generated
 	 */
-	int STREAM_FILTER_OPERATION = 50;
+	int STREAM_FILTER_OPERATION = 51;
 
 	/**
 	 * The feature id for the '<em><b>Predicate</b></em>' containment reference.
@@ -2601,7 +2656,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamSelectOperation()
 	 * @generated
 	 */
-	int STREAM_SELECT_OPERATION = 51;
+	int STREAM_SELECT_OPERATION = 52;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -2631,6 +2686,16 @@ public interface RoamIntermediatePackage extends EPackage {
 	int STREAM_SELECT_OPERATION_OPERATION_COUNT = STREAM_OPERATION_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget <em>Objective Target</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getObjectiveTarget()
+	 * @generated
+	 */
+	int OBJECTIVE_TARGET = 53;
+
+	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator <em>Relational Operator</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2638,7 +2703,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getRelationalOperator()
 	 * @generated
 	 */
-	int RELATIONAL_OPERATOR = 52;
+	int RELATIONAL_OPERATOR = 54;
 
 	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator <em>Binary Arithmetic Operator</em>}' enum.
@@ -2648,7 +2713,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBinaryArithmeticOperator()
 	 * @generated
 	 */
-	int BINARY_ARITHMETIC_OPERATOR = 53;
+	int BINARY_ARITHMETIC_OPERATOR = 55;
 
 	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator <em>Unary Arithmetic Operator</em>}' enum.
@@ -2658,7 +2723,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getUnaryArithmeticOperator()
 	 * @generated
 	 */
-	int UNARY_ARITHMETIC_OPERATOR = 54;
+	int UNARY_ARITHMETIC_OPERATOR = 56;
 
 	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamArithmeticOperator <em>Stream Arithmetic Operator</em>}' enum.
@@ -2668,7 +2733,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamArithmeticOperator()
 	 * @generated
 	 */
-	int STREAM_ARITHMETIC_OPERATOR = 55;
+	int STREAM_ARITHMETIC_OPERATOR = 57;
 
 	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryBoolOperator <em>Binary Bool Operator</em>}' enum.
@@ -2678,7 +2743,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBinaryBoolOperator()
 	 * @generated
 	 */
-	int BINARY_BOOL_OPERATOR = 56;
+	int BINARY_BOOL_OPERATOR = 58;
 
 	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryBoolOperator <em>Unary Bool Operator</em>}' enum.
@@ -2688,7 +2753,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getUnaryBoolOperator()
 	 * @generated
 	 */
-	int UNARY_BOOL_OPERATOR = 57;
+	int UNARY_BOOL_OPERATOR = 59;
 
 	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamBoolOperator <em>Stream Bool Operator</em>}' enum.
@@ -2698,7 +2763,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamBoolOperator()
 	 * @generated
 	 */
-	int STREAM_BOOL_OPERATOR = 58;
+	int STREAM_BOOL_OPERATOR = 60;
 
 	/**
 	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel <em>Model</em>}'.
@@ -2945,6 +3010,17 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 */
 	EReference getGlobalObjective_Expression();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective#getTarget <em>Target</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Target</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective#getTarget()
+	 * @see #getGlobalObjective()
+	 * @generated
+	 */
+	EAttribute getGlobalObjective_Target();
 
 	/**
 	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.Context <em>Context</em>}'.
@@ -3654,6 +3730,27 @@ public interface RoamIntermediatePackage extends EPackage {
 	EReference getContextMappingNode_Node();
 
 	/**
+	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue <em>Objective Function Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Objective Function Value</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue
+	 * @generated
+	 */
+	EClass getObjectiveFunctionValue();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue#getObjective <em>Objective</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Objective</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue#getObjective()
+	 * @see #getObjectiveFunctionValue()
+	 * @generated
+	 */
+	EReference getObjectiveFunctionValue_Objective();
+
+	/**
 	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression <em>Feature Expression</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4013,6 +4110,16 @@ public interface RoamIntermediatePackage extends EPackage {
 	EReference getStreamSelectOperation_Type();
 
 	/**
+	 * Returns the meta object for enum '{@link org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget <em>Objective Target</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Objective Target</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget
+	 * @generated
+	 */
+	EEnum getObjectiveTarget();
+
+	/**
 	 * Returns the meta object for enum '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator <em>Relational Operator</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4302,6 +4409,14 @@ public interface RoamIntermediatePackage extends EPackage {
 		 * @generated
 		 */
 		EReference GLOBAL_OBJECTIVE__EXPRESSION = eINSTANCE.getGlobalObjective_Expression();
+
+		/**
+		 * The meta object literal for the '<em><b>Target</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute GLOBAL_OBJECTIVE__TARGET = eINSTANCE.getGlobalObjective_Target();
 
 		/**
 		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.Context <em>Context</em>}' class.
@@ -4900,6 +5015,24 @@ public interface RoamIntermediatePackage extends EPackage {
 		EReference CONTEXT_MAPPING_NODE__NODE = eINSTANCE.getContextMappingNode_Node();
 
 		/**
+		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ObjectiveFunctionValueImpl <em>Objective Function Value</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ObjectiveFunctionValueImpl
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getObjectiveFunctionValue()
+		 * @generated
+		 */
+		EClass OBJECTIVE_FUNCTION_VALUE = eINSTANCE.getObjectiveFunctionValue();
+
+		/**
+		 * The meta object literal for the '<em><b>Objective</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference OBJECTIVE_FUNCTION_VALUE__OBJECTIVE = eINSTANCE.getObjectiveFunctionValue_Objective();
+
+		/**
 		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.FeatureExpressionImpl <em>Feature Expression</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -5207,6 +5340,16 @@ public interface RoamIntermediatePackage extends EPackage {
 		 * @generated
 		 */
 		EReference STREAM_SELECT_OPERATION__TYPE = eINSTANCE.getStreamSelectOperation_Type();
+
+		/**
+		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget <em>Objective Target</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getObjectiveTarget()
+		 * @generated
+		 */
+		EEnum OBJECTIVE_TARGET = eINSTANCE.getObjectiveTarget();
 
 		/**
 		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator <em>Relational Operator</em>}' enum.

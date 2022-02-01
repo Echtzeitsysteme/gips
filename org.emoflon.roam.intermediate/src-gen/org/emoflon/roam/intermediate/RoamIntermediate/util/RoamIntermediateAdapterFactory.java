@@ -252,6 +252,11 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseObjectiveFunctionValue(ObjectiveFunctionValue object) {
+			return createObjectiveFunctionValueAdapter();
+		}
+
+		@Override
 		public Adapter caseFeatureExpression(FeatureExpression object) {
 			return createFeatureExpressionAdapter();
 		}
@@ -860,6 +865,20 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createContextMappingNodeAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue <em>Objective Function Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue
+	 * @generated
+	 */
+	public Adapter createObjectiveFunctionValueAdapter() {
 		return null;
 	}
 

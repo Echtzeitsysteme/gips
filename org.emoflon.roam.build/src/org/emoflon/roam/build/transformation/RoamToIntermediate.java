@@ -13,20 +13,28 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
+import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionTransformer;
 import org.emoflon.roam.build.transformation.helper.RelationalExpressionTransformer;
 import org.emoflon.roam.build.transformation.helper.TransformerFactory;
 import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective;
+import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
+import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateFactory;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
 import org.emoflon.roam.intermediate.RoamIntermediate.Type;
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective;
 import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
 import org.emoflon.roam.roamslang.roamSLang.RoamBoolExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamBooleanLiteral;
 import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
+import org.emoflon.roam.roamslang.roamSLang.RoamGlobalObjective;
 import org.emoflon.roam.roamslang.roamSLang.RoamMappingContext;
+import org.emoflon.roam.roamslang.roamSLang.RoamObjective;
 import org.emoflon.roam.roamslang.roamSLang.RoamRelExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
 
@@ -49,6 +57,8 @@ public class RoamToIntermediate {
 		//transform Roam components
 		transformMappings();
 		transformConstraints();
+		transformObjectives();
+		transformGlobalObjective();
 		
 		//add all required data types
 		data.model().getVariables().addAll(data.eType2Type().values());
@@ -98,6 +108,47 @@ public class RoamToIntermediate {
 		}
 	}
 	
+	protected void transformObjectives() throws Exception {
+		for(RoamObjective eObjective : data.roamSlangFile().getObjectives()) {
+			if(eObjective.getExpr() == null) {
+				continue;
+			}
+			
+			Objective objective = createObjective(eObjective);
+			objective.setElementwise(true);
+			data.model().getObjectives().add(objective);
+			data.eObjective2Objective().put(eObjective, objective);
+			
+			ArithmeticExpressionTransformer transformer = transformationFactory.createArithmeticTransformer(objective);
+			objective.setExpression(transformer.transform(eObjective.getExpr()));
+		}
+	}
+	
+	protected void transformGlobalObjective() throws Exception {
+		RoamGlobalObjective eGlobalObj = data.roamSlangFile().getGlobalObjective();
+		if(eGlobalObj == null) {
+			return;
+		}
+		
+		GlobalObjective globalObj = factory.createGlobalObjective();
+		data.model().setGlobalObjective(globalObj);
+		
+		switch(eGlobalObj.getObjectiveGoal()) {
+			case MAX -> {
+				globalObj.setTarget(ObjectiveTarget.MAX);
+			}
+			case MIN -> {
+				globalObj.setTarget(ObjectiveTarget.MIN);
+			}
+			default -> {
+				throw new IllegalArgumentException("Unknown global objective function goal: "+eGlobalObj.getObjectiveGoal());
+			}
+		}
+		
+		ArithmeticExpressionTransformer transformer = transformationFactory.createArithmeticTransformer(globalObj);
+		globalObj.setExpression(transformer.transform(eGlobalObj.getExpr()));
+	}
+	
 	protected Constraint createConstraint(final RoamConstraint eConstraint, int counter) {
 		if(eConstraint.getContext() instanceof RoamMappingContext mapping) {
 			MappingConstraint constraint = factory.createMappingConstraint();
@@ -111,6 +162,22 @@ public class RoamToIntermediate {
 			Type varType = data.getType((EClass) type.getType());
 			constraint.setModelType(varType);
 			return constraint;
+		}
+	}
+	
+	protected Objective createObjective(final RoamObjective eObjective) {
+		if(eObjective.getContext() instanceof RoamMappingContext mapping) {
+			MappingObjective objective = factory.createMappingObjective();
+			objective.setName(eObjective.getName());
+			objective.setMapping(data.eMapping2Mapping().get(mapping.getMapping()));
+			return objective;
+		} else  {
+			RoamTypeContext type = (RoamTypeContext) eObjective.getContext();
+			TypeObjective objective = factory.createTypeObjective();
+			objective.setName(eObjective.getName());
+			Type varType = data.getType((EClass) type.getType());
+			objective.setModelType(varType);
+			return objective;
 		}
 	}
 	

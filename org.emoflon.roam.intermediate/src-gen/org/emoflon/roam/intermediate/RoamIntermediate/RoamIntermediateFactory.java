@@ -257,6 +257,15 @@ public interface RoamIntermediateFactory extends EFactory {
 	ContextMappingNode createContextMappingNode();
 
 	/**
+	 * Returns a new object of class '<em>Objective Function Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Objective Function Value</em>'.
+	 * @generated
+	 */
+	ObjectiveFunctionValue createObjectiveFunctionValue();
+
+	/**
 	 * Returns a new object of class '<em>Feature Expression</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -11,6 +11,10 @@
   <testsDirectory xsi:nil="true"/>
   <genPackages prefix="RoamIntermediate" basePackage="org.emoflon.roam.intermediate"
       disposableProviderFactory="true" ecorePackage="RoamIntermediate.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="RoamIntermediate.ecore#//ObjectiveTarget">
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//ObjectiveTarget/MIN"/>
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//ObjectiveTarget/MAX"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="RoamIntermediate.ecore#//RelationalOperator">
       <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//RelationalOperator/Less"/>
       <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//RelationalOperator/LessOrEqual"/>
@@ -77,6 +81,7 @@
     </genClasses>
     <genClasses ecoreClass="RoamIntermediate.ecore#//GlobalObjective">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//GlobalObjective/expression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//GlobalObjective/target"/>
     </genClasses>
     <genClasses image="false" ecoreClass="RoamIntermediate.ecore#//Context"/>
     <genClasses ecoreClass="RoamIntermediate.ecore#//TypeConstraint">
@@ -168,6 +173,9 @@
     <genClasses ecoreClass="RoamIntermediate.ecore#//ContextMappingNode">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//ContextMappingNode/mappingContext"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//ContextMappingNode/node"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//ObjectiveFunctionValue">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//ObjectiveFunctionValue/objective"/>
     </genClasses>
     <genClasses ecoreClass="RoamIntermediate.ecore#//FeatureExpression">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//FeatureExpression/current"/>

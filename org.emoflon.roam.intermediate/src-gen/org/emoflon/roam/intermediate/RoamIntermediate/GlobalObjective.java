@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective#getExpression <em>Expression</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective#getTarget <em>Target</em>}</li>
  * </ul>
  *
  * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getGlobalObjective()
@@ -42,5 +43,30 @@ public interface GlobalObjective extends EObject {
 	 * @generated
 	 */
 	void setExpression(ArithmeticExpression value);
+
+	/**
+	 * Returns the value of the '<em><b>Target</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Target</em>' attribute.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget
+	 * @see #setTarget(ObjectiveTarget)
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getGlobalObjective_Target()
+	 * @model
+	 * @generated
+	 */
+	ObjectiveTarget getTarget();
+
+	/**
+	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective#getTarget <em>Target</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Target</em>' attribute.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget
+	 * @see #getTarget()
+	 * @generated
+	 */
+	void setTarget(ObjectiveTarget value);
 
 } // GlobalObjective

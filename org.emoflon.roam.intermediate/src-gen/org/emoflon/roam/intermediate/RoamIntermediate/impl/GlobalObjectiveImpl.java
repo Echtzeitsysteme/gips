@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective;
+import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
@@ -24,6 +25,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * </p>
  * <ul>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.GlobalObjectiveImpl#getExpression <em>Expression</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.GlobalObjectiveImpl#getTarget <em>Target</em>}</li>
  * </ul>
  *
  * @generated
@@ -38,6 +40,25 @@ public class GlobalObjectiveImpl extends MinimalEObjectImpl.Container implements
 	 * @ordered
 	 */
 	protected ArithmeticExpression expression;
+
+	/**
+	 * The default value of the '{@link #getTarget() <em>Target</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTarget()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final ObjectiveTarget TARGET_EDEFAULT = ObjectiveTarget.MIN;
+	/**
+	 * The cached value of the '{@link #getTarget() <em>Target</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTarget()
+	 * @generated
+	 * @ordered
+	 */
+	protected ObjectiveTarget target = TARGET_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -113,6 +134,28 @@ public class GlobalObjectiveImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ObjectiveTarget getTarget() {
+		return target;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setTarget(ObjectiveTarget newTarget) {
+		ObjectiveTarget oldTarget = target;
+		target = newTarget == null ? TARGET_EDEFAULT : newTarget;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.GLOBAL_OBJECTIVE__TARGET,
+					oldTarget, target));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -132,6 +175,8 @@ public class GlobalObjectiveImpl extends MinimalEObjectImpl.Container implements
 		switch (featureID) {
 		case RoamIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION:
 			return getExpression();
+		case RoamIntermediatePackage.GLOBAL_OBJECTIVE__TARGET:
+			return getTarget();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -146,6 +191,9 @@ public class GlobalObjectiveImpl extends MinimalEObjectImpl.Container implements
 		switch (featureID) {
 		case RoamIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION:
 			setExpression((ArithmeticExpression) newValue);
+			return;
+		case RoamIntermediatePackage.GLOBAL_OBJECTIVE__TARGET:
+			setTarget((ObjectiveTarget) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -162,6 +210,9 @@ public class GlobalObjectiveImpl extends MinimalEObjectImpl.Container implements
 		case RoamIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION:
 			setExpression((ArithmeticExpression) null);
 			return;
+		case RoamIntermediatePackage.GLOBAL_OBJECTIVE__TARGET:
+			setTarget(TARGET_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -176,8 +227,27 @@ public class GlobalObjectiveImpl extends MinimalEObjectImpl.Container implements
 		switch (featureID) {
 		case RoamIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION:
 			return expression != null;
+		case RoamIntermediatePackage.GLOBAL_OBJECTIVE__TARGET:
+			return target != TARGET_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy())
+			return super.toString();
+
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (target: ");
+		result.append(target);
+		result.append(')');
+		return result.toString();
 	}
 
 } //GlobalObjectiveImpl

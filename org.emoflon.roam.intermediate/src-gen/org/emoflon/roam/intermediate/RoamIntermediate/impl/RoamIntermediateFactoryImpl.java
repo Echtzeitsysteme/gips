@@ -109,6 +109,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 			return createContextMappingValue();
 		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE:
 			return createContextMappingNode();
+		case RoamIntermediatePackage.OBJECTIVE_FUNCTION_VALUE:
+			return createObjectiveFunctionValue();
 		case RoamIntermediatePackage.FEATURE_EXPRESSION:
 			return createFeatureExpression();
 		case RoamIntermediatePackage.FEATURE_LITERAL:
@@ -148,6 +150,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
+		case RoamIntermediatePackage.OBJECTIVE_TARGET:
+			return createObjectiveTargetFromString(eDataType, initialValue);
 		case RoamIntermediatePackage.RELATIONAL_OPERATOR:
 			return createRelationalOperatorFromString(eDataType, initialValue);
 		case RoamIntermediatePackage.BINARY_ARITHMETIC_OPERATOR:
@@ -175,6 +179,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
+		case RoamIntermediatePackage.OBJECTIVE_TARGET:
+			return convertObjectiveTargetToString(eDataType, instanceValue);
 		case RoamIntermediatePackage.RELATIONAL_OPERATOR:
 			return convertRelationalOperatorToString(eDataType, instanceValue);
 		case RoamIntermediatePackage.BINARY_ARITHMETIC_OPERATOR:
@@ -459,6 +465,16 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ObjectiveFunctionValue createObjectiveFunctionValue() {
+		ObjectiveFunctionValueImpl objectiveFunctionValue = new ObjectiveFunctionValueImpl();
+		return objectiveFunctionValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public FeatureExpression createFeatureExpression() {
 		FeatureExpressionImpl featureExpression = new FeatureExpressionImpl();
 		return featureExpression;
@@ -582,6 +598,28 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	public StreamSelectOperation createStreamSelectOperation() {
 		StreamSelectOperationImpl streamSelectOperation = new StreamSelectOperationImpl();
 		return streamSelectOperation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ObjectiveTarget createObjectiveTargetFromString(EDataType eDataType, String initialValue) {
+		ObjectiveTarget result = ObjectiveTarget.get(initialValue);
+		if (result == null)
+			throw new IllegalArgumentException(
+					"The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertObjectiveTargetToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
 	}
 
 	/**

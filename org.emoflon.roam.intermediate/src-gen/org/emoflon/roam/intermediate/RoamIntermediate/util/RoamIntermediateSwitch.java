@@ -417,6 +417,15 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case RoamIntermediatePackage.OBJECTIVE_FUNCTION_VALUE: {
+			ObjectiveFunctionValue objectiveFunctionValue = (ObjectiveFunctionValue) theEObject;
+			T result = caseObjectiveFunctionValue(objectiveFunctionValue);
+			if (result == null)
+				result = caseValueExpression(objectiveFunctionValue);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case RoamIntermediatePackage.FEATURE_EXPRESSION: {
 			FeatureExpression featureExpression = (FeatureExpression) theEObject;
 			T result = caseFeatureExpression(featureExpression);
@@ -1121,6 +1130,21 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseContextMappingNode(ContextMappingNode object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Objective Function Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Objective Function Value</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseObjectiveFunctionValue(ObjectiveFunctionValue object) {
 		return null;
 	}
 

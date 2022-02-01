@@ -51,6 +51,8 @@ import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
+import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget;
 import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateFactory;
@@ -345,6 +347,13 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass objectiveFunctionValueEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass featureExpressionEClass = null;
 
 	/**
@@ -444,6 +453,13 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * @generated
 	 */
 	private EClass streamSelectOperationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum objectiveTargetEEnum = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -766,6 +782,15 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 */
 	public EReference getGlobalObjective_Expression() {
 		return (EReference) globalObjectiveEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGlobalObjective_Target() {
+		return (EAttribute) globalObjectiveEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -1376,6 +1401,24 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getObjectiveFunctionValue() {
+		return objectiveFunctionValueEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getObjectiveFunctionValue_Objective() {
+		return (EReference) objectiveFunctionValueEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getFeatureExpression() {
 		return featureExpressionEClass;
 	}
@@ -1682,6 +1725,15 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EEnum getObjectiveTarget() {
+		return objectiveTargetEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EEnum getRelationalOperator() {
 		return relationalOperatorEEnum;
 	}
@@ -1798,6 +1850,7 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 
 		globalObjectiveEClass = createEClass(GLOBAL_OBJECTIVE);
 		createEReference(globalObjectiveEClass, GLOBAL_OBJECTIVE__EXPRESSION);
+		createEAttribute(globalObjectiveEClass, GLOBAL_OBJECTIVE__TARGET);
 
 		contextEClass = createEClass(CONTEXT);
 
@@ -1896,6 +1949,9 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		createEReference(contextMappingNodeEClass, CONTEXT_MAPPING_NODE__MAPPING_CONTEXT);
 		createEReference(contextMappingNodeEClass, CONTEXT_MAPPING_NODE__NODE);
 
+		objectiveFunctionValueEClass = createEClass(OBJECTIVE_FUNCTION_VALUE);
+		createEReference(objectiveFunctionValueEClass, OBJECTIVE_FUNCTION_VALUE__OBJECTIVE);
+
 		featureExpressionEClass = createEClass(FEATURE_EXPRESSION);
 		createEReference(featureExpressionEClass, FEATURE_EXPRESSION__CURRENT);
 		createEReference(featureExpressionEClass, FEATURE_EXPRESSION__CHILD);
@@ -1947,6 +2003,7 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		createEReference(streamSelectOperationEClass, STREAM_SELECT_OPERATION__TYPE);
 
 		// Create enums
+		objectiveTargetEEnum = createEEnum(OBJECTIVE_TARGET);
 		relationalOperatorEEnum = createEEnum(RELATIONAL_OPERATOR);
 		binaryArithmeticOperatorEEnum = createEEnum(BINARY_ARITHMETIC_OPERATOR);
 		unaryArithmeticOperatorEEnum = createEEnum(UNARY_ARITHMETIC_OPERATOR);
@@ -2021,6 +2078,7 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		contextTypeValueEClass.getESuperTypes().add(this.getValueExpression());
 		contextMappingValueEClass.getESuperTypes().add(this.getValueExpression());
 		contextMappingNodeEClass.getESuperTypes().add(this.getValueExpression());
+		objectiveFunctionValueEClass.getESuperTypes().add(this.getValueExpression());
 		contextTypeFeatureValueEClass.getESuperTypes().add(this.getContextTypeValue());
 		contextMappingNodeFeatureValueEClass.getESuperTypes().add(this.getContextMappingNode());
 		iteratorMappingValueEClass.getESuperTypes().add(this.getValueExpression());
@@ -2101,6 +2159,9 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		initEReference(getGlobalObjective_Expression(), this.getArithmeticExpression(), null, "expression", null, 0, 1,
 				GlobalObjective.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getGlobalObjective_Target(), this.getObjectiveTarget(), "target", null, 0, 1,
+				GlobalObjective.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
 
 		initEClass(contextEClass, Context.class, "Context", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -2300,6 +2361,12 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 				ContextMappingNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(objectiveFunctionValueEClass, ObjectiveFunctionValue.class, "ObjectiveFunctionValue", !IS_ABSTRACT,
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getObjectiveFunctionValue_Objective(), this.getObjective(), null, "objective", null, 1, 1,
+				ObjectiveFunctionValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(featureExpressionEClass, FeatureExpression.class, "FeatureExpression", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getFeatureExpression_Current(), this.getFeatureLiteral(), null, "current", null, 1, 1,
@@ -2402,6 +2469,10 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
+		initEEnum(objectiveTargetEEnum, ObjectiveTarget.class, "ObjectiveTarget");
+		addEEnumLiteral(objectiveTargetEEnum, ObjectiveTarget.MIN);
+		addEEnumLiteral(objectiveTargetEEnum, ObjectiveTarget.MAX);
+
 		initEEnum(relationalOperatorEEnum, RelationalOperator.class, "RelationalOperator");
 		addEEnumLiteral(relationalOperatorEEnum, RelationalOperator.LESS);
 		addEEnumLiteral(relationalOperatorEEnum, RelationalOperator.LESS_OR_EQUAL);

@@ -3,6 +3,8 @@ package org.emoflon.roam.build.transformation.helper;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.roam.build.transformation.RoamTransformationData;
 import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective;
+import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
 import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.SumExpression;
 
@@ -38,6 +40,10 @@ public class TransformerFactory {
 			return new ArithmeticInStreamTransformer(data, streamExpr, this);
 		} else if(context instanceof SumExpression sumExpr) {
 			return new ArithmeticInSumTransformer(data, sumExpr, this);
+		} else if(context instanceof Objective objective) {
+			return new ArithmeticInObjectiveTransformer(data, objective, this);
+		} else if(context instanceof GlobalObjective objective) {
+			return new ArithmeticInGlobalObjectiveTransformer(data, objective, this);
 		}else {
 			throw new IllegalArgumentException("Transforming arithmetic expressions within the given context is undefined. Context: "+context);
 		}
@@ -60,6 +66,8 @@ public class TransformerFactory {
 			return new AttributeInStreamTransformer(data, streamExpr, this);
 		} else if(context instanceof SumExpression sumExpr) {
 			return new AttributeInSumTransformer(data, sumExpr, this);
+		} else if(context instanceof Objective objective) {
+			return new AttributeInObjectiveTransformer(data, objective, this);
 		} else {
 			throw new IllegalArgumentException("Transforming arithmetic expressions within the given context is undefined. Context: "+context);
 		}

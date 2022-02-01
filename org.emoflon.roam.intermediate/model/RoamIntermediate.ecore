@@ -40,6 +40,11 @@
   <eClassifiers xsi:type="ecore:EClass" name="GlobalObjective">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//ArithmeticExpression"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="target" eType="#//ObjectiveTarget"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ObjectiveTarget">
+    <eLiterals name="MIN"/>
+    <eLiterals name="MAX" value="1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Context" abstract="true" interface="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="TypeConstraint" eSuperTypes="#//Context #//Constraint">
@@ -190,6 +195,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="ContextMappingNode" eSuperTypes="#//ValueExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//MappingConstraint"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXNode"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ObjectiveFunctionValue" eSuperTypes="#//ValueExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="objective" lowerBound="1"
+        eType="#//Objective"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FeatureExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="current" lowerBound="1"

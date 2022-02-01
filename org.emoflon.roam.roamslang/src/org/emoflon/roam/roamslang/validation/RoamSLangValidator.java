@@ -12,10 +12,13 @@ import org.eclipse.xtext.validation.Check;
 import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
 import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticLiteral;
+import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticUnaryOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamBinaryBoolExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamBool;
+import org.emoflon.roam.roamslang.roamSLang.RoamBoolBinaryOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamBoolExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamBoolUnaryOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamBooleanLiteral;
 import org.emoflon.roam.roamslang.roamSLang.RoamBracketExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
@@ -23,6 +26,7 @@ import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamContextOperation;
 import org.emoflon.roam.roamslang.roamSLang.RoamContextOperationExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamExpArithmeticExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamExpOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamExpressionOperand;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureLit;
@@ -35,7 +39,9 @@ import org.emoflon.roam.roamslang.roamSLang.RoamNodeAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjective;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjectiveExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamProductArithmeticExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamProductOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamRelExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamRelOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamSLangPackage;
 import org.emoflon.roam.roamslang.roamSLang.RoamSelect;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamArithmetic;
@@ -45,6 +51,7 @@ import org.emoflon.roam.roamslang.roamSLang.RoamStreamNavigation;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamNoArgOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamSet;
 import org.emoflon.roam.roamslang.roamSLang.RoamSumArithmeticExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamSumOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeCast;
 import org.emoflon.roam.roamslang.roamSLang.RoamUnaryArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamUnaryBoolExpr;
@@ -325,24 +332,29 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return leafType.BOOLEAN;
 		} else if (expr instanceof RoamBinaryBoolExpr) {
 			final RoamBinaryBoolExpr boolExpr = (RoamBinaryBoolExpr) expr;
-			// TODO: Check if return type is compatible with operator
-			return getEvalLeftRightSide(boolExpr.getLeft(), boolExpr.getRight());
+			return getEvalLeftRightSideOp(boolExpr.getLeft(), boolExpr.getRight(), boolExpr.getOperator());
 		} else if (expr instanceof RoamUnaryBoolExpr) {
 			final RoamUnaryBoolExpr boolExpr = (RoamUnaryBoolExpr) expr;
-			// TODO: Check if return type is compatible with operator
-			boolExpr.getOperator();
-			return getEvalTypeDelegate(boolExpr);
+			return getEvalLEftRightSideOp(boolExpr.getOperand(), boolExpr.getOperator());
 		} else if (expr instanceof RoamRelExpr) {
 			final RoamRelExpr relExpr = (RoamRelExpr) expr;
-			if (relExpr.getRight() == null) {
-				// TODO: Check if return type is compatible with operator
-				relExpr.getOperator();
-				return getEvalTypeDelegate(relExpr.getLeft());
-			} else {
-				// If lhs and rhs are set, the expression must evaluate to a boolean.
-				// TODO: Check if return type is compatible with operator
-				return getEvalLeftRightSide(relExpr.getLeft(), relExpr.getRight());
-			}
+//			if (relExpr.getRight() == null) {
+//				// TODO: Check if return type is compatible with operator
+//				relExpr.getOperator();
+//				return getEvalTypeDelegate(relExpr.getLeft());
+//			} else {
+//				// If lhs and rhs are set, the expression must evaluate to a boolean.
+//				// TODO: Check if return type is compatible with operator
+//				relExpr.getOperator();
+//				return getEvalLeftRightSide(relExpr.getLeft(), relExpr.getRight());
+//			}
+
+//			System.out.println("test");
+//			return leafType.ERROR;
+			final leafType leftType = getEvalTypeDelegate(relExpr.getLeft());
+			final leafType rightType = getEvalTypeDelegate(relExpr.getRight());
+//			relExpr.getOperator();
+			return combine(leftType, rightType, relExpr.getOperator());
 		}
 
 		return leafType.ERROR;
@@ -354,20 +366,22 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return getEvalTypeFromArithExpr(brack.getOperand());
 		} else if (expr instanceof RoamExpArithmeticExpr) {
 			final RoamExpArithmeticExpr exp = (RoamExpArithmeticExpr) expr;
-			// TODO: Check if return type is compatible with operator
-//			RoamExpOperator.VALUES.contains(exp.getOperator());
-			return getEvalLeftRightSide(exp.getLeft(), exp.getRight());
+			final leafType leftType = getEvalTypeDelegate(exp.getLeft());
+			final leafType rightType = getEvalTypeDelegate(exp.getRight());
+			return combine(leftType, rightType, exp.getOperator());
 		} else if (expr instanceof RoamProductArithmeticExpr) {
 			final RoamProductArithmeticExpr prod = (RoamProductArithmeticExpr) expr;
-			// TODO: Check if return type is compatible with operator
-			return getEvalLeftRightSide(prod.getLeft(), prod.getRight());
+			final leafType leftType = getEvalTypeDelegate(prod.getLeft());
+			final leafType rightType = getEvalTypeDelegate(prod.getRight());
+			return combine(leftType, rightType, prod.getOperator());
 		} else if (expr instanceof RoamSumArithmeticExpr) {
 			final RoamSumArithmeticExpr sum = (RoamSumArithmeticExpr) expr;
-			// TODO: Check if return type is compatible with operator
-			return getEvalLeftRightSide(sum.getLeft(), sum.getRight());
+			final leafType leftType = getEvalTypeDelegate(sum.getLeft());
+			final leafType rightType = getEvalTypeDelegate(sum.getRight());
+			return combine(leftType, rightType, sum.getOperator());
 		} else if (expr instanceof RoamUnaryArithmeticExpr) {
-			// TODO: Check if return type is compatible with operator
-			return getEvalTypeFromArithExpr(((RoamUnaryArithmeticExpr) expr).getOperand());
+			final leafType operand = getEvalTypeFromArithExpr(((RoamUnaryArithmeticExpr) expr).getOperand());
+			return combine(operand, ((RoamUnaryArithmeticExpr) expr).getOperator());
 		} else if (expr instanceof RoamExpressionOperand) {
 			return getEvalTypeFromExprOp((RoamExpressionOperand) expr);
 		}
@@ -537,6 +551,10 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	}
 
 	public leafType getEvalTypeDelegate(final EObject e) {
+		if (e == null) {
+			return null;
+		}
+
 		if (e instanceof RoamBoolExpr) {
 			return getEvalTypeFromBoolExpr((RoamBoolExpr) e);
 		} else if (e instanceof RoamArithmeticExpr) {
@@ -556,6 +574,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	 * @param right Second type to evaluate.
 	 * @return Type or error if types do not match.
 	 */
+	@Deprecated
 	public leafType getEvalLeftRightSide(final EObject left, final EObject right) {
 		final leafType lhs = getEvalTypeDelegate(left);
 		final leafType rhs = getEvalTypeDelegate(right);
@@ -564,6 +583,110 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		} else {
 			return leafType.ERROR;
 		}
+	}
+
+	public leafType getEvalLeftRightSideOp(final RoamRelExpr left, final RoamRelExpr right, final RoamRelOperator op) {
+		if (right == null) {
+			final leafType leftType = getEvalTypeFromArithExpr(left.getLeft());
+			final leafType rightType = getEvalTypeFromArithExpr(left.getRight());
+			return combine(leftType, rightType, left.getOperator());
+		} else {
+			final leafType leftType = getEvalTypeDelegate(left);
+			final leafType rightType = getEvalTypeDelegate(right);
+			return combine(leftType, rightType, op);
+		}
+	}
+
+	public leafType getEvalLeftRightSideOp(final RoamBoolExpr left, final RoamBoolExpr right,
+			final RoamBoolBinaryOperator op) {
+		if (right == null) {
+			throw new UnsupportedOperationException("Not yet implemented.");
+		} else {
+			final leafType leftType = getEvalTypeDelegate(left);
+			final leafType rightType = getEvalTypeDelegate(right);
+			return combine(leftType, rightType, op);
+		}
+	}
+
+	public leafType getEvalLEftRightSideOp(final RoamBoolExpr operand, final RoamBoolUnaryOperator op) {
+		final leafType opType = getEvalTypeDelegate(operand);
+		return combine(opType, op);
+	}
+
+//	public leafType getEvalFromRelExpr(final RoamRelExpr expr) {
+//		
+//		
+//		// TODO
+//		return leafType.ERROR;
+//	}
+
+//	public leafType getEvalLeftRightSideOp(final RoamArithmeticExpr left, final RoamArithmeticExpr right,
+//			RoamRelOperator op) {
+//		if (right == null) {
+//
+//		} else {
+//
+//		}
+//
+//		// TODO
+//		return leafType.ERROR;
+//	}
+
+	public leafType combine(final leafType left, final leafType right, final RoamRelOperator op) {
+		// Case: right side is null and operator did not change from default
+		if (left != null && right == null && op == RoamRelOperator.GREATER) {
+			return left;
+		}
+
+		// Case: Comparing numbers
+		if ((left == leafType.INTEGER || left == leafType.DOUBLE)
+				&& (right == leafType.INTEGER || right == leafType.DOUBLE)) {
+			return leafType.BOOLEAN;
+		} else {
+			return leafType.ERROR;
+		}
+	}
+
+	public leafType combine(final leafType left, final leafType right, final RoamExpOperator op) {
+		if ((left == leafType.INTEGER || left == leafType.DOUBLE)
+				&& (right == leafType.INTEGER || right == leafType.DOUBLE)) {
+			return leafType.DOUBLE;
+			// TODO: ^isn't there also an integer possible here?
+		} else {
+			return leafType.ERROR;
+		}
+	}
+
+	public leafType combine(final leafType left, final leafType right, final RoamProductOperator op) {
+		if (left == leafType.INTEGER && right == leafType.INTEGER) {
+			return leafType.INTEGER;
+		} else if ((left == leafType.INTEGER && right == leafType.DOUBLE) //
+				|| (left == leafType.DOUBLE && right == leafType.INTEGER) //
+				|| (left == leafType.DOUBLE && right == leafType.DOUBLE)) {
+			return leafType.DOUBLE;
+		} else {
+			return leafType.ERROR;
+		}
+	}
+
+	public leafType combine(final leafType left, final leafType right, final RoamSumOperator op) {
+		// TODO
+		return leafType.ERROR;
+	}
+
+	public leafType combine(final leafType operand, final RoamArithmeticUnaryOperator op) {
+		// TODO
+		return leafType.ERROR;
+	}
+
+	public leafType combine(final leafType left, final leafType right, final RoamBoolBinaryOperator op) {
+		// TODO
+		return leafType.ERROR;
+	}
+
+	public leafType combine(final leafType left, final RoamBoolUnaryOperator op) {
+		// TODO
+		return leafType.ERROR;
 	}
 
 	/**

@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.validation.Check;
 import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
@@ -50,6 +51,7 @@ import org.emoflon.roam.roamslang.roamSLang.RoamStreamExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamNavigation;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamNoArgOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamSet;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamSetOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamSumArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamSumOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeCast;
@@ -206,10 +208,15 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			);
 		}
 
-		checkConstraintIsLiteratl(constraint);
+		checkConstraintIsLiteral(constraint);
 	}
 
-	public void checkConstraintIsLiteratl(final RoamConstraint constraint) {
+	/**
+	 * Checks if the constraint is a literal and, therefore, display a warning.
+	 * 
+	 * @param constraint Constraint to check.
+	 */
+	public void checkConstraintIsLiteral(final RoamConstraint constraint) {
 		if (constraint.getExpr().getExpr() instanceof RoamBooleanLiteral) {
 			final RoamBooleanLiteral lit = (RoamBooleanLiteral) constraint.getExpr().getExpr();
 			final String warning = String.valueOf(lit.isLiteral());
@@ -453,6 +460,17 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		return leafType.ERROR;
 	}
 
+	public leafType getEvalTypeFromStreamSet(final RoamStreamSet set) {
+		if (set.getOperator().getValue() == RoamStreamSetOperator.FILTER_VALUE) {
+			return leafType.SET;
+		}
+
+		// TODO: Check lambda expression
+//		getEvalTypeFromLambdaAttrExpr(set.getLambda());
+
+		throw new UnsupportedOperationException("Not yet implemented");
+	}
+
 	public leafType getEvalTypeFromLambdaAttrExpr(final RoamLambdaAttributeExpression expr) {
 		final EObject innerExpr = expr.getExpr();
 		if (innerExpr instanceof RoamNodeAttributeExpr) {
@@ -473,10 +491,24 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 
 	public leafType getEvalTypeFromContextExpr(final RoamContextExpr expr) {
 //		final leafType exprType = getEvalTypeFromContextExpr(expr.getExpr());
-		expr.getExpr(); // <- (not) optional?
-		expr.getTypeCast(); // <- optional
-		expr.getStream(); // <- optional
+//		expr.getExpr(); // <- (not) optional?
+//		expr.getTypeCast(); // <- optional
+//		expr.getStream(); // <- optional
 		// ^All optional?
+
+		if (expr.getExpr() != null) {
+			final EObject innerExpr = expr.getExpr();
+			if (innerExpr instanceof RoamNodeAttributeExpr) {
+				return getEvalTypeFromNodeAttrExpr((RoamNodeAttributeExpr) innerExpr);
+			} else if (innerExpr instanceof RoamContextOperationExpression) {
+				return getEvalTypeFromContextOpExpr((RoamContextOperationExpression) innerExpr);
+			} else if (innerExpr instanceof RoamFeatureExpr) {
+				// TODO: ^this case should be dealt with as RoamNodeAttributeExpr right?
+				return getEvalTypeFromFeatureExpr((RoamFeatureExpr) innerExpr);
+			}
+		}
+
+		// TODO: typeCast + stream
 
 		// TODO
 		return null;
@@ -512,6 +544,20 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			final RoamFeatureLit lit = (RoamFeatureLit) expr;
 			lit.getFeature(); // <- not optional
 			lit.getTypeCast(); // <- optional
+			lit.getFeature().getEType();// instanceof ELong;
+			final EClassifier ecl = lit.getFeature().getEType();
+			if (ecl.getName().equals("ELong") || ecl.getName().equals("EDouble")) {
+				return leafType.DOUBLE;
+			} else if (ecl.getName().equals("EInt")) {
+				return leafType.INTEGER;
+			} else if (ecl.getName().equals("EString")) {
+				return leafType.STRING;
+			} else {
+//				throw new UnsupportedOperationException("Not yet implemented");
+				return leafType.ECLASS;
+			}
+
+			// TODO
 		}
 
 		// TODO
@@ -561,6 +607,10 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return getEvalTypeFromArithExpr((RoamArithmeticExpr) e);
 		} else if (e instanceof RoamBool) {
 			return getEvalTypeFromBoolExpr(((RoamBool) e).getExpr());
+		} else if (e instanceof RoamStreamSet) {
+			return getEvalTypeFromStreamSet((RoamStreamSet) e);
+		} else if (e instanceof RoamStreamBoolExpr) {
+			return getEvalTypeFromStreamExpr((RoamStreamBoolExpr) e);
 		}
 
 		return leafType.ERROR;
@@ -576,8 +626,21 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	 */
 	@Deprecated
 	public leafType getEvalLeftRightSide(final EObject left, final EObject right) {
+		// Case: lhs is a stream set and rhs is a stream boolean expression (NOT
+		// count()) = boolean
+		if (left instanceof RoamStreamSet && right instanceof RoamStreamBoolExpr //
+				&& ((RoamStreamBoolExpr) right).getOperator().getValue() != RoamStreamNoArgOperator.COUNT_VALUE) {
+			return leafType.BOOLEAN;
+		}
+
 		final leafType lhs = getEvalTypeDelegate(left);
 		final leafType rhs = getEvalTypeDelegate(right);
+
+		if (left instanceof RoamStreamSet && lhs == leafType.SET && right instanceof RoamStreamBoolExpr
+				&& ((RoamStreamBoolExpr) right).getOperator().getValue() == RoamStreamNoArgOperator.COUNT_VALUE) {
+			return leafType.INTEGER;
+		}
+
 		if (lhs.equals(rhs)) {
 			return lhs;
 		} else {
@@ -696,6 +759,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		BOOLEAN, // RoamBooleanLiteral
 		INTEGER, //
 		DOUBLE, //
+		STRING, //
+		SET, // Sets like output of a filter
 		OBJECTIVE, // RoamObjective
 		MAPPING, // RoamMapping
 		ECLASS, // EClass for casts

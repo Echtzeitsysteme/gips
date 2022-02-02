@@ -122,6 +122,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	public static final String LAMBDA_EXPR_EVAL_NOT_BOOLEAN_MESSAGE = "Lambda expression does not evaluate to boolean.";
 	public static final String LAMBDA_EXPR_EVAL_LITERAL_MESSAGE = "Lambda expression is always '%s'.";
 
+	public static final String CONSTRAINT_DEFINED_MULTIPLE_TIMES_MESSAGE = "Constraint defined multiple times.";
+
 	// Exception error messages
 	public static final String NOT_IMPLEMENTED_EXCEPTION_MESSAGE = "Not yet implemented";
 
@@ -223,6 +225,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 
 		checkConstraintIsLiteral(constraint);
+		checkConstraintUnique(constraint);
 	}
 
 	/**
@@ -238,6 +241,27 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 					String.format(CONSTRAINT_EVAL_LITERAL_MESSAGE, warning), //
 					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR //
 			);
+		}
+	}
+
+	public void checkConstraintUnique(final RoamConstraint constraint) {
+		final EditorGTFile file = (EditorGTFile) constraint.eContainer();
+		final HashSet<RoamConstraint> others = new HashSet<>();
+		for (final RoamConstraint other : file.getConstraints()) {
+			if (constraint.equals(other)) {
+				// TODO: ^equals is defined as '==' in this case -.-
+				others.add(other);
+			}
+		}
+
+		if (others.size() > 1) {
+			for (final RoamConstraint other : others) {
+				warning( //
+						CONSTRAINT_DEFINED_MULTIPLE_TIMES_MESSAGE, //
+						other, //
+						RoamSLangPackage.Literals.ROAM_CONSTRAINT__CONTEXT //
+				);
+			}
 		}
 	}
 
@@ -737,7 +761,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			final RoamBooleanLiteral lit = (RoamBooleanLiteral) expr.getExpr();
 			final String warning = String.valueOf(lit.isLiteral());
 			warning( //
-					String.format(LAMBDA_EXPR_EVAL_NOT_BOOLEAN_MESSAGE, warning), //
+					String.format(LAMBDA_EXPR_EVAL_LITERAL_MESSAGE, warning), //
 					expr, //
 					RoamSLangPackage.Literals.ROAM_LAMBDA_EXPRESSION__EXPR //
 			);

@@ -2,14 +2,29 @@ package org.emoflon.roam.roamslang.scoping;
 
 import java.util.Set;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.xtext.scoping.IScope;
+import org.eclipse.xtext.scoping.Scopes;
 import org.emoflon.roam.roamslang.roamSLang.RoamMappingContext;
 import org.emoflon.roam.roamslang.roamSLang.RoamNodeAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamSLangPackage;
 import org.emoflon.roam.roamslang.roamSLang.RoamSelect;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamNavigation;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeCast;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
+import org.emoflon.roam.roamslang.roamSLang.impl.RoamConstraintImpl;
+import org.emoflon.roam.roamslang.roamSLang.impl.RoamContextExprImpl;
+import org.emoflon.roam.roamslang.roamSLang.impl.RoamMappingAttributeExprImpl;
+import org.emoflon.roam.roamslang.roamSLang.impl.RoamObjectiveImpl;
+import org.emoflon.roam.roamslang.roamSLang.impl.RoamSelectImpl;
+import org.emoflon.roam.roamslang.roamSLang.impl.RoamStreamArithmeticImpl;
+import org.emoflon.roam.roamslang.roamSLang.impl.RoamStreamNavigationImpl;
+import org.emoflon.roam.roamslang.roamSLang.impl.RoamStreamSetImpl;
+import org.emoflon.roam.roamslang.roamSLang.RoamAttributeExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
 import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureLit;
@@ -76,7 +91,6 @@ public final class RoamSLangScopeContextUtil {
 		return context instanceof RoamTypeCast;
 	}
 	
-	
 	public static Object getContainer(EObject node, Set<Class<?>> classes) {
 		EObject current = node;
 		do {
@@ -86,13 +100,43 @@ public final class RoamSLangScopeContextUtil {
 		return current;
 	}
 	
-	public static RoamFeatureExpr findLeafExpression(final RoamFeatureExpr expr) {
-		if(expr instanceof RoamFeatureLit) {
-			return expr;
+	public static EObject getContextType(final RoamContextExpr expr) {
+		Set<Class<?>> classes = Set.of(RoamConstraintImpl.class, RoamObjectiveImpl.class);
+		EObject root = (EObject) RoamSLangScopeContextUtil.getContainer(expr, classes);
+		if(root instanceof RoamConstraint constr) {
+			return constr.getContext();
+		} else if(root instanceof RoamObjectiveImpl obj) {
+			return obj.getContext();
+		} else {
+			return null;
+		}
+	}
+	
+	public static RoamFeatureLit findLeafExpression(final RoamFeatureExpr expr) {
+		if(expr instanceof RoamFeatureLit lit) {
+			return lit;
 		} else if (expr instanceof RoamFeatureNavigation nav) {
 			return findLeafExpression(nav.getRight());
 		} else {
 			return null;
 		}
+	}
+	
+	public static RoamAttributeExpr getStreamRootContainer(RoamLambdaAttributeExpression context) {
+		Set<Class<?>> classes = Set.of(RoamContextExprImpl.class, RoamMappingAttributeExprImpl.class);
+		return (RoamAttributeExpr) RoamSLangScopeContextUtil.getContainer(context, classes);
+	}
+	
+	public static RoamStreamExpr getStreamIteratorContainer(RoamLambdaAttributeExpression context) {
+		Set<Class<?>> classes = Set.of(RoamStreamNavigationImpl.class, RoamStreamSetImpl.class, RoamSelectImpl.class,
+				RoamStreamArithmeticImpl.class);
+		return (RoamStreamExpr) RoamSLangScopeContextUtil.getContainer(context, classes);
+	}
+	
+	public static EObject getStreamContainer(RoamLambdaAttributeExpression context) {
+		Set<Class<?>> classes = Set.of(RoamContextExprImpl.class, RoamMappingAttributeExprImpl.class,
+				RoamStreamNavigationImpl.class, RoamStreamSetImpl.class, RoamSelectImpl.class,
+				RoamStreamArithmeticImpl.class);
+		return (EObject) RoamSLangScopeContextUtil.getContainer(context, classes);
 	}
 }

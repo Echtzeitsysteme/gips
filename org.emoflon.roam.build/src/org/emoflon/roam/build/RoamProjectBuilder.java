@@ -31,7 +31,7 @@ public class RoamProjectBuilder implements RoamBuilderExtension {
 		}
 		
 		LogUtils.info(logger, "RoamProjectBuilder: transforming RoamSLang models...");
-		// create intermediate grapel model and ibex patterns
+		// create intermediate Roam model and ibex patterns
 		EditorGTFile roamSlangFile = (EditorGTFile) resource.getContents().get(0);
 		// use transformer to create intermediate roam model out of the roamSlang file
 		RoamToIntermediate transformer = new RoamToIntermediate(roamSlangFile);

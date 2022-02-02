@@ -79,8 +79,6 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 			return createBinaryArithmeticExpression();
 		case RoamIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION:
 			return createUnaryArithmeticExpression();
-		case RoamIntermediatePackage.ARITHMETIC_STREAM_EXPRESSION:
-			return createArithmeticStreamExpression();
 		case RoamIntermediatePackage.ARITHMETIC_VALUE:
 			return createArithmeticValue();
 		case RoamIntermediatePackage.INTEGER_LITERAL:
@@ -315,36 +313,6 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ArithmeticStreamExpression createArithmeticStreamExpression() {
-		ArithmeticStreamExpressionImpl arithmeticStreamExpression = new ArithmeticStreamExpressionImpl();
-		return arithmeticStreamExpression;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public MappingSumExpression createMappingSumExpression() {
-		MappingSumExpressionImpl mappingSumExpression = new MappingSumExpressionImpl();
-		return mappingSumExpression;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public TypeSumExpression createTypeSumExpression() {
-		TypeSumExpressionImpl typeSumExpression = new TypeSumExpressionImpl();
-		return typeSumExpression;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public ArithmeticValue createArithmeticValue() {
 		ArithmeticValueImpl arithmeticValue = new ArithmeticValueImpl();
 		return arithmeticValue;
@@ -428,6 +396,26 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	public BoolLiteral createBoolLiteral() {
 		BoolLiteralImpl boolLiteral = new BoolLiteralImpl();
 		return boolLiteral;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public MappingSumExpression createMappingSumExpression() {
+		MappingSumExpressionImpl mappingSumExpression = new MappingSumExpressionImpl();
+		return mappingSumExpression;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public TypeSumExpression createTypeSumExpression() {
+		TypeSumExpressionImpl typeSumExpression = new TypeSumExpressionImpl();
+		return typeSumExpression;
 	}
 
 	/**

@@ -108,11 +108,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//UnaryArithmeticExpression/expression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//UnaryArithmeticExpression/operator"/>
     </genClasses>
-    <genClasses ecoreClass="RoamIntermediate.ecore#//ArithmeticStreamExpression">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//ArithmeticStreamExpression/stream"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//ArithmeticStreamExpression/operator"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//ArithmeticStreamExpression/operation"/>
-    </genClasses>
     <genClasses image="false" ecoreClass="RoamIntermediate.ecore#//SetOperation"/>
     <genClasses image="false" ecoreClass="RoamIntermediate.ecore#//ArithmeticValueExpression"/>
     <genClasses image="false" ecoreClass="RoamIntermediate.ecore#//ArithmeticValue">

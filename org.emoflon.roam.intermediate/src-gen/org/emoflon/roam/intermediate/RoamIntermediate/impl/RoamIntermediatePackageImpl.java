@@ -14,7 +14,6 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPatternModelPackage;
 
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral;
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticStreamExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValueExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression;
@@ -193,35 +192,7 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass arithmeticStreamExpressionEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	private EClass setOperationEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass sumExpressionEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass mappingSumExpressionEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass typeSumExpressionEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -320,6 +291,27 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * @generated
 	 */
 	private EClass valueExpressionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass sumExpressionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass mappingSumExpressionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass typeSumExpressionEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -960,107 +952,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getArithmeticStreamExpression() {
-		return arithmeticStreamExpressionEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getArithmeticStreamExpression_Stream() {
-		return (EReference) arithmeticStreamExpressionEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getArithmeticStreamExpression_Operator() {
-		return (EAttribute) arithmeticStreamExpressionEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getArithmeticStreamExpression_Operation() {
-		return (EReference) arithmeticStreamExpressionEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getSetOperation() {
 		return setOperationEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getSumExpression() {
-		return sumExpressionEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getSumExpression_Expression() {
-		return (EReference) sumExpressionEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getSumExpression_Filter() {
-		return (EReference) sumExpressionEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getMappingSumExpression() {
-		return mappingSumExpressionEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getMappingSumExpression_Mapping() {
-		return (EReference) mappingSumExpressionEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getTypeSumExpression() {
-		return typeSumExpressionEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getTypeSumExpression_Type() {
-		return (EReference) typeSumExpressionEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -1331,6 +1224,69 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 */
 	public EReference getValueExpression_ReturnType() {
 		return (EReference) valueExpressionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getSumExpression() {
+		return sumExpressionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getSumExpression_Expression() {
+		return (EReference) sumExpressionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getSumExpression_Filter() {
+		return (EReference) sumExpressionEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getMappingSumExpression() {
+		return mappingSumExpressionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getMappingSumExpression_Mapping() {
+		return (EReference) mappingSumExpressionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getTypeSumExpression() {
+		return typeSumExpressionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTypeSumExpression_Type() {
+		return (EReference) typeSumExpressionEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -1878,11 +1834,6 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		createEReference(unaryArithmeticExpressionEClass, UNARY_ARITHMETIC_EXPRESSION__EXPRESSION);
 		createEAttribute(unaryArithmeticExpressionEClass, UNARY_ARITHMETIC_EXPRESSION__OPERATOR);
 
-		arithmeticStreamExpressionEClass = createEClass(ARITHMETIC_STREAM_EXPRESSION);
-		createEReference(arithmeticStreamExpressionEClass, ARITHMETIC_STREAM_EXPRESSION__STREAM);
-		createEAttribute(arithmeticStreamExpressionEClass, ARITHMETIC_STREAM_EXPRESSION__OPERATOR);
-		createEReference(arithmeticStreamExpressionEClass, ARITHMETIC_STREAM_EXPRESSION__OPERATION);
-
 		setOperationEClass = createEClass(SET_OPERATION);
 
 		arithmeticValueExpressionEClass = createEClass(ARITHMETIC_VALUE_EXPRESSION);
@@ -2058,7 +2009,6 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		typeObjectiveEClass.getESuperTypes().add(this.getObjective());
 		binaryArithmeticExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
 		unaryArithmeticExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
-		arithmeticStreamExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
 		arithmeticValueExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
 		arithmeticValueEClass.getESuperTypes().add(this.getArithmeticValueExpression());
 		arithmeticLiteralEClass.getESuperTypes().add(this.getArithmeticValueExpression());
@@ -2215,18 +2165,6 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		initEAttribute(getUnaryArithmeticExpression_Operator(), this.getUnaryArithmeticOperator(), "operator", null, 0,
 				1, UnaryArithmeticExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(arithmeticStreamExpressionEClass, ArithmeticStreamExpression.class, "ArithmeticStreamExpression",
-				!IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getArithmeticStreamExpression_Stream(), this.getStreamExpression(), null, "stream", null, 0, 1,
-				ArithmeticStreamExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getArithmeticStreamExpression_Operator(), this.getStreamArithmeticOperator(), "operator", null,
-				0, 1, ArithmeticStreamExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-				!IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getArithmeticStreamExpression_Operation(), this.getArithmeticExpression(), null, "operation",
-				null, 0, 1, ArithmeticStreamExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(setOperationEClass, SetOperation.class, "SetOperation", IS_ABSTRACT, IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);

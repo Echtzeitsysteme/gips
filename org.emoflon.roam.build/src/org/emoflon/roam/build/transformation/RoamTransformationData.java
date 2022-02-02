@@ -21,9 +21,16 @@ import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjective;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamExpr;
 
-public record RoamTransformationData(RoamIntermediateModel model, EditorGTFile roamSlangFile, Map<EditorPattern, IBeXRule> ePattern2Rule, 
-		Map<EditorNode, IBeXNode> eNode2Node, Map<RoamMapping, Mapping> eMapping2Mapping, Map<RoamConstraint, Constraint> eConstraint2Constraint,
-		Map<RoamStreamExpr, SetOperation> eStream2SetOp, Map<EClass, Type> eType2Type, Map<RoamObjective, Objective> eObjective2Objective) {
+public record RoamTransformationData(
+		RoamIntermediateModel model, 							//
+		EditorGTFile roamSlangFile, 							//
+		Map<EditorPattern, IBeXRule> ePattern2Rule, 			//
+		Map<EditorNode, IBeXNode> eNode2Node, 					//
+		Map<RoamMapping, Mapping> eMapping2Mapping, 			//
+		Map<RoamConstraint, Constraint> eConstraint2Constraint,	//
+		Map<RoamStreamExpr, SetOperation> eStream2SetOp, 		//
+		Map<EClass, Type> eType2Type, 							//
+		Map<RoamObjective, Objective> eObjective2Objective) {
 	
 	public RoamTransformationData(final RoamIntermediateModel model, final EditorGTFile roamSlangFile) {
 		this(model, roamSlangFile, new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), 

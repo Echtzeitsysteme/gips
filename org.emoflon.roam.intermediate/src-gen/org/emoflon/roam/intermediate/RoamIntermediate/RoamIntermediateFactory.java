@@ -122,33 +122,6 @@ public interface RoamIntermediateFactory extends EFactory {
 	UnaryArithmeticExpression createUnaryArithmeticExpression();
 
 	/**
-	 * Returns a new object of class '<em>Arithmetic Stream Expression</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Arithmetic Stream Expression</em>'.
-	 * @generated
-	 */
-	ArithmeticStreamExpression createArithmeticStreamExpression();
-
-	/**
-	 * Returns a new object of class '<em>Mapping Sum Expression</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Mapping Sum Expression</em>'.
-	 * @generated
-	 */
-	MappingSumExpression createMappingSumExpression();
-
-	/**
-	 * Returns a new object of class '<em>Type Sum Expression</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Type Sum Expression</em>'.
-	 * @generated
-	 */
-	TypeSumExpression createTypeSumExpression();
-
-	/**
 	 * Returns a new object of class '<em>Arithmetic Value</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -228,6 +201,24 @@ public interface RoamIntermediateFactory extends EFactory {
 	 * @generated
 	 */
 	BoolLiteral createBoolLiteral();
+
+	/**
+	 * Returns a new object of class '<em>Mapping Sum Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Mapping Sum Expression</em>'.
+	 * @generated
+	 */
+	MappingSumExpression createMappingSumExpression();
+
+	/**
+	 * Returns a new object of class '<em>Type Sum Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Type Sum Expression</em>'.
+	 * @generated
+	 */
+	TypeSumExpression createTypeSumExpression();
 
 	/**
 	 * Returns a new object of class '<em>Context Type Value</em>'.

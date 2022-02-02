@@ -866,70 +866,6 @@ public interface RoamIntermediatePackage extends EPackage {
 	int UNARY_ARITHMETIC_EXPRESSION_OPERATION_COUNT = ARITHMETIC_EXPRESSION_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticStreamExpressionImpl <em>Arithmetic Stream Expression</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticStreamExpressionImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getArithmeticStreamExpression()
-	 * @generated
-	 */
-	int ARITHMETIC_STREAM_EXPRESSION = 15;
-
-	/**
-	 * The feature id for the '<em><b>Return Type</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ARITHMETIC_STREAM_EXPRESSION__RETURN_TYPE = ARITHMETIC_EXPRESSION__RETURN_TYPE;
-
-	/**
-	 * The feature id for the '<em><b>Stream</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ARITHMETIC_STREAM_EXPRESSION__STREAM = ARITHMETIC_EXPRESSION_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Operator</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ARITHMETIC_STREAM_EXPRESSION__OPERATOR = ARITHMETIC_EXPRESSION_FEATURE_COUNT + 1;
-
-	/**
-	 * The feature id for the '<em><b>Operation</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ARITHMETIC_STREAM_EXPRESSION__OPERATION = ARITHMETIC_EXPRESSION_FEATURE_COUNT + 2;
-
-	/**
-	 * The number of structural features of the '<em>Arithmetic Stream Expression</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ARITHMETIC_STREAM_EXPRESSION_FEATURE_COUNT = ARITHMETIC_EXPRESSION_FEATURE_COUNT + 3;
-
-	/**
-	 * The number of operations of the '<em>Arithmetic Stream Expression</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ARITHMETIC_STREAM_EXPRESSION_OPERATION_COUNT = ARITHMETIC_EXPRESSION_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.SetOperation <em>Set Operation</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -937,7 +873,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getSetOperation()
 	 * @generated
 	 */
-	int SET_OPERATION = 16;
+	int SET_OPERATION = 15;
 
 	/**
 	 * The number of structural features of the '<em>Set Operation</em>' class.
@@ -958,36 +894,6 @@ public interface RoamIntermediatePackage extends EPackage {
 	int SET_OPERATION_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.SumExpressionImpl <em>Sum Expression</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.SumExpressionImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getSumExpression()
-	 * @generated
-	 */
-	int SUM_EXPRESSION = 31;
-
-	/**
-	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingSumExpressionImpl <em>Mapping Sum Expression</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingSumExpressionImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getMappingSumExpression()
-	 * @generated
-	 */
-	int MAPPING_SUM_EXPRESSION = 32;
-
-	/**
-	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeSumExpressionImpl <em>Type Sum Expression</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeSumExpressionImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getTypeSumExpression()
-	 * @generated
-	 */
-	int TYPE_SUM_EXPRESSION = 33;
-
-	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticValueExpressionImpl <em>Arithmetic Value Expression</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -995,7 +901,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getArithmeticValueExpression()
 	 * @generated
 	 */
-	int ARITHMETIC_VALUE_EXPRESSION = 17;
+	int ARITHMETIC_VALUE_EXPRESSION = 16;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -1032,7 +938,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getArithmeticValue()
 	 * @generated
 	 */
-	int ARITHMETIC_VALUE = 18;
+	int ARITHMETIC_VALUE = 17;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -1078,7 +984,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getArithmeticLiteral()
 	 * @generated
 	 */
-	int ARITHMETIC_LITERAL = 19;
+	int ARITHMETIC_LITERAL = 18;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -1115,7 +1021,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIntegerLiteral()
 	 * @generated
 	 */
-	int INTEGER_LITERAL = 20;
+	int INTEGER_LITERAL = 19;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -1161,7 +1067,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getDoubleLiteral()
 	 * @generated
 	 */
-	int DOUBLE_LITERAL = 21;
+	int DOUBLE_LITERAL = 20;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -1207,7 +1113,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolExpression()
 	 * @generated
 	 */
-	int BOOL_EXPRESSION = 22;
+	int BOOL_EXPRESSION = 21;
 
 	/**
 	 * The number of structural features of the '<em>Bool Expression</em>' class.
@@ -1235,7 +1141,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolBinaryExpression()
 	 * @generated
 	 */
-	int BOOL_BINARY_EXPRESSION = 23;
+	int BOOL_BINARY_EXPRESSION = 22;
 
 	/**
 	 * The feature id for the '<em><b>Lhs</b></em>' containment reference.
@@ -1290,7 +1196,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolUnaryExpression()
 	 * @generated
 	 */
-	int BOOL_UNARY_EXPRESSION = 24;
+	int BOOL_UNARY_EXPRESSION = 23;
 
 	/**
 	 * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -1336,7 +1242,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolValueExpression()
 	 * @generated
 	 */
-	int BOOL_VALUE_EXPRESSION = 25;
+	int BOOL_VALUE_EXPRESSION = 24;
 
 	/**
 	 * The number of structural features of the '<em>Bool Value Expression</em>' class.
@@ -1364,7 +1270,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolValue()
 	 * @generated
 	 */
-	int BOOL_VALUE = 26;
+	int BOOL_VALUE = 25;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' containment reference.
@@ -1401,7 +1307,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolStreamExpression()
 	 * @generated
 	 */
-	int BOOL_STREAM_EXPRESSION = 27;
+	int BOOL_STREAM_EXPRESSION = 26;
 
 	/**
 	 * The feature id for the '<em><b>Stream</b></em>' containment reference.
@@ -1447,7 +1353,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getRelationalExpression()
 	 * @generated
 	 */
-	int RELATIONAL_EXPRESSION = 28;
+	int RELATIONAL_EXPRESSION = 27;
 
 	/**
 	 * The feature id for the '<em><b>Operator</b></em>' attribute.
@@ -1502,7 +1408,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolLiteral()
 	 * @generated
 	 */
-	int BOOL_LITERAL = 29;
+	int BOOL_LITERAL = 28;
 
 	/**
 	 * The feature id for the '<em><b>Literal</b></em>' attribute.
@@ -1539,7 +1445,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getValueExpression()
 	 * @generated
 	 */
-	int VALUE_EXPRESSION = 30;
+	int VALUE_EXPRESSION = 29;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -1567,6 +1473,16 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @ordered
 	 */
 	int VALUE_EXPRESSION_OPERATION_COUNT = 0;
+
+	/**
+	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.SumExpressionImpl <em>Sum Expression</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.SumExpressionImpl
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getSumExpression()
+	 * @generated
+	 */
+	int SUM_EXPRESSION = 30;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -1612,6 +1528,16 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @ordered
 	 */
 	int SUM_EXPRESSION_OPERATION_COUNT = VALUE_EXPRESSION_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingSumExpressionImpl <em>Mapping Sum Expression</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingSumExpressionImpl
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getMappingSumExpression()
+	 * @generated
+	 */
+	int MAPPING_SUM_EXPRESSION = 31;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -1666,6 +1592,16 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @ordered
 	 */
 	int MAPPING_SUM_EXPRESSION_OPERATION_COUNT = SUM_EXPRESSION_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeSumExpressionImpl <em>Type Sum Expression</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeSumExpressionImpl
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getTypeSumExpression()
+	 * @generated
+	 */
+	int TYPE_SUM_EXPRESSION = 32;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -1729,7 +1665,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextTypeValue()
 	 * @generated
 	 */
-	int CONTEXT_TYPE_VALUE = 34;
+	int CONTEXT_TYPE_VALUE = 33;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -1775,7 +1711,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextMappingValue()
 	 * @generated
 	 */
-	int CONTEXT_MAPPING_VALUE = 35;
+	int CONTEXT_MAPPING_VALUE = 34;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -1821,7 +1757,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextMappingNode()
 	 * @generated
 	 */
-	int CONTEXT_MAPPING_NODE = 36;
+	int CONTEXT_MAPPING_NODE = 35;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -1876,7 +1812,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getObjectiveFunctionValue()
 	 * @generated
 	 */
-	int OBJECTIVE_FUNCTION_VALUE = 37;
+	int OBJECTIVE_FUNCTION_VALUE = 36;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -1922,7 +1858,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getFeatureExpression()
 	 * @generated
 	 */
-	int FEATURE_EXPRESSION = 38;
+	int FEATURE_EXPRESSION = 37;
 
 	/**
 	 * The feature id for the '<em><b>Current</b></em>' containment reference.
@@ -1968,7 +1904,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getFeatureLiteral()
 	 * @generated
 	 */
-	int FEATURE_LITERAL = 39;
+	int FEATURE_LITERAL = 38;
 
 	/**
 	 * The feature id for the '<em><b>Feature</b></em>' reference.
@@ -2005,7 +1941,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextTypeFeatureValue()
 	 * @generated
 	 */
-	int CONTEXT_TYPE_FEATURE_VALUE = 40;
+	int CONTEXT_TYPE_FEATURE_VALUE = 39;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -2060,7 +1996,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextMappingNodeFeatureValue()
 	 * @generated
 	 */
-	int CONTEXT_MAPPING_NODE_FEATURE_VALUE = 41;
+	int CONTEXT_MAPPING_NODE_FEATURE_VALUE = 40;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -2124,7 +2060,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIterator()
 	 * @generated
 	 */
-	int ITERATOR = 42;
+	int ITERATOR = 41;
 
 	/**
 	 * The feature id for the '<em><b>Stream</b></em>' reference.
@@ -2161,7 +2097,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingValue()
 	 * @generated
 	 */
-	int ITERATOR_MAPPING_VALUE = 43;
+	int ITERATOR_MAPPING_VALUE = 42;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -2216,7 +2152,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingFeatureValue()
 	 * @generated
 	 */
-	int ITERATOR_MAPPING_FEATURE_VALUE = 44;
+	int ITERATOR_MAPPING_FEATURE_VALUE = 43;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -2280,7 +2216,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingNodeValue()
 	 * @generated
 	 */
-	int ITERATOR_MAPPING_NODE_VALUE = 45;
+	int ITERATOR_MAPPING_NODE_VALUE = 44;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -2344,7 +2280,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingNodeFeatureValue()
 	 * @generated
 	 */
-	int ITERATOR_MAPPING_NODE_FEATURE_VALUE = 46;
+	int ITERATOR_MAPPING_NODE_FEATURE_VALUE = 45;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -2417,7 +2353,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorTypeValue()
 	 * @generated
 	 */
-	int ITERATOR_TYPE_VALUE = 47;
+	int ITERATOR_TYPE_VALUE = 46;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -2472,7 +2408,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorTypeFeatureValue()
 	 * @generated
 	 */
-	int ITERATOR_TYPE_FEATURE_VALUE = 48;
+	int ITERATOR_TYPE_FEATURE_VALUE = 47;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -2536,7 +2472,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamExpression()
 	 * @generated
 	 */
-	int STREAM_EXPRESSION = 49;
+	int STREAM_EXPRESSION = 48;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference.
@@ -2591,7 +2527,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamOperation()
 	 * @generated
 	 */
-	int STREAM_OPERATION = 50;
+	int STREAM_OPERATION = 49;
 
 	/**
 	 * The number of structural features of the '<em>Stream Operation</em>' class.
@@ -2619,7 +2555,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamFilterOperation()
 	 * @generated
 	 */
-	int STREAM_FILTER_OPERATION = 51;
+	int STREAM_FILTER_OPERATION = 50;
 
 	/**
 	 * The feature id for the '<em><b>Predicate</b></em>' containment reference.
@@ -2656,7 +2592,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamSelectOperation()
 	 * @generated
 	 */
-	int STREAM_SELECT_OPERATION = 52;
+	int STREAM_SELECT_OPERATION = 51;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -2693,7 +2629,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getObjectiveTarget()
 	 * @generated
 	 */
-	int OBJECTIVE_TARGET = 53;
+	int OBJECTIVE_TARGET = 52;
 
 	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator <em>Relational Operator</em>}' enum.
@@ -2703,7 +2639,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getRelationalOperator()
 	 * @generated
 	 */
-	int RELATIONAL_OPERATOR = 54;
+	int RELATIONAL_OPERATOR = 53;
 
 	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator <em>Binary Arithmetic Operator</em>}' enum.
@@ -2713,7 +2649,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBinaryArithmeticOperator()
 	 * @generated
 	 */
-	int BINARY_ARITHMETIC_OPERATOR = 55;
+	int BINARY_ARITHMETIC_OPERATOR = 54;
 
 	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator <em>Unary Arithmetic Operator</em>}' enum.
@@ -2723,7 +2659,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getUnaryArithmeticOperator()
 	 * @generated
 	 */
-	int UNARY_ARITHMETIC_OPERATOR = 56;
+	int UNARY_ARITHMETIC_OPERATOR = 55;
 
 	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamArithmeticOperator <em>Stream Arithmetic Operator</em>}' enum.
@@ -2733,7 +2669,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamArithmeticOperator()
 	 * @generated
 	 */
-	int STREAM_ARITHMETIC_OPERATOR = 57;
+	int STREAM_ARITHMETIC_OPERATOR = 56;
 
 	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryBoolOperator <em>Binary Bool Operator</em>}' enum.
@@ -2743,7 +2679,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBinaryBoolOperator()
 	 * @generated
 	 */
-	int BINARY_BOOL_OPERATOR = 58;
+	int BINARY_BOOL_OPERATOR = 57;
 
 	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryBoolOperator <em>Unary Bool Operator</em>}' enum.
@@ -2753,7 +2689,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getUnaryBoolOperator()
 	 * @generated
 	 */
-	int UNARY_BOOL_OPERATOR = 59;
+	int UNARY_BOOL_OPERATOR = 58;
 
 	/**
 	 * The meta object id for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamBoolOperator <em>Stream Bool Operator</em>}' enum.
@@ -2763,7 +2699,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamBoolOperator()
 	 * @generated
 	 */
-	int STREAM_BOOL_OPERATOR = 60;
+	int STREAM_BOOL_OPERATOR = 59;
 
 	/**
 	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel <em>Model</em>}'.
@@ -3213,49 +3149,6 @@ public interface RoamIntermediatePackage extends EPackage {
 	EAttribute getUnaryArithmeticExpression_Operator();
 
 	/**
-	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticStreamExpression <em>Arithmetic Stream Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Arithmetic Stream Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticStreamExpression
-	 * @generated
-	 */
-	EClass getArithmeticStreamExpression();
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticStreamExpression#getStream <em>Stream</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Stream</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticStreamExpression#getStream()
-	 * @see #getArithmeticStreamExpression()
-	 * @generated
-	 */
-	EReference getArithmeticStreamExpression_Stream();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticStreamExpression#getOperator <em>Operator</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Operator</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticStreamExpression#getOperator()
-	 * @see #getArithmeticStreamExpression()
-	 * @generated
-	 */
-	EAttribute getArithmeticStreamExpression_Operator();
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticStreamExpression#getOperation <em>Operation</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Operation</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticStreamExpression#getOperation()
-	 * @see #getArithmeticStreamExpression()
-	 * @generated
-	 */
-	EReference getArithmeticStreamExpression_Operation();
-
-	/**
 	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.SetOperation <em>Set Operation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3264,80 +3157,6 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 */
 	EClass getSetOperation();
-
-	/**
-	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression <em>Sum Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Sum Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.SumExpression
-	 * @generated
-	 */
-	EClass getSumExpression();
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getExpression <em>Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getExpression()
-	 * @see #getSumExpression()
-	 * @generated
-	 */
-	EReference getSumExpression_Expression();
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getFilter <em>Filter</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Filter</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getFilter()
-	 * @see #getSumExpression()
-	 * @generated
-	 */
-	EReference getSumExpression_Filter();
-
-	/**
-	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression <em>Mapping Sum Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Mapping Sum Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression
-	 * @generated
-	 */
-	EClass getMappingSumExpression();
-
-	/**
-	 * Returns the meta object for the reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression#getMapping <em>Mapping</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Mapping</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression#getMapping()
-	 * @see #getMappingSumExpression()
-	 * @generated
-	 */
-	EReference getMappingSumExpression_Mapping();
-
-	/**
-	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression <em>Type Sum Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Type Sum Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression
-	 * @generated
-	 */
-	EClass getTypeSumExpression();
-
-	/**
-	 * Returns the meta object for the reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression#getType <em>Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Type</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression#getType()
-	 * @see #getTypeSumExpression()
-	 * @generated
-	 */
-	EReference getTypeSumExpression_Type();
 
 	/**
 	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValueExpression <em>Arithmetic Value Expression</em>}'.
@@ -3654,6 +3473,80 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 */
 	EReference getValueExpression_ReturnType();
+
+	/**
+	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression <em>Sum Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Sum Expression</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.SumExpression
+	 * @generated
+	 */
+	EClass getSumExpression();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getExpression <em>Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Expression</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getExpression()
+	 * @see #getSumExpression()
+	 * @generated
+	 */
+	EReference getSumExpression_Expression();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getFilter <em>Filter</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Filter</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getFilter()
+	 * @see #getSumExpression()
+	 * @generated
+	 */
+	EReference getSumExpression_Filter();
+
+	/**
+	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression <em>Mapping Sum Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Mapping Sum Expression</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression
+	 * @generated
+	 */
+	EClass getMappingSumExpression();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression#getMapping <em>Mapping</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Mapping</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression#getMapping()
+	 * @see #getMappingSumExpression()
+	 * @generated
+	 */
+	EReference getMappingSumExpression_Mapping();
+
+	/**
+	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression <em>Type Sum Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Type Sum Expression</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression
+	 * @generated
+	 */
+	EClass getTypeSumExpression();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Type</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression#getType()
+	 * @see #getTypeSumExpression()
+	 * @generated
+	 */
+	EReference getTypeSumExpression_Type();
 
 	/**
 	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue <em>Context Type Value</em>}'.
@@ -4579,40 +4472,6 @@ public interface RoamIntermediatePackage extends EPackage {
 		EAttribute UNARY_ARITHMETIC_EXPRESSION__OPERATOR = eINSTANCE.getUnaryArithmeticExpression_Operator();
 
 		/**
-		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticStreamExpressionImpl <em>Arithmetic Stream Expression</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticStreamExpressionImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getArithmeticStreamExpression()
-		 * @generated
-		 */
-		EClass ARITHMETIC_STREAM_EXPRESSION = eINSTANCE.getArithmeticStreamExpression();
-
-		/**
-		 * The meta object literal for the '<em><b>Stream</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference ARITHMETIC_STREAM_EXPRESSION__STREAM = eINSTANCE.getArithmeticStreamExpression_Stream();
-
-		/**
-		 * The meta object literal for the '<em><b>Operator</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute ARITHMETIC_STREAM_EXPRESSION__OPERATOR = eINSTANCE.getArithmeticStreamExpression_Operator();
-
-		/**
-		 * The meta object literal for the '<em><b>Operation</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference ARITHMETIC_STREAM_EXPRESSION__OPERATION = eINSTANCE.getArithmeticStreamExpression_Operation();
-
-		/**
 		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.SetOperation <em>Set Operation</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -4621,68 +4480,6 @@ public interface RoamIntermediatePackage extends EPackage {
 		 * @generated
 		 */
 		EClass SET_OPERATION = eINSTANCE.getSetOperation();
-
-		/**
-		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.SumExpressionImpl <em>Sum Expression</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.SumExpressionImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getSumExpression()
-		 * @generated
-		 */
-		EClass SUM_EXPRESSION = eINSTANCE.getSumExpression();
-
-		/**
-		 * The meta object literal for the '<em><b>Expression</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference SUM_EXPRESSION__EXPRESSION = eINSTANCE.getSumExpression_Expression();
-
-		/**
-		 * The meta object literal for the '<em><b>Filter</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference SUM_EXPRESSION__FILTER = eINSTANCE.getSumExpression_Filter();
-
-		/**
-		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingSumExpressionImpl <em>Mapping Sum Expression</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingSumExpressionImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getMappingSumExpression()
-		 * @generated
-		 */
-		EClass MAPPING_SUM_EXPRESSION = eINSTANCE.getMappingSumExpression();
-
-		/**
-		 * The meta object literal for the '<em><b>Mapping</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference MAPPING_SUM_EXPRESSION__MAPPING = eINSTANCE.getMappingSumExpression_Mapping();
-
-		/**
-		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeSumExpressionImpl <em>Type Sum Expression</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeSumExpressionImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getTypeSumExpression()
-		 * @generated
-		 */
-		EClass TYPE_SUM_EXPRESSION = eINSTANCE.getTypeSumExpression();
-
-		/**
-		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference TYPE_SUM_EXPRESSION__TYPE = eINSTANCE.getTypeSumExpression_Type();
 
 		/**
 		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticValueExpressionImpl <em>Arithmetic Value Expression</em>}' class.
@@ -4951,6 +4748,68 @@ public interface RoamIntermediatePackage extends EPackage {
 		 * @generated
 		 */
 		EReference VALUE_EXPRESSION__RETURN_TYPE = eINSTANCE.getValueExpression_ReturnType();
+
+		/**
+		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.SumExpressionImpl <em>Sum Expression</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.SumExpressionImpl
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getSumExpression()
+		 * @generated
+		 */
+		EClass SUM_EXPRESSION = eINSTANCE.getSumExpression();
+
+		/**
+		 * The meta object literal for the '<em><b>Expression</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SUM_EXPRESSION__EXPRESSION = eINSTANCE.getSumExpression_Expression();
+
+		/**
+		 * The meta object literal for the '<em><b>Filter</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SUM_EXPRESSION__FILTER = eINSTANCE.getSumExpression_Filter();
+
+		/**
+		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingSumExpressionImpl <em>Mapping Sum Expression</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingSumExpressionImpl
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getMappingSumExpression()
+		 * @generated
+		 */
+		EClass MAPPING_SUM_EXPRESSION = eINSTANCE.getMappingSumExpression();
+
+		/**
+		 * The meta object literal for the '<em><b>Mapping</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference MAPPING_SUM_EXPRESSION__MAPPING = eINSTANCE.getMappingSumExpression_Mapping();
+
+		/**
+		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeSumExpressionImpl <em>Type Sum Expression</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeSumExpressionImpl
+		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getTypeSumExpression()
+		 * @generated
+		 */
+		EClass TYPE_SUM_EXPRESSION = eINSTANCE.getTypeSumExpression();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TYPE_SUM_EXPRESSION__TYPE = eINSTANCE.getTypeSumExpression_Type();
 
 		/**
 		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextTypeValueImpl <em>Context Type Value</em>}' class.

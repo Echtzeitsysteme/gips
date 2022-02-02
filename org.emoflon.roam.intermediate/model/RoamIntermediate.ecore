@@ -85,13 +85,6 @@
         eType="#//ArithmeticExpression" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//UnaryArithmeticOperator"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ArithmeticStreamExpression" eSuperTypes="#//ArithmeticExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="stream" eType="#//StreamExpression"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//StreamArithmeticOperator"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operation" eType="#//ArithmeticExpression"
-        containment="true"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SetOperation" abstract="true" interface="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="ArithmeticValueExpression" abstract="true"
       eSuperTypes="#//ArithmeticExpression"/>

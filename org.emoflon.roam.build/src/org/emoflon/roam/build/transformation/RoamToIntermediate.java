@@ -97,6 +97,7 @@ public class RoamToIntermediate {
 				}
 				
 				Constraint constraint = createConstraint(eSubConstraint, constraintCounter);
+				constraintCounter++;
 				//TODO: For now we'll generate a constraint for each context element. In the future, this should be optimized.
 				constraint.setElementwise(true);
 				data.model().getConstraints().add(constraint);

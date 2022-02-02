@@ -50,6 +50,7 @@ public class GlobalObjectiveImpl extends MinimalEObjectImpl.Container implements
 	 * @ordered
 	 */
 	protected static final ObjectiveTarget TARGET_EDEFAULT = ObjectiveTarget.MIN;
+
 	/**
 	 * The cached value of the '{@link #getTarget() <em>Target</em>}' attribute.
 	 * <!-- begin-user-doc -->

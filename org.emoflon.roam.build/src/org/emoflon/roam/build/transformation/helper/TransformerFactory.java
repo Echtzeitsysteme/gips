@@ -44,7 +44,7 @@ public class TransformerFactory {
 			return new ArithmeticInObjectiveTransformer(data, objective, this);
 		} else if(context instanceof GlobalObjective objective) {
 			return new ArithmeticInGlobalObjectiveTransformer(data, objective, this);
-		}else {
+		} else {
 			throw new IllegalArgumentException("Transforming arithmetic expressions within the given context is undefined. Context: "+context);
 		}
 	}

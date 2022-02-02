@@ -70,7 +70,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	 * The list of invalid mapping/objective names. Will be filled in the static
 	 * block.
 	 */
-	public static Set<String> INVALID_NAMES = new HashSet<String>();
+	public static final Set<String> INVALID_NAMES = new HashSet<String>();
 
 	static {
 		final String[] invalidNames = new String[] { "clone", "equals", "finalize", "getClass", "hashCode", "notify",
@@ -87,29 +87,43 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		INVALID_NAMES.addAll(Arrays.asList(invalidNames));
 	}
 
-	static String CODE_PREFIX = "org.emoflon.roam.roamslang.";
+	static final String CODE_PREFIX = "org.emoflon.roam.roamslang.";
 
 	// General errors for named elements.
-	public static String NAME_BLOCKED = CODE_PREFIX + "name.blocked";
-	public static String NAME_EXPECT_CAMEL_CASE = CODE_PREFIX + "name.expectCamelCase";
-	public static String NAME_EXPECT_LOWER_CASE = CODE_PREFIX + "name.expectLowerCase";
-	public static String NAME_EXPECT_UNIQUE = CODE_PREFIX + "name.expectUnique";
+	public static final String NAME_BLOCKED = CODE_PREFIX + "name.blocked";
+	public static final String NAME_EXPECT_CAMEL_CASE = CODE_PREFIX + "name.expectCamelCase";
+	public static final String NAME_EXPECT_LOWER_CASE = CODE_PREFIX + "name.expectLowerCase";
+	public static final String NAME_EXPECT_UNIQUE = CODE_PREFIX + "name.expectUnique";
 
-	public static String GLOBA_OBJJECTIVE_DOES_NOT_EXIST = CODE_PREFIX + "objective.global.doesNotExist";
+	public static final String GLOBA_OBJJECTIVE_DOES_NOT_EXIST = CODE_PREFIX + "objective.global.doesNotExist";
 
-	public static String GLOBAL_OBJECTIVE_IS_NULL = "You need to specify a global objective.";
+	public static final String GLOBAL_OBJECTIVE_IS_NULL = "You need to specify a global objective.";
 
-	public static String MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Mapping '%s' must not be declared '%s'.";
-	public static String MAPPING_NAME_FORBIDDEN_MESSAGE = "Mappings cannot be be named '%s'. Use a different name.";
-	public static String MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Mapping name '%s' contains underscores. Use camelCase instead.";
-	public static String MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Mapping '%s' should start with a lower case character.";
+	public static final String MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Mapping '%s' must not be declared '%s'.";
+	public static final String MAPPING_NAME_FORBIDDEN_MESSAGE = "Mappings cannot be be named '%s'. Use a different name.";
+	public static final String MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Mapping name '%s' contains underscores. Use camelCase instead.";
+	public static final String MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Mapping '%s' should start with a lower case character.";
 
-	public static String OBJECTIVE_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Objective '%s' must not be declared '%s'";
-	public static String OBJECTIVE_NAME_FORBIDDEN_MESSAGE = "Objectives cannot be be named '%s'. Use a different name.";
-	public static String OBJECTIVE_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Objective name '%s' contains underscores. Use camelCase instead.";
-	public static String OBJECTIVE_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Objective '%s' should start with a lower case character.";
+	public static final String OBJECTIVE_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Objective '%s' must not be declared '%s'";
+	public static final String OBJECTIVE_NAME_FORBIDDEN_MESSAGE = "Objectives cannot be be named '%s'. Use a different name.";
+	public static final String OBJECTIVE_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Objective name '%s' contains underscores. Use camelCase instead.";
+	public static final String OBJECTIVE_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Objective '%s' should start with a lower case character.";
 
-	public static String OBJECTIVE_VALUE_IS_ZERO_MESSAGE = "Objective '%s' can be removed because its value is 0.";
+	// Other errors for types
+	public static final String OBJECTIVE_VALUE_IS_ZERO_MESSAGE = "Objective '%s' can be removed because its value is 0.";
+
+	public static final String CONSTRAINT_EVAL_NOT_BOOLEAN_MESSAGE = "Constraint does not evaluate to a boolean";
+	public static final String CONSTRAINT_EVAL_LITERAL_MESSAGE = "Constraint is always '%s'.";
+
+	public static final String OBJECTIVE_EVAL_NOT_NUMBER_MESSAGE = "Objective does not evaluate to an integer or double.";
+
+	public static final String LITERAL_NOT_PARSABLE_MESSAGE = "Literal is not parsable.";
+
+	public static final String LAMBDA_EXPR_EVAL_NOT_BOOLEAN_MESSAGE = "Lambda expression does not evaluate to boolean.";
+	public static final String LAMBDA_EXPR_EVAL_LITERAL_MESSAGE = "Lambda expression is always '%s'.";
+
+	// Exception error messages
+	public static final String NOT_IMPLEMENTED_EXCEPTION_MESSAGE = "Not yet implemented";
 
 	/**
 	 * Checks if a global objective is specified in a given file. This must hold if
@@ -203,7 +217,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	public void checkConstraint(final RoamConstraint constraint) {
 		if (LeafType.BOOLEAN != getEvalTypeFromBoolExpr(constraint.getExpr().getExpr())) {
 			error( //
-					"Constraint does not evaluate to a boolean", //
+					CONSTRAINT_EVAL_NOT_BOOLEAN_MESSAGE, //
 					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR //
 			);
 		}
@@ -221,7 +235,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			final RoamBooleanLiteral lit = (RoamBooleanLiteral) constraint.getExpr().getExpr();
 			final String warning = String.valueOf(lit.isLiteral());
 			warning( //
-					"Constraint is always " + warning + ".", //
+					String.format(CONSTRAINT_EVAL_LITERAL_MESSAGE, warning), //
 					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR //
 			);
 		}
@@ -241,7 +255,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		final LeafType eval = getEvalTypeFromArithExpr(objective.getExpr());
 		if (eval != LeafType.INTEGER && eval != LeafType.DOUBLE) {
 			error( //
-					"Objective does not evaluate to an integer or double.", //
+					OBJECTIVE_EVAL_NOT_NUMBER_MESSAGE, //
 					RoamSLangPackage.Literals.ROAM_OBJECTIVE__EXPR //
 			);
 		}
@@ -328,7 +342,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			Double.valueOf(literal.getValue());
 		} catch (final NumberFormatException ex) {
 			error( //
-					"Literal not parsable.", //
+					LITERAL_NOT_PARSABLE_MESSAGE, //
 					RoamSLangPackage.Literals.ROAM_ARITHMETIC_LITERAL__VALUE //
 			);
 		}
@@ -431,7 +445,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			sel.getType(); // EClassifier
 			// TODO
 //			return leafType.ECLASS;
-			throw new UnsupportedOperationException("Not yet implemented.");
+			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		}
 
 		return LeafType.ERROR;
@@ -478,7 +492,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return LeafType.SET;
 		}
 
-		throw new UnsupportedOperationException("Not yet implemented");
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	public LeafType getEvalTypeFromLambdaAttrExpr(final RoamLambdaAttributeExpression expr) {
@@ -492,7 +506,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return getEvalTypeFromFeatureExpr((RoamFeatureExpr) innerExpr);
 		}
 
-		throw new UnsupportedOperationException("Not yet implemented.");
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	public LeafType getEvalTypeFromContextExpr(final RoamContextExpr expr) {
@@ -623,7 +637,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	public LeafType getEvalLeftRightSideOp(final RoamBoolExpr left, final RoamBoolExpr right,
 			final RoamBoolBinaryOperator op) {
 		if (right == null) {
-			throw new UnsupportedOperationException("Not yet implemented.");
+			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		} else {
 			final LeafType leftType = getEvalTypeDelegate(left);
 			final LeafType rightType = getEvalTypeDelegate(right);
@@ -685,7 +699,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			// Case: SQRT, SIN, and COS change the type to double
 			return LeafType.DOUBLE;
 		} else {
-			throw new UnsupportedOperationException("Not yet implemented.");
+			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		}
 	}
 
@@ -713,7 +727,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		// Check return type
 		if (getEvalTypeFromBoolExpr(expr.getExpr()) != LeafType.BOOLEAN) {
 			error( //
-					"Lambda expression does not evaluate to boolean.", //
+					LAMBDA_EXPR_EVAL_NOT_BOOLEAN_MESSAGE, //
 					RoamSLangPackage.Literals.ROAM_LAMBDA_EXPRESSION__EXPR //
 			);
 		}
@@ -723,7 +737,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			final RoamBooleanLiteral lit = (RoamBooleanLiteral) expr.getExpr();
 			final String warning = String.valueOf(lit.isLiteral());
 			warning( //
-					"Lambda expression is always " + warning + ".", //
+					String.format(LAMBDA_EXPR_EVAL_NOT_BOOLEAN_MESSAGE, warning), //
 					expr, //
 					RoamSLangPackage.Literals.ROAM_LAMBDA_EXPRESSION__EXPR //
 			);

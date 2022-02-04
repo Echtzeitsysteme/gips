@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.xtext.validation.Check;
 import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
 import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticExpr;
@@ -226,6 +227,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 
 		checkConstraintIsLiteral(constraint);
 		checkConstraintUnique(constraint);
+		checkConstraintLeftRightDynamic(constraint);
 	}
 
 	/**
@@ -263,6 +265,13 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 				);
 			}
 		}
+	}
+
+	public void checkConstraintLeftRightDynamic(final RoamConstraint constraint) {
+		// TODO:
+		// In Constraint darf es nur möglich sein, dass eine Seite ein mappings.xy oder
+		// self.xy enthält und die andere Seite konstant ist.
+		// Es dürfen nicht beide Seiten variabel sein!!!!
 	}
 
 	/**
@@ -465,11 +474,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			final RoamStreamBoolExpr boolExpr = (RoamStreamBoolExpr) expr;
 			return getEvalTypeFromStreamNoArgOp(boolExpr.getOperator());
 		} else if (expr instanceof RoamSelect) {
-			final RoamSelect sel = (RoamSelect) expr;
-			sel.getType(); // EClassifier
-			// TODO
-//			return leafType.ECLASS;
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+			return LeafType.STREAM;
 		}
 
 		return LeafType.ERROR;
@@ -534,12 +539,6 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	}
 
 	public LeafType getEvalTypeFromContextExpr(final RoamContextExpr expr) {
-//		final leafType exprType = getEvalTypeFromContextExpr(expr.getExpr());
-//		expr.getExpr(); // <- (not) optional?
-//		expr.getTypeCast(); // <- optional
-//		expr.getStream(); // <- optional
-		// ^All optional?
-
 		if (expr.getExpr() != null) {
 			final EObject innerExpr = expr.getExpr();
 			if (innerExpr instanceof RoamNodeAttributeExpr) {
@@ -552,10 +551,11 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			}
 		}
 
-		// TODO: typeCast + stream
+		// TODO: Stream?
+		// expr.getStream();
 
-		// TODO
-		return null;
+		// No need to check type casts
+		return LeafType.ERROR;
 	}
 
 	public LeafType getEvalTypeFromContextOpExpr(final RoamContextOperationExpression expr) {
@@ -571,10 +571,14 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 
 	public LeafType getEvalTypeFromNodeAttrExpr(final RoamNodeAttributeExpr expr) {
 		expr.getNode(); // <- not optional
-		expr.getTypeCast(); // <- optional
 		expr.getExpr(); // <- optional
 
-		// TODO: Node + type cast
+		// TODO: instanceof prüfen
+		// a + b
+		// $wert + $node <- Das muss verboten werden!
+
+		// Type cast must not be checked
+		// TODO: Node
 		return getEvalTypeFromFeatureExpr(expr.getExpr());
 	}
 
@@ -586,24 +590,22 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			// TODO
 		} else if (expr instanceof RoamFeatureLit) {
 			final RoamFeatureLit lit = (RoamFeatureLit) expr;
-			lit.getFeature(); // <- not optional
-			lit.getTypeCast(); // <- optional
-			lit.getFeature().getEType();// instanceof ELong;
 			final EClassifier ecl = lit.getFeature().getEType();
-			if (ecl.getName().equals("ELong") || ecl.getName().equals("EDouble")) {
+
+			if (ecl == EcorePackage.Literals.EDOUBLE || ecl == EcorePackage.Literals.ELONG) {
 				return LeafType.DOUBLE;
-			} else if (ecl.getName().equals("EInt")) {
+			} else if (ecl == EcorePackage.Literals.EINT) {
 				return LeafType.INTEGER;
-			} else if (ecl.getName().equals("EString")) {
+			} else if (ecl == EcorePackage.Literals.ESTRING) {
 				return LeafType.STRING;
 			} else {
-				// throw new UnsupportedOperationException("Not yet implemented");
 				return LeafType.ECLASS;
 			}
+
+			// Type cast must not be checked
 		}
 
-		// TODO
-		return null;
+		return LeafType.ERROR;
 	}
 
 	/**
@@ -779,6 +781,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		SET, // Sets like output of a filter
 		OBJECTIVE, // RoamObjective
 		MAPPING, // RoamMapping
+		STREAM, // RoamStream
 		ECLASS, // EClass for casts
 		ERROR // If leaf type can not be evaluated, e.g.: '1 + true'
 	}

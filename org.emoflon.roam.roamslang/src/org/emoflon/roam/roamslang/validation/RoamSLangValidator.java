@@ -272,6 +272,108 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		// In Constraint darf es nur möglich sein, dass eine Seite ein mappings.xy oder
 		// self.xy enthält und die andere Seite konstant ist.
 		// Es dürfen nicht beide Seiten variabel sein!!!!
+
+		final RoamBoolExpr expr = constraint.getExpr().getExpr();
+		boolean left = false;
+		boolean right = false;
+
+		if (expr instanceof RoamRelExpr) {
+			final RoamRelExpr relExpr = (RoamRelExpr) expr;
+			left = isDynamic(relExpr.getLeft());
+			right = isDynamic(relExpr.getRight());
+		} else if (expr instanceof RoamBoolExpr) {
+			final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
+			left = isDynamic(binExpr.getLeft());
+			right = isDynamic(binExpr.getRight());
+		} else {
+			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		}
+
+		if (left && right) {
+			error( //
+					"Constraint has no constant side.", //
+					constraint, //
+					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR //
+			);
+		}
+	}
+
+	public boolean isDynamic(final RoamBoolExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof RoamBinaryBoolExpr) {
+			final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
+			return isDynamic(binExpr.getLeft()) || isDynamic(binExpr.getRight());
+		} else if (expr instanceof RoamBooleanLiteral) {
+			return false;
+		} else if (expr instanceof RoamRelExpr) {
+			final RoamRelExpr relExpr = (RoamRelExpr) expr;
+			return isDynamic(relExpr.getLeft()) || isDynamic(relExpr.getRight());
+		} else if (expr instanceof RoamUnaryBoolExpr) {
+			final RoamUnaryBoolExpr unExpr = (RoamUnaryBoolExpr) expr;
+			return isDynamic(unExpr.getOperand());
+		}
+
+		// TODO
+		// return false;
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	/**
+	 * Returns true if the given arithmetic expression contains at least one dynamic
+	 * element which would not be constant at later translate time.
+	 * 
+	 * @param expr Arithmetic expression to check.
+	 * @return True if expression contains at least one dynamic element.
+	 */
+	public boolean isDynamic(final RoamArithmeticExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof RoamBracketExpr) {
+			final RoamBracketExpr bracketExpr = (RoamBracketExpr) expr;
+			return isDynamic(bracketExpr.getOperand());
+		} else if (expr instanceof RoamExpArithmeticExpr) {
+			final RoamExpArithmeticExpr expExpr = (RoamExpArithmeticExpr) expr;
+			return isDynamic(expExpr.getLeft()) || isDynamic(expExpr.getRight());
+		} else if (expr instanceof RoamExpressionOperand) {
+			final RoamExpressionOperand exprOp = (RoamExpressionOperand) expr;
+			if (exprOp instanceof RoamArithmeticLiteral) {
+				return false;
+			} else if (exprOp instanceof RoamAttributeExpr) {
+				if (exprOp instanceof RoamContextExpr) {
+					// TODO
+					final RoamContextExpr conExpr = (RoamContextExpr) expr;
+					conExpr.getExpr();
+					conExpr.getStream();
+				} else if (expr instanceof RoamLambdaAttributeExpression) {
+					// TODO
+					final RoamLambdaAttributeExpression attrExpr = (RoamLambdaAttributeExpression) expr;
+					attrExpr.getExpr();
+					attrExpr.getVar();
+				} else if (expr instanceof RoamMappingAttributeExpr) {
+					return true;
+				}
+			} else if (exprOp instanceof RoamObjectiveExpression) {
+				// This should not be possible at all
+			}
+		} else if (expr instanceof RoamProductArithmeticExpr) {
+			final RoamProductArithmeticExpr prodExpr = (RoamProductArithmeticExpr) expr;
+			return isDynamic(prodExpr.getLeft()) || isDynamic(prodExpr.getRight());
+		} else if (expr instanceof RoamSumArithmeticExpr) {
+			final RoamSumArithmeticExpr sumExpr = (RoamSumArithmeticExpr) expr;
+			return isDynamic(sumExpr.getLeft()) || isDynamic(sumExpr.getRight());
+		} else if (expr instanceof RoamUnaryArithmeticExpr) {
+			final RoamUnaryArithmeticExpr unExpr = (RoamUnaryArithmeticExpr) expr;
+			return isDynamic(unExpr.getOperand());
+		}
+
+		// TODO
+		// return false;
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	/**

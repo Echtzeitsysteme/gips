@@ -1,4 +1,4 @@
-package org.emoflon.roam.core;
+package org.emoflon.roam.core.api;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -8,6 +8,8 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.emoflon.ibex.gt.api.GraphTransformationAPI;
 import org.emoflon.ibex.gt.api.GraphTransformationApp;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPatternModelPackage;
+import org.emoflon.roam.core.RoamEngine;
+import org.emoflon.roam.core.RoamMapper;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
@@ -19,6 +21,7 @@ public abstract class RoamEngineAPI {
 	protected RoamIntermediateModel roamModel;
 	protected RoamEngine roamEngine;
 	protected RoamMapperFactory mapperFactory;
+	protected RoamConstraintFactory constraintFactory;
 	
 	protected RoamEngineAPI(final GraphTransformationApp<? extends GraphTransformationAPI> eMoflonApp) {
 		this.eMoflonApp = eMoflonApp;
@@ -27,6 +30,8 @@ public abstract class RoamEngineAPI {
 	protected abstract void registerMetamodels();
 
 	protected abstract void initMapperFactory();
+	
+	protected abstract void initConstraintFactory();
 
 	protected void init(final URI roamModelURI, final URI modelUri) {
 		registerMetamodels();
@@ -36,6 +41,8 @@ public abstract class RoamEngineAPI {
 		this.roamEngine = new RoamEngine(eMoflonAPI, roamModel);
 		initMapperFactory();
 		createMappers();
+		initConstraintFactory();
+		createConstraints();
 	}
 	
 	protected void loadIntermediateModel(final URI roamModelURI) {
@@ -54,9 +61,14 @@ public abstract class RoamEngineAPI {
 			.filter(var -> var instanceof Mapping)
 			.map(var -> (Mapping) var)
 			.forEach(mapping->{
-				RoamMapper mapper = mapperFactory.createMapper(mapping);
+				RoamMapper<?> mapper = mapperFactory.createMapper(mapping);
 				roamEngine.addMapper(mapper);
 			});
+	}
+	
+	protected void createConstraints() {
+		roamModel.getConstraints().stream()
+		.forEach(constraint -> roamEngine.addConstraint(constraintFactory.createConstraint(constraint)));
 	}
 	
 	public void terminate() {

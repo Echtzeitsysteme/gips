@@ -5,5 +5,6 @@ Bundle-SymbolicName: org.emoflon.roam.core
 Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: org.emoflon.roam.core
 Bundle-RequiredExecutionEnvironment: JavaSE-16
-Require-Bundle: org.emoflon.ibex.gt,
- org.emoflon.roam.intermediate
+Require-Bundle: org.emoflon.ibex.gt;visibility:=reexport,
+ org.emoflon.roam.intermediate;visibility:=reexport,
+ org.emoflon.roam.core.dependencies;bundle-version="1.0.0";visibility:=reexport

@@ -15,13 +15,11 @@ public class TypeListener extends EContentAdapter {
 
 	final protected TypeIndexer indexer;
 	final protected ResourceSet rs;
-	final protected EClass type;
 	private boolean terminated = true;
 
-	public TypeListener(final TypeIndexer indexer, final ResourceSet rs, final EClass type) {
+	public TypeListener(final TypeIndexer indexer, final ResourceSet rs) {
 		this.indexer = indexer;
 		this.rs = rs;
-		this.type = type;
 	}
 	
 	public void injectListener() {

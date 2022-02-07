@@ -25,7 +25,7 @@ public class TypeIndexer {
 	
 	final protected GraphTransformationAPI eMoflonAPI;
 	final protected RoamIntermediateModel roamModel;
-	final protected Map<EClass, TypeListener> listeners = new HashMap<>();
+	protected TypeListener listener;
 	final protected Map<EClass, Set<EObject>> index = Collections.synchronizedMap(new HashMap<>());
 	protected boolean cascadingNotifications = false;
 	
@@ -33,11 +33,11 @@ public class TypeIndexer {
 		this.eMoflonAPI = eMoflonAPI;
 		this.roamModel = roamModel;
 		initIndex();
-		injectListeners();
+		injectListener();
 	}
 	
 	public void terminate() {
-		listeners.forEach((type, listener) -> listener.removeListener());
+		listener.removeListener();
 	}
 	
 	protected EObject putObject(final EClass type, final EObject object) {
@@ -124,6 +124,13 @@ public class TypeIndexer {
 	}
 	
 	private void initIndex() {
+		roamModel.getVariables().stream()
+			.filter(var -> var instanceof Type)
+			.map(var -> (Type) var)
+			.forEach(type -> {
+				index.put(type.getType(), Collections.synchronizedSet(new HashSet<>()));
+			});
+		
 		eMoflonAPI.getModel().getResources().parallelStream()
 		.filter(r -> !r.getURI().toString().contains("trash.xmi"))
 		.forEach(r -> {
@@ -136,16 +143,9 @@ public class TypeIndexer {
 		});
 	}
 	
-	private void injectListeners() {
-		roamModel.getVariables().stream()
-		.filter(var -> var instanceof Type)
-		.map(var -> (Type) var)
-		.forEach(type -> {
-			TypeListener listener = new TypeListener(this, eMoflonAPI.getModel(), type.getType());
-			listeners.put(type.getType(), listener);
-			listener.injectListener();
-			index.put(type.getType(), Collections.synchronizedSet(new HashSet<>()));
-		});
+	private void injectListener() {
+		listener = new TypeListener(this, eMoflonAPI.getModel());
+		listener.injectListener();
 	}
 	
 	private void explore(EObject rootObj) {

@@ -40,6 +40,10 @@ public class TypeIndexer {
 		listener.removeListener();
 	}
 	
+	public Set<EObject> getObjectsOfType(final EClass type) {
+		return index.get(type);
+	}
+	
 	protected EObject putObject(final EClass type, final EObject object) {
 		Set<EObject> elts = index.get(type);
 		if(elts.add(object))

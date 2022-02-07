@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.emoflon.roam.roamslang.RoamBuilderExtension">
+      <builder_extension
+            class="org.emoflon.roam.build.RoamProjectBuilder">
+      </builder_extension>
+   </extension>
+
+</plugin>

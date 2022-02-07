@@ -104,8 +104,10 @@ RoamMappingAttributeExpr returns RoamAttributeExpr: {RoamMappingAttributeExpr}
 	'mappings.' mapping=[RoamMapping|ID] '->' expr = RoamStreamExpr
 ;
 
+//TODO: Allow optional nested lambda expressions
+//TODO: Allow omission of "expr" rule call to enable usage of objects in lambda expression, e.g., for identity / type checks.
 RoamLambdaAttributeExpression returns RoamAttributeExpr: {RoamLambdaAttributeExpression}
-	var=[RoamLambdaExpression|ID] '.' (expr = RoamNodeAttributeExpr | expr = RoamContextOperationExpression | expr = RoamFeatureExpr)
+	var=[RoamLambdaExpression|ID] '.' (expr = RoamNodeAttributeExpr | expr = RoamContextOperationExpression | expr = RoamFeatureExpr) // ('->' stream = RoamStreamExpr)?
 ;
 
 RoamContextExpr returns RoamAttributeExpr: {RoamContextExpr}

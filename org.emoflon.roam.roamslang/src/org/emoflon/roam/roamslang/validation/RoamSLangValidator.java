@@ -345,10 +345,10 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 				return false;
 			} else if (exprOp instanceof RoamAttributeExpr) {
 				if (exprOp instanceof RoamContextExpr) {
-					// TODO
-					final RoamContextExpr conExpr = (RoamContextExpr) expr;
-					conExpr.getExpr();
-					conExpr.getStream();
+					// final RoamContextExpr conExpr = (RoamContextExpr) expr;
+					// conExpr.getExpr();
+					// conExpr.getStream();
+					return true; // RoamContextExpr is always dynamic (right?)
 				} else if (expr instanceof RoamLambdaAttributeExpression) {
 					// TODO
 					final RoamLambdaAttributeExpression attrExpr = (RoamLambdaAttributeExpression) expr;
@@ -852,6 +852,17 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	}
 
 	public void validateLambdaExpr(final RoamLambdaExpression expr) {
+		// Break recursive cycle
+		if (expr.getExpr() instanceof RoamRelExpr) {
+			final RoamRelExpr relExpr = (RoamRelExpr) expr.getExpr();
+			if (relExpr.getLeft() instanceof RoamLambdaAttributeExpression) {
+				final RoamLambdaAttributeExpression attrExpr = (RoamLambdaAttributeExpression) relExpr.getLeft();
+				if (attrExpr.getVar().equals(attrExpr.eContainer().eContainer())) {
+					return;
+				}
+			}
+		}
+
 		// Check return type
 		if (getEvalTypeFromBoolExpr(expr.getExpr()) != LeafType.BOOLEAN) {
 			error( //

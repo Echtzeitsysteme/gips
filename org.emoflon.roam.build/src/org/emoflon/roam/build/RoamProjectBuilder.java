@@ -80,6 +80,7 @@ public class RoamProjectBuilder implements RoamBuilderExtension {
 		roamApiData.setRoamMappingPackage(RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.MAPPING_FOLDER));
 		roamApiData.setRoamMapperPackage(RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.MAPPER_FOLDER));
 		roamApiData.setRoamConstraintPackage(RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.CONSTRAINT_FOLDER));
+		roamApiData.setRoamObjectivePackage(RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.OBJECTIVE_FOLDER));
 		// get package dependencies
 		EClassifiersManager manager = RoamBuilderUtils.createEClassifierManager(RoamBuilderUtils.createEPackageRegistry(model));
 		// generate files

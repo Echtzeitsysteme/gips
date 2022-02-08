@@ -50,6 +50,7 @@ public final class RoamBuilderUtils {
 	final public static String MAPPING_FOLDER = ROAM_API_FOLDER + "/mapping";
 	final public static String MAPPER_FOLDER = ROAM_API_FOLDER + "/mapper";
 	final public static String CONSTRAINT_FOLDER = ROAM_API_FOLDER + "/constraint";
+	final public static String OBJECTIVE_FOLDER = ROAM_API_FOLDER + "/objective";
 
 	/**
 	 * Removes generated code in the project matching the deletion pattern
@@ -96,6 +97,9 @@ public final class RoamBuilderUtils {
 				new NullProgressMonitor());
 		WorkspaceHelper.createFolderIfNotExists(
 				getGeneratedProjectFolder(project, CONSTRAINT_FOLDER),
+				new NullProgressMonitor());
+		WorkspaceHelper.createFolderIfNotExists(
+				getGeneratedProjectFolder(project, OBJECTIVE_FOLDER),
 				new NullProgressMonitor());
 	}
 	

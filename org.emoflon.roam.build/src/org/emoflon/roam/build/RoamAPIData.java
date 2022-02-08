@@ -40,6 +40,8 @@ public class RoamAPIData {
 	public String roamMapperPkgPath;
 	public String roamConstraintPkg;
 	public String roamConstraintPkgPath;
+	public String roamObjectivePkg;
+	public String roamObjectivePkgPath;
 	
 	public RoamAPIData(final IFolder apiPackageFolder) {
 		this.apiPackageFolder = apiPackageFolder;
@@ -80,5 +82,10 @@ public class RoamAPIData {
 	public void setRoamConstraintPackage(final IFolder roamConstraintFolder) {
 		roamConstraintPkgPath = roamConstraintFolder.getProjectRelativePath().toPortableString();
 		roamConstraintPkg  = roamConstraintPkgPath.replace("/", ".");
+	}
+	
+	public void setRoamObjectivePackage(final IFolder roamObjectiveFolder) {
+		roamObjectivePkgPath = roamObjectiveFolder.getProjectRelativePath().toPortableString();
+		roamObjectivePkg  = roamObjectivePkgPath.replace("/", ".");
 	}
 }

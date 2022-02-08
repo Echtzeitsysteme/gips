@@ -3,9 +3,7 @@ package org.emoflon.roam.core.ilp;
 import org.emoflon.roam.core.RoamEngine;
 import org.emoflon.roam.core.RoamMapping;
 import org.emoflon.roam.core.RoamMappingConstraint;
-import org.emoflon.roam.core.RoamMappingObjective;
 import org.emoflon.roam.core.RoamTypeConstraint;
-import org.emoflon.roam.core.RoamTypeObjective;
 
 import gurobi.GRB.DoubleParam;
 import gurobi.GRB.IntParam;
@@ -64,18 +62,6 @@ public class GurobiSolver extends ILPSolver{
 
 	@Override
 	protected void translateConstraint(RoamTypeConstraint constraint) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected void translateObjective(RoamMappingObjective objective) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected void translateObjective(RoamTypeObjective objective) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -12,8 +12,7 @@ public class RoamEngine {
 	final protected RoamIntermediateModel roamModel;
 	final protected Map<String, RoamMapper<?>> mappers = new HashMap<>();
 	final protected TypeIndexer indexer;
-	final protected Map<String, RoamConstraint<?,?,?>> constraints = new HashMap<>();
-	final protected Map<String, RoamObjective<?,?,?>> objectives = new HashMap<>();
+	final protected Map<String, RoamConstraint> constraints = new HashMap<>();
 	
 	public RoamEngine(final GraphTransformationAPI eMoflonAPI, final RoamIntermediateModel roamModel) {
 		this.eMoflonAPI = eMoflonAPI;
@@ -33,20 +32,12 @@ public class RoamEngine {
 		return mappers;
 	}
 	
-	public void addConstraint(final RoamConstraint<?,?,?> constraint) {
+	public void addConstraint(final RoamConstraint constraint) {
 		constraints.put(constraint.getName(), constraint);
 	}
 	
-	public Map<String, RoamConstraint<?,?,?>> getConstraints() {
+	public Map<String, RoamConstraint> getConstraints() {
 		return constraints;
-	}
-	
-	public void addObjective(final RoamObjective<?,?,?> objective) {
-		objectives.put(objective.getName(), objective);
-	}
-	
-	public Map<String, RoamObjective<?,?,?>> getObjectives() {
-		return objectives;
 	}
 	
 	public TypeIndexer getIndexer() {

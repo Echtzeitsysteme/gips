@@ -12,20 +12,20 @@ public abstract class RoamMappingConstraint extends RoamConstraint<MappingConstr
 
 	public RoamMappingConstraint(RoamEngine engine, MappingConstraint constraint) {
 		super(engine, constraint);
-		mapper = engine.getMapper(constraint.getMapping().getName());
+		mapper = engine.getMapper(constraint.getName());
 	}
 	
 	@Override
 	public void buildConstraints() {
-		mapper.getMappings().values().parallelStream().forEach(context -> {
+		for(RoamMapping context : mapper.getMappings().values()) {
 			ilpConstraints.put(context, buildConstraint(context));
-		});
+		}
 	}
 	
 	@Override
 	public ILPConstraint<Integer> buildConstraint(final RoamMapping context) {
 		Integer constTerm = buildConstantTerm(context);
-		List<ILPTerm<Integer, Integer>> terms = buildVariableTerms(context);
+		List<ILPTerm<Integer>> terms = buildVariableTerms(context);
 		return new ILPConstraint<Integer>(constTerm, constraint.getExpression().getOperator(), terms);
 	}
 

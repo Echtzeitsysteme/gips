@@ -22,7 +22,6 @@ public abstract class RoamEngineAPI <EMOFLON_APP extends GraphTransformationApp<
 	protected RoamEngine roamEngine;
 	protected RoamMapperFactory mapperFactory;
 	protected RoamConstraintFactory constraintFactory;
-	protected RoamObjectiveFactory objectiveFactory;
 	
 	protected RoamEngineAPI(final EMOFLON_APP eMoflonApp) {
 		this.eMoflonApp = eMoflonApp;
@@ -33,8 +32,6 @@ public abstract class RoamEngineAPI <EMOFLON_APP extends GraphTransformationApp<
 	protected abstract void initMapperFactory();
 	
 	protected abstract void initConstraintFactory();
-	
-	protected abstract void initObjectiveFactory();
 
 	protected void init(final URI roamModelURI, final URI modelUri) {
 		eMoflonApp.registerMetaModels();
@@ -46,8 +43,6 @@ public abstract class RoamEngineAPI <EMOFLON_APP extends GraphTransformationApp<
 		createMappers();
 		initConstraintFactory();
 		createConstraints();
-		initObjectiveFactory();
-		createObjectives();
 	}
 	
 	protected void loadIntermediateModel(final URI roamModelURI) {
@@ -74,11 +69,6 @@ public abstract class RoamEngineAPI <EMOFLON_APP extends GraphTransformationApp<
 	protected void createConstraints() {
 		roamModel.getConstraints().stream()
 		.forEach(constraint -> roamEngine.addConstraint(constraintFactory.createConstraint(constraint)));
-	}
-	
-	protected void createObjectives() {
-		roamModel.getObjectives().stream()
-		.forEach(objective -> roamEngine.addObjective(objectiveFactory.createObjective(objective)));
 	}
 	
 	public void terminate() {

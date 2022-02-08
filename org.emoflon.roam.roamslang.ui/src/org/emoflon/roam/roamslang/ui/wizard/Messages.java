@@ -8,10 +8,6 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.emoflon.roam.roamslang.ui.wizard.messages"; //$NON-NLS-1$
 	
-	public static String SimpleIflyeProject_Label;
-	public static String SimpleIflyeProject_Description;
-	public static String CompleteIflyeProject_Label;
-	public static String CompleteIflyeProject_Description;
 	public static String HelloWorldProject_Label;
 	public static String HelloWorldProject_Description;
 	

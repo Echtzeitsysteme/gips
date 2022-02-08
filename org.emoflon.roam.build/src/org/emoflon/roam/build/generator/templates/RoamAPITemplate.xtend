@@ -13,7 +13,7 @@ class RoamAPITemplate extends GeneratorTemplate<RoamIntermediateModel> {
 	
 	override init() {
 		packageName = data.apiData.roamApiPkg;
-		className = data.apiData.apiClassNamePrefix+"RoamAPI";
+		className = data.roamApiClassName;
 		fqn = packageName + "." + className;
 		filePath = data.apiData.roamApiPkgPath + "/" + className + ".java"
 		imports.add("org.emoflon.roam.core.api.RoamEngineAPI")
@@ -48,6 +48,11 @@ class RoamAPITemplate extends GeneratorTemplate<RoamIntermediateModel> {
 			@Override	
 			protected void initConstraintFactory() {
 				constraintFactory = new «data.constraintFactoryClassName»(roamEngine);
+			}
+			
+			@Override	
+			protected void initObjectiveFactory() {
+				objectiveFactory = new «data.objectiveFactoryClassName»(roamEngine);
 			}
 			
 		}'''

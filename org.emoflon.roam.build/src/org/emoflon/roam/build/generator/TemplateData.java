@@ -9,8 +9,10 @@ public class TemplateData {
 	final public RoamAPIData apiData;
 	final public EClassifiersManager classToPackage;
 	
+	public String roamApiClassName;
 	public String mapperFactoryClassName;
 	public String constraintFactoryClassName;
+	public String objectiveFactoryClassName;
 	
 	public TemplateData(final RoamIntermediateModel model, final RoamAPIData apiData, final EClassifiersManager classToPackage) {
 		this.model = model;
@@ -20,7 +22,9 @@ public class TemplateData {
 	}
 	
 	private void init() {
+		roamApiClassName = apiData.apiClassNamePrefix+"RoamAPI";
 		mapperFactoryClassName = apiData.apiClassNamePrefix+"RoamMapperFactory";
 		constraintFactoryClassName = apiData.apiClassNamePrefix+"RoamConstraintFactory";
+		objectiveFactoryClassName = apiData.apiClassNamePrefix+"RoamObjectiveFactory";
 	}
 }

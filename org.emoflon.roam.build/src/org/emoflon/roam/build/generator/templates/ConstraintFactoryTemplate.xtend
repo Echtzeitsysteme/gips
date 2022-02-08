@@ -39,12 +39,12 @@ class ConstraintFactoryTemplate extends GeneratorTemplate<RoamIntermediateModel>
 			@Override
 			public RoamConstraint<? extends Constraint, ? extends Object, ? extends Number> createConstraint(final Constraint constraint) {
 				«IF context.constraints.isNullOrEmpty»
-				throw new IllegalArgumentException("Unknown mapping type: "+mapping);
+				throw new IllegalArgumentException("Unknown constraint type: "+constraint);
 				«ELSE»
-				switch(mapping.getName()) {
+				switch(constraint.getName()) {
 					«FOR constraint : context.constraints»
 					case «constraint.name» -> {
-						return «««TODO: insert instantiation via mapper classname
+						return «««TODO: insert instantiation via constraint classname
 					}
 					«ENDFOR»
 				}

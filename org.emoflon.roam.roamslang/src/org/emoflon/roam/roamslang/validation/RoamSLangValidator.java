@@ -138,9 +138,10 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	public void checkGlobalObjectiveNotNull(final EditorGTFile file) {
 		if (file.getObjectives() != null && !file.getObjectives().isEmpty() && file.getGlobalObjective() == null) {
 			error(GLOBAL_OBJECTIVE_IS_NULL, //
-					// TODO: I'm not quite sure about the second parameter:
+					// TODO: Change scope of the warning:
 					RoamSLangPackage.Literals.EDITOR_GT_FILE__GLOBAL_OBJECTIVE, //
-					GLOBA_OBJJECTIVE_DOES_NOT_EXIST); //
+					GLOBA_OBJJECTIVE_DOES_NOT_EXIST //
+			);
 		}
 	}
 
@@ -200,11 +201,11 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	 */
 	public void checkMappingNameUnique(final RoamMapping mapping) {
 		final EditorGTFile container = (EditorGTFile) mapping.eContainer();
-		final int count = (int) container.getMappings().stream()
+		final long count = container.getMappings().stream()
 				.filter(m -> m.getName() != null && m.getName().equals(mapping.getName())).count();
 		if (count != 1) {
 			error( //
-					String.format(MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE, mapping.getName(), getTimes(count)), //
+					String.format(MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE, mapping.getName(), getTimes((int) count)), //
 					RoamSLangPackage.Literals.ROAM_MAPPING__NAME, //
 					NAME_EXPECT_UNIQUE //
 			);
@@ -246,12 +247,19 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 	}
 
+	/**
+	 * Checks if a given constraint is unique, i.e., if there is another constraint
+	 * that has the exact same expression.
+	 * 
+	 * @param constraint Constraint to check uniqueness for.
+	 */
 	public void checkConstraintUnique(final RoamConstraint constraint) {
 		final EditorGTFile file = (EditorGTFile) constraint.eContainer();
 		final HashSet<RoamConstraint> others = new HashSet<>();
 		for (final RoamConstraint other : file.getConstraints()) {
 			if (constraint.equals(other)) {
-				// TODO: ^equals is defined as '==' in this case -.-
+				// TODO: ^equals() is defined as '==' in this case -.-
+				// Therefore, this does not work, yet.
 				others.add(other);
 			}
 		}
@@ -267,12 +275,14 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 	}
 
+	/**
+	 * Checks if a constraint has at least one static side. Currently, this only
+	 * holds if at least one of the two sides does not contain a "self" or
+	 * "mappings".
+	 * 
+	 * @param constraint Constraint to check dynamic elements for.
+	 */
 	public void checkConstraintLeftRightDynamic(final RoamConstraint constraint) {
-		// TODO:
-		// In Constraint darf es nur möglich sein, dass eine Seite ein mappings.xy oder
-		// self.xy enthält und die andere Seite konstant ist.
-		// Es dürfen nicht beide Seiten variabel sein!!!!
-
 		final RoamBoolExpr expr = constraint.getExpr().getExpr();
 		boolean left = false;
 		boolean right = false;
@@ -298,6 +308,13 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 	}
 
+	/**
+	 * Returns true if the given boolean expression contains at least one dynamic
+	 * element which would not be constant at later translate time.
+	 * 
+	 * @param expr Boolean expression to check.
+	 * @return True if expression contains at least one dynamic element.
+	 */
 	public boolean isDynamic(final RoamBoolExpr expr) {
 		if (expr == null) {
 			return false;
@@ -442,11 +459,12 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	 */
 	public void checkObjectiveNameUnique(final RoamObjective objective) {
 		final EditorGTFile container = (EditorGTFile) objective.eContainer();
-		final int count = (int) container.getObjectives().stream()
+		final long count = container.getObjectives().stream()
 				.filter(o -> o.getName() != null && o.getName().equals(objective.getName())).count();
 		if (count != 1) {
 			error( //
-					String.format(OBJECTIVE_NAME_MULTIPLE_DECLARATIONS_MESSAGE, objective.getName(), getTimes(count)), //
+					String.format(OBJECTIVE_NAME_MULTIPLE_DECLARATIONS_MESSAGE, objective.getName(),
+							getTimes((int) count)), //
 					RoamSLangPackage.Literals.ROAM_OBJECTIVE__NAME, //
 					NAME_EXPECT_UNIQUE //
 			);
@@ -851,6 +869,13 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		return LeafType.ERROR;
 	}
 
+	/**
+	 * Validates a given lambda expression. Therefore, this method checks the return
+	 * type (must be boolean). Furthermore, it checks if the literal of the lambda
+	 * expression is a constant and displays a warning.
+	 * 
+	 * @param expr Lambda expression to check.
+	 */
 	public void validateLambdaExpr(final RoamLambdaExpression expr) {
 		// Break recursive cycle
 		if (expr.getExpr() instanceof RoamRelExpr) {

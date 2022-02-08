@@ -33,8 +33,6 @@ import org.emoflon.ibex.gt.codegen.GTEngineExtension;
 import org.emoflon.ibex.gt.codegen.JavaFileGenerator;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPattern;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
 import org.gervarro.eclipse.workspace.util.AntPatternCondition;
 import org.moflon.core.build.CleanVisitor;
 import org.moflon.core.plugins.manifest.ManifestFileUpdater;
@@ -46,11 +44,6 @@ public final class RoamBuilderUtils {
 	final public static String API_FOLDER = "api";
 	final public static String MATCHES_FOLDER = API_FOLDER + "/matches";
 	final public static String RULES_FOLDER = API_FOLDER + "/rules";
-	final public static String ROAM_API_FOLDER = API_FOLDER + "/roam";
-	final public static String MAPPING_FOLDER = ROAM_API_FOLDER + "/mapping";
-	final public static String MAPPER_FOLDER = ROAM_API_FOLDER + "/mapper";
-	final public static String CONSTRAINT_FOLDER = ROAM_API_FOLDER + "/constraint";
-	final public static String OBJECTIVE_FOLDER = ROAM_API_FOLDER + "/objective";
 
 	/**
 	 * Removes generated code in the project matching the deletion pattern
@@ -78,33 +71,14 @@ public final class RoamBuilderUtils {
 		WorkspaceHelper.createFolderIfNotExists(WorkspaceHelper.getBinFolder(project), new NullProgressMonitor());
 		WorkspaceHelper.createFolderIfNotExists(project.getFolder(GEN_FOLDER), new NullProgressMonitor());
 		WorkspaceHelper.createFolderIfNotExists(
-				getGeneratedProjectFolder(project, API_FOLDER),
+				project.getFolder(GEN_FOLDER + "/" + project.getName().replace(".", "/") + "/" + API_FOLDER),
 				new NullProgressMonitor());
 		WorkspaceHelper.createFolderIfNotExists(
-				getGeneratedProjectFolder(project, MATCHES_FOLDER),
+				project.getFolder(GEN_FOLDER + "/" + project.getName().replace(".", "/") + "/" + MATCHES_FOLDER),
 				new NullProgressMonitor());
 		WorkspaceHelper.createFolderIfNotExists(
-				getGeneratedProjectFolder(project, RULES_FOLDER),
+				project.getFolder(GEN_FOLDER + "/" + project.getName().replace(".", "/") + "/" + RULES_FOLDER),
 				new NullProgressMonitor());
-		WorkspaceHelper.createFolderIfNotExists(
-				getGeneratedProjectFolder(project, ROAM_API_FOLDER),
-				new NullProgressMonitor());
-		WorkspaceHelper.createFolderIfNotExists(
-				getGeneratedProjectFolder(project, MAPPING_FOLDER),
-				new NullProgressMonitor());
-		WorkspaceHelper.createFolderIfNotExists(
-				getGeneratedProjectFolder(project, MAPPER_FOLDER),
-				new NullProgressMonitor());
-		WorkspaceHelper.createFolderIfNotExists(
-				getGeneratedProjectFolder(project, CONSTRAINT_FOLDER),
-				new NullProgressMonitor());
-		WorkspaceHelper.createFolderIfNotExists(
-				getGeneratedProjectFolder(project, OBJECTIVE_FOLDER),
-				new NullProgressMonitor());
-	}
-	
-	public static IFolder getGeneratedProjectFolder(IProject project, String projectFolder) {
-		return project.getFolder(GEN_FOLDER + "/" + project.getName().replace(".", "/") + "/" + projectFolder);
 	}
 
 	/**
@@ -130,7 +104,7 @@ public final class RoamBuilderUtils {
 	public static boolean processManifestForPackage(IProject project, Manifest manifest) {
 		List<String> dependencies = new ArrayList<String>();
 //		TODO: Add dependencies on Roam runtime libraries!
-		dependencies.addAll(Arrays.asList("org.emoflon.ibex.common", "org.emoflon.ibex.gt", "org.emoflon.roam.core"));
+		dependencies.addAll(Arrays.asList("org.emoflon.ibex.common", "org.emoflon.ibex.gt"));
 		collectEngineExtensions().forEach(engine -> dependencies.addAll(engine.getDependencies()));
 		boolean changedBasics = ManifestFileUpdater.setBasicProperties(manifest, project.getName());
 		boolean updatedDependencies = ManifestFileUpdater.updateDependencies(manifest, dependencies);
@@ -143,12 +117,11 @@ public final class RoamBuilderUtils {
 	 * @param object to be saved
 	 * @param path   where the XMI should be saved
 	 */
-	public static URI saveResource(EObject object, String path) {
+	public static void saveResource(EObject object, String path) {
 		// save for debugging
 		ResourceSet rs = new ResourceSetImpl();
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
-		URI pathURI = URI.createURI(path);
-		Resource output = rs.createResource(pathURI);
+		Resource output = rs.createResource(URI.createURI(path));
 		output.getContents().add(object);
 		// create save options to save XMI
 		Map<Object, Object> saveOptions = ((XMIResource) output).getDefaultSaveOptions();
@@ -162,7 +135,6 @@ public final class RoamBuilderUtils {
 			e.printStackTrace();
 		}
 		output.unload();
-		return pathURI;
 	}
 
 	/**
@@ -173,47 +145,14 @@ public final class RoamBuilderUtils {
 	 * @throws CoreException if hte API folder does not exist or API generation
 	 *                       fails
 	 */
-	public static RoamAPIData buildEMoflonAPI(IProject project, IBeXModel ibexModel) throws CoreException {
-		final Registry packageRegistry = createEPackageRegistry(ibexModel);
+	public static void buildEMoflonAPI(IProject project, IBeXModel ibexModel) throws CoreException {
+		final Registry packageRegistry = new EPackageRegistryImpl();
+		findAllEPackages(ibexModel, packageRegistry);
+
 		IFolder apiPackage = project
 				.getFolder(GEN_FOLDER + "/" + project.getName().replace(".", "/") + "/" + API_FOLDER);
-		RoamAPIData apiData = new RoamAPIData(apiPackage);
 		ensureFolderExists(apiPackage);
-		generateEMoflonAPI(project, apiData, ibexModel, packageRegistry);
-		return apiData;
-	}
-	
-	/**
-	 * Create a package registry of all used packages in the model.
-	 * 
-	 * @param model       which includes the ePackages, that should be
-	 *                    registered
-	 */
-	public static Registry createEPackageRegistry(final RoamIntermediateModel model) {
-		Registry packageRegistry = new EPackageRegistryImpl();
-		findAllEPackages(model.getIbexModel(), packageRegistry);
-		model.getConstraints().stream()
-			.filter(constr -> constr instanceof TypeConstraint)
-			.map(constr -> (TypeConstraint) constr)
-			.forEach(constr -> {
-				EPackage foreign = constr.getModelType().getType().getEPackage();
-				if(!packageRegistry.containsKey(foreign.getNsURI())) {
-					packageRegistry.put(foreign.getNsURI(), foreign);
-				}
-			});
-		return packageRegistry;
-	}
-	
-	/**
-	 * Create a package registry of all used packages in the model.
-	 * 
-	 * @param ibexModel       which includes the ePackages, that should be
-	 *                        registered
-	 */
-	public static Registry createEPackageRegistry(final IBeXModel ibexModel) {
-		Registry packageRegistry = new EPackageRegistryImpl();
-		findAllEPackages(ibexModel, packageRegistry);
-		return packageRegistry;
+		generateEMoflonAPI(project, apiPackage, ibexModel, packageRegistry);
 	}
 
 	/**
@@ -257,19 +196,15 @@ public final class RoamBuilderUtils {
 	 * @throws CoreException if API generation fails due to missing folders/ invalid
 	 *                       generation paths
 	 */
-	public static void generateEMoflonAPI(final IProject project, final RoamAPIData apiData, final IBeXModel ibexModel,
+	public static void generateEMoflonAPI(final IProject project, final IFolder apiPackage, final IBeXModel ibexModel,
 			final Registry packageRegistry) throws CoreException {
 		JavaFileGenerator generator = new JavaFileGenerator(getClassNamePrefix(project), project.getName(),
 				createEClassifierManager(packageRegistry));
 		// ensure generation folders exist
-		IFolder matchesPackage = ensureFolderExists(apiData.apiPackageFolder.getFolder("matches"));
-		IFolder rulesPackage = ensureFolderExists(apiData.apiPackageFolder.getFolder("rules"));
-		IFolder probabilitiesPackage = ensureFolderExists(apiData.apiPackageFolder.getFolder("probabilities"));
-		// Store in API-Data
-		apiData.setMatchesPkg(matchesPackage);
-		apiData.setRulesPkg(rulesPackage);
-		apiData.setProbabilitiesPkg(probabilitiesPackage);
-		
+		IFolder matchesPackage = ensureFolderExists(apiPackage.getFolder("matches"));
+		IFolder rulesPackage = ensureFolderExists(apiPackage.getFolder("rules"));
+		IFolder probabilitiesPackage = ensureFolderExists(apiPackage.getFolder("probabilities"));
+
 		// generate code for rules
 		Set<IBeXPattern> ruleContextPatterns = new HashSet<>();
 		ibexModel.getRuleSet().getRules().forEach(ibexRule -> {
@@ -288,17 +223,10 @@ public final class RoamBuilderUtils {
 				});
 
 		// generate the Java IBEX APP and API for the model
-		generator.generateAPIClass(apiData.apiPackageFolder, ibexModel, String.format("%s/%s/%s/api/ibex-patterns.xmi",
+		generator.generateAPIClass(apiPackage, ibexModel, String.format("%s/%s/%s/api/ibex-patterns.xmi",
 				project.getName(), "src-gen", project.getName().replace(".", "/")));
-		generator.generateAppClass(apiData.apiPackageFolder);
-		collectEngineExtensions().forEach(e -> generator.generateAppClassForEngine(apiData.apiPackageFolder, e));
-		
-		apiData.apiClassNamePrefix = getClassNamePrefix(project);
-		apiData.apiClass = getClassNamePrefix(project)+"API";
-		apiData.appClass = getClassNamePrefix(project)+"App";
-		collectEngineExtensions().forEach(engineExt -> {
-			apiData.engineAppClasses.put(engineExt.getEngineName(), getClassNamePrefix(project)+engineExt.getEngineName()+"App");
-		});
+		generator.generateAppClass(apiPackage);
+		collectEngineExtensions().forEach(e -> generator.generateAppClassForEngine(apiPackage, e));
 	}
 
 	/**

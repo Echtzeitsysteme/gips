@@ -37,6 +37,7 @@ import org.emoflon.roam.roamslang.roamSLang.RoamLambdaAttributeExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamLambdaExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
 import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamMappingContext;
 import org.emoflon.roam.roamslang.roamSLang.RoamNodeAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjective;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjectiveExpression;
@@ -56,6 +57,7 @@ import org.emoflon.roam.roamslang.roamSLang.RoamStreamSetOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamSumArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamSumOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeCast;
+import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
 import org.emoflon.roam.roamslang.roamSLang.RoamUnaryArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamUnaryBoolExpr;
 
@@ -124,9 +126,12 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	public static final String LAMBDA_EXPR_EVAL_LITERAL_MESSAGE = "Lambda expression is always '%s'.";
 
 	public static final String CONSTRAINT_DEFINED_MULTIPLE_TIMES_MESSAGE = "Constraint defined multiple times.";
+	public static final String CONSTRAINT_HAS_NO_CONSTANT_SIDE_MESSAGE = "Constraint has no constant side.";
+	public static final String CONSTRAINT_HAS_TWO_CONSTANT_SIDES_MESSAGE = "Constraint has only constant sides. Use GT to express this condition.";
 
 	// Exception error messages
 	public static final String NOT_IMPLEMENTED_EXCEPTION_MESSAGE = "Not yet implemented";
+	public static final String CONSTRAINT_CONTEXT_UNKNOWN_EXCEPTION_MESSAGE = "Context is neither a RoamType nor a RoamMapping.";
 
 	/**
 	 * Checks if a global objective is specified in a given file. This must hold if
@@ -276,32 +281,56 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	}
 
 	/**
-	 * Checks if a constraint has at least one static side. Currently, this only
-	 * holds if at least one of the two sides does not contain a "self" or
-	 * "mappings".
+	 * Checks if a constraint has at least one static side. Currently, there are two
+	 * types of constraints possible: Constraints on classes must not contain a
+	 * "mappings..." on both sides. Constraints on mappings must not contain a
+	 * "mappings..." or a "self..." on both sides.
 	 * 
 	 * @param constraint Constraint to check dynamic elements for.
 	 */
 	public void checkConstraintLeftRightDynamic(final RoamConstraint constraint) {
 		final RoamBoolExpr expr = constraint.getExpr().getExpr();
-		boolean left = false;
-		boolean right = false;
+		boolean leftDynamic = false;
+		boolean rightDynamic = false;
+		boolean isMappingContext = false;
+
+		// Get context if set
+		if (constraint.getContext() != null && constraint.getContext() instanceof RoamTypeContext) {
+			// Context is a RoamType (e.g. a class)
+			isMappingContext = false;
+		} else if (constraint.getContext() != null && constraint.getContext() instanceof RoamMappingContext) {
+			// Context is a mapping
+			isMappingContext = true;
+		} else {
+			// Context type is not known
+			throw new UnsupportedOperationException(CONSTRAINT_CONTEXT_UNKNOWN_EXCEPTION_MESSAGE);
+		}
 
 		if (expr instanceof RoamRelExpr) {
 			final RoamRelExpr relExpr = (RoamRelExpr) expr;
-			left = isDynamic(relExpr.getLeft());
-			right = isDynamic(relExpr.getRight());
+			leftDynamic = isDynamic(relExpr.getLeft(), isMappingContext);
+			rightDynamic = isDynamic(relExpr.getRight(), isMappingContext);
 		} else if (expr instanceof RoamBoolExpr) {
 			final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
-			left = isDynamic(binExpr.getLeft());
-			right = isDynamic(binExpr.getRight());
+			leftDynamic = isDynamic(binExpr.getLeft(), isMappingContext);
+			rightDynamic = isDynamic(binExpr.getRight(), isMappingContext);
 		} else {
 			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		}
 
-		if (left && right) {
+		// Generate a warning if both sides of the constraint are dynamic
+		if (leftDynamic && rightDynamic) {
 			error( //
-					"Constraint has no constant side.", //
+					CONSTRAINT_HAS_NO_CONSTANT_SIDE_MESSAGE, //
+					constraint, //
+					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR //
+			);
+		}
+
+		// Generate a warning if both sides of the constraint are constant
+		if (!leftDynamic && !rightDynamic) {
+			warning( //
+					CONSTRAINT_HAS_TWO_CONSTANT_SIDES_MESSAGE, //
 					constraint, //
 					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR //
 			);
@@ -312,25 +341,26 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	 * Returns true if the given boolean expression contains at least one dynamic
 	 * element which would not be constant at later translate time.
 	 * 
-	 * @param expr Boolean expression to check.
+	 * @param expr             Boolean expression to check.
+	 * @param isMappingContext True if this method is called from a mapping context.
 	 * @return True if expression contains at least one dynamic element.
 	 */
-	public boolean isDynamic(final RoamBoolExpr expr) {
+	public boolean isDynamic(final RoamBoolExpr expr, final boolean isMappingContext) {
 		if (expr == null) {
 			return false;
 		}
 
 		if (expr instanceof RoamBinaryBoolExpr) {
 			final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
-			return isDynamic(binExpr.getLeft()) || isDynamic(binExpr.getRight());
+			return isDynamic(binExpr.getLeft(), isMappingContext) || isDynamic(binExpr.getRight(), isMappingContext);
 		} else if (expr instanceof RoamBooleanLiteral) {
 			return false;
 		} else if (expr instanceof RoamRelExpr) {
 			final RoamRelExpr relExpr = (RoamRelExpr) expr;
-			return isDynamic(relExpr.getLeft()) || isDynamic(relExpr.getRight());
+			return isDynamic(relExpr.getLeft(), isMappingContext) || isDynamic(relExpr.getRight(), isMappingContext);
 		} else if (expr instanceof RoamUnaryBoolExpr) {
 			final RoamUnaryBoolExpr unExpr = (RoamUnaryBoolExpr) expr;
-			return isDynamic(unExpr.getOperand());
+			return isDynamic(unExpr.getOperand(), isMappingContext);
 		}
 
 		// TODO
@@ -342,30 +372,28 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	 * Returns true if the given arithmetic expression contains at least one dynamic
 	 * element which would not be constant at later translate time.
 	 * 
-	 * @param expr Arithmetic expression to check.
+	 * @param expr             Arithmetic expression to check.
+	 * @param isMappingContext True if this method is called from a mapping context.
 	 * @return True if expression contains at least one dynamic element.
 	 */
-	public boolean isDynamic(final RoamArithmeticExpr expr) {
+	public boolean isDynamic(final RoamArithmeticExpr expr, final boolean isMappingContext) {
 		if (expr == null) {
 			return false;
 		}
 
 		if (expr instanceof RoamBracketExpr) {
 			final RoamBracketExpr bracketExpr = (RoamBracketExpr) expr;
-			return isDynamic(bracketExpr.getOperand());
+			return isDynamic(bracketExpr.getOperand(), isMappingContext);
 		} else if (expr instanceof RoamExpArithmeticExpr) {
 			final RoamExpArithmeticExpr expExpr = (RoamExpArithmeticExpr) expr;
-			return isDynamic(expExpr.getLeft()) || isDynamic(expExpr.getRight());
+			return isDynamic(expExpr.getLeft(), isMappingContext) || isDynamic(expExpr.getRight(), isMappingContext);
 		} else if (expr instanceof RoamExpressionOperand) {
 			final RoamExpressionOperand exprOp = (RoamExpressionOperand) expr;
 			if (exprOp instanceof RoamArithmeticLiteral) {
 				return false;
 			} else if (exprOp instanceof RoamAttributeExpr) {
 				if (exprOp instanceof RoamContextExpr) {
-					// final RoamContextExpr conExpr = (RoamContextExpr) expr;
-					// conExpr.getExpr();
-					// conExpr.getStream();
-					return true; // RoamContextExpr is always dynamic (right?)
+					return isMappingContext;
 				} else if (expr instanceof RoamLambdaAttributeExpression) {
 					// TODO
 					final RoamLambdaAttributeExpression attrExpr = (RoamLambdaAttributeExpression) expr;
@@ -379,13 +407,13 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			}
 		} else if (expr instanceof RoamProductArithmeticExpr) {
 			final RoamProductArithmeticExpr prodExpr = (RoamProductArithmeticExpr) expr;
-			return isDynamic(prodExpr.getLeft()) || isDynamic(prodExpr.getRight());
+			return isDynamic(prodExpr.getLeft(), isMappingContext) || isDynamic(prodExpr.getRight(), isMappingContext);
 		} else if (expr instanceof RoamSumArithmeticExpr) {
 			final RoamSumArithmeticExpr sumExpr = (RoamSumArithmeticExpr) expr;
-			return isDynamic(sumExpr.getLeft()) || isDynamic(sumExpr.getRight());
+			return isDynamic(sumExpr.getLeft(), isMappingContext) || isDynamic(sumExpr.getRight(), isMappingContext);
 		} else if (expr instanceof RoamUnaryArithmeticExpr) {
 			final RoamUnaryArithmeticExpr unExpr = (RoamUnaryArithmeticExpr) expr;
-			return isDynamic(unExpr.getOperand());
+			return isDynamic(unExpr.getOperand(), isMappingContext);
 		}
 
 		// TODO

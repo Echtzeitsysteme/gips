@@ -927,9 +927,30 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		// Break recursive cycle
 		if (expr.getExpr() instanceof RoamRelExpr) {
 			final RoamRelExpr relExpr = (RoamRelExpr) expr.getExpr();
-			if (relExpr.getLeft() instanceof RoamLambdaAttributeExpression) {
-				final RoamLambdaAttributeExpression attrExpr = (RoamLambdaAttributeExpression) relExpr.getLeft();
-				if (attrExpr.getVar().equals(attrExpr.eContainer().eContainer())) {
+			RoamArithmeticExpr left = relExpr.getLeft();
+
+			// Get left element until it is a RoamLambdaAttributeExpression
+			while (!(left instanceof RoamLambdaAttributeExpression)) {
+				if (left instanceof RoamSumArithmeticExpr) {
+					left = ((RoamSumArithmeticExpr) left).getLeft();
+				} else if (left instanceof RoamProductArithmeticExpr) {
+					left = ((RoamProductArithmeticExpr) left).getLeft();
+				} else if (left instanceof RoamExpArithmeticExpr) {
+					left = ((RoamExpArithmeticExpr) left).getLeft();
+				} else if (left instanceof RoamBracketExpr) {
+					left = ((RoamBracketExpr) left).getOperand();
+				} else if (left instanceof RoamUnaryArithmeticExpr) {
+					left = ((RoamUnaryArithmeticExpr) left).getOperand();
+				} else if (left instanceof RoamArithmeticLiteral) {
+					break;
+				} else {
+					throw new UnsupportedOperationException("rip");
+				}
+			}
+
+			if (left instanceof RoamLambdaAttributeExpression) {
+				final RoamLambdaAttributeExpression leftLambda = (RoamLambdaAttributeExpression) left;
+				if (leftLambda.getVar().equals(expr)) {
 					return;
 				}
 			}
@@ -939,6 +960,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		if (getEvalTypeFromBoolExpr(expr.getExpr()) != LeafType.BOOLEAN) {
 			error( //
 					LAMBDA_EXPR_EVAL_NOT_BOOLEAN_MESSAGE, //
+					expr, //
 					RoamSLangPackage.Literals.ROAM_LAMBDA_EXPRESSION__EXPR //
 			);
 		}

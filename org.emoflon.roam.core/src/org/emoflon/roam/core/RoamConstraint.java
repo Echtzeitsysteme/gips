@@ -36,5 +36,5 @@ public abstract class RoamConstraint <CONSTR extends Constraint, CONTEXT extends
 	
 	protected abstract VARTYPE buildConstantTerm(final CONTEXT context);
 	
-	protected abstract List<ILPTerm<VARTYPE>> buildVariableTerms(final CONTEXT context);
+	protected abstract List<ILPTerm<VARTYPE, VARTYPE>> buildVariableTerms(final CONTEXT context);
 }

@@ -21,15 +21,15 @@ public abstract class RoamTypeConstraint extends RoamConstraint<TypeConstraint, 
 
 	@Override
 	public void buildConstraints() {
-		for(EObject context : indexer.getObjectsOfType(type)) {
+		indexer.getObjectsOfType(type).parallelStream().forEach(context -> {
 			ilpConstraints.put(context, buildConstraint(context));
-		}
+		});
 	}
 	
 	@Override
 	public ILPConstraint<Integer> buildConstraint(final EObject context) {
 		Integer constTerm = buildConstantTerm(context);
-		List<ILPTerm<Integer>> terms = buildVariableTerms(context);
+		List<ILPTerm<Integer, Integer>> terms = buildVariableTerms(context);
 		return new ILPConstraint<Integer>(constTerm, constraint.getExpression().getOperator(), terms);
 	}
 

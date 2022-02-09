@@ -98,7 +98,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	public static final String NAME_EXPECT_LOWER_CASE = CODE_PREFIX + "name.expectLowerCase";
 	public static final String NAME_EXPECT_UNIQUE = CODE_PREFIX + "name.expectUnique";
 
-	public static final String GLOBA_OBJJECTIVE_DOES_NOT_EXIST = CODE_PREFIX + "objective.global.doesNotExist";
+	public static final String GLOBA_OBJECTIVE_DOES_NOT_EXIST = CODE_PREFIX + "objective.global.doesNotExist";
 
 	public static final String GLOBAL_OBJECTIVE_IS_NULL = "You need to specify a global objective.";
 
@@ -129,6 +129,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	public static final String CONSTRAINT_HAS_NO_CONSTANT_SIDE_MESSAGE = "Constraint has no constant side.";
 	public static final String CONSTRAINT_HAS_TWO_CONSTANT_SIDES_MESSAGE = "Constraint has only constant sides. Use GT to express this condition.";
 
+	public static final String STREAM_ON_NON_COLLECTION_TYPE_MESSAGE = "Stream used on non collection type.";
+
 	// Exception error messages
 	public static final String NOT_IMPLEMENTED_EXCEPTION_MESSAGE = "Not yet implemented";
 	public static final String CONSTRAINT_CONTEXT_UNKNOWN_EXCEPTION_MESSAGE = "Context is neither a RoamType nor a RoamMapping.";
@@ -145,7 +147,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			error(GLOBAL_OBJECTIVE_IS_NULL, //
 					// TODO: Change scope of the warning:
 					RoamSLangPackage.Literals.EDITOR_GT_FILE__GLOBAL_OBJECTIVE, //
-					GLOBA_OBJJECTIVE_DOES_NOT_EXIST //
+					GLOBA_OBJECTIVE_DOES_NOT_EXIST //
 			);
 		}
 	}
@@ -218,7 +220,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	}
 
 	/**
-	 * Runs all checks for a given constraints.
+	 * Runs all checks for a given constraint.
 	 * 
 	 * @param constraint Roam constraint to check.
 	 */
@@ -363,8 +365,6 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return isDynamic(unExpr.getOperand(), isMappingContext);
 		}
 
-		// TODO
-		// return false;
 		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
@@ -416,8 +416,6 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return isDynamic(unExpr.getOperand(), isMappingContext);
 		}
 
-		// TODO
-		// return false;
 		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
@@ -687,23 +685,34 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	}
 
 	public LeafType getEvalTypeFromContextExpr(final RoamContextExpr expr) {
+		LeafType exprEval = null;
 		if (expr.getExpr() != null) {
 			final EObject innerExpr = expr.getExpr();
 			if (innerExpr instanceof RoamNodeAttributeExpr) {
-				return getEvalTypeFromNodeAttrExpr((RoamNodeAttributeExpr) innerExpr);
+				exprEval = getEvalTypeFromNodeAttrExpr((RoamNodeAttributeExpr) innerExpr);
 			} else if (innerExpr instanceof RoamContextOperationExpression) {
-				return getEvalTypeFromContextOpExpr((RoamContextOperationExpression) innerExpr);
+				exprEval = getEvalTypeFromContextOpExpr((RoamContextOperationExpression) innerExpr);
 			} else if (innerExpr instanceof RoamFeatureExpr) {
-				// TODO: ^this case should be dealt with as RoamNodeAttributeExpr right?
-				return getEvalTypeFromFeatureExpr((RoamFeatureExpr) innerExpr);
+				exprEval = getEvalTypeFromFeatureExpr((RoamFeatureExpr) innerExpr);
 			}
 		}
 
-		// TODO: Stream?
-		// expr.getStream();
+		// Expr returns a set and stream is set
+		if (expr.getStream() != null && exprEval == LeafType.SET) {
+			return getEvalTypeFromStreamExpr(expr.getStream());
+		} else if (expr.getStream() != null && exprEval != LeafType.SET) {
+			// Expr does NOT return a set and stream is set -> violation
+			error( //
+					STREAM_ON_NON_COLLECTION_TYPE_MESSAGE, //
+					expr, //
+					RoamSLangPackage.Literals.ROAM_CONTEXT_EXPR__STREAM //
+			);
+			return getEvalTypeFromStreamExpr(expr.getStream());
+		}
 
+		// Stream is null -> return expr eval
 		// No need to check type casts
-		return LeafType.ERROR;
+		return exprEval;
 	}
 
 	public LeafType getEvalTypeFromContextOpExpr(final RoamContextOperationExpression expr) {
@@ -740,7 +749,10 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			final RoamFeatureLit lit = (RoamFeatureLit) expr;
 			final EClassifier ecl = lit.getFeature().getEType();
 
-			if (ecl == EcorePackage.Literals.EDOUBLE || ecl == EcorePackage.Literals.ELONG) {
+			if (lit.getFeature().getUpperBound() == -1 || lit.getFeature().getUpperBound() > 1) {
+				// Upper bound is larger than 1 or -1 (no limit)
+				return LeafType.SET;
+			} else if (ecl == EcorePackage.Literals.EDOUBLE || ecl == EcorePackage.Literals.ELONG) {
 				return LeafType.DOUBLE;
 			} else if (ecl == EcorePackage.Literals.EINT) {
 				return LeafType.INTEGER;
@@ -749,7 +761,6 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			} else {
 				return LeafType.ECLASS;
 			}
-
 			// Type cast must not be checked
 		}
 

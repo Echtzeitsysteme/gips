@@ -395,7 +395,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 				if (exprOp instanceof RoamContextExpr) {
 					return isMappingContext;
 				} else if (expr instanceof RoamLambdaAttributeExpression) {
-					// TODO
+					// TODO: Evaluate RoamLambdaAttributeExpression
 					final RoamLambdaAttributeExpression attrExpr = (RoamLambdaAttributeExpression) expr;
 					attrExpr.getExpr();
 					attrExpr.getVar();
@@ -742,9 +742,16 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	public LeafType getEvalTypeFromFeatureExpr(final RoamFeatureExpr expr) {
 		if (expr instanceof RoamFeatureNavigation) {
 			final RoamFeatureNavigation nav = (RoamFeatureNavigation) expr;
-			getEvalTypeFromFeatureExpr(nav.getLeft());
-			getEvalTypeFromFeatureExpr(nav.getRight());
-			// TODO
+			final LeafType leftType = getEvalTypeFromFeatureExpr(nav.getLeft());
+			final LeafType rightType = getEvalTypeFromFeatureExpr(nav.getRight());
+
+			// If left side is no ECLASS than there is a violation, but this should get
+			// checked in the validation and not in the type evaluation
+			if (leftType == LeafType.ECLASS) {
+				return rightType;
+			} else {
+				throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+			}
 		} else if (expr instanceof RoamFeatureLit) {
 			final RoamFeatureLit lit = (RoamFeatureLit) expr;
 			final EClassifier ecl = lit.getFeature().getEType();
@@ -779,9 +786,9 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	}
 
 	public LeafType getEvalTypeFromArithLit(final RoamArithmeticLiteral lit) {
-//		if (lit instanceof RoamDoubleLiteral) {
-//			
-//		}
+		// if (lit instanceof RoamDoubleLiteral) {
+		//
+		// }
 		// TODO: ^There is no 'RoamDoubleLiteral' or 'RoamIntegerLiteral'
 
 		final String val = lit.getValue();
@@ -851,10 +858,11 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	}
 
 	public LeafType combine(final LeafType left, final LeafType right, final RoamExpOperator op) {
-		if ((left == LeafType.INTEGER || left == LeafType.DOUBLE)
+		if (left == LeafType.INTEGER || right == LeafType.INTEGER) {
+			return LeafType.INTEGER;
+		} else if ((left == LeafType.INTEGER || left == LeafType.DOUBLE)
 				&& (right == LeafType.INTEGER || right == LeafType.DOUBLE)) {
 			return LeafType.DOUBLE;
-			// TODO: ^isn't there also an integer possible here?
 		} else {
 			return LeafType.ERROR;
 		}
@@ -948,7 +956,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	}
 
 	/**
-	 * Enumeration for the type of the leaf.
+	 * Enumeration for the type of the leaf. This represents the output type of an
+	 * evaluation.
 	 */
 	protected enum LeafType {
 		BOOLEAN, // RoamBooleanLiteral

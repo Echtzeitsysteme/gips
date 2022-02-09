@@ -19,43 +19,43 @@ class RoamAPITemplate extends GeneratorTemplate<RoamIntermediateModel> {
 		imports.add("org.emoflon.roam.core.api.RoamEngineAPI")
 		imports.add(data.apiData.apiPkg + "." + data.apiData.engineAppClasses.get(RoamAPIData.HIPE_ENGINE_NAME))
 		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)
-		imports.add("import org.eclipse.emf.common.util.URI");
+		imports.add("org.eclipse.emf.common.util.URI");
 	}
 	
 	override generate() {
-		code = '''package «packageName»
+		code = '''package «packageName»;
 		
-		«FOR imp : imports»
-		import «imp»
-		«ENDFOR»
+«FOR imp : imports»
+import «imp»;
+«ENDFOR»
 		
-		public class «className» extends RoamEngineAPI <«data.apiData.engineAppClasses.get(RoamAPIData.HIPE_ENGINE_NAME)», «data.apiData.apiClass»>{
-			final public static URI INTERMEDIATE_MODEL_URI = URI.createURI("«data.apiData.intermediateModelURI.toPlatformString(false)»");
-			public «className»() {
-				super(new «data.apiData.engineAppClasses.get(RoamAPIData.HIPE_ENGINE_NAME)»());
-			}
-			
-			@Override
-			public void init(final URI modelUri) {
-				super.init(INTERMEDIATE_MODEL_URI, modelUri);
-			}
-			
-			@Override
-			protected void initMapperFactory() {
-				mapperFactory = new «data.mapperFactoryClassName»(roamEngine);
-			}
-			
-			@Override	
-			protected void initConstraintFactory() {
-				constraintFactory = new «data.constraintFactoryClassName»(roamEngine);
-			}
-			
-			@Override	
-			protected void initObjectiveFactory() {
-				objectiveFactory = new «data.objectiveFactoryClassName»(roamEngine);
-			}
-			
-		}'''
+public class «className» extends RoamEngineAPI <«data.apiData.engineAppClasses.get(RoamAPIData.HIPE_ENGINE_NAME)», «data.apiData.apiClass»>{
+	final public static URI INTERMEDIATE_MODEL_URI = URI.createURI("«data.apiData.intermediateModelURI.toPlatformString(false)»");
+	public «className»() {
+		super(new «data.apiData.engineAppClasses.get(RoamAPIData.HIPE_ENGINE_NAME)»());
+	}
+	
+	@Override
+	public void init(final URI modelUri) {
+		super.init(INTERMEDIATE_MODEL_URI, modelUri);
+	}
+	
+	@Override
+	protected void initMapperFactory() {
+		mapperFactory = new «data.mapperFactoryClassName»(roamEngine);
+	}
+	
+	@Override	
+	protected void initConstraintFactory() {
+		constraintFactory = new «data.constraintFactoryClassName»(roamEngine);
+	}
+	
+	@Override	
+	protected void initObjectiveFactory() {
+		objectiveFactory = new «data.objectiveFactoryClassName»(roamEngine);
+	}
+	
+}'''
 	}
 	
 }

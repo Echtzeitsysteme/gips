@@ -26,36 +26,41 @@ class MapperFactoryTemplate extends GeneratorTemplate<RoamIntermediateModel> {
 		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.Mapping")
 		//TODO: insert mapper imports!
 		mappings = context.variables.filter[v | v instanceof Mapping].map[m | m  as Mapping].toList
+		mappings.forEach[mapping | imports.add(data.apiData.roamMapperPkg+"."+data.mapping2mapperClassName.get(mapping))]
 	}
 	
 	override generate() {
-		code = '''package «packageName»
-		
-		«FOR imp : imports»
-		import «imp»
-		«ENDFOR»
-		
-		public class «className» extends RoamMapperFactory {
-			public «className»(final RoamEngine engine) {
-				super(engine);
+		code = '''package «packageName»;
+
+«FOR imp : imports»
+import «imp»;
+«ENDFOR»
+
+public class «className» extends RoamMapperFactory {
+	public «className»(final RoamEngine engine) {
+		super(engine);
+	}
+	
+	@Override
+	public RoamMapper<? extends RoamMapping> createMapper(final Mapping mapping) {
+		«IF mappings.isEmpty»
+		throw new IllegalArgumentException("Unknown mapping type: "+mapping);
+		«ELSE»
+		switch(mapping.getName()) {
+			«FOR mapping : mappings»
+			case "«mapping.name»" -> {
+				return new «data.mapping2mapperClassName.get(mapping)»(engine, mapping);
+				
 			}
+			«ENDFOR»
+			default -> {
+				throw new IllegalArgumentException("Unknown mapping type: "+mapping);	
+			}
+		}
+		«ENDIF»
 			
-			@Override
-			public RoamMapper<? extends RoamMapping> createMapper(final Mapping mapping) {
-				«IF mappings.isEmpty»
-				throw new IllegalArgumentException("Unknown mapping type: "+mapping);
-				«ELSE»
-				switch(mapping.getName()) {
-					«FOR mapping : mappings»
-					case «mapping.name» -> {
-						return «««TODO: insert instantiation via mapper classname
-					}
-					«ENDFOR»
-				}
-				«ENDIF»
-					
-			}
-		}'''
+	}
+}'''
 	}
 
 	

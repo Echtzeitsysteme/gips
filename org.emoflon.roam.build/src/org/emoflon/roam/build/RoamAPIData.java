@@ -45,47 +45,47 @@ public class RoamAPIData {
 	
 	public RoamAPIData(final IFolder apiPackageFolder) {
 		this.apiPackageFolder = apiPackageFolder;
-		apiPkg = apiPackageFolder.getProjectRelativePath().toPortableString().replace("/", ".");
+		apiPkg = apiPackageFolder.getProjectRelativePath().toPortableString().replace("/", ".").replace("src-gen.", "");
 		apiPkgPath = apiPackageFolder.getProjectRelativePath().toPortableString();
 	}
 	
 	public void setMatchesPkg(final IFolder matchesFolder) {
 		matchesPkgPath = matchesFolder.getProjectRelativePath().toPortableString();
-		matchesPkg = matchesPkgPath.replace("/", ".");
+		matchesPkg = matchesPkgPath.replace("/", ".").replace("src-gen.", "");
 	}
 	
 	public void setRulesPkg(final IFolder rulesFolder) {
 		rulesPkgPath = rulesFolder.getProjectRelativePath().toPortableString();
-		rulesPkg = rulesPkgPath.replace("/", ".");
+		rulesPkg = rulesPkgPath.replace("/", ".").replace("src-gen.", "");
 	}
 	
 	public void setProbabilitiesPkg(final IFolder probabilitiesFolder) {
 		probabilitiesPkgPath = probabilitiesFolder.getProjectRelativePath().toPortableString();
-		probabilitiesPkg = probabilitiesPkgPath.replace("/", ".");
+		probabilitiesPkg = probabilitiesPkgPath.replace("/", ".").replace("src-gen.", "");
 	}
 	
 	public void setRoamApiPackage(final IFolder roamApiFolder) {
 		roamApiPkgPath = roamApiFolder.getProjectRelativePath().toPortableString();
-		roamApiPkg = roamApiPkgPath.replace("/", ".");
+		roamApiPkg = roamApiPkgPath.replace("/", ".").replace("src-gen.", "");
 	}
 	
 	public void setRoamMappingPackage(final IFolder roamMappingFolder) {
 		roamMappingPkgPath = roamMappingFolder.getProjectRelativePath().toPortableString();
-		roamMappingPkg  = roamMappingPkgPath.replace("/", ".");
+		roamMappingPkg  = roamMappingPkgPath.replace("/", ".").replace("src-gen.", "");
 	}
 	
 	public void setRoamMapperPackage(final IFolder roamMapperFolder) {
 		roamMapperPkgPath = roamMapperFolder.getProjectRelativePath().toPortableString();
-		roamMapperPkg  = roamMapperPkgPath.replace("/", ".");
+		roamMapperPkg  = roamMapperPkgPath.replace("/", ".").replace("src-gen.", "");
 	}
 	
 	public void setRoamConstraintPackage(final IFolder roamConstraintFolder) {
 		roamConstraintPkgPath = roamConstraintFolder.getProjectRelativePath().toPortableString();
-		roamConstraintPkg  = roamConstraintPkgPath.replace("/", ".");
+		roamConstraintPkg  = roamConstraintPkgPath.replace("/", ".").replace("src-gen.", "");
 	}
 	
 	public void setRoamObjectivePackage(final IFolder roamObjectiveFolder) {
 		roamObjectivePkgPath = roamObjectiveFolder.getProjectRelativePath().toPortableString();
-		roamObjectivePkg  = roamObjectivePkgPath.replace("/", ".");
+		roamObjectivePkg  = roamObjectivePkgPath.replace("/", ".").replace("src-gen.", "");
 	}
 }

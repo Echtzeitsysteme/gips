@@ -8,6 +8,8 @@ import org.emoflon.ibex.gt.codegen.EClassifiersManager;
 import org.emoflon.roam.build.RoamAPIData;
 import org.emoflon.roam.build.generator.templates.ConstraintFactoryTemplate;
 import org.emoflon.roam.build.generator.templates.MapperFactoryTemplate;
+import org.emoflon.roam.build.generator.templates.MapperTemplate;
+import org.emoflon.roam.build.generator.templates.MappingTemplate;
 import org.emoflon.roam.build.generator.templates.ObjectiveFactoryTemplate;
 import org.emoflon.roam.build.generator.templates.RoamAPITemplate;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
@@ -35,7 +37,8 @@ public class RoamCodeGenerator {
 			.filter(mapping -> mapping instanceof Mapping)
 			.map(mapping -> (Mapping) mapping)
 			.forEach(mapping -> {
-				//TODO: create mapping and mapper class templates, then add to list
+				templates.add(new MappingTemplate(data, mapping));
+				templates.add(new MapperTemplate(data, mapping));
 			});
 		data.model.getConstraints().parallelStream().forEach(constraint -> {
 			if(constraint instanceof MappingConstraint mappingConstraint) {
@@ -54,6 +57,7 @@ public class RoamCodeGenerator {
 			}
 		});
 		templates.parallelStream().forEach(template -> {
+			template.init();
 			template.generate();
 			try {
 				template.writeToFile();

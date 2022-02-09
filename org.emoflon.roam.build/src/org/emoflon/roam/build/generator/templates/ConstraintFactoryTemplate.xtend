@@ -15,7 +15,6 @@ class ConstraintFactoryTemplate extends GeneratorTemplate<RoamIntermediateModel>
 		className = data.constraintFactoryClassName
 		fqn = packageName + "." + className;
 		filePath = data.apiData.roamApiPkgPath + "/" + className + ".java"
-		
 		imports.add("org.emoflon.roam.core.api.RoamConstraintFactory")
 		imports.add("org.emoflon.roam.core.RoamEngine")
 		imports.add("org.emoflon.roam.core.RoamConstraint")
@@ -25,33 +24,37 @@ class ConstraintFactoryTemplate extends GeneratorTemplate<RoamIntermediateModel>
 	}
 	
 	override generate() {
-		code = '''package «packageName»
-		
-		«FOR imp : imports»
-		import «imp»
-		«ENDFOR»
-		
-		public class «className» extends RoamConstraintFactory {
-			public «className»(final RoamEngine engine) {
-				super(engine);
+		code = '''package «packageName»;
+
+«FOR imp : imports»
+import «imp»;
+«ENDFOR»
+
+public class «className» extends RoamConstraintFactory {
+	public «className»(final RoamEngine engine) {
+		super(engine);
+	}
+	
+	@Override
+	public RoamConstraint<? extends Constraint, ? extends Object, ? extends Number> createConstraint(final Constraint constraint) {
+		«IF context.constraints.isNullOrEmpty»
+		throw new IllegalArgumentException("Unknown constraint type: "+constraint);
+		«ELSE»
+		switch(constraint.getName()) {
+			«FOR constraint : context.constraints»
+			case "«constraint.name»" -> {
+			return null; «««TODO: insert instantiation via constraint classname
+				
 			}
+			«ENDFOR»
+			default -> {
+				throw new IllegalArgumentException("Unknown constraint type: "+constraint);	
+			}
+		}
+		«ENDIF»
 			
-			@Override
-			public RoamConstraint<? extends Constraint, ? extends Object, ? extends Number> createConstraint(final Constraint constraint) {
-				«IF context.constraints.isNullOrEmpty»
-				throw new IllegalArgumentException("Unknown constraint type: "+constraint);
-				«ELSE»
-				switch(constraint.getName()) {
-					«FOR constraint : context.constraints»
-					case «constraint.name» -> {
-						return «««TODO: insert instantiation via constraint classname
-					}
-					«ENDFOR»
-				}
-				«ENDIF»
-					
-			}
-		}'''
+	}
+}'''
 	}
 
 	

@@ -15,7 +15,6 @@ class ObjectiveFactoryTemplate extends GeneratorTemplate<RoamIntermediateModel> 
 		className = data.objectiveFactoryClassName
 		fqn = packageName + "." + className;
 		filePath = data.apiData.roamApiPkgPath + "/" + className + ".java"
-		
 		imports.add("org.emoflon.roam.core.api.RoamObjectiveFactory")
 		imports.add("org.emoflon.roam.core.RoamEngine")
 		imports.add("org.emoflon.roam.core.RoamObjective")
@@ -25,33 +24,37 @@ class ObjectiveFactoryTemplate extends GeneratorTemplate<RoamIntermediateModel> 
 	}
 	
 	override generate() {
-		code = '''package «packageName»
-		
-		«FOR imp : imports»
-		import «imp»
-		«ENDFOR»
-		
-		public class «className» extends RoamObjectiveFactory {
-			public «className»(final RoamEngine engine) {
-				super(engine);
+		code = '''package «packageName»;
+
+«FOR imp : imports»
+import «imp»;
+«ENDFOR»
+
+public class «className» extends RoamObjectiveFactory {
+	public «className»(final RoamEngine engine) {
+		super(engine);
+	}
+	
+	@Override
+	public RoamObjective<? extends Objective, ? extends Object, ? extends Number> createObjective(final Objective objective) {
+		«IF context.objectives.isNullOrEmpty»
+		throw new IllegalArgumentException("Unknown objective type: "+objective);
+		«ELSE»
+		switch(objective.getName()) {
+			«FOR objective : context.objectives»
+			case "«objective.name»" -> {
+				return null; «««TODO: insert instantiation via objective classname
+				
 			}
+			«ENDFOR»
+			default -> {
+				throw new IllegalArgumentException("Unknown objective type: "+objective);	
+			}
+		}
+		«ENDIF»
 			
-			@Override
-			public RoamObjective<? extends Objective, ? extends Object, ? extends Number> createObjective(final Objective objective) {
-				«IF context.objectives.isNullOrEmpty»
-				throw new IllegalArgumentException("Unknown objective type: "+objective);
-				«ELSE»
-				switch(objective.getName()) {
-					«FOR objective : context.objectives»
-					case «objective.name» -> {
-						return «««TODO: insert instantiation via objective classname
-					}
-					«ENDFOR»
-				}
-				«ENDIF»
-					
-			}
-		}'''
+	}
+}'''
 	}
 
 	

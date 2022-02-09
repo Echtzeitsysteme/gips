@@ -1,5 +1,6 @@
 package org.emoflon.roam.build.generator;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
@@ -17,7 +18,7 @@ public abstract class GeneratorTemplate <CONTEXT extends EObject>{
 	protected String filePath;
 	
 	protected String code;
-	protected Set<String> imports;
+	protected Set<String> imports = new HashSet<>();
 	
 	
 	public GeneratorTemplate(final TemplateData data, final CONTEXT context) {

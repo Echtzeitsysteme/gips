@@ -147,7 +147,7 @@ public final class RoamBuilderUtils {
 		// save for debugging
 		ResourceSet rs = new ResourceSetImpl();
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
-		URI pathURI = URI.createURI(path);
+		URI pathURI = URI.createFileURI(path);
 		Resource output = rs.createResource(pathURI);
 		output.getContents().add(object);
 		// create save options to save XMI

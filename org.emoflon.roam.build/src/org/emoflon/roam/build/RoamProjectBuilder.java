@@ -64,8 +64,8 @@ public class RoamProjectBuilder implements RoamBuilderExtension {
 
 		// save ibex-patterns and gt-rules for the hipe engine builder
 		RoamBuilderUtils.saveResource(EcoreUtil.copy(ibexModel), roamApiData.apiPackageFolder.getLocation() + "/ibex-patterns.xmi");
-		RoamBuilderUtils.saveResource(model, roamApiData.apiPackageFolder.getLocation() + "/roam-model.xmi");
-		roamApiData.intermediateModelURI = URI.createPlatformResourceURI(roamApiData.apiPackageFolder.getProjectRelativePath() + "/roam-model.xmi", true);
+		RoamBuilderUtils.saveResource(model, roamApiData.apiPackageFolder.getLocation() + "/roam/roam-model.xmi");
+		roamApiData.intermediateModelURI = URI.createPlatformResourceURI(roamApiData.apiPackageFolder.getProjectRelativePath() + "/roam/roam-model.xmi", true);
 
 		// build HiPE engine code
 		if (ibexModel != null && !ibexModel.getPatternSet().getContextPatterns().isEmpty()) {
@@ -85,6 +85,7 @@ public class RoamProjectBuilder implements RoamBuilderExtension {
 		EClassifiersManager manager = RoamBuilderUtils.createEClassifierManager(RoamBuilderUtils.createEPackageRegistry(model));
 		// generate files
 		RoamCodeGenerator roamGen = new RoamCodeGenerator(model, roamApiData, manager);
+		roamGen.generate();
 		LogUtils.info(logger, "RoamProjectBuilder: Done!");
 	}
 	

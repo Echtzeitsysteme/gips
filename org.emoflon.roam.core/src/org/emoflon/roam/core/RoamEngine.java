@@ -21,6 +21,10 @@ public class RoamEngine {
 		this.indexer = new TypeIndexer(eMoflonAPI, roamModel);
 	}
 	
+	public GraphTransformationAPI getEMoflonAPI() {
+		return eMoflonAPI;
+	}
+	
 	public void addMapper(final RoamMapper<?> mapper) {
 		mappers.put(mapper.getName(), mapper);
 	}

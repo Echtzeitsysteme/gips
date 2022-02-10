@@ -15,6 +15,7 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
 import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionTransformer;
 import org.emoflon.roam.build.transformation.helper.RelationalExpressionTransformer;
+import org.emoflon.roam.build.transformation.helper.RoamTransformationUtils;
 import org.emoflon.roam.build.transformation.helper.TransformerFactory;
 import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective;
@@ -105,6 +106,21 @@ public class RoamToIntermediate {
 				
 				RelationalExpressionTransformer transformer = transformationFactory.createRelationalTransformer(constraint);
 				constraint.setExpression(transformer.transform((RoamRelExpr) boolExpr));
+				if(constraint.getExpression().getRhs() == null) {
+					if(RoamTransformationUtils.isConstantExpression(constraint.getExpression())) {
+						throw new UnsupportedOperationException("Expressions that can be evaluated statically at ILP problem build time are currently not allowed.");
+					}
+				} else {
+					if(RoamTransformationUtils.isConstantExpression(constraint.getExpression())) {
+						throw new UnsupportedOperationException("Expressions that can be evaluated statically at ILP problem build time are currently not allowed.");
+					} else {
+						boolean isLhsConst = RoamTransformationUtils.isConstantExpression(constraint.getExpression().getLhs());
+						boolean isRhsConst = RoamTransformationUtils.isConstantExpression(constraint.getExpression().getRhs());
+						if(!isLhsConst && !isRhsConst) {
+							throw new UnsupportedOperationException("Constraints on mapping variables of a certain type may not depend on the value of mapping variables of other types.");
+						}
+					}
+				}
 			}
 		}
 	}

@@ -33,6 +33,7 @@ import org.emoflon.ibex.gt.codegen.GTEngineExtension;
 import org.emoflon.ibex.gt.codegen.JavaFileGenerator;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPattern;
+import org.emoflon.roam.build.generator.RoamImportManager;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
 import org.gervarro.eclipse.workspace.util.AntPatternCondition;
@@ -313,6 +314,22 @@ public final class RoamBuilderUtils {
 		return Character.toUpperCase(prefix.charAt(0)) + prefix.substring(1);
 	}
 
+	/**
+	 * Creates a classifier manager for the packages in the package registry
+	 * 
+	 * @param packageRegistry the package registry, which includes the EPackages,
+	 *                        that should be present in the EClassifier manager
+	 * @return an EClassifier manager for the EPackages in the package registry
+	 */
+	public static RoamImportManager createRoamImportManager(final Registry packageRegistry) {
+		RoamImportManager eClassifiersManager = new RoamImportManager(new HashMap<>());
+		packageRegistry.values().stream().filter(x -> (x instanceof EPackage)).forEach(obj -> {
+			EPackage epackage = (EPackage) obj;
+			eClassifiersManager.loadMetaModelClasses(epackage.eResource());
+		});
+		return eClassifiersManager;
+	}
+	
 	/**
 	 * Creates a classifier manager for the packages in the package registry
 	 * 

@@ -4,14 +4,15 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.emoflon.ibex.gt.codegen.EClassifiersManager;
 import org.emoflon.roam.build.RoamAPIData;
 import org.emoflon.roam.build.generator.templates.ConstraintFactoryTemplate;
 import org.emoflon.roam.build.generator.templates.MapperFactoryTemplate;
 import org.emoflon.roam.build.generator.templates.MapperTemplate;
+import org.emoflon.roam.build.generator.templates.MappingConstraintTemplate;
 import org.emoflon.roam.build.generator.templates.MappingTemplate;
 import org.emoflon.roam.build.generator.templates.ObjectiveFactoryTemplate;
 import org.emoflon.roam.build.generator.templates.RoamAPITemplate;
+import org.emoflon.roam.build.generator.templates.TypeConstraintTemplate;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective;
@@ -24,7 +25,7 @@ public class RoamCodeGenerator {
 	final protected TemplateData data;
 	protected List<GeneratorTemplate<?>> templates = Collections.synchronizedList(new LinkedList<>());
 	
-	public RoamCodeGenerator(final RoamIntermediateModel model, final RoamAPIData apiData, final EClassifiersManager classToPackage) {
+	public RoamCodeGenerator(final RoamIntermediateModel model, final RoamAPIData apiData, final RoamImportManager classToPackage) {
 		data = new TemplateData(model, apiData, classToPackage);
 	}
 	
@@ -42,10 +43,10 @@ public class RoamCodeGenerator {
 			});
 		data.model.getConstraints().parallelStream().forEach(constraint -> {
 			if(constraint instanceof MappingConstraint mappingConstraint) {
-				//TODO: create constraint class template, then add to list
+				templates.add(new MappingConstraintTemplate(data, mappingConstraint));
 			} else {
 				TypeConstraint typeConstraint = (TypeConstraint) constraint;
-				//TODO: create constraint class template, then add to list
+				templates.add(new TypeConstraintTemplate(data, typeConstraint));
 			}
 		});
 		data.model.getObjectives().parallelStream().forEach(objective -> {

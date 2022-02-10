@@ -12,12 +12,14 @@ import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
 
 public abstract class RoamConstraint <CONSTR extends Constraint, CONTEXT extends Object, VARTYPE extends Number>{
 	final protected RoamEngine engine;
+	final protected TypeIndexer indexer;
 	final protected CONSTR constraint;
 	final protected String name;
 	final protected Map<CONTEXT, ILPConstraint<VARTYPE>> ilpConstraints = Collections.synchronizedMap(new HashMap<>());
 	
 	public RoamConstraint(final RoamEngine engine, final CONSTR constraint) {
 		this.engine = engine;
+		this.indexer = engine.getIndexer();
 		this.constraint = constraint;
 		this.name = constraint.getName();
 	}

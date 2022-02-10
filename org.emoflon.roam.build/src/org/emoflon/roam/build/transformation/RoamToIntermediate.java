@@ -43,29 +43,29 @@ public class RoamToIntermediate {
 	protected RoamIntermediateFactory factory = RoamIntermediateFactory.eINSTANCE;
 	final protected RoamTransformationData data;
 	final protected TransformerFactory transformationFactory;
-	
+
 	public RoamToIntermediate(final EditorGTFile roamSlangFile) {
 		data = new RoamTransformationData(factory.createRoamIntermediateModel(), roamSlangFile);
 		this.transformationFactory = new TransformerFactory(data);
 	}
-	
+
 	public RoamIntermediateModel transform() throws Exception {
-		//transform GT to IBeXPatterns
+		// transform GT to IBeXPatterns
 		EditorToIBeXPatternTransformation ibexTransformer = new EditorToIBeXPatternTransformation();
 		data.model().setIbexModel(ibexTransformer.transform(data.roamSlangFile()));
 		mapGT2IBeXElements();
-		
-		//transform Roam components
+
+		// transform Roam components
 		transformMappings();
 		transformConstraints();
 		transformObjectives();
 		transformGlobalObjective();
-		
-		//add all required data types
+
+		// add all required data types
 		data.model().getVariables().addAll(data.eType2Type().values());
 		return data.model();
 	}
-	
+
 	protected void transformMappings() {
 		data.roamSlangFile().getMappings().forEach(eMapping -> {
 			Mapping mapping = factory.createMapping();
@@ -75,120 +75,124 @@ public class RoamToIntermediate {
 			data.eMapping2Mapping().put(eMapping, mapping);
 		});
 	}
-	
+
 	protected void transformConstraints() throws Exception {
 		RoamConstraintSplitter splitter = new RoamConstraintSplitter(data);
 		int constraintCounter = 0;
-		for(RoamConstraint eConstraint : data.roamSlangFile().getConstraints()) {
-			if(eConstraint.getExpr() == null || eConstraint.getExpr().getExpr() == null) {
+		for (RoamConstraint eConstraint : data.roamSlangFile().getConstraints()) {
+			if (eConstraint.getExpr() == null || eConstraint.getExpr().getExpr() == null) {
 				continue;
 			}
 			Collection<RoamConstraint> eConstraints = splitter.split(eConstraint);
-			for(RoamConstraint eSubConstraint : eConstraints) {
+			for (RoamConstraint eSubConstraint : eConstraints) {
 				// check primitive or impossible expressions
 				RoamBoolExpr boolExpr = eSubConstraint.getExpr().getExpr();
-				if(boolExpr instanceof RoamBooleanLiteral lit) {
-					if(lit.isLiteral()) {
+				if (boolExpr instanceof RoamBooleanLiteral lit) {
+					if (lit.isLiteral()) {
 						// Ignore this constraint, since it will always be satisfied
 						continue;
 					} else {
-						// This constraint will never be satisfied, hence this is an impossible to solve problem
-						throw new IllegalArgumentException("Optimization problem is impossible to solve: One ore more constraints return false by definition.");
+						// This constraint will never be satisfied, hence this is an impossible to solve
+						// problem
+						throw new IllegalArgumentException(
+								"Optimization problem is impossible to solve: One ore more constraints return false by definition.");
 					}
 				}
-				
+
 				Constraint constraint = createConstraint(eSubConstraint, constraintCounter);
 				constraintCounter++;
-				//TODO: For now we'll generate a constraint for each context element. In the future, this should be optimized.
+				// TODO: For now we'll generate a constraint for each context element. In the
+				// future, this should be optimized.
 				constraint.setElementwise(true);
 				data.model().getConstraints().add(constraint);
 				data.eConstraint2Constraint().put(eSubConstraint, constraint);
-				
-				RelationalExpressionTransformer transformer = transformationFactory.createRelationalTransformer(constraint);
+
+				RelationalExpressionTransformer transformer = transformationFactory
+						.createRelationalTransformer(constraint);
 				constraint.setExpression(transformer.transform((RoamRelExpr) boolExpr));
-				if(constraint.getExpression().getRhs() == null) {
-					if(RoamTransformationUtils.isConstantExpression(constraint.getExpression())) {
-						throw new UnsupportedOperationException("Expressions that can be evaluated statically at ILP problem build time are currently not allowed.");
-					}
+				if (RoamTransformationUtils.isConstantExpression(constraint.getExpression())) {
+					throw new UnsupportedOperationException(
+							"Expressions that can be evaluated statically at ILP problem build time are currently not allowed.");
 				} else {
-					if(RoamTransformationUtils.isConstantExpression(constraint.getExpression())) {
-						throw new UnsupportedOperationException("Expressions that can be evaluated statically at ILP problem build time are currently not allowed.");
-					} else {
-						boolean isLhsConst = RoamTransformationUtils.isConstantExpression(constraint.getExpression().getLhs());
-						boolean isRhsConst = RoamTransformationUtils.isConstantExpression(constraint.getExpression().getRhs());
-						if(!isLhsConst && !isRhsConst) {
-							throw new UnsupportedOperationException("Constraints on mapping variables of a certain type may not depend on the value of mapping variables of other types.");
-						}
+					boolean isLhsConst = RoamTransformationUtils
+							.isConstantExpression(constraint.getExpression().getLhs());
+					boolean isRhsConst = RoamTransformationUtils
+							.isConstantExpression(constraint.getExpression().getRhs());
+					if (!isLhsConst && !isRhsConst) {
+						throw new UnsupportedOperationException(
+								"Constraints on mapping variables of a certain type may not depend on the value of mapping variables of other types.");
 					}
 				}
+
 			}
 		}
 	}
-	
+
 	protected void transformObjectives() throws Exception {
-		for(RoamObjective eObjective : data.roamSlangFile().getObjectives()) {
-			if(eObjective.getExpr() == null) {
+		for (RoamObjective eObjective : data.roamSlangFile().getObjectives()) {
+			if (eObjective.getExpr() == null) {
 				continue;
 			}
-			
+
 			Objective objective = createObjective(eObjective);
 			objective.setElementwise(true);
 			data.model().getObjectives().add(objective);
 			data.eObjective2Objective().put(eObjective, objective);
-			
+
 			ArithmeticExpressionTransformer transformer = transformationFactory.createArithmeticTransformer(objective);
 			objective.setExpression(transformer.transform(eObjective.getExpr()));
 		}
 	}
-	
+
 	protected void transformGlobalObjective() throws Exception {
 		RoamGlobalObjective eGlobalObj = data.roamSlangFile().getGlobalObjective();
-		if(eGlobalObj == null) {
+		if (eGlobalObj == null) {
 			return;
 		}
-		
+
 		GlobalObjective globalObj = factory.createGlobalObjective();
 		data.model().setGlobalObjective(globalObj);
-		
-		switch(eGlobalObj.getObjectiveGoal()) {
-			case MAX -> {
-				globalObj.setTarget(ObjectiveTarget.MAX);
-			}
-			case MIN -> {
-				globalObj.setTarget(ObjectiveTarget.MIN);
-			}
-			default -> {
-				throw new IllegalArgumentException("Unknown global objective function goal: "+eGlobalObj.getObjectiveGoal());
-			}
+
+		switch (eGlobalObj.getObjectiveGoal()) {
+		case MAX -> {
+			globalObj.setTarget(ObjectiveTarget.MAX);
 		}
-		
+		case MIN -> {
+			globalObj.setTarget(ObjectiveTarget.MIN);
+		}
+		default -> {
+			throw new IllegalArgumentException(
+					"Unknown global objective function goal: " + eGlobalObj.getObjectiveGoal());
+		}
+		}
+
 		ArithmeticExpressionTransformer transformer = transformationFactory.createArithmeticTransformer(globalObj);
 		globalObj.setExpression(transformer.transform(eGlobalObj.getExpr()));
 	}
-	
+
 	protected Constraint createConstraint(final RoamConstraint eConstraint, int counter) {
-		if(eConstraint.getContext() instanceof RoamMappingContext mapping) {
+		if (eConstraint.getContext()instanceof RoamMappingContext mapping) {
 			MappingConstraint constraint = factory.createMappingConstraint();
-			constraint.setName("MappingConstraint"+counter+"On"+mapping.getMapping().getName());
+			constraint.setName("MappingConstraint" + counter + "On" + mapping.getMapping().getName());
 			constraint.setMapping(data.eMapping2Mapping().get(mapping.getMapping()));
 			return constraint;
 		} else {
 			RoamTypeContext type = (RoamTypeContext) eConstraint.getContext();
 			TypeConstraint constraint = factory.createTypeConstraint();
-			constraint.setName("TypeConstraint"+counter+"On"+type.getType().getName());
+			constraint.setName("TypeConstraint" + counter + "On" + type.getType().getName());
 			Type varType = data.getType((EClass) type.getType());
 			constraint.setModelType(varType);
 			return constraint;
 		}
 	}
-	
+
 	protected Objective createObjective(final RoamObjective eObjective) {
-		if(eObjective.getContext() instanceof RoamMappingContext mapping) {
+		if (eObjective.getContext()instanceof RoamMappingContext mapping) {
 			MappingObjective objective = factory.createMappingObjective();
 			objective.setName(eObjective.getName());
 			objective.setMapping(data.eMapping2Mapping().get(mapping.getMapping()));
 			return objective;
-		} else  {
+		} else {
 			RoamTypeContext type = (RoamTypeContext) eObjective.getContext();
 			TypeObjective objective = factory.createTypeObjective();
 			objective.setName(eObjective.getName());
@@ -197,17 +201,17 @@ public class RoamToIntermediate {
 			return objective;
 		}
 	}
-	
+
 	protected void mapGT2IBeXElements() {
-		for(EditorPattern ePattern : data.roamSlangFile().getPatterns().stream()
+		for (EditorPattern ePattern : data.roamSlangFile().getPatterns().stream()
 				.filter(pattern -> GTEditorPatternUtils.containsCreatedOrDeletedElements(pattern))
 				.collect(Collectors.toList())) {
-			for(IBeXRule rule : data.model().getIbexModel().getRuleSet().getRules()) {
-				if(rule.getName().equals(ePattern.getName())) {
+			for (IBeXRule rule : data.model().getIbexModel().getRuleSet().getRules()) {
+				if (rule.getName().equals(ePattern.getName())) {
 					data.ePattern2Rule().put(ePattern, rule);
-					for(EditorNode eNode : ePattern.getNodes()) {
-						for(IBeXNode node : toContextPattern(rule.getLhs()).getSignatureNodes()) {
-							if(eNode.getName().equals(node.getName())) {
+					for (EditorNode eNode : ePattern.getNodes()) {
+						for (IBeXNode node : toContextPattern(rule.getLhs()).getSignatureNodes()) {
+							if (eNode.getName().equals(node.getName())) {
 								data.eNode2Node().put(eNode, node);
 							}
 						}
@@ -216,12 +220,12 @@ public class RoamToIntermediate {
 			}
 		}
 	}
-	
+
 	public static IBeXContextPattern toContextPattern(final IBeXContext context) {
-		if(context instanceof IBeXContextAlternatives alt) {
+		if (context instanceof IBeXContextAlternatives alt) {
 			return alt.getContext();
 		} else {
-			return (IBeXContextPattern)context;
+			return (IBeXContextPattern) context;
 		}
 	}
 }

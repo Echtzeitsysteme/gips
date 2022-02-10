@@ -7,9 +7,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.emoflon.ibex.gt.codegen.EClassifiersManager;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
 import org.emoflon.roam.build.generator.RoamCodeGenerator;
+import org.emoflon.roam.build.generator.RoamImportManager;
 import org.emoflon.roam.build.transformation.RoamToIntermediate;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
 import org.emoflon.roam.roamslang.generator.RoamBuilderExtension;
@@ -82,7 +82,7 @@ public class RoamProjectBuilder implements RoamBuilderExtension {
 		roamApiData.setRoamConstraintPackage(RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.CONSTRAINT_FOLDER));
 		roamApiData.setRoamObjectivePackage(RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.OBJECTIVE_FOLDER));
 		// get package dependencies
-		EClassifiersManager manager = RoamBuilderUtils.createEClassifierManager(RoamBuilderUtils.createEPackageRegistry(model));
+		RoamImportManager manager = RoamBuilderUtils.createRoamImportManager(RoamBuilderUtils.createEPackageRegistry(model));
 		// generate files
 		RoamCodeGenerator roamGen = new RoamCodeGenerator(model, roamApiData, manager);
 		roamGen.generate();

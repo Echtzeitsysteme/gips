@@ -71,7 +71,7 @@ public final class RoamTransformationUtils {
 		} else if(expr instanceof RelationalExpression relExpr) {
 			return isConstantExpression(relExpr);
 		} else if(expr instanceof BoolStreamExpression streamExpr) {
-			return isConstantExpression(streamExpr);
+			return isConstantExpression(streamExpr.getStream());
 		} else {
 			BoolValue value = (BoolValue) expr;
 			return isConstantExpression(value.getValue());

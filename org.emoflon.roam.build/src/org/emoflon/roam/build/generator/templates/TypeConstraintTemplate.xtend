@@ -1,9 +1,9 @@
 package org.emoflon.roam.build.generator.templates
 
 import org.emoflon.roam.build.generator.GeneratorTemplate
+import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint
 import org.emoflon.roam.build.generator.TemplateData
 import org.emoflon.roam.build.transformation.helper.RoamTransformationUtils
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression
@@ -12,51 +12,54 @@ import org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral
 import org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue
 import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue
+import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue
+import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue
-import java.util.HashMap
-import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation
-import org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolValue
+import org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression
+import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation
+import java.util.HashMap
 import org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation
 import org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation
+import org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression
+import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression
+import org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression
+import org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression
+import org.emoflon.roam.intermediate.RoamIntermediate.BoolValue
+import org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression
+import org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue
 
-class MappingConstraintTemplate extends GeneratorTemplate<MappingConstraint> {
-
-new(TemplateData data, MappingConstraint context) {
+class TypeConstraintTemplate extends GeneratorTemplate<TypeConstraint> {
+	
+	new(TemplateData data, TypeConstraint context) {
 		super(data, context)
 	}
-
-	override init() {
+	
+		override init() {
 		packageName = data.apiData.roamConstraintPkg
 		className = data.constraint2constraintClassName.get(context)
 		fqn = packageName + "." + className;
 		filePath = data.apiData.roamConstraintPkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
+		imports.add("org.eclipse.emf.ecore.EClass")
+		imports.add("org.eclipse.emf.ecore.EObject")
 		imports.add("org.emoflon.roam.core.RoamEngine")
-		imports.add("org.emoflon.roam.core.RoamMappingConstraint")
+		imports.add("org.emoflon.roam.core.RoamMapping")
+		imports.add("org.emoflon.roam.core.RoamTypeConstraint")
 		imports.add("org.emoflon.roam.core.ilp.ILPTerm")
-		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint")
-		imports.add(data.apiData.roamMappingPkg+"."+data.mapping2mappingClassName.get(context.mapping))
+		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint")
+		imports.add(data.classToPackage.getImportsForType(context.modelType.type))
 	}
 	
 	override generate() {
@@ -66,8 +69,8 @@ new(TemplateData data, MappingConstraint context) {
 import «imp»;
 «ENDFOR»
 
-public class «className» extends RoamMappingConstraint<«data.mapping2mappingClassName.get(context.mapping)»>{
-	public «className»(final RoamEngine engine, final MappingConstraint constraint) {
+public class «className» extends RoamTypeConstraint<«context.modelType.type.name»> {
+	public «className»(final RoamEngine engine, final TypeConstraint constraint) {
 		super(engine, constraint);
 	}
 	«IF RoamTransformationUtils.isConstantExpression(context.expression.lhs)»
@@ -81,12 +84,12 @@ public class «className» extends RoamMappingConstraint<«data.mapping2mappingC
 	def String generateComplexConstraint(ArithmeticExpression constExpr, ArithmeticExpression dynamicExpr) {
 		return '''
 @Override
-protected Integer buildConstantTerm(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+protected Integer buildConstantTerm(final «context.modelType.type.name» context) {
 	return (int) («generateConstTermBuilder(constExpr)»);
 }
 	
 @Override
-protected List<ILPTerm<Integer, Integer>> buildVariableTerms(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+protected List<ILPTerm<Integer, Integer>> buildVariableTerms(final «context.modelType.type.name» context) {
 	List<ILPTerm<Integer, Integer>> terms = new LinkedList<>();
 	
 	return terms;
@@ -120,17 +123,17 @@ protected List<ILPTerm<Integer, Integer>> buildVariableTerms(final «data.mappin
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof TypeSumExpression) {
 			imports.add(data.classToPackage.getPackage(constExpr.type.type.EPackage))
-			return '''indexer.getObjectsOfType(«constExpr.type.type.EPackage.name».eINSTANCE.get«constExpr.type.type.name»()).stream()
+			return '''indexer.getObjectsOfType(type).stream()
 			.«parseStreamExpression(constExpr.filter)»
 			.reduce(0, (sum, «getIteratorVariableName(constExpr)») -> {
 				sum + «parseConstArithmeticExpression(constExpr.expression)»
 			})'''
 		} else if(constExpr instanceof ContextTypeFeatureValue) {
-			throw new UnsupportedOperationException("Type context access not allowed in mapping constraints.");
+			return '''context.«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else if(constExpr instanceof ContextTypeValue) {
-			throw new UnsupportedOperationException("Type context access not allowed in mapping constraints.");
+			return '''context'''
 		} else if(constExpr instanceof ObjectiveFunctionValue) {
-			throw new UnsupportedOperationException("Objective function value access not allowed in mapping constraints.");
+			throw new UnsupportedOperationException("Objective function value access not allowed in type constraints.");
 		} else if(constExpr instanceof ContextMappingValue) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof ContextMappingNode) {
@@ -302,5 +305,4 @@ protected List<ILPTerm<Integer, Integer>> buildVariableTerms(final «data.mappin
 		}
 		return itrName;
 	}
-	
 }

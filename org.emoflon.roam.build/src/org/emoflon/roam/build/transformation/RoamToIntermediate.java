@@ -1,6 +1,7 @@
 package org.emoflon.roam.build.transformation;
 
 import java.util.Collection;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
@@ -17,18 +18,28 @@ import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionTransfor
 import org.emoflon.roam.build.transformation.helper.RelationalExpressionTransformer;
 import org.emoflon.roam.build.transformation.helper.RoamTransformationUtils;
 import org.emoflon.roam.build.transformation.helper.TransformerFactory;
+import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator;
 import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral;
 import org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective;
+import org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective;
 import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
 import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget;
+import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateFactory;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
+import org.emoflon.roam.intermediate.RoamIntermediate.SumExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.Type;
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective;
+import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator;
 import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
 import org.emoflon.roam.roamslang.roamSLang.RoamBoolExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamBooleanLiteral;
@@ -122,6 +133,15 @@ public class RoamToIntermediate {
 						throw new UnsupportedOperationException(
 								"Constraints on mapping variables of a certain type may not depend on the value of mapping variables of other types.");
 					}
+					
+					//Rewrite the non-constant expression, which will be translated into ILP-Terms, into a sum of products.
+					if(isLhsConst) {
+						constraint.getExpression().setRhs(rewriteToSumOfProducts(constraint.getExpression().getRhs(), null, null));
+					} else {
+						constraint.getExpression().setLhs(rewriteToSumOfProducts(constraint.getExpression().getLhs(), null, null));
+					}
+					// Move constant terms from the sum of products to the constant side of the relational constraint.
+					constraint.setExpression(rewriteMoveConstantTerms(constraint.getExpression()));
 				}
 
 			}
@@ -218,6 +238,306 @@ public class RoamToIntermediate {
 					}
 				}
 			}
+		}
+	}
+	
+	protected ArithmeticExpression rewriteToSumOfProducts(final ArithmeticExpression expr, final ArithmeticExpression factor, final BinaryArithmeticOperator operator) {
+		if(expr instanceof BinaryArithmeticExpression binaryExpr) {
+			if(binaryExpr.getOperator() == BinaryArithmeticOperator.ADD || binaryExpr.getOperator() == BinaryArithmeticOperator.SUBTRACT) {
+				if(factor == null) {
+					ArithmeticExpression newLhs = rewriteToSumOfProducts(binaryExpr.getLhs(), null, null);
+					ArithmeticExpression newRhs = rewriteToSumOfProducts(binaryExpr.getRhs(), null, null);
+					binaryExpr.setLhs(newLhs);
+					binaryExpr.setLhs(newRhs);
+					return binaryExpr;
+				} else {
+					if(RoamTransformationUtils.isConstantExpression(binaryExpr.getLhs())) {
+						BinaryArithmeticExpression rewriteLhs = factory.createBinaryArithmeticExpression();
+						rewriteLhs.setOperator(operator);
+						rewriteLhs.setLhs(binaryExpr.getLhs());
+						rewriteLhs.setRhs(factor);
+						binaryExpr.setLhs(rewriteLhs);
+					} else {
+						ArithmeticExpression newLhs = rewriteToSumOfProducts(binaryExpr.getLhs(), factor, operator);
+						binaryExpr.setLhs(newLhs);
+					}
+					if(RoamTransformationUtils.isConstantExpression(binaryExpr.getRhs())) {
+						BinaryArithmeticExpression rewriteRhs = factory.createBinaryArithmeticExpression();
+						rewriteRhs.setOperator(operator);
+						rewriteRhs.setLhs(binaryExpr.getRhs());
+						rewriteRhs.setRhs(factor);
+						binaryExpr.setRhs(rewriteRhs);
+					} else {
+						ArithmeticExpression newRhs = rewriteToSumOfProducts(binaryExpr.getRhs(), factor, operator);
+						binaryExpr.setRhs(newRhs);
+					}
+					return binaryExpr;
+				}
+			} else if(binaryExpr.getOperator() == BinaryArithmeticOperator.DIVIDE || binaryExpr.getOperator() == BinaryArithmeticOperator.MULTIPLY) {
+				boolean isLhsConst = RoamTransformationUtils.isConstantExpression(binaryExpr.getLhs());
+				boolean isRhsConst = RoamTransformationUtils.isConstantExpression(binaryExpr.getRhs());
+				if(!isLhsConst && !isRhsConst) {
+					throw new IllegalArgumentException("A product may not contain more than one mapping expression.");
+				}
+				
+				if(factor == null) {
+					if(isLhsConst) {
+						return rewriteToSumOfProducts(binaryExpr.getRhs(), binaryExpr.getLhs(), binaryExpr.getOperator());
+					} else {
+						return rewriteToSumOfProducts(binaryExpr.getLhs(), binaryExpr.getRhs(), binaryExpr.getOperator());
+					}
+				} else {
+					if(isLhsConst) {
+						BinaryArithmeticExpression rewriteLhs = factory.createBinaryArithmeticExpression();
+						rewriteLhs.setOperator(operator);
+						rewriteLhs.setLhs(binaryExpr.getLhs());
+						rewriteLhs.setRhs(factor);
+						return rewriteToSumOfProducts(binaryExpr.getRhs(), rewriteLhs, operator);
+					} else {
+						BinaryArithmeticExpression rewriteRhs = factory.createBinaryArithmeticExpression();
+						rewriteRhs.setOperator(operator);
+						rewriteRhs.setLhs(binaryExpr.getRhs());
+						rewriteRhs.setRhs(factor);
+						return rewriteToSumOfProducts(binaryExpr.getLhs(), rewriteRhs, operator);
+					}
+				}
+			} else {
+				// CASE: POW -> It is impossible to refactor exponentials into a sum-product
+				boolean isLhsConst = RoamTransformationUtils.isConstantExpression(binaryExpr.getLhs());
+				boolean isRhsConst = RoamTransformationUtils.isConstantExpression(binaryExpr.getRhs());
+				if(!isLhsConst || !isRhsConst) {
+					throw new IllegalArgumentException("An exponential expression must not contain any mapping expressions.");
+				}
+				
+				if(factor == null) {
+					return binaryExpr;
+				} else {
+					BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
+					rewrite.setOperator(operator);
+					rewrite.setLhs(binaryExpr);
+					rewrite.setRhs(factor);
+					return rewrite;
+				}
+				
+			}
+		} else if(expr instanceof UnaryArithmeticExpression unaryExpr) {
+			if(unaryExpr.getOperator() == UnaryArithmeticOperator.BRACKET) {
+				boolean isConst = RoamTransformationUtils.isConstantExpression(unaryExpr.getExpression());
+				if(factor == null) {
+					if(isConst) {
+						return unaryExpr.getExpression();
+					} else {
+						return rewriteToSumOfProducts(unaryExpr.getExpression(), null, null);
+					}
+				} else {
+					if(isConst) {
+						BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
+						rewrite.setOperator(operator);
+						rewrite.setRhs(factor);
+						rewrite.setLhs(unaryExpr.getExpression());
+						return rewrite;
+					} else {
+						return rewriteToSumOfProducts(unaryExpr.getExpression(), factor, operator);
+					}
+					
+				}
+			} else if(unaryExpr.getOperator() == UnaryArithmeticOperator.NEGATE) {
+				if(factor == null) {
+					DoubleLiteral constNegOne = factory.createDoubleLiteral();
+					constNegOne.setLiteral(-1);
+					return rewriteToSumOfProducts(unaryExpr.getExpression(), constNegOne, BinaryArithmeticOperator.MULTIPLY);
+				} else {
+					DoubleLiteral constNegOne = factory.createDoubleLiteral();
+					constNegOne.setLiteral(-1);
+					BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
+					rewrite.setOperator(BinaryArithmeticOperator.MULTIPLY);
+					rewrite.setRhs(constNegOne);
+					rewrite.setLhs(unaryExpr.getExpression());
+					return rewriteToSumOfProducts(rewrite, factor, operator);
+				}
+			} else {
+				boolean isConst = RoamTransformationUtils.isConstantExpression(unaryExpr.getExpression());
+				if(!isConst) {
+					throw new IllegalArgumentException("Absolute, square-root, sine or cosine expressions must not contain any mapping expressions.");
+				}
+				
+				if(factor == null) {
+					return unaryExpr;
+				} else {
+					BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
+					rewrite.setOperator(operator);
+					rewrite.setLhs(unaryExpr);
+					rewrite.setRhs(factor);
+					return rewrite;
+				}
+			}
+		} else if(expr instanceof ArithmeticValue valExpr) {
+			if(factor == null ) {
+				return expr;
+			} else {
+				boolean isConst = RoamTransformationUtils.isConstantExpression(valExpr.getValue());
+				if(isConst) {
+					BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
+					rewrite.setOperator(operator);
+					rewrite.setLhs(valExpr);
+					rewrite.setRhs(factor);
+					return rewrite;
+				} else {
+					if(valExpr.getValue() instanceof SumExpression sumExpr) {
+						ArithmeticExpression rewrite = rewriteToSumOfProducts(sumExpr.getExpression(), factor, operator);
+						sumExpr.setExpression(rewrite);
+						return valExpr;
+					} else {
+						BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
+						rewrite.setOperator(operator);
+						rewrite.setLhs(valExpr);
+						rewrite.setRhs(factor);
+						return rewrite;
+					}
+				}
+			}
+		} else {
+			// CASE: Literals
+			if(factor == null ) {
+				return expr;
+			} else {
+				BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
+				rewrite.setOperator(operator);
+				rewrite.setLhs(expr);
+				rewrite.setRhs(factor);
+				return rewrite;
+			}
+		}
+	}
+	
+	protected RelationalExpression rewriteMoveConstantTerms(final RelationalExpression relExpr) {
+		boolean isLhsConst = RoamTransformationUtils
+				.isConstantExpression(relExpr.getLhs());
+		
+		ArithmeticExpression constExpr;
+		ArithmeticExpression variableExpr;
+		if(isLhsConst) {
+			constExpr = relExpr.getLhs();
+			variableExpr = relExpr.getRhs();
+		} else {
+			constExpr = relExpr.getRhs();
+			variableExpr = relExpr.getLhs();
+		}
+		
+		if(variableExpr instanceof BinaryArithmeticExpression binaryExpr) {
+			if(binaryExpr.getOperator() == BinaryArithmeticOperator.ADD) {
+				boolean isVarLhsConst = RoamTransformationUtils
+						.isConstantExpression(binaryExpr.getLhs());
+				boolean isVarRhsConst = RoamTransformationUtils
+						.isConstantExpression(binaryExpr.getRhs());
+				
+				if(!isVarLhsConst && !isVarRhsConst) {
+					return relExpr;
+				}
+				
+				RelationalExpression rewrite = factory.createRelationalExpression();
+				rewrite.setOperator(relExpr.getOperator());
+				BinaryArithmeticExpression newConst = factory.createBinaryArithmeticExpression();
+				rewrite.setLhs(newConst);
+				
+				newConst.setOperator(BinaryArithmeticOperator.SUBTRACT);
+				newConst.setLhs(constExpr);
+				
+				if(isVarLhsConst) {
+					newConst.setRhs(binaryExpr.getLhs());
+					rewrite.setRhs(binaryExpr.getRhs());
+				} else {
+					newConst.setRhs(binaryExpr.getRhs());
+					rewrite.setRhs(binaryExpr.getLhs());
+				}
+				return rewriteMoveConstantTerms(rewrite);
+			} else if(binaryExpr.getOperator() == BinaryArithmeticOperator.SUBTRACT) {
+				boolean isVarLhsConst = RoamTransformationUtils
+						.isConstantExpression(binaryExpr.getLhs());
+				boolean isVarRhsConst = RoamTransformationUtils
+						.isConstantExpression(binaryExpr.getRhs());
+				
+				if(!isVarLhsConst && !isVarRhsConst) {
+					return relExpr;
+				}
+				
+				RelationalExpression rewrite = factory.createRelationalExpression();
+				rewrite.setOperator(relExpr.getOperator());
+				BinaryArithmeticExpression newConst = factory.createBinaryArithmeticExpression();
+				rewrite.setLhs(newConst);
+				newConst.setLhs(constExpr);
+				
+				if(isVarLhsConst) {
+					newConst.setOperator(BinaryArithmeticOperator.SUBTRACT);
+					newConst.setRhs(binaryExpr.getLhs());
+					ArithmeticExpression invertedRhs = invertSign(binaryExpr.getRhs());
+					rewrite.setRhs(invertedRhs);
+				} else {
+					newConst.setOperator(BinaryArithmeticOperator.ADD);
+					newConst.setRhs(binaryExpr.getRhs());
+					rewrite.setRhs(binaryExpr.getLhs());
+				}
+				return rewriteMoveConstantTerms(rewrite);
+			} else {
+				return relExpr;
+			}
+		} else if(variableExpr instanceof UnaryArithmeticExpression unaryExpr) {
+			return relExpr;
+		} else if(variableExpr instanceof ArithmeticValue valExpr) {
+			return relExpr;
+		} else {
+			return relExpr;
+		}
+	}
+	
+	protected ArithmeticExpression invertSign(final ArithmeticExpression expr) {
+		if(expr instanceof BinaryArithmeticExpression binaryExpr) {
+			if(binaryExpr.getOperator() == BinaryArithmeticOperator.ADD) {
+				binaryExpr.setLhs(invertSign(binaryExpr.getLhs()));
+				binaryExpr.setOperator(BinaryArithmeticOperator.SUBTRACT);
+				return binaryExpr;
+			} else if(binaryExpr.getOperator() == BinaryArithmeticOperator.SUBTRACT) {
+				binaryExpr.setLhs(invertSign(binaryExpr.getLhs()));
+				binaryExpr.setOperator(BinaryArithmeticOperator.ADD);
+				return binaryExpr;
+			} else {
+				binaryExpr.setLhs(invertSign(binaryExpr.getLhs()));
+				return binaryExpr;
+			}
+		} else if(expr instanceof UnaryArithmeticExpression unaryExpr) {
+			if(unaryExpr.getOperator() == UnaryArithmeticOperator.NEGATE) {
+				return unaryExpr.getExpression();
+			} else if(unaryExpr.getOperator() == UnaryArithmeticOperator.BRACKET) {
+				return invertSign(unaryExpr.getExpression());
+			} else {
+				BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
+				rewrite.setOperator(BinaryArithmeticOperator.MULTIPLY);
+				DoubleLiteral constNegOne = factory.createDoubleLiteral();
+				constNegOne.setLiteral(-1);
+				rewrite.setLhs(constNegOne);
+				rewrite.setRhs(unaryExpr);
+				return rewrite;
+			}
+		} else if(expr instanceof ArithmeticValue valExpr) {
+			if(valExpr.getValue() instanceof SumExpression sumExpr) {
+				sumExpr.setExpression(invertSign(sumExpr.getExpression()));
+				return valExpr;
+			} else {
+				BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
+				DoubleLiteral constNegOne = factory.createDoubleLiteral();
+				constNegOne.setLiteral(-1);
+				rewrite.setOperator(BinaryArithmeticOperator.MULTIPLY);
+				rewrite.setLhs(constNegOne);
+				rewrite.setRhs(valExpr);
+				return rewrite;
+			}
+		} else if(expr instanceof IntegerLiteral lit) {
+			lit.setLiteral(-lit.getLiteral());
+			return lit;
+		} else {
+			DoubleLiteral lit = (DoubleLiteral) expr;
+			lit.setLiteral(-lit.getLiteral());
+			return lit;
 		}
 	}
 

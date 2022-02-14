@@ -1,5 +1,6 @@
 package org.emoflon.roam.build.transformation.helper;
 
+import org.emoflon.roam.build.transformation.ArithmeticExpressionType;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
@@ -11,7 +12,9 @@ import org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.BoolValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode;
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.FeatureLiteral;
@@ -61,13 +64,23 @@ public final class RoamTransformationUtils {
 		return lit;
 	}
 	
-	public static boolean isConstantExpression(final BoolExpression expr) {
+	public static ArithmeticExpressionType isConstantExpression(final BoolExpression expr) {
 		if(expr instanceof BoolBinaryExpression bin) {
-			return isConstantExpression(bin.getLhs()) && isConstantExpression(bin.getRhs());
+			ArithmeticExpressionType lhsType = isConstantExpression(bin.getLhs());
+			ArithmeticExpressionType rhsType = isConstantExpression(bin.getRhs());
+			if(lhsType == ArithmeticExpressionType.variableVector || rhsType == ArithmeticExpressionType.variableVector) {
+				return ArithmeticExpressionType.variableVector;
+			} else if(lhsType == ArithmeticExpressionType.variableValue || rhsType == ArithmeticExpressionType.variableValue) {
+				return ArithmeticExpressionType.variableValue;
+			} else if(lhsType == ArithmeticExpressionType.variableScalar || rhsType == ArithmeticExpressionType.variableScalar) {
+				return ArithmeticExpressionType.variableScalar;
+			} else {
+				return ArithmeticExpressionType.constant;
+			}
 		} else if(expr instanceof BoolUnaryExpression unary) {
 			return isConstantExpression(unary.getExpression());
 		} else if(expr instanceof BoolLiteral) {
-			return true;
+			return ArithmeticExpressionType.constant;
 		} else if(expr instanceof RelationalExpression relExpr) {
 			return isConstantExpression(relExpr);
 		} else if(expr instanceof BoolStreamExpression streamExpr) {
@@ -78,61 +91,110 @@ public final class RoamTransformationUtils {
 		}
 	}
 	
-	public static boolean isConstantExpression(final RelationalExpression relExpr) {
+	public static ArithmeticExpressionType isConstantExpression(final RelationalExpression relExpr) {
 		if(relExpr.getRhs() == null) {
 			return isConstantExpression(relExpr.getLhs());
 		} else {
-			return isConstantExpression(relExpr.getLhs()) && isConstantExpression(relExpr.getRhs());
+			ArithmeticExpressionType lhsType = isConstantExpression(relExpr.getLhs());
+			ArithmeticExpressionType rhsType = isConstantExpression(relExpr.getRhs());
+			if(lhsType == ArithmeticExpressionType.variableVector || rhsType == ArithmeticExpressionType.variableVector) {
+				return ArithmeticExpressionType.variableVector;
+			} else if(lhsType == ArithmeticExpressionType.variableValue || rhsType == ArithmeticExpressionType.variableValue) {
+				return ArithmeticExpressionType.variableValue;
+			} else if(lhsType == ArithmeticExpressionType.variableScalar || rhsType == ArithmeticExpressionType.variableScalar) {
+				return ArithmeticExpressionType.variableScalar;
+			} else {
+				return ArithmeticExpressionType.constant;
+			}
 		}
 	}
 	
-	public static boolean isConstantExpression(final ArithmeticExpression expr) {
+	public static ArithmeticExpressionType isConstantExpression(final ArithmeticExpression expr) {
 		if(expr instanceof BinaryArithmeticExpression bin) {
-			return isConstantExpression(bin.getLhs()) && isConstantExpression(bin.getRhs());
+			ArithmeticExpressionType lhsType = isConstantExpression(bin.getLhs());
+			ArithmeticExpressionType rhsType = isConstantExpression(bin.getRhs());
+			if(lhsType == ArithmeticExpressionType.variableVector || rhsType == ArithmeticExpressionType.variableVector) {
+				return ArithmeticExpressionType.variableVector;
+			} else if(lhsType == ArithmeticExpressionType.variableValue || rhsType == ArithmeticExpressionType.variableValue) {
+				return ArithmeticExpressionType.variableValue;
+			} else if(lhsType == ArithmeticExpressionType.variableScalar || rhsType == ArithmeticExpressionType.variableScalar) {
+				return ArithmeticExpressionType.variableScalar;
+			} else {
+				return ArithmeticExpressionType.constant;
+			}
 		} else if(expr instanceof UnaryArithmeticExpression unary) {
 			return isConstantExpression(unary.getExpression());
 		} else if(expr instanceof ArithmeticLiteral) {
-			return true;
+			return ArithmeticExpressionType.constant;
 		} else {
 			ArithmeticValue value = (ArithmeticValue) expr;
 			return isConstantExpression(value.getValue());
 		}
 	}
 	
-	public static boolean isConstantExpression(final ValueExpression expr) {
+	public static ArithmeticExpressionType isConstantExpression(final ValueExpression expr) {
 		if(expr instanceof MappingSumExpression) {
-			return false;
+			return ArithmeticExpressionType.variableVector;
 		} else if(expr instanceof TypeSumExpression typeSum) {
-			return isConstantExpression(typeSum.getExpression()) && isConstantExpression(typeSum.getFilter());
+			ArithmeticExpressionType exprType = isConstantExpression(typeSum.getExpression());
+			ArithmeticExpressionType filterType = isConstantExpression(typeSum.getFilter());
+			if(exprType == ArithmeticExpressionType.variableVector || filterType == ArithmeticExpressionType.variableVector) {
+				return ArithmeticExpressionType.variableVector;
+			} else if(exprType == ArithmeticExpressionType.variableValue || filterType == ArithmeticExpressionType.variableValue) {
+				return ArithmeticExpressionType.variableValue;
+			} else if(exprType == ArithmeticExpressionType.variableScalar || filterType == ArithmeticExpressionType.variableScalar) {
+				return ArithmeticExpressionType.variableScalar;
+			} else {
+				return ArithmeticExpressionType.constant;
+			}
 		} else if(expr instanceof ContextTypeValue) {
-			return true;
-		} else if(expr instanceof ContextMappingValue || expr instanceof ContextMappingNode 
-				|| expr instanceof ObjectiveFunctionValue) {
-			return false;
-		} else if(expr instanceof IteratorMappingValue || expr instanceof IteratorMappingFeatureValue 
+			return ArithmeticExpressionType.constant;
+		} else if(expr instanceof ContextTypeFeatureValue) {
+			return ArithmeticExpressionType.constant;
+		} else if(expr instanceof ContextMappingNodeFeatureValue) {
+			return ArithmeticExpressionType.variableScalar;
+		} else if(expr instanceof ContextMappingNode) {
+			return ArithmeticExpressionType.variableScalar;
+		} else if(expr instanceof ContextMappingValue) {
+			return ArithmeticExpressionType.variableValue;
+		} else if(expr instanceof ObjectiveFunctionValue) {
+			return ArithmeticExpressionType.variableVector;
+		} else if(expr instanceof IteratorMappingValue) {
+			return ArithmeticExpressionType.variableValue;
+		}  else if(expr instanceof IteratorMappingFeatureValue 
 				|| expr instanceof IteratorMappingNodeValue || expr instanceof IteratorMappingNodeFeatureValue) {
-			return false;
+			return ArithmeticExpressionType.variableScalar;
 		} else {
-			return true;
+			// CASE: IteratorTypeValue or IteratorTypeFeatureValue 
+			return ArithmeticExpressionType.constant;
 		}
 	}
 	
-	public static boolean isConstantExpression(final StreamExpression expr) {
+	public static ArithmeticExpressionType isConstantExpression(final StreamExpression expr) {
 		if(expr.getChild() == null) {
 			if(expr.getCurrent() instanceof StreamFilterOperation filterOp) {
 				return isConstantExpression(filterOp.getPredicate());
 			} else {
-				return true;
+				return ArithmeticExpressionType.constant;
 			}
 		} else {
-			boolean currentExpr = false;
+			ArithmeticExpressionType currentExpr = null;
 			if(expr.getCurrent() instanceof StreamFilterOperation filterOp) {
 				currentExpr = isConstantExpression(filterOp.getPredicate());
 			} else {
-				currentExpr = true;
+				currentExpr = ArithmeticExpressionType.constant;
 			}
+			ArithmeticExpressionType childExpr = isConstantExpression(expr.getChild());
 			
-			return currentExpr && isConstantExpression(expr.getChild()); 
+			if(currentExpr == ArithmeticExpressionType.variableVector || childExpr == ArithmeticExpressionType.variableVector) {
+				return ArithmeticExpressionType.variableVector;
+			} else if(currentExpr == ArithmeticExpressionType.variableValue || childExpr == ArithmeticExpressionType.variableValue) {
+				return ArithmeticExpressionType.variableValue;
+			} else if(currentExpr == ArithmeticExpressionType.variableScalar || childExpr == ArithmeticExpressionType.variableScalar) {
+				return ArithmeticExpressionType.variableScalar;
+			} else {
+				return ArithmeticExpressionType.constant;
+			}
 		}
 	}
 }

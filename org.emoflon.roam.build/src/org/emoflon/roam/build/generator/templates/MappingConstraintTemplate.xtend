@@ -38,6 +38,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.BoolValue
 import org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation
 import org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue
+import org.emoflon.roam.build.transformation.ArithmeticExpressionType
 
 class MappingConstraintTemplate extends GeneratorTemplate<MappingConstraint> {
 
@@ -70,7 +71,7 @@ public class «className» extends RoamMappingConstraint<«data.mapping2mappingC
 	public «className»(final RoamEngine engine, final MappingConstraint constraint) {
 		super(engine, constraint);
 	}
-	«IF RoamTransformationUtils.isConstantExpression(context.expression.lhs)»
+	«IF RoamTransformationUtils.isConstantExpression(context.expression.lhs) == ArithmeticExpressionType.constant»
 	«generateComplexConstraint(context.expression.lhs, context.expression.rhs)»
 	«ELSE»
 	«generateComplexConstraint(context.expression.rhs, context.expression.lhs)»

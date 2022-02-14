@@ -38,6 +38,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.BoolValue
 import org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue
+import org.emoflon.roam.build.transformation.ArithmeticExpressionType
 
 class TypeConstraintTemplate extends GeneratorTemplate<TypeConstraint> {
 	
@@ -73,7 +74,7 @@ public class «className» extends RoamTypeConstraint<«context.modelType.type.n
 	public «className»(final RoamEngine engine, final TypeConstraint constraint) {
 		super(engine, constraint);
 	}
-	«IF RoamTransformationUtils.isConstantExpression(context.expression.lhs)»
+	«IF RoamTransformationUtils.isConstantExpression(context.expression.lhs) == ArithmeticExpressionType.constant»
 	«generateComplexConstraint(context.expression.lhs, context.expression.rhs)»
 	«ELSE»
 	«generateComplexConstraint(context.expression.rhs, context.expression.lhs)»

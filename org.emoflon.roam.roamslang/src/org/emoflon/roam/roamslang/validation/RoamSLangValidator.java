@@ -34,6 +34,7 @@ import org.emoflon.roam.roamslang.roamSLang.RoamExpressionOperand;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureLit;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureNavigation;
+import org.emoflon.roam.roamslang.roamSLang.RoamGlobalObjective;
 import org.emoflon.roam.roamslang.roamSLang.RoamLambdaAttributeExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamLambdaExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
@@ -153,6 +154,18 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 					GLOBA_OBJECTIVE_DOES_NOT_EXIST //
 			);
 		}
+	}
+
+	/**
+	 * Checks the global objective regarding the use of dynamic sub types like
+	 * 'self.value()' in non-linear mathematical expressions.
+	 * 
+	 * @param globObj Roam global objective to validate/check.
+	 */
+	@Check
+	public void checkGlobalObjective(final RoamGlobalObjective globObj) {
+		// Validate expression regarding dynamic uses (like self.value())
+		containsSelfValueOrMappingsCall(globObj.getExpr());
 	}
 
 	/**
@@ -391,7 +404,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 					return true;
 				}
 			} else if (exprOp instanceof RoamObjectiveExpression) {
-				// This should not be possible at all
+				// Only relevant for the global objective function
+				return true;
 			}
 		} else if (expr instanceof RoamProductArithmeticExpr) {
 			final RoamProductArithmeticExpr prodExpr = (RoamProductArithmeticExpr) expr;
@@ -408,7 +422,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		} else if (expr instanceof RoamSumArithmeticExpr) {
 			final RoamSumArithmeticExpr sumExpr = (RoamSumArithmeticExpr) expr;
 			return containsSelfValueOrMappingsCall(sumExpr.getLeft())
-					|| containsSelfValueOrMappingsCall(sumExpr.getRight());
+					| containsSelfValueOrMappingsCall(sumExpr.getRight());
 		} else if (expr instanceof RoamUnaryArithmeticExpr) {
 			final RoamUnaryArithmeticExpr unExpr = (RoamUnaryArithmeticExpr) expr;
 			final boolean isDyn = containsSelfValueOrMappingsCall(unExpr.getOperand());
@@ -435,6 +449,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		checkObjectiveNameValid(objective);
 		checkObjectiveNameUnique(objective);
 		checkObjectiveIsNotUseless(objective);
+		validateObjectiveExprForm(objective);
 
 		final LeafType eval = getEvalTypeFromArithExpr(objective.getExpr());
 		if (eval != LeafType.INTEGER && eval != LeafType.DOUBLE) {
@@ -518,6 +533,17 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 				);
 			}
 		}
+	}
+
+	/**
+	 * Validates a given objective function regarding of dynamic sub expressions
+	 * like 'self.value()' in non-linear mathematical expressions.
+	 * 
+	 * @param obj Roam objective to validate.
+	 */
+	public void validateObjectiveExprForm(final RoamObjective obj) {
+		// Validate expression regarding dynamic uses (like self.value())
+		containsSelfValueOrMappingsCall(obj.getExpr());
 	}
 
 	// TODO: Is this even necessary?

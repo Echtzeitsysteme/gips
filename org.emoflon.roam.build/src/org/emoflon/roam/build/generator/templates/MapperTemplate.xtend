@@ -3,12 +3,8 @@ package org.emoflon.roam.build.generator.templates
 import org.emoflon.roam.build.generator.GeneratorTemplate
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping
 import org.emoflon.roam.build.generator.TemplateData
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives
 
 class MapperTemplate extends GeneratorTemplate<Mapping> {
-	
-	IBeXContextPattern pattern;
 	
 	new(TemplateData data, Mapping context) {
 		super(data, context)
@@ -26,8 +22,6 @@ class MapperTemplate extends GeneratorTemplate<Mapping> {
 		imports.add(data.apiData.rulesPkg+"."+data.mapping2ruleClassName.get(context))
 		imports.add(data.apiData.matchesPkg+"."+data.mapping2matchClassName.get(context))
 		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.Mapping")
-		
-		pattern = (context.rule.lhs instanceof IBeXContextPattern) ? context.rule.lhs as IBeXContextPattern : (context.rule.lhs as IBeXContextAlternatives).context
 	}
 	
 	override generate() {

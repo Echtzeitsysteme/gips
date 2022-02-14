@@ -82,13 +82,13 @@ public class «className» extends RoamMappingConstraint<«data.mapping2mappingC
 	def String generateComplexConstraint(ArithmeticExpression constExpr, ArithmeticExpression dynamicExpr) {
 		return '''
 @Override
-protected Integer buildConstantTerm(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-	return (int) («generateConstTermBuilder(constExpr)»);
+protected Double buildConstantTerm(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+	return «generateConstTermBuilder(constExpr)»;
 }
 	
 @Override
-protected List<ILPTerm<Integer, Integer>> buildVariableTerms(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-	List<ILPTerm<Integer, Integer>> terms = new LinkedList<>();
+protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+	List<ILPTerm<Integer, Double>> terms = new LinkedList<>();
 	
 	return terms;
 }

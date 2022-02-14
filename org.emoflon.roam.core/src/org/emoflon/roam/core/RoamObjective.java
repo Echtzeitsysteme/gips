@@ -1,6 +1,6 @@
 package org.emoflon.roam.core;
 
-import org.emoflon.roam.core.ilp.ILPObjectiveFunction;
+import org.emoflon.roam.core.ilp.ILPLinearFunction;
 import org.emoflon.roam.core.ilp.ILPTerm;
 import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
 
@@ -8,7 +8,7 @@ public abstract class RoamObjective <OBJECTIVE extends Objective, CONTEXT extend
 	final protected RoamEngine engine;
 	final protected OBJECTIVE objective;
 	final protected String name;
-	protected ILPObjectiveFunction<VARTYPE> ilpObjective;
+	protected ILPLinearFunction<VARTYPE> ilpObjective;
 	
 	public RoamObjective(final RoamEngine engine, final OBJECTIVE objective) {
 		this.engine = engine;
@@ -22,7 +22,7 @@ public abstract class RoamObjective <OBJECTIVE extends Objective, CONTEXT extend
 		return name;
 	}
 	
-	public ILPObjectiveFunction<VARTYPE> getObjectiveFunction() {
+	public ILPLinearFunction<VARTYPE> getObjectiveFunction() {
 		return ilpObjective;
 	}
 	

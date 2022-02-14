@@ -85,13 +85,13 @@ public class «className» extends RoamTypeConstraint<«context.modelType.type.n
 	def String generateComplexConstraint(ArithmeticExpression constExpr, ArithmeticExpression dynamicExpr) {
 		return '''
 @Override
-protected Integer buildConstantTerm(final «context.modelType.type.name» context) {
-	return (int) («generateConstTermBuilder(constExpr)»);
+protected Double buildConstantTerm(final «context.modelType.type.name» context) {
+	return «generateConstTermBuilder(constExpr)»;
 }
 	
 @Override
-protected List<ILPTerm<Integer, Integer>> buildVariableTerms(final «context.modelType.type.name» context) {
-	List<ILPTerm<Integer, Integer>> terms = new LinkedList<>();
+protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «context.modelType.type.name» context) {
+	List<ILPTerm<Integer, Double>> terms = new LinkedList<>();
 	
 	return terms;
 }

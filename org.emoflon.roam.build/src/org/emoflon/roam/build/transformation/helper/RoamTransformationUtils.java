@@ -147,9 +147,9 @@ public final class RoamTransformationUtils {
 			} else {
 				return ArithmeticExpressionType.constant;
 			}
-		} else if(expr instanceof ContextTypeValue) {
-			return ArithmeticExpressionType.constant;
 		} else if(expr instanceof ContextTypeFeatureValue) {
+			return ArithmeticExpressionType.constant;
+		} else if(expr instanceof ContextTypeValue) {
 			return ArithmeticExpressionType.constant;
 		} else if(expr instanceof ContextMappingNodeFeatureValue) {
 			return ArithmeticExpressionType.variableScalar;

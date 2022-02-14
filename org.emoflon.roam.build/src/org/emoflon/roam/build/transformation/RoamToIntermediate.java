@@ -169,6 +169,8 @@ public class RoamToIntermediate {
 
 			ArithmeticExpressionTransformer transformer = transformationFactory.createArithmeticTransformer(objective);
 			objective.setExpression(transformer.transform(eObjective.getExpr()));
+			//Rewrite the expression, which will be translated into ILP-Terms, into a sum of products.
+			objective.setExpression(rewriteToSumOfProducts(objective.getExpression(), null, null));
 		}
 	}
 
@@ -196,6 +198,8 @@ public class RoamToIntermediate {
 
 		ArithmeticExpressionTransformer transformer = transformationFactory.createArithmeticTransformer(globalObj);
 		globalObj.setExpression(transformer.transform(eGlobalObj.getExpr()));
+		//Rewrite the expression, which will be translated into ILP-Terms, into a sum of products.
+		globalObj.setExpression(rewriteToSumOfProducts(globalObj.getExpression(), null, null));
 	}
 
 	protected Constraint createConstraint(final RoamConstraint eConstraint, int counter) {
@@ -311,17 +315,28 @@ public class RoamToIntermediate {
 				}
 			} else {
 				// CASE: POW -> It is impossible to refactor exponentials into a sum-product
-				boolean isLhsConst = RoamTransformationUtils.isConstantExpression(binaryExpr.getLhs()) == ArithmeticExpressionType.constant ? true : false;
-				boolean isRhsConst = RoamTransformationUtils.isConstantExpression(binaryExpr.getRhs()) == ArithmeticExpressionType.constant ? true : false;
-				if(!isLhsConst || !isRhsConst) {
+				ArithmeticExpressionType lhsType = RoamTransformationUtils.isConstantExpression(binaryExpr.getLhs());
+				ArithmeticExpressionType rhsType = RoamTransformationUtils.isConstantExpression(binaryExpr.getRhs());
+				if(lhsType == ArithmeticExpressionType.variableValue || lhsType == ArithmeticExpressionType.variableVector) {
+					throw new IllegalArgumentException("An exponential expression must not contain any mapping expressions.");
+				}
+				if(rhsType == ArithmeticExpressionType.variableValue || rhsType == ArithmeticExpressionType.variableVector) {
 					throw new IllegalArgumentException("An exponential expression must not contain any mapping expressions.");
 				}
 				
 				if(factor == null) {
+					ArithmeticExpression lhsRewrite = rewriteToSumOfProducts(binaryExpr.getLhs(), null, null);
+					ArithmeticExpression rhsRewrite = rewriteToSumOfProducts(binaryExpr.getRhs(), null, null);
+					binaryExpr.setLhs(lhsRewrite);
+					binaryExpr.setRhs(rhsRewrite);
 					return binaryExpr;
 				} else {
 					BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
 					rewrite.setOperator(operator);
+					ArithmeticExpression lhsRewrite = rewriteToSumOfProducts(binaryExpr.getLhs(), null, null);
+					ArithmeticExpression rhsRewrite = rewriteToSumOfProducts(binaryExpr.getRhs(), null, null);
+					binaryExpr.setLhs(lhsRewrite);
+					binaryExpr.setRhs(rhsRewrite);
 					rewrite.setLhs(binaryExpr);
 					rewrite.setRhs(factor);
 					return rewrite;
@@ -364,16 +379,20 @@ public class RoamToIntermediate {
 					return rewriteToSumOfProducts(rewrite, factor, operator);
 				}
 			} else {
-				boolean isConst = RoamTransformationUtils.isConstantExpression(unaryExpr.getExpression()) == ArithmeticExpressionType.constant ? true : false;
-				if(!isConst) {
+				ArithmeticExpressionType expressionType = RoamTransformationUtils.isConstantExpression(unaryExpr.getExpression());
+				if(expressionType == ArithmeticExpressionType.variableValue ||  expressionType == ArithmeticExpressionType.variableVector) {
 					throw new IllegalArgumentException("Absolute, square-root, sine or cosine expressions must not contain any mapping expressions.");
 				}
 				
 				if(factor == null) {
+					ArithmeticExpression rewrite = rewriteToSumOfProducts(unaryExpr.getExpression(), null, null);
+					unaryExpr.setExpression(rewrite);
 					return unaryExpr;
 				} else {
 					BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
 					rewrite.setOperator(operator);
+					ArithmeticExpression innerRewrite = rewriteToSumOfProducts(unaryExpr.getExpression(), null, null);
+					unaryExpr.setExpression(innerRewrite);
 					rewrite.setLhs(unaryExpr);
 					rewrite.setRhs(factor);
 					return rewrite;
@@ -383,8 +402,8 @@ public class RoamToIntermediate {
 			if(factor == null ) {
 				return expr;
 			} else {
-				boolean isConst = RoamTransformationUtils.isConstantExpression(valExpr.getValue()) == ArithmeticExpressionType.constant ? true : false;
-				if(isConst) {
+				ArithmeticExpressionType expressionType = RoamTransformationUtils.isConstantExpression(valExpr.getValue());
+				if(expressionType  == ArithmeticExpressionType.constant || expressionType  == ArithmeticExpressionType.variableScalar) {
 					BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
 					rewrite.setOperator(operator);
 					rewrite.setLhs(valExpr);

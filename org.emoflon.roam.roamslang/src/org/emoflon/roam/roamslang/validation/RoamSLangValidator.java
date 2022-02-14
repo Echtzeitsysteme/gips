@@ -38,7 +38,6 @@ import org.emoflon.roam.roamslang.roamSLang.RoamLambdaAttributeExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamLambdaExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
 import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamMappingContext;
 import org.emoflon.roam.roamslang.roamSLang.RoamNodeAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjective;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjectiveExpression;
@@ -58,7 +57,6 @@ import org.emoflon.roam.roamslang.roamSLang.RoamStreamSetOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamSumArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamSumOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeCast;
-import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
 import org.emoflon.roam.roamslang.roamSLang.RoamUnaryArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamUnaryBoolExpr;
 
@@ -297,41 +295,54 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	 */
 	public void checkConstraintLeftRightDynamic(final RoamConstraint constraint) {
 		final RoamBoolExpr expr = constraint.getExpr().getExpr();
+
+		// Rule set:
+		// Forbidden input for non-linear mathematical functions (abs, sin, cos, sqrt,
+		// pow):
+		// * self.value()...
+		// * self.isMapped() (only for context = mapping? -> currently no ...)
+		// * mappings.xy->count/sum + exists/notExists
+
 		boolean leftDynamic = false;
 		boolean rightDynamic = false;
-		boolean isMappingContext = false;
 
-		// Get context if set
-		if (constraint.getContext() != null && constraint.getContext() instanceof RoamTypeContext) {
-			// Context is a RoamType (e.g. a class)
-			isMappingContext = false;
-		} else if (constraint.getContext() != null && constraint.getContext() instanceof RoamMappingContext) {
-			// Context is a mapping
-			isMappingContext = true;
-		} else {
-			// Context type is not known
-			throw new UnsupportedOperationException(CONSTRAINT_CONTEXT_UNKNOWN_EXCEPTION_MESSAGE);
-		}
+		// TODO: Delete old stuff
+//		boolean isMappingContext = false;
+//
+//		// Get context if set
+//		if (constraint.getContext() != null && constraint.getContext() instanceof RoamTypeContext) {
+//			// Context is a RoamType (e.g. a class)
+//			isMappingContext = false;
+//		} else if (constraint.getContext() != null && constraint.getContext() instanceof RoamMappingContext) {
+//			// Context is a mapping
+//			isMappingContext = true;
+//		} else {
+//			// Context type is not known
+//			throw new UnsupportedOperationException(CONSTRAINT_CONTEXT_UNKNOWN_EXCEPTION_MESSAGE);
+//		}
+//
+//		if (expr instanceof RoamRelExpr) {
+//			final RoamRelExpr relExpr = (RoamRelExpr) expr;
+//			leftDynamic = isDynamic(relExpr.getLeft(), isMappingContext);
+//			rightDynamic = isDynamic(relExpr.getRight(), isMappingContext);
+//		} else if (expr instanceof RoamBoolExpr) {
+//			final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
+//			leftDynamic = isDynamic(binExpr.getLeft(), isMappingContext);
+//			rightDynamic = isDynamic(binExpr.getRight(), isMappingContext);
+//		} else {
+//			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+//		}
 
 		if (expr instanceof RoamRelExpr) {
 			final RoamRelExpr relExpr = (RoamRelExpr) expr;
-			leftDynamic = isDynamic(relExpr.getLeft(), isMappingContext);
-			rightDynamic = isDynamic(relExpr.getRight(), isMappingContext);
+			leftDynamic = containsSelfValueOrMappingsCall(relExpr.getLeft());
+			rightDynamic = containsSelfValueOrMappingsCall(relExpr.getRight());
 		} else if (expr instanceof RoamBoolExpr) {
 			final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
-			leftDynamic = isDynamic(binExpr.getLeft(), isMappingContext);
-			rightDynamic = isDynamic(binExpr.getRight(), isMappingContext);
+			leftDynamic = containsSelfValueOrMappingsCall(binExpr.getLeft());
+			rightDynamic = containsSelfValueOrMappingsCall(binExpr.getRight());
 		} else {
 			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
-		}
-
-		// Generate a warning if both sides of the constraint are dynamic
-		if (leftDynamic && rightDynamic) {
-			error( //
-					CONSTRAINT_HAS_NO_CONSTANT_SIDE_MESSAGE, //
-					constraint, //
-					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR //
-			);
 		}
 
 		// Generate a warning if both sides of the constraint are constant
@@ -343,6 +354,127 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			);
 		}
 	}
+
+	public boolean containsSelfValueOrMappingsCall(final RoamBoolExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof RoamBinaryBoolExpr) {
+			final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
+			return containsSelfValueOrMappingsCall(binExpr.getLeft())
+					|| containsSelfValueOrMappingsCall(binExpr.getRight());
+		} else if (expr instanceof RoamBooleanLiteral) {
+			return false;
+		} else if (expr instanceof RoamRelExpr) {
+			final RoamRelExpr relExpr = (RoamRelExpr) expr;
+			return containsSelfValueOrMappingsCall(relExpr.getLeft())
+					|| containsSelfValueOrMappingsCall(relExpr.getRight());
+		} else if (expr instanceof RoamUnaryBoolExpr) {
+			final RoamUnaryBoolExpr unExpr = (RoamUnaryBoolExpr) expr;
+			return containsSelfValueOrMappingsCall(unExpr.getOperand());
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	public boolean containsSelfValueOrMappingsCall(final RoamArithmeticExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof RoamBracketExpr) {
+			final RoamBracketExpr bracketExpr = (RoamBracketExpr) expr;
+			return containsSelfValueOrMappingsCall(bracketExpr.getOperand());
+		} else if (expr instanceof RoamExpArithmeticExpr) {
+			final RoamExpArithmeticExpr expExpr = (RoamExpArithmeticExpr) expr;
+			final boolean dynLeft = containsSelfValueOrMappingsCall(expExpr.getLeft());
+			final boolean dynRight = containsSelfValueOrMappingsCall(expExpr.getRight());
+			if (dynLeft) {
+				error( //
+						EXP_EXPR_NOT_CONSTANT_MESSAGE, //
+						expr, //
+						RoamSLangPackage.Literals.ROAM_EXP_ARITHMETIC_EXPR__LEFT //
+				);
+			}
+			if (dynRight) {
+				error( //
+						EXP_EXPR_NOT_CONSTANT_MESSAGE, //
+						expr, //
+						RoamSLangPackage.Literals.ROAM_EXP_ARITHMETIC_EXPR__RIGHT //
+				);
+			}
+			return dynLeft || dynRight;
+		} else if (expr instanceof RoamExpressionOperand) {
+			final RoamExpressionOperand exprOp = (RoamExpressionOperand) expr;
+			if (exprOp instanceof RoamArithmeticLiteral) {
+				return false;
+			} else if (exprOp instanceof RoamAttributeExpr) {
+				if (exprOp instanceof RoamContextExpr) {
+					final RoamContextExpr conExpr = (RoamContextExpr) exprOp;
+					// TODO
+					if (conExpr.getExpr() instanceof RoamContextOperationExpression) {
+//						final RoamContextOperationExpression conOpExpr = (RoamContextOperationExpression) conExpr.getExpr();
+//						if (conOpExpr.getOperation() == RoamContextOperation.MAPPED || conOpExpr.getOperation() == RoamContextOperation.VALUE) {
+//							return true;
+//						}
+						return true;
+					} else {
+						return false;
+					}
+				} else if (exprOp instanceof RoamLambdaAttributeExpression) {
+					// TODO: Evaluate RoamLambdaAttributeExpression
+					final RoamLambdaAttributeExpression attrExpr = (RoamLambdaAttributeExpression) expr;
+					attrExpr.getExpr();
+					attrExpr.getVar();
+				} else if (exprOp instanceof RoamMappingAttributeExpr) {
+					// TODO
+					return true;
+				}
+			} else if (exprOp instanceof RoamObjectiveExpression) {
+				// This should not be possible at all
+			}
+		} else if (expr instanceof RoamProductArithmeticExpr) {
+			final RoamProductArithmeticExpr prodExpr = (RoamProductArithmeticExpr) expr;
+			final boolean dynLeft = containsSelfValueOrMappingsCall(prodExpr.getLeft());
+			final boolean dynRight = containsSelfValueOrMappingsCall(prodExpr.getRight());
+			if (dynLeft && dynRight) {
+				error( //
+						PRODUCT_EXPR_NOT_CONSTANT_MESSAGE, //
+						expr, //
+						RoamSLangPackage.Literals.ROAM_PRODUCT_ARITHMETIC_EXPR__RIGHT //
+				);
+			}
+			return dynLeft || dynRight;
+		} else if (expr instanceof RoamSumArithmeticExpr) {
+			final RoamSumArithmeticExpr sumExpr = (RoamSumArithmeticExpr) expr;
+			return containsSelfValueOrMappingsCall(sumExpr.getLeft())
+					|| containsSelfValueOrMappingsCall(sumExpr.getRight());
+		} else if (expr instanceof RoamUnaryArithmeticExpr) {
+			final RoamUnaryArithmeticExpr unExpr = (RoamUnaryArithmeticExpr) expr;
+			final boolean isDyn = containsSelfValueOrMappingsCall(unExpr.getOperand());
+			if (isDyn && unExpr.getOperator() != RoamArithmeticUnaryOperator.NEG) {
+				error( //
+						String.format(UNARY_ARITH_EXPR_NOT_CONSTANT_MESSAGE, unExpr.getOperator()), //
+						expr, //
+						RoamSLangPackage.Literals.ROAM_UNARY_ARITHMETIC_EXPR__OPERAND //
+				);
+			}
+			return isDyn;
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+//	public boolean containsMappingsCall(final RoamBoolExpr expr) {
+//		// TODO
+//		return false;
+//	}
+//
+//	public boolean containsMappingsCall(final RoamArithmeticExpr expr) {
+//		// TODO
+//		return false;
+//	}
 
 	/**
 	 * Returns true if the given boolean expression contains at least one dynamic
@@ -995,7 +1127,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 					final LeafType leftType = getEvalTypeFromNodeAttrExpr((RoamNodeAttributeExpr) leftLambda.getExpr());
 					final LeafType rightType = getEvalTypeFromArithExpr(relExpr.getRight());
 					// Type must be equal or it must be integer and double
-					if (leftType != rightType && LeafType.DOUBLE != intOrDouble(leftType, rightType)) {
+					if (relExpr.getRight() != null && leftType != rightType
+							&& LeafType.DOUBLE != intOrDouble(leftType, rightType)) {
 						error( //
 								"Type error in lambda expression.", //
 								expr, //
@@ -1011,7 +1144,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 
 		// Check return type
-		if (getEvalTypeFromBoolExpr(expr.getExpr()) != LeafType.BOOLEAN) {
+		final LeafType lambdaEval = getEvalTypeFromBoolExpr(expr.getExpr());
+		if (lambdaEval != LeafType.BOOLEAN) {
 			error( //
 					LAMBDA_EXPR_EVAL_NOT_BOOLEAN_MESSAGE, //
 					expr, //

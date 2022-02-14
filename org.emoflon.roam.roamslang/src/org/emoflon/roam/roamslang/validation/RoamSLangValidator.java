@@ -11,6 +11,7 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.xtext.validation.Check;
+import org.emoflon.ibex.gt.editor.gT.EditorNode;
 import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
 import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticLiteral;
@@ -727,16 +728,18 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	}
 
 	public LeafType getEvalTypeFromNodeAttrExpr(final RoamNodeAttributeExpr expr) {
-		expr.getNode(); // <- not optional
-		expr.getExpr(); // <- optional
-
-		// TODO: instanceof prüfen
-		// a + b
-		// $wert + $node <- Das muss verboten werden!
-
 		// Type cast must not be checked
-		// TODO: Node
-		return getEvalTypeFromFeatureExpr(expr.getExpr());
+		// If expr is not set, evaluate node itself
+		if (expr.getExpr() == null) {
+			return getEvalTypeFromEditorNode(expr.getNode());
+		} else {
+			return getEvalTypeFromFeatureExpr(expr.getExpr());
+		}
+	}
+
+	public LeafType getEvalTypeFromEditorNode(final EditorNode node) {
+		// TODO: Always an EClass?
+		return LeafType.ECLASS;
 	}
 
 	public LeafType getEvalTypeFromFeatureExpr(final RoamFeatureExpr expr) {
@@ -944,12 +947,25 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 				} else if (left instanceof RoamArithmeticLiteral) {
 					break;
 				} else {
-					throw new UnsupportedOperationException("rip");
+					throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 				}
 			}
 
 			if (left instanceof RoamLambdaAttributeExpression) {
 				final RoamLambdaAttributeExpression leftLambda = (RoamLambdaAttributeExpression) left;
+
+				if (leftLambda.getExpr() instanceof RoamNodeAttributeExpr) {
+					final LeafType leftType = getEvalTypeFromNodeAttrExpr((RoamNodeAttributeExpr) leftLambda.getExpr());
+					final LeafType rightType = getEvalTypeFromArithExpr(relExpr.getRight());
+					if (leftType != rightType) {
+						error( //
+								"Type error in lambda expression.", //
+								expr, //
+								RoamSLangPackage.Literals.ROAM_LAMBDA_EXPRESSION__EXPR //
+						);
+					}
+				}
+
 				if (leftLambda.getVar().equals(expr)) {
 					return;
 				}

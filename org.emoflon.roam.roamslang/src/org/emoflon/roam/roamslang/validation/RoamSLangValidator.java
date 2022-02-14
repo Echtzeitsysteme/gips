@@ -132,6 +132,10 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 
 	public static final String STREAM_ON_NON_COLLECTION_TYPE_MESSAGE = "Stream used on non collection type.";
 
+	public static final String EXP_EXPR_NOT_CONSTANT_MESSAGE = "Exponential expression must be constant due to ILP.";
+	public static final String PRODUCT_EXPR_NOT_CONSTANT_MESSAGE = "Product expressions can only have one dynamic sub expression due to ILP.";
+	public static final String UNARY_ARITH_EXPR_NOT_CONSTANT_MESSAGE = "Unary arithmetic expression with operator '%s' must be constant due to ILP.";
+
 	// Exception error messages
 	public static final String NOT_IMPLEMENTED_EXCEPTION_MESSAGE = "Not yet implemented";
 	public static final String CONSTRAINT_CONTEXT_UNKNOWN_EXCEPTION_MESSAGE = "Context is neither a RoamType nor a RoamMapping.";
@@ -387,7 +391,23 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return isDynamic(bracketExpr.getOperand(), isMappingContext);
 		} else if (expr instanceof RoamExpArithmeticExpr) {
 			final RoamExpArithmeticExpr expExpr = (RoamExpArithmeticExpr) expr;
-			return isDynamic(expExpr.getLeft(), isMappingContext) || isDynamic(expExpr.getRight(), isMappingContext);
+			final boolean dynLeft = isDynamic(expExpr.getLeft(), isMappingContext);
+			final boolean dynRight = isDynamic(expExpr.getRight(), isMappingContext);
+			if (dynLeft) {
+				error( //
+						EXP_EXPR_NOT_CONSTANT_MESSAGE, //
+						expr, //
+						RoamSLangPackage.Literals.ROAM_EXP_ARITHMETIC_EXPR__LEFT //
+				);
+			}
+			if (dynRight) {
+				error( //
+						EXP_EXPR_NOT_CONSTANT_MESSAGE, //
+						expr, //
+						RoamSLangPackage.Literals.ROAM_EXP_ARITHMETIC_EXPR__RIGHT //
+				);
+			}
+			return dynLeft || dynRight;
 		} else if (expr instanceof RoamExpressionOperand) {
 			final RoamExpressionOperand exprOp = (RoamExpressionOperand) expr;
 			if (exprOp instanceof RoamArithmeticLiteral) {
@@ -408,13 +428,30 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			}
 		} else if (expr instanceof RoamProductArithmeticExpr) {
 			final RoamProductArithmeticExpr prodExpr = (RoamProductArithmeticExpr) expr;
-			return isDynamic(prodExpr.getLeft(), isMappingContext) || isDynamic(prodExpr.getRight(), isMappingContext);
+			final boolean dynLeft = isDynamic(prodExpr.getLeft(), isMappingContext);
+			final boolean dynRight = isDynamic(prodExpr.getRight(), isMappingContext);
+			if (dynLeft && dynRight) {
+				error( //
+						PRODUCT_EXPR_NOT_CONSTANT_MESSAGE, //
+						expr, //
+						RoamSLangPackage.Literals.ROAM_PRODUCT_ARITHMETIC_EXPR__RIGHT //
+				);
+			}
+			return dynLeft || dynRight;
 		} else if (expr instanceof RoamSumArithmeticExpr) {
 			final RoamSumArithmeticExpr sumExpr = (RoamSumArithmeticExpr) expr;
 			return isDynamic(sumExpr.getLeft(), isMappingContext) || isDynamic(sumExpr.getRight(), isMappingContext);
 		} else if (expr instanceof RoamUnaryArithmeticExpr) {
 			final RoamUnaryArithmeticExpr unExpr = (RoamUnaryArithmeticExpr) expr;
-			return isDynamic(unExpr.getOperand(), isMappingContext);
+			final boolean isDyn = isDynamic(unExpr.getOperand(), isMappingContext);
+			if (isDyn && unExpr.getOperator() != RoamArithmeticUnaryOperator.NEG) {
+				error( //
+						String.format(UNARY_ARITH_EXPR_NOT_CONSTANT_MESSAGE, unExpr.getOperator()), //
+						expr, //
+						RoamSLangPackage.Literals.ROAM_UNARY_ARITHMETIC_EXPR__OPERAND //
+				);
+			}
+			return isDyn;
 		}
 
 		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);

@@ -994,7 +994,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 				if (leftLambda.getExpr() instanceof RoamNodeAttributeExpr) {
 					final LeafType leftType = getEvalTypeFromNodeAttrExpr((RoamNodeAttributeExpr) leftLambda.getExpr());
 					final LeafType rightType = getEvalTypeFromArithExpr(relExpr.getRight());
-					if (leftType != rightType) {
+					// Type must be equal or it must be integer and double
+					if (leftType != rightType && LeafType.DOUBLE != intOrDouble(leftType, rightType)) {
 						error( //
 								"Type error in lambda expression.", //
 								expr, //

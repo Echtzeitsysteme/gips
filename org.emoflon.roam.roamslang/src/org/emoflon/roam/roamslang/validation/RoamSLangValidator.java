@@ -238,7 +238,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 
 		checkConstraintIsLiteral(constraint);
 		checkConstraintUnique(constraint);
-		checkConstraintLeftRightDynamic(constraint);
+		validateConstraintDynamic(constraint);
 	}
 
 	/**
@@ -286,52 +286,19 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	}
 
 	/**
-	 * Checks if a constraint has at least one static side. Currently, there are two
-	 * types of constraints possible: Constraints on classes must not contain a
-	 * "mappings..." on both sides. Constraints on mappings must not contain a
-	 * "mappings..." or a "self..." on both sides.
+	 * Validates constraints regarding their dynamic parts. Currently, the following
+	 * rule set is implemented: Forbidden input for non-linear mathematical
+	 * functions (abs, sin, cos, sqrt, pow): self.value()..., self.isMapped() (only
+	 * for context = mapping? -> currently no ...), mappings.xy->count/sum +
+	 * exists/notExists
 	 * 
 	 * @param constraint Constraint to check dynamic elements for.
 	 */
-	public void checkConstraintLeftRightDynamic(final RoamConstraint constraint) {
+	public void validateConstraintDynamic(final RoamConstraint constraint) {
 		final RoamBoolExpr expr = constraint.getExpr().getExpr();
-
-		// Rule set:
-		// Forbidden input for non-linear mathematical functions (abs, sin, cos, sqrt,
-		// pow):
-		// * self.value()...
-		// * self.isMapped() (only for context = mapping? -> currently no ...)
-		// * mappings.xy->count/sum + exists/notExists
 
 		boolean leftDynamic = false;
 		boolean rightDynamic = false;
-
-		// TODO: Delete old stuff
-//		boolean isMappingContext = false;
-//
-//		// Get context if set
-//		if (constraint.getContext() != null && constraint.getContext() instanceof RoamTypeContext) {
-//			// Context is a RoamType (e.g. a class)
-//			isMappingContext = false;
-//		} else if (constraint.getContext() != null && constraint.getContext() instanceof RoamMappingContext) {
-//			// Context is a mapping
-//			isMappingContext = true;
-//		} else {
-//			// Context type is not known
-//			throw new UnsupportedOperationException(CONSTRAINT_CONTEXT_UNKNOWN_EXCEPTION_MESSAGE);
-//		}
-//
-//		if (expr instanceof RoamRelExpr) {
-//			final RoamRelExpr relExpr = (RoamRelExpr) expr;
-//			leftDynamic = isDynamic(relExpr.getLeft(), isMappingContext);
-//			rightDynamic = isDynamic(relExpr.getRight(), isMappingContext);
-//		} else if (expr instanceof RoamBoolExpr) {
-//			final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
-//			leftDynamic = isDynamic(binExpr.getLeft(), isMappingContext);
-//			rightDynamic = isDynamic(binExpr.getRight(), isMappingContext);
-//		} else {
-//			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
-//		}
 
 		if (expr instanceof RoamRelExpr) {
 			final RoamRelExpr relExpr = (RoamRelExpr) expr;
@@ -412,16 +379,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			} else if (exprOp instanceof RoamAttributeExpr) {
 				if (exprOp instanceof RoamContextExpr) {
 					final RoamContextExpr conExpr = (RoamContextExpr) exprOp;
-					// TODO
-					if (conExpr.getExpr() instanceof RoamContextOperationExpression) {
-//						final RoamContextOperationExpression conOpExpr = (RoamContextOperationExpression) conExpr.getExpr();
-//						if (conOpExpr.getOperation() == RoamContextOperation.MAPPED || conOpExpr.getOperation() == RoamContextOperation.VALUE) {
-//							return true;
-//						}
-						return true;
-					} else {
-						return false;
-					}
+					// Currently only MAPPED and VALUE are supported -> Both are dynamic
+					return conExpr.getExpr() instanceof RoamContextOperationExpression;
 				} else if (exprOp instanceof RoamLambdaAttributeExpression) {
 					// TODO: Evaluate RoamLambdaAttributeExpression
 					final RoamLambdaAttributeExpression attrExpr = (RoamLambdaAttributeExpression) expr;
@@ -453,129 +412,6 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		} else if (expr instanceof RoamUnaryArithmeticExpr) {
 			final RoamUnaryArithmeticExpr unExpr = (RoamUnaryArithmeticExpr) expr;
 			final boolean isDyn = containsSelfValueOrMappingsCall(unExpr.getOperand());
-			if (isDyn && unExpr.getOperator() != RoamArithmeticUnaryOperator.NEG) {
-				error( //
-						String.format(UNARY_ARITH_EXPR_NOT_CONSTANT_MESSAGE, unExpr.getOperator()), //
-						expr, //
-						RoamSLangPackage.Literals.ROAM_UNARY_ARITHMETIC_EXPR__OPERAND //
-				);
-			}
-			return isDyn;
-		}
-
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
-	}
-
-//	public boolean containsMappingsCall(final RoamBoolExpr expr) {
-//		// TODO
-//		return false;
-//	}
-//
-//	public boolean containsMappingsCall(final RoamArithmeticExpr expr) {
-//		// TODO
-//		return false;
-//	}
-
-	/**
-	 * Returns true if the given boolean expression contains at least one dynamic
-	 * element which would not be constant at later translate time.
-	 * 
-	 * @param expr             Boolean expression to check.
-	 * @param isMappingContext True if this method is called from a mapping context.
-	 * @return True if expression contains at least one dynamic element.
-	 */
-	public boolean isDynamic(final RoamBoolExpr expr, final boolean isMappingContext) {
-		if (expr == null) {
-			return false;
-		}
-
-		if (expr instanceof RoamBinaryBoolExpr) {
-			final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
-			return isDynamic(binExpr.getLeft(), isMappingContext) || isDynamic(binExpr.getRight(), isMappingContext);
-		} else if (expr instanceof RoamBooleanLiteral) {
-			return false;
-		} else if (expr instanceof RoamRelExpr) {
-			final RoamRelExpr relExpr = (RoamRelExpr) expr;
-			return isDynamic(relExpr.getLeft(), isMappingContext) || isDynamic(relExpr.getRight(), isMappingContext);
-		} else if (expr instanceof RoamUnaryBoolExpr) {
-			final RoamUnaryBoolExpr unExpr = (RoamUnaryBoolExpr) expr;
-			return isDynamic(unExpr.getOperand(), isMappingContext);
-		}
-
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
-	}
-
-	/**
-	 * Returns true if the given arithmetic expression contains at least one dynamic
-	 * element which would not be constant at later translate time.
-	 * 
-	 * @param expr             Arithmetic expression to check.
-	 * @param isMappingContext True if this method is called from a mapping context.
-	 * @return True if expression contains at least one dynamic element.
-	 */
-	public boolean isDynamic(final RoamArithmeticExpr expr, final boolean isMappingContext) {
-		if (expr == null) {
-			return false;
-		}
-
-		if (expr instanceof RoamBracketExpr) {
-			final RoamBracketExpr bracketExpr = (RoamBracketExpr) expr;
-			return isDynamic(bracketExpr.getOperand(), isMappingContext);
-		} else if (expr instanceof RoamExpArithmeticExpr) {
-			final RoamExpArithmeticExpr expExpr = (RoamExpArithmeticExpr) expr;
-			final boolean dynLeft = isDynamic(expExpr.getLeft(), isMappingContext);
-			final boolean dynRight = isDynamic(expExpr.getRight(), isMappingContext);
-			if (dynLeft) {
-				error( //
-						EXP_EXPR_NOT_CONSTANT_MESSAGE, //
-						expr, //
-						RoamSLangPackage.Literals.ROAM_EXP_ARITHMETIC_EXPR__LEFT //
-				);
-			}
-			if (dynRight) {
-				error( //
-						EXP_EXPR_NOT_CONSTANT_MESSAGE, //
-						expr, //
-						RoamSLangPackage.Literals.ROAM_EXP_ARITHMETIC_EXPR__RIGHT //
-				);
-			}
-			return dynLeft || dynRight;
-		} else if (expr instanceof RoamExpressionOperand) {
-			final RoamExpressionOperand exprOp = (RoamExpressionOperand) expr;
-			if (exprOp instanceof RoamArithmeticLiteral) {
-				return false;
-			} else if (exprOp instanceof RoamAttributeExpr) {
-				if (exprOp instanceof RoamContextExpr) {
-					return isMappingContext;
-				} else if (expr instanceof RoamLambdaAttributeExpression) {
-					// TODO: Evaluate RoamLambdaAttributeExpression
-					final RoamLambdaAttributeExpression attrExpr = (RoamLambdaAttributeExpression) expr;
-					attrExpr.getExpr();
-					attrExpr.getVar();
-				} else if (expr instanceof RoamMappingAttributeExpr) {
-					return true;
-				}
-			} else if (exprOp instanceof RoamObjectiveExpression) {
-				// This should not be possible at all
-			}
-		} else if (expr instanceof RoamProductArithmeticExpr) {
-			final RoamProductArithmeticExpr prodExpr = (RoamProductArithmeticExpr) expr;
-			final boolean dynLeft = isDynamic(prodExpr.getLeft(), isMappingContext);
-			final boolean dynRight = isDynamic(prodExpr.getRight(), isMappingContext);
-			if (dynLeft && dynRight) {
-				error( //
-						PRODUCT_EXPR_NOT_CONSTANT_MESSAGE, //
-						expr, //
-						RoamSLangPackage.Literals.ROAM_PRODUCT_ARITHMETIC_EXPR__RIGHT //
-				);
-			}
-			return dynLeft || dynRight;
-		} else if (expr instanceof RoamSumArithmeticExpr) {
-			final RoamSumArithmeticExpr sumExpr = (RoamSumArithmeticExpr) expr;
-			return isDynamic(sumExpr.getLeft(), isMappingContext) || isDynamic(sumExpr.getRight(), isMappingContext);
-		} else if (expr instanceof RoamUnaryArithmeticExpr) {
-			final RoamUnaryArithmeticExpr unExpr = (RoamUnaryArithmeticExpr) expr;
-			final boolean isDyn = isDynamic(unExpr.getOperand(), isMappingContext);
 			if (isDyn && unExpr.getOperator() != RoamArithmeticUnaryOperator.NEG) {
 				error( //
 						String.format(UNARY_ARITH_EXPR_NOT_CONSTANT_MESSAGE, unExpr.getOperator()), //

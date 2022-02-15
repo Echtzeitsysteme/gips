@@ -1134,6 +1134,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 					left = ((RoamUnaryArithmeticExpr) left).getOperand();
 				} else if (left instanceof RoamArithmeticLiteral) {
 					break;
+				} else if (left instanceof RoamContextExpr) {
+					break;
 				} else {
 					throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 				}

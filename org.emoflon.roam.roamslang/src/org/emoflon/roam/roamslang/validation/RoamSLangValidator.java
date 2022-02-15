@@ -100,7 +100,9 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 
 	public static final String GLOBA_OBJECTIVE_DOES_NOT_EXIST = CODE_PREFIX + "objective.global.doesNotExist";
 
-	public static final String GLOBAL_OBJECTIVE_IS_NULL = "You need to specify a global objective.";
+	public static final String GLOBAL_OBJECTIVE_IS_NULL_MESSAGE = "You need to specify a global objective.";
+	public static final String GLOBAL_OBJECTIVE_IS_OPTIONAL_MESSAGE = "The global objective is optional if no local objective is defined.";
+	public static final String GLOBAL_OBJECTIVE_DOES_NOT_CONTAIN_LOCAL_OBJECTIVE_MESSAGE = "Global objective does not contain any reference to a local objective.";
 
 	public static final String MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Mapping '%s' must not be declared '%s'.";
 	public static final String MAPPING_NAME_FORBIDDEN_MESSAGE = "Mappings cannot be be named '%s'. Use a different name.";
@@ -124,6 +126,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 
 	public static final String LAMBDA_EXPR_EVAL_NOT_BOOLEAN_MESSAGE = "Lambda expression does not evaluate to boolean.";
 	public static final String LAMBDA_EXPR_EVAL_LITERAL_MESSAGE = "Lambda expression is always '%s'.";
+	public static final String LAMBDA_EXPR_EVAL_TYPE_ERROR = "Type error in lambda expression.";
 
 	public static final String CONSTRAINT_DEFINED_MULTIPLE_TIMES_MESSAGE = "Constraint defined multiple times.";
 	public static final String CONSTRAINT_HAS_NO_CONSTANT_SIDE_MESSAGE = "Constraint has no constant side.";
@@ -141,17 +144,26 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 
 	/**
 	 * Checks if a global objective is specified in a given file. This must hold if
-	 * there is any local objective defined.
+	 * there is any local objective defined. Furthermore, it displays a warning if
+	 * the user specified a global objective but there is no local objective in the
+	 * given file.
 	 * 
 	 * @param file File to check existence of a global objective for.
 	 */
 	@Check
 	public void checkGlobalObjectiveNotNull(final EditorGTFile file) {
 		if (file.getObjectives() != null && !file.getObjectives().isEmpty() && file.getGlobalObjective() == null) {
-			error(GLOBAL_OBJECTIVE_IS_NULL, //
+			error( //
+					GLOBAL_OBJECTIVE_IS_NULL_MESSAGE, //
 					// TODO: Change scope of the warning:
 					RoamSLangPackage.Literals.EDITOR_GT_FILE__GLOBAL_OBJECTIVE, //
 					GLOBA_OBJECTIVE_DOES_NOT_EXIST //
+			);
+		} else if (file.getObjectives() != null && file.getObjectives().isEmpty()
+				&& file.getGlobalObjective() != null) {
+			warning( //
+					GLOBAL_OBJECTIVE_IS_OPTIONAL_MESSAGE, //
+					RoamSLangPackage.Literals.EDITOR_GT_FILE__GLOBAL_OBJECTIVE //
 			);
 		}
 	}
@@ -166,6 +178,53 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	public void checkGlobalObjective(final RoamGlobalObjective globObj) {
 		// Validate expression regarding dynamic uses (like self.value())
 		containsSelfValueOrMappingsCall(globObj.getExpr());
+
+		// Check if global objective contains any reference to a local objective
+		// If this is not the case, display a warning that the global objective is
+		// constant
+		if (!containsLocalObjectiveCall(globObj.getExpr())) {
+			warning( //
+					GLOBAL_OBJECTIVE_DOES_NOT_CONTAIN_LOCAL_OBJECTIVE_MESSAGE, //
+					RoamSLangPackage.Literals.ROAM_GLOBAL_OBJECTIVE__EXPR //
+			);
+		}
+	}
+
+	/**
+	 * Returns true if the given arithmetic expression contains at least one call to
+	 * a local Roam objective.
+	 * 
+	 * @param expr Roam arithmetic expression to check local objective call
+	 *             existence for.
+	 * @return True if the given arithmetic expression contains at least one call to
+	 *         a local Roam objective.
+	 */
+	public boolean containsLocalObjectiveCall(final RoamArithmeticExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof RoamBracketExpr) {
+			final RoamBracketExpr bracketExpr = (RoamBracketExpr) expr;
+			return containsLocalObjectiveCall(bracketExpr.getOperand());
+		} else if (expr instanceof RoamExpArithmeticExpr) {
+			final RoamExpArithmeticExpr expExpr = (RoamExpArithmeticExpr) expr;
+			return containsLocalObjectiveCall(expExpr.getLeft()) || containsLocalObjectiveCall(expExpr.getRight());
+		} else if (expr instanceof RoamExpressionOperand) {
+			final RoamExpressionOperand exprOp = (RoamExpressionOperand) expr;
+			return exprOp instanceof RoamObjectiveExpression;
+		} else if (expr instanceof RoamProductArithmeticExpr) {
+			final RoamProductArithmeticExpr prodExpr = (RoamProductArithmeticExpr) expr;
+			return containsLocalObjectiveCall(prodExpr.getLeft()) || containsLocalObjectiveCall(prodExpr.getRight());
+		} else if (expr instanceof RoamSumArithmeticExpr) {
+			final RoamSumArithmeticExpr sumExpr = (RoamSumArithmeticExpr) expr;
+			return containsLocalObjectiveCall(sumExpr.getLeft()) || containsLocalObjectiveCall(sumExpr.getRight());
+		} else if (expr instanceof RoamUnaryArithmeticExpr) {
+			final RoamUnaryArithmeticExpr unExpr = (RoamUnaryArithmeticExpr) expr;
+			return containsLocalObjectiveCall(unExpr.getOperand());
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	/**
@@ -992,7 +1051,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 					if (relExpr.getRight() != null && leftType != rightType
 							&& LeafType.DOUBLE != intOrDouble(leftType, rightType)) {
 						error( //
-								"Type error in lambda expression.", //
+								LAMBDA_EXPR_EVAL_TYPE_ERROR, //
 								expr, //
 								RoamSLangPackage.Literals.ROAM_LAMBDA_EXPRESSION__EXPR //
 						);

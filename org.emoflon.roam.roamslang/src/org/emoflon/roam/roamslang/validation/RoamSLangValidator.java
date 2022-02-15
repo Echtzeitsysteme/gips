@@ -128,7 +128,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 
 	public static final String LITERAL_NOT_PARSABLE_MESSAGE = "Literal is not parsable.";
 
-	public static final String LAMBDA_EXPR_EVAL_NOT_BOOLEAN_MESSAGE = "Lambda expression does not evaluate to boolean.";
+	public static final String LAMBDA_EXPR_EVAL_NOT_PRIMITIVE_MESSAGE = "Lambda expression does not evaluate to a primitve type.";
 	public static final String LAMBDA_EXPR_EVAL_LITERAL_MESSAGE = "Lambda expression is always '%s'.";
 	public static final String LAMBDA_EXPR_EVAL_TYPE_ERROR = "Type error in lambda expression.";
 
@@ -141,6 +141,9 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	public static final String EXP_EXPR_NOT_CONSTANT_MESSAGE = "Exponential expression must be constant due to ILP.";
 	public static final String PRODUCT_EXPR_NOT_CONSTANT_MESSAGE = "Product expressions can only have one dynamic sub expression due to ILP.";
 	public static final String UNARY_ARITH_EXPR_NOT_CONSTANT_MESSAGE = "Unary arithmetic expression with operator '%s' must be constant due to ILP.";
+
+	public static final String BOOL_EXPR_EVAL_ERROR_MESSAGE = "Boolean expression does not evaluate to boolean.";
+	public static final String ARITH_EXPR_EVAL_ERROR_MESSAGE = "Arithmetic expression does not evaluate to a primitive type.";
 
 	// Exception error messages
 	public static final String NOT_IMPLEMENTED_EXCEPTION_MESSAGE = "Not yet implemented";
@@ -657,7 +660,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		// If the output is not a boolean, display an error
 		if (output != LeafType.BOOLEAN && output != LeafType.ERROR) {
 			error( //
-					"Boolean expression does not evaluate to boolean.", //
+					BOOL_EXPR_EVAL_ERROR_MESSAGE, //
 					expr, //
 					RoamSLangPackage.Literals.ROAM_REL_EXPR__OPERATOR //
 			);
@@ -699,7 +702,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		// If the output is an error and this method call was a leaf, display an error
 		if (output == LeafType.ERROR && leaf && expr != null) {
 			error( //
-					"Arithmetic expression does not evaluate to a primitive type.", //
+					ARITH_EXPR_EVAL_ERROR_MESSAGE, //
 					expr, //
 					getLiteralType(expr) //
 			);
@@ -1146,11 +1149,9 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 
 		// Check return type
 		final LeafType lambdaEval = getEvalTypeFromBoolExpr(expr.getExpr());
-		// TODO: Refactor this (together with the other occurrences) into a dedicated
-		// method:
-		if (lambdaEval != LeafType.BOOLEAN && lambdaEval != LeafType.INTEGER && lambdaEval != LeafType.DOUBLE) {
+		if (!isPrimitiveType(lambdaEval)) {
 			error( //
-					LAMBDA_EXPR_EVAL_NOT_BOOLEAN_MESSAGE, //
+					LAMBDA_EXPR_EVAL_NOT_PRIMITIVE_MESSAGE, //
 					expr, //
 					RoamSLangPackage.Literals.ROAM_LAMBDA_EXPRESSION__EXPR //
 			);
@@ -1166,6 +1167,10 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 					RoamSLangPackage.Literals.ROAM_LAMBDA_EXPRESSION__EXPR //
 			);
 		}
+	}
+
+	public boolean isPrimitiveType(final LeafType input) {
+		return input == LeafType.BOOLEAN || input != LeafType.INTEGER || input != LeafType.DOUBLE;
 	}
 
 	/**

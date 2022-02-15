@@ -10,6 +10,7 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.xtext.validation.Check;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
@@ -304,12 +305,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	 */
 	@Check
 	public void checkConstraint(final RoamConstraint constraint) {
-		if (LeafType.BOOLEAN != getEvalTypeFromBoolExpr(constraint.getExpr().getExpr())) {
-			error( //
-					CONSTRAINT_EVAL_NOT_BOOLEAN_MESSAGE, //
-					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR //
-			);
-		}
+		// Trigger validation of boolean expression
+		getEvalTypeFromBoolExpr(constraint.getExpr().getExpr());
 
 		checkConstraintIsLiteral(constraint);
 		checkConstraintUnique(constraint);
@@ -633,51 +630,119 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	}
 
 	public LeafType getEvalTypeFromBoolExpr(final RoamBoolExpr expr) {
+		LeafType output = LeafType.ERROR;
+
+		// Determine output type of this expression
 		if (expr instanceof RoamBooleanLiteral) {
-			return LeafType.BOOLEAN;
+			output = LeafType.BOOLEAN;
 		} else if (expr instanceof RoamBinaryBoolExpr) {
 			final RoamBinaryBoolExpr boolExpr = (RoamBinaryBoolExpr) expr;
-			return getEvalLeftRightSideOp(boolExpr.getLeft(), boolExpr.getRight(), boolExpr.getOperator());
+			output = getEvalLeftRightSideOp(boolExpr.getLeft(), boolExpr.getRight(), boolExpr.getOperator());
 		} else if (expr instanceof RoamUnaryBoolExpr) {
 			final RoamUnaryBoolExpr boolExpr = (RoamUnaryBoolExpr) expr;
-			return getEvalLEftRightSideOp(boolExpr.getOperand(), boolExpr.getOperator());
+			output = getEvalLEftRightSideOp(boolExpr.getOperand(), boolExpr.getOperator());
 		} else if (expr instanceof RoamRelExpr) {
 			final RoamRelExpr relExpr = (RoamRelExpr) expr;
 			final LeafType leftType = getEvalTypeDelegate(relExpr.getLeft());
 			final LeafType rightType = getEvalTypeDelegate(relExpr.getRight());
-			return combine(leftType, rightType, relExpr.getOperator());
+			output = combine(leftType, rightType, relExpr.getOperator());
+
+			// Special case: expr is an instance of RoamRelExpr and the rhs is null -> skip
+			// error, because output is not necessarily a boolean
+			if (relExpr.getRight() == null) {
+				return output;
+			}
 		}
 
-		return LeafType.ERROR;
+		// If the output is not a boolean, display an error
+		if (output != LeafType.BOOLEAN && output != LeafType.ERROR) {
+			error( //
+					"Boolean expression does not evaluate to boolean.", //
+					expr, //
+					RoamSLangPackage.Literals.ROAM_REL_EXPR__OPERATOR //
+			);
+		}
+		return output;
 	}
 
 	public LeafType getEvalTypeFromArithExpr(final RoamArithmeticExpr expr) {
+		LeafType output = LeafType.ERROR;
+		boolean leaf = true;
+
 		if (expr instanceof RoamBracketExpr) {
 			final RoamBracketExpr brack = (RoamBracketExpr) expr;
-			return getEvalTypeFromArithExpr(brack.getOperand());
+			output = getEvalTypeFromArithExpr(brack.getOperand());
+			leaf = false;
 		} else if (expr instanceof RoamExpArithmeticExpr) {
 			final RoamExpArithmeticExpr exp = (RoamExpArithmeticExpr) expr;
 			final LeafType leftType = getEvalTypeDelegate(exp.getLeft());
 			final LeafType rightType = getEvalTypeDelegate(exp.getRight());
-			return combine(leftType, rightType, exp.getOperator());
+			output = combine(leftType, rightType, exp.getOperator());
 		} else if (expr instanceof RoamProductArithmeticExpr) {
 			final RoamProductArithmeticExpr prod = (RoamProductArithmeticExpr) expr;
 			final LeafType leftType = getEvalTypeDelegate(prod.getLeft());
 			final LeafType rightType = getEvalTypeDelegate(prod.getRight());
-			return combine(leftType, rightType, prod.getOperator());
+			output = combine(leftType, rightType, prod.getOperator());
 		} else if (expr instanceof RoamSumArithmeticExpr) {
 			final RoamSumArithmeticExpr sum = (RoamSumArithmeticExpr) expr;
 			final LeafType leftType = getEvalTypeDelegate(sum.getLeft());
 			final LeafType rightType = getEvalTypeDelegate(sum.getRight());
-			return combine(leftType, rightType, sum.getOperator());
+			output = combine(leftType, rightType, sum.getOperator());
 		} else if (expr instanceof RoamUnaryArithmeticExpr) {
 			final LeafType operand = getEvalTypeFromArithExpr(((RoamUnaryArithmeticExpr) expr).getOperand());
-			return combine(operand, ((RoamUnaryArithmeticExpr) expr).getOperator());
+			output = combine(operand, ((RoamUnaryArithmeticExpr) expr).getOperator());
 		} else if (expr instanceof RoamExpressionOperand) {
-			return getEvalTypeFromExprOp((RoamExpressionOperand) expr);
+			output = getEvalTypeFromExprOp((RoamExpressionOperand) expr);
+			leaf = false;
 		}
 
-		return LeafType.ERROR;
+		// If the output is an error and this method call was a leaf, display an error
+		if (output == LeafType.ERROR && leaf && expr != null) {
+			error( //
+					"Arithmetic expression does not evaluate to a primitive type.", //
+					expr, //
+					getLiteralType(expr) //
+			);
+		}
+		return output;
+	}
+
+	/**
+	 * Determines the literal type for a given EObject.
+	 * 
+	 * @param expr EObject which is an expression from Roam.
+	 * @return Literal from RoamSLangPackage.Literals.
+	 */
+	public EStructuralFeature getLiteralType(final EObject expr) {
+		EStructuralFeature type = null;
+
+		if (expr instanceof RoamBracketExpr) {
+			type = RoamSLangPackage.Literals.ROAM_BRACKET_EXPR__OPERAND;
+		} else if (expr instanceof RoamExpArithmeticExpr) {
+			type = RoamSLangPackage.Literals.ROAM_EXP_ARITHMETIC_EXPR__LEFT;
+		} else if (expr instanceof RoamProductArithmeticExpr) {
+			type = RoamSLangPackage.Literals.ROAM_PRODUCT_ARITHMETIC_EXPR__OPERATOR;
+		} else if (expr instanceof RoamSumArithmeticExpr) {
+			type = RoamSLangPackage.Literals.ROAM_SUM_ARITHMETIC_EXPR__OPERATOR;
+		} else if (expr instanceof RoamUnaryArithmeticExpr) {
+			type = RoamSLangPackage.Literals.ROAM_UNARY_ARITHMETIC_EXPR__OPERAND;
+		} else if (expr instanceof RoamExpressionOperand) {
+			if (expr instanceof RoamArithmeticLiteral) {
+				type = RoamSLangPackage.Literals.ROAM_ARITHMETIC_LITERAL__VALUE;
+			} else if (expr instanceof RoamAttributeExpr) {
+				if (expr instanceof RoamMappingAttributeExpr) {
+					type = RoamSLangPackage.Literals.ROAM_MAPPING_ATTRIBUTE_EXPR__EXPR;
+				} else if (expr instanceof RoamContextExpr) {
+					type = RoamSLangPackage.Literals.ROAM_CONTEXT_EXPR__EXPR;
+				} else if (expr instanceof RoamLambdaAttributeExpression) {
+					type = RoamSLangPackage.Literals.ROAM_LAMBDA_ATTRIBUTE_EXPRESSION__EXPR;
+				}
+			} else if (expr instanceof RoamObjectiveExpression) {
+				type = RoamSLangPackage.Literals.ROAM_OBJECTIVE_EXPRESSION__OBJECTIVE;
+			}
+		}
+
+		return type;
 	}
 
 	public LeafType getEvalTypeFromExprOp(final RoamExpressionOperand op) {
@@ -1061,6 +1126,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 				if (leftLambda.getExpr() instanceof RoamNodeAttributeExpr) {
 					final LeafType leftType = getEvalTypeFromNodeAttrExpr((RoamNodeAttributeExpr) leftLambda.getExpr());
 					final LeafType rightType = getEvalTypeFromArithExpr(relExpr.getRight());
+					// TODO: ^this causes a recursive endless loop
 					// Type must be equal or it must be integer and double
 					if (relExpr.getRight() != null && leftType != rightType
 							&& LeafType.DOUBLE != intOrDouble(leftType, rightType)) {
@@ -1080,7 +1146,9 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 
 		// Check return type
 		final LeafType lambdaEval = getEvalTypeFromBoolExpr(expr.getExpr());
-		if (lambdaEval != LeafType.BOOLEAN) {
+		// TODO: Refactor this (together with the other occurrences) into a dedicated
+		// method:
+		if (lambdaEval != LeafType.BOOLEAN && lambdaEval != LeafType.INTEGER && lambdaEval != LeafType.DOUBLE) {
 			error( //
 					LAMBDA_EXPR_EVAL_NOT_BOOLEAN_MESSAGE, //
 					expr, //

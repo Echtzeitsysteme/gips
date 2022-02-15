@@ -58,9 +58,9 @@ public class RoamCodeGenerator {
 			}
 		});
 		templates.parallelStream().forEach(template -> {
-			template.init();
-			template.generate();
 			try {
+				template.init();
+				template.generate();
 				template.writeToFile();
 			} catch (Exception e) {
 				e.printStackTrace();

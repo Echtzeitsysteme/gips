@@ -85,7 +85,7 @@ public class «className» extends RoamTypeConstraint<«context.modelType.type.n
 	def String generateComplexConstraint(ArithmeticExpression constExpr, ArithmeticExpression dynamicExpr) {
 		return '''
 @Override
-protected Double buildConstantTerm(final «context.modelType.type.name» context) {
+protected double buildConstantTerm(final «context.modelType.type.name» context) {
 	return «generateConstTermBuilder(constExpr)»;
 }
 	

@@ -85,7 +85,9 @@
         eType="#//ArithmeticExpression" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//UnaryArithmeticOperator"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SetOperation" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SetOperation" abstract="true" interface="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operandName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ArithmeticValueExpression" abstract="true"
       eSuperTypes="#//ArithmeticExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="ArithmeticValue" eSuperTypes="#//ArithmeticValueExpression">

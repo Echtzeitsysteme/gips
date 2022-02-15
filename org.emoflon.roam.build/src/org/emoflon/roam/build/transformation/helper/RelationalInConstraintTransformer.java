@@ -7,6 +7,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValueExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral;
 import org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
@@ -107,7 +108,7 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 		switch(contextOperation.getOperation()) {
 			case MAPPED -> {
 				RelationalExpression expr = factory.createRelationalExpression();
-				IntegerLiteral constOne = factory.createIntegerLiteral();
+				DoubleLiteral constOne = factory.createDoubleLiteral();
 				constOne.setLiteral(1);
 				expr.setLhs(constOne);
 				expr.setOperator(RelationalOperator.EQUAL);
@@ -142,7 +143,7 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 				}
 				case EXISTS -> {
 					RelationalExpression expr = factory.createRelationalExpression();
-					IntegerLiteral constZero = factory.createIntegerLiteral();
+					DoubleLiteral constZero = factory.createDoubleLiteral();
 					constZero.setLiteral(0);
 					expr.setLhs(constZero);
 					expr.setOperator(RelationalOperator.GREATER);
@@ -154,7 +155,7 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 				}
 				case NOTEXISTS -> {
 					RelationalExpression expr = factory.createRelationalExpression();
-					IntegerLiteral constZero = factory.createIntegerLiteral();
+					DoubleLiteral constZero = factory.createDoubleLiteral();
 					constZero.setLiteral(0);
 					expr.setLhs(constZero);
 					expr.setOperator(RelationalOperator.EQUAL);

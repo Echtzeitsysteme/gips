@@ -260,7 +260,7 @@ public class RoamToIntermediate {
 					ArithmeticExpression newLhs = rewriteToSumOfProducts(binaryExpr.getLhs(), null, null);
 					ArithmeticExpression newRhs = rewriteToSumOfProducts(binaryExpr.getRhs(), null, null);
 					binaryExpr.setLhs(newLhs);
-					binaryExpr.setLhs(newRhs);
+					binaryExpr.setRhs(newRhs);
 					return binaryExpr;
 				} else {
 					if(RoamTransformationUtils.isConstantExpression(binaryExpr.getLhs()) == ArithmeticExpressionType.constant) {
@@ -286,8 +286,35 @@ public class RoamToIntermediate {
 					return binaryExpr;
 				}
 			} else if(binaryExpr.getOperator() == BinaryArithmeticOperator.DIVIDE || binaryExpr.getOperator() == BinaryArithmeticOperator.MULTIPLY) {
-				boolean isLhsConst = RoamTransformationUtils.isConstantExpression(binaryExpr.getLhs()) == ArithmeticExpressionType.constant ? true : false;
-				boolean isRhsConst = RoamTransformationUtils.isConstantExpression(binaryExpr.getRhs()) == ArithmeticExpressionType.constant ? true : false;
+				boolean isLhsConst = switch(RoamTransformationUtils.isConstantExpression(binaryExpr.getLhs())) {
+						case constant -> {
+							yield true;
+						}
+						case variableScalar -> {
+							yield true;
+						}
+						case variableValue -> {
+							yield false;
+						}
+						case variableVector -> {
+							yield false;
+						}
+					};
+				boolean isRhsConst = switch(RoamTransformationUtils.isConstantExpression(binaryExpr.getRhs())) {
+					case constant -> {
+						yield true;
+					}
+					case variableScalar -> {
+						yield true;
+					}
+					case variableValue -> {
+						yield false;
+					}
+					case variableVector -> {
+						yield false;
+					}
+				};
+				
 				if(!isLhsConst && !isRhsConst) {
 					throw new IllegalArgumentException("A product may not contain more than one mapping expression.");
 				}

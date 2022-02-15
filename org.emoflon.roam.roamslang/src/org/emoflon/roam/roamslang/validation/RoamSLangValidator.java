@@ -360,6 +360,9 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 	}
 
+	// TODO: Das andere was ich gemerkt habe ist auch, dass du keine mapping.value()
+	// ausdrücke in den Arithmetischen Ausdrück innerhalb von sum() haben darfst,
+	// wenn du bereits in der Filterfunktion auf mappings zugreifst.
 	/**
 	 * Validates constraints regarding their dynamic parts. Currently, the following
 	 * rule set is implemented: Forbidden input for non-linear mathematical
@@ -656,9 +659,21 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			if (relExpr.getRight() == null && !(expr.eContainer() instanceof RoamBool)) {
 				return output;
 			}
+
+			// Special case: If sub types did not return an error but the combination
+			// produced an error, we have to generate an error
+			if (output == LeafType.ERROR && leftType != LeafType.ERROR && rightType != LeafType.ERROR) {
+				error( //
+						BOOL_EXPR_EVAL_ERROR_MESSAGE, //
+						expr, //
+						RoamSLangPackage.Literals.ROAM_REL_EXPR__OPERATOR //
+				);
+				return output;
+			}
 		}
 
-		// If the output is not a boolean, display an error
+		// If the output is not a boolean, display an error but only if the output isn't
+		// an error
 		if (output != LeafType.BOOLEAN && output != LeafType.ERROR) {
 			error( //
 					BOOL_EXPR_EVAL_ERROR_MESSAGE, //

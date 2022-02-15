@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -58,6 +59,7 @@ import org.emoflon.roam.roamslang.roamSLang.RoamStreamSetOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamSumArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamSumOperator;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeCast;
+import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
 import org.emoflon.roam.roamslang.roamSLang.RoamUnaryArithmeticExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamUnaryBoolExpr;
 
@@ -121,6 +123,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	public static final String CONSTRAINT_EVAL_LITERAL_MESSAGE = "Constraint is always '%s'.";
 
 	public static final String OBJECTIVE_EVAL_NOT_NUMBER_MESSAGE = "Objective does not evaluate to an integer or double.";
+	public static final String OBJECTIVE_CONTEXT_CLASS_MESSAGE = "Objectives can not have a class as context.";
 
 	public static final String LITERAL_NOT_PARSABLE_MESSAGE = "Literal is not parsable.";
 
@@ -509,6 +512,17 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		checkObjectiveNameUnique(objective);
 		checkObjectiveIsNotUseless(objective);
 		validateObjectiveExprForm(objective);
+
+		// Objective must not be defined on a class
+		if (objective.getContext() instanceof RoamTypeContext) {
+			final RoamTypeContext cont = (RoamTypeContext) objective.getContext();
+			if (cont.getType() instanceof EClass) {
+				error( //
+						OBJECTIVE_CONTEXT_CLASS_MESSAGE, //
+						RoamSLangPackage.Literals.ROAM_OBJECTIVE__CONTEXT //
+				);
+			}
+		}
 
 		final LeafType eval = getEvalTypeFromArithExpr(objective.getExpr());
 		if (eval != LeafType.INTEGER && eval != LeafType.DOUBLE) {

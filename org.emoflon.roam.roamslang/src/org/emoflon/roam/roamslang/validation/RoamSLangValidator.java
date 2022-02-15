@@ -650,9 +650,10 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			final LeafType rightType = getEvalTypeDelegate(relExpr.getRight());
 			output = combine(leftType, rightType, relExpr.getOperator());
 
-			// Special case: expr is an instance of RoamRelExpr and the rhs is null -> skip
-			// error, because output is not necessarily a boolean
-			if (relExpr.getRight() == null) {
+			// Special case: expr is an instance of RoamRelExpr, the rhs is null, and the
+			// container is not directly the constraint -> skip error, because output is not
+			// necessarily a boolean
+			if (relExpr.getRight() == null && !(expr.eContainer() instanceof RoamBool)) {
 				return output;
 			}
 		}
@@ -700,7 +701,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 
 		// If the output is an error and this method call was a leaf, display an error
-		if (output == LeafType.ERROR && leaf && expr != null) {
+		if (output != null && output == LeafType.ERROR && leaf && expr != null) {
 			error( //
 					ARITH_EXPR_EVAL_ERROR_MESSAGE, //
 					expr, //
@@ -1131,7 +1132,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 					final LeafType rightType = getEvalTypeFromArithExpr(relExpr.getRight());
 					// TODO: ^this causes a recursive endless loop
 					// Type must be equal or it must be integer and double
-					if (relExpr.getRight() != null && leftType != rightType
+					if (relExpr.getRight() != null && rightType != null && leftType != rightType
 							&& LeafType.DOUBLE != intOrDouble(leftType, rightType)) {
 						error( //
 								LAMBDA_EXPR_EVAL_TYPE_ERROR, //

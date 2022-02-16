@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.emoflon.roam.core.RoamEngine;
+import org.emoflon.roam.core.RoamMapper;
 import org.emoflon.roam.core.RoamMapping;
 import org.emoflon.roam.core.RoamMappingConstraint;
 import org.emoflon.roam.core.RoamMappingObjective;
@@ -15,6 +16,7 @@ import org.emoflon.roam.core.RoamTypeObjective;
 import org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator;
 
 import gurobi.GRB;
+import gurobi.GRB.DoubleAttr;
 import gurobi.GRB.DoubleParam;
 import gurobi.GRB.IntParam;
 import gurobi.GRBEnv;
@@ -78,7 +80,23 @@ public class GurobiSolver extends ILPSolver {
 
 	@Override
 	public void updateValuesFromSolution() {
-		// TODO Auto-generated method stub
+		// Iterate over all mappers
+		for (final String key : engine.getMappers().keySet()) {
+			final RoamMapper<?> mapper = engine.getMapper(key);
+			// Iterate over all mappings of each mapper
+			for (final String k : mapper.getMappings().keySet()) {
+				// Get corresponding ILP variable name
+				final String varName = mapper.getMapping(k).ilpVariable;
+				try {
+					// Get value of the ILP variable and round it (to eliminate small deltas)
+					double result = Math.round(getVar(varName).get(DoubleAttr.X));
+					// Save result value in specific mapping
+					mapper.getMapping(k).setValue((int) result);
+				} catch (final GRBException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 
 		// TODO: Dispose model and environment after solution update?
 		model.dispose();

@@ -80,32 +80,40 @@ public class GurobiSolver extends ILPSolver {
 	public void updateValuesFromSolution() {
 		// TODO Auto-generated method stub
 
-		// TODO: Free model after solution update?
+		// TODO: Dispose model and environment after solution update?
+		model.dispose();
+		try {
+			env.dispose();
+		} catch (final GRBException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
-	protected void translateMapping(RoamMapping mapping) {
-		// TODO Auto-generated method stub
-
+	protected void translateMapping(final RoamMapping mapping) {
+		// Add a binary variable with corresponding name for the mapping
+		createOrGetBinVar(mapping.ilpVariable);
 	}
 
 	@Override
-	protected void translateConstraint(RoamMappingConstraint constraint) {
+	protected void translateConstraint(final RoamMappingConstraint constraint) {
 		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
 	}
 
 	@Override
-	protected void translateConstraint(RoamTypeConstraint constraint) {
+	protected void translateConstraint(final RoamTypeConstraint constraint) {
 		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
 	}
 
 	@Override
-	protected void translateObjective(RoamMappingObjective objective) {
+	protected void translateObjective(final RoamMappingObjective objective) {
+		// TODO: Add global weight
 		addToObj(objective);
 	}
 
 	@Override
-	protected void translateObjective(RoamTypeObjective objective) {
+	protected void translateObjective(final RoamTypeObjective objective) {
+		// TODO: Add global weight
 		addToObj(objective);
 	}
 
@@ -142,13 +150,7 @@ public class GurobiSolver extends ILPSolver {
 
 			// Add each term to the GRB linear expression
 			curr.terms().forEach(t -> {
-				try {
-					final GRBVar var = model.addVar(0.0, 1.0, 0.0, GRB.BINARY, t.variable().getName());
-					grbLinExpr.addTerm(t.weight(), var);
-					grbVars.put(t.variable().getName(), var);
-				} catch (final GRBException e) {
-					throw new UnsupportedOperationException(e);
-				}
+				grbLinExpr.addTerm(t.weight(), createOrGetBinVar(t.variable().getName()));
 			});
 
 			// Add current constructed constraint to the GRB model
@@ -212,7 +214,7 @@ public class GurobiSolver extends ILPSolver {
 
 		final List<ILPTerm<Integer, Double>> terms = objective.getObjectiveFunction().terms();
 		terms.forEach(t -> {
-			obj.addTerm(t.weight(), getVar(t.variable().getName()));
+			obj.addTerm(t.weight(), createOrGetBinVar(t.variable().getName()));
 		});
 	}
 
@@ -231,6 +233,27 @@ public class GurobiSolver extends ILPSolver {
 			return model.getVarByName(name);
 		} catch (final GRBException e) {
 			return null;
+		}
+	}
+
+	/**
+	 * Creates a new binary Gurobi variable for a given name if it does not exist
+	 * already. If it exists, the method returns the already existing variable.
+	 * 
+	 * @param name Name to create new binary Gurobi variable for.
+	 * @return New binary Gurobi variable.
+	 */
+	private GRBVar createOrGetBinVar(final String name) {
+		if (getVar(name) != null) {
+			return getVar(name);
+		} else {
+			try {
+				final GRBVar var = model.addVar(0.0, 1.0, 0.0, GRB.BINARY, name);
+				grbVars.put(name, var);
+				return var;
+			} catch (final GRBException e) {
+				throw new UnsupportedOperationException(e);
+			}
 		}
 	}
 

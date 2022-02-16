@@ -1,12 +1,15 @@
 package org.emoflon.roam.core.ilp;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.emoflon.roam.core.RoamEngine;
 import org.emoflon.roam.core.RoamMapping;
 import org.emoflon.roam.core.RoamMappingConstraint;
 import org.emoflon.roam.core.RoamMappingObjective;
+import org.emoflon.roam.core.RoamObjective;
 import org.emoflon.roam.core.RoamTypeConstraint;
 import org.emoflon.roam.core.RoamTypeObjective;
 import org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator;
@@ -32,6 +35,17 @@ public class GurobiSolver extends ILPSolver {
 	 */
 	private GRBModel model;
 
+	/**
+	 * Look-up data structure to speed-up the variable look-up.
+	 */
+	private final HashMap<String, GRBVar> grbVars = new HashMap<String, GRBVar>();
+
+	/**
+	 * Global objective expression that will be constructed while executing
+	 * 'translateObjective(...)'.
+	 */
+	private GRBLinExpr obj;
+
 	public GurobiSolver(final RoamEngine engine, final ILPSolverConfig config) throws Exception {
 		super(engine);
 		env = new GRBEnv("Gurobi_ILP.log");
@@ -49,6 +63,10 @@ public class GurobiSolver extends ILPSolver {
 	@Override
 	public void solve() {
 		try {
+			// Finish setup
+			model.setObjective(obj);
+
+			// Solving starts here
 			model.update();
 			// TODO: Set optimality tolerance here
 			model.optimize();
@@ -83,14 +101,12 @@ public class GurobiSolver extends ILPSolver {
 
 	@Override
 	protected void translateObjective(RoamMappingObjective objective) {
-		// TODO Auto-generated method stub
-
+		addToObj(objective);
 	}
 
 	@Override
 	protected void translateObjective(RoamTypeObjective objective) {
-		// TODO Auto-generated method stub
-
+		addToObj(objective);
 	}
 
 	//
@@ -129,6 +145,7 @@ public class GurobiSolver extends ILPSolver {
 				try {
 					final GRBVar var = model.addVar(0.0, 1.0, 0.0, GRB.BINARY, t.variable().getName());
 					grbLinExpr.addTerm(t.weight(), var);
+					grbVars.put(t.variable().getName(), var);
 				} catch (final GRBException e) {
 					throw new UnsupportedOperationException(e);
 				}
@@ -182,6 +199,48 @@ public class GurobiSolver extends ILPSolver {
 		// related to numerical tolerances.
 		//
 		// https://www.gurobi.com/documentation/9.5/refman/constraints.html
+	}
+
+	/**
+	 * Adds the terms with their weights from a given Roam objective to the global
+	 * objective.
+	 * 
+	 * @param objective Roam objective to add to the global objective.
+	 */
+	private void addToObj(final RoamObjective<?, ?, Integer> objective) {
+		initObjIfNull();
+
+		final List<ILPTerm<Integer, Double>> terms = objective.getObjectiveFunction().terms();
+		terms.forEach(t -> {
+			obj.addTerm(t.weight(), getVar(t.variable().getName()));
+		});
+	}
+
+	/**
+	 * Returns the corresponding GRBVar for a given name.
+	 * 
+	 * @param name Name to search variable for.
+	 * @return GBRVar for a given name.
+	 */
+	private GRBVar getVar(final String name) {
+		if (grbVars.containsKey(name)) {
+			return grbVars.get(name);
+		}
+
+		try {
+			return model.getVarByName(name);
+		} catch (final GRBException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Initializes the global objective (GRBExpr) if it is null.
+	 */
+	private void initObjIfNull() {
+		if (this.obj == null) {
+			this.obj = new GRBLinExpr();
+		}
 	}
 
 }

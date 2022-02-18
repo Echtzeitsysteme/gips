@@ -19,6 +19,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="VariableSet" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Pattern" eSuperTypes="#//VariableSet">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" lowerBound="1"
+        eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXContext"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Type" eSuperTypes="#//VariableSet">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
   </eClassifiers>
@@ -47,6 +51,9 @@
     <eLiterals name="MAX" value="1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Context" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternConstraint" eSuperTypes="#//Context #//Constraint">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" eType="#//Pattern"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TypeConstraint" eSuperTypes="#//Context #//Constraint">
     <eStructuralFeatures xsi:type="ecore:EReference" name="modelType" eType="#//Type"/>
   </eClassifiers>
@@ -54,12 +61,15 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" lowerBound="1"
         eType="#//Mapping"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="MappingObjective" eSuperTypes="#//Context #//Objective">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" lowerBound="1"
-        eType="#//Mapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternObjective" eSuperTypes="#//Context #//Objective">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" eType="#//Pattern"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TypeObjective" eSuperTypes="#//Context #//Objective">
     <eStructuralFeatures xsi:type="ecore:EReference" name="modelType" eType="#//Type"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MappingObjective" eSuperTypes="#//Context #//Objective">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" lowerBound="1"
+        eType="#//Mapping"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="RelationalOperator">
     <eLiterals name="Less"/>
@@ -182,13 +192,20 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="#//Type"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContextTypeValue" eSuperTypes="#//ValueExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="typeContext" eType="#//TypeConstraint"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeContext" eType="#//Type"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContextPatternValue" eSuperTypes="#//ValueExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="patternContext" eType="#//Pattern"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContextPatternNode" eSuperTypes="#//ValueExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="patternContext" eType="#//Pattern"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXNode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContextMappingValue" eSuperTypes="#//ValueExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//MappingConstraint"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//Mapping"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContextMappingNode" eSuperTypes="#//ValueExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//MappingConstraint"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//Mapping"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXNode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ObjectiveFunctionValue" eSuperTypes="#//ValueExpression">
@@ -208,12 +225,32 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="featureExpression" eType="#//FeatureExpression"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContextPatternNodeFeatureValue" eSuperTypes="#//ContextPatternNode">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureExpression" eType="#//FeatureExpression"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContextMappingNodeFeatureValue" eSuperTypes="#//ContextMappingNode">
     <eStructuralFeatures xsi:type="ecore:EReference" name="featureExpression" eType="#//FeatureExpression"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Iterator" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="stream" eType="#//SetOperation"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IteratorPatternValue" eSuperTypes="#//ValueExpression #//Iterator">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="patternContext" eType="#//Pattern"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IteratorPatternFeatureValue" eSuperTypes="#//ValueExpression #//Iterator">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="patternContext" eType="#//Pattern"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureExpression" eType="#//FeatureExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IteratorPatternNodeValue" eSuperTypes="#//ValueExpression #//Iterator">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="patternContext" eType="#//Pattern"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXNode"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IteratorPatternNodeFeatureValue" eSuperTypes="#//IteratorPatternNodeValue">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureExpression" eType="#//FeatureExpression"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IteratorMappingValue" eSuperTypes="#//ValueExpression #//Iterator">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//Mapping"/>

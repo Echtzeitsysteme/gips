@@ -9,40 +9,40 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.Pattern;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Context Mapping Value</b></em>'.
+ * An implementation of the model object '<em><b>Context Pattern Value</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingValueImpl#getMappingContext <em>Mapping Context</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextPatternValueImpl#getPatternContext <em>Pattern Context</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ContextMappingValueImpl extends ValueExpressionImpl implements ContextMappingValue {
+public class ContextPatternValueImpl extends ValueExpressionImpl implements ContextPatternValue {
 	/**
-	 * The cached value of the '{@link #getMappingContext() <em>Mapping Context</em>}' reference.
+	 * The cached value of the '{@link #getPatternContext() <em>Pattern Context</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getMappingContext()
+	 * @see #getPatternContext()
 	 * @generated
 	 * @ordered
 	 */
-	protected Mapping mappingContext;
+	protected Pattern patternContext;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ContextMappingValueImpl() {
+	protected ContextPatternValueImpl() {
 		super();
 	}
 
@@ -53,7 +53,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.CONTEXT_MAPPING_VALUE;
+		return RoamIntermediatePackage.Literals.CONTEXT_PATTERN_VALUE;
 	}
 
 	/**
@@ -61,18 +61,18 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Mapping getMappingContext() {
-		if (mappingContext != null && mappingContext.eIsProxy()) {
-			InternalEObject oldMappingContext = (InternalEObject) mappingContext;
-			mappingContext = (Mapping) eResolveProxy(oldMappingContext);
-			if (mappingContext != oldMappingContext) {
+	public Pattern getPatternContext() {
+		if (patternContext != null && patternContext.eIsProxy()) {
+			InternalEObject oldPatternContext = (InternalEObject) patternContext;
+			patternContext = (Pattern) eResolveProxy(oldPatternContext);
+			if (patternContext != oldPatternContext) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT, oldMappingContext,
-							mappingContext));
+							RoamIntermediatePackage.CONTEXT_PATTERN_VALUE__PATTERN_CONTEXT, oldPatternContext,
+							patternContext));
 			}
 		}
-		return mappingContext;
+		return patternContext;
 	}
 
 	/**
@@ -80,8 +80,8 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Mapping basicGetMappingContext() {
-		return mappingContext;
+	public Pattern basicGetPatternContext() {
+		return patternContext;
 	}
 
 	/**
@@ -89,12 +89,12 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMappingContext(Mapping newMappingContext) {
-		Mapping oldMappingContext = mappingContext;
-		mappingContext = newMappingContext;
+	public void setPatternContext(Pattern newPatternContext) {
+		Pattern oldPatternContext = patternContext;
+		patternContext = newPatternContext;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT, oldMappingContext, mappingContext));
+					RoamIntermediatePackage.CONTEXT_PATTERN_VALUE__PATTERN_CONTEXT, oldPatternContext, patternContext));
 	}
 
 	/**
@@ -105,10 +105,10 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT:
+		case RoamIntermediatePackage.CONTEXT_PATTERN_VALUE__PATTERN_CONTEXT:
 			if (resolve)
-				return getMappingContext();
-			return basicGetMappingContext();
+				return getPatternContext();
+			return basicGetPatternContext();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -121,8 +121,8 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT:
-			setMappingContext((Mapping) newValue);
+		case RoamIntermediatePackage.CONTEXT_PATTERN_VALUE__PATTERN_CONTEXT:
+			setPatternContext((Pattern) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -136,8 +136,8 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT:
-			setMappingContext((Mapping) null);
+		case RoamIntermediatePackage.CONTEXT_PATTERN_VALUE__PATTERN_CONTEXT:
+			setPatternContext((Pattern) null);
 			return;
 		}
 		super.eUnset(featureID);
@@ -151,10 +151,10 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT:
-			return mappingContext != null;
+		case RoamIntermediatePackage.CONTEXT_PATTERN_VALUE__PATTERN_CONTEXT:
+			return patternContext != null;
 		}
 		return super.eIsSet(featureID);
 	}
 
-} //ContextMappingValueImpl
+} //ContextPatternValueImpl

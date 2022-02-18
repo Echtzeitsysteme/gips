@@ -117,7 +117,7 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 				ContextMappingValue mapVal = factory.createContextMappingValue();
 				val.setValue(mapVal);
 				val.setReturnType(EcorePackage.Literals.EINT);
-				mapVal.setMappingContext((MappingConstraint) context);
+				mapVal.setMappingContext(((MappingConstraint) context).getMapping());
 				return expr;
 			}
 			case VALUE -> {

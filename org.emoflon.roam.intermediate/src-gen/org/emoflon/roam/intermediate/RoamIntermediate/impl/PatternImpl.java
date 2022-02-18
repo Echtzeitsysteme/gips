@@ -9,40 +9,41 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue;
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
+
+import org.emoflon.roam.intermediate.RoamIntermediate.Pattern;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.Type;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Context Type Value</b></em>'.
+ * An implementation of the model object '<em><b>Pattern</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextTypeValueImpl#getTypeContext <em>Type Context</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternImpl#getPattern <em>Pattern</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ContextTypeValueImpl extends ValueExpressionImpl implements ContextTypeValue {
+public class PatternImpl extends VariableSetImpl implements Pattern {
 	/**
-	 * The cached value of the '{@link #getTypeContext() <em>Type Context</em>}' reference.
+	 * The cached value of the '{@link #getPattern() <em>Pattern</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getTypeContext()
+	 * @see #getPattern()
 	 * @generated
 	 * @ordered
 	 */
-	protected Type typeContext;
+	protected IBeXContext pattern;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ContextTypeValueImpl() {
+	protected PatternImpl() {
 		super();
 	}
 
@@ -53,7 +54,7 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.CONTEXT_TYPE_VALUE;
+		return RoamIntermediatePackage.Literals.PATTERN;
 	}
 
 	/**
@@ -61,17 +62,17 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Type getTypeContext() {
-		if (typeContext != null && typeContext.eIsProxy()) {
-			InternalEObject oldTypeContext = (InternalEObject) typeContext;
-			typeContext = (Type) eResolveProxy(oldTypeContext);
-			if (typeContext != oldTypeContext) {
+	public IBeXContext getPattern() {
+		if (pattern != null && pattern.eIsProxy()) {
+			InternalEObject oldPattern = (InternalEObject) pattern;
+			pattern = (IBeXContext) eResolveProxy(oldPattern);
+			if (pattern != oldPattern) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT, oldTypeContext, typeContext));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, RoamIntermediatePackage.PATTERN__PATTERN,
+							oldPattern, pattern));
 			}
 		}
-		return typeContext;
+		return pattern;
 	}
 
 	/**
@@ -79,8 +80,8 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Type basicGetTypeContext() {
-		return typeContext;
+	public IBeXContext basicGetPattern() {
+		return pattern;
 	}
 
 	/**
@@ -88,12 +89,12 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setTypeContext(Type newTypeContext) {
-		Type oldTypeContext = typeContext;
-		typeContext = newTypeContext;
+	public void setPattern(IBeXContext newPattern) {
+		IBeXContext oldPattern = pattern;
+		pattern = newPattern;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT, oldTypeContext, typeContext));
+			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.PATTERN__PATTERN, oldPattern,
+					pattern));
 	}
 
 	/**
@@ -104,10 +105,10 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT:
+		case RoamIntermediatePackage.PATTERN__PATTERN:
 			if (resolve)
-				return getTypeContext();
-			return basicGetTypeContext();
+				return getPattern();
+			return basicGetPattern();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -120,8 +121,8 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT:
-			setTypeContext((Type) newValue);
+		case RoamIntermediatePackage.PATTERN__PATTERN:
+			setPattern((IBeXContext) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -135,8 +136,8 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT:
-			setTypeContext((Type) null);
+		case RoamIntermediatePackage.PATTERN__PATTERN:
+			setPattern((IBeXContext) null);
 			return;
 		}
 		super.eUnset(featureID);
@@ -150,10 +151,10 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT:
-			return typeContext != null;
+		case RoamIntermediatePackage.PATTERN__PATTERN:
+			return pattern != null;
 		}
 		return super.eIsSet(featureID);
 	}
 
-} //ContextTypeValueImpl
+} //PatternImpl

@@ -11,34 +11,34 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode;
-import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode;
+import org.emoflon.roam.intermediate.RoamIntermediate.Pattern;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Context Mapping Node</b></em>'.
+ * An implementation of the model object '<em><b>Context Pattern Node</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingNodeImpl#getMappingContext <em>Mapping Context</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingNodeImpl#getNode <em>Node</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextPatternNodeImpl#getPatternContext <em>Pattern Context</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextPatternNodeImpl#getNode <em>Node</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ContextMappingNodeImpl extends ValueExpressionImpl implements ContextMappingNode {
+public class ContextPatternNodeImpl extends ValueExpressionImpl implements ContextPatternNode {
 	/**
-	 * The cached value of the '{@link #getMappingContext() <em>Mapping Context</em>}' reference.
+	 * The cached value of the '{@link #getPatternContext() <em>Pattern Context</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getMappingContext()
+	 * @see #getPatternContext()
 	 * @generated
 	 * @ordered
 	 */
-	protected Mapping mappingContext;
+	protected Pattern patternContext;
 
 	/**
 	 * The cached value of the '{@link #getNode() <em>Node</em>}' reference.
@@ -55,7 +55,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ContextMappingNodeImpl() {
+	protected ContextPatternNodeImpl() {
 		super();
 	}
 
@@ -66,7 +66,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.CONTEXT_MAPPING_NODE;
+		return RoamIntermediatePackage.Literals.CONTEXT_PATTERN_NODE;
 	}
 
 	/**
@@ -74,18 +74,18 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Mapping getMappingContext() {
-		if (mappingContext != null && mappingContext.eIsProxy()) {
-			InternalEObject oldMappingContext = (InternalEObject) mappingContext;
-			mappingContext = (Mapping) eResolveProxy(oldMappingContext);
-			if (mappingContext != oldMappingContext) {
+	public Pattern getPatternContext() {
+		if (patternContext != null && patternContext.eIsProxy()) {
+			InternalEObject oldPatternContext = (InternalEObject) patternContext;
+			patternContext = (Pattern) eResolveProxy(oldPatternContext);
+			if (patternContext != oldPatternContext) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.CONTEXT_MAPPING_NODE__MAPPING_CONTEXT, oldMappingContext,
-							mappingContext));
+							RoamIntermediatePackage.CONTEXT_PATTERN_NODE__PATTERN_CONTEXT, oldPatternContext,
+							patternContext));
 			}
 		}
-		return mappingContext;
+		return patternContext;
 	}
 
 	/**
@@ -93,8 +93,8 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Mapping basicGetMappingContext() {
-		return mappingContext;
+	public Pattern basicGetPatternContext() {
+		return patternContext;
 	}
 
 	/**
@@ -102,12 +102,12 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMappingContext(Mapping newMappingContext) {
-		Mapping oldMappingContext = mappingContext;
-		mappingContext = newMappingContext;
+	public void setPatternContext(Pattern newPatternContext) {
+		Pattern oldPatternContext = patternContext;
+		patternContext = newPatternContext;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.CONTEXT_MAPPING_NODE__MAPPING_CONTEXT, oldMappingContext, mappingContext));
+					RoamIntermediatePackage.CONTEXT_PATTERN_NODE__PATTERN_CONTEXT, oldPatternContext, patternContext));
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 			if (node != oldNode) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.CONTEXT_MAPPING_NODE__NODE, oldNode, node));
+							RoamIntermediatePackage.CONTEXT_PATTERN_NODE__NODE, oldNode, node));
 			}
 		}
 		return node;
@@ -146,7 +146,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 		IBeXNode oldNode = node;
 		node = newNode;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.CONTEXT_MAPPING_NODE__NODE,
+			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.CONTEXT_PATTERN_NODE__NODE,
 					oldNode, node));
 	}
 
@@ -158,11 +158,11 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE__MAPPING_CONTEXT:
+		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE__PATTERN_CONTEXT:
 			if (resolve)
-				return getMappingContext();
-			return basicGetMappingContext();
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE__NODE:
+				return getPatternContext();
+			return basicGetPatternContext();
+		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE__NODE:
 			if (resolve)
 				return getNode();
 			return basicGetNode();
@@ -178,10 +178,10 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE__MAPPING_CONTEXT:
-			setMappingContext((Mapping) newValue);
+		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE__PATTERN_CONTEXT:
+			setPatternContext((Pattern) newValue);
 			return;
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE__NODE:
+		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE__NODE:
 			setNode((IBeXNode) newValue);
 			return;
 		}
@@ -196,10 +196,10 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE__MAPPING_CONTEXT:
-			setMappingContext((Mapping) null);
+		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE__PATTERN_CONTEXT:
+			setPatternContext((Pattern) null);
 			return;
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE__NODE:
+		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE__NODE:
 			setNode((IBeXNode) null);
 			return;
 		}
@@ -214,12 +214,12 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE__MAPPING_CONTEXT:
-			return mappingContext != null;
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE__NODE:
+		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE__PATTERN_CONTEXT:
+			return patternContext != null;
+		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE__NODE:
 			return node != null;
 		}
 		return super.eIsSet(featureID);
 	}
 
-} //ContextMappingNodeImpl
+} //ContextPatternNodeImpl

@@ -31,6 +31,9 @@ import org.emoflon.roam.intermediate.RoamIntermediate.Context;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode;
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral;
@@ -43,6 +46,10 @@ import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValu
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
@@ -52,6 +59,9 @@ import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
 import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget;
+import org.emoflon.roam.intermediate.RoamIntermediate.Pattern;
+import org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective;
 import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateFactory;
@@ -101,6 +111,13 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass patternEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass typeEClass = null;
 
 	/**
@@ -143,6 +160,13 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass patternConstraintEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass typeConstraintEClass = null;
 
 	/**
@@ -151,6 +175,13 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * @generated
 	 */
 	private EClass mappingConstraintEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass patternObjectiveEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -325,6 +356,20 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass contextPatternValueEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass contextPatternNodeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass contextMappingValueEClass = null;
 
 	/**
@@ -367,6 +412,13 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass contextPatternNodeFeatureValueEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass contextMappingNodeFeatureValueEClass = null;
 
 	/**
@@ -375,6 +427,34 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * @generated
 	 */
 	private EClass iteratorEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iteratorPatternValueEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iteratorPatternFeatureValueEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iteratorPatternNodeValueEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iteratorPatternNodeFeatureValueEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -655,6 +735,24 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getPattern() {
+		return patternEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getPattern_Pattern() {
+		return (EReference) patternEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getType() {
 		return typeEClass;
 	}
@@ -799,6 +897,24 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getPatternConstraint() {
+		return patternConstraintEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getPatternConstraint_Pattern() {
+		return (EReference) patternConstraintEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getTypeConstraint() {
 		return typeConstraintEClass;
 	}
@@ -828,6 +944,24 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 */
 	public EReference getMappingConstraint_Mapping() {
 		return (EReference) mappingConstraintEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getPatternObjective() {
+		return patternObjectiveEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getPatternObjective_Pattern() {
+		return (EReference) patternObjectiveEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -954,6 +1088,15 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 */
 	public EClass getSetOperation() {
 		return setOperationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getSetOperation_OperandName() {
+		return (EAttribute) setOperationEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -1312,6 +1455,51 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getContextPatternValue() {
+		return contextPatternValueEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getContextPatternValue_PatternContext() {
+		return (EReference) contextPatternValueEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getContextPatternNode() {
+		return contextPatternNodeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getContextPatternNode_PatternContext() {
+		return (EReference) contextPatternNodeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getContextPatternNode_Node() {
+		return (EReference) contextPatternNodeEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getContextMappingValue() {
 		return contextMappingValueEClass;
 	}
@@ -1438,6 +1626,24 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getContextPatternNodeFeatureValue() {
+		return contextPatternNodeFeatureValueEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getContextPatternNodeFeatureValue_FeatureExpression() {
+		return (EReference) contextPatternNodeFeatureValueEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getContextMappingNodeFeatureValue() {
 		return contextMappingNodeFeatureValueEClass;
 	}
@@ -1467,6 +1673,96 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 */
 	public EReference getIterator_Stream() {
 		return (EReference) iteratorEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getIteratorPatternValue() {
+		return iteratorPatternValueEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getIteratorPatternValue_PatternContext() {
+		return (EReference) iteratorPatternValueEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getIteratorPatternFeatureValue() {
+		return iteratorPatternFeatureValueEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getIteratorPatternFeatureValue_PatternContext() {
+		return (EReference) iteratorPatternFeatureValueEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getIteratorPatternFeatureValue_FeatureExpression() {
+		return (EReference) iteratorPatternFeatureValueEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getIteratorPatternNodeValue() {
+		return iteratorPatternNodeValueEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getIteratorPatternNodeValue_PatternContext() {
+		return (EReference) iteratorPatternNodeValueEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getIteratorPatternNodeValue_Node() {
+		return (EReference) iteratorPatternNodeValueEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getIteratorPatternNodeFeatureValue() {
+		return iteratorPatternNodeFeatureValueEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getIteratorPatternNodeFeatureValue_FeatureExpression() {
+		return (EReference) iteratorPatternNodeFeatureValueEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -1788,6 +2084,9 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		variableSetEClass = createEClass(VARIABLE_SET);
 		createEAttribute(variableSetEClass, VARIABLE_SET__NAME);
 
+		patternEClass = createEClass(PATTERN);
+		createEReference(patternEClass, PATTERN__PATTERN);
+
 		typeEClass = createEClass(TYPE);
 		createEReference(typeEClass, TYPE__TYPE);
 
@@ -1810,17 +2109,23 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 
 		contextEClass = createEClass(CONTEXT);
 
+		patternConstraintEClass = createEClass(PATTERN_CONSTRAINT);
+		createEReference(patternConstraintEClass, PATTERN_CONSTRAINT__PATTERN);
+
 		typeConstraintEClass = createEClass(TYPE_CONSTRAINT);
 		createEReference(typeConstraintEClass, TYPE_CONSTRAINT__MODEL_TYPE);
 
 		mappingConstraintEClass = createEClass(MAPPING_CONSTRAINT);
 		createEReference(mappingConstraintEClass, MAPPING_CONSTRAINT__MAPPING);
 
-		mappingObjectiveEClass = createEClass(MAPPING_OBJECTIVE);
-		createEReference(mappingObjectiveEClass, MAPPING_OBJECTIVE__MAPPING);
+		patternObjectiveEClass = createEClass(PATTERN_OBJECTIVE);
+		createEReference(patternObjectiveEClass, PATTERN_OBJECTIVE__PATTERN);
 
 		typeObjectiveEClass = createEClass(TYPE_OBJECTIVE);
 		createEReference(typeObjectiveEClass, TYPE_OBJECTIVE__MODEL_TYPE);
+
+		mappingObjectiveEClass = createEClass(MAPPING_OBJECTIVE);
+		createEReference(mappingObjectiveEClass, MAPPING_OBJECTIVE__MAPPING);
 
 		arithmeticExpressionEClass = createEClass(ARITHMETIC_EXPRESSION);
 		createEReference(arithmeticExpressionEClass, ARITHMETIC_EXPRESSION__RETURN_TYPE);
@@ -1835,6 +2140,7 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		createEAttribute(unaryArithmeticExpressionEClass, UNARY_ARITHMETIC_EXPRESSION__OPERATOR);
 
 		setOperationEClass = createEClass(SET_OPERATION);
+		createEAttribute(setOperationEClass, SET_OPERATION__OPERAND_NAME);
 
 		arithmeticValueExpressionEClass = createEClass(ARITHMETIC_VALUE_EXPRESSION);
 
@@ -1893,6 +2199,13 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		contextTypeValueEClass = createEClass(CONTEXT_TYPE_VALUE);
 		createEReference(contextTypeValueEClass, CONTEXT_TYPE_VALUE__TYPE_CONTEXT);
 
+		contextPatternValueEClass = createEClass(CONTEXT_PATTERN_VALUE);
+		createEReference(contextPatternValueEClass, CONTEXT_PATTERN_VALUE__PATTERN_CONTEXT);
+
+		contextPatternNodeEClass = createEClass(CONTEXT_PATTERN_NODE);
+		createEReference(contextPatternNodeEClass, CONTEXT_PATTERN_NODE__PATTERN_CONTEXT);
+		createEReference(contextPatternNodeEClass, CONTEXT_PATTERN_NODE__NODE);
+
 		contextMappingValueEClass = createEClass(CONTEXT_MAPPING_VALUE);
 		createEReference(contextMappingValueEClass, CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT);
 
@@ -1913,11 +2226,29 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		contextTypeFeatureValueEClass = createEClass(CONTEXT_TYPE_FEATURE_VALUE);
 		createEReference(contextTypeFeatureValueEClass, CONTEXT_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION);
 
+		contextPatternNodeFeatureValueEClass = createEClass(CONTEXT_PATTERN_NODE_FEATURE_VALUE);
+		createEReference(contextPatternNodeFeatureValueEClass, CONTEXT_PATTERN_NODE_FEATURE_VALUE__FEATURE_EXPRESSION);
+
 		contextMappingNodeFeatureValueEClass = createEClass(CONTEXT_MAPPING_NODE_FEATURE_VALUE);
 		createEReference(contextMappingNodeFeatureValueEClass, CONTEXT_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION);
 
 		iteratorEClass = createEClass(ITERATOR);
 		createEReference(iteratorEClass, ITERATOR__STREAM);
+
+		iteratorPatternValueEClass = createEClass(ITERATOR_PATTERN_VALUE);
+		createEReference(iteratorPatternValueEClass, ITERATOR_PATTERN_VALUE__PATTERN_CONTEXT);
+
+		iteratorPatternFeatureValueEClass = createEClass(ITERATOR_PATTERN_FEATURE_VALUE);
+		createEReference(iteratorPatternFeatureValueEClass, ITERATOR_PATTERN_FEATURE_VALUE__PATTERN_CONTEXT);
+		createEReference(iteratorPatternFeatureValueEClass, ITERATOR_PATTERN_FEATURE_VALUE__FEATURE_EXPRESSION);
+
+		iteratorPatternNodeValueEClass = createEClass(ITERATOR_PATTERN_NODE_VALUE);
+		createEReference(iteratorPatternNodeValueEClass, ITERATOR_PATTERN_NODE_VALUE__PATTERN_CONTEXT);
+		createEReference(iteratorPatternNodeValueEClass, ITERATOR_PATTERN_NODE_VALUE__NODE);
+
+		iteratorPatternNodeFeatureValueEClass = createEClass(ITERATOR_PATTERN_NODE_FEATURE_VALUE);
+		createEReference(iteratorPatternNodeFeatureValueEClass,
+				ITERATOR_PATTERN_NODE_FEATURE_VALUE__FEATURE_EXPRESSION);
 
 		iteratorMappingValueEClass = createEClass(ITERATOR_MAPPING_VALUE);
 		createEReference(iteratorMappingValueEClass, ITERATOR_MAPPING_VALUE__MAPPING_CONTEXT);
@@ -1997,16 +2328,21 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		patternEClass.getESuperTypes().add(this.getVariableSet());
 		typeEClass.getESuperTypes().add(this.getVariableSet());
 		mappingEClass.getESuperTypes().add(this.getVariableSet());
+		patternConstraintEClass.getESuperTypes().add(this.getContext());
+		patternConstraintEClass.getESuperTypes().add(this.getConstraint());
 		typeConstraintEClass.getESuperTypes().add(this.getContext());
 		typeConstraintEClass.getESuperTypes().add(this.getConstraint());
 		mappingConstraintEClass.getESuperTypes().add(this.getContext());
 		mappingConstraintEClass.getESuperTypes().add(this.getConstraint());
-		mappingObjectiveEClass.getESuperTypes().add(this.getContext());
-		mappingObjectiveEClass.getESuperTypes().add(this.getObjective());
+		patternObjectiveEClass.getESuperTypes().add(this.getContext());
+		patternObjectiveEClass.getESuperTypes().add(this.getObjective());
 		typeObjectiveEClass.getESuperTypes().add(this.getContext());
 		typeObjectiveEClass.getESuperTypes().add(this.getObjective());
+		mappingObjectiveEClass.getESuperTypes().add(this.getContext());
+		mappingObjectiveEClass.getESuperTypes().add(this.getObjective());
 		binaryArithmeticExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
 		unaryArithmeticExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
 		arithmeticValueExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
@@ -2026,11 +2362,21 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		mappingSumExpressionEClass.getESuperTypes().add(this.getSumExpression());
 		typeSumExpressionEClass.getESuperTypes().add(this.getSumExpression());
 		contextTypeValueEClass.getESuperTypes().add(this.getValueExpression());
+		contextPatternValueEClass.getESuperTypes().add(this.getValueExpression());
+		contextPatternNodeEClass.getESuperTypes().add(this.getValueExpression());
 		contextMappingValueEClass.getESuperTypes().add(this.getValueExpression());
 		contextMappingNodeEClass.getESuperTypes().add(this.getValueExpression());
 		objectiveFunctionValueEClass.getESuperTypes().add(this.getValueExpression());
 		contextTypeFeatureValueEClass.getESuperTypes().add(this.getContextTypeValue());
+		contextPatternNodeFeatureValueEClass.getESuperTypes().add(this.getContextPatternNode());
 		contextMappingNodeFeatureValueEClass.getESuperTypes().add(this.getContextMappingNode());
+		iteratorPatternValueEClass.getESuperTypes().add(this.getValueExpression());
+		iteratorPatternValueEClass.getESuperTypes().add(this.getIterator());
+		iteratorPatternFeatureValueEClass.getESuperTypes().add(this.getValueExpression());
+		iteratorPatternFeatureValueEClass.getESuperTypes().add(this.getIterator());
+		iteratorPatternNodeValueEClass.getESuperTypes().add(this.getValueExpression());
+		iteratorPatternNodeValueEClass.getESuperTypes().add(this.getIterator());
+		iteratorPatternNodeFeatureValueEClass.getESuperTypes().add(this.getIteratorPatternNodeValue());
 		iteratorMappingValueEClass.getESuperTypes().add(this.getValueExpression());
 		iteratorMappingValueEClass.getESuperTypes().add(this.getIterator());
 		iteratorMappingFeatureValueEClass.getESuperTypes().add(this.getValueExpression());
@@ -2071,6 +2417,11 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 				IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getVariableSet_Name(), ecorePackage.getEString(), "name", null, 0, 1, VariableSet.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(patternEClass, Pattern.class, "Pattern", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getPattern_Pattern(), theIBeXPatternModelPackage.getIBeXContext(), null, "pattern", null, 1, 1,
+				Pattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(typeEClass, Type.class, "Type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getType_Type(), ecorePackage.getEClass(), null, "type", null, 1, 1, Type.class, !IS_TRANSIENT,
@@ -2115,6 +2466,12 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 
 		initEClass(contextEClass, Context.class, "Context", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+		initEClass(patternConstraintEClass, PatternConstraint.class, "PatternConstraint", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getPatternConstraint_Pattern(), this.getPattern(), null, "pattern", null, 0, 1,
+				PatternConstraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(typeConstraintEClass, TypeConstraint.class, "TypeConstraint", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTypeConstraint_ModelType(), this.getType(), null, "modelType", null, 0, 1,
@@ -2127,10 +2484,10 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 				MappingConstraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(mappingObjectiveEClass, MappingObjective.class, "MappingObjective", !IS_ABSTRACT, !IS_INTERFACE,
+		initEClass(patternObjectiveEClass, PatternObjective.class, "PatternObjective", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getMappingObjective_Mapping(), this.getMapping(), null, "mapping", null, 1, 1,
-				MappingObjective.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+		initEReference(getPatternObjective_Pattern(), this.getPattern(), null, "pattern", null, 0, 1,
+				PatternObjective.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(typeObjectiveEClass, TypeObjective.class, "TypeObjective", !IS_ABSTRACT, !IS_INTERFACE,
@@ -2138,6 +2495,12 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		initEReference(getTypeObjective_ModelType(), this.getType(), null, "modelType", null, 0, 1, TypeObjective.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(mappingObjectiveEClass, MappingObjective.class, "MappingObjective", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getMappingObjective_Mapping(), this.getMapping(), null, "mapping", null, 1, 1,
+				MappingObjective.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(arithmeticExpressionEClass, ArithmeticExpression.class, "ArithmeticExpression", IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2168,6 +2531,9 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 
 		initEClass(setOperationEClass, SetOperation.class, "SetOperation", IS_ABSTRACT, IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getSetOperation_OperandName(), ecorePackage.getEString(), "operandName", null, 0, 1,
+				SetOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
 
 		initEClass(arithmeticValueExpressionEClass, ArithmeticValueExpression.class, "ArithmeticValueExpression",
 				IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2280,21 +2646,36 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 
 		initEClass(contextTypeValueEClass, ContextTypeValue.class, "ContextTypeValue", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getContextTypeValue_TypeContext(), this.getTypeConstraint(), null, "typeContext", null, 0, 1,
+		initEReference(getContextTypeValue_TypeContext(), this.getType(), null, "typeContext", null, 0, 1,
 				ContextTypeValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(contextPatternValueEClass, ContextPatternValue.class, "ContextPatternValue", !IS_ABSTRACT,
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getContextPatternValue_PatternContext(), this.getPattern(), null, "patternContext", null, 0, 1,
+				ContextPatternValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(contextPatternNodeEClass, ContextPatternNode.class, "ContextPatternNode", !IS_ABSTRACT,
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getContextPatternNode_PatternContext(), this.getPattern(), null, "patternContext", null, 0, 1,
+				ContextPatternNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getContextPatternNode_Node(), theIBeXPatternModelPackage.getIBeXNode(), null, "node", null, 0, 1,
+				ContextPatternNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(contextMappingValueEClass, ContextMappingValue.class, "ContextMappingValue", !IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getContextMappingValue_MappingContext(), this.getMappingConstraint(), null, "mappingContext",
-				null, 0, 1, ContextMappingValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+		initEReference(getContextMappingValue_MappingContext(), this.getMapping(), null, "mappingContext", null, 0, 1,
+				ContextMappingValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(contextMappingNodeEClass, ContextMappingNode.class, "ContextMappingNode", !IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getContextMappingNode_MappingContext(), this.getMappingConstraint(), null, "mappingContext",
-				null, 0, 1, ContextMappingNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
-				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getContextMappingNode_MappingContext(), this.getMapping(), null, "mappingContext", null, 0, 1,
+				ContextMappingNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getContextMappingNode_Node(), theIBeXPatternModelPackage.getIBeXNode(), null, "node", null, 0, 1,
 				ContextMappingNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2326,6 +2707,12 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 				"featureExpression", null, 0, 1, ContextTypeFeatureValue.class, !IS_TRANSIENT, !IS_VOLATILE,
 				IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(contextPatternNodeFeatureValueEClass, ContextPatternNodeFeatureValue.class,
+				"ContextPatternNodeFeatureValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getContextPatternNodeFeatureValue_FeatureExpression(), this.getFeatureExpression(), null,
+				"featureExpression", null, 0, 1, ContextPatternNodeFeatureValue.class, !IS_TRANSIENT, !IS_VOLATILE,
+				IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(contextMappingNodeFeatureValueEClass, ContextMappingNodeFeatureValue.class,
 				"ContextMappingNodeFeatureValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getContextMappingNodeFeatureValue_FeatureExpression(), this.getFeatureExpression(), null,
@@ -2336,6 +2723,36 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		initEReference(getIterator_Stream(), this.getSetOperation(), null, "stream", null, 0, 1, Iterator.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(iteratorPatternValueEClass, IteratorPatternValue.class, "IteratorPatternValue", !IS_ABSTRACT,
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getIteratorPatternValue_PatternContext(), this.getPattern(), null, "patternContext", null, 0, 1,
+				IteratorPatternValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(iteratorPatternFeatureValueEClass, IteratorPatternFeatureValue.class, "IteratorPatternFeatureValue",
+				!IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getIteratorPatternFeatureValue_PatternContext(), this.getPattern(), null, "patternContext", null,
+				0, 1, IteratorPatternFeatureValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getIteratorPatternFeatureValue_FeatureExpression(), this.getFeatureExpression(), null,
+				"featureExpression", null, 0, 1, IteratorPatternFeatureValue.class, !IS_TRANSIENT, !IS_VOLATILE,
+				IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(iteratorPatternNodeValueEClass, IteratorPatternNodeValue.class, "IteratorPatternNodeValue",
+				!IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getIteratorPatternNodeValue_PatternContext(), this.getPattern(), null, "patternContext", null, 0,
+				1, IteratorPatternNodeValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getIteratorPatternNodeValue_Node(), theIBeXPatternModelPackage.getIBeXNode(), null, "node", null,
+				0, 1, IteratorPatternNodeValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(iteratorPatternNodeFeatureValueEClass, IteratorPatternNodeFeatureValue.class,
+				"IteratorPatternNodeFeatureValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getIteratorPatternNodeFeatureValue_FeatureExpression(), this.getFeatureExpression(), null,
+				"featureExpression", null, 0, 1, IteratorPatternNodeFeatureValue.class, !IS_TRANSIENT, !IS_VOLATILE,
+				IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(iteratorMappingValueEClass, IteratorMappingValue.class, "IteratorMappingValue", !IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

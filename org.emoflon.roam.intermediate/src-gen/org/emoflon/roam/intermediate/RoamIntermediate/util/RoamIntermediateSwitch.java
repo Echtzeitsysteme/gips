@@ -80,6 +80,15 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case RoamIntermediatePackage.PATTERN: {
+			Pattern pattern = (Pattern) theEObject;
+			T result = casePattern(pattern);
+			if (result == null)
+				result = caseVariableSet(pattern);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case RoamIntermediatePackage.TYPE: {
 			Type type = (Type) theEObject;
 			T result = caseType(type);
@@ -126,6 +135,17 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case RoamIntermediatePackage.PATTERN_CONSTRAINT: {
+			PatternConstraint patternConstraint = (PatternConstraint) theEObject;
+			T result = casePatternConstraint(patternConstraint);
+			if (result == null)
+				result = caseContext(patternConstraint);
+			if (result == null)
+				result = caseConstraint(patternConstraint);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case RoamIntermediatePackage.TYPE_CONSTRAINT: {
 			TypeConstraint typeConstraint = (TypeConstraint) theEObject;
 			T result = caseTypeConstraint(typeConstraint);
@@ -148,13 +168,13 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.MAPPING_OBJECTIVE: {
-			MappingObjective mappingObjective = (MappingObjective) theEObject;
-			T result = caseMappingObjective(mappingObjective);
+		case RoamIntermediatePackage.PATTERN_OBJECTIVE: {
+			PatternObjective patternObjective = (PatternObjective) theEObject;
+			T result = casePatternObjective(patternObjective);
 			if (result == null)
-				result = caseContext(mappingObjective);
+				result = caseContext(patternObjective);
 			if (result == null)
-				result = caseObjective(mappingObjective);
+				result = caseObjective(patternObjective);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -166,6 +186,17 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = caseContext(typeObjective);
 			if (result == null)
 				result = caseObjective(typeObjective);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.MAPPING_OBJECTIVE: {
+			MappingObjective mappingObjective = (MappingObjective) theEObject;
+			T result = caseMappingObjective(mappingObjective);
+			if (result == null)
+				result = caseContext(mappingObjective);
+			if (result == null)
+				result = caseObjective(mappingObjective);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -390,6 +421,24 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case RoamIntermediatePackage.CONTEXT_PATTERN_VALUE: {
+			ContextPatternValue contextPatternValue = (ContextPatternValue) theEObject;
+			T result = caseContextPatternValue(contextPatternValue);
+			if (result == null)
+				result = caseValueExpression(contextPatternValue);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE: {
+			ContextPatternNode contextPatternNode = (ContextPatternNode) theEObject;
+			T result = caseContextPatternNode(contextPatternNode);
+			if (result == null)
+				result = caseValueExpression(contextPatternNode);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case RoamIntermediatePackage.CONTEXT_MAPPING_VALUE: {
 			ContextMappingValue contextMappingValue = (ContextMappingValue) theEObject;
 			T result = caseContextMappingValue(contextMappingValue);
@@ -442,6 +491,17 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE_FEATURE_VALUE: {
+			ContextPatternNodeFeatureValue contextPatternNodeFeatureValue = (ContextPatternNodeFeatureValue) theEObject;
+			T result = caseContextPatternNodeFeatureValue(contextPatternNodeFeatureValue);
+			if (result == null)
+				result = caseContextPatternNode(contextPatternNodeFeatureValue);
+			if (result == null)
+				result = caseValueExpression(contextPatternNodeFeatureValue);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE: {
 			ContextMappingNodeFeatureValue contextMappingNodeFeatureValue = (ContextMappingNodeFeatureValue) theEObject;
 			T result = caseContextMappingNodeFeatureValue(contextMappingNodeFeatureValue);
@@ -456,6 +516,52 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 		case RoamIntermediatePackage.ITERATOR: {
 			Iterator iterator = (Iterator) theEObject;
 			T result = caseIterator(iterator);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.ITERATOR_PATTERN_VALUE: {
+			IteratorPatternValue iteratorPatternValue = (IteratorPatternValue) theEObject;
+			T result = caseIteratorPatternValue(iteratorPatternValue);
+			if (result == null)
+				result = caseValueExpression(iteratorPatternValue);
+			if (result == null)
+				result = caseIterator(iteratorPatternValue);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.ITERATOR_PATTERN_FEATURE_VALUE: {
+			IteratorPatternFeatureValue iteratorPatternFeatureValue = (IteratorPatternFeatureValue) theEObject;
+			T result = caseIteratorPatternFeatureValue(iteratorPatternFeatureValue);
+			if (result == null)
+				result = caseValueExpression(iteratorPatternFeatureValue);
+			if (result == null)
+				result = caseIterator(iteratorPatternFeatureValue);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE: {
+			IteratorPatternNodeValue iteratorPatternNodeValue = (IteratorPatternNodeValue) theEObject;
+			T result = caseIteratorPatternNodeValue(iteratorPatternNodeValue);
+			if (result == null)
+				result = caseValueExpression(iteratorPatternNodeValue);
+			if (result == null)
+				result = caseIterator(iteratorPatternNodeValue);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_FEATURE_VALUE: {
+			IteratorPatternNodeFeatureValue iteratorPatternNodeFeatureValue = (IteratorPatternNodeFeatureValue) theEObject;
+			T result = caseIteratorPatternNodeFeatureValue(iteratorPatternNodeFeatureValue);
+			if (result == null)
+				result = caseIteratorPatternNodeValue(iteratorPatternNodeFeatureValue);
+			if (result == null)
+				result = caseValueExpression(iteratorPatternNodeFeatureValue);
+			if (result == null)
+				result = caseIterator(iteratorPatternNodeFeatureValue);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -600,6 +706,21 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Pattern</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Pattern</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T casePattern(Pattern object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Type</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -690,6 +811,21 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Pattern Constraint</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Pattern Constraint</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T casePatternConstraint(PatternConstraint object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Type Constraint</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -716,6 +852,21 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseMappingConstraint(MappingConstraint object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Pattern Objective</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Pattern Objective</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T casePatternObjective(PatternObjective object) {
 		return null;
 	}
 
@@ -1080,6 +1231,36 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Context Pattern Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Context Pattern Value</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseContextPatternValue(ContextPatternValue object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Context Pattern Node</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Context Pattern Node</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseContextPatternNode(ContextPatternNode object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Context Mapping Value</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -1170,6 +1351,21 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Context Pattern Node Feature Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Context Pattern Node Feature Value</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseContextPatternNodeFeatureValue(ContextPatternNodeFeatureValue object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Context Mapping Node Feature Value</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -1196,6 +1392,66 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseIterator(Iterator object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator Pattern Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator Pattern Value</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIteratorPatternValue(IteratorPatternValue object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator Pattern Feature Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator Pattern Feature Value</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIteratorPatternFeatureValue(IteratorPatternFeatureValue object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator Pattern Node Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator Pattern Node Value</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIteratorPatternNodeValue(IteratorPatternNodeValue object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator Pattern Node Feature Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator Pattern Node Feature Value</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIteratorPatternNodeFeatureValue(IteratorPatternNodeFeatureValue object) {
 		return null;
 	}
 

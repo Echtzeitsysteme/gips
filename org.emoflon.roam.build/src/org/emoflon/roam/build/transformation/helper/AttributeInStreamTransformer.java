@@ -53,7 +53,7 @@ public class AttributeInStreamTransformer extends TransformationContext<StreamEx
 					TypeConstraint tc = (TypeConstraint) constraint;
 					ContextTypeValue typeValue = factory.createContextTypeValue();
 					typeValue.setReturnType(tc.getModelType().getType());
-					typeValue.setTypeContext(tc);
+					typeValue.setTypeContext(tc.getModelType());
 					return typeValue;
 				} else {
 					throw new UnsupportedOperationException("Using sets of mapping variables as operands in boolean or arithmetic expressions is not allowed.");
@@ -63,7 +63,7 @@ public class AttributeInStreamTransformer extends TransformationContext<StreamEx
 					if(eContext.getExpr() instanceof RoamFeatureExpr eFeature) {
 						TypeConstraint tc = (TypeConstraint) constraint;
 						ContextTypeFeatureValue featureValue = factory.createContextTypeFeatureValue();
-						featureValue.setTypeContext(tc);
+						featureValue.setTypeContext(tc.getModelType());
 						featureValue.setReturnType(tc.getModelType().getType());
 						featureValue.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eFeature));
 						return featureValue;
@@ -75,13 +75,13 @@ public class AttributeInStreamTransformer extends TransformationContext<StreamEx
 					if(eContext.getExpr() instanceof RoamNodeAttributeExpr eNodeExpr) {
 						if(eNodeExpr.getExpr() == null) {
 							ContextMappingNode nodeValue = factory.createContextMappingNode();
-							nodeValue.setMappingContext(mc);
+							nodeValue.setMappingContext(mc.getMapping());
 							nodeValue.setNode(data.eNode2Node().get(eNodeExpr.getNode()));
 							nodeValue.setReturnType(nodeValue.getNode().getType());
 							return nodeValue;
 						} else {
 							ContextMappingNodeFeatureValue featureValue = factory.createContextMappingNodeFeatureValue();
-							featureValue.setMappingContext(mc);
+							featureValue.setMappingContext(mc.getMapping());
 							featureValue.setNode(data.eNode2Node().get(eNodeExpr.getNode()));
 							featureValue.setReturnType(featureValue.getNode().getType());
 							featureValue.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eNodeExpr.getExpr()));
@@ -96,7 +96,7 @@ public class AttributeInStreamTransformer extends TransformationContext<StreamEx
 								//TODO:
 								// On a serious note: Accessing ILP variable values should not be allowed in filter stream expressions since it is impractical.
 								ContextMappingValue value = factory.createContextMappingValue();
-								value.setMappingContext(mc);
+								value.setMappingContext(mc.getMapping());
 								return value;
 							}
 							default -> {

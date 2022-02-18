@@ -31,6 +31,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective;
 import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
 import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget;
+import org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateFactory;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
@@ -46,6 +47,7 @@ import org.emoflon.roam.roamslang.roamSLang.RoamBooleanLiteral;
 import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
 import org.emoflon.roam.roamslang.roamSLang.RoamGlobalObjective;
 import org.emoflon.roam.roamslang.roamSLang.RoamMappingContext;
+import org.emoflon.roam.roamslang.roamSLang.RoamMatchContext;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjective;
 import org.emoflon.roam.roamslang.roamSLang.RoamRelExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
@@ -208,6 +210,11 @@ public class RoamToIntermediate {
 			constraint.setName("MappingConstraint" + counter + "On" + mapping.getMapping().getName());
 			constraint.setMapping(data.eMapping2Mapping().get(mapping.getMapping()));
 			return constraint;
+		} else if(eConstraint.getContext()instanceof RoamMatchContext pattern) {
+			PatternConstraint constraint = factory.createPatternConstraint();
+			constraint.setName("PatternConstraint" + counter + "On" + pattern.getPattern().getName());
+			constraint.setPattern(data.getPattern(pattern.getPattern()));
+			return constraint;
 		} else {
 			RoamTypeContext type = (RoamTypeContext) eConstraint.getContext();
 			TypeConstraint constraint = factory.createTypeConstraint();
@@ -245,6 +252,22 @@ public class RoamToIntermediate {
 						for (IBeXNode node : toContextPattern(rule.getLhs()).getSignatureNodes()) {
 							if (eNode.getName().equals(node.getName())) {
 								data.eNode2Node().put(eNode, node);
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		for (EditorPattern ePattern : data.roamSlangFile().getPatterns()) {
+			for (IBeXContext pattern : data.model().getIbexModel().getPatternSet().getContextPatterns()) {
+				if (pattern.getName().equals(ePattern.getName())) {
+					data.ePattern2Context().put(ePattern, pattern);
+					
+					for (EditorNode eNode : ePattern.getNodes()) {
+						for (IBeXNode node : toContextPattern(pattern).getSignatureNodes()) {
+							if (eNode.getName().equals(node.getName())) {
+								data.eNode2Node().putIfAbsent(eNode, node);
 							}
 						}
 					}

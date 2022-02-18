@@ -8,14 +8,21 @@ import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode;
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamAttributeExpr;
@@ -26,6 +33,7 @@ import org.emoflon.roam.roamslang.roamSLang.RoamFeatureLit;
 import org.emoflon.roam.roamslang.roamSLang.RoamLambdaAttributeExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamMappingContext;
+import org.emoflon.roam.roamslang.roamSLang.RoamMatchContext;
 import org.emoflon.roam.roamslang.roamSLang.RoamNodeAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamArithmetic;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamBoolExpr;
@@ -81,6 +89,12 @@ public class AttributeInConstraintTransformer extends TransformationContext<Cons
 					typeValue.setReturnType(tc.getModelType().getType());
 					typeValue.setTypeContext(tc.getModelType());
 					return typeValue;
+				} else if(contextType instanceof RoamMatchContext matchContext) { 
+					PatternConstraint pc = (PatternConstraint) constraint;
+					ContextPatternValue patternValue = factory.createContextPatternValue();
+					patternValue.setReturnType(data.getPattern(matchContext.getPattern()).eClass());
+					patternValue.setPatternContext(data.getPattern(matchContext.getPattern()));
+					return patternValue;
 				} else {
 					throw new UnsupportedOperationException("Using sets of mapping variables as operands in boolean or arithmetic expressions is not allowed.");
 				}
@@ -93,6 +107,25 @@ public class AttributeInConstraintTransformer extends TransformationContext<Cons
 						featureValue.setReturnType(tc.getModelType().getType());
 						featureValue.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eFeature));
 						return featureValue;
+					} else {
+						throw new UnsupportedOperationException("Node and ILP variable (e.g., .value(), .isMapped()) expressions are not applicable to model objects.");
+					}
+				} else if(contextType instanceof RoamMatchContext matchContext) {
+					if(eContext.getExpr() instanceof RoamNodeAttributeExpr eNodeExpr) {
+						PatternConstraint pc = (PatternConstraint) constraint;
+						if(eNodeExpr.getExpr() == null) {
+							ContextPatternNode nodeValue = factory.createContextPatternNode();
+							nodeValue.setPatternContext(pc.getPattern());
+							nodeValue.setNode(data.eNode2Node().get(eNodeExpr.getNode()));
+							nodeValue.setReturnType(nodeValue.getNode().getType());
+							return nodeValue;
+						} else {
+							ContextPatternNodeFeatureValue featureValue = factory.createContextPatternNodeFeatureValue();
+							featureValue.setPatternContext(pc.getPattern());
+							featureValue.setNode(data.eNode2Node().get(eNodeExpr.getNode()));
+							featureValue.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eNodeExpr.getExpr()));
+							return featureValue;
+						}
 					} else {
 						throw new UnsupportedOperationException("Node and ILP variable (e.g., .value(), .isMapped()) expressions are not applicable to model objects.");
 					}
@@ -109,7 +142,6 @@ public class AttributeInConstraintTransformer extends TransformationContext<Cons
 							ContextMappingNodeFeatureValue featureValue = factory.createContextMappingNodeFeatureValue();
 							featureValue.setMappingContext(mc.getMapping());
 							featureValue.setNode(data.eNode2Node().get(eNodeExpr.getNode()));
-							featureValue.setReturnType(featureValue.getNode().getType());
 							featureValue.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eNodeExpr.getExpr()));
 							return featureValue;
 						}
@@ -160,16 +192,35 @@ public class AttributeInConstraintTransformer extends TransformationContext<Cons
 					} else {
 						IteratorMappingNodeFeatureValue mappingFeature = factory.createIteratorMappingNodeFeatureValue();
 						mappingFeature.setNode(data.eNode2Node().get(eNodeAttribute.getNode()));
-						mappingFeature.setReturnType(mappingFeature.getNode().getType());
 						mappingFeature.setMappingContext(data.eMapping2Mapping().get(eMappingAttribute.getMapping()));
 						mappingFeature.setStream(data.eStream2SetOp().get(streamIteratorContainer));
 						mappingFeature.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eNodeAttribute.getExpr()));
 						return mappingFeature;
 					}
 				} else {
-					//	Case: The root expression is a context expression, i.e., .self, that is invoked upon mapping or type contexts.
-					//	Either way, this case makes it impossible to iterate over a set of matches and, hence, prohibits the access of match nodes.
-					throw new UnsupportedOperationException("Match node access operations are not defined on model objects.");
+					RoamContextExpr eContext = (RoamContextExpr) streamRoot;
+					EObject contextType = RoamSLangScopeContextUtil.getContextType(eContext);
+					if(contextType instanceof RoamMatchContext eMatchContext) {
+						if(eNodeAttribute.getExpr() == null) {
+							IteratorPatternNodeValue patternNode = factory.createIteratorPatternNodeValue();
+							patternNode.setNode(data.eNode2Node().get(eNodeAttribute.getNode()));
+							patternNode.setReturnType(patternNode.getNode().getType());
+							patternNode.setPatternContext(data.ePattern2Pattern().get(eMatchContext.getPattern()));
+							patternNode.setStream(data.eStream2SetOp().get(streamIteratorContainer));
+							return patternNode;
+						} else {
+							IteratorPatternNodeFeatureValue patternFeature = factory.createIteratorPatternNodeFeatureValue();
+							patternFeature.setNode(data.eNode2Node().get(eNodeAttribute.getNode()));
+							patternFeature.setPatternContext(data.ePattern2Pattern().get(eMatchContext.getPattern()));
+							patternFeature.setStream(data.eStream2SetOp().get(streamIteratorContainer));
+							patternFeature.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eNodeAttribute.getExpr()));
+							return patternFeature;
+						}
+					} else {
+						//	Case: The root expression is a context expression, i.e., .self, that is invoked upon mapping or type contexts.
+						//	Either way, this case makes it impossible to iterate over a set of matches and, hence, prohibits the access of match nodes.
+						throw new UnsupportedOperationException("Match node access operations are not defined on model objects.");
+					}
 				}
 			} else if(eLambda.getExpr() instanceof RoamContextOperationExpression eContextOp) {
 				if(streamRoot instanceof RoamMappingAttributeExpr eMappingAttribute) {
@@ -200,7 +251,8 @@ public class AttributeInConstraintTransformer extends TransformationContext<Cons
 				RoamFeatureExpr eFeature = (RoamFeatureExpr) eLambda.getExpr();
 				if(streamRoot instanceof RoamContextExpr eContext) {
 					EObject contextType = RoamSLangScopeContextUtil.getContextType(eContext);
-					if(contextType instanceof RoamMappingContext eMappingContext && eContext.getExpr() instanceof RoamNodeAttributeExpr eNodeExpr && eNodeExpr.getExpr() != null) {
+					if(contextType instanceof RoamMappingContext eMappingContext && eContext.getExpr() instanceof RoamNodeAttributeExpr eNodeExpr 
+							&& eNodeExpr.getExpr() != null) {
 						IteratorMappingFeatureValue mappingFeatureValue = factory.createIteratorMappingFeatureValue();
 						mappingFeatureValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
 						mappingFeatureValue.setMappingContext(data.eMapping2Mapping().get(eMappingContext.getMapping()));
@@ -208,6 +260,15 @@ public class AttributeInConstraintTransformer extends TransformationContext<Cons
 						mappingFeatureValue.setReturnType(rootFeatureType.getFeature().getEType());
 						mappingFeatureValue.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eFeature));
 						return mappingFeatureValue;
+					} else if(contextType instanceof RoamMatchContext ePatternContext && eContext.getExpr() instanceof RoamNodeAttributeExpr eNodeExpr 
+							&& eNodeExpr.getExpr() != null) {
+						IteratorPatternFeatureValue patternFeatureValue = factory.createIteratorPatternFeatureValue();
+						patternFeatureValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
+						patternFeatureValue.setPatternContext(data.ePattern2Pattern().get(ePatternContext.getPattern()));
+						RoamFeatureLit rootFeatureType = (RoamFeatureLit) RoamSLangScopeContextUtil.findLeafExpression(eNodeExpr.getExpr());
+						patternFeatureValue.setReturnType(rootFeatureType.getFeature().getEType());
+						patternFeatureValue.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eFeature));
+						return patternFeatureValue;
 					} else if(contextType instanceof RoamTypeContext eTypeContext && eContext.getExpr() instanceof RoamFeatureExpr eRootFeature) {
 						IteratorTypeFeatureValue typeFeatureValue = factory.createIteratorTypeFeatureValue();
 						typeFeatureValue.setTypeContext(data.getType((EClass) eTypeContext.getType()));

@@ -15,9 +15,9 @@ public class TransformerFactory {
 		this.data = data;
 	}
 	
-	public BooleanExpressionTransformer createBooleanTransformer(final EObject context) throws Exception{
+	public BooleanExpressionTransformer<? extends EObject> createBooleanTransformer(final EObject context) throws Exception{
 		if(context instanceof StreamExpression streamExpr) {
-			return new BooleanInStreamTransformer(data, streamExpr, this);
+			return new BooleanExpressionTransformer<StreamExpression>(data, streamExpr, this);
 		} else {
 			throw new IllegalArgumentException("Transforming boolean expressions within the given context is undefined. Context: "+context);
 		}
@@ -59,7 +59,7 @@ public class TransformerFactory {
 		}
 	}
 	
-	public AttributeExpressionTransformer createAttributeTransformer(final EObject context) throws Exception {
+	public AttributeExpressionTransformer<? extends EObject> createAttributeTransformer(final EObject context) throws Exception {
 		if(context instanceof Constraint constraint) {
 			return new AttributeInConstraintTransformer(data, constraint, this);
 		} else if(context instanceof StreamExpression streamExpr) {

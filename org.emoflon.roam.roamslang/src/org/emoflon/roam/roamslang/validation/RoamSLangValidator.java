@@ -383,6 +383,10 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			leftDynamic = containsSelfValueOrMappingsCall(relExpr.getLeft());
 			rightDynamic = containsSelfValueOrMappingsCall(relExpr.getRight());
 		} else if (expr instanceof RoamBoolExpr) {
+			// Special case: Complete boolean expression is just a literal
+			if (expr instanceof RoamBooleanLiteral) {
+				return;
+			}
 			final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
 			leftDynamic = containsSelfValueOrMappingsCall(binExpr.getLeft());
 			rightDynamic = containsSelfValueOrMappingsCall(binExpr.getRight());

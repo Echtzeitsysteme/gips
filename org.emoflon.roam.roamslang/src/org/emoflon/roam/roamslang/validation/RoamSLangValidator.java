@@ -41,6 +41,8 @@ import org.emoflon.roam.roamslang.roamSLang.RoamLambdaAttributeExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamLambdaExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
 import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamMappingContext;
+import org.emoflon.roam.roamslang.roamSLang.RoamMatchContext;
 import org.emoflon.roam.roamslang.roamSLang.RoamNodeAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjective;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjectiveExpression;
@@ -144,6 +146,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 
 	public static final String BOOL_EXPR_EVAL_ERROR_MESSAGE = "Boolean expression does not evaluate to boolean.";
 	public static final String ARITH_EXPR_EVAL_ERROR_MESSAGE = "Arithmetic expression does not evaluate to a primitive type.";
+
+	public static final String TYPE_DOES_NOT_CONTAIN_SELF_MESSAGE = "'%s' does not contain any self reference.";
 
 	// Exception error messages
 	public static final String NOT_IMPLEMENTED_EXCEPTION_MESSAGE = "Not yet implemented";
@@ -313,6 +317,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 
 		checkConstraintIsLiteral(constraint);
 		checkConstraintUnique(constraint);
+		validateConstraintHasSelf(constraint);
 		validateConstraintDynamic(constraint);
 	}
 
@@ -358,6 +363,146 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 				);
 			}
 		}
+	}
+
+	/**
+	 * Validates that a constraint has at least one 'self' reference.
+	 * 
+	 * @param constraint Constraint to validate.
+	 */
+	public void validateConstraintHasSelf(final RoamConstraint constraint) {
+		final RoamBoolExpr expr = constraint.getExpr().getExpr();
+		boolean leftSelf = false;
+		boolean rightSelf = false;
+
+		final SelfType type = getContextType(constraint.getContext());
+
+		if (expr instanceof RoamRelExpr) {
+			final RoamRelExpr relExpr = (RoamRelExpr) expr;
+			leftSelf = containsSelf(relExpr.getLeft(), type);
+			rightSelf = containsSelf(relExpr.getRight(), type);
+		} else if (expr instanceof RoamBoolExpr) {
+			if (!(expr instanceof RoamBooleanLiteral)) {
+				final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
+				leftSelf = containsSelf(binExpr.getLeft(), type);
+				rightSelf = containsSelf(binExpr.getRight(), type);
+			}
+		} else {
+			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		}
+
+		// Generate an error if both sides of the constraint does not contain 'self'
+		if (!(leftSelf || rightSelf)) {
+			error( //
+					String.format(TYPE_DOES_NOT_CONTAIN_SELF_MESSAGE, "Constraint"), //
+					constraint, //
+					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR //
+			);
+		}
+	}
+
+	/**
+	 * Returns the context type of a given EObject.
+	 * 
+	 * @param e EObject to determine context type for.
+	 * @return Context type for given EObject.
+	 */
+	public SelfType getContextType(final EObject e) {
+		SelfType type = SelfType.ERROR;
+
+		if (e instanceof RoamMatchContext) {
+			type = SelfType.MATCH;
+		} else if (e instanceof RoamTypeContext) {
+			type = SelfType.TYPE;
+		} else if (e instanceof RoamMappingContext) {
+			type = SelfType.MAPPING;
+		}
+
+		return type;
+	}
+
+	/**
+	 * Returns true if given arithmetic expression contains a self reference.
+	 * 
+	 * @param expr Arithmetic expression to check.
+	 * @param type Context type.
+	 * @return True if given arithmetic expression contains a self reference.
+	 */
+	public boolean containsSelf(final RoamArithmeticExpr expr, final SelfType type) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof RoamBracketExpr) {
+			final RoamBracketExpr bracketExpr = (RoamBracketExpr) expr;
+			return containsSelf(bracketExpr.getOperand(), type);
+		} else if (expr instanceof RoamExpArithmeticExpr) {
+			final RoamExpArithmeticExpr expExpr = (RoamExpArithmeticExpr) expr;
+			return containsSelf(expExpr.getLeft(), type) || containsSelf(expExpr.getRight(), type);
+		} else if (expr instanceof RoamExpressionOperand) {
+			final RoamExpressionOperand exprOp = (RoamExpressionOperand) expr;
+			if (exprOp instanceof RoamArithmeticLiteral) {
+				return false;
+			} else if (exprOp instanceof RoamAttributeExpr) {
+				if (exprOp instanceof RoamContextExpr) {
+					final RoamContextExpr conExpr = (RoamContextExpr) exprOp;
+					// Currently only MAPPED and VALUE are supported -> Both are dynamic
+//					return conExpr.getExpr() instanceof RoamContextOperationExpression;
+//					return getContextType(conExpr) == type;
+					return true;
+				} else if (exprOp instanceof RoamLambdaAttributeExpression) {
+					// TODO: Evaluate RoamLambdaAttributeExpression
+					final RoamLambdaAttributeExpression attrExpr = (RoamLambdaAttributeExpression) expr;
+					attrExpr.getExpr();
+					attrExpr.getVar();
+				} else if (exprOp instanceof RoamMappingAttributeExpr) {
+					return type == SelfType.MAPPING;
+				}
+			}
+//			else if (exprOp instanceof RoamObjectiveExpression) {
+//				// Only relevant for the global objective function
+//				return true;
+//			}
+		} else if (expr instanceof RoamProductArithmeticExpr) {
+			final RoamProductArithmeticExpr prodExpr = (RoamProductArithmeticExpr) expr;
+			return containsSelf(prodExpr.getLeft(), type) || containsSelf(prodExpr.getRight(), type);
+		} else if (expr instanceof RoamSumArithmeticExpr) {
+			final RoamSumArithmeticExpr sumExpr = (RoamSumArithmeticExpr) expr;
+			return containsSelf(sumExpr.getLeft(), type) || containsSelf(sumExpr.getRight(), type);
+		} else if (expr instanceof RoamUnaryArithmeticExpr) {
+			final RoamUnaryArithmeticExpr unExpr = (RoamUnaryArithmeticExpr) expr;
+			return containsSelf(unExpr.getOperand(), type);
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	/**
+	 * Returns true if given boolean expression contains a self reference.
+	 * 
+	 * @param expr Boolean expression to check.
+	 * @param type Context type.
+	 * @return True if given boolean expression contains a self reference.
+	 */
+	public boolean containsSelf(final RoamBoolExpr expr, final SelfType type) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof RoamBinaryBoolExpr) {
+			final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
+			return containsSelf(binExpr.getLeft(), type) || containsSelf(binExpr.getRight(), type);
+		} else if (expr instanceof RoamBooleanLiteral) {
+			return false;
+		} else if (expr instanceof RoamRelExpr) {
+			final RoamRelExpr relExpr = (RoamRelExpr) expr;
+			return containsSelf(relExpr.getLeft(), type) || containsSelf(relExpr.getRight(), type);
+		} else if (expr instanceof RoamUnaryBoolExpr) {
+			final RoamUnaryBoolExpr unExpr = (RoamUnaryBoolExpr) expr;
+			return containsSelf(unExpr.getOperand(), type);
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	// TODO: Das andere was ich gemerkt habe ist auch, dass du keine mapping.value()
@@ -1210,6 +1355,16 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		STREAM, // RoamStream
 		ECLASS, // EClass for casts
 		ERROR // If leaf type can not be evaluated, e.g.: '1 + true'
+	}
+
+	/**
+	 * Enumeration for the context (self) type.
+	 */
+	protected enum SelfType {
+		MAPPING, //
+		MATCH, //
+		TYPE, //
+		ERROR //
 	}
 
 }

@@ -33,15 +33,15 @@ public class TransformerFactory {
 		}
 	}
 	
-	public ArithmeticExpressionTransformer createArithmeticTransformer(final EObject context) throws Exception{
+	public ArithmeticExpressionTransformer<? extends EObject> createArithmeticTransformer(final EObject context) throws Exception{
 		if(context instanceof Constraint constraint) {
-			return new ArithmeticInConstraintTransformer(data, constraint, this);
+			return new ArithmeticExpressionTransformer<Constraint>(data, constraint, this);
 		} else if(context instanceof StreamExpression streamExpr) {
-			return new ArithmeticInStreamTransformer(data, streamExpr, this);
+			return new ArithmeticExpressionTransformer<StreamExpression>(data, streamExpr, this);
 		} else if(context instanceof SumExpression sumExpr) {
-			return new ArithmeticInSumTransformer(data, sumExpr, this);
+			return new ArithmeticExpressionTransformer<SumExpression>(data, sumExpr, this);
 		} else if(context instanceof Objective objective) {
-			return new ArithmeticInObjectiveTransformer(data, objective, this);
+			return new ArithmeticExpressionTransformer<Objective>(data, objective, this);
 		} else if(context instanceof GlobalObjective objective) {
 			return new ArithmeticInGlobalObjectiveTransformer(data, objective, this);
 		} else {

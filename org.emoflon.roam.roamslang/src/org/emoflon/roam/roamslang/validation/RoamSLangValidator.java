@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -664,22 +663,31 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		checkObjectiveNameUnique(objective);
 		checkObjectiveIsNotUseless(objective);
 		validateObjectiveExprForm(objective);
-
-		// Objective must not be defined on a class
-		if (objective.getContext() instanceof RoamTypeContext) {
-			final RoamTypeContext cont = (RoamTypeContext) objective.getContext();
-			if (cont.getType() instanceof EClass) {
-				error( //
-						OBJECTIVE_CONTEXT_CLASS_MESSAGE, //
-						RoamSLangPackage.Literals.ROAM_OBJECTIVE__CONTEXT //
-				);
-			}
-		}
+		checkObjectiveHasSelf(objective);
 
 		final LeafType eval = getEvalTypeFromArithExpr(objective.getExpr());
 		if (eval != LeafType.INTEGER && eval != LeafType.DOUBLE) {
 			error( //
 					OBJECTIVE_EVAL_NOT_NUMBER_MESSAGE, //
+					RoamSLangPackage.Literals.ROAM_OBJECTIVE__EXPR //
+			);
+		}
+	}
+
+	/**
+	 * Checks that an objective has at least one 'self' reference.
+	 * 
+	 * @param objective Objective to validate.
+	 */
+	public void checkObjectiveHasSelf(final RoamObjective objective) {
+		final RoamArithmeticExpr expr = objective.getExpr();
+		final SelfType type = getContextType(objective.getContext());
+
+		// Generate a warning if the objective does not contain 'self'
+		if (!containsSelf(expr, type)) {
+			warning( //
+					String.format(TYPE_DOES_NOT_CONTAIN_SELF_MESSAGE, "Objective"), //
+					objective, //
 					RoamSLangPackage.Literals.ROAM_OBJECTIVE__EXPR //
 			);
 		}

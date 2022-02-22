@@ -1,6 +1,7 @@
 package org.emoflon.roam.core.ilp;
 
 import org.emoflon.roam.core.RoamEngine;
+import org.emoflon.roam.core.RoamGlobalObjective;
 import org.emoflon.roam.core.RoamMapping;
 import org.emoflon.roam.core.RoamMappingConstraint;
 import org.emoflon.roam.core.RoamMappingObjective;
@@ -69,13 +70,7 @@ public class GurobiSolver extends ILPSolver{
 	}
 
 	@Override
-	protected void translateObjective(RoamMappingObjective objective) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected void translateObjective(RoamTypeObjective objective) {
+	protected void translateObjective(RoamGlobalObjective objective) {
 		// TODO Auto-generated method stub
 		
 	}

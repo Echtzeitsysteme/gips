@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.emoflon.ibex.gt.api.GraphTransformationAPI;
+import org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
 
 public class RoamEngine {
@@ -14,6 +15,8 @@ public class RoamEngine {
 	final protected TypeIndexer indexer;
 	final protected Map<String, RoamConstraint<?,?,?>> constraints = new HashMap<>();
 	final protected Map<String, RoamObjective<?,?,?>> objectives = new HashMap<>();
+	protected RoamGlobalObjective globalObjective;
+	
 	
 	public RoamEngine(final GraphTransformationAPI eMoflonAPI, final RoamIntermediateModel roamModel) {
 		this.eMoflonAPI = eMoflonAPI;
@@ -55,6 +58,14 @@ public class RoamEngine {
 	
 	public TypeIndexer getIndexer() {
 		return indexer;
+	}
+	
+	public void setGlobalObjective(final RoamGlobalObjective globalObjective) {
+		this.globalObjective = globalObjective;
+	}
+	
+	public RoamGlobalObjective getGlobalObjective() {
+		return globalObjective;
 	}
 	
 	public void terminate() {

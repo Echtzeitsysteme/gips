@@ -155,7 +155,10 @@ public class RoamToIntermediate {
 				constraint.setExpression(rewriteMoveConstantTerms(constraint.getExpression()));
 				
 				// Final check: Was the context used?
-				// TODO:
+				if(!RoamTransformationUtils.containsContextExpression(constraint.getExpression().getRhs()) && !RoamTransformationUtils.containsContextExpression(constraint.getExpression().getLhs())) {
+					throw new IllegalArgumentException(
+							"Context must be used at least once per constraint.");
+				}
 			}
 		}
 	}
@@ -175,6 +178,12 @@ public class RoamToIntermediate {
 			objective.setExpression(transformer.transform(eObjective.getExpr()));
 			//Rewrite the expression, which will be translated into ILP-Terms, into a sum of products.
 			objective.setExpression(rewriteToSumOfProducts(objective.getExpression(), null, null));
+			
+			// Final check: Was the context used?
+			if(!RoamTransformationUtils.containsContextExpression(objective.getExpression())) {
+				throw new IllegalArgumentException(
+						"Context must be used at least once per objective.");
+			}
 		}
 	}
 
@@ -568,6 +577,38 @@ public class RoamToIntermediate {
 			return relExpr;
 		}
 	}
+	
+//	protected ArithmeticExpression rewriteMoveILPVariableToTop(final ArithmeticExpression expr) {
+//		if(expr instanceof BinaryArithmeticExpression binaryExpr) {
+//			if(binaryExpr.getOperator() == BinaryArithmeticOperator.ADD || binaryExpr.getOperator() == BinaryArithmeticOperator.SUBTRACT) {
+//				ArithmeticExpression rewriteLHS = rewriteMoveILPVariableToTop(binaryExpr.getLhs());
+//				ArithmeticExpression rewriteRHS = rewriteMoveILPVariableToTop(binaryExpr.getRhs());
+//				binaryExpr.setLhs(rewriteLHS);
+//				binaryExpr.setRhs(rewriteRHS);
+//				return binaryExpr;
+//			} else if(binaryExpr.getOperator() == BinaryArithmeticOperator.POW) {
+//				return expr;
+//			} else if(binaryExpr.getOperator() == BinaryArithmeticOperator.MULTIPLY) {
+//				ArithmeticExpressionType lhsType = RoamTransformationUtils.isConstantExpression(binaryExpr.getLhs());
+//				ArithmeticExpressionType rhsType = RoamTransformationUtils.isConstantExpression(binaryExpr.getRhs());
+//				if(lhsType == ArithmeticExpressionType.variableVector && rhsType != ArithmeticExpressionType.variableVector) {
+//					
+//				} else if(rhsType == ArithmeticExpressionType.variableVector && lhsType != ArithmeticExpressionType.variableVector) {
+//					
+//				} else {
+//					return expr;
+//				}
+//			} else {
+//				
+//			}
+//		} else if(expr instanceof UnaryArithmeticExpression unaryExpr) {
+//			return relExpr;
+//		} else if(expr instanceof ArithmeticValue valExpr) {
+//			return relExpr;
+//		} else {
+//			return expr;
+//		}
+//	}
 	
 	protected ArithmeticExpression invertSign(final ArithmeticExpression expr) {
 		if(expr instanceof BinaryArithmeticExpression binaryExpr) {

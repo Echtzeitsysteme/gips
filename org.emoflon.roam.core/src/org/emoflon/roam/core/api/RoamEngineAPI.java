@@ -9,6 +9,7 @@ import org.emoflon.ibex.gt.api.GraphTransformationAPI;
 import org.emoflon.ibex.gt.api.GraphTransformationApp;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPatternModelPackage;
 import org.emoflon.roam.core.RoamEngine;
+import org.emoflon.roam.core.RoamGlobalObjective;
 import org.emoflon.roam.core.RoamMapper;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
@@ -35,6 +36,8 @@ public abstract class RoamEngineAPI <EMOFLON_APP extends GraphTransformationApp<
 	protected abstract void initConstraintFactory();
 	
 	protected abstract void initObjectiveFactory();
+	
+	protected abstract RoamGlobalObjective createGlobalObjective();
 
 	protected void init(final URI roamModelURI, final URI modelUri) {
 		eMoflonApp.registerMetaModels();
@@ -48,6 +51,9 @@ public abstract class RoamEngineAPI <EMOFLON_APP extends GraphTransformationApp<
 		createConstraints();
 		initObjectiveFactory();
 		createObjectives();
+		
+		if(roamModel.getGlobalObjective() != null)
+			roamEngine.setGlobalObjective(createGlobalObjective());
 	}
 	
 	protected void loadIntermediateModel(final URI roamModelURI) {

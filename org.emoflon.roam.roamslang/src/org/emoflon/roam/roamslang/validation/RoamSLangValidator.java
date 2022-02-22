@@ -318,6 +318,140 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		checkConstraintUnique(constraint);
 		validateConstraintHasSelf(constraint);
 		validateConstraintDynamic(constraint);
+		validateNoMappingAccessIfMappingContext(constraint);
+	}
+
+	public void validateNoMappingAccessIfMappingContext(final RoamConstraint constraint) {
+		// If context is not a mapping, return immediately
+		if (getContextType(constraint.getContext()) != SelfType.MAPPING) {
+			return;
+		}
+
+		final RoamBoolExpr expr = constraint.getExpr().getExpr();
+
+		boolean leftMapping = false;
+		boolean rightMapping = false;
+
+		if (expr instanceof RoamRelExpr) {
+			final RoamRelExpr relExpr = (RoamRelExpr) expr;
+			leftMapping = containsMappingsCall(relExpr.getLeft());
+			rightMapping = containsMappingsCall(relExpr.getRight());
+		} else if (expr instanceof RoamBoolExpr) {
+			// Special case: Complete boolean expression is just a literal
+			if (expr instanceof RoamBooleanLiteral) {
+				return;
+			}
+			final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
+			leftMapping = containsMappingsCall(binExpr.getLeft());
+			rightMapping = containsMappingsCall(binExpr.getRight());
+		} else {
+			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		}
+
+		// Generate an error if mappings are referenced
+		if (leftMapping || rightMapping) {
+			error( //
+					"Mapping access within Mapping context is forbidden.", //
+					constraint, //
+					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR //
+			);
+		}
+	}
+
+	public boolean containsMappingsCall(final RoamBoolExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof RoamBinaryBoolExpr) {
+			final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
+			return containsMappingsCall(binExpr.getLeft()) || containsMappingsCall(binExpr.getRight());
+		} else if (expr instanceof RoamBooleanLiteral) {
+			return false;
+		} else if (expr instanceof RoamRelExpr) {
+			final RoamRelExpr relExpr = (RoamRelExpr) expr;
+			return containsMappingsCall(relExpr.getLeft()) || containsMappingsCall(relExpr.getRight());
+		} else if (expr instanceof RoamUnaryBoolExpr) {
+			final RoamUnaryBoolExpr unExpr = (RoamUnaryBoolExpr) expr;
+			return containsMappingsCall(unExpr.getOperand());
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	public boolean containsMappingsCall(final RoamArithmeticExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof RoamBracketExpr) {
+			final RoamBracketExpr bracketExpr = (RoamBracketExpr) expr;
+			return containsMappingsCall(bracketExpr.getOperand());
+		} else if (expr instanceof RoamExpArithmeticExpr) {
+			final RoamExpArithmeticExpr expExpr = (RoamExpArithmeticExpr) expr;
+			return containsMappingsCall(expExpr.getLeft()) || containsMappingsCall(expExpr.getRight());
+		} else if (expr instanceof RoamExpressionOperand) {
+			final RoamExpressionOperand exprOp = (RoamExpressionOperand) expr;
+			if (exprOp instanceof RoamArithmeticLiteral) {
+				return false;
+			} else if (exprOp instanceof RoamAttributeExpr) {
+				if (exprOp instanceof RoamContextExpr) {
+					final RoamContextExpr conExpr = (RoamContextExpr) exprOp;
+					if (streamContainsMappingsCall(conExpr.getStream())) {
+						return true;
+					}
+					return conExpr.getExpr() instanceof RoamContextOperationExpression;
+				} else if (exprOp instanceof RoamLambdaAttributeExpression) {
+					final RoamLambdaAttributeExpression attrExpr = (RoamLambdaAttributeExpression) expr;
+					// TODO: Creates recursive loop
+					// return lambdaContainsMappingsCall(attrExpr.getVar());
+					return false;
+				} else if (exprOp instanceof RoamMappingAttributeExpr) {
+					// TODO
+					return true;
+				}
+			}
+		} else if (expr instanceof RoamProductArithmeticExpr) {
+			final RoamProductArithmeticExpr prodExpr = (RoamProductArithmeticExpr) expr;
+			return containsMappingsCall(prodExpr.getLeft()) || containsMappingsCall(prodExpr.getRight());
+		} else if (expr instanceof RoamSumArithmeticExpr) {
+			final RoamSumArithmeticExpr sumExpr = (RoamSumArithmeticExpr) expr;
+			return containsMappingsCall(sumExpr.getLeft()) || containsMappingsCall(sumExpr.getRight());
+		} else if (expr instanceof RoamUnaryArithmeticExpr) {
+			final RoamUnaryArithmeticExpr unExpr = (RoamUnaryArithmeticExpr) expr;
+			return containsMappingsCall(unExpr.getOperand());
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	public boolean streamContainsMappingsCall(final RoamStreamExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof RoamSelect) {
+			return false;
+		} else if (expr instanceof RoamStreamArithmetic) {
+			final RoamStreamArithmetic arithExpr = (RoamStreamArithmetic) expr;
+			// TODO: Validate lambda
+			return lambdaContainsMappingsCall(arithExpr.getLambda());
+		} else if (expr instanceof RoamStreamBoolExpr) {
+			return false;
+		} else if (expr instanceof RoamStreamNavigation) {
+			final RoamStreamNavigation nav = (RoamStreamNavigation) expr;
+			return streamContainsMappingsCall(nav.getLeft()) || streamContainsMappingsCall(nav.getRight());
+		} else if (expr instanceof RoamStreamSet) {
+			final RoamStreamSet set = (RoamStreamSet) expr;
+			// TODO: Validate lambda
+			return lambdaContainsMappingsCall(set.getLambda());
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	public boolean lambdaContainsMappingsCall(final RoamLambdaExpression lambda) {
+		return containsMappingsCall(lambda.getExpr());
 	}
 
 	/**
@@ -1365,6 +1499,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		ERROR // If leaf type can not be evaluated, e.g.: '1 + true'
 	}
 
+	// TODO: Rename to something like "ContextType".
 	/**
 	 * Enumeration for the context (self) type.
 	 */

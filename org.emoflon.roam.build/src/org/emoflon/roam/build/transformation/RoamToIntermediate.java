@@ -124,37 +124,38 @@ public class RoamToIntermediate {
 				RelationalExpressionTransformer transformer = transformationFactory
 						.createRelationalTransformer(constraint);
 				constraint.setExpression(transformer.transform((RoamRelExpr) boolExpr));
-				if (RoamTransformationUtils.isConstantExpression(constraint.getExpression()) == ArithmeticExpressionType.constant) {
+				if (RoamTransformationUtils.isConstantExpression(constraint.getExpression()) == ArithmeticExpressionType.constant)
 					throw new UnsupportedOperationException(
 							"Expressions that can be evaluated statically at ILP problem build time are currently not allowed.");
-				} else {
-					boolean isLhsConst = (RoamTransformationUtils
-							.isConstantExpression(constraint.getExpression().getLhs()) == ArithmeticExpressionType.constant) ? true : false;
-					boolean isRhsConst = (RoamTransformationUtils
-							.isConstantExpression(constraint.getExpression().getRhs()) == ArithmeticExpressionType.constant) ? true : false;
-					if (!isLhsConst && !isRhsConst) {
-						// Fix this malformed constraint by subtracting the lhs from the rhs.
-						// E.g.: c: x < y is transformed to  c: 0 < y - x
-						BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
-						rewrite.setOperator(BinaryArithmeticOperator.SUBTRACT);
-						rewrite.setLhs(constraint.getExpression().getRhs());
-						rewrite.setRhs(constraint.getExpression().getLhs());
-						DoubleLiteral lit = factory.createDoubleLiteral();
-						lit.setLiteral(0);
-						constraint.getExpression().setLhs(lit);
-						constraint.getExpression().setRhs(rewrite);
-					}
-					
-					//Rewrite the non-constant expression, which will be translated into ILP-Terms, into a sum of products.
-					if(isLhsConst) {
-						constraint.getExpression().setRhs(rewriteToSumOfProducts(constraint.getExpression().getRhs(), null, null));
-					} else {
-						constraint.getExpression().setLhs(rewriteToSumOfProducts(constraint.getExpression().getLhs(), null, null));
-					}
-					// Move constant terms from the sum of products to the constant side of the relational constraint.
-					constraint.setExpression(rewriteMoveConstantTerms(constraint.getExpression()));
+				
+				boolean isLhsConst = (RoamTransformationUtils
+						.isConstantExpression(constraint.getExpression().getLhs()) == ArithmeticExpressionType.constant) ? true : false;
+				boolean isRhsConst = (RoamTransformationUtils
+						.isConstantExpression(constraint.getExpression().getRhs()) == ArithmeticExpressionType.constant) ? true : false;
+				if (!isLhsConst && !isRhsConst) {
+					// Fix this malformed constraint by subtracting the lhs from the rhs.
+					// E.g.: c: x < y is transformed to  c: 0 < y - x
+					BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
+					rewrite.setOperator(BinaryArithmeticOperator.SUBTRACT);
+					rewrite.setLhs(constraint.getExpression().getRhs());
+					rewrite.setRhs(constraint.getExpression().getLhs());
+					DoubleLiteral lit = factory.createDoubleLiteral();
+					lit.setLiteral(0);
+					constraint.getExpression().setLhs(lit);
+					constraint.getExpression().setRhs(rewrite);
 				}
-
+				
+				//Rewrite the non-constant expression, which will be translated into ILP-Terms, into a sum of products.
+				if(isLhsConst) {
+					constraint.getExpression().setRhs(rewriteToSumOfProducts(constraint.getExpression().getRhs(), null, null));
+				} else {
+					constraint.getExpression().setLhs(rewriteToSumOfProducts(constraint.getExpression().getLhs(), null, null));
+				}
+				// Move constant terms from the sum of products to the constant side of the relational constraint.
+				constraint.setExpression(rewriteMoveConstantTerms(constraint.getExpression()));
+				
+				// Final check: Was the context used?
+				// TODO:
 			}
 		}
 	}

@@ -38,7 +38,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.BoolValue
 import org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue
-import org.emoflon.roam.build.transformation.ArithmeticExpressionType
+import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionType
 
 class TypeConstraintTemplate extends GeneratorTemplate<TypeConstraint> {
 	

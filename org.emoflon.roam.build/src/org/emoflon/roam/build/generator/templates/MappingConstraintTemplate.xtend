@@ -1,7 +1,6 @@
 package org.emoflon.roam.build.generator.templates
 
 import org.emoflon.roam.build.generator.TemplateData
-import org.emoflon.roam.build.transformation.ArithmeticExpressionType
 import org.emoflon.roam.build.transformation.helper.RoamTransformationUtils
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode
@@ -19,6 +18,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression
+import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionType
 
 class MappingConstraintTemplate extends ConstraintTemplate<MappingConstraint> {
 

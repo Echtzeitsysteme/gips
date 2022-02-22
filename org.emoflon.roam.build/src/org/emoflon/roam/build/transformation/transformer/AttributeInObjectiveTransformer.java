@@ -5,6 +5,7 @@ import org.emoflon.roam.build.transformation.helper.RoamTransformationData;
 import org.emoflon.roam.build.transformation.helper.RoamTransformationUtils;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective;
 import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
 import org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective;
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective;
@@ -26,6 +27,9 @@ public class AttributeInObjectiveTransformer extends AttributeExpressionTransfor
 
 	@Override
 	protected ValueExpression transform(RoamMappingAttributeExpr eMapping) throws Exception {
+		if(context instanceof MappingObjective)
+			throw new UnsupportedOperationException("Other mappings are not accessible from within mapping contexts!");
+		
 		if(eMapping.getExpr() != null) {
 			RoamStreamExpr terminalExpr = RoamTransformationUtils.getTerminalStreamExpression(eMapping.getExpr());
 			if(terminalExpr instanceof RoamStreamBoolExpr streamBool) {

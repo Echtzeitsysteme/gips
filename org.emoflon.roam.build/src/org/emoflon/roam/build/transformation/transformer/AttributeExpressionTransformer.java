@@ -1,9 +1,11 @@
-package org.emoflon.roam.build.transformation.helper;
+package org.emoflon.roam.build.transformation.transformer;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.emoflon.roam.build.transformation.RoamTransformationData;
+import org.emoflon.roam.build.transformation.helper.RoamTransformationData;
+import org.emoflon.roam.build.transformation.helper.RoamTransformationUtils;
+import org.emoflon.roam.build.transformation.helper.TransformationContext;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue;

@@ -1,12 +1,13 @@
-package org.emoflon.roam.build.transformation.helper;
+package org.emoflon.roam.build.transformation.transformer;
 
 import org.eclipse.emf.ecore.EObject;
-import org.emoflon.roam.build.transformation.RoamTransformationData;
+import org.emoflon.roam.build.transformation.helper.RoamTransformationData;
+import org.emoflon.roam.build.transformation.helper.RoamTransformationUtils;
+import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
-import org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective;
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective;
+import org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
@@ -16,9 +17,9 @@ import org.emoflon.roam.roamslang.roamSLang.RoamStreamBoolExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
 
-public class AttributeInObjectiveTransformer extends AttributeExpressionTransformer<Objective> {
+public class AttributeInConstraintTransformer extends AttributeExpressionTransformer<Constraint> {
 
-	protected AttributeInObjectiveTransformer(RoamTransformationData data, Objective context,
+	protected AttributeInConstraintTransformer(RoamTransformationData data, Constraint context,
 			TransformerFactory factory) {
 		super(data, context, factory);
 	}
@@ -58,14 +59,15 @@ public class AttributeInObjectiveTransformer extends AttributeExpressionTransfor
 	protected ValueExpression transformNoExprAndNoStream(RoamContextExpr eContext, EObject contextType)
 			throws Exception {
 		if(contextType instanceof RoamTypeContext typeContext) {
-			TypeObjective tc = (TypeObjective) context;
+			TypeConstraint tc = (TypeConstraint) context;
 			ContextTypeValue typeValue = factory.createContextTypeValue();
 			typeValue.setReturnType(tc.getModelType().getType());
 			typeValue.setTypeContext(tc.getModelType());
 			return typeValue;
 		} else if(contextType instanceof RoamMatchContext matchContext) { 
-			PatternObjective pc = (PatternObjective) context;
+			PatternConstraint pc = (PatternConstraint) context;
 			ContextPatternValue patternValue = factory.createContextPatternValue();
+			patternValue.setReturnType(pc.getPattern().getPattern().eClass());
 			patternValue.setPatternContext(pc.getPattern());
 			return patternValue;
 		} else {

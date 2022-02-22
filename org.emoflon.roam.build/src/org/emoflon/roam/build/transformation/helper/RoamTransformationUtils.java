@@ -1,6 +1,5 @@
 package org.emoflon.roam.build.transformation.helper;
 
-import org.emoflon.roam.build.transformation.ArithmeticExpressionType;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;

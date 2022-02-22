@@ -1,8 +1,11 @@
-package org.emoflon.roam.build.transformation.helper;
+package org.emoflon.roam.build.transformation.transformer;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.emoflon.roam.build.transformation.RoamTransformationData;
+import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionType;
+import org.emoflon.roam.build.transformation.helper.RoamTransformationData;
+import org.emoflon.roam.build.transformation.helper.RoamTransformationUtils;
+import org.emoflon.roam.build.transformation.helper.TransformationContext;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
@@ -39,6 +42,11 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 		// Create filter expression
 		StreamExpressionTransformer transformer = transformerFactory.createStreamTransformer(mapSum);
 		mapSum.setFilter(transformer.transform(streamExpr));
+		// Check for valid ilp semantics
+		ArithmeticExpressionType filterExpressionType = RoamTransformationUtils.isConstantExpression(mapSum.getExpression());
+		if(filterExpressionType == ArithmeticExpressionType.variableVector || filterExpressionType == ArithmeticExpressionType.variableValue)
+			throw new UnsupportedOperationException("Variable simultaneous value access in filter and arithmetic expression is forbidden.");
+		
 		return mapSum;
 	}
 
@@ -53,9 +61,17 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 		StreamExpressionTransformer streamTransformer = transformerFactory.createStreamTransformer(mapSum);
 		mapSum.setFilter(streamTransformer.transform(streamExpr));
 		
+		ArithmeticExpressionType filterExpressionType = RoamTransformationUtils.isConstantExpression(mapSum.getExpression());
+		
 		ArithmeticExpressionTransformer arithmeticTransformer = transformerFactory.createArithmeticTransformer(mapSum);
 		if(streamArithmetic.getLambda().getExpr() instanceof RoamRelExpr relExpr && relExpr.getRight() == null) {
 			mapSum.setExpression(arithmeticTransformer.transform(relExpr.getLeft()));
+			
+			ArithmeticExpressionType arithmeticExpressionType = RoamTransformationUtils.isConstantExpression(mapSum.getExpression());
+			if((filterExpressionType == ArithmeticExpressionType.variableVector || filterExpressionType == ArithmeticExpressionType.variableValue) && 
+					(arithmeticExpressionType == ArithmeticExpressionType.variableVector || arithmeticExpressionType == ArithmeticExpressionType.variableValue)) {
+				throw new UnsupportedOperationException("Variable simultaneous value access in filter and arithmetic expression is forbidden.");
+			}
 			return mapSum;
 		} else {
 			throw new IllegalArgumentException("A sum stream expression may only contain arithmetic expressions or arithmetic values.");

@@ -1,4 +1,4 @@
-package org.emoflon.roam.build.transformation;
+package org.emoflon.roam.build.transformation.helper;
 
 import java.util.HashMap;
 import java.util.Map;

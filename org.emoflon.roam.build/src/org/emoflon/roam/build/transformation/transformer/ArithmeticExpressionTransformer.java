@@ -1,7 +1,8 @@
-package org.emoflon.roam.build.transformation.helper;
+package org.emoflon.roam.build.transformation.transformer;
 
 import org.eclipse.emf.ecore.EObject;
-import org.emoflon.roam.build.transformation.RoamTransformationData;
+import org.emoflon.roam.build.transformation.helper.RoamTransformationData;
+import org.emoflon.roam.build.transformation.helper.TransformationContext;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression;

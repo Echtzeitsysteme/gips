@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.emoflon.roam.build.transformation.helper.RoamTransformationData;
 import org.emoflon.roam.roamslang.roamSLang.RoamBinaryBoolExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamBool;
 import org.emoflon.roam.roamslang.roamSLang.RoamBoolExpr;

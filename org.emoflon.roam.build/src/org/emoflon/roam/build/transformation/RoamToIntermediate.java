@@ -1,7 +1,6 @@
 package org.emoflon.roam.build.transformation;
 
 import java.util.Collection;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
@@ -14,10 +13,12 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
-import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionTransformer;
-import org.emoflon.roam.build.transformation.helper.RelationalExpressionTransformer;
+import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionType;
+import org.emoflon.roam.build.transformation.helper.RoamTransformationData;
 import org.emoflon.roam.build.transformation.helper.RoamTransformationUtils;
-import org.emoflon.roam.build.transformation.helper.TransformerFactory;
+import org.emoflon.roam.build.transformation.transformer.ArithmeticExpressionTransformer;
+import org.emoflon.roam.build.transformation.transformer.RelationalExpressionTransformer;
+import org.emoflon.roam.build.transformation.transformer.TransformerFactory;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression;

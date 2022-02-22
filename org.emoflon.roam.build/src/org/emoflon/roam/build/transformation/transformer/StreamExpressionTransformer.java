@@ -1,8 +1,9 @@
-package org.emoflon.roam.build.transformation.helper;
+package org.emoflon.roam.build.transformation.transformer;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.emoflon.roam.build.transformation.RoamTransformationData;
+import org.emoflon.roam.build.transformation.helper.RoamTransformationData;
+import org.emoflon.roam.build.transformation.helper.TransformationContext;
 import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation;
 import org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation;

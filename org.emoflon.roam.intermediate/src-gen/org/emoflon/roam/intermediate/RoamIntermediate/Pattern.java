@@ -14,6 +14,7 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
  * </p>
  * <ul>
  *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Pattern#getPattern <em>Pattern</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Pattern#isIsRule <em>Is Rule</em>}</li>
  * </ul>
  *
  * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getPattern()
@@ -42,5 +43,27 @@ public interface Pattern extends VariableSet {
 	 * @generated
 	 */
 	void setPattern(IBeXContext value);
+
+	/**
+	 * Returns the value of the '<em><b>Is Rule</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Is Rule</em>' attribute.
+	 * @see #setIsRule(boolean)
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getPattern_IsRule()
+	 * @model
+	 * @generated
+	 */
+	boolean isIsRule();
+
+	/**
+	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.Pattern#isIsRule <em>Is Rule</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Is Rule</em>' attribute.
+	 * @see #isIsRule()
+	 * @generated
+	 */
+	void setIsRule(boolean value);
 
 } // Pattern

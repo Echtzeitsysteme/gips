@@ -2,7 +2,6 @@ package org.emoflon.roam.build.generator.templates
 
 import org.emoflon.roam.build.generator.GeneratorTemplate
 import org.emoflon.roam.build.generator.TemplateData
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression
@@ -41,6 +40,10 @@ import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator
 import org.eclipse.emf.ecore.EObject
 import org.emoflon.roam.intermediate.RoamIntermediate.Constraint
 import java.util.HashSet
+import org.emoflon.roam.build.transformation.helper.RoamTransformationUtils
+import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionType
+import java.util.LinkedList
+import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet
 
 abstract class ConstraintTemplate <CONTEXT extends Constraint> extends GeneratorTemplate<CONTEXT> {
 
@@ -48,6 +51,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 	public val builderMethodNames = new HashSet<String>
 	public val builderMethods = new HashMap<EObject,String>
 	public val builderMethodDefinitions = new HashMap<EObject,String>
+	public val builderMethodCalls = new LinkedList<String>
 
 	new(TemplateData data, CONTEXT context) {
 		super(data, context)
@@ -60,28 +64,52 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		return '''«parseExpression(constExpr, ExpressionContext.constConstraint)»'''
 	}
 	
-	def String generateVariableTermBuilder(ArithmeticExpression expr) {
+	def void generateVariableTermBuilder(ArithmeticExpression root, ArithmeticExpression expr) {
 		if(expr instanceof BinaryArithmeticExpression) {
-			if(expr.operator == BinaryArithmeticOperator.ADD || expr.operator == BinaryArithmeticOperator.SUBTRACT) {
-				return generateVariableTermBuilder(expr.lhs) + generateVariableTermBuilder(expr.rhs)
-			} else if(expr.operator == BinaryArithmeticOperator.MULTIPLY || expr.operator == BinaryArithmeticOperator.DIVIDE) {
-				return "null"
+			if(expr.operator == BinaryArithmeticOperator.ADD) {
+				generateVariableTermBuilder(expr, expr.lhs)
+				generateVariableTermBuilder(expr, expr.rhs)
+			} else if(expr.operator == BinaryArithmeticOperator.SUBTRACT) {
+				throw new UnsupportedOperationException("Code generator does not support subtraction expressions.");
 			} else {
-				//CASE: Pow
-				return "null"
+				val variable = RoamTransformationUtils.extractVariable(expr);
+				if(variable.size != 1)
+					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
+				
+				val builderMethodName = generateBuilder(expr)
+				val instruction = '''
+		double constValue = «builderMethodName»(context);
+		ILPTerm<Integer, Double> term = new ILPTerm<Integer, Double>(«getVariableValue(variable.iterator.next)», constValue);
+		terms.add()'''
+				builderMethodCalls.add(instruction)
 			}
 		} else if(expr instanceof UnaryArithmeticExpression) {
-			generateBuilderMethod(expr)
-			return '''terms.add(«builderMethods.get(expr)»(context));
-			'''
+				val variable = RoamTransformationUtils.extractVariable(expr);
+				if(variable.size != 1)
+					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
+				
+				val builderMethodName = generateBuilder(expr)
+				val instruction = '''
+		double constValue = «builderMethodName»(context);
+		ILPTerm<Integer, Double> term = new ILPTerm<Integer, Double>(«getVariableValue(variable.iterator.next)», constValue);
+		terms.add()'''
+				builderMethodCalls.add(instruction)
 		} else if(expr instanceof ArithmeticValue) {
-			return generateVariableTermBuilder(expr.value)
+			generateBuilder(expr.value)
 		} else {
 			throw new IllegalAccessException("Ilp term may not be constant")
 		}
 	}
 	
-	def String generateVariableTermBuilder(ValueExpression expr);
+	def String getVariableValue(VariableSet variable) {
+		
+	}
+	
+	def void generateBuilder(ValueExpression expr);
+	
+	def String generateBuilder(BinaryArithmeticExpression expr);
+	
+	def String generateBuilder(UnaryArithmeticExpression expr);
 	
 	def void generateBuilderMethod(UnaryArithmeticExpression expr);
 	
@@ -443,7 +471,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 	def String getIteratorVariableName(SetOperation iterator) {
 		var itrName = iterator2variableName.get(iterator)
 		if(itrName === null) {
-			itrName = ""+Character.forDigit(Character.digit('a',0)+iterator2variableName.size,0)
+			itrName = '''itr_«iterator2variableName.size»'''
 			iterator2variableName.put(iterator, itrName);
 		}
 		return itrName;

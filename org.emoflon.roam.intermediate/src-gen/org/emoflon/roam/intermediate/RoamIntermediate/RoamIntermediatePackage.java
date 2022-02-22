@@ -206,13 +206,22 @@ public interface RoamIntermediatePackage extends EPackage {
 	int PATTERN__PATTERN = VARIABLE_SET_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Is Rule</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PATTERN__IS_RULE = VARIABLE_SET_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Pattern</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PATTERN_FEATURE_COUNT = VARIABLE_SET_FEATURE_COUNT + 1;
+	int PATTERN_FEATURE_COUNT = VARIABLE_SET_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Pattern</em>' class.
@@ -3460,6 +3469,17 @@ public interface RoamIntermediatePackage extends EPackage {
 	EReference getPattern_Pattern();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.emoflon.roam.intermediate.RoamIntermediate.Pattern#isIsRule <em>Is Rule</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Is Rule</em>'.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Pattern#isIsRule()
+	 * @see #getPattern()
+	 * @generated
+	 */
+	EAttribute getPattern_IsRule();
+
+	/**
 	 * Returns the meta object for class '{@link org.emoflon.roam.intermediate.RoamIntermediate.Type <em>Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5092,6 +5112,14 @@ public interface RoamIntermediatePackage extends EPackage {
 		 * @generated
 		 */
 		EReference PATTERN__PATTERN = eINSTANCE.getPattern_Pattern();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Rule</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PATTERN__IS_RULE = eINSTANCE.getPattern_IsRule();
 
 		/**
 		 * The meta object literal for the '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeImpl <em>Type</em>}' class.

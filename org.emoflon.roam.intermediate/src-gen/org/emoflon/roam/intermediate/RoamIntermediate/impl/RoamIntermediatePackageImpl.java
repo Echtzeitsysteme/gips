@@ -753,6 +753,15 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getPattern_IsRule() {
+		return (EAttribute) patternEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getType() {
 		return typeEClass;
 	}
@@ -2086,6 +2095,7 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 
 		patternEClass = createEClass(PATTERN);
 		createEReference(patternEClass, PATTERN__PATTERN);
+		createEAttribute(patternEClass, PATTERN__IS_RULE);
 
 		typeEClass = createEClass(TYPE);
 		createEReference(typeEClass, TYPE__TYPE);
@@ -2422,6 +2432,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		initEReference(getPattern_Pattern(), theIBeXPatternModelPackage.getIBeXContext(), null, "pattern", null, 1, 1,
 				Pattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPattern_IsRule(), ecorePackage.getEBoolean(), "isRule", null, 0, 1, Pattern.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(typeEClass, Type.class, "Type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getType_Type(), ecorePackage.getEClass(), null, "type", null, 1, 1, Type.class, !IS_TRANSIENT,

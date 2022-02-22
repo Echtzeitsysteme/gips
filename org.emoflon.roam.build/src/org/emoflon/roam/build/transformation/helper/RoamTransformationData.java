@@ -6,6 +6,7 @@ import java.util.Map;
 import org.eclipse.emf.ecore.EClass;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
+import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
@@ -58,6 +59,7 @@ public record RoamTransformationData(
 			p = RoamIntermediateFactory.eINSTANCE.createPattern();
 			p.setName(pattern.getName());
 			p.setPattern(ePattern2Context.get(pattern));
+			p.setIsRule(GTEditorPatternUtils.containsCreatedOrDeletedElements(pattern));
 			ePattern2Pattern.put(pattern, p);
 		}
 		return p;

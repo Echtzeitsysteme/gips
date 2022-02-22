@@ -1,5 +1,8 @@
 package org.emoflon.roam.build.transformation.helper;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral;
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
@@ -39,6 +42,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation;
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureLit;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureNavigation;
@@ -310,6 +314,95 @@ public final class RoamTransformationUtils {
 			return false;
 		} else {
 			throw new IllegalArgumentException("Unknown value expression Type: " + expr);
+		}
+	}
+	
+	public static Set<VariableSet> extractVariable(final ArithmeticExpression expr) {
+		if(expr instanceof BinaryArithmeticExpression bin) {
+			Set<VariableSet> variables = new HashSet<>();
+			variables.addAll(extractVariable(bin.getLhs()));
+			variables.addAll(extractVariable(bin.getRhs()));
+			return variables;
+		} else if(expr instanceof UnaryArithmeticExpression unary) {
+			return extractVariable(unary.getExpression());
+		} else if(expr instanceof ArithmeticLiteral) {
+			return new HashSet<>();
+		} else {
+			ArithmeticValue value = (ArithmeticValue) expr;
+			return extractVariable(value.getValue());
+		}
+	}
+	
+	public static Set<VariableSet> extractVariable(final ValueExpression expr) {
+		Set<VariableSet> variables = new HashSet<>();
+		if(expr instanceof MappingSumExpression mapSum) {
+			variables.add(mapSum.getMapping());
+		} else if(expr instanceof TypeSumExpression typeSum) {
+			variables.addAll(extractVariable(typeSum.getExpression()));
+			variables.addAll(extractVariable(typeSum.getFilter()));
+		} else if(expr instanceof ContextMappingNodeFeatureValue val) {
+			variables.add(val.getMappingContext());
+		} else if(expr instanceof ContextMappingNode val) {
+			variables.add(val.getMappingContext());
+		} else if(expr instanceof ContextMappingValue val) {
+			variables.add(val.getMappingContext());
+		} else if(expr instanceof IteratorMappingValue val) {
+			variables.add(val.getMappingContext());
+		} else if(expr instanceof IteratorMappingFeatureValue val) {
+			variables.add(val.getMappingContext());
+		} else if(expr instanceof IteratorMappingNodeValue val) {
+			variables.add(val.getMappingContext());
+		}  else if(expr instanceof IteratorMappingNodeFeatureValue val) {
+			variables.add(val.getMappingContext());
+		}
+		return variables;
+	}
+	
+	public static Set<VariableSet> extractVariable(final StreamExpression expr) {
+		if(expr.getChild() == null) {
+			if(expr.getCurrent() instanceof StreamFilterOperation filterOp) {
+				return extractVariable(filterOp.getPredicate());
+			} else {
+				return new HashSet<>();
+			}
+		} else {
+			Set<VariableSet> variables = new HashSet<>();
+			if(expr.getCurrent() instanceof StreamFilterOperation filterOp) {
+				variables.addAll(extractVariable(filterOp.getPredicate()));
+			}
+			variables.addAll(extractVariable(expr.getChild()));
+			return variables;
+		}
+	}
+	
+	public static Set<VariableSet> extractVariable(final BoolExpression expr) {
+		if(expr instanceof BoolBinaryExpression bin) {
+			Set<VariableSet> variables = new HashSet<>();
+			variables.addAll(extractVariable(bin.getLhs()));
+			variables.addAll(extractVariable(bin.getRhs()));
+			return variables;
+		} else if(expr instanceof BoolUnaryExpression unary) {
+			return extractVariable(unary.getExpression());
+		} else if(expr instanceof BoolLiteral) {
+			return new HashSet<>();
+		} else if(expr instanceof RelationalExpression relExpr) {
+			return extractVariable(relExpr);
+		} else if(expr instanceof BoolStreamExpression streamExpr) {
+			return extractVariable(streamExpr.getStream());
+		} else {
+			BoolValue value = (BoolValue) expr;
+			return extractVariable(value.getValue());
+		}
+	}
+	
+	public static Set<VariableSet> extractVariable(final RelationalExpression relExpr) {
+		if(relExpr.getRhs() == null) {
+			return extractVariable(relExpr.getLhs());
+		} else {
+			Set<VariableSet> variables = new HashSet<>();
+			variables.addAll(extractVariable(relExpr.getLhs()));
+			variables.addAll(extractVariable(relExpr.getRhs()));
+			return variables;
 		}
 	}
 }

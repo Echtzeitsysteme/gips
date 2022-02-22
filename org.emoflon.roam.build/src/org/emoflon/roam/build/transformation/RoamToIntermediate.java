@@ -33,6 +33,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective;
 import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
 import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget;
 import org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective;
 import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateFactory;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
@@ -154,8 +155,16 @@ public class RoamToIntermediate {
 				// Move constant terms from the sum of products to the constant side of the relational constraint.
 				constraint.setExpression(rewriteMoveConstantTerms(constraint.getExpression()));
 				
+				// Remove subtractions, e.g.: a - b becomes a + -b
+				if(isLhsConst) {
+					constraint.getExpression().setRhs(rewriteRemoveSubtractions(constraint.getExpression().getRhs()));
+				} else {
+					constraint.getExpression().setLhs(rewriteRemoveSubtractions(constraint.getExpression().getLhs()));
+				}
+				
 				// Final check: Was the context used?
-				if(!RoamTransformationUtils.containsContextExpression(constraint.getExpression().getRhs()) && !RoamTransformationUtils.containsContextExpression(constraint.getExpression().getLhs())) {
+				if(!RoamTransformationUtils.containsContextExpression(constraint.getExpression().getRhs()) 
+						&& !RoamTransformationUtils.containsContextExpression(constraint.getExpression().getLhs())) {
 					throw new IllegalArgumentException(
 							"Context must be used at least once per constraint.");
 				}
@@ -178,7 +187,8 @@ public class RoamToIntermediate {
 			objective.setExpression(transformer.transform(eObjective.getExpr()));
 			//Rewrite the expression, which will be translated into ILP-Terms, into a sum of products.
 			objective.setExpression(rewriteToSumOfProducts(objective.getExpression(), null, null));
-			
+			// Remove subtractions, e.g.: a - b becomes a + -b
+			objective.setExpression(rewriteRemoveSubtractions(objective.getExpression()));
 			// Final check: Was the context used?
 			if(!RoamTransformationUtils.containsContextExpression(objective.getExpression())) {
 				throw new IllegalArgumentException(
@@ -213,15 +223,17 @@ public class RoamToIntermediate {
 		globalObj.setExpression(transformer.transform(eGlobalObj.getExpr()));
 		//Rewrite the expression, which will be translated into ILP-Terms, into a sum of products.
 		globalObj.setExpression(rewriteToSumOfProducts(globalObj.getExpression(), null, null));
+		// Remove subtractions, e.g.: a - b becomes a + -b
+		globalObj.setExpression(rewriteRemoveSubtractions(globalObj.getExpression()));
 	}
 
 	protected Constraint createConstraint(final RoamConstraint eConstraint, int counter) {
-		if (eConstraint.getContext()instanceof RoamMappingContext mapping) {
+		if (eConstraint.getContext() instanceof RoamMappingContext mapping) {
 			MappingConstraint constraint = factory.createMappingConstraint();
 			constraint.setName("MappingConstraint" + counter + "On" + mapping.getMapping().getName());
 			constraint.setMapping(data.eMapping2Mapping().get(mapping.getMapping()));
 			return constraint;
-		} else if(eConstraint.getContext()instanceof RoamMatchContext pattern) {
+		} else if(eConstraint.getContext() instanceof RoamMatchContext pattern) {
 			PatternConstraint constraint = factory.createPatternConstraint();
 			constraint.setName("PatternConstraint" + counter + "On" + pattern.getPattern().getName());
 			constraint.setPattern(data.getPattern(pattern.getPattern()));
@@ -237,11 +249,16 @@ public class RoamToIntermediate {
 	}
 
 	protected Objective createObjective(final RoamObjective eObjective) {
-		if (eObjective.getContext()instanceof RoamMappingContext mapping) {
+		if (eObjective.getContext() instanceof RoamMappingContext mapping) {
 			MappingObjective objective = factory.createMappingObjective();
 			objective.setName(eObjective.getName());
 			objective.setMapping(data.eMapping2Mapping().get(mapping.getMapping()));
 			return objective;
+		} else if(eObjective.getContext() instanceof RoamMatchContext pattern) {
+			PatternObjective constraint = factory.createPatternObjective();
+			constraint.setName(eObjective.getName());
+			constraint.setPattern(data.getPattern(pattern.getPattern()));
+			return constraint;
 		} else {
 			RoamTypeContext type = (RoamTypeContext) eObjective.getContext();
 			TypeObjective objective = factory.createTypeObjective();
@@ -578,37 +595,40 @@ public class RoamToIntermediate {
 		}
 	}
 	
-//	protected ArithmeticExpression rewriteMoveILPVariableToTop(final ArithmeticExpression expr) {
-//		if(expr instanceof BinaryArithmeticExpression binaryExpr) {
-//			if(binaryExpr.getOperator() == BinaryArithmeticOperator.ADD || binaryExpr.getOperator() == BinaryArithmeticOperator.SUBTRACT) {
-//				ArithmeticExpression rewriteLHS = rewriteMoveILPVariableToTop(binaryExpr.getLhs());
-//				ArithmeticExpression rewriteRHS = rewriteMoveILPVariableToTop(binaryExpr.getRhs());
-//				binaryExpr.setLhs(rewriteLHS);
-//				binaryExpr.setRhs(rewriteRHS);
-//				return binaryExpr;
-//			} else if(binaryExpr.getOperator() == BinaryArithmeticOperator.POW) {
-//				return expr;
-//			} else if(binaryExpr.getOperator() == BinaryArithmeticOperator.MULTIPLY) {
-//				ArithmeticExpressionType lhsType = RoamTransformationUtils.isConstantExpression(binaryExpr.getLhs());
-//				ArithmeticExpressionType rhsType = RoamTransformationUtils.isConstantExpression(binaryExpr.getRhs());
-//				if(lhsType == ArithmeticExpressionType.variableVector && rhsType != ArithmeticExpressionType.variableVector) {
-//					
-//				} else if(rhsType == ArithmeticExpressionType.variableVector && lhsType != ArithmeticExpressionType.variableVector) {
-//					
-//				} else {
-//					return expr;
-//				}
-//			} else {
-//				
-//			}
-//		} else if(expr instanceof UnaryArithmeticExpression unaryExpr) {
-//			return relExpr;
-//		} else if(expr instanceof ArithmeticValue valExpr) {
-//			return relExpr;
-//		} else {
-//			return expr;
-//		}
-//	}
+	protected ArithmeticExpression rewriteRemoveSubtractions(final ArithmeticExpression expr) {
+		if(expr instanceof BinaryArithmeticExpression binaryExpr) {
+			if(binaryExpr.getOperator() == BinaryArithmeticOperator.SUBTRACT) {
+				ArithmeticExpression rewriteRHS = invertSign(binaryExpr.getRhs());
+				rewriteRHS = rewriteRemoveSubtractions(rewriteRHS);
+				ArithmeticExpression rewriteLHS = rewriteRemoveSubtractions(binaryExpr.getLhs());
+				BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
+				rewrite.setOperator(BinaryArithmeticOperator.ADD);
+				rewrite.setLhs(rewriteLHS);
+				rewrite.setRhs(rewriteRHS);
+				return rewrite;
+			} else {
+				ArithmeticExpression rewriteLHS = rewriteRemoveSubtractions(binaryExpr.getLhs());
+				ArithmeticExpression rewriteRHS = rewriteRemoveSubtractions(binaryExpr.getRhs());
+				binaryExpr.setLhs(rewriteLHS);
+				binaryExpr.setRhs(rewriteRHS);
+				return binaryExpr;
+			}
+		} else if(expr instanceof UnaryArithmeticExpression unaryExpr) {
+			ArithmeticExpression rewrite = rewriteRemoveSubtractions(unaryExpr.getExpression());
+			unaryExpr.setExpression(rewrite);
+			return unaryExpr;
+		} else if(expr instanceof ArithmeticValue valExpr) {
+			if(valExpr.getValue() instanceof SumExpression sumExpr) {
+				ArithmeticExpression rewrite = rewriteRemoveSubtractions(sumExpr.getExpression());
+				sumExpr.setExpression(rewrite);
+				return valExpr;
+			} else {
+				return valExpr;
+			}
+		} else {
+			return expr;
+		}
+	}
 	
 	protected ArithmeticExpression invertSign(final ArithmeticExpression expr) {
 		if(expr instanceof BinaryArithmeticExpression binaryExpr) {

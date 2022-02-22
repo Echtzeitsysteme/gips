@@ -7,6 +7,7 @@ import org.emoflon.roam.build.RoamAPIData;
 import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
+import org.emoflon.roam.intermediate.RoamIntermediate.Pattern;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
 
 public class TemplateData {
@@ -23,6 +24,8 @@ public class TemplateData {
 	final public Map<Mapping, String> mapping2mapperClassName = new HashMap<>();
 	final public Map<Mapping, String> mapping2ruleClassName = new HashMap<>();
 	final public Map<Mapping, String> mapping2matchClassName = new HashMap<>();
+	final public Map<Pattern, String> pattern2matchClassName = new HashMap<>();
+	final public Map<Pattern, String> pattern2patternClassName = new HashMap<>();
 	
 	final public Map<Constraint, String> constraint2constraintClassName = new HashMap<>();
 	final public Map<Objective, String> objective2objectiveClassName = new HashMap<>();
@@ -48,7 +51,17 @@ public class TemplateData {
 				mapping2ruleClassName.put(mapping, firstToUpper(mapping.getRule().getName())+"Rule");
 				mapping2matchClassName.put(mapping, firstToUpper(mapping.getRule().getName())+"Match");
 			});
-		
+		model.getVariables().stream()
+			.filter(var -> var instanceof Pattern)
+			.map(var -> (Pattern) var)
+			.forEach(pattern -> {
+				if(pattern.isIsRule()) {
+					pattern2patternClassName.put(pattern, firstToUpper(pattern.getPattern().getName())+"Rule");
+				} else {
+					pattern2patternClassName.put(pattern, firstToUpper(pattern.getPattern().getName())+"Pattern");
+				}
+				pattern2matchClassName.put(pattern, firstToUpper(pattern.getPattern().getName())+"Match");
+			});
 		model.getConstraints().stream().forEach(constraint -> constraint2constraintClassName.put(constraint, firstToUpper(constraint.getName())));
 		model.getObjectives().stream().forEach(objective -> objective2objectiveClassName.put(objective, firstToUpper(objective.getName())));
 	}

@@ -11,11 +11,13 @@ import org.emoflon.roam.build.generator.templates.MapperTemplate;
 import org.emoflon.roam.build.generator.templates.MappingConstraintTemplate;
 import org.emoflon.roam.build.generator.templates.MappingTemplate;
 import org.emoflon.roam.build.generator.templates.ObjectiveFactoryTemplate;
+import org.emoflon.roam.build.generator.templates.PatternConstraintTemplate;
 import org.emoflon.roam.build.generator.templates.RoamAPITemplate;
 import org.emoflon.roam.build.generator.templates.TypeConstraintTemplate;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective;
+import org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective;
@@ -44,6 +46,8 @@ public class RoamCodeGenerator {
 		data.model.getConstraints().parallelStream().forEach(constraint -> {
 			if(constraint instanceof MappingConstraint mappingConstraint) {
 				templates.add(new MappingConstraintTemplate(data, mappingConstraint));
+			} else if(constraint instanceof PatternConstraint patternConstraint) {
+				templates.add(new PatternConstraintTemplate(data, patternConstraint));
 			} else {
 				TypeConstraint typeConstraint = (TypeConstraint) constraint;
 				templates.add(new TypeConstraintTemplate(data, typeConstraint));

@@ -41,9 +41,16 @@ import org.eclipse.emf.ecore.EObject
 import org.emoflon.roam.intermediate.RoamIntermediate.Constraint
 import java.util.HashSet
 import org.emoflon.roam.build.transformation.helper.RoamTransformationUtils
-import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionType
 import java.util.LinkedList
 import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue
 
 abstract class ConstraintTemplate <CONTEXT extends Constraint> extends GeneratorTemplate<CONTEXT> {
 
@@ -64,11 +71,11 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		return '''«parseExpression(constExpr, ExpressionContext.constConstraint)»'''
 	}
 	
-	def void generateVariableTermBuilder(ArithmeticExpression root, ArithmeticExpression expr) {
+	def void generateVariableTermBuilder(ArithmeticExpression expr) {
 		if(expr instanceof BinaryArithmeticExpression) {
 			if(expr.operator == BinaryArithmeticOperator.ADD) {
-				generateVariableTermBuilder(expr, expr.lhs)
-				generateVariableTermBuilder(expr, expr.rhs)
+				generateVariableTermBuilder(expr.lhs)
+				generateVariableTermBuilder(expr.rhs)
 			} else if(expr.operator == BinaryArithmeticOperator.SUBTRACT) {
 				throw new UnsupportedOperationException("Code generator does not support subtraction expressions.");
 			} else {
@@ -77,10 +84,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 				
 				val builderMethodName = generateBuilder(expr)
-				val instruction = '''
-		double constValue = «builderMethodName»(context);
-		ILPTerm<Integer, Double> term = new ILPTerm<Integer, Double>(«getVariableValue(variable.iterator.next)», constValue);
-		terms.add()'''
+				val instruction = '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable.iterator.next)», «builderMethodName»(context)));'''
 				builderMethodCalls.add(instruction)
 			}
 		} else if(expr instanceof UnaryArithmeticExpression) {
@@ -89,10 +93,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 				
 				val builderMethodName = generateBuilder(expr)
-				val instruction = '''
-		double constValue = «builderMethodName»(context);
-		ILPTerm<Integer, Double> term = new ILPTerm<Integer, Double>(«getVariableValue(variable.iterator.next)», constValue);
-		terms.add()'''
+				val instruction = '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable.iterator.next)», «builderMethodName»(context)));'''
 				builderMethodCalls.add(instruction)
 		} else if(expr instanceof ArithmeticValue) {
 			generateBuilder(expr.value)
@@ -101,9 +102,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		}
 	}
 	
-	def String getVariableValue(VariableSet variable) {
-		
-	}
+	def String getContextVariable(VariableSet variable);
 	
 	def void generateBuilder(ValueExpression expr);
 	
@@ -111,28 +110,11 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 	
 	def String generateBuilder(UnaryArithmeticExpression expr);
 	
-	def void generateBuilderMethod(UnaryArithmeticExpression expr);
+	def String generateBuilder(MappingSumExpression expr);
 	
-	def void generateBuilderMethod(MappingSumExpression expr);
+	def String generateBuilder(TypeSumExpression expr);
 	
-	def void generateBuilderMethod(TypeSumExpression expr);
-	
-	def void generateForeignBuilderMethod(MappingSumExpression expr) {
-		val methodName = '''builder_«builderMethods.size»'''
-		builderMethods.put(expr, methodName)
-		val method = '''
-	protected void «methodName»() {
-		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper(«expr.mapping.name»).getMappings().values().parallelStream()
-			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-			double constValue = «parseExpression(expr.expression, ExpressionContext.varConstraint)
-			»;
-			ILPTerm<Integer, Double> term = new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», constValue);
-			terms.add(term);
-		}
-	}
-		'''
-		builderMethodDefinitions.put(expr, method)
-	}
+	def String generateForeignBuilder(MappingSumExpression expr);
 	
 	def String parseExpression(ArithmeticExpression expr, ExpressionContext contextType) {
 		if(expr instanceof BinaryArithmeticExpression) {
@@ -344,6 +326,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 				return parseVarExpression(constExpr)
 			}
 			case varStream: {
+				return parseVarStreamExpression(constExpr)
 			}
 		}
 	}
@@ -359,12 +342,20 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 				sum + «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»
 			})'''
 		} else if(constExpr instanceof ContextTypeFeatureValue) {
-			throw new UnsupportedOperationException("Type context access not allowed in mapping constraints.");
+			return '''context.«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else if(constExpr instanceof ContextTypeValue) {
-			throw new UnsupportedOperationException("Type context access not allowed in mapping constraints.");
+			return '''context'''
+		} else if(constExpr instanceof ContextPatternNodeFeatureValue) {
+			return '''context.get«constExpr.node.name.toFirstUpper»().«parseFeatureExpression(constExpr.featureExpression)»'''
+		} else if(constExpr instanceof ContextPatternNode) {
+			return '''context.get«constExpr.node.name.toFirstUpper»()'''
+		} else if(constExpr instanceof ContextPatternValue) {
+			return '''context'''
 		} else if(constExpr instanceof ObjectiveFunctionValue) {
 			throw new UnsupportedOperationException("Objective function value access not allowed in mapping constraints.");
 		} else if(constExpr instanceof ContextMappingValue) {
+			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
+		} else if(constExpr instanceof ContextMappingNodeFeatureValue) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof ContextMappingNode) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
@@ -376,8 +367,16 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingNodeValue) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
-		} else if(constExpr instanceof IteratorTypeFeatureValue){
+		} else if(constExpr instanceof IteratorPatternValue) {
+			return '''«getIteratorVariableName(constExpr.stream)»'''
+		}  else if(constExpr instanceof IteratorPatternFeatureValue) {
 			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)»'''
+		} else if(constExpr instanceof IteratorPatternNodeFeatureValue) {
+			return '''«getIteratorVariableName(constExpr.stream)».get«constExpr.node.name.toFirstUpper»().«parseFeatureExpression(constExpr.featureExpression)»'''
+		} else if(constExpr instanceof IteratorPatternNodeValue) {
+			return '''«getIteratorVariableName(constExpr.stream)».get«constExpr.node.name.toFirstUpper»()'''
+		} else if(constExpr instanceof IteratorTypeFeatureValue){
+			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)».«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else {
 			val itrTypVal = constExpr as IteratorTypeValue
 			return '''«getIteratorVariableName(itrTypVal.stream)»'''
@@ -388,74 +387,149 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		if(constExpr instanceof MappingSumExpression) {
 			throw new UnsupportedOperationException("Nested mapping streams not allowed in mapping stream expressions.");
 		} else if(constExpr instanceof TypeSumExpression) {
-			imports.add(data.classToPackage.getPackage(constExpr.type.type.EPackage))
-			return '''indexer.getObjectsOfType(«constExpr.type.type.EPackage.name».eINSTANCE.get«constExpr.type.type.name»()).stream()
-			.«parseExpression(constExpr.filter, ExpressionContext.constStream)»
-			.reduce(0, (sum, «getIteratorVariableName(constExpr)») -> {
-				sum + «parseExpression(constExpr.expression, ExpressionContext.constStream)»
-			})'''
+			throw new UnsupportedOperationException("Nested stream expressions are not allowed.");
 		} else if(constExpr instanceof ContextTypeFeatureValue) {
-			throw new UnsupportedOperationException("Type context access not allowed in mapping constraints.");
+			return '''context.«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else if(constExpr instanceof ContextTypeValue) {
-			throw new UnsupportedOperationException("Type context access not allowed in mapping constraints.");
+			return '''context'''
+		} else if(constExpr instanceof ContextPatternNodeFeatureValue) {
+			return '''context.get«constExpr.node.name.toFirstUpper»().«parseFeatureExpression(constExpr.featureExpression)»'''
+		} else if(constExpr instanceof ContextPatternNode) {
+			return '''context.get«constExpr.node.name.toFirstUpper»()'''
+		} else if(constExpr instanceof ContextPatternValue) {
+			return '''context'''
 		} else if(constExpr instanceof ObjectiveFunctionValue) {
 			throw new UnsupportedOperationException("Objective function value access not allowed in mapping constraints.");
 		} else if(constExpr instanceof ContextMappingValue) {
-			throw new UnsupportedOperationException("Mapping context access not allowed in mapping stream expressions.");
+			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
+		} else if(constExpr instanceof ContextMappingNodeFeatureValue) {
+			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof ContextMappingNode) {
-			throw new UnsupportedOperationException("Complex objects are not allowed within arithmetic expressions.");
+			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingValue) {
-			return "1"
+			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingFeatureValue) {
-			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)»'''
+			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingNodeFeatureValue) {
-			return '''«getIteratorVariableName(constExpr.stream)».get«constExpr.node.name.toFirstUpper»().«parseFeatureExpression(constExpr.featureExpression)»'''
+			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingNodeValue) {
-			throw new UnsupportedOperationException("Complex objects are not allowed within arithmetic expressions.");
-		} else if(constExpr instanceof IteratorTypeFeatureValue){
+			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
+		} else if(constExpr instanceof IteratorPatternValue) {
+			return '''«getIteratorVariableName(constExpr.stream)»'''
+		}  else if(constExpr instanceof IteratorPatternFeatureValue) {
 			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)»'''
+		} else if(constExpr instanceof IteratorPatternNodeFeatureValue) {
+			return '''«getIteratorVariableName(constExpr.stream)».get«constExpr.node.name.toFirstUpper»().«parseFeatureExpression(constExpr.featureExpression)»'''
+		} else if(constExpr instanceof IteratorPatternNodeValue) {
+			return '''«getIteratorVariableName(constExpr.stream)».get«constExpr.node.name.toFirstUpper»()'''
+		} else if(constExpr instanceof IteratorTypeFeatureValue){
+			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)».«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else {
-			//CASE: IteratorTypeValue
-			throw new UnsupportedOperationException("Complex objects are not allowed within arithmetic expressions.");
+			val itrTypVal = constExpr as IteratorTypeValue
+			return '''«getIteratorVariableName(itrTypVal.stream)»'''
 		}
 	}
 	
-	def String parseVarExpression(ValueExpression constExpr) {
-		if(constExpr instanceof MappingSumExpression) {
-			generateForeignBuilderMethod(constExpr);
-			return '''
-		«builderMethods.get(constExpr)»();
-			'''
-		} else if(constExpr instanceof TypeSumExpression) {
-			imports.add(data.classToPackage.getPackage(constExpr.type.type.EPackage))
-			return '''indexer.getObjectsOfType(«constExpr.type.type.EPackage.name».eINSTANCE.get«constExpr.type.type.name»()).stream()
-			.«parseExpression(constExpr.filter, ExpressionContext.varConstraint)»
-			.reduce(0, (sum, «getIteratorVariableName(constExpr)») -> {
-				sum + «parseExpression(constExpr.expression, ExpressionContext.varConstraint)»
+	def String parseVarExpression(ValueExpression varExpr) {
+		if(varExpr instanceof MappingSumExpression) {
+			throw new UnsupportedOperationException("Mapping stream expressions may not be part of multiplications, fractions, exponentials, roots etc.");
+		} else if(varExpr instanceof TypeSumExpression) {
+			imports.add(data.classToPackage.getPackage(varExpr.type.type.EPackage))
+			return '''indexer.getObjectsOfType(«varExpr.type.type.EPackage.name».eINSTANCE.get«varExpr.type.type.name»()).stream()
+			.«parseExpression(varExpr.filter, ExpressionContext.varConstraint)»
+			.reduce(0, (sum, «getIteratorVariableName(varExpr)») -> {
+				sum + «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»
 			})'''
-		} else if(constExpr instanceof ContextTypeFeatureValue) {
-			throw new UnsupportedOperationException("Type context access not allowed in mapping constraints.");
-		} else if(constExpr instanceof ContextTypeValue) {
-			throw new UnsupportedOperationException("Type context access not allowed in mapping constraints.");
-		} else if(constExpr instanceof ObjectiveFunctionValue) {
+		} else if(varExpr instanceof ContextTypeFeatureValue) {
+			return '''context.«parseFeatureExpression(varExpr.featureExpression)»'''
+		} else if(varExpr instanceof ContextTypeValue) {
+			return '''context'''
+		} else if(varExpr instanceof ContextPatternNodeFeatureValue) {
+			return '''context.get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.featureExpression)»'''
+		} else if(varExpr instanceof ContextPatternNode) {
+			return '''context.get«varExpr.node.name.toFirstUpper»()'''
+		} else if(varExpr instanceof ContextPatternValue) {
+			return '''context'''
+		} else if(varExpr instanceof ObjectiveFunctionValue) {
 			throw new UnsupportedOperationException("Objective function value access not allowed in mapping constraints.");
-		} else if(constExpr instanceof ContextMappingValue) {
-			throw new UnsupportedOperationException("Mapping context access not allowed in mapping stream expressions.");
-		} else if(constExpr instanceof ContextMappingNode) {
-			throw new UnsupportedOperationException("Complex objects are not allowed within arithmetic expressions.");
-		} else if(constExpr instanceof IteratorMappingValue) {
-			return "1"
-		} else if(constExpr instanceof IteratorMappingFeatureValue) {
-			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)»'''
-		} else if(constExpr instanceof IteratorMappingNodeFeatureValue) {
-			return '''«getIteratorVariableName(constExpr.stream)».get«constExpr.node.name.toFirstUpper»().«parseFeatureExpression(constExpr.featureExpression)»'''
-		} else if(constExpr instanceof IteratorMappingNodeValue) {
-			throw new UnsupportedOperationException("Complex objects are not allowed within arithmetic expressions.");
-		} else if(constExpr instanceof IteratorTypeFeatureValue){
-			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)»'''
+		} else if(varExpr instanceof ContextMappingValue) {
+			//This should have been taken care of already. -> Constant 1 doesn't hurt... 
+			return '''1.0'''
+		} else if(varExpr instanceof ContextMappingNodeFeatureValue) {
+			return '''context.get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.featureExpression)»'''
+		} else if(varExpr instanceof ContextMappingNode) {
+			return '''context.get«varExpr.node.name.toFirstUpper»()'''
+		} else if(varExpr instanceof IteratorMappingValue) {
+			//This should have been taken care of already. -> Constant 1 doesn't hurt... 
+			return '''1.0'''
+		} else if(varExpr instanceof IteratorMappingFeatureValue) {
+			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)»'''
+		} else if(varExpr instanceof IteratorMappingNodeFeatureValue) {
+			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.featureExpression)»'''
+		} else if(varExpr instanceof IteratorMappingNodeValue) {
+			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»()'''
+		} else if(varExpr instanceof IteratorPatternValue) {
+			return '''«getIteratorVariableName(varExpr.stream)»'''
+		}  else if(varExpr instanceof IteratorPatternFeatureValue) {
+			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)»'''
+		} else if(varExpr instanceof IteratorPatternNodeFeatureValue) {
+			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.featureExpression)»'''
+		} else if(varExpr instanceof IteratorPatternNodeValue) {
+			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»()'''
+		} else if(varExpr instanceof IteratorTypeFeatureValue){
+			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)».«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else {
-			//CASE: IteratorTypeValue
-			throw new UnsupportedOperationException("Complex objects are not allowed within arithmetic expressions.");
+			val itrTypVal = varExpr as IteratorTypeValue
+			return '''«getIteratorVariableName(itrTypVal.stream)»'''
+		}
+	}
+	
+	def String parseVarStreamExpression(ValueExpression varExpr) {
+		if(varExpr instanceof MappingSumExpression) {
+			throw new UnsupportedOperationException("Nested mapping streams not allowed in mapping stream expressions.");
+		} else if(varExpr instanceof TypeSumExpression) {
+			throw new UnsupportedOperationException("Nested stream expressions are not allowed.");
+		} else if(varExpr instanceof ContextTypeFeatureValue) {
+			return '''context.«parseFeatureExpression(varExpr.featureExpression)»'''
+		} else if(varExpr instanceof ContextTypeValue) {
+			return '''context'''
+		} else if(varExpr instanceof ContextPatternNodeFeatureValue) {
+			return '''context.get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.featureExpression)»'''
+		} else if(varExpr instanceof ContextPatternNode) {
+			return '''context.get«varExpr.node.name.toFirstUpper»()'''
+		} else if(varExpr instanceof ContextPatternValue) {
+			return '''context'''
+		} else if(varExpr instanceof ObjectiveFunctionValue) {
+			throw new UnsupportedOperationException("Objective function value access not allowed in mapping constraints.");
+		} else if(varExpr instanceof ContextMappingValue) {
+			//This should have been taken care of already. -> Constant 1 doesn't hurt... 
+			return '''1.0'''
+		} else if(varExpr instanceof ContextMappingNodeFeatureValue) {
+			return '''context.get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.featureExpression)»'''
+		} else if(varExpr instanceof ContextMappingNode) {
+			return '''context.get«varExpr.node.name.toFirstUpper»()'''
+		} else if(varExpr instanceof IteratorMappingValue) {
+			//This should have been taken care of already. -> Constant 1 doesn't hurt... 
+			return '''1.0'''
+		} else if(varExpr instanceof IteratorMappingFeatureValue) {
+			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)»'''
+		} else if(varExpr instanceof IteratorMappingNodeFeatureValue) {
+			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.featureExpression)»'''
+		} else if(varExpr instanceof IteratorMappingNodeValue) {
+			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»()'''
+		} else if(varExpr instanceof IteratorPatternValue) {
+			return '''«getIteratorVariableName(varExpr.stream)»'''
+		}  else if(varExpr instanceof IteratorPatternFeatureValue) {
+			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)»'''
+		} else if(varExpr instanceof IteratorPatternNodeFeatureValue) {
+			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.featureExpression)»'''
+		} else if(varExpr instanceof IteratorPatternNodeValue) {
+			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»()'''
+		} else if(varExpr instanceof IteratorTypeFeatureValue){
+			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)».«parseFeatureExpression(varExpr.featureExpression)»'''
+		} else {
+			val itrTypVal = varExpr as IteratorTypeValue
+			return '''«getIteratorVariableName(itrTypVal.stream)»'''
 		}
 	}
 	

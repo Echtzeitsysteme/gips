@@ -1,46 +1,37 @@
 package org.emoflon.roam.build.generator.templates
 
-import org.emoflon.roam.build.generator.GeneratorTemplate
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint
 import org.emoflon.roam.build.generator.TemplateData
+import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionType
 import org.emoflon.roam.build.transformation.helper.RoamTransformationUtils
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral
-import org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral
-import org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue
-import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue
-import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation
-import java.util.HashMap
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolValue
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue
-import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionType
+import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression
+import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue
+import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint
+import org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression
+import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression
+import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression
+import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue
 
-class TypeConstraintTemplate extends GeneratorTemplate<TypeConstraint> {
+class TypeConstraintTemplate extends ConstraintTemplate<TypeConstraint> {
 	
 	new(TemplateData data, TypeConstraint context) {
 		super(data, context)
@@ -79,10 +70,16 @@ public class «className» extends RoamTypeConstraint<«context.modelType.type.n
 	«ELSE»
 	«generateComplexConstraint(context.expression.rhs, context.expression.lhs)»
 	«ENDIF»
+	
+		
+	«FOR methods : builderMethodDefinitions.values»
+	«methods»
+	«ENDFOR»
 }'''
 	}
 	
-	def String generateComplexConstraint(ArithmeticExpression constExpr, ArithmeticExpression dynamicExpr) {
+	override String generateComplexConstraint(ArithmeticExpression constExpr, ArithmeticExpression dynamicExpr) {
+		generateVariableTermBuilder(dynamicExpr)
 		return '''
 @Override
 protected double buildConstantTerm(final «context.modelType.type.name» context) {
@@ -92,218 +89,123 @@ protected double buildConstantTerm(final «context.modelType.type.name» context
 @Override
 protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «context.modelType.type.name» context) {
 	List<ILPTerm<Integer, Double>> terms = new LinkedList<>();
-	
+	«FOR instruction : builderMethodCalls»
+	«instruction»
+	«ENDFOR»
 	return terms;
 }
 		'''
 	}
 	
-	def String generateConstTermBuilder(ArithmeticExpression constExpr) {
-		return '''«parseConstArithmeticExpression(constExpr)»'''
-	}
-	
-	def String parseConstArithmeticExpression(ArithmeticExpression expr) {
-		if(expr instanceof BinaryArithmeticExpression) {
-			return transformOperation(expr)
-		} else if(expr instanceof UnaryArithmeticExpression) {
-			return transformOperation(expr)
-		} else if(expr instanceof ArithmeticLiteral) {
-			if(expr instanceof DoubleLiteral) {
-				return String.valueOf(expr.literal)
-			} else {
-				return String.valueOf((expr as IntegerLiteral).literal)
-			}
+	override generateBuilder(ValueExpression expr) {
+		if(expr instanceof MappingSumExpression) {
+				val builderMethodName = generateForeignBuilder(expr)
+				val instruction = '''«builderMethodName»(terms, context);'''
+				builderMethodCalls.add(instruction)
+		} else if(expr instanceof TypeSumExpression) {
+			val builderMethodName = generateBuilder(expr)
+			val instruction = '''«builderMethodName»(terms, context);'''
+				builderMethodCalls.add(instruction)
+		} else if(expr instanceof ContextTypeFeatureValue) {
+			throw new UnsupportedOperationException("Ilp term may not be constant.")
+		} else if(expr instanceof ContextTypeValue) {
+			throw new UnsupportedOperationException("Ilp term may not be constant.")
+		} else if(expr instanceof ContextMappingNodeFeatureValue) {
+			throw new UnsupportedOperationException("Mapping context access is not possible within a type context.")
+		} else if(expr instanceof ContextMappingNode) {
+			throw new UnsupportedOperationException("Mapping context access is not possible within a type context.")
+		} else if(expr instanceof ContextMappingValue) {
+			throw new UnsupportedOperationException("Mapping context access is not possible within a type context.")
+		} else if(expr instanceof ContextPatternNodeFeatureValue) {
+			throw new UnsupportedOperationException("Ilp term may not be constant.")
+		} else if(expr instanceof ContextPatternNode) {
+			throw new UnsupportedOperationException("Ilp term may not be constant.")
+		} else if(expr instanceof ContextPatternValue) {
+			throw new UnsupportedOperationException("Ilp term may not be constant.")
+		} else if(expr instanceof ObjectiveFunctionValue) {
+			throw new UnsupportedOperationException("Ilp term may not contain references to objective functions.")
+		} else if(expr instanceof IteratorMappingValue) {
+			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
+		} else if(expr instanceof IteratorMappingFeatureValue) {
+			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
+		} else if(expr instanceof IteratorMappingNodeFeatureValue) {
+			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
+		} else if(expr instanceof IteratorMappingNodeValue) {
+			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
+		} else if(expr instanceof IteratorPatternValue || expr instanceof IteratorPatternFeatureValue 
+				|| expr instanceof IteratorPatternNodeValue || expr instanceof IteratorPatternNodeFeatureValue) {
+			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
+		} else if(expr instanceof IteratorTypeValue || expr instanceof IteratorTypeFeatureValue ) {
+			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
 		} else {
-			val value = expr as ArithmeticValue
-			return parseConstValueExpression(value.value)
+			// CASE: IteratorTypeValue or IteratorTypeFeatureValue 
+			throw new IllegalArgumentException("Unknown value expression Type: " + expr);
 		}
 	}
 	
-	def String parseConstValueExpression(ValueExpression constExpr) {
-		if(constExpr instanceof MappingSumExpression) {
-			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
-		} else if(constExpr instanceof TypeSumExpression) {
-			imports.add(data.classToPackage.getPackage(constExpr.type.type.EPackage))
-			return '''indexer.getObjectsOfType(type).stream()
-			.«parseStreamExpression(constExpr.filter)»
-			.reduce(0, (sum, «getIteratorVariableName(constExpr)») -> {
-				sum + «parseConstArithmeticExpression(constExpr.expression)»
-			})'''
-		} else if(constExpr instanceof ContextTypeFeatureValue) {
-			return '''context.«parseFeatureExpression(constExpr.featureExpression)»'''
-		} else if(constExpr instanceof ContextTypeValue) {
-			return '''context'''
-		} else if(constExpr instanceof ObjectiveFunctionValue) {
-			throw new UnsupportedOperationException("Objective function value access not allowed in type constraints.");
-		} else if(constExpr instanceof ContextMappingValue) {
-			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
-		} else if(constExpr instanceof ContextMappingNode) {
-			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
-		} else if(constExpr instanceof IteratorMappingValue) {
-			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
-		} else if(constExpr instanceof IteratorMappingFeatureValue) {
-			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
-		} else if(constExpr instanceof IteratorMappingNodeFeatureValue) {
-			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
-		} else if(constExpr instanceof IteratorMappingNodeValue) {
-			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
-		} else if(constExpr instanceof IteratorTypeFeatureValue){
-			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)»'''
-		} else {
-			val itrTypVal = constExpr as IteratorTypeValue
-			return '''«getIteratorVariableName(itrTypVal.stream)»'''
-		}
+	override getContextVariable(VariableSet variable) {
+		throw new UnsupportedOperationException("Mapping context access is not possible within a type context.")
 	}
 	
-	def String transformOperation(BinaryArithmeticExpression operation) {
-		switch(operation.operator) {
-			case ADD: {
-				return '''«parseConstArithmeticExpression(operation.lhs)» + «parseConstArithmeticExpression(operation.rhs)»'''
-			}
-			case DIVIDE: {
-				return '''«parseConstArithmeticExpression(operation.lhs)» / «parseConstArithmeticExpression(operation.rhs)»'''
-			}
-			case MULTIPLY: {
-				return '''«parseConstArithmeticExpression(operation.lhs)» * «parseConstArithmeticExpression(operation.rhs)»'''
-			}
-			case POW: {
-				return '''Math.pow(«parseConstArithmeticExpression(operation.lhs)», «parseConstArithmeticExpression(operation.rhs)»)'''
-			}
-			case SUBTRACT: {
-				return '''«parseConstArithmeticExpression(operation.lhs)» - «parseConstArithmeticExpression(operation.rhs)»'''
-			}
-		}
+	override generateBuilder(BinaryArithmeticExpression expr) {
+		val methodName = '''builder_«builderMethods.size»'''
+		builderMethods.put(expr, methodName)
+		val method = '''
+	protected double «methodName»(final «context.modelType.type.name» context) {
+		return «parseExpression(expr, ExpressionContext.varConstraint)»;
+	}
+		'''
+		builderMethodDefinitions.put(expr, method)
+		return methodName
 	}
 	
-	def String transformOperation(UnaryArithmeticExpression operation) {
-		switch(operation.operator) {
-			case ABSOLUTE: {
-				return '''Math.abs(«parseConstArithmeticExpression(operation.expression)»)'''
-			}
-			case BRACKET: {
-				return '''(«parseConstArithmeticExpression(operation.expression)»)'''
-			}
-			case COSINE: {
-				return '''Math.cos(«parseConstArithmeticExpression(operation.expression)»)'''
-			}
-			case NEGATE: {
-				return '''-«parseConstArithmeticExpression(operation.expression)»'''
-			}
-			case SINE: {
-				return '''Math.sin(«parseConstArithmeticExpression(operation.expression)»)'''
-			}
-			case SQRT: {
-				return '''Math.sqrt(«parseConstArithmeticExpression(operation.expression)»)'''
-			}
-			
-		}
+	override generateBuilder(UnaryArithmeticExpression expr) {
+		val methodName = '''builder_«builderMethods.size»'''
+		builderMethods.put(expr, methodName)
+		val method = '''
+	protected double «methodName»(final «context.modelType.type.name» context) {
+		return «parseExpression(expr, ExpressionContext.varConstraint)»;
+	}
+		'''
+		builderMethodDefinitions.put(expr, method)
+		return methodName
 	}
 	
-	def String parseBooleanExpression(BoolExpression expr) {
-		if(expr instanceof BoolBinaryExpression) {
-			return transformOperation(expr)
-		} else if(expr instanceof BoolUnaryExpression) {
-			return transformOperation(expr)
-		} else if(expr instanceof BoolLiteral) {
-			return '''«(expr.literal)?"true":"false"»''';
-		} else if(expr instanceof RelationalExpression) {
-			return parseRelationalExpression(expr);
-		} else if(expr instanceof BoolStreamExpression) {
-			switch(expr.operator) {
-				case EXISTS: {
-					return '''«parseStreamExpression(expr.stream)».isPresent()'''
-				}
-				case NOTEXISTS: {
-					return '''!«parseStreamExpression(expr.stream)».isPresent()'''
-				}
-			}
-		} else {
-			val value = expr as BoolValue;
-			return parseConstValueExpression(value.getValue());
+	override generateForeignBuilder(MappingSumExpression expr) {
+		val methodName = '''builder_«builderMethods.size»'''
+		builderMethods.put(expr, methodName)
+		imports.add(data.apiData.roamMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
+		imports.add("java.util.stream.Collectors")
+		val method = '''
+	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «context.modelType.type.name» context) {
+		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper(«expr.mapping.name»).getMappings().values().parallelStream()
+			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
+			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», «parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}
 	}
-	
-	def String transformOperation(BoolBinaryExpression operation) {
-		switch(operation.operator) {
-			case AND: {
-				return '''«parseBooleanExpression(operation.lhs)» && «parseBooleanExpression(operation.rhs)»'''
-			}
-			case OR: {
-				return '''«parseBooleanExpression(operation.lhs)» || «parseBooleanExpression(operation.rhs)»'''			
-			}
-		}
+		'''
+		builderMethodDefinitions.put(expr, method)
+		return methodName
 	}
 	
-	def String transformOperation(BoolUnaryExpression operation) {
-		switch(operation.operator) {
-			case NOT: {
-				return '''!«parseBooleanExpression(operation.expression)»'''
-			}
+	override generateBuilder(TypeSumExpression expr) {
+		val methodName = '''builder_«builderMethods.size»'''
+		builderMethods.put(expr, methodName)
+		imports.add("java.util.stream.Collectors")
+		val method = '''
+	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «context.modelType.type.name» context) {
+		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.name»").parallelStream()
+			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
+			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», «parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}
 	}
+		'''
+		builderMethodDefinitions.put(expr, method)
+		return methodName
+	}
 	
-	def String parseRelationalExpression(RelationalExpression expr) {
-		switch(expr.operator) {
-			case EQUAL: {
-				return '''«parseConstArithmeticExpression(expr.lhs)» == «parseConstArithmeticExpression(expr.lhs)»'''
-			}
-			case GREATER: {
-				return '''«parseConstArithmeticExpression(expr.lhs)» > «parseConstArithmeticExpression(expr.lhs)»'''
-			}
-			case GREATER_OR_EQUAL: {
-				return '''«parseConstArithmeticExpression(expr.lhs)» >= «parseConstArithmeticExpression(expr.lhs)»'''
-			}
-			case LESS: {
-				return '''«parseConstArithmeticExpression(expr.lhs)» < «parseConstArithmeticExpression(expr.lhs)»'''
-			}
-			case LESS_OR_EQUAL: {
-				return '''«parseConstArithmeticExpression(expr.lhs)» <= «parseConstArithmeticExpression(expr.lhs)»'''
-			}
-			case NOT_EQUAL: {
-				return '''«parseConstArithmeticExpression(expr.lhs)» != «parseConstArithmeticExpression(expr.lhs)»'''
-			}
-			
-		}
+	override generateBuilder(MappingSumExpression expr) {
+		throw new UnsupportedOperationException("Mapping context access is not possible within a type context.")
 	}
 
-	
-	def String parseStreamExpression(StreamExpression expr) {
-		if(expr.current instanceof StreamFilterOperation) {
-			if(expr.child === null) {
-				return '''filter(«getIteratorVariableName(expr)» -> «parseBooleanExpression((expr.current as StreamFilterOperation).predicate)»)'''
-			} else {
-				return '''filter(«getIteratorVariableName(expr)» -> «parseBooleanExpression((expr.current as StreamFilterOperation).predicate)»)
-				.«parseStreamExpression(expr.child)»'''
-			}
-		} else {
-			val selectOp = expr.current as StreamSelectOperation
-			imports.add(data.classToPackage.getImportsForType(selectOp.type))
-			if(expr.child === null) {
-				return '''filter(«getIteratorVariableName(expr)» -> «getIteratorVariableName(expr)» instanceof «selectOp.type.name»)
-				.map(«getIteratorVariableName(expr)» -> («selectOp.type.name») «getIteratorVariableName(expr)»)'''
-			} else {
-				return '''filter(«getIteratorVariableName(expr)» -> «getIteratorVariableName(expr)» instanceof «selectOp.type.name»)
-				.map(«getIteratorVariableName(expr)» -> («selectOp.type.name») «getIteratorVariableName(expr)»)
-				.«parseStreamExpression(expr.child)»'''
-			}
-		}
-	}
-	
-	def String parseFeatureExpression(FeatureExpression expr) {
-		if(expr.child === null) {
-			//TODO: Watch out for boolean attributes -> isXXXX() instead of getXXXX()
-			return '''get«expr.current.feature.name.toFirstUpper»()'''
-		} else {
-			return '''get«expr.current.feature.name.toFirstUpper»().«parseFeatureExpression(expr.child)»'''
-		}
-	}
-	val iterator2variableName = new HashMap<SetOperation, String>();
-	def String getIteratorVariableName(SetOperation iterator) {
-		var itrName = iterator2variableName.get(iterator)
-		if(itrName === null) {
-			itrName = ""+Character.forDigit(Character.digit('a',0)+iterator2variableName.size,0)
-			iterator2variableName.put(iterator, itrName);
-		}
-		return itrName;
-	}
 }

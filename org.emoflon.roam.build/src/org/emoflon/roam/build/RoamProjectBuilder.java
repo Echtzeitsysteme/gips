@@ -29,7 +29,8 @@ public class RoamProjectBuilder implements RoamBuilderExtension {
 			RoamBuilderUtils.removeGeneratedCode(project, RoamBuilderUtils.GEN_FOLDER+"/**");
 			RoamBuilderUtils.createFolders(project);
 		} catch (CoreException e) {
-			LogUtils.error(logger, e.getMessage());
+			LogUtils.error(logger, e.toString());
+			e.printStackTrace();
 			return;
 		}
 		
@@ -42,7 +43,8 @@ public class RoamProjectBuilder implements RoamBuilderExtension {
 		try {
 			model = transformer.transform();
 		} catch (Exception e) {
-			LogUtils.error(logger, e.getMessage());
+			LogUtils.error(logger, e.toString());
+			e.printStackTrace();
 			return;
 		}
 		model.setName(resource.getURI().trimFileExtension().lastSegment());
@@ -57,7 +59,8 @@ public class RoamProjectBuilder implements RoamBuilderExtension {
 				roamApiData.project = project;
 				RoamBuilderUtils.updateManifest(project, RoamBuilderUtils::processManifestForPackage);
 			} catch (CoreException e) {
-				LogUtils.error(logger, e.getMessage());
+				LogUtils.error(logger, e.toString());
+				e.printStackTrace();
 				return;
 			}
 		}

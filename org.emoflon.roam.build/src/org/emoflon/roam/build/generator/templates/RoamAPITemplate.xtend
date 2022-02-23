@@ -17,6 +17,7 @@ class RoamAPITemplate extends GeneratorTemplate<RoamIntermediateModel> {
 		fqn = packageName + "." + className;
 		filePath = data.apiData.roamApiPkgPath + "/" + className + ".java"
 		imports.add("org.emoflon.roam.core.api.RoamEngineAPI")
+		imports.add("org.emoflon.roam.core.RoamGlobalObjective")
 		imports.add(data.apiData.apiPkg + "." + data.apiData.engineAppClasses.get(RoamAPIData.HIPE_ENGINE_NAME))
 		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)
 		imports.add("org.eclipse.emf.common.util.URI");
@@ -53,6 +54,12 @@ public class «className» extends RoamEngineAPI <«data.apiData.engineAppClasse
 	@Override	
 	protected void initObjectiveFactory() {
 		objectiveFactory = new «data.objectiveFactoryClassName»(roamEngine);
+	}
+	
+	@Override
+	protected RoamGlobalObjective createGlobalObjective() {
+		// TODO: Implement me!
+		return null;
 	}
 	
 }'''

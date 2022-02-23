@@ -19,6 +19,17 @@ import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression
 import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionType
 import org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint
+import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet
+import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue
 
 class PatternConstraintTemplate extends ConstraintTemplate<PatternConstraint> {
 
@@ -37,8 +48,8 @@ class PatternConstraintTemplate extends ConstraintTemplate<PatternConstraint> {
 		imports.add("org.emoflon.roam.core.gt.RoamPatternConstraint")
 		imports.add("org.emoflon.roam.core.ilp.ILPTerm")
 		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint")
-		imports.add(data.apiData.matchesPkg+"."+data.pattern2patternClassName.get(context.pattern))
-		imports.add(data.apiData.rulesPkg+"."+data.pattern2matchClassName.get(context.pattern))
+		imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(context.pattern))
+		imports.add(data.apiData.rulesPkg+"."+data.pattern2patternClassName.get(context.pattern))
 	}
 	
 	override generate() {
@@ -48,7 +59,7 @@ class PatternConstraintTemplate extends ConstraintTemplate<PatternConstraint> {
 import «imp»;
 «ENDFOR»
 
-public class «className» extends RoamPatternConstraint<«data.pattern2patternClassName.get(context.pattern)»>{
+public class «className» extends RoamPatternConstraint<«data.pattern2matchClassName.get(context.pattern)», «data.pattern2patternClassName.get(context.pattern)»>{
 	public «className»(final RoamEngine engine, final PatternConstraint constraint) {
 		super(engine, constraint);
 	}
@@ -65,6 +76,7 @@ public class «className» extends RoamPatternConstraint<«data.pattern2patternC
 	}
 	
 	override String generateComplexConstraint(ArithmeticExpression constExpr, ArithmeticExpression dynamicExpr) {
+		generateVariableTermBuilder(dynamicExpr)
 		return '''
 @Override
 protected double buildConstantTerm(final «data.pattern2matchClassName.get(context.pattern)» context) {
@@ -74,39 +86,41 @@ protected double buildConstantTerm(final «data.pattern2matchClassName.get(conte
 @Override
 protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.pattern2matchClassName.get(context.pattern)» context) {
 	List<ILPTerm<Integer, Double>> terms = new LinkedList<>();
-	«generateVariableTermBuilder(dynamicExpr)»
+	«FOR instruction : builderMethodCalls»
+	«instruction»
+	«ENDFOR»
 	return terms;
 }
-
-«FOR generator : builderMethodDefinitions.values»
-«generator»
-«ENDFOR»
 		'''
 	}
 	
-override generateVariableTermBuilder(ValueExpression expr) {
+	override generateBuilder(ValueExpression expr) {
 		if(expr instanceof MappingSumExpression) {
-				generateForeignBuilderMethod(expr)
-				return '''
-			«builderMethods.get(expr)»();'''
+				val builderMethodName = generateForeignBuilder(expr)
+				val instruction = '''«builderMethodName»(terms, context);'''
+				builderMethodCalls.add(instruction)
 		} else if(expr instanceof TypeSumExpression) {
-			
+			val builderMethodName = generateBuilder(expr)
+			val instruction = '''«builderMethodName»(terms, context);'''
+				builderMethodCalls.add(instruction)
 		} else if(expr instanceof ContextTypeFeatureValue) {
-			throw new IllegalAccessException("Ilp term may not be constant.")
+			throw new UnsupportedOperationException("Type context access is not possible within a pattern context.")
 		} else if(expr instanceof ContextTypeValue) {
-			throw new IllegalAccessException("Ilp term may not be constant.")
+			throw new UnsupportedOperationException("Type context access is not possible within a pattern context.")
 		} else if(expr instanceof ContextMappingNodeFeatureValue) {
-			generateBuilderMethod(expr)
-			return '''terms.add(«builderMethods.get(expr)»(context));
-			'''
+			throw new UnsupportedOperationException("Mapping context access is not possible within a pattern context.")
 		} else if(expr instanceof ContextMappingNode) {
-			throw new IllegalAccessException("Ilp term may not contain complex objects.")
+			throw new UnsupportedOperationException("Mapping context access is not possible within a pattern context.")
 		} else if(expr instanceof ContextMappingValue) {
-			generateBuilderMethod(expr)
-			return '''terms.add(«builderMethods.get(expr)»(context));
-			'''
+			throw new UnsupportedOperationException("Mapping context access is not possible within a pattern context.")
+		} else if(expr instanceof ContextPatternNodeFeatureValue) {
+			throw new UnsupportedOperationException("Ilp term may not be constant.")
+		} else if(expr instanceof ContextPatternNode) {
+			throw new UnsupportedOperationException("Ilp term may not be constant.")
+		} else if(expr instanceof ContextPatternValue) {
+			throw new UnsupportedOperationException("Ilp term may not be constant.")
 		} else if(expr instanceof ObjectiveFunctionValue) {
-			throw new IllegalAccessException("Ilp term may not contain references to objective functions.")
+			throw new UnsupportedOperationException("Ilp term may not contain references to objective functions.")
 		} else if(expr instanceof IteratorMappingValue) {
 			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
 		} else if(expr instanceof IteratorMappingFeatureValue) {
@@ -114,81 +128,81 @@ override generateVariableTermBuilder(ValueExpression expr) {
 		} else if(expr instanceof IteratorMappingNodeFeatureValue) {
 			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
 		} else if(expr instanceof IteratorMappingNodeValue) {
-			throw new IllegalAccessException("Ilp term may not contain complex objects.")
+			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
+		} else if(expr instanceof IteratorPatternValue || expr instanceof IteratorPatternFeatureValue 
+				|| expr instanceof IteratorPatternNodeValue || expr instanceof IteratorPatternNodeFeatureValue) {
+			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
+		} else if(expr instanceof IteratorTypeValue || expr instanceof IteratorTypeFeatureValue ) {
+			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
 		} else {
 			// CASE: IteratorTypeValue or IteratorTypeFeatureValue 
-			throw new IllegalAccessException("Ilp term may not be constant.")
+			throw new IllegalArgumentException("Unknown value expression Type: " + expr);
 		}
 	}
 	
-	override void generateBuilderMethod(UnaryArithmeticExpression expr) {
+	override String getContextVariable(VariableSet variable) {
+		throw new UnsupportedOperationException("Mapping context access is not possible within a pattern context.")
+	}
+	
+	override generateBuilder(BinaryArithmeticExpression expr) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		val method = '''
-	protected ILPTerm<Integer, Double> «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
-		return null;
+	protected double «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		return «parseExpression(expr, ExpressionContext.varConstraint)»;
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)
+		return methodName
 	}
 	
-	override void generateBuilderMethod(MappingSumExpression expr) {
+	override String generateBuilder(UnaryArithmeticExpression expr) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		val method = '''
-	protected void «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
+	protected double «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		return «parseExpression(expr, ExpressionContext.varConstraint)»;
+	}
+		'''
+		builderMethodDefinitions.put(expr, method)
+		return methodName
+	}
+	
+	override String generateBuilder(MappingSumExpression expr) {
+		throw new UnsupportedOperationException("Mapping context access is not possible within a pattern context.")
+	}
+	
+	override String generateForeignBuilder(MappingSumExpression expr) {
+		val methodName = '''builder_«builderMethods.size»'''
+		builderMethods.put(expr, methodName)
+		imports.add(data.apiData.roamMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
+		imports.add("java.util.stream.Collectors")
+		val method = '''
+	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
 		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper(«expr.mapping.name»).getMappings().values().parallelStream()
 			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-			double constValue = «parseExpression(expr.expression, ExpressionContext.varConstraint)
-			»;
-			ILPTerm<Integer, Double> term = new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», constValue);
-			terms.add(term);
+			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», «parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}
 	}
 		'''
-		
 		builderMethodDefinitions.put(expr, method)
+		return methodName
 	}
 	
-	override void generateBuilderMethod(TypeSumExpression expr) {
+	override String generateBuilder(TypeSumExpression expr) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
+		imports.add("java.util.stream.Collectors")
 		val method = '''
-	protected void «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
+	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
 		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.name»").parallelStream()
 			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-			double constValue = «parseExpression(expr.expression, ExpressionContext.varConstraint)»;
-			ILPTerm<Integer, Double> term = new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», constValue);
-			terms.add(term);
+			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», «parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}
-		return new ILPTerm<Integer, Double>(context, 1.0);
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)
+		return methodName
 	}
-	
-	def void generateBuilderMethod(ContextMappingValue expr) {
-		val methodName = '''builder_«builderMethods.size»'''
-		builderMethods.put(expr, methodName)
-		val method = '''
-	protected ILPTerm<Integer, Double> «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
-		return new ILPTerm<Integer, Double>(context, 1.0);
-	}
-		'''
-		builderMethodDefinitions.put(expr, method)
-	}
-	
-	def void generateBuilderMethod(ContextMappingNodeFeatureValue expr) {
-		val methodName = '''builder_«builderMethods.size»'''
-		builderMethods.put(expr, methodName)
-		val method = '''
-	protected ILPTerm<Integer, Double> «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
-		return new ILPTerm<Integer, Double>(context, context.«parseFeatureExpression(expr.featureExpression)»);
-	}
-		'''
-		builderMethodDefinitions.put(expr, method)
-	}
-	
-
 	
 }

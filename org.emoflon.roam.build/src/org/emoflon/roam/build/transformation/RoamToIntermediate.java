@@ -78,6 +78,7 @@ public class RoamToIntermediate {
 
 		// add all required data types
 		data.model().getVariables().addAll(data.eType2Type().values());
+		data.model().getVariables().addAll(data.ePattern2Pattern().values());
 		return data.model();
 	}
 

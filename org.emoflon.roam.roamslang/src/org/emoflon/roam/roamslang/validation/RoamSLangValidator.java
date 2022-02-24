@@ -432,8 +432,10 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 					return conExpr.getExpr() instanceof RoamContextOperationExpression;
 				} else if (exprOp instanceof RoamLambdaAttributeExpression) {
 					final RoamLambdaAttributeExpression attrExpr = (RoamLambdaAttributeExpression) expr;
-					// TODO: Creates recursive loop
-					// return lambdaContainsMappingsCall(attrExpr.getVar());
+					// TODO: Creates recursive loop. Solved?
+					if (!attrExpr.getVar().getExpr().equals(attrExpr.eContainer())) {
+						containsMappingsCall(attrExpr.getVar().getExpr());
+					}
 					return false;
 				} else if (exprOp instanceof RoamMappingAttributeExpr) {
 					// TODO
@@ -808,10 +810,11 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 					// Currently only MAPPED and VALUE are supported -> Both are dynamic
 					return conExpr.getExpr() instanceof RoamContextOperationExpression;
 				} else if (exprOp instanceof RoamLambdaAttributeExpression) {
-					// TODO: Evaluate RoamLambdaAttributeExpression
+					// TODO: Evaluate RoamLambdaAttributeExpression. Solved?
 					final RoamLambdaAttributeExpression attrExpr = (RoamLambdaAttributeExpression) expr;
-					attrExpr.getExpr();
-					attrExpr.getVar();
+					if (!attrExpr.getVar().getExpr().equals(attrExpr.eContainer())) {
+						return validateBoolExprDynamic(attrExpr.getVar().getExpr());
+					}
 				} else if (exprOp instanceof RoamMappingAttributeExpr) {
 					// TODO
 					return true;
@@ -1216,7 +1219,10 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	}
 
 	public LeafType getEvalTypeFromLambdaAttrExpr(final RoamLambdaAttributeExpression expr) {
-		validateLambdaExpr(expr.getVar());
+		if (!expr.getVar().getExpr().equals(expr.eContainer())) {
+			validateLambdaExpr(expr.getVar());
+		}
+
 		final EObject innerExpr = expr.getExpr();
 		if (innerExpr instanceof RoamNodeAttributeExpr) {
 			return getEvalTypeFromNodeAttrExpr((RoamNodeAttributeExpr) innerExpr);
@@ -1471,56 +1477,6 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	 * @param expr Lambda expression to check.
 	 */
 	public void validateLambdaExpr(final RoamLambdaExpression expr) {
-		// Break recursive cycle
-		if (expr.getExpr() instanceof RoamRelExpr) {
-			final RoamRelExpr relExpr = (RoamRelExpr) expr.getExpr();
-			RoamArithmeticExpr left = relExpr.getLeft();
-
-			// Get left element until it is a RoamLambdaAttributeExpression
-			while (!(left instanceof RoamLambdaAttributeExpression)) {
-				if (left instanceof RoamSumArithmeticExpr) {
-					left = ((RoamSumArithmeticExpr) left).getLeft();
-				} else if (left instanceof RoamProductArithmeticExpr) {
-					left = ((RoamProductArithmeticExpr) left).getLeft();
-				} else if (left instanceof RoamExpArithmeticExpr) {
-					left = ((RoamExpArithmeticExpr) left).getLeft();
-				} else if (left instanceof RoamBracketExpr) {
-					left = ((RoamBracketExpr) left).getOperand();
-				} else if (left instanceof RoamUnaryArithmeticExpr) {
-					left = ((RoamUnaryArithmeticExpr) left).getOperand();
-				} else if (left instanceof RoamArithmeticLiteral) {
-					break;
-				} else if (left instanceof RoamContextExpr) {
-					break;
-				} else {
-					throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
-				}
-			}
-
-			if (left instanceof RoamLambdaAttributeExpression) {
-				final RoamLambdaAttributeExpression leftLambda = (RoamLambdaAttributeExpression) left;
-
-				if (leftLambda.getExpr() instanceof RoamNodeAttributeExpr) {
-					final LeafType leftType = getEvalTypeFromNodeAttrExpr((RoamNodeAttributeExpr) leftLambda.getExpr());
-					final LeafType rightType = getEvalTypeFromArithExpr(relExpr.getRight());
-					// TODO: ^this causes a recursive endless loop
-					// Type must be equal or it must be integer and double
-					if (relExpr.getRight() != null && rightType != null && leftType != rightType
-							&& LeafType.DOUBLE != intOrDouble(leftType, rightType)) {
-						error( //
-								LAMBDA_EXPR_EVAL_TYPE_ERROR, //
-								expr, //
-								RoamSLangPackage.Literals.ROAM_LAMBDA_EXPRESSION__EXPR //
-						);
-					}
-				}
-
-				if (leftLambda.getVar().equals(expr)) {
-					return;
-				}
-			}
-		}
-
 		// Check return type
 		final LeafType lambdaEval = getEvalTypeFromBoolExpr(expr.getExpr());
 		if (!isPrimitiveType(lambdaEval)) {

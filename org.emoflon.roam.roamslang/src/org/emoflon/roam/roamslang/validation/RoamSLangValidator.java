@@ -610,24 +610,15 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 				return false;
 			} else if (exprOp instanceof RoamAttributeExpr) {
 				if (exprOp instanceof RoamContextExpr) {
-					final RoamContextExpr conExpr = (RoamContextExpr) exprOp;
-					// Currently only MAPPED and VALUE are supported -> Both are dynamic
-//					return conExpr.getExpr() instanceof RoamContextOperationExpression;
-//					return getContextType(conExpr) == type;
+					// Context expression is always a 'self' access
 					return true;
 				} else if (exprOp instanceof RoamLambdaAttributeExpression) {
-					// TODO: Evaluate RoamLambdaAttributeExpression
-					final RoamLambdaAttributeExpression attrExpr = (RoamLambdaAttributeExpression) expr;
-					attrExpr.getExpr();
-					attrExpr.getVar();
+					return containsSelf((RoamLambdaAttributeExpression) exprOp, type);
 				} else if (exprOp instanceof RoamMappingAttributeExpr) {
-					return type == SelfType.MAPPING;
+					final RoamMappingAttributeExpr attrExpr = (RoamMappingAttributeExpr) exprOp;
+					return containsSelf(attrExpr.getExpr(), type);
 				}
 			}
-//			else if (exprOp instanceof RoamObjectiveExpression) {
-//				// Only relevant for the global objective function
-//				return true;
-//			}
 		} else if (expr instanceof RoamProductArithmeticExpr) {
 			final RoamProductArithmeticExpr prodExpr = (RoamProductArithmeticExpr) expr;
 			return containsSelf(prodExpr.getLeft(), type) || containsSelf(prodExpr.getRight(), type);
@@ -640,6 +631,55 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 
 		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	public boolean containsSelf(final RoamLambdaAttributeExpression expr, final SelfType type) {
+		// TODO: Validate expr.getExpr()?
+		// final boolean selfInExpr = containsSelf(expr.getExpr(), type);
+
+//		// Expr
+//		final EObject innerExpr = expr.getExpr();
+//		if (innerExpr instanceof RoamNodeAttributeExpr) {
+//			return containsSelf((RoamNodeAttributeExpr) innerExpr, type);
+//		} else if (innerExpr instanceof RoamContextOperationExpression) {
+//			return containsSelf((RoamContextOperationExpression) innerExpr, type);
+//		} else if (innerExpr instanceof RoamFeatureExpr) {
+//			return containsSelf((RoamFeatureExpr) innerExpr, type);
+//		}
+
+		// Var
+		boolean selfInVar = false;
+		if (!expr.getVar().getExpr().equals(expr.eContainer())) {
+			selfInVar = containsSelf(expr.getVar(), type);
+		}
+		return selfInVar;
+	}
+
+	public boolean containsSelf(final RoamStreamExpr expr, final SelfType type) {
+		if (expr instanceof RoamSelect) {
+			// Stream -> no self
+			return false;
+		} else if (expr instanceof RoamStreamArithmetic) {
+			// sum() -> validate lambda
+			final RoamStreamArithmetic arithExpr = (RoamStreamArithmetic) expr;
+			return containsSelf(arithExpr.getLambda(), type);
+		} else if (expr instanceof RoamStreamBoolExpr) {
+			// Boolean operator -> no self
+			return false;
+		} else if (expr instanceof RoamStreamNavigation) {
+			final RoamStreamNavigation navExpr = (RoamStreamNavigation) expr;
+			return containsSelf(navExpr.getLeft(), type) || containsSelf(navExpr.getRight(), type);
+		} else if (expr instanceof RoamStreamSet) {
+			// filter() -> validate lambda
+			final RoamStreamSet setExpr = (RoamStreamSet) expr;
+			return containsSelf(setExpr.getLambda(), type);
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	public boolean containsSelf(final RoamLambdaExpression expr, final SelfType type) {
+		return containsSelf(expr.getExpr(), type);
 	}
 
 	/**

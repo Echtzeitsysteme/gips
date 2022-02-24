@@ -202,7 +202,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.pattern
 		val method = '''
 	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
 		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.name»").parallelStream()
-			.map(type -> («expr.type.type.name») mapping)
+			.map(type -> («expr.type.type.name») type)
 			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», «parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}

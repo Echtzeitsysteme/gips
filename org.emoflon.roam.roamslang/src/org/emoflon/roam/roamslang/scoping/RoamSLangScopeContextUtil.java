@@ -134,6 +134,18 @@ public final class RoamSLangScopeContextUtil {
 		return (RoamStreamExpr) RoamSLangScopeContextUtil.getContainer(context, classes);
 	}
 	
+	public static RoamStreamExpr getStreamIteratorNavigationRoot(RoamLambdaAttributeExpression context) {
+		Set<Class<?>> classes = Set.of(RoamStreamNavigationImpl.class);
+		RoamStreamExpr root = (RoamStreamExpr) RoamSLangScopeContextUtil.getContainer(context, classes);
+		if(root != null)
+			return root;
+		
+		classes.add(RoamStreamSetImpl.class);
+		classes.add(RoamSelectImpl.class);
+		classes.add(RoamStreamArithmeticImpl.class);
+		return (RoamStreamExpr) RoamSLangScopeContextUtil.getContainer(context, classes);
+	}
+	
 	public static EObject getStreamContainer(RoamLambdaAttributeExpression context) {
 		Set<Class<?>> classes = Set.of(RoamContextExprImpl.class, RoamMappingAttributeExprImpl.class,
 				RoamStreamNavigationImpl.class, RoamStreamSetImpl.class, RoamSelectImpl.class,

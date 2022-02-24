@@ -68,7 +68,7 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 	
 	protected ValueExpression transform(final RoamLambdaAttributeExpression eLambda) throws Exception {
 		RoamAttributeExpr streamRoot = RoamSLangScopeContextUtil.getStreamRootContainer(eLambda);
-		RoamStreamExpr streamIteratorContainer = RoamSLangScopeContextUtil.getStreamIteratorContainer(eLambda);
+		RoamStreamExpr streamIteratorContainer = RoamSLangScopeContextUtil.getStreamIteratorNavigationRoot(eLambda);
 		
 		if(streamRoot == null) {
 			throw new UnsupportedOperationException("Unknown stream lhs-operand.");

@@ -148,6 +148,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 
 	public static final String TYPE_DOES_NOT_CONTAIN_SELF_MESSAGE = "'%s' does not contain any self reference.";
 
+	public static final String MAPPING_IN_MAPPING_FORBIDDED_MESSAGE = "Mapping access within mapping context is forbidden.";
+
 	// Exception error messages
 	public static final String NOT_IMPLEMENTED_EXCEPTION_MESSAGE = "Not yet implemented";
 	public static final String CONSTRAINT_CONTEXT_UNKNOWN_EXCEPTION_MESSAGE = "Context is neither a RoamType nor a RoamMapping.";
@@ -321,6 +323,12 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		validateNoMappingAccessIfMappingContext(constraint);
 	}
 
+	/**
+	 * This method ensures that no mappings will be accessed from within the mapping
+	 * context. This does not include 'self'.
+	 * 
+	 * @param constraint Constraint to check mapping in mapping access for.
+	 */
 	public void validateNoMappingAccessIfMappingContext(final RoamConstraint constraint) {
 		// If context is not a mapping, return immediately
 		if (getContextType(constraint.getContext()) != SelfType.MAPPING) {
@@ -351,13 +359,19 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		// Generate an error if mappings are referenced
 		if (leftMapping || rightMapping) {
 			error( //
-					"Mapping access within Mapping context is forbidden.", //
+					MAPPING_IN_MAPPING_FORBIDDED_MESSAGE, //
 					constraint, //
 					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR //
 			);
 		}
 	}
 
+	/**
+	 * Returns true if the given boolean expression contains a mapping call.
+	 * 
+	 * @param expr Boolean expression to check.
+	 * @return True if the given boolean expression contains a mapping call.
+	 */
 	public boolean containsMappingsCall(final RoamBoolExpr expr) {
 		if (expr == null) {
 			return false;
@@ -379,6 +393,12 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
+	/**
+	 * Returns true if the given arithmetic expression contains a mapping call.
+	 * 
+	 * @param expr Arithmetic expression to check.
+	 * @return True if the given arithmetic expression contains a mapping call.
+	 */
 	public boolean containsMappingsCall(final RoamArithmeticExpr expr) {
 		if (expr == null) {
 			return false;
@@ -425,6 +445,12 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
+	/**
+	 * Returns true if the given stream expression contains a mapping call.
+	 * 
+	 * @param expr Stream expression to check.
+	 * @return True if the given stream expression contains a mapping call.
+	 */
 	public boolean streamContainsMappingsCall(final RoamStreamExpr expr) {
 		if (expr == null) {
 			return false;
@@ -450,6 +476,12 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
+	/**
+	 * Returns true if the given lambda expression contains a mapping call.
+	 * 
+	 * @param expr Lambda expression to check.
+	 * @return True if the given lambda expression contains a mapping call.
+	 */
 	public boolean lambdaContainsMappingsCall(final RoamLambdaExpression lambda) {
 		return containsMappingsCall(lambda.getExpr());
 	}

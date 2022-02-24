@@ -51,13 +51,18 @@ class MappingConstraintTemplate extends ConstraintTemplate<MappingConstraint> {
 		imports.add(data.apiData.roamMappingPkg+"."+data.mapping2mappingClassName.get(context.mapping))
 	}
 	
-	override generate() {
-		code = '''package «packageName»;
-
-«FOR imp : imports»
+	override String generatePackageDeclaration() {
+		return '''package «packageName»;'''
+	}
+	
+	override String generateImports() {
+		return '''«FOR imp : imports»
 import «imp»;
-«ENDFOR»
-
+«ENDFOR»'''
+	}
+	
+	override String generateClassContent() {
+		return '''
 public class «className» extends RoamMappingConstraint<«data.mapping2mappingClassName.get(context.mapping)»>{
 	public «className»(final RoamEngine engine, final MappingConstraint constraint) {
 		super(engine, constraint);
@@ -183,6 +188,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.mapping
 		val method = '''
 	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper(«expr.mapping.name»).getMappings().values().parallelStream()
+			.map(type -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
 			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			ILPTerm<Integer, Double> term = new ILPTerm<Integer, Double>(context, «parseExpression(expr.expression, ExpressionContext.varConstraint)»);
 			terms.add(term);
@@ -205,6 +211,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.mapping
 		val method = '''
 	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.name»").parallelStream()
+			.map(type -> («expr.type.type.name») mapping)
 			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			terms.add(new ILPTerm<Integer, Double>(context, «parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}

@@ -63,7 +63,23 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 	new(TemplateData data, CONTEXT context) {
 		super(data, context)
 	}
+	
+	override generate() {
+		val classContent = generateClassContent()
+		val importStatements = generateImports();
+		code = '''«generatePackageDeclaration»		
 
+«importStatements»
+
+«classContent»
+'''
+	}
+	
+	def String generatePackageDeclaration();
+	
+	def String generateImports();
+	
+	def String generateClassContent();
 	
 	def String generateComplexConstraint(ArithmeticExpression constExpr, ArithmeticExpression dynamicExpr);
 	

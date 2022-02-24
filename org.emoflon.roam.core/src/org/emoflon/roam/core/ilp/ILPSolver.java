@@ -6,6 +6,7 @@ import org.emoflon.roam.core.RoamGlobalObjective;
 import org.emoflon.roam.core.RoamMapping;
 import org.emoflon.roam.core.RoamMappingConstraint;
 import org.emoflon.roam.core.RoamTypeConstraint;
+import org.emoflon.roam.core.gt.RoamPatternConstraint;
 
 public abstract class ILPSolver {
 	final protected RoamEngine engine;
@@ -31,12 +32,16 @@ public abstract class ILPSolver {
 	protected void translateConstraint(final RoamConstraint<?,?,?> constraint){
 		if(constraint instanceof RoamMappingConstraint mapping) {
 			translateConstraint(mapping);
+		} else if(constraint instanceof RoamPatternConstraint pattern) {
+			translateConstraint(pattern);
 		} else {
 			translateConstraint((RoamTypeConstraint) constraint);
 		}
 	}
 	
 	protected abstract void translateConstraint(final RoamMappingConstraint constraint);
+	
+	protected abstract void translateConstraint(final RoamPatternConstraint constraint);
 	
 	protected abstract void translateConstraint(final RoamTypeConstraint constraint);
 	

@@ -52,13 +52,18 @@ class PatternConstraintTemplate extends ConstraintTemplate<PatternConstraint> {
 		imports.add(data.apiData.rulesPkg+"."+data.pattern2patternClassName.get(context.pattern))
 	}
 	
-	override generate() {
-		code = '''package «packageName»;
-
-«FOR imp : imports»
+	override String generatePackageDeclaration() {
+		return '''package «packageName»;'''
+	}
+	
+	override String generateImports() {
+		return '''«FOR imp : imports»
 import «imp»;
-«ENDFOR»
-
+«ENDFOR»'''
+	}
+	
+	override String generateClassContent() {
+		return '''
 public class «className» extends RoamPatternConstraint<«data.pattern2matchClassName.get(context.pattern)», «data.pattern2patternClassName.get(context.pattern)»>{
 	public «className»(final RoamEngine engine, final PatternConstraint constraint) {
 		super(engine, constraint);
@@ -179,7 +184,8 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.pattern
 		imports.add("java.util.stream.Collectors")
 		val method = '''
 	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
-		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper(«expr.mapping.name»).getMappings().values().parallelStream()
+		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper("«expr.mapping.name»").getMappings().values().parallelStream()
+			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
 			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», «parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}
@@ -196,6 +202,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.pattern
 		val method = '''
 	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
 		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.name»").parallelStream()
+			.map(type -> («expr.type.type.name») mapping)
 			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», «parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}

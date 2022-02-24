@@ -189,7 +189,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	@Check
 	public void checkGlobalObjective(final RoamGlobalObjective globObj) {
 		// Validate expression regarding dynamic uses (like self.value())
-		containsSelfValueOrMappingsCall(globObj.getExpr());
+		validateArithExprDynamic(globObj.getExpr());
 
 		// Check if global objective contains any reference to a local objective
 		// If this is not the case, display a warning that the global objective is
@@ -316,10 +316,19 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		// Trigger validation of boolean expression
 		getEvalTypeFromBoolExpr(constraint.getExpr().getExpr());
 
+		// Check if constraint is a literal -> warning
 		checkConstraintIsLiteral(constraint);
+
+		// Check if constraint is unique
 		checkConstraintUnique(constraint);
+
+		// Check if constraint contains at least one 'self' call
 		validateConstraintHasSelf(constraint);
+
+		// Validate expression -> Non-linear operations must be constant in ILP time
 		validateConstraintDynamic(constraint);
+
+		// Validate that no mapping gets accessed if context is mapping
 		validateNoMappingAccessIfMappingContext(constraint);
 	}
 
@@ -460,8 +469,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return false;
 		} else if (expr instanceof RoamStreamArithmetic) {
 			final RoamStreamArithmetic arithExpr = (RoamStreamArithmetic) expr;
-			// TODO: Validate lambda
-			return lambdaContainsMappingsCall(arithExpr.getLambda());
+			return containsMappingsCall(arithExpr.getLambda().getExpr());
 		} else if (expr instanceof RoamStreamBoolExpr) {
 			return false;
 		} else if (expr instanceof RoamStreamNavigation) {
@@ -469,21 +477,10 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return streamContainsMappingsCall(nav.getLeft()) || streamContainsMappingsCall(nav.getRight());
 		} else if (expr instanceof RoamStreamSet) {
 			final RoamStreamSet set = (RoamStreamSet) expr;
-			// TODO: Validate lambda
-			return lambdaContainsMappingsCall(set.getLambda());
+			return containsMappingsCall(set.getLambda().getExpr());
 		}
 
 		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
-	}
-
-	/**
-	 * Returns true if the given lambda expression contains a mapping call.
-	 * 
-	 * @param expr Lambda expression to check.
-	 * @return True if the given lambda expression contains a mapping call.
-	 */
-	public boolean lambdaContainsMappingsCall(final RoamLambdaExpression lambda) {
-		return containsMappingsCall(lambda.getExpr());
 	}
 
 	/**
@@ -716,9 +713,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	/**
 	 * Validates constraints regarding their dynamic parts. Currently, the following
 	 * rule set is implemented: Forbidden input for non-linear mathematical
-	 * functions (abs, sin, cos, sqrt, pow): self.value()..., self.isMapped() (only
-	 * for context = mapping? -> currently no ...), mappings.xy->count/sum +
-	 * exists/notExists
+	 * functions (abs, sin, cos, sqrt, pow): self.isMapped() (only for context =
+	 * mapping? -> currently no ...), mappings.xy->count/sum + exists/notExists
 	 * 
 	 * @param constraint Constraint to check dynamic elements for.
 	 */
@@ -730,16 +726,16 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 
 		if (expr instanceof RoamRelExpr) {
 			final RoamRelExpr relExpr = (RoamRelExpr) expr;
-			leftDynamic = containsSelfValueOrMappingsCall(relExpr.getLeft());
-			rightDynamic = containsSelfValueOrMappingsCall(relExpr.getRight());
+			leftDynamic = validateArithExprDynamic(relExpr.getLeft());
+			rightDynamic = validateArithExprDynamic(relExpr.getRight());
 		} else if (expr instanceof RoamBoolExpr) {
 			// Special case: Complete boolean expression is just a literal
 			if (expr instanceof RoamBooleanLiteral) {
 				return;
 			}
 			final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
-			leftDynamic = containsSelfValueOrMappingsCall(binExpr.getLeft());
-			rightDynamic = containsSelfValueOrMappingsCall(binExpr.getRight());
+			leftDynamic = validateBoolExprDynamic(binExpr.getLeft());
+			rightDynamic = validateBoolExprDynamic(binExpr.getRight());
 		} else {
 			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		}
@@ -754,41 +750,39 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		}
 	}
 
-	public boolean containsSelfValueOrMappingsCall(final RoamBoolExpr expr) {
+	public boolean validateBoolExprDynamic(final RoamBoolExpr expr) {
 		if (expr == null) {
 			return false;
 		}
 
 		if (expr instanceof RoamBinaryBoolExpr) {
 			final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
-			return containsSelfValueOrMappingsCall(binExpr.getLeft())
-					|| containsSelfValueOrMappingsCall(binExpr.getRight());
+			return validateBoolExprDynamic(binExpr.getLeft()) || validateBoolExprDynamic(binExpr.getRight());
 		} else if (expr instanceof RoamBooleanLiteral) {
 			return false;
 		} else if (expr instanceof RoamRelExpr) {
 			final RoamRelExpr relExpr = (RoamRelExpr) expr;
-			return containsSelfValueOrMappingsCall(relExpr.getLeft())
-					|| containsSelfValueOrMappingsCall(relExpr.getRight());
+			return validateArithExprDynamic(relExpr.getLeft()) || validateArithExprDynamic(relExpr.getRight());
 		} else if (expr instanceof RoamUnaryBoolExpr) {
 			final RoamUnaryBoolExpr unExpr = (RoamUnaryBoolExpr) expr;
-			return containsSelfValueOrMappingsCall(unExpr.getOperand());
+			return validateBoolExprDynamic(unExpr.getOperand());
 		}
 
 		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
-	public boolean containsSelfValueOrMappingsCall(final RoamArithmeticExpr expr) {
+	public boolean validateArithExprDynamic(final RoamArithmeticExpr expr) {
 		if (expr == null) {
 			return false;
 		}
 
 		if (expr instanceof RoamBracketExpr) {
 			final RoamBracketExpr bracketExpr = (RoamBracketExpr) expr;
-			return containsSelfValueOrMappingsCall(bracketExpr.getOperand());
+			return validateArithExprDynamic(bracketExpr.getOperand());
 		} else if (expr instanceof RoamExpArithmeticExpr) {
 			final RoamExpArithmeticExpr expExpr = (RoamExpArithmeticExpr) expr;
-			final boolean dynLeft = containsSelfValueOrMappingsCall(expExpr.getLeft());
-			final boolean dynRight = containsSelfValueOrMappingsCall(expExpr.getRight());
+			final boolean dynLeft = validateArithExprDynamic(expExpr.getLeft());
+			final boolean dynRight = validateArithExprDynamic(expExpr.getRight());
 			if (dynLeft) {
 				error( //
 						EXP_EXPR_NOT_CONSTANT_MESSAGE, //
@@ -828,8 +822,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			}
 		} else if (expr instanceof RoamProductArithmeticExpr) {
 			final RoamProductArithmeticExpr prodExpr = (RoamProductArithmeticExpr) expr;
-			final boolean dynLeft = containsSelfValueOrMappingsCall(prodExpr.getLeft());
-			final boolean dynRight = containsSelfValueOrMappingsCall(prodExpr.getRight());
+			final boolean dynLeft = validateArithExprDynamic(prodExpr.getLeft());
+			final boolean dynRight = validateArithExprDynamic(prodExpr.getRight());
 			if (dynLeft && dynRight) {
 				error( //
 						PRODUCT_EXPR_NOT_CONSTANT_MESSAGE, //
@@ -840,11 +834,10 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 			return dynLeft || dynRight;
 		} else if (expr instanceof RoamSumArithmeticExpr) {
 			final RoamSumArithmeticExpr sumExpr = (RoamSumArithmeticExpr) expr;
-			return containsSelfValueOrMappingsCall(sumExpr.getLeft())
-					| containsSelfValueOrMappingsCall(sumExpr.getRight());
+			return validateArithExprDynamic(sumExpr.getLeft()) | validateArithExprDynamic(sumExpr.getRight());
 		} else if (expr instanceof RoamUnaryArithmeticExpr) {
 			final RoamUnaryArithmeticExpr unExpr = (RoamUnaryArithmeticExpr) expr;
-			final boolean isDyn = containsSelfValueOrMappingsCall(unExpr.getOperand());
+			final boolean isDyn = validateArithExprDynamic(unExpr.getOperand());
 			if (isDyn && unExpr.getOperator() != RoamArithmeticUnaryOperator.NEG) {
 				error( //
 						String.format(UNARY_ARITH_EXPR_NOT_CONSTANT_MESSAGE, unExpr.getOperator()), //
@@ -865,12 +858,23 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	 */
 	@Check
 	public void checkObjective(final RoamObjective objective) {
+		// Check for bad names
 		checkObjectiveNameValid(objective);
+
+		// Check uniqueness of name
 		checkObjectiveNameUnique(objective);
+
+		// Check if value is 0
 		checkObjectiveIsNotUseless(objective);
-		validateObjectiveExprForm(objective);
+
+		// Validate arithmetic expression regarding non-linear expressions that are not
+		// constant in ILP time
+		validateArithExprDynamic(objective.getExpr());
+
+		// Check if objective contains a 'self' call -> If not, display a warning
 		checkObjectiveHasSelf(objective);
 
+		// Check expression evaluation type
 		final LeafType eval = getEvalTypeFromArithExpr(objective.getExpr());
 		if (eval != LeafType.INTEGER && eval != LeafType.DOUBLE) {
 			error( //
@@ -972,17 +976,6 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 				);
 			}
 		}
-	}
-
-	/**
-	 * Validates a given objective function regarding of dynamic sub expressions
-	 * like 'self.value()' in non-linear mathematical expressions.
-	 * 
-	 * @param obj Roam objective to validate.
-	 */
-	public void validateObjectiveExprForm(final RoamObjective obj) {
-		// Validate expression regarding dynamic uses (like self.value())
-		containsSelfValueOrMappingsCall(obj.getExpr());
 	}
 
 	// TODO: Is this even necessary?

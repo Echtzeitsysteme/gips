@@ -147,6 +147,9 @@ public class RoamToIntermediate {
 					constraint.getExpression().setRhs(rewrite);
 				}
 				
+				isLhsConst = (RoamTransformationUtils
+						.isConstantExpression(constraint.getExpression().getLhs()) == ArithmeticExpressionType.constant) ? true : false;
+				
 				//Rewrite the non-constant expression, which will be translated into ILP-Terms, into a sum of products.
 				if(isLhsConst) {
 					constraint.getExpression().setRhs(rewriteToSumOfProducts(constraint.getExpression().getRhs(), null, null));

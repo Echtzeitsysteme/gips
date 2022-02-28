@@ -781,6 +781,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 					return conExpr.getExpr() instanceof RoamContextOperationExpression;
 				} else if (exprOp instanceof RoamLambdaAttributeExpression) {
 					// Nothing to do here
+					return false;
 				} else if (exprOp instanceof RoamMappingAttributeExpr) {
 					return validateStreamExprDynamic(((RoamMappingAttributeExpr) exprOp).getExpr());
 				}

@@ -1388,6 +1388,9 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		if ((left == LeafType.INTEGER || left == LeafType.DOUBLE)
 				&& (right == LeafType.INTEGER || right == LeafType.DOUBLE)) {
 			return LeafType.BOOLEAN;
+		} else if (left == LeafType.ECLASS && right == LeafType.ECLASS) {
+			// Case: Comparing two Eclasses
+			return LeafType.BOOLEAN;
 		} else {
 			return LeafType.ERROR;
 		}

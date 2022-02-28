@@ -1220,7 +1220,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	}
 
 	public LeafType getEvalTypeFromContextExpr(final RoamContextExpr expr) {
-		LeafType exprEval = null;
+		LeafType exprEval = LeafType.CONTEXT;
 		if (expr.getExpr() != null) {
 			final EObject innerExpr = expr.getExpr();
 			if (innerExpr instanceof RoamNodeAttributeExpr) {
@@ -1389,8 +1389,9 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		if ((left == LeafType.INTEGER || left == LeafType.DOUBLE)
 				&& (right == LeafType.INTEGER || right == LeafType.DOUBLE)) {
 			return LeafType.BOOLEAN;
-		} else if (left == LeafType.ECLASS && right == LeafType.ECLASS) {
-			// Case: Comparing two Eclasses
+		} else if ((left == LeafType.ECLASS || left == LeafType.CONTEXT)
+				&& (right == LeafType.ECLASS || right == LeafType.CONTEXT)) {
+			// Case: Comparing two from {EClass, Context}
 			return LeafType.BOOLEAN;
 		} else {
 			return LeafType.ERROR;
@@ -1504,6 +1505,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 		MAPPING, // RoamMapping
 		STREAM, // RoamStream
 		ECLASS, // EClass for casts
+		CONTEXT, // Context, e.g.: 'match::xy'
 		ERROR // If leaf type can not be evaluated, e.g.: '1 + true'
 	}
 

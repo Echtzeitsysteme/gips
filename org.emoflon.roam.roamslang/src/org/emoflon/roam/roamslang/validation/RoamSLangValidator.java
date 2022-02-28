@@ -783,7 +783,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 					// Nothing to do here
 					return false;
 				} else if (exprOp instanceof RoamMappingAttributeExpr) {
-					return validateStreamExprDynamic(((RoamMappingAttributeExpr) exprOp).getExpr());
+					validateStreamExprDynamic(((RoamMappingAttributeExpr) exprOp).getExpr());
+					return true;
 				}
 			} else if (exprOp instanceof RoamObjectiveExpression) {
 				// Only relevant for the global objective function

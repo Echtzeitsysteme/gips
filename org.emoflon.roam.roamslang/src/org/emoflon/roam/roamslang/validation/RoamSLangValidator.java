@@ -432,10 +432,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 					return conExpr.getExpr() instanceof RoamContextOperationExpression;
 				} else if (exprOp instanceof RoamLambdaAttributeExpression) {
 					final RoamLambdaAttributeExpression attrExpr = (RoamLambdaAttributeExpression) expr;
-					// TODO: Creates recursive loop. Solved?
-					if (!attrExpr.getVar().getExpr().equals(attrExpr.eContainer())) {
-						containsMappingsCall(attrExpr.getVar().getExpr());
-					}
+					// TODO
+					attrExpr.getExpr();
 					return false;
 				} else if (exprOp instanceof RoamMappingAttributeExpr) {
 					// TODO
@@ -648,10 +646,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 
 		// Var
 		boolean selfInVar = false;
-		if (!expr.getVar().getExpr().equals(expr.eContainer())) {
-			selfInVar = containsSelf(expr.getVar(), type);
-		}
 		return selfInVar;
+		// TODO
 	}
 
 	public boolean containsSelf(final RoamStreamExpr expr, final SelfType type) {
@@ -810,11 +806,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 					// Currently only MAPPED and VALUE are supported -> Both are dynamic
 					return conExpr.getExpr() instanceof RoamContextOperationExpression;
 				} else if (exprOp instanceof RoamLambdaAttributeExpression) {
-					// TODO: Evaluate RoamLambdaAttributeExpression. Solved?
+					// TODO: Evaluate RoamLambdaAttributeExpression -> getExpr()
 					final RoamLambdaAttributeExpression attrExpr = (RoamLambdaAttributeExpression) expr;
-					if (!attrExpr.getVar().getExpr().equals(attrExpr.eContainer())) {
-						return validateBoolExprDynamic(attrExpr.getVar().getExpr());
-					}
 				} else if (exprOp instanceof RoamMappingAttributeExpr) {
 					// TODO
 					return true;
@@ -1219,10 +1212,6 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	}
 
 	public LeafType getEvalTypeFromLambdaAttrExpr(final RoamLambdaAttributeExpression expr) {
-		if (!expr.getVar().getExpr().equals(expr.eContainer())) {
-			validateLambdaExpr(expr.getVar());
-		}
-
 		final EObject innerExpr = expr.getExpr();
 		if (innerExpr instanceof RoamNodeAttributeExpr) {
 			return getEvalTypeFromNodeAttrExpr((RoamNodeAttributeExpr) innerExpr);

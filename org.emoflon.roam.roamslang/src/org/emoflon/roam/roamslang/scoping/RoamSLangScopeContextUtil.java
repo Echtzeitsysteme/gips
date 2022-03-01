@@ -72,6 +72,10 @@ public final class RoamSLangScopeContextUtil {
 		return context instanceof RoamNodeAttributeExpr && reference == RoamSLangPackage.Literals.ROAM_FEATURE_LIT__FEATURE;
 	}
 	
+	public static boolean isRoamLambdaAttributeExpressionVariable(final EObject context, final EReference reference) {
+		return context instanceof RoamLambdaAttributeExpression && reference == RoamSLangPackage.Literals.ROAM_LAMBDA_ATTRIBUTE_EXPRESSION__VAR;
+	}
+	
 	public static boolean isRoamLambdaAttributeExpression(final EObject context, final EReference reference) {
 		return context instanceof RoamLambdaAttributeExpression && reference == RoamSLangPackage.Literals.ROAM_FEATURE_LIT__FEATURE;
 	}

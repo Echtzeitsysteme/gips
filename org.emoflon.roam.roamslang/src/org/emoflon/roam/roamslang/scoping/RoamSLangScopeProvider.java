@@ -3,6 +3,7 @@
  */
 package org.emoflon.roam.roamslang.scoping;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,9 @@ import org.emoflon.roam.roamslang.roamSLang.RoamMatchContext;
 import org.emoflon.roam.roamslang.roamSLang.RoamNodeAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjective;
 import org.emoflon.roam.roamslang.roamSLang.RoamSelect;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamArithmetic;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamNavigation;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamSet;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeCast;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
 import org.emoflon.roam.roamslang.roamSLang.impl.EditorGTFileImpl;
@@ -78,6 +81,8 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 			return scopeForRoamContextExprNode((RoamContextExpr) context, reference);
 		} else if (RoamSLangScopeContextUtil.isRoamContextExprFeature(context, reference)) {
 			return scopeForRoamContextExprFeature((RoamContextExpr) context, reference);
+		} else if (RoamSLangScopeContextUtil.isRoamLambdaAttributeExpressionVariable(context, reference)) {
+			return scopeForRoamLambdaAttributeExpressionVariable((RoamLambdaAttributeExpression) context, reference);
 		} else if (RoamSLangScopeContextUtil.isRoamLambdaAttributeExpression(context, reference)) {
 			return scopeForRoamLambdaAttributeExpression((RoamLambdaAttributeExpression) context, reference);
 		} else if (RoamSLangScopeContextUtil.isRoamSelect(context, reference)) {
@@ -154,6 +159,21 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 					.collect(Collectors.toList()));
 		} else {
 			return super.getScope(context, reference);
+		}
+	}
+	
+	public IScope scopeForRoamLambdaAttributeExpressionVariable(RoamLambdaAttributeExpression context, EReference reference) {
+		Set<Class<?>> classes = Set.of(RoamStreamSetImpl.class, RoamStreamArithmeticImpl.class);
+		EObject parent = (EObject) RoamSLangScopeContextUtil.getContainer(context, classes);
+		if (parent == null) {
+			return super.getScope(context, reference);
+		}
+		
+		if(parent instanceof RoamStreamSet streamSet) {
+			return Scopes.scopeFor(List.of(streamSet.getLambda()));
+		} else {
+			RoamStreamArithmetic streamArithmetic = (RoamStreamArithmetic) parent;
+			return Scopes.scopeFor(List.of(streamArithmetic.getLambda()));
 		}
 	}
 

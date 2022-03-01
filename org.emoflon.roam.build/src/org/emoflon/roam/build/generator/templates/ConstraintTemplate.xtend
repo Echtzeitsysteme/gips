@@ -51,6 +51,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValu
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue
+import org.emoflon.roam.intermediate.RoamIntermediate.SumExpression
 
 abstract class ConstraintTemplate <CONTEXT extends Constraint> extends GeneratorTemplate<CONTEXT> {
 
@@ -559,10 +560,14 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 	}
 
 	def String getIteratorVariableName(SetOperation iterator) {
-		var itrName = iterator2variableName.get(iterator)
+		var itr = iterator
+		if(iterator.eContainer instanceof SumExpression) {
+			itr = iterator.eContainer as SetOperation
+		}
+		var itrName = iterator2variableName.get(itr)
 		if(itrName === null) {
 			itrName = '''itr_«iterator2variableName.size»'''
-			iterator2variableName.put(iterator, itrName);
+			iterator2variableName.put(itr, itrName);
 		}
 		return itrName;
 	}

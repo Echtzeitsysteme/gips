@@ -190,7 +190,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.mapping
 		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper("«expr.mapping.name»").getMappings().values().parallelStream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
 			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-			ILPTerm<Integer, Double> term = new ILPTerm<Integer, Double>(context, «parseExpression(expr.expression, ExpressionContext.varConstraint)»);
+			ILPTerm<Integer, Double> term = new ILPTerm<Integer, Double>(context, (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»);
 			terms.add(term);
 		}
 	}
@@ -213,7 +213,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.mapping
 		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.name»").parallelStream()
 			.map(type -> («expr.type.type.name») type)
 			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-			terms.add(new ILPTerm<Integer, Double>(context, «parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+			terms.add(new ILPTerm<Integer, Double>(context, (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}
 	}
 		'''
@@ -238,7 +238,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.mapping
 		builderMethods.put(expr, methodName)
 		val method = '''
 	protected ILPTerm<Integer, Double> «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		return new ILPTerm<Integer, Double>(context, context.«parseFeatureExpression(expr.featureExpression)»);
+		return new ILPTerm<Integer, Double>(context, (double)context.«parseFeatureExpression(expr.featureExpression)»);
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)

@@ -82,17 +82,13 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 	
 	def String generateClassContent();
 	
-	def String generateComplexConstraint(ArithmeticExpression constExpr, ArithmeticExpression dynamicExpr);
+	def String generateObjective(ArithmeticExpression expr);
 	
-	def String generateConstTermBuilder(ArithmeticExpression constExpr) {
-		return '''«parseExpression(constExpr, ExpressionContext.constConstraint)»'''
-	}
-	
-	def void generateVariableTermBuilder(ArithmeticExpression expr) {
+	def void generateTermBuilder(ArithmeticExpression expr) {
 		if(expr instanceof BinaryArithmeticExpression) {
 			if(expr.operator == BinaryArithmeticOperator.ADD) {
-				generateVariableTermBuilder(expr.lhs)
-				generateVariableTermBuilder(expr.rhs)
+				generateTermBuilder(expr.lhs)
+				generateTermBuilder(expr.rhs)
 			} else if(expr.operator == BinaryArithmeticOperator.SUBTRACT) {
 				throw new UnsupportedOperationException("Code generator does not support subtraction expressions.");
 			} else {

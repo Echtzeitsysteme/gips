@@ -9,15 +9,19 @@ import org.emoflon.roam.build.generator.templates.ConstraintFactoryTemplate;
 import org.emoflon.roam.build.generator.templates.MapperFactoryTemplate;
 import org.emoflon.roam.build.generator.templates.MapperTemplate;
 import org.emoflon.roam.build.generator.templates.MappingConstraintTemplate;
+import org.emoflon.roam.build.generator.templates.MappingObjectiveTemplate;
 import org.emoflon.roam.build.generator.templates.MappingTemplate;
 import org.emoflon.roam.build.generator.templates.ObjectiveFactoryTemplate;
 import org.emoflon.roam.build.generator.templates.PatternConstraintTemplate;
+import org.emoflon.roam.build.generator.templates.PatternObjectiveTemplate;
 import org.emoflon.roam.build.generator.templates.RoamAPITemplate;
 import org.emoflon.roam.build.generator.templates.TypeConstraintTemplate;
+import org.emoflon.roam.build.generator.templates.TypeObjectiveTemplate;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective;
 import org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective;
@@ -55,10 +59,12 @@ public class RoamCodeGenerator {
 		});
 		data.model.getObjectives().parallelStream().forEach(objective -> {
 			if(objective instanceof MappingObjective mappingObjective) {
-				//TODO: create objective class template, then add to list
-			} else {
+				templates.add(new MappingObjectiveTemplate(data, mappingObjective));
+			} else if(objective instanceof PatternObjective patternObjective) {
+				templates.add(new PatternObjectiveTemplate(data, patternObjective));
+			}  else {
 				TypeObjective typeObjective = (TypeObjective) objective;
-				//TODO: create objective class template, then add to list
+				templates.add(new TypeObjectiveTemplate(data, typeObjective));
 			}
 		});
 		templates.parallelStream().forEach(template -> {

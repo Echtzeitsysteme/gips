@@ -1,5 +1,7 @@
 package org.emoflon.roam.core;
 
+import java.util.List;
+
 import org.emoflon.roam.core.ilp.ILPLinearFunction;
 import org.emoflon.roam.core.ilp.ILPTerm;
 import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
@@ -26,5 +28,5 @@ public abstract class RoamObjective <OBJECTIVE extends Objective, CONTEXT extend
 		return ilpObjective;
 	}
 	
-	protected abstract ILPTerm<VARTYPE, Double> buildTerm(final CONTEXT context);
+	protected abstract List<ILPTerm<VARTYPE, Double>> buildTerms(final CONTEXT context);
 }

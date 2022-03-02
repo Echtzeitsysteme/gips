@@ -25,7 +25,9 @@ public abstract class RoamPatternObjective <M extends GraphTransformationMatch<M
 	
 	@Override
 	public void buildObjectiveFunction() {
-		List<ILPTerm<Integer, Double>> terms = pattern.findMatches().parallelStream().map(context -> buildTerm(context)).collect(Collectors.toList());
+		List<ILPTerm<Integer, Double>> terms = pattern.findMatches().parallelStream()
+				.flatMap(context -> buildTerms(context).parallelStream())
+				.collect(Collectors.toList());
 		ilpObjective = new ILPLinearFunction<Integer>(terms, new LinkedList<>());
 	}
 	

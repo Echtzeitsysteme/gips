@@ -50,7 +50,6 @@ public class «className» extends RoamMapperFactory {
 			«FOR mapping : mappings»
 			case "«mapping.name»" -> {
 				return new «data.mapping2mapperClassName.get(mapping)»(engine, mapping);
-				
 			}
 			«ENDFOR»
 			default -> {

@@ -20,7 +20,12 @@ class ConstraintFactoryTemplate extends GeneratorTemplate<RoamIntermediateModel>
 		imports.add("org.emoflon.roam.core.RoamConstraint")
 		imports.add("org.emoflon.roam.core.RoamTypeConstraint")
 		imports.add("org.emoflon.roam.core.RoamMappingConstraint")
+		imports.add("org.emoflon.roam.core.gt.RoamPatternConstraint")
 		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.Constraint")
+		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint")
+		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint")
+		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint")
+		data.constraint2constraintClassName.values.forEach[c | imports.add(data.apiData.roamConstraintPkg+"."+c)]
 	}
 	
 	override generate() {
@@ -43,8 +48,7 @@ public class «className» extends RoamConstraintFactory {
 		switch(constraint.getName()) {
 			«FOR constraint : context.constraints»
 			case "«constraint.name»" -> {
-			return null; «««TODO: insert instantiation via constraint classname
-				
+			return new «data.constraint2constraintClassName.get(constraint)»(engine, («constraint.eClass.name»)constraint);
 			}
 			«ENDFOR»
 			default -> {

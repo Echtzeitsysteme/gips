@@ -21,6 +21,10 @@ class ObjectiveFactoryTemplate extends GeneratorTemplate<RoamIntermediateModel> 
 		imports.add("org.emoflon.roam.core.RoamTypeObjective")
 		imports.add("org.emoflon.roam.core.RoamMappingObjective")
 		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.Objective")
+		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective")
+		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective")
+		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective")
+		data.objective2objectiveClassName.values.forEach[o | imports.add(data.apiData.roamObjectivePkg+"."+o)]
 	}
 	
 	override generate() {
@@ -43,8 +47,7 @@ public class «className» extends RoamObjectiveFactory {
 		switch(objective.getName()) {
 			«FOR objective : context.objectives»
 			case "«objective.name»" -> {
-				return null; «««TODO: insert instantiation via objective classname
-				
+				return new «data.objective2objectiveClassName.get(objective)»(engine, («objective.eClass.name»)objective);
 			}
 			«ENDFOR»
 			default -> {

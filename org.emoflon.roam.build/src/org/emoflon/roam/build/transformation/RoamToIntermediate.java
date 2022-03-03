@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
@@ -187,7 +188,7 @@ public class RoamToIntermediate {
 			data.model().getObjectives().add(objective);
 			data.eObjective2Objective().put(eObjective, objective);
 
-			ArithmeticExpressionTransformer transformer = transformationFactory.createArithmeticTransformer(objective);
+			ArithmeticExpressionTransformer<? extends EObject> transformer = transformationFactory.createArithmeticTransformer(objective);
 			objective.setExpression(transformer.transform(eObjective.getExpr()));
 			//Rewrite the expression, which will be translated into ILP-Terms, into a sum of products.
 			objective.setExpression(rewriteToSumOfProducts(objective.getExpression(), null, null));
@@ -223,7 +224,7 @@ public class RoamToIntermediate {
 		}
 		}
 
-		ArithmeticExpressionTransformer transformer = transformationFactory.createArithmeticTransformer(globalObj);
+		ArithmeticExpressionTransformer<? extends EObject> transformer = transformationFactory.createArithmeticTransformer(globalObj);
 		globalObj.setExpression(transformer.transform(eGlobalObj.getExpr()));
 		//Rewrite the expression, which will be translated into ILP-Terms, into a sum of products.
 		globalObj.setExpression(rewriteToSumOfProducts(globalObj.getExpression(), null, null));

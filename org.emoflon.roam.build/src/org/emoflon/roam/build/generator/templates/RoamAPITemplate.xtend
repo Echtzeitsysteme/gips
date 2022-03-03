@@ -21,6 +21,9 @@ class RoamAPITemplate extends GeneratorTemplate<RoamIntermediateModel> {
 		imports.add(data.apiData.apiPkg + "." + data.apiData.engineAppClasses.get(RoamAPIData.HIPE_ENGINE_NAME))
 		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)
 		imports.add("org.eclipse.emf.common.util.URI");
+		if(data.model.globalObjective !== null) {
+			imports.add(data.apiData.roamObjectivePkg+"."+data.globalObjectiveClassName)
+		}
 	}
 	
 	override generate() {
@@ -58,8 +61,12 @@ public class «className» extends RoamEngineAPI <«data.apiData.engineAppClasse
 	
 	@Override
 	protected RoamGlobalObjective createGlobalObjective() {
-		// TODO: Implement me!
+		«IF data.model.globalObjective === null»
+		// No global objective was defined!
 		return null;
+		«ELSE»
+		return new «data.globalObjectiveClassName»(roamEngine, roamModel.getGlobalObjective());
+		«ENDIF»
 	}
 	
 }'''

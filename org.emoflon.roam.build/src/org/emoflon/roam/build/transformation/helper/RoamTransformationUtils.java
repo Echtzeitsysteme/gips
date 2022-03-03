@@ -34,6 +34,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
 import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateFactory;
@@ -405,4 +406,78 @@ public final class RoamTransformationUtils {
 			return variables;
 		}
 	}
+	
+	public static Set<Objective> extractObjective(final ArithmeticExpression expr) {
+		if(expr instanceof BinaryArithmeticExpression bin) {
+			Set<Objective> objectives = new HashSet<>();
+			objectives.addAll(extractObjective(bin.getLhs()));
+			objectives.addAll(extractObjective(bin.getRhs()));
+			return objectives;
+		} else if(expr instanceof UnaryArithmeticExpression unary) {
+			return extractObjective(unary.getExpression());
+		} else if(expr instanceof ArithmeticLiteral) {
+			return new HashSet<>();
+		} else {
+			ArithmeticValue value = (ArithmeticValue) expr;
+			return extractObjective(value.getValue());
+		}
+	}
+	
+	public static Set<Objective> extractObjective(final ValueExpression expr) {
+		Set<Objective> objectives = new HashSet<>();
+		if(expr instanceof ObjectiveFunctionValue objVal) {
+			objectives.add(objVal.getObjective());
+		}
+		return objectives;
+	}
+	
+	public static Set<Objective> extractObjective(final StreamExpression expr) {
+		if(expr.getChild() == null) {
+			if(expr.getCurrent() instanceof StreamFilterOperation filterOp) {
+				return extractObjective(filterOp.getPredicate());
+			} else {
+				return new HashSet<>();
+			}
+		} else {
+			Set<Objective> objective = new HashSet<>();
+			if(expr.getCurrent() instanceof StreamFilterOperation filterOp) {
+				objective.addAll(extractObjective(filterOp.getPredicate()));
+			}
+			objective.addAll(extractObjective(expr.getChild()));
+			return objective;
+		}
+	}
+	
+	public static Set<Objective> extractObjective(final BoolExpression expr) {
+		if(expr instanceof BoolBinaryExpression bin) {
+			Set<Objective> objectives = new HashSet<>();
+			objectives.addAll(extractObjective(bin.getLhs()));
+			objectives.addAll(extractObjective(bin.getRhs()));
+			return objectives;
+		} else if(expr instanceof BoolUnaryExpression unary) {
+			return extractObjective(unary.getExpression());
+		} else if(expr instanceof BoolLiteral) {
+			return new HashSet<>();
+		} else if(expr instanceof RelationalExpression relExpr) {
+			return extractObjective(relExpr);
+		} else if(expr instanceof BoolStreamExpression streamExpr) {
+			return extractObjective(streamExpr.getStream());
+		} else {
+			BoolValue value = (BoolValue) expr;
+			return extractObjective(value.getValue());
+		}
+	}
+	
+	public static Set<Objective> extractObjective(final RelationalExpression relExpr) {
+		if(relExpr.getRhs() == null) {
+			return extractObjective(relExpr.getLhs());
+		} else {
+			Set<Objective> objectives = new HashSet<>();
+			objectives.addAll(extractObjective(relExpr.getLhs()));
+			objectives.addAll(extractObjective(relExpr.getRhs()));
+			return objectives;
+		}
+	}
+	
+	//
 }

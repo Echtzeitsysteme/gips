@@ -19,6 +19,7 @@ public class TemplateData {
 	public String mapperFactoryClassName;
 	public String constraintFactoryClassName;
 	public String objectiveFactoryClassName;
+	public String globalObjectiveClassName;
 	
 	final public Map<Mapping, String> mapping2mappingClassName = new HashMap<>();
 	final public Map<Mapping, String> mapping2mapperClassName = new HashMap<>();
@@ -64,6 +65,10 @@ public class TemplateData {
 			});
 		model.getConstraints().stream().forEach(constraint -> constraint2constraintClassName.put(constraint, firstToUpper(constraint.getName())));
 		model.getObjectives().stream().forEach(objective -> objective2objectiveClassName.put(objective, firstToUpper(objective.getName())));
+		if(model.getGlobalObjective() == null)
+			return;
+
+		globalObjectiveClassName = apiData.apiClassNamePrefix+"RoamGlobalObjective";
 	}
 	
 	public static String firstToUpper(final String str) {

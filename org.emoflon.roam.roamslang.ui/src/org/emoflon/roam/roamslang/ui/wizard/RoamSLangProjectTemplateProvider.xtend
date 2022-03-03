@@ -69,14 +69,14 @@ final class HelloWorldProject {
 				// create a mapping on the rule
 				mapping mapNode with exampleRule;
 				
-				// create a constraint on the mapping
-				constraint -> mapping::mapNode {
-					mappings.mapNode->filter(m | m.nodes().clazz.^abstract)->exists()
+				// create a constraint on one class
+				constraint -> class::EOperation {
+					mappings.mapNode->filter(m | m.nodes().clazz.^abstract)->count() > self.lowerBound
 				}
 				
 				// create an objective for the mapping
 				objective nodeObj -> mapping::mapNode {
-					1
+					self.nodes().op.upperBound * sin(73)
 				}
 				
 				// create an overall objective

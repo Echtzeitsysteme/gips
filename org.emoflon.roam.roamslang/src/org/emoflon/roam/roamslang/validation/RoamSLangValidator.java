@@ -434,7 +434,8 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 					// A RoamLambdaAttributeExpression can not contain a mappings call
 					return false;
 				} else if (exprOp instanceof RoamMappingAttributeExpr) {
-					return streamContainsMappingsCall(((RoamMappingAttributeExpr) exprOp).getExpr());
+					// A RoamMappingAttributeExpr always contains a mappings call
+					return true;
 				}
 			}
 		} else if (expr instanceof RoamProductArithmeticExpr) {

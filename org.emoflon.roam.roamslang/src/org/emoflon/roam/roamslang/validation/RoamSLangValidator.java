@@ -102,7 +102,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 	public static final String NAME_EXPECT_LOWER_CASE = CODE_PREFIX + "name.expectLowerCase";
 	public static final String NAME_EXPECT_UNIQUE = CODE_PREFIX + "name.expectUnique";
 
-	public static final String GLOBA_OBJECTIVE_DOES_NOT_EXIST = CODE_PREFIX + "objective.global.doesNotExist";
+	public static final String GLOBAL_OBJECTIVE_DOES_NOT_EXIST = CODE_PREFIX + "objective.global.doesNotExist";
 
 	public static final String GLOBAL_OBJECTIVE_IS_NULL_MESSAGE = "You need to specify a global objective.";
 	public static final String GLOBAL_OBJECTIVE_IS_OPTIONAL_MESSAGE = "The global objective is optional if no local objective is defined.";
@@ -169,7 +169,7 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 					GLOBAL_OBJECTIVE_IS_NULL_MESSAGE, //
 					// TODO: Change scope of the warning:
 					RoamSLangPackage.Literals.EDITOR_GT_FILE__GLOBAL_OBJECTIVE, //
-					GLOBA_OBJECTIVE_DOES_NOT_EXIST //
+					GLOBAL_OBJECTIVE_DOES_NOT_EXIST //
 			);
 		} else if (file.getObjectives() != null && file.getObjectives().isEmpty()
 				&& file.getGlobalObjective() != null) {

@@ -14,27 +14,30 @@ import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
-public abstract class RoamEngineAPI {
+public abstract class RoamEngineAPI <EMOFLON_APP extends GraphTransformationApp<EMOFLON_API>, EMOFLON_API extends GraphTransformationAPI>{
 
-	final protected GraphTransformationApp<? extends GraphTransformationAPI> eMoflonApp;
-	protected GraphTransformationAPI eMoflonAPI;
+	final protected EMOFLON_APP eMoflonApp;
+	protected EMOFLON_API eMoflonAPI;
 	protected RoamIntermediateModel roamModel;
 	protected RoamEngine roamEngine;
 	protected RoamMapperFactory mapperFactory;
 	protected RoamConstraintFactory constraintFactory;
+	protected RoamObjectiveFactory objectiveFactory;
 	
-	protected RoamEngineAPI(final GraphTransformationApp<? extends GraphTransformationAPI> eMoflonApp) {
+	protected RoamEngineAPI(final EMOFLON_APP eMoflonApp) {
 		this.eMoflonApp = eMoflonApp;
 	}
 	
-	protected abstract void registerMetamodels();
+	public abstract void init(final URI modelUri);
 
 	protected abstract void initMapperFactory();
 	
 	protected abstract void initConstraintFactory();
+	
+	protected abstract void initObjectiveFactory();
 
 	protected void init(final URI roamModelURI, final URI modelUri) {
-		registerMetamodels();
+		eMoflonApp.registerMetaModels();
 		eMoflonApp.loadModel(modelUri);
 		eMoflonAPI = eMoflonApp.initAPI();
 		loadIntermediateModel(roamModelURI);
@@ -43,6 +46,8 @@ public abstract class RoamEngineAPI {
 		createMappers();
 		initConstraintFactory();
 		createConstraints();
+		initObjectiveFactory();
+		createObjectives();
 	}
 	
 	protected void loadIntermediateModel(final URI roamModelURI) {
@@ -69,6 +74,11 @@ public abstract class RoamEngineAPI {
 	protected void createConstraints() {
 		roamModel.getConstraints().stream()
 		.forEach(constraint -> roamEngine.addConstraint(constraintFactory.createConstraint(constraint)));
+	}
+	
+	protected void createObjectives() {
+		roamModel.getObjectives().stream()
+		.forEach(objective -> roamEngine.addObjective(objectiveFactory.createObjective(objective)));
 	}
 	
 	public void terminate() {

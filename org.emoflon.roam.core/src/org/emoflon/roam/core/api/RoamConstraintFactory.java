@@ -11,5 +11,5 @@ public abstract class RoamConstraintFactory {
 		this.engine = engine;
 	}
 	
-	public abstract RoamConstraint createConstraint(final Constraint constraint);
+	public abstract RoamConstraint<? extends Constraint, ? extends Object, ? extends Number> createConstraint(final Constraint constraint);
 }

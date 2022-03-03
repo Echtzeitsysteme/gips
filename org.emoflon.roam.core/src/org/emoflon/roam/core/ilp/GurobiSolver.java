@@ -6,13 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.emoflon.roam.core.RoamEngine;
+import org.emoflon.roam.core.RoamGlobalObjective;
 import org.emoflon.roam.core.RoamMapper;
 import org.emoflon.roam.core.RoamMapping;
 import org.emoflon.roam.core.RoamMappingConstraint;
-import org.emoflon.roam.core.RoamMappingObjective;
-import org.emoflon.roam.core.RoamObjective;
 import org.emoflon.roam.core.RoamTypeConstraint;
-import org.emoflon.roam.core.RoamTypeObjective;
+import org.emoflon.roam.core.gt.RoamPatternConstraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator;
 
 import gurobi.GRB;
@@ -113,26 +112,40 @@ public class GurobiSolver extends ILPSolver {
 		createOrGetBinVar(mapping.ilpVariable);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	protected void translateConstraint(final RoamMappingConstraint constraint) {
 		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	protected void translateConstraint(final RoamPatternConstraint constraint) {
+		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	protected void translateConstraint(final RoamTypeConstraint constraint) {
 		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
 	}
 
 	@Override
-	protected void translateObjective(final RoamMappingObjective objective) {
-		// TODO: Add global weight
-		addToObj(objective);
-	}
+	protected void translateObjective(final RoamGlobalObjective objective) {
+		initObjIfNull();
+		final List<?> terms = objective.getObjectiveFunction().terms();
+		final List<ILPConstant<Double>> constants = objective.getObjectiveFunction().constants();
 
-	@Override
-	protected void translateObjective(final RoamTypeObjective objective) {
-		// TODO: Add global weight
-		addToObj(objective);
+		if (terms.size() != constants.size()) {
+			throw new UnsupportedOperationException("Size of terms and constants did not match.");
+		}
+
+		for (int i = 0; i < terms.size(); i++) {
+			// TODO: How to fix this?
+			@SuppressWarnings("unchecked")
+			final ILPTerm<? extends Number, Double> ilpTerm = (ILPTerm<? extends Number, Double>) terms.get(i);
+			obj.addTerm(constants.get(i).weight(), createOrGetBinVar(ilpTerm.variable().getName()));
+		}
 	}
 
 	//
@@ -219,21 +232,6 @@ public class GurobiSolver extends ILPSolver {
 		// related to numerical tolerances.
 		//
 		// https://www.gurobi.com/documentation/9.5/refman/constraints.html
-	}
-
-	/**
-	 * Adds the terms with their weights from a given Roam objective to the global
-	 * objective.
-	 * 
-	 * @param objective Roam objective to add to the global objective.
-	 */
-	private void addToObj(final RoamObjective<?, ?, Integer> objective) {
-		initObjIfNull();
-
-		final List<ILPTerm<Integer, Double>> terms = objective.getObjectiveFunction().terms();
-		terms.forEach(t -> {
-			obj.addTerm(t.weight(), createOrGetBinVar(t.variable().getName()));
-		});
 	}
 
 	/**

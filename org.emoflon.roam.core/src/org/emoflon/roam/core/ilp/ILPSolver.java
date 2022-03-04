@@ -1,5 +1,6 @@
 package org.emoflon.roam.core.ilp;
 
+import org.eclipse.emf.ecore.EObject;
 import org.emoflon.roam.core.RoamConstraint;
 import org.emoflon.roam.core.RoamEngine;
 import org.emoflon.roam.core.RoamGlobalObjective;
@@ -24,27 +25,27 @@ public abstract class ILPSolver {
 			translateObjective(go);
 	}
 
-	public abstract void solve();
+	public abstract ILPSolverOutput solve();
 
 	public abstract void updateValuesFromSolution();
 
 	protected abstract void translateMapping(final RoamMapping mapping);
 
 	protected void translateConstraint(final RoamConstraint<?, ?, ?> constraint) {
-		if (constraint instanceof RoamMappingConstraint mapping) {
+		if (constraint instanceof RoamMappingConstraint<?> mapping) {
 			translateConstraint(mapping);
-		} else if (constraint instanceof RoamPatternConstraint pattern) {
+		} else if (constraint instanceof RoamPatternConstraint<?, ?> pattern) {
 			translateConstraint(pattern);
 		} else {
-			translateConstraint((RoamTypeConstraint) constraint);
+			translateConstraint((RoamTypeConstraint<?>) constraint);
 		}
 	}
 
-	protected abstract void translateConstraint(final RoamMappingConstraint constraint);
+	protected abstract void translateConstraint(final RoamMappingConstraint<? extends EObject> constraint);
 
-	protected abstract void translateConstraint(final RoamPatternConstraint constraint);
+	protected abstract void translateConstraint(final RoamPatternConstraint<?, ?> constraint);
 
-	protected abstract void translateConstraint(final RoamTypeConstraint constraint);
+	protected abstract void translateConstraint(final RoamTypeConstraint<? extends EObject> constraint);
 
 	protected abstract void translateObjective(final RoamGlobalObjective objective);
 }

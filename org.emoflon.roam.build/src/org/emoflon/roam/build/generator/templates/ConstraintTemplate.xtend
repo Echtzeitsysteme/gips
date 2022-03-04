@@ -52,6 +52,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue
 import org.emoflon.roam.intermediate.RoamIntermediate.SumExpression
+import org.eclipse.emf.ecore.EcorePackage
 
 abstract class ConstraintTemplate <CONTEXT extends Constraint> extends GeneratorTemplate<CONTEXT> {
 
@@ -551,11 +552,15 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 	}
 	
 	def String parseFeatureExpression(FeatureExpression expr) {
+		var getOrIs = "get"
+		if(expr.current.feature.EType == EcorePackage.Literals.EBOOLEAN)
+			getOrIs = "is";
+			
 		if(expr.child === null) {
 			//TODO: Watch out for boolean attributes -> isXXXX() instead of getXXXX()
-			return '''get«expr.current.feature.name.toFirstUpper»()'''
+			return '''«getOrIs»«expr.current.feature.name.toFirstUpper»()'''
 		} else {
-			return '''get«expr.current.feature.name.toFirstUpper»().«parseFeatureExpression(expr.child)»'''
+			return '''«getOrIs»«expr.current.feature.name.toFirstUpper»().«parseFeatureExpression(expr.child)»'''
 		}
 	}
 

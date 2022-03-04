@@ -431,4 +431,33 @@
 			type="text">
 		</fileTypes>
 	</extension>
+	<extension
+		point="org.eclipse.ui.newWizards">
+		<category id="org.emoflon.roam.roamslang.ui.category" name="RoamSLang">
+		</category>
+		<wizard
+			category="org.emoflon.roam.roamslang.ui.category"
+			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.wizard.template.TemplateNewProjectWizard"
+			id="org.emoflon.roam.roamslang.ui.wizard.RoamSLangNewProjectWizard"
+			name="RoamSLang Project"
+			icon="icons/new_RoamSLang_proj.gif"
+			project="true">
+		</wizard>
+	</extension>
+	<extension
+		point="org.eclipse.xtext.ui.projectTemplate">
+		<projectTemplateProvider
+			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.emoflon.roam.roamslang.ui.wizard.RoamSLangProjectTemplateProvider"
+			grammarName="org.emoflon.roam.roamslang.RoamSLang">
+		</projectTemplateProvider>
+	</extension>
+	<extension
+		point="org.eclipse.ui.perspectiveExtensions">
+		<perspectiveExtension targetID="org.eclipse.ui.resourcePerspective">
+			<newWizardShortcut id="org.emoflon.roam.roamslang.ui.wizard.RoamSLangNewProjectWizard"/>
+		</perspectiveExtension>
+		<perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
+			<newWizardShortcut id="org.emoflon.roam.roamslang.ui.wizard.RoamSLangNewProjectWizard"/>
+		</perspectiveExtension>
+	</extension>
 </plugin>

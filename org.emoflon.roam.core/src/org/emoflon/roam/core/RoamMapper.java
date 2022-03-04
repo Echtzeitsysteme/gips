@@ -3,6 +3,7 @@ package org.emoflon.roam.core;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 
 public abstract class RoamMapper <M extends RoamMapping>{

@@ -4,9 +4,12 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
+import org.emoflon.roam.build.generator.RoamCodeGenerator;
+import org.emoflon.roam.build.generator.RoamImportManager;
 import org.emoflon.roam.build.transformation.RoamToIntermediate;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
 import org.emoflon.roam.roamslang.generator.RoamBuilderExtension;
@@ -26,7 +29,8 @@ public class RoamProjectBuilder implements RoamBuilderExtension {
 			RoamBuilderUtils.removeGeneratedCode(project, RoamBuilderUtils.GEN_FOLDER+"/**");
 			RoamBuilderUtils.createFolders(project);
 		} catch (CoreException e) {
-			LogUtils.error(logger, e.getMessage());
+			LogUtils.error(logger, e.toString());
+			e.printStackTrace();
 			return;
 		}
 		
@@ -39,28 +43,32 @@ public class RoamProjectBuilder implements RoamBuilderExtension {
 		try {
 			model = transformer.transform();
 		} catch (Exception e) {
-			LogUtils.error(logger, e.getMessage());
+			LogUtils.error(logger, e.toString());
+			e.printStackTrace();
 			return;
 		}
 		model.setName(resource.getURI().trimFileExtension().lastSegment());
 		IBeXModel ibexModel = model.getIbexModel();
 
 		LogUtils.info(logger, "RoamProjectBuilder: building eMoflon-API...");
+		RoamAPIData roamApiData = null;
 		// build emoflon API and update Manifest
 		if (ibexModel != null) {
 			try {
-				RoamBuilderUtils.buildEMoflonAPI(project, ibexModel);
+				roamApiData = RoamBuilderUtils.buildEMoflonAPI(project, ibexModel);
+				roamApiData.project = project;
 				RoamBuilderUtils.updateManifest(project, RoamBuilderUtils::processManifestForPackage);
 			} catch (CoreException e) {
-				LogUtils.error(logger, e.getMessage());
+				LogUtils.error(logger, e.toString());
+				e.printStackTrace();
 				return;
 			}
 		}
 
 		// save ibex-patterns and gt-rules for the hipe engine builder
-		IFolder apiPackage = project.getFolder("src-gen/" + project.getName().replace(".", "/") + "/api");
-		RoamBuilderUtils.saveResource(EcoreUtil.copy(ibexModel), apiPackage.getFullPath() + "/ibex-patterns.xmi");
-		RoamBuilderUtils.saveResource(model, resource.getURI().trimFileExtension() + "_intermediate.xmi");
+		RoamBuilderUtils.saveResource(EcoreUtil.copy(ibexModel), roamApiData.apiPackageFolder.getLocation() + "/ibex-patterns.xmi");
+		RoamBuilderUtils.saveResource(model, roamApiData.apiPackageFolder.getLocation() + "/roam/roam-model.xmi");
+		roamApiData.intermediateModelURI = URI.createPlatformResourceURI(roamApiData.apiPackageFolder.getProjectRelativePath() + "/roam/roam-model.xmi", true);
 
 		// build HiPE engine code
 		if (ibexModel != null && !ibexModel.getPatternSet().getContextPatterns().isEmpty()) {
@@ -68,10 +76,19 @@ public class RoamProjectBuilder implements RoamBuilderExtension {
 			RoamBuilderUtils.collectEngineBuilderExtensions()
 					.forEach(ext -> ext.run(project, packagePath.getProjectRelativePath(), ibexModel));
 		}
-		
-		LogUtils.info(logger, "RoamProjectBuilder: building Roam-API...");
 		// build Roam API
-//		TODO:...
+		LogUtils.info(logger, "RoamProjectBuilder: building Roam-API...");
+		// set output folders
+		roamApiData.setRoamApiPackage(RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.ROAM_API_FOLDER));
+		roamApiData.setRoamMappingPackage(RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.MAPPING_FOLDER));
+		roamApiData.setRoamMapperPackage(RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.MAPPER_FOLDER));
+		roamApiData.setRoamConstraintPackage(RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.CONSTRAINT_FOLDER));
+		roamApiData.setRoamObjectivePackage(RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.OBJECTIVE_FOLDER));
+		// get package dependencies
+		RoamImportManager manager = RoamBuilderUtils.createRoamImportManager(RoamBuilderUtils.createEPackageRegistry(model));
+		// generate files
+		RoamCodeGenerator roamGen = new RoamCodeGenerator(model, roamApiData, manager);
+		roamGen.generate();
 		LogUtils.info(logger, "RoamProjectBuilder: Done!");
 	}
 	

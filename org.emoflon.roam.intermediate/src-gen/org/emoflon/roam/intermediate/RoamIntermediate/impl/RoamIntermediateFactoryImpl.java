@@ -59,6 +59,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 		switch (eClass.getClassifierID()) {
 		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL:
 			return createRoamIntermediateModel();
+		case RoamIntermediatePackage.PATTERN:
+			return createPattern();
 		case RoamIntermediatePackage.TYPE:
 			return createType();
 		case RoamIntermediatePackage.MAPPING:
@@ -67,14 +69,18 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 			return createObjective();
 		case RoamIntermediatePackage.GLOBAL_OBJECTIVE:
 			return createGlobalObjective();
+		case RoamIntermediatePackage.PATTERN_CONSTRAINT:
+			return createPatternConstraint();
 		case RoamIntermediatePackage.TYPE_CONSTRAINT:
 			return createTypeConstraint();
 		case RoamIntermediatePackage.MAPPING_CONSTRAINT:
 			return createMappingConstraint();
-		case RoamIntermediatePackage.MAPPING_OBJECTIVE:
-			return createMappingObjective();
+		case RoamIntermediatePackage.PATTERN_OBJECTIVE:
+			return createPatternObjective();
 		case RoamIntermediatePackage.TYPE_OBJECTIVE:
 			return createTypeObjective();
+		case RoamIntermediatePackage.MAPPING_OBJECTIVE:
+			return createMappingObjective();
 		case RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION:
 			return createBinaryArithmeticExpression();
 		case RoamIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION:
@@ -103,6 +109,10 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 			return createTypeSumExpression();
 		case RoamIntermediatePackage.CONTEXT_TYPE_VALUE:
 			return createContextTypeValue();
+		case RoamIntermediatePackage.CONTEXT_PATTERN_VALUE:
+			return createContextPatternValue();
+		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE:
+			return createContextPatternNode();
 		case RoamIntermediatePackage.CONTEXT_MAPPING_VALUE:
 			return createContextMappingValue();
 		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE:
@@ -115,8 +125,18 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 			return createFeatureLiteral();
 		case RoamIntermediatePackage.CONTEXT_TYPE_FEATURE_VALUE:
 			return createContextTypeFeatureValue();
+		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE_FEATURE_VALUE:
+			return createContextPatternNodeFeatureValue();
 		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE:
 			return createContextMappingNodeFeatureValue();
+		case RoamIntermediatePackage.ITERATOR_PATTERN_VALUE:
+			return createIteratorPatternValue();
+		case RoamIntermediatePackage.ITERATOR_PATTERN_FEATURE_VALUE:
+			return createIteratorPatternFeatureValue();
+		case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE:
+			return createIteratorPatternNodeValue();
+		case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_FEATURE_VALUE:
+			return createIteratorPatternNodeFeatureValue();
 		case RoamIntermediatePackage.ITERATOR_MAPPING_VALUE:
 			return createIteratorMappingValue();
 		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE:
@@ -213,6 +233,16 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Pattern createPattern() {
+		PatternImpl pattern = new PatternImpl();
+		return pattern;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Type createType() {
 		TypeImpl type = new TypeImpl();
 		return type;
@@ -253,6 +283,16 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public PatternConstraint createPatternConstraint() {
+		PatternConstraintImpl patternConstraint = new PatternConstraintImpl();
+		return patternConstraint;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public TypeConstraint createTypeConstraint() {
 		TypeConstraintImpl typeConstraint = new TypeConstraintImpl();
 		return typeConstraint;
@@ -266,6 +306,16 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	public MappingConstraint createMappingConstraint() {
 		MappingConstraintImpl mappingConstraint = new MappingConstraintImpl();
 		return mappingConstraint;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public PatternObjective createPatternObjective() {
+		PatternObjectiveImpl patternObjective = new PatternObjectiveImpl();
+		return patternObjective;
 	}
 
 	/**
@@ -433,6 +483,26 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ContextPatternValue createContextPatternValue() {
+		ContextPatternValueImpl contextPatternValue = new ContextPatternValueImpl();
+		return contextPatternValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ContextPatternNode createContextPatternNode() {
+		ContextPatternNodeImpl contextPatternNode = new ContextPatternNodeImpl();
+		return contextPatternNode;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public ContextMappingValue createContextMappingValue() {
 		ContextMappingValueImpl contextMappingValue = new ContextMappingValueImpl();
 		return contextMappingValue;
@@ -493,9 +563,59 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ContextPatternNodeFeatureValue createContextPatternNodeFeatureValue() {
+		ContextPatternNodeFeatureValueImpl contextPatternNodeFeatureValue = new ContextPatternNodeFeatureValueImpl();
+		return contextPatternNodeFeatureValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public ContextMappingNodeFeatureValue createContextMappingNodeFeatureValue() {
 		ContextMappingNodeFeatureValueImpl contextMappingNodeFeatureValue = new ContextMappingNodeFeatureValueImpl();
 		return contextMappingNodeFeatureValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public IteratorPatternValue createIteratorPatternValue() {
+		IteratorPatternValueImpl iteratorPatternValue = new IteratorPatternValueImpl();
+		return iteratorPatternValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public IteratorPatternFeatureValue createIteratorPatternFeatureValue() {
+		IteratorPatternFeatureValueImpl iteratorPatternFeatureValue = new IteratorPatternFeatureValueImpl();
+		return iteratorPatternFeatureValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public IteratorPatternNodeValue createIteratorPatternNodeValue() {
+		IteratorPatternNodeValueImpl iteratorPatternNodeValue = new IteratorPatternNodeValueImpl();
+		return iteratorPatternNodeValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public IteratorPatternNodeFeatureValue createIteratorPatternNodeFeatureValue() {
+		IteratorPatternNodeFeatureValueImpl iteratorPatternNodeFeatureValue = new IteratorPatternNodeFeatureValueImpl();
+		return iteratorPatternNodeFeatureValue;
 	}
 
 	/**

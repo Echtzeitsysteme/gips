@@ -24,12 +24,12 @@ public interface ContextTypeValue extends ValueExpression {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Type Context</em>' reference.
-	 * @see #setTypeContext(TypeConstraint)
+	 * @see #setTypeContext(Type)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getContextTypeValue_TypeContext()
 	 * @model
 	 * @generated
 	 */
-	TypeConstraint getTypeContext();
+	Type getTypeContext();
 
 	/**
 	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue#getTypeContext <em>Type Context</em>}' reference.
@@ -39,6 +39,6 @@ public interface ContextTypeValue extends ValueExpression {
 	 * @see #getTypeContext()
 	 * @generated
 	 */
-	void setTypeContext(TypeConstraint value);
+	void setTypeContext(Type value);
 
 } // ContextTypeValue

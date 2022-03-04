@@ -4,7 +4,7 @@
 	<extension point="org.eclipse.emf.ecore.generated_package">
 		<package
 			uri = "http://www.emoflon.org/roam/roamslang/RoamSLang"
-			class = "org.emoflon.roam.roamslang.RoamSLang.RoamSLangPackage"
+			class = "org.emoflon.roam.roamslang.roamSLang.RoamSLangPackage"
 			genModel = "model/generated/RoamSLang.genmodel" />
 	</extension>
 </plugin>

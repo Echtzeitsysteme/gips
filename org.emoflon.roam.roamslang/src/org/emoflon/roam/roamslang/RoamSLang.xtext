@@ -21,13 +21,13 @@ RoamMapping :
 ;
 
 RoamConstraint : 
-	'constraint' '->' context=(RoamMappingContext | RoamTypeContext) '{'
+	'constraint' '->' context=(RoamMappingContext | RoamTypeContext | RoamMatchContext) '{'
 		expr = RoamBool
 	'}'
 ;
 
 RoamObjective : 
-	'objective' name=ID '->' context=(RoamMappingContext | RoamTypeContext) '{'
+	'objective' name=ID '->' context=(RoamMappingContext | RoamTypeContext | RoamMatchContext) '{'
 		expr = RoamArithmeticExpr
 	'}'
 ;
@@ -38,6 +38,10 @@ RoamMappingContext:
 
 RoamTypeContext:
 	'class::' type = [ecore::EClassifier]
+;
+
+RoamMatchContext:
+	'match::' pattern = [GT::EditorPattern|ID]
 ;
 
 RoamObjectiveExpression:

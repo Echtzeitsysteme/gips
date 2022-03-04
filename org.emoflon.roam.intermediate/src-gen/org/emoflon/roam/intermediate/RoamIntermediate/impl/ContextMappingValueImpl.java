@@ -10,7 +10,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
@@ -35,7 +35,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	 * @generated
 	 * @ordered
 	 */
-	protected MappingConstraint mappingContext;
+	protected Mapping mappingContext;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -61,10 +61,10 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public MappingConstraint getMappingContext() {
+	public Mapping getMappingContext() {
 		if (mappingContext != null && mappingContext.eIsProxy()) {
 			InternalEObject oldMappingContext = (InternalEObject) mappingContext;
-			mappingContext = (MappingConstraint) eResolveProxy(oldMappingContext);
+			mappingContext = (Mapping) eResolveProxy(oldMappingContext);
 			if (mappingContext != oldMappingContext) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
@@ -80,7 +80,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public MappingConstraint basicGetMappingContext() {
+	public Mapping basicGetMappingContext() {
 		return mappingContext;
 	}
 
@@ -89,8 +89,8 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMappingContext(MappingConstraint newMappingContext) {
-		MappingConstraint oldMappingContext = mappingContext;
+	public void setMappingContext(Mapping newMappingContext) {
+		Mapping oldMappingContext = mappingContext;
 		mappingContext = newMappingContext;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -122,7 +122,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 		case RoamIntermediatePackage.CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT:
-			setMappingContext((MappingConstraint) newValue);
+			setMappingContext((Mapping) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -137,7 +137,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	public void eUnset(int featureID) {
 		switch (featureID) {
 		case RoamIntermediatePackage.CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT:
-			setMappingContext((MappingConstraint) null);
+			setMappingContext((Mapping) null);
 			return;
 		}
 		super.eUnset(featureID);

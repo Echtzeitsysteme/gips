@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.Type;
 
 /**
  * <!-- begin-user-doc -->
@@ -35,7 +35,7 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	 * @generated
 	 * @ordered
 	 */
-	protected TypeConstraint typeContext;
+	protected Type typeContext;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -61,10 +61,10 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public TypeConstraint getTypeContext() {
+	public Type getTypeContext() {
 		if (typeContext != null && typeContext.eIsProxy()) {
 			InternalEObject oldTypeContext = (InternalEObject) typeContext;
-			typeContext = (TypeConstraint) eResolveProxy(oldTypeContext);
+			typeContext = (Type) eResolveProxy(oldTypeContext);
 			if (typeContext != oldTypeContext) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
@@ -79,7 +79,7 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public TypeConstraint basicGetTypeContext() {
+	public Type basicGetTypeContext() {
 		return typeContext;
 	}
 
@@ -88,8 +88,8 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setTypeContext(TypeConstraint newTypeContext) {
-		TypeConstraint oldTypeContext = typeContext;
+	public void setTypeContext(Type newTypeContext) {
+		Type oldTypeContext = typeContext;
 		typeContext = newTypeContext;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -121,7 +121,7 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 		case RoamIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT:
-			setTypeContext((TypeConstraint) newValue);
+			setTypeContext((Type) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -136,7 +136,7 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	public void eUnset(int featureID) {
 		switch (featureID) {
 		case RoamIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT:
-			setTypeContext((TypeConstraint) null);
+			setTypeContext((Type) null);
 			return;
 		}
 		super.eUnset(featureID);

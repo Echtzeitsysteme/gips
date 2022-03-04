@@ -6,7 +6,7 @@ import org.emoflon.roam.core.RoamMapping;
 
 public abstract class GTMapping <M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>> extends RoamMapping {
 
-	final public M match;
+	final protected M match;
 	
 	protected GTMapping(final String ilpVariable, final M match) {
 		super(ilpVariable);

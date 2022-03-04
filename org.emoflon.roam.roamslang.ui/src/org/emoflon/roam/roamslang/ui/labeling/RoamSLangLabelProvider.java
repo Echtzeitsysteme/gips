@@ -3,14 +3,16 @@
  */
 package org.emoflon.roam.roamslang.ui.labeling;
 
-import com.google.inject.Inject;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider;
 
+import com.google.inject.Inject;
+
 /**
  * Provides labels for EObjects.
- * 
- * See https://www.eclipse.org/Xtext/documentation/310_eclipse_support.html#label-provider
+ *
+ * See
+ * https://www.eclipse.org/Xtext/documentation/310_eclipse_support.html#label-provider
  */
 public class RoamSLangLabelProvider extends DefaultEObjectLabelProvider {
 
@@ -20,7 +22,7 @@ public class RoamSLangLabelProvider extends DefaultEObjectLabelProvider {
 	}
 
 	// Labels and icons can be computed like this:
-	
+
 //	String text(Greeting ele) {
 //		return "A greeting to " + ele.getName();
 //	}

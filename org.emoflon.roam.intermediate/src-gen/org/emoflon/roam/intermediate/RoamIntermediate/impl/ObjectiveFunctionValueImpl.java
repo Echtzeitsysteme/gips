@@ -3,34 +3,31 @@
 package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
 import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Objective Function Value</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object
+ * '<em><b>Objective Function Value</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ObjectiveFunctionValueImpl#getObjective <em>Objective</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ObjectiveFunctionValueImpl#getObjective
+ * <em>Objective</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements ObjectiveFunctionValue {
 	/**
-	 * The cached value of the '{@link #getObjective() <em>Objective</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getObjective() <em>Objective</em>}'
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @see #getObjective()
 	 * @generated
 	 * @ordered
@@ -38,8 +35,8 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 	protected Objective objective;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	protected ObjectiveFunctionValueImpl() {
@@ -47,8 +44,8 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -57,10 +54,11 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
+	@Override
 	public Objective getObjective() {
 		if (objective != null && objective.eIsProxy()) {
 			InternalEObject oldObjective = (InternalEObject) objective;
@@ -75,8 +73,8 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	public Objective basicGetObjective() {
@@ -84,10 +82,11 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
+	@Override
 	public void setObjective(Objective newObjective) {
 		Objective oldObjective = objective;
 		objective = newObjective;
@@ -97,8 +96,8 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -113,8 +112,8 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -128,8 +127,8 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -143,8 +142,8 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -156,4 +155,4 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 		return super.eIsSet(featureID);
 	}
 
-} //ObjectiveFunctionValueImpl
+} // ObjectiveFunctionValueImpl

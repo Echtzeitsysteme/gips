@@ -1,18 +1,25 @@
 package org.emoflon.roam.core.ilp;
 
 /**
- * 
+ *
  * @author SebastianE
  *
- * @param <T extends Number> T determines the type of variables. For now we only support integer variables. 
- * @param terms : ILPLinearFunction<T> -> -> List containing (1) terms, i.e., a sum of products, where a variable is multiplied with some constant factor., and (2) a sum of constant terms.
- * @param weight : double -> A constant value that is multiplied with the linear function.
- * 
- * 
- * An instance of an ILPWeightedLinearFunction represents a sum of terms and constants. 
- * Mathematical representation of weighted ILPLinearFunction: 
- * f(linearFunction, weight) = weight * (Sum_{term in linearFunction.terms} ( term.variable * term.constant ) + Sum_{cterm in linearFunction.constants} ( cterm.constant ) )
+ * @param <T     extends Number> T determines the type of variables. For now we
+ *               only support integer variables.
+ * @param terms  : ILPLinearFunction<T> -> -> List containing (1) terms, i.e., a
+ *               sum of products, where a variable is multiplied with some
+ *               constant factor., and (2) a sum of constant terms.
+ * @param weight : double -> A constant value that is multiplied with the linear
+ *               function.
+ *
+ *
+ *               An instance of an ILPWeightedLinearFunction represents a sum of
+ *               terms and constants. Mathematical representation of weighted
+ *               ILPLinearFunction: f(linearFunction, weight) = weight *
+ *               (Sum_{term in linearFunction.terms} ( term.variable *
+ *               term.constant ) + Sum_{cterm in linearFunction.constants} (
+ *               cterm.constant ) )
  */
-public record ILPWeightedLinearFunction <T extends Number> (ILPLinearFunction<T> linearFunction, double weight){
+public record ILPWeightedLinearFunction<T extends Number> (ILPLinearFunction<T> linearFunction, double weight) {
 
 }

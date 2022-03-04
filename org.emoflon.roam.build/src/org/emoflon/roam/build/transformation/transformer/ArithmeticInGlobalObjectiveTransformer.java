@@ -10,10 +10,11 @@ import org.emoflon.roam.roamslang.roamSLang.RoamObjectiveExpression;
 
 public class ArithmeticInGlobalObjectiveTransformer extends ArithmeticExpressionTransformer<GlobalObjective> {
 
-	protected ArithmeticInGlobalObjectiveTransformer(RoamTransformationData data, GlobalObjective context, TransformerFactory factory) {
+	protected ArithmeticInGlobalObjectiveTransformer(RoamTransformationData data, GlobalObjective context,
+			TransformerFactory factory) {
 		super(data, context, factory);
 	}
-	
+
 	@Override
 	public ArithmeticExpression transform(final RoamObjectiveExpression objExpr) throws Exception {
 		ArithmeticValue val = factory.createArithmeticValue();
@@ -22,10 +23,11 @@ public class ArithmeticInGlobalObjectiveTransformer extends ArithmeticExpression
 		objVal.setObjective(data.eObjective2Objective().get(objExpr.getObjective()));
 		return val;
 	}
-	
+
 	@Override
 	public ArithmeticExpression transform(final RoamAttributeExpr objExpr) throws Exception {
-		throw new UnsupportedOperationException("References to objects, object attributes or ILP variables are not permitted within a global objective function.");
+		throw new UnsupportedOperationException(
+				"References to objects, object attributes or ILP variables are not permitted within a global objective function.");
 	}
 
 }

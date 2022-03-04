@@ -3,14 +3,14 @@
  */
 package org.emoflon.roam.roamslang.validation;
 
-
 /**
- * This class contains custom validation rules. 
+ * This class contains custom validation rules.
  *
- * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
+ * See
+ * https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 public class RoamSLangValidator extends AbstractRoamSLangValidator {
-	
+
 //	public static final String INVALID_NAME = "invalidName";
 //
 //	@Check
@@ -21,5 +21,5 @@ public class RoamSLangValidator extends AbstractRoamSLangValidator {
 //					INVALID_NAME);
 //		}
 //	}
-	
+
 }

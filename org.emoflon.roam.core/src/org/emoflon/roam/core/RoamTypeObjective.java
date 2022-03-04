@@ -10,11 +10,12 @@ import org.emoflon.roam.core.ilp.ILPLinearFunction;
 import org.emoflon.roam.core.ilp.ILPTerm;
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective;
 
-public abstract class RoamTypeObjective<CONTEXT extends EObject> extends RoamObjective<TypeObjective, CONTEXT, Integer> {
+public abstract class RoamTypeObjective<CONTEXT extends EObject>
+		extends RoamObjective<TypeObjective, CONTEXT, Integer> {
 
 	final protected TypeIndexer indexer;
 	final protected EClass type;
-	
+
 	public RoamTypeObjective(RoamEngine engine, TypeObjective objective) {
 		super(engine, objective);
 		indexer = engine.getIndexer();
@@ -25,9 +26,8 @@ public abstract class RoamTypeObjective<CONTEXT extends EObject> extends RoamObj
 	@Override
 	public void buildObjectiveFunction() {
 		List<ILPTerm<Integer, Double>> terms = indexer.getObjectsOfType(type).parallelStream()
-				.flatMap(context -> buildTerms((CONTEXT)context).parallelStream())
-				.collect(Collectors.toList());
-		ilpObjective = new ILPLinearFunction<Integer>(terms, new LinkedList<>());
+				.flatMap(context -> buildTerms((CONTEXT) context).parallelStream()).collect(Collectors.toList());
+		ilpObjective = new ILPLinearFunction<>(terms, new LinkedList<>());
 	}
 
 }

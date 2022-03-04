@@ -4,34 +4,92 @@ package org.emoflon.roam.intermediate.RoamIntermediate.util;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
-
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
-
 import org.eclipse.emf.ecore.EObject;
-
-import org.emoflon.roam.intermediate.RoamIntermediate.*;
+import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral;
+import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValueExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral;
+import org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.BoolValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.BoolValueExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.Context;
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode;
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode;
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral;
+import org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.FeatureLiteral;
+import org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective;
+import org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral;
+import org.emoflon.roam.intermediate.RoamIntermediate.Iterator;
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
+import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective;
+import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
+import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue;
+import org.emoflon.roam.intermediate.RoamIntermediate.Pattern;
+import org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective;
+import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
+import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation;
+import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation;
+import org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation;
+import org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation;
+import org.emoflon.roam.intermediate.RoamIntermediate.SumExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.Type;
+import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective;
+import org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet;
 
 /**
- * <!-- begin-user-doc -->
- * The <b>Adapter Factory</b> for the model.
- * It provides an adapter <code>createXXX</code> method for each class of the model.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides
+ * an adapter <code>createXXX</code> method for each class of the model. <!--
+ * end-user-doc -->
+ *
  * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage
  * @generated
  */
 public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	/**
-	 * The cached model package.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached model package. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	protected static RoamIntermediatePackage modelPackage;
 
 	/**
-	 * Creates an instance of the adapter factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an instance of the adapter factory. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
 	 * @generated
 	 */
 	public RoamIntermediateAdapterFactory() {
@@ -41,10 +99,11 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Returns whether this factory is applicable for the type of the object.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns <code>true</code> if the object is either the model's package or is an instance object of the model.
+	 * Returns whether this factory is applicable for the type of the object. <!--
+	 * begin-user-doc --> This implementation returns <code>true</code> if the
+	 * object is either the model's package or is an instance object of the model.
 	 * <!-- end-user-doc -->
+	 *
 	 * @return whether this factory is applicable for the type of the object.
 	 * @generated
 	 */
@@ -60,12 +119,12 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * The switch that delegates to the <code>createXXX</code> methods.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The switch that delegates to the <code>createXXX</code> methods. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
-	protected RoamIntermediateSwitch<Adapter> modelSwitch = new RoamIntermediateSwitch<Adapter>() {
+	protected RoamIntermediateSwitch<Adapter> modelSwitch = new RoamIntermediateSwitch<>() {
 		@Override
 		public Adapter caseRoamIntermediateModel(RoamIntermediateModel object) {
 			return createRoamIntermediateModelAdapter();
@@ -383,9 +442,9 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	};
 
 	/**
-	 * Creates an adapter for the <code>target</code>.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an adapter for the <code>target</code>. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
 	 * @param target the object to adapt.
 	 * @return the adapter for the <code>target</code>.
 	 * @generated
@@ -396,11 +455,12 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel <em>Model</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel
+	 * <em>Model</em>}'. <!-- begin-user-doc --> This default implementation returns
+	 * null so that we can easily ignore cases; it's useful to ignore a case when
+	 * inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel
 	 * @generated
@@ -410,11 +470,12 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.VariableSet <em>Variable Set</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.VariableSet
+	 * <em>Variable Set</em>}'. <!-- begin-user-doc --> This default implementation
+	 * returns null so that we can easily ignore cases; it's useful to ignore a case
+	 * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.VariableSet
 	 * @generated
@@ -424,11 +485,12 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.Pattern <em>Pattern</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Pattern
+	 * <em>Pattern</em>}'. <!-- begin-user-doc --> This default implementation
+	 * returns null so that we can easily ignore cases; it's useful to ignore a case
+	 * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Pattern
 	 * @generated
@@ -438,11 +500,12 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.Type <em>Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Type <em>Type</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we
+	 * can easily ignore cases; it's useful to ignore a case when inheritance will
+	 * catch all the cases anyway. <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Type
 	 * @generated
@@ -452,11 +515,12 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.Mapping <em>Mapping</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Mapping
+	 * <em>Mapping</em>}'. <!-- begin-user-doc --> This default implementation
+	 * returns null so that we can easily ignore cases; it's useful to ignore a case
+	 * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Mapping
 	 * @generated
@@ -466,11 +530,12 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint <em>Constraint</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint
+	 * <em>Constraint</em>}'. <!-- begin-user-doc --> This default implementation
+	 * returns null so that we can easily ignore cases; it's useful to ignore a case
+	 * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Constraint
 	 * @generated
@@ -480,11 +545,12 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective <em>Objective</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective
+	 * <em>Objective</em>}'. <!-- begin-user-doc --> This default implementation
+	 * returns null so that we can easily ignore cases; it's useful to ignore a case
+	 * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Objective
 	 * @generated
@@ -494,11 +560,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective <em>Global Objective</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective
+	 * <em>Global Objective</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective
 	 * @generated
@@ -508,11 +576,12 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.Context <em>Context</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Context
+	 * <em>Context</em>}'. <!-- begin-user-doc --> This default implementation
+	 * returns null so that we can easily ignore cases; it's useful to ignore a case
+	 * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Context
 	 * @generated
@@ -522,11 +591,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint <em>Pattern Constraint</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint
+	 * <em>Pattern Constraint</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint
 	 * @generated
@@ -536,11 +607,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint <em>Type Constraint</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint
+	 * <em>Type Constraint</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint
 	 * @generated
@@ -550,11 +623,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint <em>Mapping Constraint</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint
+	 * <em>Mapping Constraint</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint
 	 * @generated
@@ -564,11 +639,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective <em>Pattern Objective</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective
+	 * <em>Pattern Objective</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective
 	 * @generated
@@ -578,11 +655,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective <em>Mapping Objective</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective
+	 * <em>Mapping Objective</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective
 	 * @generated
@@ -592,11 +671,12 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective <em>Type Objective</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective <em>Type
+	 * Objective</em>}'. <!-- begin-user-doc --> This default implementation returns
+	 * null so that we can easily ignore cases; it's useful to ignore a case when
+	 * inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective
 	 * @generated
@@ -606,11 +686,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression <em>Arithmetic Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression
+	 * <em>Arithmetic Expression</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression
 	 * @generated
@@ -620,11 +702,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression <em>Binary Arithmetic Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression
+	 * <em>Binary Arithmetic Expression</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression
 	 * @generated
@@ -634,11 +718,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression <em>Unary Arithmetic Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression
+	 * <em>Unary Arithmetic Expression</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression
 	 * @generated
@@ -648,11 +734,12 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.SetOperation <em>Set Operation</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.SetOperation <em>Set
+	 * Operation</em>}'. <!-- begin-user-doc --> This default implementation returns
+	 * null so that we can easily ignore cases; it's useful to ignore a case when
+	 * inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.SetOperation
 	 * @generated
@@ -662,11 +749,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValueExpression <em>Arithmetic Value Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValueExpression
+	 * <em>Arithmetic Value Expression</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValueExpression
 	 * @generated
@@ -676,11 +765,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue <em>Arithmetic Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue
+	 * <em>Arithmetic Value</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue
 	 * @generated
@@ -690,11 +781,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral <em>Arithmetic Literal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral
+	 * <em>Arithmetic Literal</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral
 	 * @generated
@@ -704,11 +797,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral <em>Integer Literal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral
+	 * <em>Integer Literal</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral
 	 * @generated
@@ -718,11 +813,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral <em>Double Literal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral
+	 * <em>Double Literal</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral
 	 * @generated
@@ -732,11 +829,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression <em>Bool Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression
+	 * <em>Bool Expression</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression
 	 * @generated
@@ -746,11 +845,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression <em>Bool Binary Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression
+	 * <em>Bool Binary Expression</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression
 	 * @generated
@@ -760,11 +861,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression <em>Bool Unary Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression
+	 * <em>Bool Unary Expression</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression
 	 * @generated
@@ -774,11 +877,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolValueExpression <em>Bool Value Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolValueExpression
+	 * <em>Bool Value Expression</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolValueExpression
 	 * @generated
@@ -788,11 +893,12 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolValue <em>Bool Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolValue <em>Bool
+	 * Value</em>}'. <!-- begin-user-doc --> This default implementation returns
+	 * null so that we can easily ignore cases; it's useful to ignore a case when
+	 * inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolValue
 	 * @generated
@@ -802,11 +908,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression <em>Bool Stream Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression
+	 * <em>Bool Stream Expression</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression
 	 * @generated
@@ -816,11 +924,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression <em>Relational Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression
+	 * <em>Relational Expression</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression
 	 * @generated
@@ -830,11 +940,12 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral <em>Bool Literal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral <em>Bool
+	 * Literal</em>}'. <!-- begin-user-doc --> This default implementation returns
+	 * null so that we can easily ignore cases; it's useful to ignore a case when
+	 * inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral
 	 * @generated
@@ -844,11 +955,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression <em>Value Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression
+	 * <em>Value Expression</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression
 	 * @generated
@@ -858,11 +971,12 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression <em>Sum Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression <em>Sum
+	 * Expression</em>}'. <!-- begin-user-doc --> This default implementation
+	 * returns null so that we can easily ignore cases; it's useful to ignore a case
+	 * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.SumExpression
 	 * @generated
@@ -872,11 +986,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression <em>Mapping Sum Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression
+	 * <em>Mapping Sum Expression</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression
 	 * @generated
@@ -886,11 +1002,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression <em>Type Sum Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression
+	 * <em>Type Sum Expression</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression
 	 * @generated
@@ -900,11 +1018,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue <em>Context Type Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue
+	 * <em>Context Type Value</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue
 	 * @generated
@@ -914,11 +1034,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue <em>Context Pattern Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue
+	 * <em>Context Pattern Value</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue
 	 * @generated
@@ -928,11 +1050,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode <em>Context Pattern Node</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode
+	 * <em>Context Pattern Node</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode
 	 * @generated
@@ -942,11 +1066,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue <em>Context Mapping Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue
+	 * <em>Context Mapping Value</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue
 	 * @generated
@@ -956,11 +1082,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode <em>Context Mapping Node</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode
+	 * <em>Context Mapping Node</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode
 	 * @generated
@@ -970,11 +1098,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue <em>Objective Function Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue
+	 * <em>Objective Function Value</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue
 	 * @generated
@@ -984,11 +1114,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression <em>Feature Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression
+	 * <em>Feature Expression</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression
 	 * @generated
@@ -998,11 +1130,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureLiteral <em>Feature Literal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureLiteral
+	 * <em>Feature Literal</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.FeatureLiteral
 	 * @generated
@@ -1012,11 +1146,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue <em>Context Type Feature Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue
+	 * <em>Context Type Feature Value</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue
 	 * @generated
@@ -1026,11 +1162,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue <em>Context Pattern Node Feature Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue
+	 * <em>Context Pattern Node Feature Value</em>}'. <!-- begin-user-doc --> This
+	 * default implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue
 	 * @generated
@@ -1040,11 +1178,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue <em>Context Mapping Node Feature Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue
+	 * <em>Context Mapping Node Feature Value</em>}'. <!-- begin-user-doc --> This
+	 * default implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue
 	 * @generated
@@ -1054,11 +1194,12 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.Iterator <em>Iterator</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Iterator
+	 * <em>Iterator</em>}'. <!-- begin-user-doc --> This default implementation
+	 * returns null so that we can easily ignore cases; it's useful to ignore a case
+	 * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Iterator
 	 * @generated
@@ -1068,11 +1209,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue <em>Iterator Pattern Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue
+	 * <em>Iterator Pattern Value</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue
 	 * @generated
@@ -1082,11 +1225,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue <em>Iterator Pattern Feature Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue
+	 * <em>Iterator Pattern Feature Value</em>}'. <!-- begin-user-doc --> This
+	 * default implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue
 	 * @generated
@@ -1096,11 +1241,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue <em>Iterator Pattern Node Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue
+	 * <em>Iterator Pattern Node Value</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue
 	 * @generated
@@ -1110,11 +1257,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue <em>Iterator Pattern Node Feature Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue
+	 * <em>Iterator Pattern Node Feature Value</em>}'. <!-- begin-user-doc --> This
+	 * default implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue
 	 * @generated
@@ -1124,11 +1273,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue <em>Iterator Mapping Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue
+	 * <em>Iterator Mapping Value</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue
 	 * @generated
@@ -1138,11 +1289,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue <em>Iterator Mapping Feature Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue
+	 * <em>Iterator Mapping Feature Value</em>}'. <!-- begin-user-doc --> This
+	 * default implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue
 	 * @generated
@@ -1152,11 +1305,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue <em>Iterator Mapping Node Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue
+	 * <em>Iterator Mapping Node Value</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue
 	 * @generated
@@ -1166,11 +1321,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue <em>Iterator Mapping Node Feature Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue
+	 * <em>Iterator Mapping Node Feature Value</em>}'. <!-- begin-user-doc --> This
+	 * default implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue
 	 * @generated
@@ -1180,11 +1337,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue <em>Iterator Type Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue
+	 * <em>Iterator Type Value</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue
 	 * @generated
@@ -1194,11 +1353,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue <em>Iterator Type Feature Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue
+	 * <em>Iterator Type Feature Value</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue
 	 * @generated
@@ -1208,11 +1369,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression <em>Stream Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression
+	 * <em>Stream Expression</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression
 	 * @generated
@@ -1222,11 +1385,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation <em>Stream Operation</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation
+	 * <em>Stream Operation</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation
 	 * @generated
@@ -1236,11 +1401,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation <em>Stream Filter Operation</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation
+	 * <em>Stream Filter Operation</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation
 	 * @generated
@@ -1250,11 +1417,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation <em>Stream Select Operation</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation
+	 * <em>Stream Select Operation</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation
 	 * @generated
@@ -1264,10 +1433,9 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for the default case.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for the default case. <!-- begin-user-doc --> This
+	 * default implementation returns null. <!-- end-user-doc -->
+	 *
 	 * @return the new adapter.
 	 * @generated
 	 */
@@ -1275,4 +1443,4 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		return null;
 	}
 
-} //RoamIntermediateAdapterFactory
+} // RoamIntermediateAdapterFactory

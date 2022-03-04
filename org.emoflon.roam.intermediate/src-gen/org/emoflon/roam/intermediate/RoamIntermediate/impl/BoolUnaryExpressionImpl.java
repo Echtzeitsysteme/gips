@@ -4,36 +4,34 @@ package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 import org.emoflon.roam.intermediate.RoamIntermediate.UnaryBoolOperator;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Bool Unary Expression</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Bool
+ * Unary Expression</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolUnaryExpressionImpl#getExpression <em>Expression</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolUnaryExpressionImpl#getOperator <em>Operator</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolUnaryExpressionImpl#getExpression
+ * <em>Expression</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolUnaryExpressionImpl#getOperator
+ * <em>Operator</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolUnaryExpression {
 	/**
-	 * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getExpression() <em>Expression</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @see #getExpression()
 	 * @generated
 	 * @ordered
@@ -41,9 +39,9 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 	protected BoolExpression expression;
 
 	/**
-	 * The default value of the '{@link #getOperator() <em>Operator</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getOperator() <em>Operator</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @see #getOperator()
 	 * @generated
 	 * @ordered
@@ -52,8 +50,8 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 
 	/**
 	 * The cached value of the '{@link #getOperator() <em>Operator</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @see #getOperator()
 	 * @generated
 	 * @ordered
@@ -61,8 +59,8 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 	protected UnaryBoolOperator operator = OPERATOR_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	protected BoolUnaryExpressionImpl() {
@@ -70,8 +68,8 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -80,17 +78,18 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
+	@Override
 	public BoolExpression getExpression() {
 		return expression;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	public NotificationChain basicSetExpression(BoolExpression newExpression, NotificationChain msgs) {
@@ -108,10 +107,11 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
+	@Override
 	public void setExpression(BoolExpression newExpression) {
 		if (newExpression != expression) {
 			NotificationChain msgs = null;
@@ -130,19 +130,21 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
+	@Override
 	public UnaryBoolOperator getOperator() {
 		return operator;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
+	@Override
 	public void setOperator(UnaryBoolOperator newOperator) {
 		UnaryBoolOperator oldOperator = operator;
 		operator = newOperator == null ? OPERATOR_EDEFAULT : newOperator;
@@ -152,8 +154,8 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -166,8 +168,8 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -182,8 +184,8 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -200,8 +202,8 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -218,8 +220,8 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -234,8 +236,8 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -250,4 +252,4 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 		return result.toString();
 	}
 
-} //BoolUnaryExpressionImpl
+} // BoolUnaryExpressionImpl

@@ -24,13 +24,13 @@ public class RoamImportManager {
 	 * The mapping eClassifier name to the name of the package containing the
 	 * meta-model code.
 	 */
-	private Map<String, String> eClassifierNameToPath = new HashMap<String, String>();
+	private Map<String, String> eClassifierNameToPath = new HashMap<>();
 
 	/**
 	 * The mapping name of the meta-model Java Package to the name of the package
 	 * containing it.
 	 */
-	private Map<String, String> packageNameToPath = new HashMap<String, String>();
+	private Map<String, String> packageNameToPath = new HashMap<>();
 
 	/**
 	 * The mappings of URIs to package paths set via the properties file.
@@ -39,7 +39,7 @@ public class RoamImportManager {
 
 	/**
 	 * Creates a new EClassifiersManager.
-	 * 
+	 *
 	 * @param mappings the mappings of URIs to package paths set via the properties
 	 *                 file
 	 */
@@ -49,7 +49,7 @@ public class RoamImportManager {
 
 	/**
 	 * Loads the EClasses from the given meta-model resource.
-	 * 
+	 *
 	 * @param ecoreFile the resource
 	 */
 	public void loadMetaModelClasses(final Resource ecoreFile) {
@@ -61,7 +61,7 @@ public class RoamImportManager {
 
 	/**
 	 * Loads the EClasses from the given package.
-	 * 
+	 *
 	 * @param ePackage the package
 	 */
 	private void loadMetaModelClasses(final EPackage ePackage) {
@@ -80,7 +80,7 @@ public class RoamImportManager {
 	/**
 	 * Returns the import path for the Java package containing the code for the
 	 * given Ecore package.
-	 * 
+	 *
 	 * @param ePackage the package
 	 * @return the import path for package
 	 */
@@ -95,7 +95,7 @@ public class RoamImportManager {
 
 	/**
 	 * Adds the EPackage to the meta-models.
-	 * 
+	 *
 	 * @param ePackage the package to add
 	 */
 	private void addPackage(final EPackage ePackage) {
@@ -108,7 +108,7 @@ public class RoamImportManager {
 	/**
 	 * Give the user the chance to correct any package mapping with values in the
 	 * property file.
-	 * 
+	 *
 	 * @param packageImport initial import
 	 * @return fixed import
 	 */
@@ -120,7 +120,7 @@ public class RoamImportManager {
 
 	/**
 	 * Return the name of the Package class.
-	 * 
+	 *
 	 * @param modelName the package of the meta-model
 	 */
 	private static String getPackageClassName(String modelName) {
@@ -129,12 +129,12 @@ public class RoamImportManager {
 
 	/**
 	 * Determines the set of necessary imports for the given EClassifiers.
-	 * 
+	 *
 	 * @param types the EClassifiers to import
 	 * @return the types for Java import statements
 	 */
 	public Set<String> getImportsForTypes(final Set<? extends EClassifier> types) {
-		Set<String> imports = new TreeSet<String>();
+		Set<String> imports = new TreeSet<>();
 		types.stream().distinct().forEach(eClassifier -> {
 			String typePackageName = eClassifierNameToPath.get(eClassifier.getName());
 			if (typePackageName != null) {
@@ -143,10 +143,10 @@ public class RoamImportManager {
 		});
 		return imports;
 	}
-	
+
 	/**
 	 * Determines the set of necessary imports for the given EClassifiers.
-	 * 
+	 *
 	 * @param types the EClassifiers to import
 	 * @return the types for Java import statements
 	 */
@@ -161,7 +161,7 @@ public class RoamImportManager {
 
 	/**
 	 * Determines the set of necessary type imports for a set of nodes.
-	 * 
+	 *
 	 * @param nodes the nodes
 	 * @return the types for Java import statements
 	 */
@@ -171,7 +171,7 @@ public class RoamImportManager {
 
 	/**
 	 * Determines the set of necessary type imports for the parameters.
-	 * 
+	 *
 	 * @param parameters the parameters
 	 * @return the types for Java import statements
 	 */
@@ -181,7 +181,7 @@ public class RoamImportManager {
 
 	/**
 	 * Returns the names of the meta-model packages.
-	 * 
+	 *
 	 * @return names of the meta-model packages
 	 */
 	public Set<String> getPackages() {
@@ -190,13 +190,13 @@ public class RoamImportManager {
 
 	/**
 	 * Determines the set of necessary imports for the meta-models packages.
-	 * 
+	 *
 	 * @return the types for Java import statements
 	 */
 	public Set<String> getImportsForPackages() {
-		return new HashSet<String>(packageNameToPath.values());
+		return new HashSet<>(packageNameToPath.values());
 	}
-	
+
 	public String getPackage(final EPackage pkg) {
 		return packageNameToPath.get(pkg.getName());
 	}

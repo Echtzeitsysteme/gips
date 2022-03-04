@@ -7,16 +7,18 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator;
 import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression;
 import org.emoflon.roam.roamslang.roamSLang.RoamRelExpr;
 
-public class RelationalInStreamTransformer extends TransformationContext<StreamExpression> implements RelationalExpressionTransformer{
+public class RelationalInStreamTransformer extends TransformationContext<StreamExpression>
+		implements RelationalExpressionTransformer {
 
-	protected RelationalInStreamTransformer(RoamTransformationData data, StreamExpression context, TransformerFactory factory) {
+	protected RelationalInStreamTransformer(RoamTransformationData data, StreamExpression context,
+			TransformerFactory factory) {
 		super(data, context, factory);
 	}
 
 	@Override
 	public RelationalExpression transform(RoamRelExpr eRelational) throws Exception {
 		RelationalExpression relExpr = factory.createRelationalExpression();
-		switch(eRelational.getOperator()) {
+		switch (eRelational.getOperator()) {
 		case EQUAL:
 			relExpr.setOperator(RelationalOperator.EQUAL);
 			break;
@@ -36,7 +38,7 @@ public class RelationalInStreamTransformer extends TransformationContext<StreamE
 			relExpr.setOperator(RelationalOperator.NOT_EQUAL);
 			break;
 		default:
-			throw new UnsupportedOperationException("Unknown bool operator: "+eRelational.getOperator());
+			throw new UnsupportedOperationException("Unknown bool operator: " + eRelational.getOperator());
 		}
 		ArithmeticExpressionTransformer transformer = transformerFactory.createArithmeticTransformer(context);
 		relExpr.setLhs(transformer.transform(eRelational.getLeft()));

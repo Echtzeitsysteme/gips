@@ -8,7 +8,7 @@ public interface RoamBuilderExtension {
 
 	/**
 	 * Builds the project.
-	 * 
+	 *
 	 * @param project the project to build
 	 */
 	public void build(IProject project, Resource resource);

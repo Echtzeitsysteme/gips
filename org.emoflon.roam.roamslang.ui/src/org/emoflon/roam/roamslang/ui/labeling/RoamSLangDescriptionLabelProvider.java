@@ -7,8 +7,9 @@ import org.eclipse.xtext.ui.label.DefaultDescriptionLabelProvider;
 
 /**
  * Provides labels for IEObjectDescriptions and IResourceDescriptions.
- * 
- * See https://www.eclipse.org/Xtext/documentation/310_eclipse_support.html#label-provider
+ *
+ * See
+ * https://www.eclipse.org/Xtext/documentation/310_eclipse_support.html#label-provider
  */
 public class RoamSLangDescriptionLabelProvider extends DefaultDescriptionLabelProvider {
 
@@ -17,7 +18,7 @@ public class RoamSLangDescriptionLabelProvider extends DefaultDescriptionLabelPr
 //	public String text(IEObjectDescription ele) {
 //		return ele.getName().toString();
 //	}
-//	
+//
 //	@Override
 //	public String image(IEObjectDescription ele) {
 //		return ele.getEClass().getName() + ".gif";

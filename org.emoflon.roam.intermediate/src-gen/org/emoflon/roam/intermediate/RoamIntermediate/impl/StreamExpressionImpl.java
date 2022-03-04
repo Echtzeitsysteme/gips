@@ -4,38 +4,59 @@ package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Stream Expression</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Stream
+ * Expression</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamExpressionImpl#getReturnType <em>Return Type</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamExpressionImpl#getCurrent <em>Current</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamExpressionImpl#getChild <em>Child</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamExpressionImpl#getOperandName
+ * <em>Operand Name</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamExpressionImpl#getReturnType
+ * <em>Return Type</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamExpressionImpl#getCurrent
+ * <em>Current</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamExpressionImpl#getChild
+ * <em>Child</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class StreamExpressionImpl extends MinimalEObjectImpl.Container implements StreamExpression {
 	/**
-	 * The cached value of the '{@link #getReturnType() <em>Return Type</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getOperandName() <em>Operand Name</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @see #getOperandName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String OPERAND_NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getOperandName() <em>Operand Name</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @see #getOperandName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String operandName = OPERAND_NAME_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getReturnType() <em>Return Type</em>}'
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @see #getReturnType()
 	 * @generated
 	 * @ordered
@@ -43,9 +64,9 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	protected EClassifier returnType;
 
 	/**
-	 * The cached value of the '{@link #getCurrent() <em>Current</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getCurrent() <em>Current</em>}' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @see #getCurrent()
 	 * @generated
 	 * @ordered
@@ -53,9 +74,9 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	protected StreamOperation current;
 
 	/**
-	 * The cached value of the '{@link #getChild() <em>Child</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getChild() <em>Child</em>}' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @see #getChild()
 	 * @generated
 	 * @ordered
@@ -63,8 +84,8 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	protected StreamExpression child;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	protected StreamExpressionImpl() {
@@ -72,8 +93,8 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -82,10 +103,35 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
+	@Override
+	public String getOperandName() {
+		return operandName;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 */
+	@Override
+	public void setOperandName(String newOperandName) {
+		String oldOperandName = operandName;
+		operandName = newOperandName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					RoamIntermediatePackage.STREAM_EXPRESSION__OPERAND_NAME, oldOperandName, operandName));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 */
+	@Override
 	public EClassifier getReturnType() {
 		if (returnType != null && returnType.eIsProxy()) {
 			InternalEObject oldReturnType = (InternalEObject) returnType;
@@ -100,8 +146,8 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	public EClassifier basicGetReturnType() {
@@ -109,10 +155,11 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
+	@Override
 	public void setReturnType(EClassifier newReturnType) {
 		EClassifier oldReturnType = returnType;
 		returnType = newReturnType;
@@ -122,17 +169,18 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
+	@Override
 	public StreamOperation getCurrent() {
 		return current;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	public NotificationChain basicSetCurrent(StreamOperation newCurrent, NotificationChain msgs) {
@@ -150,10 +198,11 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
+	@Override
 	public void setCurrent(StreamOperation newCurrent) {
 		if (newCurrent != current) {
 			NotificationChain msgs = null;
@@ -172,17 +221,18 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
+	@Override
 	public StreamExpression getChild() {
 		return child;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	public NotificationChain basicSetChild(StreamExpression newChild, NotificationChain msgs) {
@@ -200,10 +250,11 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
+	@Override
 	public void setChild(StreamExpression newChild) {
 		if (newChild != child) {
 			NotificationChain msgs = null;
@@ -222,8 +273,8 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -238,13 +289,15 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+		case RoamIntermediatePackage.STREAM_EXPRESSION__OPERAND_NAME:
+			return getOperandName();
 		case RoamIntermediatePackage.STREAM_EXPRESSION__RETURN_TYPE:
 			if (resolve)
 				return getReturnType();
@@ -258,13 +311,16 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+		case RoamIntermediatePackage.STREAM_EXPRESSION__OPERAND_NAME:
+			setOperandName((String) newValue);
+			return;
 		case RoamIntermediatePackage.STREAM_EXPRESSION__RETURN_TYPE:
 			setReturnType((EClassifier) newValue);
 			return;
@@ -279,13 +335,16 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+		case RoamIntermediatePackage.STREAM_EXPRESSION__OPERAND_NAME:
+			setOperandName(OPERAND_NAME_EDEFAULT);
+			return;
 		case RoamIntermediatePackage.STREAM_EXPRESSION__RETURN_TYPE:
 			setReturnType((EClassifier) null);
 			return;
@@ -300,13 +359,15 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+		case RoamIntermediatePackage.STREAM_EXPRESSION__OPERAND_NAME:
+			return OPERAND_NAME_EDEFAULT == null ? operandName != null : !OPERAND_NAME_EDEFAULT.equals(operandName);
 		case RoamIntermediatePackage.STREAM_EXPRESSION__RETURN_TYPE:
 			return returnType != null;
 		case RoamIntermediatePackage.STREAM_EXPRESSION__CURRENT:
@@ -317,4 +378,21 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 		return super.eIsSet(featureID);
 	}
 
-} //StreamExpressionImpl
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy())
+			return super.toString();
+
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (operandName: ");
+		result.append(operandName);
+		result.append(')');
+		return result.toString();
+	}
+
+} // StreamExpressionImpl

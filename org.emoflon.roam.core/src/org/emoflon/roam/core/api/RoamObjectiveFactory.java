@@ -6,10 +6,11 @@ import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
 
 public abstract class RoamObjectiveFactory {
 	protected final RoamEngine engine;
-	
+
 	public RoamObjectiveFactory(final RoamEngine engine) {
 		this.engine = engine;
 	}
-	
-	public abstract RoamObjective<? extends Objective, ? extends Object, ? extends Number> createObjective(final Objective objective);
+
+	public abstract RoamObjective<? extends Objective, ? extends Object, ? extends Number> createObjective(
+			final Objective objective);
 }

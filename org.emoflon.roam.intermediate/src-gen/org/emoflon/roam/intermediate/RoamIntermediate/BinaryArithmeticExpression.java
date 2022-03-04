@@ -3,17 +3,19 @@
 package org.emoflon.roam.intermediate.RoamIntermediate;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Binary Arithmetic Expression</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the model object '<em><b>Binary
+ * Arithmetic Expression</b></em>'. <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getLhs <em>Lhs</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getRhs <em>Rhs</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getOperator <em>Operator</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getLhs
+ * <em>Lhs</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getRhs
+ * <em>Rhs</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getOperator
+ * <em>Operator</em>}</li>
  * </ul>
  *
  * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBinaryArithmeticExpression()
@@ -22,9 +24,9 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  */
 public interface BinaryArithmeticExpression extends ArithmeticExpression {
 	/**
-	 * Returns the value of the '<em><b>Lhs</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the value of the '<em><b>Lhs</b></em>' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @return the value of the '<em>Lhs</em>' containment reference.
 	 * @see #setLhs(ArithmeticExpression)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBinaryArithmeticExpression_Lhs()
@@ -34,9 +36,11 @@ public interface BinaryArithmeticExpression extends ArithmeticExpression {
 	ArithmeticExpression getLhs();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getLhs <em>Lhs</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Sets the value of the
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getLhs
+	 * <em>Lhs</em>}' containment reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
 	 * @param value the new value of the '<em>Lhs</em>' containment reference.
 	 * @see #getLhs()
 	 * @generated
@@ -44,9 +48,9 @@ public interface BinaryArithmeticExpression extends ArithmeticExpression {
 	void setLhs(ArithmeticExpression value);
 
 	/**
-	 * Returns the value of the '<em><b>Rhs</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the value of the '<em><b>Rhs</b></em>' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @return the value of the '<em>Rhs</em>' containment reference.
 	 * @see #setRhs(ArithmeticExpression)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBinaryArithmeticExpression_Rhs()
@@ -56,9 +60,11 @@ public interface BinaryArithmeticExpression extends ArithmeticExpression {
 	ArithmeticExpression getRhs();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getRhs <em>Rhs</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Sets the value of the
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getRhs
+	 * <em>Rhs</em>}' containment reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
 	 * @param value the new value of the '<em>Rhs</em>' containment reference.
 	 * @see #getRhs()
 	 * @generated
@@ -66,10 +72,11 @@ public interface BinaryArithmeticExpression extends ArithmeticExpression {
 	void setRhs(ArithmeticExpression value);
 
 	/**
-	 * Returns the value of the '<em><b>Operator</b></em>' attribute.
-	 * The literals are from the enumeration {@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the value of the '<em><b>Operator</b></em>' attribute. The literals
+	 * are from the enumeration
+	 * {@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @return the value of the '<em>Operator</em>' attribute.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator
 	 * @see #setOperator(BinaryArithmeticOperator)
@@ -80,9 +87,10 @@ public interface BinaryArithmeticExpression extends ArithmeticExpression {
 	BinaryArithmeticOperator getOperator();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getOperator <em>Operator</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Sets the value of the
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getOperator
+	 * <em>Operator</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @param value the new value of the '<em>Operator</em>' attribute.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator
 	 * @see #getOperator()

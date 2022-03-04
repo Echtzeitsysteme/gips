@@ -1,16 +1,18 @@
 package org.emoflon.roam.core.ilp;
 
-import org.emoflon.roam.core.RoamConstraint;
 import org.emoflon.roam.core.RoamEngine;
+import org.emoflon.roam.core.RoamGlobalObjective;
 import org.emoflon.roam.core.RoamMapping;
+import org.emoflon.roam.core.RoamMappingConstraint;
+import org.emoflon.roam.core.RoamTypeConstraint;
+import org.emoflon.roam.core.gt.RoamPatternConstraint;
 
 import gurobi.GRB.DoubleParam;
 import gurobi.GRB.IntParam;
 import gurobi.GRBEnv;
-import gurobi.GRBException;
 import gurobi.GRBModel;
 
-public class GurobiSolver extends ILPSolver{
+public class GurobiSolver extends ILPSolver {
 
 	/**
 	 * Gurobi environment (for configuration etc.).
@@ -22,7 +24,7 @@ public class GurobiSolver extends ILPSolver{
 	 */
 	private GRBModel model;
 
-	public GurobiSolver(RoamEngine engine, final ILPSolverConfig config) throws Exception{
+	public GurobiSolver(RoamEngine engine, final ILPSolverConfig config) throws Exception {
 		super(engine);
 		env = new GRBEnv("Gurobi_ILP.log");
 		env.set(DoubleParam.TimeLimit, config.timeLimit());
@@ -39,25 +41,43 @@ public class GurobiSolver extends ILPSolver{
 	@Override
 	public void solve() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void updateValuesFromSolution() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void translateMapping(RoamMapping mapping) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	protected void translateConstraint(RoamConstraint constraint) {
+	protected void translateConstraint(RoamMappingConstraint constraint) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	protected void translateConstraint(RoamPatternConstraint constraint) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void translateConstraint(RoamTypeConstraint constraint) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void translateObjective(RoamGlobalObjective objective) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

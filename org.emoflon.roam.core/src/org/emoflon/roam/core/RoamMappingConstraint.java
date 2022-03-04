@@ -6,27 +6,29 @@ import org.emoflon.roam.core.ilp.ILPConstraint;
 import org.emoflon.roam.core.ilp.ILPTerm;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
 
-public abstract class RoamMappingConstraint extends RoamConstraint<MappingConstraint, RoamMapping, Integer> {
-	
-	final protected RoamMapper<?> mapper;
+public abstract class RoamMappingConstraint<CONTEXT extends RoamMapping>
+		extends RoamConstraint<MappingConstraint, CONTEXT, Integer> {
 
+	final protected RoamMapper<CONTEXT> mapper;
+
+	@SuppressWarnings("unchecked")
 	public RoamMappingConstraint(RoamEngine engine, MappingConstraint constraint) {
 		super(engine, constraint);
-		mapper = engine.getMapper(constraint.getName());
+		mapper = (RoamMapper<CONTEXT>) engine.getMapper(constraint.getMapping().getName());
 	}
-	
+
 	@Override
 	public void buildConstraints() {
-		for(RoamMapping context : mapper.getMappings().values()) {
+		mapper.getMappings().values().parallelStream().forEach(context -> {
 			ilpConstraints.put(context, buildConstraint(context));
-		}
+		});
 	}
-	
+
 	@Override
-	public ILPConstraint<Integer> buildConstraint(final RoamMapping context) {
-		Integer constTerm = buildConstantTerm(context);
-		List<ILPTerm<Integer>> terms = buildVariableTerms(context);
-		return new ILPConstraint<Integer>(constTerm, constraint.getExpression().getOperator(), terms);
+	public ILPConstraint<Integer> buildConstraint(final CONTEXT context) {
+		double constTerm = buildConstantTerm(context);
+		List<ILPTerm<Integer, Double>> terms = buildVariableTerms(context);
+		return new ILPConstraint<>(constTerm, constraint.getExpression().getOperator(), terms);
 	}
 
 }

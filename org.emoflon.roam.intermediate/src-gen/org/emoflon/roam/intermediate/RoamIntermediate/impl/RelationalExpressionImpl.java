@@ -4,37 +4,36 @@ package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Relational Expression</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object
+ * '<em><b>Relational Expression</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RelationalExpressionImpl#getOperator <em>Operator</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RelationalExpressionImpl#getLhs <em>Lhs</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RelationalExpressionImpl#getRhs <em>Rhs</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RelationalExpressionImpl#getOperator
+ * <em>Operator</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RelationalExpressionImpl#getLhs
+ * <em>Lhs</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RelationalExpressionImpl#getRhs
+ * <em>Rhs</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class RelationalExpressionImpl extends BoolValueExpressionImpl implements RelationalExpression {
 	/**
-	 * The default value of the '{@link #getOperator() <em>Operator</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getOperator() <em>Operator</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @see #getOperator()
 	 * @generated
 	 * @ordered
@@ -43,8 +42,8 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 
 	/**
 	 * The cached value of the '{@link #getOperator() <em>Operator</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @see #getOperator()
 	 * @generated
 	 * @ordered
@@ -52,9 +51,9 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	protected RelationalOperator operator = OPERATOR_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getLhs() <em>Lhs</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getLhs() <em>Lhs</em>}' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @see #getLhs()
 	 * @generated
 	 * @ordered
@@ -62,9 +61,9 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	protected ArithmeticExpression lhs;
 
 	/**
-	 * The cached value of the '{@link #getRhs() <em>Rhs</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getRhs() <em>Rhs</em>}' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @see #getRhs()
 	 * @generated
 	 * @ordered
@@ -72,8 +71,8 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	protected ArithmeticExpression rhs;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	protected RelationalExpressionImpl() {
@@ -81,8 +80,8 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -91,19 +90,21 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
+	@Override
 	public RelationalOperator getOperator() {
 		return operator;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
+	@Override
 	public void setOperator(RelationalOperator newOperator) {
 		RelationalOperator oldOperator = operator;
 		operator = newOperator == null ? OPERATOR_EDEFAULT : newOperator;
@@ -113,17 +114,18 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
+	@Override
 	public ArithmeticExpression getLhs() {
 		return lhs;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	public NotificationChain basicSetLhs(ArithmeticExpression newLhs, NotificationChain msgs) {
@@ -141,10 +143,11 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
+	@Override
 	public void setLhs(ArithmeticExpression newLhs) {
 		if (newLhs != lhs) {
 			NotificationChain msgs = null;
@@ -163,17 +166,18 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
+	@Override
 	public ArithmeticExpression getRhs() {
 		return rhs;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	public NotificationChain basicSetRhs(ArithmeticExpression newRhs, NotificationChain msgs) {
@@ -191,10 +195,11 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
+	@Override
 	public void setRhs(ArithmeticExpression newRhs) {
 		if (newRhs != rhs) {
 			NotificationChain msgs = null;
@@ -213,8 +218,8 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -229,8 +234,8 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -247,8 +252,8 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -268,8 +273,8 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -289,8 +294,8 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -307,8 +312,8 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -323,4 +328,4 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 		return result.toString();
 	}
 
-} //RelationalExpressionImpl
+} // RelationalExpressionImpl

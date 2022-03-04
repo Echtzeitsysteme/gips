@@ -3,16 +3,16 @@
  */
 package org.emoflon.roam.roamslang.scoping;
 
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.Scopes;
+import org.emoflon.ibex.gt.editor.gT.EditorOperator;
 import org.emoflon.ibex.gt.editor.utils.GTEditorModelUtils;
 import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
 import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
@@ -22,15 +22,18 @@ import org.emoflon.roam.roamslang.roamSLang.RoamFeatureExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureLit;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureNavigation;
 import org.emoflon.roam.roamslang.roamSLang.RoamLambdaAttributeExpression;
+import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
+import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamMappingContext;
+import org.emoflon.roam.roamslang.roamSLang.RoamMatchContext;
 import org.emoflon.roam.roamslang.roamSLang.RoamNodeAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjective;
 import org.emoflon.roam.roamslang.roamSLang.RoamSelect;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamArithmetic;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamNavigation;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamSet;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeCast;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
-import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
-import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.impl.EditorGTFileImpl;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamConstraintImpl;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamContextExprImpl;
@@ -44,7 +47,7 @@ import org.emoflon.roam.roamslang.roamSLang.impl.RoamStreamSetImpl;
 
 /**
  * This class contains custom scoping description.
- * 
+ *
  * See
  * https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#scoping
  * on how and when to use it.
@@ -68,6 +71,8 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 			return scopeForRoamMappingContext((RoamMappingContext) context, reference);
 		} else if (RoamSLangScopeContextUtil.isRoamTypeContext(context, reference)) {
 			return scopeForRoamTypeContext((RoamTypeContext) context, reference);
+		} else if (RoamSLangScopeContextUtil.isRoamMatchContext(context, reference)) {
+			return scopeForRoamMatchContext((RoamMatchContext) context, reference);
 		} else if (RoamSLangScopeContextUtil.isRoamMappingAttributeExprMapping(context, reference)) {
 			return scopeForRoamMappingAttributeExprMapping((RoamMappingAttributeExpr) context, reference);
 		} else if (RoamSLangScopeContextUtil.isRoamMappingAttributeExprNode(context, reference)) {
@@ -76,6 +81,8 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 			return scopeForRoamContextExprNode((RoamContextExpr) context, reference);
 		} else if (RoamSLangScopeContextUtil.isRoamContextExprFeature(context, reference)) {
 			return scopeForRoamContextExprFeature((RoamContextExpr) context, reference);
+		} else if (RoamSLangScopeContextUtil.isRoamLambdaAttributeExpressionVariable(context, reference)) {
+			return scopeForRoamLambdaAttributeExpressionVariable((RoamLambdaAttributeExpression) context, reference);
 		} else if (RoamSLangScopeContextUtil.isRoamLambdaAttributeExpression(context, reference)) {
 			return scopeForRoamLambdaAttributeExpression((RoamLambdaAttributeExpression) context, reference);
 		} else if (RoamSLangScopeContextUtil.isRoamSelect(context, reference)) {
@@ -91,10 +98,15 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 		} else if (RoamSLangScopeContextUtil.isRoamTypeCast(context, reference)) {
 			return scopeForRoamTypeCast((RoamTypeCast) context, reference);
 		}
-		
+
 		else {
 			return super.getScope(context, reference);
 		}
+	}
+
+	private IScope scopeForRoamMatchContext(RoamMatchContext context, EReference reference) {
+		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
+		return Scopes.scopeFor(editorFile.getPatterns());
 	}
 
 	public IScope scopeForRoamMapping(RoamMapping context, EReference reference) {
@@ -136,9 +148,33 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 		}
 
 		if (contextType instanceof RoamMappingContext mappingContext) {
-			return Scopes.scopeFor(mappingContext.getMapping().getRule().getNodes());
+			// Return context nodes only!
+			return Scopes.scopeFor(mappingContext.getMapping().getRule().getNodes().stream()
+					.filter(node -> !node.isLocal() && node.getOperator() != EditorOperator.CREATE)
+					.collect(Collectors.toList()));
+		} else if (contextType instanceof RoamMatchContext matchContext) {
+			// Return context nodes only!
+			return Scopes.scopeFor(matchContext.getPattern().getNodes().stream()
+					.filter(node -> !node.isLocal() && node.getOperator() != EditorOperator.CREATE)
+					.collect(Collectors.toList()));
 		} else {
 			return super.getScope(context, reference);
+		}
+	}
+
+	public IScope scopeForRoamLambdaAttributeExpressionVariable(RoamLambdaAttributeExpression context,
+			EReference reference) {
+		Set<Class<?>> classes = Set.of(RoamStreamSetImpl.class, RoamStreamArithmeticImpl.class);
+		EObject parent = (EObject) RoamSLangScopeContextUtil.getContainer(context, classes);
+		if (parent == null) {
+			return super.getScope(context, reference);
+		}
+
+		if (parent instanceof RoamStreamSet streamSet) {
+			return Scopes.scopeFor(List.of(streamSet.getLambda()));
+		} else {
+			RoamStreamArithmetic streamArithmetic = (RoamStreamArithmetic) parent;
+			return Scopes.scopeFor(List.of(streamArithmetic.getLambda()));
 		}
 	}
 
@@ -157,18 +193,18 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 			} else if (parent instanceof RoamMappingAttributeExpr mapping) {
 				return Scopes.scopeFor(mapping.getMapping().getRule().getNodes());
 			} else if (parent instanceof RoamContextExpr contextExpr) {
-				if(contextExpr.getExpr() != null) {
-					if(contextExpr.getExpr() instanceof RoamNodeAttributeExpr nodeExpr) {
+				if (contextExpr.getExpr() != null) {
+					if (contextExpr.getExpr() instanceof RoamNodeAttributeExpr nodeExpr) {
 						RoamFeatureExpr expr = RoamSLangScopeContextUtil.findLeafExpression(nodeExpr.getExpr());
-						if(expr instanceof RoamFeatureLit lit) {
+						if (expr instanceof RoamFeatureLit lit) {
 							EClass clazz = (EClass) lit.getFeature().getEType();
 							return Scopes.scopeFor(clazz.getEAllStructuralFeatures());
 						} else {
 							return super.getScope(context, reference);
 						}
-					} else if(contextExpr.getExpr() instanceof RoamFeatureExpr featExpr) {
+					} else if (contextExpr.getExpr() instanceof RoamFeatureExpr featExpr) {
 						RoamFeatureExpr expr = RoamSLangScopeContextUtil.findLeafExpression(featExpr);
-						if(expr instanceof RoamFeatureLit lit) {
+						if (expr instanceof RoamFeatureLit lit) {
 							EClass clazz = (EClass) lit.getFeature().getEType();
 							return Scopes.scopeFor(clazz.getEAllStructuralFeatures());
 						} else {
@@ -181,7 +217,7 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 					return super.getScope(context, reference);
 				}
 			} else if (parent instanceof RoamStreamNavigation nav) {
-				if (nav.getLeft()instanceof RoamSelect select) {
+				if (nav.getLeft() instanceof RoamSelect select) {
 					return Scopes.scopeFor(((EClass) select.getType()).getEAllStructuralFeatures());
 				} else {
 					parent = (EObject) RoamSLangScopeContextUtil.getContainer(parent, classes);
@@ -189,26 +225,29 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 			} else {
 				parent = (EObject) RoamSLangScopeContextUtil.getContainer(parent, classes);
 			}
-			// TODO: Traverese nested stream expressions recursively to derive the current type
+			// TODO: Traverese nested stream expressions recursively to derive the current
+			// type
 		}
-		
+
 		// TODO: For now we'll exit this gracefully if anything unexpected occurs
 		return super.getScope(context, reference);
 	}
 
 	public IScope scopeForRoamSelect(RoamSelect context, EReference reference) {
-		Set<Class<?>> classes = Set.of(RoamContextExprImpl.class, RoamMappingAttributeExprImpl.class, RoamNodeAttributeExprImpl.class);
+		Set<Class<?>> classes = Set.of(RoamContextExprImpl.class, RoamMappingAttributeExprImpl.class,
+				RoamNodeAttributeExprImpl.class);
 		EObject parent = (EObject) RoamSLangScopeContextUtil.getContainer(context, classes);
-		if(parent instanceof RoamMappingAttributeExpr mapping) {
+		if (parent instanceof RoamMappingAttributeExpr mapping) {
 			// TODO: Find all rules that refine the rule that corresponds to this mapping
-			// TODO: Deactivated for now, since we do not support rule inheritance in any meaningful way
+			// TODO: Deactivated for now, since we do not support rule inheritance in any
+			// meaningful way
 			// return Scopes.scopeFor(List.of(mapping.getMapping().getRule()));
 			return super.getScope(context, reference);
 		} else if (parent instanceof RoamContextExpr contextExpr) {
-			if(contextExpr.getExpr() != null) {
-				if(contextExpr.getExpr() instanceof RoamNodeAttributeExpr nodeExpr) {
+			if (contextExpr.getExpr() != null) {
+				if (contextExpr.getExpr() instanceof RoamNodeAttributeExpr nodeExpr) {
 					RoamFeatureExpr expr = RoamSLangScopeContextUtil.findLeafExpression(nodeExpr.getExpr());
-					if(expr instanceof RoamFeatureLit lit) {
+					if (expr instanceof RoamFeatureLit lit) {
 						EClass clazz = (EClass) lit.getFeature().getEType();
 						EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
 						return Scopes.scopeFor(GTEditorModelUtils.getClasses(editorFile).stream()
@@ -216,9 +255,9 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 					} else {
 						return super.getScope(context, reference);
 					}
-				} else if(contextExpr.getExpr() instanceof RoamFeatureExpr featExpr) {
+				} else if (contextExpr.getExpr() instanceof RoamFeatureExpr featExpr) {
 					RoamFeatureExpr expr = RoamSLangScopeContextUtil.findLeafExpression(featExpr);
-					if(expr instanceof RoamFeatureLit lit) {
+					if (expr instanceof RoamFeatureLit lit) {
 						EClass clazz = (EClass) lit.getFeature().getEType();
 						EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
 						return Scopes.scopeFor(GTEditorModelUtils.getClasses(editorFile).stream()
@@ -238,7 +277,7 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 	}
 
 	public IScope scopeForRoamContextExprFeature(RoamContextExpr context, EReference reference) {
-		if(context.getTypeCast() == null) {
+		if (context.getTypeCast() == null) {
 			EObject contextType = null;
 			RoamConstraint parent = GTEditorPatternUtils.getContainer(context, RoamConstraintImpl.class);
 			if (parent != null) {
@@ -252,7 +291,7 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 				}
 			}
 
-			if (contextType instanceof RoamTypeContext typeContext && typeContext.getType()instanceof EClass type) {
+			if (contextType instanceof RoamTypeContext typeContext && typeContext.getType() instanceof EClass type) {
 				return Scopes.scopeFor(type.getEAllStructuralFeatures());
 			} else {
 				return super.getScope(context, reference);
@@ -260,16 +299,16 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 		} else {
 			return Scopes.scopeFor(context.getTypeCast().getType().getEAllStructuralFeatures());
 		}
-		
+
 	}
 
 	public IScope scopeForRoamNodeAttributeExprFeature(RoamNodeAttributeExpr context, EReference reference) {
-		if(context.getTypeCast() == null) {
+		if (context.getTypeCast() == null) {
 			return Scopes.scopeFor(context.getNode().getType().getEAllStructuralFeatures());
 		} else {
 			return Scopes.scopeFor(context.getTypeCast().getType().getEAllStructuralFeatures());
 		}
-		
+
 	}
 
 	public IScope scopeForRoamNodeAttributeExprNode(RoamNodeAttributeExpr context, EReference reference) {
@@ -288,11 +327,19 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 			}
 
 			if (contextType instanceof RoamMappingContext mappingContext) {
-				return Scopes.scopeFor(mappingContext.getMapping().getRule().getNodes());
+				// Return context nodes only!
+				return Scopes.scopeFor(mappingContext.getMapping().getRule().getNodes().stream()
+						.filter(node -> !node.isLocal() && node.getOperator() != EditorOperator.CREATE)
+						.collect(Collectors.toList()));
+			} else if (contextType instanceof RoamMatchContext matchContext) {
+				// Return context nodes only!
+				return Scopes.scopeFor(matchContext.getPattern().getNodes().stream()
+						.filter(node -> !node.isLocal() && node.getOperator() != EditorOperator.CREATE)
+						.collect(Collectors.toList()));
 			} else {
 				return super.getScope(context, reference);
 			}
-		} else if (context.eContainer()instanceof RoamLambdaAttributeExpression lambda) {
+		} else if (context.eContainer() instanceof RoamLambdaAttributeExpression lambda) {
 			return scopeForRoamLambdaAttributeExpression(lambda, reference);
 		} else {
 			RoamMappingAttributeExpr parentExpr = (RoamMappingAttributeExpr) context.eContainer();
@@ -302,27 +349,27 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 
 	public IScope scopeForRoamFeatureNavigationFeature(RoamFeatureNavigation context, EReference reference) {
 		RoamFeatureLit parentFeature = (RoamFeatureLit) context.getLeft();
-		if (parentFeature.getFeature().getEType()instanceof EClass parentClass) {
-			if(parentFeature.getTypeCast() == null) {
+		if (parentFeature.getFeature().getEType() instanceof EClass parentClass) {
+			if (parentFeature.getTypeCast() == null) {
 				return Scopes.scopeFor(parentClass.getEAllStructuralFeatures());
 			} else {
 				return Scopes.scopeFor(parentFeature.getTypeCast().getType().getEAllStructuralFeatures());
 			}
-			
+
 		} else {
 			return super.getScope(context, reference);
 		}
 	}
 
 	public IScope scopeForRoamFeatureLit(RoamFeatureLit context, EReference reference) {
-		if (context.eContainer()instanceof RoamNodeAttributeExpr nodeExpr) {
-			if(nodeExpr.getTypeCast() == null) {
+		if (context.eContainer() instanceof RoamNodeAttributeExpr nodeExpr) {
+			if (nodeExpr.getTypeCast() == null) {
 				return Scopes.scopeFor(nodeExpr.getNode().getType().getEAllStructuralFeatures());
 			} else {
 				return Scopes.scopeFor(nodeExpr.getTypeCast().getType().getEAllStructuralFeatures());
 			}
-		} else if (context.eContainer()instanceof RoamContextExpr contextExpr) {
-			if(contextExpr.getTypeCast() == null) {
+		} else if (context.eContainer() instanceof RoamContextExpr contextExpr) {
+			if (contextExpr.getTypeCast() == null) {
 				EObject contextType = null;
 				RoamConstraint root = GTEditorPatternUtils.getContainer(context, RoamConstraintImpl.class);
 				if (root != null) {
@@ -336,7 +383,8 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 					}
 				}
 
-				if (contextType instanceof RoamTypeContext typeContext && typeContext.getType()instanceof EClass type) {
+				if (contextType instanceof RoamTypeContext typeContext
+						&& typeContext.getType() instanceof EClass type) {
 					return Scopes.scopeFor(type.getEAllStructuralFeatures());
 				} else {
 					return super.getScope(context, reference);
@@ -344,20 +392,20 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 			} else {
 				return Scopes.scopeFor(contextExpr.getTypeCast().getType().getEAllStructuralFeatures());
 			}
-		} else if (context.eContainer()instanceof RoamLambdaAttributeExpression lambda) {
+		} else if (context.eContainer() instanceof RoamLambdaAttributeExpression lambda) {
 			return scopeForRoamLambdaAttributeExpression(lambda, reference);
 		} else {
 			RoamFeatureNavigation parent = (RoamFeatureNavigation) context.eContainer();
 			RoamFeatureLit parentFeature = (RoamFeatureLit) parent.getLeft();
 			if (context == parentFeature) {
-				if (parent.eContainer()instanceof RoamNodeAttributeExpr parentNodeExpr) {
-					if(parentNodeExpr.getTypeCast() == null) {
+				if (parent.eContainer() instanceof RoamNodeAttributeExpr parentNodeExpr) {
+					if (parentNodeExpr.getTypeCast() == null) {
 						return Scopes.scopeFor(parentNodeExpr.getNode().getType().getEAllStructuralFeatures());
 					} else {
 						return Scopes.scopeFor(parentNodeExpr.getTypeCast().getType().getEAllStructuralFeatures());
 					}
-				} else if (parent.eContainer()instanceof RoamContextExpr contextExpr) {
-					if(contextExpr.getTypeCast() == null) {
+				} else if (parent.eContainer() instanceof RoamContextExpr contextExpr) {
+					if (contextExpr.getTypeCast() == null) {
 						EObject contextType = null;
 						RoamConstraint root = GTEditorPatternUtils.getContainer(context, RoamConstraintImpl.class);
 						if (root != null) {
@@ -372,7 +420,7 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 						}
 
 						if (contextType instanceof RoamTypeContext typeContext
-								&& typeContext.getType()instanceof EClass type) {
+								&& typeContext.getType() instanceof EClass type) {
 							return Scopes.scopeFor(type.getEAllStructuralFeatures());
 						} else {
 							return super.getScope(context, reference);
@@ -380,25 +428,25 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 					} else {
 						return Scopes.scopeFor(contextExpr.getTypeCast().getType().getEAllStructuralFeatures());
 					}
-				} else if (parent.eContainer()instanceof RoamLambdaAttributeExpression lambda) {
+				} else if (parent.eContainer() instanceof RoamLambdaAttributeExpression lambda) {
 					return scopeForRoamLambdaAttributeExpression(lambda, reference);
 				} else {
 					RoamFeatureNavigation parentNavigation = (RoamFeatureNavigation) parent.eContainer();
 					parentFeature = (RoamFeatureLit) parentNavigation.getLeft();
-					if (parentFeature.getFeature().getEType()instanceof EClass parentClass) {
-						if(parentFeature.getTypeCast() == null) {
+					if (parentFeature.getFeature().getEType() instanceof EClass parentClass) {
+						if (parentFeature.getTypeCast() == null) {
 							return Scopes.scopeFor(parentClass.getEAllStructuralFeatures());
 						} else {
 							return Scopes.scopeFor(parentFeature.getTypeCast().getType().getEAllStructuralFeatures());
 						}
-						
+
 					} else {
 						return super.getScope(context, reference);
 					}
 				}
 			} else {
-				if (parentFeature.getFeature().getEType()instanceof EClass parentClass) {
-					if(parentFeature.getTypeCast() == null) {
+				if (parentFeature.getFeature().getEType() instanceof EClass parentClass) {
+					if (parentFeature.getTypeCast() == null) {
 						return Scopes.scopeFor(parentClass.getEAllStructuralFeatures());
 					} else {
 						return Scopes.scopeFor(parentFeature.getTypeCast().getType().getEAllStructuralFeatures());
@@ -410,35 +458,37 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 
 		}
 	}
-	
+
 	public IScope scopeForRoamTypeCast(RoamTypeCast context, EReference reference) {
-		if(context.eContainer() instanceof RoamContextExpr contextExpr) {
+		if (context.eContainer() instanceof RoamContextExpr contextExpr) {
 			Set<Class<?>> classes = Set.of(RoamConstraintImpl.class, RoamObjectiveImpl.class);
 			EObject root = (EObject) RoamSLangScopeContextUtil.getContainer(context, classes);
 			EObject contextType = null;
-			if(root instanceof RoamConstraint constr) {
+			if (root instanceof RoamConstraint constr) {
 				contextType = constr.getContext();
-			} else if(root instanceof RoamObjectiveImpl obj) {
+			} else if (root instanceof RoamObjectiveImpl obj) {
 				contextType = obj.getContext();
 			} else {
 				return super.getScope(context, reference);
 			}
-			if(contextType instanceof RoamTypeContext type && type.getType() instanceof EClass clazz) {
+			if (contextType instanceof RoamTypeContext type && type.getType() instanceof EClass clazz) {
 				EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
 				return Scopes.scopeFor(GTEditorModelUtils.getClasses(editorFile).stream()
 						.filter(c -> c.getEAllSuperTypes().contains(clazz)).collect(Collectors.toSet()));
 			} else {
 				return super.getScope(context, reference);
 			}
-		} else if(context.eContainer() instanceof RoamNodeAttributeExpr atrExpr) {
+		} else if (context.eContainer() instanceof RoamNodeAttributeExpr atrExpr) {
 			EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
 			return Scopes.scopeFor(GTEditorModelUtils.getClasses(editorFile).stream()
-					.filter(c -> c.getEAllSuperTypes().contains(atrExpr.getNode().getType())).collect(Collectors.toSet()));
-		} else if(context.eContainer() instanceof RoamFeatureLit lit) {
-			if(!lit.getFeature().isMany()) {
+					.filter(c -> c.getEAllSuperTypes().contains(atrExpr.getNode().getType()))
+					.collect(Collectors.toSet()));
+		} else if (context.eContainer() instanceof RoamFeatureLit lit) {
+			if (!lit.getFeature().isMany()) {
 				EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
 				return Scopes.scopeFor(GTEditorModelUtils.getClasses(editorFile).stream()
-						.filter(c -> c.getEAllSuperTypes().contains(lit.getFeature().getEType())).collect(Collectors.toSet()));
+						.filter(c -> c.getEAllSuperTypes().contains(lit.getFeature().getEType()))
+						.collect(Collectors.toSet()));
 			} else {
 				return super.getScope(context, reference);
 			}

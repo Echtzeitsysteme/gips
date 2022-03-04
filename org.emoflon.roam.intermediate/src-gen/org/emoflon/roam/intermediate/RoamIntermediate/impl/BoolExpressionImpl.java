@@ -3,23 +3,20 @@
 package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Bool Expression</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Bool
+ * Expression</b></em>'. <!-- end-user-doc -->
  *
  * @generated
  */
 public abstract class BoolExpressionImpl extends MinimalEObjectImpl.Container implements BoolExpression {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	protected BoolExpressionImpl() {
@@ -27,8 +24,8 @@ public abstract class BoolExpressionImpl extends MinimalEObjectImpl.Container im
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -36,4 +33,4 @@ public abstract class BoolExpressionImpl extends MinimalEObjectImpl.Container im
 		return RoamIntermediatePackage.Literals.BOOL_EXPRESSION;
 	}
 
-} //BoolExpressionImpl
+} // BoolExpressionImpl

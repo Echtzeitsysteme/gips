@@ -9,32 +9,38 @@ import org.emoflon.ibex.gt.api.GraphTransformationAPI;
 import org.emoflon.ibex.gt.api.GraphTransformationApp;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPatternModelPackage;
 import org.emoflon.roam.core.RoamEngine;
+import org.emoflon.roam.core.RoamGlobalObjective;
 import org.emoflon.roam.core.RoamMapper;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
-public abstract class RoamEngineAPI {
+public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<EMOFLON_API>, EMOFLON_API extends GraphTransformationAPI> {
 
-	final protected GraphTransformationApp<? extends GraphTransformationAPI> eMoflonApp;
-	protected GraphTransformationAPI eMoflonAPI;
+	final protected EMOFLON_APP eMoflonApp;
+	protected EMOFLON_API eMoflonAPI;
 	protected RoamIntermediateModel roamModel;
 	protected RoamEngine roamEngine;
 	protected RoamMapperFactory mapperFactory;
 	protected RoamConstraintFactory constraintFactory;
-	
-	protected RoamEngineAPI(final GraphTransformationApp<? extends GraphTransformationAPI> eMoflonApp) {
+	protected RoamObjectiveFactory objectiveFactory;
+
+	protected RoamEngineAPI(final EMOFLON_APP eMoflonApp) {
 		this.eMoflonApp = eMoflonApp;
 	}
-	
-	protected abstract void registerMetamodels();
+
+	public abstract void init(final URI modelUri);
 
 	protected abstract void initMapperFactory();
-	
+
 	protected abstract void initConstraintFactory();
 
+	protected abstract void initObjectiveFactory();
+
+	protected abstract RoamGlobalObjective createGlobalObjective();
+
 	protected void init(final URI roamModelURI, final URI modelUri) {
-		registerMetamodels();
+		eMoflonApp.registerMetaModels();
 		eMoflonApp.loadModel(modelUri);
 		eMoflonAPI = eMoflonApp.initAPI();
 		loadIntermediateModel(roamModelURI);
@@ -43,8 +49,13 @@ public abstract class RoamEngineAPI {
 		createMappers();
 		initConstraintFactory();
 		createConstraints();
+		initObjectiveFactory();
+		createObjectives();
+
+		if (roamModel.getGlobalObjective() != null)
+			roamEngine.setGlobalObjective(createGlobalObjective());
 	}
-	
+
 	protected void loadIntermediateModel(final URI roamModelURI) {
 		ResourceSet rs = new ResourceSetImpl();
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
@@ -55,22 +66,25 @@ public abstract class RoamEngineAPI {
 		Resource model = rs.getResource(roamModelURI, false);
 		roamModel = (RoamIntermediateModel) model.getContents().get(0);
 	}
-	
+
 	protected void createMappers() {
-		roamModel.getVariables().stream()
-			.filter(var -> var instanceof Mapping)
-			.map(var -> (Mapping) var)
-			.forEach(mapping->{
-				RoamMapper<?> mapper = mapperFactory.createMapper(mapping);
-				roamEngine.addMapper(mapper);
-			});
+		roamModel.getVariables().stream().filter(var -> var instanceof Mapping).map(var -> (Mapping) var)
+				.forEach(mapping -> {
+					RoamMapper<?> mapper = mapperFactory.createMapper(mapping);
+					roamEngine.addMapper(mapper);
+				});
 	}
-	
+
 	protected void createConstraints() {
 		roamModel.getConstraints().stream()
-		.forEach(constraint -> roamEngine.addConstraint(constraintFactory.createConstraint(constraint)));
+				.forEach(constraint -> roamEngine.addConstraint(constraintFactory.createConstraint(constraint)));
 	}
-	
+
+	protected void createObjectives() {
+		roamModel.getObjectives().stream()
+				.forEach(objective -> roamEngine.addObjective(objectiveFactory.createObjective(objective)));
+	}
+
 	public void terminate() {
 		roamEngine.terminate();
 	}

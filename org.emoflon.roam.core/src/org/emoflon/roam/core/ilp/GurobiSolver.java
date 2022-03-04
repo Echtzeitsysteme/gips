@@ -43,6 +43,8 @@ public class GurobiSolver extends ILPSolver {
 
 	public GurobiSolver(final RoamEngine engine, final ILPSolverConfig config) throws Exception {
 		super(engine);
+		
+		// TODO: Gurobi log output redirect from stdout to ILPSolverOutput
 		env = new GRBEnv("Gurobi_ILP.log");
 		env.set(DoubleParam.TimeLimit, config.timeLimit());
 		env.set(IntParam.Seed, config.randomSeed());
@@ -56,16 +58,39 @@ public class GurobiSolver extends ILPSolver {
 	}
 
 	@Override
-	public void solve() {
+	public ILPSolverOutput solve() {
+		ILPSolverStatus status = null;
+		double objVal = -1;
+		
 		try {
 			// Solving starts here
 			model.update();
 			// TODO: Set optimality tolerance here
 			model.optimize();
-			// TODO: Determine solver status (e.g., 'infeasible')
+			objVal = model.get(GRB.DoubleAttr.ObjVal);
+			final int grbStatus = model.get(GRB.IntAttr.Status);
+			switch(grbStatus) {
+			case GRB.UNBOUNDED -> {
+				status = ILPSolverStatus.UNBOUNDED;
+			}
+			case GRB.INF_OR_UNBD -> {
+				status = ILPSolverStatus.INF_OR_UNBD;
+			}
+			case GRB.INFEASIBLE -> {
+				status = ILPSolverStatus.INFEASIBLE;
+			}
+			case GRB.OPTIMAL -> {
+				status = ILPSolverStatus.OPTIMAL;
+			}
+			case GRB.TIME_LIMIT -> {
+				status = ILPSolverStatus.TIME_OUT;
+			}
+			}
 		} catch (final GRBException e) {
 			// TODO
 		}
+		
+		return new ILPSolverOutput(status, objVal);
 	}
 
 	@Override

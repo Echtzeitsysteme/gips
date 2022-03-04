@@ -25,7 +25,7 @@ public abstract class ILPSolver {
 			translateObjective(go);
 	}
 
-	public abstract void solve();
+	public abstract ILPSolverOutput solve();
 
 	public abstract void updateValuesFromSolution();
 

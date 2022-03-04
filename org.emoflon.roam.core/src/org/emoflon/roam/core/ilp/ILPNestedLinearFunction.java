@@ -1,6 +1,8 @@
 package org.emoflon.roam.core.ilp;
 
 import java.util.List;
+
+import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget;
 /**
  * 
  * @author SebastianE
@@ -17,6 +19,6 @@ import java.util.List;
  * Sum_{func in ILPWeightedLinearFunctions} ( func.weight * (Sum_{term in func.terms} term.variable * term.constant ) 
  * + Sum_{cterm in func.constants} ( cterm.constant ) )  
  */
-public record ILPNestedLinearFunction <T extends Number> (List<ILPWeightedLinearFunction<T>> linearFunctions, List<ILPConstant<Double>> constants){
+public record ILPNestedLinearFunction <T extends Number> (List<ILPWeightedLinearFunction<T>> linearFunctions, List<ILPConstant<Double>> constants, ObjectiveTarget goal){
 
 }

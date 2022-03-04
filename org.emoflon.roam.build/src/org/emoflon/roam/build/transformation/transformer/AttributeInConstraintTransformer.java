@@ -27,55 +27,60 @@ public class AttributeInConstraintTransformer extends AttributeExpressionTransfo
 
 	@Override
 	protected ValueExpression transform(RoamMappingAttributeExpr eMapping) throws Exception {
-		if(context instanceof MappingConstraint)
+		if (context instanceof MappingConstraint)
 			throw new UnsupportedOperationException("Other mappings are not accessible from within mapping contexts!");
-		
-		if(eMapping.getExpr() != null) {
+
+		if (eMapping.getExpr() != null) {
 			RoamStreamExpr terminalExpr = RoamTransformationUtils.getTerminalStreamExpression(eMapping.getExpr());
-			if(terminalExpr instanceof RoamStreamBoolExpr streamBool) {
-				switch(streamBool.getOperator()) {
-					case COUNT -> {
-						SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
-						return transformer.transform(eMapping);
-					}
-					case EXISTS -> {
-						throw new IllegalArgumentException("Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
-					}
-					case NOTEXISTS -> {
-						throw new IllegalArgumentException("Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
-					}
-					default -> {
-						throw new UnsupportedOperationException("Unknown stream operator: "+streamBool.getOperator());
-					}
+			if (terminalExpr instanceof RoamStreamBoolExpr streamBool) {
+				switch (streamBool.getOperator()) {
+				case COUNT -> {
+					SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
+					return transformer.transform(eMapping);
 				}
-			} else if(terminalExpr instanceof RoamStreamArithmetic streamArithmetic){
+				case EXISTS -> {
+					throw new IllegalArgumentException(
+							"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
+				}
+				case NOTEXISTS -> {
+					throw new IllegalArgumentException(
+							"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
+				}
+				default -> {
+					throw new UnsupportedOperationException("Unknown stream operator: " + streamBool.getOperator());
+				}
+				}
+			} else if (terminalExpr instanceof RoamStreamArithmetic streamArithmetic) {
 				SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
 				return transformer.transform(eMapping, streamArithmetic);
 			} else {
-				throw new UnsupportedOperationException("Some constrains contain invalid values within arithmetic expressions, e.g., objects or streams of objects instead of arithmetic values.");
+				throw new UnsupportedOperationException(
+						"Some constrains contain invalid values within arithmetic expressions, e.g., objects or streams of objects instead of arithmetic values.");
 			}
-		} else  {
-			throw new UnsupportedOperationException("Some constrains contain invalid values within arithmetic expressions, e.g., objects or streams of objects instead of arithmetic values.");
+		} else {
+			throw new UnsupportedOperationException(
+					"Some constrains contain invalid values within arithmetic expressions, e.g., objects or streams of objects instead of arithmetic values.");
 		}
 	}
 
 	@Override
 	protected ValueExpression transformNoExprAndNoStream(RoamContextExpr eContext, EObject contextType)
 			throws Exception {
-		if(contextType instanceof RoamTypeContext typeContext) {
+		if (contextType instanceof RoamTypeContext typeContext) {
 			TypeConstraint tc = (TypeConstraint) context;
 			ContextTypeValue typeValue = factory.createContextTypeValue();
 			typeValue.setReturnType(tc.getModelType().getType());
 			typeValue.setTypeContext(tc.getModelType());
 			return typeValue;
-		} else if(contextType instanceof RoamMatchContext matchContext) { 
+		} else if (contextType instanceof RoamMatchContext matchContext) {
 			PatternConstraint pc = (PatternConstraint) context;
 			ContextPatternValue patternValue = factory.createContextPatternValue();
 			patternValue.setReturnType(pc.getPattern().getPattern().eClass());
 			patternValue.setPatternContext(pc.getPattern());
 			return patternValue;
 		} else {
-			throw new UnsupportedOperationException("Using sets of mapping variables as operands in boolean or arithmetic expressions is not allowed.");
+			throw new UnsupportedOperationException(
+					"Using sets of mapping variables as operands in boolean or arithmetic expressions is not allowed.");
 		}
 	}
 

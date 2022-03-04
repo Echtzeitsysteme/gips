@@ -31,27 +31,26 @@ public class RoamCodeGenerator {
 
 	final protected TemplateData data;
 	protected List<GeneratorTemplate<?>> templates = Collections.synchronizedList(new LinkedList<>());
-	
-	public RoamCodeGenerator(final RoamIntermediateModel model, final RoamAPIData apiData, final RoamImportManager classToPackage) {
+
+	public RoamCodeGenerator(final RoamIntermediateModel model, final RoamAPIData apiData,
+			final RoamImportManager classToPackage) {
 		data = new TemplateData(model, apiData, classToPackage);
 	}
-	
+
 	public void generate() {
 		templates.add(new RoamAPITemplate(data, data.model));
 		templates.add(new MapperFactoryTemplate(data, data.model));
 		templates.add(new ConstraintFactoryTemplate(data, data.model));
 		templates.add(new ObjectiveFactoryTemplate(data, data.model));
-		data.model.getVariables().parallelStream()
-			.filter(mapping -> mapping instanceof Mapping)
-			.map(mapping -> (Mapping) mapping)
-			.forEach(mapping -> {
-				templates.add(new MappingTemplate(data, mapping));
-				templates.add(new MapperTemplate(data, mapping));
-			});
+		data.model.getVariables().parallelStream().filter(mapping -> mapping instanceof Mapping)
+				.map(mapping -> (Mapping) mapping).forEach(mapping -> {
+					templates.add(new MappingTemplate(data, mapping));
+					templates.add(new MapperTemplate(data, mapping));
+				});
 		data.model.getConstraints().parallelStream().forEach(constraint -> {
-			if(constraint instanceof MappingConstraint mappingConstraint) {
+			if (constraint instanceof MappingConstraint mappingConstraint) {
 				templates.add(new MappingConstraintTemplate(data, mappingConstraint));
-			} else if(constraint instanceof PatternConstraint patternConstraint) {
+			} else if (constraint instanceof PatternConstraint patternConstraint) {
 				templates.add(new PatternConstraintTemplate(data, patternConstraint));
 			} else {
 				TypeConstraint typeConstraint = (TypeConstraint) constraint;
@@ -59,16 +58,16 @@ public class RoamCodeGenerator {
 			}
 		});
 		data.model.getObjectives().parallelStream().forEach(objective -> {
-			if(objective instanceof MappingObjective mappingObjective) {
+			if (objective instanceof MappingObjective mappingObjective) {
 				templates.add(new MappingObjectiveTemplate(data, mappingObjective));
-			} else if(objective instanceof PatternObjective patternObjective) {
+			} else if (objective instanceof PatternObjective patternObjective) {
 				templates.add(new PatternObjectiveTemplate(data, patternObjective));
-			}  else {
+			} else {
 				TypeObjective typeObjective = (TypeObjective) objective;
 				templates.add(new TypeObjectiveTemplate(data, typeObjective));
 			}
 		});
-		if(data.model.getGlobalObjective() != null) {
+		if (data.model.getGlobalObjective() != null) {
 			templates.add(new GlobalObjectiveTemplate(data, data.model.getGlobalObjective()));
 		}
 		templates.parallelStream().forEach(template -> {

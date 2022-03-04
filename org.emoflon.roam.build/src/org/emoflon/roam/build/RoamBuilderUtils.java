@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMIResource;
+import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.emoflon.ibex.gt.codegen.EClassifiersManager;
 import org.emoflon.ibex.gt.codegen.GTEngineBuilderExtension;
@@ -55,7 +56,7 @@ public final class RoamBuilderUtils {
 
 	/**
 	 * Removes generated code in the project matching the deletion pattern
-	 * 
+	 *
 	 * @param project to remove the generated code from
 	 * @param pattern to match for deletion
 	 * @throws CoreException if the request for deletion of files matching the
@@ -70,7 +71,7 @@ public final class RoamBuilderUtils {
 
 	/**
 	 * Creates empty folders in the project needed for code generation
-	 * 
+	 *
 	 * @param project to create folders needed for code generation
 	 * @throws CoreException if the folder generation fails
 	 */
@@ -78,39 +79,31 @@ public final class RoamBuilderUtils {
 		WorkspaceHelper.createFolderIfNotExists(WorkspaceHelper.getSourceFolder(project), new NullProgressMonitor());
 		WorkspaceHelper.createFolderIfNotExists(WorkspaceHelper.getBinFolder(project), new NullProgressMonitor());
 		WorkspaceHelper.createFolderIfNotExists(project.getFolder(GEN_FOLDER), new NullProgressMonitor());
-		WorkspaceHelper.createFolderIfNotExists(
-				getGeneratedProjectFolder(project, API_FOLDER),
+		WorkspaceHelper.createFolderIfNotExists(getGeneratedProjectFolder(project, API_FOLDER),
 				new NullProgressMonitor());
-		WorkspaceHelper.createFolderIfNotExists(
-				getGeneratedProjectFolder(project, MATCHES_FOLDER),
+		WorkspaceHelper.createFolderIfNotExists(getGeneratedProjectFolder(project, MATCHES_FOLDER),
 				new NullProgressMonitor());
-		WorkspaceHelper.createFolderIfNotExists(
-				getGeneratedProjectFolder(project, RULES_FOLDER),
+		WorkspaceHelper.createFolderIfNotExists(getGeneratedProjectFolder(project, RULES_FOLDER),
 				new NullProgressMonitor());
-		WorkspaceHelper.createFolderIfNotExists(
-				getGeneratedProjectFolder(project, ROAM_API_FOLDER),
+		WorkspaceHelper.createFolderIfNotExists(getGeneratedProjectFolder(project, ROAM_API_FOLDER),
 				new NullProgressMonitor());
-		WorkspaceHelper.createFolderIfNotExists(
-				getGeneratedProjectFolder(project, MAPPING_FOLDER),
+		WorkspaceHelper.createFolderIfNotExists(getGeneratedProjectFolder(project, MAPPING_FOLDER),
 				new NullProgressMonitor());
-		WorkspaceHelper.createFolderIfNotExists(
-				getGeneratedProjectFolder(project, MAPPER_FOLDER),
+		WorkspaceHelper.createFolderIfNotExists(getGeneratedProjectFolder(project, MAPPER_FOLDER),
 				new NullProgressMonitor());
-		WorkspaceHelper.createFolderIfNotExists(
-				getGeneratedProjectFolder(project, CONSTRAINT_FOLDER),
+		WorkspaceHelper.createFolderIfNotExists(getGeneratedProjectFolder(project, CONSTRAINT_FOLDER),
 				new NullProgressMonitor());
-		WorkspaceHelper.createFolderIfNotExists(
-				getGeneratedProjectFolder(project, OBJECTIVE_FOLDER),
+		WorkspaceHelper.createFolderIfNotExists(getGeneratedProjectFolder(project, OBJECTIVE_FOLDER),
 				new NullProgressMonitor());
 	}
-	
+
 	public static IFolder getGeneratedProjectFolder(IProject project, String projectFolder) {
 		return project.getFolder(GEN_FOLDER + "/" + project.getName().replace(".", "/") + "/" + projectFolder);
 	}
 
 	/**
 	 * Updates the manifest in the given project with the update function
-	 * 
+	 *
 	 * @param project        in which the manifest should be updated
 	 * @param updateFunction to determine how the manifest should be updated
 	 * @throws CoreException if manifest update fails
@@ -122,14 +115,14 @@ public final class RoamBuilderUtils {
 
 	/**
 	 * Adds/updates Manifest for a project
-	 * 
+	 *
 	 * @param project  in which the manifest should be added and/or updated to fit
 	 *                 the dependency requirements
 	 * @param manifest to change to in the project
 	 * @return true if the manifest has updated OR changed dependencies
 	 */
 	public static boolean processManifestForPackage(IProject project, Manifest manifest) {
-		List<String> dependencies = new ArrayList<String>();
+		List<String> dependencies = new ArrayList<>();
 //		TODO: Add dependencies on Roam runtime libraries!
 		dependencies.addAll(Arrays.asList("org.emoflon.ibex.common", "org.emoflon.ibex.gt", "org.emoflon.roam.core"));
 		collectEngineExtensions().forEach(engine -> dependencies.addAll(engine.getDependencies()));
@@ -140,7 +133,7 @@ public final class RoamBuilderUtils {
 
 	/**
 	 * Saves a given EObject as resource XMI to a given path
-	 * 
+	 *
 	 * @param object to be saved
 	 * @param path   where the XMI should be saved
 	 */
@@ -153,10 +146,10 @@ public final class RoamBuilderUtils {
 		output.getContents().add(object);
 		// create save options to save XMI
 		Map<Object, Object> saveOptions = ((XMIResource) output).getDefaultSaveOptions();
-		saveOptions.put(XMIResource.OPTION_ENCODING, "UTF-8");
+		saveOptions.put(XMLResource.OPTION_ENCODING, "UTF-8");
 		saveOptions.put(XMIResource.OPTION_USE_XMI_TYPE, Boolean.TRUE);
-		saveOptions.put(XMIResource.OPTION_SAVE_TYPE_INFORMATION, Boolean.TRUE);
-		saveOptions.put(XMIResource.OPTION_SCHEMA_LOCATION_IMPLEMENTATION, Boolean.TRUE);
+		saveOptions.put(XMLResource.OPTION_SAVE_TYPE_INFORMATION, Boolean.TRUE);
+		saveOptions.put(XMLResource.OPTION_SCHEMA_LOCATION_IMPLEMENTATION, Boolean.TRUE);
 		try {
 			((XMIResource) output).save(saveOptions);
 		} catch (IOException e) {
@@ -168,7 +161,7 @@ public final class RoamBuilderUtils {
 
 	/**
 	 * Builds the eMoflon API for a given IBeX model and
-	 * 
+	 *
 	 * @param project   to build the API for
 	 * @param ibexModel to build the API for
 	 * @throws CoreException if hte API folder does not exist or API generation
@@ -183,33 +176,29 @@ public final class RoamBuilderUtils {
 		generateEMoflonAPI(project, apiData, ibexModel, packageRegistry);
 		return apiData;
 	}
-	
+
 	/**
 	 * Create a package registry of all used packages in the model.
-	 * 
-	 * @param model       which includes the ePackages, that should be
-	 *                    registered
+	 *
+	 * @param model which includes the ePackages, that should be registered
 	 */
 	public static Registry createEPackageRegistry(final RoamIntermediateModel model) {
 		Registry packageRegistry = new EPackageRegistryImpl();
 		findAllEPackages(model.getIbexModel(), packageRegistry);
-		model.getConstraints().stream()
-			.filter(constr -> constr instanceof TypeConstraint)
-			.map(constr -> (TypeConstraint) constr)
-			.forEach(constr -> {
-				EPackage foreign = constr.getModelType().getType().getEPackage();
-				if(!packageRegistry.containsKey(foreign.getNsURI())) {
-					packageRegistry.put(foreign.getNsURI(), foreign);
-				}
-			});
+		model.getConstraints().stream().filter(constr -> constr instanceof TypeConstraint)
+				.map(constr -> (TypeConstraint) constr).forEach(constr -> {
+					EPackage foreign = constr.getModelType().getType().getEPackage();
+					if (!packageRegistry.containsKey(foreign.getNsURI())) {
+						packageRegistry.put(foreign.getNsURI(), foreign);
+					}
+				});
 		return packageRegistry;
 	}
-	
+
 	/**
 	 * Create a package registry of all used packages in the model.
-	 * 
-	 * @param ibexModel       which includes the ePackages, that should be
-	 *                        registered
+	 *
+	 * @param ibexModel which includes the ePackages, that should be registered
 	 */
 	public static Registry createEPackageRegistry(final IBeXModel ibexModel) {
 		Registry packageRegistry = new EPackageRegistryImpl();
@@ -220,7 +209,7 @@ public final class RoamBuilderUtils {
 	/**
 	 * Searches for all ePackages in an IBeX model and add them to the package
 	 * registry
-	 * 
+	 *
 	 * @param ibexModel       which includes the ePackages, that should be
 	 *                        registered
 	 * @param packageRegistry to add ePackage, from model, if not already registered
@@ -236,7 +225,7 @@ public final class RoamBuilderUtils {
 
 	/**
 	 * Checks if the given folder exits, if not the folder is created
-	 * 
+	 *
 	 * @param folder to check if present and if not to be created
 	 * @return the folder, which needs to be present
 	 * @throws CoreException if the folder is not present and cannot be created
@@ -250,7 +239,7 @@ public final class RoamBuilderUtils {
 
 	/**
 	 * Generates the API for the given parameters
-	 * 
+	 *
 	 * @param project         in/for which the API should be generated
 	 * @param apiPackage      the API package folder
 	 * @param ibexModel       the model, which the API needs to include
@@ -270,7 +259,7 @@ public final class RoamBuilderUtils {
 		apiData.setMatchesPkg(matchesPackage);
 		apiData.setRulesPkg(rulesPackage);
 		apiData.setProbabilitiesPkg(probabilitiesPackage);
-		
+
 		// generate code for rules
 		Set<IBeXPattern> ruleContextPatterns = new HashSet<>();
 		ibexModel.getRuleSet().getRules().forEach(ibexRule -> {
@@ -293,18 +282,19 @@ public final class RoamBuilderUtils {
 				project.getName(), "src-gen", project.getName().replace(".", "/")));
 		generator.generateAppClass(apiData.apiPackageFolder);
 		collectEngineExtensions().forEach(e -> generator.generateAppClassForEngine(apiData.apiPackageFolder, e));
-		
+
 		apiData.apiClassNamePrefix = getClassNamePrefix(project);
-		apiData.apiClass = getClassNamePrefix(project)+"API";
-		apiData.appClass = getClassNamePrefix(project)+"App";
+		apiData.apiClass = getClassNamePrefix(project) + "API";
+		apiData.appClass = getClassNamePrefix(project) + "App";
 		collectEngineExtensions().forEach(engineExt -> {
-			apiData.engineAppClasses.put(engineExt.getEngineName(), getClassNamePrefix(project)+engineExt.getEngineName()+"App");
+			apiData.engineAppClasses.put(engineExt.getEngineName(),
+					getClassNamePrefix(project) + engineExt.getEngineName() + "App");
 		});
 	}
 
 	/**
 	 * Gets the class name prefix for a given project
-	 * 
+	 *
 	 * @param project of which the class name prefix should be determined
 	 * @return the class name prefix for the project
 	 */
@@ -316,7 +306,7 @@ public final class RoamBuilderUtils {
 
 	/**
 	 * Creates a classifier manager for the packages in the package registry
-	 * 
+	 *
 	 * @param packageRegistry the package registry, which includes the EPackages,
 	 *                        that should be present in the EClassifier manager
 	 * @return an EClassifier manager for the EPackages in the package registry
@@ -329,10 +319,10 @@ public final class RoamBuilderUtils {
 		});
 		return eClassifiersManager;
 	}
-	
+
 	/**
 	 * Creates a classifier manager for the packages in the package registry
-	 * 
+	 *
 	 * @param packageRegistry the package registry, which includes the EPackages,
 	 *                        that should be present in the EClassifier manager
 	 * @return an EClassifier manager for the EPackages in the package registry
@@ -349,7 +339,7 @@ public final class RoamBuilderUtils {
 	/**
 	 * Collects all engine extensions with the GTEngineExtension builder extension
 	 * ID
-	 * 
+	 *
 	 * @return all engine extension with the GTEngine extension ID
 	 */
 	public static Collection<GTEngineExtension> collectEngineExtensions() {

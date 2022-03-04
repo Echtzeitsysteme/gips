@@ -3,16 +3,13 @@
  */
 package org.emoflon.roam.roamslang.ui.outline;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider;
-import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
-import org.emoflon.roam.roamslang.roamSLang.RoamObjective;
 
 /**
  * Customization of the default outline structure.
  *
- * See https://www.eclipse.org/Xtext/documentation/310_eclipse_support.html#outline
+ * See
+ * https://www.eclipse.org/Xtext/documentation/310_eclipse_support.html#outline
  */
 public class RoamSLangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 //	@Override
@@ -24,7 +21,7 @@ public class RoamSLangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 //			super.createChildren(parent, modelElement);
 //		}
 //	}
-//	
+//
 //	public void internalCreateChildren(IOutlineNode parent, EObject modelElement) throws Exception{
 //		if(modelElement instanceof RoamConstraint constr) {
 //			createEObjectNode(parent, constr, null, "Constraint", false);

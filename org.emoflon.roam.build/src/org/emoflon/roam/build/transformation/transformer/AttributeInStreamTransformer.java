@@ -25,26 +25,27 @@ public class AttributeInStreamTransformer extends AttributeExpressionTransformer
 
 	@Override
 	protected ValueExpression transform(RoamMappingAttributeExpr eMapping) throws Exception {
-		//TODO: We could support this to a limited degree in the future.
+		// TODO: We could support this to a limited degree in the future.
 		throw new UnsupportedOperationException("Nested Mapping access operations not yet supported.");
 	}
 
 	@Override
 	protected ValueExpression transformNoExprAndNoStream(RoamContextExpr eContext, EObject contextType)
 			throws Exception {
-		if(contextType instanceof RoamTypeContext typeContext) {
-			Type tc = data.getType((EClass)typeContext.getType());
+		if (contextType instanceof RoamTypeContext typeContext) {
+			Type tc = data.getType((EClass) typeContext.getType());
 			ContextTypeValue typeValue = factory.createContextTypeValue();
 			typeValue.setReturnType(tc.getType());
 			typeValue.setTypeContext(tc);
 			return typeValue;
-		} else if(contextType instanceof RoamMatchContext matchContext) { 
+		} else if (contextType instanceof RoamMatchContext matchContext) {
 			Pattern pc = data.getPattern(matchContext.getPattern());
 			ContextPatternValue patternValue = factory.createContextPatternValue();
 			patternValue.setPatternContext(pc);
 			return patternValue;
 		} else {
-			throw new UnsupportedOperationException("Using sets of mapping variables as operands in boolean or arithmetic expressions is not allowed.");
+			throw new UnsupportedOperationException(
+					"Using sets of mapping variables as operands in boolean or arithmetic expressions is not allowed.");
 		}
 	}
 

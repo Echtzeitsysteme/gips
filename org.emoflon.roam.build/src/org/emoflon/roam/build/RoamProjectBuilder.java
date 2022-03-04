@@ -17,23 +17,23 @@ import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
 import org.moflon.core.utilities.LogUtils;
 
 public class RoamProjectBuilder implements RoamBuilderExtension {
-	
+
 	private static Logger logger = Logger.getLogger(RoamProjectBuilder.class);
 
 	@Override
 	public void build(IProject project, Resource resource) {
-		LogUtils.info(logger, "RoamProjectBuilder: Building project <"+project.getName()+">");
+		LogUtils.info(logger, "RoamProjectBuilder: Building project <" + project.getName() + ">");
 		// clean old code and create folders
 		try {
 			LogUtils.info(logger, "RoamProjectBuilder: cleaning old code...");
-			RoamBuilderUtils.removeGeneratedCode(project, RoamBuilderUtils.GEN_FOLDER+"/**");
+			RoamBuilderUtils.removeGeneratedCode(project, RoamBuilderUtils.GEN_FOLDER + "/**");
 			RoamBuilderUtils.createFolders(project);
 		} catch (CoreException e) {
 			LogUtils.error(logger, e.toString());
 			e.printStackTrace();
 			return;
 		}
-		
+
 		LogUtils.info(logger, "RoamProjectBuilder: transforming RoamSLang models...");
 		// create intermediate Roam model and ibex patterns
 		EditorGTFile roamSlangFile = (EditorGTFile) resource.getContents().get(0);
@@ -66,9 +66,11 @@ public class RoamProjectBuilder implements RoamBuilderExtension {
 		}
 
 		// save ibex-patterns and gt-rules for the hipe engine builder
-		RoamBuilderUtils.saveResource(EcoreUtil.copy(ibexModel), roamApiData.apiPackageFolder.getLocation() + "/ibex-patterns.xmi");
+		RoamBuilderUtils.saveResource(EcoreUtil.copy(ibexModel),
+				roamApiData.apiPackageFolder.getLocation() + "/ibex-patterns.xmi");
 		RoamBuilderUtils.saveResource(model, roamApiData.apiPackageFolder.getLocation() + "/roam/roam-model.xmi");
-		roamApiData.intermediateModelURI = URI.createPlatformResourceURI(roamApiData.apiPackageFolder.getProjectRelativePath() + "/roam/roam-model.xmi", true);
+		roamApiData.intermediateModelURI = URI.createPlatformResourceURI(
+				roamApiData.apiPackageFolder.getProjectRelativePath() + "/roam/roam-model.xmi", true);
 
 		// build HiPE engine code
 		if (ibexModel != null && !ibexModel.getPatternSet().getContextPatterns().isEmpty()) {
@@ -79,19 +81,23 @@ public class RoamProjectBuilder implements RoamBuilderExtension {
 		// build Roam API
 		LogUtils.info(logger, "RoamProjectBuilder: building Roam-API...");
 		// set output folders
-		roamApiData.setRoamApiPackage(RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.ROAM_API_FOLDER));
-		roamApiData.setRoamMappingPackage(RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.MAPPING_FOLDER));
-		roamApiData.setRoamMapperPackage(RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.MAPPER_FOLDER));
-		roamApiData.setRoamConstraintPackage(RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.CONSTRAINT_FOLDER));
-		roamApiData.setRoamObjectivePackage(RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.OBJECTIVE_FOLDER));
+		roamApiData.setRoamApiPackage(
+				RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.ROAM_API_FOLDER));
+		roamApiData.setRoamMappingPackage(
+				RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.MAPPING_FOLDER));
+		roamApiData.setRoamMapperPackage(
+				RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.MAPPER_FOLDER));
+		roamApiData.setRoamConstraintPackage(
+				RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.CONSTRAINT_FOLDER));
+		roamApiData.setRoamObjectivePackage(
+				RoamBuilderUtils.getGeneratedProjectFolder(project, RoamBuilderUtils.OBJECTIVE_FOLDER));
 		// get package dependencies
-		RoamImportManager manager = RoamBuilderUtils.createRoamImportManager(RoamBuilderUtils.createEPackageRegistry(model));
+		RoamImportManager manager = RoamBuilderUtils
+				.createRoamImportManager(RoamBuilderUtils.createEPackageRegistry(model));
 		// generate files
 		RoamCodeGenerator roamGen = new RoamCodeGenerator(model, roamApiData, manager);
 		roamGen.generate();
 		LogUtils.info(logger, "RoamProjectBuilder: Done!");
 	}
-	
-	
 
 }

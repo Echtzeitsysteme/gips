@@ -127,17 +127,22 @@ public class RoamToIntermediate {
 				RelationalExpressionTransformer transformer = transformationFactory
 						.createRelationalTransformer(constraint);
 				constraint.setExpression(transformer.transform((RoamRelExpr) boolExpr));
-				if (RoamTransformationUtils.isConstantExpression(constraint.getExpression()) == ArithmeticExpressionType.constant)
+				if (RoamTransformationUtils
+						.isConstantExpression(constraint.getExpression()) == ArithmeticExpressionType.constant)
 					throw new UnsupportedOperationException(
 							"Expressions that can be evaluated statically at ILP problem build time are currently not allowed.");
-				
+
 				boolean isLhsConst = (RoamTransformationUtils
-						.isConstantExpression(constraint.getExpression().getLhs()) == ArithmeticExpressionType.constant) ? true : false;
+						.isConstantExpression(constraint.getExpression().getLhs()) == ArithmeticExpressionType.constant)
+								? true
+								: false;
 				boolean isRhsConst = (RoamTransformationUtils
-						.isConstantExpression(constraint.getExpression().getRhs()) == ArithmeticExpressionType.constant) ? true : false;
+						.isConstantExpression(constraint.getExpression().getRhs()) == ArithmeticExpressionType.constant)
+								? true
+								: false;
 				if (!isLhsConst && !isRhsConst) {
 					// Fix this malformed constraint by subtracting the lhs from the rhs.
-					// E.g.: c: x < y is transformed to  c: 0 < y - x
+					// E.g.: c: x < y is transformed to c: 0 < y - x
 					BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
 					rewrite.setOperator(BinaryArithmeticOperator.SUBTRACT);
 					rewrite.setLhs(constraint.getExpression().getRhs());
@@ -147,31 +152,36 @@ public class RoamToIntermediate {
 					constraint.getExpression().setLhs(lit);
 					constraint.getExpression().setRhs(rewrite);
 				}
-				
+
 				isLhsConst = (RoamTransformationUtils
-						.isConstantExpression(constraint.getExpression().getLhs()) == ArithmeticExpressionType.constant) ? true : false;
-				
-				//Rewrite the non-constant expression, which will be translated into ILP-Terms, into a sum of products.
-				if(isLhsConst) {
-					constraint.getExpression().setRhs(rewriteToSumOfProducts(constraint.getExpression().getRhs(), null, null));
+						.isConstantExpression(constraint.getExpression().getLhs()) == ArithmeticExpressionType.constant)
+								? true
+								: false;
+
+				// Rewrite the non-constant expression, which will be translated into ILP-Terms,
+				// into a sum of products.
+				if (isLhsConst) {
+					constraint.getExpression()
+							.setRhs(rewriteToSumOfProducts(constraint.getExpression().getRhs(), null, null));
 				} else {
-					constraint.getExpression().setLhs(rewriteToSumOfProducts(constraint.getExpression().getLhs(), null, null));
+					constraint.getExpression()
+							.setLhs(rewriteToSumOfProducts(constraint.getExpression().getLhs(), null, null));
 				}
-				// Move constant terms from the sum of products to the constant side of the relational constraint.
+				// Move constant terms from the sum of products to the constant side of the
+				// relational constraint.
 				constraint.setExpression(rewriteMoveConstantTerms(constraint.getExpression()));
-				
+
 				// Remove subtractions, e.g.: a - b becomes a + -b
-				if(isLhsConst) {
+				if (isLhsConst) {
 					constraint.getExpression().setRhs(rewriteRemoveSubtractions(constraint.getExpression().getRhs()));
 				} else {
 					constraint.getExpression().setLhs(rewriteRemoveSubtractions(constraint.getExpression().getLhs()));
 				}
-				
+
 				// Final check: Was the context used?
-				if(!RoamTransformationUtils.containsContextExpression(constraint.getExpression().getRhs()) 
+				if (!RoamTransformationUtils.containsContextExpression(constraint.getExpression().getRhs())
 						&& !RoamTransformationUtils.containsContextExpression(constraint.getExpression().getLhs())) {
-					throw new IllegalArgumentException(
-							"Context must be used at least once per constraint.");
+					throw new IllegalArgumentException("Context must be used at least once per constraint.");
 				}
 			}
 		}
@@ -188,16 +198,17 @@ public class RoamToIntermediate {
 			data.model().getObjectives().add(objective);
 			data.eObjective2Objective().put(eObjective, objective);
 
-			ArithmeticExpressionTransformer<? extends EObject> transformer = transformationFactory.createArithmeticTransformer(objective);
+			ArithmeticExpressionTransformer<? extends EObject> transformer = transformationFactory
+					.createArithmeticTransformer(objective);
 			objective.setExpression(transformer.transform(eObjective.getExpr()));
-			//Rewrite the expression, which will be translated into ILP-Terms, into a sum of products.
+			// Rewrite the expression, which will be translated into ILP-Terms, into a sum
+			// of products.
 			objective.setExpression(rewriteToSumOfProducts(objective.getExpression(), null, null));
 			// Remove subtractions, e.g.: a - b becomes a + -b
 			objective.setExpression(rewriteRemoveSubtractions(objective.getExpression()));
 			// Final check: Was the context used?
-			if(!RoamTransformationUtils.containsContextExpression(objective.getExpression())) {
-				throw new IllegalArgumentException(
-						"Context must be used at least once per objective.");
+			if (!RoamTransformationUtils.containsContextExpression(objective.getExpression())) {
+				throw new IllegalArgumentException("Context must be used at least once per objective.");
 			}
 		}
 	}
@@ -224,9 +235,11 @@ public class RoamToIntermediate {
 		}
 		}
 
-		ArithmeticExpressionTransformer<? extends EObject> transformer = transformationFactory.createArithmeticTransformer(globalObj);
+		ArithmeticExpressionTransformer<? extends EObject> transformer = transformationFactory
+				.createArithmeticTransformer(globalObj);
 		globalObj.setExpression(transformer.transform(eGlobalObj.getExpr()));
-		//Rewrite the expression, which will be translated into ILP-Terms, into a sum of products.
+		// Rewrite the expression, which will be translated into ILP-Terms, into a sum
+		// of products.
 		globalObj.setExpression(rewriteToSumOfProducts(globalObj.getExpression(), null, null));
 		// Remove subtractions, e.g.: a - b becomes a + -b
 		globalObj.setExpression(rewriteRemoveSubtractions(globalObj.getExpression()));
@@ -238,7 +251,7 @@ public class RoamToIntermediate {
 			constraint.setName("MappingConstraint" + counter + "On" + mapping.getMapping().getName());
 			constraint.setMapping(data.eMapping2Mapping().get(mapping.getMapping()));
 			return constraint;
-		} else if(eConstraint.getContext() instanceof RoamMatchContext pattern) {
+		} else if (eConstraint.getContext() instanceof RoamMatchContext pattern) {
 			PatternConstraint constraint = factory.createPatternConstraint();
 			constraint.setName("PatternConstraint" + counter + "On" + pattern.getPattern().getName());
 			constraint.setPattern(data.getPattern(pattern.getPattern()));
@@ -259,7 +272,7 @@ public class RoamToIntermediate {
 			objective.setName(eObjective.getName());
 			objective.setMapping(data.eMapping2Mapping().get(mapping.getMapping()));
 			return objective;
-		} else if(eObjective.getContext() instanceof RoamMatchContext pattern) {
+		} else if (eObjective.getContext() instanceof RoamMatchContext pattern) {
 			PatternObjective constraint = factory.createPatternObjective();
 			constraint.setName(eObjective.getName());
 			constraint.setPattern(data.getPattern(pattern.getPattern()));
@@ -291,12 +304,12 @@ public class RoamToIntermediate {
 				}
 			}
 		}
-		
+
 		for (EditorPattern ePattern : data.roamSlangFile().getPatterns()) {
 			for (IBeXContext pattern : data.model().getIbexModel().getPatternSet().getContextPatterns()) {
 				if (pattern.getName().equals(ePattern.getName())) {
 					data.ePattern2Context().put(ePattern, pattern);
-					
+
 					for (EditorNode eNode : ePattern.getNodes()) {
 						for (IBeXNode node : toContextPattern(pattern).getSignatureNodes()) {
 							if (eNode.getName().equals(node.getName())) {
@@ -308,18 +321,21 @@ public class RoamToIntermediate {
 			}
 		}
 	}
-	
-	protected ArithmeticExpression rewriteToSumOfProducts(final ArithmeticExpression expr, final ArithmeticExpression factor, final BinaryArithmeticOperator operator) {
-		if(expr instanceof BinaryArithmeticExpression binaryExpr) {
-			if(binaryExpr.getOperator() == BinaryArithmeticOperator.ADD || binaryExpr.getOperator() == BinaryArithmeticOperator.SUBTRACT) {
-				if(factor == null) {
+
+	protected ArithmeticExpression rewriteToSumOfProducts(final ArithmeticExpression expr,
+			final ArithmeticExpression factor, final BinaryArithmeticOperator operator) {
+		if (expr instanceof BinaryArithmeticExpression binaryExpr) {
+			if (binaryExpr.getOperator() == BinaryArithmeticOperator.ADD
+					|| binaryExpr.getOperator() == BinaryArithmeticOperator.SUBTRACT) {
+				if (factor == null) {
 					ArithmeticExpression newLhs = rewriteToSumOfProducts(binaryExpr.getLhs(), null, null);
 					ArithmeticExpression newRhs = rewriteToSumOfProducts(binaryExpr.getRhs(), null, null);
 					binaryExpr.setLhs(newLhs);
 					binaryExpr.setRhs(newRhs);
 					return binaryExpr;
 				} else {
-					if(RoamTransformationUtils.isConstantExpression(binaryExpr.getLhs()) == ArithmeticExpressionType.constant) {
+					if (RoamTransformationUtils
+							.isConstantExpression(binaryExpr.getLhs()) == ArithmeticExpressionType.constant) {
 						BinaryArithmeticExpression rewriteLhs = factory.createBinaryArithmeticExpression();
 						rewriteLhs.setOperator(operator);
 						rewriteLhs.setLhs(binaryExpr.getLhs());
@@ -329,7 +345,8 @@ public class RoamToIntermediate {
 						ArithmeticExpression newLhs = rewriteToSumOfProducts(binaryExpr.getLhs(), factor, operator);
 						binaryExpr.setLhs(newLhs);
 					}
-					if(RoamTransformationUtils.isConstantExpression(binaryExpr.getRhs()) == ArithmeticExpressionType.constant) {
+					if (RoamTransformationUtils
+							.isConstantExpression(binaryExpr.getRhs()) == ArithmeticExpressionType.constant) {
 						BinaryArithmeticExpression rewriteRhs = factory.createBinaryArithmeticExpression();
 						rewriteRhs.setOperator(operator);
 						rewriteRhs.setLhs(binaryExpr.getRhs());
@@ -341,48 +358,51 @@ public class RoamToIntermediate {
 					}
 					return binaryExpr;
 				}
-			} else if(binaryExpr.getOperator() == BinaryArithmeticOperator.DIVIDE || binaryExpr.getOperator() == BinaryArithmeticOperator.MULTIPLY) {
-				boolean isLhsConst = switch(RoamTransformationUtils.isConstantExpression(binaryExpr.getLhs())) {
-						case constant -> {
-							yield true;
-						}
-						case variableScalar -> {
-							yield true;
-						}
-						case variableValue -> {
-							yield false;
-						}
-						case variableVector -> {
-							yield false;
-						}
-					};
-				boolean isRhsConst = switch(RoamTransformationUtils.isConstantExpression(binaryExpr.getRhs())) {
-					case constant -> {
-						yield true;
-					}
-					case variableScalar -> {
-						yield true;
-					}
-					case variableValue -> {
-						yield false;
-					}
-					case variableVector -> {
-						yield false;
-					}
+			} else if (binaryExpr.getOperator() == BinaryArithmeticOperator.DIVIDE
+					|| binaryExpr.getOperator() == BinaryArithmeticOperator.MULTIPLY) {
+				boolean isLhsConst = switch (RoamTransformationUtils.isConstantExpression(binaryExpr.getLhs())) {
+				case constant -> {
+					yield true;
+				}
+				case variableScalar -> {
+					yield true;
+				}
+				case variableValue -> {
+					yield false;
+				}
+				case variableVector -> {
+					yield false;
+				}
 				};
-				
-				if(!isLhsConst && !isRhsConst) {
+				boolean isRhsConst = switch (RoamTransformationUtils.isConstantExpression(binaryExpr.getRhs())) {
+				case constant -> {
+					yield true;
+				}
+				case variableScalar -> {
+					yield true;
+				}
+				case variableValue -> {
+					yield false;
+				}
+				case variableVector -> {
+					yield false;
+				}
+				};
+
+				if (!isLhsConst && !isRhsConst) {
 					throw new IllegalArgumentException("A product may not contain more than one mapping expression.");
 				}
-				
-				if(factor == null) {
-					if(isLhsConst) {
-						return rewriteToSumOfProducts(binaryExpr.getRhs(), binaryExpr.getLhs(), binaryExpr.getOperator());
+
+				if (factor == null) {
+					if (isLhsConst) {
+						return rewriteToSumOfProducts(binaryExpr.getRhs(), binaryExpr.getLhs(),
+								binaryExpr.getOperator());
 					} else {
-						return rewriteToSumOfProducts(binaryExpr.getLhs(), binaryExpr.getRhs(), binaryExpr.getOperator());
+						return rewriteToSumOfProducts(binaryExpr.getLhs(), binaryExpr.getRhs(),
+								binaryExpr.getOperator());
 					}
 				} else {
-					if(isLhsConst) {
+					if (isLhsConst) {
 						BinaryArithmeticExpression rewriteLhs = factory.createBinaryArithmeticExpression();
 						rewriteLhs.setOperator(operator);
 						rewriteLhs.setLhs(binaryExpr.getLhs());
@@ -400,14 +420,15 @@ public class RoamToIntermediate {
 				// CASE: POW -> It is impossible to refactor exponentials into a sum-product
 				ArithmeticExpressionType lhsType = RoamTransformationUtils.isConstantExpression(binaryExpr.getLhs());
 				ArithmeticExpressionType rhsType = RoamTransformationUtils.isConstantExpression(binaryExpr.getRhs());
-				if(lhsType == ArithmeticExpressionType.variableValue || lhsType == ArithmeticExpressionType.variableVector) {
-					throw new IllegalArgumentException("An exponential expression must not contain any mapping expressions.");
+				if (lhsType == ArithmeticExpressionType.variableValue
+						|| lhsType == ArithmeticExpressionType.variableVector
+						|| rhsType == ArithmeticExpressionType.variableValue
+						|| rhsType == ArithmeticExpressionType.variableVector) {
+					throw new IllegalArgumentException(
+							"An exponential expression must not contain any mapping expressions.");
 				}
-				if(rhsType == ArithmeticExpressionType.variableValue || rhsType == ArithmeticExpressionType.variableVector) {
-					throw new IllegalArgumentException("An exponential expression must not contain any mapping expressions.");
-				}
-				
-				if(factor == null) {
+
+				if (factor == null) {
 					ArithmeticExpression lhsRewrite = rewriteToSumOfProducts(binaryExpr.getLhs(), null, null);
 					ArithmeticExpression rhsRewrite = rewriteToSumOfProducts(binaryExpr.getRhs(), null, null);
 					binaryExpr.setLhs(lhsRewrite);
@@ -424,19 +445,21 @@ public class RoamToIntermediate {
 					rewrite.setRhs(factor);
 					return rewrite;
 				}
-				
+
 			}
-		} else if(expr instanceof UnaryArithmeticExpression unaryExpr) {
-			if(unaryExpr.getOperator() == UnaryArithmeticOperator.BRACKET) {
-				boolean isConst = RoamTransformationUtils.isConstantExpression(unaryExpr.getExpression()) == ArithmeticExpressionType.constant ? true : false;
-				if(factor == null) {
-					if(isConst) {
+		} else if (expr instanceof UnaryArithmeticExpression unaryExpr) {
+			if (unaryExpr.getOperator() == UnaryArithmeticOperator.BRACKET) {
+				boolean isConst = RoamTransformationUtils
+						.isConstantExpression(unaryExpr.getExpression()) == ArithmeticExpressionType.constant ? true
+								: false;
+				if (factor == null) {
+					if (isConst) {
 						return unaryExpr.getExpression();
 					} else {
 						return rewriteToSumOfProducts(unaryExpr.getExpression(), null, null);
 					}
 				} else {
-					if(isConst) {
+					if (isConst) {
 						BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
 						rewrite.setOperator(operator);
 						rewrite.setRhs(factor);
@@ -445,13 +468,14 @@ public class RoamToIntermediate {
 					} else {
 						return rewriteToSumOfProducts(unaryExpr.getExpression(), factor, operator);
 					}
-					
+
 				}
-			} else if(unaryExpr.getOperator() == UnaryArithmeticOperator.NEGATE) {
-				if(factor == null) {
+			} else if (unaryExpr.getOperator() == UnaryArithmeticOperator.NEGATE) {
+				if (factor == null) {
 					DoubleLiteral constNegOne = factory.createDoubleLiteral();
 					constNegOne.setLiteral(-1);
-					return rewriteToSumOfProducts(unaryExpr.getExpression(), constNegOne, BinaryArithmeticOperator.MULTIPLY);
+					return rewriteToSumOfProducts(unaryExpr.getExpression(), constNegOne,
+							BinaryArithmeticOperator.MULTIPLY);
 				} else {
 					DoubleLiteral constNegOne = factory.createDoubleLiteral();
 					constNegOne.setLiteral(-1);
@@ -462,12 +486,15 @@ public class RoamToIntermediate {
 					return rewriteToSumOfProducts(rewrite, factor, operator);
 				}
 			} else {
-				ArithmeticExpressionType expressionType = RoamTransformationUtils.isConstantExpression(unaryExpr.getExpression());
-				if(expressionType == ArithmeticExpressionType.variableValue ||  expressionType == ArithmeticExpressionType.variableVector) {
-					throw new IllegalArgumentException("Absolute, square-root, sine or cosine expressions must not contain any mapping expressions.");
+				ArithmeticExpressionType expressionType = RoamTransformationUtils
+						.isConstantExpression(unaryExpr.getExpression());
+				if (expressionType == ArithmeticExpressionType.variableValue
+						|| expressionType == ArithmeticExpressionType.variableVector) {
+					throw new IllegalArgumentException(
+							"Absolute, square-root, sine or cosine expressions must not contain any mapping expressions.");
 				}
-				
-				if(factor == null) {
+
+				if (factor == null) {
 					ArithmeticExpression rewrite = rewriteToSumOfProducts(unaryExpr.getExpression(), null, null);
 					unaryExpr.setExpression(rewrite);
 					return unaryExpr;
@@ -481,20 +508,23 @@ public class RoamToIntermediate {
 					return rewrite;
 				}
 			}
-		} else if(expr instanceof ArithmeticValue valExpr) {
-			if(factor == null ) {
+		} else if (expr instanceof ArithmeticValue valExpr) {
+			if (factor == null) {
 				return expr;
 			} else {
-				ArithmeticExpressionType expressionType = RoamTransformationUtils.isConstantExpression(valExpr.getValue());
-				if(expressionType  == ArithmeticExpressionType.constant || expressionType  == ArithmeticExpressionType.variableScalar) {
+				ArithmeticExpressionType expressionType = RoamTransformationUtils
+						.isConstantExpression(valExpr.getValue());
+				if (expressionType == ArithmeticExpressionType.constant
+						|| expressionType == ArithmeticExpressionType.variableScalar) {
 					BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
 					rewrite.setOperator(operator);
 					rewrite.setLhs(valExpr);
 					rewrite.setRhs(factor);
 					return rewrite;
 				} else {
-					if(valExpr.getValue() instanceof SumExpression sumExpr) {
-						ArithmeticExpression rewrite = rewriteToSumOfProducts(sumExpr.getExpression(), factor, operator);
+					if (valExpr.getValue() instanceof SumExpression sumExpr) {
+						ArithmeticExpression rewrite = rewriteToSumOfProducts(sumExpr.getExpression(), factor,
+								operator);
 						sumExpr.setExpression(rewrite);
 						return valExpr;
 					} else {
@@ -508,7 +538,7 @@ public class RoamToIntermediate {
 			}
 		} else {
 			// CASE: Literals
-			if(factor == null ) {
+			if (factor == null) {
 				return expr;
 			} else {
 				BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
@@ -519,41 +549,41 @@ public class RoamToIntermediate {
 			}
 		}
 	}
-	
+
 	protected RelationalExpression rewriteMoveConstantTerms(final RelationalExpression relExpr) {
 		boolean isLhsConst = RoamTransformationUtils
 				.isConstantExpression(relExpr.getLhs()) == ArithmeticExpressionType.constant ? true : false;
-		
+
 		ArithmeticExpression constExpr;
 		ArithmeticExpression variableExpr;
-		if(isLhsConst) {
+		if (isLhsConst) {
 			constExpr = relExpr.getLhs();
 			variableExpr = relExpr.getRhs();
 		} else {
 			constExpr = relExpr.getRhs();
 			variableExpr = relExpr.getLhs();
 		}
-		
-		if(variableExpr instanceof BinaryArithmeticExpression binaryExpr) {
-			if(binaryExpr.getOperator() == BinaryArithmeticOperator.ADD) {
+
+		if (variableExpr instanceof BinaryArithmeticExpression binaryExpr) {
+			if (binaryExpr.getOperator() == BinaryArithmeticOperator.ADD) {
 				boolean isVarLhsConst = RoamTransformationUtils
 						.isConstantExpression(binaryExpr.getLhs()) == ArithmeticExpressionType.constant ? true : false;
 				boolean isVarRhsConst = RoamTransformationUtils
 						.isConstantExpression(binaryExpr.getRhs()) == ArithmeticExpressionType.constant ? true : false;
-				
-				if(!isVarLhsConst && !isVarRhsConst) {
+
+				if (!isVarLhsConst && !isVarRhsConst) {
 					return relExpr;
 				}
-				
+
 				RelationalExpression rewrite = factory.createRelationalExpression();
 				rewrite.setOperator(relExpr.getOperator());
 				BinaryArithmeticExpression newConst = factory.createBinaryArithmeticExpression();
 				rewrite.setLhs(newConst);
-				
+
 				newConst.setOperator(BinaryArithmeticOperator.SUBTRACT);
 				newConst.setLhs(constExpr);
-				
-				if(isVarLhsConst) {
+
+				if (isVarLhsConst) {
 					newConst.setRhs(binaryExpr.getLhs());
 					rewrite.setRhs(binaryExpr.getRhs());
 				} else {
@@ -561,23 +591,23 @@ public class RoamToIntermediate {
 					rewrite.setRhs(binaryExpr.getLhs());
 				}
 				return rewriteMoveConstantTerms(rewrite);
-			} else if(binaryExpr.getOperator() == BinaryArithmeticOperator.SUBTRACT) {
+			} else if (binaryExpr.getOperator() == BinaryArithmeticOperator.SUBTRACT) {
 				boolean isVarLhsConst = RoamTransformationUtils
 						.isConstantExpression(binaryExpr.getLhs()) == ArithmeticExpressionType.constant ? true : false;
 				boolean isVarRhsConst = RoamTransformationUtils
 						.isConstantExpression(binaryExpr.getRhs()) == ArithmeticExpressionType.constant ? true : false;
-				
-				if(!isVarLhsConst && !isVarRhsConst) {
+
+				if (!isVarLhsConst && !isVarRhsConst) {
 					return relExpr;
 				}
-				
+
 				RelationalExpression rewrite = factory.createRelationalExpression();
 				rewrite.setOperator(relExpr.getOperator());
 				BinaryArithmeticExpression newConst = factory.createBinaryArithmeticExpression();
 				rewrite.setLhs(newConst);
 				newConst.setLhs(constExpr);
-				
-				if(isVarLhsConst) {
+
+				if (isVarLhsConst) {
 					newConst.setOperator(BinaryArithmeticOperator.SUBTRACT);
 					newConst.setRhs(binaryExpr.getLhs());
 					ArithmeticExpression invertedRhs = invertSign(binaryExpr.getRhs());
@@ -591,18 +621,18 @@ public class RoamToIntermediate {
 			} else {
 				return relExpr;
 			}
-		} else if(variableExpr instanceof UnaryArithmeticExpression unaryExpr) {
+		} else if (variableExpr instanceof UnaryArithmeticExpression unaryExpr) {
 			return relExpr;
-		} else if(variableExpr instanceof ArithmeticValue valExpr) {
+		} else if (variableExpr instanceof ArithmeticValue valExpr) {
 			return relExpr;
 		} else {
 			return relExpr;
 		}
 	}
-	
+
 	protected ArithmeticExpression rewriteRemoveSubtractions(final ArithmeticExpression expr) {
-		if(expr instanceof BinaryArithmeticExpression binaryExpr) {
-			if(binaryExpr.getOperator() == BinaryArithmeticOperator.SUBTRACT) {
+		if (expr instanceof BinaryArithmeticExpression binaryExpr) {
+			if (binaryExpr.getOperator() == BinaryArithmeticOperator.SUBTRACT) {
 				ArithmeticExpression rewriteRHS = invertSign(binaryExpr.getRhs());
 				rewriteRHS = rewriteRemoveSubtractions(rewriteRHS);
 				ArithmeticExpression rewriteLHS = rewriteRemoveSubtractions(binaryExpr.getLhs());
@@ -618,12 +648,12 @@ public class RoamToIntermediate {
 				binaryExpr.setRhs(rewriteRHS);
 				return binaryExpr;
 			}
-		} else if(expr instanceof UnaryArithmeticExpression unaryExpr) {
+		} else if (expr instanceof UnaryArithmeticExpression unaryExpr) {
 			ArithmeticExpression rewrite = rewriteRemoveSubtractions(unaryExpr.getExpression());
 			unaryExpr.setExpression(rewrite);
 			return unaryExpr;
-		} else if(expr instanceof ArithmeticValue valExpr) {
-			if(valExpr.getValue() instanceof SumExpression sumExpr) {
+		} else if (expr instanceof ArithmeticValue valExpr) {
+			if (valExpr.getValue() instanceof SumExpression sumExpr) {
 				ArithmeticExpression rewrite = rewriteRemoveSubtractions(sumExpr.getExpression());
 				sumExpr.setExpression(rewrite);
 				return valExpr;
@@ -634,14 +664,14 @@ public class RoamToIntermediate {
 			return expr;
 		}
 	}
-	
+
 	protected ArithmeticExpression invertSign(final ArithmeticExpression expr) {
-		if(expr instanceof BinaryArithmeticExpression binaryExpr) {
-			if(binaryExpr.getOperator() == BinaryArithmeticOperator.ADD) {
+		if (expr instanceof BinaryArithmeticExpression binaryExpr) {
+			if (binaryExpr.getOperator() == BinaryArithmeticOperator.ADD) {
 				binaryExpr.setLhs(invertSign(binaryExpr.getLhs()));
 				binaryExpr.setOperator(BinaryArithmeticOperator.SUBTRACT);
 				return binaryExpr;
-			} else if(binaryExpr.getOperator() == BinaryArithmeticOperator.SUBTRACT) {
+			} else if (binaryExpr.getOperator() == BinaryArithmeticOperator.SUBTRACT) {
 				binaryExpr.setLhs(invertSign(binaryExpr.getLhs()));
 				binaryExpr.setOperator(BinaryArithmeticOperator.ADD);
 				return binaryExpr;
@@ -649,10 +679,10 @@ public class RoamToIntermediate {
 				binaryExpr.setLhs(invertSign(binaryExpr.getLhs()));
 				return binaryExpr;
 			}
-		} else if(expr instanceof UnaryArithmeticExpression unaryExpr) {
-			if(unaryExpr.getOperator() == UnaryArithmeticOperator.NEGATE) {
+		} else if (expr instanceof UnaryArithmeticExpression unaryExpr) {
+			if (unaryExpr.getOperator() == UnaryArithmeticOperator.NEGATE) {
 				return unaryExpr.getExpression();
-			} else if(unaryExpr.getOperator() == UnaryArithmeticOperator.BRACKET) {
+			} else if (unaryExpr.getOperator() == UnaryArithmeticOperator.BRACKET) {
 				return invertSign(unaryExpr.getExpression());
 			} else {
 				BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
@@ -663,8 +693,8 @@ public class RoamToIntermediate {
 				rewrite.setRhs(unaryExpr);
 				return rewrite;
 			}
-		} else if(expr instanceof ArithmeticValue valExpr) {
-			if(valExpr.getValue() instanceof SumExpression sumExpr) {
+		} else if (expr instanceof ArithmeticValue valExpr) {
+			if (valExpr.getValue() instanceof SumExpression sumExpr) {
 				sumExpr.setExpression(invertSign(sumExpr.getExpression()));
 				return valExpr;
 			} else {
@@ -676,7 +706,7 @@ public class RoamToIntermediate {
 				rewrite.setRhs(valExpr);
 				return rewrite;
 			}
-		} else if(expr instanceof IntegerLiteral lit) {
+		} else if (expr instanceof IntegerLiteral lit) {
 			lit.setLiteral(-lit.getLiteral());
 			return lit;
 		} else {

@@ -32,6 +32,15 @@ public interface RoamIntermediateFactory extends EFactory {
 	RoamIntermediateModel createRoamIntermediateModel();
 
 	/**
+	 * Returns a new object of class '<em>Pattern</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Pattern</em>'.
+	 * @generated
+	 */
+	Pattern createPattern();
+
+	/**
 	 * Returns a new object of class '<em>Type</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -68,6 +77,15 @@ public interface RoamIntermediateFactory extends EFactory {
 	GlobalObjective createGlobalObjective();
 
 	/**
+	 * Returns a new object of class '<em>Pattern Constraint</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Pattern Constraint</em>'.
+	 * @generated
+	 */
+	PatternConstraint createPatternConstraint();
+
+	/**
 	 * Returns a new object of class '<em>Type Constraint</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -84,6 +102,15 @@ public interface RoamIntermediateFactory extends EFactory {
 	 * @generated
 	 */
 	MappingConstraint createMappingConstraint();
+
+	/**
+	 * Returns a new object of class '<em>Pattern Objective</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Pattern Objective</em>'.
+	 * @generated
+	 */
+	PatternObjective createPatternObjective();
 
 	/**
 	 * Returns a new object of class '<em>Mapping Objective</em>'.
@@ -230,6 +257,24 @@ public interface RoamIntermediateFactory extends EFactory {
 	ContextTypeValue createContextTypeValue();
 
 	/**
+	 * Returns a new object of class '<em>Context Pattern Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Context Pattern Value</em>'.
+	 * @generated
+	 */
+	ContextPatternValue createContextPatternValue();
+
+	/**
+	 * Returns a new object of class '<em>Context Pattern Node</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Context Pattern Node</em>'.
+	 * @generated
+	 */
+	ContextPatternNode createContextPatternNode();
+
+	/**
 	 * Returns a new object of class '<em>Context Mapping Value</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -284,6 +329,15 @@ public interface RoamIntermediateFactory extends EFactory {
 	ContextTypeFeatureValue createContextTypeFeatureValue();
 
 	/**
+	 * Returns a new object of class '<em>Context Pattern Node Feature Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Context Pattern Node Feature Value</em>'.
+	 * @generated
+	 */
+	ContextPatternNodeFeatureValue createContextPatternNodeFeatureValue();
+
+	/**
 	 * Returns a new object of class '<em>Context Mapping Node Feature Value</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -291,6 +345,42 @@ public interface RoamIntermediateFactory extends EFactory {
 	 * @generated
 	 */
 	ContextMappingNodeFeatureValue createContextMappingNodeFeatureValue();
+
+	/**
+	 * Returns a new object of class '<em>Iterator Pattern Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Iterator Pattern Value</em>'.
+	 * @generated
+	 */
+	IteratorPatternValue createIteratorPatternValue();
+
+	/**
+	 * Returns a new object of class '<em>Iterator Pattern Feature Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Iterator Pattern Feature Value</em>'.
+	 * @generated
+	 */
+	IteratorPatternFeatureValue createIteratorPatternFeatureValue();
+
+	/**
+	 * Returns a new object of class '<em>Iterator Pattern Node Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Iterator Pattern Node Value</em>'.
+	 * @generated
+	 */
+	IteratorPatternNodeValue createIteratorPatternNodeValue();
+
+	/**
+	 * Returns a new object of class '<em>Iterator Pattern Node Feature Value</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Iterator Pattern Node Feature Value</em>'.
+	 * @generated
+	 */
+	IteratorPatternNodeFeatureValue createIteratorPatternNodeFeatureValue();
 
 	/**
 	 * Returns a new object of class '<em>Iterator Mapping Value</em>'.

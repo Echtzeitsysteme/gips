@@ -12,7 +12,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode;
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
@@ -38,7 +38,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	 * @generated
 	 * @ordered
 	 */
-	protected MappingConstraint mappingContext;
+	protected Mapping mappingContext;
 
 	/**
 	 * The cached value of the '{@link #getNode() <em>Node</em>}' reference.
@@ -74,10 +74,10 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public MappingConstraint getMappingContext() {
+	public Mapping getMappingContext() {
 		if (mappingContext != null && mappingContext.eIsProxy()) {
 			InternalEObject oldMappingContext = (InternalEObject) mappingContext;
-			mappingContext = (MappingConstraint) eResolveProxy(oldMappingContext);
+			mappingContext = (Mapping) eResolveProxy(oldMappingContext);
 			if (mappingContext != oldMappingContext) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
@@ -93,7 +93,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public MappingConstraint basicGetMappingContext() {
+	public Mapping basicGetMappingContext() {
 		return mappingContext;
 	}
 
@@ -102,8 +102,8 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMappingContext(MappingConstraint newMappingContext) {
-		MappingConstraint oldMappingContext = mappingContext;
+	public void setMappingContext(Mapping newMappingContext) {
+		Mapping oldMappingContext = mappingContext;
 		mappingContext = newMappingContext;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -179,7 +179,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE__MAPPING_CONTEXT:
-			setMappingContext((MappingConstraint) newValue);
+			setMappingContext((Mapping) newValue);
 			return;
 		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE__NODE:
 			setNode((IBeXNode) newValue);
@@ -197,7 +197,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	public void eUnset(int featureID) {
 		switch (featureID) {
 		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE__MAPPING_CONTEXT:
-			setMappingContext((MappingConstraint) null);
+			setMappingContext((Mapping) null);
 			return;
 		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE__NODE:
 			setNode((IBeXNode) null);

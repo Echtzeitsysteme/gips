@@ -2,17 +2,23 @@ package org.emoflon.roam.roamslang.scoping;
 
 import java.util.Set;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.xtext.scoping.IScope;
-import org.eclipse.xtext.scoping.Scopes;
+import org.emoflon.roam.roamslang.roamSLang.RoamAttributeExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
+import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamFeatureExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamFeatureLit;
+import org.emoflon.roam.roamslang.roamSLang.RoamFeatureNavigation;
+import org.emoflon.roam.roamslang.roamSLang.RoamLambdaAttributeExpression;
+import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
+import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamMappingContext;
+import org.emoflon.roam.roamslang.roamSLang.RoamMatchContext;
 import org.emoflon.roam.roamslang.roamSLang.RoamNodeAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamSLangPackage;
 import org.emoflon.roam.roamslang.roamSLang.RoamSelect;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamStreamNavigation;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeCast;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamConstraintImpl;
@@ -23,20 +29,15 @@ import org.emoflon.roam.roamslang.roamSLang.impl.RoamSelectImpl;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamStreamArithmeticImpl;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamStreamNavigationImpl;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamStreamSetImpl;
-import org.emoflon.roam.roamslang.roamSLang.RoamAttributeExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
-import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamFeatureExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamFeatureLit;
-import org.emoflon.roam.roamslang.roamSLang.RoamFeatureNavigation;
-import org.emoflon.roam.roamslang.roamSLang.RoamLambdaAttributeExpression;
-import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
-import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
 
 public final class RoamSLangScopeContextUtil {
 	
 	public static boolean isRoamMapping(final EObject context, final EReference reference) {
 		return context instanceof RoamMapping;
+	}
+	
+	public static boolean isRoamMatchContext(EObject context, EReference reference) {
+		return context instanceof RoamMatchContext;
 	}
 	
 	public static boolean isRoamMappingContext(final EObject context, final EReference reference) {
@@ -69,6 +70,10 @@ public final class RoamSLangScopeContextUtil {
 	
 	public static boolean isRoamNodeAttributeExprFeature(final EObject context, final EReference reference) {
 		return context instanceof RoamNodeAttributeExpr && reference == RoamSLangPackage.Literals.ROAM_FEATURE_LIT__FEATURE;
+	}
+	
+	public static boolean isRoamLambdaAttributeExpressionVariable(final EObject context, final EReference reference) {
+		return context instanceof RoamLambdaAttributeExpression && reference == RoamSLangPackage.Literals.ROAM_LAMBDA_ATTRIBUTE_EXPRESSION__VAR;
 	}
 	
 	public static boolean isRoamLambdaAttributeExpression(final EObject context, final EReference reference) {
@@ -133,10 +138,24 @@ public final class RoamSLangScopeContextUtil {
 		return (RoamStreamExpr) RoamSLangScopeContextUtil.getContainer(context, classes);
 	}
 	
+	public static RoamStreamExpr getStreamIteratorNavigationRoot(RoamLambdaAttributeExpression context) {
+		Set<Class<?>> classes = Set.of(RoamStreamNavigationImpl.class);
+		RoamStreamExpr root = (RoamStreamExpr) RoamSLangScopeContextUtil.getContainer(context, classes);
+		if(root != null)
+			return root;
+		
+		classes.add(RoamStreamSetImpl.class);
+		classes.add(RoamSelectImpl.class);
+		classes.add(RoamStreamArithmeticImpl.class);
+		return (RoamStreamExpr) RoamSLangScopeContextUtil.getContainer(context, classes);
+	}
+	
 	public static EObject getStreamContainer(RoamLambdaAttributeExpression context) {
 		Set<Class<?>> classes = Set.of(RoamContextExprImpl.class, RoamMappingAttributeExprImpl.class,
 				RoamStreamNavigationImpl.class, RoamStreamSetImpl.class, RoamSelectImpl.class,
 				RoamStreamArithmeticImpl.class);
 		return (EObject) RoamSLangScopeContextUtil.getContainer(context, classes);
 	}
+
+	
 }

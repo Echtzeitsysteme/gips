@@ -3,16 +3,16 @@
  */
 package org.emoflon.roam.roamslang.scoping;
 
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.Scopes;
+import org.emoflon.ibex.gt.editor.gT.EditorOperator;
 import org.emoflon.ibex.gt.editor.utils.GTEditorModelUtils;
 import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
 import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
@@ -22,15 +22,18 @@ import org.emoflon.roam.roamslang.roamSLang.RoamFeatureExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureLit;
 import org.emoflon.roam.roamslang.roamSLang.RoamFeatureNavigation;
 import org.emoflon.roam.roamslang.roamSLang.RoamLambdaAttributeExpression;
+import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
+import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamMappingContext;
+import org.emoflon.roam.roamslang.roamSLang.RoamMatchContext;
 import org.emoflon.roam.roamslang.roamSLang.RoamNodeAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamObjective;
 import org.emoflon.roam.roamslang.roamSLang.RoamSelect;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamArithmetic;
 import org.emoflon.roam.roamslang.roamSLang.RoamStreamNavigation;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamSet;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeCast;
 import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
-import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
-import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
 import org.emoflon.roam.roamslang.roamSLang.impl.EditorGTFileImpl;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamConstraintImpl;
 import org.emoflon.roam.roamslang.roamSLang.impl.RoamContextExprImpl;
@@ -68,6 +71,8 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 			return scopeForRoamMappingContext((RoamMappingContext) context, reference);
 		} else if (RoamSLangScopeContextUtil.isRoamTypeContext(context, reference)) {
 			return scopeForRoamTypeContext((RoamTypeContext) context, reference);
+		} else if (RoamSLangScopeContextUtil.isRoamMatchContext(context, reference)) {
+			return scopeForRoamMatchContext((RoamMatchContext) context, reference);
 		} else if (RoamSLangScopeContextUtil.isRoamMappingAttributeExprMapping(context, reference)) {
 			return scopeForRoamMappingAttributeExprMapping((RoamMappingAttributeExpr) context, reference);
 		} else if (RoamSLangScopeContextUtil.isRoamMappingAttributeExprNode(context, reference)) {
@@ -76,6 +81,8 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 			return scopeForRoamContextExprNode((RoamContextExpr) context, reference);
 		} else if (RoamSLangScopeContextUtil.isRoamContextExprFeature(context, reference)) {
 			return scopeForRoamContextExprFeature((RoamContextExpr) context, reference);
+		} else if (RoamSLangScopeContextUtil.isRoamLambdaAttributeExpressionVariable(context, reference)) {
+			return scopeForRoamLambdaAttributeExpressionVariable((RoamLambdaAttributeExpression) context, reference);
 		} else if (RoamSLangScopeContextUtil.isRoamLambdaAttributeExpression(context, reference)) {
 			return scopeForRoamLambdaAttributeExpression((RoamLambdaAttributeExpression) context, reference);
 		} else if (RoamSLangScopeContextUtil.isRoamSelect(context, reference)) {
@@ -95,6 +102,11 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 		else {
 			return super.getScope(context, reference);
 		}
+	}
+
+	private IScope scopeForRoamMatchContext(RoamMatchContext context, EReference reference) {
+		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
+		return Scopes.scopeFor(editorFile.getPatterns());
 	}
 
 	public IScope scopeForRoamMapping(RoamMapping context, EReference reference) {
@@ -136,9 +148,32 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 		}
 
 		if (contextType instanceof RoamMappingContext mappingContext) {
-			return Scopes.scopeFor(mappingContext.getMapping().getRule().getNodes());
+			// Return context nodes only!
+			return Scopes.scopeFor(mappingContext.getMapping().getRule().getNodes().stream()
+					.filter(node -> !node.isLocal() && node.getOperator() != EditorOperator.CREATE)
+					.collect(Collectors.toList()));
+		} else if(contextType instanceof RoamMatchContext matchContext) {
+			// Return context nodes only!
+			return Scopes.scopeFor(matchContext.getPattern().getNodes().stream()
+					.filter(node -> !node.isLocal() && node.getOperator() != EditorOperator.CREATE)
+					.collect(Collectors.toList()));
 		} else {
 			return super.getScope(context, reference);
+		}
+	}
+	
+	public IScope scopeForRoamLambdaAttributeExpressionVariable(RoamLambdaAttributeExpression context, EReference reference) {
+		Set<Class<?>> classes = Set.of(RoamStreamSetImpl.class, RoamStreamArithmeticImpl.class);
+		EObject parent = (EObject) RoamSLangScopeContextUtil.getContainer(context, classes);
+		if (parent == null) {
+			return super.getScope(context, reference);
+		}
+		
+		if(parent instanceof RoamStreamSet streamSet) {
+			return Scopes.scopeFor(List.of(streamSet.getLambda()));
+		} else {
+			RoamStreamArithmetic streamArithmetic = (RoamStreamArithmetic) parent;
+			return Scopes.scopeFor(List.of(streamArithmetic.getLambda()));
 		}
 	}
 
@@ -288,7 +323,15 @@ public class RoamSLangScopeProvider extends AbstractRoamSLangScopeProvider {
 			}
 
 			if (contextType instanceof RoamMappingContext mappingContext) {
-				return Scopes.scopeFor(mappingContext.getMapping().getRule().getNodes());
+				// Return context nodes only!
+				return Scopes.scopeFor(mappingContext.getMapping().getRule().getNodes().stream()
+						.filter(node -> !node.isLocal() && node.getOperator() != EditorOperator.CREATE)
+						.collect(Collectors.toList()));
+			} else if(contextType instanceof RoamMatchContext matchContext) {
+				// Return context nodes only!
+				return Scopes.scopeFor(matchContext.getPattern().getNodes().stream()
+						.filter(node -> !node.isLocal() && node.getOperator() != EditorOperator.CREATE)
+						.collect(Collectors.toList()));
 			} else {
 				return super.getScope(context, reference);
 			}

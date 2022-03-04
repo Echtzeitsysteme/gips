@@ -77,6 +77,11 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter casePattern(Pattern object) {
+			return createPatternAdapter();
+		}
+
+		@Override
 		public Adapter caseType(Type object) {
 			return createTypeAdapter();
 		}
@@ -107,6 +112,11 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter casePatternConstraint(PatternConstraint object) {
+			return createPatternConstraintAdapter();
+		}
+
+		@Override
 		public Adapter caseTypeConstraint(TypeConstraint object) {
 			return createTypeConstraintAdapter();
 		}
@@ -117,13 +127,18 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
-		public Adapter caseMappingObjective(MappingObjective object) {
-			return createMappingObjectiveAdapter();
+		public Adapter casePatternObjective(PatternObjective object) {
+			return createPatternObjectiveAdapter();
 		}
 
 		@Override
 		public Adapter caseTypeObjective(TypeObjective object) {
 			return createTypeObjectiveAdapter();
+		}
+
+		@Override
+		public Adapter caseMappingObjective(MappingObjective object) {
+			return createMappingObjectiveAdapter();
 		}
 
 		@Override
@@ -237,6 +252,16 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseContextPatternValue(ContextPatternValue object) {
+			return createContextPatternValueAdapter();
+		}
+
+		@Override
+		public Adapter caseContextPatternNode(ContextPatternNode object) {
+			return createContextPatternNodeAdapter();
+		}
+
+		@Override
 		public Adapter caseContextMappingValue(ContextMappingValue object) {
 			return createContextMappingValueAdapter();
 		}
@@ -267,6 +292,11 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseContextPatternNodeFeatureValue(ContextPatternNodeFeatureValue object) {
+			return createContextPatternNodeFeatureValueAdapter();
+		}
+
+		@Override
 		public Adapter caseContextMappingNodeFeatureValue(ContextMappingNodeFeatureValue object) {
 			return createContextMappingNodeFeatureValueAdapter();
 		}
@@ -274,6 +304,26 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseIterator(Iterator object) {
 			return createIteratorAdapter();
+		}
+
+		@Override
+		public Adapter caseIteratorPatternValue(IteratorPatternValue object) {
+			return createIteratorPatternValueAdapter();
+		}
+
+		@Override
+		public Adapter caseIteratorPatternFeatureValue(IteratorPatternFeatureValue object) {
+			return createIteratorPatternFeatureValueAdapter();
+		}
+
+		@Override
+		public Adapter caseIteratorPatternNodeValue(IteratorPatternNodeValue object) {
+			return createIteratorPatternNodeValueAdapter();
+		}
+
+		@Override
+		public Adapter caseIteratorPatternNodeFeatureValue(IteratorPatternNodeFeatureValue object) {
+			return createIteratorPatternNodeFeatureValueAdapter();
 		}
 
 		@Override
@@ -374,6 +424,20 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.Pattern <em>Pattern</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Pattern
+	 * @generated
+	 */
+	public Adapter createPatternAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.Type <em>Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -458,6 +522,20 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint <em>Pattern Constraint</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint
+	 * @generated
+	 */
+	public Adapter createPatternConstraintAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint <em>Type Constraint</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -482,6 +560,20 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createMappingConstraintAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective <em>Pattern Objective</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective
+	 * @generated
+	 */
+	public Adapter createPatternObjectiveAdapter() {
 		return null;
 	}
 
@@ -822,6 +914,34 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue <em>Context Pattern Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue
+	 * @generated
+	 */
+	public Adapter createContextPatternValueAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode <em>Context Pattern Node</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode
+	 * @generated
+	 */
+	public Adapter createContextPatternNodeAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue <em>Context Mapping Value</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -906,6 +1026,20 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue <em>Context Pattern Node Feature Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue
+	 * @generated
+	 */
+	public Adapter createContextPatternNodeFeatureValueAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue <em>Context Mapping Node Feature Value</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -930,6 +1064,62 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createIteratorAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue <em>Iterator Pattern Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue
+	 * @generated
+	 */
+	public Adapter createIteratorPatternValueAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue <em>Iterator Pattern Feature Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue
+	 * @generated
+	 */
+	public Adapter createIteratorPatternFeatureValueAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue <em>Iterator Pattern Node Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue
+	 * @generated
+	 */
+	public Adapter createIteratorPatternNodeValueAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue <em>Iterator Pattern Node Feature Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue
+	 * @generated
+	 */
+	public Adapter createIteratorPatternNodeFeatureValueAdapter() {
 		return null;
 	}
 

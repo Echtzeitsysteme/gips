@@ -83,6 +83,9 @@
     <genClasses ecoreClass="RoamSLang.ecore#//RoamTypeContext">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamTypeContext/type"/>
     </genClasses>
+    <genClasses ecoreClass="RoamSLang.ecore#//RoamMatchContext">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamMatchContext/pattern"/>
+    </genClasses>
     <genClasses ecoreClass="RoamSLang.ecore#//RoamObjectiveExpression">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//RoamObjectiveExpression/objective"/>
     </genClasses>

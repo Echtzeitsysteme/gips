@@ -27,6 +27,7 @@ public class TypeIndexer {
 	final protected RoamIntermediateModel roamModel;
 	protected TypeListener listener;
 	final protected Map<EClass, Set<EObject>> index = Collections.synchronizedMap(new HashMap<>());
+	final protected Map<String, EClass> typeByName = Collections.synchronizedMap(new HashMap<>());
 	protected boolean cascadingNotifications = false;
 	
 	protected TypeIndexer(final GraphTransformationAPI eMoflonAPI, final RoamIntermediateModel roamModel) {
@@ -42,6 +43,10 @@ public class TypeIndexer {
 	
 	public Set<EObject> getObjectsOfType(final EClass type) {
 		return index.get(type);
+	}
+	
+	public Set<EObject> getObjectsOfType(final String type) {
+		return index.get(typeByName.get(type));
 	}
 	
 	protected EObject putObject(final EClass type, final EObject object) {
@@ -133,6 +138,7 @@ public class TypeIndexer {
 			.map(var -> (Type) var)
 			.forEach(type -> {
 				index.put(type.getType(), Collections.synchronizedSet(new HashSet<>()));
+				typeByName.put(type.getName(), type.getType());
 			});
 		
 		eMoflonAPI.getModel().getResources().parallelStream()

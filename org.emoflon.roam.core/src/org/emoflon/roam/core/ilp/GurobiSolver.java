@@ -3,8 +3,8 @@ package org.emoflon.roam.core.ilp;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
+import org.eclipse.emf.ecore.EObject;
 import org.emoflon.roam.core.RoamEngine;
 import org.emoflon.roam.core.RoamGlobalObjective;
 import org.emoflon.roam.core.RoamMapper;
@@ -41,12 +41,6 @@ public class GurobiSolver extends ILPSolver {
 	 */
 	private final HashMap<String, GRBVar> grbVars = new HashMap<String, GRBVar>();
 
-	/**
-	 * Global objective expression that will be constructed while executing
-	 * 'translateObjective(...)'.
-	 */
-	private GRBLinExpr obj;
-
 	public GurobiSolver(final RoamEngine engine, final ILPSolverConfig config) throws Exception {
 		super(engine);
 		env = new GRBEnv("Gurobi_ILP.log");
@@ -64,9 +58,6 @@ public class GurobiSolver extends ILPSolver {
 	@Override
 	public void solve() {
 		try {
-			// Finish setup
-			model.setObjective(obj);
-
 			// Solving starts here
 			model.update();
 			// TODO: Set optimality tolerance here
@@ -112,39 +103,74 @@ public class GurobiSolver extends ILPSolver {
 		createOrGetBinVar(mapping.ilpVariable);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	protected void translateConstraint(final RoamMappingConstraint constraint) {
+	protected void translateConstraint(final RoamMappingConstraint<? extends EObject> constraint) {
 		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	protected void translateConstraint(final RoamPatternConstraint constraint) {
+	protected void translateConstraint(final RoamPatternConstraint<?, ?> constraint) {
 		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	protected void translateConstraint(final RoamTypeConstraint constraint) {
+	protected void translateConstraint(final RoamTypeConstraint<? extends EObject> constraint) {
 		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
 	}
 
 	@Override
 	protected void translateObjective(final RoamGlobalObjective objective) {
-		initObjIfNull();
-		final List<?> terms = objective.getObjectiveFunction().terms();
-		final List<ILPConstant<Double>> constants = objective.getObjectiveFunction().constants();
+		final GRBLinExpr obj = new GRBLinExpr();
+		final ILPNestedLinearFunction<?> nestFunc = objective.getObjectiveFunction();
 
-		if (terms.size() != constants.size()) {
-			throw new UnsupportedOperationException("Size of terms and constants did not match.");
-		}
+		
+		// Add all constants
+		nestFunc.constants().forEach(c -> {
+			obj.addConstant(c.weight());
+		});
+		
+		// For each linear function
+		nestFunc.linearFunctions().forEach(lf -> {
+			final GRBLinExpr expr = new GRBLinExpr();
+			// Linear function contains terms
+			lf.linearFunction().terms().forEach(t -> {
+				final GRBLinExpr term = new GRBLinExpr();				
+				term.addTerm(t.weight(), createOrGetBinVar(t.variable().getName()));
+				
+				try {
+					expr.add(term);
+				} catch (final GRBException e) {
+					e.printStackTrace();
+				}
+			});
+			
+			// Linear function contains constant terms
+			lf.linearFunction().constantTerms().forEach(c -> {
+				expr.addConstant(c.weight());
+			});
+			
+			try {
+				// Add current linear function with its weight
+				obj.multAdd(lf.weight(), expr);
+			} catch (final GRBException e) {
+				e.printStackTrace();
+			}
+		});
 
-		for (int i = 0; i < terms.size(); i++) {
-			// TODO: How to fix this?
-			@SuppressWarnings("unchecked")
-			final ILPTerm<? extends Number, Double> ilpTerm = (ILPTerm<? extends Number, Double>) terms.get(i);
-			obj.addTerm(constants.get(i).weight(), createOrGetBinVar(ilpTerm.variable().getName()));
+		// Set global objective with goal
+		try {
+			int goal = -1;
+			switch (nestFunc.goal()) {
+			case MAX -> {
+				goal = GRB.MAXIMIZE;
+			}
+			case MIN -> {
+				goal = GRB.MINIMIZE;
+			}
+			}
+			model.setObjective(obj, goal);
+		} catch (final GRBException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -270,15 +296,6 @@ public class GurobiSolver extends ILPSolver {
 			} catch (final GRBException e) {
 				throw new UnsupportedOperationException(e);
 			}
-		}
-	}
-
-	/**
-	 * Initializes the global objective (GRBExpr) if it is null.
-	 */
-	private void initObjIfNull() {
-		if (this.obj == null) {
-			this.obj = new GRBLinExpr();
 		}
 	}
 

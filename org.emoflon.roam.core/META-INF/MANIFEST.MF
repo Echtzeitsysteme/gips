@@ -8,3 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-16
 Require-Bundle: org.emoflon.ibex.gt;visibility:=reexport,
  org.emoflon.roam.intermediate;visibility:=reexport,
  org.emoflon.roam.core.dependencies;bundle-version="1.0.0";visibility:=reexport
+Export-Package: org.emoflon.roam.core,
+ org.emoflon.roam.core.api,
+ org.emoflon.roam.core.gt,
+ org.emoflon.roam.core.ilp

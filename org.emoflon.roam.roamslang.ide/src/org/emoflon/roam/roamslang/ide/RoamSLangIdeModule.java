@@ -3,7 +3,6 @@
  */
 package org.emoflon.roam.roamslang.ide;
 
-
 /**
  * Use this class to register ide components.
  */

@@ -3,43 +3,40 @@
 package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
+import org.emoflon.roam.intermediate.RoamIntermediate.Type;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Context Type Value</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Context
+ * Type Value</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextTypeValueImpl#getTypeContext <em>Type Context</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextTypeValueImpl#getTypeContext
+ * <em>Type Context</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ContextTypeValueImpl extends ValueExpressionImpl implements ContextTypeValue {
 	/**
-	 * The cached value of the '{@link #getTypeContext() <em>Type Context</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getTypeContext() <em>Type Context</em>}'
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @see #getTypeContext()
 	 * @generated
 	 * @ordered
 	 */
-	protected TypeConstraint typeContext;
+	protected Type typeContext;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	protected ContextTypeValueImpl() {
@@ -47,8 +44,8 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -57,14 +54,15 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
-	public TypeConstraint getTypeContext() {
+	@Override
+	public Type getTypeContext() {
 		if (typeContext != null && typeContext.eIsProxy()) {
 			InternalEObject oldTypeContext = (InternalEObject) typeContext;
-			typeContext = (TypeConstraint) eResolveProxy(oldTypeContext);
+			typeContext = (Type) eResolveProxy(oldTypeContext);
 			if (typeContext != oldTypeContext) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
@@ -75,21 +73,22 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
-	public TypeConstraint basicGetTypeContext() {
+	public Type basicGetTypeContext() {
 		return typeContext;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
-	public void setTypeContext(TypeConstraint newTypeContext) {
-		TypeConstraint oldTypeContext = typeContext;
+	@Override
+	public void setTypeContext(Type newTypeContext) {
+		Type oldTypeContext = typeContext;
 		typeContext = newTypeContext;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -97,8 +96,8 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -113,38 +112,38 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 		case RoamIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT:
-			setTypeContext((TypeConstraint) newValue);
+			setTypeContext((Type) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 		case RoamIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT:
-			setTypeContext((TypeConstraint) null);
+			setTypeContext((Type) null);
 			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @generated
 	 */
 	@Override
@@ -156,4 +155,4 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 		return super.eIsSet(featureID);
 	}
 
-} //ContextTypeValueImpl
+} // ContextTypeValueImpl

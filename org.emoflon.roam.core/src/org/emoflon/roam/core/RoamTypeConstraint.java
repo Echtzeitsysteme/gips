@@ -8,29 +8,29 @@ import org.emoflon.roam.core.ilp.ILPConstraint;
 import org.emoflon.roam.core.ilp.ILPTerm;
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
 
-public abstract class RoamTypeConstraint extends RoamConstraint<TypeConstraint, EObject, Integer> {
-	
-	final protected TypeIndexer indexer;
+public abstract class RoamTypeConstraint<CONTEXT extends EObject>
+		extends RoamConstraint<TypeConstraint, CONTEXT, Integer> {
+
 	final protected EClass type;
 
 	public RoamTypeConstraint(RoamEngine engine, TypeConstraint constraint) {
 		super(engine, constraint);
-		indexer = engine.getIndexer();
 		type = constraint.getModelType().getType();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void buildConstraints() {
 		indexer.getObjectsOfType(type).parallelStream().forEach(context -> {
-			ilpConstraints.put(context, buildConstraint(context));
+			ilpConstraints.put((CONTEXT) context, buildConstraint((CONTEXT) context));
 		});
 	}
-	
+
 	@Override
-	public ILPConstraint<Integer> buildConstraint(final EObject context) {
-		Integer constTerm = buildConstantTerm(context);
-		List<ILPTerm<Integer, Integer>> terms = buildVariableTerms(context);
-		return new ILPConstraint<Integer>(constTerm, constraint.getExpression().getOperator(), terms);
+	public ILPConstraint<Integer> buildConstraint(final CONTEXT context) {
+		double constTerm = buildConstantTerm(context);
+		List<ILPTerm<Integer, Double>> terms = buildVariableTerms(context);
+		return new ILPConstraint<>(constTerm, constraint.getExpression().getOperator(), terms);
 	}
 
 }

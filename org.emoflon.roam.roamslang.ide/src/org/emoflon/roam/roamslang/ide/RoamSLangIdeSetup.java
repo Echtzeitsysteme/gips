@@ -3,11 +3,12 @@
  */
 package org.emoflon.roam.roamslang.ide;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import org.eclipse.xtext.util.Modules2;
 import org.emoflon.roam.roamslang.RoamSLangRuntimeModule;
 import org.emoflon.roam.roamslang.RoamSLangStandaloneSetup;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /**
  * Initialization support for running Xtext languages as language servers.
@@ -18,5 +19,5 @@ public class RoamSLangIdeSetup extends RoamSLangStandaloneSetup {
 	public Injector createInjector() {
 		return Guice.createInjector(Modules2.mixin(new RoamSLangRuntimeModule(), new RoamSLangIdeModule()));
 	}
-	
+
 }

@@ -39,11 +39,11 @@ public class GurobiSolver extends ILPSolver {
 	/**
 	 * Look-up data structure to speed-up the variable look-up.
 	 */
-	private final HashMap<String, GRBVar> grbVars = new HashMap<String, GRBVar>();
+	private final HashMap<String, GRBVar> grbVars = new HashMap<>();
 
 	public GurobiSolver(final RoamEngine engine, final ILPSolverConfig config) throws Exception {
 		super(engine);
-		
+
 		// TODO: Gurobi log output redirect from stdout to ILPSolverOutput
 		env = new GRBEnv("Gurobi_ILP.log");
 		env.set(DoubleParam.TimeLimit, config.timeLimit());
@@ -61,7 +61,7 @@ public class GurobiSolver extends ILPSolver {
 	public ILPSolverOutput solve() {
 		ILPSolverStatus status = null;
 		double objVal = -1;
-		
+
 		try {
 			// Solving starts here
 			model.update();
@@ -69,7 +69,7 @@ public class GurobiSolver extends ILPSolver {
 			model.optimize();
 			objVal = model.get(GRB.DoubleAttr.ObjVal);
 			final int grbStatus = model.get(GRB.IntAttr.Status);
-			switch(grbStatus) {
+			switch (grbStatus) {
 			case GRB.UNBOUNDED -> {
 				status = ILPSolverStatus.UNBOUNDED;
 			}
@@ -87,9 +87,9 @@ public class GurobiSolver extends ILPSolver {
 			}
 			}
 		} catch (final GRBException e) {
-			// TODO
+			throw new RuntimeException(e);
 		}
-		
+
 		return new ILPSolverOutput(status, objVal);
 	}
 
@@ -108,7 +108,7 @@ public class GurobiSolver extends ILPSolver {
 					// Save result value in specific mapping
 					mapper.getMapping(k).setValue((int) result);
 				} catch (final GRBException e) {
-					e.printStackTrace();
+					throw new RuntimeException(e);
 				}
 			}
 		}
@@ -118,7 +118,7 @@ public class GurobiSolver extends ILPSolver {
 		try {
 			env.dispose();
 		} catch (final GRBException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -148,37 +148,36 @@ public class GurobiSolver extends ILPSolver {
 		final GRBLinExpr obj = new GRBLinExpr();
 		final ILPNestedLinearFunction<?> nestFunc = objective.getObjectiveFunction();
 
-		
 		// Add all constants
 		nestFunc.constants().forEach(c -> {
 			obj.addConstant(c.weight());
 		});
-		
+
 		// For each linear function
 		nestFunc.linearFunctions().forEach(lf -> {
 			final GRBLinExpr expr = new GRBLinExpr();
 			// Linear function contains terms
 			lf.linearFunction().terms().forEach(t -> {
-				final GRBLinExpr term = new GRBLinExpr();				
+				final GRBLinExpr term = new GRBLinExpr();
 				term.addTerm(t.weight(), createOrGetBinVar(t.variable().getName()));
-				
+
 				try {
 					expr.add(term);
 				} catch (final GRBException e) {
-					e.printStackTrace();
+					throw new RuntimeException(e);
 				}
 			});
-			
+
 			// Linear function contains constant terms
 			lf.linearFunction().constantTerms().forEach(c -> {
 				expr.addConstant(c.weight());
 			});
-			
+
 			try {
 				// Add current linear function with its weight
 				obj.multAdd(lf.weight(), expr);
 			} catch (final GRBException e) {
-				e.printStackTrace();
+				throw new RuntimeException(e);
 			}
 		});
 
@@ -195,7 +194,7 @@ public class GurobiSolver extends ILPSolver {
 			}
 			model.setObjective(obj, goal);
 		} catch (final GRBException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -206,7 +205,7 @@ public class GurobiSolver extends ILPSolver {
 	/**
 	 * Adds a given collection of ILP constraints and a given constraint name to the
 	 * Gurobi model.
-	 * 
+	 *
 	 * @param constraints Collection of integer ILP constraints to add.
 	 * @param name        Name of the overall constraint to add.
 	 */
@@ -239,7 +238,7 @@ public class GurobiSolver extends ILPSolver {
 			try {
 				model.addConstr(grbLinExpr, op, curr.constantTerm(), name + "_" + counter++);
 			} catch (final GRBException e) {
-				throw new UnsupportedOperationException(e);
+				throw new RuntimeException(e);
 			}
 		}
 	}
@@ -247,7 +246,7 @@ public class GurobiSolver extends ILPSolver {
 	/**
 	 * Converts a given operator value (from RelationalOperator) to the
 	 * corresponding GRB char value.
-	 * 
+	 *
 	 * @param op Operator value to convert.
 	 * @return Corresponding GRB char value.
 	 */
@@ -287,7 +286,7 @@ public class GurobiSolver extends ILPSolver {
 
 	/**
 	 * Returns the corresponding GRBVar for a given name.
-	 * 
+	 *
 	 * @param name Name to search variable for.
 	 * @return GBRVar for a given name.
 	 */
@@ -299,14 +298,14 @@ public class GurobiSolver extends ILPSolver {
 		try {
 			return model.getVarByName(name);
 		} catch (final GRBException e) {
-			return null;
+			throw new RuntimeException(e);
 		}
 	}
 
 	/**
 	 * Creates a new binary Gurobi variable for a given name if it does not exist
 	 * already. If it exists, the method returns the already existing variable.
-	 * 
+	 *
 	 * @param name Name to create new binary Gurobi variable for.
 	 * @return New binary Gurobi variable.
 	 */
@@ -319,7 +318,7 @@ public class GurobiSolver extends ILPSolver {
 				grbVars.put(name, var);
 				return var;
 			} catch (final GRBException e) {
-				throw new UnsupportedOperationException(e);
+				throw new RuntimeException(e);
 			}
 		}
 	}

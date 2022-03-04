@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.emoflon.ibex.gt.api.GraphTransformationAPI;
+import org.emoflon.roam.core.ilp.ILPSolver;
+import org.emoflon.roam.core.ilp.ILPSolverOutput;
+import org.emoflon.roam.core.ilp.ILPSolverStatus;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
 
 public class RoamEngine {
@@ -15,11 +18,35 @@ public class RoamEngine {
 	final protected Map<String, RoamConstraint<?, ?, ?>> constraints = new HashMap<>();
 	final protected Map<String, RoamObjective<?, ?, ?>> objectives = new HashMap<>();
 	protected RoamGlobalObjective globalObjective;
-
+	protected ILPSolver ilpSolver;
+	
 	public RoamEngine(final GraphTransformationAPI eMoflonAPI, final RoamIntermediateModel roamModel) {
 		this.eMoflonAPI = eMoflonAPI;
 		this.roamModel = roamModel;
 		this.indexer = new TypeIndexer(eMoflonAPI, roamModel);
+	}
+	
+	public void update() {
+		eMoflonAPI.updateMatches();
+	}
+	
+	public void buildILPProblem(boolean doUpdate) {
+		if(doUpdate)
+			update();
+		
+		constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints());
+		if(globalObjective != null)
+			globalObjective.buildObjectiveFunction();
+		
+		ilpSolver.buildILPProblem();
+	}
+	
+	public ILPSolverOutput solveILPProblem() {
+		ILPSolverOutput output = ilpSolver.solve();
+		if(output.status() != ILPSolverStatus.INFEASIBLE)
+			ilpSolver.updateValuesFromSolution();
+		
+		return output;
 	}
 
 	public GraphTransformationAPI getEMoflonAPI() {
@@ -64,6 +91,10 @@ public class RoamEngine {
 
 	public RoamGlobalObjective getGlobalObjective() {
 		return globalObjective;
+	}
+	
+	public void setILPSolver(final ILPSolver solver) {
+		this.ilpSolver = solver;
 	}
 
 	public void terminate() {

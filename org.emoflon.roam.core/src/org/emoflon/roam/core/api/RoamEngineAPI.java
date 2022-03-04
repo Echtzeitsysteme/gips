@@ -11,6 +11,8 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPatternModelPackage;
 import org.emoflon.roam.core.RoamEngine;
 import org.emoflon.roam.core.RoamGlobalObjective;
 import org.emoflon.roam.core.RoamMapper;
+import org.emoflon.roam.core.ilp.ILPSolver;
+import org.emoflon.roam.core.ilp.ILPSolverOutput;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
@@ -30,6 +32,18 @@ public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	}
 
 	public abstract void init(final URI modelUri);
+	
+	public void update() {
+		roamEngine.update();
+	}
+	
+	public void buildILPProblem(boolean doUpdate) {
+		roamEngine.buildILPProblem(doUpdate);
+	}
+	
+	public ILPSolverOutput solveILPProblem() {
+		return roamEngine.solveILPProblem();
+	}
 
 	protected abstract void initMapperFactory();
 
@@ -38,6 +52,8 @@ public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	protected abstract void initObjectiveFactory();
 
 	protected abstract RoamGlobalObjective createGlobalObjective();
+	
+	protected abstract ILPSolver createSolver();
 
 	protected void init(final URI roamModelURI, final URI modelUri) {
 		eMoflonApp.registerMetaModels();
@@ -54,6 +70,8 @@ public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 
 		if (roamModel.getGlobalObjective() != null)
 			roamEngine.setGlobalObjective(createGlobalObjective());
+		
+		roamEngine.setILPSolver(createSolver());
 	}
 
 	protected void loadIntermediateModel(final URI roamModelURI) {

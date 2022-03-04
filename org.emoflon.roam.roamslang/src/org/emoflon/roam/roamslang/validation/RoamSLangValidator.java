@@ -3,6 +3,68 @@
  */
 package org.emoflon.roam.roamslang.validation;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.xtext.validation.Check;
+import org.emoflon.ibex.gt.editor.gT.EditorNode;
+import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
+import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticLiteral;
+import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticUnaryOperator;
+import org.emoflon.roam.roamslang.roamSLang.RoamAttributeExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamBinaryBoolExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamBool;
+import org.emoflon.roam.roamslang.roamSLang.RoamBoolBinaryOperator;
+import org.emoflon.roam.roamslang.roamSLang.RoamBoolExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamBoolUnaryOperator;
+import org.emoflon.roam.roamslang.roamSLang.RoamBooleanLiteral;
+import org.emoflon.roam.roamslang.roamSLang.RoamBracketExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
+import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamContextOperation;
+import org.emoflon.roam.roamslang.roamSLang.RoamContextOperationExpression;
+import org.emoflon.roam.roamslang.roamSLang.RoamExpArithmeticExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamExpOperator;
+import org.emoflon.roam.roamslang.roamSLang.RoamExpressionOperand;
+import org.emoflon.roam.roamslang.roamSLang.RoamFeatureExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamFeatureLit;
+import org.emoflon.roam.roamslang.roamSLang.RoamFeatureNavigation;
+import org.emoflon.roam.roamslang.roamSLang.RoamGlobalObjective;
+import org.emoflon.roam.roamslang.roamSLang.RoamLambdaAttributeExpression;
+import org.emoflon.roam.roamslang.roamSLang.RoamLambdaExpression;
+import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
+import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamMappingContext;
+import org.emoflon.roam.roamslang.roamSLang.RoamMatchContext;
+import org.emoflon.roam.roamslang.roamSLang.RoamNodeAttributeExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamObjective;
+import org.emoflon.roam.roamslang.roamSLang.RoamObjectiveExpression;
+import org.emoflon.roam.roamslang.roamSLang.RoamProductArithmeticExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamProductOperator;
+import org.emoflon.roam.roamslang.roamSLang.RoamRelExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamRelOperator;
+import org.emoflon.roam.roamslang.roamSLang.RoamSLangPackage;
+import org.emoflon.roam.roamslang.roamSLang.RoamSelect;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamArithmetic;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamBoolExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamNavigation;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamNoArgOperator;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamSet;
+import org.emoflon.roam.roamslang.roamSLang.RoamStreamSetOperator;
+import org.emoflon.roam.roamslang.roamSLang.RoamSumArithmeticExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamSumOperator;
+import org.emoflon.roam.roamslang.roamSLang.RoamTypeCast;
+import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
+import org.emoflon.roam.roamslang.roamSLang.RoamUnaryArithmeticExpr;
+import org.emoflon.roam.roamslang.roamSLang.RoamUnaryBoolExpr;
+
 /**
  * This class contains custom validation rules.
  *
@@ -11,15 +73,1458 @@ package org.emoflon.roam.roamslang.validation;
  */
 public class RoamSLangValidator extends AbstractRoamSLangValidator {
 
-//	public static final String INVALID_NAME = "invalidName";
-//
-//	@Check
-//	public void checkGreetingStartsWithCapital(Greeting greeting) {
-//		if (!Character.isUpperCase(greeting.getName().charAt(0))) {
-//			warning("Name should start with a capital",
-//					RoamSLangPackage.Literals.GREETING__NAME,
-//					INVALID_NAME);
-//		}
-//	}
+	/**
+	 * The list of invalid mapping/objective names. Will be filled in the static
+	 * block.
+	 */
+	public static final Set<String> INVALID_NAMES = new HashSet<String>();
+
+	static {
+		final String[] invalidNames = new String[] { "clone", "equals", "finalize", "getClass", "hashCode", "notify",
+				"notifyAll", "toString", "wait", "abstract", "assert", "boolean", "break", "byte", "case", "catch",
+				"char", "class", "const", "continue", "default", "do", "double", "EAttribute", "EBoolean", "EDataType",
+				"EClass", "EClassifier", "EDouble", "EFloat", "EInt", "else", "enum", "EPackage", "EReference",
+				"EString", "extends", "final", "finally", "float", "for", "goto", "if", "implements", "import",
+				"instanceof", "int", "interface", "long", "native", "new", "package", "private", "protected", "public",
+				"return", "short", "static", "strictfp", "super", "switch", "synchronized", "this", "throw", "throws",
+				"transient", "try", "void", "volatile", "while",
+
+				// New values
+				"mapping", "objective", "global objective", "global", "min", "max", "constraint" };
+		INVALID_NAMES.addAll(Arrays.asList(invalidNames));
+	}
+
+	static final String CODE_PREFIX = "org.emoflon.roam.roamslang.";
+
+	// General errors for named elements.
+	public static final String NAME_BLOCKED = CODE_PREFIX + "name.blocked";
+	public static final String NAME_EXPECT_CAMEL_CASE = CODE_PREFIX + "name.expectCamelCase";
+	public static final String NAME_EXPECT_LOWER_CASE = CODE_PREFIX + "name.expectLowerCase";
+	public static final String NAME_EXPECT_UNIQUE = CODE_PREFIX + "name.expectUnique";
+
+	public static final String GLOBAL_OBJECTIVE_DOES_NOT_EXIST = CODE_PREFIX + "objective.global.doesNotExist";
+
+	public static final String GLOBAL_OBJECTIVE_IS_NULL_MESSAGE = "You need to specify a global objective.";
+	public static final String GLOBAL_OBJECTIVE_IS_OPTIONAL_MESSAGE = "The global objective is optional if no local objective is defined.";
+	public static final String GLOBAL_OBJECTIVE_DOES_NOT_CONTAIN_LOCAL_OBJECTIVE_MESSAGE = "Global objective does not contain any reference to a local objective.";
+
+	public static final String MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Mapping '%s' must not be declared '%s'.";
+	public static final String MAPPING_NAME_FORBIDDEN_MESSAGE = "Mappings cannot be be named '%s'. Use a different name.";
+	public static final String MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Mapping name '%s' contains underscores. Use camelCase instead.";
+	public static final String MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Mapping '%s' should start with a lower case character.";
+
+	public static final String OBJECTIVE_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Objective '%s' must not be declared '%s'";
+	public static final String OBJECTIVE_NAME_FORBIDDEN_MESSAGE = "Objectives cannot be be named '%s'. Use a different name.";
+	public static final String OBJECTIVE_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Objective name '%s' contains underscores. Use camelCase instead.";
+	public static final String OBJECTIVE_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Objective '%s' should start with a lower case character.";
+
+	// Other errors for types
+	public static final String OBJECTIVE_VALUE_IS_ZERO_MESSAGE = "Objective '%s' can be removed because its value is 0.";
+
+	public static final String CONSTRAINT_EVAL_NOT_BOOLEAN_MESSAGE = "Constraint does not evaluate to a boolean";
+	public static final String CONSTRAINT_EVAL_LITERAL_MESSAGE = "Constraint is always '%s'.";
+
+	public static final String OBJECTIVE_EVAL_NOT_NUMBER_MESSAGE = "Objective does not evaluate to an integer or double.";
+	public static final String OBJECTIVE_CONTEXT_CLASS_MESSAGE = "Objectives can not have a class as context.";
+
+	public static final String LITERAL_NOT_PARSABLE_MESSAGE = "Literal is not parsable.";
+
+	public static final String LAMBDA_EXPR_EVAL_NOT_PRIMITIVE_MESSAGE = "Lambda expression does not evaluate to a primitve type.";
+	public static final String LAMBDA_EXPR_EVAL_LITERAL_MESSAGE = "Lambda expression is always '%s'.";
+	public static final String LAMBDA_EXPR_EVAL_TYPE_ERROR = "Type error in lambda expression.";
+
+	public static final String CONSTRAINT_DEFINED_MULTIPLE_TIMES_MESSAGE = "Constraint defined multiple times.";
+	public static final String CONSTRAINT_HAS_NO_CONSTANT_SIDE_MESSAGE = "Constraint has no constant side.";
+	public static final String CONSTRAINT_HAS_TWO_CONSTANT_SIDES_MESSAGE = "Constraint has only constant sides. Use GT to express this condition.";
+
+	public static final String STREAM_ON_NON_COLLECTION_TYPE_MESSAGE = "Stream used on non collection type.";
+
+	public static final String EXP_EXPR_NOT_CONSTANT_MESSAGE = "Exponential expression must be constant due to ILP.";
+	public static final String PRODUCT_EXPR_NOT_CONSTANT_MESSAGE = "Product expressions can only have one dynamic sub expression due to ILP.";
+	public static final String UNARY_ARITH_EXPR_NOT_CONSTANT_MESSAGE = "Unary arithmetic expression with operator '%s' must be constant due to ILP.";
+
+	public static final String BOOL_EXPR_EVAL_ERROR_MESSAGE = "Boolean expression does not evaluate to boolean.";
+	public static final String ARITH_EXPR_EVAL_ERROR_MESSAGE = "Arithmetic expression does not evaluate to a primitive type.";
+
+	public static final String TYPE_DOES_NOT_CONTAIN_SELF_MESSAGE = "'%s' does not contain any self reference.";
+
+	public static final String MAPPING_IN_MAPPING_FORBIDDED_MESSAGE = "Mapping access within mapping context is forbidden.";
+
+	// Exception error messages
+	public static final String NOT_IMPLEMENTED_EXCEPTION_MESSAGE = "Not yet implemented";
+	public static final String CONSTRAINT_CONTEXT_UNKNOWN_EXCEPTION_MESSAGE = "Context is neither a RoamType nor a RoamMapping.";
+
+	/**
+	 * Checks if a global objective is specified in a given file. This must hold if
+	 * there is any local objective defined. Furthermore, it displays a warning if
+	 * the user specified a global objective but there is no local objective in the
+	 * given file.
+	 * 
+	 * @param file File to check existence of a global objective for.
+	 */
+	@Check
+	public void checkGlobalObjectiveNotNull(final EditorGTFile file) {
+		if (file.getObjectives() != null && !file.getObjectives().isEmpty() && file.getGlobalObjective() == null) {
+			error( //
+					GLOBAL_OBJECTIVE_IS_NULL_MESSAGE, //
+					// TODO: Change scope of the warning:
+					RoamSLangPackage.Literals.EDITOR_GT_FILE__GLOBAL_OBJECTIVE, //
+					GLOBAL_OBJECTIVE_DOES_NOT_EXIST //
+			);
+		} else if (file.getObjectives() != null && file.getObjectives().isEmpty()
+				&& file.getGlobalObjective() != null) {
+			warning( //
+					GLOBAL_OBJECTIVE_IS_OPTIONAL_MESSAGE, //
+					RoamSLangPackage.Literals.EDITOR_GT_FILE__GLOBAL_OBJECTIVE //
+			);
+		}
+	}
+
+	/**
+	 * Checks the global objective regarding the use of dynamic sub types like
+	 * 'self.value()' in non-linear mathematical expressions.
+	 * 
+	 * @param globObj Roam global objective to validate/check.
+	 */
+	@Check
+	public void checkGlobalObjective(final RoamGlobalObjective globObj) {
+		// Validate expression regarding dynamic uses (like self.value())
+		validateArithExprDynamic(globObj.getExpr());
+
+		// Check if global objective contains any reference to a local objective
+		// If this is not the case, display a warning that the global objective is
+		// constant
+		if (!containsLocalObjectiveCall(globObj.getExpr())) {
+			warning( //
+					GLOBAL_OBJECTIVE_DOES_NOT_CONTAIN_LOCAL_OBJECTIVE_MESSAGE, //
+					RoamSLangPackage.Literals.ROAM_GLOBAL_OBJECTIVE__EXPR //
+			);
+		}
+	}
+
+	/**
+	 * Returns true if the given arithmetic expression contains at least one call to
+	 * a local Roam objective.
+	 * 
+	 * @param expr Roam arithmetic expression to check local objective call
+	 *             existence for.
+	 * @return True if the given arithmetic expression contains at least one call to
+	 *         a local Roam objective.
+	 */
+	public boolean containsLocalObjectiveCall(final RoamArithmeticExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof RoamBracketExpr) {
+			final RoamBracketExpr bracketExpr = (RoamBracketExpr) expr;
+			return containsLocalObjectiveCall(bracketExpr.getOperand());
+		} else if (expr instanceof RoamExpArithmeticExpr) {
+			final RoamExpArithmeticExpr expExpr = (RoamExpArithmeticExpr) expr;
+			return containsLocalObjectiveCall(expExpr.getLeft()) || containsLocalObjectiveCall(expExpr.getRight());
+		} else if (expr instanceof RoamExpressionOperand) {
+			final RoamExpressionOperand exprOp = (RoamExpressionOperand) expr;
+			return exprOp instanceof RoamObjectiveExpression;
+		} else if (expr instanceof RoamProductArithmeticExpr) {
+			final RoamProductArithmeticExpr prodExpr = (RoamProductArithmeticExpr) expr;
+			return containsLocalObjectiveCall(prodExpr.getLeft()) || containsLocalObjectiveCall(prodExpr.getRight());
+		} else if (expr instanceof RoamSumArithmeticExpr) {
+			final RoamSumArithmeticExpr sumExpr = (RoamSumArithmeticExpr) expr;
+			return containsLocalObjectiveCall(sumExpr.getLeft()) || containsLocalObjectiveCall(sumExpr.getRight());
+		} else if (expr instanceof RoamUnaryArithmeticExpr) {
+			final RoamUnaryArithmeticExpr unExpr = (RoamUnaryArithmeticExpr) expr;
+			return containsLocalObjectiveCall(unExpr.getOperand());
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	/**
+	 * Runs checks for all Roam mappings.
+	 * 
+	 * @param mapping Input Roam mapping to check.
+	 */
+	@Check
+	public void checkMapping(final RoamMapping mapping) {
+		checkMappingNameValid(mapping);
+		checkMappingNameUnique(mapping);
+	}
+
+	/**
+	 * Checks for validity of a mapping name. The name must not be on the list of
+	 * invalid names, the name should be in lowerCamelCase, and the name should
+	 * start with a lower case character.
+	 * 
+	 * @param mapping Roam mapping to check.
+	 */
+	public void checkMappingNameValid(final RoamMapping mapping) {
+		if (mapping.getName() == null) {
+			return;
+		}
+
+		if (INVALID_NAMES.contains(mapping.getName())) {
+			error( //
+					String.format(MAPPING_NAME_FORBIDDEN_MESSAGE, mapping.getName()), //
+					RoamSLangPackage.Literals.ROAM_MAPPING__NAME, //
+					NAME_EXPECT_UNIQUE //
+			);
+		} else {
+			// The mapping name should be lowerCamelCase.
+			if (mapping.getName().contains("_")) {
+				warning( //
+						String.format(MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE, mapping.getName()), //
+						RoamSLangPackage.Literals.ROAM_MAPPING__NAME, //
+						NAME_BLOCKED //
+				);
+			} else {
+				// The mapping name should start with a lower case character.
+				if (!Character.isLowerCase(mapping.getName().charAt(0))) {
+					warning( //
+							String.format(MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE, mapping.getName()), //
+							RoamSLangPackage.Literals.ROAM_MAPPING__NAME, NAME_EXPECT_LOWER_CASE //
+					);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Checks the uniqueness of the name of a given Roam mapping.
+	 * 
+	 * @param mapping Roam mapping to check uniqueness of the name for.
+	 */
+	public void checkMappingNameUnique(final RoamMapping mapping) {
+		final EditorGTFile container = (EditorGTFile) mapping.eContainer();
+		final long count = container.getMappings().stream()
+				.filter(m -> m.getName() != null && m.getName().equals(mapping.getName())).count();
+		if (count != 1) {
+			error( //
+					String.format(MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE, mapping.getName(), getTimes((int) count)), //
+					RoamSLangPackage.Literals.ROAM_MAPPING__NAME, //
+					NAME_EXPECT_UNIQUE //
+			);
+		}
+	}
+
+	/**
+	 * Runs all checks for a given constraint.
+	 * 
+	 * @param constraint Roam constraint to check.
+	 */
+	@Check
+	public void checkConstraint(final RoamConstraint constraint) {
+		// Trigger validation of boolean expression
+		getEvalTypeFromBoolExpr(constraint.getExpr().getExpr());
+
+		// Check if constraint is a literal -> warning
+		checkConstraintIsLiteral(constraint);
+
+		// Check if constraint is unique
+		checkConstraintUnique(constraint);
+
+		// Check if constraint contains at least one 'self' call
+		validateConstraintHasSelf(constraint);
+
+		// Validate expression -> Non-linear operations must be constant in ILP time
+		validateConstraintDynamic(constraint);
+
+		// Validate that no mapping gets accessed if context is mapping
+		validateNoMappingAccessIfMappingContext(constraint);
+	}
+
+	/**
+	 * This method ensures that no mappings will be accessed from within the mapping
+	 * context. This does not include 'self'.
+	 * 
+	 * @param constraint Constraint to check mapping in mapping access for.
+	 */
+	public void validateNoMappingAccessIfMappingContext(final RoamConstraint constraint) {
+		// If context is not a mapping, return immediately
+		if (getContextType(constraint.getContext()) != ContextType.MAPPING) {
+			return;
+		}
+
+		final RoamBoolExpr expr = constraint.getExpr().getExpr();
+
+		boolean leftMapping = false;
+		boolean rightMapping = false;
+
+		if (expr instanceof RoamRelExpr) {
+			final RoamRelExpr relExpr = (RoamRelExpr) expr;
+			leftMapping = containsMappingsCall(relExpr.getLeft());
+			rightMapping = containsMappingsCall(relExpr.getRight());
+		} else if (expr instanceof RoamBoolExpr) {
+			// Special case: Complete boolean expression is just a literal
+			if (expr instanceof RoamBooleanLiteral) {
+				return;
+			}
+			final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
+			leftMapping = containsMappingsCall(binExpr.getLeft());
+			rightMapping = containsMappingsCall(binExpr.getRight());
+		} else {
+			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		}
+
+		// Generate an error if mappings are referenced
+		if (leftMapping || rightMapping) {
+			error( //
+					MAPPING_IN_MAPPING_FORBIDDED_MESSAGE, //
+					constraint, //
+					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR //
+			);
+		}
+	}
+
+	/**
+	 * Returns true if the given boolean expression contains a mapping call.
+	 * 
+	 * @param expr Boolean expression to check.
+	 * @return True if the given boolean expression contains a mapping call.
+	 */
+	public boolean containsMappingsCall(final RoamBoolExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof RoamBinaryBoolExpr) {
+			final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
+			return containsMappingsCall(binExpr.getLeft()) || containsMappingsCall(binExpr.getRight());
+		} else if (expr instanceof RoamBooleanLiteral) {
+			return false;
+		} else if (expr instanceof RoamRelExpr) {
+			final RoamRelExpr relExpr = (RoamRelExpr) expr;
+			return containsMappingsCall(relExpr.getLeft()) || containsMappingsCall(relExpr.getRight());
+		} else if (expr instanceof RoamUnaryBoolExpr) {
+			final RoamUnaryBoolExpr unExpr = (RoamUnaryBoolExpr) expr;
+			return containsMappingsCall(unExpr.getOperand());
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	/**
+	 * Returns true if the given arithmetic expression contains a mapping call.
+	 * 
+	 * @param expr Arithmetic expression to check.
+	 * @return True if the given arithmetic expression contains a mapping call.
+	 */
+	public boolean containsMappingsCall(final RoamArithmeticExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof RoamBracketExpr) {
+			final RoamBracketExpr bracketExpr = (RoamBracketExpr) expr;
+			return containsMappingsCall(bracketExpr.getOperand());
+		} else if (expr instanceof RoamExpArithmeticExpr) {
+			final RoamExpArithmeticExpr expExpr = (RoamExpArithmeticExpr) expr;
+			return containsMappingsCall(expExpr.getLeft()) || containsMappingsCall(expExpr.getRight());
+		} else if (expr instanceof RoamExpressionOperand) {
+			final RoamExpressionOperand exprOp = (RoamExpressionOperand) expr;
+			if (exprOp instanceof RoamArithmeticLiteral) {
+				return false;
+			} else if (exprOp instanceof RoamAttributeExpr) {
+				if (exprOp instanceof RoamContextExpr) {
+					final RoamContextExpr conExpr = (RoamContextExpr) exprOp;
+					if (streamContainsMappingsCall(conExpr.getStream())) {
+						return true;
+					}
+					return conExpr.getExpr() instanceof RoamContextOperationExpression;
+				} else if (exprOp instanceof RoamLambdaAttributeExpression) {
+					// A RoamLambdaAttributeExpression can not contain a mappings call
+					return false;
+				} else if (exprOp instanceof RoamMappingAttributeExpr) {
+					// A RoamMappingAttributeExpr always contains a mappings call
+					return true;
+				}
+			}
+		} else if (expr instanceof RoamProductArithmeticExpr) {
+			final RoamProductArithmeticExpr prodExpr = (RoamProductArithmeticExpr) expr;
+			return containsMappingsCall(prodExpr.getLeft()) || containsMappingsCall(prodExpr.getRight());
+		} else if (expr instanceof RoamSumArithmeticExpr) {
+			final RoamSumArithmeticExpr sumExpr = (RoamSumArithmeticExpr) expr;
+			return containsMappingsCall(sumExpr.getLeft()) || containsMappingsCall(sumExpr.getRight());
+		} else if (expr instanceof RoamUnaryArithmeticExpr) {
+			final RoamUnaryArithmeticExpr unExpr = (RoamUnaryArithmeticExpr) expr;
+			return containsMappingsCall(unExpr.getOperand());
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	/**
+	 * Returns true if the given stream expression contains a mapping call.
+	 * 
+	 * @param expr Stream expression to check.
+	 * @return True if the given stream expression contains a mapping call.
+	 */
+	public boolean streamContainsMappingsCall(final RoamStreamExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof RoamSelect) {
+			return false;
+		} else if (expr instanceof RoamStreamArithmetic) {
+			final RoamStreamArithmetic arithExpr = (RoamStreamArithmetic) expr;
+			return containsMappingsCall(arithExpr.getLambda().getExpr());
+		} else if (expr instanceof RoamStreamBoolExpr) {
+			return false;
+		} else if (expr instanceof RoamStreamNavigation) {
+			final RoamStreamNavigation nav = (RoamStreamNavigation) expr;
+			return streamContainsMappingsCall(nav.getLeft()) || streamContainsMappingsCall(nav.getRight());
+		} else if (expr instanceof RoamStreamSet) {
+			final RoamStreamSet set = (RoamStreamSet) expr;
+			return containsMappingsCall(set.getLambda().getExpr());
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	/**
+	 * Checks if the constraint is a literal and, therefore, display a warning.
+	 * 
+	 * @param constraint Constraint to check.
+	 */
+	public void checkConstraintIsLiteral(final RoamConstraint constraint) {
+		if (constraint.getExpr().getExpr() instanceof RoamBooleanLiteral) {
+			final RoamBooleanLiteral lit = (RoamBooleanLiteral) constraint.getExpr().getExpr();
+			final String warning = String.valueOf(lit.isLiteral());
+			warning( //
+					String.format(CONSTRAINT_EVAL_LITERAL_MESSAGE, warning), //
+					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR //
+			);
+		}
+	}
+
+	/**
+	 * Checks if a given constraint is unique, i.e., if there is another constraint
+	 * that has the exact same expression.
+	 * 
+	 * @param constraint Constraint to check uniqueness for.
+	 */
+	public void checkConstraintUnique(final RoamConstraint constraint) {
+		final EditorGTFile file = (EditorGTFile) constraint.eContainer();
+		final HashSet<RoamConstraint> others = new HashSet<>();
+		for (final RoamConstraint other : file.getConstraints()) {
+			if (constraint.equals(other)) {
+				// TODO: ^equals() is defined as '==' in this case -.-
+				// Therefore, this does not work, yet.
+				others.add(other);
+			}
+		}
+
+		if (others.size() > 1) {
+			for (final RoamConstraint other : others) {
+				warning( //
+						CONSTRAINT_DEFINED_MULTIPLE_TIMES_MESSAGE, //
+						other, //
+						RoamSLangPackage.Literals.ROAM_CONSTRAINT__CONTEXT //
+				);
+			}
+		}
+	}
+
+	/**
+	 * Validates that a constraint has at least one 'self' reference.
+	 * 
+	 * @param constraint Constraint to validate.
+	 */
+	public void validateConstraintHasSelf(final RoamConstraint constraint) {
+		final RoamBoolExpr expr = constraint.getExpr().getExpr();
+		boolean leftSelf = false;
+		boolean rightSelf = false;
+
+		final ContextType type = getContextType(constraint.getContext());
+
+		if (expr instanceof RoamRelExpr) {
+			final RoamRelExpr relExpr = (RoamRelExpr) expr;
+			leftSelf = containsSelf(relExpr.getLeft(), type);
+			rightSelf = containsSelf(relExpr.getRight(), type);
+		} else if (expr instanceof RoamBoolExpr) {
+			if (!(expr instanceof RoamBooleanLiteral)) {
+				final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
+				leftSelf = containsSelf(binExpr.getLeft(), type);
+				rightSelf = containsSelf(binExpr.getRight(), type);
+			}
+		} else {
+			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		}
+
+		// Generate an error if both sides of the constraint does not contain 'self'
+		if (!(leftSelf || rightSelf)) {
+			error( //
+					String.format(TYPE_DOES_NOT_CONTAIN_SELF_MESSAGE, "Constraint"), //
+					constraint, //
+					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR //
+			);
+		}
+	}
+
+	/**
+	 * Returns the context type of a given EObject.
+	 * 
+	 * @param e EObject to determine context type for.
+	 * @return Context type for given EObject.
+	 */
+	public ContextType getContextType(final EObject e) {
+		ContextType type = ContextType.ERROR;
+
+		if (e instanceof RoamMatchContext) {
+			type = ContextType.MATCH;
+		} else if (e instanceof RoamTypeContext) {
+			type = ContextType.TYPE;
+		} else if (e instanceof RoamMappingContext) {
+			type = ContextType.MAPPING;
+		}
+
+		return type;
+	}
+
+	/**
+	 * Returns true if given arithmetic expression contains a self reference.
+	 * 
+	 * @param expr Arithmetic expression to check.
+	 * @param type Context type.
+	 * @return True if given arithmetic expression contains a self reference.
+	 */
+	public boolean containsSelf(final RoamArithmeticExpr expr, final ContextType type) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof RoamBracketExpr) {
+			final RoamBracketExpr bracketExpr = (RoamBracketExpr) expr;
+			return containsSelf(bracketExpr.getOperand(), type);
+		} else if (expr instanceof RoamExpArithmeticExpr) {
+			final RoamExpArithmeticExpr expExpr = (RoamExpArithmeticExpr) expr;
+			return containsSelf(expExpr.getLeft(), type) || containsSelf(expExpr.getRight(), type);
+		} else if (expr instanceof RoamExpressionOperand) {
+			final RoamExpressionOperand exprOp = (RoamExpressionOperand) expr;
+			if (exprOp instanceof RoamArithmeticLiteral) {
+				return false;
+			} else if (exprOp instanceof RoamAttributeExpr) {
+				if (exprOp instanceof RoamContextExpr) {
+					// Context expression is always a 'self' access
+					return true;
+				} else if (exprOp instanceof RoamLambdaAttributeExpression) {
+					// A RoamLambdaAttributeExpression can not contain a 'self' access
+					return false;
+				} else if (exprOp instanceof RoamMappingAttributeExpr) {
+					final RoamMappingAttributeExpr attrExpr = (RoamMappingAttributeExpr) exprOp;
+					return containsSelf(attrExpr.getExpr(), type);
+				}
+			}
+		} else if (expr instanceof RoamProductArithmeticExpr) {
+			final RoamProductArithmeticExpr prodExpr = (RoamProductArithmeticExpr) expr;
+			return containsSelf(prodExpr.getLeft(), type) || containsSelf(prodExpr.getRight(), type);
+		} else if (expr instanceof RoamSumArithmeticExpr) {
+			final RoamSumArithmeticExpr sumExpr = (RoamSumArithmeticExpr) expr;
+			return containsSelf(sumExpr.getLeft(), type) || containsSelf(sumExpr.getRight(), type);
+		} else if (expr instanceof RoamUnaryArithmeticExpr) {
+			final RoamUnaryArithmeticExpr unExpr = (RoamUnaryArithmeticExpr) expr;
+			return containsSelf(unExpr.getOperand(), type);
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	/**
+	 * Returns true if a given stream expression contains a self reference.
+	 * 
+	 * @param expr Stream expression to check.
+	 * @param type Context type.
+	 * @return True if given stream expression contains a self reference.
+	 */
+	public boolean containsSelf(final RoamStreamExpr expr, final ContextType type) {
+		if (expr instanceof RoamSelect) {
+			// Stream -> no self
+			return false;
+		} else if (expr instanceof RoamStreamArithmetic) {
+			// sum() -> validate lambda
+			final RoamStreamArithmetic arithExpr = (RoamStreamArithmetic) expr;
+			return containsSelf(arithExpr.getLambda().getExpr(), type);
+		} else if (expr instanceof RoamStreamBoolExpr) {
+			// Boolean operator -> no self
+			return false;
+		} else if (expr instanceof RoamStreamNavigation) {
+			final RoamStreamNavigation navExpr = (RoamStreamNavigation) expr;
+			return containsSelf(navExpr.getLeft(), type) || containsSelf(navExpr.getRight(), type);
+		} else if (expr instanceof RoamStreamSet) {
+			// filter() -> validate lambda
+			final RoamStreamSet setExpr = (RoamStreamSet) expr;
+			return containsSelf(setExpr.getLambda().getExpr(), type);
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	/**
+	 * Returns true if given boolean expression contains a self reference.
+	 * 
+	 * @param expr Boolean expression to check.
+	 * @param type Context type.
+	 * @return True if given boolean expression contains a self reference.
+	 */
+	public boolean containsSelf(final RoamBoolExpr expr, final ContextType type) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof RoamBinaryBoolExpr) {
+			final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
+			return containsSelf(binExpr.getLeft(), type) || containsSelf(binExpr.getRight(), type);
+		} else if (expr instanceof RoamBooleanLiteral) {
+			return false;
+		} else if (expr instanceof RoamRelExpr) {
+			final RoamRelExpr relExpr = (RoamRelExpr) expr;
+			return containsSelf(relExpr.getLeft(), type) || containsSelf(relExpr.getRight(), type);
+		} else if (expr instanceof RoamUnaryBoolExpr) {
+			final RoamUnaryBoolExpr unExpr = (RoamUnaryBoolExpr) expr;
+			return containsSelf(unExpr.getOperand(), type);
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	// TODO: Das andere was ich gemerkt habe ist auch, dass du keine mapping.value()
+	// ausdrücke in den Arithmetischen Ausdrück innerhalb von sum() haben darfst,
+	// wenn du bereits in der Filterfunktion auf mappings zugreifst.
+	/**
+	 * Validates constraints regarding their dynamic parts. Currently, the following
+	 * rule set is implemented: Forbidden input for non-linear mathematical
+	 * functions (abs, sin, cos, sqrt, pow): self.isMapped() (only for context =
+	 * mapping? -> currently no ...), mappings.xy->count/sum + exists/notExists
+	 * 
+	 * @param constraint Constraint to check dynamic elements for.
+	 */
+	public void validateConstraintDynamic(final RoamConstraint constraint) {
+		final RoamBoolExpr expr = constraint.getExpr().getExpr();
+
+		boolean leftDynamic = false;
+		boolean rightDynamic = false;
+
+		if (expr instanceof RoamRelExpr) {
+			final RoamRelExpr relExpr = (RoamRelExpr) expr;
+			leftDynamic = validateArithExprDynamic(relExpr.getLeft());
+			rightDynamic = validateArithExprDynamic(relExpr.getRight());
+		} else if (expr instanceof RoamBoolExpr) {
+			// Special case: Complete boolean expression is just a literal
+			if (expr instanceof RoamBooleanLiteral) {
+				return;
+			}
+			final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
+			leftDynamic = validateBoolExprDynamic(binExpr.getLeft());
+			rightDynamic = validateBoolExprDynamic(binExpr.getRight());
+		} else {
+			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		}
+
+		// Generate a warning if both sides of the constraint are constant
+		if (!leftDynamic && !rightDynamic) {
+			warning( //
+					CONSTRAINT_HAS_TWO_CONSTANT_SIDES_MESSAGE, //
+					constraint, //
+					RoamSLangPackage.Literals.ROAM_CONSTRAINT__EXPR //
+			);
+		}
+	}
+
+	public boolean validateBoolExprDynamic(final RoamBoolExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof RoamBinaryBoolExpr) {
+			final RoamBinaryBoolExpr binExpr = (RoamBinaryBoolExpr) expr;
+			return validateBoolExprDynamic(binExpr.getLeft()) || validateBoolExprDynamic(binExpr.getRight());
+		} else if (expr instanceof RoamBooleanLiteral) {
+			return false;
+		} else if (expr instanceof RoamRelExpr) {
+			final RoamRelExpr relExpr = (RoamRelExpr) expr;
+			return validateArithExprDynamic(relExpr.getLeft()) || validateArithExprDynamic(relExpr.getRight());
+		} else if (expr instanceof RoamUnaryBoolExpr) {
+			final RoamUnaryBoolExpr unExpr = (RoamUnaryBoolExpr) expr;
+			return validateBoolExprDynamic(unExpr.getOperand());
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	public boolean validateArithExprDynamic(final RoamArithmeticExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof RoamBracketExpr) {
+			final RoamBracketExpr bracketExpr = (RoamBracketExpr) expr;
+			return validateArithExprDynamic(bracketExpr.getOperand());
+		} else if (expr instanceof RoamExpArithmeticExpr) {
+			final RoamExpArithmeticExpr expExpr = (RoamExpArithmeticExpr) expr;
+			final boolean dynLeft = validateArithExprDynamic(expExpr.getLeft());
+			final boolean dynRight = validateArithExprDynamic(expExpr.getRight());
+			if (dynLeft) {
+				error( //
+						EXP_EXPR_NOT_CONSTANT_MESSAGE, //
+						expr, //
+						RoamSLangPackage.Literals.ROAM_EXP_ARITHMETIC_EXPR__LEFT //
+				);
+			}
+			if (dynRight) {
+				error( //
+						EXP_EXPR_NOT_CONSTANT_MESSAGE, //
+						expr, //
+						RoamSLangPackage.Literals.ROAM_EXP_ARITHMETIC_EXPR__RIGHT //
+				);
+			}
+			return dynLeft || dynRight;
+		} else if (expr instanceof RoamExpressionOperand) {
+			final RoamExpressionOperand exprOp = (RoamExpressionOperand) expr;
+			if (exprOp instanceof RoamArithmeticLiteral) {
+				return false;
+			} else if (exprOp instanceof RoamAttributeExpr) {
+				if (exprOp instanceof RoamContextExpr) {
+					final RoamContextExpr conExpr = (RoamContextExpr) exprOp;
+					// Currently only MAPPED and VALUE are supported -> Both are dynamic
+					return conExpr.getExpr() instanceof RoamContextOperationExpression;
+				} else if (exprOp instanceof RoamLambdaAttributeExpression) {
+					// Nothing to do here
+					return false;
+				} else if (exprOp instanceof RoamMappingAttributeExpr) {
+					validateStreamExprDynamic(((RoamMappingAttributeExpr) exprOp).getExpr());
+					return true;
+				}
+			} else if (exprOp instanceof RoamObjectiveExpression) {
+				// Only relevant for the global objective function
+				return true;
+			}
+		} else if (expr instanceof RoamProductArithmeticExpr) {
+			final RoamProductArithmeticExpr prodExpr = (RoamProductArithmeticExpr) expr;
+			final boolean dynLeft = validateArithExprDynamic(prodExpr.getLeft());
+			final boolean dynRight = validateArithExprDynamic(prodExpr.getRight());
+			if (dynLeft && dynRight) {
+				error( //
+						PRODUCT_EXPR_NOT_CONSTANT_MESSAGE, //
+						expr, //
+						RoamSLangPackage.Literals.ROAM_PRODUCT_ARITHMETIC_EXPR__RIGHT //
+				);
+			}
+			return dynLeft || dynRight;
+		} else if (expr instanceof RoamSumArithmeticExpr) {
+			final RoamSumArithmeticExpr sumExpr = (RoamSumArithmeticExpr) expr;
+			return validateArithExprDynamic(sumExpr.getLeft()) | validateArithExprDynamic(sumExpr.getRight());
+		} else if (expr instanceof RoamUnaryArithmeticExpr) {
+			final RoamUnaryArithmeticExpr unExpr = (RoamUnaryArithmeticExpr) expr;
+			final boolean isDyn = validateArithExprDynamic(unExpr.getOperand());
+			if (isDyn && unExpr.getOperator() != RoamArithmeticUnaryOperator.NEG) {
+				error( //
+						String.format(UNARY_ARITH_EXPR_NOT_CONSTANT_MESSAGE, unExpr.getOperator()), //
+						expr, //
+						RoamSLangPackage.Literals.ROAM_UNARY_ARITHMETIC_EXPR__OPERAND //
+				);
+			}
+			return isDyn;
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	public boolean validateStreamExprDynamic(final RoamStreamExpr expr) {
+		if (expr instanceof RoamStreamNavigation) {
+			final RoamStreamNavigation nav = (RoamStreamNavigation) expr;
+			return validateStreamExprDynamic(nav.getLeft()) | validateStreamExprDynamic(nav.getRight());
+		} else if (expr instanceof RoamStreamSet) { // .filter(...)
+			final RoamStreamSet set = (RoamStreamSet) expr;
+			// set.getOperator(); // operator is always a filter -> output is a set
+			return validateBoolExprDynamic(set.getLambda().getExpr());
+		} else if (expr instanceof RoamStreamArithmetic) { // .sum(...)
+			final RoamStreamArithmetic arith = (RoamStreamArithmetic) expr;
+			// arith.getOperator(); // operator is always an integer/a double
+			return validateBoolExprDynamic(arith.getLambda().getExpr());
+		} else if (expr instanceof RoamStreamBoolExpr) { // .exists(); .notExists(); .count()
+			return false;
+		} else if (expr instanceof RoamSelect) {
+			return false;
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	/**
+	 * Runs all checks for a given objective.
+	 * 
+	 * @param objective Roam objective to check.
+	 */
+	@Check
+	public void checkObjective(final RoamObjective objective) {
+		// Check for bad names
+		checkObjectiveNameValid(objective);
+
+		// Check uniqueness of name
+		checkObjectiveNameUnique(objective);
+
+		// Check if value is 0
+		checkObjectiveIsNotUseless(objective);
+
+		// Validate arithmetic expression regarding non-linear expressions that are not
+		// constant in ILP time
+		validateArithExprDynamic(objective.getExpr());
+
+		// Check if objective contains a 'self' call -> If not, display a warning
+		checkObjectiveHasSelf(objective);
+
+		// Check expression evaluation type
+		final EvalType eval = getEvalTypeFromArithExpr(objective.getExpr());
+		if (eval != EvalType.INTEGER && eval != EvalType.DOUBLE) {
+			error( //
+					OBJECTIVE_EVAL_NOT_NUMBER_MESSAGE, //
+					RoamSLangPackage.Literals.ROAM_OBJECTIVE__EXPR //
+			);
+		}
+	}
+
+	/**
+	 * Checks that an objective has at least one 'self' reference.
+	 * 
+	 * @param objective Objective to validate.
+	 */
+	public void checkObjectiveHasSelf(final RoamObjective objective) {
+		final RoamArithmeticExpr expr = objective.getExpr();
+		final ContextType type = getContextType(objective.getContext());
+
+		// Generate a warning if the objective does not contain 'self'
+		if (!containsSelf(expr, type)) {
+			warning( //
+					String.format(TYPE_DOES_NOT_CONTAIN_SELF_MESSAGE, "Objective"), //
+					objective, //
+					RoamSLangPackage.Literals.ROAM_OBJECTIVE__EXPR //
+			);
+		}
+	}
+
+	/**
+	 * Checks for validity of an objective name. The name must not be on the list of
+	 * invalid names, the name should be in lowerCamelCase, and the name should
+	 * start with a lower case character.
+	 * 
+	 * @param objective Roam objective to check.
+	 */
+	public void checkObjectiveNameValid(final RoamObjective objective) {
+		if (objective.getName() == null) {
+			return;
+		}
+
+		if (INVALID_NAMES.contains(objective.getName())) {
+			error( //
+					String.format(OBJECTIVE_NAME_FORBIDDEN_MESSAGE, objective.getName()), //
+					RoamSLangPackage.Literals.ROAM_OBJECTIVE__NAME, //
+					NAME_BLOCKED //
+			);
+		} else {
+			// The objective name should be lowerCamelCase.
+			if (objective.getName().contains("_")) {
+				warning( //
+						String.format(OBJECTIVE_NAME_CONTAINS_UNDERSCORES_MESSAGE, objective.getName()), //
+						RoamSLangPackage.Literals.ROAM_OBJECTIVE__NAME, //
+						NAME_BLOCKED //
+				);
+			} else {
+				// The objective name should start with a lower case character.
+				if (!Character.isLowerCase(objective.getName().charAt(0))) {
+					warning( //
+							String.format(OBJECTIVE_NAME_STARTS_WITH_LOWER_CASE_MESSAGE, objective.getName()), //
+							RoamSLangPackage.Literals.ROAM_OBJECTIVE__NAME, //
+							NAME_EXPECT_LOWER_CASE //
+					);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Checks the uniqueness of the name of a given Roam objective.
+	 * 
+	 * @param objective Roam objective to check uniqueness of the name for.
+	 */
+	public void checkObjectiveNameUnique(final RoamObjective objective) {
+		final EditorGTFile container = (EditorGTFile) objective.eContainer();
+		final long count = container.getObjectives().stream()
+				.filter(o -> o.getName() != null && o.getName().equals(objective.getName())).count();
+		if (count != 1) {
+			error( //
+					String.format(OBJECTIVE_NAME_MULTIPLE_DECLARATIONS_MESSAGE, objective.getName(),
+							getTimes((int) count)), //
+					RoamSLangPackage.Literals.ROAM_OBJECTIVE__NAME, //
+					NAME_EXPECT_UNIQUE //
+			);
+		}
+	}
+
+	/**
+	 * Checks a given Roam objective for uselessness, i.e, if the objective is '0'.
+	 * 
+	 * @param objective Roam objective to check for uselessness.
+	 */
+	public void checkObjectiveIsNotUseless(final RoamObjective objective) {
+		if (objective.getExpr() instanceof RoamArithmeticLiteral) {
+			final RoamArithmeticLiteral lit = (RoamArithmeticLiteral) objective.getExpr();
+			if (lit.getValue() != null && lit.getValue().equals("0")) {
+				warning( //
+						String.format(OBJECTIVE_VALUE_IS_ZERO_MESSAGE, objective.getName()), //
+						RoamSLangPackage.Literals.ROAM_OBJECTIVE__EXPR //
+				);
+			}
+		}
+	}
+
+	// TODO: Is this even necessary?
+	@Check
+	public void checkArithmeticLiteralParsable(final RoamArithmeticLiteral literal) {
+		try {
+			Double.valueOf(literal.getValue());
+		} catch (final NumberFormatException ex) {
+			error( //
+					LITERAL_NOT_PARSABLE_MESSAGE, //
+					RoamSLangPackage.Literals.ROAM_ARITHMETIC_LITERAL__VALUE //
+			);
+		}
+	}
+
+	public EvalType getEvalTypeFromBoolExpr(final RoamBoolExpr expr) {
+		EvalType output = EvalType.ERROR;
+
+		// Determine output type of this expression
+		if (expr instanceof RoamBooleanLiteral) {
+			output = EvalType.BOOLEAN;
+		} else if (expr instanceof RoamBinaryBoolExpr) {
+			final RoamBinaryBoolExpr boolExpr = (RoamBinaryBoolExpr) expr;
+			output = getEvalLeftRightSideOp(boolExpr.getLeft(), boolExpr.getRight(), boolExpr.getOperator());
+		} else if (expr instanceof RoamUnaryBoolExpr) {
+			final RoamUnaryBoolExpr boolExpr = (RoamUnaryBoolExpr) expr;
+			output = getEvalLEftRightSideOp(boolExpr.getOperand(), boolExpr.getOperator());
+		} else if (expr instanceof RoamRelExpr) {
+			final RoamRelExpr relExpr = (RoamRelExpr) expr;
+			final EvalType leftType = getEvalTypeDelegate(relExpr.getLeft());
+			final EvalType rightType = getEvalTypeDelegate(relExpr.getRight());
+			output = combine(leftType, rightType, relExpr.getOperator());
+
+			// Special case: expr is an instance of RoamRelExpr, the rhs is null, and the
+			// container is not directly the constraint -> skip error, because output is not
+			// necessarily a boolean
+			if (relExpr.getRight() == null && !(expr.eContainer() instanceof RoamBool)) {
+				return output;
+			}
+
+			// Special case: If sub types did not return an error but the combination
+			// produced an error, we have to generate an error
+			if (output == EvalType.ERROR && leftType != EvalType.ERROR && rightType != EvalType.ERROR) {
+				error( //
+						BOOL_EXPR_EVAL_ERROR_MESSAGE, //
+						expr, //
+						RoamSLangPackage.Literals.ROAM_REL_EXPR__OPERATOR //
+				);
+				return output;
+			}
+		}
+
+		// If the output is not a boolean, display an error but only if the output isn't
+		// an error
+		if (output != EvalType.BOOLEAN && output != EvalType.ERROR) {
+			error( //
+					BOOL_EXPR_EVAL_ERROR_MESSAGE, //
+					expr, //
+					RoamSLangPackage.Literals.ROAM_REL_EXPR__OPERATOR //
+			);
+		}
+		return output;
+	}
+
+	public EvalType getEvalTypeFromArithExpr(final RoamArithmeticExpr expr) {
+		EvalType output = EvalType.ERROR;
+		boolean leaf = true;
+
+		if (expr instanceof RoamBracketExpr) {
+			final RoamBracketExpr brack = (RoamBracketExpr) expr;
+			output = getEvalTypeFromArithExpr(brack.getOperand());
+			leaf = false;
+		} else if (expr instanceof RoamExpArithmeticExpr) {
+			final RoamExpArithmeticExpr exp = (RoamExpArithmeticExpr) expr;
+			final EvalType leftType = getEvalTypeDelegate(exp.getLeft());
+			final EvalType rightType = getEvalTypeDelegate(exp.getRight());
+			output = combine(leftType, rightType, exp.getOperator());
+		} else if (expr instanceof RoamProductArithmeticExpr) {
+			final RoamProductArithmeticExpr prod = (RoamProductArithmeticExpr) expr;
+			final EvalType leftType = getEvalTypeDelegate(prod.getLeft());
+			final EvalType rightType = getEvalTypeDelegate(prod.getRight());
+			output = combine(leftType, rightType, prod.getOperator());
+		} else if (expr instanceof RoamSumArithmeticExpr) {
+			final RoamSumArithmeticExpr sum = (RoamSumArithmeticExpr) expr;
+			final EvalType leftType = getEvalTypeDelegate(sum.getLeft());
+			final EvalType rightType = getEvalTypeDelegate(sum.getRight());
+			output = combine(leftType, rightType, sum.getOperator());
+		} else if (expr instanceof RoamUnaryArithmeticExpr) {
+			final EvalType operand = getEvalTypeFromArithExpr(((RoamUnaryArithmeticExpr) expr).getOperand());
+			output = combine(operand, ((RoamUnaryArithmeticExpr) expr).getOperator());
+		} else if (expr instanceof RoamExpressionOperand) {
+			output = getEvalTypeFromExprOp((RoamExpressionOperand) expr);
+			leaf = false;
+		}
+
+		// If the output is an error and this method call was a leaf, display an error
+		if (output != null && output == EvalType.ERROR && leaf && expr != null) {
+			error( //
+					ARITH_EXPR_EVAL_ERROR_MESSAGE, //
+					expr, //
+					getLiteralType(expr) //
+			);
+		}
+		return output;
+	}
+
+	/**
+	 * Determines the literal type for a given EObject.
+	 * 
+	 * @param expr EObject which is an expression from Roam.
+	 * @return Literal from RoamSLangPackage.Literals.
+	 */
+	public EStructuralFeature getLiteralType(final EObject expr) {
+		EStructuralFeature type = null;
+
+		if (expr instanceof RoamBracketExpr) {
+			type = RoamSLangPackage.Literals.ROAM_BRACKET_EXPR__OPERAND;
+		} else if (expr instanceof RoamExpArithmeticExpr) {
+			type = RoamSLangPackage.Literals.ROAM_EXP_ARITHMETIC_EXPR__LEFT;
+		} else if (expr instanceof RoamProductArithmeticExpr) {
+			type = RoamSLangPackage.Literals.ROAM_PRODUCT_ARITHMETIC_EXPR__OPERATOR;
+		} else if (expr instanceof RoamSumArithmeticExpr) {
+			type = RoamSLangPackage.Literals.ROAM_SUM_ARITHMETIC_EXPR__OPERATOR;
+		} else if (expr instanceof RoamUnaryArithmeticExpr) {
+			type = RoamSLangPackage.Literals.ROAM_UNARY_ARITHMETIC_EXPR__OPERAND;
+		} else if (expr instanceof RoamExpressionOperand) {
+			if (expr instanceof RoamArithmeticLiteral) {
+				type = RoamSLangPackage.Literals.ROAM_ARITHMETIC_LITERAL__VALUE;
+			} else if (expr instanceof RoamAttributeExpr) {
+				if (expr instanceof RoamMappingAttributeExpr) {
+					type = RoamSLangPackage.Literals.ROAM_MAPPING_ATTRIBUTE_EXPR__EXPR;
+				} else if (expr instanceof RoamContextExpr) {
+					type = RoamSLangPackage.Literals.ROAM_CONTEXT_EXPR__EXPR;
+				} else if (expr instanceof RoamLambdaAttributeExpression) {
+					type = RoamSLangPackage.Literals.ROAM_LAMBDA_ATTRIBUTE_EXPRESSION__EXPR;
+				}
+			} else if (expr instanceof RoamObjectiveExpression) {
+				type = RoamSLangPackage.Literals.ROAM_OBJECTIVE_EXPRESSION__OBJECTIVE;
+			}
+		}
+
+		return type;
+	}
+
+	public EvalType getEvalTypeFromExprOp(final RoamExpressionOperand op) {
+		if (op instanceof RoamArithmeticLiteral) {
+			return getEvalTypeFromArithLit((RoamArithmeticLiteral) op);
+		} else if (op instanceof RoamAttributeExpr) {
+			return getEvalTypeFromAttrExpr((RoamAttributeExpr) op);
+		} else if (op instanceof RoamObjectiveExpression) {
+			return EvalType.OBJECTIVE;
+		}
+
+		return EvalType.ERROR;
+	}
+
+	public EvalType getEvalTypeFromAttrExpr(final RoamAttributeExpr expr) {
+		if (expr instanceof RoamMappingAttributeExpr) {
+			final RoamMappingAttributeExpr mapExpr = (RoamMappingAttributeExpr) expr;
+			return getEvalTypeFromStreamExpr(mapExpr.getExpr());
+		} else if (expr instanceof RoamContextExpr) {
+			final RoamContextExpr conExpr = (RoamContextExpr) expr;
+			return getEvalTypeFromContextExpr(conExpr);
+		} else if (expr instanceof RoamLambdaAttributeExpression) {
+			final RoamLambdaAttributeExpression lambExpr = (RoamLambdaAttributeExpression) expr;
+			return getEvalTypeFromLambdaAttrExpr(lambExpr);
+		}
+
+		return EvalType.ERROR;
+	}
+
+	public EvalType getEvalTypeFromStreamExpr(final RoamStreamExpr expr) {
+		if (expr instanceof RoamStreamNavigation) {
+			final RoamStreamNavigation nav = (RoamStreamNavigation) expr;
+			return getEvalTypeFromStreamNav(nav);
+		} else if (expr instanceof RoamStreamSet) { // .filter(...)
+			final RoamStreamSet set = (RoamStreamSet) expr;
+			// set.getOperator(); // operator is always a filter -> output is a set
+			validateLambdaExpr(set.getLambda());
+			return EvalType.SET;
+		} else if (expr instanceof RoamStreamArithmetic) { // .sum(...)
+			final RoamStreamArithmetic arith = (RoamStreamArithmetic) expr;
+			// arith.getOperator(); // operator is always an integer/a double
+			validateLambdaExpr(arith.getLambda());
+			return EvalType.DOUBLE;
+		} else if (expr instanceof RoamStreamBoolExpr) { // .exists(); .notExists(); .count()
+			final RoamStreamBoolExpr boolExpr = (RoamStreamBoolExpr) expr;
+			return getEvalTypeFromStreamNoArgOp(boolExpr.getOperator());
+		} else if (expr instanceof RoamSelect) {
+			return EvalType.STREAM;
+		}
+
+		return EvalType.ERROR;
+	}
+
+	public EvalType getEvalTypeFromStreamNav(final RoamStreamNavigation nav) {
+		final RoamStreamExpr left = nav.getLeft();
+		final RoamStreamExpr right = nav.getRight();
+
+		final EvalType lhs = getEvalTypeFromStreamExpr(left);
+
+		// Case: lhs is a stream set and rhs is a stream boolean expression (NOT
+		// count()) = boolean
+		if (left instanceof RoamStreamSet && right instanceof RoamStreamBoolExpr //
+				&& ((RoamStreamBoolExpr) right).getOperator().getValue() != RoamStreamNoArgOperator.COUNT_VALUE) {
+			return EvalType.BOOLEAN;
+		}
+
+		// Case: lhs is a stream set and rhs is a stream boolean expression (count()) =
+		// integer
+		if (left instanceof RoamStreamSet && lhs == EvalType.SET && right instanceof RoamStreamBoolExpr
+				&& ((RoamStreamBoolExpr) right).getOperator().getValue() == RoamStreamNoArgOperator.COUNT_VALUE) {
+			return EvalType.INTEGER;
+		}
+
+		// Case: else
+		return getEvalTypeFromStreamExpr(right);
+	}
+
+	public EvalType getEvalTypeFromStreamNoArgOp(final RoamStreamNoArgOperator op) {
+		final int val = op.getValue();
+		if (val == RoamStreamNoArgOperator.COUNT_VALUE) {
+			return EvalType.INTEGER;
+		} else if (val == RoamStreamNoArgOperator.EXISTS_VALUE || val == RoamStreamNoArgOperator.NOTEXISTS_VALUE) {
+			return EvalType.BOOLEAN;
+		}
+
+		return EvalType.ERROR;
+	}
+
+	public EvalType getEvalTypeFromStreamSet(final RoamStreamSet set) {
+		validateLambdaExpr(set.getLambda());
+		if (set.getOperator().getValue() == RoamStreamSetOperator.FILTER_VALUE) {
+			return EvalType.SET;
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	public EvalType getEvalTypeFromLambdaAttrExpr(final RoamLambdaAttributeExpression expr) {
+		final EObject innerExpr = expr.getExpr();
+		if (innerExpr instanceof RoamNodeAttributeExpr) {
+			return getEvalTypeFromNodeAttrExpr((RoamNodeAttributeExpr) innerExpr);
+		} else if (innerExpr instanceof RoamContextOperationExpression) {
+			return getEvalTypeFromContextOpExpr((RoamContextOperationExpression) innerExpr);
+		} else if (innerExpr instanceof RoamFeatureExpr) {
+			return getEvalTypeFromFeatureExpr((RoamFeatureExpr) innerExpr);
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	public EvalType getEvalTypeFromContextExpr(final RoamContextExpr expr) {
+		EvalType exprEval = EvalType.CONTEXT;
+		if (expr.getExpr() != null) {
+			final EObject innerExpr = expr.getExpr();
+			if (innerExpr instanceof RoamNodeAttributeExpr) {
+				exprEval = getEvalTypeFromNodeAttrExpr((RoamNodeAttributeExpr) innerExpr);
+			} else if (innerExpr instanceof RoamContextOperationExpression) {
+				exprEval = getEvalTypeFromContextOpExpr((RoamContextOperationExpression) innerExpr);
+			} else if (innerExpr instanceof RoamFeatureExpr) {
+				exprEval = getEvalTypeFromFeatureExpr((RoamFeatureExpr) innerExpr);
+			}
+		}
+
+		// Expr returns a set and stream is set
+		if (expr.getStream() != null && exprEval == EvalType.SET) {
+			return getEvalTypeFromStreamExpr(expr.getStream());
+		} else if (expr.getStream() != null && exprEval != EvalType.SET) {
+			// Expr does NOT return a set and stream is set -> violation
+			error( //
+					STREAM_ON_NON_COLLECTION_TYPE_MESSAGE, //
+					expr, //
+					RoamSLangPackage.Literals.ROAM_CONTEXT_EXPR__STREAM //
+			);
+			return getEvalTypeFromStreamExpr(expr.getStream());
+		}
+
+		// Stream is null -> return expr eval
+		// No need to check type casts
+		return exprEval;
+	}
+
+	public EvalType getEvalTypeFromContextOpExpr(final RoamContextOperationExpression expr) {
+		final int val = expr.getOperation().getValue();
+		if (val == RoamContextOperation.MAPPED_VALUE) {
+			return EvalType.BOOLEAN;
+		} else if (val == RoamContextOperation.VALUE_VALUE) {
+			return EvalType.INTEGER;
+		}
+
+		return EvalType.ERROR;
+	}
+
+	public EvalType getEvalTypeFromNodeAttrExpr(final RoamNodeAttributeExpr expr) {
+		// Type cast must not be checked
+		// If expr is not set, evaluate node itself
+		if (expr.getExpr() == null) {
+			return getEvalTypeFromEditorNode(expr.getNode());
+		} else {
+			return getEvalTypeFromFeatureExpr(expr.getExpr());
+		}
+	}
+
+	public EvalType getEvalTypeFromEditorNode(final EditorNode node) {
+		// TODO: Always an EClass?
+		return EvalType.ECLASS;
+	}
+
+	public EvalType getEvalTypeFromFeatureExpr(final RoamFeatureExpr expr) {
+		if (expr instanceof RoamFeatureNavigation) {
+			final RoamFeatureNavigation nav = (RoamFeatureNavigation) expr;
+			final EvalType leftType = getEvalTypeFromFeatureExpr(nav.getLeft());
+			final EvalType rightType = getEvalTypeFromFeatureExpr(nav.getRight());
+
+			// If left side is no ECLASS than there is a violation, but this should get
+			// checked in the validation and not in the type evaluation
+			if (leftType == EvalType.ECLASS) {
+				return rightType;
+			} else {
+				throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+			}
+		} else if (expr instanceof RoamFeatureLit) {
+			final RoamFeatureLit lit = (RoamFeatureLit) expr;
+			final EClassifier ecl = lit.getFeature().getEType();
+
+			if (lit.getFeature().getUpperBound() == -1 || lit.getFeature().getUpperBound() > 1) {
+				// Upper bound is larger than 1 or -1 (no limit)
+				return EvalType.SET;
+			} else if (ecl == EcorePackage.Literals.EDOUBLE || ecl == EcorePackage.Literals.ELONG) {
+				return EvalType.DOUBLE;
+			} else if (ecl == EcorePackage.Literals.EINT) {
+				return EvalType.INTEGER;
+			} else if (ecl == EcorePackage.Literals.ESTRING) {
+				return EvalType.STRING;
+			} else {
+				return EvalType.ECLASS;
+			}
+			// Type cast must not be checked
+		}
+
+		return EvalType.ERROR;
+	}
+
+	/**
+	 * Returns the evaluation type from a given RoamTypeCast (EClass) or null if
+	 * cast isn't set (because it is optional).
+	 * 
+	 * @param cast RoamTypeCast to check.
+	 * @return leafType EClass or null if cast not set.
+	 */
+	public EvalType getEvalTypeFromTypeCast(final RoamTypeCast cast) {
+		return (cast != null && cast.getType() != null) ? EvalType.ECLASS : null;
+	}
+
+	public EvalType getEvalTypeFromArithLit(final RoamArithmeticLiteral lit) {
+		// if (lit instanceof RoamDoubleLiteral) {
+		//
+		// }
+		// TODO: ^There is no 'RoamDoubleLiteral' or 'RoamIntegerLiteral'
+
+		final String val = lit.getValue();
+		try {
+			Integer.valueOf(val);
+			return EvalType.INTEGER;
+		} catch (final NumberFormatException ex) {
+			// No int
+		}
+		try {
+			Double.valueOf(val);
+			return EvalType.DOUBLE;
+		} catch (final NumberFormatException ex) {
+			return EvalType.ERROR;
+		}
+	}
+
+	public EvalType getEvalTypeDelegate(final EObject e) {
+		if (e == null) {
+			return null;
+		}
+
+		if (e instanceof RoamBoolExpr) {
+			return getEvalTypeFromBoolExpr((RoamBoolExpr) e);
+		} else if (e instanceof RoamArithmeticExpr) {
+			return getEvalTypeFromArithExpr((RoamArithmeticExpr) e);
+		} else if (e instanceof RoamBool) {
+			return getEvalTypeFromBoolExpr(((RoamBool) e).getExpr());
+		} else if (e instanceof RoamStreamSet) {
+			return getEvalTypeFromStreamSet((RoamStreamSet) e);
+		} else if (e instanceof RoamStreamBoolExpr) {
+			return getEvalTypeFromStreamExpr((RoamStreamBoolExpr) e);
+		}
+
+		return EvalType.ERROR;
+	}
+
+	public EvalType getEvalLeftRightSideOp(final RoamBoolExpr left, final RoamBoolExpr right,
+			final RoamBoolBinaryOperator op) {
+		if (right == null) {
+			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		} else {
+			final EvalType leftType = getEvalTypeDelegate(left);
+			final EvalType rightType = getEvalTypeDelegate(right);
+			return combine(leftType, rightType, op);
+		}
+	}
+
+	public EvalType getEvalLEftRightSideOp(final RoamBoolExpr operand, final RoamBoolUnaryOperator op) {
+		final EvalType opType = getEvalTypeDelegate(operand);
+		return combine(opType, op);
+	}
+
+	public EvalType combine(final EvalType left, final EvalType right, final RoamRelOperator op) {
+		// Case: right side is null and operator did not change from default
+		if (left != null && right == null && op == RoamRelOperator.GREATER) {
+			return left;
+		}
+
+		// Case: Comparing numbers
+		if ((left == EvalType.INTEGER || left == EvalType.DOUBLE)
+				&& (right == EvalType.INTEGER || right == EvalType.DOUBLE)) {
+			return EvalType.BOOLEAN;
+		} else if ((left == EvalType.ECLASS || left == EvalType.CONTEXT)
+				&& (right == EvalType.ECLASS || right == EvalType.CONTEXT)) {
+			// Case: Comparing two from {EClass, Context}
+			return EvalType.BOOLEAN;
+		} else {
+			return EvalType.ERROR;
+		}
+	}
+
+	public EvalType combine(final EvalType left, final EvalType right, final RoamExpOperator op) {
+		if (left == EvalType.INTEGER || right == EvalType.INTEGER) {
+			return EvalType.INTEGER;
+		} else if ((left == EvalType.INTEGER || left == EvalType.DOUBLE)
+				&& (right == EvalType.INTEGER || right == EvalType.DOUBLE)) {
+			return EvalType.DOUBLE;
+		} else {
+			return EvalType.ERROR;
+		}
+	}
+
+	public EvalType combine(final EvalType left, final EvalType right, final RoamProductOperator op) {
+		// return type must be integer or double
+		return intOrDouble(left, right);
+	}
+
+	public EvalType combine(final EvalType left, final EvalType right, final RoamSumOperator op) {
+		// return type must be integer or double
+		return intOrDouble(left, right);
+	}
+
+	public EvalType combine(final EvalType operand, final RoamArithmeticUnaryOperator op) {
+		// Case: Operand is not a number
+		if (operand != EvalType.INTEGER && operand != EvalType.DOUBLE) {
+			return EvalType.ERROR;
+		}
+
+		// Case: ABS and NEG do not change the type
+		if (op == RoamArithmeticUnaryOperator.ABS || op == RoamArithmeticUnaryOperator.NEG) {
+			return operand;
+		} else if (op == RoamArithmeticUnaryOperator.SQRT || op == RoamArithmeticUnaryOperator.SIN
+				|| op == RoamArithmeticUnaryOperator.COS) {
+			// Case: SQRT, SIN, and COS change the type to double
+			return EvalType.DOUBLE;
+		} else {
+			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		}
+	}
+
+	public EvalType combine(final EvalType left, final EvalType right, final RoamBoolBinaryOperator op) {
+		return (left == EvalType.BOOLEAN && right == EvalType.BOOLEAN) ? EvalType.BOOLEAN : EvalType.ERROR;
+	}
+
+	public EvalType combine(final EvalType left, final RoamBoolUnaryOperator op) {
+		return left == EvalType.BOOLEAN ? EvalType.BOOLEAN : EvalType.ERROR;
+	}
+
+	public EvalType intOrDouble(final EvalType left, final EvalType right) {
+		if (left == EvalType.INTEGER && right == EvalType.INTEGER) {
+			return EvalType.INTEGER;
+		} else if ((left == EvalType.INTEGER && right == EvalType.DOUBLE) //
+				|| (left == EvalType.DOUBLE && right == EvalType.INTEGER) //
+				|| (left == EvalType.DOUBLE && right == EvalType.DOUBLE)) {
+			return EvalType.DOUBLE;
+		}
+
+		return EvalType.ERROR;
+	}
+
+	/**
+	 * Validates a given lambda expression. Therefore, this method checks the return
+	 * type (must be boolean). Furthermore, it checks if the literal of the lambda
+	 * expression is a constant and displays a warning.
+	 * 
+	 * @param expr Lambda expression to check.
+	 */
+	public void validateLambdaExpr(final RoamLambdaExpression expr) {
+		// Check return type
+		final EvalType lambdaEval = getEvalTypeFromBoolExpr(expr.getExpr());
+		if (!isPrimitiveType(lambdaEval)) {
+			error( //
+					LAMBDA_EXPR_EVAL_NOT_PRIMITIVE_MESSAGE, //
+					expr, //
+					RoamSLangPackage.Literals.ROAM_LAMBDA_EXPRESSION__EXPR //
+			);
+		}
+
+		// Check if literal is constant
+		if (expr.getExpr() instanceof RoamBooleanLiteral) {
+			final RoamBooleanLiteral lit = (RoamBooleanLiteral) expr.getExpr();
+			final String warning = String.valueOf(lit.isLiteral());
+			warning( //
+					String.format(LAMBDA_EXPR_EVAL_LITERAL_MESSAGE, warning), //
+					expr, //
+					RoamSLangPackage.Literals.ROAM_LAMBDA_EXPRESSION__EXPR //
+			);
+		}
+	}
+
+	public boolean isPrimitiveType(final EvalType input) {
+		return input == EvalType.BOOLEAN || input != EvalType.INTEGER || input != EvalType.DOUBLE;
+	}
+
+	/**
+	 * Enumeration for the type of the leaf. This represents the output type of an
+	 * evaluation.
+	 */
+	protected enum EvalType {
+		BOOLEAN, // RoamBooleanLiteral
+		INTEGER, //
+		DOUBLE, //
+		STRING, //
+		SET, // Sets like output of a filter
+		OBJECTIVE, // RoamObjective
+		MAPPING, // RoamMapping
+		STREAM, // RoamStream
+		ECLASS, // EClass for casts
+		CONTEXT, // Context, e.g.: 'match::xy'
+		ERROR // If leaf type can not be evaluated, e.g.: '1 + true'
+	}
+
+	/**
+	 * Enumeration for the context (self) type.
+	 */
+	protected enum ContextType {
+		MAPPING, //
+		MATCH, //
+		TYPE, //
+		ERROR //
+	}
 
 }

@@ -10,83 +10,62 @@ import org.eclipse.emf.common.util.Enumerator;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the literals of the enumeration '<em><b>Objective Target</b></em>',
+ * A representation of the literals of the enumeration '<em><b>ILP Solver Type</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getObjectiveTarget()
+ * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getILPSolverType()
  * @model
  * @generated
  */
-public enum ObjectiveTarget implements Enumerator {
+public enum ILPSolverType implements Enumerator {
 	/**
-	 * The '<em><b>MIN</b></em>' literal object.
+	 * The '<em><b>GUROBI</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #MIN_VALUE
+	 * @see #GUROBI_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	MIN(0, "MIN", "MIN"),
+	GUROBI(0, "GUROBI", "GUROBI");
 
 	/**
-	 * The '<em><b>MAX</b></em>' literal object.
+	 * The '<em><b>GUROBI</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #MAX_VALUE
-	 * @generated
-	 * @ordered
-	 */
-	MAX(1, "MAX", "MAX");
-
-	/**
-	 * The '<em><b>MIN</b></em>' literal value.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #MIN
+	 * @see #GUROBI
 	 * @model
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MIN_VALUE = 0;
+	public static final int GUROBI_VALUE = 0;
 
 	/**
-	 * The '<em><b>MAX</b></em>' literal value.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #MAX
-	 * @model
-	 * @generated
-	 * @ordered
-	 */
-	public static final int MAX_VALUE = 1;
-
-	/**
-	 * An array of all the '<em><b>Objective Target</b></em>' enumerators.
+	 * An array of all the '<em><b>ILP Solver Type</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private static final ObjectiveTarget[] VALUES_ARRAY = new ObjectiveTarget[] { MIN, MAX, };
+	private static final ILPSolverType[] VALUES_ARRAY = new ILPSolverType[] { GUROBI, };
 
 	/**
-	 * A public read-only list of all the '<em><b>Objective Target</b></em>' enumerators.
+	 * A public read-only list of all the '<em><b>ILP Solver Type</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static final List<ObjectiveTarget> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+	public static final List<ILPSolverType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
-	 * Returns the '<em><b>Objective Target</b></em>' literal with the specified literal value.
+	 * Returns the '<em><b>ILP Solver Type</b></em>' literal with the specified literal value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param literal the literal.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
-	public static ObjectiveTarget get(String literal) {
+	public static ILPSolverType get(String literal) {
 		for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-			ObjectiveTarget result = VALUES_ARRAY[i];
+			ILPSolverType result = VALUES_ARRAY[i];
 			if (result.toString().equals(literal)) {
 				return result;
 			}
@@ -95,16 +74,16 @@ public enum ObjectiveTarget implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>Objective Target</b></em>' literal with the specified name.
+	 * Returns the '<em><b>ILP Solver Type</b></em>' literal with the specified name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param name the name.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
-	public static ObjectiveTarget getByName(String name) {
+	public static ILPSolverType getByName(String name) {
 		for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-			ObjectiveTarget result = VALUES_ARRAY[i];
+			ILPSolverType result = VALUES_ARRAY[i];
 			if (result.getName().equals(name)) {
 				return result;
 			}
@@ -113,19 +92,17 @@ public enum ObjectiveTarget implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>Objective Target</b></em>' literal with the specified integer value.
+	 * Returns the '<em><b>ILP Solver Type</b></em>' literal with the specified integer value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the integer value.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
-	public static ObjectiveTarget get(int value) {
+	public static ILPSolverType get(int value) {
 		switch (value) {
-		case MIN_VALUE:
-			return MIN;
-		case MAX_VALUE:
-			return MAX;
+		case GUROBI_VALUE:
+			return GUROBI;
 		}
 		return null;
 	}
@@ -157,7 +134,7 @@ public enum ObjectiveTarget implements Enumerator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private ObjectiveTarget(int value, String name, String literal) {
+	private ILPSolverType(int value, String name, String literal) {
 		this.value = value;
 		this.name = name;
 		this.literal = literal;
@@ -201,4 +178,4 @@ public enum ObjectiveTarget implements Enumerator {
 		return literal;
 	}
 
-} //ObjectiveTarget
+} //ILPSolverType

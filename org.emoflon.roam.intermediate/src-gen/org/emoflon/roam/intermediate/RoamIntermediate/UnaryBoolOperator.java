@@ -9,19 +9,19 @@ import java.util.List;
 import org.eclipse.emf.common.util.Enumerator;
 
 /**
- * <!-- begin-user-doc --> A representation of the literals of the enumeration
- * '<em><b>Unary Bool Operator</b></em>', and utility methods for working with
- * them. <!-- end-user-doc -->
- *
+ * <!-- begin-user-doc -->
+ * A representation of the literals of the enumeration '<em><b>Unary Bool Operator</b></em>',
+ * and utility methods for working with them.
+ * <!-- end-user-doc -->
  * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getUnaryBoolOperator()
  * @model
  * @generated
  */
 public enum UnaryBoolOperator implements Enumerator {
 	/**
-	 * The '<em><b>NOT</b></em>' literal object. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 *
+	 * The '<em><b>NOT</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #NOT_VALUE
 	 * @generated
 	 * @ordered
@@ -29,9 +29,9 @@ public enum UnaryBoolOperator implements Enumerator {
 	NOT(0, "NOT", "NOT");
 
 	/**
-	 * The '<em><b>NOT</b></em>' literal value. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 *
+	 * The '<em><b>NOT</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #NOT
 	 * @model
 	 * @generated
@@ -40,31 +40,32 @@ public enum UnaryBoolOperator implements Enumerator {
 	public static final int NOT_VALUE = 0;
 
 	/**
-	 * An array of all the '<em><b>Unary Bool Operator</b></em>' enumerators. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * An array of all the '<em><b>Unary Bool Operator</b></em>' enumerators.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private static final UnaryBoolOperator[] VALUES_ARRAY = new UnaryBoolOperator[] { NOT, };
 
 	/**
-	 * A public read-only list of all the '<em><b>Unary Bool Operator</b></em>'
-	 * enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * A public read-only list of all the '<em><b>Unary Bool Operator</b></em>' enumerators.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public static final List<UnaryBoolOperator> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
-	 * Returns the '<em><b>Unary Bool Operator</b></em>' literal with the specified
-	 * literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * Returns the '<em><b>Unary Bool Operator</b></em>' literal with the specified literal value.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param literal the literal.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
 	public static UnaryBoolOperator get(String literal) {
-		for (UnaryBoolOperator result : VALUES_ARRAY) {
+		for (int i = 0; i < VALUES_ARRAY.length; ++i) {
+			UnaryBoolOperator result = VALUES_ARRAY[i];
 			if (result.toString().equals(literal)) {
 				return result;
 			}
@@ -73,15 +74,16 @@ public enum UnaryBoolOperator implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>Unary Bool Operator</b></em>' literal with the specified
-	 * name. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * Returns the '<em><b>Unary Bool Operator</b></em>' literal with the specified name.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param name the name.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
 	public static UnaryBoolOperator getByName(String name) {
-		for (UnaryBoolOperator result : VALUES_ARRAY) {
+		for (int i = 0; i < VALUES_ARRAY.length; ++i) {
+			UnaryBoolOperator result = VALUES_ARRAY[i];
 			if (result.getName().equals(name)) {
 				return result;
 			}
@@ -90,9 +92,9 @@ public enum UnaryBoolOperator implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>Unary Bool Operator</b></em>' literal with the specified
-	 * integer value. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * Returns the '<em><b>Unary Bool Operator</b></em>' literal with the specified integer value.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the integer value.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
@@ -106,30 +108,30 @@ public enum UnaryBoolOperator implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private final int value;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private final String name;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private final String literal;
 
 	/**
-	 * Only this class can construct instances. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 *
+	 * Only this class can construct instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private UnaryBoolOperator(int value, String name, String literal) {
@@ -139,39 +141,36 @@ public enum UnaryBoolOperator implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public int getValue() {
 		return value;
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public String getLiteral() {
 		return literal;
 	}
 
 	/**
-	 * Returns the literal value of the enumerator, which is its string
-	 * representation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * Returns the literal value of the enumerator, which is its string representation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -179,4 +178,4 @@ public enum UnaryBoolOperator implements Enumerator {
 		return literal;
 	}
 
-} // UnaryBoolOperator
+} //UnaryBoolOperator

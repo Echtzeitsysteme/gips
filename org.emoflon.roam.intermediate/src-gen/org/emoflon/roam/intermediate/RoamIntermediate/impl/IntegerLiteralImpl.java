@@ -3,20 +3,23 @@
 package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Integer
- * Literal</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Integer Literal</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IntegerLiteralImpl#getLiteral
- * <em>Literal</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IntegerLiteralImpl#getLiteral <em>Literal</em>}</li>
  * </ul>
  *
  * @generated
@@ -24,8 +27,8 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 public class IntegerLiteralImpl extends ArithmeticLiteralImpl implements IntegerLiteral {
 	/**
 	 * The default value of the '{@link #getLiteral() <em>Literal</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getLiteral()
 	 * @generated
 	 * @ordered
@@ -34,8 +37,8 @@ public class IntegerLiteralImpl extends ArithmeticLiteralImpl implements Integer
 
 	/**
 	 * The cached value of the '{@link #getLiteral() <em>Literal</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getLiteral()
 	 * @generated
 	 * @ordered
@@ -43,8 +46,8 @@ public class IntegerLiteralImpl extends ArithmeticLiteralImpl implements Integer
 	protected int literal = LITERAL_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected IntegerLiteralImpl() {
@@ -52,8 +55,8 @@ public class IntegerLiteralImpl extends ArithmeticLiteralImpl implements Integer
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -62,21 +65,19 @@ public class IntegerLiteralImpl extends ArithmeticLiteralImpl implements Integer
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public int getLiteral() {
 		return literal;
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public void setLiteral(int newLiteral) {
 		int oldLiteral = literal;
 		literal = newLiteral;
@@ -86,8 +87,8 @@ public class IntegerLiteralImpl extends ArithmeticLiteralImpl implements Integer
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -100,8 +101,8 @@ public class IntegerLiteralImpl extends ArithmeticLiteralImpl implements Integer
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -115,8 +116,8 @@ public class IntegerLiteralImpl extends ArithmeticLiteralImpl implements Integer
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -130,8 +131,8 @@ public class IntegerLiteralImpl extends ArithmeticLiteralImpl implements Integer
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -144,8 +145,8 @@ public class IntegerLiteralImpl extends ArithmeticLiteralImpl implements Integer
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -160,4 +161,4 @@ public class IntegerLiteralImpl extends ArithmeticLiteralImpl implements Integer
 		return result.toString();
 	}
 
-} // IntegerLiteralImpl
+} //IntegerLiteralImpl

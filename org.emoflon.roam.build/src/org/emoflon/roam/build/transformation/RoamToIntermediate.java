@@ -27,6 +27,8 @@ import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator;
 import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
 import org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral;
 import org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective;
+import org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig;
+import org.emoflon.roam.intermediate.RoamIntermediate.ILPSolverType;
 import org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
@@ -47,6 +49,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator;
 import org.emoflon.roam.roamslang.roamSLang.EditorGTFile;
 import org.emoflon.roam.roamslang.roamSLang.RoamBoolExpr;
 import org.emoflon.roam.roamslang.roamSLang.RoamBooleanLiteral;
+import org.emoflon.roam.roamslang.roamSLang.RoamConfig;
 import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
 import org.emoflon.roam.roamslang.roamSLang.RoamGlobalObjective;
 import org.emoflon.roam.roamslang.roamSLang.RoamMappingContext;
@@ -72,6 +75,7 @@ public class RoamToIntermediate {
 		mapGT2IBeXElements();
 
 		// transform Roam components
+		transformConfig();
 		transformMappings();
 		transformConstraints();
 		transformObjectives();
@@ -81,6 +85,37 @@ public class RoamToIntermediate {
 		data.model().getVariables().addAll(data.eType2Type().values());
 		data.model().getVariables().addAll(data.ePattern2Pattern().values());
 		return data.model();
+	}
+	
+	protected void transformConfig() {
+		RoamConfig eConfig = data.roamSlangFile().getConfig();
+		ILPConfig config = factory.createILPConfig();
+		switch(eConfig.getSolver()) {
+			case GUROBI -> {
+				config.setSolver(ILPSolverType.GUROBI);
+			}
+			default -> {
+				throw new IllegalArgumentException("Unsupported solver type: "+eConfig.getSolver());
+			}
+		}
+		config.setSolverHomeDir(eConfig.getHome());
+		config.setSolverLicenseFile(eConfig.getHome());
+		config.setEnableDebugOutput(eConfig.isEnableDebugOutput());
+		config.setEnablePresolve(eConfig.isEnablePresolve());
+		
+		if(eConfig.getRndSeed() == 0) {
+			config.setEnableRndSeed(false);
+		} else {
+			config.setEnableRndSeed(true);
+			config.setIlpRndSeed(eConfig.getRndSeed());
+		}
+		
+		if(eConfig.getTimeLimit() == 0.0) {
+			config.setIlpTimeLimit(5.0);
+		} else {
+			config.setIlpTimeLimit(eConfig.getTimeLimit());
+		}
+		data.model().setConfig(config);
 	}
 
 	protected void transformMappings() {

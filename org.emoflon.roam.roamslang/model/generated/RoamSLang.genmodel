@@ -6,6 +6,9 @@
     complianceLevel="8.0" copyrightFields="false" runtimeVersion="2.20" usedGenPackages="platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.genmodel#//gT">
   <genPackages prefix="RoamSLang" basePackage="org.emoflon.roam.roamslang" disposableProviderFactory="true"
       fileExtensions="rslang" ecorePackage="RoamSLang.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="RoamSLang.ecore#//SolverType">
+      <genEnumLiterals ecoreEnumLiteral="RoamSLang.ecore#//SolverType/GUROBI"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="RoamSLang.ecore#//RoamObjectiveGoal">
       <genEnumLiterals ecoreEnumLiteral="RoamSLang.ecore#//RoamObjectiveGoal/MIN"/>
       <genEnumLiterals ecoreEnumLiteral="RoamSLang.ecore#//RoamObjectiveGoal/MAX"/>
@@ -59,10 +62,20 @@
       <genEnumLiterals ecoreEnumLiteral="RoamSLang.ecore#//RoamStreamNoArgOperator/count"/>
     </genEnums>
     <genClasses ecoreClass="RoamSLang.ecore#//EditorGTFile">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//EditorGTFile/config"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//EditorGTFile/mappings"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//EditorGTFile/constraints"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//EditorGTFile/objectives"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamSLang.ecore#//EditorGTFile/globalObjective"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamSLang.ecore#//RoamConfig">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamConfig/solver"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamConfig/home"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamConfig/license"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamConfig/timeLimit"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamConfig/rndSeed"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamConfig/enablePresolve"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamConfig/enableDebugOutput"/>
     </genClasses>
     <genClasses ecoreClass="RoamSLang.ecore#//RoamMapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamMapping/name"/>

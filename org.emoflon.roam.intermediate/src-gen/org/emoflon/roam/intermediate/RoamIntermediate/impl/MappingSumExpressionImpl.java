@@ -3,22 +3,25 @@
 package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Mapping
- * Sum Expression</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Mapping Sum Expression</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingSumExpressionImpl#getMapping
- * <em>Mapping</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingSumExpressionImpl#getMapping <em>Mapping</em>}</li>
  * </ul>
  *
  * @generated
@@ -26,8 +29,8 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 public class MappingSumExpressionImpl extends SumExpressionImpl implements MappingSumExpression {
 	/**
 	 * The cached value of the '{@link #getMapping() <em>Mapping</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getMapping()
 	 * @generated
 	 * @ordered
@@ -35,8 +38,8 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 	protected Mapping mapping;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected MappingSumExpressionImpl() {
@@ -44,8 +47,8 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -54,11 +57,10 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public Mapping getMapping() {
 		if (mapping != null && mapping.eIsProxy()) {
 			InternalEObject oldMapping = (InternalEObject) mapping;
@@ -73,8 +75,8 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Mapping basicGetMapping() {
@@ -82,11 +84,10 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public void setMapping(Mapping newMapping) {
 		Mapping oldMapping = mapping;
 		mapping = newMapping;
@@ -96,8 +97,8 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -112,8 +113,8 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -127,8 +128,8 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -142,8 +143,8 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -155,4 +156,4 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 		return super.eIsSet(featureID);
 	}
 
-} // MappingSumExpressionImpl
+} //MappingSumExpressionImpl

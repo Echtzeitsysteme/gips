@@ -5,17 +5,16 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Iterator
- * Pattern Node Value</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * A representation of the model object '<em><b>Iterator Pattern Node Value</b></em>'.
+ * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue#getPatternContext
- * <em>Pattern Context</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue#getNode
- * <em>Node</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue#getPatternContext <em>Pattern Context</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue#getNode <em>Node</em>}</li>
  * </ul>
  *
  * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorPatternNodeValue()
@@ -24,9 +23,9 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
  */
 public interface IteratorPatternNodeValue extends ValueExpression, Iterator {
 	/**
-	 * Returns the value of the '<em><b>Pattern Context</b></em>' reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * Returns the value of the '<em><b>Pattern Context</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Pattern Context</em>' reference.
 	 * @see #setPatternContext(Pattern)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorPatternNodeValue_PatternContext()
@@ -36,11 +35,9 @@ public interface IteratorPatternNodeValue extends ValueExpression, Iterator {
 	Pattern getPatternContext();
 
 	/**
-	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue#getPatternContext
-	 * <em>Pattern Context</em>}' reference. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 *
+	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue#getPatternContext <em>Pattern Context</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Pattern Context</em>' reference.
 	 * @see #getPatternContext()
 	 * @generated
@@ -48,9 +45,9 @@ public interface IteratorPatternNodeValue extends ValueExpression, Iterator {
 	void setPatternContext(Pattern value);
 
 	/**
-	 * Returns the value of the '<em><b>Node</b></em>' reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * Returns the value of the '<em><b>Node</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Node</em>' reference.
 	 * @see #setNode(IBeXNode)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorPatternNodeValue_Node()
@@ -60,10 +57,9 @@ public interface IteratorPatternNodeValue extends ValueExpression, Iterator {
 	IBeXNode getNode();
 
 	/**
-	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue#getNode
-	 * <em>Node</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue#getNode <em>Node</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Node</em>' reference.
 	 * @see #getNode()
 	 * @generated

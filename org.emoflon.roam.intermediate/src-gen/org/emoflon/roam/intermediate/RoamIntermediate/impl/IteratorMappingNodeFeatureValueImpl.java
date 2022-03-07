@@ -4,22 +4,25 @@ package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object
- * '<em><b>Iterator Mapping Node Feature Value</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Iterator Mapping Node Feature Value</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeFeatureValueImpl#getFeatureExpression
- * <em>Feature Expression</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeFeatureValueImpl#getFeatureExpression <em>Feature Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -27,10 +30,9 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValueImpl
 		implements IteratorMappingNodeFeatureValue {
 	/**
-	 * The cached value of the '{@link #getFeatureExpression() <em>Feature
-	 * Expression</em>}' containment reference. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 *
+	 * The cached value of the '{@link #getFeatureExpression() <em>Feature Expression</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getFeatureExpression()
 	 * @generated
 	 * @ordered
@@ -38,8 +40,8 @@ public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValu
 	protected FeatureExpression featureExpression;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected IteratorMappingNodeFeatureValueImpl() {
@@ -47,8 +49,8 @@ public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValu
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -57,18 +59,17 @@ public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValu
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public FeatureExpression getFeatureExpression() {
 		return featureExpression;
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetFeatureExpression(FeatureExpression newFeatureExpression, NotificationChain msgs) {
@@ -87,11 +88,10 @@ public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValu
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public void setFeatureExpression(FeatureExpression newFeatureExpression) {
 		if (newFeatureExpression != featureExpression) {
 			NotificationChain msgs = null;
@@ -115,8 +115,8 @@ public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValu
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -129,8 +129,8 @@ public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValu
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -143,8 +143,8 @@ public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValu
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -158,8 +158,8 @@ public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValu
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -173,8 +173,8 @@ public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValu
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -186,4 +186,4 @@ public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValu
 		return super.eIsSet(featureID);
 	}
 
-} // IteratorMappingNodeFeatureValueImpl
+} //IteratorMappingNodeFeatureValueImpl

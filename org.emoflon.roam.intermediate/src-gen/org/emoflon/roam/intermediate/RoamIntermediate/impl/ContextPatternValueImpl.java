@@ -3,31 +3,34 @@
 package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.Pattern;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Context
- * Pattern Value</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Context Pattern Value</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextPatternValueImpl#getPatternContext
- * <em>Pattern Context</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextPatternValueImpl#getPatternContext <em>Pattern Context</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ContextPatternValueImpl extends ValueExpressionImpl implements ContextPatternValue {
 	/**
-	 * The cached value of the '{@link #getPatternContext() <em>Pattern
-	 * Context</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The cached value of the '{@link #getPatternContext() <em>Pattern Context</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getPatternContext()
 	 * @generated
 	 * @ordered
@@ -35,8 +38,8 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 	protected Pattern patternContext;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected ContextPatternValueImpl() {
@@ -44,8 +47,8 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -54,11 +57,10 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public Pattern getPatternContext() {
 		if (patternContext != null && patternContext.eIsProxy()) {
 			InternalEObject oldPatternContext = (InternalEObject) patternContext;
@@ -74,8 +76,8 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Pattern basicGetPatternContext() {
@@ -83,11 +85,10 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public void setPatternContext(Pattern newPatternContext) {
 		Pattern oldPatternContext = patternContext;
 		patternContext = newPatternContext;
@@ -97,8 +98,8 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -113,8 +114,8 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -128,8 +129,8 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -143,8 +144,8 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -156,4 +157,4 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 		return super.eIsSet(featureID);
 	}
 
-} // ContextPatternValueImpl
+} //ContextPatternValueImpl

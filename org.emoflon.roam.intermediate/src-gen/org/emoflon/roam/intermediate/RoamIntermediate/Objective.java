@@ -5,19 +5,17 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
 import org.eclipse.emf.ecore.EObject;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object
- * '<em><b>Objective</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * A representation of the model object '<em><b>Objective</b></em>'.
+ * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#getName
- * <em>Name</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#isElementwise
- * <em>Elementwise</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#getExpression
- * <em>Expression</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#getName <em>Name</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#isElementwise <em>Elementwise</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#getExpression <em>Expression</em>}</li>
  * </ul>
  *
  * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getObjective()
@@ -26,9 +24,9 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Objective extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getObjective_Name()
@@ -38,10 +36,9 @@ public interface Objective extends EObject {
 	String getName();
 
 	/**
-	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#getName
-	 * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#getName <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Name</em>' attribute.
 	 * @see #getName()
 	 * @generated
@@ -49,9 +46,9 @@ public interface Objective extends EObject {
 	void setName(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Elementwise</b></em>' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * Returns the value of the '<em><b>Elementwise</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Elementwise</em>' attribute.
 	 * @see #setElementwise(boolean)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getObjective_Elementwise()
@@ -61,11 +58,9 @@ public interface Objective extends EObject {
 	boolean isElementwise();
 
 	/**
-	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#isElementwise
-	 * <em>Elementwise</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-	 * -->
-	 *
+	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#isElementwise <em>Elementwise</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Elementwise</em>' attribute.
 	 * @see #isElementwise()
 	 * @generated
@@ -74,8 +69,8 @@ public interface Objective extends EObject {
 
 	/**
 	 * Returns the value of the '<em><b>Expression</b></em>' containment reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Expression</em>' containment reference.
 	 * @see #setExpression(ArithmeticExpression)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getObjective_Expression()
@@ -85,13 +80,10 @@ public interface Objective extends EObject {
 	ArithmeticExpression getExpression();
 
 	/**
-	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#getExpression
-	 * <em>Expression</em>}' containment reference. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 *
-	 * @param value the new value of the '<em>Expression</em>' containment
-	 *              reference.
+	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#getExpression <em>Expression</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Expression</em>' containment reference.
 	 * @see #getExpression()
 	 * @generated
 	 */

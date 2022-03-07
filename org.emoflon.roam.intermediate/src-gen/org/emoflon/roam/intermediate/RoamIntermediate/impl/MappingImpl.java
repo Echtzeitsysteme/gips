@@ -3,31 +3,35 @@
 package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object
- * '<em><b>Mapping</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Mapping</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingImpl#getRule
- * <em>Rule</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingImpl#getRule <em>Rule</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class MappingImpl extends VariableSetImpl implements Mapping {
 	/**
-	 * The cached value of the '{@link #getRule() <em>Rule</em>}' reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The cached value of the '{@link #getRule() <em>Rule</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getRule()
 	 * @generated
 	 * @ordered
@@ -35,8 +39,8 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	protected IBeXRule rule;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected MappingImpl() {
@@ -44,8 +48,8 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -54,11 +58,10 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public IBeXRule getRule() {
 		if (rule != null && rule.eIsProxy()) {
 			InternalEObject oldRule = (InternalEObject) rule;
@@ -73,8 +76,8 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public IBeXRule basicGetRule() {
@@ -82,11 +85,10 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public void setRule(IBeXRule newRule) {
 		IBeXRule oldRule = rule;
 		rule = newRule;
@@ -96,8 +98,8 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -112,8 +114,8 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -127,8 +129,8 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -142,8 +144,8 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -155,4 +157,4 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 		return super.eIsSet(featureID);
 	}
 
-} // MappingImpl
+} //MappingImpl

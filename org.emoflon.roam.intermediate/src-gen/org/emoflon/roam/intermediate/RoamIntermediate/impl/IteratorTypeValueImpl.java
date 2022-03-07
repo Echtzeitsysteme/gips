@@ -3,9 +3,12 @@
 package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.Iterator;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
@@ -13,16 +16,15 @@ import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation;
 import org.emoflon.roam.intermediate.RoamIntermediate.Type;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object
- * '<em><b>Iterator Type Value</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Iterator Type Value</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeValueImpl#getStream
- * <em>Stream</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeValueImpl#getTypeContext
- * <em>Type Context</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeValueImpl#getStream <em>Stream</em>}</li>
+ *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeValueImpl#getTypeContext <em>Type Context</em>}</li>
  * </ul>
  *
  * @generated
@@ -30,8 +32,8 @@ import org.emoflon.roam.intermediate.RoamIntermediate.Type;
 public class IteratorTypeValueImpl extends ValueExpressionImpl implements IteratorTypeValue {
 	/**
 	 * The cached value of the '{@link #getStream() <em>Stream</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getStream()
 	 * @generated
 	 * @ordered
@@ -39,9 +41,9 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	protected SetOperation stream;
 
 	/**
-	 * The cached value of the '{@link #getTypeContext() <em>Type Context</em>}'
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The cached value of the '{@link #getTypeContext() <em>Type Context</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getTypeContext()
 	 * @generated
 	 * @ordered
@@ -49,8 +51,8 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	protected Type typeContext;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected IteratorTypeValueImpl() {
@@ -58,8 +60,8 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -68,11 +70,10 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public SetOperation getStream() {
 		if (stream != null && stream.eIsProxy()) {
 			InternalEObject oldStream = (InternalEObject) stream;
@@ -87,8 +88,8 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public SetOperation basicGetStream() {
@@ -96,11 +97,10 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public void setStream(SetOperation newStream) {
 		SetOperation oldStream = stream;
 		stream = newStream;
@@ -110,11 +110,10 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public Type getTypeContext() {
 		if (typeContext != null && typeContext.eIsProxy()) {
 			InternalEObject oldTypeContext = (InternalEObject) typeContext;
@@ -129,8 +128,8 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Type basicGetTypeContext() {
@@ -138,11 +137,10 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public void setTypeContext(Type newTypeContext) {
 		Type oldTypeContext = typeContext;
 		typeContext = newTypeContext;
@@ -152,8 +150,8 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -172,8 +170,8 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -190,8 +188,8 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -208,8 +206,8 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -224,8 +222,8 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -242,8 +240,8 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -259,4 +257,4 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
-} // IteratorTypeValueImpl
+} //IteratorTypeValueImpl

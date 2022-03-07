@@ -12,7 +12,9 @@ import org.emoflon.roam.core.RoamEngine;
 import org.emoflon.roam.core.RoamGlobalObjective;
 import org.emoflon.roam.core.RoamMapper;
 import org.emoflon.roam.core.ilp.ILPSolver;
+import org.emoflon.roam.core.ilp.ILPSolverConfig;
 import org.emoflon.roam.core.ilp.ILPSolverOutput;
+import org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
@@ -23,6 +25,7 @@ public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	protected EMOFLON_API eMoflonAPI;
 	protected RoamIntermediateModel roamModel;
 	protected RoamEngine roamEngine;
+	protected ILPSolverConfig solverConfig;
 	protected RoamMapperFactory mapperFactory;
 	protected RoamConstraintFactory constraintFactory;
 	protected RoamObjectiveFactory objectiveFactory;
@@ -32,6 +35,15 @@ public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	}
 
 	public abstract void init(final URI modelUri);
+	
+	public void setSolverConfig(final ILPSolverConfig solverConfig) {
+		this.solverConfig = solverConfig;
+	}
+	
+	protected void setSolverConfig(final ILPConfig config) {
+		solverConfig = new ILPSolverConfig(config.getIlpTimeLimit(), config.isEnableRndSeed(), 
+				config.getIlpRndSeed(), config.isEnablePresolve(), config.isEnableDebugOutput());
+	}
 	
 	public void update() {
 		roamEngine.update();
@@ -61,6 +73,7 @@ public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		eMoflonAPI = eMoflonApp.initAPI();
 		loadIntermediateModel(roamModelURI);
 		this.roamEngine = new RoamEngine(eMoflonAPI, roamModel);
+		setSolverConfig(roamModel.getConfig());
 		initMapperFactory();
 		createMappers();
 		initConstraintFactory();

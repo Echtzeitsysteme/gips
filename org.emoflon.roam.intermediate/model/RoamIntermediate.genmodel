@@ -11,6 +11,9 @@
   <testsDirectory xsi:nil="true"/>
   <genPackages prefix="RoamIntermediate" basePackage="org.emoflon.roam.intermediate"
       disposableProviderFactory="true" ecorePackage="RoamIntermediate.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="RoamIntermediate.ecore#//ILPSolverType">
+      <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//ILPSolverType/GUROBI"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="RoamIntermediate.ecore#//ObjectiveTarget">
       <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//ObjectiveTarget/MIN"/>
       <genEnumLiterals ecoreEnumLiteral="RoamIntermediate.ecore#//ObjectiveTarget/MAX"/>
@@ -59,6 +62,18 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//RoamIntermediateModel/objectives"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//RoamIntermediateModel/globalObjective"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//RoamIntermediateModel/ibexModel"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RoamIntermediate.ecore#//RoamIntermediateModel/config"/>
+    </genClasses>
+    <genClasses ecoreClass="RoamIntermediate.ecore#//ILPConfig">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//ILPConfig/solver"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//ILPConfig/solverHomeDir"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//ILPConfig/solverLicenseFile"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//ILPConfig/ilpTimeLimit"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//ILPConfig/enableRndSeed"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//ILPConfig/ilpRndSeed"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//ILPConfig/presolve"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//ILPConfig/enablePresolve"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//ILPConfig/enableDebugOutput"/>
     </genClasses>
     <genClasses image="false" ecoreClass="RoamIntermediate.ecore#//VariableSet">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//VariableSet/name"/>

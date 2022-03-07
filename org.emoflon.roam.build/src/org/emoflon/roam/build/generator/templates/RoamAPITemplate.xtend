@@ -98,17 +98,23 @@ public class «className» extends RoamEngineAPI <«data.apiData.engineAppClasse
 	
 	@Override
 	protected ILPSolver createSolver() {
-		//TODO: Make this configurable!
-		ILPSolverConfig config = new ILPSolverConfig(5000, "randomSeed".hashCode(), true, true);
 		ILPSolver solver = null;
 		try {
-			solver = new GurobiSolver(roamEngine, config);
+			solver = «solverInit()»;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return solver;
 	}
 }'''
+	}
+	
+	def String solverInit() {
+		switch(data.model.config.solver) {
+			case GUROBI: {
+				return '''new GurobiSolver(roamEngine, solverConfig)'''
+			}
+		}
 	}
 	
 }

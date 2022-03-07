@@ -16,24 +16,25 @@ import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Unary Arithmetic Expression</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Unary
+ * Arithmetic Expression</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.UnaryArithmeticExpressionImpl#getExpression <em>Expression</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.UnaryArithmeticExpressionImpl#getOperator <em>Operator</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.UnaryArithmeticExpressionImpl#getExpression
+ * <em>Expression</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.UnaryArithmeticExpressionImpl#getOperator
+ * <em>Operator</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl implements UnaryArithmeticExpression {
 	/**
-	 * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getExpression() <em>Expression</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getExpression()
 	 * @generated
 	 * @ordered
@@ -41,9 +42,9 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 	protected ArithmeticExpression expression;
 
 	/**
-	 * The default value of the '{@link #getOperator() <em>Operator</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getOperator() <em>Operator</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getOperator()
 	 * @generated
 	 * @ordered
@@ -52,8 +53,8 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 
 	/**
 	 * The cached value of the '{@link #getOperator() <em>Operator</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getOperator()
 	 * @generated
 	 * @ordered
@@ -61,8 +62,8 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 	protected UnaryArithmeticOperator operator = OPERATOR_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected UnaryArithmeticExpressionImpl() {
@@ -70,8 +71,8 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -80,8 +81,8 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ArithmeticExpression getExpression() {
@@ -89,8 +90,8 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetExpression(ArithmeticExpression newExpression, NotificationChain msgs) {
@@ -108,8 +109,8 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setExpression(ArithmeticExpression newExpression) {
@@ -132,8 +133,8 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public UnaryArithmeticOperator getOperator() {
@@ -141,8 +142,8 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setOperator(UnaryArithmeticOperator newOperator) {
@@ -154,8 +155,8 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -168,8 +169,8 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -184,8 +185,8 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -202,8 +203,8 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -220,8 +221,8 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -236,8 +237,8 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -252,4 +253,4 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 		return result.toString();
 	}
 
-} //UnaryArithmeticExpressionImpl
+} // UnaryArithmeticExpressionImpl

@@ -86,33 +86,34 @@ public class RoamToIntermediate {
 		data.model().getVariables().addAll(data.ePattern2Pattern().values());
 		return data.model();
 	}
-	
+
 	protected void transformConfig() {
 		RoamConfig eConfig = data.roamSlangFile().getConfig();
 		ILPConfig config = factory.createILPConfig();
-		switch(eConfig.getSolver()) {
-			case GUROBI -> {
-				config.setSolver(ILPSolverType.GUROBI);
-			}
-			default -> {
-				throw new IllegalArgumentException("Unsupported solver type: "+eConfig.getSolver());
-			}
+		switch (eConfig.getSolver()) {
+		case GUROBI -> {
+			config.setSolver(ILPSolverType.GUROBI);
 		}
-		config.setSolverHomeDir(eConfig.getHome());
-		config.setSolverLicenseFile(eConfig.getHome());
+		default -> {
+			throw new IllegalArgumentException("Unsupported solver type: " + eConfig.getSolver());
+		}
+		}
+		config.setSolverHomeDir(eConfig.getHome().replace("\"", ""));
+		config.setSolverLicenseFile(eConfig.getLicense().replace("\"", ""));
+		config.setBuildLaunchConfig(eConfig.isEnableLaunchConfig());
+		if (eConfig.isEnableLaunchConfig())
+			config.setMainFile(eConfig.getMainLoc().replace("\"", ""));
+
 		config.setEnableDebugOutput(eConfig.isEnableDebugOutput());
 		config.setEnablePresolve(eConfig.isEnablePresolve());
-		
-		if(eConfig.getRndSeed() == 0) {
-			config.setEnableRndSeed(false);
-		} else {
-			config.setEnableRndSeed(true);
+
+		config.setEnableRndSeed(eConfig.isEnableSeed());
+		if (eConfig.isEnableSeed()) {
 			config.setIlpRndSeed(eConfig.getRndSeed());
 		}
-		
-		if(eConfig.getTimeLimit() == 0.0) {
-			config.setIlpTimeLimit(5.0);
-		} else {
+
+		config.setEnableTimeLimit(eConfig.isEnableLimit());
+		if (eConfig.isEnableLimit()) {
 			config.setIlpTimeLimit(eConfig.getTimeLimit());
 		}
 		data.model().setConfig(config);

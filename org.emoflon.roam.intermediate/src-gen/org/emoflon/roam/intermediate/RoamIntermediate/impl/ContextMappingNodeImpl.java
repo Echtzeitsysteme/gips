@@ -16,24 +16,25 @@ import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Context Mapping Node</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Context
+ * Mapping Node</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingNodeImpl#getMappingContext <em>Mapping Context</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingNodeImpl#getNode <em>Node</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingNodeImpl#getMappingContext
+ * <em>Mapping Context</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingNodeImpl#getNode
+ * <em>Node</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ContextMappingNodeImpl extends ValueExpressionImpl implements ContextMappingNode {
 	/**
-	 * The cached value of the '{@link #getMappingContext() <em>Mapping Context</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMappingContext() <em>Mapping
+	 * Context</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMappingContext()
 	 * @generated
 	 * @ordered
@@ -41,9 +42,9 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	protected Mapping mappingContext;
 
 	/**
-	 * The cached value of the '{@link #getNode() <em>Node</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getNode() <em>Node</em>}' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getNode()
 	 * @generated
 	 * @ordered
@@ -51,8 +52,8 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	protected IBeXNode node;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ContextMappingNodeImpl() {
@@ -60,8 +61,8 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -70,8 +71,8 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Mapping getMappingContext() {
@@ -89,8 +90,8 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Mapping basicGetMappingContext() {
@@ -98,8 +99,8 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setMappingContext(Mapping newMappingContext) {
@@ -111,8 +112,8 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IBeXNode getNode() {
@@ -129,8 +130,8 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IBeXNode basicGetNode() {
@@ -138,8 +139,8 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setNode(IBeXNode newNode) {
@@ -151,8 +152,8 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -171,8 +172,8 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -189,8 +190,8 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -207,8 +208,8 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -222,4 +223,4 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 		return super.eIsSet(featureID);
 	}
 
-} //ContextMappingNodeImpl
+} // ContextMappingNodeImpl

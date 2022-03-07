@@ -35,24 +35,25 @@ public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	}
 
 	public abstract void init(final URI modelUri);
-	
+
 	public void setSolverConfig(final ILPSolverConfig solverConfig) {
 		this.solverConfig = solverConfig;
 	}
-	
+
 	protected void setSolverConfig(final ILPConfig config) {
-		solverConfig = new ILPSolverConfig(config.getIlpTimeLimit(), config.isEnableRndSeed(), 
-				config.getIlpRndSeed(), config.isEnablePresolve(), config.isEnableDebugOutput());
+		solverConfig = new ILPSolverConfig(config.isEnableTimeLimit(), config.getIlpTimeLimit(),
+				config.isEnableRndSeed(), config.getIlpRndSeed(), config.isEnablePresolve(),
+				config.isEnableDebugOutput());
 	}
-	
+
 	public void update() {
 		roamEngine.update();
 	}
-	
+
 	public void buildILPProblem(boolean doUpdate) {
 		roamEngine.buildILPProblem(doUpdate);
 	}
-	
+
 	public ILPSolverOutput solveILPProblem() {
 		return roamEngine.solveILPProblem();
 	}
@@ -64,7 +65,7 @@ public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	protected abstract void initObjectiveFactory();
 
 	protected abstract RoamGlobalObjective createGlobalObjective();
-	
+
 	protected abstract ILPSolver createSolver();
 
 	protected void init(final URI roamModelURI, final URI modelUri) {
@@ -83,7 +84,7 @@ public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 
 		if (roamModel.getGlobalObjective() != null)
 			roamEngine.setGlobalObjective(createGlobalObjective());
-		
+
 		roamEngine.setILPSolver(createSolver());
 	}
 

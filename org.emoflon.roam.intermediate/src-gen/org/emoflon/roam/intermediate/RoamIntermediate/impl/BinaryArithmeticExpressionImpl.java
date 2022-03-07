@@ -16,25 +16,27 @@ import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Binary Arithmetic Expression</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Binary
+ * Arithmetic Expression</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BinaryArithmeticExpressionImpl#getLhs <em>Lhs</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BinaryArithmeticExpressionImpl#getRhs <em>Rhs</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BinaryArithmeticExpressionImpl#getOperator <em>Operator</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BinaryArithmeticExpressionImpl#getLhs
+ * <em>Lhs</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BinaryArithmeticExpressionImpl#getRhs
+ * <em>Rhs</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BinaryArithmeticExpressionImpl#getOperator
+ * <em>Operator</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl implements BinaryArithmeticExpression {
 	/**
-	 * The cached value of the '{@link #getLhs() <em>Lhs</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getLhs() <em>Lhs</em>}' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getLhs()
 	 * @generated
 	 * @ordered
@@ -42,9 +44,9 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	protected ArithmeticExpression lhs;
 
 	/**
-	 * The cached value of the '{@link #getRhs() <em>Rhs</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getRhs() <em>Rhs</em>}' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getRhs()
 	 * @generated
 	 * @ordered
@@ -52,9 +54,9 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	protected ArithmeticExpression rhs;
 
 	/**
-	 * The default value of the '{@link #getOperator() <em>Operator</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getOperator() <em>Operator</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getOperator()
 	 * @generated
 	 * @ordered
@@ -63,8 +65,8 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 
 	/**
 	 * The cached value of the '{@link #getOperator() <em>Operator</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getOperator()
 	 * @generated
 	 * @ordered
@@ -72,8 +74,8 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	protected BinaryArithmeticOperator operator = OPERATOR_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected BinaryArithmeticExpressionImpl() {
@@ -81,8 +83,8 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -91,8 +93,8 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ArithmeticExpression getLhs() {
@@ -100,8 +102,8 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetLhs(ArithmeticExpression newLhs, NotificationChain msgs) {
@@ -119,8 +121,8 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setLhs(ArithmeticExpression newLhs) {
@@ -141,8 +143,8 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ArithmeticExpression getRhs() {
@@ -150,8 +152,8 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetRhs(ArithmeticExpression newRhs, NotificationChain msgs) {
@@ -169,8 +171,8 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setRhs(ArithmeticExpression newRhs) {
@@ -191,8 +193,8 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public BinaryArithmeticOperator getOperator() {
@@ -200,8 +202,8 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setOperator(BinaryArithmeticOperator newOperator) {
@@ -213,8 +215,8 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -229,8 +231,8 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -247,8 +249,8 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -268,8 +270,8 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -289,8 +291,8 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -307,8 +309,8 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -323,4 +325,4 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 		return result.toString();
 	}
 
-} //BinaryArithmeticExpressionImpl
+} // BinaryArithmeticExpressionImpl

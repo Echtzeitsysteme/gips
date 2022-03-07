@@ -3,16 +3,17 @@
 package org.emoflon.roam.intermediate.RoamIntermediate;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Bool Stream Expression</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the model object '<em><b>Bool
+ * Stream Expression</b></em>'. <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression#getStream <em>Stream</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression#getOperator <em>Operator</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression#getStream
+ * <em>Stream</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression#getOperator
+ * <em>Operator</em>}</li>
  * </ul>
  *
  * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBoolStreamExpression()
@@ -21,9 +22,9 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  */
 public interface BoolStreamExpression extends BoolValueExpression {
 	/**
-	 * Returns the value of the '<em><b>Stream</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the value of the '<em><b>Stream</b></em>' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Stream</em>' containment reference.
 	 * @see #setStream(StreamExpression)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBoolStreamExpression_Stream()
@@ -33,9 +34,11 @@ public interface BoolStreamExpression extends BoolValueExpression {
 	StreamExpression getStream();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression#getStream <em>Stream</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Sets the value of the
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression#getStream
+	 * <em>Stream</em>}' containment reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Stream</em>' containment reference.
 	 * @see #getStream()
 	 * @generated
@@ -43,10 +46,11 @@ public interface BoolStreamExpression extends BoolValueExpression {
 	void setStream(StreamExpression value);
 
 	/**
-	 * Returns the value of the '<em><b>Operator</b></em>' attribute.
-	 * The literals are from the enumeration {@link org.emoflon.roam.intermediate.RoamIntermediate.StreamBoolOperator}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the value of the '<em><b>Operator</b></em>' attribute. The literals
+	 * are from the enumeration
+	 * {@link org.emoflon.roam.intermediate.RoamIntermediate.StreamBoolOperator}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Operator</em>' attribute.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamBoolOperator
 	 * @see #setOperator(StreamBoolOperator)
@@ -57,9 +61,10 @@ public interface BoolStreamExpression extends BoolValueExpression {
 	StreamBoolOperator getOperator();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression#getOperator <em>Operator</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Sets the value of the
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression#getOperator
+	 * <em>Operator</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Operator</em>' attribute.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamBoolOperator
 	 * @see #getOperator()

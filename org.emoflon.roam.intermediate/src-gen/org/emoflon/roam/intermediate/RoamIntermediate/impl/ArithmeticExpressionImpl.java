@@ -15,23 +15,23 @@ import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Arithmetic Expression</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object
+ * '<em><b>Arithmetic Expression</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticExpressionImpl#getReturnType <em>Return Type</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticExpressionImpl#getReturnType
+ * <em>Return Type</em>}</li>
  * </ul>
  *
  * @generated
  */
 public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Container implements ArithmeticExpression {
 	/**
-	 * The cached value of the '{@link #getReturnType() <em>Return Type</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getReturnType() <em>Return Type</em>}'
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getReturnType()
 	 * @generated
 	 * @ordered
@@ -39,8 +39,8 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 	protected EDataType returnType;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ArithmeticExpressionImpl() {
@@ -48,8 +48,8 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -58,8 +58,8 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EDataType getReturnType() {
@@ -76,8 +76,8 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EDataType basicGetReturnType() {
@@ -85,8 +85,8 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setReturnType(EDataType newReturnType) {
@@ -98,8 +98,8 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -114,8 +114,8 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -129,8 +129,8 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -144,8 +144,8 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -157,4 +157,4 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 		return super.eIsSet(featureID);
 	}
 
-} //ArithmeticExpressionImpl
+} // ArithmeticExpressionImpl

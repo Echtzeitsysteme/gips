@@ -68,6 +68,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//ILPConfig/solver"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//ILPConfig/solverHomeDir"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//ILPConfig/solverLicenseFile"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//ILPConfig/buildLaunchConfig"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//ILPConfig/mainFile"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//ILPConfig/enableTimeLimit"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//ILPConfig/ilpTimeLimit"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//ILPConfig/enableRndSeed"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamIntermediate.ecore#//ILPConfig/ilpRndSeed"/>

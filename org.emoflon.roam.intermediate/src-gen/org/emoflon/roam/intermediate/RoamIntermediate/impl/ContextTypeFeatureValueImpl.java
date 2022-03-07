@@ -15,23 +15,24 @@ import org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Context Type Feature Value</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Context
+ * Type Feature Value</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextTypeFeatureValueImpl#getFeatureExpression <em>Feature Expression</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextTypeFeatureValueImpl#getFeatureExpression
+ * <em>Feature Expression</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ContextTypeFeatureValueImpl extends ContextTypeValueImpl implements ContextTypeFeatureValue {
 	/**
-	 * The cached value of the '{@link #getFeatureExpression() <em>Feature Expression</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getFeatureExpression() <em>Feature
+	 * Expression</em>}' containment reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #getFeatureExpression()
 	 * @generated
 	 * @ordered
@@ -39,8 +40,8 @@ public class ContextTypeFeatureValueImpl extends ContextTypeValueImpl implements
 	protected FeatureExpression featureExpression;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ContextTypeFeatureValueImpl() {
@@ -48,8 +49,8 @@ public class ContextTypeFeatureValueImpl extends ContextTypeValueImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -58,8 +59,8 @@ public class ContextTypeFeatureValueImpl extends ContextTypeValueImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public FeatureExpression getFeatureExpression() {
@@ -67,8 +68,8 @@ public class ContextTypeFeatureValueImpl extends ContextTypeValueImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetFeatureExpression(FeatureExpression newFeatureExpression, NotificationChain msgs) {
@@ -87,8 +88,8 @@ public class ContextTypeFeatureValueImpl extends ContextTypeValueImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setFeatureExpression(FeatureExpression newFeatureExpression) {
@@ -112,8 +113,8 @@ public class ContextTypeFeatureValueImpl extends ContextTypeValueImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -126,8 +127,8 @@ public class ContextTypeFeatureValueImpl extends ContextTypeValueImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -140,8 +141,8 @@ public class ContextTypeFeatureValueImpl extends ContextTypeValueImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -155,8 +156,8 @@ public class ContextTypeFeatureValueImpl extends ContextTypeValueImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -170,8 +171,8 @@ public class ContextTypeFeatureValueImpl extends ContextTypeValueImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -183,4 +184,4 @@ public class ContextTypeFeatureValueImpl extends ContextTypeValueImpl implements
 		return super.eIsSet(featureID);
 	}
 
-} //ContextTypeFeatureValueImpl
+} // ContextTypeFeatureValueImpl

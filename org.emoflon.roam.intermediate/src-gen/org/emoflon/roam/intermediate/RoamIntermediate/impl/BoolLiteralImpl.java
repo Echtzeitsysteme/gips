@@ -12,14 +12,14 @@ import org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Bool Literal</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Bool
+ * Literal</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolLiteralImpl#isLiteral <em>Literal</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolLiteralImpl#isLiteral
+ * <em>Literal</em>}</li>
  * </ul>
  *
  * @generated
@@ -27,8 +27,8 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLiteral {
 	/**
 	 * The default value of the '{@link #isLiteral() <em>Literal</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #isLiteral()
 	 * @generated
 	 * @ordered
@@ -37,8 +37,8 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 
 	/**
 	 * The cached value of the '{@link #isLiteral() <em>Literal</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #isLiteral()
 	 * @generated
 	 * @ordered
@@ -46,8 +46,8 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 	protected boolean literal = LITERAL_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected BoolLiteralImpl() {
@@ -55,8 +55,8 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -65,8 +65,8 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean isLiteral() {
@@ -74,8 +74,8 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setLiteral(boolean newLiteral) {
@@ -87,8 +87,8 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -101,8 +101,8 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -116,8 +116,8 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -131,8 +131,8 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -145,8 +145,8 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -161,4 +161,4 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 		return result.toString();
 	}
 
-} //BoolLiteralImpl
+} // BoolLiteralImpl

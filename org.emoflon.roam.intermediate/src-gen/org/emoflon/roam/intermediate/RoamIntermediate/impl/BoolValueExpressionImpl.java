@@ -8,16 +8,15 @@ import org.emoflon.roam.intermediate.RoamIntermediate.BoolValueExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Bool Value Expression</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Bool
+ * Value Expression</b></em>'. <!-- end-user-doc -->
  *
  * @generated
  */
 public abstract class BoolValueExpressionImpl extends BoolExpressionImpl implements BoolValueExpression {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected BoolValueExpressionImpl() {
@@ -25,8 +24,8 @@ public abstract class BoolValueExpressionImpl extends BoolExpressionImpl impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -34,4 +33,4 @@ public abstract class BoolValueExpressionImpl extends BoolExpressionImpl impleme
 		return RoamIntermediatePackage.Literals.BOOL_VALUE_EXPRESSION;
 	}
 
-} //BoolValueExpressionImpl
+} // BoolValueExpressionImpl

@@ -16,24 +16,25 @@ import org.emoflon.roam.intermediate.RoamIntermediate.FeatureLiteral;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Feature Expression</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Feature
+ * Expression</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.FeatureExpressionImpl#getCurrent <em>Current</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.FeatureExpressionImpl#getChild <em>Child</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.FeatureExpressionImpl#getCurrent
+ * <em>Current</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.FeatureExpressionImpl#getChild
+ * <em>Child</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implements FeatureExpression {
 	/**
-	 * The cached value of the '{@link #getCurrent() <em>Current</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getCurrent() <em>Current</em>}' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getCurrent()
 	 * @generated
 	 * @ordered
@@ -41,9 +42,9 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 	protected FeatureLiteral current;
 
 	/**
-	 * The cached value of the '{@link #getChild() <em>Child</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getChild() <em>Child</em>}' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getChild()
 	 * @generated
 	 * @ordered
@@ -51,8 +52,8 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 	protected FeatureExpression child;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected FeatureExpressionImpl() {
@@ -60,8 +61,8 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -70,8 +71,8 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public FeatureLiteral getCurrent() {
@@ -79,8 +80,8 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetCurrent(FeatureLiteral newCurrent, NotificationChain msgs) {
@@ -98,8 +99,8 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setCurrent(FeatureLiteral newCurrent) {
@@ -120,8 +121,8 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public FeatureExpression getChild() {
@@ -129,8 +130,8 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetChild(FeatureExpression newChild, NotificationChain msgs) {
@@ -148,8 +149,8 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setChild(FeatureExpression newChild) {
@@ -170,8 +171,8 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -186,8 +187,8 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -202,8 +203,8 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -220,8 +221,8 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -238,8 +239,8 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -253,4 +254,4 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 		return super.eIsSet(featureID);
 	}
 
-} //FeatureExpressionImpl
+} // FeatureExpressionImpl

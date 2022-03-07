@@ -18,26 +18,29 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Pattern Constraint</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Pattern
+ * Constraint</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternConstraintImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternConstraintImpl#isElementwise <em>Elementwise</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternConstraintImpl#getExpression <em>Expression</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternConstraintImpl#getPattern <em>Pattern</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternConstraintImpl#getName
+ * <em>Name</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternConstraintImpl#isElementwise
+ * <em>Elementwise</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternConstraintImpl#getExpression
+ * <em>Expression</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternConstraintImpl#getPattern
+ * <em>Pattern</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class PatternConstraintImpl extends MinimalEObjectImpl.Container implements PatternConstraint {
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -45,9 +48,9 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	protected static final String NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -55,9 +58,9 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isElementwise() <em>Elementwise</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #isElementwise() <em>Elementwise</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #isElementwise()
 	 * @generated
 	 * @ordered
@@ -65,9 +68,9 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	protected static final boolean ELEMENTWISE_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isElementwise() <em>Elementwise</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #isElementwise() <em>Elementwise</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #isElementwise()
 	 * @generated
 	 * @ordered
@@ -75,9 +78,9 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	protected boolean elementwise = ELEMENTWISE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getExpression() <em>Expression</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getExpression()
 	 * @generated
 	 * @ordered
@@ -86,8 +89,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 
 	/**
 	 * The cached value of the '{@link #getPattern() <em>Pattern</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getPattern()
 	 * @generated
 	 * @ordered
@@ -95,8 +98,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	protected Pattern pattern;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected PatternConstraintImpl() {
@@ -104,8 +107,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -114,8 +117,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String getName() {
@@ -123,8 +126,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setName(String newName) {
@@ -136,8 +139,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean isElementwise() {
@@ -145,8 +148,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setElementwise(boolean newElementwise) {
@@ -158,8 +161,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public RelationalExpression getExpression() {
@@ -167,8 +170,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetExpression(RelationalExpression newExpression, NotificationChain msgs) {
@@ -186,8 +189,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setExpression(RelationalExpression newExpression) {
@@ -208,8 +211,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Pattern getPattern() {
@@ -226,8 +229,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Pattern basicGetPattern() {
@@ -235,8 +238,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setPattern(Pattern newPattern) {
@@ -248,8 +251,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -262,8 +265,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -284,8 +287,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -308,8 +311,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -332,8 +335,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -352,8 +355,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -374,8 +377,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -396,8 +399,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -414,4 +417,4 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 		return result.toString();
 	}
 
-} //PatternConstraintImpl
+} // PatternConstraintImpl

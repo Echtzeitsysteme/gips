@@ -72,7 +72,11 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamConfig/solver"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamConfig/home"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamConfig/license"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamConfig/enableLaunchConfig"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamConfig/mainLoc"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamConfig/enableLimit"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamConfig/timeLimit"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamConfig/enableSeed"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamConfig/rndSeed"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamConfig/enablePresolve"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RoamSLang.ecore#//RoamConfig/enableDebugOutput"/>

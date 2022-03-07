@@ -9,19 +9,19 @@ import java.util.List;
 import org.eclipse.emf.common.util.Enumerator;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the literals of the enumeration '<em><b>Stream Bool Operator</b></em>',
- * and utility methods for working with them.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the literals of the enumeration
+ * '<em><b>Stream Bool Operator</b></em>', and utility methods for working with
+ * them. <!-- end-user-doc -->
+ * 
  * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getStreamBoolOperator()
  * @model
  * @generated
  */
 public enum StreamBoolOperator implements Enumerator {
 	/**
-	 * The '<em><b>EXISTS</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>EXISTS</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #EXISTS_VALUE
 	 * @generated
 	 * @ordered
@@ -29,9 +29,9 @@ public enum StreamBoolOperator implements Enumerator {
 	EXISTS(0, "EXISTS", "EXISTS"),
 
 	/**
-	 * The '<em><b>NOTEXISTS</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>NOTEXISTS</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #NOTEXISTS_VALUE
 	 * @generated
 	 * @ordered
@@ -39,9 +39,9 @@ public enum StreamBoolOperator implements Enumerator {
 	NOTEXISTS(0, "NOTEXISTS", "NOTEXISTS");
 
 	/**
-	 * The '<em><b>EXISTS</b></em>' literal value.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>EXISTS</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #EXISTS
 	 * @model
 	 * @generated
@@ -50,9 +50,9 @@ public enum StreamBoolOperator implements Enumerator {
 	public static final int EXISTS_VALUE = 0;
 
 	/**
-	 * The '<em><b>NOTEXISTS</b></em>' literal value.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>NOTEXISTS</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #NOTEXISTS
 	 * @model
 	 * @generated
@@ -61,25 +61,25 @@ public enum StreamBoolOperator implements Enumerator {
 	public static final int NOTEXISTS_VALUE = 0;
 
 	/**
-	 * An array of all the '<em><b>Stream Bool Operator</b></em>' enumerators.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * An array of all the '<em><b>Stream Bool Operator</b></em>' enumerators. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private static final StreamBoolOperator[] VALUES_ARRAY = new StreamBoolOperator[] { EXISTS, NOTEXISTS, };
 
 	/**
-	 * A public read-only list of all the '<em><b>Stream Bool Operator</b></em>' enumerators.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * A public read-only list of all the '<em><b>Stream Bool Operator</b></em>'
+	 * enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static final List<StreamBoolOperator> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
-	 * Returns the '<em><b>Stream Bool Operator</b></em>' literal with the specified literal value.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the '<em><b>Stream Bool Operator</b></em>' literal with the specified
+	 * literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @param literal the literal.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
@@ -95,9 +95,9 @@ public enum StreamBoolOperator implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>Stream Bool Operator</b></em>' literal with the specified name.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the '<em><b>Stream Bool Operator</b></em>' literal with the specified
+	 * name. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @param name the name.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
@@ -113,9 +113,9 @@ public enum StreamBoolOperator implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>Stream Bool Operator</b></em>' literal with the specified integer value.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the '<em><b>Stream Bool Operator</b></em>' literal with the specified
+	 * integer value. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @param value the integer value.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
@@ -129,30 +129,30 @@ public enum StreamBoolOperator implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private final int value;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private final String name;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private final String literal;
 
 	/**
-	 * Only this class can construct instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Only this class can construct instances. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private StreamBoolOperator(int value, String name, String literal) {
@@ -162,8 +162,8 @@ public enum StreamBoolOperator implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public int getValue() {
@@ -171,8 +171,8 @@ public enum StreamBoolOperator implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String getName() {
@@ -180,8 +180,8 @@ public enum StreamBoolOperator implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String getLiteral() {
@@ -189,9 +189,9 @@ public enum StreamBoolOperator implements Enumerator {
 	}
 
 	/**
-	 * Returns the literal value of the enumerator, which is its string representation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the literal value of the enumerator, which is its string
+	 * representation. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -199,4 +199,4 @@ public enum StreamBoolOperator implements Enumerator {
 		return literal;
 	}
 
-} //StreamBoolOperator
+} // StreamBoolOperator

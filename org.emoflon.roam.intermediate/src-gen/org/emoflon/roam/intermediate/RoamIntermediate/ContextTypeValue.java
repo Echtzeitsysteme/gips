@@ -3,15 +3,15 @@
 package org.emoflon.roam.intermediate.RoamIntermediate;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Context Type Value</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the model object '<em><b>Context
+ * Type Value</b></em>'. <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue#getTypeContext <em>Type Context</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue#getTypeContext
+ * <em>Type Context</em>}</li>
  * </ul>
  *
  * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getContextTypeValue()
@@ -20,9 +20,9 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  */
 public interface ContextTypeValue extends ValueExpression {
 	/**
-	 * Returns the value of the '<em><b>Type Context</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the value of the '<em><b>Type Context</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Type Context</em>' reference.
 	 * @see #setTypeContext(Type)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getContextTypeValue_TypeContext()
@@ -32,9 +32,11 @@ public interface ContextTypeValue extends ValueExpression {
 	Type getTypeContext();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue#getTypeContext <em>Type Context</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Sets the value of the
+	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue#getTypeContext
+	 * <em>Type Context</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
 	 * @param value the new value of the '<em>Type Context</em>' reference.
 	 * @see #getTypeContext()
 	 * @generated

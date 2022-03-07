@@ -29,29 +29,35 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Model</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object
+ * '<em><b>Model</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getVariables <em>Variables</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getConstraints <em>Constraints</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getObjectives <em>Objectives</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getGlobalObjective <em>Global Objective</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getIbexModel <em>Ibex Model</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getConfig <em>Config</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getName
+ * <em>Name</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getVariables
+ * <em>Variables</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getConstraints
+ * <em>Constraints</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getObjectives
+ * <em>Objectives</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getGlobalObjective
+ * <em>Global Objective</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getIbexModel
+ * <em>Ibex Model</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getConfig
+ * <em>Config</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container implements RoamIntermediateModel {
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -59,9 +65,9 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	protected static final String NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -69,9 +75,9 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getVariables() <em>Variables</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getVariables() <em>Variables</em>}'
+	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getVariables()
 	 * @generated
 	 * @ordered
@@ -79,9 +85,9 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	protected EList<VariableSet> variables;
 
 	/**
-	 * The cached value of the '{@link #getConstraints() <em>Constraints</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getConstraints() <em>Constraints</em>}'
+	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getConstraints()
 	 * @generated
 	 * @ordered
@@ -89,9 +95,9 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	protected EList<Constraint> constraints;
 
 	/**
-	 * The cached value of the '{@link #getObjectives() <em>Objectives</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getObjectives() <em>Objectives</em>}'
+	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getObjectives()
 	 * @generated
 	 * @ordered
@@ -99,9 +105,10 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	protected EList<Objective> objectives;
 
 	/**
-	 * The cached value of the '{@link #getGlobalObjective() <em>Global Objective</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getGlobalObjective() <em>Global
+	 * Objective</em>}' containment reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #getGlobalObjective()
 	 * @generated
 	 * @ordered
@@ -109,9 +116,9 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	protected GlobalObjective globalObjective;
 
 	/**
-	 * The cached value of the '{@link #getIbexModel() <em>Ibex Model</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getIbexModel() <em>Ibex Model</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getIbexModel()
 	 * @generated
 	 * @ordered
@@ -119,9 +126,9 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	protected IBeXModel ibexModel;
 
 	/**
-	 * The cached value of the '{@link #getConfig() <em>Config</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getConfig() <em>Config</em>}' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getConfig()
 	 * @generated
 	 * @ordered
@@ -129,8 +136,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	protected ILPConfig config;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected RoamIntermediateModelImpl() {
@@ -138,8 +145,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -148,8 +155,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String getName() {
@@ -157,8 +164,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setName(String newName) {
@@ -170,8 +177,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EList<VariableSet> getVariables() {
@@ -183,8 +190,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EList<Constraint> getConstraints() {
@@ -196,8 +203,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EList<Objective> getObjectives() {
@@ -209,8 +216,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public GlobalObjective getGlobalObjective() {
@@ -218,8 +225,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetGlobalObjective(GlobalObjective newGlobalObjective, NotificationChain msgs) {
@@ -238,8 +245,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setGlobalObjective(GlobalObjective newGlobalObjective) {
@@ -263,8 +270,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IBeXModel getIbexModel() {
@@ -272,8 +279,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetIbexModel(IBeXModel newIbexModel, NotificationChain msgs) {
@@ -291,8 +298,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setIbexModel(IBeXModel newIbexModel) {
@@ -315,8 +322,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ILPConfig getConfig() {
@@ -324,8 +331,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetConfig(ILPConfig newConfig, NotificationChain msgs) {
@@ -343,8 +350,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setConfig(ILPConfig newConfig) {
@@ -365,8 +372,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -389,8 +396,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -415,8 +422,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -452,8 +459,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -485,8 +492,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -511,8 +518,8 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -527,4 +534,4 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 		return result.toString();
 	}
 
-} //RoamIntermediateModelImpl
+} // RoamIntermediateModelImpl

@@ -88,526 +88,526 @@ import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model <b>Package</b>.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!--
+ * end-user-doc -->
+ * 
  * @generated
  */
 public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamIntermediatePackage {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass roamIntermediateModelEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass ilpConfigEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass variableSetEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass patternEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass typeEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass mappingEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass constraintEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass objectiveEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass globalObjectiveEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass contextEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass patternConstraintEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass typeConstraintEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass mappingConstraintEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass patternObjectiveEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass typeObjectiveEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass mappingObjectiveEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass arithmeticExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass binaryArithmeticExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass unaryArithmeticExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass setOperationEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass arithmeticValueExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass arithmeticValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass arithmeticLiteralEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass integerLiteralEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass doubleLiteralEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass boolExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass boolBinaryExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass boolUnaryExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass boolValueExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass boolValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass boolStreamExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass relationalExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass boolLiteralEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass valueExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass sumExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass mappingSumExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass typeSumExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass contextTypeValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass contextPatternValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass contextPatternNodeEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass contextMappingValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass contextMappingNodeEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass objectiveFunctionValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass featureExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass featureLiteralEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass contextTypeFeatureValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass contextPatternNodeFeatureValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass contextMappingNodeFeatureValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass iteratorEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass iteratorPatternValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass iteratorPatternFeatureValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass iteratorPatternNodeValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass iteratorPatternNodeFeatureValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass iteratorMappingValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass iteratorMappingFeatureValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass iteratorMappingNodeValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass iteratorMappingNodeFeatureValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass iteratorTypeValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass iteratorTypeFeatureValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass streamExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass streamOperationEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass streamFilterOperationEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass streamSelectOperationEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EEnum ilpSolverTypeEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EEnum objectiveTargetEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EEnum relationalOperatorEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EEnum binaryArithmeticOperatorEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EEnum unaryArithmeticOperatorEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EEnum streamArithmeticOperatorEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EEnum binaryBoolOperatorEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EEnum unaryBoolOperatorEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EEnum streamBoolOperatorEEnum = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
-	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
-	 * package URI value.
-	 * <p>Note: the correct way to create the package is via the static
-	 * factory method {@link #init init()}, which also performs
-	 * initialization of the package, or returns the registered package,
-	 * if one already exists.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the
+	 * package package URI value.
+	 * <p>
+	 * Note: the correct way to create the package is via the static factory method
+	 * {@link #init init()}, which also performs initialization of the package, or
+	 * returns the registered package, if one already exists. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.emf.ecore.EPackage.Registry
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#eNS_URI
 	 * @see #init()
@@ -618,19 +618,22 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private static boolean isInited = false;
 
 	/**
-	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
+	 * Creates, registers, and initializes the <b>Package</b> for this model, and
+	 * for any others upon which it depends.
 	 *
-	 * <p>This method is used to initialize {@link RoamIntermediatePackage#eINSTANCE} when that field is accessed.
-	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <p>
+	 * This method is used to initialize {@link RoamIntermediatePackage#eINSTANCE}
+	 * when that field is accessed. Clients should not invoke it directly. Instead,
+	 * they should simply access that field to obtain the package. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
@@ -666,8 +669,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getRoamIntermediateModel() {
@@ -675,8 +678,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getRoamIntermediateModel_Name() {
@@ -684,8 +687,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getRoamIntermediateModel_Variables() {
@@ -693,8 +696,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getRoamIntermediateModel_Constraints() {
@@ -702,8 +705,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getRoamIntermediateModel_Objectives() {
@@ -711,8 +714,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getRoamIntermediateModel_GlobalObjective() {
@@ -720,8 +723,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getRoamIntermediateModel_IbexModel() {
@@ -729,8 +732,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getRoamIntermediateModel_Config() {
@@ -738,8 +741,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getILPConfig() {
@@ -747,8 +750,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getILPConfig_Solver() {
@@ -756,8 +759,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getILPConfig_SolverHomeDir() {
@@ -765,8 +768,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getILPConfig_SolverLicenseFile() {
@@ -774,62 +777,89 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
-	public EAttribute getILPConfig_IlpTimeLimit() {
+	public EAttribute getILPConfig_BuildLaunchConfig() {
 		return (EAttribute) ilpConfigEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
-	public EAttribute getILPConfig_EnableRndSeed() {
+	public EAttribute getILPConfig_MainFile() {
 		return (EAttribute) ilpConfigEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
-	public EAttribute getILPConfig_IlpRndSeed() {
+	public EAttribute getILPConfig_EnableTimeLimit() {
 		return (EAttribute) ilpConfigEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
-	public EAttribute getILPConfig_Presolve() {
+	public EAttribute getILPConfig_IlpTimeLimit() {
 		return (EAttribute) ilpConfigEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
-	public EAttribute getILPConfig_EnablePresolve() {
+	public EAttribute getILPConfig_EnableRndSeed() {
 		return (EAttribute) ilpConfigEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
-	public EAttribute getILPConfig_EnableDebugOutput() {
+	public EAttribute getILPConfig_IlpRndSeed() {
 		return (EAttribute) ilpConfigEClass.getEStructuralFeatures().get(8);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getILPConfig_Presolve() {
+		return (EAttribute) ilpConfigEClass.getEStructuralFeatures().get(9);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getILPConfig_EnablePresolve() {
+		return (EAttribute) ilpConfigEClass.getEStructuralFeatures().get(10);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getILPConfig_EnableDebugOutput() {
+		return (EAttribute) ilpConfigEClass.getEStructuralFeatures().get(11);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getVariableSet() {
@@ -837,8 +867,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getVariableSet_Name() {
@@ -846,8 +876,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getPattern() {
@@ -855,8 +885,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getPattern_Pattern() {
@@ -864,8 +894,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getPattern_IsRule() {
@@ -873,8 +903,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getType() {
@@ -882,8 +912,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getType_Type() {
@@ -891,8 +921,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getMapping() {
@@ -900,8 +930,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getMapping_Rule() {
@@ -909,8 +939,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getConstraint() {
@@ -918,8 +948,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getConstraint_Name() {
@@ -927,8 +957,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getConstraint_Elementwise() {
@@ -936,8 +966,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getConstraint_Expression() {
@@ -945,8 +975,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getObjective() {
@@ -954,8 +984,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getObjective_Name() {
@@ -963,8 +993,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getObjective_Elementwise() {
@@ -972,8 +1002,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getObjective_Expression() {
@@ -981,8 +1011,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getGlobalObjective() {
@@ -990,8 +1020,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getGlobalObjective_Expression() {
@@ -999,8 +1029,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getGlobalObjective_Target() {
@@ -1008,8 +1038,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getContext() {
@@ -1017,8 +1047,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getPatternConstraint() {
@@ -1026,8 +1056,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getPatternConstraint_Pattern() {
@@ -1035,8 +1065,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getTypeConstraint() {
@@ -1044,8 +1074,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getTypeConstraint_ModelType() {
@@ -1053,8 +1083,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getMappingConstraint() {
@@ -1062,8 +1092,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getMappingConstraint_Mapping() {
@@ -1071,8 +1101,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getPatternObjective() {
@@ -1080,8 +1110,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getPatternObjective_Pattern() {
@@ -1089,8 +1119,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getTypeObjective() {
@@ -1098,8 +1128,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getTypeObjective_ModelType() {
@@ -1107,8 +1137,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getMappingObjective() {
@@ -1116,8 +1146,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getMappingObjective_Mapping() {
@@ -1125,8 +1155,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getArithmeticExpression() {
@@ -1134,8 +1164,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getArithmeticExpression_ReturnType() {
@@ -1143,8 +1173,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getBinaryArithmeticExpression() {
@@ -1152,8 +1182,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getBinaryArithmeticExpression_Lhs() {
@@ -1161,8 +1191,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getBinaryArithmeticExpression_Rhs() {
@@ -1170,8 +1200,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getBinaryArithmeticExpression_Operator() {
@@ -1179,8 +1209,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getUnaryArithmeticExpression() {
@@ -1188,8 +1218,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getUnaryArithmeticExpression_Expression() {
@@ -1197,8 +1227,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getUnaryArithmeticExpression_Operator() {
@@ -1206,8 +1236,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getSetOperation() {
@@ -1215,8 +1245,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getSetOperation_OperandName() {
@@ -1224,8 +1254,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getArithmeticValueExpression() {
@@ -1233,8 +1263,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getArithmeticValue() {
@@ -1242,8 +1272,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getArithmeticValue_Value() {
@@ -1251,8 +1281,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getArithmeticLiteral() {
@@ -1260,8 +1290,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getIntegerLiteral() {
@@ -1269,8 +1299,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getIntegerLiteral_Literal() {
@@ -1278,8 +1308,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getDoubleLiteral() {
@@ -1287,8 +1317,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getDoubleLiteral_Literal() {
@@ -1296,8 +1326,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getBoolExpression() {
@@ -1305,8 +1335,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getBoolBinaryExpression() {
@@ -1314,8 +1344,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getBoolBinaryExpression_Lhs() {
@@ -1323,8 +1353,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getBoolBinaryExpression_Rhs() {
@@ -1332,8 +1362,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getBoolBinaryExpression_Operator() {
@@ -1341,8 +1371,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getBoolUnaryExpression() {
@@ -1350,8 +1380,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getBoolUnaryExpression_Expression() {
@@ -1359,8 +1389,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getBoolUnaryExpression_Operator() {
@@ -1368,8 +1398,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getBoolValueExpression() {
@@ -1377,8 +1407,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getBoolValue() {
@@ -1386,8 +1416,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getBoolValue_Value() {
@@ -1395,8 +1425,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getBoolStreamExpression() {
@@ -1404,8 +1434,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getBoolStreamExpression_Stream() {
@@ -1413,8 +1443,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getBoolStreamExpression_Operator() {
@@ -1422,8 +1452,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getRelationalExpression() {
@@ -1431,8 +1461,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getRelationalExpression_Operator() {
@@ -1440,8 +1470,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getRelationalExpression_Lhs() {
@@ -1449,8 +1479,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getRelationalExpression_Rhs() {
@@ -1458,8 +1488,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getBoolLiteral() {
@@ -1467,8 +1497,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getBoolLiteral_Literal() {
@@ -1476,8 +1506,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getValueExpression() {
@@ -1485,8 +1515,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getValueExpression_ReturnType() {
@@ -1494,8 +1524,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getSumExpression() {
@@ -1503,8 +1533,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getSumExpression_Expression() {
@@ -1512,8 +1542,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getSumExpression_Filter() {
@@ -1521,8 +1551,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getMappingSumExpression() {
@@ -1530,8 +1560,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getMappingSumExpression_Mapping() {
@@ -1539,8 +1569,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getTypeSumExpression() {
@@ -1548,8 +1578,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getTypeSumExpression_Type() {
@@ -1557,8 +1587,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getContextTypeValue() {
@@ -1566,8 +1596,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getContextTypeValue_TypeContext() {
@@ -1575,8 +1605,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getContextPatternValue() {
@@ -1584,8 +1614,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getContextPatternValue_PatternContext() {
@@ -1593,8 +1623,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getContextPatternNode() {
@@ -1602,8 +1632,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getContextPatternNode_PatternContext() {
@@ -1611,8 +1641,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getContextPatternNode_Node() {
@@ -1620,8 +1650,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getContextMappingValue() {
@@ -1629,8 +1659,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getContextMappingValue_MappingContext() {
@@ -1638,8 +1668,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getContextMappingNode() {
@@ -1647,8 +1677,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getContextMappingNode_MappingContext() {
@@ -1656,8 +1686,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getContextMappingNode_Node() {
@@ -1665,8 +1695,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getObjectiveFunctionValue() {
@@ -1674,8 +1704,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getObjectiveFunctionValue_Objective() {
@@ -1683,8 +1713,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getFeatureExpression() {
@@ -1692,8 +1722,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getFeatureExpression_Current() {
@@ -1701,8 +1731,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getFeatureExpression_Child() {
@@ -1710,8 +1740,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getFeatureLiteral() {
@@ -1719,8 +1749,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getFeatureLiteral_Feature() {
@@ -1728,8 +1758,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getContextTypeFeatureValue() {
@@ -1737,8 +1767,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getContextTypeFeatureValue_FeatureExpression() {
@@ -1746,8 +1776,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getContextPatternNodeFeatureValue() {
@@ -1755,8 +1785,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getContextPatternNodeFeatureValue_FeatureExpression() {
@@ -1764,8 +1794,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getContextMappingNodeFeatureValue() {
@@ -1773,8 +1803,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getContextMappingNodeFeatureValue_FeatureExpression() {
@@ -1782,8 +1812,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getIterator() {
@@ -1791,8 +1821,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getIterator_Stream() {
@@ -1800,8 +1830,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getIteratorPatternValue() {
@@ -1809,8 +1839,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getIteratorPatternValue_PatternContext() {
@@ -1818,8 +1848,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getIteratorPatternFeatureValue() {
@@ -1827,8 +1857,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getIteratorPatternFeatureValue_PatternContext() {
@@ -1836,8 +1866,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getIteratorPatternFeatureValue_FeatureExpression() {
@@ -1845,8 +1875,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getIteratorPatternNodeValue() {
@@ -1854,8 +1884,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getIteratorPatternNodeValue_PatternContext() {
@@ -1863,8 +1893,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getIteratorPatternNodeValue_Node() {
@@ -1872,8 +1902,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getIteratorPatternNodeFeatureValue() {
@@ -1881,8 +1911,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getIteratorPatternNodeFeatureValue_FeatureExpression() {
@@ -1890,8 +1920,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getIteratorMappingValue() {
@@ -1899,8 +1929,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getIteratorMappingValue_MappingContext() {
@@ -1908,8 +1938,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getIteratorMappingFeatureValue() {
@@ -1917,8 +1947,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getIteratorMappingFeatureValue_MappingContext() {
@@ -1926,8 +1956,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getIteratorMappingFeatureValue_FeatureExpression() {
@@ -1935,8 +1965,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getIteratorMappingNodeValue() {
@@ -1944,8 +1974,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getIteratorMappingNodeValue_MappingContext() {
@@ -1953,8 +1983,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getIteratorMappingNodeValue_Node() {
@@ -1962,8 +1992,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getIteratorMappingNodeFeatureValue() {
@@ -1971,8 +2001,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getIteratorMappingNodeFeatureValue_FeatureExpression() {
@@ -1980,8 +2010,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getIteratorTypeValue() {
@@ -1989,8 +2019,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getIteratorTypeValue_TypeContext() {
@@ -1998,8 +2028,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getIteratorTypeFeatureValue() {
@@ -2007,8 +2037,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getIteratorTypeFeatureValue_FeatureExpression() {
@@ -2016,8 +2046,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getStreamExpression() {
@@ -2025,8 +2055,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getStreamExpression_ReturnType() {
@@ -2034,8 +2064,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getStreamExpression_Current() {
@@ -2043,8 +2073,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getStreamExpression_Child() {
@@ -2052,8 +2082,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getStreamOperation() {
@@ -2061,8 +2091,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getStreamFilterOperation() {
@@ -2070,8 +2100,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getStreamFilterOperation_Predicate() {
@@ -2079,8 +2109,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getStreamSelectOperation() {
@@ -2088,8 +2118,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getStreamSelectOperation_Type() {
@@ -2097,8 +2127,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EEnum getILPSolverType() {
@@ -2106,8 +2136,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EEnum getObjectiveTarget() {
@@ -2115,8 +2145,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EEnum getRelationalOperator() {
@@ -2124,8 +2154,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EEnum getBinaryArithmeticOperator() {
@@ -2133,8 +2163,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EEnum getUnaryArithmeticOperator() {
@@ -2142,8 +2172,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EEnum getStreamArithmeticOperator() {
@@ -2151,8 +2181,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EEnum getBinaryBoolOperator() {
@@ -2160,8 +2190,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EEnum getUnaryBoolOperator() {
@@ -2169,8 +2199,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EEnum getStreamBoolOperator() {
@@ -2178,8 +2208,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public RoamIntermediateFactory getRoamIntermediateFactory() {
@@ -2187,17 +2217,17 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private boolean isCreated = false;
 
 	/**
-	 * Creates the meta-model objects for the package.  This method is
-	 * guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates the meta-model objects for the package. This method is guarded to
+	 * have no affect on any invocation but its first. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void createPackageContents() {
@@ -2219,6 +2249,9 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		createEAttribute(ilpConfigEClass, ILP_CONFIG__SOLVER);
 		createEAttribute(ilpConfigEClass, ILP_CONFIG__SOLVER_HOME_DIR);
 		createEAttribute(ilpConfigEClass, ILP_CONFIG__SOLVER_LICENSE_FILE);
+		createEAttribute(ilpConfigEClass, ILP_CONFIG__BUILD_LAUNCH_CONFIG);
+		createEAttribute(ilpConfigEClass, ILP_CONFIG__MAIN_FILE);
+		createEAttribute(ilpConfigEClass, ILP_CONFIG__ENABLE_TIME_LIMIT);
 		createEAttribute(ilpConfigEClass, ILP_CONFIG__ILP_TIME_LIMIT);
 		createEAttribute(ilpConfigEClass, ILP_CONFIG__ENABLE_RND_SEED);
 		createEAttribute(ilpConfigEClass, ILP_CONFIG__ILP_RND_SEED);
@@ -2443,17 +2476,17 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private boolean isInitialized = false;
 
 	/**
-	 * Complete the initialization of the package and its meta-model.  This
-	 * method is guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Complete the initialization of the package and its meta-model. This method is
+	 * guarded to have no affect on any invocation but its first. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void initializePackageContents() {
@@ -2571,6 +2604,14 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 				ILPConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
 				!IS_DERIVED, IS_ORDERED);
 		initEAttribute(getILPConfig_SolverLicenseFile(), ecorePackage.getEString(), "solverLicenseFile", null, 0, 1,
+				ILPConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
+		initEAttribute(getILPConfig_BuildLaunchConfig(), ecorePackage.getEBoolean(), "buildLaunchConfig", null, 0, 1,
+				ILPConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
+		initEAttribute(getILPConfig_MainFile(), ecorePackage.getEString(), "mainFile", null, 0, 1, ILPConfig.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getILPConfig_EnableTimeLimit(), ecorePackage.getEBoolean(), "enableTimeLimit", null, 0, 1,
 				ILPConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
 				!IS_DERIVED, IS_ORDERED);
 		initEAttribute(getILPConfig_IlpTimeLimit(), ecorePackage.getEDouble(), "ilpTimeLimit", null, 0, 1,
@@ -3051,4 +3092,4 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		createResource(eNS_URI);
 	}
 
-} //RoamIntermediatePackageImpl
+} // RoamIntermediatePackageImpl

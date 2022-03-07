@@ -14,16 +14,16 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.emoflon.roam.intermediate.RoamIntermediate.*;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model <b>Factory</b>.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!--
+ * end-user-doc -->
+ * 
  * @generated
  */
 public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamIntermediateFactory {
 	/**
-	 * Creates the default factory implementation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates the default factory implementation. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static RoamIntermediateFactory init() {
@@ -40,9 +40,9 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * Creates an instance of the factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
 	 * @generated
 	 */
 	public RoamIntermediateFactoryImpl() {
@@ -50,8 +50,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -163,8 +163,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -194,8 +194,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -225,8 +225,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public RoamIntermediateModel createRoamIntermediateModel() {
@@ -235,8 +235,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ILPConfig createILPConfig() {
@@ -245,8 +245,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Pattern createPattern() {
@@ -255,8 +255,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Type createType() {
@@ -265,8 +265,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Mapping createMapping() {
@@ -275,8 +275,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Objective createObjective() {
@@ -285,8 +285,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public GlobalObjective createGlobalObjective() {
@@ -295,8 +295,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public PatternConstraint createPatternConstraint() {
@@ -305,8 +305,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public TypeConstraint createTypeConstraint() {
@@ -315,8 +315,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public MappingConstraint createMappingConstraint() {
@@ -325,8 +325,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public PatternObjective createPatternObjective() {
@@ -335,8 +335,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public TypeObjective createTypeObjective() {
@@ -345,8 +345,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public MappingObjective createMappingObjective() {
@@ -355,8 +355,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public BinaryArithmeticExpression createBinaryArithmeticExpression() {
@@ -365,8 +365,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public UnaryArithmeticExpression createUnaryArithmeticExpression() {
@@ -375,8 +375,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ArithmeticValue createArithmeticValue() {
@@ -385,8 +385,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IntegerLiteral createIntegerLiteral() {
@@ -395,8 +395,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public DoubleLiteral createDoubleLiteral() {
@@ -405,8 +405,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public BoolBinaryExpression createBoolBinaryExpression() {
@@ -415,8 +415,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public BoolUnaryExpression createBoolUnaryExpression() {
@@ -425,8 +425,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public BoolValue createBoolValue() {
@@ -435,8 +435,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public BoolStreamExpression createBoolStreamExpression() {
@@ -445,8 +445,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public RelationalExpression createRelationalExpression() {
@@ -455,8 +455,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public BoolLiteral createBoolLiteral() {
@@ -465,8 +465,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public MappingSumExpression createMappingSumExpression() {
@@ -475,8 +475,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public TypeSumExpression createTypeSumExpression() {
@@ -485,8 +485,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ContextTypeValue createContextTypeValue() {
@@ -495,8 +495,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ContextPatternValue createContextPatternValue() {
@@ -505,8 +505,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ContextPatternNode createContextPatternNode() {
@@ -515,8 +515,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ContextMappingValue createContextMappingValue() {
@@ -525,8 +525,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ContextMappingNode createContextMappingNode() {
@@ -535,8 +535,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ObjectiveFunctionValue createObjectiveFunctionValue() {
@@ -545,8 +545,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public FeatureExpression createFeatureExpression() {
@@ -555,8 +555,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public FeatureLiteral createFeatureLiteral() {
@@ -565,8 +565,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ContextTypeFeatureValue createContextTypeFeatureValue() {
@@ -575,8 +575,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ContextPatternNodeFeatureValue createContextPatternNodeFeatureValue() {
@@ -585,8 +585,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ContextMappingNodeFeatureValue createContextMappingNodeFeatureValue() {
@@ -595,8 +595,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IteratorPatternValue createIteratorPatternValue() {
@@ -605,8 +605,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IteratorPatternFeatureValue createIteratorPatternFeatureValue() {
@@ -615,8 +615,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IteratorPatternNodeValue createIteratorPatternNodeValue() {
@@ -625,8 +625,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IteratorPatternNodeFeatureValue createIteratorPatternNodeFeatureValue() {
@@ -635,8 +635,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IteratorMappingValue createIteratorMappingValue() {
@@ -645,8 +645,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IteratorMappingFeatureValue createIteratorMappingFeatureValue() {
@@ -655,8 +655,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IteratorMappingNodeValue createIteratorMappingNodeValue() {
@@ -665,8 +665,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IteratorMappingNodeFeatureValue createIteratorMappingNodeFeatureValue() {
@@ -675,8 +675,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IteratorTypeValue createIteratorTypeValue() {
@@ -685,8 +685,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IteratorTypeFeatureValue createIteratorTypeFeatureValue() {
@@ -695,8 +695,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public StreamExpression createStreamExpression() {
@@ -705,8 +705,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public StreamFilterOperation createStreamFilterOperation() {
@@ -715,8 +715,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public StreamSelectOperation createStreamSelectOperation() {
@@ -725,8 +725,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ILPSolverType createILPSolverTypeFromString(EDataType eDataType, String initialValue) {
@@ -738,8 +738,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertILPSolverTypeToString(EDataType eDataType, Object instanceValue) {
@@ -747,8 +747,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ObjectiveTarget createObjectiveTargetFromString(EDataType eDataType, String initialValue) {
@@ -760,8 +760,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertObjectiveTargetToString(EDataType eDataType, Object instanceValue) {
@@ -769,8 +769,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public RelationalOperator createRelationalOperatorFromString(EDataType eDataType, String initialValue) {
@@ -782,8 +782,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertRelationalOperatorToString(EDataType eDataType, Object instanceValue) {
@@ -791,8 +791,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public BinaryArithmeticOperator createBinaryArithmeticOperatorFromString(EDataType eDataType, String initialValue) {
@@ -804,8 +804,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertBinaryArithmeticOperatorToString(EDataType eDataType, Object instanceValue) {
@@ -813,8 +813,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public UnaryArithmeticOperator createUnaryArithmeticOperatorFromString(EDataType eDataType, String initialValue) {
@@ -826,8 +826,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertUnaryArithmeticOperatorToString(EDataType eDataType, Object instanceValue) {
@@ -835,8 +835,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public StreamArithmeticOperator createStreamArithmeticOperatorFromString(EDataType eDataType, String initialValue) {
@@ -848,8 +848,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertStreamArithmeticOperatorToString(EDataType eDataType, Object instanceValue) {
@@ -857,8 +857,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public BinaryBoolOperator createBinaryBoolOperatorFromString(EDataType eDataType, String initialValue) {
@@ -870,8 +870,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertBinaryBoolOperatorToString(EDataType eDataType, Object instanceValue) {
@@ -879,8 +879,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public UnaryBoolOperator createUnaryBoolOperatorFromString(EDataType eDataType, String initialValue) {
@@ -892,8 +892,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertUnaryBoolOperatorToString(EDataType eDataType, Object instanceValue) {
@@ -901,8 +901,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public StreamBoolOperator createStreamBoolOperatorFromString(EDataType eDataType, String initialValue) {
@@ -914,8 +914,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertStreamBoolOperatorToString(EDataType eDataType, Object instanceValue) {
@@ -923,8 +923,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public RoamIntermediatePackage getRoamIntermediatePackage() {
@@ -932,8 +932,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @deprecated
 	 * @generated
 	 */
@@ -942,4 +942,4 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 		return RoamIntermediatePackage.eINSTANCE;
 	}
 
-} //RoamIntermediateFactoryImpl
+} // RoamIntermediateFactoryImpl

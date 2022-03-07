@@ -14,23 +14,23 @@ import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Context Mapping Value</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Context
+ * Mapping Value</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingValueImpl#getMappingContext <em>Mapping Context</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingValueImpl#getMappingContext
+ * <em>Mapping Context</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ContextMappingValueImpl extends ValueExpressionImpl implements ContextMappingValue {
 	/**
-	 * The cached value of the '{@link #getMappingContext() <em>Mapping Context</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMappingContext() <em>Mapping
+	 * Context</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMappingContext()
 	 * @generated
 	 * @ordered
@@ -38,8 +38,8 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	protected Mapping mappingContext;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ContextMappingValueImpl() {
@@ -47,8 +47,8 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -57,8 +57,8 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Mapping getMappingContext() {
@@ -76,8 +76,8 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Mapping basicGetMappingContext() {
@@ -85,8 +85,8 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setMappingContext(Mapping newMappingContext) {
@@ -98,8 +98,8 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -114,8 +114,8 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -129,8 +129,8 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -144,8 +144,8 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -157,4 +157,4 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 		return super.eIsSet(featureID);
 	}
 
-} //ContextMappingValueImpl
+} // ContextMappingValueImpl

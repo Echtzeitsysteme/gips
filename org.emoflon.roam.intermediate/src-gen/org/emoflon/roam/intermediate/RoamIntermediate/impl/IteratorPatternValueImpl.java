@@ -16,15 +16,16 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Iterator Pattern Value</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object
+ * '<em><b>Iterator Pattern Value</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternValueImpl#getStream <em>Stream</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternValueImpl#getPatternContext <em>Pattern Context</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternValueImpl#getStream
+ * <em>Stream</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternValueImpl#getPatternContext
+ * <em>Pattern Context</em>}</li>
  * </ul>
  *
  * @generated
@@ -32,8 +33,8 @@ import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation;
 public class IteratorPatternValueImpl extends ValueExpressionImpl implements IteratorPatternValue {
 	/**
 	 * The cached value of the '{@link #getStream() <em>Stream</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getStream()
 	 * @generated
 	 * @ordered
@@ -41,9 +42,9 @@ public class IteratorPatternValueImpl extends ValueExpressionImpl implements Ite
 	protected SetOperation stream;
 
 	/**
-	 * The cached value of the '{@link #getPatternContext() <em>Pattern Context</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getPatternContext() <em>Pattern
+	 * Context</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getPatternContext()
 	 * @generated
 	 * @ordered
@@ -51,8 +52,8 @@ public class IteratorPatternValueImpl extends ValueExpressionImpl implements Ite
 	protected Pattern patternContext;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected IteratorPatternValueImpl() {
@@ -60,8 +61,8 @@ public class IteratorPatternValueImpl extends ValueExpressionImpl implements Ite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -70,8 +71,8 @@ public class IteratorPatternValueImpl extends ValueExpressionImpl implements Ite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public SetOperation getStream() {
@@ -88,8 +89,8 @@ public class IteratorPatternValueImpl extends ValueExpressionImpl implements Ite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public SetOperation basicGetStream() {
@@ -97,8 +98,8 @@ public class IteratorPatternValueImpl extends ValueExpressionImpl implements Ite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setStream(SetOperation newStream) {
@@ -110,8 +111,8 @@ public class IteratorPatternValueImpl extends ValueExpressionImpl implements Ite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Pattern getPatternContext() {
@@ -129,8 +130,8 @@ public class IteratorPatternValueImpl extends ValueExpressionImpl implements Ite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Pattern basicGetPatternContext() {
@@ -138,8 +139,8 @@ public class IteratorPatternValueImpl extends ValueExpressionImpl implements Ite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setPatternContext(Pattern newPatternContext) {
@@ -152,8 +153,8 @@ public class IteratorPatternValueImpl extends ValueExpressionImpl implements Ite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -172,8 +173,8 @@ public class IteratorPatternValueImpl extends ValueExpressionImpl implements Ite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -190,8 +191,8 @@ public class IteratorPatternValueImpl extends ValueExpressionImpl implements Ite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -208,8 +209,8 @@ public class IteratorPatternValueImpl extends ValueExpressionImpl implements Ite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -224,8 +225,8 @@ public class IteratorPatternValueImpl extends ValueExpressionImpl implements Ite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -242,8 +243,8 @@ public class IteratorPatternValueImpl extends ValueExpressionImpl implements Ite
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -259,4 +260,4 @@ public class IteratorPatternValueImpl extends ValueExpressionImpl implements Ite
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
-} //IteratorPatternValueImpl
+} // IteratorPatternValueImpl

@@ -7,6 +7,7 @@ import java.util.List;
 import org.emoflon.roam.build.RoamAPIData;
 import org.emoflon.roam.build.generator.templates.ConstraintFactoryTemplate;
 import org.emoflon.roam.build.generator.templates.GlobalObjectiveTemplate;
+import org.emoflon.roam.build.generator.templates.LaunchFileTemplate;
 import org.emoflon.roam.build.generator.templates.MapperFactoryTemplate;
 import org.emoflon.roam.build.generator.templates.MapperTemplate;
 import org.emoflon.roam.build.generator.templates.MappingConstraintTemplate;
@@ -79,5 +80,16 @@ public class RoamCodeGenerator {
 				e.printStackTrace();
 			}
 		});
+		if (data.model.getConfig().isBuildLaunchConfig()) {
+			GeneratorTemplate<?> launchTemplate = new LaunchFileTemplate(data, data.model);
+			try {
+				launchTemplate.init();
+				launchTemplate.generate();
+				launchTemplate.writeToFile();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
 	}
 }

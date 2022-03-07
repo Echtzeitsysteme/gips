@@ -9,19 +9,19 @@ import java.util.List;
 import org.eclipse.emf.common.util.Enumerator;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the literals of the enumeration '<em><b>Unary Arithmetic Operator</b></em>',
- * and utility methods for working with them.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the literals of the enumeration
+ * '<em><b>Unary Arithmetic Operator</b></em>', and utility methods for working
+ * with them. <!-- end-user-doc -->
+ * 
  * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getUnaryArithmeticOperator()
  * @model
  * @generated
  */
 public enum UnaryArithmeticOperator implements Enumerator {
 	/**
-	 * The '<em><b>BRACKET</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>BRACKET</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #BRACKET_VALUE
 	 * @generated
 	 * @ordered
@@ -29,9 +29,9 @@ public enum UnaryArithmeticOperator implements Enumerator {
 	BRACKET(0, "BRACKET", "BRACKET"),
 
 	/**
-	 * The '<em><b>NEGATE</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>NEGATE</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #NEGATE_VALUE
 	 * @generated
 	 * @ordered
@@ -39,9 +39,9 @@ public enum UnaryArithmeticOperator implements Enumerator {
 	NEGATE(1, "NEGATE", "NEGATE"),
 
 	/**
-	 * The '<em><b>ABSOLUTE</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>ABSOLUTE</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #ABSOLUTE_VALUE
 	 * @generated
 	 * @ordered
@@ -49,9 +49,9 @@ public enum UnaryArithmeticOperator implements Enumerator {
 	ABSOLUTE(2, "ABSOLUTE", "ABSOLUTE"),
 
 	/**
-	 * The '<em><b>SINE</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>SINE</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #SINE_VALUE
 	 * @generated
 	 * @ordered
@@ -59,9 +59,9 @@ public enum UnaryArithmeticOperator implements Enumerator {
 	SINE(3, "SINE", "SINE"),
 
 	/**
-	 * The '<em><b>COSINE</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>COSINE</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #COSINE_VALUE
 	 * @generated
 	 * @ordered
@@ -69,9 +69,9 @@ public enum UnaryArithmeticOperator implements Enumerator {
 	COSINE(4, "COSINE", "COSINE"),
 
 	/**
-	 * The '<em><b>SQRT</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>SQRT</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #SQRT_VALUE
 	 * @generated
 	 * @ordered
@@ -79,9 +79,9 @@ public enum UnaryArithmeticOperator implements Enumerator {
 	SQRT(5, "SQRT", "SQRT");
 
 	/**
-	 * The '<em><b>BRACKET</b></em>' literal value.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>BRACKET</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #BRACKET
 	 * @model
 	 * @generated
@@ -90,9 +90,9 @@ public enum UnaryArithmeticOperator implements Enumerator {
 	public static final int BRACKET_VALUE = 0;
 
 	/**
-	 * The '<em><b>NEGATE</b></em>' literal value.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>NEGATE</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #NEGATE
 	 * @model
 	 * @generated
@@ -101,9 +101,9 @@ public enum UnaryArithmeticOperator implements Enumerator {
 	public static final int NEGATE_VALUE = 1;
 
 	/**
-	 * The '<em><b>ABSOLUTE</b></em>' literal value.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>ABSOLUTE</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #ABSOLUTE
 	 * @model
 	 * @generated
@@ -112,9 +112,9 @@ public enum UnaryArithmeticOperator implements Enumerator {
 	public static final int ABSOLUTE_VALUE = 2;
 
 	/**
-	 * The '<em><b>SINE</b></em>' literal value.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>SINE</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #SINE
 	 * @model
 	 * @generated
@@ -123,9 +123,9 @@ public enum UnaryArithmeticOperator implements Enumerator {
 	public static final int SINE_VALUE = 3;
 
 	/**
-	 * The '<em><b>COSINE</b></em>' literal value.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>COSINE</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #COSINE
 	 * @model
 	 * @generated
@@ -134,9 +134,9 @@ public enum UnaryArithmeticOperator implements Enumerator {
 	public static final int COSINE_VALUE = 4;
 
 	/**
-	 * The '<em><b>SQRT</b></em>' literal value.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>SQRT</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #SQRT
 	 * @model
 	 * @generated
@@ -146,26 +146,26 @@ public enum UnaryArithmeticOperator implements Enumerator {
 
 	/**
 	 * An array of all the '<em><b>Unary Arithmetic Operator</b></em>' enumerators.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private static final UnaryArithmeticOperator[] VALUES_ARRAY = new UnaryArithmeticOperator[] { BRACKET, NEGATE,
 			ABSOLUTE, SINE, COSINE, SQRT, };
 
 	/**
-	 * A public read-only list of all the '<em><b>Unary Arithmetic Operator</b></em>' enumerators.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * A public read-only list of all the '<em><b>Unary Arithmetic
+	 * Operator</b></em>' enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static final List<UnaryArithmeticOperator> VALUES = Collections
 			.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
-	 * Returns the '<em><b>Unary Arithmetic Operator</b></em>' literal with the specified literal value.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the '<em><b>Unary Arithmetic Operator</b></em>' literal with the
+	 * specified literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @param literal the literal.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
@@ -181,9 +181,9 @@ public enum UnaryArithmeticOperator implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>Unary Arithmetic Operator</b></em>' literal with the specified name.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the '<em><b>Unary Arithmetic Operator</b></em>' literal with the
+	 * specified name. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @param name the name.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
@@ -199,9 +199,9 @@ public enum UnaryArithmeticOperator implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>Unary Arithmetic Operator</b></em>' literal with the specified integer value.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the '<em><b>Unary Arithmetic Operator</b></em>' literal with the
+	 * specified integer value. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @param value the integer value.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
@@ -225,30 +225,30 @@ public enum UnaryArithmeticOperator implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private final int value;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private final String name;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private final String literal;
 
 	/**
-	 * Only this class can construct instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Only this class can construct instances. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private UnaryArithmeticOperator(int value, String name, String literal) {
@@ -258,8 +258,8 @@ public enum UnaryArithmeticOperator implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public int getValue() {
@@ -267,8 +267,8 @@ public enum UnaryArithmeticOperator implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String getName() {
@@ -276,8 +276,8 @@ public enum UnaryArithmeticOperator implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String getLiteral() {
@@ -285,9 +285,9 @@ public enum UnaryArithmeticOperator implements Enumerator {
 	}
 
 	/**
-	 * Returns the literal value of the enumerator, which is its string representation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the literal value of the enumerator, which is its string
+	 * representation. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -295,4 +295,4 @@ public enum UnaryArithmeticOperator implements Enumerator {
 		return literal;
 	}
 
-} //UnaryArithmeticOperator
+} // UnaryArithmeticOperator

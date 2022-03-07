@@ -15,23 +15,23 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Arithmetic Value</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object
+ * '<em><b>Arithmetic Value</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticValueImpl#getValue <em>Value</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticValueImpl#getValue
+ * <em>Value</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implements ArithmeticValue {
 	/**
-	 * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getValue() <em>Value</em>}' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getValue()
 	 * @generated
 	 * @ordered
@@ -39,8 +39,8 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	protected ValueExpression value;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ArithmeticValueImpl() {
@@ -48,8 +48,8 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -58,8 +58,8 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ValueExpression getValue() {
@@ -67,8 +67,8 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetValue(ValueExpression newValue, NotificationChain msgs) {
@@ -86,8 +86,8 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setValue(ValueExpression newValue) {
@@ -108,8 +108,8 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -122,8 +122,8 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -136,8 +136,8 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -151,8 +151,8 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -166,8 +166,8 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -179,4 +179,4 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 		return super.eIsSet(featureID);
 	}
 
-} //ArithmeticValueImpl
+} // ArithmeticValueImpl

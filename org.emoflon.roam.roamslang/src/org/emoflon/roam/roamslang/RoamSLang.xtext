@@ -20,8 +20,9 @@ EditorGTFile: {EditorGTFile}
 RoamConfig : {RoamConfig}
 	'config' '{'
 	'solver' ':=' solver=SolverType '[' 'home' ':=' home=RoamStringLiteral ',' 'license' ':=' license=RoamStringLiteral ']' ';'
-	('timeLimit' ':=' timeLimit = RoamDouble ';')?
-	('randomSeed' ':=' rndSeed = RoamInteger ';')?
+	('launchConfig' ':=' enableLaunchConfig = RoamBoolean '[' 'main' ':=' mainLoc=RoamStringLiteral ']' ';')?
+	('timeLimit' ':=' enableLimit = RoamBoolean '[' 'value' ':=' timeLimit=RoamDouble ']' ';')?
+	('randomSeed' ':=' enableSeed = RoamBoolean '[' 'value' ':=' rndSeed=RoamInteger ']' ';')?
 	('presolve' ':=' enablePresolve = RoamBoolean ';')?
 	('debugOutput' ':=' enableDebugOutput = RoamBoolean ';')?
 	'}'

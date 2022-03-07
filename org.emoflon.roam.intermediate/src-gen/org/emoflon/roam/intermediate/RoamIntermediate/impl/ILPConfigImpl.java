@@ -14,22 +14,36 @@ import org.emoflon.roam.intermediate.RoamIntermediate.ILPSolverType;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>ILP Config</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>ILP
+ * Config</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#getSolver <em>Solver</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#getSolverHomeDir <em>Solver Home Dir</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#getSolverLicenseFile <em>Solver License File</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#getIlpTimeLimit <em>Ilp Time Limit</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#isEnableRndSeed <em>Enable Rnd Seed</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#getIlpRndSeed <em>Ilp Rnd Seed</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#isPresolve <em>Presolve</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#isEnablePresolve <em>Enable Presolve</em>}</li>
- *   <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#isEnableDebugOutput <em>Enable Debug Output</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#getSolver
+ * <em>Solver</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#getSolverHomeDir
+ * <em>Solver Home Dir</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#getSolverLicenseFile
+ * <em>Solver License File</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#isBuildLaunchConfig
+ * <em>Build Launch Config</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#getMainFile
+ * <em>Main File</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#isEnableTimeLimit
+ * <em>Enable Time Limit</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#getIlpTimeLimit
+ * <em>Ilp Time Limit</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#isEnableRndSeed
+ * <em>Enable Rnd Seed</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#getIlpRndSeed
+ * <em>Ilp Rnd Seed</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#isPresolve
+ * <em>Presolve</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#isEnablePresolve
+ * <em>Enable Presolve</em>}</li>
+ * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#isEnableDebugOutput
+ * <em>Enable Debug Output</em>}</li>
  * </ul>
  *
  * @generated
@@ -37,8 +51,8 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPConfig {
 	/**
 	 * The default value of the '{@link #getSolver() <em>Solver</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getSolver()
 	 * @generated
 	 * @ordered
@@ -47,8 +61,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 
 	/**
 	 * The cached value of the '{@link #getSolver() <em>Solver</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getSolver()
 	 * @generated
 	 * @ordered
@@ -56,9 +70,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected ILPSolverType solver = SOLVER_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getSolverHomeDir() <em>Solver Home Dir</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getSolverHomeDir() <em>Solver Home
+	 * Dir</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getSolverHomeDir()
 	 * @generated
 	 * @ordered
@@ -66,9 +80,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected static final String SOLVER_HOME_DIR_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getSolverHomeDir() <em>Solver Home Dir</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getSolverHomeDir() <em>Solver Home
+	 * Dir</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getSolverHomeDir()
 	 * @generated
 	 * @ordered
@@ -76,9 +90,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected String solverHomeDir = SOLVER_HOME_DIR_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getSolverLicenseFile() <em>Solver License File</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getSolverLicenseFile() <em>Solver License
+	 * File</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getSolverLicenseFile()
 	 * @generated
 	 * @ordered
@@ -86,9 +100,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected static final String SOLVER_LICENSE_FILE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getSolverLicenseFile() <em>Solver License File</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getSolverLicenseFile() <em>Solver License
+	 * File</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getSolverLicenseFile()
 	 * @generated
 	 * @ordered
@@ -96,9 +110,69 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected String solverLicenseFile = SOLVER_LICENSE_FILE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getIlpTimeLimit() <em>Ilp Time Limit</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #isBuildLaunchConfig() <em>Build Launch
+	 * Config</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isBuildLaunchConfig()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean BUILD_LAUNCH_CONFIG_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isBuildLaunchConfig() <em>Build Launch
+	 * Config</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isBuildLaunchConfig()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean buildLaunchConfig = BUILD_LAUNCH_CONFIG_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getMainFile() <em>Main File</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getMainFile()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String MAIN_FILE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getMainFile() <em>Main File</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getMainFile()
+	 * @generated
+	 * @ordered
+	 */
+	protected String mainFile = MAIN_FILE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isEnableTimeLimit() <em>Enable Time
+	 * Limit</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isEnableTimeLimit()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean ENABLE_TIME_LIMIT_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isEnableTimeLimit() <em>Enable Time
+	 * Limit</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isEnableTimeLimit()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean enableTimeLimit = ENABLE_TIME_LIMIT_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getIlpTimeLimit() <em>Ilp Time Limit</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getIlpTimeLimit()
 	 * @generated
 	 * @ordered
@@ -106,9 +180,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected static final double ILP_TIME_LIMIT_EDEFAULT = 0.0;
 
 	/**
-	 * The cached value of the '{@link #getIlpTimeLimit() <em>Ilp Time Limit</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getIlpTimeLimit() <em>Ilp Time Limit</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getIlpTimeLimit()
 	 * @generated
 	 * @ordered
@@ -116,9 +190,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected double ilpTimeLimit = ILP_TIME_LIMIT_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isEnableRndSeed() <em>Enable Rnd Seed</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #isEnableRndSeed() <em>Enable Rnd
+	 * Seed</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #isEnableRndSeed()
 	 * @generated
 	 * @ordered
@@ -126,9 +200,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected static final boolean ENABLE_RND_SEED_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isEnableRndSeed() <em>Enable Rnd Seed</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #isEnableRndSeed() <em>Enable Rnd Seed</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #isEnableRndSeed()
 	 * @generated
 	 * @ordered
@@ -136,9 +210,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected boolean enableRndSeed = ENABLE_RND_SEED_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getIlpRndSeed() <em>Ilp Rnd Seed</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getIlpRndSeed() <em>Ilp Rnd Seed</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getIlpRndSeed()
 	 * @generated
 	 * @ordered
@@ -146,9 +220,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected static final int ILP_RND_SEED_EDEFAULT = 0;
 
 	/**
-	 * The cached value of the '{@link #getIlpRndSeed() <em>Ilp Rnd Seed</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getIlpRndSeed() <em>Ilp Rnd Seed</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getIlpRndSeed()
 	 * @generated
 	 * @ordered
@@ -157,8 +231,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 
 	/**
 	 * The default value of the '{@link #isPresolve() <em>Presolve</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #isPresolve()
 	 * @generated
 	 * @ordered
@@ -167,8 +241,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 
 	/**
 	 * The cached value of the '{@link #isPresolve() <em>Presolve</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #isPresolve()
 	 * @generated
 	 * @ordered
@@ -176,9 +250,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected boolean presolve = PRESOLVE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isEnablePresolve() <em>Enable Presolve</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #isEnablePresolve() <em>Enable
+	 * Presolve</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #isEnablePresolve()
 	 * @generated
 	 * @ordered
@@ -186,9 +260,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected static final boolean ENABLE_PRESOLVE_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isEnablePresolve() <em>Enable Presolve</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #isEnablePresolve() <em>Enable
+	 * Presolve</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #isEnablePresolve()
 	 * @generated
 	 * @ordered
@@ -196,9 +270,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected boolean enablePresolve = ENABLE_PRESOLVE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isEnableDebugOutput() <em>Enable Debug Output</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #isEnableDebugOutput() <em>Enable Debug
+	 * Output</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #isEnableDebugOutput()
 	 * @generated
 	 * @ordered
@@ -206,9 +280,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected static final boolean ENABLE_DEBUG_OUTPUT_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isEnableDebugOutput() <em>Enable Debug Output</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #isEnableDebugOutput() <em>Enable Debug
+	 * Output</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #isEnableDebugOutput()
 	 * @generated
 	 * @ordered
@@ -216,8 +290,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected boolean enableDebugOutput = ENABLE_DEBUG_OUTPUT_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ILPConfigImpl() {
@@ -225,8 +299,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -235,8 +309,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ILPSolverType getSolver() {
@@ -244,8 +318,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setSolver(ILPSolverType newSolver) {
@@ -257,8 +331,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String getSolverHomeDir() {
@@ -266,8 +340,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setSolverHomeDir(String newSolverHomeDir) {
@@ -279,8 +353,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String getSolverLicenseFile() {
@@ -288,8 +362,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setSolverLicenseFile(String newSolverLicenseFile) {
@@ -301,8 +375,74 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public boolean isBuildLaunchConfig() {
+		return buildLaunchConfig;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setBuildLaunchConfig(boolean newBuildLaunchConfig) {
+		boolean oldBuildLaunchConfig = buildLaunchConfig;
+		buildLaunchConfig = newBuildLaunchConfig;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					RoamIntermediatePackage.ILP_CONFIG__BUILD_LAUNCH_CONFIG, oldBuildLaunchConfig, buildLaunchConfig));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public String getMainFile() {
+		return mainFile;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setMainFile(String newMainFile) {
+		String oldMainFile = mainFile;
+		mainFile = newMainFile;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.ILP_CONFIG__MAIN_FILE,
+					oldMainFile, mainFile));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public boolean isEnableTimeLimit() {
+		return enableTimeLimit;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setEnableTimeLimit(boolean newEnableTimeLimit) {
+		boolean oldEnableTimeLimit = enableTimeLimit;
+		enableTimeLimit = newEnableTimeLimit;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.ILP_CONFIG__ENABLE_TIME_LIMIT,
+					oldEnableTimeLimit, enableTimeLimit));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public double getIlpTimeLimit() {
@@ -310,8 +450,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setIlpTimeLimit(double newIlpTimeLimit) {
@@ -323,8 +463,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean isEnableRndSeed() {
@@ -332,8 +472,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setEnableRndSeed(boolean newEnableRndSeed) {
@@ -345,8 +485,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public int getIlpRndSeed() {
@@ -354,8 +494,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setIlpRndSeed(int newIlpRndSeed) {
@@ -367,8 +507,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean isPresolve() {
@@ -376,8 +516,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setPresolve(boolean newPresolve) {
@@ -389,8 +529,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean isEnablePresolve() {
@@ -398,8 +538,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setEnablePresolve(boolean newEnablePresolve) {
@@ -411,8 +551,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean isEnableDebugOutput() {
@@ -420,8 +560,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setEnableDebugOutput(boolean newEnableDebugOutput) {
@@ -433,8 +573,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -446,6 +586,12 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 			return getSolverHomeDir();
 		case RoamIntermediatePackage.ILP_CONFIG__SOLVER_LICENSE_FILE:
 			return getSolverLicenseFile();
+		case RoamIntermediatePackage.ILP_CONFIG__BUILD_LAUNCH_CONFIG:
+			return isBuildLaunchConfig();
+		case RoamIntermediatePackage.ILP_CONFIG__MAIN_FILE:
+			return getMainFile();
+		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_TIME_LIMIT:
+			return isEnableTimeLimit();
 		case RoamIntermediatePackage.ILP_CONFIG__ILP_TIME_LIMIT:
 			return getIlpTimeLimit();
 		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_RND_SEED:
@@ -463,8 +609,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -478,6 +624,15 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 			return;
 		case RoamIntermediatePackage.ILP_CONFIG__SOLVER_LICENSE_FILE:
 			setSolverLicenseFile((String) newValue);
+			return;
+		case RoamIntermediatePackage.ILP_CONFIG__BUILD_LAUNCH_CONFIG:
+			setBuildLaunchConfig((Boolean) newValue);
+			return;
+		case RoamIntermediatePackage.ILP_CONFIG__MAIN_FILE:
+			setMainFile((String) newValue);
+			return;
+		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_TIME_LIMIT:
+			setEnableTimeLimit((Boolean) newValue);
 			return;
 		case RoamIntermediatePackage.ILP_CONFIG__ILP_TIME_LIMIT:
 			setIlpTimeLimit((Double) newValue);
@@ -502,8 +657,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -517,6 +672,15 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 			return;
 		case RoamIntermediatePackage.ILP_CONFIG__SOLVER_LICENSE_FILE:
 			setSolverLicenseFile(SOLVER_LICENSE_FILE_EDEFAULT);
+			return;
+		case RoamIntermediatePackage.ILP_CONFIG__BUILD_LAUNCH_CONFIG:
+			setBuildLaunchConfig(BUILD_LAUNCH_CONFIG_EDEFAULT);
+			return;
+		case RoamIntermediatePackage.ILP_CONFIG__MAIN_FILE:
+			setMainFile(MAIN_FILE_EDEFAULT);
+			return;
+		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_TIME_LIMIT:
+			setEnableTimeLimit(ENABLE_TIME_LIMIT_EDEFAULT);
 			return;
 		case RoamIntermediatePackage.ILP_CONFIG__ILP_TIME_LIMIT:
 			setIlpTimeLimit(ILP_TIME_LIMIT_EDEFAULT);
@@ -541,8 +705,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -556,6 +720,12 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 		case RoamIntermediatePackage.ILP_CONFIG__SOLVER_LICENSE_FILE:
 			return SOLVER_LICENSE_FILE_EDEFAULT == null ? solverLicenseFile != null
 					: !SOLVER_LICENSE_FILE_EDEFAULT.equals(solverLicenseFile);
+		case RoamIntermediatePackage.ILP_CONFIG__BUILD_LAUNCH_CONFIG:
+			return buildLaunchConfig != BUILD_LAUNCH_CONFIG_EDEFAULT;
+		case RoamIntermediatePackage.ILP_CONFIG__MAIN_FILE:
+			return MAIN_FILE_EDEFAULT == null ? mainFile != null : !MAIN_FILE_EDEFAULT.equals(mainFile);
+		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_TIME_LIMIT:
+			return enableTimeLimit != ENABLE_TIME_LIMIT_EDEFAULT;
 		case RoamIntermediatePackage.ILP_CONFIG__ILP_TIME_LIMIT:
 			return ilpTimeLimit != ILP_TIME_LIMIT_EDEFAULT;
 		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_RND_SEED:
@@ -573,8 +743,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -589,6 +759,12 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 		result.append(solverHomeDir);
 		result.append(", solverLicenseFile: ");
 		result.append(solverLicenseFile);
+		result.append(", buildLaunchConfig: ");
+		result.append(buildLaunchConfig);
+		result.append(", mainFile: ");
+		result.append(mainFile);
+		result.append(", enableTimeLimit: ");
+		result.append(enableTimeLimit);
 		result.append(", ilpTimeLimit: ");
 		result.append(ilpTimeLimit);
 		result.append(", enableRndSeed: ");
@@ -605,4 +781,4 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 		return result.toString();
 	}
 
-} //ILPConfigImpl
+} // ILPConfigImpl

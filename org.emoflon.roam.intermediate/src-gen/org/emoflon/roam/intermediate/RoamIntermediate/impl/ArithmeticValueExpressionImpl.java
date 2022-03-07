@@ -8,17 +8,16 @@ import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValueExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Arithmetic Value Expression</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object
+ * '<em><b>Arithmetic Value Expression</b></em>'. <!-- end-user-doc -->
  *
  * @generated
  */
 public abstract class ArithmeticValueExpressionImpl extends ArithmeticExpressionImpl
 		implements ArithmeticValueExpression {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ArithmeticValueExpressionImpl() {
@@ -26,8 +25,8 @@ public abstract class ArithmeticValueExpressionImpl extends ArithmeticExpression
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -35,4 +34,4 @@ public abstract class ArithmeticValueExpressionImpl extends ArithmeticExpression
 		return RoamIntermediatePackage.Literals.ARITHMETIC_VALUE_EXPRESSION;
 	}
 
-} //ArithmeticValueExpressionImpl
+} // ArithmeticValueExpressionImpl

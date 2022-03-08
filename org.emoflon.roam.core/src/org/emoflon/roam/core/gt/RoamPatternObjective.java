@@ -17,11 +17,9 @@ public abstract class RoamPatternObjective<M extends GraphTransformationMatch<M,
 
 	final protected GraphTransformationPattern<M, P> pattern;
 
-	@SuppressWarnings("unchecked")
-	public RoamPatternObjective(RoamEngine engine, PatternObjective objective) {
+	public RoamPatternObjective(RoamEngine engine, PatternObjective objective, final P pattern) {
 		super(engine, objective);
-		pattern = (GraphTransformationPattern<M, P>) engine.getEMoflonAPI()
-				.getPattern(objective.getPattern().getName());
+		this.pattern = pattern;
 	}
 
 	@Override

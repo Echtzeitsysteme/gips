@@ -30,7 +30,7 @@ public class TypeIndexer {
 	final protected Map<String, EClass> typeByName = Collections.synchronizedMap(new HashMap<>());
 	protected boolean cascadingNotifications = false;
 
-	protected TypeIndexer(final GraphTransformationAPI eMoflonAPI, final RoamIntermediateModel roamModel) {
+	public TypeIndexer(final GraphTransformationAPI eMoflonAPI, final RoamIntermediateModel roamModel) {
 		this.eMoflonAPI = eMoflonAPI;
 		this.roamModel = roamModel;
 		initIndex();

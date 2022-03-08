@@ -65,25 +65,25 @@ public class «className» extends RoamEngineAPI <«data.apiData.engineAppClasse
 	
 	@Override
 	protected void createMappers() {
-		super.createMappers();
 		«FOR mapping : data.model.variables.filter[v | v instanceof Mapping]»
-		«mapping.name.toFirstLower» = («data.mapping2mapperClassName.get(mapping)») roamEngine.getMapper("«mapping.name»");
+		«mapping.name.toFirstLower» = («data.mapping2mapperClassName.get(mapping)») mapperFactory.createMapper(name2Mapping.get("«mapping.name»"));
+		addMapper(«mapping.name.toFirstLower»);
 		«ENDFOR»
 	}
 	
 	@Override
 	protected void initMapperFactory() {
-		mapperFactory = new «data.mapperFactoryClassName»(roamEngine);
+		mapperFactory = new «data.mapperFactoryClassName»(this, eMoflonAPI);
 	}
 	
 	@Override	
 	protected void initConstraintFactory() {
-		constraintFactory = new «data.constraintFactoryClassName»(roamEngine);
+		constraintFactory = new «data.constraintFactoryClassName»(this, eMoflonAPI);
 	}
 	
 	@Override	
 	protected void initObjectiveFactory() {
-		objectiveFactory = new «data.objectiveFactoryClassName»(roamEngine);
+		objectiveFactory = new «data.objectiveFactoryClassName»(this, eMoflonAPI);
 	}
 	
 	@Override
@@ -92,7 +92,7 @@ public class «className» extends RoamEngineAPI <«data.apiData.engineAppClasse
 		// No global objective was defined!
 		return null;
 		«ELSE»
-		return new «data.globalObjectiveClassName»(roamEngine, roamModel.getGlobalObjective());
+		return new «data.globalObjectiveClassName»(this, roamModel.getGlobalObjective());
 		«ENDIF»
 	}
 	
@@ -112,7 +112,7 @@ public class «className» extends RoamEngineAPI <«data.apiData.engineAppClasse
 	def String solverInit() {
 		switch(data.model.config.solver) {
 			case GUROBI: {
-				return '''new GurobiSolver(roamEngine, solverConfig)'''
+				return '''new GurobiSolver(this, solverConfig)'''
 			}
 		}
 	}

@@ -3,6 +3,7 @@ package org.emoflon.roam.build.generator.templates
 import org.emoflon.roam.build.generator.GeneratorTemplate
 import org.emoflon.roam.build.generator.TemplateData
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel
+import org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective
 
 class ObjectiveFactoryTemplate extends GeneratorTemplate<RoamIntermediateModel> {
 	
@@ -15,6 +16,7 @@ class ObjectiveFactoryTemplate extends GeneratorTemplate<RoamIntermediateModel> 
 		className = data.objectiveFactoryClassName
 		fqn = packageName + "." + className;
 		filePath = data.apiData.roamApiPkgPath + "/" + className + ".java"
+		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)
 		imports.add("org.emoflon.roam.core.api.RoamObjectiveFactory")
 		imports.add("org.emoflon.roam.core.RoamEngine")
 		imports.add("org.emoflon.roam.core.RoamObjective")
@@ -34,9 +36,9 @@ class ObjectiveFactoryTemplate extends GeneratorTemplate<RoamIntermediateModel> 
 import «imp»;
 «ENDFOR»
 
-public class «className» extends RoamObjectiveFactory {
-	public «className»(final RoamEngine engine) {
-		super(engine);
+public class «className» extends RoamObjectiveFactory<«data.apiData.apiClass»> {
+	public «className»(final RoamEngine engine, final «data.apiData.apiClass» eMoflonApi) {
+		super(engine, eMoflonApi);
 	}
 	
 	@Override
@@ -47,7 +49,11 @@ public class «className» extends RoamObjectiveFactory {
 		switch(objective.getName()) {
 			«FOR objective : context.objectives»
 			case "«objective.name»" -> {
+				«IF objective instanceof PatternObjective»
+				return new «data.objective2objectiveClassName.get(objective)»(engine, («objective.eClass.name»)objective, eMoflonApi.«objective.pattern.name.toFirstLower»());
+				«ELSE»
 				return new «data.objective2objectiveClassName.get(objective)»(engine, («objective.eClass.name»)objective);
+				«ENDIF»
 			}
 			«ENDFOR»
 			default -> {

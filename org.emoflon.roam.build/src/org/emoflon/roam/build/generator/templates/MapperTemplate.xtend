@@ -32,25 +32,13 @@ import «imp»;
 «ENDFOR»
 		
 public class «className» extends GTMapper<«data.mapping2mappingClassName.get(context)», «data.mapping2matchClassName.get(context)», «data.mapping2ruleClassName.get(context)»> {
-	public «className»(final RoamEngine engine, final Mapping mapping) {
-		super(engine, mapping);
-	}
-	
-	@Override
-	protected void init() {
-		((«data.apiData.apiClass»)engine.getEMoflonAPI()).«context.rule.name»().subscribeAppearing(this::addMapping);
-		((«data.apiData.apiClass»)engine.getEMoflonAPI()).«context.rule.name»().subscribeDisappearing(this::removeMapping);
+	public «className»(final RoamEngine engine, final Mapping mapping, final «data.mapping2ruleClassName.get(context)» rule) {
+		super(engine, mapping, rule);
 	}
 	
 	@Override
 	protected «data.mapping2mappingClassName.get(context)» convertMatch(final String ilpVariable, final «data.mapping2matchClassName.get(context)» match) {
 		return new «data.mapping2mappingClassName.get(context)»(ilpVariable, match);
-	}
-	
-	@Override
-	protected void terminate() {
-		((«data.apiData.apiClass»)engine.getEMoflonAPI()).«context.rule.name»().unsubscribeAppearing(this::addMapping);
-		((«data.apiData.apiClass»)engine.getEMoflonAPI()).«context.rule.name»().unsubscribeDisappearing(this::removeMapping);
 	}
 }'''
 	}

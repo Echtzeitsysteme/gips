@@ -45,6 +45,14 @@ public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 				config.isEnableRndSeed(), config.getIlpRndSeed(), config.isEnablePresolve(),
 				config.isEnableDebugOutput());
 	}
+	
+	public EMOFLON_APP getEMoflonApp() {
+		return eMoflonApp;
+	}
+	
+	public EMOFLON_API getEMoflonAPI() {
+		return eMoflonAPI;
+	}
 
 	public void update() {
 		roamEngine.update();
@@ -56,6 +64,10 @@ public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 
 	public ILPSolverOutput solveILPProblem() {
 		return roamEngine.solveILPProblem();
+	}
+	
+	public void terminate() {
+		roamEngine.terminate();
 	}
 
 	protected abstract void initMapperFactory();
@@ -115,10 +127,6 @@ public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	protected void createObjectives() {
 		roamModel.getObjectives().stream()
 				.forEach(objective -> roamEngine.addObjective(objectiveFactory.createObjective(objective)));
-	}
-
-	public void terminate() {
-		roamEngine.terminate();
 	}
 
 }

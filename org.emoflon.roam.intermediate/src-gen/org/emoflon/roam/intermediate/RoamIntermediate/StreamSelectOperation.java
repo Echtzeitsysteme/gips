@@ -24,7 +24,7 @@ public interface StreamSelectOperation extends StreamOperation {
 	/**
 	 * Returns the value of the '<em><b>Type</b></em>' containment reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Type</em>' containment reference.
 	 * @see #setType(EClass)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getStreamSelectOperation_Type()
@@ -38,7 +38,7 @@ public interface StreamSelectOperation extends StreamOperation {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation#getType
 	 * <em>Type</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Type</em>' containment reference.
 	 * @see #getType()
 	 * @generated

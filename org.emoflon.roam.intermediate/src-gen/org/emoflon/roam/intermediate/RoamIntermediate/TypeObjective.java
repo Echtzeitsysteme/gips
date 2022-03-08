@@ -22,7 +22,7 @@ public interface TypeObjective extends Context, Objective {
 	/**
 	 * Returns the value of the '<em><b>Model Type</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Model Type</em>' reference.
 	 * @see #setModelType(Type)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getTypeObjective_ModelType()
@@ -36,7 +36,7 @@ public interface TypeObjective extends Context, Objective {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective#getModelType
 	 * <em>Model Type</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Model Type</em>' reference.
 	 * @see #getModelType()
 	 * @generated

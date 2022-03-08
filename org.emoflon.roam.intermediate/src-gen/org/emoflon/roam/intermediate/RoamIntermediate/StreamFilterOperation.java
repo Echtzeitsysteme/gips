@@ -22,7 +22,7 @@ public interface StreamFilterOperation extends StreamOperation {
 	/**
 	 * Returns the value of the '<em><b>Predicate</b></em>' containment reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Predicate</em>' containment reference.
 	 * @see #setPredicate(BoolExpression)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getStreamFilterOperation_Predicate()
@@ -36,7 +36,7 @@ public interface StreamFilterOperation extends StreamOperation {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation#getPredicate
 	 * <em>Predicate</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Predicate</em>' containment reference.
 	 * @see #getPredicate()
 	 * @generated

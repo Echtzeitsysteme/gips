@@ -26,7 +26,7 @@ public interface BoolBinaryExpression extends BoolExpression {
 	/**
 	 * Returns the value of the '<em><b>Lhs</b></em>' containment reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Lhs</em>' containment reference.
 	 * @see #setLhs(BoolExpression)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBoolBinaryExpression_Lhs()
@@ -40,7 +40,7 @@ public interface BoolBinaryExpression extends BoolExpression {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression#getLhs
 	 * <em>Lhs</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Lhs</em>' containment reference.
 	 * @see #getLhs()
 	 * @generated
@@ -50,7 +50,7 @@ public interface BoolBinaryExpression extends BoolExpression {
 	/**
 	 * Returns the value of the '<em><b>Rhs</b></em>' containment reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Rhs</em>' containment reference.
 	 * @see #setRhs(BoolExpression)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBoolBinaryExpression_Rhs()
@@ -64,7 +64,7 @@ public interface BoolBinaryExpression extends BoolExpression {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression#getRhs
 	 * <em>Rhs</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Rhs</em>' containment reference.
 	 * @see #getRhs()
 	 * @generated
@@ -76,7 +76,7 @@ public interface BoolBinaryExpression extends BoolExpression {
 	 * are from the enumeration
 	 * {@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryBoolOperator}.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Operator</em>' attribute.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BinaryBoolOperator
 	 * @see #setOperator(BinaryBoolOperator)
@@ -90,7 +90,7 @@ public interface BoolBinaryExpression extends BoolExpression {
 	 * Sets the value of the
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression#getOperator
 	 * <em>Operator</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Operator</em>' attribute.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BinaryBoolOperator
 	 * @see #getOperator()

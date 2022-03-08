@@ -25,7 +25,7 @@ public interface FeatureLiteral extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Feature</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Feature</em>' reference.
 	 * @see #setFeature(EStructuralFeature)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getFeatureLiteral_Feature()
@@ -38,7 +38,7 @@ public interface FeatureLiteral extends EObject {
 	 * Sets the value of the
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureLiteral#getFeature
 	 * <em>Feature</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Feature</em>' reference.
 	 * @see #getFeature()
 	 * @generated

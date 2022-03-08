@@ -22,7 +22,7 @@ public interface TypeConstraint extends Context, Constraint {
 	/**
 	 * Returns the value of the '<em><b>Model Type</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Model Type</em>' reference.
 	 * @see #setModelType(Type)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getTypeConstraint_ModelType()
@@ -36,7 +36,7 @@ public interface TypeConstraint extends Context, Constraint {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint#getModelType
 	 * <em>Model Type</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Model Type</em>' reference.
 	 * @see #getModelType()
 	 * @generated

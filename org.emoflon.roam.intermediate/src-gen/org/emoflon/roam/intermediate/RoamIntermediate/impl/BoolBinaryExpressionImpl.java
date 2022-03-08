@@ -4,9 +4,12 @@ package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.BinaryBoolOperator;
 import org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression;
@@ -33,7 +36,7 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 	/**
 	 * The cached value of the '{@link #getLhs() <em>Lhs</em>}' containment
 	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getLhs()
 	 * @generated
 	 * @ordered
@@ -43,7 +46,7 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 	/**
 	 * The cached value of the '{@link #getRhs() <em>Rhs</em>}' containment
 	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getRhs()
 	 * @generated
 	 * @ordered
@@ -53,7 +56,7 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 	/**
 	 * The default value of the '{@link #getOperator() <em>Operator</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getOperator()
 	 * @generated
 	 * @ordered
@@ -63,7 +66,7 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 	/**
 	 * The cached value of the '{@link #getOperator() <em>Operator</em>}' attribute.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getOperator()
 	 * @generated
 	 * @ordered
@@ -72,7 +75,7 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	protected BoolBinaryExpressionImpl() {
@@ -81,7 +84,7 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -91,17 +94,16 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public BoolExpression getLhs() {
 		return lhs;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetLhs(BoolExpression newLhs, NotificationChain msgs) {
@@ -120,10 +122,9 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setLhs(BoolExpression newLhs) {
 		if (newLhs != lhs) {
 			NotificationChain msgs = null;
@@ -143,17 +144,16 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public BoolExpression getRhs() {
 		return rhs;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetRhs(BoolExpression newRhs, NotificationChain msgs) {
@@ -172,10 +172,9 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setRhs(BoolExpression newRhs) {
 		if (newRhs != rhs) {
 			NotificationChain msgs = null;
@@ -195,20 +194,18 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public BinaryBoolOperator getOperator() {
 		return operator;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setOperator(BinaryBoolOperator newOperator) {
 		BinaryBoolOperator oldOperator = operator;
 		operator = newOperator == null ? OPERATOR_EDEFAULT : newOperator;
@@ -219,7 +216,7 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -235,7 +232,7 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -253,7 +250,7 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -274,7 +271,7 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -295,7 +292,7 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -313,7 +310,7 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override

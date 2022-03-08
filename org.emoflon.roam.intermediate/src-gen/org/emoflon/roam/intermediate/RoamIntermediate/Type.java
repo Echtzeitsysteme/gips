@@ -24,7 +24,7 @@ public interface Type extends VariableSet {
 	/**
 	 * Returns the value of the '<em><b>Type</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Type</em>' reference.
 	 * @see #setType(EClass)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getType_Type()
@@ -37,7 +37,7 @@ public interface Type extends VariableSet {
 	 * Sets the value of the
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Type#getType
 	 * <em>Type</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Type</em>' reference.
 	 * @see #getType()
 	 * @generated

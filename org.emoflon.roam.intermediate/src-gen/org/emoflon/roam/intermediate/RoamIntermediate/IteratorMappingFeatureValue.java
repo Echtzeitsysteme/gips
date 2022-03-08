@@ -24,7 +24,7 @@ public interface IteratorMappingFeatureValue extends ValueExpression, Iterator {
 	/**
 	 * Returns the value of the '<em><b>Mapping Context</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Mapping Context</em>' reference.
 	 * @see #setMappingContext(Mapping)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorMappingFeatureValue_MappingContext()
@@ -38,7 +38,7 @@ public interface IteratorMappingFeatureValue extends ValueExpression, Iterator {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue#getMappingContext
 	 * <em>Mapping Context</em>}' reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Mapping Context</em>' reference.
 	 * @see #getMappingContext()
 	 * @generated
@@ -48,7 +48,7 @@ public interface IteratorMappingFeatureValue extends ValueExpression, Iterator {
 	/**
 	 * Returns the value of the '<em><b>Feature Expression</b></em>' containment
 	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Feature Expression</em>' containment reference.
 	 * @see #setFeatureExpression(FeatureExpression)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorMappingFeatureValue_FeatureExpression()
@@ -62,7 +62,7 @@ public interface IteratorMappingFeatureValue extends ValueExpression, Iterator {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue#getFeatureExpression
 	 * <em>Feature Expression</em>}' containment reference. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Feature Expression</em>' containment
 	 *              reference.
 	 * @see #getFeatureExpression()

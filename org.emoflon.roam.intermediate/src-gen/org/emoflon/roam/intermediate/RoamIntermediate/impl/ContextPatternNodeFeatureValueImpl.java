@@ -4,9 +4,12 @@ package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
@@ -30,7 +33,7 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 	 * The cached value of the '{@link #getFeatureExpression() <em>Feature
 	 * Expression</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @see #getFeatureExpression()
 	 * @generated
 	 * @ordered
@@ -39,7 +42,7 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	protected ContextPatternNodeFeatureValueImpl() {
@@ -48,7 +51,7 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -58,17 +61,16 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public FeatureExpression getFeatureExpression() {
 		return featureExpression;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetFeatureExpression(FeatureExpression newFeatureExpression, NotificationChain msgs) {
@@ -88,10 +90,9 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setFeatureExpression(FeatureExpression newFeatureExpression) {
 		if (newFeatureExpression != featureExpression) {
 			NotificationChain msgs = null;
@@ -116,7 +117,7 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -130,7 +131,7 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -144,7 +145,7 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -159,7 +160,7 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -174,7 +175,7 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override

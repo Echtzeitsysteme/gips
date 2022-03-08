@@ -28,7 +28,7 @@ public interface StreamExpression extends SetOperation {
 	/**
 	 * Returns the value of the '<em><b>Return Type</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Return Type</em>' reference.
 	 * @see #setReturnType(EClassifier)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getStreamExpression_ReturnType()
@@ -42,7 +42,7 @@ public interface StreamExpression extends SetOperation {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression#getReturnType
 	 * <em>Return Type</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Return Type</em>' reference.
 	 * @see #getReturnType()
 	 * @generated
@@ -52,7 +52,7 @@ public interface StreamExpression extends SetOperation {
 	/**
 	 * Returns the value of the '<em><b>Current</b></em>' containment reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Current</em>' containment reference.
 	 * @see #setCurrent(StreamOperation)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getStreamExpression_Current()
@@ -66,7 +66,7 @@ public interface StreamExpression extends SetOperation {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression#getCurrent
 	 * <em>Current</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Current</em>' containment reference.
 	 * @see #getCurrent()
 	 * @generated
@@ -76,7 +76,7 @@ public interface StreamExpression extends SetOperation {
 	/**
 	 * Returns the value of the '<em><b>Child</b></em>' containment reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Child</em>' containment reference.
 	 * @see #setChild(StreamExpression)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getStreamExpression_Child()
@@ -90,7 +90,7 @@ public interface StreamExpression extends SetOperation {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression#getChild
 	 * <em>Child</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Child</em>' containment reference.
 	 * @see #getChild()
 	 * @generated

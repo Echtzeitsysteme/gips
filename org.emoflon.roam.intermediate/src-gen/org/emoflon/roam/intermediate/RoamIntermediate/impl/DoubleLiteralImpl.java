@@ -3,8 +3,11 @@
 package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
@@ -25,7 +28,7 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 	/**
 	 * The default value of the '{@link #getLiteral() <em>Literal</em>}' attribute.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getLiteral()
 	 * @generated
 	 * @ordered
@@ -35,7 +38,7 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 	/**
 	 * The cached value of the '{@link #getLiteral() <em>Literal</em>}' attribute.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getLiteral()
 	 * @generated
 	 * @ordered
@@ -44,7 +47,7 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	protected DoubleLiteralImpl() {
@@ -53,7 +56,7 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -63,20 +66,18 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public double getLiteral() {
 		return literal;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setLiteral(double newLiteral) {
 		double oldLiteral = literal;
 		literal = newLiteral;
@@ -87,7 +88,7 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -101,7 +102,7 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -116,7 +117,7 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -131,7 +132,7 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -145,7 +146,7 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override

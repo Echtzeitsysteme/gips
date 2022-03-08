@@ -15,10 +15,9 @@ public abstract class RoamPatternConstraint<M extends GraphTransformationMatch<M
 
 	final protected GraphTransformationPattern<M, P> pattern;
 
-	@SuppressWarnings("unchecked")
-	public RoamPatternConstraint(RoamEngine engine, PatternConstraint constraint) {
+	public RoamPatternConstraint(RoamEngine engine, PatternConstraint constraint, final P pattern) {
 		super(engine, constraint);
-		pattern = (P) engine.getEMoflonAPI().getPattern(constraint.getPattern().getName());
+		this.pattern = pattern;
 	}
 
 	@Override

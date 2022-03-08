@@ -4,9 +4,12 @@ package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.BoolValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression;
@@ -28,7 +31,7 @@ public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue 
 	/**
 	 * The cached value of the '{@link #getValue() <em>Value</em>}' containment
 	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getValue()
 	 * @generated
 	 * @ordered
@@ -37,7 +40,7 @@ public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	protected BoolValueImpl() {
@@ -46,7 +49,7 @@ public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -56,17 +59,16 @@ public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public ValueExpression getValue() {
 		return value;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetValue(ValueExpression newValue, NotificationChain msgs) {
@@ -85,10 +87,9 @@ public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setValue(ValueExpression newValue) {
 		if (newValue != value) {
 			NotificationChain msgs = null;
@@ -108,7 +109,7 @@ public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -122,7 +123,7 @@ public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -136,7 +137,7 @@ public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -151,7 +152,7 @@ public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -166,7 +167,7 @@ public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override

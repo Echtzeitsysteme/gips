@@ -24,7 +24,7 @@ public interface Iterator extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Stream</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Stream</em>' reference.
 	 * @see #setStream(SetOperation)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIterator_Stream()
@@ -37,7 +37,7 @@ public interface Iterator extends EObject {
 	 * Sets the value of the
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Iterator#getStream
 	 * <em>Stream</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Stream</em>' reference.
 	 * @see #getStream()
 	 * @generated

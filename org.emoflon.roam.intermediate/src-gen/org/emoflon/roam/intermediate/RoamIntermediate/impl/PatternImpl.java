@@ -3,10 +3,14 @@
 package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.Pattern;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
@@ -29,7 +33,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	/**
 	 * The cached value of the '{@link #getPattern() <em>Pattern</em>}' reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getPattern()
 	 * @generated
 	 * @ordered
@@ -39,16 +43,17 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	/**
 	 * The default value of the '{@link #isIsRule() <em>Is Rule</em>}' attribute.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #isIsRule()
 	 * @generated
 	 * @ordered
 	 */
 	protected static final boolean IS_RULE_EDEFAULT = false;
+
 	/**
 	 * The cached value of the '{@link #isIsRule() <em>Is Rule</em>}' attribute.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #isIsRule()
 	 * @generated
 	 * @ordered
@@ -57,7 +62,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	protected PatternImpl() {
@@ -66,7 +71,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -76,10 +81,9 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public IBeXContext getPattern() {
 		if (pattern != null && pattern.eIsProxy()) {
 			InternalEObject oldPattern = (InternalEObject) pattern;
@@ -95,7 +99,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	public IBeXContext basicGetPattern() {
@@ -104,10 +108,9 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setPattern(IBeXContext newPattern) {
 		IBeXContext oldPattern = pattern;
 		pattern = newPattern;
@@ -118,20 +121,18 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public boolean isIsRule() {
 		return isRule;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setIsRule(boolean newIsRule) {
 		boolean oldIsRule = isRule;
 		isRule = newIsRule;
@@ -142,7 +143,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -160,7 +161,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -178,7 +179,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -196,7 +197,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -212,7 +213,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override

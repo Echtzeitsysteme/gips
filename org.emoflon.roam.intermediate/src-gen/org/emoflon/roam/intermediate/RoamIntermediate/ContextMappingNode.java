@@ -26,7 +26,7 @@ public interface ContextMappingNode extends ValueExpression {
 	/**
 	 * Returns the value of the '<em><b>Mapping Context</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Mapping Context</em>' reference.
 	 * @see #setMappingContext(Mapping)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getContextMappingNode_MappingContext()
@@ -40,7 +40,7 @@ public interface ContextMappingNode extends ValueExpression {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode#getMappingContext
 	 * <em>Mapping Context</em>}' reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Mapping Context</em>' reference.
 	 * @see #getMappingContext()
 	 * @generated
@@ -50,7 +50,7 @@ public interface ContextMappingNode extends ValueExpression {
 	/**
 	 * Returns the value of the '<em><b>Node</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Node</em>' reference.
 	 * @see #setNode(IBeXNode)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getContextMappingNode_Node()
@@ -63,7 +63,7 @@ public interface ContextMappingNode extends ValueExpression {
 	 * Sets the value of the
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode#getNode
 	 * <em>Node</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Node</em>' reference.
 	 * @see #getNode()
 	 * @generated

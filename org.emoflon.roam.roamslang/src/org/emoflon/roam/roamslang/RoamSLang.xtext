@@ -8,12 +8,28 @@ generate roamSLang "http://www.emoflon.org/roam/roamslang/RoamSLang"
 @Override 
 EditorGTFile: {EditorGTFile} 
 	(imports+=EditorImport)*
+	config = RoamConfig
   	(patterns+=EditorPattern |
   	conditions+=EditorCondition |
   	mappings += RoamMapping |
   	constraints += RoamConstraint |
   	objectives += RoamObjective)*
   	(globalObjective = RoamGlobalObjective)?	
+;
+
+RoamConfig : {RoamConfig}
+	'config' '{'
+	'solver' ':=' solver=SolverType '[' 'home' ':=' home=RoamStringLiteral ',' 'license' ':=' license=RoamStringLiteral ']' ';'
+	('launchConfig' ':=' enableLaunchConfig = RoamBoolean '[' 'main' ':=' mainLoc=RoamStringLiteral ']' ';')?
+	('timeLimit' ':=' enableLimit = RoamBoolean '[' 'value' ':=' timeLimit=RoamDouble ']' ';')?
+	('randomSeed' ':=' enableSeed = RoamBoolean '[' 'value' ':=' rndSeed=RoamInteger ']' ';')?
+	('presolve' ':=' enablePresolve = RoamBoolean ';')?
+	('debugOutput' ':=' enableDebugOutput = RoamBoolean ';')?
+	'}'
+;
+
+enum SolverType:
+	GUROBI='GUROBI'
 ;
 
 RoamMapping :
@@ -265,4 +281,13 @@ terminal TRUE returns ecore::EBoolean:
 
 terminal FALSE returns ecore::EBoolean:
 	'false'
+;
+
+RoamStringLiteral:
+	STRING
+;
+
+@Override
+terminal STRING returns ecore::EString:
+	'"' ( '""' | !('"') )* '"'
 ;

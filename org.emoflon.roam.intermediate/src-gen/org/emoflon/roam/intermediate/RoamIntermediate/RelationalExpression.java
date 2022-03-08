@@ -28,7 +28,7 @@ public interface RelationalExpression extends BoolValueExpression {
 	 * are from the enumeration
 	 * {@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator}.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Operator</em>' attribute.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator
 	 * @see #setOperator(RelationalOperator)
@@ -42,7 +42,7 @@ public interface RelationalExpression extends BoolValueExpression {
 	 * Sets the value of the
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression#getOperator
 	 * <em>Operator</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Operator</em>' attribute.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator
 	 * @see #getOperator()
@@ -53,7 +53,7 @@ public interface RelationalExpression extends BoolValueExpression {
 	/**
 	 * Returns the value of the '<em><b>Lhs</b></em>' containment reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Lhs</em>' containment reference.
 	 * @see #setLhs(ArithmeticExpression)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getRelationalExpression_Lhs()
@@ -67,7 +67,7 @@ public interface RelationalExpression extends BoolValueExpression {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression#getLhs
 	 * <em>Lhs</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Lhs</em>' containment reference.
 	 * @see #getLhs()
 	 * @generated
@@ -77,7 +77,7 @@ public interface RelationalExpression extends BoolValueExpression {
 	/**
 	 * Returns the value of the '<em><b>Rhs</b></em>' containment reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Rhs</em>' containment reference.
 	 * @see #setRhs(ArithmeticExpression)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getRelationalExpression_Rhs()
@@ -91,7 +91,7 @@ public interface RelationalExpression extends BoolValueExpression {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression#getRhs
 	 * <em>Rhs</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Rhs</em>' containment reference.
 	 * @see #getRhs()
 	 * @generated

@@ -22,7 +22,7 @@ public interface ContextPatternValue extends ValueExpression {
 	/**
 	 * Returns the value of the '<em><b>Pattern Context</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Pattern Context</em>' reference.
 	 * @see #setPatternContext(Pattern)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getContextPatternValue_PatternContext()
@@ -36,7 +36,7 @@ public interface ContextPatternValue extends ValueExpression {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue#getPatternContext
 	 * <em>Pattern Context</em>}' reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Pattern Context</em>' reference.
 	 * @see #getPatternContext()
 	 * @generated

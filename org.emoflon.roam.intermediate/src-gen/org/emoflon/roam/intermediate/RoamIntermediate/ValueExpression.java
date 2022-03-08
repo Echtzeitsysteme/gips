@@ -25,7 +25,7 @@ public interface ValueExpression extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Return Type</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Return Type</em>' reference.
 	 * @see #setReturnType(EClassifier)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getValueExpression_ReturnType()
@@ -39,7 +39,7 @@ public interface ValueExpression extends EObject {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression#getReturnType
 	 * <em>Return Type</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Return Type</em>' reference.
 	 * @see #getReturnType()
 	 * @generated

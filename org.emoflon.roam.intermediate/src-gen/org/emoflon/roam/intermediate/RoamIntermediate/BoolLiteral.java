@@ -22,7 +22,7 @@ public interface BoolLiteral extends BoolValueExpression {
 	/**
 	 * Returns the value of the '<em><b>Literal</b></em>' attribute. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Literal</em>' attribute.
 	 * @see #setLiteral(boolean)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBoolLiteral_Literal()
@@ -35,7 +35,7 @@ public interface BoolLiteral extends BoolValueExpression {
 	 * Sets the value of the
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral#isLiteral
 	 * <em>Literal</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Literal</em>' attribute.
 	 * @see #isLiteral()
 	 * @generated

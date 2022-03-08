@@ -21,11 +21,10 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface SetOperation extends EObject {
-
 	/**
 	 * Returns the value of the '<em><b>Operand Name</b></em>' attribute. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Operand Name</em>' attribute.
 	 * @see #setOperandName(String)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getSetOperation_OperandName()
@@ -39,10 +38,11 @@ public interface SetOperation extends EObject {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.SetOperation#getOperandName
 	 * <em>Operand Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Operand Name</em>' attribute.
 	 * @see #getOperandName()
 	 * @generated
 	 */
 	void setOperandName(String value);
+
 } // SetOperation

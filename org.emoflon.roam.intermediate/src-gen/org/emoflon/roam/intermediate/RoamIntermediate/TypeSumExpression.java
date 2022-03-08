@@ -22,7 +22,7 @@ public interface TypeSumExpression extends SumExpression {
 	/**
 	 * Returns the value of the '<em><b>Type</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Type</em>' reference.
 	 * @see #setType(Type)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getTypeSumExpression_Type()
@@ -35,7 +35,7 @@ public interface TypeSumExpression extends SumExpression {
 	 * Sets the value of the
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression#getType
 	 * <em>Type</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Type</em>' reference.
 	 * @see #getType()
 	 * @generated

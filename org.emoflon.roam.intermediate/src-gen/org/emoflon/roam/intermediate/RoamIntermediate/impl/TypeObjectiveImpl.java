@@ -4,10 +4,13 @@ package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
@@ -37,7 +40,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -47,7 +50,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 	/**
 	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -57,7 +60,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 	/**
 	 * The default value of the '{@link #isElementwise() <em>Elementwise</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #isElementwise()
 	 * @generated
 	 * @ordered
@@ -67,7 +70,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 	/**
 	 * The cached value of the '{@link #isElementwise() <em>Elementwise</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #isElementwise()
 	 * @generated
 	 * @ordered
@@ -77,7 +80,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 	/**
 	 * The cached value of the '{@link #getExpression() <em>Expression</em>}'
 	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getExpression()
 	 * @generated
 	 * @ordered
@@ -87,7 +90,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 	/**
 	 * The cached value of the '{@link #getModelType() <em>Model Type</em>}'
 	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getModelType()
 	 * @generated
 	 * @ordered
@@ -96,7 +99,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	protected TypeObjectiveImpl() {
@@ -105,7 +108,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -115,20 +118,18 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public String getName() {
 		return name;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -139,20 +140,18 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public boolean isElementwise() {
 		return elementwise;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setElementwise(boolean newElementwise) {
 		boolean oldElementwise = elementwise;
 		elementwise = newElementwise;
@@ -163,17 +162,16 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public ArithmeticExpression getExpression() {
 		return expression;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetExpression(ArithmeticExpression newExpression, NotificationChain msgs) {
@@ -192,10 +190,9 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setExpression(ArithmeticExpression newExpression) {
 		if (newExpression != expression) {
 			NotificationChain msgs = null;
@@ -215,10 +212,9 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public Type getModelType() {
 		if (modelType != null && modelType.eIsProxy()) {
 			InternalEObject oldModelType = (InternalEObject) modelType;
@@ -234,7 +230,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	public Type basicGetModelType() {
@@ -243,10 +239,9 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setModelType(Type newModelType) {
 		Type oldModelType = modelType;
 		modelType = newModelType;
@@ -257,7 +252,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -271,7 +266,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -293,7 +288,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -317,7 +312,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -341,7 +336,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -361,7 +356,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -383,7 +378,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -405,7 +400,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override

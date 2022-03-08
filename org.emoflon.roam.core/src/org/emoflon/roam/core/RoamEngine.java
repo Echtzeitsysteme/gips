@@ -3,31 +3,40 @@ package org.emoflon.roam.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.emoflon.ibex.gt.api.GraphTransformationAPI;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
+import org.emoflon.roam.core.ilp.ILPSolver;
+import org.emoflon.roam.core.ilp.ILPSolverOutput;
+import org.emoflon.roam.core.ilp.ILPSolverStatus;
 
-public class RoamEngine {
+public abstract class RoamEngine {
 
-	final protected GraphTransformationAPI eMoflonAPI;
-	final protected RoamIntermediateModel roamModel;
 	final protected Map<String, RoamMapper<?>> mappers = new HashMap<>();
-	final protected TypeIndexer indexer;
+	protected TypeIndexer indexer;
 	final protected Map<String, RoamConstraint<?, ?, ?>> constraints = new HashMap<>();
 	final protected Map<String, RoamObjective<?, ?, ?>> objectives = new HashMap<>();
 	protected RoamGlobalObjective globalObjective;
+	protected ILPSolver ilpSolver;
 
-	public RoamEngine(final GraphTransformationAPI eMoflonAPI, final RoamIntermediateModel roamModel) {
-		this.eMoflonAPI = eMoflonAPI;
-		this.roamModel = roamModel;
-		this.indexer = new TypeIndexer(eMoflonAPI, roamModel);
+	public abstract void initTypeIndexer();
+
+	public abstract void update();
+
+	public void buildILPProblem(boolean doUpdate) {
+		if (doUpdate)
+			update();
+
+		constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints());
+		if (globalObjective != null)
+			globalObjective.buildObjectiveFunction();
+
+		ilpSolver.buildILPProblem();
 	}
 
-	public GraphTransformationAPI getEMoflonAPI() {
-		return eMoflonAPI;
-	}
+	public ILPSolverOutput solveILPProblem() {
+		ILPSolverOutput output = ilpSolver.solve();
+		if (output.status() != ILPSolverStatus.INFEASIBLE)
+			ilpSolver.updateValuesFromSolution();
 
-	public void addMapper(final RoamMapper<?> mapper) {
-		mappers.put(mapper.getName(), mapper);
+		return output;
 	}
 
 	public RoamMapper<?> getMapper(final String mappingName) {
@@ -38,16 +47,8 @@ public class RoamEngine {
 		return mappers;
 	}
 
-	public void addConstraint(final RoamConstraint<?, ?, ?> constraint) {
-		constraints.put(constraint.getName(), constraint);
-	}
-
 	public Map<String, RoamConstraint<?, ?, ?>> getConstraints() {
 		return constraints;
-	}
-
-	public void addObjective(final RoamObjective<?, ?, ?> objective) {
-		objectives.put(objective.getName(), objective);
 	}
 
 	public Map<String, RoamObjective<?, ?, ?>> getObjectives() {
@@ -58,10 +59,6 @@ public class RoamEngine {
 		return indexer;
 	}
 
-	public void setGlobalObjective(final RoamGlobalObjective globalObjective) {
-		this.globalObjective = globalObjective;
-	}
-
 	public RoamGlobalObjective getGlobalObjective() {
 		return globalObjective;
 	}
@@ -69,5 +66,25 @@ public class RoamEngine {
 	public void terminate() {
 		indexer.terminate();
 		mappers.forEach((name, mapper) -> mapper.terminate());
+	}
+
+	protected void addMapper(final RoamMapper<?> mapper) {
+		mappers.put(mapper.getName(), mapper);
+	}
+
+	protected void addConstraint(final RoamConstraint<?, ?, ?> constraint) {
+		constraints.put(constraint.getName(), constraint);
+	}
+
+	protected void addObjective(final RoamObjective<?, ?, ?> objective) {
+		objectives.put(objective.getName(), objective);
+	}
+
+	protected void setGlobalObjective(final RoamGlobalObjective globalObjective) {
+		this.globalObjective = globalObjective;
+	}
+
+	protected void setILPSolver(final ILPSolver solver) {
+		this.ilpSolver = solver;
 	}
 }

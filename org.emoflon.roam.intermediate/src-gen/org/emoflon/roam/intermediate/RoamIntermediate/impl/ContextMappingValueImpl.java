@@ -3,9 +3,12 @@
 package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
@@ -27,7 +30,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	/**
 	 * The cached value of the '{@link #getMappingContext() <em>Mapping
 	 * Context</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getMappingContext()
 	 * @generated
 	 * @ordered
@@ -36,7 +39,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	protected ContextMappingValueImpl() {
@@ -45,7 +48,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -55,10 +58,9 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public Mapping getMappingContext() {
 		if (mappingContext != null && mappingContext.eIsProxy()) {
 			InternalEObject oldMappingContext = (InternalEObject) mappingContext;
@@ -75,7 +77,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	public Mapping basicGetMappingContext() {
@@ -84,10 +86,9 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setMappingContext(Mapping newMappingContext) {
 		Mapping oldMappingContext = mappingContext;
 		mappingContext = newMappingContext;
@@ -98,7 +99,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -114,7 +115,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -129,7 +130,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -144,7 +145,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override

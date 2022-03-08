@@ -65,8 +65,8 @@ import «imp»;
 	override String generateClassContent() {
 		return '''
 public class «className» extends RoamPatternConstraint<«data.pattern2matchClassName.get(context.pattern)», «data.pattern2patternClassName.get(context.pattern)»>{
-	public «className»(final RoamEngine engine, final PatternConstraint constraint) {
-		super(engine, constraint);
+	public «className»(final RoamEngine engine, final PatternConstraint constraint, final «data.pattern2patternClassName.get(context.pattern)» pattern) {
+		super(engine, constraint, pattern);
 	}
 	«IF RoamTransformationUtils.isConstantExpression(context.expression.lhs) == ArithmeticExpressionType.constant»
 	«generateComplexConstraint(context.expression.lhs, context.expression.rhs)»

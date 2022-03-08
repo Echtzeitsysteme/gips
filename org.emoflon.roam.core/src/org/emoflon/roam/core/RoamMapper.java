@@ -1,8 +1,11 @@
 package org.emoflon.roam.core;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 
@@ -23,11 +26,11 @@ public abstract class RoamMapper<M extends RoamMapping> {
 		return mappings.get(ilpVariable);
 	}
 
-	public M putMapping(final M mapping) {
+	protected M putMapping(final M mapping) {
 		return mappings.put(mapping.ilpVariable, mapping);
 	}
 
-	public M removeMapping(final M mapping) {
+	protected M removeMapping(final M mapping) {
 		return mappings.remove(mapping.ilpVariable);
 	}
 
@@ -41,6 +44,18 @@ public abstract class RoamMapper<M extends RoamMapping> {
 
 	public Map<String, M> getMappings() {
 		return mappings;
+	}
+
+	public Collection<M> getNonZeroVariableMappings() {
+		return mappings.values().stream().filter(m -> m.getValue() > 0).collect(Collectors.toSet());
+	}
+
+	public Collection<M> getZeroVariableMappings() {
+		return mappings.values().stream().filter(m -> m.getValue() == 0).collect(Collectors.toSet());
+	}
+
+	public Collection<M> getMappings(Function<Integer, Boolean> predicate) {
+		return mappings.values().stream().filter(m -> predicate.apply(m.getValue())).collect(Collectors.toSet());
 	}
 
 	protected abstract void terminate();

@@ -63,8 +63,8 @@ import «imp»;
 	override String generateClassContent() {
 		return '''
 public class «className» extends RoamPatternObjective<«data.pattern2matchClassName.get(context.pattern)», «data.pattern2patternClassName.get(context.pattern)»>{
-	public «className»(final RoamEngine engine, final PatternObjective objective) {
-		super(engine, objective);
+	public «className»(final RoamEngine engine, final PatternObjective objective, final «data.pattern2patternClassName.get(context.pattern)» pattern) {
+		super(engine, objective, pattern);
 	}
 	
 	«generateObjective(context.expression)»

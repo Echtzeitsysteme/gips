@@ -25,7 +25,7 @@ public interface ArithmeticExpression extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Return Type</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Return Type</em>' reference.
 	 * @see #setReturnType(EDataType)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getArithmeticExpression_ReturnType()
@@ -39,7 +39,7 @@ public interface ArithmeticExpression extends EObject {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression#getReturnType
 	 * <em>Return Type</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Return Type</em>' reference.
 	 * @see #getReturnType()
 	 * @generated

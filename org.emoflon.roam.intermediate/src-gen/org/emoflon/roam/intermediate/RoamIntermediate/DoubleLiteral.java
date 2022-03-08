@@ -22,7 +22,7 @@ public interface DoubleLiteral extends ArithmeticLiteral {
 	/**
 	 * Returns the value of the '<em><b>Literal</b></em>' attribute. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Literal</em>' attribute.
 	 * @see #setLiteral(double)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getDoubleLiteral_Literal()
@@ -35,7 +35,7 @@ public interface DoubleLiteral extends ArithmeticLiteral {
 	 * Sets the value of the
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral#getLiteral
 	 * <em>Literal</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Literal</em>' attribute.
 	 * @see #getLiteral()
 	 * @generated

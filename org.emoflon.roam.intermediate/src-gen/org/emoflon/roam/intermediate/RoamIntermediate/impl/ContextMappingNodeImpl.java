@@ -3,10 +3,14 @@
 package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
@@ -30,7 +34,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	/**
 	 * The cached value of the '{@link #getMappingContext() <em>Mapping
 	 * Context</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getMappingContext()
 	 * @generated
 	 * @ordered
@@ -40,7 +44,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	/**
 	 * The cached value of the '{@link #getNode() <em>Node</em>}' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getNode()
 	 * @generated
 	 * @ordered
@@ -49,7 +53,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	protected ContextMappingNodeImpl() {
@@ -58,7 +62,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -68,10 +72,9 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public Mapping getMappingContext() {
 		if (mappingContext != null && mappingContext.eIsProxy()) {
 			InternalEObject oldMappingContext = (InternalEObject) mappingContext;
@@ -88,7 +91,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	public Mapping basicGetMappingContext() {
@@ -97,10 +100,9 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setMappingContext(Mapping newMappingContext) {
 		Mapping oldMappingContext = mappingContext;
 		mappingContext = newMappingContext;
@@ -111,10 +113,9 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public IBeXNode getNode() {
 		if (node != null && node.eIsProxy()) {
 			InternalEObject oldNode = (InternalEObject) node;
@@ -130,7 +131,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	public IBeXNode basicGetNode() {
@@ -139,10 +140,9 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setNode(IBeXNode newNode) {
 		IBeXNode oldNode = node;
 		node = newNode;
@@ -153,7 +153,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -173,7 +173,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -191,7 +191,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -209,7 +209,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override

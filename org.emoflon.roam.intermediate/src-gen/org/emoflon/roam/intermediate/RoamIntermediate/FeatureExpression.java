@@ -26,7 +26,7 @@ public interface FeatureExpression extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Current</b></em>' containment reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Current</em>' containment reference.
 	 * @see #setCurrent(FeatureLiteral)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getFeatureExpression_Current()
@@ -40,7 +40,7 @@ public interface FeatureExpression extends EObject {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression#getCurrent
 	 * <em>Current</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Current</em>' containment reference.
 	 * @see #getCurrent()
 	 * @generated
@@ -50,7 +50,7 @@ public interface FeatureExpression extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Child</b></em>' containment reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Child</em>' containment reference.
 	 * @see #setChild(FeatureExpression)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getFeatureExpression_Child()
@@ -64,7 +64,7 @@ public interface FeatureExpression extends EObject {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression#getChild
 	 * <em>Child</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Child</em>' containment reference.
 	 * @see #getChild()
 	 * @generated

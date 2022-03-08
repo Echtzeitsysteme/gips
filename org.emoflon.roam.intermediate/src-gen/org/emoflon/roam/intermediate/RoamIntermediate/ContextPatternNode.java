@@ -26,7 +26,7 @@ public interface ContextPatternNode extends ValueExpression {
 	/**
 	 * Returns the value of the '<em><b>Pattern Context</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Pattern Context</em>' reference.
 	 * @see #setPatternContext(Pattern)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getContextPatternNode_PatternContext()
@@ -40,7 +40,7 @@ public interface ContextPatternNode extends ValueExpression {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode#getPatternContext
 	 * <em>Pattern Context</em>}' reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Pattern Context</em>' reference.
 	 * @see #getPatternContext()
 	 * @generated
@@ -50,7 +50,7 @@ public interface ContextPatternNode extends ValueExpression {
 	/**
 	 * Returns the value of the '<em><b>Node</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Node</em>' reference.
 	 * @see #setNode(IBeXNode)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getContextPatternNode_Node()
@@ -63,7 +63,7 @@ public interface ContextPatternNode extends ValueExpression {
 	 * Sets the value of the
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode#getNode
 	 * <em>Node</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Node</em>' reference.
 	 * @see #getNode()
 	 * @generated

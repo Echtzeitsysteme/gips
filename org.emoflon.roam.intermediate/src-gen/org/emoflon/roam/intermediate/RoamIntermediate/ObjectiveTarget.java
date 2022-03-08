@@ -12,7 +12,7 @@ import org.eclipse.emf.common.util.Enumerator;
  * <!-- begin-user-doc --> A representation of the literals of the enumeration
  * '<em><b>Objective Target</b></em>', and utility methods for working with
  * them. <!-- end-user-doc -->
- *
+ * 
  * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getObjectiveTarget()
  * @model
  * @generated
@@ -21,7 +21,7 @@ public enum ObjectiveTarget implements Enumerator {
 	/**
 	 * The '<em><b>MIN</b></em>' literal object. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @see #MIN_VALUE
 	 * @generated
 	 * @ordered
@@ -31,7 +31,7 @@ public enum ObjectiveTarget implements Enumerator {
 	/**
 	 * The '<em><b>MAX</b></em>' literal object. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @see #MAX_VALUE
 	 * @generated
 	 * @ordered
@@ -41,7 +41,7 @@ public enum ObjectiveTarget implements Enumerator {
 	/**
 	 * The '<em><b>MIN</b></em>' literal value. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @see #MIN
 	 * @model
 	 * @generated
@@ -52,7 +52,7 @@ public enum ObjectiveTarget implements Enumerator {
 	/**
 	 * The '<em><b>MAX</b></em>' literal value. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @see #MAX
 	 * @model
 	 * @generated
@@ -63,7 +63,7 @@ public enum ObjectiveTarget implements Enumerator {
 	/**
 	 * An array of all the '<em><b>Objective Target</b></em>' enumerators. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	private static final ObjectiveTarget[] VALUES_ARRAY = new ObjectiveTarget[] { MIN, MAX, };
@@ -71,7 +71,7 @@ public enum ObjectiveTarget implements Enumerator {
 	/**
 	 * A public read-only list of all the '<em><b>Objective Target</b></em>'
 	 * enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	public static final List<ObjectiveTarget> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
@@ -79,13 +79,14 @@ public enum ObjectiveTarget implements Enumerator {
 	/**
 	 * Returns the '<em><b>Objective Target</b></em>' literal with the specified
 	 * literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @param literal the literal.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
 	public static ObjectiveTarget get(String literal) {
-		for (ObjectiveTarget result : VALUES_ARRAY) {
+		for (int i = 0; i < VALUES_ARRAY.length; ++i) {
+			ObjectiveTarget result = VALUES_ARRAY[i];
 			if (result.toString().equals(literal)) {
 				return result;
 			}
@@ -96,13 +97,14 @@ public enum ObjectiveTarget implements Enumerator {
 	/**
 	 * Returns the '<em><b>Objective Target</b></em>' literal with the specified
 	 * name. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @param name the name.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
 	public static ObjectiveTarget getByName(String name) {
-		for (ObjectiveTarget result : VALUES_ARRAY) {
+		for (int i = 0; i < VALUES_ARRAY.length; ++i) {
+			ObjectiveTarget result = VALUES_ARRAY[i];
 			if (result.getName().equals(name)) {
 				return result;
 			}
@@ -113,7 +115,7 @@ public enum ObjectiveTarget implements Enumerator {
 	/**
 	 * Returns the '<em><b>Objective Target</b></em>' literal with the specified
 	 * integer value. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @param value the integer value.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
@@ -130,21 +132,21 @@ public enum ObjectiveTarget implements Enumerator {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	private final int value;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	private final String name;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	private final String literal;
@@ -152,7 +154,7 @@ public enum ObjectiveTarget implements Enumerator {
 	/**
 	 * Only this class can construct instances. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	private ObjectiveTarget(int value, String name, String literal) {
@@ -163,30 +165,27 @@ public enum ObjectiveTarget implements Enumerator {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public int getValue() {
 		return value;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public String getName() {
 		return name;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public String getLiteral() {
 		return literal;
 	}
@@ -194,7 +193,7 @@ public enum ObjectiveTarget implements Enumerator {
 	/**
 	 * Returns the literal value of the enumerator, which is its string
 	 * representation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override

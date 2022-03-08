@@ -24,7 +24,7 @@ public interface Mapping extends VariableSet {
 	/**
 	 * Returns the value of the '<em><b>Rule</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Rule</em>' reference.
 	 * @see #setRule(IBeXRule)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getMapping_Rule()
@@ -37,7 +37,7 @@ public interface Mapping extends VariableSet {
 	 * Sets the value of the
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Mapping#getRule
 	 * <em>Rule</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Rule</em>' reference.
 	 * @see #getRule()
 	 * @generated

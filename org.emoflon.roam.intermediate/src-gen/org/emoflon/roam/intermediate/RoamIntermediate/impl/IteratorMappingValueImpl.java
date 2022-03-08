@@ -3,9 +3,12 @@
 package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.Iterator;
 import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
@@ -31,7 +34,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 	/**
 	 * The cached value of the '{@link #getStream() <em>Stream</em>}' reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getStream()
 	 * @generated
 	 * @ordered
@@ -41,7 +44,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 	/**
 	 * The cached value of the '{@link #getMappingContext() <em>Mapping
 	 * Context</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getMappingContext()
 	 * @generated
 	 * @ordered
@@ -50,7 +53,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	protected IteratorMappingValueImpl() {
@@ -59,7 +62,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -69,10 +72,9 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public SetOperation getStream() {
 		if (stream != null && stream.eIsProxy()) {
 			InternalEObject oldStream = (InternalEObject) stream;
@@ -88,7 +90,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	public SetOperation basicGetStream() {
@@ -97,10 +99,9 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setStream(SetOperation newStream) {
 		SetOperation oldStream = stream;
 		stream = newStream;
@@ -111,10 +112,9 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public Mapping getMappingContext() {
 		if (mappingContext != null && mappingContext.eIsProxy()) {
 			InternalEObject oldMappingContext = (InternalEObject) mappingContext;
@@ -131,7 +131,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	public Mapping basicGetMappingContext() {
@@ -140,10 +140,9 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setMappingContext(Mapping newMappingContext) {
 		Mapping oldMappingContext = mappingContext;
 		mappingContext = newMappingContext;
@@ -155,7 +154,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -175,7 +174,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -193,7 +192,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -211,7 +210,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -227,7 +226,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -245,7 +244,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override

@@ -4,9 +4,12 @@ package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 import org.emoflon.roam.intermediate.RoamIntermediate.StreamBoolOperator;
@@ -31,7 +34,7 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	/**
 	 * The cached value of the '{@link #getStream() <em>Stream</em>}' containment
 	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getStream()
 	 * @generated
 	 * @ordered
@@ -41,7 +44,7 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	/**
 	 * The default value of the '{@link #getOperator() <em>Operator</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getOperator()
 	 * @generated
 	 * @ordered
@@ -51,7 +54,7 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	/**
 	 * The cached value of the '{@link #getOperator() <em>Operator</em>}' attribute.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getOperator()
 	 * @generated
 	 * @ordered
@@ -60,7 +63,7 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	protected BoolStreamExpressionImpl() {
@@ -69,7 +72,7 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -79,17 +82,16 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public StreamExpression getStream() {
 		return stream;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetStream(StreamExpression newStream, NotificationChain msgs) {
@@ -108,10 +110,9 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setStream(StreamExpression newStream) {
 		if (newStream != stream) {
 			NotificationChain msgs = null;
@@ -131,20 +132,18 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public StreamBoolOperator getOperator() {
 		return operator;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setOperator(StreamBoolOperator newOperator) {
 		StreamBoolOperator oldOperator = operator;
 		operator = newOperator == null ? OPERATOR_EDEFAULT : newOperator;
@@ -155,7 +154,7 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -169,7 +168,7 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -185,7 +184,7 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -203,7 +202,7 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -221,7 +220,7 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -237,7 +236,7 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override

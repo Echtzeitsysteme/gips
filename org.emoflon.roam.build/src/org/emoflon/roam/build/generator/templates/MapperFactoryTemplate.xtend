@@ -19,6 +19,7 @@ class MapperFactoryTemplate extends GeneratorTemplate<RoamIntermediateModel> {
 		className = data.mapperFactoryClassName
 		fqn = packageName + "." + className;
 		filePath = data.apiData.roamApiPkgPath + "/" + className + ".java"
+		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)
 		imports.add("org.emoflon.roam.core.api.RoamMapperFactory")
 		imports.add("org.emoflon.roam.core.RoamEngine")
 		imports.add("org.emoflon.roam.core.RoamMapper")
@@ -36,9 +37,9 @@ class MapperFactoryTemplate extends GeneratorTemplate<RoamIntermediateModel> {
 import «imp»;
 «ENDFOR»
 
-public class «className» extends RoamMapperFactory {
-	public «className»(final RoamEngine engine) {
-		super(engine);
+public class «className» extends RoamMapperFactory<«data.apiData.apiClass»> {
+	public «className»(final RoamEngine engine, final «data.apiData.apiClass» eMoflonApi) {
+		super(engine, eMoflonApi);
 	}
 	
 	@Override
@@ -49,7 +50,7 @@ public class «className» extends RoamMapperFactory {
 		switch(mapping.getName()) {
 			«FOR mapping : mappings»
 			case "«mapping.name»" -> {
-				return new «data.mapping2mapperClassName.get(mapping)»(engine, mapping);
+				return new «data.mapping2mapperClassName.get(mapping)»(engine, mapping, eMoflonApi.«mapping.rule.name.toFirstLower»());
 			}
 			«ENDFOR»
 			default -> {

@@ -28,7 +28,7 @@ public interface Objective extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getObjective_Name()
@@ -41,7 +41,7 @@ public interface Objective extends EObject {
 	 * Sets the value of the
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#getName
 	 * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Name</em>' attribute.
 	 * @see #getName()
 	 * @generated
@@ -51,7 +51,7 @@ public interface Objective extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Elementwise</b></em>' attribute. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Elementwise</em>' attribute.
 	 * @see #setElementwise(boolean)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getObjective_Elementwise()
@@ -65,7 +65,7 @@ public interface Objective extends EObject {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#isElementwise
 	 * <em>Elementwise</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Elementwise</em>' attribute.
 	 * @see #isElementwise()
 	 * @generated
@@ -75,7 +75,7 @@ public interface Objective extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Expression</b></em>' containment reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Expression</em>' containment reference.
 	 * @see #setExpression(ArithmeticExpression)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getObjective_Expression()
@@ -89,7 +89,7 @@ public interface Objective extends EObject {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#getExpression
 	 * <em>Expression</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Expression</em>' containment
 	 *              reference.
 	 * @see #getExpression()

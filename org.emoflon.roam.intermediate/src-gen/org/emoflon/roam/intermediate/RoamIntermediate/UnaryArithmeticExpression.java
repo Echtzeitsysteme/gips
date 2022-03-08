@@ -24,7 +24,7 @@ public interface UnaryArithmeticExpression extends ArithmeticExpression {
 	/**
 	 * Returns the value of the '<em><b>Expression</b></em>' containment reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Expression</em>' containment reference.
 	 * @see #setExpression(ArithmeticExpression)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getUnaryArithmeticExpression_Expression()
@@ -38,7 +38,7 @@ public interface UnaryArithmeticExpression extends ArithmeticExpression {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression#getExpression
 	 * <em>Expression</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Expression</em>' containment
 	 *              reference.
 	 * @see #getExpression()
@@ -51,7 +51,7 @@ public interface UnaryArithmeticExpression extends ArithmeticExpression {
 	 * are from the enumeration
 	 * {@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator}.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Operator</em>' attribute.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator
 	 * @see #setOperator(UnaryArithmeticOperator)
@@ -65,7 +65,7 @@ public interface UnaryArithmeticExpression extends ArithmeticExpression {
 	 * Sets the value of the
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression#getOperator
 	 * <em>Operator</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Operator</em>' attribute.
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator
 	 * @see #getOperator()

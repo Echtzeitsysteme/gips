@@ -3,6 +3,7 @@
 package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.ecore.EClass;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
@@ -15,7 +16,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 public abstract class ArithmeticLiteralImpl extends ArithmeticValueExpressionImpl implements ArithmeticLiteral {
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	protected ArithmeticLiteralImpl() {
@@ -24,7 +25,7 @@ public abstract class ArithmeticLiteralImpl extends ArithmeticValueExpressionImp
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override

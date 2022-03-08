@@ -24,7 +24,7 @@ public interface SumExpression extends ValueExpression, SetOperation {
 	/**
 	 * Returns the value of the '<em><b>Expression</b></em>' containment reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Expression</em>' containment reference.
 	 * @see #setExpression(ArithmeticExpression)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getSumExpression_Expression()
@@ -38,7 +38,7 @@ public interface SumExpression extends ValueExpression, SetOperation {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getExpression
 	 * <em>Expression</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Expression</em>' containment
 	 *              reference.
 	 * @see #getExpression()
@@ -49,7 +49,7 @@ public interface SumExpression extends ValueExpression, SetOperation {
 	/**
 	 * Returns the value of the '<em><b>Filter</b></em>' containment reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Filter</em>' containment reference.
 	 * @see #setFilter(StreamExpression)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getSumExpression_Filter()
@@ -63,7 +63,7 @@ public interface SumExpression extends ValueExpression, SetOperation {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getFilter
 	 * <em>Filter</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Filter</em>' containment reference.
 	 * @see #getFilter()
 	 * @generated

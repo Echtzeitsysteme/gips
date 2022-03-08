@@ -3,9 +3,12 @@
 package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 import org.emoflon.roam.intermediate.RoamIntermediate.Type;
@@ -27,7 +30,7 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	/**
 	 * The cached value of the '{@link #getTypeContext() <em>Type Context</em>}'
 	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getTypeContext()
 	 * @generated
 	 * @ordered
@@ -36,7 +39,7 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	protected ContextTypeValueImpl() {
@@ -45,7 +48,7 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -55,10 +58,9 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public Type getTypeContext() {
 		if (typeContext != null && typeContext.eIsProxy()) {
 			InternalEObject oldTypeContext = (InternalEObject) typeContext;
@@ -74,7 +76,7 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	public Type basicGetTypeContext() {
@@ -83,10 +85,9 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setTypeContext(Type newTypeContext) {
 		Type oldTypeContext = typeContext;
 		typeContext = newTypeContext;
@@ -97,7 +98,7 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -113,7 +114,7 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -128,7 +129,7 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -143,7 +144,7 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override

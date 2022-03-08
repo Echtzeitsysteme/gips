@@ -3,11 +3,14 @@
 package org.emoflon.roam.intermediate.RoamIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
 
@@ -28,7 +31,7 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 	/**
 	 * The cached value of the '{@link #getReturnType() <em>Return Type</em>}'
 	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @see #getReturnType()
 	 * @generated
 	 * @ordered
@@ -37,7 +40,7 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	protected ArithmeticExpressionImpl() {
@@ -46,7 +49,7 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -56,10 +59,9 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public EDataType getReturnType() {
 		if (returnType != null && returnType.eIsProxy()) {
 			InternalEObject oldReturnType = (InternalEObject) returnType;
@@ -75,7 +77,7 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	public EDataType basicGetReturnType() {
@@ -84,10 +86,9 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
-	@Override
 	public void setReturnType(EDataType newReturnType) {
 		EDataType oldReturnType = returnType;
 		returnType = newReturnType;
@@ -98,7 +99,7 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -114,7 +115,7 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -129,7 +130,7 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -144,7 +145,7 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated
 	 */
 	@Override

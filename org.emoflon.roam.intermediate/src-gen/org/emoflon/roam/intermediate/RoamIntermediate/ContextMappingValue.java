@@ -22,7 +22,7 @@ public interface ContextMappingValue extends ValueExpression {
 	/**
 	 * Returns the value of the '<em><b>Mapping Context</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Mapping Context</em>' reference.
 	 * @see #setMappingContext(Mapping)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getContextMappingValue_MappingContext()
@@ -36,7 +36,7 @@ public interface ContextMappingValue extends ValueExpression {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue#getMappingContext
 	 * <em>Mapping Context</em>}' reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Mapping Context</em>' reference.
 	 * @see #getMappingContext()
 	 * @generated

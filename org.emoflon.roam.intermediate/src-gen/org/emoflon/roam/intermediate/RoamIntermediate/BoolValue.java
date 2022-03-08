@@ -22,7 +22,7 @@ public interface BoolValue extends BoolValueExpression {
 	/**
 	 * Returns the value of the '<em><b>Value</b></em>' containment reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @return the value of the '<em>Value</em>' containment reference.
 	 * @see #setValue(ValueExpression)
 	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBoolValue_Value()
@@ -36,7 +36,7 @@ public interface BoolValue extends BoolValueExpression {
 	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolValue#getValue
 	 * <em>Value</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 *
+	 * 
 	 * @param value the new value of the '<em>Value</em>' containment reference.
 	 * @see #getValue()
 	 * @generated

@@ -41,7 +41,7 @@ public abstract class PatternMapper<GTM extends GTMapping<M, P>, M extends Graph
 		match2Mappings.remove(match);
 		super.removeMapping(mapping);
 	}
-	
+
 	public P getGTPattern() {
 		return pattern;
 	}

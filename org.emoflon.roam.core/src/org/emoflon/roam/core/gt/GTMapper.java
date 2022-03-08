@@ -25,25 +25,21 @@ public abstract class GTMapper<GTM extends GTMapping<M, R>, M extends GraphTrans
 		super(engine, mapping);
 		this.rule = rule;
 	}
-	
+
 	public R getGTRule() {
 		return rule;
 	}
-	
+
 	public Collection<Optional<M>> applyNonZeroMappings() {
-		return getNonZeroVariableMappings().stream()
-				.map(m -> rule.apply(m.match))
-				.collect(Collectors.toSet());
+		return getNonZeroVariableMappings().stream().map(m -> rule.apply(m.match)).collect(Collectors.toSet());
 	}
-	
+
 	public Collection<Optional<M>> applyMappings(Function<Integer, Boolean> predicate) {
-		return getMappings(predicate).stream()
-				.map(m -> rule.apply(m.match))
-				.collect(Collectors.toSet());
+		return getMappings(predicate).stream().map(m -> rule.apply(m.match)).collect(Collectors.toSet());
 	}
-	
+
 	protected abstract GTM convertMatch(final String ilpVariable, final M match);
-	
+
 	protected void addMapping(final M match) {
 		if (match2Mappings.containsKey(match))
 			return;
@@ -61,13 +57,13 @@ public abstract class GTMapper<GTM extends GTMapping<M, R>, M extends GraphTrans
 		match2Mappings.remove(match);
 		super.removeMapping(mapping);
 	}
-	
+
 	@Override
 	protected void init() {
 		rule.subscribeAppearing(this::addMapping);
 		rule.subscribeDisappearing(this::removeMapping);
 	}
-	
+
 	@Override
 	protected void terminate() {
 		rule.unsubscribeAppearing(this::addMapping);

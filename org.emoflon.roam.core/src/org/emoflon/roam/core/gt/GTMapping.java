@@ -15,7 +15,7 @@ public abstract class GTMapping<M extends GraphTransformationMatch<M, P>, P exte
 		super(ilpVariable);
 		this.match = match;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(ilpVariable, match);
@@ -24,7 +24,7 @@ public abstract class GTMapping<M extends GraphTransformationMatch<M, P>, P exte
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof GTMapping<?, ?> other) {
-			if(ilpVariable.equals(other.ilpVariable) && match.equals(other.match)) {
+			if (ilpVariable.equals(other.ilpVariable) && match.equals(other.match)) {
 				return true;
 			} else {
 				return false;

@@ -45,15 +45,15 @@ public abstract class RoamMapper<M extends RoamMapping> {
 	public Map<String, M> getMappings() {
 		return mappings;
 	}
-	
+
 	public Collection<M> getNonZeroVariableMappings() {
 		return mappings.values().stream().filter(m -> m.getValue() > 0).collect(Collectors.toSet());
 	}
-	
+
 	public Collection<M> getZeroVariableMappings() {
 		return mappings.values().stream().filter(m -> m.getValue() == 0).collect(Collectors.toSet());
 	}
-	
+
 	public Collection<M> getMappings(Function<Integer, Boolean> predicate) {
 		return mappings.values().stream().filter(m -> predicate.apply(m.getValue())).collect(Collectors.toSet());
 	}

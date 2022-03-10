@@ -42,7 +42,7 @@ import «imp»;
 «ENDFOR»
 		
 public class «className» extends RoamEngineAPI <«data.apiData.engineAppClasses.get(RoamAPIData.HIPE_ENGINE_NAME)», «data.apiData.apiClass»>{
-	final public static URI INTERMEDIATE_MODEL_URI = URI.createURI("«data.apiData.intermediateModelURI.toPlatformString(false)»");
+	final public static URI INTERMEDIATE_MODEL_URI = URI.createFileURI("«data.apiData.project.location.toPortableString»«data.apiData.intermediateModelURI.toPlatformString(false)»");
 	
 	«FOR mapping : data.model.variables.filter[v | v instanceof Mapping]»
 	protected «data.mapping2mapperClassName.get(mapping)» «mapping.name.toFirstLower»;

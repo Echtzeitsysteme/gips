@@ -20,6 +20,7 @@ public abstract class PatternMapper<GTM extends GTMapping<M, P>, M extends Graph
 	public PatternMapper(final RoamEngine engine, final Mapping mapping, final P pattern) {
 		super(engine, mapping);
 		this.pattern = pattern;
+		// TODO: this.init() see GTMapper.java
 	}
 
 	protected abstract GTM convertMatch(final String ilpVariable, final M match);

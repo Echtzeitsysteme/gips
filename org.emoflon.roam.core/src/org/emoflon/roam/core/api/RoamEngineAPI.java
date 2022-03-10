@@ -89,12 +89,21 @@ public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 
 	protected void loadIntermediateModel(final URI roamModelURI) {
 		ResourceSet rs = new ResourceSetImpl();
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
-		// Init GT-Metamodel
-		IBeXPatternModelPackage.eINSTANCE.eClass();
-		// Init RoamIntermediate-Metamodel
-		RoamIntermediatePackage.eINSTANCE.eClass();
-		Resource model = rs.getResource(roamModelURI, false);
+		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION,
+				new XMIResourceFactoryImpl());
+
+		rs.getPackageRegistry().put(RoamIntermediatePackage.eNS_URI, RoamIntermediatePackage.eINSTANCE);
+		rs.getPackageRegistry().put(IBeXPatternModelPackage.eNS_URI, IBeXPatternModelPackage.eINSTANCE);
+
+		Resource model = null;
+		try {
+			model = rs.getResource(roamModelURI, true);
+		} catch (final Exception ex) {
+			ex.printStackTrace();
+		}
+
 		roamModel = (RoamIntermediateModel) model.getContents().get(0);
 
 		roamModel.getVariables().stream().filter(var -> var instanceof Mapping).map(var -> (Mapping) var)

@@ -64,13 +64,14 @@ public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	public void saveResult(final String path) throws IOException {
 		// Create new model for saving
 		ResourceSet rs = new ResourceSetImpl();
-		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
+		rs.getResourceFactoryRegistry().getExtensionToFactoryMap()
+				.putAll(eMoflonApp.getModel().getResourceFactoryRegistry().getExtensionToFactoryMap());
 		Resource r = rs.createResource(URI.createFileURI(path));
 		// Fetch model contents from eMoflon
-		r.getContents().addAll(rs.getResources().get(0).getContents());
+		r.getContents().addAll(eMoflonApp.getModel().getResources().get(0).getContents());
 		r.save(null);
 		// Hand model back to owner
-		rs.getResources().get(0).getContents().addAll(r.getContents());
+		eMoflonApp.getModel().getResources().get(0).getContents().addAll(r.getContents());
 	}
 
 	@Override

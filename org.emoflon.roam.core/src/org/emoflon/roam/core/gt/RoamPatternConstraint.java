@@ -31,7 +31,7 @@ public abstract class RoamPatternConstraint<M extends GraphTransformationMatch<M
 	public ILPConstraint<Integer> buildConstraint(final M context) {
 		double constTerm = buildConstantTerm(context);
 		List<ILPTerm<Integer, Double>> terms = buildVariableTerms(context);
-		return new ILPConstraint<>(constTerm, constraint.getExpression().getOperator(), terms);
+		return new ILPConstraint<>(terms, constraint.getExpression().getOperator(), constTerm);
 	}
 
 }

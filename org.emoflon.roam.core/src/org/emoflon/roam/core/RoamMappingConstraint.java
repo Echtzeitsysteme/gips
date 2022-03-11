@@ -28,7 +28,7 @@ public abstract class RoamMappingConstraint<CONTEXT extends RoamMapping>
 	public ILPConstraint<Integer> buildConstraint(final CONTEXT context) {
 		double constTerm = buildConstantTerm(context);
 		List<ILPTerm<Integer, Double>> terms = buildVariableTerms(context);
-		return new ILPConstraint<>(constTerm, constraint.getExpression().getOperator(), terms);
+		return new ILPConstraint<>(terms, constraint.getExpression().getOperator(), constTerm);
 	}
 
 }

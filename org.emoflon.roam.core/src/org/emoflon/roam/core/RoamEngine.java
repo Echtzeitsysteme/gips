@@ -1,5 +1,6 @@
 package org.emoflon.roam.core;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,9 +17,11 @@ public abstract class RoamEngine {
 	protected RoamGlobalObjective globalObjective;
 	protected ILPSolver ilpSolver;
 
-	public abstract void initTypeIndexer();
-
 	public abstract void update();
+
+	public abstract void saveResult() throws IOException;
+
+	public abstract void saveResult(final String path) throws IOException;
 
 	public void buildILPProblem(boolean doUpdate) {
 		if (doUpdate)
@@ -67,6 +70,8 @@ public abstract class RoamEngine {
 		indexer.terminate();
 		mappers.forEach((name, mapper) -> mapper.terminate());
 	}
+
+	protected abstract void initTypeIndexer();
 
 	protected void addMapper(final RoamMapper<?> mapper) {
 		mappers.put(mapper.getName(), mapper);

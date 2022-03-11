@@ -37,6 +37,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
 import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue;
 import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
+import org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator;
 import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateFactory;
 import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression;
 import org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation;
@@ -75,6 +76,30 @@ public final class RoamTransformationUtils {
 		FeatureLiteral lit = RoamIntermediateFactory.eINSTANCE.createFeatureLiteral();
 		lit.setFeature(eFeature.getFeature());
 		return lit;
+	}
+
+	public static void flipOperator(final RelationalExpression expr) {
+		switch (expr.getOperator()) {
+		case EQUAL -> {
+		}
+		case GREATER -> {
+			expr.setOperator(RelationalOperator.LESS);
+		}
+		case GREATER_OR_EQUAL -> {
+			expr.setOperator(RelationalOperator.LESS_OR_EQUAL);
+		}
+		case LESS -> {
+			expr.setOperator(RelationalOperator.GREATER);
+		}
+		case LESS_OR_EQUAL -> {
+			expr.setOperator(RelationalOperator.LESS_OR_EQUAL);
+		}
+		case NOT_EQUAL -> {
+		}
+		default -> {
+			throw new UnsupportedOperationException("Unknown relational operator: " + expr.getOperator());
+		}
+		}
 	}
 
 	public static ArithmeticExpressionType isConstantExpression(final BoolExpression expr) {

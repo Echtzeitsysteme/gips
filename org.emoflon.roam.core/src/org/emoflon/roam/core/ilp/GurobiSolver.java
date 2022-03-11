@@ -234,14 +234,14 @@ public class GurobiSolver extends ILPSolver {
 			//
 
 			// Add each term to the GRB linear expression
-			curr.terms().forEach(t -> {
+			curr.lhsTerms().forEach(t -> {
 				grbLinExpr.addTerm(t.weight(), createOrGetBinVar(t.variable().getName()));
 			});
 
 			// Add current constructed constraint to the GRB model
 			try {
 				// TODO: Use model.addLConstr instead (up to ~50% faster)
-				model.addConstr(grbLinExpr, op, curr.constantTerm(), name + "_" + counter++);
+				model.addConstr(grbLinExpr, op, curr.rhsConstantTerm(), name + "_" + counter++);
 			} catch (final GRBException e) {
 				throw new RuntimeException(e);
 			}

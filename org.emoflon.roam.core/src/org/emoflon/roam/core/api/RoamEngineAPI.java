@@ -1,5 +1,6 @@
 package org.emoflon.roam.core.api;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,7 +56,25 @@ public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	}
 
 	@Override
-	public void initTypeIndexer() {
+	public void saveResult() throws IOException {
+		eMoflonApp.getModel().getResources().get(0).save(null);
+	}
+
+	@Override
+	public void saveResult(final String path) throws IOException {
+		// Create new model for saving
+		ResourceSet rs = new ResourceSetImpl();
+		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
+		Resource r = rs.createResource(URI.createFileURI(path));
+		// Fetch model contents from eMoflon
+		r.getContents().addAll(rs.getResources().get(0).getContents());
+		r.save(null);
+		// Hand model back to owner
+		rs.getResources().get(0).getContents().addAll(r.getContents());
+	}
+
+	@Override
+	protected void initTypeIndexer() {
 		indexer = new TypeIndexer(eMoflonAPI, roamModel);
 	}
 

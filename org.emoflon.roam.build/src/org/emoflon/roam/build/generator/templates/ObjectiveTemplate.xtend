@@ -532,7 +532,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»()'''
 		} else if(varExpr instanceof IteratorPatternValue) {
 			return '''«getIteratorVariableName(varExpr.stream)»'''
-		}  else if(varExpr instanceof IteratorPatternFeatureValue) {
+		} else if(varExpr instanceof IteratorPatternFeatureValue) {
 			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else if(varExpr instanceof IteratorPatternNodeFeatureValue) {
 			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.featureExpression)»'''

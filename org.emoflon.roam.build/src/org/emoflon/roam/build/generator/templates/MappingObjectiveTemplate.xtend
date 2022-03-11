@@ -229,7 +229,7 @@ protected List<ILPTerm<Integer, Double>> buildTerms(final «data.mapping2mapping
 		builderMethods.put(expr, methodName)
 		val method = '''
 	protected ILPTerm<Integer, Double> «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		return new ILPTerm<Integer, Double>(context, (double)context.«parseFeatureExpression(expr.featureExpression)»);
+		return new ILPTerm<Integer, Double>(context, (double)«parseExpression(expr, ExpressionContext.varConstraint)»);
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)

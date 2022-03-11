@@ -12,7 +12,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.emoflon.roam.roamslang.roamSLang.EditorGTFile
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.util.EcoreUtil
-import org.eclipse.emf.ecore.xmi.XMIResource
 import org.eclipse.core.resources.IWorkspace
 import org.eclipse.core.resources.ResourcesPlugin
 import org.eclipse.core.resources.IProject
@@ -44,15 +43,15 @@ class RoamSLangGenerator extends AbstractGenerator {
 		output.contents.add(model)
 		EcoreUtil.resolveAll(output)
 		
-		// configure save options
-		val saveOptions = (output as XMIResource).getDefaultSaveOptions()
-		saveOptions.put(XMIResource.OPTION_ENCODING,"UTF-8");
-		saveOptions.put(XMIResource.OPTION_USE_XMI_TYPE, Boolean.TRUE);
-		saveOptions.put(XMIResource.OPTION_SAVE_TYPE_INFORMATION,Boolean.TRUE);
-		saveOptions.put(XMIResource.OPTION_SCHEMA_LOCATION_IMPLEMENTATION, Boolean.TRUE);
-		// save output
-		(output as XMIResource).save(saveOptions)
-		System.out.println("Xtext model saved to: "+output.URI.path)
+////		 configure save options
+//		val saveOptions = (output as XMIResource).getDefaultSaveOptions()
+//		saveOptions.put(XMIResource.OPTION_ENCODING,"UTF-8");
+//		saveOptions.put(XMIResource.OPTION_USE_XMI_TYPE, Boolean.TRUE);
+//		saveOptions.put(XMIResource.OPTION_SAVE_TYPE_INFORMATION,Boolean.TRUE);
+//		saveOptions.put(XMIResource.OPTION_SCHEMA_LOCATION_IMPLEMENTATION, Boolean.TRUE);
+//		// save output
+//		(output as XMIResource).save(saveOptions)
+//		System.out.println("Xtext model saved to: "+output.URI.path)
 		
 		// run the builder with model
 		val workspace = getWorkspace()

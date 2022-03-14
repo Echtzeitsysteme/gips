@@ -24,6 +24,7 @@ public abstract class GTMapper<GTM extends GTMapping<M, R>, M extends GraphTrans
 	public GTMapper(final RoamEngine engine, final Mapping mapping, final R rule) {
 		super(engine, mapping);
 		this.rule = rule;
+		this.init();
 	}
 
 	public R getGTRule() {
@@ -58,7 +59,6 @@ public abstract class GTMapper<GTM extends GTMapping<M, R>, M extends GraphTrans
 		super.removeMapping(mapping);
 	}
 
-	@Override
 	protected void init() {
 		rule.subscribeAppearing(this::addMapping);
 		rule.subscribeDisappearing(this::removeMapping);

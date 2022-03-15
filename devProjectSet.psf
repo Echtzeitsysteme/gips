@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+<provider id="org.eclipse.egit.core.GitProvider">
+<project reference="1.0,git@github.com:Echtzeitsysteme/Roam.git,master,org.emoflon.roam.build"/>
+<project reference="1.0,git@github.com:Echtzeitsysteme/Roam.git,master,org.emoflon.roam.core"/>
+<project reference="1.0,git@github.com:Echtzeitsysteme/Roam.git,master,org.emoflon.roam.core.dependencies"/>
+<project reference="1.0,git@github.com:Echtzeitsysteme/Roam.git,master,org.emoflon.roam.intermediate"/>
+<project reference="1.0,git@github.com:Echtzeitsysteme/Roam.git,master,org.emoflon.roam.roamslang"/>
+<project reference="1.0,git@github.com:Echtzeitsysteme/Roam.git,master,org.emoflon.roam.roamslang.ide"/>
+<project reference="1.0,git@github.com:Echtzeitsysteme/Roam.git,master,org.emoflon.roam.roamslang.ui"/>
+</provider>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1646913457918_19" label="roam" name="roam">
+<item elementID="=org.emoflon.roam.intermediate" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=org.emoflon.roam.core" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=org.emoflon.roam.roamslang.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=org.emoflon.roam.build" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=org.emoflon.roam.core.dependencies" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=org.emoflon.roam.roamslang.ide" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=org.emoflon.roam.roamslang" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+</psf>

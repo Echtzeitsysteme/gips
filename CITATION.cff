@@ -8,7 +8,7 @@ authors:
   - family-names: Kratz
     given-names: Maximilian
     orcid: https://orcid.org/0000-0001-7396-7763
-title: Incremental Fast Lightweight (y) virtual network Embedding
+title: Rule-based optimal mapping
 version: 1.0.0
 date-released: 2022-03-15
 repository-code: "https://github.com/Echtzeitsysteme/Roam"

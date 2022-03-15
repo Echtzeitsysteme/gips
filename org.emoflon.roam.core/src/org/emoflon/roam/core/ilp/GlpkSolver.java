@@ -111,6 +111,18 @@ public class GlpkSolver extends ILPSolver {
 	protected void translateObjective(final RoamGlobalObjective objective) {
 		final ILPNestedLinearFunction<?> nestFunc = objective.getObjectiveFunction();
 
+		// Set goal
+		int goal = 0;
+		switch (nestFunc.goal()) {
+		case MAX -> {
+			goal = GLPKConstants.GLP_MAX;
+		}
+		case MIN -> {
+			goal = GLPKConstants.GLP_MIN;
+		}
+		}
+		GLPK.glp_set_obj_dir(model, goal);
+
 		// Constants
 		double constSum = 0;
 		for (ILPConstant<Double> c : nestFunc.constants()) {
@@ -130,18 +142,6 @@ public class GlpkSolver extends ILPSolver {
 
 		// Add global constant sum
 		GLPK.glp_set_obj_coef(model, 0, constSum);
-
-		// Set goal
-		int goal = 0;
-		switch (nestFunc.goal()) {
-		case MAX -> {
-			goal = GLPKConstants.GLP_MAX;
-		}
-		case MIN -> {
-			goal = GLPKConstants.GLP_MIN;
-		}
-		}
-		GLPK.glp_set_obj_dir(model, goal);
 	}
 
 	private void setUpVars() {

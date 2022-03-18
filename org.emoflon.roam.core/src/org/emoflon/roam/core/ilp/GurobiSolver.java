@@ -67,23 +67,27 @@ public class GurobiSolver extends ILPSolver {
 			model.update();
 			// TODO: Set optimality tolerance here
 			model.optimize();
-			objVal = model.get(GRB.DoubleAttr.ObjVal);
 			final int grbStatus = model.get(GRB.IntAttr.Status);
 			switch (grbStatus) {
 			case GRB.UNBOUNDED -> {
 				status = ILPSolverStatus.UNBOUNDED;
+				objVal = model.get(GRB.DoubleAttr.ObjVal);
 			}
 			case GRB.INF_OR_UNBD -> {
 				status = ILPSolverStatus.INF_OR_UNBD;
+				objVal = 0;
 			}
 			case GRB.INFEASIBLE -> {
 				status = ILPSolverStatus.INFEASIBLE;
+				objVal = 0;
 			}
 			case GRB.OPTIMAL -> {
 				status = ILPSolverStatus.OPTIMAL;
+				objVal = model.get(GRB.DoubleAttr.ObjVal);
 			}
 			case GRB.TIME_LIMIT -> {
 				status = ILPSolverStatus.TIME_OUT;
+				objVal = model.get(GRB.DoubleAttr.ObjVal);
 			}
 			}
 		} catch (final GRBException e) {
@@ -223,7 +227,7 @@ public class GurobiSolver extends ILPSolver {
 			// Operator
 			//
 
-			final char op = convertOperator(curr.operator().getValue());
+			final char op = convertOperator(curr.operator());
 
 			//
 			// Terms
@@ -236,6 +240,7 @@ public class GurobiSolver extends ILPSolver {
 
 			// Add current constructed constraint to the GRB model
 			try {
+				// TODO: Use model.addLConstr instead (up to ~50% faster)
 				model.addConstr(grbLinExpr, op, curr.rhsConstantTerm(), name + "_" + counter++);
 			} catch (final GRBException e) {
 				throw new RuntimeException(e);
@@ -250,24 +255,24 @@ public class GurobiSolver extends ILPSolver {
 	 * @param op Operator value to convert.
 	 * @return Corresponding GRB char value.
 	 */
-	private char convertOperator(final int op) {
+	private char convertOperator(final RelationalOperator op) {
 		switch (op) {
-		case RelationalOperator.LESS_VALUE:
+		case LESS:
 			// https://www.gurobi.com/documentation/9.5/refman/java_model_addconstr.html
 			throw new UnsupportedOperationException("Gurobi does not support LESS in constraints.");
 		// break;
 		// TODO: Could be expressed with !(x >= a)
-		case RelationalOperator.LESS_OR_EQUAL_VALUE:
+		case LESS_OR_EQUAL:
 			return GRB.LESS_EQUAL;
-		case RelationalOperator.EQUAL_VALUE:
+		case EQUAL:
 			return GRB.EQUAL;
-		case RelationalOperator.GREATER_OR_EQUAL_VALUE:
+		case GREATER_OR_EQUAL:
 			return GRB.GREATER_EQUAL;
-		case RelationalOperator.GREATER_VALUE:
+		case GREATER:
 			throw new UnsupportedOperationException("Gurobi does not support GREATER in constraints.");
 		// break;
 		// TODO: Could be expressed with !(x <= a)
-		case RelationalOperator.NOT_EQUAL_VALUE:
+		case NOT_EQUAL:
 			throw new UnsupportedOperationException("Gurobi does not support NOT EQUAL in constraints.");
 		// TODO: This introduces an OR constraint
 		// https://math.stackexchange.com/questions/37075/how-can-not-equals-be-expressed-as-an-inequality-for-a-linear-programming-model/1517850
@@ -298,7 +303,8 @@ public class GurobiSolver extends ILPSolver {
 		try {
 			return model.getVarByName(name);
 		} catch (final GRBException e) {
-			throw new RuntimeException(e);
+			// Var not found in model -> return null
+			return null;
 		}
 	}
 

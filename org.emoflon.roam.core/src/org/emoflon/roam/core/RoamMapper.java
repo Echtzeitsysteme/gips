@@ -17,10 +17,7 @@ public abstract class RoamMapper<M extends RoamMapping> {
 	public RoamMapper(final RoamEngine engine, final Mapping mapping) {
 		this.engine = engine;
 		this.mapping = mapping;
-		init();
 	}
-
-	protected abstract void init();
 
 	public M getMapping(final String ilpVariable) {
 		return mappings.get(ilpVariable);

@@ -1,33 +1,15 @@
 package org.emoflon.roam.build.generator.templates
 
 import org.emoflon.roam.build.generator.TemplateData
+import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionType
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue
+import org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective
 
 class TypeObjectiveTemplate extends ObjectiveTemplate<TypeObjective> {
 	
@@ -48,6 +30,7 @@ class TypeObjectiveTemplate extends ObjectiveTemplate<TypeObjective> {
 		imports.add("org.emoflon.roam.core.RoamMapping")
 		imports.add("org.emoflon.roam.core.RoamTypeObjective")
 		imports.add("org.emoflon.roam.core.ilp.ILPTerm")
+		imports.add("org.emoflon.roam.core.ilp.ILPConstant")
 		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective")
 		imports.add(data.classToPackage.getImportsForType(context.modelType.type))
 	}
@@ -81,55 +64,28 @@ public class «className» extends RoamTypeConstraint<«context.modelType.type.n
 		generateTermBuilder(expr)
 		return '''
 @Override
-protected List<ILPTerm<Integer, Double>> buildTerms(final «context.modelType.type.name» context) {
-	List<ILPTerm<Integer, Double>> terms = new LinkedList<>();
+protected void buildTerms(final «context.modelType.type.name» context) {
 	«FOR instruction : builderMethodCalls»
 	«instruction»
 	«ENDFOR»
-	return terms;
 }
 		'''
 	}
 	
-	override generateBuilder(ValueExpression expr) {
+	override generateIteratingBuilder(ValueExpression expr) {
 		if(expr instanceof MappingSumExpression) {
 			return generateForeignBuilder(expr)
-		} else if(expr instanceof TypeSumExpression) {
-			return generateBuilder(expr)
-		} else if(expr instanceof ContextTypeFeatureValue) {
-			throw new UnsupportedOperationException("Ilp term may not be constant.")
-		} else if(expr instanceof ContextTypeValue) {
-			throw new UnsupportedOperationException("Ilp term may not be constant.")
-		} else if(expr instanceof ContextMappingNodeFeatureValue) {
-			throw new UnsupportedOperationException("Mapping context access is not possible within a type context.")
-		} else if(expr instanceof ContextMappingNode) {
-			throw new UnsupportedOperationException("Mapping context access is not possible within a type context.")
-		} else if(expr instanceof ContextMappingValue) {
-			throw new UnsupportedOperationException("Mapping context access is not possible within a type context.")
-		} else if(expr instanceof ContextPatternNodeFeatureValue) {
-			throw new UnsupportedOperationException("Ilp term may not be constant.")
-		} else if(expr instanceof ContextPatternNode) {
-			throw new UnsupportedOperationException("Ilp term may not be constant.")
-		} else if(expr instanceof ContextPatternValue) {
-			throw new UnsupportedOperationException("Ilp term may not be constant.")
-		} else if(expr instanceof ObjectiveFunctionValue) {
-			throw new UnsupportedOperationException("Ilp term may not contain references to objective functions.")
-		} else if(expr instanceof IteratorMappingValue) {
-			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
-		} else if(expr instanceof IteratorMappingFeatureValue) {
-			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
-		} else if(expr instanceof IteratorMappingNodeFeatureValue) {
-			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
-		} else if(expr instanceof IteratorMappingNodeValue) {
-			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
-		} else if(expr instanceof IteratorPatternValue || expr instanceof IteratorPatternFeatureValue 
-				|| expr instanceof IteratorPatternNodeValue || expr instanceof IteratorPatternNodeFeatureValue) {
-			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
-		} else if(expr instanceof IteratorTypeValue || expr instanceof IteratorTypeFeatureValue ) {
-			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
 		} else {
-			// CASE: IteratorTypeValue or IteratorTypeFeatureValue 
-			throw new IllegalArgumentException("Unknown value expression Type: " + expr);
+			val tse = expr as TypeSumExpression
+			return generateBuilder(tse)
+		}
+	}
+	
+	override generateConstantBuilder(ValueExpression expr, ArithmeticExpressionType type) {
+		if(type == ArithmeticExpressionType.constant) {
+			return parseExpression(expr, ExpressionContext.constConstraint)
+		} else {
+			return parseExpression(expr, ExpressionContext.varConstraint)
 		}
 	}
 	

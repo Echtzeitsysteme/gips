@@ -1,33 +1,17 @@
 package org.emoflon.roam.build.generator.templates
 
 import org.emoflon.roam.build.generator.TemplateData
+import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionType
 import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode
+import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue
+import org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue
 import org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue
 import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet
-import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective
 
 class MappingObjectiveTemplate extends ObjectiveTemplate<MappingObjective> {
 
@@ -45,6 +29,7 @@ class MappingObjectiveTemplate extends ObjectiveTemplate<MappingObjective> {
 		imports.add("org.emoflon.roam.core.RoamEngine")
 		imports.add("org.emoflon.roam.core.RoamMappingObjective")
 		imports.add("org.emoflon.roam.core.ilp.ILPTerm")
+		imports.add("org.emoflon.roam.core.ilp.ILPConstant")
 		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective")
 		imports.add(data.apiData.roamMappingPkg+"."+data.mapping2mappingClassName.get(context.mapping))
 	}
@@ -79,59 +64,38 @@ public class «className» extends RoamMappingObjective<«data.mapping2mappingCl
 		return '''
 	
 @Override
-protected List<ILPTerm<Integer, Double>> buildTerms(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-	List<ILPTerm<Integer, Double>> terms = new LinkedList<>();
+protected void buildTerms(final «data.mapping2mappingClassName.get(context.mapping)» context) {
 	«FOR instruction : builderMethodCalls»
 	«instruction»
 	«ENDFOR»
-	return terms;
 }
 		'''
 	}
 	
-	override generateBuilder(ValueExpression expr) {
+	override generateIteratingBuilder(ValueExpression expr) {
 		if(expr instanceof MappingSumExpression) {
 			if(expr.mapping == context.mapping) {
 				return generateBuilder(expr)
 			} else {
 				throw new UnsupportedOperationException("Referencing other mapping variables from within a mapping context is not allowed.")
 			}
-		} else if(expr instanceof TypeSumExpression) {
-			return generateBuilder(expr)
-		} else if(expr instanceof ContextTypeFeatureValue) {
-			throw new UnsupportedOperationException("Type context access is not possible within a mapping context.")
-		} else if(expr instanceof ContextTypeValue) {
-			throw new UnsupportedOperationException("Type context access is not possible within a mapping context.")
-		} else if(expr instanceof ContextMappingNodeFeatureValue) {
-			return generateBuilder(expr)
-		} else if(expr instanceof ContextMappingNode) {
-			throw new UnsupportedOperationException("Ilp term may not contain complex objects.")
-		} else if(expr instanceof ContextMappingValue) {
-			return generateBuilder(expr)
-		} else if(expr instanceof ContextPatternNodeFeatureValue) {
-			throw new UnsupportedOperationException("Pattern context access is not possible within a mapping context.")
-		}  else if(expr instanceof ContextPatternNode) {
-			throw new UnsupportedOperationException("Pattern context access is not possible within a mapping context.")
-		} else if(expr instanceof ContextPatternValue) {
-			throw new UnsupportedOperationException("Pattern context access is not possible within a mapping context.")
-		} else if(expr instanceof ObjectiveFunctionValue) {
-			throw new UnsupportedOperationException("Ilp term may not contain references to objective functions.")
-		} else if(expr instanceof IteratorMappingValue) {
-			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
-		} else if(expr instanceof IteratorMappingFeatureValue) {
-			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
-		} else if(expr instanceof IteratorMappingNodeFeatureValue) {
-			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
-		} else if(expr instanceof IteratorMappingNodeValue) {
-			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
-		} else if(expr instanceof IteratorPatternValue || expr instanceof IteratorPatternFeatureValue 
-				|| expr instanceof IteratorPatternNodeValue || expr instanceof IteratorPatternNodeFeatureValue) {
-			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
-		} else if(expr instanceof IteratorTypeValue || expr instanceof IteratorTypeFeatureValue ) {
-			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
 		} else {
-			// CASE: IteratorTypeValue or IteratorTypeFeatureValue 
-			throw new IllegalArgumentException("Unknown value expression Type: " + expr);
+			val tse = expr as TypeSumExpression
+			return generateBuilder(tse)
+		}
+	}
+	
+	override generateConstantBuilder(ValueExpression expr, ArithmeticExpressionType type) {
+		if(type == ArithmeticExpressionType.constant) {
+			return parseExpression(expr, ExpressionContext.constConstraint)
+		} else {
+			if(expr instanceof ContextMappingNodeFeatureValue) {
+				return generateBuilder(expr)
+			} else if(expr instanceof ContextMappingValue) {
+				return generateBuilder(expr)
+			} else {
+				return parseExpression(expr, ExpressionContext.varConstraint)
+			}
 		}
 	}
 	
@@ -213,7 +177,7 @@ protected List<ILPTerm<Integer, Double>> buildTerms(final «data.mapping2mapping
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)
-		return methodName;
+		return '''«methodName»(context)''';
 	}
 	
 	def String generateBuilder(ContextMappingNodeFeatureValue expr) {
@@ -225,7 +189,7 @@ protected List<ILPTerm<Integer, Double>> buildTerms(final «data.mapping2mapping
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)
-		return methodName;
+		return '''«methodName»(context)''';
 	}
 
 	

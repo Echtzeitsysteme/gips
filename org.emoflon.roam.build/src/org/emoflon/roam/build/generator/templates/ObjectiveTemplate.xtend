@@ -103,7 +103,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 						throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 		
 					val variable = variables.iterator.next
-					instruction = instruction = '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable)», «builderMethodName»(context)));'''
+					instruction = '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable)», «builderMethodName»(context)));'''
 				}
 				builderMethodCalls.add(instruction)
 			}
@@ -118,22 +118,11 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 						throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 		
 					val variable = variables.iterator.next
-					instruction = instruction = '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable)», «builderMethodName»(context)));'''
+					instruction =  '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable)», «builderMethodName»(context)));'''
 				}
 				builderMethodCalls.add(instruction)
 		} else if(expr instanceof ArithmeticValue) {
-			val builderMethodName = generateBuilder(expr.value)
-			var instruction = ""
-			if(RoamTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
-				instruction = '''constantTerms.add(new ILPConstant<Double>(«builderMethodName»(context)));'''
-			} else {
-				val variables = RoamTransformationUtils.extractVariable(expr);
-				if(variables.size != 1)
-					throw new UnsupportedOperationException("Access to multiple different variables in the same stream expression is forbidden.");
-
-				instruction = '''«builderMethodName»(context);'''	
-			}
-			builderMethodCalls.add(instruction)
+			generateBuilder(expr.value);
 		} else {
 			if(expr instanceof IntegerLiteral) {
 				val instruction = '''constantTerms.add(new ILPConstant<Double>((double)«expr.literal»));'''
@@ -148,7 +137,31 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 	
 	def String getContextVariable(VariableSet variable);
 	
-	def String generateBuilder(ValueExpression expr);
+	def void generateBuilder(ValueExpression expr) {
+		if(expr instanceof MappingSumExpression || expr instanceof TypeSumExpression) {
+			val builderMethodName = generateIteratingBuilder(expr);
+			builderMethodCalls.add('''«builderMethodName»(context);''')
+		} else {
+			var instruction = "";
+			val type = RoamTransformationUtils.isConstantExpression(expr)
+			if(type == ArithmeticExpressionType.constant) {
+				instruction = '''constantTerms.add(new ILPConstant<Double>(«generateConstantBuilder(expr, type)»));'''
+			} else {
+				val variables = RoamTransformationUtils.extractVariable(expr);
+				if(variables.size != 1)
+					throw new UnsupportedOperationException("Access to multiple different variables in the same stream expression is forbidden.");
+				
+				val builderMethodName = generateConstantBuilder(expr, type);
+				val variable = variables.iterator.next
+				instruction = '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable)», «builderMethodName»(context)));'''
+			}
+			builderMethodCalls.add(instruction);
+		}
+	}
+	
+	def String generateIteratingBuilder(ValueExpression expr);
+	
+	def String generateConstantBuilder(ValueExpression expr, ArithmeticExpressionType type);
 	
 	def String generateBuilder(BinaryArithmeticExpression expr);
 	

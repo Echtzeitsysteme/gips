@@ -1,11 +1,9 @@
 package org.emoflon.roam.core;
 
+import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.emoflon.roam.core.ilp.ILPLinearFunction;
-import org.emoflon.roam.core.ilp.ILPTerm;
 import org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective;
 
 public abstract class RoamMappingObjective<CONTEXT extends RoamMapping>
@@ -21,9 +19,10 @@ public abstract class RoamMappingObjective<CONTEXT extends RoamMapping>
 
 	@Override
 	public void buildObjectiveFunction() {
-		List<ILPTerm<Integer, Double>> terms = mapper.getMappings().values().parallelStream()
-				.flatMap(context -> buildTerms(context).parallelStream()).collect(Collectors.toList());
-		ilpObjective = new ILPLinearFunction<>(terms, new LinkedList<>());
+		terms = Collections.synchronizedList(new LinkedList<>());
+		constantTerms = Collections.synchronizedList(new LinkedList<>());
+		mapper.getMappings().values().parallelStream().forEach(context -> buildTerms(context));
+		ilpObjective = new ILPLinearFunction<>(terms, constantTerms);
 	}
 
 }

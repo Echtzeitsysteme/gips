@@ -177,7 +177,7 @@ protected void buildTerms(final «data.mapping2mappingClassName.get(context.mapp
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)
-		return '''«methodName»(context)''';
+		return '''«methodName»''';
 	}
 	
 	def String generateBuilder(ContextMappingNodeFeatureValue expr) {
@@ -189,7 +189,7 @@ protected void buildTerms(final «data.mapping2mappingClassName.get(context.mapp
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)
-		return '''«methodName»(context)''';
+		return '''«methodName»''';
 	}
 
 	

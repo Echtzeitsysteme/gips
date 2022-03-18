@@ -44,6 +44,7 @@ class TypeConstraintTemplate extends ConstraintTemplate<TypeConstraint> {
 		filePath = data.apiData.roamConstraintPkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
+		imports.add("java.util.Collections");
 		imports.add("org.eclipse.emf.ecore.EClass")
 		imports.add("org.eclipse.emf.ecore.EObject")
 		imports.add("org.emoflon.roam.core.RoamEngine")
@@ -93,7 +94,7 @@ protected double buildConstantTerm(final «context.modelType.type.name» context
 	
 @Override
 protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «context.modelType.type.name» context) {
-	List<ILPTerm<Integer, Double>> terms = new LinkedList<>();
+	List<ILPTerm<Integer, Double>> terms = Collections.synchronizedList(new LinkedList<>());
 	«FOR instruction : builderMethodCalls»
 	«instruction»
 	«ENDFOR»

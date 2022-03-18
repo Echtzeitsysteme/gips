@@ -3,7 +3,9 @@ package org.emoflon.roam.build;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -98,6 +100,13 @@ public class RoamProjectBuilder implements RoamBuilderExtension {
 		RoamCodeGenerator roamGen = new RoamCodeGenerator(model, roamApiData, manager);
 		roamGen.generate();
 		LogUtils.info(logger, "RoamProjectBuilder: Done!");
+
+		try {
+			project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+		} catch (CoreException e) {
+			LogUtils.error(logger, e.toString());
+			e.printStackTrace();
+		}
 	}
 
 }

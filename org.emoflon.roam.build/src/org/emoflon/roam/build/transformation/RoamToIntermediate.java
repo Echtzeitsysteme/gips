@@ -245,9 +245,9 @@ public class RoamToIntermediate {
 			// Remove subtractions, e.g.: a - b becomes a + -b
 			objective.setExpression(rewriteRemoveSubtractions(objective.getExpression()));
 			// Final check: Was the context used?
-			if (!RoamTransformationUtils.containsContextExpression(objective.getExpression())) {
-				throw new IllegalArgumentException("Context must be used at least once per objective.");
-			}
+//			if (!RoamTransformationUtils.containsContextExpression(objective.getExpression())) {
+//				throw new IllegalArgumentException("Context must be used at least once per objective.");
+//			}
 		}
 	}
 

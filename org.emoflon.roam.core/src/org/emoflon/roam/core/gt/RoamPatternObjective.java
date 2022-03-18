@@ -1,15 +1,13 @@
 package org.emoflon.roam.core.gt;
 
+import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 import org.emoflon.ibex.gt.api.GraphTransformationPattern;
 import org.emoflon.roam.core.RoamEngine;
 import org.emoflon.roam.core.RoamObjective;
 import org.emoflon.roam.core.ilp.ILPLinearFunction;
-import org.emoflon.roam.core.ilp.ILPTerm;
 import org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective;
 
 public abstract class RoamPatternObjective<M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
@@ -24,9 +22,10 @@ public abstract class RoamPatternObjective<M extends GraphTransformationMatch<M,
 
 	@Override
 	public void buildObjectiveFunction() {
-		List<ILPTerm<Integer, Double>> terms = pattern.findMatches().parallelStream()
-				.flatMap(context -> buildTerms(context).parallelStream()).collect(Collectors.toList());
-		ilpObjective = new ILPLinearFunction<>(terms, new LinkedList<>());
+		terms = Collections.synchronizedList(new LinkedList<>());
+		constantTerms = Collections.synchronizedList(new LinkedList<>());
+		pattern.findMatches().parallelStream().forEach(context -> buildTerms(context));
+		ilpObjective = new ILPLinearFunction<>(terms, constantTerms);
 	}
 
 }

@@ -44,6 +44,7 @@ class PatternConstraintTemplate extends ConstraintTemplate<PatternConstraint> {
 		filePath = data.apiData.roamConstraintPkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
+		imports.add("java.util.Collections");
 		imports.add("org.emoflon.roam.core.RoamEngine")
 		imports.add("org.emoflon.roam.core.gt.RoamPatternConstraint")
 		imports.add("org.emoflon.roam.core.ilp.ILPTerm")
@@ -90,7 +91,7 @@ protected double buildConstantTerm(final «data.pattern2matchClassName.get(conte
 	
 @Override
 protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.pattern2matchClassName.get(context.pattern)» context) {
-	List<ILPTerm<Integer, Double>> terms = new LinkedList<>();
+	List<ILPTerm<Integer, Double>> terms = Collections.synchronizedList(new LinkedList<>());
 	«FOR instruction : builderMethodCalls»
 	«instruction»
 	«ENDFOR»

@@ -44,6 +44,7 @@ class MappingConstraintTemplate extends ConstraintTemplate<MappingConstraint> {
 		filePath = data.apiData.roamConstraintPkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
+		imports.add("java.util.Collections");
 		imports.add("org.emoflon.roam.core.RoamEngine")
 		imports.add("org.emoflon.roam.core.RoamMappingConstraint")
 		imports.add("org.emoflon.roam.core.ilp.ILPTerm")
@@ -89,7 +90,7 @@ protected double buildConstantTerm(final «data.mapping2mappingClassName.get(con
 	
 @Override
 protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-	List<ILPTerm<Integer, Double>> terms = new LinkedList<>();
+	List<ILPTerm<Integer, Double>> terms = Collections.synchronizedList(new LinkedList<>());
 	«FOR instruction : builderMethodCalls»
 	«instruction»
 	«ENDFOR»

@@ -92,30 +92,22 @@ protected List<ILPTerm<Integer, Double>> buildTerms(final «data.mapping2mapping
 	override generateBuilder(ValueExpression expr) {
 		if(expr instanceof MappingSumExpression) {
 			if(expr.mapping == context.mapping) {
-				val builderMethodName = generateBuilder(expr)
-				val instruction = '''«builderMethodName»(terms, context);'''
-				builderMethodCalls.add(instruction)
+				return generateBuilder(expr)
 			} else {
 				throw new UnsupportedOperationException("Referencing other mapping variables from within a mapping context is not allowed.")
 			}
 		} else if(expr instanceof TypeSumExpression) {
-			val builderMethodName = generateBuilder(expr)
-			val instruction = '''«builderMethodName»(terms, context);'''
-				builderMethodCalls.add(instruction)
+			return generateBuilder(expr)
 		} else if(expr instanceof ContextTypeFeatureValue) {
 			throw new UnsupportedOperationException("Type context access is not possible within a mapping context.")
 		} else if(expr instanceof ContextTypeValue) {
 			throw new UnsupportedOperationException("Type context access is not possible within a mapping context.")
 		} else if(expr instanceof ContextMappingNodeFeatureValue) {
-			val builderMethodName = generateBuilder(expr)
-			val instruction = '''«builderMethodName»(context);'''
-			builderMethodCalls.add(instruction)
+			return generateBuilder(expr)
 		} else if(expr instanceof ContextMappingNode) {
 			throw new UnsupportedOperationException("Ilp term may not contain complex objects.")
 		} else if(expr instanceof ContextMappingValue) {
-			val builderMethodName = generateBuilder(expr)
-			val instruction = '''«builderMethodName»(context);'''
-			builderMethodCalls.add(instruction)
+			return generateBuilder(expr)
 		} else if(expr instanceof ContextPatternNodeFeatureValue) {
 			throw new UnsupportedOperationException("Pattern context access is not possible within a mapping context.")
 		}  else if(expr instanceof ContextPatternNode) {

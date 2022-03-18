@@ -129,7 +129,7 @@ protected void buildTerms() {
 			} else {	
 				val builderMethodName = generateBuilder(expr)
 				var instruction = ""
-				if(RoamTransformationUtils.containsContextExpression(expr) == ArithmeticExpressionType.constant) {
+				if(RoamTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
 					instruction = '''constantTerms.add(new ILPConstant<Double>(«builderMethodName»()));'''
 				} else {
 					val objectives = RoamTransformationUtils.extractObjective(expr);
@@ -145,7 +145,7 @@ protected void buildTerms() {
 		} else if(expr instanceof UnaryArithmeticExpression) {
 				val builderMethodName = generateBuilder(expr)
 				var instruction = ""
-				if(RoamTransformationUtils.containsContextExpression(expr) == ArithmeticExpressionType.constant) {
+				if(RoamTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
 					instruction = '''constantTerms.add(new ILPConstant<Double>(«builderMethodName»()));'''
 				} else {
 					val objectives = RoamTransformationUtils.extractObjective(expr);
@@ -158,7 +158,7 @@ protected void buildTerms() {
 				}
 				builderMethodCalls.add(instruction)
 		} else if(expr instanceof ArithmeticValue) {
-				if(RoamTransformationUtils.containsContextExpression(expr) == ArithmeticExpressionType.constant) {
+				if(RoamTransformationUtils.containsContextExpression(expr)) {
 					throw new UnsupportedOperationException("Access to mappings, contexts and iterators not allowed.");
 				} else {
 					val objectives = RoamTransformationUtils.extractObjective(expr);

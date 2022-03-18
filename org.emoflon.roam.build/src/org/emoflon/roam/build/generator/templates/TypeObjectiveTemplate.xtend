@@ -93,13 +93,9 @@ protected List<ILPTerm<Integer, Double>> buildTerms(final «context.modelType.ty
 	
 	override generateBuilder(ValueExpression expr) {
 		if(expr instanceof MappingSumExpression) {
-				val builderMethodName = generateForeignBuilder(expr)
-				val instruction = '''«builderMethodName»(terms, context);'''
-				builderMethodCalls.add(instruction)
+			return generateForeignBuilder(expr)
 		} else if(expr instanceof TypeSumExpression) {
-			val builderMethodName = generateBuilder(expr)
-			val instruction = '''«builderMethodName»(terms, context);'''
-				builderMethodCalls.add(instruction)
+			return generateBuilder(expr)
 		} else if(expr instanceof ContextTypeFeatureValue) {
 			throw new UnsupportedOperationException("Ilp term may not be constant.")
 		} else if(expr instanceof ContextTypeValue) {

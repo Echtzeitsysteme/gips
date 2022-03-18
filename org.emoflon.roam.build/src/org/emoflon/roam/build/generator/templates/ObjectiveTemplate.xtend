@@ -52,6 +52,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeature
 import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue
 import org.emoflon.roam.intermediate.RoamIntermediate.SumExpression
 import org.emoflon.roam.intermediate.RoamIntermediate.Objective
+import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionType
 
 abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends GeneratorTemplate<OBJECTIVE> {
 
@@ -92,32 +93,62 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			} else if(expr.operator == BinaryArithmeticOperator.SUBTRACT) {
 				throw new UnsupportedOperationException("Code generator does not support subtraction expressions.");
 			} else {
-				val variable = RoamTransformationUtils.extractVariable(expr);
-				if(variable.size != 1)
-					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
-				
 				val builderMethodName = generateBuilder(expr)
-				val instruction = '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable.iterator.next)», «builderMethodName»(context)));'''
+				var instruction = ""
+				if(RoamTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
+					instruction = '''constantTerms.add(new ILPConstant<Double>(«builderMethodName»()));'''
+				} else {
+					val variables = RoamTransformationUtils.extractVariable(expr);
+					if(variables.size != 1)
+						throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
+		
+					val variable = variables.iterator.next
+					instruction = instruction = '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable)», «builderMethodName»(context)));'''
+				}
 				builderMethodCalls.add(instruction)
 			}
 		} else if(expr instanceof UnaryArithmeticExpression) {
-				val variable = RoamTransformationUtils.extractVariable(expr);
-				if(variable.size != 1)
-					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
-				
 				val builderMethodName = generateBuilder(expr)
-				val instruction = '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable.iterator.next)», «builderMethodName»(context)));'''
+				var instruction = ""
+				if(RoamTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
+					instruction = '''constantTerms.add(new ILPConstant<Double>(«builderMethodName»()));'''
+				} else {
+					val variables = RoamTransformationUtils.extractVariable(expr);
+					if(variables.size != 1)
+						throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
+		
+					val variable = variables.iterator.next
+					instruction = instruction = '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable)», «builderMethodName»(context)));'''
+				}
 				builderMethodCalls.add(instruction)
 		} else if(expr instanceof ArithmeticValue) {
-			generateBuilder(expr.value)
+			val builderMethodName = generateBuilder(expr.value)
+			var instruction = ""
+			if(RoamTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
+				instruction = '''constantTerms.add(new ILPConstant<Double>(«builderMethodName»(context)));'''
+			} else {
+				val variables = RoamTransformationUtils.extractVariable(expr);
+				if(variables.size != 1)
+					throw new UnsupportedOperationException("Access to multiple different variables in the same stream expression is forbidden.");
+
+				instruction = '''«builderMethodName»(context);'''	
+			}
+			builderMethodCalls.add(instruction)
 		} else {
-			throw new IllegalAccessException("Ilp term may not be constant")
+			if(expr instanceof IntegerLiteral) {
+				val instruction = '''constantTerms.add(new ILPConstant<Double>((double)«expr.literal»));'''
+				builderMethodCalls.add(instruction);
+			} else {
+				val doubleLit = expr as DoubleLiteral
+				val instruction = '''constantTerms.add(new ILPConstant<Double>(«doubleLit.literal»));'''
+				builderMethodCalls.add(instruction);
+			}
 		}
 	}
 	
 	def String getContextVariable(VariableSet variable);
 	
-	def void generateBuilder(ValueExpression expr);
+	def String generateBuilder(ValueExpression expr);
 	
 	def String generateBuilder(BinaryArithmeticExpression expr);
 	

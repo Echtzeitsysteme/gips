@@ -223,6 +223,11 @@ public class GurobiSolver extends ILPSolver {
 			final ILPConstraint<Integer> curr = cnstrsIt.next();
 			final GRBLinExpr grbLinExpr = new GRBLinExpr();
 
+			// Check if constraints of form "<empty> == const" exist and throw an exception
+			if (curr.lhsTerms().isEmpty()) {
+				throw new RuntimeException("LHS (variable terms) is empty. This produces an infeasible ILP problem.");
+			}
+
 			//
 			// Operator
 			//

@@ -20,7 +20,10 @@ public abstract class RoamMappingConstraint<CONTEXT extends RoamMapping>
 	@Override
 	public void buildConstraints() {
 		mapper.getMappings().values().parallelStream().forEach(context -> {
-			ilpConstraints.put(context, buildConstraint(context));
+			final ILPConstraint<Integer> candidate = buildConstraint(context);
+			if (!candidate.lhsTerms().isEmpty()) {
+				ilpConstraints.put(context, buildConstraint(context));
+			}
 		});
 	}
 

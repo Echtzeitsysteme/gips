@@ -23,7 +23,10 @@ public abstract class RoamPatternConstraint<M extends GraphTransformationMatch<M
 	@Override
 	public void buildConstraints() {
 		pattern.findMatches().parallelStream().forEach(context -> {
-			ilpConstraints.put(context, buildConstraint(context));
+			final ILPConstraint<Integer> candidate = buildConstraint(context);
+			if (!candidate.lhsTerms().isEmpty()) {
+				ilpConstraints.put(context, buildConstraint(context));
+			}
 		});
 	}
 

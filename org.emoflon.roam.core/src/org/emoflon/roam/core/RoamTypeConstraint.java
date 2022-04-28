@@ -22,7 +22,10 @@ public abstract class RoamTypeConstraint<CONTEXT extends EObject>
 	@Override
 	public void buildConstraints() {
 		indexer.getObjectsOfType(type).parallelStream().forEach(context -> {
-			ilpConstraints.put((CONTEXT) context, buildConstraint((CONTEXT) context));
+			final ILPConstraint<Integer> candidate = buildConstraint((CONTEXT) context);
+			if (!candidate.lhsTerms().isEmpty()) {
+				ilpConstraints.put((CONTEXT) context, buildConstraint((CONTEXT) context));
+			}
 		});
 	}
 

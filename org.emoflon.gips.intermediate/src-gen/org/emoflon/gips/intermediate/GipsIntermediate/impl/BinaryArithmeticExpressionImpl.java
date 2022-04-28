@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -10,10 +10,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Binary
@@ -22,11 +22,11 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BinaryArithmeticExpressionImpl#getLhs
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BinaryArithmeticExpressionImpl#getLhs
  * <em>Lhs</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BinaryArithmeticExpressionImpl#getRhs
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BinaryArithmeticExpressionImpl#getRhs
  * <em>Rhs</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BinaryArithmeticExpressionImpl#getOperator
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BinaryArithmeticExpressionImpl#getOperator
  * <em>Operator</em>}</li>
  * </ul>
  *
@@ -89,7 +89,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.BINARY_ARITHMETIC_EXPRESSION;
+		return GipsIntermediatePackage.Literals.BINARY_ARITHMETIC_EXPRESSION;
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 		lhs = newLhs;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__LHS, oldLhs, newLhs);
+					GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__LHS, oldLhs, newLhs);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -130,16 +130,16 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 			NotificationChain msgs = null;
 			if (lhs != null)
 				msgs = ((InternalEObject) lhs).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__LHS, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__LHS, null, msgs);
 			if (newLhs != null)
 				msgs = ((InternalEObject) newLhs).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__LHS, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__LHS, null, msgs);
 			msgs = basicSetLhs(newLhs, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__LHS, newLhs, newLhs));
+					GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__LHS, newLhs, newLhs));
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 		rhs = newRhs;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__RHS, oldRhs, newRhs);
+					GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__RHS, oldRhs, newRhs);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -180,16 +180,16 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 			NotificationChain msgs = null;
 			if (rhs != null)
 				msgs = ((InternalEObject) rhs).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__RHS, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__RHS, null, msgs);
 			if (newRhs != null)
 				msgs = ((InternalEObject) newRhs).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__RHS, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__RHS, null, msgs);
 			msgs = basicSetRhs(newRhs, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__RHS, newRhs, newRhs));
+					GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__RHS, newRhs, newRhs));
 	}
 
 	/**
@@ -211,7 +211,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 		operator = newOperator == null ? OPERATOR_EDEFAULT : newOperator;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__OPERATOR, oldOperator, operator));
+					GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__OPERATOR, oldOperator, operator));
 	}
 
 	/**
@@ -222,9 +222,9 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__LHS:
+		case GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__LHS:
 			return basicSetLhs(null, msgs);
-		case RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__RHS:
+		case GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__RHS:
 			return basicSetRhs(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -238,11 +238,11 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__LHS:
+		case GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__LHS:
 			return getLhs();
-		case RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__RHS:
+		case GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__RHS:
 			return getRhs();
-		case RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__OPERATOR:
 			return getOperator();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -256,13 +256,13 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__LHS:
+		case GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__LHS:
 			setLhs((ArithmeticExpression) newValue);
 			return;
-		case RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__RHS:
+		case GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__RHS:
 			setRhs((ArithmeticExpression) newValue);
 			return;
-		case RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__OPERATOR:
 			setOperator((BinaryArithmeticOperator) newValue);
 			return;
 		}
@@ -277,13 +277,13 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__LHS:
+		case GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__LHS:
 			setLhs((ArithmeticExpression) null);
 			return;
-		case RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__RHS:
+		case GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__RHS:
 			setRhs((ArithmeticExpression) null);
 			return;
-		case RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__OPERATOR:
 			setOperator(OPERATOR_EDEFAULT);
 			return;
 		}
@@ -298,11 +298,11 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__LHS:
+		case GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__LHS:
 			return lhs != null;
-		case RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__RHS:
+		case GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__RHS:
 			return rhs != null;
-		case RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION__OPERATOR:
 			return operator != OPERATOR_EDEFAULT;
 		}
 		return super.eIsSet(featureID);

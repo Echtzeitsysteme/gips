@@ -1,26 +1,26 @@
-package org.emoflon.roam.build.generator.templates
+package org.emoflon.gips.build.generator.templates
 
 import java.util.HashMap
 import java.util.HashSet
 import java.util.LinkedList
 import org.eclipse.emf.ecore.EObject
-import org.emoflon.roam.build.generator.GeneratorTemplate
-import org.emoflon.roam.build.generator.TemplateData
-import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionType
-import org.emoflon.roam.build.transformation.helper.RoamTransformationUtils
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue
-import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator
-import org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral
-import org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective
-import org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral
-import org.emoflon.roam.intermediate.RoamIntermediate.Objective
-import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue
-import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation
-import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression
+import org.emoflon.gips.build.generator.GeneratorTemplate
+import org.emoflon.gips.build.generator.TemplateData
+import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType
+import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue
+import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator
+import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral
+import org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective
+import org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral
+import org.emoflon.gips.intermediate.GipsIntermediate.Objective
+import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue
+import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation
+import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 
 class GlobalObjectiveTemplate extends GeneratorTemplate<GlobalObjective> {
 
@@ -36,20 +36,20 @@ class GlobalObjectiveTemplate extends GeneratorTemplate<GlobalObjective> {
 	}
 	
 	override init() {
-		packageName = data.apiData.roamObjectivePkg
+		packageName = data.apiData.gipsObjectivePkg
 		className = data.globalObjectiveClassName
 		fqn = packageName + "." + className;
-		filePath = data.apiData.roamObjectivePkgPath + "/" + className + ".java"
+		filePath = data.apiData.gipsObjectivePkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
-		imports.add("org.emoflon.roam.core.RoamEngine")
-		imports.add("org.emoflon.roam.core.RoamGlobalObjective")
-		imports.add("org.emoflon.roam.core.ilp.ILPTerm")
-		imports.add("org.emoflon.roam.core.ilp.ILPConstant")
-		imports.add("org.emoflon.roam.core.ilp.ILPLinearFunction")
-		imports.add("org.emoflon.roam.core.ilp.ILPWeightedLinearFunction")
-		imports.add("org.emoflon.roam.core.ilp.ILPNestedLinearFunction")
-		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective")
+		imports.add("org.emoflon.gips.core.GipsEngine")
+		imports.add("org.emoflon.gips.core.GipsGlobalObjective")
+		imports.add("org.emoflon.gips.core.ilp.ILPTerm")
+		imports.add("org.emoflon.gips.core.ilp.ILPConstant")
+		imports.add("org.emoflon.gips.core.ilp.ILPLinearFunction")
+		imports.add("org.emoflon.gips.core.ilp.ILPWeightedLinearFunction")
+		imports.add("org.emoflon.gips.core.ilp.ILPNestedLinearFunction")
+		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective")
 	}
 	
 	override generate() {
@@ -61,11 +61,11 @@ class GlobalObjectiveTemplate extends GeneratorTemplate<GlobalObjective> {
 
 «importStatements»
 
-public class «className» extends RoamGlobalObjective{
+public class «className» extends GipsGlobalObjective{
 	
 	«attributes»
 	
-	public «className»(final RoamEngine engine, final GlobalObjective objective) {
+	public «className»(final GipsEngine engine, final GlobalObjective objective) {
 		super(engine, objective);
 	}
 	
@@ -90,7 +90,7 @@ import «imp»;
 	}
 	
 	def String generateAttributes() {
-			referencedObjectives.forEach[o | imports.add(data.apiData.roamObjectivePkg+"."+data.objective2objectiveClassName.get(o))]
+			referencedObjectives.forEach[o | imports.add(data.apiData.gipsObjectivePkg+"."+data.objective2objectiveClassName.get(o))]
 		return '''«FOR obj : referencedObjectives»
 	protected «data.objective2objectiveClassName.get(obj)» «obj.name.toFirstLower»;
 «ENDFOR»'''
@@ -129,10 +129,10 @@ protected void buildTerms() {
 			} else {	
 				val builderMethodName = generateBuilder(expr)
 				var instruction = ""
-				if(RoamTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
+				if(GipsTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
 					instruction = '''constantTerms.add(new ILPConstant<Double>(«builderMethodName»()));'''
 				} else {
-					val objectives = RoamTransformationUtils.extractObjective(expr);
+					val objectives = GipsTransformationUtils.extractObjective(expr);
 					if(objectives.size != 1)
 						throw new UnsupportedOperationException("Access to multiple different objective functions in the same product is forbidden.");
 					
@@ -145,10 +145,10 @@ protected void buildTerms() {
 		} else if(expr instanceof UnaryArithmeticExpression) {
 				val builderMethodName = generateBuilder(expr)
 				var instruction = ""
-				if(RoamTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
+				if(GipsTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
 					instruction = '''constantTerms.add(new ILPConstant<Double>(«builderMethodName»()));'''
 				} else {
-					val objectives = RoamTransformationUtils.extractObjective(expr);
+					val objectives = GipsTransformationUtils.extractObjective(expr);
 					if(objectives.size != 1)
 						throw new UnsupportedOperationException("Access to multiple different objective functions in the same product is forbidden.");
 					
@@ -158,10 +158,10 @@ protected void buildTerms() {
 				}
 				builderMethodCalls.add(instruction)
 		} else if(expr instanceof ArithmeticValue) {
-				if(RoamTransformationUtils.containsContextExpression(expr)) {
+				if(GipsTransformationUtils.containsContextExpression(expr)) {
 					throw new UnsupportedOperationException("Access to mappings, contexts and iterators not allowed.");
 				} else {
-					val objectives = RoamTransformationUtils.extractObjective(expr);
+					val objectives = GipsTransformationUtils.extractObjective(expr);
 					if(objectives.size != 1)
 						throw new UnsupportedOperationException("Access to multiple different objective functions in the same product is forbidden.");
 						

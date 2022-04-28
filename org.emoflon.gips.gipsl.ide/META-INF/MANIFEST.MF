@@ -1,16 +1,16 @@
 Manifest-Version: 1.0
-Automatic-Module-Name: org.emoflon.roam.roamslang.ide
+Automatic-Module-Name: org.emoflon.gips.gipsl.ide
 Bundle-ManifestVersion: 2
-Bundle-Name: org.emoflon.roam.roamslang.ide
+Bundle-Name: org.emoflon.gips.gipsl.ide
 Bundle-Vendor: My Company
 Bundle-Version: 1.0.0.qualifier
-Bundle-SymbolicName: org.emoflon.roam.roamslang.ide; singleton:=true
+Bundle-SymbolicName: org.emoflon.gips.gipsl.ide; singleton:=true
 Bundle-ActivationPolicy: lazy
-Require-Bundle: org.emoflon.roam.roamslang,
+Require-Bundle: org.emoflon.gips.gipsl,
  org.eclipse.xtext.ide,
  org.eclipse.xtext.xbase.ide,
  org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
  org.emoflon.ibex.gt.editor
 Bundle-RequiredExecutionEnvironment: JavaSE-16
-Export-Package: org.emoflon.roam.roamslang.ide.contentassist.antlr.internal,
- org.emoflon.roam.roamslang.ide.contentassist.antlr
+Export-Package: org.emoflon.gips.gipsl.ide.contentassist.antlr.internal,
+ org.emoflon.gips.gipsl.ide.contentassist.antlr

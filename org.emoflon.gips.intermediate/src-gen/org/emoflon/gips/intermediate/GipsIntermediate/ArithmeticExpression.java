@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
@@ -13,11 +13,11 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression#getReturnType
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression#getReturnType
  * <em>Return Type</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getArithmeticExpression()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getArithmeticExpression()
  * @model abstract="true"
  * @generated
  */
@@ -28,7 +28,7 @@ public interface ArithmeticExpression extends EObject {
 	 * 
 	 * @return the value of the '<em>Return Type</em>' reference.
 	 * @see #setReturnType(EDataType)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getArithmeticExpression_ReturnType()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getArithmeticExpression_ReturnType()
 	 * @model required="true"
 	 * @generated
 	 */
@@ -36,7 +36,7 @@ public interface ArithmeticExpression extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression#getReturnType
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression#getReturnType
 	 * <em>Return Type</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 

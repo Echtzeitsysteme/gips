@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import java.util.Collection;
 
@@ -20,13 +20,13 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective;
-import org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig;
-import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet;
+import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
+import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -35,25 +35,25 @@ import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getName
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getName
  * <em>Name</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getVariables
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getVariables
  * <em>Variables</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getConstraints
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getConstraints
  * <em>Constraints</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getObjectives
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getObjectives
  * <em>Objectives</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getGlobalObjective
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getGlobalObjective
  * <em>Global Objective</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getIbexModel
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getIbexModel
  * <em>Ibex Model</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl#getConfig
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getConfig
  * <em>Config</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container implements RoamIntermediateModel {
+public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container implements GipsIntermediateModel {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
@@ -140,7 +140,7 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	 * 
 	 * @generated
 	 */
-	protected RoamIntermediateModelImpl() {
+	protected GipsIntermediateModelImpl() {
 		super();
 	}
 
@@ -151,7 +151,7 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.ROAM_INTERMEDIATE_MODEL;
+		return GipsIntermediatePackage.Literals.GIPS_INTERMEDIATE_MODEL;
 	}
 
 	/**
@@ -172,7 +172,7 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__NAME,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__NAME,
 					oldName, name));
 	}
 
@@ -184,7 +184,7 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	public EList<VariableSet> getVariables() {
 		if (variables == null) {
 			variables = new EObjectContainmentEList<VariableSet>(VariableSet.class, this,
-					RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__VARIABLES);
+					GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__VARIABLES);
 		}
 		return variables;
 	}
@@ -197,7 +197,7 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	public EList<Constraint> getConstraints() {
 		if (constraints == null) {
 			constraints = new EObjectContainmentEList<Constraint>(Constraint.class, this,
-					RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__CONSTRAINTS);
+					GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__CONSTRAINTS);
 		}
 		return constraints;
 	}
@@ -210,7 +210,7 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	public EList<Objective> getObjectives() {
 		if (objectives == null) {
 			objectives = new EObjectContainmentEList<Objective>(Objective.class, this,
-					RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__OBJECTIVES);
+					GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__OBJECTIVES);
 		}
 		return objectives;
 	}
@@ -234,7 +234,7 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 		globalObjective = newGlobalObjective;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE, oldGlobalObjective,
+					GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE, oldGlobalObjective,
 					newGlobalObjective);
 			if (msgs == null)
 				msgs = notification;
@@ -254,18 +254,18 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 			NotificationChain msgs = null;
 			if (globalObjective != null)
 				msgs = ((InternalEObject) globalObjective).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE,
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE,
 						null, msgs);
 			if (newGlobalObjective != null)
 				msgs = ((InternalEObject) newGlobalObjective).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE,
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE,
 						null, msgs);
 			msgs = basicSetGlobalObjective(newGlobalObjective, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE, newGlobalObjective,
+					GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE, newGlobalObjective,
 					newGlobalObjective));
 	}
 
@@ -288,7 +288,7 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 		ibexModel = newIbexModel;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__IBEX_MODEL, oldIbexModel, newIbexModel);
+					GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__IBEX_MODEL, oldIbexModel, newIbexModel);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -307,18 +307,18 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 			NotificationChain msgs = null;
 			if (ibexModel != null)
 				msgs = ((InternalEObject) ibexModel).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__IBEX_MODEL, null,
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__IBEX_MODEL, null,
 						msgs);
 			if (newIbexModel != null)
 				msgs = ((InternalEObject) newIbexModel).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__IBEX_MODEL, null,
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__IBEX_MODEL, null,
 						msgs);
 			msgs = basicSetIbexModel(newIbexModel, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__IBEX_MODEL, newIbexModel, newIbexModel));
+					GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__IBEX_MODEL, newIbexModel, newIbexModel));
 	}
 
 	/**
@@ -340,7 +340,7 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 		config = newConfig;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__CONFIG, oldConfig, newConfig);
+					GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__CONFIG, oldConfig, newConfig);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -359,16 +359,16 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 			NotificationChain msgs = null;
 			if (config != null)
 				msgs = ((InternalEObject) config).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__CONFIG, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__CONFIG, null, msgs);
 			if (newConfig != null)
 				msgs = ((InternalEObject) newConfig).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__CONFIG, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__CONFIG, null, msgs);
 			msgs = basicSetConfig(newConfig, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__CONFIG, newConfig, newConfig));
+					GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__CONFIG, newConfig, newConfig));
 	}
 
 	/**
@@ -379,17 +379,17 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__VARIABLES:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__VARIABLES:
 			return ((InternalEList<?>) getVariables()).basicRemove(otherEnd, msgs);
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__CONSTRAINTS:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__CONSTRAINTS:
 			return ((InternalEList<?>) getConstraints()).basicRemove(otherEnd, msgs);
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__OBJECTIVES:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__OBJECTIVES:
 			return ((InternalEList<?>) getObjectives()).basicRemove(otherEnd, msgs);
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE:
 			return basicSetGlobalObjective(null, msgs);
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__IBEX_MODEL:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__IBEX_MODEL:
 			return basicSetIbexModel(null, msgs);
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__CONFIG:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__CONFIG:
 			return basicSetConfig(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -403,19 +403,19 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__NAME:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__NAME:
 			return getName();
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__VARIABLES:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__VARIABLES:
 			return getVariables();
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__CONSTRAINTS:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__CONSTRAINTS:
 			return getConstraints();
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__OBJECTIVES:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__OBJECTIVES:
 			return getObjectives();
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE:
 			return getGlobalObjective();
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__IBEX_MODEL:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__IBEX_MODEL:
 			return getIbexModel();
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__CONFIG:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__CONFIG:
 			return getConfig();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -430,28 +430,28 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__NAME:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__NAME:
 			setName((String) newValue);
 			return;
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__VARIABLES:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__VARIABLES:
 			getVariables().clear();
 			getVariables().addAll((Collection<? extends VariableSet>) newValue);
 			return;
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__CONSTRAINTS:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__CONSTRAINTS:
 			getConstraints().clear();
 			getConstraints().addAll((Collection<? extends Constraint>) newValue);
 			return;
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__OBJECTIVES:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__OBJECTIVES:
 			getObjectives().clear();
 			getObjectives().addAll((Collection<? extends Objective>) newValue);
 			return;
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE:
 			setGlobalObjective((GlobalObjective) newValue);
 			return;
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__IBEX_MODEL:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__IBEX_MODEL:
 			setIbexModel((IBeXModel) newValue);
 			return;
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__CONFIG:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__CONFIG:
 			setConfig((ILPConfig) newValue);
 			return;
 		}
@@ -466,25 +466,25 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__NAME:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__NAME:
 			setName(NAME_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__VARIABLES:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__VARIABLES:
 			getVariables().clear();
 			return;
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__CONSTRAINTS:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__CONSTRAINTS:
 			getConstraints().clear();
 			return;
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__OBJECTIVES:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__OBJECTIVES:
 			getObjectives().clear();
 			return;
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE:
 			setGlobalObjective((GlobalObjective) null);
 			return;
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__IBEX_MODEL:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__IBEX_MODEL:
 			setIbexModel((IBeXModel) null);
 			return;
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__CONFIG:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__CONFIG:
 			setConfig((ILPConfig) null);
 			return;
 		}
@@ -499,19 +499,19 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__NAME:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__NAME:
 			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__VARIABLES:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__VARIABLES:
 			return variables != null && !variables.isEmpty();
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__CONSTRAINTS:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__CONSTRAINTS:
 			return constraints != null && !constraints.isEmpty();
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__OBJECTIVES:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__OBJECTIVES:
 			return objectives != null && !objectives.isEmpty();
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE:
 			return globalObjective != null;
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__IBEX_MODEL:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__IBEX_MODEL:
 			return ibexModel != null;
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL__CONFIG:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__CONFIG:
 			return config != null;
 		}
 		return super.eIsSet(featureID);
@@ -534,4 +534,4 @@ public class RoamIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 		return result.toString();
 	}
 
-} // RoamIntermediateModelImpl
+} // GipsIntermediateModelImpl

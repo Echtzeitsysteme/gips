@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -10,9 +10,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -21,7 +21,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeFeatureValueImpl#getFeatureExpression
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorTypeFeatureValueImpl#getFeatureExpression
  * <em>Feature Expression</em>}</li>
  * </ul>
  *
@@ -55,7 +55,7 @@ public class IteratorTypeFeatureValueImpl extends IteratorTypeValueImpl implemen
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.ITERATOR_TYPE_FEATURE_VALUE;
+		return GipsIntermediatePackage.Literals.ITERATOR_TYPE_FEATURE_VALUE;
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class IteratorTypeFeatureValueImpl extends IteratorTypeValueImpl implemen
 		featureExpression = newFeatureExpression;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION, oldFeatureExpression,
+					GipsIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION, oldFeatureExpression,
 					newFeatureExpression);
 			if (msgs == null)
 				msgs = notification;
@@ -97,16 +97,16 @@ public class IteratorTypeFeatureValueImpl extends IteratorTypeValueImpl implemen
 			NotificationChain msgs = null;
 			if (featureExpression != null)
 				msgs = ((InternalEObject) featureExpression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-						- RoamIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION, null, msgs);
+						- GipsIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION, null, msgs);
 			if (newFeatureExpression != null)
 				msgs = ((InternalEObject) newFeatureExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-						- RoamIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION, null, msgs);
+						- GipsIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION, null, msgs);
 			msgs = basicSetFeatureExpression(newFeatureExpression, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION, newFeatureExpression,
+					GipsIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION, newFeatureExpression,
 					newFeatureExpression));
 	}
 
@@ -118,7 +118,7 @@ public class IteratorTypeFeatureValueImpl extends IteratorTypeValueImpl implemen
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION:
+		case GipsIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION:
 			return basicSetFeatureExpression(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -132,7 +132,7 @@ public class IteratorTypeFeatureValueImpl extends IteratorTypeValueImpl implemen
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION:
+		case GipsIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION:
 			return getFeatureExpression();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -146,7 +146,7 @@ public class IteratorTypeFeatureValueImpl extends IteratorTypeValueImpl implemen
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION:
+		case GipsIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION:
 			setFeatureExpression((FeatureExpression) newValue);
 			return;
 		}
@@ -161,7 +161,7 @@ public class IteratorTypeFeatureValueImpl extends IteratorTypeValueImpl implemen
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION:
+		case GipsIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION:
 			setFeatureExpression((FeatureExpression) null);
 			return;
 		}
@@ -176,7 +176,7 @@ public class IteratorTypeFeatureValueImpl extends IteratorTypeValueImpl implemen
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION:
+		case GipsIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION:
 			return featureExpression != null;
 		}
 		return super.eIsSet(featureID);

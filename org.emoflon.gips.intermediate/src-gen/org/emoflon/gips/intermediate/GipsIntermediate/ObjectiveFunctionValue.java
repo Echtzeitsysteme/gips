@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object
@@ -10,11 +10,11 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue#getObjective
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue#getObjective
  * <em>Objective</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getObjectiveFunctionValue()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getObjectiveFunctionValue()
  * @model
  * @generated
  */
@@ -25,7 +25,7 @@ public interface ObjectiveFunctionValue extends ValueExpression {
 	 * 
 	 * @return the value of the '<em>Objective</em>' reference.
 	 * @see #setObjective(Objective)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getObjectiveFunctionValue_Objective()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getObjectiveFunctionValue_Objective()
 	 * @model required="true"
 	 * @generated
 	 */
@@ -33,7 +33,7 @@ public interface ObjectiveFunctionValue extends ValueExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue#getObjective
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue#getObjective
 	 * <em>Objective</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Objective</em>' reference.

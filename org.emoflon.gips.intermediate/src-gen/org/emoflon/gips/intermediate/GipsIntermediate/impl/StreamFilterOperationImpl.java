@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -11,9 +11,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Stream
@@ -22,7 +22,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamFilterOperationImpl#getPredicate
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamFilterOperationImpl#getPredicate
  * <em>Predicate</em>}</li>
  * </ul>
  *
@@ -55,7 +55,7 @@ public class StreamFilterOperationImpl extends MinimalEObjectImpl.Container impl
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.STREAM_FILTER_OPERATION;
+		return GipsIntermediatePackage.Literals.STREAM_FILTER_OPERATION;
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class StreamFilterOperationImpl extends MinimalEObjectImpl.Container impl
 		predicate = newPredicate;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.STREAM_FILTER_OPERATION__PREDICATE, oldPredicate, newPredicate);
+					GipsIntermediatePackage.STREAM_FILTER_OPERATION__PREDICATE, oldPredicate, newPredicate);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -96,18 +96,18 @@ public class StreamFilterOperationImpl extends MinimalEObjectImpl.Container impl
 			NotificationChain msgs = null;
 			if (predicate != null)
 				msgs = ((InternalEObject) predicate).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.STREAM_FILTER_OPERATION__PREDICATE, null,
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.STREAM_FILTER_OPERATION__PREDICATE, null,
 						msgs);
 			if (newPredicate != null)
 				msgs = ((InternalEObject) newPredicate).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.STREAM_FILTER_OPERATION__PREDICATE, null,
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.STREAM_FILTER_OPERATION__PREDICATE, null,
 						msgs);
 			msgs = basicSetPredicate(newPredicate, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.STREAM_FILTER_OPERATION__PREDICATE, newPredicate, newPredicate));
+					GipsIntermediatePackage.STREAM_FILTER_OPERATION__PREDICATE, newPredicate, newPredicate));
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class StreamFilterOperationImpl extends MinimalEObjectImpl.Container impl
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.STREAM_FILTER_OPERATION__PREDICATE:
+		case GipsIntermediatePackage.STREAM_FILTER_OPERATION__PREDICATE:
 			return basicSetPredicate(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -132,7 +132,7 @@ public class StreamFilterOperationImpl extends MinimalEObjectImpl.Container impl
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.STREAM_FILTER_OPERATION__PREDICATE:
+		case GipsIntermediatePackage.STREAM_FILTER_OPERATION__PREDICATE:
 			return getPredicate();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -146,7 +146,7 @@ public class StreamFilterOperationImpl extends MinimalEObjectImpl.Container impl
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.STREAM_FILTER_OPERATION__PREDICATE:
+		case GipsIntermediatePackage.STREAM_FILTER_OPERATION__PREDICATE:
 			setPredicate((BoolExpression) newValue);
 			return;
 		}
@@ -161,7 +161,7 @@ public class StreamFilterOperationImpl extends MinimalEObjectImpl.Container impl
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.STREAM_FILTER_OPERATION__PREDICATE:
+		case GipsIntermediatePackage.STREAM_FILTER_OPERATION__PREDICATE:
 			setPredicate((BoolExpression) null);
 			return;
 		}
@@ -176,7 +176,7 @@ public class StreamFilterOperationImpl extends MinimalEObjectImpl.Container impl
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.STREAM_FILTER_OPERATION__PREDICATE:
+		case GipsIntermediatePackage.STREAM_FILTER_OPERATION__PREDICATE:
 			return predicate != null;
 		}
 		return super.eIsSet(featureID);

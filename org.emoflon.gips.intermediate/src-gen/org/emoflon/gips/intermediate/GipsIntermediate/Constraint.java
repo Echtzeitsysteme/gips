@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -12,15 +12,15 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#getName
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getName
  * <em>Name</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#isElementwise
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isElementwise
  * <em>Elementwise</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#getExpression
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getExpression
  * <em>Expression</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getConstraint()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint()
  * @model abstract="true"
  * @generated
  */
@@ -31,7 +31,7 @@ public interface Constraint extends EObject {
 	 * 
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getConstraint_Name()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_Name()
 	 * @model
 	 * @generated
 	 */
@@ -39,7 +39,7 @@ public interface Constraint extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#getName
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getName
 	 * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Name</em>' attribute.
@@ -54,7 +54,7 @@ public interface Constraint extends EObject {
 	 * 
 	 * @return the value of the '<em>Elementwise</em>' attribute.
 	 * @see #setElementwise(boolean)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getConstraint_Elementwise()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_Elementwise()
 	 * @model
 	 * @generated
 	 */
@@ -62,7 +62,7 @@ public interface Constraint extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#isElementwise
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isElementwise
 	 * <em>Elementwise</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
@@ -78,7 +78,7 @@ public interface Constraint extends EObject {
 	 * 
 	 * @return the value of the '<em>Expression</em>' containment reference.
 	 * @see #setExpression(RelationalExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getConstraint_Expression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_Expression()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -86,7 +86,7 @@ public interface Constraint extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#getExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getExpression
 	 * <em>Expression</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 

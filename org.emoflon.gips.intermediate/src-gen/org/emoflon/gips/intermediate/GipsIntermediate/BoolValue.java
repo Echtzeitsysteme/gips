@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Bool
@@ -10,11 +10,11 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolValue#getValue
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolValue#getValue
  * <em>Value</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBoolValue()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getBoolValue()
  * @model
  * @generated
  */
@@ -25,7 +25,7 @@ public interface BoolValue extends BoolValueExpression {
 	 * 
 	 * @return the value of the '<em>Value</em>' containment reference.
 	 * @see #setValue(ValueExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBoolValue_Value()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getBoolValue_Value()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -33,7 +33,7 @@ public interface BoolValue extends BoolValueExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolValue#getValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolValue#getValue
 	 * <em>Value</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 

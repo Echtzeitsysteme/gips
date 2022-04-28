@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -10,11 +10,11 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation;
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.SumExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Sum
@@ -23,11 +23,11 @@ import org.emoflon.roam.intermediate.RoamIntermediate.SumExpression;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.SumExpressionImpl#getOperandName
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.SumExpressionImpl#getOperandName
  * <em>Operand Name</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.SumExpressionImpl#getExpression
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.SumExpressionImpl#getExpression
  * <em>Expression</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.SumExpressionImpl#getFilter
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.SumExpressionImpl#getFilter
  * <em>Filter</em>}</li>
  * </ul>
  *
@@ -90,7 +90,7 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.SUM_EXPRESSION;
+		return GipsIntermediatePackage.Literals.SUM_EXPRESSION;
 	}
 
 	/**
@@ -111,7 +111,7 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 		String oldOperandName = operandName;
 		operandName = newOperandName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.SUM_EXPRESSION__OPERAND_NAME,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.SUM_EXPRESSION__OPERAND_NAME,
 					oldOperandName, operandName));
 	}
 
@@ -134,7 +134,7 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 		expression = newExpression;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.SUM_EXPRESSION__EXPRESSION, oldExpression, newExpression);
+					GipsIntermediatePackage.SUM_EXPRESSION__EXPRESSION, oldExpression, newExpression);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -153,15 +153,15 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 			NotificationChain msgs = null;
 			if (expression != null)
 				msgs = ((InternalEObject) expression).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.SUM_EXPRESSION__EXPRESSION, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.SUM_EXPRESSION__EXPRESSION, null, msgs);
 			if (newExpression != null)
 				msgs = ((InternalEObject) newExpression).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.SUM_EXPRESSION__EXPRESSION, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.SUM_EXPRESSION__EXPRESSION, null, msgs);
 			msgs = basicSetExpression(newExpression, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.SUM_EXPRESSION__EXPRESSION,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.SUM_EXPRESSION__EXPRESSION,
 					newExpression, newExpression));
 	}
 
@@ -184,7 +184,7 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 		filter = newFilter;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.SUM_EXPRESSION__FILTER, oldFilter, newFilter);
+					GipsIntermediatePackage.SUM_EXPRESSION__FILTER, oldFilter, newFilter);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -203,15 +203,15 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 			NotificationChain msgs = null;
 			if (filter != null)
 				msgs = ((InternalEObject) filter).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.SUM_EXPRESSION__FILTER, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.SUM_EXPRESSION__FILTER, null, msgs);
 			if (newFilter != null)
 				msgs = ((InternalEObject) newFilter).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.SUM_EXPRESSION__FILTER, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.SUM_EXPRESSION__FILTER, null, msgs);
 			msgs = basicSetFilter(newFilter, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.SUM_EXPRESSION__FILTER,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.SUM_EXPRESSION__FILTER,
 					newFilter, newFilter));
 	}
 
@@ -223,9 +223,9 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.SUM_EXPRESSION__EXPRESSION:
+		case GipsIntermediatePackage.SUM_EXPRESSION__EXPRESSION:
 			return basicSetExpression(null, msgs);
-		case RoamIntermediatePackage.SUM_EXPRESSION__FILTER:
+		case GipsIntermediatePackage.SUM_EXPRESSION__FILTER:
 			return basicSetFilter(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -239,11 +239,11 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.SUM_EXPRESSION__OPERAND_NAME:
+		case GipsIntermediatePackage.SUM_EXPRESSION__OPERAND_NAME:
 			return getOperandName();
-		case RoamIntermediatePackage.SUM_EXPRESSION__EXPRESSION:
+		case GipsIntermediatePackage.SUM_EXPRESSION__EXPRESSION:
 			return getExpression();
-		case RoamIntermediatePackage.SUM_EXPRESSION__FILTER:
+		case GipsIntermediatePackage.SUM_EXPRESSION__FILTER:
 			return getFilter();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -257,13 +257,13 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.SUM_EXPRESSION__OPERAND_NAME:
+		case GipsIntermediatePackage.SUM_EXPRESSION__OPERAND_NAME:
 			setOperandName((String) newValue);
 			return;
-		case RoamIntermediatePackage.SUM_EXPRESSION__EXPRESSION:
+		case GipsIntermediatePackage.SUM_EXPRESSION__EXPRESSION:
 			setExpression((ArithmeticExpression) newValue);
 			return;
-		case RoamIntermediatePackage.SUM_EXPRESSION__FILTER:
+		case GipsIntermediatePackage.SUM_EXPRESSION__FILTER:
 			setFilter((StreamExpression) newValue);
 			return;
 		}
@@ -278,13 +278,13 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.SUM_EXPRESSION__OPERAND_NAME:
+		case GipsIntermediatePackage.SUM_EXPRESSION__OPERAND_NAME:
 			setOperandName(OPERAND_NAME_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.SUM_EXPRESSION__EXPRESSION:
+		case GipsIntermediatePackage.SUM_EXPRESSION__EXPRESSION:
 			setExpression((ArithmeticExpression) null);
 			return;
-		case RoamIntermediatePackage.SUM_EXPRESSION__FILTER:
+		case GipsIntermediatePackage.SUM_EXPRESSION__FILTER:
 			setFilter((StreamExpression) null);
 			return;
 		}
@@ -299,11 +299,11 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.SUM_EXPRESSION__OPERAND_NAME:
+		case GipsIntermediatePackage.SUM_EXPRESSION__OPERAND_NAME:
 			return OPERAND_NAME_EDEFAULT == null ? operandName != null : !OPERAND_NAME_EDEFAULT.equals(operandName);
-		case RoamIntermediatePackage.SUM_EXPRESSION__EXPRESSION:
+		case GipsIntermediatePackage.SUM_EXPRESSION__EXPRESSION:
 			return expression != null;
-		case RoamIntermediatePackage.SUM_EXPRESSION__FILTER:
+		case GipsIntermediatePackage.SUM_EXPRESSION__FILTER:
 			return filter != null;
 		}
 		return super.eIsSet(featureID);
@@ -318,8 +318,8 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == SetOperation.class) {
 			switch (derivedFeatureID) {
-			case RoamIntermediatePackage.SUM_EXPRESSION__OPERAND_NAME:
-				return RoamIntermediatePackage.SET_OPERATION__OPERAND_NAME;
+			case GipsIntermediatePackage.SUM_EXPRESSION__OPERAND_NAME:
+				return GipsIntermediatePackage.SET_OPERATION__OPERAND_NAME;
 			default:
 				return -1;
 			}
@@ -336,8 +336,8 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == SetOperation.class) {
 			switch (baseFeatureID) {
-			case RoamIntermediatePackage.SET_OPERATION__OPERAND_NAME:
-				return RoamIntermediatePackage.SUM_EXPRESSION__OPERAND_NAME;
+			case GipsIntermediatePackage.SET_OPERATION__OPERAND_NAME:
+				return GipsIntermediatePackage.SUM_EXPRESSION__OPERAND_NAME;
 			default:
 				return -1;
 			}

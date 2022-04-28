@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -10,9 +10,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.Iterator;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.Iterator;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -21,7 +21,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorImpl#getStream
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorImpl#getStream
  * <em>Stream</em>}</li>
  * </ul>
  *
@@ -54,7 +54,7 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.ITERATOR;
+		return GipsIntermediatePackage.Literals.ITERATOR;
 	}
 
 	/**
@@ -68,7 +68,7 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 			stream = (SetOperation) eResolveProxy(oldStream);
 			if (stream != oldStream) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, RoamIntermediatePackage.ITERATOR__STREAM,
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, GipsIntermediatePackage.ITERATOR__STREAM,
 							oldStream, stream));
 			}
 		}
@@ -93,7 +93,7 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 		SetOperation oldStream = stream;
 		stream = newStream;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.ITERATOR__STREAM, oldStream,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.ITERATOR__STREAM, oldStream,
 					stream));
 	}
 
@@ -105,7 +105,7 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR__STREAM:
+		case GipsIntermediatePackage.ITERATOR__STREAM:
 			if (resolve)
 				return getStream();
 			return basicGetStream();
@@ -121,7 +121,7 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR__STREAM:
+		case GipsIntermediatePackage.ITERATOR__STREAM:
 			setStream((SetOperation) newValue);
 			return;
 		}
@@ -136,7 +136,7 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR__STREAM:
+		case GipsIntermediatePackage.ITERATOR__STREAM:
 			setStream((SetOperation) null);
 			return;
 		}
@@ -151,7 +151,7 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR__STREAM:
+		case GipsIntermediatePackage.ITERATOR__STREAM:
 			return stream != null;
 		}
 		return super.eIsSet(featureID);

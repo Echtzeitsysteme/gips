@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -13,11 +13,11 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression#getReturnType
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression#getReturnType
  * <em>Return Type</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getValueExpression()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getValueExpression()
  * @model abstract="true"
  * @generated
  */
@@ -28,7 +28,7 @@ public interface ValueExpression extends EObject {
 	 * 
 	 * @return the value of the '<em>Return Type</em>' reference.
 	 * @see #setReturnType(EClassifier)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getValueExpression_ReturnType()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getValueExpression_ReturnType()
 	 * @model
 	 * @generated
 	 */
@@ -36,7 +36,7 @@ public interface ValueExpression extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression#getReturnType
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression#getReturnType
 	 * <em>Return Type</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 

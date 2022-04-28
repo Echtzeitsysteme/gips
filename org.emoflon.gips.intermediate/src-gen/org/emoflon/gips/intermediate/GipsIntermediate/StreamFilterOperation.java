@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Stream
@@ -10,11 +10,11 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation#getPredicate
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation#getPredicate
  * <em>Predicate</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getStreamFilterOperation()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getStreamFilterOperation()
  * @model
  * @generated
  */
@@ -25,7 +25,7 @@ public interface StreamFilterOperation extends StreamOperation {
 	 * 
 	 * @return the value of the '<em>Predicate</em>' containment reference.
 	 * @see #setPredicate(BoolExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getStreamFilterOperation_Predicate()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getStreamFilterOperation_Predicate()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -33,7 +33,7 @@ public interface StreamFilterOperation extends StreamOperation {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation#getPredicate
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation#getPredicate
 	 * <em>Predicate</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 

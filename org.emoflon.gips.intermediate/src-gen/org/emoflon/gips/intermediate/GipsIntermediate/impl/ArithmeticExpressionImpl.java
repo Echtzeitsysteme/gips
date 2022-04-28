@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -11,8 +11,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -21,7 +21,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticExpressionImpl#getReturnType
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ArithmeticExpressionImpl#getReturnType
  * <em>Return Type</em>}</li>
  * </ul>
  *
@@ -54,7 +54,7 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.ARITHMETIC_EXPRESSION;
+		return GipsIntermediatePackage.Literals.ARITHMETIC_EXPRESSION;
 	}
 
 	/**
@@ -69,7 +69,7 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 			if (returnType != oldReturnType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.ARITHMETIC_EXPRESSION__RETURN_TYPE, oldReturnType, returnType));
+							GipsIntermediatePackage.ARITHMETIC_EXPRESSION__RETURN_TYPE, oldReturnType, returnType));
 			}
 		}
 		return returnType;
@@ -94,7 +94,7 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 		returnType = newReturnType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ARITHMETIC_EXPRESSION__RETURN_TYPE, oldReturnType, returnType));
+					GipsIntermediatePackage.ARITHMETIC_EXPRESSION__RETURN_TYPE, oldReturnType, returnType));
 	}
 
 	/**
@@ -105,7 +105,7 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ARITHMETIC_EXPRESSION__RETURN_TYPE:
+		case GipsIntermediatePackage.ARITHMETIC_EXPRESSION__RETURN_TYPE:
 			if (resolve)
 				return getReturnType();
 			return basicGetReturnType();
@@ -121,7 +121,7 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ARITHMETIC_EXPRESSION__RETURN_TYPE:
+		case GipsIntermediatePackage.ARITHMETIC_EXPRESSION__RETURN_TYPE:
 			setReturnType((EDataType) newValue);
 			return;
 		}
@@ -136,7 +136,7 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ARITHMETIC_EXPRESSION__RETURN_TYPE:
+		case GipsIntermediatePackage.ARITHMETIC_EXPRESSION__RETURN_TYPE:
 			setReturnType((EDataType) null);
 			return;
 		}
@@ -151,7 +151,7 @@ public abstract class ArithmeticExpressionImpl extends MinimalEObjectImpl.Contai
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ARITHMETIC_EXPRESSION__RETURN_TYPE:
+		case GipsIntermediatePackage.ARITHMETIC_EXPRESSION__RETURN_TYPE:
 			return returnType != null;
 		}
 		return super.eIsSet(featureID);

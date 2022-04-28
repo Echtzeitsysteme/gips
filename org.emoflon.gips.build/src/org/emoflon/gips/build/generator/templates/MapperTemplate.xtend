@@ -1,8 +1,8 @@
-package org.emoflon.roam.build.generator.templates
+package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.roam.build.generator.GeneratorTemplate
-import org.emoflon.roam.intermediate.RoamIntermediate.Mapping
-import org.emoflon.roam.build.generator.TemplateData
+import org.emoflon.gips.build.generator.GeneratorTemplate
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping
+import org.emoflon.gips.build.generator.TemplateData
 
 class MapperTemplate extends GeneratorTemplate<Mapping> {
 	
@@ -11,17 +11,17 @@ class MapperTemplate extends GeneratorTemplate<Mapping> {
 	}
 	
 	override init() {
-		packageName = data.apiData.roamMapperPkg
+		packageName = data.apiData.gipsMapperPkg
 		className = data.mapping2mapperClassName.get(context)
 		fqn = packageName + "." + className
-		filePath = data.apiData.roamMapperPkgPath + "/" + className + ".java"
+		filePath = data.apiData.gipsMapperPkgPath + "/" + className + ".java"
 		imports.add(data.apiData.apiPkg+"."+data.apiData.apiClass)
-		imports.add("org.emoflon.roam.core.RoamEngine")
-		imports.add("org.emoflon.roam.core.gt.GTMapper")
-		imports.add(data.apiData.roamMappingPkg+"."+data.mapping2mappingClassName.get(context))
+		imports.add("org.emoflon.gips.core.GipsEngine")
+		imports.add("org.emoflon.gips.core.gt.GTMapper")
+		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(context))
 		imports.add(data.apiData.rulesPkg+"."+data.mapping2ruleClassName.get(context))
 		imports.add(data.apiData.matchesPkg+"."+data.mapping2matchClassName.get(context))
-		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.Mapping")
+		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.Mapping")
 	}
 	
 	override generate() {
@@ -32,7 +32,7 @@ import «imp»;
 «ENDFOR»
 		
 public class «className» extends GTMapper<«data.mapping2mappingClassName.get(context)», «data.mapping2matchClassName.get(context)», «data.mapping2ruleClassName.get(context)»> {
-	public «className»(final RoamEngine engine, final Mapping mapping, final «data.mapping2ruleClassName.get(context)» rule) {
+	public «className»(final GipsEngine engine, final Mapping mapping, final «data.mapping2ruleClassName.get(context)» rule) {
 		super(engine, mapping, rule);
 	}
 	

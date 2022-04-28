@@ -1,35 +1,35 @@
-package org.emoflon.roam.build.generator.templates
+package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.roam.build.generator.TemplateData
-import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionType
-import org.emoflon.roam.build.transformation.helper.RoamTransformationUtils
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue
+import org.emoflon.gips.build.generator.TemplateData
+import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType
+import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue
 
 class TypeConstraintTemplate extends ConstraintTemplate<TypeConstraint> {
 	
@@ -38,20 +38,20 @@ class TypeConstraintTemplate extends ConstraintTemplate<TypeConstraint> {
 	}
 	
 		override init() {
-		packageName = data.apiData.roamConstraintPkg
+		packageName = data.apiData.gipsConstraintPkg
 		className = data.constraint2constraintClassName.get(context)
 		fqn = packageName + "." + className;
-		filePath = data.apiData.roamConstraintPkgPath + "/" + className + ".java"
+		filePath = data.apiData.gipsConstraintPkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
 		imports.add("java.util.Collections");
 		imports.add("org.eclipse.emf.ecore.EClass")
 		imports.add("org.eclipse.emf.ecore.EObject")
-		imports.add("org.emoflon.roam.core.RoamEngine")
-		imports.add("org.emoflon.roam.core.RoamMapping")
-		imports.add("org.emoflon.roam.core.RoamTypeConstraint")
-		imports.add("org.emoflon.roam.core.ilp.ILPTerm")
-		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint")
+		imports.add("org.emoflon.gips.core.GipsEngine")
+		imports.add("org.emoflon.gips.core.GipsMapping")
+		imports.add("org.emoflon.gips.core.GipsTypeConstraint")
+		imports.add("org.emoflon.gips.core.ilp.ILPTerm")
+		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint")
 		imports.add(data.classToPackage.getImportsForType(context.modelType.type))
 	}
 	
@@ -67,11 +67,11 @@ import «imp»;
 	
 	override String generateClassContent() {
 		return '''
-public class «className» extends RoamTypeConstraint<«context.modelType.type.name»> {
-	public «className»(final RoamEngine engine, final TypeConstraint constraint) {
+public class «className» extends GipsTypeConstraint<«context.modelType.type.name»> {
+	public «className»(final GipsEngine engine, final TypeConstraint constraint) {
 		super(engine, constraint);
 	}
-	«IF RoamTransformationUtils.isConstantExpression(context.expression.lhs) == ArithmeticExpressionType.constant»
+	«IF GipsTransformationUtils.isConstantExpression(context.expression.lhs) == ArithmeticExpressionType.constant»
 	«generateComplexConstraint(context.expression.lhs, context.expression.rhs)»
 	«ELSE»
 	«generateComplexConstraint(context.expression.rhs, context.expression.lhs)»
@@ -180,7 +180,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «context.mode
 	override generateForeignBuilder(MappingSumExpression expr) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
-		imports.add(data.apiData.roamMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
+		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
 		imports.add("java.util.stream.Collectors")
 		val method = '''
 	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «context.modelType.type.name» context) {

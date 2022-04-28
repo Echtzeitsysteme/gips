@@ -1,33 +1,33 @@
-package org.emoflon.roam.build.generator.templates
+package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.roam.build.generator.GeneratorTemplate
-import org.emoflon.roam.build.generator.TemplateData
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel
-import org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint
+import org.emoflon.gips.build.generator.GeneratorTemplate
+import org.emoflon.gips.build.generator.TemplateData
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint
 
-class ConstraintFactoryTemplate extends GeneratorTemplate<RoamIntermediateModel> {
+class ConstraintFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 	
-	new(TemplateData data, RoamIntermediateModel context) {
+	new(TemplateData data, GipsIntermediateModel context) {
 		super(data, context)
 	}
 
 	override init() {
-		packageName = data.apiData.roamApiPkg
+		packageName = data.apiData.gipsApiPkg
 		className = data.constraintFactoryClassName
 		fqn = packageName + "." + className;
-		filePath = data.apiData.roamApiPkgPath + "/" + className + ".java"
+		filePath = data.apiData.gipsApiPkgPath + "/" + className + ".java"
 		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)
-		imports.add("org.emoflon.roam.core.api.RoamConstraintFactory")
-		imports.add("org.emoflon.roam.core.RoamEngine")
-		imports.add("org.emoflon.roam.core.RoamConstraint")
-		imports.add("org.emoflon.roam.core.RoamTypeConstraint")
-		imports.add("org.emoflon.roam.core.RoamMappingConstraint")
-		imports.add("org.emoflon.roam.core.gt.RoamPatternConstraint")
-		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.Constraint")
-		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint")
-		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint")
-		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint")
-		data.constraint2constraintClassName.values.forEach[c | imports.add(data.apiData.roamConstraintPkg+"."+c)]
+		imports.add("org.emoflon.gips.core.api.GipsConstraintFactory")
+		imports.add("org.emoflon.gips.core.GipsEngine")
+		imports.add("org.emoflon.gips.core.GipsConstraint")
+		imports.add("org.emoflon.gips.core.GipsTypeConstraint")
+		imports.add("org.emoflon.gips.core.GipsMappingConstraint")
+		imports.add("org.emoflon.gips.core.gt.GipsPatternConstraint")
+		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.Constraint")
+		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint")
+		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint")
+		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint")
+		data.constraint2constraintClassName.values.forEach[c | imports.add(data.apiData.gipsConstraintPkg+"."+c)]
 	}
 	
 	override generate() {
@@ -37,13 +37,13 @@ class ConstraintFactoryTemplate extends GeneratorTemplate<RoamIntermediateModel>
 import «imp»;
 «ENDFOR»
 
-public class «className» extends RoamConstraintFactory<«data.apiData.apiClass»> {
-	public «className»(final RoamEngine engine, final «data.apiData.apiClass» eMoflonApi) {
+public class «className» extends GipsConstraintFactory<«data.apiData.apiClass»> {
+	public «className»(final GipsEngine engine, final «data.apiData.apiClass» eMoflonApi) {
 		super(engine, eMoflonApi);
 	}
 	
 	@Override
-	public RoamConstraint<? extends Constraint, ? extends Object, ? extends Number> createConstraint(final Constraint constraint) {
+	public GipsConstraint<? extends Constraint, ? extends Object, ? extends Number> createConstraint(final Constraint constraint) {
 		«IF context.constraints.isNullOrEmpty»
 		throw new IllegalArgumentException("Unknown constraint type: "+constraint);
 		«ELSE»

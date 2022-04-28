@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -12,15 +12,15 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#getName
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Objective#getName
  * <em>Name</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#isElementwise
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Objective#isElementwise
  * <em>Elementwise</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#getExpression
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Objective#getExpression
  * <em>Expression</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getObjective()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getObjective()
  * @model
  * @generated
  */
@@ -31,7 +31,7 @@ public interface Objective extends EObject {
 	 * 
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getObjective_Name()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getObjective_Name()
 	 * @model
 	 * @generated
 	 */
@@ -39,7 +39,7 @@ public interface Objective extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#getName
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Objective#getName
 	 * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Name</em>' attribute.
@@ -54,7 +54,7 @@ public interface Objective extends EObject {
 	 * 
 	 * @return the value of the '<em>Elementwise</em>' attribute.
 	 * @see #setElementwise(boolean)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getObjective_Elementwise()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getObjective_Elementwise()
 	 * @model
 	 * @generated
 	 */
@@ -62,7 +62,7 @@ public interface Objective extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#isElementwise
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Objective#isElementwise
 	 * <em>Elementwise</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
@@ -78,7 +78,7 @@ public interface Objective extends EObject {
 	 * 
 	 * @return the value of the '<em>Expression</em>' containment reference.
 	 * @see #setExpression(ArithmeticExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getObjective_Expression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getObjective_Expression()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -86,7 +86,7 @@ public interface Objective extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#getExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Objective#getExpression
 	 * <em>Expression</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 

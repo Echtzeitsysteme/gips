@@ -1,21 +1,21 @@
-package org.emoflon.roam.core.gt;
+package org.emoflon.gips.core.gt;
 
 import java.util.Collections;
 import java.util.LinkedList;
 
 import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 import org.emoflon.ibex.gt.api.GraphTransformationPattern;
-import org.emoflon.roam.core.RoamEngine;
-import org.emoflon.roam.core.RoamObjective;
-import org.emoflon.roam.core.ilp.ILPLinearFunction;
-import org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective;
+import org.emoflon.gips.core.GipsEngine;
+import org.emoflon.gips.core.GipsObjective;
+import org.emoflon.gips.core.ilp.ILPLinearFunction;
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective;
 
-public abstract class RoamPatternObjective<M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
-		extends RoamObjective<PatternObjective, GraphTransformationMatch<M, P>, Integer> {
+public abstract class GipsPatternObjective<M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
+		extends GipsObjective<PatternObjective, GraphTransformationMatch<M, P>, Integer> {
 
 	final protected GraphTransformationPattern<M, P> pattern;
 
-	public RoamPatternObjective(RoamEngine engine, PatternObjective objective, final P pattern) {
+	public GipsPatternObjective(GipsEngine engine, PatternObjective objective, final P pattern) {
 		super(engine, objective);
 		this.pattern = pattern;
 	}

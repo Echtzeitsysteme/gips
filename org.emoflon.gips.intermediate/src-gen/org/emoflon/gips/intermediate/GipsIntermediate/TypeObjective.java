@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Type
@@ -10,11 +10,11 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective#getModelType
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective#getModelType
  * <em>Model Type</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getTypeObjective()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getTypeObjective()
  * @model
  * @generated
  */
@@ -25,7 +25,7 @@ public interface TypeObjective extends Context, Objective {
 	 * 
 	 * @return the value of the '<em>Model Type</em>' reference.
 	 * @see #setModelType(Type)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getTypeObjective_ModelType()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getTypeObjective_ModelType()
 	 * @model
 	 * @generated
 	 */
@@ -33,7 +33,7 @@ public interface TypeObjective extends Context, Objective {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective#getModelType
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective#getModelType
 	 * <em>Model Type</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 

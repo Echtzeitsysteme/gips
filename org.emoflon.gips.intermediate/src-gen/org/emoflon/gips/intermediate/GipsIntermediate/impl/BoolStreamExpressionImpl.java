@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -10,10 +10,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamBoolOperator;
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamBoolOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Bool
@@ -22,9 +22,9 @@ import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolStreamExpressionImpl#getStream
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolStreamExpressionImpl#getStream
  * <em>Stream</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolStreamExpressionImpl#getOperator
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolStreamExpressionImpl#getOperator
  * <em>Operator</em>}</li>
  * </ul>
  *
@@ -77,7 +77,7 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.BOOL_STREAM_EXPRESSION;
+		return GipsIntermediatePackage.Literals.BOOL_STREAM_EXPRESSION;
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 		stream = newStream;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.BOOL_STREAM_EXPRESSION__STREAM, oldStream, newStream);
+					GipsIntermediatePackage.BOOL_STREAM_EXPRESSION__STREAM, oldStream, newStream);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -118,16 +118,16 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 			NotificationChain msgs = null;
 			if (stream != null)
 				msgs = ((InternalEObject) stream).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.BOOL_STREAM_EXPRESSION__STREAM, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.BOOL_STREAM_EXPRESSION__STREAM, null, msgs);
 			if (newStream != null)
 				msgs = ((InternalEObject) newStream).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.BOOL_STREAM_EXPRESSION__STREAM, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.BOOL_STREAM_EXPRESSION__STREAM, null, msgs);
 			msgs = basicSetStream(newStream, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.BOOL_STREAM_EXPRESSION__STREAM, newStream, newStream));
+					GipsIntermediatePackage.BOOL_STREAM_EXPRESSION__STREAM, newStream, newStream));
 	}
 
 	/**
@@ -149,7 +149,7 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 		operator = newOperator == null ? OPERATOR_EDEFAULT : newOperator;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.BOOL_STREAM_EXPRESSION__OPERATOR, oldOperator, operator));
+					GipsIntermediatePackage.BOOL_STREAM_EXPRESSION__OPERATOR, oldOperator, operator));
 	}
 
 	/**
@@ -160,7 +160,7 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.BOOL_STREAM_EXPRESSION__STREAM:
+		case GipsIntermediatePackage.BOOL_STREAM_EXPRESSION__STREAM:
 			return basicSetStream(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -174,9 +174,9 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.BOOL_STREAM_EXPRESSION__STREAM:
+		case GipsIntermediatePackage.BOOL_STREAM_EXPRESSION__STREAM:
 			return getStream();
-		case RoamIntermediatePackage.BOOL_STREAM_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.BOOL_STREAM_EXPRESSION__OPERATOR:
 			return getOperator();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -190,10 +190,10 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.BOOL_STREAM_EXPRESSION__STREAM:
+		case GipsIntermediatePackage.BOOL_STREAM_EXPRESSION__STREAM:
 			setStream((StreamExpression) newValue);
 			return;
-		case RoamIntermediatePackage.BOOL_STREAM_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.BOOL_STREAM_EXPRESSION__OPERATOR:
 			setOperator((StreamBoolOperator) newValue);
 			return;
 		}
@@ -208,10 +208,10 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.BOOL_STREAM_EXPRESSION__STREAM:
+		case GipsIntermediatePackage.BOOL_STREAM_EXPRESSION__STREAM:
 			setStream((StreamExpression) null);
 			return;
-		case RoamIntermediatePackage.BOOL_STREAM_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.BOOL_STREAM_EXPRESSION__OPERATOR:
 			setOperator(OPERATOR_EDEFAULT);
 			return;
 		}
@@ -226,9 +226,9 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.BOOL_STREAM_EXPRESSION__STREAM:
+		case GipsIntermediatePackage.BOOL_STREAM_EXPRESSION__STREAM:
 			return stream != null;
-		case RoamIntermediatePackage.BOOL_STREAM_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.BOOL_STREAM_EXPRESSION__OPERATOR:
 			return operator != OPERATOR_EDEFAULT;
 		}
 		return super.eIsSet(featureID);

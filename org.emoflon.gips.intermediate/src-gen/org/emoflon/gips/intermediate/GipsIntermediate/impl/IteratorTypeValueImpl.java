@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -9,11 +9,11 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.Iterator;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation;
-import org.emoflon.roam.intermediate.RoamIntermediate.Type;
+import org.emoflon.gips.intermediate.GipsIntermediate.Iterator;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -22,9 +22,9 @@ import org.emoflon.roam.intermediate.RoamIntermediate.Type;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeValueImpl#getStream
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorTypeValueImpl#getStream
  * <em>Stream</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeValueImpl#getTypeContext
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorTypeValueImpl#getTypeContext
  * <em>Type Context</em>}</li>
  * </ul>
  *
@@ -67,7 +67,7 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.ITERATOR_TYPE_VALUE;
+		return GipsIntermediatePackage.Literals.ITERATOR_TYPE_VALUE;
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 			if (stream != oldStream) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.ITERATOR_TYPE_VALUE__STREAM, oldStream, stream));
+							GipsIntermediatePackage.ITERATOR_TYPE_VALUE__STREAM, oldStream, stream));
 			}
 		}
 		return stream;
@@ -106,7 +106,7 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 		SetOperation oldStream = stream;
 		stream = newStream;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.ITERATOR_TYPE_VALUE__STREAM,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.ITERATOR_TYPE_VALUE__STREAM,
 					oldStream, stream));
 	}
 
@@ -122,7 +122,7 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 			if (typeContext != oldTypeContext) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.ITERATOR_TYPE_VALUE__TYPE_CONTEXT, oldTypeContext, typeContext));
+							GipsIntermediatePackage.ITERATOR_TYPE_VALUE__TYPE_CONTEXT, oldTypeContext, typeContext));
 			}
 		}
 		return typeContext;
@@ -147,7 +147,7 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 		typeContext = newTypeContext;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ITERATOR_TYPE_VALUE__TYPE_CONTEXT, oldTypeContext, typeContext));
+					GipsIntermediatePackage.ITERATOR_TYPE_VALUE__TYPE_CONTEXT, oldTypeContext, typeContext));
 	}
 
 	/**
@@ -158,11 +158,11 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_TYPE_VALUE__STREAM:
+		case GipsIntermediatePackage.ITERATOR_TYPE_VALUE__STREAM:
 			if (resolve)
 				return getStream();
 			return basicGetStream();
-		case RoamIntermediatePackage.ITERATOR_TYPE_VALUE__TYPE_CONTEXT:
+		case GipsIntermediatePackage.ITERATOR_TYPE_VALUE__TYPE_CONTEXT:
 			if (resolve)
 				return getTypeContext();
 			return basicGetTypeContext();
@@ -178,10 +178,10 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_TYPE_VALUE__STREAM:
+		case GipsIntermediatePackage.ITERATOR_TYPE_VALUE__STREAM:
 			setStream((SetOperation) newValue);
 			return;
-		case RoamIntermediatePackage.ITERATOR_TYPE_VALUE__TYPE_CONTEXT:
+		case GipsIntermediatePackage.ITERATOR_TYPE_VALUE__TYPE_CONTEXT:
 			setTypeContext((Type) newValue);
 			return;
 		}
@@ -196,10 +196,10 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_TYPE_VALUE__STREAM:
+		case GipsIntermediatePackage.ITERATOR_TYPE_VALUE__STREAM:
 			setStream((SetOperation) null);
 			return;
-		case RoamIntermediatePackage.ITERATOR_TYPE_VALUE__TYPE_CONTEXT:
+		case GipsIntermediatePackage.ITERATOR_TYPE_VALUE__TYPE_CONTEXT:
 			setTypeContext((Type) null);
 			return;
 		}
@@ -214,9 +214,9 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_TYPE_VALUE__STREAM:
+		case GipsIntermediatePackage.ITERATOR_TYPE_VALUE__STREAM:
 			return stream != null;
-		case RoamIntermediatePackage.ITERATOR_TYPE_VALUE__TYPE_CONTEXT:
+		case GipsIntermediatePackage.ITERATOR_TYPE_VALUE__TYPE_CONTEXT:
 			return typeContext != null;
 		}
 		return super.eIsSet(featureID);
@@ -231,8 +231,8 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == Iterator.class) {
 			switch (derivedFeatureID) {
-			case RoamIntermediatePackage.ITERATOR_TYPE_VALUE__STREAM:
-				return RoamIntermediatePackage.ITERATOR__STREAM;
+			case GipsIntermediatePackage.ITERATOR_TYPE_VALUE__STREAM:
+				return GipsIntermediatePackage.ITERATOR__STREAM;
 			default:
 				return -1;
 			}
@@ -249,8 +249,8 @@ public class IteratorTypeValueImpl extends ValueExpressionImpl implements Iterat
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == Iterator.class) {
 			switch (baseFeatureID) {
-			case RoamIntermediatePackage.ITERATOR__STREAM:
-				return RoamIntermediatePackage.ITERATOR_TYPE_VALUE__STREAM;
+			case GipsIntermediatePackage.ITERATOR__STREAM:
+				return GipsIntermediatePackage.ITERATOR_TYPE_VALUE__STREAM;
 			default:
 				return -1;
 			}

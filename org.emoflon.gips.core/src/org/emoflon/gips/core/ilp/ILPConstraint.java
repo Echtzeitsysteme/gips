@@ -1,8 +1,8 @@
-package org.emoflon.roam.core.ilp;
+package org.emoflon.gips.core.ilp;
 
 import java.util.List;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 
 public record ILPConstraint<T extends Number> (List<ILPTerm<T, Double>> lhsTerms, RelationalOperator operator,
 		Double rhsConstantTerm) {

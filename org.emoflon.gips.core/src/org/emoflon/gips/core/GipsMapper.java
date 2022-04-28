@@ -1,4 +1,4 @@
-package org.emoflon.roam.core;
+package org.emoflon.gips.core;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -7,14 +7,14 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 
-public abstract class RoamMapper<M extends RoamMapping> {
-	final protected RoamEngine engine;
+public abstract class GipsMapper<M extends GipsMapping> {
+	final protected GipsEngine engine;
 	final protected Mapping mapping;
 	final protected Map<String, M> mappings = Collections.synchronizedMap(new HashMap<>());
 
-	public RoamMapper(final RoamEngine engine, final Mapping mapping) {
+	public GipsMapper(final GipsEngine engine, final Mapping mapping) {
 		this.engine = engine;
 		this.mapping = mapping;
 	}

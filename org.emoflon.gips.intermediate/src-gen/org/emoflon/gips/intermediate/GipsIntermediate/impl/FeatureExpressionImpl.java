@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -11,9 +11,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.FeatureLiteral;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Feature
@@ -22,9 +22,9 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.FeatureExpressionImpl#getCurrent
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.FeatureExpressionImpl#getCurrent
  * <em>Current</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.FeatureExpressionImpl#getChild
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.FeatureExpressionImpl#getChild
  * <em>Child</em>}</li>
  * </ul>
  *
@@ -67,7 +67,7 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.FEATURE_EXPRESSION;
+		return GipsIntermediatePackage.Literals.FEATURE_EXPRESSION;
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 		current = newCurrent;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.FEATURE_EXPRESSION__CURRENT, oldCurrent, newCurrent);
+					GipsIntermediatePackage.FEATURE_EXPRESSION__CURRENT, oldCurrent, newCurrent);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -108,15 +108,15 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 			NotificationChain msgs = null;
 			if (current != null)
 				msgs = ((InternalEObject) current).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.FEATURE_EXPRESSION__CURRENT, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.FEATURE_EXPRESSION__CURRENT, null, msgs);
 			if (newCurrent != null)
 				msgs = ((InternalEObject) newCurrent).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.FEATURE_EXPRESSION__CURRENT, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.FEATURE_EXPRESSION__CURRENT, null, msgs);
 			msgs = basicSetCurrent(newCurrent, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.FEATURE_EXPRESSION__CURRENT,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.FEATURE_EXPRESSION__CURRENT,
 					newCurrent, newCurrent));
 	}
 
@@ -139,7 +139,7 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 		child = newChild;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.FEATURE_EXPRESSION__CHILD, oldChild, newChild);
+					GipsIntermediatePackage.FEATURE_EXPRESSION__CHILD, oldChild, newChild);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -158,15 +158,15 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 			NotificationChain msgs = null;
 			if (child != null)
 				msgs = ((InternalEObject) child).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.FEATURE_EXPRESSION__CHILD, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.FEATURE_EXPRESSION__CHILD, null, msgs);
 			if (newChild != null)
 				msgs = ((InternalEObject) newChild).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.FEATURE_EXPRESSION__CHILD, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.FEATURE_EXPRESSION__CHILD, null, msgs);
 			msgs = basicSetChild(newChild, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.FEATURE_EXPRESSION__CHILD,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.FEATURE_EXPRESSION__CHILD,
 					newChild, newChild));
 	}
 
@@ -178,9 +178,9 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.FEATURE_EXPRESSION__CURRENT:
+		case GipsIntermediatePackage.FEATURE_EXPRESSION__CURRENT:
 			return basicSetCurrent(null, msgs);
-		case RoamIntermediatePackage.FEATURE_EXPRESSION__CHILD:
+		case GipsIntermediatePackage.FEATURE_EXPRESSION__CHILD:
 			return basicSetChild(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -194,9 +194,9 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.FEATURE_EXPRESSION__CURRENT:
+		case GipsIntermediatePackage.FEATURE_EXPRESSION__CURRENT:
 			return getCurrent();
-		case RoamIntermediatePackage.FEATURE_EXPRESSION__CHILD:
+		case GipsIntermediatePackage.FEATURE_EXPRESSION__CHILD:
 			return getChild();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -210,10 +210,10 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.FEATURE_EXPRESSION__CURRENT:
+		case GipsIntermediatePackage.FEATURE_EXPRESSION__CURRENT:
 			setCurrent((FeatureLiteral) newValue);
 			return;
-		case RoamIntermediatePackage.FEATURE_EXPRESSION__CHILD:
+		case GipsIntermediatePackage.FEATURE_EXPRESSION__CHILD:
 			setChild((FeatureExpression) newValue);
 			return;
 		}
@@ -228,10 +228,10 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.FEATURE_EXPRESSION__CURRENT:
+		case GipsIntermediatePackage.FEATURE_EXPRESSION__CURRENT:
 			setCurrent((FeatureLiteral) null);
 			return;
-		case RoamIntermediatePackage.FEATURE_EXPRESSION__CHILD:
+		case GipsIntermediatePackage.FEATURE_EXPRESSION__CHILD:
 			setChild((FeatureExpression) null);
 			return;
 		}
@@ -246,9 +246,9 @@ public class FeatureExpressionImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.FEATURE_EXPRESSION__CURRENT:
+		case GipsIntermediatePackage.FEATURE_EXPRESSION__CURRENT:
 			return current != null;
-		case RoamIntermediatePackage.FEATURE_EXPRESSION__CHILD:
+		case GipsIntermediatePackage.FEATURE_EXPRESSION__CHILD:
 			return child != null;
 		}
 		return super.eIsSet(featureID);

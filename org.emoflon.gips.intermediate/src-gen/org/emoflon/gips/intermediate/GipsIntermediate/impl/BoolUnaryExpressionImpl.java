@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -10,10 +10,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.UnaryBoolOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.UnaryBoolOperator;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Bool
@@ -22,9 +22,9 @@ import org.emoflon.roam.intermediate.RoamIntermediate.UnaryBoolOperator;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolUnaryExpressionImpl#getExpression
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolUnaryExpressionImpl#getExpression
  * <em>Expression</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolUnaryExpressionImpl#getOperator
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolUnaryExpressionImpl#getOperator
  * <em>Operator</em>}</li>
  * </ul>
  *
@@ -77,7 +77,7 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.BOOL_UNARY_EXPRESSION;
+		return GipsIntermediatePackage.Literals.BOOL_UNARY_EXPRESSION;
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 		expression = newExpression;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.BOOL_UNARY_EXPRESSION__EXPRESSION, oldExpression, newExpression);
+					GipsIntermediatePackage.BOOL_UNARY_EXPRESSION__EXPRESSION, oldExpression, newExpression);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -118,16 +118,16 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 			NotificationChain msgs = null;
 			if (expression != null)
 				msgs = ((InternalEObject) expression).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.BOOL_UNARY_EXPRESSION__EXPRESSION, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.BOOL_UNARY_EXPRESSION__EXPRESSION, null, msgs);
 			if (newExpression != null)
 				msgs = ((InternalEObject) newExpression).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.BOOL_UNARY_EXPRESSION__EXPRESSION, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.BOOL_UNARY_EXPRESSION__EXPRESSION, null, msgs);
 			msgs = basicSetExpression(newExpression, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.BOOL_UNARY_EXPRESSION__EXPRESSION, newExpression, newExpression));
+					GipsIntermediatePackage.BOOL_UNARY_EXPRESSION__EXPRESSION, newExpression, newExpression));
 	}
 
 	/**
@@ -149,7 +149,7 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 		operator = newOperator == null ? OPERATOR_EDEFAULT : newOperator;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.BOOL_UNARY_EXPRESSION__OPERATOR, oldOperator, operator));
+					GipsIntermediatePackage.BOOL_UNARY_EXPRESSION__OPERATOR, oldOperator, operator));
 	}
 
 	/**
@@ -160,7 +160,7 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.BOOL_UNARY_EXPRESSION__EXPRESSION:
+		case GipsIntermediatePackage.BOOL_UNARY_EXPRESSION__EXPRESSION:
 			return basicSetExpression(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -174,9 +174,9 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.BOOL_UNARY_EXPRESSION__EXPRESSION:
+		case GipsIntermediatePackage.BOOL_UNARY_EXPRESSION__EXPRESSION:
 			return getExpression();
-		case RoamIntermediatePackage.BOOL_UNARY_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.BOOL_UNARY_EXPRESSION__OPERATOR:
 			return getOperator();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -190,10 +190,10 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.BOOL_UNARY_EXPRESSION__EXPRESSION:
+		case GipsIntermediatePackage.BOOL_UNARY_EXPRESSION__EXPRESSION:
 			setExpression((BoolExpression) newValue);
 			return;
-		case RoamIntermediatePackage.BOOL_UNARY_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.BOOL_UNARY_EXPRESSION__OPERATOR:
 			setOperator((UnaryBoolOperator) newValue);
 			return;
 		}
@@ -208,10 +208,10 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.BOOL_UNARY_EXPRESSION__EXPRESSION:
+		case GipsIntermediatePackage.BOOL_UNARY_EXPRESSION__EXPRESSION:
 			setExpression((BoolExpression) null);
 			return;
-		case RoamIntermediatePackage.BOOL_UNARY_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.BOOL_UNARY_EXPRESSION__OPERATOR:
 			setOperator(OPERATOR_EDEFAULT);
 			return;
 		}
@@ -226,9 +226,9 @@ public class BoolUnaryExpressionImpl extends BoolExpressionImpl implements BoolU
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.BOOL_UNARY_EXPRESSION__EXPRESSION:
+		case GipsIntermediatePackage.BOOL_UNARY_EXPRESSION__EXPRESSION:
 			return expression != null;
-		case RoamIntermediatePackage.BOOL_UNARY_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.BOOL_UNARY_EXPRESSION__OPERATOR:
 			return operator != OPERATOR_EDEFAULT;
 		}
 		return super.eIsSet(featureID);

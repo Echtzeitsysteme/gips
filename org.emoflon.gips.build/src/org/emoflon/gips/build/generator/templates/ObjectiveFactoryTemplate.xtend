@@ -1,32 +1,32 @@
-package org.emoflon.roam.build.generator.templates
+package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.roam.build.generator.GeneratorTemplate
-import org.emoflon.roam.build.generator.TemplateData
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel
-import org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective
+import org.emoflon.gips.build.generator.GeneratorTemplate
+import org.emoflon.gips.build.generator.TemplateData
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective
 
-class ObjectiveFactoryTemplate extends GeneratorTemplate<RoamIntermediateModel> {
+class ObjectiveFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 	
-	new(TemplateData data, RoamIntermediateModel context) {
+	new(TemplateData data, GipsIntermediateModel context) {
 		super(data, context)
 	}
 
 	override init() {
-		packageName = data.apiData.roamApiPkg
+		packageName = data.apiData.gipsApiPkg
 		className = data.objectiveFactoryClassName
 		fqn = packageName + "." + className;
-		filePath = data.apiData.roamApiPkgPath + "/" + className + ".java"
+		filePath = data.apiData.gipsApiPkgPath + "/" + className + ".java"
 		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)
-		imports.add("org.emoflon.roam.core.api.RoamObjectiveFactory")
-		imports.add("org.emoflon.roam.core.RoamEngine")
-		imports.add("org.emoflon.roam.core.RoamObjective")
-		imports.add("org.emoflon.roam.core.RoamTypeObjective")
-		imports.add("org.emoflon.roam.core.RoamMappingObjective")
-		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.Objective")
-		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective")
-		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective")
-		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective")
-		data.objective2objectiveClassName.values.forEach[o | imports.add(data.apiData.roamObjectivePkg+"."+o)]
+		imports.add("org.emoflon.gips.core.api.GipsObjectiveFactory")
+		imports.add("org.emoflon.gips.core.GipsEngine")
+		imports.add("org.emoflon.gips.core.GipsObjective")
+		imports.add("org.emoflon.gips.core.GipsTypeObjective")
+		imports.add("org.emoflon.gips.core.GipsMappingObjective")
+		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.Objective")
+		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective")
+		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective")
+		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective")
+		data.objective2objectiveClassName.values.forEach[o | imports.add(data.apiData.gipsObjectivePkg+"."+o)]
 	}
 	
 	override generate() {
@@ -36,13 +36,13 @@ class ObjectiveFactoryTemplate extends GeneratorTemplate<RoamIntermediateModel> 
 import «imp»;
 «ENDFOR»
 
-public class «className» extends RoamObjectiveFactory<«data.apiData.apiClass»> {
-	public «className»(final RoamEngine engine, final «data.apiData.apiClass» eMoflonApi) {
+public class «className» extends GipsObjectiveFactory<«data.apiData.apiClass»> {
+	public «className»(final GipsEngine engine, final «data.apiData.apiClass» eMoflonApi) {
 		super(engine, eMoflonApi);
 	}
 	
 	@Override
-	public RoamObjective<? extends Objective, ? extends Object, ? extends Number> createObjective(final Objective objective) {
+	public GipsObjective<? extends Objective, ? extends Object, ? extends Number> createObjective(final Objective objective) {
 		«IF context.objectives.isNullOrEmpty»
 		throw new IllegalArgumentException("Unknown objective type: "+objective);
 		«ELSE»

@@ -1,4 +1,4 @@
-package org.emoflon.roam.core.gt;
+package org.emoflon.gips.core.gt;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -6,18 +6,18 @@ import java.util.Map;
 
 import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 import org.emoflon.ibex.gt.api.GraphTransformationPattern;
-import org.emoflon.roam.core.RoamEngine;
-import org.emoflon.roam.core.RoamMapper;
-import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
+import org.emoflon.gips.core.GipsEngine;
+import org.emoflon.gips.core.GipsMapper;
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 
 public abstract class PatternMapper<GTM extends GTMapping<M, P>, M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
-		extends RoamMapper<GTM> {
+		extends GipsMapper<GTM> {
 
 	final protected P pattern;
 	final protected Map<M, GTM> match2Mappings = Collections.synchronizedMap(new HashMap<>());
 	private int mappingCounter = 0;
 
-	public PatternMapper(final RoamEngine engine, final Mapping mapping, final P pattern) {
+	public PatternMapper(final GipsEngine engine, final Mapping mapping, final P pattern) {
 		super(engine, mapping);
 		this.pattern = pattern;
 		// TODO: this.init() see GTMapper.java

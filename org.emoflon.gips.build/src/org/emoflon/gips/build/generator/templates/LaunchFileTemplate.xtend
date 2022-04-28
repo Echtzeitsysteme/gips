@@ -1,17 +1,17 @@
-package org.emoflon.roam.build.generator.templates
+package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.roam.build.generator.GeneratorTemplate
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel
-import org.emoflon.roam.build.generator.TemplateData
+import org.emoflon.gips.build.generator.GeneratorTemplate
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
+import org.emoflon.gips.build.generator.TemplateData
 
-class LaunchFileTemplate extends GeneratorTemplate<RoamIntermediateModel> {
+class LaunchFileTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 	
-	new(TemplateData data, RoamIntermediateModel context) {
+	new(TemplateData data, GipsIntermediateModel context) {
 		super(data, context)
 	}
 	
 	override init() {
-		filePath = data.apiData.roamApiPkgPath + "/" + data.apiData.apiClassNamePrefix + "Launcher.launch"
+		filePath = data.apiData.gipsApiPkgPath + "/" + data.apiData.apiClassNamePrefix + "Launcher.launch"
 	}
 	
 	override generate() {

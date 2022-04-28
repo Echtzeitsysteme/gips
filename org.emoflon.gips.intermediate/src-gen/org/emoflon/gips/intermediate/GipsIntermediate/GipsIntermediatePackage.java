@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -20,31 +20,31 @@ import org.eclipse.emf.ecore.EReference;
  * </ul>
  * <!-- end-user-doc -->
  * 
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateFactory
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory
  * @model kind="package"
  * @generated
  */
-public interface RoamIntermediatePackage extends EPackage {
+public interface GipsIntermediatePackage extends EPackage {
 	/**
 	 * The package name. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	String eNAME = "RoamIntermediate";
+	String eNAME = "GipsIntermediate";
 
 	/**
 	 * The package namespace URI. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	String eNS_URI = "platform:/resource/org.emoflon.roam.intermediate/model/RoamIntermediate.ecore";
+	String eNS_URI = "platform:/resource/org.emoflon.gips.intermediate/model/GipsIntermediate.ecore";
 
 	/**
 	 * The package namespace name. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	String eNS_PREFIX = "RoamIntermediate";
+	String eNS_PREFIX = "GipsIntermediate";
 
 	/**
 	 * The singleton instance of the package. <!-- begin-user-doc --> <!--
@@ -52,19 +52,19 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * 
 	 * @generated
 	 */
-	RoamIntermediatePackage eINSTANCE = org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl
+	GipsIntermediatePackage eINSTANCE = org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl
 			.init();
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl
 	 * <em>Model</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getRoamIntermediateModel()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getGipsIntermediateModel()
 	 * @generated
 	 */
-	int ROAM_INTERMEDIATE_MODEL = 0;
+	int GIPS_INTERMEDIATE_MODEL = 0;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc
@@ -73,7 +73,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROAM_INTERMEDIATE_MODEL__NAME = 0;
+	int GIPS_INTERMEDIATE_MODEL__NAME = 0;
 
 	/**
 	 * The feature id for the '<em><b>Variables</b></em>' containment reference
@@ -82,7 +82,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROAM_INTERMEDIATE_MODEL__VARIABLES = 1;
+	int GIPS_INTERMEDIATE_MODEL__VARIABLES = 1;
 
 	/**
 	 * The feature id for the '<em><b>Constraints</b></em>' containment reference
@@ -91,7 +91,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROAM_INTERMEDIATE_MODEL__CONSTRAINTS = 2;
+	int GIPS_INTERMEDIATE_MODEL__CONSTRAINTS = 2;
 
 	/**
 	 * The feature id for the '<em><b>Objectives</b></em>' containment reference
@@ -100,7 +100,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROAM_INTERMEDIATE_MODEL__OBJECTIVES = 3;
+	int GIPS_INTERMEDIATE_MODEL__OBJECTIVES = 3;
 
 	/**
 	 * The feature id for the '<em><b>Global Objective</b></em>' containment
@@ -109,7 +109,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE = 4;
+	int GIPS_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE = 4;
 
 	/**
 	 * The feature id for the '<em><b>Ibex Model</b></em>' containment reference.
@@ -118,7 +118,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROAM_INTERMEDIATE_MODEL__IBEX_MODEL = 5;
+	int GIPS_INTERMEDIATE_MODEL__IBEX_MODEL = 5;
 
 	/**
 	 * The feature id for the '<em><b>Config</b></em>' containment reference. <!--
@@ -127,7 +127,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROAM_INTERMEDIATE_MODEL__CONFIG = 6;
+	int GIPS_INTERMEDIATE_MODEL__CONFIG = 6;
 
 	/**
 	 * The number of structural features of the '<em>Model</em>' class. <!--
@@ -136,7 +136,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROAM_INTERMEDIATE_MODEL_FEATURE_COUNT = 7;
+	int GIPS_INTERMEDIATE_MODEL_FEATURE_COUNT = 7;
 
 	/**
 	 * The number of operations of the '<em>Model</em>' class. <!-- begin-user-doc
@@ -145,15 +145,15 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROAM_INTERMEDIATE_MODEL_OPERATION_COUNT = 0;
+	int GIPS_INTERMEDIATE_MODEL_OPERATION_COUNT = 0;
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl
 	 * <em>ILP Config</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getILPConfig()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getILPConfig()
 	 * @generated
 	 */
 	int ILP_CONFIG = 1;
@@ -286,11 +286,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.VariableSetImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.VariableSetImpl
 	 * <em>Variable Set</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.VariableSetImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getVariableSet()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.VariableSetImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getVariableSet()
 	 * @generated
 	 */
 	int VARIABLE_SET = 2;
@@ -324,11 +324,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternImpl
 	 * <em>Pattern</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getPattern()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getPattern()
 	 * @generated
 	 */
 	int PATTERN = 3;
@@ -380,11 +380,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeImpl
 	 * <em>Type</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getType()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getType()
 	 * @generated
 	 */
 	int TYPE = 4;
@@ -427,11 +427,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingImpl
 	 * <em>Mapping</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getMapping()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getMapping()
 	 * @generated
 	 */
 	int MAPPING = 5;
@@ -474,11 +474,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ConstraintImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl
 	 * <em>Constraint</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ConstraintImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getConstraint()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getConstraint()
 	 * @generated
 	 */
 	int CONSTRAINT = 6;
@@ -530,11 +530,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ObjectiveImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ObjectiveImpl
 	 * <em>Objective</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ObjectiveImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getObjective()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ObjectiveImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getObjective()
 	 * @generated
 	 */
 	int OBJECTIVE = 7;
@@ -586,12 +586,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.GlobalObjectiveImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GlobalObjectiveImpl
 	 * <em>Global Objective</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.GlobalObjectiveImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getGlobalObjective()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GlobalObjectiveImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getGlobalObjective()
 	 * @generated
 	 */
 	int GLOBAL_OBJECTIVE = 8;
@@ -634,11 +634,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Context
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Context
 	 * <em>Context</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Context
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Context
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContext()
 	 * @generated
 	 */
 	int CONTEXT = 9;
@@ -663,12 +663,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternConstraintImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternConstraintImpl
 	 * <em>Pattern Constraint</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternConstraintImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getPatternConstraint()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternConstraintImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getPatternConstraint()
 	 * @generated
 	 */
 	int PATTERN_CONSTRAINT = 10;
@@ -729,12 +729,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl
 	 * <em>Type Constraint</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getTypeConstraint()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getTypeConstraint()
 	 * @generated
 	 */
 	int TYPE_CONSTRAINT = 11;
@@ -795,12 +795,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingConstraintImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingConstraintImpl
 	 * <em>Mapping Constraint</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingConstraintImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getMappingConstraint()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingConstraintImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getMappingConstraint()
 	 * @generated
 	 */
 	int MAPPING_CONSTRAINT = 12;
@@ -861,12 +861,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternObjectiveImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternObjectiveImpl
 	 * <em>Pattern Objective</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternObjectiveImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getPatternObjective()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternObjectiveImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getPatternObjective()
 	 * @generated
 	 */
 	int PATTERN_OBJECTIVE = 13;
@@ -927,12 +927,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeObjectiveImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeObjectiveImpl
 	 * <em>Type Objective</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeObjectiveImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getTypeObjective()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeObjectiveImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getTypeObjective()
 	 * @generated
 	 */
 	int TYPE_OBJECTIVE = 14;
@@ -993,12 +993,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingObjectiveImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingObjectiveImpl
 	 * <em>Mapping Objective</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingObjectiveImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getMappingObjective()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingObjectiveImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getMappingObjective()
 	 * @generated
 	 */
 	int MAPPING_OBJECTIVE = 15;
@@ -1059,12 +1059,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticExpressionImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ArithmeticExpressionImpl
 	 * <em>Arithmetic Expression</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticExpressionImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getArithmeticExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ArithmeticExpressionImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getArithmeticExpression()
 	 * @generated
 	 */
 	int ARITHMETIC_EXPRESSION = 16;
@@ -1098,12 +1098,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BinaryArithmeticExpressionImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BinaryArithmeticExpressionImpl
 	 * <em>Binary Arithmetic Expression</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.BinaryArithmeticExpressionImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBinaryArithmeticExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.BinaryArithmeticExpressionImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBinaryArithmeticExpression()
 	 * @generated
 	 */
 	int BINARY_ARITHMETIC_EXPRESSION = 17;
@@ -1164,12 +1164,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.UnaryArithmeticExpressionImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.UnaryArithmeticExpressionImpl
 	 * <em>Unary Arithmetic Expression</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.UnaryArithmeticExpressionImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getUnaryArithmeticExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.UnaryArithmeticExpressionImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getUnaryArithmeticExpression()
 	 * @generated
 	 */
 	int UNARY_ARITHMETIC_EXPRESSION = 18;
@@ -1221,11 +1221,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.SetOperation <em>Set
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.SetOperation <em>Set
 	 * Operation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.SetOperation
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getSetOperation()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.SetOperation
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getSetOperation()
 	 * @generated
 	 */
 	int SET_OPERATION = 19;
@@ -1259,12 +1259,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticValueExpressionImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ArithmeticValueExpressionImpl
 	 * <em>Arithmetic Value Expression</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticValueExpressionImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getArithmeticValueExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ArithmeticValueExpressionImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getArithmeticValueExpression()
 	 * @generated
 	 */
 	int ARITHMETIC_VALUE_EXPRESSION = 20;
@@ -1298,12 +1298,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticValueImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ArithmeticValueImpl
 	 * <em>Arithmetic Value</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getArithmeticValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ArithmeticValueImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getArithmeticValue()
 	 * @generated
 	 */
 	int ARITHMETIC_VALUE = 21;
@@ -1346,12 +1346,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticLiteralImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ArithmeticLiteralImpl
 	 * <em>Arithmetic Literal</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticLiteralImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getArithmeticLiteral()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ArithmeticLiteralImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getArithmeticLiteral()
 	 * @generated
 	 */
 	int ARITHMETIC_LITERAL = 22;
@@ -1385,12 +1385,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IntegerLiteralImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IntegerLiteralImpl
 	 * <em>Integer Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IntegerLiteralImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIntegerLiteral()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IntegerLiteralImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIntegerLiteral()
 	 * @generated
 	 */
 	int INTEGER_LITERAL = 23;
@@ -1433,12 +1433,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.DoubleLiteralImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.DoubleLiteralImpl
 	 * <em>Double Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.DoubleLiteralImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getDoubleLiteral()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.DoubleLiteralImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getDoubleLiteral()
 	 * @generated
 	 */
 	int DOUBLE_LITERAL = 24;
@@ -1481,12 +1481,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolExpressionImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolExpressionImpl
 	 * <em>Bool Expression</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolExpressionImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolExpressionImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBoolExpression()
 	 * @generated
 	 */
 	int BOOL_EXPRESSION = 25;
@@ -1511,12 +1511,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolBinaryExpressionImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolBinaryExpressionImpl
 	 * <em>Bool Binary Expression</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolBinaryExpressionImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolBinaryExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolBinaryExpressionImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBoolBinaryExpression()
 	 * @generated
 	 */
 	int BOOL_BINARY_EXPRESSION = 26;
@@ -1568,12 +1568,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolUnaryExpressionImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolUnaryExpressionImpl
 	 * <em>Bool Unary Expression</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolUnaryExpressionImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolUnaryExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolUnaryExpressionImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBoolUnaryExpression()
 	 * @generated
 	 */
 	int BOOL_UNARY_EXPRESSION = 27;
@@ -1616,12 +1616,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolValueExpressionImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolValueExpressionImpl
 	 * <em>Bool Value Expression</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolValueExpressionImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolValueExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolValueExpressionImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBoolValueExpression()
 	 * @generated
 	 */
 	int BOOL_VALUE_EXPRESSION = 28;
@@ -1646,11 +1646,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolValueImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolValueImpl
 	 * <em>Bool Value</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolValueImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBoolValue()
 	 * @generated
 	 */
 	int BOOL_VALUE = 29;
@@ -1684,12 +1684,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolStreamExpressionImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolStreamExpressionImpl
 	 * <em>Bool Stream Expression</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolStreamExpressionImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolStreamExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolStreamExpressionImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBoolStreamExpression()
 	 * @generated
 	 */
 	int BOOL_STREAM_EXPRESSION = 30;
@@ -1732,12 +1732,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RelationalExpressionImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.RelationalExpressionImpl
 	 * <em>Relational Expression</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RelationalExpressionImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getRelationalExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.RelationalExpressionImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getRelationalExpression()
 	 * @generated
 	 */
 	int RELATIONAL_EXPRESSION = 31;
@@ -1789,11 +1789,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolLiteralImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolLiteralImpl
 	 * <em>Bool Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolLiteralImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolLiteral()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolLiteralImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBoolLiteral()
 	 * @generated
 	 */
 	int BOOL_LITERAL = 32;
@@ -1827,12 +1827,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ValueExpressionImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ValueExpressionImpl
 	 * <em>Value Expression</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ValueExpressionImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getValueExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ValueExpressionImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getValueExpression()
 	 * @generated
 	 */
 	int VALUE_EXPRESSION = 33;
@@ -1866,12 +1866,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.SumExpressionImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.SumExpressionImpl
 	 * <em>Sum Expression</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.SumExpressionImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getSumExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.SumExpressionImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getSumExpression()
 	 * @generated
 	 */
 	int SUM_EXPRESSION = 34;
@@ -1932,12 +1932,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingSumExpressionImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingSumExpressionImpl
 	 * <em>Mapping Sum Expression</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingSumExpressionImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getMappingSumExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingSumExpressionImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getMappingSumExpression()
 	 * @generated
 	 */
 	int MAPPING_SUM_EXPRESSION = 35;
@@ -2007,12 +2007,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeSumExpressionImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeSumExpressionImpl
 	 * <em>Type Sum Expression</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeSumExpressionImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getTypeSumExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeSumExpressionImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getTypeSumExpression()
 	 * @generated
 	 */
 	int TYPE_SUM_EXPRESSION = 36;
@@ -2082,12 +2082,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextTypeValueImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextTypeValueImpl
 	 * <em>Context Type Value</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextTypeValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextTypeValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextTypeValueImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextTypeValue()
 	 * @generated
 	 */
 	int CONTEXT_TYPE_VALUE = 37;
@@ -2130,12 +2130,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextPatternValueImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternValueImpl
 	 * <em>Context Pattern Value</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextPatternValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextPatternValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternValueImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextPatternValue()
 	 * @generated
 	 */
 	int CONTEXT_PATTERN_VALUE = 38;
@@ -2178,12 +2178,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextPatternNodeImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternNodeImpl
 	 * <em>Context Pattern Node</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextPatternNodeImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextPatternNode()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternNodeImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextPatternNode()
 	 * @generated
 	 */
 	int CONTEXT_PATTERN_NODE = 39;
@@ -2235,12 +2235,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingValueImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextMappingValueImpl
 	 * <em>Context Mapping Value</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextMappingValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextMappingValueImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextMappingValue()
 	 * @generated
 	 */
 	int CONTEXT_MAPPING_VALUE = 40;
@@ -2283,12 +2283,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingNodeImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextMappingNodeImpl
 	 * <em>Context Mapping Node</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingNodeImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextMappingNode()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextMappingNodeImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextMappingNode()
 	 * @generated
 	 */
 	int CONTEXT_MAPPING_NODE = 41;
@@ -2340,12 +2340,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ObjectiveFunctionValueImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ObjectiveFunctionValueImpl
 	 * <em>Objective Function Value</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ObjectiveFunctionValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getObjectiveFunctionValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ObjectiveFunctionValueImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getObjectiveFunctionValue()
 	 * @generated
 	 */
 	int OBJECTIVE_FUNCTION_VALUE = 42;
@@ -2388,12 +2388,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.FeatureExpressionImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.FeatureExpressionImpl
 	 * <em>Feature Expression</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.FeatureExpressionImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getFeatureExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.FeatureExpressionImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getFeatureExpression()
 	 * @generated
 	 */
 	int FEATURE_EXPRESSION = 43;
@@ -2436,12 +2436,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.FeatureLiteralImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.FeatureLiteralImpl
 	 * <em>Feature Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.FeatureLiteralImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getFeatureLiteral()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.FeatureLiteralImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getFeatureLiteral()
 	 * @generated
 	 */
 	int FEATURE_LITERAL = 44;
@@ -2475,12 +2475,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextTypeFeatureValueImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextTypeFeatureValueImpl
 	 * <em>Context Type Feature Value</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextTypeFeatureValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextTypeFeatureValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextTypeFeatureValueImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextTypeFeatureValue()
 	 * @generated
 	 */
 	int CONTEXT_TYPE_FEATURE_VALUE = 45;
@@ -2532,12 +2532,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextPatternNodeFeatureValueImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternNodeFeatureValueImpl
 	 * <em>Context Pattern Node Feature Value</em>}' class. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextPatternNodeFeatureValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextPatternNodeFeatureValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternNodeFeatureValueImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextPatternNodeFeatureValue()
 	 * @generated
 	 */
 	int CONTEXT_PATTERN_NODE_FEATURE_VALUE = 46;
@@ -2598,12 +2598,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingNodeFeatureValueImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextMappingNodeFeatureValueImpl
 	 * <em>Context Mapping Node Feature Value</em>}' class. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingNodeFeatureValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextMappingNodeFeatureValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextMappingNodeFeatureValueImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextMappingNodeFeatureValue()
 	 * @generated
 	 */
 	int CONTEXT_MAPPING_NODE_FEATURE_VALUE = 47;
@@ -2664,11 +2664,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorImpl
 	 * <em>Iterator</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIterator()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIterator()
 	 * @generated
 	 */
 	int ITERATOR = 48;
@@ -2702,12 +2702,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternValueImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternValueImpl
 	 * <em>Iterator Pattern Value</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorPatternValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternValueImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorPatternValue()
 	 * @generated
 	 */
 	int ITERATOR_PATTERN_VALUE = 49;
@@ -2759,12 +2759,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternFeatureValueImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternFeatureValueImpl
 	 * <em>Iterator Pattern Feature Value</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternFeatureValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorPatternFeatureValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternFeatureValueImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorPatternFeatureValue()
 	 * @generated
 	 */
 	int ITERATOR_PATTERN_FEATURE_VALUE = 50;
@@ -2825,12 +2825,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternNodeValueImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternNodeValueImpl
 	 * <em>Iterator Pattern Node Value</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternNodeValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorPatternNodeValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternNodeValueImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorPatternNodeValue()
 	 * @generated
 	 */
 	int ITERATOR_PATTERN_NODE_VALUE = 51;
@@ -2891,12 +2891,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternNodeFeatureValueImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternNodeFeatureValueImpl
 	 * <em>Iterator Pattern Node Feature Value</em>}' class. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternNodeFeatureValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorPatternNodeFeatureValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternNodeFeatureValueImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorPatternNodeFeatureValue()
 	 * @generated
 	 */
 	int ITERATOR_PATTERN_NODE_FEATURE_VALUE = 52;
@@ -2966,12 +2966,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingValueImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingValueImpl
 	 * <em>Iterator Mapping Value</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingValueImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorMappingValue()
 	 * @generated
 	 */
 	int ITERATOR_MAPPING_VALUE = 53;
@@ -3023,12 +3023,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingFeatureValueImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingFeatureValueImpl
 	 * <em>Iterator Mapping Feature Value</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingFeatureValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingFeatureValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingFeatureValueImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorMappingFeatureValue()
 	 * @generated
 	 */
 	int ITERATOR_MAPPING_FEATURE_VALUE = 54;
@@ -3089,12 +3089,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeValueImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingNodeValueImpl
 	 * <em>Iterator Mapping Node Value</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingNodeValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingNodeValueImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorMappingNodeValue()
 	 * @generated
 	 */
 	int ITERATOR_MAPPING_NODE_VALUE = 55;
@@ -3155,12 +3155,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeFeatureValueImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingNodeFeatureValueImpl
 	 * <em>Iterator Mapping Node Feature Value</em>}' class. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeFeatureValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingNodeFeatureValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingNodeFeatureValueImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorMappingNodeFeatureValue()
 	 * @generated
 	 */
 	int ITERATOR_MAPPING_NODE_FEATURE_VALUE = 56;
@@ -3230,12 +3230,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeValueImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorTypeValueImpl
 	 * <em>Iterator Type Value</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorTypeValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorTypeValueImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorTypeValue()
 	 * @generated
 	 */
 	int ITERATOR_TYPE_VALUE = 57;
@@ -3287,12 +3287,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeFeatureValueImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorTypeFeatureValueImpl
 	 * <em>Iterator Type Feature Value</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeFeatureValueImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorTypeFeatureValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorTypeFeatureValueImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorTypeFeatureValue()
 	 * @generated
 	 */
 	int ITERATOR_TYPE_FEATURE_VALUE = 58;
@@ -3353,12 +3353,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamExpressionImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamExpressionImpl
 	 * <em>Stream Expression</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamExpressionImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamExpressionImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamExpression()
 	 * @generated
 	 */
 	int STREAM_EXPRESSION = 59;
@@ -3419,12 +3419,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamOperation
 	 * <em>Stream Operation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamOperation()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamOperation
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamOperation()
 	 * @generated
 	 */
 	int STREAM_OPERATION = 60;
@@ -3449,12 +3449,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamFilterOperationImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamFilterOperationImpl
 	 * <em>Stream Filter Operation</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamFilterOperationImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamFilterOperation()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamFilterOperationImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamFilterOperation()
 	 * @generated
 	 */
 	int STREAM_FILTER_OPERATION = 61;
@@ -3488,12 +3488,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamSelectOperationImpl
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamSelectOperationImpl
 	 * <em>Stream Select Operation</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamSelectOperationImpl
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamSelectOperation()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamSelectOperationImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamSelectOperation()
 	 * @generated
 	 */
 	int STREAM_SELECT_OPERATION = 62;
@@ -3527,228 +3527,228 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPSolverType <em>ILP
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType <em>ILP
 	 * Solver Type</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ILPSolverType
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getILPSolverType()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getILPSolverType()
 	 * @generated
 	 */
 	int ILP_SOLVER_TYPE = 63;
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget
 	 * <em>Objective Target</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getObjectiveTarget()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getObjectiveTarget()
 	 * @generated
 	 */
 	int OBJECTIVE_TARGET = 64;
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator
 	 * <em>Relational Operator</em>}' enum. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getRelationalOperator()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getRelationalOperator()
 	 * @generated
 	 */
 	int RELATIONAL_OPERATOR = 65;
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator
 	 * <em>Binary Arithmetic Operator</em>}' enum. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBinaryArithmeticOperator()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBinaryArithmeticOperator()
 	 * @generated
 	 */
 	int BINARY_ARITHMETIC_OPERATOR = 66;
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator
 	 * <em>Unary Arithmetic Operator</em>}' enum. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getUnaryArithmeticOperator()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getUnaryArithmeticOperator()
 	 * @generated
 	 */
 	int UNARY_ARITHMETIC_OPERATOR = 67;
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamArithmeticOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamArithmeticOperator
 	 * <em>Stream Arithmetic Operator</em>}' enum. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamArithmeticOperator
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamArithmeticOperator()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamArithmeticOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamArithmeticOperator()
 	 * @generated
 	 */
 	int STREAM_ARITHMETIC_OPERATOR = 68;
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryBoolOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BinaryBoolOperator
 	 * <em>Binary Bool Operator</em>}' enum. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BinaryBoolOperator
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBinaryBoolOperator()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BinaryBoolOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBinaryBoolOperator()
 	 * @generated
 	 */
 	int BINARY_BOOL_OPERATOR = 69;
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryBoolOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.UnaryBoolOperator
 	 * <em>Unary Bool Operator</em>}' enum. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.UnaryBoolOperator
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getUnaryBoolOperator()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.UnaryBoolOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getUnaryBoolOperator()
 	 * @generated
 	 */
 	int UNARY_BOOL_OPERATOR = 70;
 
 	/**
 	 * The meta object id for the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamBoolOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamBoolOperator
 	 * <em>Stream Bool Operator</em>}' enum. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamBoolOperator
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamBoolOperator()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamBoolOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamBoolOperator()
 	 * @generated
 	 */
 	int STREAM_BOOL_OPERATOR = 71;
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
 	 * <em>Model</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Model</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
 	 * @generated
 	 */
-	EClass getRoamIntermediateModel();
+	EClass getGipsIntermediateModel();
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getName
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getName
 	 * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getName()
-	 * @see #getRoamIntermediateModel()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getName()
+	 * @see #getGipsIntermediateModel()
 	 * @generated
 	 */
-	EAttribute getRoamIntermediateModel_Name();
+	EAttribute getGipsIntermediateModel_Name();
 
 	/**
 	 * Returns the meta object for the containment reference list
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getVariables
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getVariables
 	 * <em>Variables</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference list
 	 *         '<em>Variables</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getVariables()
-	 * @see #getRoamIntermediateModel()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getVariables()
+	 * @see #getGipsIntermediateModel()
 	 * @generated
 	 */
-	EReference getRoamIntermediateModel_Variables();
+	EReference getGipsIntermediateModel_Variables();
 
 	/**
 	 * Returns the meta object for the containment reference list
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getConstraints
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getConstraints
 	 * <em>Constraints</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference list
 	 *         '<em>Constraints</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getConstraints()
-	 * @see #getRoamIntermediateModel()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getConstraints()
+	 * @see #getGipsIntermediateModel()
 	 * @generated
 	 */
-	EReference getRoamIntermediateModel_Constraints();
+	EReference getGipsIntermediateModel_Constraints();
 
 	/**
 	 * Returns the meta object for the containment reference list
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getObjectives
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getObjectives
 	 * <em>Objectives</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference list
 	 *         '<em>Objectives</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getObjectives()
-	 * @see #getRoamIntermediateModel()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getObjectives()
+	 * @see #getGipsIntermediateModel()
 	 * @generated
 	 */
-	EReference getRoamIntermediateModel_Objectives();
+	EReference getGipsIntermediateModel_Objectives();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getGlobalObjective
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getGlobalObjective
 	 * <em>Global Objective</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Global
 	 *         Objective</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getGlobalObjective()
-	 * @see #getRoamIntermediateModel()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getGlobalObjective()
+	 * @see #getGipsIntermediateModel()
 	 * @generated
 	 */
-	EReference getRoamIntermediateModel_GlobalObjective();
+	EReference getGipsIntermediateModel_GlobalObjective();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getIbexModel
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getIbexModel
 	 * <em>Ibex Model</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Ibex Model</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getIbexModel()
-	 * @see #getRoamIntermediateModel()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getIbexModel()
+	 * @see #getGipsIntermediateModel()
 	 * @generated
 	 */
-	EReference getRoamIntermediateModel_IbexModel();
+	EReference getGipsIntermediateModel_IbexModel();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getConfig
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getConfig
 	 * <em>Config</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Config</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getConfig()
-	 * @see #getRoamIntermediateModel()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getConfig()
+	 * @see #getGipsIntermediateModel()
 	 * @generated
 	 */
-	EReference getRoamIntermediateModel_Config();
+	EReference getGipsIntermediateModel_Config();
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig <em>ILP
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig <em>ILP
 	 * Config</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>ILP Config</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig
 	 * @generated
 	 */
 	EClass getILPConfig();
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getSolver
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolver
 	 * <em>Solver</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Solver</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getSolver()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolver()
 	 * @see #getILPConfig()
 	 * @generated
 	 */
@@ -3756,11 +3756,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getSolverHomeDir
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolverHomeDir
 	 * <em>Solver Home Dir</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Solver Home Dir</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getSolverHomeDir()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolverHomeDir()
 	 * @see #getILPConfig()
 	 * @generated
 	 */
@@ -3768,11 +3768,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getSolverLicenseFile
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolverLicenseFile
 	 * <em>Solver License File</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Solver License File</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getSolverLicenseFile()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolverLicenseFile()
 	 * @see #getILPConfig()
 	 * @generated
 	 */
@@ -3780,11 +3780,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isBuildLaunchConfig
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isBuildLaunchConfig
 	 * <em>Build Launch Config</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Build Launch Config</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isBuildLaunchConfig()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isBuildLaunchConfig()
 	 * @see #getILPConfig()
 	 * @generated
 	 */
@@ -3792,11 +3792,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getMainFile
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getMainFile
 	 * <em>Main File</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Main File</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getMainFile()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getMainFile()
 	 * @see #getILPConfig()
 	 * @generated
 	 */
@@ -3804,11 +3804,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isEnableTimeLimit
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableTimeLimit
 	 * <em>Enable Time Limit</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Enable Time Limit</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isEnableTimeLimit()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableTimeLimit()
 	 * @see #getILPConfig()
 	 * @generated
 	 */
@@ -3816,11 +3816,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getIlpTimeLimit
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getIlpTimeLimit
 	 * <em>Ilp Time Limit</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Ilp Time Limit</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getIlpTimeLimit()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getIlpTimeLimit()
 	 * @see #getILPConfig()
 	 * @generated
 	 */
@@ -3828,11 +3828,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isEnableRndSeed
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableRndSeed
 	 * <em>Enable Rnd Seed</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Enable Rnd Seed</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isEnableRndSeed()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableRndSeed()
 	 * @see #getILPConfig()
 	 * @generated
 	 */
@@ -3840,11 +3840,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getIlpRndSeed
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getIlpRndSeed
 	 * <em>Ilp Rnd Seed</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Ilp Rnd Seed</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getIlpRndSeed()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getIlpRndSeed()
 	 * @see #getILPConfig()
 	 * @generated
 	 */
@@ -3852,11 +3852,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isPresolve
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isPresolve
 	 * <em>Presolve</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Presolve</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isPresolve()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isPresolve()
 	 * @see #getILPConfig()
 	 * @generated
 	 */
@@ -3864,11 +3864,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isEnablePresolve
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnablePresolve
 	 * <em>Enable Presolve</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Enable Presolve</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isEnablePresolve()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnablePresolve()
 	 * @see #getILPConfig()
 	 * @generated
 	 */
@@ -3876,11 +3876,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isEnableDebugOutput
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableDebugOutput
 	 * <em>Enable Debug Output</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Enable Debug Output</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isEnableDebugOutput()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableDebugOutput()
 	 * @see #getILPConfig()
 	 * @generated
 	 */
@@ -3888,22 +3888,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.VariableSet
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.VariableSet
 	 * <em>Variable Set</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Variable Set</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.VariableSet
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.VariableSet
 	 * @generated
 	 */
 	EClass getVariableSet();
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.VariableSet#getName
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.VariableSet#getName
 	 * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.VariableSet#getName()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.VariableSet#getName()
 	 * @see #getVariableSet()
 	 * @generated
 	 */
@@ -3911,22 +3911,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Pattern
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Pattern
 	 * <em>Pattern</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Pattern</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Pattern
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Pattern
 	 * @generated
 	 */
 	EClass getPattern();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Pattern#getPattern
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Pattern#getPattern
 	 * <em>Pattern</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Pattern</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Pattern#getPattern()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Pattern#getPattern()
 	 * @see #getPattern()
 	 * @generated
 	 */
@@ -3934,11 +3934,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Pattern#isIsRule
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Pattern#isIsRule
 	 * <em>Is Rule</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Is Rule</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Pattern#isIsRule()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Pattern#isIsRule()
 	 * @see #getPattern()
 	 * @generated
 	 */
@@ -3946,22 +3946,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Type <em>Type</em>}'.
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Type <em>Type</em>}'.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Type</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Type
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Type
 	 * @generated
 	 */
 	EClass getType();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Type#getType
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Type#getType
 	 * <em>Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Type</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Type#getType()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Type#getType()
 	 * @see #getType()
 	 * @generated
 	 */
@@ -3969,22 +3969,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Mapping
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Mapping
 	 * <em>Mapping</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Mapping</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Mapping
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Mapping
 	 * @generated
 	 */
 	EClass getMapping();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Mapping#getRule
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Mapping#getRule
 	 * <em>Rule</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Rule</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Mapping#getRule()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Mapping#getRule()
 	 * @see #getMapping()
 	 * @generated
 	 */
@@ -3992,22 +3992,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint
 	 * <em>Constraint</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Constraint</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Constraint
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Constraint
 	 * @generated
 	 */
 	EClass getConstraint();
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#getName
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getName
 	 * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Constraint#getName()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getName()
 	 * @see #getConstraint()
 	 * @generated
 	 */
@@ -4015,11 +4015,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#isElementwise
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isElementwise
 	 * <em>Elementwise</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Elementwise</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Constraint#isElementwise()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isElementwise()
 	 * @see #getConstraint()
 	 * @generated
 	 */
@@ -4027,11 +4027,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint#getExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getExpression
 	 * <em>Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Constraint#getExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getExpression()
 	 * @see #getConstraint()
 	 * @generated
 	 */
@@ -4039,22 +4039,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Objective
 	 * <em>Objective</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Objective</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Objective
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Objective
 	 * @generated
 	 */
 	EClass getObjective();
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#getName
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Objective#getName
 	 * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Objective#getName()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Objective#getName()
 	 * @see #getObjective()
 	 * @generated
 	 */
@@ -4062,11 +4062,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#isElementwise
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Objective#isElementwise
 	 * <em>Elementwise</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Elementwise</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Objective#isElementwise()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Objective#isElementwise()
 	 * @see #getObjective()
 	 * @generated
 	 */
@@ -4074,11 +4074,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective#getExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Objective#getExpression
 	 * <em>Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Objective#getExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Objective#getExpression()
 	 * @see #getObjective()
 	 * @generated
 	 */
@@ -4086,22 +4086,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective
 	 * <em>Global Objective</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Global Objective</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective
 	 * @generated
 	 */
 	EClass getGlobalObjective();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective#getExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective#getExpression
 	 * <em>Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective#getExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective#getExpression()
 	 * @see #getGlobalObjective()
 	 * @generated
 	 */
@@ -4109,11 +4109,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective#getTarget
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective#getTarget
 	 * <em>Target</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Target</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective#getTarget()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective#getTarget()
 	 * @see #getGlobalObjective()
 	 * @generated
 	 */
@@ -4121,33 +4121,33 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Context
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Context
 	 * <em>Context</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Context</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Context
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Context
 	 * @generated
 	 */
 	EClass getContext();
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint
 	 * <em>Pattern Constraint</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Pattern Constraint</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint
 	 * @generated
 	 */
 	EClass getPatternConstraint();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint#getPattern
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint#getPattern
 	 * <em>Pattern</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Pattern</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint#getPattern()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint#getPattern()
 	 * @see #getPatternConstraint()
 	 * @generated
 	 */
@@ -4155,22 +4155,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint
 	 * <em>Type Constraint</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Type Constraint</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint
 	 * @generated
 	 */
 	EClass getTypeConstraint();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint#getModelType
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint#getModelType
 	 * <em>Model Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Model Type</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint#getModelType()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint#getModelType()
 	 * @see #getTypeConstraint()
 	 * @generated
 	 */
@@ -4178,22 +4178,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint
 	 * <em>Mapping Constraint</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Mapping Constraint</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint
 	 * @generated
 	 */
 	EClass getMappingConstraint();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint#getMapping
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint#getMapping
 	 * <em>Mapping</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Mapping</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint#getMapping()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint#getMapping()
 	 * @see #getMappingConstraint()
 	 * @generated
 	 */
@@ -4201,22 +4201,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective
 	 * <em>Pattern Objective</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Pattern Objective</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective
 	 * @generated
 	 */
 	EClass getPatternObjective();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective#getPattern
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective#getPattern
 	 * <em>Pattern</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Pattern</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective#getPattern()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective#getPattern()
 	 * @see #getPatternObjective()
 	 * @generated
 	 */
@@ -4224,22 +4224,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective <em>Type
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective <em>Type
 	 * Objective</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Type Objective</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective
 	 * @generated
 	 */
 	EClass getTypeObjective();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective#getModelType
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective#getModelType
 	 * <em>Model Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Model Type</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective#getModelType()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective#getModelType()
 	 * @see #getTypeObjective()
 	 * @generated
 	 */
@@ -4247,22 +4247,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective
 	 * <em>Mapping Objective</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Mapping Objective</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective
 	 * @generated
 	 */
 	EClass getMappingObjective();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective#getMapping
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective#getMapping
 	 * <em>Mapping</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Mapping</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective#getMapping()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective#getMapping()
 	 * @see #getMappingObjective()
 	 * @generated
 	 */
@@ -4270,23 +4270,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
 	 * <em>Arithmetic Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
 	 * @return the meta object for class '<em>Arithmetic Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
 	 * @generated
 	 */
 	EClass getArithmeticExpression();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression#getReturnType
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression#getReturnType
 	 * <em>Return Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Return Type</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression#getReturnType()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression#getReturnType()
 	 * @see #getArithmeticExpression()
 	 * @generated
 	 */
@@ -4294,23 +4294,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression
 	 * <em>Binary Arithmetic Expression</em>}'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Binary Arithmetic Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression
 	 * @generated
 	 */
 	EClass getBinaryArithmeticExpression();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getLhs
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression#getLhs
 	 * <em>Lhs</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Lhs</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getLhs()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression#getLhs()
 	 * @see #getBinaryArithmeticExpression()
 	 * @generated
 	 */
@@ -4318,11 +4318,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getRhs
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression#getRhs
 	 * <em>Rhs</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Rhs</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getRhs()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression#getRhs()
 	 * @see #getBinaryArithmeticExpression()
 	 * @generated
 	 */
@@ -4330,11 +4330,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression#getOperator
 	 * <em>Operator</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Operator</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getOperator()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression#getOperator()
 	 * @see #getBinaryArithmeticExpression()
 	 * @generated
 	 */
@@ -4342,23 +4342,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression
 	 * <em>Unary Arithmetic Expression</em>}'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Unary Arithmetic Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression
 	 * @generated
 	 */
 	EClass getUnaryArithmeticExpression();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression#getExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression#getExpression
 	 * <em>Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression#getExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression#getExpression()
 	 * @see #getUnaryArithmeticExpression()
 	 * @generated
 	 */
@@ -4366,11 +4366,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression#getOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression#getOperator
 	 * <em>Operator</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Operator</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression#getOperator()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression#getOperator()
 	 * @see #getUnaryArithmeticExpression()
 	 * @generated
 	 */
@@ -4378,22 +4378,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.SetOperation <em>Set
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.SetOperation <em>Set
 	 * Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Set Operation</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.SetOperation
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.SetOperation
 	 * @generated
 	 */
 	EClass getSetOperation();
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.SetOperation#getOperandName
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.SetOperation#getOperandName
 	 * <em>Operand Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Operand Name</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.SetOperation#getOperandName()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.SetOperation#getOperandName()
 	 * @see #getSetOperation()
 	 * @generated
 	 */
@@ -4401,34 +4401,34 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValueExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValueExpression
 	 * <em>Arithmetic Value Expression</em>}'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Arithmetic Value Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValueExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValueExpression
 	 * @generated
 	 */
 	EClass getArithmeticValueExpression();
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue
 	 * <em>Arithmetic Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Arithmetic Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue
 	 * @generated
 	 */
 	EClass getArithmeticValue();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue#getValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue#getValue
 	 * <em>Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue#getValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue#getValue()
 	 * @see #getArithmeticValue()
 	 * @generated
 	 */
@@ -4436,33 +4436,33 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral
 	 * <em>Arithmetic Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Arithmetic Literal</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral
 	 * @generated
 	 */
 	EClass getArithmeticLiteral();
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral
 	 * <em>Integer Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Integer Literal</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral
 	 * @generated
 	 */
 	EClass getIntegerLiteral();
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral#getLiteral
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral#getLiteral
 	 * <em>Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Literal</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral#getLiteral()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral#getLiteral()
 	 * @see #getIntegerLiteral()
 	 * @generated
 	 */
@@ -4470,22 +4470,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral
 	 * <em>Double Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Double Literal</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral
 	 * @generated
 	 */
 	EClass getDoubleLiteral();
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral#getLiteral
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral#getLiteral
 	 * <em>Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Literal</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral#getLiteral()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral#getLiteral()
 	 * @see #getDoubleLiteral()
 	 * @generated
 	 */
@@ -4493,34 +4493,34 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression
 	 * <em>Bool Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Bool Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression
 	 * @generated
 	 */
 	EClass getBoolExpression();
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression
 	 * <em>Bool Binary Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
 	 * @return the meta object for class '<em>Bool Binary Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression
 	 * @generated
 	 */
 	EClass getBoolBinaryExpression();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression#getLhs
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression#getLhs
 	 * <em>Lhs</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Lhs</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression#getLhs()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression#getLhs()
 	 * @see #getBoolBinaryExpression()
 	 * @generated
 	 */
@@ -4528,11 +4528,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression#getRhs
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression#getRhs
 	 * <em>Rhs</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Rhs</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression#getRhs()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression#getRhs()
 	 * @see #getBoolBinaryExpression()
 	 * @generated
 	 */
@@ -4540,11 +4540,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression#getOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression#getOperator
 	 * <em>Operator</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Operator</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression#getOperator()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression#getOperator()
 	 * @see #getBoolBinaryExpression()
 	 * @generated
 	 */
@@ -4552,23 +4552,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression
 	 * <em>Bool Unary Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
 	 * @return the meta object for class '<em>Bool Unary Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression
 	 * @generated
 	 */
 	EClass getBoolUnaryExpression();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression#getExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression#getExpression
 	 * <em>Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression#getExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression#getExpression()
 	 * @see #getBoolUnaryExpression()
 	 * @generated
 	 */
@@ -4576,11 +4576,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression#getOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression#getOperator
 	 * <em>Operator</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Operator</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression#getOperator()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression#getOperator()
 	 * @see #getBoolUnaryExpression()
 	 * @generated
 	 */
@@ -4588,34 +4588,34 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolValueExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression
 	 * <em>Bool Value Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
 	 * @return the meta object for class '<em>Bool Value Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolValueExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression
 	 * @generated
 	 */
 	EClass getBoolValueExpression();
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolValue <em>Bool
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolValue <em>Bool
 	 * Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Bool Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolValue
 	 * @generated
 	 */
 	EClass getBoolValue();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolValue#getValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolValue#getValue
 	 * <em>Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolValue#getValue()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolValue#getValue()
 	 * @see #getBoolValue()
 	 * @generated
 	 */
@@ -4623,23 +4623,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression
 	 * <em>Bool Stream Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
 	 * @return the meta object for class '<em>Bool Stream Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression
 	 * @generated
 	 */
 	EClass getBoolStreamExpression();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression#getStream
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression#getStream
 	 * <em>Stream</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Stream</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression#getStream()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression#getStream()
 	 * @see #getBoolStreamExpression()
 	 * @generated
 	 */
@@ -4647,11 +4647,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression#getOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression#getOperator
 	 * <em>Operator</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Operator</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression#getOperator()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression#getOperator()
 	 * @see #getBoolStreamExpression()
 	 * @generated
 	 */
@@ -4659,23 +4659,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
 	 * <em>Relational Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
 	 * @return the meta object for class '<em>Relational Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
 	 * @generated
 	 */
 	EClass getRelationalExpression();
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression#getOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression#getOperator
 	 * <em>Operator</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Operator</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression#getOperator()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression#getOperator()
 	 * @see #getRelationalExpression()
 	 * @generated
 	 */
@@ -4683,11 +4683,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression#getLhs
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression#getLhs
 	 * <em>Lhs</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Lhs</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression#getLhs()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression#getLhs()
 	 * @see #getRelationalExpression()
 	 * @generated
 	 */
@@ -4695,11 +4695,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression#getRhs
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression#getRhs
 	 * <em>Rhs</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Rhs</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression#getRhs()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression#getRhs()
 	 * @see #getRelationalExpression()
 	 * @generated
 	 */
@@ -4707,22 +4707,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral <em>Bool
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral <em>Bool
 	 * Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Bool Literal</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral
 	 * @generated
 	 */
 	EClass getBoolLiteral();
 
 	/**
 	 * Returns the meta object for the attribute
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral#isLiteral
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral#isLiteral
 	 * <em>Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Literal</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral#isLiteral()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral#isLiteral()
 	 * @see #getBoolLiteral()
 	 * @generated
 	 */
@@ -4730,22 +4730,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 	 * <em>Value Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Value Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 	 * @generated
 	 */
 	EClass getValueExpression();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression#getReturnType
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression#getReturnType
 	 * <em>Return Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Return Type</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression#getReturnType()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression#getReturnType()
 	 * @see #getValueExpression()
 	 * @generated
 	 */
@@ -4753,22 +4753,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression <em>Sum
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.SumExpression <em>Sum
 	 * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Sum Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.SumExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.SumExpression
 	 * @generated
 	 */
 	EClass getSumExpression();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.SumExpression#getExpression
 	 * <em>Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.SumExpression#getExpression()
 	 * @see #getSumExpression()
 	 * @generated
 	 */
@@ -4776,11 +4776,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getFilter
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.SumExpression#getFilter
 	 * <em>Filter</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Filter</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getFilter()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.SumExpression#getFilter()
 	 * @see #getSumExpression()
 	 * @generated
 	 */
@@ -4788,23 +4788,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression
 	 * <em>Mapping Sum Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
 	 * @return the meta object for class '<em>Mapping Sum Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression
 	 * @generated
 	 */
 	EClass getMappingSumExpression();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression#getMapping
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression#getMapping
 	 * <em>Mapping</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Mapping</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression#getMapping()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression#getMapping()
 	 * @see #getMappingSumExpression()
 	 * @generated
 	 */
@@ -4812,22 +4812,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression
 	 * <em>Type Sum Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Type Sum Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression
 	 * @generated
 	 */
 	EClass getTypeSumExpression();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression#getType
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression#getType
 	 * <em>Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Type</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression#getType()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression#getType()
 	 * @see #getTypeSumExpression()
 	 * @generated
 	 */
@@ -4835,22 +4835,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue
 	 * <em>Context Type Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Context Type Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue
 	 * @generated
 	 */
 	EClass getContextTypeValue();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue#getTypeContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue#getTypeContext
 	 * <em>Type Context</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Type Context</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue#getTypeContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue#getTypeContext()
 	 * @see #getContextTypeValue()
 	 * @generated
 	 */
@@ -4858,23 +4858,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue
 	 * <em>Context Pattern Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
 	 * @return the meta object for class '<em>Context Pattern Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue
 	 * @generated
 	 */
 	EClass getContextPatternValue();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue#getPatternContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue#getPatternContext
 	 * <em>Pattern Context</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Pattern Context</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue#getPatternContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue#getPatternContext()
 	 * @see #getContextPatternValue()
 	 * @generated
 	 */
@@ -4882,23 +4882,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode
 	 * <em>Context Pattern Node</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
 	 * @return the meta object for class '<em>Context Pattern Node</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode
 	 * @generated
 	 */
 	EClass getContextPatternNode();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode#getPatternContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode#getPatternContext
 	 * <em>Pattern Context</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Pattern Context</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode#getPatternContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode#getPatternContext()
 	 * @see #getContextPatternNode()
 	 * @generated
 	 */
@@ -4906,11 +4906,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode#getNode
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode#getNode
 	 * <em>Node</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Node</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode#getNode()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode#getNode()
 	 * @see #getContextPatternNode()
 	 * @generated
 	 */
@@ -4918,23 +4918,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue
 	 * <em>Context Mapping Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
 	 * @return the meta object for class '<em>Context Mapping Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue
 	 * @generated
 	 */
 	EClass getContextMappingValue();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue#getMappingContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue#getMappingContext
 	 * <em>Mapping Context</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Mapping Context</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue#getMappingContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue#getMappingContext()
 	 * @see #getContextMappingValue()
 	 * @generated
 	 */
@@ -4942,23 +4942,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode
 	 * <em>Context Mapping Node</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
 	 * @return the meta object for class '<em>Context Mapping Node</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode
 	 * @generated
 	 */
 	EClass getContextMappingNode();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode#getMappingContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode#getMappingContext
 	 * <em>Mapping Context</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Mapping Context</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode#getMappingContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode#getMappingContext()
 	 * @see #getContextMappingNode()
 	 * @generated
 	 */
@@ -4966,11 +4966,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode#getNode
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode#getNode
 	 * <em>Node</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Node</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode#getNode()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode#getNode()
 	 * @see #getContextMappingNode()
 	 * @generated
 	 */
@@ -4978,23 +4978,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue
 	 * <em>Objective Function Value</em>}'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Objective Function Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue
 	 * @generated
 	 */
 	EClass getObjectiveFunctionValue();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue#getObjective
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue#getObjective
 	 * <em>Objective</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Objective</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue#getObjective()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue#getObjective()
 	 * @see #getObjectiveFunctionValue()
 	 * @generated
 	 */
@@ -5002,22 +5002,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression
 	 * <em>Feature Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Feature Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression
 	 * @generated
 	 */
 	EClass getFeatureExpression();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression#getCurrent
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression#getCurrent
 	 * <em>Current</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Current</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression#getCurrent()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression#getCurrent()
 	 * @see #getFeatureExpression()
 	 * @generated
 	 */
@@ -5025,11 +5025,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression#getChild
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression#getChild
 	 * <em>Child</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Child</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression#getChild()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression#getChild()
 	 * @see #getFeatureExpression()
 	 * @generated
 	 */
@@ -5037,22 +5037,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureLiteral
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral
 	 * <em>Feature Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Feature Literal</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.FeatureLiteral
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral
 	 * @generated
 	 */
 	EClass getFeatureLiteral();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureLiteral#getFeature
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral#getFeature
 	 * <em>Feature</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Feature</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.FeatureLiteral#getFeature()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral#getFeature()
 	 * @see #getFeatureLiteral()
 	 * @generated
 	 */
@@ -5060,24 +5060,24 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue
 	 * <em>Context Type Feature Value</em>}'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Context Type Feature Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue
 	 * @generated
 	 */
 	EClass getContextTypeFeatureValue();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue#getFeatureExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue#getFeatureExpression
 	 * <em>Feature Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Feature
 	 *         Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue#getFeatureExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue#getFeatureExpression()
 	 * @see #getContextTypeFeatureValue()
 	 * @generated
 	 */
@@ -5085,25 +5085,25 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue
 	 * <em>Context Pattern Node Feature Value</em>}'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Context Pattern Node Feature
 	 *         Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue
 	 * @generated
 	 */
 	EClass getContextPatternNodeFeatureValue();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue#getFeatureExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue#getFeatureExpression
 	 * <em>Feature Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Feature
 	 *         Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue#getFeatureExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue#getFeatureExpression()
 	 * @see #getContextPatternNodeFeatureValue()
 	 * @generated
 	 */
@@ -5111,25 +5111,25 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue
 	 * <em>Context Mapping Node Feature Value</em>}'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Context Mapping Node Feature
 	 *         Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue
 	 * @generated
 	 */
 	EClass getContextMappingNodeFeatureValue();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue#getFeatureExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue#getFeatureExpression
 	 * <em>Feature Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Feature
 	 *         Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue#getFeatureExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue#getFeatureExpression()
 	 * @see #getContextMappingNodeFeatureValue()
 	 * @generated
 	 */
@@ -5137,22 +5137,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Iterator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Iterator
 	 * <em>Iterator</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Iterator</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Iterator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Iterator
 	 * @generated
 	 */
 	EClass getIterator();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Iterator#getStream
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Iterator#getStream
 	 * <em>Stream</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Stream</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Iterator#getStream()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Iterator#getStream()
 	 * @see #getIterator()
 	 * @generated
 	 */
@@ -5160,23 +5160,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternValue
 	 * <em>Iterator Pattern Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
 	 * @return the meta object for class '<em>Iterator Pattern Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternValue
 	 * @generated
 	 */
 	EClass getIteratorPatternValue();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue#getPatternContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternValue#getPatternContext
 	 * <em>Pattern Context</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Pattern Context</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue#getPatternContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternValue#getPatternContext()
 	 * @see #getIteratorPatternValue()
 	 * @generated
 	 */
@@ -5184,23 +5184,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue
 	 * <em>Iterator Pattern Feature Value</em>}'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Iterator Pattern Feature Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue
 	 * @generated
 	 */
 	EClass getIteratorPatternFeatureValue();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue#getPatternContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue#getPatternContext
 	 * <em>Pattern Context</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Pattern Context</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue#getPatternContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue#getPatternContext()
 	 * @see #getIteratorPatternFeatureValue()
 	 * @generated
 	 */
@@ -5208,12 +5208,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue#getFeatureExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue#getFeatureExpression
 	 * <em>Feature Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Feature
 	 *         Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue#getFeatureExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue#getFeatureExpression()
 	 * @see #getIteratorPatternFeatureValue()
 	 * @generated
 	 */
@@ -5221,23 +5221,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue
 	 * <em>Iterator Pattern Node Value</em>}'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Iterator Pattern Node Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue
 	 * @generated
 	 */
 	EClass getIteratorPatternNodeValue();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue#getPatternContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue#getPatternContext
 	 * <em>Pattern Context</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Pattern Context</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue#getPatternContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue#getPatternContext()
 	 * @see #getIteratorPatternNodeValue()
 	 * @generated
 	 */
@@ -5245,11 +5245,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue#getNode
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue#getNode
 	 * <em>Node</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Node</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue#getNode()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue#getNode()
 	 * @see #getIteratorPatternNodeValue()
 	 * @generated
 	 */
@@ -5257,25 +5257,25 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue
 	 * <em>Iterator Pattern Node Feature Value</em>}'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Iterator Pattern Node Feature
 	 *         Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue
 	 * @generated
 	 */
 	EClass getIteratorPatternNodeFeatureValue();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue#getFeatureExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue#getFeatureExpression
 	 * <em>Feature Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Feature
 	 *         Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue#getFeatureExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue#getFeatureExpression()
 	 * @see #getIteratorPatternNodeFeatureValue()
 	 * @generated
 	 */
@@ -5283,23 +5283,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
 	 * <em>Iterator Mapping Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
 	 * @return the meta object for class '<em>Iterator Mapping Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
 	 * @generated
 	 */
 	EClass getIteratorMappingValue();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue#getMappingContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue#getMappingContext
 	 * <em>Mapping Context</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Mapping Context</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue#getMappingContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue#getMappingContext()
 	 * @see #getIteratorMappingValue()
 	 * @generated
 	 */
@@ -5307,23 +5307,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue
 	 * <em>Iterator Mapping Feature Value</em>}'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Iterator Mapping Feature Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue
 	 * @generated
 	 */
 	EClass getIteratorMappingFeatureValue();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue#getMappingContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue#getMappingContext
 	 * <em>Mapping Context</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Mapping Context</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue#getMappingContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue#getMappingContext()
 	 * @see #getIteratorMappingFeatureValue()
 	 * @generated
 	 */
@@ -5331,12 +5331,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue#getFeatureExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue#getFeatureExpression
 	 * <em>Feature Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Feature
 	 *         Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue#getFeatureExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue#getFeatureExpression()
 	 * @see #getIteratorMappingFeatureValue()
 	 * @generated
 	 */
@@ -5344,23 +5344,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue
 	 * <em>Iterator Mapping Node Value</em>}'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Iterator Mapping Node Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue
 	 * @generated
 	 */
 	EClass getIteratorMappingNodeValue();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue#getMappingContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue#getMappingContext
 	 * <em>Mapping Context</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Mapping Context</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue#getMappingContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue#getMappingContext()
 	 * @see #getIteratorMappingNodeValue()
 	 * @generated
 	 */
@@ -5368,11 +5368,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue#getNode
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue#getNode
 	 * <em>Node</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Node</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue#getNode()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue#getNode()
 	 * @see #getIteratorMappingNodeValue()
 	 * @generated
 	 */
@@ -5380,25 +5380,25 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue
 	 * <em>Iterator Mapping Node Feature Value</em>}'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Iterator Mapping Node Feature
 	 *         Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue
 	 * @generated
 	 */
 	EClass getIteratorMappingNodeFeatureValue();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue#getFeatureExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue#getFeatureExpression
 	 * <em>Feature Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Feature
 	 *         Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue#getFeatureExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue#getFeatureExpression()
 	 * @see #getIteratorMappingNodeFeatureValue()
 	 * @generated
 	 */
@@ -5406,22 +5406,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue
 	 * <em>Iterator Type Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Iterator Type Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue
 	 * @generated
 	 */
 	EClass getIteratorTypeValue();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue#getTypeContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue#getTypeContext
 	 * <em>Type Context</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Type Context</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue#getTypeContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue#getTypeContext()
 	 * @see #getIteratorTypeValue()
 	 * @generated
 	 */
@@ -5429,24 +5429,24 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue
 	 * <em>Iterator Type Feature Value</em>}'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Iterator Type Feature Value</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue
 	 * @generated
 	 */
 	EClass getIteratorTypeFeatureValue();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue#getFeatureExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue#getFeatureExpression
 	 * <em>Feature Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Feature
 	 *         Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue#getFeatureExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue#getFeatureExpression()
 	 * @see #getIteratorTypeFeatureValue()
 	 * @generated
 	 */
@@ -5454,22 +5454,22 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression
 	 * <em>Stream Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Stream Expression</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression
 	 * @generated
 	 */
 	EClass getStreamExpression();
 
 	/**
 	 * Returns the meta object for the reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression#getReturnType
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getReturnType
 	 * <em>Return Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Return Type</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression#getReturnType()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getReturnType()
 	 * @see #getStreamExpression()
 	 * @generated
 	 */
@@ -5477,11 +5477,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression#getCurrent
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getCurrent
 	 * <em>Current</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Current</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression#getCurrent()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getCurrent()
 	 * @see #getStreamExpression()
 	 * @generated
 	 */
@@ -5489,11 +5489,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression#getChild
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getChild
 	 * <em>Child</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Child</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression#getChild()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getChild()
 	 * @see #getStreamExpression()
 	 * @generated
 	 */
@@ -5501,34 +5501,34 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamOperation
 	 * <em>Stream Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Stream Operation</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamOperation
 	 * @generated
 	 */
 	EClass getStreamOperation();
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation
 	 * <em>Stream Filter Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
 	 * @return the meta object for class '<em>Stream Filter Operation</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation
 	 * @generated
 	 */
 	EClass getStreamFilterOperation();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation#getPredicate
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation#getPredicate
 	 * <em>Predicate</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Predicate</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation#getPredicate()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation#getPredicate()
 	 * @see #getStreamFilterOperation()
 	 * @generated
 	 */
@@ -5536,23 +5536,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation
 	 * <em>Stream Select Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
 	 * @return the meta object for class '<em>Stream Select Operation</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation
 	 * @generated
 	 */
 	EClass getStreamSelectOperation();
 
 	/**
 	 * Returns the meta object for the containment reference
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation#getType
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation#getType
 	 * <em>Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Type</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation#getType()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation#getType()
 	 * @see #getStreamSelectOperation()
 	 * @generated
 	 */
@@ -5560,104 +5560,104 @@ public interface RoamIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for enum
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPSolverType <em>ILP
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType <em>ILP
 	 * Solver Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for enum '<em>ILP Solver Type</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ILPSolverType
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType
 	 * @generated
 	 */
 	EEnum getILPSolverType();
 
 	/**
 	 * Returns the meta object for enum
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget
 	 * <em>Objective Target</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for enum '<em>Objective Target</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget
 	 * @generated
 	 */
 	EEnum getObjectiveTarget();
 
 	/**
 	 * Returns the meta object for enum
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator
 	 * <em>Relational Operator</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for enum '<em>Relational Operator</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator
 	 * @generated
 	 */
 	EEnum getRelationalOperator();
 
 	/**
 	 * Returns the meta object for enum
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator
 	 * <em>Binary Arithmetic Operator</em>}'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the meta object for enum '<em>Binary Arithmetic Operator</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator
 	 * @generated
 	 */
 	EEnum getBinaryArithmeticOperator();
 
 	/**
 	 * Returns the meta object for enum
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator
 	 * <em>Unary Arithmetic Operator</em>}'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the meta object for enum '<em>Unary Arithmetic Operator</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator
 	 * @generated
 	 */
 	EEnum getUnaryArithmeticOperator();
 
 	/**
 	 * Returns the meta object for enum
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamArithmeticOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamArithmeticOperator
 	 * <em>Stream Arithmetic Operator</em>}'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the meta object for enum '<em>Stream Arithmetic Operator</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamArithmeticOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamArithmeticOperator
 	 * @generated
 	 */
 	EEnum getStreamArithmeticOperator();
 
 	/**
 	 * Returns the meta object for enum
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryBoolOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BinaryBoolOperator
 	 * <em>Binary Bool Operator</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
 	 * @return the meta object for enum '<em>Binary Bool Operator</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BinaryBoolOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BinaryBoolOperator
 	 * @generated
 	 */
 	EEnum getBinaryBoolOperator();
 
 	/**
 	 * Returns the meta object for enum
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryBoolOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.UnaryBoolOperator
 	 * <em>Unary Bool Operator</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for enum '<em>Unary Bool Operator</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.UnaryBoolOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.UnaryBoolOperator
 	 * @generated
 	 */
 	EEnum getUnaryBoolOperator();
 
 	/**
 	 * Returns the meta object for enum
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamBoolOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamBoolOperator
 	 * <em>Stream Bool Operator</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
 	 * @return the meta object for enum '<em>Stream Bool Operator</em>'.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamBoolOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamBoolOperator
 	 * @generated
 	 */
 	EEnum getStreamBoolOperator();
@@ -5669,7 +5669,7 @@ public interface RoamIntermediatePackage extends EPackage {
 	 * @return the factory that creates the instances of the model.
 	 * @generated
 	 */
-	RoamIntermediateFactory getRoamIntermediateFactory();
+	GipsIntermediateFactory getGipsIntermediateFactory();
 
 	/**
 	 * <!-- begin-user-doc --> Defines literals for the meta objects that represent
@@ -5687,14 +5687,14 @@ public interface RoamIntermediatePackage extends EPackage {
 	interface Literals {
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl
 		 * <em>Model</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateModelImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getRoamIntermediateModel()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getGipsIntermediateModel()
 		 * @generated
 		 */
-		EClass ROAM_INTERMEDIATE_MODEL = eINSTANCE.getRoamIntermediateModel();
+		EClass GIPS_INTERMEDIATE_MODEL = eINSTANCE.getGipsIntermediateModel();
 
 		/**
 		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
@@ -5702,7 +5702,7 @@ public interface RoamIntermediatePackage extends EPackage {
 		 * 
 		 * @generated
 		 */
-		EAttribute ROAM_INTERMEDIATE_MODEL__NAME = eINSTANCE.getRoamIntermediateModel_Name();
+		EAttribute GIPS_INTERMEDIATE_MODEL__NAME = eINSTANCE.getGipsIntermediateModel_Name();
 
 		/**
 		 * The meta object literal for the '<em><b>Variables</b></em>' containment
@@ -5710,7 +5710,7 @@ public interface RoamIntermediatePackage extends EPackage {
 		 * 
 		 * @generated
 		 */
-		EReference ROAM_INTERMEDIATE_MODEL__VARIABLES = eINSTANCE.getRoamIntermediateModel_Variables();
+		EReference GIPS_INTERMEDIATE_MODEL__VARIABLES = eINSTANCE.getGipsIntermediateModel_Variables();
 
 		/**
 		 * The meta object literal for the '<em><b>Constraints</b></em>' containment
@@ -5718,7 +5718,7 @@ public interface RoamIntermediatePackage extends EPackage {
 		 * 
 		 * @generated
 		 */
-		EReference ROAM_INTERMEDIATE_MODEL__CONSTRAINTS = eINSTANCE.getRoamIntermediateModel_Constraints();
+		EReference GIPS_INTERMEDIATE_MODEL__CONSTRAINTS = eINSTANCE.getGipsIntermediateModel_Constraints();
 
 		/**
 		 * The meta object literal for the '<em><b>Objectives</b></em>' containment
@@ -5726,7 +5726,7 @@ public interface RoamIntermediatePackage extends EPackage {
 		 * 
 		 * @generated
 		 */
-		EReference ROAM_INTERMEDIATE_MODEL__OBJECTIVES = eINSTANCE.getRoamIntermediateModel_Objectives();
+		EReference GIPS_INTERMEDIATE_MODEL__OBJECTIVES = eINSTANCE.getGipsIntermediateModel_Objectives();
 
 		/**
 		 * The meta object literal for the '<em><b>Global Objective</b></em>'
@@ -5734,7 +5734,7 @@ public interface RoamIntermediatePackage extends EPackage {
 		 * 
 		 * @generated
 		 */
-		EReference ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE = eINSTANCE.getRoamIntermediateModel_GlobalObjective();
+		EReference GIPS_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE = eINSTANCE.getGipsIntermediateModel_GlobalObjective();
 
 		/**
 		 * The meta object literal for the '<em><b>Ibex Model</b></em>' containment
@@ -5742,7 +5742,7 @@ public interface RoamIntermediatePackage extends EPackage {
 		 * 
 		 * @generated
 		 */
-		EReference ROAM_INTERMEDIATE_MODEL__IBEX_MODEL = eINSTANCE.getRoamIntermediateModel_IbexModel();
+		EReference GIPS_INTERMEDIATE_MODEL__IBEX_MODEL = eINSTANCE.getGipsIntermediateModel_IbexModel();
 
 		/**
 		 * The meta object literal for the '<em><b>Config</b></em>' containment
@@ -5750,15 +5750,15 @@ public interface RoamIntermediatePackage extends EPackage {
 		 * 
 		 * @generated
 		 */
-		EReference ROAM_INTERMEDIATE_MODEL__CONFIG = eINSTANCE.getRoamIntermediateModel_Config();
+		EReference GIPS_INTERMEDIATE_MODEL__CONFIG = eINSTANCE.getGipsIntermediateModel_Config();
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl
 		 * <em>ILP Config</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getILPConfig()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getILPConfig()
 		 * @generated
 		 */
 		EClass ILP_CONFIG = eINSTANCE.getILPConfig();
@@ -5861,11 +5861,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.VariableSetImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.VariableSetImpl
 		 * <em>Variable Set</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.VariableSetImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getVariableSet()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.VariableSetImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getVariableSet()
 		 * @generated
 		 */
 		EClass VARIABLE_SET = eINSTANCE.getVariableSet();
@@ -5880,11 +5880,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternImpl
 		 * <em>Pattern</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getPattern()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getPattern()
 		 * @generated
 		 */
 		EClass PATTERN = eINSTANCE.getPattern();
@@ -5907,11 +5907,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeImpl
 		 * <em>Type</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getType()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getType()
 		 * @generated
 		 */
 		EClass TYPE = eINSTANCE.getType();
@@ -5926,11 +5926,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingImpl
 		 * <em>Mapping</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getMapping()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getMapping()
 		 * @generated
 		 */
 		EClass MAPPING = eINSTANCE.getMapping();
@@ -5945,11 +5945,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ConstraintImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl
 		 * <em>Constraint</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ConstraintImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getConstraint()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getConstraint()
 		 * @generated
 		 */
 		EClass CONSTRAINT = eINSTANCE.getConstraint();
@@ -5980,11 +5980,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ObjectiveImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ObjectiveImpl
 		 * <em>Objective</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ObjectiveImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getObjective()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ObjectiveImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getObjective()
 		 * @generated
 		 */
 		EClass OBJECTIVE = eINSTANCE.getObjective();
@@ -6015,12 +6015,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.GlobalObjectiveImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GlobalObjectiveImpl
 		 * <em>Global Objective</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 		 * -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.GlobalObjectiveImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getGlobalObjective()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GlobalObjectiveImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getGlobalObjective()
 		 * @generated
 		 */
 		EClass GLOBAL_OBJECTIVE = eINSTANCE.getGlobalObjective();
@@ -6043,23 +6043,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Context
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Context
 		 * <em>Context</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.Context
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContext()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.Context
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContext()
 		 * @generated
 		 */
 		EClass CONTEXT = eINSTANCE.getContext();
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternConstraintImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternConstraintImpl
 		 * <em>Pattern Constraint</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternConstraintImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getPatternConstraint()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternConstraintImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getPatternConstraint()
 		 * @generated
 		 */
 		EClass PATTERN_CONSTRAINT = eINSTANCE.getPatternConstraint();
@@ -6074,12 +6074,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl
 		 * <em>Type Constraint</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 		 * -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeConstraintImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getTypeConstraint()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getTypeConstraint()
 		 * @generated
 		 */
 		EClass TYPE_CONSTRAINT = eINSTANCE.getTypeConstraint();
@@ -6094,12 +6094,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingConstraintImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingConstraintImpl
 		 * <em>Mapping Constraint</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingConstraintImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getMappingConstraint()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingConstraintImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getMappingConstraint()
 		 * @generated
 		 */
 		EClass MAPPING_CONSTRAINT = eINSTANCE.getMappingConstraint();
@@ -6114,12 +6114,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternObjectiveImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternObjectiveImpl
 		 * <em>Pattern Objective</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 		 * -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternObjectiveImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getPatternObjective()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternObjectiveImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getPatternObjective()
 		 * @generated
 		 */
 		EClass PATTERN_OBJECTIVE = eINSTANCE.getPatternObjective();
@@ -6134,12 +6134,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeObjectiveImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeObjectiveImpl
 		 * <em>Type Objective</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 		 * -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeObjectiveImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getTypeObjective()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeObjectiveImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getTypeObjective()
 		 * @generated
 		 */
 		EClass TYPE_OBJECTIVE = eINSTANCE.getTypeObjective();
@@ -6154,12 +6154,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingObjectiveImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingObjectiveImpl
 		 * <em>Mapping Objective</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 		 * -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingObjectiveImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getMappingObjective()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingObjectiveImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getMappingObjective()
 		 * @generated
 		 */
 		EClass MAPPING_OBJECTIVE = eINSTANCE.getMappingObjective();
@@ -6174,12 +6174,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticExpressionImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ArithmeticExpressionImpl
 		 * <em>Arithmetic Expression</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticExpressionImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getArithmeticExpression()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ArithmeticExpressionImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getArithmeticExpression()
 		 * @generated
 		 */
 		EClass ARITHMETIC_EXPRESSION = eINSTANCE.getArithmeticExpression();
@@ -6194,12 +6194,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BinaryArithmeticExpressionImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BinaryArithmeticExpressionImpl
 		 * <em>Binary Arithmetic Expression</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.BinaryArithmeticExpressionImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBinaryArithmeticExpression()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.BinaryArithmeticExpressionImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBinaryArithmeticExpression()
 		 * @generated
 		 */
 		EClass BINARY_ARITHMETIC_EXPRESSION = eINSTANCE.getBinaryArithmeticExpression();
@@ -6230,12 +6230,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.UnaryArithmeticExpressionImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.UnaryArithmeticExpressionImpl
 		 * <em>Unary Arithmetic Expression</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.UnaryArithmeticExpressionImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getUnaryArithmeticExpression()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.UnaryArithmeticExpressionImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getUnaryArithmeticExpression()
 		 * @generated
 		 */
 		EClass UNARY_ARITHMETIC_EXPRESSION = eINSTANCE.getUnaryArithmeticExpression();
@@ -6258,11 +6258,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.SetOperation <em>Set
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.SetOperation <em>Set
 		 * Operation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.SetOperation
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getSetOperation()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.SetOperation
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getSetOperation()
 		 * @generated
 		 */
 		EClass SET_OPERATION = eINSTANCE.getSetOperation();
@@ -6277,24 +6277,24 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticValueExpressionImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ArithmeticValueExpressionImpl
 		 * <em>Arithmetic Value Expression</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticValueExpressionImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getArithmeticValueExpression()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ArithmeticValueExpressionImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getArithmeticValueExpression()
 		 * @generated
 		 */
 		EClass ARITHMETIC_VALUE_EXPRESSION = eINSTANCE.getArithmeticValueExpression();
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticValueImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ArithmeticValueImpl
 		 * <em>Arithmetic Value</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 		 * -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getArithmeticValue()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ArithmeticValueImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getArithmeticValue()
 		 * @generated
 		 */
 		EClass ARITHMETIC_VALUE = eINSTANCE.getArithmeticValue();
@@ -6309,24 +6309,24 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticLiteralImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ArithmeticLiteralImpl
 		 * <em>Arithmetic Literal</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticLiteralImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getArithmeticLiteral()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ArithmeticLiteralImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getArithmeticLiteral()
 		 * @generated
 		 */
 		EClass ARITHMETIC_LITERAL = eINSTANCE.getArithmeticLiteral();
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IntegerLiteralImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IntegerLiteralImpl
 		 * <em>Integer Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 		 * -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IntegerLiteralImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIntegerLiteral()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IntegerLiteralImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIntegerLiteral()
 		 * @generated
 		 */
 		EClass INTEGER_LITERAL = eINSTANCE.getIntegerLiteral();
@@ -6341,12 +6341,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.DoubleLiteralImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.DoubleLiteralImpl
 		 * <em>Double Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 		 * -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.DoubleLiteralImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getDoubleLiteral()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.DoubleLiteralImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getDoubleLiteral()
 		 * @generated
 		 */
 		EClass DOUBLE_LITERAL = eINSTANCE.getDoubleLiteral();
@@ -6361,24 +6361,24 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolExpressionImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolExpressionImpl
 		 * <em>Bool Expression</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 		 * -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolExpressionImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolExpression()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolExpressionImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBoolExpression()
 		 * @generated
 		 */
 		EClass BOOL_EXPRESSION = eINSTANCE.getBoolExpression();
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolBinaryExpressionImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolBinaryExpressionImpl
 		 * <em>Bool Binary Expression</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolBinaryExpressionImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolBinaryExpression()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolBinaryExpressionImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBoolBinaryExpression()
 		 * @generated
 		 */
 		EClass BOOL_BINARY_EXPRESSION = eINSTANCE.getBoolBinaryExpression();
@@ -6409,12 +6409,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolUnaryExpressionImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolUnaryExpressionImpl
 		 * <em>Bool Unary Expression</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolUnaryExpressionImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolUnaryExpression()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolUnaryExpressionImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBoolUnaryExpression()
 		 * @generated
 		 */
 		EClass BOOL_UNARY_EXPRESSION = eINSTANCE.getBoolUnaryExpression();
@@ -6437,23 +6437,23 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolValueExpressionImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolValueExpressionImpl
 		 * <em>Bool Value Expression</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolValueExpressionImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolValueExpression()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolValueExpressionImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBoolValueExpression()
 		 * @generated
 		 */
 		EClass BOOL_VALUE_EXPRESSION = eINSTANCE.getBoolValueExpression();
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolValueImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolValueImpl
 		 * <em>Bool Value</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolValue()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolValueImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBoolValue()
 		 * @generated
 		 */
 		EClass BOOL_VALUE = eINSTANCE.getBoolValue();
@@ -6468,12 +6468,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolStreamExpressionImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolStreamExpressionImpl
 		 * <em>Bool Stream Expression</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolStreamExpressionImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolStreamExpression()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolStreamExpressionImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBoolStreamExpression()
 		 * @generated
 		 */
 		EClass BOOL_STREAM_EXPRESSION = eINSTANCE.getBoolStreamExpression();
@@ -6496,12 +6496,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RelationalExpressionImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.RelationalExpressionImpl
 		 * <em>Relational Expression</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RelationalExpressionImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getRelationalExpression()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.RelationalExpressionImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getRelationalExpression()
 		 * @generated
 		 */
 		EClass RELATIONAL_EXPRESSION = eINSTANCE.getRelationalExpression();
@@ -6532,11 +6532,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolLiteralImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolLiteralImpl
 		 * <em>Bool Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolLiteralImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBoolLiteral()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolLiteralImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBoolLiteral()
 		 * @generated
 		 */
 		EClass BOOL_LITERAL = eINSTANCE.getBoolLiteral();
@@ -6551,12 +6551,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ValueExpressionImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ValueExpressionImpl
 		 * <em>Value Expression</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 		 * -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ValueExpressionImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getValueExpression()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ValueExpressionImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getValueExpression()
 		 * @generated
 		 */
 		EClass VALUE_EXPRESSION = eINSTANCE.getValueExpression();
@@ -6571,12 +6571,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.SumExpressionImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.SumExpressionImpl
 		 * <em>Sum Expression</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 		 * -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.SumExpressionImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getSumExpression()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.SumExpressionImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getSumExpression()
 		 * @generated
 		 */
 		EClass SUM_EXPRESSION = eINSTANCE.getSumExpression();
@@ -6599,12 +6599,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingSumExpressionImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingSumExpressionImpl
 		 * <em>Mapping Sum Expression</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingSumExpressionImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getMappingSumExpression()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingSumExpressionImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getMappingSumExpression()
 		 * @generated
 		 */
 		EClass MAPPING_SUM_EXPRESSION = eINSTANCE.getMappingSumExpression();
@@ -6619,12 +6619,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeSumExpressionImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeSumExpressionImpl
 		 * <em>Type Sum Expression</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeSumExpressionImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getTypeSumExpression()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeSumExpressionImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getTypeSumExpression()
 		 * @generated
 		 */
 		EClass TYPE_SUM_EXPRESSION = eINSTANCE.getTypeSumExpression();
@@ -6639,12 +6639,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextTypeValueImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextTypeValueImpl
 		 * <em>Context Type Value</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextTypeValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextTypeValue()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextTypeValueImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextTypeValue()
 		 * @generated
 		 */
 		EClass CONTEXT_TYPE_VALUE = eINSTANCE.getContextTypeValue();
@@ -6659,12 +6659,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextPatternValueImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternValueImpl
 		 * <em>Context Pattern Value</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextPatternValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextPatternValue()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternValueImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextPatternValue()
 		 * @generated
 		 */
 		EClass CONTEXT_PATTERN_VALUE = eINSTANCE.getContextPatternValue();
@@ -6679,12 +6679,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextPatternNodeImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternNodeImpl
 		 * <em>Context Pattern Node</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextPatternNodeImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextPatternNode()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternNodeImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextPatternNode()
 		 * @generated
 		 */
 		EClass CONTEXT_PATTERN_NODE = eINSTANCE.getContextPatternNode();
@@ -6707,12 +6707,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingValueImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextMappingValueImpl
 		 * <em>Context Mapping Value</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextMappingValue()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextMappingValueImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextMappingValue()
 		 * @generated
 		 */
 		EClass CONTEXT_MAPPING_VALUE = eINSTANCE.getContextMappingValue();
@@ -6727,12 +6727,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingNodeImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextMappingNodeImpl
 		 * <em>Context Mapping Node</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingNodeImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextMappingNode()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextMappingNodeImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextMappingNode()
 		 * @generated
 		 */
 		EClass CONTEXT_MAPPING_NODE = eINSTANCE.getContextMappingNode();
@@ -6755,12 +6755,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ObjectiveFunctionValueImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ObjectiveFunctionValueImpl
 		 * <em>Objective Function Value</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ObjectiveFunctionValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getObjectiveFunctionValue()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ObjectiveFunctionValueImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getObjectiveFunctionValue()
 		 * @generated
 		 */
 		EClass OBJECTIVE_FUNCTION_VALUE = eINSTANCE.getObjectiveFunctionValue();
@@ -6775,12 +6775,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.FeatureExpressionImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.FeatureExpressionImpl
 		 * <em>Feature Expression</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.FeatureExpressionImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getFeatureExpression()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.FeatureExpressionImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getFeatureExpression()
 		 * @generated
 		 */
 		EClass FEATURE_EXPRESSION = eINSTANCE.getFeatureExpression();
@@ -6803,12 +6803,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.FeatureLiteralImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.FeatureLiteralImpl
 		 * <em>Feature Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 		 * -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.FeatureLiteralImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getFeatureLiteral()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.FeatureLiteralImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getFeatureLiteral()
 		 * @generated
 		 */
 		EClass FEATURE_LITERAL = eINSTANCE.getFeatureLiteral();
@@ -6823,12 +6823,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextTypeFeatureValueImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextTypeFeatureValueImpl
 		 * <em>Context Type Feature Value</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextTypeFeatureValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextTypeFeatureValue()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextTypeFeatureValueImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextTypeFeatureValue()
 		 * @generated
 		 */
 		EClass CONTEXT_TYPE_FEATURE_VALUE = eINSTANCE.getContextTypeFeatureValue();
@@ -6844,12 +6844,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextPatternNodeFeatureValueImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternNodeFeatureValueImpl
 		 * <em>Context Pattern Node Feature Value</em>}' class. <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextPatternNodeFeatureValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextPatternNodeFeatureValue()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternNodeFeatureValueImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextPatternNodeFeatureValue()
 		 * @generated
 		 */
 		EClass CONTEXT_PATTERN_NODE_FEATURE_VALUE = eINSTANCE.getContextPatternNodeFeatureValue();
@@ -6865,12 +6865,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingNodeFeatureValueImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextMappingNodeFeatureValueImpl
 		 * <em>Context Mapping Node Feature Value</em>}' class. <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingNodeFeatureValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getContextMappingNodeFeatureValue()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextMappingNodeFeatureValueImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextMappingNodeFeatureValue()
 		 * @generated
 		 */
 		EClass CONTEXT_MAPPING_NODE_FEATURE_VALUE = eINSTANCE.getContextMappingNodeFeatureValue();
@@ -6886,11 +6886,11 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorImpl
 		 * <em>Iterator</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIterator()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIterator()
 		 * @generated
 		 */
 		EClass ITERATOR = eINSTANCE.getIterator();
@@ -6905,12 +6905,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternValueImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternValueImpl
 		 * <em>Iterator Pattern Value</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorPatternValue()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternValueImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorPatternValue()
 		 * @generated
 		 */
 		EClass ITERATOR_PATTERN_VALUE = eINSTANCE.getIteratorPatternValue();
@@ -6925,12 +6925,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternFeatureValueImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternFeatureValueImpl
 		 * <em>Iterator Pattern Feature Value</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternFeatureValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorPatternFeatureValue()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternFeatureValueImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorPatternFeatureValue()
 		 * @generated
 		 */
 		EClass ITERATOR_PATTERN_FEATURE_VALUE = eINSTANCE.getIteratorPatternFeatureValue();
@@ -6955,12 +6955,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternNodeValueImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternNodeValueImpl
 		 * <em>Iterator Pattern Node Value</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternNodeValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorPatternNodeValue()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternNodeValueImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorPatternNodeValue()
 		 * @generated
 		 */
 		EClass ITERATOR_PATTERN_NODE_VALUE = eINSTANCE.getIteratorPatternNodeValue();
@@ -6984,12 +6984,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternNodeFeatureValueImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternNodeFeatureValueImpl
 		 * <em>Iterator Pattern Node Feature Value</em>}' class. <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternNodeFeatureValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorPatternNodeFeatureValue()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternNodeFeatureValueImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorPatternNodeFeatureValue()
 		 * @generated
 		 */
 		EClass ITERATOR_PATTERN_NODE_FEATURE_VALUE = eINSTANCE.getIteratorPatternNodeFeatureValue();
@@ -7005,12 +7005,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingValueImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingValueImpl
 		 * <em>Iterator Mapping Value</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingValue()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingValueImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorMappingValue()
 		 * @generated
 		 */
 		EClass ITERATOR_MAPPING_VALUE = eINSTANCE.getIteratorMappingValue();
@@ -7025,12 +7025,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingFeatureValueImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingFeatureValueImpl
 		 * <em>Iterator Mapping Feature Value</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingFeatureValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingFeatureValue()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingFeatureValueImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorMappingFeatureValue()
 		 * @generated
 		 */
 		EClass ITERATOR_MAPPING_FEATURE_VALUE = eINSTANCE.getIteratorMappingFeatureValue();
@@ -7055,12 +7055,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeValueImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingNodeValueImpl
 		 * <em>Iterator Mapping Node Value</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingNodeValue()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingNodeValueImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorMappingNodeValue()
 		 * @generated
 		 */
 		EClass ITERATOR_MAPPING_NODE_VALUE = eINSTANCE.getIteratorMappingNodeValue();
@@ -7084,12 +7084,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeFeatureValueImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingNodeFeatureValueImpl
 		 * <em>Iterator Mapping Node Feature Value</em>}' class. <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingNodeFeatureValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorMappingNodeFeatureValue()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingNodeFeatureValueImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorMappingNodeFeatureValue()
 		 * @generated
 		 */
 		EClass ITERATOR_MAPPING_NODE_FEATURE_VALUE = eINSTANCE.getIteratorMappingNodeFeatureValue();
@@ -7105,12 +7105,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeValueImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorTypeValueImpl
 		 * <em>Iterator Type Value</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorTypeValue()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorTypeValueImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorTypeValue()
 		 * @generated
 		 */
 		EClass ITERATOR_TYPE_VALUE = eINSTANCE.getIteratorTypeValue();
@@ -7125,12 +7125,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeFeatureValueImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorTypeFeatureValueImpl
 		 * <em>Iterator Type Feature Value</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorTypeFeatureValueImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getIteratorTypeFeatureValue()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorTypeFeatureValueImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorTypeFeatureValue()
 		 * @generated
 		 */
 		EClass ITERATOR_TYPE_FEATURE_VALUE = eINSTANCE.getIteratorTypeFeatureValue();
@@ -7146,12 +7146,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamExpressionImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamExpressionImpl
 		 * <em>Stream Expression</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 		 * -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamExpressionImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamExpression()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamExpressionImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamExpression()
 		 * @generated
 		 */
 		EClass STREAM_EXPRESSION = eINSTANCE.getStreamExpression();
@@ -7182,24 +7182,24 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamOperation
 		 * <em>Stream Operation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 		 * -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamOperation()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamOperation
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamOperation()
 		 * @generated
 		 */
 		EClass STREAM_OPERATION = eINSTANCE.getStreamOperation();
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamFilterOperationImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamFilterOperationImpl
 		 * <em>Stream Filter Operation</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamFilterOperationImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamFilterOperation()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamFilterOperationImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamFilterOperation()
 		 * @generated
 		 */
 		EClass STREAM_FILTER_OPERATION = eINSTANCE.getStreamFilterOperation();
@@ -7214,12 +7214,12 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamSelectOperationImpl
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamSelectOperationImpl
 		 * <em>Stream Select Operation</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamSelectOperationImpl
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamSelectOperation()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamSelectOperationImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamSelectOperation()
 		 * @generated
 		 */
 		EClass STREAM_SELECT_OPERATION = eINSTANCE.getStreamSelectOperation();
@@ -7234,111 +7234,111 @@ public interface RoamIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPSolverType <em>ILP
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType <em>ILP
 		 * Solver Type</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.ILPSolverType
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getILPSolverType()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getILPSolverType()
 		 * @generated
 		 */
 		EEnum ILP_SOLVER_TYPE = eINSTANCE.getILPSolverType();
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget
 		 * <em>Objective Target</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc
 		 * -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getObjectiveTarget()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getObjectiveTarget()
 		 * @generated
 		 */
 		EEnum OBJECTIVE_TARGET = eINSTANCE.getObjectiveTarget();
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator
 		 * <em>Relational Operator</em>}' enum. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getRelationalOperator()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getRelationalOperator()
 		 * @generated
 		 */
 		EEnum RELATIONAL_OPERATOR = eINSTANCE.getRelationalOperator();
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator
 		 * <em>Binary Arithmetic Operator</em>}' enum. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBinaryArithmeticOperator()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBinaryArithmeticOperator()
 		 * @generated
 		 */
 		EEnum BINARY_ARITHMETIC_OPERATOR = eINSTANCE.getBinaryArithmeticOperator();
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator
 		 * <em>Unary Arithmetic Operator</em>}' enum. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getUnaryArithmeticOperator()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getUnaryArithmeticOperator()
 		 * @generated
 		 */
 		EEnum UNARY_ARITHMETIC_OPERATOR = eINSTANCE.getUnaryArithmeticOperator();
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamArithmeticOperator
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamArithmeticOperator
 		 * <em>Stream Arithmetic Operator</em>}' enum. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamArithmeticOperator
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamArithmeticOperator()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamArithmeticOperator
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamArithmeticOperator()
 		 * @generated
 		 */
 		EEnum STREAM_ARITHMETIC_OPERATOR = eINSTANCE.getStreamArithmeticOperator();
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryBoolOperator
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BinaryBoolOperator
 		 * <em>Binary Bool Operator</em>}' enum. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.BinaryBoolOperator
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getBinaryBoolOperator()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.BinaryBoolOperator
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBinaryBoolOperator()
 		 * @generated
 		 */
 		EEnum BINARY_BOOL_OPERATOR = eINSTANCE.getBinaryBoolOperator();
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryBoolOperator
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.UnaryBoolOperator
 		 * <em>Unary Bool Operator</em>}' enum. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.UnaryBoolOperator
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getUnaryBoolOperator()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.UnaryBoolOperator
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getUnaryBoolOperator()
 		 * @generated
 		 */
 		EEnum UNARY_BOOL_OPERATOR = eINSTANCE.getUnaryBoolOperator();
 
 		/**
 		 * The meta object literal for the
-		 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamBoolOperator
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamBoolOperator
 		 * <em>Stream Bool Operator</em>}' enum. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
 		 * 
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamBoolOperator
-		 * @see org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediatePackageImpl#getStreamBoolOperator()
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamBoolOperator
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamBoolOperator()
 		 * @generated
 		 */
 		EEnum STREAM_BOOL_OPERATOR = eINSTANCE.getStreamBoolOperator();
 
 	}
 
-} // RoamIntermediatePackage
+} // GipsIntermediatePackage

@@ -1,4 +1,4 @@
-module org.emoflon.roam.roamslang.GenerateRoamSLang
+module org.emoflon.gips.gipsl.GenerateGipsl
 
 import org.eclipse.xtext.xtext.generator.*
 import org.eclipse.xtext.xtext.generator.model.project.*
@@ -18,7 +18,7 @@ Workflow {
 	component = XtextGenerator {
 		configuration = {
 			project = StandardProjectConfig {
-				baseName = "org.emoflon.roam.roamslang"
+				baseName = "org.emoflon.gips.gipsl"
 				rootPath = rootPath
 				runtimeTest = {
 					enabled = false
@@ -39,8 +39,8 @@ Workflow {
 			}
 		}
 		language = StandardLanguage {
-			name = "org.emoflon.roam.roamslang.RoamSLang"
-			fileExtensions = "rslang"
+			name = "org.emoflon.gips.gipsl.Gipsl"
+			fileExtensions = "gipsl"
 			
 			referencedResource = "platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.genmodel"
 

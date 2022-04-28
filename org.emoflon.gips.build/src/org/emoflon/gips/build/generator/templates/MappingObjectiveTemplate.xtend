@@ -1,17 +1,17 @@
-package org.emoflon.roam.build.generator.templates
+package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.roam.build.generator.TemplateData
-import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionType
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet
+import org.emoflon.gips.build.generator.TemplateData
+import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet
 
 class MappingObjectiveTemplate extends ObjectiveTemplate<MappingObjective> {
 
@@ -20,18 +20,18 @@ class MappingObjectiveTemplate extends ObjectiveTemplate<MappingObjective> {
 	}
 
 	override init() {
-		packageName = data.apiData.roamObjectivePkg
+		packageName = data.apiData.gipsObjectivePkg
 		className = data.objective2objectiveClassName.get(context)
 		fqn = packageName + "." + className;
-		filePath = data.apiData.roamObjectivePkgPath + "/" + className + ".java"
+		filePath = data.apiData.gipsObjectivePkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
-		imports.add("org.emoflon.roam.core.RoamEngine")
-		imports.add("org.emoflon.roam.core.RoamMappingObjective")
-		imports.add("org.emoflon.roam.core.ilp.ILPTerm")
-		imports.add("org.emoflon.roam.core.ilp.ILPConstant")
-		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective")
-		imports.add(data.apiData.roamMappingPkg+"."+data.mapping2mappingClassName.get(context.mapping))
+		imports.add("org.emoflon.gips.core.GipsEngine")
+		imports.add("org.emoflon.gips.core.GipsMappingObjective")
+		imports.add("org.emoflon.gips.core.ilp.ILPTerm")
+		imports.add("org.emoflon.gips.core.ilp.ILPConstant")
+		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective")
+		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(context.mapping))
 	}
 	
 	override String generatePackageDeclaration() {
@@ -46,8 +46,8 @@ import «imp»;
 	
 	override String generateClassContent() {
 		return '''
-public class «className» extends RoamMappingObjective<«data.mapping2mappingClassName.get(context.mapping)»>{
-	public «className»(final RoamEngine engine, final MappingObjective objective) {
+public class «className» extends GipsMappingObjective<«data.mapping2mappingClassName.get(context.mapping)»>{
+	public «className»(final GipsEngine engine, final MappingObjective objective) {
 		super(engine, objective);
 	}
 	
@@ -130,7 +130,7 @@ protected void buildTerms(final «data.mapping2mappingClassName.get(context.mapp
 	override String generateBuilder(MappingSumExpression expr) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
-		imports.add(data.apiData.roamMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
+		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
 		imports.add("java.util.stream.Collectors")
 		val method = '''
 	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {

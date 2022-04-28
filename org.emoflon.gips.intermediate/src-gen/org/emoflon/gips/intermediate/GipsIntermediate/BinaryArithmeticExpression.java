@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Binary
@@ -10,15 +10,15 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getLhs
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression#getLhs
  * <em>Lhs</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getRhs
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression#getRhs
  * <em>Rhs</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getOperator
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression#getOperator
  * <em>Operator</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBinaryArithmeticExpression()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getBinaryArithmeticExpression()
  * @model
  * @generated
  */
@@ -29,7 +29,7 @@ public interface BinaryArithmeticExpression extends ArithmeticExpression {
 	 * 
 	 * @return the value of the '<em>Lhs</em>' containment reference.
 	 * @see #setLhs(ArithmeticExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBinaryArithmeticExpression_Lhs()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getBinaryArithmeticExpression_Lhs()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -37,7 +37,7 @@ public interface BinaryArithmeticExpression extends ArithmeticExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getLhs
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression#getLhs
 	 * <em>Lhs</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -53,7 +53,7 @@ public interface BinaryArithmeticExpression extends ArithmeticExpression {
 	 * 
 	 * @return the value of the '<em>Rhs</em>' containment reference.
 	 * @see #setRhs(ArithmeticExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBinaryArithmeticExpression_Rhs()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getBinaryArithmeticExpression_Rhs()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -61,7 +61,7 @@ public interface BinaryArithmeticExpression extends ArithmeticExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getRhs
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression#getRhs
 	 * <em>Rhs</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -74,13 +74,13 @@ public interface BinaryArithmeticExpression extends ArithmeticExpression {
 	/**
 	 * Returns the value of the '<em><b>Operator</b></em>' attribute. The literals
 	 * are from the enumeration
-	 * {@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator}.
+	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator}.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the value of the '<em>Operator</em>' attribute.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator
 	 * @see #setOperator(BinaryArithmeticOperator)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBinaryArithmeticExpression_Operator()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getBinaryArithmeticExpression_Operator()
 	 * @model
 	 * @generated
 	 */
@@ -88,11 +88,11 @@ public interface BinaryArithmeticExpression extends ArithmeticExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression#getOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression#getOperator
 	 * <em>Operator</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Operator</em>' attribute.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator
 	 * @see #getOperator()
 	 * @generated
 	 */

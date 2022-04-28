@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -12,9 +12,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamOperation;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Stream
@@ -23,13 +23,13 @@ import org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamExpressionImpl#getOperandName
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamExpressionImpl#getOperandName
  * <em>Operand Name</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamExpressionImpl#getReturnType
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamExpressionImpl#getReturnType
  * <em>Return Type</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamExpressionImpl#getCurrent
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamExpressionImpl#getCurrent
  * <em>Current</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamExpressionImpl#getChild
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamExpressionImpl#getChild
  * <em>Child</em>}</li>
  * </ul>
  *
@@ -102,7 +102,7 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.STREAM_EXPRESSION;
+		return GipsIntermediatePackage.Literals.STREAM_EXPRESSION;
 	}
 
 	/**
@@ -124,7 +124,7 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 		operandName = newOperandName;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.STREAM_EXPRESSION__OPERAND_NAME, oldOperandName, operandName));
+					GipsIntermediatePackage.STREAM_EXPRESSION__OPERAND_NAME, oldOperandName, operandName));
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 			if (returnType != oldReturnType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.STREAM_EXPRESSION__RETURN_TYPE, oldReturnType, returnType));
+							GipsIntermediatePackage.STREAM_EXPRESSION__RETURN_TYPE, oldReturnType, returnType));
 			}
 		}
 		return returnType;
@@ -164,7 +164,7 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 		returnType = newReturnType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.STREAM_EXPRESSION__RETURN_TYPE, oldReturnType, returnType));
+					GipsIntermediatePackage.STREAM_EXPRESSION__RETURN_TYPE, oldReturnType, returnType));
 	}
 
 	/**
@@ -186,7 +186,7 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 		current = newCurrent;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.STREAM_EXPRESSION__CURRENT, oldCurrent, newCurrent);
+					GipsIntermediatePackage.STREAM_EXPRESSION__CURRENT, oldCurrent, newCurrent);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -205,15 +205,15 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 			NotificationChain msgs = null;
 			if (current != null)
 				msgs = ((InternalEObject) current).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.STREAM_EXPRESSION__CURRENT, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.STREAM_EXPRESSION__CURRENT, null, msgs);
 			if (newCurrent != null)
 				msgs = ((InternalEObject) newCurrent).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.STREAM_EXPRESSION__CURRENT, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.STREAM_EXPRESSION__CURRENT, null, msgs);
 			msgs = basicSetCurrent(newCurrent, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.STREAM_EXPRESSION__CURRENT,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.STREAM_EXPRESSION__CURRENT,
 					newCurrent, newCurrent));
 	}
 
@@ -236,7 +236,7 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 		child = newChild;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.STREAM_EXPRESSION__CHILD, oldChild, newChild);
+					GipsIntermediatePackage.STREAM_EXPRESSION__CHILD, oldChild, newChild);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -255,15 +255,15 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 			NotificationChain msgs = null;
 			if (child != null)
 				msgs = ((InternalEObject) child).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.STREAM_EXPRESSION__CHILD, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.STREAM_EXPRESSION__CHILD, null, msgs);
 			if (newChild != null)
 				msgs = ((InternalEObject) newChild).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.STREAM_EXPRESSION__CHILD, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.STREAM_EXPRESSION__CHILD, null, msgs);
 			msgs = basicSetChild(newChild, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.STREAM_EXPRESSION__CHILD,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.STREAM_EXPRESSION__CHILD,
 					newChild, newChild));
 	}
 
@@ -275,9 +275,9 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.STREAM_EXPRESSION__CURRENT:
+		case GipsIntermediatePackage.STREAM_EXPRESSION__CURRENT:
 			return basicSetCurrent(null, msgs);
-		case RoamIntermediatePackage.STREAM_EXPRESSION__CHILD:
+		case GipsIntermediatePackage.STREAM_EXPRESSION__CHILD:
 			return basicSetChild(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -291,15 +291,15 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.STREAM_EXPRESSION__OPERAND_NAME:
+		case GipsIntermediatePackage.STREAM_EXPRESSION__OPERAND_NAME:
 			return getOperandName();
-		case RoamIntermediatePackage.STREAM_EXPRESSION__RETURN_TYPE:
+		case GipsIntermediatePackage.STREAM_EXPRESSION__RETURN_TYPE:
 			if (resolve)
 				return getReturnType();
 			return basicGetReturnType();
-		case RoamIntermediatePackage.STREAM_EXPRESSION__CURRENT:
+		case GipsIntermediatePackage.STREAM_EXPRESSION__CURRENT:
 			return getCurrent();
-		case RoamIntermediatePackage.STREAM_EXPRESSION__CHILD:
+		case GipsIntermediatePackage.STREAM_EXPRESSION__CHILD:
 			return getChild();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -313,16 +313,16 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.STREAM_EXPRESSION__OPERAND_NAME:
+		case GipsIntermediatePackage.STREAM_EXPRESSION__OPERAND_NAME:
 			setOperandName((String) newValue);
 			return;
-		case RoamIntermediatePackage.STREAM_EXPRESSION__RETURN_TYPE:
+		case GipsIntermediatePackage.STREAM_EXPRESSION__RETURN_TYPE:
 			setReturnType((EClassifier) newValue);
 			return;
-		case RoamIntermediatePackage.STREAM_EXPRESSION__CURRENT:
+		case GipsIntermediatePackage.STREAM_EXPRESSION__CURRENT:
 			setCurrent((StreamOperation) newValue);
 			return;
-		case RoamIntermediatePackage.STREAM_EXPRESSION__CHILD:
+		case GipsIntermediatePackage.STREAM_EXPRESSION__CHILD:
 			setChild((StreamExpression) newValue);
 			return;
 		}
@@ -337,16 +337,16 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.STREAM_EXPRESSION__OPERAND_NAME:
+		case GipsIntermediatePackage.STREAM_EXPRESSION__OPERAND_NAME:
 			setOperandName(OPERAND_NAME_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.STREAM_EXPRESSION__RETURN_TYPE:
+		case GipsIntermediatePackage.STREAM_EXPRESSION__RETURN_TYPE:
 			setReturnType((EClassifier) null);
 			return;
-		case RoamIntermediatePackage.STREAM_EXPRESSION__CURRENT:
+		case GipsIntermediatePackage.STREAM_EXPRESSION__CURRENT:
 			setCurrent((StreamOperation) null);
 			return;
-		case RoamIntermediatePackage.STREAM_EXPRESSION__CHILD:
+		case GipsIntermediatePackage.STREAM_EXPRESSION__CHILD:
 			setChild((StreamExpression) null);
 			return;
 		}
@@ -361,13 +361,13 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.STREAM_EXPRESSION__OPERAND_NAME:
+		case GipsIntermediatePackage.STREAM_EXPRESSION__OPERAND_NAME:
 			return OPERAND_NAME_EDEFAULT == null ? operandName != null : !OPERAND_NAME_EDEFAULT.equals(operandName);
-		case RoamIntermediatePackage.STREAM_EXPRESSION__RETURN_TYPE:
+		case GipsIntermediatePackage.STREAM_EXPRESSION__RETURN_TYPE:
 			return returnType != null;
-		case RoamIntermediatePackage.STREAM_EXPRESSION__CURRENT:
+		case GipsIntermediatePackage.STREAM_EXPRESSION__CURRENT:
 			return current != null;
-		case RoamIntermediatePackage.STREAM_EXPRESSION__CHILD:
+		case GipsIntermediatePackage.STREAM_EXPRESSION__CHILD:
 			return child != null;
 		}
 		return super.eIsSet(featureID);

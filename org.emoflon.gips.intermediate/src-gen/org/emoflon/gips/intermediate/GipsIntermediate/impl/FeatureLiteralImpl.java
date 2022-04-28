@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -11,8 +11,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.FeatureLiteral;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Feature
@@ -21,7 +21,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.FeatureLiteralImpl#getFeature
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.FeatureLiteralImpl#getFeature
  * <em>Feature</em>}</li>
  * </ul>
  *
@@ -54,7 +54,7 @@ public class FeatureLiteralImpl extends MinimalEObjectImpl.Container implements 
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.FEATURE_LITERAL;
+		return GipsIntermediatePackage.Literals.FEATURE_LITERAL;
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class FeatureLiteralImpl extends MinimalEObjectImpl.Container implements 
 			if (feature != oldFeature) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.FEATURE_LITERAL__FEATURE, oldFeature, feature));
+							GipsIntermediatePackage.FEATURE_LITERAL__FEATURE, oldFeature, feature));
 			}
 		}
 		return feature;
@@ -93,7 +93,7 @@ public class FeatureLiteralImpl extends MinimalEObjectImpl.Container implements 
 		EStructuralFeature oldFeature = feature;
 		feature = newFeature;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.FEATURE_LITERAL__FEATURE,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.FEATURE_LITERAL__FEATURE,
 					oldFeature, feature));
 	}
 
@@ -105,7 +105,7 @@ public class FeatureLiteralImpl extends MinimalEObjectImpl.Container implements 
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.FEATURE_LITERAL__FEATURE:
+		case GipsIntermediatePackage.FEATURE_LITERAL__FEATURE:
 			if (resolve)
 				return getFeature();
 			return basicGetFeature();
@@ -121,7 +121,7 @@ public class FeatureLiteralImpl extends MinimalEObjectImpl.Container implements 
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.FEATURE_LITERAL__FEATURE:
+		case GipsIntermediatePackage.FEATURE_LITERAL__FEATURE:
 			setFeature((EStructuralFeature) newValue);
 			return;
 		}
@@ -136,7 +136,7 @@ public class FeatureLiteralImpl extends MinimalEObjectImpl.Container implements 
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.FEATURE_LITERAL__FEATURE:
+		case GipsIntermediatePackage.FEATURE_LITERAL__FEATURE:
 			setFeature((EStructuralFeature) null);
 			return;
 		}
@@ -151,7 +151,7 @@ public class FeatureLiteralImpl extends MinimalEObjectImpl.Container implements 
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.FEATURE_LITERAL__FEATURE:
+		case GipsIntermediatePackage.FEATURE_LITERAL__FEATURE:
 			return feature != null;
 		}
 		return super.eIsSet(featureID);

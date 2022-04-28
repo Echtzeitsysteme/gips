@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Unary
@@ -10,13 +10,13 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression#getExpression
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression#getExpression
  * <em>Expression</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression#getOperator
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression#getOperator
  * <em>Operator</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getUnaryArithmeticExpression()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getUnaryArithmeticExpression()
  * @model
  * @generated
  */
@@ -27,7 +27,7 @@ public interface UnaryArithmeticExpression extends ArithmeticExpression {
 	 * 
 	 * @return the value of the '<em>Expression</em>' containment reference.
 	 * @see #setExpression(ArithmeticExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getUnaryArithmeticExpression_Expression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getUnaryArithmeticExpression_Expression()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -35,7 +35,7 @@ public interface UnaryArithmeticExpression extends ArithmeticExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression#getExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression#getExpression
 	 * <em>Expression</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -49,13 +49,13 @@ public interface UnaryArithmeticExpression extends ArithmeticExpression {
 	/**
 	 * Returns the value of the '<em><b>Operator</b></em>' attribute. The literals
 	 * are from the enumeration
-	 * {@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator}.
+	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator}.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the value of the '<em>Operator</em>' attribute.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator
 	 * @see #setOperator(UnaryArithmeticOperator)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getUnaryArithmeticExpression_Operator()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getUnaryArithmeticExpression_Operator()
 	 * @model
 	 * @generated
 	 */
@@ -63,11 +63,11 @@ public interface UnaryArithmeticExpression extends ArithmeticExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression#getOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression#getOperator
 	 * <em>Operator</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Operator</em>' attribute.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator
 	 * @see #getOperator()
 	 * @generated
 	 */

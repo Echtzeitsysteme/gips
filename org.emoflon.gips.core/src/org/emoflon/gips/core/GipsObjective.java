@@ -1,21 +1,21 @@
-package org.emoflon.roam.core;
+package org.emoflon.gips.core;
 
 import java.util.List;
 
-import org.emoflon.roam.core.ilp.ILPConstant;
-import org.emoflon.roam.core.ilp.ILPLinearFunction;
-import org.emoflon.roam.core.ilp.ILPTerm;
-import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
+import org.emoflon.gips.core.ilp.ILPConstant;
+import org.emoflon.gips.core.ilp.ILPLinearFunction;
+import org.emoflon.gips.core.ilp.ILPTerm;
+import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
 
-public abstract class RoamObjective<OBJECTIVE extends Objective, CONTEXT extends Object, VARTYPE extends Number> {
-	final protected RoamEngine engine;
+public abstract class GipsObjective<OBJECTIVE extends Objective, CONTEXT extends Object, VARTYPE extends Number> {
+	final protected GipsEngine engine;
 	final protected OBJECTIVE objective;
 	final protected String name;
 	protected List<ILPTerm<Integer, Double>> terms;
 	protected List<ILPConstant<Double>> constantTerms;
 	protected ILPLinearFunction<VARTYPE> ilpObjective;
 
-	public RoamObjective(final RoamEngine engine, final OBJECTIVE objective) {
+	public GipsObjective(final GipsEngine engine, final OBJECTIVE objective) {
 		this.engine = engine;
 		this.objective = objective;
 		this.name = objective.getName();

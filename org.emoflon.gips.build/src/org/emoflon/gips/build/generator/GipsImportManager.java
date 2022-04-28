@@ -1,4 +1,4 @@
-package org.emoflon.roam.build.generator;
+package org.emoflon.gips.build.generator;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXParameter;
 import org.moflon.core.utilities.EcoreUtils;
 
-public class RoamImportManager {
+public class GipsImportManager {
 
 	/**
 	 * The mapping eClassifier name to the name of the package containing the
@@ -43,7 +43,7 @@ public class RoamImportManager {
 	 * @param mappings the mappings of URIs to package paths set via the properties
 	 *                 file
 	 */
-	public RoamImportManager(final Map<String, String> mappings) {
+	public GipsImportManager(final Map<String, String> mappings) {
 		this.mappings = mappings;
 	}
 

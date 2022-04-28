@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -11,8 +11,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Stream
@@ -21,7 +21,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.StreamSelectOperationImpl#getType
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamSelectOperationImpl#getType
  * <em>Type</em>}</li>
  * </ul>
  *
@@ -54,7 +54,7 @@ public class StreamSelectOperationImpl extends MinimalEObjectImpl.Container impl
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.STREAM_SELECT_OPERATION;
+		return GipsIntermediatePackage.Literals.STREAM_SELECT_OPERATION;
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class StreamSelectOperationImpl extends MinimalEObjectImpl.Container impl
 		type = newType;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.STREAM_SELECT_OPERATION__TYPE, oldType, newType);
+					GipsIntermediatePackage.STREAM_SELECT_OPERATION__TYPE, oldType, newType);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -95,15 +95,15 @@ public class StreamSelectOperationImpl extends MinimalEObjectImpl.Container impl
 			NotificationChain msgs = null;
 			if (type != null)
 				msgs = ((InternalEObject) type).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.STREAM_SELECT_OPERATION__TYPE, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.STREAM_SELECT_OPERATION__TYPE, null, msgs);
 			if (newType != null)
 				msgs = ((InternalEObject) newType).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.STREAM_SELECT_OPERATION__TYPE, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.STREAM_SELECT_OPERATION__TYPE, null, msgs);
 			msgs = basicSetType(newType, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.STREAM_SELECT_OPERATION__TYPE,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.STREAM_SELECT_OPERATION__TYPE,
 					newType, newType));
 	}
 
@@ -115,7 +115,7 @@ public class StreamSelectOperationImpl extends MinimalEObjectImpl.Container impl
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.STREAM_SELECT_OPERATION__TYPE:
+		case GipsIntermediatePackage.STREAM_SELECT_OPERATION__TYPE:
 			return basicSetType(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -129,7 +129,7 @@ public class StreamSelectOperationImpl extends MinimalEObjectImpl.Container impl
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.STREAM_SELECT_OPERATION__TYPE:
+		case GipsIntermediatePackage.STREAM_SELECT_OPERATION__TYPE:
 			return getType();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -143,7 +143,7 @@ public class StreamSelectOperationImpl extends MinimalEObjectImpl.Container impl
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.STREAM_SELECT_OPERATION__TYPE:
+		case GipsIntermediatePackage.STREAM_SELECT_OPERATION__TYPE:
 			setType((EClass) newValue);
 			return;
 		}
@@ -158,7 +158,7 @@ public class StreamSelectOperationImpl extends MinimalEObjectImpl.Container impl
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.STREAM_SELECT_OPERATION__TYPE:
+		case GipsIntermediatePackage.STREAM_SELECT_OPERATION__TYPE:
 			setType((EClass) null);
 			return;
 		}
@@ -173,7 +173,7 @@ public class StreamSelectOperationImpl extends MinimalEObjectImpl.Container impl
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.STREAM_SELECT_OPERATION__TYPE:
+		case GipsIntermediatePackage.STREAM_SELECT_OPERATION__TYPE:
 			return type != null;
 		}
 		return super.eIsSet(featureID);

@@ -1,8 +1,8 @@
-package org.emoflon.roam.build.transformation.transformer;
+package org.emoflon.gips.build.transformation.transformer;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
-import org.emoflon.roam.roamslang.roamSLang.RoamRelExpr;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
 
 public interface RelationalExpressionTransformer {
-	public RelationalExpression transform(final RoamRelExpr eRelational) throws Exception;
+	public RelationalExpression transform(final GipsRelExpr eRelational) throws Exception;
 }

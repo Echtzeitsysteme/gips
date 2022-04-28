@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Integer
@@ -10,11 +10,11 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral#getLiteral
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral#getLiteral
  * <em>Literal</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIntegerLiteral()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIntegerLiteral()
  * @model
  * @generated
  */
@@ -25,7 +25,7 @@ public interface IntegerLiteral extends ArithmeticLiteral {
 	 * 
 	 * @return the value of the '<em>Literal</em>' attribute.
 	 * @see #setLiteral(int)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIntegerLiteral_Literal()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIntegerLiteral_Literal()
 	 * @model required="true"
 	 * @generated
 	 */
@@ -33,7 +33,7 @@ public interface IntegerLiteral extends ArithmeticLiteral {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral#getLiteral
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral#getLiteral
 	 * <em>Literal</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Literal</em>' attribute.

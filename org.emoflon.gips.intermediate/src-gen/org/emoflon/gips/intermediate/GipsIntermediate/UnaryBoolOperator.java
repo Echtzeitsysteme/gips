@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,7 +13,7 @@ import org.eclipse.emf.common.util.Enumerator;
  * '<em><b>Unary Bool Operator</b></em>', and utility methods for working with
  * them. <!-- end-user-doc -->
  * 
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getUnaryBoolOperator()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getUnaryBoolOperator()
  * @model
  * @generated
  */

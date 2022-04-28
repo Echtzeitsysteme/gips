@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 
@@ -12,13 +12,13 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue#getMappingContext
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue#getMappingContext
  * <em>Mapping Context</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue#getNode
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue#getNode
  * <em>Node</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorMappingNodeValue()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorMappingNodeValue()
  * @model
  * @generated
  */
@@ -29,7 +29,7 @@ public interface IteratorMappingNodeValue extends ValueExpression, Iterator {
 	 * 
 	 * @return the value of the '<em>Mapping Context</em>' reference.
 	 * @see #setMappingContext(Mapping)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorMappingNodeValue_MappingContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorMappingNodeValue_MappingContext()
 	 * @model
 	 * @generated
 	 */
@@ -37,7 +37,7 @@ public interface IteratorMappingNodeValue extends ValueExpression, Iterator {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue#getMappingContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue#getMappingContext
 	 * <em>Mapping Context</em>}' reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -53,7 +53,7 @@ public interface IteratorMappingNodeValue extends ValueExpression, Iterator {
 	 * 
 	 * @return the value of the '<em>Node</em>' reference.
 	 * @see #setNode(IBeXNode)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorMappingNodeValue_Node()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorMappingNodeValue_Node()
 	 * @model
 	 * @generated
 	 */
@@ -61,7 +61,7 @@ public interface IteratorMappingNodeValue extends ValueExpression, Iterator {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue#getNode
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue#getNode
 	 * <em>Node</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Node</em>' reference.

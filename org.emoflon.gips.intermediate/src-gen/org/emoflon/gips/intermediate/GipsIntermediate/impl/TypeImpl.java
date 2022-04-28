@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -9,8 +9,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.Type;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -19,7 +19,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.Type;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeImpl#getType
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeImpl#getType
  * <em>Type</em>}</li>
  * </ul>
  *
@@ -52,7 +52,7 @@ public class TypeImpl extends VariableSetImpl implements Type {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.TYPE;
+		return GipsIntermediatePackage.Literals.TYPE;
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class TypeImpl extends VariableSetImpl implements Type {
 			type = (EClass) eResolveProxy(oldType);
 			if (type != oldType) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, RoamIntermediatePackage.TYPE__TYPE,
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, GipsIntermediatePackage.TYPE__TYPE,
 							oldType, type));
 			}
 		}
@@ -91,7 +91,7 @@ public class TypeImpl extends VariableSetImpl implements Type {
 		EClass oldType = type;
 		type = newType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE__TYPE, oldType, type));
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.TYPE__TYPE, oldType, type));
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class TypeImpl extends VariableSetImpl implements Type {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE__TYPE:
+		case GipsIntermediatePackage.TYPE__TYPE:
 			if (resolve)
 				return getType();
 			return basicGetType();
@@ -118,7 +118,7 @@ public class TypeImpl extends VariableSetImpl implements Type {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE__TYPE:
+		case GipsIntermediatePackage.TYPE__TYPE:
 			setType((EClass) newValue);
 			return;
 		}
@@ -133,7 +133,7 @@ public class TypeImpl extends VariableSetImpl implements Type {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE__TYPE:
+		case GipsIntermediatePackage.TYPE__TYPE:
 			setType((EClass) null);
 			return;
 		}
@@ -148,7 +148,7 @@ public class TypeImpl extends VariableSetImpl implements Type {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE__TYPE:
+		case GipsIntermediatePackage.TYPE__TYPE:
 			return type != null;
 		}
 		return super.eIsSet(featureID);

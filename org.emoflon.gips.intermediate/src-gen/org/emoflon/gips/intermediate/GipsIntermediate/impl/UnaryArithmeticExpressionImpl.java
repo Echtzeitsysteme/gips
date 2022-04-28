@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -10,10 +10,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Unary
@@ -22,9 +22,9 @@ import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.UnaryArithmeticExpressionImpl#getExpression
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.UnaryArithmeticExpressionImpl#getExpression
  * <em>Expression</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.UnaryArithmeticExpressionImpl#getOperator
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.UnaryArithmeticExpressionImpl#getOperator
  * <em>Operator</em>}</li>
  * </ul>
  *
@@ -77,7 +77,7 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.UNARY_ARITHMETIC_EXPRESSION;
+		return GipsIntermediatePackage.Literals.UNARY_ARITHMETIC_EXPRESSION;
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 		expression = newExpression;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__EXPRESSION, oldExpression, newExpression);
+					GipsIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__EXPRESSION, oldExpression, newExpression);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -118,18 +118,18 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 			NotificationChain msgs = null;
 			if (expression != null)
 				msgs = ((InternalEObject) expression).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__EXPRESSION, null,
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__EXPRESSION, null,
 						msgs);
 			if (newExpression != null)
 				msgs = ((InternalEObject) newExpression).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__EXPRESSION, null,
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__EXPRESSION, null,
 						msgs);
 			msgs = basicSetExpression(newExpression, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__EXPRESSION, newExpression, newExpression));
+					GipsIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__EXPRESSION, newExpression, newExpression));
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 		operator = newOperator == null ? OPERATOR_EDEFAULT : newOperator;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__OPERATOR, oldOperator, operator));
+					GipsIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__OPERATOR, oldOperator, operator));
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__EXPRESSION:
+		case GipsIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__EXPRESSION:
 			return basicSetExpression(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -176,9 +176,9 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__EXPRESSION:
+		case GipsIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__EXPRESSION:
 			return getExpression();
-		case RoamIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__OPERATOR:
 			return getOperator();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -192,10 +192,10 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__EXPRESSION:
+		case GipsIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__EXPRESSION:
 			setExpression((ArithmeticExpression) newValue);
 			return;
-		case RoamIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__OPERATOR:
 			setOperator((UnaryArithmeticOperator) newValue);
 			return;
 		}
@@ -210,10 +210,10 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__EXPRESSION:
+		case GipsIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__EXPRESSION:
 			setExpression((ArithmeticExpression) null);
 			return;
-		case RoamIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__OPERATOR:
 			setOperator(OPERATOR_EDEFAULT);
 			return;
 		}
@@ -228,9 +228,9 @@ public class UnaryArithmeticExpressionImpl extends ArithmeticExpressionImpl impl
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__EXPRESSION:
+		case GipsIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__EXPRESSION:
 			return expression != null;
-		case RoamIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION__OPERATOR:
 			return operator != OPERATOR_EDEFAULT;
 		}
 		return super.eIsSet(featureID);

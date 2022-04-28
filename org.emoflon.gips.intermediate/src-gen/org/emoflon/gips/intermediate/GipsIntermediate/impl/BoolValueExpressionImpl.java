@@ -1,11 +1,11 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolValueExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Bool
@@ -30,7 +30,7 @@ public abstract class BoolValueExpressionImpl extends BoolExpressionImpl impleme
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.BOOL_VALUE_EXPRESSION;
+		return GipsIntermediatePackage.Literals.BOOL_VALUE_EXPRESSION;
 	}
 
 } // BoolValueExpressionImpl

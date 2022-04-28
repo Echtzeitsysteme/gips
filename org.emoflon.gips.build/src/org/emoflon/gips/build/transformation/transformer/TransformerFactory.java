@@ -1,17 +1,17 @@
-package org.emoflon.roam.build.transformation.transformer;
+package org.emoflon.gips.build.transformation.transformer;
 
 import org.eclipse.emf.ecore.EObject;
-import org.emoflon.roam.build.transformation.helper.RoamTransformationData;
-import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective;
-import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.SumExpression;
+import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
+import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression;
 
 public class TransformerFactory {
-	final protected RoamTransformationData data;
+	final protected GipsTransformationData data;
 
-	public TransformerFactory(final RoamTransformationData data) {
+	public TransformerFactory(final GipsTransformationData data) {
 		this.data = data;
 	}
 

@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -8,8 +8,8 @@ import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Double
@@ -18,7 +18,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.DoubleLiteralImpl#getLiteral
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.DoubleLiteralImpl#getLiteral
  * <em>Literal</em>}</li>
  * </ul>
  *
@@ -61,7 +61,7 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.DOUBLE_LITERAL;
+		return GipsIntermediatePackage.Literals.DOUBLE_LITERAL;
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 		double oldLiteral = literal;
 		literal = newLiteral;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.DOUBLE_LITERAL__LITERAL,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.DOUBLE_LITERAL__LITERAL,
 					oldLiteral, literal));
 	}
 
@@ -94,7 +94,7 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.DOUBLE_LITERAL__LITERAL:
+		case GipsIntermediatePackage.DOUBLE_LITERAL__LITERAL:
 			return getLiteral();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -108,7 +108,7 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.DOUBLE_LITERAL__LITERAL:
+		case GipsIntermediatePackage.DOUBLE_LITERAL__LITERAL:
 			setLiteral((Double) newValue);
 			return;
 		}
@@ -123,7 +123,7 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.DOUBLE_LITERAL__LITERAL:
+		case GipsIntermediatePackage.DOUBLE_LITERAL__LITERAL:
 			setLiteral(LITERAL_EDEFAULT);
 			return;
 		}
@@ -138,7 +138,7 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.DOUBLE_LITERAL__LITERAL:
+		case GipsIntermediatePackage.DOUBLE_LITERAL__LITERAL:
 			return literal != LITERAL_EDEFAULT;
 		}
 		return super.eIsSet(featureID);

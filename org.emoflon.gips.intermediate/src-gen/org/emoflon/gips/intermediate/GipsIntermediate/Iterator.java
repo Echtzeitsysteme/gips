@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -12,11 +12,11 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Iterator#getStream
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Iterator#getStream
  * <em>Stream</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIterator()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIterator()
  * @model abstract="true"
  * @generated
  */
@@ -27,7 +27,7 @@ public interface Iterator extends EObject {
 	 * 
 	 * @return the value of the '<em>Stream</em>' reference.
 	 * @see #setStream(SetOperation)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIterator_Stream()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIterator_Stream()
 	 * @model
 	 * @generated
 	 */
@@ -35,7 +35,7 @@ public interface Iterator extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Iterator#getStream
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Iterator#getStream
 	 * <em>Stream</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Stream</em>' reference.

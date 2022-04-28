@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object
@@ -10,15 +10,15 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression#getOperator
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression#getOperator
  * <em>Operator</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression#getLhs
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression#getLhs
  * <em>Lhs</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression#getRhs
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression#getRhs
  * <em>Rhs</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getRelationalExpression()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getRelationalExpression()
  * @model
  * @generated
  */
@@ -26,13 +26,13 @@ public interface RelationalExpression extends BoolValueExpression {
 	/**
 	 * Returns the value of the '<em><b>Operator</b></em>' attribute. The literals
 	 * are from the enumeration
-	 * {@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator}.
+	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator}.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the value of the '<em>Operator</em>' attribute.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator
 	 * @see #setOperator(RelationalOperator)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getRelationalExpression_Operator()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getRelationalExpression_Operator()
 	 * @model
 	 * @generated
 	 */
@@ -40,11 +40,11 @@ public interface RelationalExpression extends BoolValueExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression#getOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression#getOperator
 	 * <em>Operator</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Operator</em>' attribute.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator
 	 * @see #getOperator()
 	 * @generated
 	 */
@@ -56,7 +56,7 @@ public interface RelationalExpression extends BoolValueExpression {
 	 * 
 	 * @return the value of the '<em>Lhs</em>' containment reference.
 	 * @see #setLhs(ArithmeticExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getRelationalExpression_Lhs()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getRelationalExpression_Lhs()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -64,7 +64,7 @@ public interface RelationalExpression extends BoolValueExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression#getLhs
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression#getLhs
 	 * <em>Lhs</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -80,7 +80,7 @@ public interface RelationalExpression extends BoolValueExpression {
 	 * 
 	 * @return the value of the '<em>Rhs</em>' containment reference.
 	 * @see #setRhs(ArithmeticExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getRelationalExpression_Rhs()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getRelationalExpression_Rhs()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -88,7 +88,7 @@ public interface RelationalExpression extends BoolValueExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression#getRhs
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression#getRhs
 	 * <em>Rhs</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 

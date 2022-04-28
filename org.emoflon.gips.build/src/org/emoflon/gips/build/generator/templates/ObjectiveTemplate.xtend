@@ -1,59 +1,59 @@
-package org.emoflon.roam.build.generator.templates
+package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.roam.build.generator.GeneratorTemplate
-import org.emoflon.roam.build.generator.TemplateData
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral
-import org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral
-import org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue
-import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue
+import org.emoflon.gips.build.generator.GeneratorTemplate
+import org.emoflon.gips.build.generator.TemplateData
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral
+import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral
+import org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue
+import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue
+import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue
 import java.util.HashMap
-import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation
-import org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolValue
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator
+import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation
+import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolValue
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue
+import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator
 import org.eclipse.emf.ecore.EObject
 import java.util.HashSet
-import org.emoflon.roam.build.transformation.helper.RoamTransformationUtils
+import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils
 import java.util.LinkedList
-import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue
-import org.emoflon.roam.intermediate.RoamIntermediate.SumExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.Objective
-import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionType
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue
+import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.Objective
+import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective
 
 abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends GeneratorTemplate<OBJECTIVE> {
 
@@ -96,14 +96,14 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			} else {
 				val builderMethodName = generateBuilder(expr)
 				var instruction = ""
-				if(RoamTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
+				if(GipsTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
 					if(context instanceof MappingObjective) {
 						instruction = '''terms.add(new ILPTerm<Integer, Double>(context, «builderMethodName»()));'''
 					} else {
 						instruction = '''constantTerms.add(new ILPConstant<Double>(«builderMethodName»()));'''
 					}
 				} else {
-					val variables = RoamTransformationUtils.extractVariable(expr);
+					val variables = GipsTransformationUtils.extractVariable(expr);
 					if(variables.size != 1)
 						throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 		
@@ -115,14 +115,14 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		} else if(expr instanceof UnaryArithmeticExpression) {
 				val builderMethodName = generateBuilder(expr)
 				var instruction = ""
-				if(RoamTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
+				if(GipsTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
 					if(context instanceof MappingObjective) {
 						instruction = '''terms.add(new ILPTerm<Integer, Double>(context, «builderMethodName»()));'''
 					} else {
 						instruction = '''constantTerms.add(new ILPConstant<Double>(«builderMethodName»()));'''
 					}
 				} else {
-					val variables = RoamTransformationUtils.extractVariable(expr);
+					val variables = GipsTransformationUtils.extractVariable(expr);
 					if(variables.size != 1)
 						throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 		
@@ -162,7 +162,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			builderMethodCalls.add('''«builderMethodName»(context);''')
 		} else {
 			var instruction = "";
-			val type = RoamTransformationUtils.isConstantExpression(expr)
+			val type = GipsTransformationUtils.isConstantExpression(expr)
 			if(type == ArithmeticExpressionType.constant) {
 				if(context instanceof MappingObjective) {
 					instruction = '''terms.add(new ILPTerm<Integer, Double>(context, «generateConstantBuilder(expr, type)»));'''
@@ -170,7 +170,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 					instruction = '''constantTerms.add(new ILPConstant<Double>(«generateConstantBuilder(expr, type)»));'''
 				}
 			} else {
-				val variables = RoamTransformationUtils.extractVariable(expr);
+				val variables = GipsTransformationUtils.extractVariable(expr);
 				if(variables.size != 1)
 					throw new UnsupportedOperationException("Access to multiple different variables in the same stream expression is forbidden.");
 				

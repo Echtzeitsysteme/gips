@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -10,10 +10,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.BinaryBoolOperator;
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.BinaryBoolOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Bool
@@ -22,11 +22,11 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolBinaryExpressionImpl#getLhs
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolBinaryExpressionImpl#getLhs
  * <em>Lhs</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolBinaryExpressionImpl#getRhs
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolBinaryExpressionImpl#getRhs
  * <em>Rhs</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.BoolBinaryExpressionImpl#getOperator
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolBinaryExpressionImpl#getOperator
  * <em>Operator</em>}</li>
  * </ul>
  *
@@ -89,7 +89,7 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.BOOL_BINARY_EXPRESSION;
+		return GipsIntermediatePackage.Literals.BOOL_BINARY_EXPRESSION;
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 		lhs = newLhs;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__LHS, oldLhs, newLhs);
+					GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__LHS, oldLhs, newLhs);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -130,15 +130,15 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 			NotificationChain msgs = null;
 			if (lhs != null)
 				msgs = ((InternalEObject) lhs).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__LHS, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__LHS, null, msgs);
 			if (newLhs != null)
 				msgs = ((InternalEObject) newLhs).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__LHS, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__LHS, null, msgs);
 			msgs = basicSetLhs(newLhs, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__LHS,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__LHS,
 					newLhs, newLhs));
 	}
 
@@ -161,7 +161,7 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 		rhs = newRhs;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__RHS, oldRhs, newRhs);
+					GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__RHS, oldRhs, newRhs);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -180,15 +180,15 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 			NotificationChain msgs = null;
 			if (rhs != null)
 				msgs = ((InternalEObject) rhs).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__RHS, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__RHS, null, msgs);
 			if (newRhs != null)
 				msgs = ((InternalEObject) newRhs).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__RHS, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__RHS, null, msgs);
 			msgs = basicSetRhs(newRhs, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__RHS,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__RHS,
 					newRhs, newRhs));
 	}
 
@@ -211,7 +211,7 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 		operator = newOperator == null ? OPERATOR_EDEFAULT : newOperator;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__OPERATOR, oldOperator, operator));
+					GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__OPERATOR, oldOperator, operator));
 	}
 
 	/**
@@ -222,9 +222,9 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__LHS:
+		case GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__LHS:
 			return basicSetLhs(null, msgs);
-		case RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__RHS:
+		case GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__RHS:
 			return basicSetRhs(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -238,11 +238,11 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__LHS:
+		case GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__LHS:
 			return getLhs();
-		case RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__RHS:
+		case GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__RHS:
 			return getRhs();
-		case RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__OPERATOR:
 			return getOperator();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -256,13 +256,13 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__LHS:
+		case GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__LHS:
 			setLhs((BoolExpression) newValue);
 			return;
-		case RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__RHS:
+		case GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__RHS:
 			setRhs((BoolExpression) newValue);
 			return;
-		case RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__OPERATOR:
 			setOperator((BinaryBoolOperator) newValue);
 			return;
 		}
@@ -277,13 +277,13 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__LHS:
+		case GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__LHS:
 			setLhs((BoolExpression) null);
 			return;
-		case RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__RHS:
+		case GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__RHS:
 			setRhs((BoolExpression) null);
 			return;
-		case RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__OPERATOR:
 			setOperator(OPERATOR_EDEFAULT);
 			return;
 		}
@@ -298,11 +298,11 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__LHS:
+		case GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__LHS:
 			return lhs != null;
-		case RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__RHS:
+		case GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__RHS:
 			return rhs != null;
-		case RoamIntermediatePackage.BOOL_BINARY_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.BOOL_BINARY_EXPRESSION__OPERATOR:
 			return operator != OPERATOR_EDEFAULT;
 		}
 		return super.eIsSet(featureID);

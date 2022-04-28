@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Bool
@@ -10,11 +10,11 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral#isLiteral
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral#isLiteral
  * <em>Literal</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBoolLiteral()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getBoolLiteral()
  * @model
  * @generated
  */
@@ -25,7 +25,7 @@ public interface BoolLiteral extends BoolValueExpression {
 	 * 
 	 * @return the value of the '<em>Literal</em>' attribute.
 	 * @see #setLiteral(boolean)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBoolLiteral_Literal()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getBoolLiteral_Literal()
 	 * @model
 	 * @generated
 	 */
@@ -33,7 +33,7 @@ public interface BoolLiteral extends BoolValueExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral#isLiteral
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral#isLiteral
 	 * <em>Literal</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Literal</em>' attribute.

@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -10,12 +10,12 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.Iterator;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.Iterator;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -24,11 +24,11 @@ import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingFeatureValueImpl#getStream
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingFeatureValueImpl#getStream
  * <em>Stream</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingFeatureValueImpl#getMappingContext
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingFeatureValueImpl#getMappingContext
  * <em>Mapping Context</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingFeatureValueImpl#getFeatureExpression
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingFeatureValueImpl#getFeatureExpression
  * <em>Feature Expression</em>}</li>
  * </ul>
  *
@@ -82,7 +82,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.ITERATOR_MAPPING_FEATURE_VALUE;
+		return GipsIntermediatePackage.Literals.ITERATOR_MAPPING_FEATURE_VALUE;
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 			if (stream != oldStream) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__STREAM, oldStream, stream));
+							GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__STREAM, oldStream, stream));
 			}
 		}
 		return stream;
@@ -122,7 +122,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 		stream = newStream;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__STREAM, oldStream, stream));
+					GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__STREAM, oldStream, stream));
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 			if (mappingContext != oldMappingContext) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__MAPPING_CONTEXT, oldMappingContext,
+							GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__MAPPING_CONTEXT, oldMappingContext,
 							mappingContext));
 			}
 		}
@@ -163,7 +163,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 		mappingContext = newMappingContext;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__MAPPING_CONTEXT, oldMappingContext,
+					GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__MAPPING_CONTEXT, oldMappingContext,
 					mappingContext));
 	}
 
@@ -186,7 +186,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 		featureExpression = newFeatureExpression;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION, oldFeatureExpression,
+					GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION, oldFeatureExpression,
 					newFeatureExpression);
 			if (msgs == null)
 				msgs = notification;
@@ -207,19 +207,19 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 			if (featureExpression != null)
 				msgs = ((InternalEObject) featureExpression).eInverseRemove(this,
 						EOPPOSITE_FEATURE_BASE
-								- RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION,
+								- GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION,
 						null, msgs);
 			if (newFeatureExpression != null)
 				msgs = ((InternalEObject) newFeatureExpression).eInverseAdd(this,
 						EOPPOSITE_FEATURE_BASE
-								- RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION,
+								- GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION,
 						null, msgs);
 			msgs = basicSetFeatureExpression(newFeatureExpression, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION, newFeatureExpression,
+					GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION, newFeatureExpression,
 					newFeatureExpression));
 	}
 
@@ -231,7 +231,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION:
 			return basicSetFeatureExpression(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -245,15 +245,15 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__STREAM:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__STREAM:
 			if (resolve)
 				return getStream();
 			return basicGetStream();
-		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__MAPPING_CONTEXT:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__MAPPING_CONTEXT:
 			if (resolve)
 				return getMappingContext();
 			return basicGetMappingContext();
-		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION:
 			return getFeatureExpression();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -267,13 +267,13 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__STREAM:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__STREAM:
 			setStream((SetOperation) newValue);
 			return;
-		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__MAPPING_CONTEXT:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__MAPPING_CONTEXT:
 			setMappingContext((Mapping) newValue);
 			return;
-		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION:
 			setFeatureExpression((FeatureExpression) newValue);
 			return;
 		}
@@ -288,13 +288,13 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__STREAM:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__STREAM:
 			setStream((SetOperation) null);
 			return;
-		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__MAPPING_CONTEXT:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__MAPPING_CONTEXT:
 			setMappingContext((Mapping) null);
 			return;
-		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION:
 			setFeatureExpression((FeatureExpression) null);
 			return;
 		}
@@ -309,11 +309,11 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__STREAM:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__STREAM:
 			return stream != null;
-		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__MAPPING_CONTEXT:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__MAPPING_CONTEXT:
 			return mappingContext != null;
-		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION:
 			return featureExpression != null;
 		}
 		return super.eIsSet(featureID);
@@ -328,8 +328,8 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == Iterator.class) {
 			switch (derivedFeatureID) {
-			case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__STREAM:
-				return RoamIntermediatePackage.ITERATOR__STREAM;
+			case GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__STREAM:
+				return GipsIntermediatePackage.ITERATOR__STREAM;
 			default:
 				return -1;
 			}
@@ -346,8 +346,8 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == Iterator.class) {
 			switch (baseFeatureID) {
-			case RoamIntermediatePackage.ITERATOR__STREAM:
-				return RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__STREAM;
+			case GipsIntermediatePackage.ITERATOR__STREAM:
+				return GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE__STREAM;
 			default:
 				return -1;
 			}

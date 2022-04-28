@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.util;
+package org.emoflon.gips.intermediate.GipsIntermediate.util;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
@@ -9,23 +9,23 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.*;
+import org.emoflon.gips.intermediate.GipsIntermediate.*;
 
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides
  * an adapter <code>createXXX</code> method for each class of the model. <!--
  * end-user-doc -->
  * 
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage
  * @generated
  */
-public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
+public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 	/**
 	 * The cached model package. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	protected static RoamIntermediatePackage modelPackage;
+	protected static GipsIntermediatePackage modelPackage;
 
 	/**
 	 * Creates an instance of the adapter factory. <!-- begin-user-doc --> <!--
@@ -33,9 +33,9 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * 
 	 * @generated
 	 */
-	public RoamIntermediateAdapterFactory() {
+	public GipsIntermediateAdapterFactory() {
 		if (modelPackage == null) {
-			modelPackage = RoamIntermediatePackage.eINSTANCE;
+			modelPackage = GipsIntermediatePackage.eINSTANCE;
 		}
 	}
 
@@ -65,10 +65,10 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * 
 	 * @generated
 	 */
-	protected RoamIntermediateSwitch<Adapter> modelSwitch = new RoamIntermediateSwitch<Adapter>() {
+	protected GipsIntermediateSwitch<Adapter> modelSwitch = new GipsIntermediateSwitch<Adapter>() {
 		@Override
-		public Adapter caseRoamIntermediateModel(RoamIntermediateModel object) {
-			return createRoamIntermediateModelAdapter();
+		public Adapter caseGipsIntermediateModel(GipsIntermediateModel object) {
+			return createGipsIntermediateModelAdapter();
 		}
 
 		@Override
@@ -402,28 +402,28 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
 	 * <em>Model</em>}'. <!-- begin-user-doc --> This default implementation returns
 	 * null so that we can easily ignore cases; it's useful to ignore a case when
 	 * inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
 	 * @generated
 	 */
-	public Adapter createRoamIntermediateModelAdapter() {
+	public Adapter createGipsIntermediateModelAdapter() {
 		return null;
 	}
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig <em>ILP
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig <em>ILP
 	 * Config</em>}'. <!-- begin-user-doc --> This default implementation returns
 	 * null so that we can easily ignore cases; it's useful to ignore a case when
 	 * inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig
 	 * @generated
 	 */
 	public Adapter createILPConfigAdapter() {
@@ -432,13 +432,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.VariableSet
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.VariableSet
 	 * <em>Variable Set</em>}'. <!-- begin-user-doc --> This default implementation
 	 * returns null so that we can easily ignore cases; it's useful to ignore a case
 	 * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.VariableSet
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.VariableSet
 	 * @generated
 	 */
 	public Adapter createVariableSetAdapter() {
@@ -447,13 +447,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Pattern
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Pattern
 	 * <em>Pattern</em>}'. <!-- begin-user-doc --> This default implementation
 	 * returns null so that we can easily ignore cases; it's useful to ignore a case
 	 * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Pattern
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Pattern
 	 * @generated
 	 */
 	public Adapter createPatternAdapter() {
@@ -462,13 +462,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Type <em>Type</em>}'.
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Type <em>Type</em>}'.
 	 * <!-- begin-user-doc --> This default implementation returns null so that we
 	 * can easily ignore cases; it's useful to ignore a case when inheritance will
 	 * catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Type
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Type
 	 * @generated
 	 */
 	public Adapter createTypeAdapter() {
@@ -477,13 +477,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Mapping
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Mapping
 	 * <em>Mapping</em>}'. <!-- begin-user-doc --> This default implementation
 	 * returns null so that we can easily ignore cases; it's useful to ignore a case
 	 * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Mapping
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Mapping
 	 * @generated
 	 */
 	public Adapter createMappingAdapter() {
@@ -492,13 +492,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint
 	 * <em>Constraint</em>}'. <!-- begin-user-doc --> This default implementation
 	 * returns null so that we can easily ignore cases; it's useful to ignore a case
 	 * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Constraint
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Constraint
 	 * @generated
 	 */
 	public Adapter createConstraintAdapter() {
@@ -507,13 +507,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Objective
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Objective
 	 * <em>Objective</em>}'. <!-- begin-user-doc --> This default implementation
 	 * returns null so that we can easily ignore cases; it's useful to ignore a case
 	 * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Objective
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Objective
 	 * @generated
 	 */
 	public Adapter createObjectiveAdapter() {
@@ -522,14 +522,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective
 	 * <em>Global Objective</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective
 	 * @generated
 	 */
 	public Adapter createGlobalObjectiveAdapter() {
@@ -538,13 +538,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Context
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Context
 	 * <em>Context</em>}'. <!-- begin-user-doc --> This default implementation
 	 * returns null so that we can easily ignore cases; it's useful to ignore a case
 	 * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Context
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Context
 	 * @generated
 	 */
 	public Adapter createContextAdapter() {
@@ -553,14 +553,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint
 	 * <em>Pattern Constraint</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint
 	 * @generated
 	 */
 	public Adapter createPatternConstraintAdapter() {
@@ -569,14 +569,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint
 	 * <em>Type Constraint</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint
 	 * @generated
 	 */
 	public Adapter createTypeConstraintAdapter() {
@@ -585,14 +585,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint
 	 * <em>Mapping Constraint</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint
 	 * @generated
 	 */
 	public Adapter createMappingConstraintAdapter() {
@@ -601,14 +601,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective
 	 * <em>Pattern Objective</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective
 	 * @generated
 	 */
 	public Adapter createPatternObjectiveAdapter() {
@@ -617,13 +617,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective <em>Type
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective <em>Type
 	 * Objective</em>}'. <!-- begin-user-doc --> This default implementation returns
 	 * null so that we can easily ignore cases; it's useful to ignore a case when
 	 * inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective
 	 * @generated
 	 */
 	public Adapter createTypeObjectiveAdapter() {
@@ -632,14 +632,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective
 	 * <em>Mapping Objective</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective
 	 * @generated
 	 */
 	public Adapter createMappingObjectiveAdapter() {
@@ -648,14 +648,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
 	 * <em>Arithmetic Expression</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
 	 * @generated
 	 */
 	public Adapter createArithmeticExpressionAdapter() {
@@ -664,14 +664,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression
 	 * <em>Binary Arithmetic Expression</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression
 	 * @generated
 	 */
 	public Adapter createBinaryArithmeticExpressionAdapter() {
@@ -680,14 +680,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression
 	 * <em>Unary Arithmetic Expression</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression
 	 * @generated
 	 */
 	public Adapter createUnaryArithmeticExpressionAdapter() {
@@ -696,13 +696,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.SetOperation <em>Set
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.SetOperation <em>Set
 	 * Operation</em>}'. <!-- begin-user-doc --> This default implementation returns
 	 * null so that we can easily ignore cases; it's useful to ignore a case when
 	 * inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.SetOperation
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.SetOperation
 	 * @generated
 	 */
 	public Adapter createSetOperationAdapter() {
@@ -711,14 +711,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValueExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValueExpression
 	 * <em>Arithmetic Value Expression</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValueExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValueExpression
 	 * @generated
 	 */
 	public Adapter createArithmeticValueExpressionAdapter() {
@@ -727,14 +727,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue
 	 * <em>Arithmetic Value</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue
 	 * @generated
 	 */
 	public Adapter createArithmeticValueAdapter() {
@@ -743,14 +743,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral
 	 * <em>Arithmetic Literal</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral
 	 * @generated
 	 */
 	public Adapter createArithmeticLiteralAdapter() {
@@ -759,14 +759,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral
 	 * <em>Integer Literal</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral
 	 * @generated
 	 */
 	public Adapter createIntegerLiteralAdapter() {
@@ -775,14 +775,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral
 	 * <em>Double Literal</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral
 	 * @generated
 	 */
 	public Adapter createDoubleLiteralAdapter() {
@@ -791,14 +791,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression
 	 * <em>Bool Expression</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression
 	 * @generated
 	 */
 	public Adapter createBoolExpressionAdapter() {
@@ -807,14 +807,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression
 	 * <em>Bool Binary Expression</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression
 	 * @generated
 	 */
 	public Adapter createBoolBinaryExpressionAdapter() {
@@ -823,14 +823,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression
 	 * <em>Bool Unary Expression</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression
 	 * @generated
 	 */
 	public Adapter createBoolUnaryExpressionAdapter() {
@@ -839,14 +839,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolValueExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression
 	 * <em>Bool Value Expression</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolValueExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression
 	 * @generated
 	 */
 	public Adapter createBoolValueExpressionAdapter() {
@@ -855,13 +855,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolValue <em>Bool
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolValue <em>Bool
 	 * Value</em>}'. <!-- begin-user-doc --> This default implementation returns
 	 * null so that we can easily ignore cases; it's useful to ignore a case when
 	 * inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolValue
 	 * @generated
 	 */
 	public Adapter createBoolValueAdapter() {
@@ -870,14 +870,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression
 	 * <em>Bool Stream Expression</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression
 	 * @generated
 	 */
 	public Adapter createBoolStreamExpressionAdapter() {
@@ -886,14 +886,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
 	 * <em>Relational Expression</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
 	 * @generated
 	 */
 	public Adapter createRelationalExpressionAdapter() {
@@ -902,13 +902,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral <em>Bool
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral <em>Bool
 	 * Literal</em>}'. <!-- begin-user-doc --> This default implementation returns
 	 * null so that we can easily ignore cases; it's useful to ignore a case when
 	 * inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral
 	 * @generated
 	 */
 	public Adapter createBoolLiteralAdapter() {
@@ -917,14 +917,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 	 * <em>Value Expression</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 	 * @generated
 	 */
 	public Adapter createValueExpressionAdapter() {
@@ -933,13 +933,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression <em>Sum
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.SumExpression <em>Sum
 	 * Expression</em>}'. <!-- begin-user-doc --> This default implementation
 	 * returns null so that we can easily ignore cases; it's useful to ignore a case
 	 * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.SumExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.SumExpression
 	 * @generated
 	 */
 	public Adapter createSumExpressionAdapter() {
@@ -948,14 +948,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression
 	 * <em>Mapping Sum Expression</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression
 	 * @generated
 	 */
 	public Adapter createMappingSumExpressionAdapter() {
@@ -964,14 +964,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression
 	 * <em>Type Sum Expression</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression
 	 * @generated
 	 */
 	public Adapter createTypeSumExpressionAdapter() {
@@ -980,14 +980,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue
 	 * <em>Context Type Value</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue
 	 * @generated
 	 */
 	public Adapter createContextTypeValueAdapter() {
@@ -996,14 +996,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue
 	 * <em>Context Pattern Value</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue
 	 * @generated
 	 */
 	public Adapter createContextPatternValueAdapter() {
@@ -1012,14 +1012,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode
 	 * <em>Context Pattern Node</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode
 	 * @generated
 	 */
 	public Adapter createContextPatternNodeAdapter() {
@@ -1028,14 +1028,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue
 	 * <em>Context Mapping Value</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue
 	 * @generated
 	 */
 	public Adapter createContextMappingValueAdapter() {
@@ -1044,14 +1044,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode
 	 * <em>Context Mapping Node</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode
 	 * @generated
 	 */
 	public Adapter createContextMappingNodeAdapter() {
@@ -1060,14 +1060,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue
 	 * <em>Objective Function Value</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue
 	 * @generated
 	 */
 	public Adapter createObjectiveFunctionValueAdapter() {
@@ -1076,14 +1076,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression
 	 * <em>Feature Expression</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression
 	 * @generated
 	 */
 	public Adapter createFeatureExpressionAdapter() {
@@ -1092,14 +1092,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureLiteral
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral
 	 * <em>Feature Literal</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.FeatureLiteral
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral
 	 * @generated
 	 */
 	public Adapter createFeatureLiteralAdapter() {
@@ -1108,14 +1108,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue
 	 * <em>Context Type Feature Value</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue
 	 * @generated
 	 */
 	public Adapter createContextTypeFeatureValueAdapter() {
@@ -1124,14 +1124,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue
 	 * <em>Context Pattern Node Feature Value</em>}'. <!-- begin-user-doc --> This
 	 * default implementation returns null so that we can easily ignore cases; it's
 	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue
 	 * @generated
 	 */
 	public Adapter createContextPatternNodeFeatureValueAdapter() {
@@ -1140,14 +1140,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue
 	 * <em>Context Mapping Node Feature Value</em>}'. <!-- begin-user-doc --> This
 	 * default implementation returns null so that we can easily ignore cases; it's
 	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue
 	 * @generated
 	 */
 	public Adapter createContextMappingNodeFeatureValueAdapter() {
@@ -1156,13 +1156,13 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Iterator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Iterator
 	 * <em>Iterator</em>}'. <!-- begin-user-doc --> This default implementation
 	 * returns null so that we can easily ignore cases; it's useful to ignore a case
 	 * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.Iterator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Iterator
 	 * @generated
 	 */
 	public Adapter createIteratorAdapter() {
@@ -1171,14 +1171,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternValue
 	 * <em>Iterator Pattern Value</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternValue
 	 * @generated
 	 */
 	public Adapter createIteratorPatternValueAdapter() {
@@ -1187,14 +1187,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue
 	 * <em>Iterator Pattern Feature Value</em>}'. <!-- begin-user-doc --> This
 	 * default implementation returns null so that we can easily ignore cases; it's
 	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue
 	 * @generated
 	 */
 	public Adapter createIteratorPatternFeatureValueAdapter() {
@@ -1203,14 +1203,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue
 	 * <em>Iterator Pattern Node Value</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue
 	 * @generated
 	 */
 	public Adapter createIteratorPatternNodeValueAdapter() {
@@ -1219,14 +1219,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue
 	 * <em>Iterator Pattern Node Feature Value</em>}'. <!-- begin-user-doc --> This
 	 * default implementation returns null so that we can easily ignore cases; it's
 	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue
 	 * @generated
 	 */
 	public Adapter createIteratorPatternNodeFeatureValueAdapter() {
@@ -1235,14 +1235,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
 	 * <em>Iterator Mapping Value</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
 	 * @generated
 	 */
 	public Adapter createIteratorMappingValueAdapter() {
@@ -1251,14 +1251,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue
 	 * <em>Iterator Mapping Feature Value</em>}'. <!-- begin-user-doc --> This
 	 * default implementation returns null so that we can easily ignore cases; it's
 	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue
 	 * @generated
 	 */
 	public Adapter createIteratorMappingFeatureValueAdapter() {
@@ -1267,14 +1267,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue
 	 * <em>Iterator Mapping Node Value</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue
 	 * @generated
 	 */
 	public Adapter createIteratorMappingNodeValueAdapter() {
@@ -1283,14 +1283,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue
 	 * <em>Iterator Mapping Node Feature Value</em>}'. <!-- begin-user-doc --> This
 	 * default implementation returns null so that we can easily ignore cases; it's
 	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue
 	 * @generated
 	 */
 	public Adapter createIteratorMappingNodeFeatureValueAdapter() {
@@ -1299,14 +1299,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue
 	 * <em>Iterator Type Value</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue
 	 * @generated
 	 */
 	public Adapter createIteratorTypeValueAdapter() {
@@ -1315,14 +1315,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue
 	 * <em>Iterator Type Feature Value</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue
 	 * @generated
 	 */
 	public Adapter createIteratorTypeFeatureValueAdapter() {
@@ -1331,14 +1331,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression
 	 * <em>Stream Expression</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression
 	 * @generated
 	 */
 	public Adapter createStreamExpressionAdapter() {
@@ -1347,14 +1347,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamOperation
 	 * <em>Stream Operation</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamOperation
 	 * @generated
 	 */
 	public Adapter createStreamOperationAdapter() {
@@ -1363,14 +1363,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation
 	 * <em>Stream Filter Operation</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation
 	 * @generated
 	 */
 	public Adapter createStreamFilterOperationAdapter() {
@@ -1379,14 +1379,14 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation
 	 * <em>Stream Select Operation</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
 	 * to ignore a case when inheritance will catch all the cases anyway. <!--
 	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation
 	 * @generated
 	 */
 	public Adapter createStreamSelectOperationAdapter() {
@@ -1404,4 +1404,4 @@ public class RoamIntermediateAdapterFactory extends AdapterFactoryImpl {
 		return null;
 	}
 
-} // RoamIntermediateAdapterFactory
+} // GipsIntermediateAdapterFactory

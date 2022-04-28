@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -11,8 +11,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.Pattern;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -21,9 +21,9 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternImpl#getPattern
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternImpl#getPattern
  * <em>Pattern</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternImpl#isIsRule
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternImpl#isIsRule
  * <em>Is Rule</em>}</li>
  * </ul>
  *
@@ -76,7 +76,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.PATTERN;
+		return GipsIntermediatePackage.Literals.PATTERN;
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 			pattern = (IBeXContext) eResolveProxy(oldPattern);
 			if (pattern != oldPattern) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, RoamIntermediatePackage.PATTERN__PATTERN,
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, GipsIntermediatePackage.PATTERN__PATTERN,
 							oldPattern, pattern));
 			}
 		}
@@ -115,7 +115,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 		IBeXContext oldPattern = pattern;
 		pattern = newPattern;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.PATTERN__PATTERN, oldPattern,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.PATTERN__PATTERN, oldPattern,
 					pattern));
 	}
 
@@ -137,7 +137,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 		boolean oldIsRule = isRule;
 		isRule = newIsRule;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.PATTERN__IS_RULE, oldIsRule,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.PATTERN__IS_RULE, oldIsRule,
 					isRule));
 	}
 
@@ -149,11 +149,11 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.PATTERN__PATTERN:
+		case GipsIntermediatePackage.PATTERN__PATTERN:
 			if (resolve)
 				return getPattern();
 			return basicGetPattern();
-		case RoamIntermediatePackage.PATTERN__IS_RULE:
+		case GipsIntermediatePackage.PATTERN__IS_RULE:
 			return isIsRule();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -167,10 +167,10 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.PATTERN__PATTERN:
+		case GipsIntermediatePackage.PATTERN__PATTERN:
 			setPattern((IBeXContext) newValue);
 			return;
-		case RoamIntermediatePackage.PATTERN__IS_RULE:
+		case GipsIntermediatePackage.PATTERN__IS_RULE:
 			setIsRule((Boolean) newValue);
 			return;
 		}
@@ -185,10 +185,10 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.PATTERN__PATTERN:
+		case GipsIntermediatePackage.PATTERN__PATTERN:
 			setPattern((IBeXContext) null);
 			return;
-		case RoamIntermediatePackage.PATTERN__IS_RULE:
+		case GipsIntermediatePackage.PATTERN__IS_RULE:
 			setIsRule(IS_RULE_EDEFAULT);
 			return;
 		}
@@ -203,9 +203,9 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.PATTERN__PATTERN:
+		case GipsIntermediatePackage.PATTERN__PATTERN:
 			return pattern != null;
-		case RoamIntermediatePackage.PATTERN__IS_RULE:
+		case GipsIntermediatePackage.PATTERN__IS_RULE:
 			return isRule != IS_RULE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);

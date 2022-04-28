@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -11,9 +11,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -22,11 +22,11 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ObjectiveImpl#getName
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ObjectiveImpl#getName
  * <em>Name</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ObjectiveImpl#isElementwise
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ObjectiveImpl#isElementwise
  * <em>Elementwise</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ObjectiveImpl#getExpression
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ObjectiveImpl#getExpression
  * <em>Expression</em>}</li>
  * </ul>
  *
@@ -99,7 +99,7 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.OBJECTIVE;
+		return GipsIntermediatePackage.Literals.OBJECTIVE;
 	}
 
 	/**
@@ -120,7 +120,7 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.OBJECTIVE__NAME, oldName,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.OBJECTIVE__NAME, oldName,
 					name));
 	}
 
@@ -142,7 +142,7 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 		boolean oldElementwise = elementwise;
 		elementwise = newElementwise;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.OBJECTIVE__ELEMENTWISE,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.OBJECTIVE__ELEMENTWISE,
 					oldElementwise, elementwise));
 	}
 
@@ -165,7 +165,7 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 		expression = newExpression;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.OBJECTIVE__EXPRESSION, oldExpression, newExpression);
+					GipsIntermediatePackage.OBJECTIVE__EXPRESSION, oldExpression, newExpression);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -184,15 +184,15 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 			NotificationChain msgs = null;
 			if (expression != null)
 				msgs = ((InternalEObject) expression).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.OBJECTIVE__EXPRESSION, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.OBJECTIVE__EXPRESSION, null, msgs);
 			if (newExpression != null)
 				msgs = ((InternalEObject) newExpression).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.OBJECTIVE__EXPRESSION, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.OBJECTIVE__EXPRESSION, null, msgs);
 			msgs = basicSetExpression(newExpression, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.OBJECTIVE__EXPRESSION,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.OBJECTIVE__EXPRESSION,
 					newExpression, newExpression));
 	}
 
@@ -204,7 +204,7 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.OBJECTIVE__EXPRESSION:
+		case GipsIntermediatePackage.OBJECTIVE__EXPRESSION:
 			return basicSetExpression(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -218,11 +218,11 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.OBJECTIVE__NAME:
+		case GipsIntermediatePackage.OBJECTIVE__NAME:
 			return getName();
-		case RoamIntermediatePackage.OBJECTIVE__ELEMENTWISE:
+		case GipsIntermediatePackage.OBJECTIVE__ELEMENTWISE:
 			return isElementwise();
-		case RoamIntermediatePackage.OBJECTIVE__EXPRESSION:
+		case GipsIntermediatePackage.OBJECTIVE__EXPRESSION:
 			return getExpression();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -236,13 +236,13 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.OBJECTIVE__NAME:
+		case GipsIntermediatePackage.OBJECTIVE__NAME:
 			setName((String) newValue);
 			return;
-		case RoamIntermediatePackage.OBJECTIVE__ELEMENTWISE:
+		case GipsIntermediatePackage.OBJECTIVE__ELEMENTWISE:
 			setElementwise((Boolean) newValue);
 			return;
-		case RoamIntermediatePackage.OBJECTIVE__EXPRESSION:
+		case GipsIntermediatePackage.OBJECTIVE__EXPRESSION:
 			setExpression((ArithmeticExpression) newValue);
 			return;
 		}
@@ -257,13 +257,13 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.OBJECTIVE__NAME:
+		case GipsIntermediatePackage.OBJECTIVE__NAME:
 			setName(NAME_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.OBJECTIVE__ELEMENTWISE:
+		case GipsIntermediatePackage.OBJECTIVE__ELEMENTWISE:
 			setElementwise(ELEMENTWISE_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.OBJECTIVE__EXPRESSION:
+		case GipsIntermediatePackage.OBJECTIVE__EXPRESSION:
 			setExpression((ArithmeticExpression) null);
 			return;
 		}
@@ -278,11 +278,11 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.OBJECTIVE__NAME:
+		case GipsIntermediatePackage.OBJECTIVE__NAME:
 			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-		case RoamIntermediatePackage.OBJECTIVE__ELEMENTWISE:
+		case GipsIntermediatePackage.OBJECTIVE__ELEMENTWISE:
 			return elementwise != ELEMENTWISE_EDEFAULT;
-		case RoamIntermediatePackage.OBJECTIVE__EXPRESSION:
+		case GipsIntermediatePackage.OBJECTIVE__EXPRESSION:
 			return expression != null;
 		}
 		return super.eIsSet(featureID);

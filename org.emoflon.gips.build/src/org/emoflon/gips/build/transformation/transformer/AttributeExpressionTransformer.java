@@ -1,62 +1,62 @@
-package org.emoflon.roam.build.transformation.transformer;
+package org.emoflon.gips.build.transformation.transformer;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.emoflon.roam.build.transformation.helper.RoamTransformationData;
-import org.emoflon.roam.build.transformation.helper.RoamTransformationUtils;
-import org.emoflon.roam.build.transformation.helper.TransformationContext;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.Pattern;
-import org.emoflon.roam.intermediate.RoamIntermediate.Type;
-import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression;
-import org.emoflon.roam.roamslang.roamSLang.RoamAttributeExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamContextOperationExpression;
-import org.emoflon.roam.roamslang.roamSLang.RoamFeatureExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamFeatureLit;
-import org.emoflon.roam.roamslang.roamSLang.RoamLambdaAttributeExpression;
-import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
-import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamMappingContext;
-import org.emoflon.roam.roamslang.roamSLang.RoamMatchContext;
-import org.emoflon.roam.roamslang.roamSLang.RoamNodeAttributeExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamStreamExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
-import org.emoflon.roam.roamslang.scoping.RoamSLangScopeContextUtil;
+import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
+import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
+import org.emoflon.gips.build.transformation.helper.TransformationContext;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
+import org.emoflon.gips.intermediate.GipsIntermediate.Type;
+import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
+import org.emoflon.gips.gipsl.gipsl.GipsLambdaAttributeExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsMapping;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
+import org.emoflon.gips.gipsl.gipsl.GipsMatchContext;
+import org.emoflon.gips.gipsl.gipsl.GipsNodeAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
+import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 
 public abstract class AttributeExpressionTransformer<T extends EObject> extends TransformationContext<T> {
-	protected AttributeExpressionTransformer(RoamTransformationData data, T context, TransformerFactory factory) {
+	protected AttributeExpressionTransformer(GipsTransformationData data, T context, TransformerFactory factory) {
 		super(data, context, factory);
 	}
 
-	public ValueExpression transform(final RoamAttributeExpr eAttribute) throws Exception {
-		if (eAttribute instanceof RoamMappingAttributeExpr eMapping) {
+	public ValueExpression transform(final GipsAttributeExpr eAttribute) throws Exception {
+		if (eAttribute instanceof GipsMappingAttributeExpr eMapping) {
 			return transform(eMapping);
-		} else if (eAttribute instanceof RoamContextExpr eContext) {
+		} else if (eAttribute instanceof GipsContextExpr eContext) {
 			return transform(eContext);
 		} else {
-			return transform((RoamLambdaAttributeExpression) eAttribute);
+			return transform((GipsLambdaAttributeExpression) eAttribute);
 		}
 	}
 
-	protected abstract ValueExpression transform(final RoamMappingAttributeExpr eMapping) throws Exception;
+	protected abstract ValueExpression transform(final GipsMappingAttributeExpr eMapping) throws Exception;
 
-	protected ValueExpression transform(final RoamContextExpr eContext) throws Exception {
-		EObject contextType = RoamSLangScopeContextUtil.getContextType(eContext);
+	protected ValueExpression transform(final GipsContextExpr eContext) throws Exception {
+		EObject contextType = GipslScopeContextUtil.getContextType(eContext);
 		if (eContext.getExpr() == null && eContext.getStream() == null) {
 			return transformNoExprAndNoStream(eContext, contextType);
 		} else if (eContext.getExpr() != null && eContext.getStream() == null) {
@@ -66,20 +66,20 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 		}
 	}
 
-	protected ValueExpression transform(final RoamLambdaAttributeExpression eLambda) throws Exception {
-		RoamAttributeExpr streamRoot = RoamSLangScopeContextUtil.getStreamRootContainer(eLambda);
-		RoamStreamExpr streamIteratorContainer = RoamSLangScopeContextUtil.getStreamIteratorNavigationRoot(eLambda);
+	protected ValueExpression transform(final GipsLambdaAttributeExpression eLambda) throws Exception {
+		GipsAttributeExpr streamRoot = GipslScopeContextUtil.getStreamRootContainer(eLambda);
+		GipsStreamExpr streamIteratorContainer = GipslScopeContextUtil.getStreamIteratorNavigationRoot(eLambda);
 
 		if (streamRoot == null) {
 			throw new UnsupportedOperationException("Unknown stream lhs-operand.");
 		}
 
-		if (streamRoot instanceof RoamLambdaAttributeExpression) {
+		if (streamRoot instanceof GipsLambdaAttributeExpression) {
 			throw new UnsupportedOperationException("Nested stream operations not yet supported.");
 		}
 
-		if (eLambda.getExpr() instanceof RoamNodeAttributeExpr eNodeAttribute) {
-			if (streamRoot instanceof RoamMappingAttributeExpr eMappingAttribute) {
+		if (eLambda.getExpr() instanceof GipsNodeAttributeExpr eNodeAttribute) {
+			if (streamRoot instanceof GipsMappingAttributeExpr eMappingAttribute) {
 				if (eNodeAttribute.getExpr() == null) {
 					return transformIteratorMappingNodeValue(eNodeAttribute, eMappingAttribute.getMapping(),
 							streamIteratorContainer);
@@ -87,10 +87,10 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 					return transformIteratorMappingNodeFeatureValue(eNodeAttribute, eMappingAttribute.getMapping(),
 							eNodeAttribute.getExpr(), streamIteratorContainer);
 				}
-			} else if (streamRoot instanceof RoamContextExpr eContextExpr) {
-				// CASE: streamRoot is an instance of RoamContextExpression
-				EObject contextType = RoamSLangScopeContextUtil.getContextType(eContextExpr);
-				if (contextType instanceof RoamMatchContext eMatchContext) {
+			} else if (streamRoot instanceof GipsContextExpr eContextExpr) {
+				// CASE: streamRoot is an instance of GipsContextExpression
+				EObject contextType = GipslScopeContextUtil.getContextType(eContextExpr);
+				if (contextType instanceof GipsMatchContext eMatchContext) {
 					if (eNodeAttribute.getExpr() == null) {
 						return transformIteratorPatternNodeValue(eNodeAttribute, eMatchContext,
 								streamIteratorContainer);
@@ -98,7 +98,7 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 						return transformIteratorPatternNodeFeatureValue(eNodeAttribute, eMatchContext,
 								eNodeAttribute.getExpr(), streamIteratorContainer);
 					}
-				} else if (contextType instanceof RoamMappingContext eMappingContext) {
+				} else if (contextType instanceof GipsMappingContext eMappingContext) {
 					if (eNodeAttribute.getExpr() == null) {
 						return transformIteratorMappingNodeValue(eNodeAttribute, eMappingContext.getMapping(),
 								streamIteratorContainer);
@@ -117,8 +117,8 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 			} else {
 				throw new UnsupportedOperationException("Nested stream expressions are not yet allowed!");
 			}
-		} else if (eLambda.getExpr() instanceof RoamContextOperationExpression eContextOp) {
-			if (streamRoot instanceof RoamMappingAttributeExpr eMappingAttribute) {
+		} else if (eLambda.getExpr() instanceof GipsContextOperationExpression eContextOp) {
+			if (streamRoot instanceof GipsMappingAttributeExpr eMappingAttribute) {
 				return transformVariableStreamOperation(eContextOp, eMappingAttribute, streamIteratorContainer);
 			} else {
 				// Case: The root expression is a context expression, i.e., .self, that is
@@ -131,21 +131,21 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 		} else {
 			// Case: Access the object represented by the iterator or its (nested)
 			// attributes.
-			RoamFeatureExpr eFeature = (RoamFeatureExpr) eLambda.getExpr();
-			if (streamRoot instanceof RoamContextExpr eContext) {
-				EObject contextType = RoamSLangScopeContextUtil.getContextType(eContext);
-				if (contextType instanceof RoamMappingContext eMappingContext
-						&& eContext.getExpr() instanceof RoamNodeAttributeExpr eNodeExpr
+			GipsFeatureExpr eFeature = (GipsFeatureExpr) eLambda.getExpr();
+			if (streamRoot instanceof GipsContextExpr eContext) {
+				EObject contextType = GipslScopeContextUtil.getContextType(eContext);
+				if (contextType instanceof GipsMappingContext eMappingContext
+						&& eContext.getExpr() instanceof GipsNodeAttributeExpr eNodeExpr
 						&& eNodeExpr.getExpr() != null) {
 					return transformIteratorMappingFeatureValue(streamIteratorContainer, eMappingContext, eNodeExpr,
 							eFeature);
-				} else if (contextType instanceof RoamMatchContext ePatternContext
-						&& eContext.getExpr() instanceof RoamNodeAttributeExpr eNodeExpr
+				} else if (contextType instanceof GipsMatchContext ePatternContext
+						&& eContext.getExpr() instanceof GipsNodeAttributeExpr eNodeExpr
 						&& eNodeExpr.getExpr() != null) {
 					return transformIteratorPatternFeatureValue(streamIteratorContainer, ePatternContext, eNodeExpr,
 							eFeature);
-				} else if (contextType instanceof RoamTypeContext eTypeContext
-						&& eContext.getExpr() instanceof RoamFeatureExpr eRootFeature) {
+				} else if (contextType instanceof GipsTypeContext eTypeContext
+						&& eContext.getExpr() instanceof GipsFeatureExpr eRootFeature) {
 					return transformIteratorTypeFeatureValue(streamIteratorContainer, eTypeContext, eFeature);
 				} else {
 					throw new UnsupportedOperationException(
@@ -161,25 +161,25 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 		}
 	}
 
-	protected abstract ValueExpression transformNoExprAndNoStream(final RoamContextExpr eContext,
+	protected abstract ValueExpression transformNoExprAndNoStream(final GipsContextExpr eContext,
 			final EObject contextType) throws Exception;
 
-	protected ValueExpression transformExprAndNoStream(final RoamContextExpr eContext, final EObject contextType)
+	protected ValueExpression transformExprAndNoStream(final GipsContextExpr eContext, final EObject contextType)
 			throws Exception {
-		if (contextType instanceof RoamTypeContext typeContext) {
-			if (eContext.getExpr() instanceof RoamFeatureExpr eFeature) {
+		if (contextType instanceof GipsTypeContext typeContext) {
+			if (eContext.getExpr() instanceof GipsFeatureExpr eFeature) {
 				Type tc = data.getType((EClass) typeContext.getType());
 				ContextTypeFeatureValue featureValue = factory.createContextTypeFeatureValue();
 				featureValue.setTypeContext(tc);
 				featureValue.setReturnType(tc.getType());
-				featureValue.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eFeature));
+				featureValue.setFeatureExpression(GipsTransformationUtils.transformFeatureExpression(eFeature));
 				return featureValue;
 			} else {
 				throw new UnsupportedOperationException(
 						"Node and ILP variable (e.g., .value(), .isMapped()) expressions are not applicable to model objects.");
 			}
-		} else if (contextType instanceof RoamMatchContext matchContext) {
-			if (eContext.getExpr() instanceof RoamNodeAttributeExpr eNodeExpr) {
+		} else if (contextType instanceof GipsMatchContext matchContext) {
+			if (eContext.getExpr() instanceof GipsNodeAttributeExpr eNodeExpr) {
 				Pattern pc = data.getPattern(matchContext.getPattern());
 				if (eNodeExpr.getExpr() == null) {
 					ContextPatternNode nodeValue = factory.createContextPatternNode();
@@ -192,7 +192,7 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 					featureValue.setPatternContext(pc);
 					featureValue.setNode(data.eNode2Node().get(eNodeExpr.getNode()));
 					featureValue.setFeatureExpression(
-							RoamTransformationUtils.transformFeatureExpression(eNodeExpr.getExpr()));
+							GipsTransformationUtils.transformFeatureExpression(eNodeExpr.getExpr()));
 					return featureValue;
 				}
 			} else {
@@ -200,8 +200,8 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 						"Node and ILP variable (e.g., .value(), .isMapped()) expressions are not applicable to model objects.");
 			}
 		} else {
-			RoamMappingContext mc = (RoamMappingContext) contextType;
-			if (eContext.getExpr() instanceof RoamNodeAttributeExpr eNodeExpr) {
+			GipsMappingContext mc = (GipsMappingContext) contextType;
+			if (eContext.getExpr() instanceof GipsNodeAttributeExpr eNodeExpr) {
 				if (eNodeExpr.getExpr() == null) {
 					ContextMappingNode nodeValue = factory.createContextMappingNode();
 					nodeValue.setMappingContext(data.eMapping2Mapping().get(mc.getMapping()));
@@ -214,10 +214,10 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 					featureValue.setNode(data.eNode2Node().get(eNodeExpr.getNode()));
 					featureValue.setReturnType(featureValue.getNode().getType());
 					featureValue.setFeatureExpression(
-							RoamTransformationUtils.transformFeatureExpression(eNodeExpr.getExpr()));
+							GipsTransformationUtils.transformFeatureExpression(eNodeExpr.getExpr()));
 					return featureValue;
 				}
-			} else if (eContext.getExpr() instanceof RoamContextOperationExpression eContextOp) {
+			} else if (eContext.getExpr() instanceof GipsContextOperationExpression eContextOp) {
 				switch (eContextOp.getOperation()) {
 				case MAPPED -> {
 					throw new UnsupportedOperationException(
@@ -242,7 +242,7 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 		}
 	}
 
-	protected ValueExpression transformExprAndStream(final RoamContextExpr eContext, final EObject contextType)
+	protected ValueExpression transformExprAndStream(final GipsContextExpr eContext, final EObject contextType)
 			throws Exception {
 		// Case: The context expression is followed by some stream expression
 		// TODO: This should be allowed in arithemtic Expressions, hence, TODO but on a
@@ -250,8 +250,8 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 		throw new UnsupportedOperationException("Nested stream operations not yet supported.");
 	}
 
-	protected ValueExpression transformIteratorMappingNodeValue(final RoamNodeAttributeExpr eNodeAttribute,
-			RoamMapping eMapping, final RoamStreamExpr streamIteratorContainer) throws Exception {
+	protected ValueExpression transformIteratorMappingNodeValue(final GipsNodeAttributeExpr eNodeAttribute,
+			GipsMapping eMapping, final GipsStreamExpr streamIteratorContainer) throws Exception {
 		IteratorMappingNodeValue mappingNode = factory.createIteratorMappingNodeValue();
 		mappingNode.setNode(data.eNode2Node().get(eNodeAttribute.getNode()));
 		mappingNode.setReturnType(mappingNode.getNode().getType());
@@ -260,8 +260,8 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 		return mappingNode;
 	}
 
-	protected ValueExpression transformIteratorMappingNodeFeatureValue(final RoamNodeAttributeExpr eNodeAttribute,
-			RoamMapping eMapping, RoamFeatureExpr featureExpr, final RoamStreamExpr streamIteratorContainer)
+	protected ValueExpression transformIteratorMappingNodeFeatureValue(final GipsNodeAttributeExpr eNodeAttribute,
+			GipsMapping eMapping, GipsFeatureExpr featureExpr, final GipsStreamExpr streamIteratorContainer)
 			throws Exception {
 		IteratorMappingNodeFeatureValue mappingFeature = factory.createIteratorMappingNodeFeatureValue();
 		mappingFeature.setNode(data.eNode2Node().get(eNodeAttribute.getNode()));
@@ -269,12 +269,12 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 		mappingFeature.setMappingContext(data.eMapping2Mapping().get(eMapping));
 		mappingFeature.setStream(data.eStream2SetOp().get(streamIteratorContainer));
 		mappingFeature
-				.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eNodeAttribute.getExpr()));
+				.setFeatureExpression(GipsTransformationUtils.transformFeatureExpression(eNodeAttribute.getExpr()));
 		return mappingFeature;
 	}
 
-	protected ValueExpression transformIteratorPatternNodeValue(final RoamNodeAttributeExpr eNodeAttribute,
-			RoamMatchContext eMatchContext, final RoamStreamExpr streamIteratorContainer) throws Exception {
+	protected ValueExpression transformIteratorPatternNodeValue(final GipsNodeAttributeExpr eNodeAttribute,
+			GipsMatchContext eMatchContext, final GipsStreamExpr streamIteratorContainer) throws Exception {
 		IteratorPatternNodeValue patternNode = factory.createIteratorPatternNodeValue();
 		patternNode.setNode(data.eNode2Node().get(eNodeAttribute.getNode()));
 		patternNode.setReturnType(patternNode.getNode().getType());
@@ -283,20 +283,20 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 		return patternNode;
 	}
 
-	protected ValueExpression transformIteratorPatternNodeFeatureValue(final RoamNodeAttributeExpr eNodeAttribute,
-			RoamMatchContext eMatchContext, RoamFeatureExpr featureExpr, final RoamStreamExpr streamIteratorContainer)
+	protected ValueExpression transformIteratorPatternNodeFeatureValue(final GipsNodeAttributeExpr eNodeAttribute,
+			GipsMatchContext eMatchContext, GipsFeatureExpr featureExpr, final GipsStreamExpr streamIteratorContainer)
 			throws Exception {
 		IteratorPatternNodeFeatureValue patternFeature = factory.createIteratorPatternNodeFeatureValue();
 		patternFeature.setNode(data.eNode2Node().get(eNodeAttribute.getNode()));
 		patternFeature.setPatternContext(data.ePattern2Pattern().get(eMatchContext.getPattern()));
 		patternFeature.setStream(data.eStream2SetOp().get(streamIteratorContainer));
 		patternFeature
-				.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eNodeAttribute.getExpr()));
+				.setFeatureExpression(GipsTransformationUtils.transformFeatureExpression(eNodeAttribute.getExpr()));
 		return patternFeature;
 	}
 
-	protected ValueExpression transformVariableStreamOperation(final RoamContextOperationExpression eContextOp,
-			final RoamMappingAttributeExpr eMappingAttribute, final RoamStreamExpr streamIteratorContainer)
+	protected ValueExpression transformVariableStreamOperation(final GipsContextOperationExpression eContextOp,
+			final GipsMappingAttributeExpr eMappingAttribute, final GipsStreamExpr streamIteratorContainer)
 			throws Exception {
 		switch (eContextOp.getOperation()) {
 		case MAPPED -> {
@@ -319,38 +319,38 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 		}
 	}
 
-	protected ValueExpression transformIteratorMappingFeatureValue(final RoamStreamExpr streamIteratorContainer,
-			final RoamMappingContext eMappingContext, final RoamNodeAttributeExpr eNodeExpr,
-			final RoamFeatureExpr eFeature) throws Exception {
+	protected ValueExpression transformIteratorMappingFeatureValue(final GipsStreamExpr streamIteratorContainer,
+			final GipsMappingContext eMappingContext, final GipsNodeAttributeExpr eNodeExpr,
+			final GipsFeatureExpr eFeature) throws Exception {
 		IteratorMappingFeatureValue mappingFeatureValue = factory.createIteratorMappingFeatureValue();
 		mappingFeatureValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
 		mappingFeatureValue.setMappingContext(data.eMapping2Mapping().get(eMappingContext.getMapping()));
-		RoamFeatureLit rootFeatureType = RoamSLangScopeContextUtil.findLeafExpression(eNodeExpr.getExpr());
+		GipsFeatureLit rootFeatureType = GipslScopeContextUtil.findLeafExpression(eNodeExpr.getExpr());
 		mappingFeatureValue.setReturnType(rootFeatureType.getFeature().getEType());
-		mappingFeatureValue.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eFeature));
+		mappingFeatureValue.setFeatureExpression(GipsTransformationUtils.transformFeatureExpression(eFeature));
 		return mappingFeatureValue;
 	}
 
-	protected ValueExpression transformIteratorPatternFeatureValue(final RoamStreamExpr streamIteratorContainer,
-			final RoamMatchContext eMatchContext, final RoamNodeAttributeExpr eNodeExpr, final RoamFeatureExpr eFeature)
+	protected ValueExpression transformIteratorPatternFeatureValue(final GipsStreamExpr streamIteratorContainer,
+			final GipsMatchContext eMatchContext, final GipsNodeAttributeExpr eNodeExpr, final GipsFeatureExpr eFeature)
 			throws Exception {
 		IteratorPatternFeatureValue patternFeatureValue = factory.createIteratorPatternFeatureValue();
 		patternFeatureValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
 		patternFeatureValue.setPatternContext(data.ePattern2Pattern().get(eMatchContext.getPattern()));
-		RoamFeatureLit rootFeatureType = RoamSLangScopeContextUtil.findLeafExpression(eNodeExpr.getExpr());
+		GipsFeatureLit rootFeatureType = GipslScopeContextUtil.findLeafExpression(eNodeExpr.getExpr());
 		patternFeatureValue.setReturnType(rootFeatureType.getFeature().getEType());
-		patternFeatureValue.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eFeature));
+		patternFeatureValue.setFeatureExpression(GipsTransformationUtils.transformFeatureExpression(eFeature));
 		return patternFeatureValue;
 	}
 
-	protected ValueExpression transformIteratorTypeFeatureValue(final RoamStreamExpr streamIteratorContainer,
-			final RoamTypeContext eTypeContext, final RoamFeatureExpr eFeature) throws Exception {
+	protected ValueExpression transformIteratorTypeFeatureValue(final GipsStreamExpr streamIteratorContainer,
+			final GipsTypeContext eTypeContext, final GipsFeatureExpr eFeature) throws Exception {
 		IteratorTypeFeatureValue typeFeatureValue = factory.createIteratorTypeFeatureValue();
 		typeFeatureValue.setTypeContext(data.getType((EClass) eTypeContext.getType()));
-		RoamFeatureLit rootFeatureType = RoamSLangScopeContextUtil.findLeafExpression(eFeature);
+		GipsFeatureLit rootFeatureType = GipslScopeContextUtil.findLeafExpression(eFeature);
 		typeFeatureValue.setReturnType(rootFeatureType.getFeature().getEType());
 		typeFeatureValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
-		typeFeatureValue.setFeatureExpression(RoamTransformationUtils.transformFeatureExpression(eFeature));
+		typeFeatureValue.setFeatureExpression(GipsTransformationUtils.transformFeatureExpression(eFeature));
 		return typeFeatureValue;
 	}
 }

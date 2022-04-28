@@ -1,20 +1,20 @@
-package org.emoflon.roam.core;
+package org.emoflon.gips.core;
 
 import java.util.Collections;
 import java.util.LinkedList;
 
-import org.emoflon.roam.core.ilp.ILPLinearFunction;
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective;
+import org.emoflon.gips.core.ilp.ILPLinearFunction;
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective;
 
-public abstract class RoamMappingObjective<CONTEXT extends RoamMapping>
-		extends RoamObjective<MappingObjective, CONTEXT, Integer> {
+public abstract class GipsMappingObjective<CONTEXT extends GipsMapping>
+		extends GipsObjective<MappingObjective, CONTEXT, Integer> {
 
-	final protected RoamMapper<CONTEXT> mapper;
+	final protected GipsMapper<CONTEXT> mapper;
 
 	@SuppressWarnings("unchecked")
-	public RoamMappingObjective(RoamEngine engine, MappingObjective objective) {
+	public GipsMappingObjective(GipsEngine engine, MappingObjective objective) {
 		super(engine, objective);
-		mapper = (RoamMapper<CONTEXT>) engine.getMapper(objective.getMapping().getName());
+		mapper = (GipsMapper<CONTEXT>) engine.getMapper(objective.getMapping().getName());
 	}
 
 	@Override

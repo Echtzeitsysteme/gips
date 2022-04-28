@@ -1,31 +1,31 @@
-package org.emoflon.roam.build.transformation.transformer;
+package org.emoflon.gips.build.transformation.transformer;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionType;
-import org.emoflon.roam.build.transformation.helper.RoamTransformationData;
-import org.emoflon.roam.build.transformation.helper.RoamTransformationUtils;
-import org.emoflon.roam.build.transformation.helper.TransformationContext;
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.SumExpression;
-import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamRelExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamStreamArithmetic;
-import org.emoflon.roam.roamslang.roamSLang.RoamStreamExpr;
+import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType;
+import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
+import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
+import org.emoflon.gips.build.transformation.helper.TransformationContext;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamArithmetic;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
 
 public class SumExpressionTransformer<T extends EObject> extends TransformationContext<T> {
 
-	protected SumExpressionTransformer(RoamTransformationData data, T context, TransformerFactory factory) {
+	protected SumExpressionTransformer(GipsTransformationData data, T context, TransformerFactory factory) {
 		super(data, context, factory);
 	}
 
-	public SumExpression transform(RoamMappingAttributeExpr eRoamMapping) throws Exception {
+	public SumExpression transform(GipsMappingAttributeExpr eGipsMapping) throws Exception {
 		MappingSumExpression mapSum = factory.createMappingSumExpression();
-		Mapping mapping = data.eMapping2Mapping().get(eRoamMapping.getMapping());
-		RoamStreamExpr streamExpr = eRoamMapping.getExpr();
+		Mapping mapping = data.eMapping2Mapping().get(eGipsMapping.getMapping());
+		GipsStreamExpr streamExpr = eGipsMapping.getExpr();
 		data.eStream2SetOp().put(streamExpr, mapSum);
 		mapSum.setMapping(mapping);
 		mapSum.setReturnType(EcorePackage.Literals.EINT);
@@ -42,7 +42,7 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 		StreamExpressionTransformer transformer = transformerFactory.createStreamTransformer(mapSum);
 		mapSum.setFilter(transformer.transform(streamExpr));
 		// Check for valid ilp semantics
-		ArithmeticExpressionType filterExpressionType = RoamTransformationUtils
+		ArithmeticExpressionType filterExpressionType = GipsTransformationUtils
 				.isConstantExpression(mapSum.getExpression());
 //		TODO: rethink this check...
 //		if(filterExpressionType == ArithmeticExpressionType.variableVector || filterExpressionType == ArithmeticExpressionType.variableValue)
@@ -51,25 +51,25 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 		return mapSum;
 	}
 
-	public SumExpression transform(final RoamMappingAttributeExpr eRoamMapping,
-			final RoamStreamArithmetic streamArithmetic) throws Exception {
+	public SumExpression transform(final GipsMappingAttributeExpr eGipsMapping,
+			final GipsStreamArithmetic streamArithmetic) throws Exception {
 		MappingSumExpression mapSum = factory.createMappingSumExpression();
-		Mapping mapping = data.eMapping2Mapping().get(eRoamMapping.getMapping());
-		RoamStreamExpr streamExpr = eRoamMapping.getExpr();
+		Mapping mapping = data.eMapping2Mapping().get(eGipsMapping.getMapping());
+		GipsStreamExpr streamExpr = eGipsMapping.getExpr();
 		data.eStream2SetOp().put(streamExpr, mapSum);
 		mapSum.setMapping(mapping);
 		mapSum.setReturnType(EcorePackage.Literals.EINT);
 
 		StreamExpressionTransformer streamTransformer = transformerFactory.createStreamTransformer(mapSum);
 		mapSum.setFilter(streamTransformer.transform(streamExpr));
-		ArithmeticExpressionType filterExpressionType = RoamTransformationUtils
+		ArithmeticExpressionType filterExpressionType = GipsTransformationUtils
 				.isConstantExpression(mapSum.getFilter());
 
 		ArithmeticExpressionTransformer arithmeticTransformer = transformerFactory.createArithmeticTransformer(mapSum);
-		if (streamArithmetic.getLambda().getExpr() instanceof RoamRelExpr relExpr && relExpr.getRight() == null) {
+		if (streamArithmetic.getLambda().getExpr() instanceof GipsRelExpr relExpr && relExpr.getRight() == null) {
 			mapSum.setExpression(arithmeticTransformer.transform(relExpr.getLeft()));
 
-			ArithmeticExpressionType arithmeticExpressionType = RoamTransformationUtils
+			ArithmeticExpressionType arithmeticExpressionType = GipsTransformationUtils
 					.isConstantExpression(mapSum.getExpression());
 //			TODO: rethink this check...
 //			if((filterExpressionType == ArithmeticExpressionType.variableVector || filterExpressionType == ArithmeticExpressionType.variableValue) &&

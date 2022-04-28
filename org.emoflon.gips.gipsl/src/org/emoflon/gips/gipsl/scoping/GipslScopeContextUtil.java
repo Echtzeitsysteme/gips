@@ -1,107 +1,107 @@
-package org.emoflon.roam.roamslang.scoping;
+package org.emoflon.gips.gipsl.scoping;
 
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
-import org.emoflon.roam.roamslang.roamSLang.RoamAttributeExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
-import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamFeatureExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamFeatureLit;
-import org.emoflon.roam.roamslang.roamSLang.RoamFeatureNavigation;
-import org.emoflon.roam.roamslang.roamSLang.RoamLambdaAttributeExpression;
-import org.emoflon.roam.roamslang.roamSLang.RoamMapping;
-import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamMappingContext;
-import org.emoflon.roam.roamslang.roamSLang.RoamMatchContext;
-import org.emoflon.roam.roamslang.roamSLang.RoamNodeAttributeExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamSLangPackage;
-import org.emoflon.roam.roamslang.roamSLang.RoamSelect;
-import org.emoflon.roam.roamslang.roamSLang.RoamStreamExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamTypeCast;
-import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
-import org.emoflon.roam.roamslang.roamSLang.impl.RoamConstraintImpl;
-import org.emoflon.roam.roamslang.roamSLang.impl.RoamContextExprImpl;
-import org.emoflon.roam.roamslang.roamSLang.impl.RoamMappingAttributeExprImpl;
-import org.emoflon.roam.roamslang.roamSLang.impl.RoamObjectiveImpl;
-import org.emoflon.roam.roamslang.roamSLang.impl.RoamSelectImpl;
-import org.emoflon.roam.roamslang.roamSLang.impl.RoamStreamArithmeticImpl;
-import org.emoflon.roam.roamslang.roamSLang.impl.RoamStreamNavigationImpl;
-import org.emoflon.roam.roamslang.roamSLang.impl.RoamStreamSetImpl;
+import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
+import org.emoflon.gips.gipsl.gipsl.GipsFeatureNavigation;
+import org.emoflon.gips.gipsl.gipsl.GipsLambdaAttributeExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsMapping;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
+import org.emoflon.gips.gipsl.gipsl.GipsMatchContext;
+import org.emoflon.gips.gipsl.gipsl.GipsNodeAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipslPackage;
+import org.emoflon.gips.gipsl.gipsl.GipsSelect;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeCast;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsContextExprImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsMappingAttributeExprImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsSelectImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsStreamArithmeticImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsStreamNavigationImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsStreamSetImpl;
 
-public final class RoamSLangScopeContextUtil {
+public final class GipslScopeContextUtil {
 
-	public static boolean isRoamMapping(final EObject context, final EReference reference) {
-		return context instanceof RoamMapping;
+	public static boolean isGipsMapping(final EObject context, final EReference reference) {
+		return context instanceof GipsMapping;
 	}
 
-	public static boolean isRoamMatchContext(EObject context, EReference reference) {
-		return context instanceof RoamMatchContext;
+	public static boolean isGipsMatchContext(EObject context, EReference reference) {
+		return context instanceof GipsMatchContext;
 	}
 
-	public static boolean isRoamMappingContext(final EObject context, final EReference reference) {
-		return context instanceof RoamMappingContext;
+	public static boolean isGipsMappingContext(final EObject context, final EReference reference) {
+		return context instanceof GipsMappingContext;
 	}
 
-	public static boolean isRoamTypeContext(final EObject context, final EReference reference) {
-		return context instanceof RoamTypeContext;
+	public static boolean isGipsTypeContext(final EObject context, final EReference reference) {
+		return context instanceof GipsTypeContext;
 	}
 
-	public static boolean isRoamMappingAttributeExprMapping(final EObject context, final EReference reference) {
-		return context instanceof RoamMappingAttributeExpr
-				&& reference == RoamSLangPackage.Literals.ROAM_MAPPING_ATTRIBUTE_EXPR__MAPPING;
+	public static boolean isGipsMappingAttributeExprMapping(final EObject context, final EReference reference) {
+		return context instanceof GipsMappingAttributeExpr
+				&& reference == GipslPackage.Literals.GIPS_MAPPING_ATTRIBUTE_EXPR__MAPPING;
 	}
 
-	public static boolean isRoamMappingAttributeExprNode(final EObject context, final EReference reference) {
-		return context instanceof RoamMappingAttributeExpr
-				&& reference == RoamSLangPackage.Literals.ROAM_NODE_ATTRIBUTE_EXPR__NODE;
+	public static boolean isGipsMappingAttributeExprNode(final EObject context, final EReference reference) {
+		return context instanceof GipsMappingAttributeExpr
+				&& reference == GipslPackage.Literals.GIPS_NODE_ATTRIBUTE_EXPR__NODE;
 	}
 
-	public static boolean isRoamContextExprNode(final EObject context, final EReference reference) {
-		return context instanceof RoamContextExpr
-				&& reference == RoamSLangPackage.Literals.ROAM_NODE_ATTRIBUTE_EXPR__NODE;
+	public static boolean isGipsContextExprNode(final EObject context, final EReference reference) {
+		return context instanceof GipsContextExpr
+				&& reference == GipslPackage.Literals.GIPS_NODE_ATTRIBUTE_EXPR__NODE;
 	}
 
-	public static boolean isRoamContextExprFeature(final EObject context, final EReference reference) {
-		return context instanceof RoamContextExpr && reference == RoamSLangPackage.Literals.ROAM_FEATURE_LIT__FEATURE;
+	public static boolean isGipsContextExprFeature(final EObject context, final EReference reference) {
+		return context instanceof GipsContextExpr && reference == GipslPackage.Literals.GIPS_FEATURE_LIT__FEATURE;
 	}
 
-	public static boolean isRoamNodeAttributeExprNode(final EObject context, final EReference reference) {
-		return context instanceof RoamNodeAttributeExpr
-				&& reference == RoamSLangPackage.Literals.ROAM_NODE_ATTRIBUTE_EXPR__NODE;
+	public static boolean isGipsNodeAttributeExprNode(final EObject context, final EReference reference) {
+		return context instanceof GipsNodeAttributeExpr
+				&& reference == GipslPackage.Literals.GIPS_NODE_ATTRIBUTE_EXPR__NODE;
 	}
 
-	public static boolean isRoamNodeAttributeExprFeature(final EObject context, final EReference reference) {
-		return context instanceof RoamNodeAttributeExpr
-				&& reference == RoamSLangPackage.Literals.ROAM_FEATURE_LIT__FEATURE;
+	public static boolean isGipsNodeAttributeExprFeature(final EObject context, final EReference reference) {
+		return context instanceof GipsNodeAttributeExpr
+				&& reference == GipslPackage.Literals.GIPS_FEATURE_LIT__FEATURE;
 	}
 
-	public static boolean isRoamLambdaAttributeExpressionVariable(final EObject context, final EReference reference) {
-		return context instanceof RoamLambdaAttributeExpression
-				&& reference == RoamSLangPackage.Literals.ROAM_LAMBDA_ATTRIBUTE_EXPRESSION__VAR;
+	public static boolean isGipsLambdaAttributeExpressionVariable(final EObject context, final EReference reference) {
+		return context instanceof GipsLambdaAttributeExpression
+				&& reference == GipslPackage.Literals.GIPS_LAMBDA_ATTRIBUTE_EXPRESSION__VAR;
 	}
 
-	public static boolean isRoamLambdaAttributeExpression(final EObject context, final EReference reference) {
-		return context instanceof RoamLambdaAttributeExpression
-				&& reference == RoamSLangPackage.Literals.ROAM_FEATURE_LIT__FEATURE;
+	public static boolean isGipsLambdaAttributeExpression(final EObject context, final EReference reference) {
+		return context instanceof GipsLambdaAttributeExpression
+				&& reference == GipslPackage.Literals.GIPS_FEATURE_LIT__FEATURE;
 	}
 
-	public static boolean isRoamSelect(final EObject context, final EReference reference) {
-		return context instanceof RoamSelect;
+	public static boolean isGipsSelect(final EObject context, final EReference reference) {
+		return context instanceof GipsSelect;
 	}
 
-	public static boolean isRoamFeatureNavigationFeature(final EObject context, final EReference reference) {
-		return context instanceof RoamFeatureNavigation
-				&& reference == RoamSLangPackage.Literals.ROAM_FEATURE_LIT__FEATURE;
+	public static boolean isGipsFeatureNavigationFeature(final EObject context, final EReference reference) {
+		return context instanceof GipsFeatureNavigation
+				&& reference == GipslPackage.Literals.GIPS_FEATURE_LIT__FEATURE;
 	}
 
-	public static boolean isRoamFeatureLit(final EObject context, final EReference reference) {
-		return context instanceof RoamFeatureLit;
+	public static boolean isGipsFeatureLit(final EObject context, final EReference reference) {
+		return context instanceof GipsFeatureLit;
 	}
 
-	public static boolean isRoamTypeCast(final EObject context, final EReference reference) {
-		return context instanceof RoamTypeCast;
+	public static boolean isGipsTypeCast(final EObject context, final EReference reference) {
+		return context instanceof GipsTypeCast;
 	}
 
 	public static Object getContainer(EObject node, Set<Class<?>> classes) {
@@ -113,56 +113,56 @@ public final class RoamSLangScopeContextUtil {
 		return current;
 	}
 
-	public static EObject getContextType(final RoamContextExpr expr) {
-		Set<Class<?>> classes = Set.of(RoamConstraintImpl.class, RoamObjectiveImpl.class);
-		EObject root = (EObject) RoamSLangScopeContextUtil.getContainer(expr, classes);
-		if (root instanceof RoamConstraint constr) {
+	public static EObject getContextType(final GipsContextExpr expr) {
+		Set<Class<?>> classes = Set.of(GipsConstraintImpl.class, GipsObjectiveImpl.class);
+		EObject root = (EObject) GipslScopeContextUtil.getContainer(expr, classes);
+		if (root instanceof GipsConstraint constr) {
 			return constr.getContext();
-		} else if (root instanceof RoamObjectiveImpl obj) {
+		} else if (root instanceof GipsObjectiveImpl obj) {
 			return obj.getContext();
 		} else {
 			return null;
 		}
 	}
 
-	public static RoamFeatureLit findLeafExpression(final RoamFeatureExpr expr) {
-		if (expr instanceof RoamFeatureLit lit) {
+	public static GipsFeatureLit findLeafExpression(final GipsFeatureExpr expr) {
+		if (expr instanceof GipsFeatureLit lit) {
 			return lit;
-		} else if (expr instanceof RoamFeatureNavigation nav) {
+		} else if (expr instanceof GipsFeatureNavigation nav) {
 			return findLeafExpression(nav.getRight());
 		} else {
 			return null;
 		}
 	}
 
-	public static RoamAttributeExpr getStreamRootContainer(RoamLambdaAttributeExpression context) {
-		Set<Class<?>> classes = Set.of(RoamContextExprImpl.class, RoamMappingAttributeExprImpl.class);
-		return (RoamAttributeExpr) RoamSLangScopeContextUtil.getContainer(context, classes);
+	public static GipsAttributeExpr getStreamRootContainer(GipsLambdaAttributeExpression context) {
+		Set<Class<?>> classes = Set.of(GipsContextExprImpl.class, GipsMappingAttributeExprImpl.class);
+		return (GipsAttributeExpr) GipslScopeContextUtil.getContainer(context, classes);
 	}
 
-	public static RoamStreamExpr getStreamIteratorContainer(RoamLambdaAttributeExpression context) {
-		Set<Class<?>> classes = Set.of(RoamStreamNavigationImpl.class, RoamStreamSetImpl.class, RoamSelectImpl.class,
-				RoamStreamArithmeticImpl.class);
-		return (RoamStreamExpr) RoamSLangScopeContextUtil.getContainer(context, classes);
+	public static GipsStreamExpr getStreamIteratorContainer(GipsLambdaAttributeExpression context) {
+		Set<Class<?>> classes = Set.of(GipsStreamNavigationImpl.class, GipsStreamSetImpl.class, GipsSelectImpl.class,
+				GipsStreamArithmeticImpl.class);
+		return (GipsStreamExpr) GipslScopeContextUtil.getContainer(context, classes);
 	}
 
-	public static RoamStreamExpr getStreamIteratorNavigationRoot(RoamLambdaAttributeExpression context) {
-		Set<Class<?>> classes = Set.of(RoamStreamNavigationImpl.class);
-		RoamStreamExpr root = (RoamStreamExpr) RoamSLangScopeContextUtil.getContainer(context, classes);
+	public static GipsStreamExpr getStreamIteratorNavigationRoot(GipsLambdaAttributeExpression context) {
+		Set<Class<?>> classes = Set.of(GipsStreamNavigationImpl.class);
+		GipsStreamExpr root = (GipsStreamExpr) GipslScopeContextUtil.getContainer(context, classes);
 		if (root != null)
 			return root;
 
-		classes.add(RoamStreamSetImpl.class);
-		classes.add(RoamSelectImpl.class);
-		classes.add(RoamStreamArithmeticImpl.class);
-		return (RoamStreamExpr) RoamSLangScopeContextUtil.getContainer(context, classes);
+		classes.add(GipsStreamSetImpl.class);
+		classes.add(GipsSelectImpl.class);
+		classes.add(GipsStreamArithmeticImpl.class);
+		return (GipsStreamExpr) GipslScopeContextUtil.getContainer(context, classes);
 	}
 
-	public static EObject getStreamContainer(RoamLambdaAttributeExpression context) {
-		Set<Class<?>> classes = Set.of(RoamContextExprImpl.class, RoamMappingAttributeExprImpl.class,
-				RoamStreamNavigationImpl.class, RoamStreamSetImpl.class, RoamSelectImpl.class,
-				RoamStreamArithmeticImpl.class);
-		return (EObject) RoamSLangScopeContextUtil.getContainer(context, classes);
+	public static EObject getStreamContainer(GipsLambdaAttributeExpression context) {
+		Set<Class<?>> classes = Set.of(GipsContextExprImpl.class, GipsMappingAttributeExprImpl.class,
+				GipsStreamNavigationImpl.class, GipsStreamSetImpl.class, GipsSelectImpl.class,
+				GipsStreamArithmeticImpl.class);
+		return (EObject) GipslScopeContextUtil.getContainer(context, classes);
 	}
 
 }

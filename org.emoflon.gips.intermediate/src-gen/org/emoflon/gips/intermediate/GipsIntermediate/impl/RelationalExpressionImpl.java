@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -10,10 +10,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -22,11 +22,11 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RelationalExpressionImpl#getOperator
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.RelationalExpressionImpl#getOperator
  * <em>Operator</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RelationalExpressionImpl#getLhs
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.RelationalExpressionImpl#getLhs
  * <em>Lhs</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.RelationalExpressionImpl#getRhs
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.RelationalExpressionImpl#getRhs
  * <em>Rhs</em>}</li>
  * </ul>
  *
@@ -89,7 +89,7 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.RELATIONAL_EXPRESSION;
+		return GipsIntermediatePackage.Literals.RELATIONAL_EXPRESSION;
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 		operator = newOperator == null ? OPERATOR_EDEFAULT : newOperator;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.RELATIONAL_EXPRESSION__OPERATOR, oldOperator, operator));
+					GipsIntermediatePackage.RELATIONAL_EXPRESSION__OPERATOR, oldOperator, operator));
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 		lhs = newLhs;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.RELATIONAL_EXPRESSION__LHS, oldLhs, newLhs);
+					GipsIntermediatePackage.RELATIONAL_EXPRESSION__LHS, oldLhs, newLhs);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -152,15 +152,15 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 			NotificationChain msgs = null;
 			if (lhs != null)
 				msgs = ((InternalEObject) lhs).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.RELATIONAL_EXPRESSION__LHS, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.RELATIONAL_EXPRESSION__LHS, null, msgs);
 			if (newLhs != null)
 				msgs = ((InternalEObject) newLhs).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.RELATIONAL_EXPRESSION__LHS, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.RELATIONAL_EXPRESSION__LHS, null, msgs);
 			msgs = basicSetLhs(newLhs, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.RELATIONAL_EXPRESSION__LHS,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.RELATIONAL_EXPRESSION__LHS,
 					newLhs, newLhs));
 	}
 
@@ -183,7 +183,7 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 		rhs = newRhs;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.RELATIONAL_EXPRESSION__RHS, oldRhs, newRhs);
+					GipsIntermediatePackage.RELATIONAL_EXPRESSION__RHS, oldRhs, newRhs);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -202,15 +202,15 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 			NotificationChain msgs = null;
 			if (rhs != null)
 				msgs = ((InternalEObject) rhs).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.RELATIONAL_EXPRESSION__RHS, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.RELATIONAL_EXPRESSION__RHS, null, msgs);
 			if (newRhs != null)
 				msgs = ((InternalEObject) newRhs).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.RELATIONAL_EXPRESSION__RHS, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.RELATIONAL_EXPRESSION__RHS, null, msgs);
 			msgs = basicSetRhs(newRhs, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.RELATIONAL_EXPRESSION__RHS,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.RELATIONAL_EXPRESSION__RHS,
 					newRhs, newRhs));
 	}
 
@@ -222,9 +222,9 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.RELATIONAL_EXPRESSION__LHS:
+		case GipsIntermediatePackage.RELATIONAL_EXPRESSION__LHS:
 			return basicSetLhs(null, msgs);
-		case RoamIntermediatePackage.RELATIONAL_EXPRESSION__RHS:
+		case GipsIntermediatePackage.RELATIONAL_EXPRESSION__RHS:
 			return basicSetRhs(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -238,11 +238,11 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.RELATIONAL_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.RELATIONAL_EXPRESSION__OPERATOR:
 			return getOperator();
-		case RoamIntermediatePackage.RELATIONAL_EXPRESSION__LHS:
+		case GipsIntermediatePackage.RELATIONAL_EXPRESSION__LHS:
 			return getLhs();
-		case RoamIntermediatePackage.RELATIONAL_EXPRESSION__RHS:
+		case GipsIntermediatePackage.RELATIONAL_EXPRESSION__RHS:
 			return getRhs();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -256,13 +256,13 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.RELATIONAL_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.RELATIONAL_EXPRESSION__OPERATOR:
 			setOperator((RelationalOperator) newValue);
 			return;
-		case RoamIntermediatePackage.RELATIONAL_EXPRESSION__LHS:
+		case GipsIntermediatePackage.RELATIONAL_EXPRESSION__LHS:
 			setLhs((ArithmeticExpression) newValue);
 			return;
-		case RoamIntermediatePackage.RELATIONAL_EXPRESSION__RHS:
+		case GipsIntermediatePackage.RELATIONAL_EXPRESSION__RHS:
 			setRhs((ArithmeticExpression) newValue);
 			return;
 		}
@@ -277,13 +277,13 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.RELATIONAL_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.RELATIONAL_EXPRESSION__OPERATOR:
 			setOperator(OPERATOR_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.RELATIONAL_EXPRESSION__LHS:
+		case GipsIntermediatePackage.RELATIONAL_EXPRESSION__LHS:
 			setLhs((ArithmeticExpression) null);
 			return;
-		case RoamIntermediatePackage.RELATIONAL_EXPRESSION__RHS:
+		case GipsIntermediatePackage.RELATIONAL_EXPRESSION__RHS:
 			setRhs((ArithmeticExpression) null);
 			return;
 		}
@@ -298,11 +298,11 @@ public class RelationalExpressionImpl extends BoolValueExpressionImpl implements
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.RELATIONAL_EXPRESSION__OPERATOR:
+		case GipsIntermediatePackage.RELATIONAL_EXPRESSION__OPERATOR:
 			return operator != OPERATOR_EDEFAULT;
-		case RoamIntermediatePackage.RELATIONAL_EXPRESSION__LHS:
+		case GipsIntermediatePackage.RELATIONAL_EXPRESSION__LHS:
 			return lhs != null;
-		case RoamIntermediatePackage.RELATIONAL_EXPRESSION__RHS:
+		case GipsIntermediatePackage.RELATIONAL_EXPRESSION__RHS:
 			return rhs != null;
 		}
 		return super.eIsSet(featureID);

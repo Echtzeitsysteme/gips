@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -11,11 +11,11 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.Type;
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.Type;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Type
@@ -24,13 +24,13 @@ import org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeObjectiveImpl#getName
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeObjectiveImpl#getName
  * <em>Name</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeObjectiveImpl#isElementwise
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeObjectiveImpl#isElementwise
  * <em>Elementwise</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeObjectiveImpl#getExpression
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeObjectiveImpl#getExpression
  * <em>Expression</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeObjectiveImpl#getModelType
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeObjectiveImpl#getModelType
  * <em>Model Type</em>}</li>
  * </ul>
  *
@@ -113,7 +113,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.TYPE_OBJECTIVE;
+		return GipsIntermediatePackage.Literals.TYPE_OBJECTIVE;
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE_OBJECTIVE__NAME, oldName,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.TYPE_OBJECTIVE__NAME, oldName,
 					name));
 	}
 
@@ -156,7 +156,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 		boolean oldElementwise = elementwise;
 		elementwise = newElementwise;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE,
 					oldElementwise, elementwise));
 	}
 
@@ -179,7 +179,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 		expression = newExpression;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION, oldExpression, newExpression);
+					GipsIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION, oldExpression, newExpression);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -198,15 +198,15 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 			NotificationChain msgs = null;
 			if (expression != null)
 				msgs = ((InternalEObject) expression).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION, null, msgs);
 			if (newExpression != null)
 				msgs = ((InternalEObject) newExpression).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION, null, msgs);
 			msgs = basicSetExpression(newExpression, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION,
 					newExpression, newExpression));
 	}
 
@@ -222,7 +222,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 			if (modelType != oldModelType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.TYPE_OBJECTIVE__MODEL_TYPE, oldModelType, modelType));
+							GipsIntermediatePackage.TYPE_OBJECTIVE__MODEL_TYPE, oldModelType, modelType));
 			}
 		}
 		return modelType;
@@ -246,7 +246,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 		Type oldModelType = modelType;
 		modelType = newModelType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE_OBJECTIVE__MODEL_TYPE,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.TYPE_OBJECTIVE__MODEL_TYPE,
 					oldModelType, modelType));
 	}
 
@@ -258,7 +258,7 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION:
+		case GipsIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION:
 			return basicSetExpression(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -272,13 +272,13 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE_OBJECTIVE__NAME:
+		case GipsIntermediatePackage.TYPE_OBJECTIVE__NAME:
 			return getName();
-		case RoamIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE:
+		case GipsIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE:
 			return isElementwise();
-		case RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION:
+		case GipsIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION:
 			return getExpression();
-		case RoamIntermediatePackage.TYPE_OBJECTIVE__MODEL_TYPE:
+		case GipsIntermediatePackage.TYPE_OBJECTIVE__MODEL_TYPE:
 			if (resolve)
 				return getModelType();
 			return basicGetModelType();
@@ -294,16 +294,16 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE_OBJECTIVE__NAME:
+		case GipsIntermediatePackage.TYPE_OBJECTIVE__NAME:
 			setName((String) newValue);
 			return;
-		case RoamIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE:
+		case GipsIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE:
 			setElementwise((Boolean) newValue);
 			return;
-		case RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION:
+		case GipsIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION:
 			setExpression((ArithmeticExpression) newValue);
 			return;
-		case RoamIntermediatePackage.TYPE_OBJECTIVE__MODEL_TYPE:
+		case GipsIntermediatePackage.TYPE_OBJECTIVE__MODEL_TYPE:
 			setModelType((Type) newValue);
 			return;
 		}
@@ -318,16 +318,16 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE_OBJECTIVE__NAME:
+		case GipsIntermediatePackage.TYPE_OBJECTIVE__NAME:
 			setName(NAME_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE:
+		case GipsIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE:
 			setElementwise(ELEMENTWISE_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION:
+		case GipsIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION:
 			setExpression((ArithmeticExpression) null);
 			return;
-		case RoamIntermediatePackage.TYPE_OBJECTIVE__MODEL_TYPE:
+		case GipsIntermediatePackage.TYPE_OBJECTIVE__MODEL_TYPE:
 			setModelType((Type) null);
 			return;
 		}
@@ -342,13 +342,13 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE_OBJECTIVE__NAME:
+		case GipsIntermediatePackage.TYPE_OBJECTIVE__NAME:
 			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-		case RoamIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE:
+		case GipsIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE:
 			return elementwise != ELEMENTWISE_EDEFAULT;
-		case RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION:
+		case GipsIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION:
 			return expression != null;
-		case RoamIntermediatePackage.TYPE_OBJECTIVE__MODEL_TYPE:
+		case GipsIntermediatePackage.TYPE_OBJECTIVE__MODEL_TYPE:
 			return modelType != null;
 		}
 		return super.eIsSet(featureID);
@@ -363,12 +363,12 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == Objective.class) {
 			switch (derivedFeatureID) {
-			case RoamIntermediatePackage.TYPE_OBJECTIVE__NAME:
-				return RoamIntermediatePackage.OBJECTIVE__NAME;
-			case RoamIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE:
-				return RoamIntermediatePackage.OBJECTIVE__ELEMENTWISE;
-			case RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION:
-				return RoamIntermediatePackage.OBJECTIVE__EXPRESSION;
+			case GipsIntermediatePackage.TYPE_OBJECTIVE__NAME:
+				return GipsIntermediatePackage.OBJECTIVE__NAME;
+			case GipsIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE:
+				return GipsIntermediatePackage.OBJECTIVE__ELEMENTWISE;
+			case GipsIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION:
+				return GipsIntermediatePackage.OBJECTIVE__EXPRESSION;
 			default:
 				return -1;
 			}
@@ -385,12 +385,12 @@ public class TypeObjectiveImpl extends MinimalEObjectImpl.Container implements T
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == Objective.class) {
 			switch (baseFeatureID) {
-			case RoamIntermediatePackage.OBJECTIVE__NAME:
-				return RoamIntermediatePackage.TYPE_OBJECTIVE__NAME;
-			case RoamIntermediatePackage.OBJECTIVE__ELEMENTWISE:
-				return RoamIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE;
-			case RoamIntermediatePackage.OBJECTIVE__EXPRESSION:
-				return RoamIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION;
+			case GipsIntermediatePackage.OBJECTIVE__NAME:
+				return GipsIntermediatePackage.TYPE_OBJECTIVE__NAME;
+			case GipsIntermediatePackage.OBJECTIVE__ELEMENTWISE:
+				return GipsIntermediatePackage.TYPE_OBJECTIVE__ELEMENTWISE;
+			case GipsIntermediatePackage.OBJECTIVE__EXPRESSION:
+				return GipsIntermediatePackage.TYPE_OBJECTIVE__EXPRESSION;
 			default:
 				return -1;
 			}

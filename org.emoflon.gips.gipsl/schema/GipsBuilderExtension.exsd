@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.emoflon.roam.roamslang" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.emoflon.gips.gipsl" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.emoflon.roam.roamslang" id="RoamBuilderExtension" name="RoamBuilderExtension"/>
+         <meta.schema plugin="org.emoflon.gips.gipsl" id="GipsBuilderExtension" name="GipsBuilderExtension"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -55,7 +55,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.emoflon.roam.roamslang.generator.RoamBuilderExtension"/>
+                  <meta.attribute kind="java" basedOn=":org.emoflon.gips.gipsl.generator.GipsBuilderExtension"/>
                </appInfo>
             </annotation>
          </attribute>

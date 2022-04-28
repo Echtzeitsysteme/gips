@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Mapping
@@ -10,11 +10,11 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint#getMapping
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint#getMapping
  * <em>Mapping</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getMappingConstraint()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getMappingConstraint()
  * @model
  * @generated
  */
@@ -25,7 +25,7 @@ public interface MappingConstraint extends Context, Constraint {
 	 * 
 	 * @return the value of the '<em>Mapping</em>' reference.
 	 * @see #setMapping(Mapping)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getMappingConstraint_Mapping()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getMappingConstraint_Mapping()
 	 * @model required="true"
 	 * @generated
 	 */
@@ -33,7 +33,7 @@ public interface MappingConstraint extends Context, Constraint {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint#getMapping
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint#getMapping
 	 * <em>Mapping</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Mapping</em>' reference.

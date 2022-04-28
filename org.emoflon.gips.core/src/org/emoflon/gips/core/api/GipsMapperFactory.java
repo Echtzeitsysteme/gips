@@ -1,19 +1,19 @@
-package org.emoflon.roam.core.api;
+package org.emoflon.gips.core.api;
 
 import org.emoflon.ibex.gt.api.GraphTransformationAPI;
-import org.emoflon.roam.core.RoamEngine;
-import org.emoflon.roam.core.RoamMapper;
-import org.emoflon.roam.core.RoamMapping;
-import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
+import org.emoflon.gips.core.GipsEngine;
+import org.emoflon.gips.core.GipsMapper;
+import org.emoflon.gips.core.GipsMapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 
-public abstract class RoamMapperFactory<EMOFLON_API extends GraphTransformationAPI> {
-	protected final RoamEngine engine;
+public abstract class GipsMapperFactory<EMOFLON_API extends GraphTransformationAPI> {
+	protected final GipsEngine engine;
 	protected final EMOFLON_API eMoflonApi;
 
-	public RoamMapperFactory(final RoamEngine engine, final EMOFLON_API eMoflonApi) {
+	public GipsMapperFactory(final GipsEngine engine, final EMOFLON_API eMoflonApi) {
 		this.engine = engine;
 		this.eMoflonApi = eMoflonApi;
 	}
 
-	public abstract RoamMapper<? extends RoamMapping> createMapper(final Mapping mapping);
+	public abstract GipsMapper<? extends GipsMapping> createMapper(final Mapping mapping);
 }

@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -9,9 +9,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.Type;
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.Type;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Type
@@ -20,7 +20,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.TypeSumExpressionImpl#getType
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeSumExpressionImpl#getType
  * <em>Type</em>}</li>
  * </ul>
  *
@@ -53,7 +53,7 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.TYPE_SUM_EXPRESSION;
+		return GipsIntermediatePackage.Literals.TYPE_SUM_EXPRESSION;
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 			if (type != oldType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.TYPE_SUM_EXPRESSION__TYPE, oldType, type));
+							GipsIntermediatePackage.TYPE_SUM_EXPRESSION__TYPE, oldType, type));
 			}
 		}
 		return type;
@@ -92,7 +92,7 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 		Type oldType = type;
 		type = newType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.TYPE_SUM_EXPRESSION__TYPE,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.TYPE_SUM_EXPRESSION__TYPE,
 					oldType, type));
 	}
 
@@ -104,7 +104,7 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE_SUM_EXPRESSION__TYPE:
+		case GipsIntermediatePackage.TYPE_SUM_EXPRESSION__TYPE:
 			if (resolve)
 				return getType();
 			return basicGetType();
@@ -120,7 +120,7 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE_SUM_EXPRESSION__TYPE:
+		case GipsIntermediatePackage.TYPE_SUM_EXPRESSION__TYPE:
 			setType((Type) newValue);
 			return;
 		}
@@ -135,7 +135,7 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE_SUM_EXPRESSION__TYPE:
+		case GipsIntermediatePackage.TYPE_SUM_EXPRESSION__TYPE:
 			setType((Type) null);
 			return;
 		}
@@ -150,7 +150,7 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.TYPE_SUM_EXPRESSION__TYPE:
+		case GipsIntermediatePackage.TYPE_SUM_EXPRESSION__TYPE:
 			return type != null;
 		}
 		return super.eIsSet(featureID);

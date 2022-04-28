@@ -1,13 +1,13 @@
 Manifest-Version: 1.0
-Automatic-Module-Name: org.emoflon.roam.roamslang.ui
+Automatic-Module-Name: org.emoflon.gips.gipsl.ui
 Bundle-ManifestVersion: 2
-Bundle-Name: org.emoflon.roam.roamslang.ui
+Bundle-Name: org.emoflon.gips.gipsl.ui
 Bundle-Vendor: My Company
 Bundle-Version: 1.0.0.qualifier
-Bundle-SymbolicName: org.emoflon.roam.roamslang.ui; singleton:=true
+Bundle-SymbolicName: org.emoflon.gips.gipsl.ui; singleton:=true
 Bundle-ActivationPolicy: lazy
-Require-Bundle: org.emoflon.roam.roamslang,
- org.emoflon.roam.roamslang.ide,
+Require-Bundle: org.emoflon.gips.gipsl,
+ org.emoflon.gips.gipsl.ide,
  org.eclipse.xtext.ui,
  org.eclipse.xtext.ui.shared,
  org.eclipse.xtext.ui.codetemplates.ui,
@@ -26,8 +26,8 @@ Require-Bundle: org.emoflon.roam.roamslang,
  org.eclipse.ui.forms
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-16
-Export-Package: org.emoflon.roam.roamslang.ui.quickfix,
- org.emoflon.roam.roamslang.ui.internal,
- org.emoflon.roam.roamslang.ui.contentassist,
- org.emoflon.roam.roamslang.ui.wizard
-Bundle-Activator: org.emoflon.roam.roamslang.ui.internal.RoamslangActivator
+Export-Package: org.emoflon.gips.gipsl.ui.quickfix,
+ org.emoflon.gips.gipsl.ui.internal,
+ org.emoflon.gips.gipsl.ui.contentassist,
+ org.emoflon.gips.gipsl.ui.wizard
+Bundle-Activator: org.emoflon.gips.gipsl.ui.internal.GipslActivator

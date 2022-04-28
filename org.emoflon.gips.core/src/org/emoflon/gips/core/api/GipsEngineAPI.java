@@ -1,4 +1,4 @@
-package org.emoflon.roam.core.api;
+package org.emoflon.gips.core.api;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,29 +12,29 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.emoflon.ibex.gt.api.GraphTransformationAPI;
 import org.emoflon.ibex.gt.api.GraphTransformationApp;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPatternModelPackage;
-import org.emoflon.roam.core.RoamEngine;
-import org.emoflon.roam.core.RoamGlobalObjective;
-import org.emoflon.roam.core.TypeIndexer;
-import org.emoflon.roam.core.ilp.ILPSolver;
-import org.emoflon.roam.core.ilp.ILPSolverConfig;
-import org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig;
-import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.core.GipsEngine;
+import org.emoflon.gips.core.GipsGlobalObjective;
+import org.emoflon.gips.core.TypeIndexer;
+import org.emoflon.gips.core.ilp.ILPSolver;
+import org.emoflon.gips.core.ilp.ILPSolverConfig;
+import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
-public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<EMOFLON_API>, EMOFLON_API extends GraphTransformationAPI>
-		extends RoamEngine {
+public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<EMOFLON_API>, EMOFLON_API extends GraphTransformationAPI>
+		extends GipsEngine {
 
 	final protected EMOFLON_APP eMoflonApp;
 	protected EMOFLON_API eMoflonAPI;
-	protected RoamIntermediateModel roamModel;
+	protected GipsIntermediateModel gipsModel;
 	final protected Map<String, Mapping> name2Mapping = new HashMap<>();
 	protected ILPSolverConfig solverConfig;
-	protected RoamMapperFactory<EMOFLON_API> mapperFactory;
-	protected RoamConstraintFactory<EMOFLON_API> constraintFactory;
-	protected RoamObjectiveFactory<EMOFLON_API> objectiveFactory;
+	protected GipsMapperFactory<EMOFLON_API> mapperFactory;
+	protected GipsConstraintFactory<EMOFLON_API> constraintFactory;
+	protected GipsObjectiveFactory<EMOFLON_API> objectiveFactory;
 
-	protected RoamEngineAPI(final EMOFLON_APP eMoflonApp) {
+	protected GipsEngineAPI(final EMOFLON_APP eMoflonApp) {
 		this.eMoflonApp = eMoflonApp;
 	}
 
@@ -76,7 +76,7 @@ public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 
 	@Override
 	protected void initTypeIndexer() {
-		indexer = new TypeIndexer(eMoflonAPI, roamModel);
+		indexer = new TypeIndexer(eMoflonAPI, gipsModel);
 	}
 
 	public abstract void init(final URI modelUri);
@@ -87,13 +87,13 @@ public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 				config.isEnableDebugOutput());
 	}
 
-	protected void init(final URI roamModelURI, final URI modelUri) {
+	protected void init(final URI gipsModelURI, final URI modelUri) {
 		eMoflonApp.registerMetaModels();
 		eMoflonApp.loadModel(modelUri);
 		eMoflonAPI = eMoflonApp.initAPI();
-		loadIntermediateModel(roamModelURI);
+		loadIntermediateModel(gipsModelURI);
 		initTypeIndexer();
-		setSolverConfig(roamModel.getConfig());
+		setSolverConfig(gipsModel.getConfig());
 		initMapperFactory();
 		createMappers();
 		initConstraintFactory();
@@ -101,44 +101,44 @@ public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		initObjectiveFactory();
 		createObjectives();
 
-		if (roamModel.getGlobalObjective() != null)
+		if (gipsModel.getGlobalObjective() != null)
 			setGlobalObjective(createGlobalObjective());
 
 		setILPSolver(createSolver());
 	}
 
-	protected void loadIntermediateModel(final URI roamModelURI) {
+	protected void loadIntermediateModel(final URI gipsModelURI) {
 		ResourceSet rs = new ResourceSetImpl();
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION,
 				new XMIResourceFactoryImpl());
 
-		rs.getPackageRegistry().put(RoamIntermediatePackage.eNS_URI, RoamIntermediatePackage.eINSTANCE);
+		rs.getPackageRegistry().put(GipsIntermediatePackage.eNS_URI, GipsIntermediatePackage.eINSTANCE);
 		rs.getPackageRegistry().put(IBeXPatternModelPackage.eNS_URI, IBeXPatternModelPackage.eINSTANCE);
 
 		Resource model = null;
 		try {
-			model = rs.getResource(roamModelURI, true);
+			model = rs.getResource(gipsModelURI, true);
 		} catch (final Exception ex) {
 			ex.printStackTrace();
 		}
 
-		roamModel = (RoamIntermediateModel) model.getContents().get(0);
+		gipsModel = (GipsIntermediateModel) model.getContents().get(0);
 
-		roamModel.getVariables().stream().filter(var -> var instanceof Mapping).map(var -> (Mapping) var)
+		gipsModel.getVariables().stream().filter(var -> var instanceof Mapping).map(var -> (Mapping) var)
 				.forEach(mapping -> name2Mapping.put(mapping.getName(), mapping));
 	}
 
 	protected abstract void createMappers();
 
 	protected void createConstraints() {
-		roamModel.getConstraints().stream()
+		gipsModel.getConstraints().stream()
 				.forEach(constraint -> addConstraint(constraintFactory.createConstraint(constraint)));
 	}
 
 	protected void createObjectives() {
-		roamModel.getObjectives().stream()
+		gipsModel.getObjectives().stream()
 				.forEach(objective -> addObjective(objectiveFactory.createObjective(objective)));
 	}
 
@@ -148,7 +148,7 @@ public abstract class RoamEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 
 	protected abstract void initObjectiveFactory();
 
-	protected abstract RoamGlobalObjective createGlobalObjective();
+	protected abstract GipsGlobalObjective createGlobalObjective();
 
 	protected abstract ILPSolver createSolver();
 

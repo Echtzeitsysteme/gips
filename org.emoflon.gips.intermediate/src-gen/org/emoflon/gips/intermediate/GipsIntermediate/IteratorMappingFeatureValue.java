@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Iterator
@@ -10,13 +10,13 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue#getMappingContext
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue#getMappingContext
  * <em>Mapping Context</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue#getFeatureExpression
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue#getFeatureExpression
  * <em>Feature Expression</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorMappingFeatureValue()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorMappingFeatureValue()
  * @model
  * @generated
  */
@@ -27,7 +27,7 @@ public interface IteratorMappingFeatureValue extends ValueExpression, Iterator {
 	 * 
 	 * @return the value of the '<em>Mapping Context</em>' reference.
 	 * @see #setMappingContext(Mapping)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorMappingFeatureValue_MappingContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorMappingFeatureValue_MappingContext()
 	 * @model
 	 * @generated
 	 */
@@ -35,7 +35,7 @@ public interface IteratorMappingFeatureValue extends ValueExpression, Iterator {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue#getMappingContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue#getMappingContext
 	 * <em>Mapping Context</em>}' reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -51,7 +51,7 @@ public interface IteratorMappingFeatureValue extends ValueExpression, Iterator {
 	 * 
 	 * @return the value of the '<em>Feature Expression</em>' containment reference.
 	 * @see #setFeatureExpression(FeatureExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorMappingFeatureValue_FeatureExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorMappingFeatureValue_FeatureExpression()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -59,7 +59,7 @@ public interface IteratorMappingFeatureValue extends ValueExpression, Iterator {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue#getFeatureExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue#getFeatureExpression
 	 * <em>Feature Expression</em>}' containment reference. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 

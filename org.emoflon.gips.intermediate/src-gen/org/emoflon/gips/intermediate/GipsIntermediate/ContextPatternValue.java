@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Context
@@ -10,11 +10,11 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue#getPatternContext
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue#getPatternContext
  * <em>Pattern Context</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getContextPatternValue()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getContextPatternValue()
  * @model
  * @generated
  */
@@ -25,7 +25,7 @@ public interface ContextPatternValue extends ValueExpression {
 	 * 
 	 * @return the value of the '<em>Pattern Context</em>' reference.
 	 * @see #setPatternContext(Pattern)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getContextPatternValue_PatternContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getContextPatternValue_PatternContext()
 	 * @model
 	 * @generated
 	 */
@@ -33,7 +33,7 @@ public interface ContextPatternValue extends ValueExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue#getPatternContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue#getPatternContext
 	 * <em>Pattern Context</em>}' reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 

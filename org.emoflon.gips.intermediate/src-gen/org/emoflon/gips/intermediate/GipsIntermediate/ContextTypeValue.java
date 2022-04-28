@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Context
@@ -10,11 +10,11 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue#getTypeContext
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue#getTypeContext
  * <em>Type Context</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getContextTypeValue()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getContextTypeValue()
  * @model
  * @generated
  */
@@ -25,7 +25,7 @@ public interface ContextTypeValue extends ValueExpression {
 	 * 
 	 * @return the value of the '<em>Type Context</em>' reference.
 	 * @see #setTypeContext(Type)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getContextTypeValue_TypeContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getContextTypeValue_TypeContext()
 	 * @model
 	 * @generated
 	 */
@@ -33,7 +33,7 @@ public interface ContextTypeValue extends ValueExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue#getTypeContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue#getTypeContext
 	 * <em>Type Context</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 

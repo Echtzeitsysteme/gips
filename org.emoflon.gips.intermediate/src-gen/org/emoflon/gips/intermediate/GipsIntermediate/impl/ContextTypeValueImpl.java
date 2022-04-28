@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -9,9 +9,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.Type;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Context
@@ -20,7 +20,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.Type;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextTypeValueImpl#getTypeContext
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextTypeValueImpl#getTypeContext
  * <em>Type Context</em>}</li>
  * </ul>
  *
@@ -53,7 +53,7 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.CONTEXT_TYPE_VALUE;
+		return GipsIntermediatePackage.Literals.CONTEXT_TYPE_VALUE;
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 			if (typeContext != oldTypeContext) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT, oldTypeContext, typeContext));
+							GipsIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT, oldTypeContext, typeContext));
 			}
 		}
 		return typeContext;
@@ -93,7 +93,7 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 		typeContext = newTypeContext;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT, oldTypeContext, typeContext));
+					GipsIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT, oldTypeContext, typeContext));
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT:
+		case GipsIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT:
 			if (resolve)
 				return getTypeContext();
 			return basicGetTypeContext();
@@ -120,7 +120,7 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT:
+		case GipsIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT:
 			setTypeContext((Type) newValue);
 			return;
 		}
@@ -135,7 +135,7 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT:
+		case GipsIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT:
 			setTypeContext((Type) null);
 			return;
 		}
@@ -150,7 +150,7 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT:
+		case GipsIntermediatePackage.CONTEXT_TYPE_VALUE__TYPE_CONTEXT:
 			return typeContext != null;
 		}
 		return super.eIsSet(featureID);

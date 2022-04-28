@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
 
@@ -12,11 +12,11 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Mapping#getRule
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Mapping#getRule
  * <em>Rule</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getMapping()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getMapping()
  * @model
  * @generated
  */
@@ -27,7 +27,7 @@ public interface Mapping extends VariableSet {
 	 * 
 	 * @return the value of the '<em>Rule</em>' reference.
 	 * @see #setRule(IBeXRule)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getMapping_Rule()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getMapping_Rule()
 	 * @model required="true"
 	 * @generated
 	 */
@@ -35,7 +35,7 @@ public interface Mapping extends VariableSet {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Mapping#getRule
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Mapping#getRule
 	 * <em>Rule</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Rule</em>' reference.

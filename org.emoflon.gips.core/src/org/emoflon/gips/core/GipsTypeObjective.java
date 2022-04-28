@@ -1,20 +1,20 @@
-package org.emoflon.roam.core;
+package org.emoflon.gips.core;
 
 import java.util.Collections;
 import java.util.LinkedList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.emoflon.roam.core.ilp.ILPLinearFunction;
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective;
+import org.emoflon.gips.core.ilp.ILPLinearFunction;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective;
 
-public abstract class RoamTypeObjective<CONTEXT extends EObject>
-		extends RoamObjective<TypeObjective, CONTEXT, Integer> {
+public abstract class GipsTypeObjective<CONTEXT extends EObject>
+		extends GipsObjective<TypeObjective, CONTEXT, Integer> {
 
 	final protected TypeIndexer indexer;
 	final protected EClass type;
 
-	public RoamTypeObjective(RoamEngine engine, TypeObjective objective) {
+	public GipsTypeObjective(GipsEngine engine, TypeObjective objective) {
 		super(engine, objective);
 		indexer = engine.getIndexer();
 		type = objective.getModelType().getType();

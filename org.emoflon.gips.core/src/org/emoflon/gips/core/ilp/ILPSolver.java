@@ -1,18 +1,18 @@
-package org.emoflon.roam.core.ilp;
+package org.emoflon.gips.core.ilp;
 
 import org.eclipse.emf.ecore.EObject;
-import org.emoflon.roam.core.RoamConstraint;
-import org.emoflon.roam.core.RoamEngine;
-import org.emoflon.roam.core.RoamGlobalObjective;
-import org.emoflon.roam.core.RoamMapping;
-import org.emoflon.roam.core.RoamMappingConstraint;
-import org.emoflon.roam.core.RoamTypeConstraint;
-import org.emoflon.roam.core.gt.RoamPatternConstraint;
+import org.emoflon.gips.core.GipsConstraint;
+import org.emoflon.gips.core.GipsEngine;
+import org.emoflon.gips.core.GipsGlobalObjective;
+import org.emoflon.gips.core.GipsMapping;
+import org.emoflon.gips.core.GipsMappingConstraint;
+import org.emoflon.gips.core.GipsTypeConstraint;
+import org.emoflon.gips.core.gt.GipsPatternConstraint;
 
 public abstract class ILPSolver {
-	final protected RoamEngine engine;
+	final protected GipsEngine engine;
 
-	public ILPSolver(final RoamEngine engine) {
+	public ILPSolver(final GipsEngine engine) {
 		this.engine = engine;
 	}
 
@@ -20,7 +20,7 @@ public abstract class ILPSolver {
 		engine.getMappers().values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
 				.forEach(mapping -> translateMapping(mapping));
 		engine.getConstraints().values().forEach(constraint -> translateConstraint(constraint));
-		RoamGlobalObjective go = engine.getGlobalObjective();
+		GipsGlobalObjective go = engine.getGlobalObjective();
 		if (go != null)
 			translateObjective(go);
 	}
@@ -29,23 +29,23 @@ public abstract class ILPSolver {
 
 	public abstract void updateValuesFromSolution();
 
-	protected abstract void translateMapping(final RoamMapping mapping);
+	protected abstract void translateMapping(final GipsMapping mapping);
 
-	protected void translateConstraint(final RoamConstraint<?, ?, ?> constraint) {
-		if (constraint instanceof RoamMappingConstraint<?> mapping) {
+	protected void translateConstraint(final GipsConstraint<?, ?, ?> constraint) {
+		if (constraint instanceof GipsMappingConstraint<?> mapping) {
 			translateConstraint(mapping);
-		} else if (constraint instanceof RoamPatternConstraint<?, ?> pattern) {
+		} else if (constraint instanceof GipsPatternConstraint<?, ?> pattern) {
 			translateConstraint(pattern);
 		} else {
-			translateConstraint((RoamTypeConstraint<?>) constraint);
+			translateConstraint((GipsTypeConstraint<?>) constraint);
 		}
 	}
 
-	protected abstract void translateConstraint(final RoamMappingConstraint<? extends EObject> constraint);
+	protected abstract void translateConstraint(final GipsMappingConstraint<? extends EObject> constraint);
 
-	protected abstract void translateConstraint(final RoamPatternConstraint<?, ?> constraint);
+	protected abstract void translateConstraint(final GipsPatternConstraint<?, ?> constraint);
 
-	protected abstract void translateConstraint(final RoamTypeConstraint<? extends EObject> constraint);
+	protected abstract void translateConstraint(final GipsTypeConstraint<? extends EObject> constraint);
 
-	protected abstract void translateObjective(final RoamGlobalObjective objective);
+	protected abstract void translateObjective(final GipsGlobalObjective objective);
 }

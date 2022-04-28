@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Type Sum
@@ -10,11 +10,11 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression#getType
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression#getType
  * <em>Type</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getTypeSumExpression()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getTypeSumExpression()
  * @model
  * @generated
  */
@@ -25,7 +25,7 @@ public interface TypeSumExpression extends SumExpression {
 	 * 
 	 * @return the value of the '<em>Type</em>' reference.
 	 * @see #setType(Type)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getTypeSumExpression_Type()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getTypeSumExpression_Type()
 	 * @model required="true"
 	 * @generated
 	 */
@@ -33,7 +33,7 @@ public interface TypeSumExpression extends SumExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression#getType
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression#getType
 	 * <em>Type</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Type</em>' reference.

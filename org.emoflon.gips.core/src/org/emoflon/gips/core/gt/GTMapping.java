@@ -1,13 +1,13 @@
-package org.emoflon.roam.core.gt;
+package org.emoflon.gips.core.gt;
 
 import java.util.Objects;
 
 import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 import org.emoflon.ibex.gt.api.GraphTransformationPattern;
-import org.emoflon.roam.core.RoamMapping;
+import org.emoflon.gips.core.GipsMapping;
 
 public abstract class GTMapping<M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
-		extends RoamMapping {
+		extends GipsMapping {
 
 	final protected M match;
 

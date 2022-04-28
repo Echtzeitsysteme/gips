@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Pattern
@@ -10,11 +10,11 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective#getPattern
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective#getPattern
  * <em>Pattern</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getPatternObjective()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getPatternObjective()
  * @model
  * @generated
  */
@@ -25,7 +25,7 @@ public interface PatternObjective extends Context, Objective {
 	 * 
 	 * @return the value of the '<em>Pattern</em>' reference.
 	 * @see #setPattern(Pattern)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getPatternObjective_Pattern()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getPatternObjective_Pattern()
 	 * @model
 	 * @generated
 	 */
@@ -33,7 +33,7 @@ public interface PatternObjective extends Context, Objective {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective#getPattern
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective#getPattern
 	 * <em>Pattern</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Pattern</em>' reference.

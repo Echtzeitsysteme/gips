@@ -1,4 +1,4 @@
-package org.emoflon.roam.build.generator;
+package org.emoflon.gips.build.generator;
 
 import java.io.File;
 import java.nio.file.Files;

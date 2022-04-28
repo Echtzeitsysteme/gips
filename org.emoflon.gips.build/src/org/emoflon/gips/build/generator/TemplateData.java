@@ -1,21 +1,21 @@
-package org.emoflon.roam.build.generator;
+package org.emoflon.gips.build.generator;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.emoflon.roam.build.RoamAPIData;
-import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
-import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
-import org.emoflon.roam.intermediate.RoamIntermediate.Pattern;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
+import org.emoflon.gips.build.GipsAPIData;
+import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
+import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 
 public class TemplateData {
-	final public RoamIntermediateModel model;
-	final public RoamAPIData apiData;
-	final public RoamImportManager classToPackage;
+	final public GipsIntermediateModel model;
+	final public GipsAPIData apiData;
+	final public GipsImportManager classToPackage;
 
-	public String roamApiClassName;
+	public String gipsApiClassName;
 	public String mapperFactoryClassName;
 	public String constraintFactoryClassName;
 	public String objectiveFactoryClassName;
@@ -31,8 +31,8 @@ public class TemplateData {
 	final public Map<Constraint, String> constraint2constraintClassName = new HashMap<>();
 	final public Map<Objective, String> objective2objectiveClassName = new HashMap<>();
 
-	public TemplateData(final RoamIntermediateModel model, final RoamAPIData apiData,
-			final RoamImportManager classToPackage) {
+	public TemplateData(final GipsIntermediateModel model, final GipsAPIData apiData,
+			final GipsImportManager classToPackage) {
 		this.model = model;
 		this.apiData = apiData;
 		this.classToPackage = classToPackage;
@@ -40,10 +40,10 @@ public class TemplateData {
 	}
 
 	private void init() {
-		roamApiClassName = apiData.apiClassNamePrefix + "RoamAPI";
-		mapperFactoryClassName = apiData.apiClassNamePrefix + "RoamMapperFactory";
-		constraintFactoryClassName = apiData.apiClassNamePrefix + "RoamConstraintFactory";
-		objectiveFactoryClassName = apiData.apiClassNamePrefix + "RoamObjectiveFactory";
+		gipsApiClassName = apiData.apiClassNamePrefix + "GipsAPI";
+		mapperFactoryClassName = apiData.apiClassNamePrefix + "GipsMapperFactory";
+		constraintFactoryClassName = apiData.apiClassNamePrefix + "GipsConstraintFactory";
+		objectiveFactoryClassName = apiData.apiClassNamePrefix + "GipsObjectiveFactory";
 		model.getVariables().stream().filter(var -> var instanceof Mapping).map(var -> (Mapping) var)
 				.forEach(mapping -> {
 					mapping2mapperClassName.put(mapping, firstToUpper(mapping.getName()) + "Mapper");
@@ -67,7 +67,7 @@ public class TemplateData {
 		if (model.getGlobalObjective() == null)
 			return;
 
-		globalObjectiveClassName = apiData.apiClassNamePrefix + "RoamGlobalObjective";
+		globalObjectiveClassName = apiData.apiClassNamePrefix + "GipsGlobalObjective";
 	}
 
 	public static String firstToUpper(final String str) {

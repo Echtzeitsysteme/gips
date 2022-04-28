@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -10,9 +10,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -21,7 +21,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ArithmeticValueImpl#getValue
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ArithmeticValueImpl#getValue
  * <em>Value</em>}</li>
  * </ul>
  *
@@ -54,7 +54,7 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.ARITHMETIC_VALUE;
+		return GipsIntermediatePackage.Literals.ARITHMETIC_VALUE;
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 		value = newValue;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ARITHMETIC_VALUE__VALUE, oldValue, newValue);
+					GipsIntermediatePackage.ARITHMETIC_VALUE__VALUE, oldValue, newValue);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -95,15 +95,15 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 			NotificationChain msgs = null;
 			if (value != null)
 				msgs = ((InternalEObject) value).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.ARITHMETIC_VALUE__VALUE, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.ARITHMETIC_VALUE__VALUE, null, msgs);
 			if (newValue != null)
 				msgs = ((InternalEObject) newValue).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.ARITHMETIC_VALUE__VALUE, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.ARITHMETIC_VALUE__VALUE, null, msgs);
 			msgs = basicSetValue(newValue, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.ARITHMETIC_VALUE__VALUE,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.ARITHMETIC_VALUE__VALUE,
 					newValue, newValue));
 	}
 
@@ -115,7 +115,7 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ARITHMETIC_VALUE__VALUE:
+		case GipsIntermediatePackage.ARITHMETIC_VALUE__VALUE:
 			return basicSetValue(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -129,7 +129,7 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ARITHMETIC_VALUE__VALUE:
+		case GipsIntermediatePackage.ARITHMETIC_VALUE__VALUE:
 			return getValue();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -143,7 +143,7 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ARITHMETIC_VALUE__VALUE:
+		case GipsIntermediatePackage.ARITHMETIC_VALUE__VALUE:
 			setValue((ValueExpression) newValue);
 			return;
 		}
@@ -158,7 +158,7 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ARITHMETIC_VALUE__VALUE:
+		case GipsIntermediatePackage.ARITHMETIC_VALUE__VALUE:
 			setValue((ValueExpression) null);
 			return;
 		}
@@ -173,7 +173,7 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ARITHMETIC_VALUE__VALUE:
+		case GipsIntermediatePackage.ARITHMETIC_VALUE__VALUE:
 			return value != null;
 		}
 		return super.eIsSet(featureID);

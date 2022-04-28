@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Iterator
@@ -10,11 +10,11 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue#getFeatureExpression
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue#getFeatureExpression
  * <em>Feature Expression</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorMappingNodeFeatureValue()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorMappingNodeFeatureValue()
  * @model
  * @generated
  */
@@ -25,7 +25,7 @@ public interface IteratorMappingNodeFeatureValue extends IteratorMappingNodeValu
 	 * 
 	 * @return the value of the '<em>Feature Expression</em>' containment reference.
 	 * @see #setFeatureExpression(FeatureExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorMappingNodeFeatureValue_FeatureExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorMappingNodeFeatureValue_FeatureExpression()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -33,7 +33,7 @@ public interface IteratorMappingNodeFeatureValue extends IteratorMappingNodeValu
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue#getFeatureExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue#getFeatureExpression
 	 * <em>Feature Expression</em>}' containment reference. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 

@@ -1,22 +1,22 @@
-package org.emoflon.roam.core;
+package org.emoflon.gips.core;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import org.emoflon.roam.core.ilp.ILPConstant;
-import org.emoflon.roam.core.ilp.ILPNestedLinearFunction;
-import org.emoflon.roam.core.ilp.ILPWeightedLinearFunction;
-import org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective;
+import org.emoflon.gips.core.ilp.ILPConstant;
+import org.emoflon.gips.core.ilp.ILPNestedLinearFunction;
+import org.emoflon.gips.core.ilp.ILPWeightedLinearFunction;
+import org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective;
 
-public abstract class RoamGlobalObjective {
+public abstract class GipsGlobalObjective {
 
-	final protected RoamEngine engine;
+	final protected GipsEngine engine;
 	final protected GlobalObjective objective;
 	protected ILPNestedLinearFunction<Integer> globalObjective;
 	protected List<ILPWeightedLinearFunction<Integer>> weightedFunctions;
 	protected List<ILPConstant<Double>> constantTerms;
 
-	public RoamGlobalObjective(final RoamEngine engine, final GlobalObjective objective) {
+	public GipsGlobalObjective(final GipsEngine engine, final GlobalObjective objective) {
 		this.engine = engine;
 		this.objective = objective;
 		initLocalObjectives();

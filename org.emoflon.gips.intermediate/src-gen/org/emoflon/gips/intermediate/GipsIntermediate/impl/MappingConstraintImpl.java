@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -11,11 +11,11 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Mapping
@@ -24,13 +24,13 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingConstraintImpl#getName
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingConstraintImpl#getName
  * <em>Name</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingConstraintImpl#isElementwise
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingConstraintImpl#isElementwise
  * <em>Elementwise</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingConstraintImpl#getExpression
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingConstraintImpl#getExpression
  * <em>Expression</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingConstraintImpl#getMapping
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingConstraintImpl#getMapping
  * <em>Mapping</em>}</li>
  * </ul>
  *
@@ -113,7 +113,7 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.MAPPING_CONSTRAINT;
+		return GipsIntermediatePackage.Literals.MAPPING_CONSTRAINT;
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.MAPPING_CONSTRAINT__NAME,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.MAPPING_CONSTRAINT__NAME,
 					oldName, name));
 	}
 
@@ -157,7 +157,7 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 		elementwise = newElementwise;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE, oldElementwise, elementwise));
+					GipsIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE, oldElementwise, elementwise));
 	}
 
 	/**
@@ -179,7 +179,7 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 		expression = newExpression;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION, oldExpression, newExpression);
+					GipsIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION, oldExpression, newExpression);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -198,16 +198,16 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 			NotificationChain msgs = null;
 			if (expression != null)
 				msgs = ((InternalEObject) expression).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION, null, msgs);
 			if (newExpression != null)
 				msgs = ((InternalEObject) newExpression).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION, null, msgs);
 			msgs = basicSetExpression(newExpression, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION, newExpression, newExpression));
+					GipsIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION, newExpression, newExpression));
 	}
 
 	/**
@@ -222,7 +222,7 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 			if (mapping != oldMapping) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.MAPPING_CONSTRAINT__MAPPING, oldMapping, mapping));
+							GipsIntermediatePackage.MAPPING_CONSTRAINT__MAPPING, oldMapping, mapping));
 			}
 		}
 		return mapping;
@@ -246,7 +246,7 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 		Mapping oldMapping = mapping;
 		mapping = newMapping;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.MAPPING_CONSTRAINT__MAPPING,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.MAPPING_CONSTRAINT__MAPPING,
 					oldMapping, mapping));
 	}
 
@@ -258,7 +258,7 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION:
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION:
 			return basicSetExpression(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -272,13 +272,13 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.MAPPING_CONSTRAINT__NAME:
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__NAME:
 			return getName();
-		case RoamIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE:
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE:
 			return isElementwise();
-		case RoamIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION:
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION:
 			return getExpression();
-		case RoamIntermediatePackage.MAPPING_CONSTRAINT__MAPPING:
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__MAPPING:
 			if (resolve)
 				return getMapping();
 			return basicGetMapping();
@@ -294,16 +294,16 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.MAPPING_CONSTRAINT__NAME:
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__NAME:
 			setName((String) newValue);
 			return;
-		case RoamIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE:
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE:
 			setElementwise((Boolean) newValue);
 			return;
-		case RoamIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION:
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION:
 			setExpression((RelationalExpression) newValue);
 			return;
-		case RoamIntermediatePackage.MAPPING_CONSTRAINT__MAPPING:
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__MAPPING:
 			setMapping((Mapping) newValue);
 			return;
 		}
@@ -318,16 +318,16 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.MAPPING_CONSTRAINT__NAME:
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__NAME:
 			setName(NAME_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE:
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE:
 			setElementwise(ELEMENTWISE_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION:
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION:
 			setExpression((RelationalExpression) null);
 			return;
-		case RoamIntermediatePackage.MAPPING_CONSTRAINT__MAPPING:
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__MAPPING:
 			setMapping((Mapping) null);
 			return;
 		}
@@ -342,13 +342,13 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.MAPPING_CONSTRAINT__NAME:
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__NAME:
 			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-		case RoamIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE:
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE:
 			return elementwise != ELEMENTWISE_EDEFAULT;
-		case RoamIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION:
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION:
 			return expression != null;
-		case RoamIntermediatePackage.MAPPING_CONSTRAINT__MAPPING:
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__MAPPING:
 			return mapping != null;
 		}
 		return super.eIsSet(featureID);
@@ -363,12 +363,12 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == Constraint.class) {
 			switch (derivedFeatureID) {
-			case RoamIntermediatePackage.MAPPING_CONSTRAINT__NAME:
-				return RoamIntermediatePackage.CONSTRAINT__NAME;
-			case RoamIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE:
-				return RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE;
-			case RoamIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION:
-				return RoamIntermediatePackage.CONSTRAINT__EXPRESSION;
+			case GipsIntermediatePackage.MAPPING_CONSTRAINT__NAME:
+				return GipsIntermediatePackage.CONSTRAINT__NAME;
+			case GipsIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE:
+				return GipsIntermediatePackage.CONSTRAINT__ELEMENTWISE;
+			case GipsIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION:
+				return GipsIntermediatePackage.CONSTRAINT__EXPRESSION;
 			default:
 				return -1;
 			}
@@ -385,12 +385,12 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == Constraint.class) {
 			switch (baseFeatureID) {
-			case RoamIntermediatePackage.CONSTRAINT__NAME:
-				return RoamIntermediatePackage.MAPPING_CONSTRAINT__NAME;
-			case RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE:
-				return RoamIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE;
-			case RoamIntermediatePackage.CONSTRAINT__EXPRESSION:
-				return RoamIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION;
+			case GipsIntermediatePackage.CONSTRAINT__NAME:
+				return GipsIntermediatePackage.MAPPING_CONSTRAINT__NAME;
+			case GipsIntermediatePackage.CONSTRAINT__ELEMENTWISE:
+				return GipsIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE;
+			case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
+				return GipsIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION;
 			default:
 				return -1;
 			}

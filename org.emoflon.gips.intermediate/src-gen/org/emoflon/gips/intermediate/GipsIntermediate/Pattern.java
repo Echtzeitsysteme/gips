@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
 
@@ -12,13 +12,13 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Pattern#getPattern
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Pattern#getPattern
  * <em>Pattern</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.Pattern#isIsRule
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Pattern#isIsRule
  * <em>Is Rule</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getPattern()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getPattern()
  * @model
  * @generated
  */
@@ -29,7 +29,7 @@ public interface Pattern extends VariableSet {
 	 * 
 	 * @return the value of the '<em>Pattern</em>' reference.
 	 * @see #setPattern(IBeXContext)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getPattern_Pattern()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getPattern_Pattern()
 	 * @model required="true"
 	 * @generated
 	 */
@@ -37,7 +37,7 @@ public interface Pattern extends VariableSet {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Pattern#getPattern
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Pattern#getPattern
 	 * <em>Pattern</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Pattern</em>' reference.
@@ -52,7 +52,7 @@ public interface Pattern extends VariableSet {
 	 * 
 	 * @return the value of the '<em>Is Rule</em>' attribute.
 	 * @see #setIsRule(boolean)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getPattern_IsRule()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getPattern_IsRule()
 	 * @model
 	 * @generated
 	 */
@@ -60,7 +60,7 @@ public interface Pattern extends VariableSet {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.Pattern#isIsRule
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Pattern#isIsRule
 	 * <em>Is Rule</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Is Rule</em>' attribute.

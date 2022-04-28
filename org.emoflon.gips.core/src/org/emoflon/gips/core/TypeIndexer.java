@@ -1,4 +1,4 @@
-package org.emoflon.roam.core;
+package org.emoflon.gips.core;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -18,21 +18,21 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.emoflon.ibex.gt.api.GraphTransformationAPI;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
-import org.emoflon.roam.intermediate.RoamIntermediate.Type;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
+import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 
 public class TypeIndexer {
 
 	final protected GraphTransformationAPI eMoflonAPI;
-	final protected RoamIntermediateModel roamModel;
+	final protected GipsIntermediateModel gipsModel;
 	protected TypeListener listener;
 	final protected Map<EClass, Set<EObject>> index = Collections.synchronizedMap(new HashMap<>());
 	final protected Map<String, EClass> typeByName = Collections.synchronizedMap(new HashMap<>());
 	protected boolean cascadingNotifications = false;
 
-	public TypeIndexer(final GraphTransformationAPI eMoflonAPI, final RoamIntermediateModel roamModel) {
+	public TypeIndexer(final GraphTransformationAPI eMoflonAPI, final GipsIntermediateModel gipsModel) {
 		this.eMoflonAPI = eMoflonAPI;
-		this.roamModel = roamModel;
+		this.gipsModel = gipsModel;
 		initIndex();
 		injectListener();
 	}
@@ -135,7 +135,7 @@ public class TypeIndexer {
 	}
 
 	private void initIndex() {
-		roamModel.getVariables().stream().filter(var -> var instanceof Type).map(var -> (Type) var).forEach(type -> {
+		gipsModel.getVariables().stream().filter(var -> var instanceof Type).map(var -> (Type) var).forEach(type -> {
 			index.put(type.getType(), Collections.synchronizedSet(new HashSet<>()));
 			typeByName.put(type.getName(), type.getType());
 		});

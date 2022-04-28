@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -9,9 +9,9 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig;
-import org.emoflon.roam.intermediate.RoamIntermediate.ILPSolverType;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
+import org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>ILP
@@ -20,29 +20,29 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#getSolver
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getSolver
  * <em>Solver</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#getSolverHomeDir
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getSolverHomeDir
  * <em>Solver Home Dir</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#getSolverLicenseFile
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getSolverLicenseFile
  * <em>Solver License File</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#isBuildLaunchConfig
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isBuildLaunchConfig
  * <em>Build Launch Config</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#getMainFile
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getMainFile
  * <em>Main File</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#isEnableTimeLimit
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isEnableTimeLimit
  * <em>Enable Time Limit</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#getIlpTimeLimit
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getIlpTimeLimit
  * <em>Ilp Time Limit</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#isEnableRndSeed
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isEnableRndSeed
  * <em>Enable Rnd Seed</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#getIlpRndSeed
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getIlpRndSeed
  * <em>Ilp Rnd Seed</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#isPresolve
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isPresolve
  * <em>Presolve</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#isEnablePresolve
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isEnablePresolve
  * <em>Enable Presolve</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ILPConfigImpl#isEnableDebugOutput
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isEnableDebugOutput
  * <em>Enable Debug Output</em>}</li>
  * </ul>
  *
@@ -305,7 +305,7 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.ILP_CONFIG;
+		return GipsIntermediatePackage.Literals.ILP_CONFIG;
 	}
 
 	/**
@@ -326,7 +326,7 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 		ILPSolverType oldSolver = solver;
 		solver = newSolver == null ? SOLVER_EDEFAULT : newSolver;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.ILP_CONFIG__SOLVER, oldSolver,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.ILP_CONFIG__SOLVER, oldSolver,
 					solver));
 	}
 
@@ -348,7 +348,7 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 		String oldSolverHomeDir = solverHomeDir;
 		solverHomeDir = newSolverHomeDir;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.ILP_CONFIG__SOLVER_HOME_DIR,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.ILP_CONFIG__SOLVER_HOME_DIR,
 					oldSolverHomeDir, solverHomeDir));
 	}
 
@@ -371,7 +371,7 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 		solverLicenseFile = newSolverLicenseFile;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ILP_CONFIG__SOLVER_LICENSE_FILE, oldSolverLicenseFile, solverLicenseFile));
+					GipsIntermediatePackage.ILP_CONFIG__SOLVER_LICENSE_FILE, oldSolverLicenseFile, solverLicenseFile));
 	}
 
 	/**
@@ -393,7 +393,7 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 		buildLaunchConfig = newBuildLaunchConfig;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ILP_CONFIG__BUILD_LAUNCH_CONFIG, oldBuildLaunchConfig, buildLaunchConfig));
+					GipsIntermediatePackage.ILP_CONFIG__BUILD_LAUNCH_CONFIG, oldBuildLaunchConfig, buildLaunchConfig));
 	}
 
 	/**
@@ -414,7 +414,7 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 		String oldMainFile = mainFile;
 		mainFile = newMainFile;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.ILP_CONFIG__MAIN_FILE,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.ILP_CONFIG__MAIN_FILE,
 					oldMainFile, mainFile));
 	}
 
@@ -436,7 +436,7 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 		boolean oldEnableTimeLimit = enableTimeLimit;
 		enableTimeLimit = newEnableTimeLimit;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.ILP_CONFIG__ENABLE_TIME_LIMIT,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.ILP_CONFIG__ENABLE_TIME_LIMIT,
 					oldEnableTimeLimit, enableTimeLimit));
 	}
 
@@ -458,7 +458,7 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 		double oldIlpTimeLimit = ilpTimeLimit;
 		ilpTimeLimit = newIlpTimeLimit;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.ILP_CONFIG__ILP_TIME_LIMIT,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.ILP_CONFIG__ILP_TIME_LIMIT,
 					oldIlpTimeLimit, ilpTimeLimit));
 	}
 
@@ -480,7 +480,7 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 		boolean oldEnableRndSeed = enableRndSeed;
 		enableRndSeed = newEnableRndSeed;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.ILP_CONFIG__ENABLE_RND_SEED,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.ILP_CONFIG__ENABLE_RND_SEED,
 					oldEnableRndSeed, enableRndSeed));
 	}
 
@@ -502,7 +502,7 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 		int oldIlpRndSeed = ilpRndSeed;
 		ilpRndSeed = newIlpRndSeed;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.ILP_CONFIG__ILP_RND_SEED,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.ILP_CONFIG__ILP_RND_SEED,
 					oldIlpRndSeed, ilpRndSeed));
 	}
 
@@ -524,7 +524,7 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 		boolean oldPresolve = presolve;
 		presolve = newPresolve;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.ILP_CONFIG__PRESOLVE,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.ILP_CONFIG__PRESOLVE,
 					oldPresolve, presolve));
 	}
 
@@ -546,7 +546,7 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 		boolean oldEnablePresolve = enablePresolve;
 		enablePresolve = newEnablePresolve;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.ILP_CONFIG__ENABLE_PRESOLVE,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.ILP_CONFIG__ENABLE_PRESOLVE,
 					oldEnablePresolve, enablePresolve));
 	}
 
@@ -569,7 +569,7 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 		enableDebugOutput = newEnableDebugOutput;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ILP_CONFIG__ENABLE_DEBUG_OUTPUT, oldEnableDebugOutput, enableDebugOutput));
+					GipsIntermediatePackage.ILP_CONFIG__ENABLE_DEBUG_OUTPUT, oldEnableDebugOutput, enableDebugOutput));
 	}
 
 	/**
@@ -580,29 +580,29 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ILP_CONFIG__SOLVER:
+		case GipsIntermediatePackage.ILP_CONFIG__SOLVER:
 			return getSolver();
-		case RoamIntermediatePackage.ILP_CONFIG__SOLVER_HOME_DIR:
+		case GipsIntermediatePackage.ILP_CONFIG__SOLVER_HOME_DIR:
 			return getSolverHomeDir();
-		case RoamIntermediatePackage.ILP_CONFIG__SOLVER_LICENSE_FILE:
+		case GipsIntermediatePackage.ILP_CONFIG__SOLVER_LICENSE_FILE:
 			return getSolverLicenseFile();
-		case RoamIntermediatePackage.ILP_CONFIG__BUILD_LAUNCH_CONFIG:
+		case GipsIntermediatePackage.ILP_CONFIG__BUILD_LAUNCH_CONFIG:
 			return isBuildLaunchConfig();
-		case RoamIntermediatePackage.ILP_CONFIG__MAIN_FILE:
+		case GipsIntermediatePackage.ILP_CONFIG__MAIN_FILE:
 			return getMainFile();
-		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_TIME_LIMIT:
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_TIME_LIMIT:
 			return isEnableTimeLimit();
-		case RoamIntermediatePackage.ILP_CONFIG__ILP_TIME_LIMIT:
+		case GipsIntermediatePackage.ILP_CONFIG__ILP_TIME_LIMIT:
 			return getIlpTimeLimit();
-		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_RND_SEED:
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_RND_SEED:
 			return isEnableRndSeed();
-		case RoamIntermediatePackage.ILP_CONFIG__ILP_RND_SEED:
+		case GipsIntermediatePackage.ILP_CONFIG__ILP_RND_SEED:
 			return getIlpRndSeed();
-		case RoamIntermediatePackage.ILP_CONFIG__PRESOLVE:
+		case GipsIntermediatePackage.ILP_CONFIG__PRESOLVE:
 			return isPresolve();
-		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_PRESOLVE:
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_PRESOLVE:
 			return isEnablePresolve();
-		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_DEBUG_OUTPUT:
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_DEBUG_OUTPUT:
 			return isEnableDebugOutput();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -616,40 +616,40 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ILP_CONFIG__SOLVER:
+		case GipsIntermediatePackage.ILP_CONFIG__SOLVER:
 			setSolver((ILPSolverType) newValue);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__SOLVER_HOME_DIR:
+		case GipsIntermediatePackage.ILP_CONFIG__SOLVER_HOME_DIR:
 			setSolverHomeDir((String) newValue);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__SOLVER_LICENSE_FILE:
+		case GipsIntermediatePackage.ILP_CONFIG__SOLVER_LICENSE_FILE:
 			setSolverLicenseFile((String) newValue);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__BUILD_LAUNCH_CONFIG:
+		case GipsIntermediatePackage.ILP_CONFIG__BUILD_LAUNCH_CONFIG:
 			setBuildLaunchConfig((Boolean) newValue);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__MAIN_FILE:
+		case GipsIntermediatePackage.ILP_CONFIG__MAIN_FILE:
 			setMainFile((String) newValue);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_TIME_LIMIT:
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_TIME_LIMIT:
 			setEnableTimeLimit((Boolean) newValue);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__ILP_TIME_LIMIT:
+		case GipsIntermediatePackage.ILP_CONFIG__ILP_TIME_LIMIT:
 			setIlpTimeLimit((Double) newValue);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_RND_SEED:
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_RND_SEED:
 			setEnableRndSeed((Boolean) newValue);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__ILP_RND_SEED:
+		case GipsIntermediatePackage.ILP_CONFIG__ILP_RND_SEED:
 			setIlpRndSeed((Integer) newValue);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__PRESOLVE:
+		case GipsIntermediatePackage.ILP_CONFIG__PRESOLVE:
 			setPresolve((Boolean) newValue);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_PRESOLVE:
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_PRESOLVE:
 			setEnablePresolve((Boolean) newValue);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_DEBUG_OUTPUT:
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_DEBUG_OUTPUT:
 			setEnableDebugOutput((Boolean) newValue);
 			return;
 		}
@@ -664,40 +664,40 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ILP_CONFIG__SOLVER:
+		case GipsIntermediatePackage.ILP_CONFIG__SOLVER:
 			setSolver(SOLVER_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__SOLVER_HOME_DIR:
+		case GipsIntermediatePackage.ILP_CONFIG__SOLVER_HOME_DIR:
 			setSolverHomeDir(SOLVER_HOME_DIR_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__SOLVER_LICENSE_FILE:
+		case GipsIntermediatePackage.ILP_CONFIG__SOLVER_LICENSE_FILE:
 			setSolverLicenseFile(SOLVER_LICENSE_FILE_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__BUILD_LAUNCH_CONFIG:
+		case GipsIntermediatePackage.ILP_CONFIG__BUILD_LAUNCH_CONFIG:
 			setBuildLaunchConfig(BUILD_LAUNCH_CONFIG_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__MAIN_FILE:
+		case GipsIntermediatePackage.ILP_CONFIG__MAIN_FILE:
 			setMainFile(MAIN_FILE_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_TIME_LIMIT:
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_TIME_LIMIT:
 			setEnableTimeLimit(ENABLE_TIME_LIMIT_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__ILP_TIME_LIMIT:
+		case GipsIntermediatePackage.ILP_CONFIG__ILP_TIME_LIMIT:
 			setIlpTimeLimit(ILP_TIME_LIMIT_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_RND_SEED:
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_RND_SEED:
 			setEnableRndSeed(ENABLE_RND_SEED_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__ILP_RND_SEED:
+		case GipsIntermediatePackage.ILP_CONFIG__ILP_RND_SEED:
 			setIlpRndSeed(ILP_RND_SEED_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__PRESOLVE:
+		case GipsIntermediatePackage.ILP_CONFIG__PRESOLVE:
 			setPresolve(PRESOLVE_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_PRESOLVE:
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_PRESOLVE:
 			setEnablePresolve(ENABLE_PRESOLVE_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_DEBUG_OUTPUT:
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_DEBUG_OUTPUT:
 			setEnableDebugOutput(ENABLE_DEBUG_OUTPUT_EDEFAULT);
 			return;
 		}
@@ -712,31 +712,31 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ILP_CONFIG__SOLVER:
+		case GipsIntermediatePackage.ILP_CONFIG__SOLVER:
 			return solver != SOLVER_EDEFAULT;
-		case RoamIntermediatePackage.ILP_CONFIG__SOLVER_HOME_DIR:
+		case GipsIntermediatePackage.ILP_CONFIG__SOLVER_HOME_DIR:
 			return SOLVER_HOME_DIR_EDEFAULT == null ? solverHomeDir != null
 					: !SOLVER_HOME_DIR_EDEFAULT.equals(solverHomeDir);
-		case RoamIntermediatePackage.ILP_CONFIG__SOLVER_LICENSE_FILE:
+		case GipsIntermediatePackage.ILP_CONFIG__SOLVER_LICENSE_FILE:
 			return SOLVER_LICENSE_FILE_EDEFAULT == null ? solverLicenseFile != null
 					: !SOLVER_LICENSE_FILE_EDEFAULT.equals(solverLicenseFile);
-		case RoamIntermediatePackage.ILP_CONFIG__BUILD_LAUNCH_CONFIG:
+		case GipsIntermediatePackage.ILP_CONFIG__BUILD_LAUNCH_CONFIG:
 			return buildLaunchConfig != BUILD_LAUNCH_CONFIG_EDEFAULT;
-		case RoamIntermediatePackage.ILP_CONFIG__MAIN_FILE:
+		case GipsIntermediatePackage.ILP_CONFIG__MAIN_FILE:
 			return MAIN_FILE_EDEFAULT == null ? mainFile != null : !MAIN_FILE_EDEFAULT.equals(mainFile);
-		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_TIME_LIMIT:
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_TIME_LIMIT:
 			return enableTimeLimit != ENABLE_TIME_LIMIT_EDEFAULT;
-		case RoamIntermediatePackage.ILP_CONFIG__ILP_TIME_LIMIT:
+		case GipsIntermediatePackage.ILP_CONFIG__ILP_TIME_LIMIT:
 			return ilpTimeLimit != ILP_TIME_LIMIT_EDEFAULT;
-		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_RND_SEED:
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_RND_SEED:
 			return enableRndSeed != ENABLE_RND_SEED_EDEFAULT;
-		case RoamIntermediatePackage.ILP_CONFIG__ILP_RND_SEED:
+		case GipsIntermediatePackage.ILP_CONFIG__ILP_RND_SEED:
 			return ilpRndSeed != ILP_RND_SEED_EDEFAULT;
-		case RoamIntermediatePackage.ILP_CONFIG__PRESOLVE:
+		case GipsIntermediatePackage.ILP_CONFIG__PRESOLVE:
 			return presolve != PRESOLVE_EDEFAULT;
-		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_PRESOLVE:
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_PRESOLVE:
 			return enablePresolve != ENABLE_PRESOLVE_EDEFAULT;
-		case RoamIntermediatePackage.ILP_CONFIG__ENABLE_DEBUG_OUTPUT:
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_DEBUG_OUTPUT:
 			return enableDebugOutput != ENABLE_DEBUG_OUTPUT_EDEFAULT;
 		}
 		return super.eIsSet(featureID);

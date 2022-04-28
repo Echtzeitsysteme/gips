@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -10,9 +10,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Context
@@ -21,7 +21,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingNodeFeatureValueImpl#getFeatureExpression
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextMappingNodeFeatureValueImpl#getFeatureExpression
  * <em>Feature Expression</em>}</li>
  * </ul>
  *
@@ -56,7 +56,7 @@ public class ContextMappingNodeFeatureValueImpl extends ContextMappingNodeImpl
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.CONTEXT_MAPPING_NODE_FEATURE_VALUE;
+		return GipsIntermediatePackage.Literals.CONTEXT_MAPPING_NODE_FEATURE_VALUE;
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class ContextMappingNodeFeatureValueImpl extends ContextMappingNodeImpl
 		featureExpression = newFeatureExpression;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION,
+					GipsIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION,
 					oldFeatureExpression, newFeatureExpression);
 			if (msgs == null)
 				msgs = notification;
@@ -99,19 +99,19 @@ public class ContextMappingNodeFeatureValueImpl extends ContextMappingNodeImpl
 			if (featureExpression != null)
 				msgs = ((InternalEObject) featureExpression).eInverseRemove(this,
 						EOPPOSITE_FEATURE_BASE
-								- RoamIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION,
+								- GipsIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION,
 						null, msgs);
 			if (newFeatureExpression != null)
 				msgs = ((InternalEObject) newFeatureExpression).eInverseAdd(this,
 						EOPPOSITE_FEATURE_BASE
-								- RoamIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION,
+								- GipsIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION,
 						null, msgs);
 			msgs = basicSetFeatureExpression(newFeatureExpression, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION,
+					GipsIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION,
 					newFeatureExpression, newFeatureExpression));
 	}
 
@@ -123,7 +123,7 @@ public class ContextMappingNodeFeatureValueImpl extends ContextMappingNodeImpl
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION:
+		case GipsIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION:
 			return basicSetFeatureExpression(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -137,7 +137,7 @@ public class ContextMappingNodeFeatureValueImpl extends ContextMappingNodeImpl
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION:
+		case GipsIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION:
 			return getFeatureExpression();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -151,7 +151,7 @@ public class ContextMappingNodeFeatureValueImpl extends ContextMappingNodeImpl
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION:
+		case GipsIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION:
 			setFeatureExpression((FeatureExpression) newValue);
 			return;
 		}
@@ -166,7 +166,7 @@ public class ContextMappingNodeFeatureValueImpl extends ContextMappingNodeImpl
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION:
+		case GipsIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION:
 			setFeatureExpression((FeatureExpression) null);
 			return;
 		}
@@ -181,7 +181,7 @@ public class ContextMappingNodeFeatureValueImpl extends ContextMappingNodeImpl
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION:
+		case GipsIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE__FEATURE_EXPRESSION:
 			return featureExpression != null;
 		}
 		return super.eIsSet(featureID);

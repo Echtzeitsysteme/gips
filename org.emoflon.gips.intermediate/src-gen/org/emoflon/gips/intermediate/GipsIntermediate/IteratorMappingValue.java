@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Iterator
@@ -10,11 +10,11 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue#getMappingContext
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue#getMappingContext
  * <em>Mapping Context</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorMappingValue()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorMappingValue()
  * @model
  * @generated
  */
@@ -25,7 +25,7 @@ public interface IteratorMappingValue extends ValueExpression, Iterator {
 	 * 
 	 * @return the value of the '<em>Mapping Context</em>' reference.
 	 * @see #setMappingContext(Mapping)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorMappingValue_MappingContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorMappingValue_MappingContext()
 	 * @model
 	 * @generated
 	 */
@@ -33,7 +33,7 @@ public interface IteratorMappingValue extends ValueExpression, Iterator {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue#getMappingContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue#getMappingContext
 	 * <em>Mapping Context</em>}' reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 

@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -9,7 +9,7 @@ import org.eclipse.emf.ecore.EObject;
  * Operation</b></em>'. <!-- end-user-doc -->
  *
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getStreamOperation()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getStreamOperation()
  * @model interface="true" abstract="true"
  * @generated
  */

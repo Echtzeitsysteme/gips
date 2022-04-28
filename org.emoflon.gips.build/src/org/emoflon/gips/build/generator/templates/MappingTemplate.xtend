@@ -1,8 +1,8 @@
-package org.emoflon.roam.build.generator.templates
+package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.roam.build.generator.GeneratorTemplate
-import org.emoflon.roam.intermediate.RoamIntermediate.Mapping
-import org.emoflon.roam.build.generator.TemplateData
+import org.emoflon.gips.build.generator.GeneratorTemplate
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping
+import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives
 
@@ -15,11 +15,11 @@ class MappingTemplate extends GeneratorTemplate<Mapping> {
 	}
 	
 	override init() {
-		packageName = data.apiData.roamMappingPkg
+		packageName = data.apiData.gipsMappingPkg
 		className = data.mapping2mappingClassName.get(context)
 		fqn = packageName + "." + className
-		filePath = data.apiData.roamMappingPkgPath + "/" + className + ".java"
-		imports.add("org.emoflon.roam.core.gt.GTMapping")
+		filePath = data.apiData.gipsMappingPkgPath + "/" + className + ".java"
+		imports.add("org.emoflon.gips.core.gt.GTMapping")
 		imports.add(data.apiData.rulesPkg+"."+data.mapping2ruleClassName.get(context))
 		imports.add(data.apiData.matchesPkg+"."+data.mapping2matchClassName.get(context))
 		

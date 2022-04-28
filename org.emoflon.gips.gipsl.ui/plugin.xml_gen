@@ -4,48 +4,48 @@
 	<extension
 		point="org.eclipse.ui.editors">
 		<editor
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
 			contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
 			default="true"
-			extensions="rslang"
-			id="org.emoflon.roam.roamslang.RoamSLang"
-			name="RoamSLang Editor">
+			extensions="gipsl"
+			id="org.emoflon.gips.gipsl.Gipsl"
+			name="Gipsl Editor">
 		</editor>
 	</extension>
 	<extension
 		point="org.eclipse.ui.handlers">
 		<handler
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclarationHandler"
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclarationHandler"
 			commandId="org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclaration">
 			<activeWhen>
 				<reference
-					definitionId="org.emoflon.roam.roamslang.RoamSLang.Editor.opened">
+					definitionId="org.emoflon.gips.gipsl.Gipsl.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
 		<handler
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.handler.ValidateActionHandler"
-			commandId="org.emoflon.roam.roamslang.RoamSLang.validate">
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.editor.handler.ValidateActionHandler"
+			commandId="org.emoflon.gips.gipsl.Gipsl.validate">
 			<activeWhen>
 				<reference
-					definitionId="org.emoflon.roam.roamslang.RoamSLang.Editor.opened">
+					definitionId="org.emoflon.gips.gipsl.Gipsl.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
 		<!-- copy qualified name -->
 		<handler
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedNameHandler"
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedNameHandler"
 			commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName">
 			<activeWhen>
-				<reference definitionId="org.emoflon.roam.roamslang.RoamSLang.Editor.opened" />
+				<reference definitionId="org.emoflon.gips.gipsl.Gipsl.Editor.opened" />
 			</activeWhen>
 		</handler>
 		<handler
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedNameHandler"
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedNameHandler"
 			commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedName">
 			<activeWhen>
 				<and>
-					<reference definitionId="org.emoflon.roam.roamslang.RoamSLang.XtextEditor.opened" />
+					<reference definitionId="org.emoflon.gips.gipsl.Gipsl.XtextEditor.opened" />
 					<iterate>
 						<adapt type="org.eclipse.xtext.ui.editor.outline.IOutlineNode" />
 					</iterate>
@@ -54,22 +54,22 @@
 		</handler>
 	</extension>
 	<extension point="org.eclipse.core.expressions.definitions">
-		<definition id="org.emoflon.roam.roamslang.RoamSLang.Editor.opened">
+		<definition id="org.emoflon.gips.gipsl.Gipsl.Editor.opened">
 			<and>
 				<reference definitionId="isActiveEditorAnInstanceOfXtextEditor"/>
 				<with variable="activeEditor">
 					<test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName"
-						value="org.emoflon.roam.roamslang.RoamSLang"
+						value="org.emoflon.gips.gipsl.Gipsl"
 						forcePluginActivation="true"/>
 				</with>
 			</and>
 		</definition>
-		<definition id="org.emoflon.roam.roamslang.RoamSLang.XtextEditor.opened">
+		<definition id="org.emoflon.gips.gipsl.Gipsl.XtextEditor.opened">
 			<and>
 				<reference definitionId="isXtextEditorActive"/>
 				<with variable="activeEditor">
 					<test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName"
-						value="org.emoflon.roam.roamslang.RoamSLang"
+						value="org.emoflon.gips.gipsl.Gipsl"
 						forcePluginActivation="true"/>
 				</with>
 			</and>
@@ -78,33 +78,33 @@
 	<extension
 			point="org.eclipse.ui.preferencePages">
 		<page
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
-			id="org.emoflon.roam.roamslang.RoamSLang"
-			name="RoamSLang">
-			<keywordReference id="org.emoflon.roam.roamslang.ui.keyword_RoamSLang"/>
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
+			id="org.emoflon.gips.gipsl.Gipsl"
+			name="Gipsl">
+			<keywordReference id="org.emoflon.gips.gipsl.ui.keyword_Gipsl"/>
 		</page>
 		<page
-			category="org.emoflon.roam.roamslang.RoamSLang"
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.syntaxcoloring.SyntaxColoringPreferencePage"
-			id="org.emoflon.roam.roamslang.RoamSLang.coloring"
+			category="org.emoflon.gips.gipsl.Gipsl"
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.editor.syntaxcoloring.SyntaxColoringPreferencePage"
+			id="org.emoflon.gips.gipsl.Gipsl.coloring"
 			name="Syntax Coloring">
-			<keywordReference id="org.emoflon.roam.roamslang.ui.keyword_RoamSLang"/>
+			<keywordReference id="org.emoflon.gips.gipsl.ui.keyword_Gipsl"/>
 		</page>
 		<page
-			category="org.emoflon.roam.roamslang.RoamSLang"
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.templates.XtextTemplatePreferencePage"
-			id="org.emoflon.roam.roamslang.RoamSLang.templates"
+			category="org.emoflon.gips.gipsl.Gipsl"
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.editor.templates.XtextTemplatePreferencePage"
+			id="org.emoflon.gips.gipsl.Gipsl.templates"
 			name="Templates">
-			<keywordReference id="org.emoflon.roam.roamslang.ui.keyword_RoamSLang"/>
+			<keywordReference id="org.emoflon.gips.gipsl.ui.keyword_Gipsl"/>
 		</page>
 	</extension>
 	<extension
 			point="org.eclipse.ui.propertyPages">
 		<page
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
-			id="org.emoflon.roam.roamslang.RoamSLang"
-			name="RoamSLang">
-			<keywordReference id="org.emoflon.roam.roamslang.ui.keyword_RoamSLang"/>
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
+			id="org.emoflon.gips.gipsl.Gipsl"
+			name="Gipsl">
+			<keywordReference id="org.emoflon.gips.gipsl.ui.keyword_Gipsl"/>
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject"/>
 			</enabledWhen>
@@ -114,14 +114,14 @@
 	<extension
 		point="org.eclipse.ui.keywords">
 		<keyword
-			id="org.emoflon.roam.roamslang.ui.keyword_RoamSLang"
-			label="RoamSLang"/>
+			id="org.emoflon.gips.gipsl.ui.keyword_Gipsl"
+			label="Gipsl"/>
 	</extension>
 	<extension
 		point="org.eclipse.ui.commands">
 		<command
 			description="Trigger expensive validation"
-			id="org.emoflon.roam.roamslang.RoamSLang.validate"
+			id="org.emoflon.gips.gipsl.Gipsl.validate"
 			name="Validate">
 		</command>
 		<!-- copy qualified name -->
@@ -142,12 +142,12 @@
 		<menuContribution
 			locationURI="popup:#TextEditorContext?after=group.edit">
 			<command
-				commandId="org.emoflon.roam.roamslang.RoamSLang.validate"
+				commandId="org.emoflon.gips.gipsl.Gipsl.validate"
 				style="push"
 				tooltip="Trigger expensive validation">
 				<visibleWhen checkEnabled="false">
 					<reference
-						definitionId="org.emoflon.roam.roamslang.RoamSLang.Editor.opened">
+						definitionId="org.emoflon.gips.gipsl.Gipsl.Editor.opened">
 					</reference>
 				</visibleWhen>
 			</command>
@@ -157,7 +157,7 @@
 			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
 				style="push" tooltip="Copy Qualified Name">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="org.emoflon.roam.roamslang.RoamSLang.Editor.opened" />
+					<reference definitionId="org.emoflon.gips.gipsl.Gipsl.Editor.opened" />
 				</visibleWhen>
 			</command>
 		</menuContribution>
@@ -165,7 +165,7 @@
 			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
 				style="push" tooltip="Copy Qualified Name">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="org.emoflon.roam.roamslang.RoamSLang.Editor.opened" />
+					<reference definitionId="org.emoflon.gips.gipsl.Gipsl.Editor.opened" />
 				</visibleWhen>
 			</command>
 		</menuContribution>
@@ -174,7 +174,7 @@
 				style="push" tooltip="Copy Qualified Name">
 				<visibleWhen checkEnabled="false">
 					<and>
-						<reference definitionId="org.emoflon.roam.roamslang.RoamSLang.XtextEditor.opened" />
+						<reference definitionId="org.emoflon.gips.gipsl.Gipsl.XtextEditor.opened" />
 						<iterate>
 							<adapt type="org.eclipse.xtext.ui.editor.outline.IOutlineNode" />
 						</iterate>
@@ -187,7 +187,7 @@
 		<menuContribution locationURI="popup:#TextEditorContext?endof=group.find">
 			<command commandId="org.eclipse.xtext.ui.editor.FindReferences">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="org.emoflon.roam.roamslang.RoamSLang.Editor.opened">
+					<reference definitionId="org.emoflon.gips.gipsl.Gipsl.Editor.opened">
 					</reference>
 				</visibleWhen>
 			</command>
@@ -195,11 +195,11 @@
 	</extension>
 	<extension point="org.eclipse.ui.handlers">
 		<handler
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.findrefs.FindReferencesHandler"
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.editor.findrefs.FindReferencesHandler"
 			commandId="org.eclipse.xtext.ui.editor.FindReferences">
 			<activeWhen>
 				<reference
-					definitionId="org.emoflon.roam.roamslang.RoamSLang.Editor.opened">
+					definitionId="org.emoflon.gips.gipsl.Gipsl.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
@@ -207,9 +207,9 @@
 	<extension point="org.eclipse.core.contenttype.contentTypes">
 		<content-type
 			base-type="org.eclipse.core.runtime.text"
-			file-extensions="rslang"
-			id="org.emoflon.roam.roamslang.RoamSLang.contenttype"
-			name="RoamSLang File"
+			file-extensions="gipsl"
+			id="org.emoflon.gips.gipsl.Gipsl.contenttype"
+			name="Gipsl File"
 			priority="normal">
 		</content-type>
 	</extension>
@@ -217,68 +217,68 @@
 	<extension
 		point="org.eclipse.emf.ecore.extension_parser">
 		<parser
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
-			type="rslang">
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
+			type="gipsl">
 		</parser>
 	</extension>
 	<extension point="org.eclipse.xtext.extension_resourceServiceProvider">
 		<resourceServiceProvider
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
-			uriExtension="rslang">
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
+			uriExtension="gipsl">
 		</resourceServiceProvider>
 	</extension>
-	<!-- marker definitions for org.emoflon.roam.roamslang.RoamSLang -->
+	<!-- marker definitions for org.emoflon.gips.gipsl.Gipsl -->
 	<extension
-			id="roamslang.check.fast"
-			name="RoamSLang Problem"
+			id="gipsl.check.fast"
+			name="Gipsl Problem"
 			point="org.eclipse.core.resources.markers">
 		<super type="org.eclipse.xtext.ui.check.fast"/>
 		<persistent value="true"/>
 	</extension>
 	<extension
-			id="roamslang.check.normal"
-			name="RoamSLang Problem"
+			id="gipsl.check.normal"
+			name="Gipsl Problem"
 			point="org.eclipse.core.resources.markers">
 		<super type="org.eclipse.xtext.ui.check.normal"/>
 		<persistent value="true"/>
 	</extension>
 	<extension
-			id="roamslang.check.expensive"
-			name="RoamSLang Problem"
+			id="gipsl.check.expensive"
+			name="Gipsl Problem"
 			point="org.eclipse.core.resources.markers">
 		<super type="org.eclipse.xtext.ui.check.expensive"/>
 		<persistent value="true"/>
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="org.emoflon.roam.roamslang.RoamSLang"
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.validation.ValidatorPreferencePage"
-			id="org.emoflon.roam.roamslang.RoamSLang.validator.preferencePage"
+			category="org.emoflon.gips.gipsl.Gipsl"
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.validation.ValidatorPreferencePage"
+			id="org.emoflon.gips.gipsl.Gipsl.validator.preferencePage"
 			name="Errors/Warnings">
-			<keywordReference id="org.emoflon.roam.roamslang.ui.keyword_RoamSLang"/>
+			<keywordReference id="org.emoflon.gips.gipsl.ui.keyword_Gipsl"/>
 		</page>
 	</extension>
 	<extension point="org.eclipse.xtext.builder.participant">
 		<participant
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant"
-			fileExtensions="rslang"/>
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant"
+			fileExtensions="gipsl"/>
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="org.emoflon.roam.roamslang.RoamSLang"
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
-			id="org.emoflon.roam.roamslang.RoamSLang.compiler.preferencePage"
+			category="org.emoflon.gips.gipsl.Gipsl"
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+			id="org.emoflon.gips.gipsl.Gipsl.compiler.preferencePage"
 			name="Compiler">
-			<keywordReference id="org.emoflon.roam.roamslang.ui.keyword_RoamSLang"/>
+			<keywordReference id="org.emoflon.gips.gipsl.ui.keyword_Gipsl"/>
 		</page>
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
-			category="org.emoflon.roam.roamslang.RoamSLang"
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
-			id="org.emoflon.roam.roamslang.RoamSLang.compiler.propertyPage"
+			category="org.emoflon.gips.gipsl.Gipsl"
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+			id="org.emoflon.gips.gipsl.Gipsl.compiler.propertyPage"
 			name="Compiler">
-			<keywordReference id="org.emoflon.roam.roamslang.ui.keyword_RoamSLang"/>
+			<keywordReference id="org.emoflon.gips.gipsl.ui.keyword_Gipsl"/>
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject"/>
 			</enabledWhen>
@@ -289,20 +289,20 @@
 		<menuContribution locationURI="popup:#TextEditorContext?after=xtext.ui.openDeclaration">
 			<command
 				commandId="org.eclipse.xtext.ui.OpenGeneratedFileCommand"
-				id="org.emoflon.roam.roamslang.RoamSLang.OpenGeneratedCode"
+				id="org.emoflon.gips.gipsl.Gipsl.OpenGeneratedCode"
 				style="push">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="org.emoflon.roam.roamslang.RoamSLang.Editor.opened" />
+					<reference definitionId="org.emoflon.gips.gipsl.Gipsl.Editor.opened" />
 				</visibleWhen>
 			</command>
 		</menuContribution>
 	</extension>
 	<extension point="org.eclipse.ui.handlers">
 		<handler
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.generator.trace.OpenGeneratedFileHandler"
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.generator.trace.OpenGeneratedFileHandler"
 			commandId="org.eclipse.xtext.ui.OpenGeneratedFileCommand">
 			<activeWhen>
-				<reference definitionId="org.emoflon.roam.roamslang.RoamSLang.Editor.opened" />
+				<reference definitionId="org.emoflon.gips.gipsl.Gipsl.Editor.opened" />
 			</activeWhen>
 		</handler>
 	</extension>
@@ -310,11 +310,11 @@
 	<extension
 		point="org.eclipse.ui.handlers">
 		<handler
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.outline.quickoutline.ShowQuickOutlineActionHandler"
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.editor.outline.quickoutline.ShowQuickOutlineActionHandler"
 			commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline">
 			<activeWhen>
 				<reference
-					definitionId="org.emoflon.roam.roamslang.RoamSLang.Editor.opened">
+					definitionId="org.emoflon.gips.gipsl.Gipsl.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
@@ -334,33 +334,33 @@
 				style="push"
 				tooltip="Open Quick Outline">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="org.emoflon.roam.roamslang.RoamSLang.Editor.opened"/>
+					<reference definitionId="org.emoflon.gips.gipsl.Gipsl.Editor.opened"/>
 				</visibleWhen>
 			</command>
 		</menuContribution>
 	</extension>
-	<!-- quickfix marker resolution generator for org.emoflon.roam.roamslang.RoamSLang -->
+	<!-- quickfix marker resolution generator for org.emoflon.gips.gipsl.Gipsl -->
 	<extension
 			point="org.eclipse.ui.ide.markerResolution">
 		<markerResolutionGenerator
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-			markerType="org.emoflon.roam.roamslang.ui.roamslang.check.fast">
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="org.emoflon.gips.gipsl.ui.gipsl.check.fast">
 			<attribute
 				name="FIXABLE_KEY"
 				value="true">
 			</attribute>
 		</markerResolutionGenerator>
 		<markerResolutionGenerator
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-			markerType="org.emoflon.roam.roamslang.ui.roamslang.check.normal">
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="org.emoflon.gips.gipsl.ui.gipsl.check.normal">
 			<attribute
 				name="FIXABLE_KEY"
 				value="true">
 			</attribute>
 		</markerResolutionGenerator>
 		<markerResolutionGenerator
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-			markerType="org.emoflon.roam.roamslang.ui.roamslang.check.expensive">
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="org.emoflon.gips.gipsl.ui.gipsl.check.expensive">
 			<attribute
 				name="FIXABLE_KEY"
 				value="true">
@@ -370,11 +370,11 @@
 	<!-- Rename Refactoring -->
 	<extension point="org.eclipse.ui.handlers">
 		<handler
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.DefaultRenameElementHandler"
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.DefaultRenameElementHandler"
 			commandId="org.eclipse.xtext.ui.refactoring.RenameElement">
 			<activeWhen>
 				<reference
-					definitionId="org.emoflon.roam.roamslang.RoamSLang.Editor.opened">
+					definitionId="org.emoflon.gips.gipsl.Gipsl.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
@@ -386,7 +386,7 @@
 				style="push">
 				<visibleWhen checkEnabled="false">
 					<reference
-						definitionId="org.emoflon.roam.roamslang.RoamSLang.Editor.opened">
+						definitionId="org.emoflon.gips.gipsl.Gipsl.Editor.opened">
 					</reference>
 				</visibleWhen>
 			</command>
@@ -394,70 +394,70 @@
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="org.emoflon.roam.roamslang.RoamSLang"
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.RefactoringPreferencePage"
-			id="org.emoflon.roam.roamslang.RoamSLang.refactoring"
+			category="org.emoflon.gips.gipsl.Gipsl"
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.RefactoringPreferencePage"
+			id="org.emoflon.gips.gipsl.Gipsl.refactoring"
 			name="Refactoring">
-			<keywordReference id="org.emoflon.roam.roamslang.ui.keyword_RoamSLang"/>
+			<keywordReference id="org.emoflon.gips.gipsl.ui.keyword_Gipsl"/>
 		</page>
 	</extension>
 	<extension point="org.eclipse.compare.contentViewers">
-		<viewer id="org.emoflon.roam.roamslang.RoamSLang.compare.contentViewers"
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
-			extensions="rslang">
+		<viewer id="org.emoflon.gips.gipsl.Gipsl.compare.contentViewers"
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
+			extensions="gipsl">
 		</viewer>
 		<contentTypeBinding
-			contentTypeId="org.emoflon.roam.roamslang.RoamSLang.contenttype"
-			contentViewerId="org.emoflon.roam.roamslang.RoamSLang.compare.contentViewers" />
+			contentTypeId="org.emoflon.gips.gipsl.Gipsl.contenttype"
+			contentViewerId="org.emoflon.gips.gipsl.Gipsl.compare.contentViewers" />
 	</extension>
 	<extension point="org.eclipse.compare.contentMergeViewers">
-		<viewer id="org.emoflon.roam.roamslang.RoamSLang.compare.contentMergeViewers"
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
-			extensions="rslang" label="RoamSLang Compare">
+		<viewer id="org.emoflon.gips.gipsl.Gipsl.compare.contentMergeViewers"
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
+			extensions="gipsl" label="Gipsl Compare">
 		</viewer>
 		<contentTypeBinding
-			contentTypeId="org.emoflon.roam.roamslang.RoamSLang.contenttype"
-			contentMergeViewerId="org.emoflon.roam.roamslang.RoamSLang.compare.contentMergeViewers" />
+			contentTypeId="org.emoflon.gips.gipsl.Gipsl.contenttype"
+			contentMergeViewerId="org.emoflon.gips.gipsl.Gipsl.compare.contentMergeViewers" />
 	</extension>
 	<extension point="org.eclipse.ui.editors.documentProviders">
-		<provider id="org.emoflon.roam.roamslang.RoamSLang.editors.documentProviders"
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
-			extensions="rslang">
+		<provider id="org.emoflon.gips.gipsl.Gipsl.editors.documentProviders"
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
+			extensions="gipsl">
 		</provider>
 	</extension>
 	<extension point="org.eclipse.team.core.fileTypes">
 		<fileTypes
-			extension="rslang"
+			extension="gipsl"
 			type="text">
 		</fileTypes>
 	</extension>
 	<extension
 		point="org.eclipse.ui.newWizards">
-		<category id="org.emoflon.roam.roamslang.ui.category" name="RoamSLang">
+		<category id="org.emoflon.gips.gipsl.ui.category" name="Gipsl">
 		</category>
 		<wizard
-			category="org.emoflon.roam.roamslang.ui.category"
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.eclipse.xtext.ui.wizard.template.TemplateNewProjectWizard"
-			id="org.emoflon.roam.roamslang.ui.wizard.RoamSLangNewProjectWizard"
-			name="RoamSLang Project"
-			icon="icons/new_RoamSLang_proj.gif"
+			category="org.emoflon.gips.gipsl.ui.category"
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.eclipse.xtext.ui.wizard.template.TemplateNewProjectWizard"
+			id="org.emoflon.gips.gipsl.ui.wizard.GipslNewProjectWizard"
+			name="Gipsl Project"
+			icon="icons/new_Gipsl_proj.gif"
 			project="true">
 		</wizard>
 	</extension>
 	<extension
 		point="org.eclipse.xtext.ui.projectTemplate">
 		<projectTemplateProvider
-			class="org.emoflon.roam.roamslang.ui.RoamSLangExecutableExtensionFactory:org.emoflon.roam.roamslang.ui.wizard.RoamSLangProjectTemplateProvider"
-			grammarName="org.emoflon.roam.roamslang.RoamSLang">
+			class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.emoflon.gips.gipsl.ui.wizard.GipslProjectTemplateProvider"
+			grammarName="org.emoflon.gips.gipsl.Gipsl">
 		</projectTemplateProvider>
 	</extension>
 	<extension
 		point="org.eclipse.ui.perspectiveExtensions">
 		<perspectiveExtension targetID="org.eclipse.ui.resourcePerspective">
-			<newWizardShortcut id="org.emoflon.roam.roamslang.ui.wizard.RoamSLangNewProjectWizard"/>
+			<newWizardShortcut id="org.emoflon.gips.gipsl.ui.wizard.GipslNewProjectWizard"/>
 		</perspectiveExtension>
 		<perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
-			<newWizardShortcut id="org.emoflon.roam.roamslang.ui.wizard.RoamSLangNewProjectWizard"/>
+			<newWizardShortcut id="org.emoflon.gips.gipsl.ui.wizard.GipslNewProjectWizard"/>
 		</perspectiveExtension>
 	</extension>
 </plugin>

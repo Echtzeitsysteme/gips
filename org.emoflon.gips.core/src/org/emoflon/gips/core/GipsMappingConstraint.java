@@ -1,20 +1,20 @@
-package org.emoflon.roam.core;
+package org.emoflon.gips.core;
 
 import java.util.List;
 
-import org.emoflon.roam.core.ilp.ILPConstraint;
-import org.emoflon.roam.core.ilp.ILPTerm;
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
+import org.emoflon.gips.core.ilp.ILPConstraint;
+import org.emoflon.gips.core.ilp.ILPTerm;
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
 
-public abstract class RoamMappingConstraint<CONTEXT extends RoamMapping>
-		extends RoamConstraint<MappingConstraint, CONTEXT, Integer> {
+public abstract class GipsMappingConstraint<CONTEXT extends GipsMapping>
+		extends GipsConstraint<MappingConstraint, CONTEXT, Integer> {
 
-	final protected RoamMapper<CONTEXT> mapper;
+	final protected GipsMapper<CONTEXT> mapper;
 
 	@SuppressWarnings("unchecked")
-	public RoamMappingConstraint(RoamEngine engine, MappingConstraint constraint) {
+	public GipsMappingConstraint(GipsEngine engine, MappingConstraint constraint) {
 		super(engine, constraint);
-		mapper = (RoamMapper<CONTEXT>) engine.getMapper(constraint.getMapping().getName());
+		mapper = (GipsMapper<CONTEXT>) engine.getMapper(constraint.getMapping().getName());
 	}
 
 	@Override

@@ -1,21 +1,21 @@
-package org.emoflon.roam.core.gt;
+package org.emoflon.gips.core.gt;
 
 import java.util.List;
 
 import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 import org.emoflon.ibex.gt.api.GraphTransformationPattern;
-import org.emoflon.roam.core.RoamConstraint;
-import org.emoflon.roam.core.RoamEngine;
-import org.emoflon.roam.core.ilp.ILPConstraint;
-import org.emoflon.roam.core.ilp.ILPTerm;
-import org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint;
+import org.emoflon.gips.core.GipsConstraint;
+import org.emoflon.gips.core.GipsEngine;
+import org.emoflon.gips.core.ilp.ILPConstraint;
+import org.emoflon.gips.core.ilp.ILPTerm;
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
 
-public abstract class RoamPatternConstraint<M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
-		extends RoamConstraint<PatternConstraint, M, Integer> {
+public abstract class GipsPatternConstraint<M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
+		extends GipsConstraint<PatternConstraint, M, Integer> {
 
 	final protected GraphTransformationPattern<M, P> pattern;
 
-	public RoamPatternConstraint(RoamEngine engine, PatternConstraint constraint, final P pattern) {
+	public GipsPatternConstraint(GipsEngine engine, PatternConstraint constraint, final P pattern) {
 		super(engine, constraint);
 		this.pattern = pattern;
 	}

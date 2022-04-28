@@ -3,8 +3,8 @@
 <plugin>
 	<extension point="org.eclipse.emf.ecore.generated_package">
 		<package
-			uri = "http://www.emoflon.org/roam/roamslang/RoamSLang"
-			class = "org.emoflon.roam.roamslang.roamSLang.RoamSLangPackage"
-			genModel = "model/generated/RoamSLang.genmodel" />
+			uri = "http://www.emoflon.org/gips/gipsl/Gipsl"
+			class = "org.emoflon.gips.gipsl.gipsl.GipslPackage"
+			genModel = "model/generated/Gipsl.genmodel" />
 	</extension>
 </plugin>

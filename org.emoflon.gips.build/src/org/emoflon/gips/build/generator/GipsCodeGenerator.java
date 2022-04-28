@@ -1,45 +1,45 @@
-package org.emoflon.roam.build.generator;
+package org.emoflon.gips.build.generator;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.emoflon.roam.build.RoamAPIData;
-import org.emoflon.roam.build.generator.templates.ConstraintFactoryTemplate;
-import org.emoflon.roam.build.generator.templates.GlobalObjectiveTemplate;
-import org.emoflon.roam.build.generator.templates.LaunchFileTemplate;
-import org.emoflon.roam.build.generator.templates.MapperFactoryTemplate;
-import org.emoflon.roam.build.generator.templates.MapperTemplate;
-import org.emoflon.roam.build.generator.templates.MappingConstraintTemplate;
-import org.emoflon.roam.build.generator.templates.MappingObjectiveTemplate;
-import org.emoflon.roam.build.generator.templates.MappingTemplate;
-import org.emoflon.roam.build.generator.templates.ObjectiveFactoryTemplate;
-import org.emoflon.roam.build.generator.templates.PatternConstraintTemplate;
-import org.emoflon.roam.build.generator.templates.PatternObjectiveTemplate;
-import org.emoflon.roam.build.generator.templates.RoamAPITemplate;
-import org.emoflon.roam.build.generator.templates.TypeConstraintTemplate;
-import org.emoflon.roam.build.generator.templates.TypeObjectiveTemplate;
-import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective;
-import org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective;
+import org.emoflon.gips.build.GipsAPIData;
+import org.emoflon.gips.build.generator.templates.ConstraintFactoryTemplate;
+import org.emoflon.gips.build.generator.templates.GlobalObjectiveTemplate;
+import org.emoflon.gips.build.generator.templates.LaunchFileTemplate;
+import org.emoflon.gips.build.generator.templates.MapperFactoryTemplate;
+import org.emoflon.gips.build.generator.templates.MapperTemplate;
+import org.emoflon.gips.build.generator.templates.MappingConstraintTemplate;
+import org.emoflon.gips.build.generator.templates.MappingObjectiveTemplate;
+import org.emoflon.gips.build.generator.templates.MappingTemplate;
+import org.emoflon.gips.build.generator.templates.ObjectiveFactoryTemplate;
+import org.emoflon.gips.build.generator.templates.PatternConstraintTemplate;
+import org.emoflon.gips.build.generator.templates.PatternObjectiveTemplate;
+import org.emoflon.gips.build.generator.templates.GipsAPITemplate;
+import org.emoflon.gips.build.generator.templates.TypeConstraintTemplate;
+import org.emoflon.gips.build.generator.templates.TypeObjectiveTemplate;
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective;
 
-public class RoamCodeGenerator {
+public class GipsCodeGenerator {
 
 	final protected TemplateData data;
 	protected List<GeneratorTemplate<?>> templates = Collections.synchronizedList(new LinkedList<>());
 
-	public RoamCodeGenerator(final RoamIntermediateModel model, final RoamAPIData apiData,
-			final RoamImportManager classToPackage) {
+	public GipsCodeGenerator(final GipsIntermediateModel model, final GipsAPIData apiData,
+			final GipsImportManager classToPackage) {
 		data = new TemplateData(model, apiData, classToPackage);
 	}
 
 	public void generate() {
-		templates.add(new RoamAPITemplate(data, data.model));
+		templates.add(new GipsAPITemplate(data, data.model));
 		templates.add(new MapperFactoryTemplate(data, data.model));
 		templates.add(new ConstraintFactoryTemplate(data, data.model));
 		templates.add(new ObjectiveFactoryTemplate(data, data.model));

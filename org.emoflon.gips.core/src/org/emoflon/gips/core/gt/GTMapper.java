@@ -1,4 +1,4 @@
-package org.emoflon.roam.core.gt;
+package org.emoflon.gips.core.gt;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -10,18 +10,18 @@ import java.util.stream.Collectors;
 
 import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 import org.emoflon.ibex.gt.api.GraphTransformationRule;
-import org.emoflon.roam.core.RoamEngine;
-import org.emoflon.roam.core.RoamMapper;
-import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
+import org.emoflon.gips.core.GipsEngine;
+import org.emoflon.gips.core.GipsMapper;
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 
 public abstract class GTMapper<GTM extends GTMapping<M, R>, M extends GraphTransformationMatch<M, R>, R extends GraphTransformationRule<M, R>>
-		extends RoamMapper<GTM> {
+		extends GipsMapper<GTM> {
 
 	final protected R rule;
 	final protected Map<M, GTM> match2Mappings = Collections.synchronizedMap(new HashMap<>());
 	private int mappingCounter = 0;
 
-	public GTMapper(final RoamEngine engine, final Mapping mapping, final R rule) {
+	public GTMapper(final GipsEngine engine, final Mapping mapping, final R rule) {
 		super(engine, mapping);
 		this.rule = rule;
 		this.init();

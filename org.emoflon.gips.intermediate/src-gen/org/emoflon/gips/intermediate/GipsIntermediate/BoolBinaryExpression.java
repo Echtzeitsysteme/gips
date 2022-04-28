@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Bool
@@ -10,15 +10,15 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression#getLhs
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression#getLhs
  * <em>Lhs</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression#getRhs
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression#getRhs
  * <em>Rhs</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression#getOperator
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression#getOperator
  * <em>Operator</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBoolBinaryExpression()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getBoolBinaryExpression()
  * @model
  * @generated
  */
@@ -29,7 +29,7 @@ public interface BoolBinaryExpression extends BoolExpression {
 	 * 
 	 * @return the value of the '<em>Lhs</em>' containment reference.
 	 * @see #setLhs(BoolExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBoolBinaryExpression_Lhs()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getBoolBinaryExpression_Lhs()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -37,7 +37,7 @@ public interface BoolBinaryExpression extends BoolExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression#getLhs
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression#getLhs
 	 * <em>Lhs</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -53,7 +53,7 @@ public interface BoolBinaryExpression extends BoolExpression {
 	 * 
 	 * @return the value of the '<em>Rhs</em>' containment reference.
 	 * @see #setRhs(BoolExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBoolBinaryExpression_Rhs()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getBoolBinaryExpression_Rhs()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -61,7 +61,7 @@ public interface BoolBinaryExpression extends BoolExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression#getRhs
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression#getRhs
 	 * <em>Rhs</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -74,13 +74,13 @@ public interface BoolBinaryExpression extends BoolExpression {
 	/**
 	 * Returns the value of the '<em><b>Operator</b></em>' attribute. The literals
 	 * are from the enumeration
-	 * {@link org.emoflon.roam.intermediate.RoamIntermediate.BinaryBoolOperator}.
+	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.BinaryBoolOperator}.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the value of the '<em>Operator</em>' attribute.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BinaryBoolOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BinaryBoolOperator
 	 * @see #setOperator(BinaryBoolOperator)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBoolBinaryExpression_Operator()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getBoolBinaryExpression_Operator()
 	 * @model
 	 * @generated
 	 */
@@ -88,11 +88,11 @@ public interface BoolBinaryExpression extends BoolExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression#getOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression#getOperator
 	 * <em>Operator</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Operator</em>' attribute.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.BinaryBoolOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BinaryBoolOperator
 	 * @see #getOperator()
 	 * @generated
 	 */

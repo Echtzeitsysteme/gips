@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -12,33 +12,33 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getSolver
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolver
  * <em>Solver</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getSolverHomeDir
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolverHomeDir
  * <em>Solver Home Dir</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getSolverLicenseFile
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolverLicenseFile
  * <em>Solver License File</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isBuildLaunchConfig
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isBuildLaunchConfig
  * <em>Build Launch Config</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getMainFile
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getMainFile
  * <em>Main File</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isEnableTimeLimit
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableTimeLimit
  * <em>Enable Time Limit</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getIlpTimeLimit
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getIlpTimeLimit
  * <em>Ilp Time Limit</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isEnableRndSeed
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableRndSeed
  * <em>Enable Rnd Seed</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getIlpRndSeed
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getIlpRndSeed
  * <em>Ilp Rnd Seed</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isPresolve
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isPresolve
  * <em>Presolve</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isEnablePresolve
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnablePresolve
  * <em>Enable Presolve</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isEnableDebugOutput
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableDebugOutput
  * <em>Enable Debug Output</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getILPConfig()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig()
  * @model
  * @generated
  */
@@ -46,13 +46,13 @@ public interface ILPConfig extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Solver</b></em>' attribute. The literals are
 	 * from the enumeration
-	 * {@link org.emoflon.roam.intermediate.RoamIntermediate.ILPSolverType}. <!--
+	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType}. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the value of the '<em>Solver</em>' attribute.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ILPSolverType
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType
 	 * @see #setSolver(ILPSolverType)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getILPConfig_Solver()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig_Solver()
 	 * @model
 	 * @generated
 	 */
@@ -60,11 +60,11 @@ public interface ILPConfig extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getSolver
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolver
 	 * <em>Solver</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Solver</em>' attribute.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ILPSolverType
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType
 	 * @see #getSolver()
 	 * @generated
 	 */
@@ -76,7 +76,7 @@ public interface ILPConfig extends EObject {
 	 * 
 	 * @return the value of the '<em>Solver Home Dir</em>' attribute.
 	 * @see #setSolverHomeDir(String)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getILPConfig_SolverHomeDir()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig_SolverHomeDir()
 	 * @model
 	 * @generated
 	 */
@@ -84,7 +84,7 @@ public interface ILPConfig extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getSolverHomeDir
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolverHomeDir
 	 * <em>Solver Home Dir</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -100,7 +100,7 @@ public interface ILPConfig extends EObject {
 	 * 
 	 * @return the value of the '<em>Solver License File</em>' attribute.
 	 * @see #setSolverLicenseFile(String)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getILPConfig_SolverLicenseFile()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig_SolverLicenseFile()
 	 * @model
 	 * @generated
 	 */
@@ -108,7 +108,7 @@ public interface ILPConfig extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getSolverLicenseFile
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolverLicenseFile
 	 * <em>Solver License File</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -124,7 +124,7 @@ public interface ILPConfig extends EObject {
 	 * 
 	 * @return the value of the '<em>Build Launch Config</em>' attribute.
 	 * @see #setBuildLaunchConfig(boolean)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getILPConfig_BuildLaunchConfig()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig_BuildLaunchConfig()
 	 * @model
 	 * @generated
 	 */
@@ -132,7 +132,7 @@ public interface ILPConfig extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isBuildLaunchConfig
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isBuildLaunchConfig
 	 * <em>Build Launch Config</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -148,7 +148,7 @@ public interface ILPConfig extends EObject {
 	 * 
 	 * @return the value of the '<em>Main File</em>' attribute.
 	 * @see #setMainFile(String)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getILPConfig_MainFile()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig_MainFile()
 	 * @model
 	 * @generated
 	 */
@@ -156,7 +156,7 @@ public interface ILPConfig extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getMainFile
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getMainFile
 	 * <em>Main File</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Main File</em>' attribute.
@@ -171,7 +171,7 @@ public interface ILPConfig extends EObject {
 	 * 
 	 * @return the value of the '<em>Enable Time Limit</em>' attribute.
 	 * @see #setEnableTimeLimit(boolean)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getILPConfig_EnableTimeLimit()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig_EnableTimeLimit()
 	 * @model
 	 * @generated
 	 */
@@ -179,7 +179,7 @@ public interface ILPConfig extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isEnableTimeLimit
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableTimeLimit
 	 * <em>Enable Time Limit</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -195,7 +195,7 @@ public interface ILPConfig extends EObject {
 	 * 
 	 * @return the value of the '<em>Ilp Time Limit</em>' attribute.
 	 * @see #setIlpTimeLimit(double)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getILPConfig_IlpTimeLimit()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig_IlpTimeLimit()
 	 * @model
 	 * @generated
 	 */
@@ -203,7 +203,7 @@ public interface ILPConfig extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getIlpTimeLimit
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getIlpTimeLimit
 	 * <em>Ilp Time Limit</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -219,7 +219,7 @@ public interface ILPConfig extends EObject {
 	 * 
 	 * @return the value of the '<em>Enable Rnd Seed</em>' attribute.
 	 * @see #setEnableRndSeed(boolean)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getILPConfig_EnableRndSeed()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig_EnableRndSeed()
 	 * @model
 	 * @generated
 	 */
@@ -227,7 +227,7 @@ public interface ILPConfig extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isEnableRndSeed
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableRndSeed
 	 * <em>Enable Rnd Seed</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -243,7 +243,7 @@ public interface ILPConfig extends EObject {
 	 * 
 	 * @return the value of the '<em>Ilp Rnd Seed</em>' attribute.
 	 * @see #setIlpRndSeed(int)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getILPConfig_IlpRndSeed()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig_IlpRndSeed()
 	 * @model
 	 * @generated
 	 */
@@ -251,7 +251,7 @@ public interface ILPConfig extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#getIlpRndSeed
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getIlpRndSeed
 	 * <em>Ilp Rnd Seed</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
@@ -267,7 +267,7 @@ public interface ILPConfig extends EObject {
 	 * 
 	 * @return the value of the '<em>Presolve</em>' attribute.
 	 * @see #setPresolve(boolean)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getILPConfig_Presolve()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig_Presolve()
 	 * @model
 	 * @generated
 	 */
@@ -275,7 +275,7 @@ public interface ILPConfig extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isPresolve
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isPresolve
 	 * <em>Presolve</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Presolve</em>' attribute.
@@ -290,7 +290,7 @@ public interface ILPConfig extends EObject {
 	 * 
 	 * @return the value of the '<em>Enable Presolve</em>' attribute.
 	 * @see #setEnablePresolve(boolean)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getILPConfig_EnablePresolve()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig_EnablePresolve()
 	 * @model
 	 * @generated
 	 */
@@ -298,7 +298,7 @@ public interface ILPConfig extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isEnablePresolve
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnablePresolve
 	 * <em>Enable Presolve</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -314,7 +314,7 @@ public interface ILPConfig extends EObject {
 	 * 
 	 * @return the value of the '<em>Enable Debug Output</em>' attribute.
 	 * @see #setEnableDebugOutput(boolean)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getILPConfig_EnableDebugOutput()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig_EnableDebugOutput()
 	 * @model
 	 * @generated
 	 */
@@ -322,7 +322,7 @@ public interface ILPConfig extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig#isEnableDebugOutput
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableDebugOutput
 	 * <em>Enable Debug Output</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 

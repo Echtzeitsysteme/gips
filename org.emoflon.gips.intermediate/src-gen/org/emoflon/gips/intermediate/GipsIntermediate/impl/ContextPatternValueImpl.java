@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -9,9 +9,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.Pattern;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Context
@@ -20,7 +20,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextPatternValueImpl#getPatternContext
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternValueImpl#getPatternContext
  * <em>Pattern Context</em>}</li>
  * </ul>
  *
@@ -53,7 +53,7 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.CONTEXT_PATTERN_VALUE;
+		return GipsIntermediatePackage.Literals.CONTEXT_PATTERN_VALUE;
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 			if (patternContext != oldPatternContext) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.CONTEXT_PATTERN_VALUE__PATTERN_CONTEXT, oldPatternContext,
+							GipsIntermediatePackage.CONTEXT_PATTERN_VALUE__PATTERN_CONTEXT, oldPatternContext,
 							patternContext));
 			}
 		}
@@ -94,7 +94,7 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 		patternContext = newPatternContext;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.CONTEXT_PATTERN_VALUE__PATTERN_CONTEXT, oldPatternContext, patternContext));
+					GipsIntermediatePackage.CONTEXT_PATTERN_VALUE__PATTERN_CONTEXT, oldPatternContext, patternContext));
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_PATTERN_VALUE__PATTERN_CONTEXT:
+		case GipsIntermediatePackage.CONTEXT_PATTERN_VALUE__PATTERN_CONTEXT:
 			if (resolve)
 				return getPatternContext();
 			return basicGetPatternContext();
@@ -121,7 +121,7 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_PATTERN_VALUE__PATTERN_CONTEXT:
+		case GipsIntermediatePackage.CONTEXT_PATTERN_VALUE__PATTERN_CONTEXT:
 			setPatternContext((Pattern) newValue);
 			return;
 		}
@@ -136,7 +136,7 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_PATTERN_VALUE__PATTERN_CONTEXT:
+		case GipsIntermediatePackage.CONTEXT_PATTERN_VALUE__PATTERN_CONTEXT:
 			setPatternContext((Pattern) null);
 			return;
 		}
@@ -151,7 +151,7 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_PATTERN_VALUE__PATTERN_CONTEXT:
+		case GipsIntermediatePackage.CONTEXT_PATTERN_VALUE__PATTERN_CONTEXT:
 			return patternContext != null;
 		}
 		return super.eIsSet(featureID);

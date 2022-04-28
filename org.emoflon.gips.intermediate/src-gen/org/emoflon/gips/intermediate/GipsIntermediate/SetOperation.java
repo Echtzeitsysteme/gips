@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -12,11 +12,11 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.SetOperation#getOperandName
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.SetOperation#getOperandName
  * <em>Operand Name</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getSetOperation()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getSetOperation()
  * @model interface="true" abstract="true"
  * @generated
  */
@@ -27,7 +27,7 @@ public interface SetOperation extends EObject {
 	 * 
 	 * @return the value of the '<em>Operand Name</em>' attribute.
 	 * @see #setOperandName(String)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getSetOperation_OperandName()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getSetOperation_OperandName()
 	 * @model
 	 * @generated
 	 */
@@ -35,7 +35,7 @@ public interface SetOperation extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.SetOperation#getOperandName
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.SetOperation#getOperandName
 	 * <em>Operand Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 

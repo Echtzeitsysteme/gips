@@ -1,22 +1,22 @@
-package org.emoflon.roam.build.transformation.transformer;
+package org.emoflon.gips.build.transformation.transformer;
 
-import org.emoflon.roam.build.transformation.helper.RoamTransformationData;
-import org.emoflon.roam.build.transformation.helper.TransformationContext;
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator;
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression;
-import org.emoflon.roam.roamslang.roamSLang.RoamRelExpr;
+import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
+import org.emoflon.gips.build.transformation.helper.TransformationContext;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
 
 public class RelationalInStreamTransformer extends TransformationContext<StreamExpression>
 		implements RelationalExpressionTransformer {
 
-	protected RelationalInStreamTransformer(RoamTransformationData data, StreamExpression context,
+	protected RelationalInStreamTransformer(GipsTransformationData data, StreamExpression context,
 			TransformerFactory factory) {
 		super(data, context, factory);
 	}
 
 	@Override
-	public RelationalExpression transform(RoamRelExpr eRelational) throws Exception {
+	public RelationalExpression transform(GipsRelExpr eRelational) throws Exception {
 		RelationalExpression relExpr = factory.createRelationalExpression();
 		switch (eRelational.getOperator()) {
 		case EQUAL:

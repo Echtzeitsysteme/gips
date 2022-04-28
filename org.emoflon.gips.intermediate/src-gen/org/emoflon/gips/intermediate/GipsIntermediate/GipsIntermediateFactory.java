@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.eclipse.emf.ecore.EFactory;
 
@@ -8,17 +8,17 @@ import org.eclipse.emf.ecore.EFactory;
  * <!-- begin-user-doc --> The <b>Factory</b> for the model. It provides a
  * create method for each non-abstract class of the model. <!-- end-user-doc -->
  * 
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage
  * @generated
  */
-public interface RoamIntermediateFactory extends EFactory {
+public interface GipsIntermediateFactory extends EFactory {
 	/**
 	 * The singleton instance of the factory. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	RoamIntermediateFactory eINSTANCE = org.emoflon.roam.intermediate.RoamIntermediate.impl.RoamIntermediateFactoryImpl
+	GipsIntermediateFactory eINSTANCE = org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateFactoryImpl
 			.init();
 
 	/**
@@ -28,7 +28,7 @@ public interface RoamIntermediateFactory extends EFactory {
 	 * @return a new object of class '<em>Model</em>'.
 	 * @generated
 	 */
-	RoamIntermediateModel createRoamIntermediateModel();
+	GipsIntermediateModel createGipsIntermediateModel();
 
 	/**
 	 * Returns a new object of class '<em>ILP Config</em>'. <!-- begin-user-doc -->
@@ -478,6 +478,6 @@ public interface RoamIntermediateFactory extends EFactory {
 	 * @return the package supported by this factory.
 	 * @generated
 	 */
-	RoamIntermediatePackage getRoamIntermediatePackage();
+	GipsIntermediatePackage getGipsIntermediatePackage();
 
-} // RoamIntermediateFactory
+} // GipsIntermediateFactory

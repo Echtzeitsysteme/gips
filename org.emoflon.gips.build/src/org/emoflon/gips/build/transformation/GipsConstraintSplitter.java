@@ -1,29 +1,29 @@
-package org.emoflon.roam.build.transformation;
+package org.emoflon.gips.build.transformation;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.emoflon.roam.build.transformation.helper.RoamTransformationData;
-import org.emoflon.roam.roamslang.roamSLang.RoamBinaryBoolExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamBool;
-import org.emoflon.roam.roamslang.roamSLang.RoamBoolExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamBooleanLiteral;
-import org.emoflon.roam.roamslang.roamSLang.RoamConstraint;
-import org.emoflon.roam.roamslang.roamSLang.RoamRelExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamSLangFactory;
-import org.emoflon.roam.roamslang.roamSLang.RoamUnaryBoolExpr;
+import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
+import org.emoflon.gips.gipsl.gipsl.GipsBinaryBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsBool;
+import org.emoflon.gips.gipsl.gipsl.GipsBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
+import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
+import org.emoflon.gips.gipsl.gipsl.GipslFactory;
+import org.emoflon.gips.gipsl.gipsl.GipsUnaryBoolExpr;
 
-public class RoamConstraintSplitter {
-	protected RoamSLangFactory factory = RoamSLangFactory.eINSTANCE;
-	protected final RoamTransformationData data;
+public class GipsConstraintSplitter {
+	protected GipslFactory factory = GipslFactory.eINSTANCE;
+	protected final GipsTransformationData data;
 
-	public RoamConstraintSplitter(final RoamTransformationData data) {
+	public GipsConstraintSplitter(final GipsTransformationData data) {
 		this.data = data;
 	}
 
-	public Collection<RoamConstraint> split(final RoamConstraint constraint) throws Exception {
-		Collection<RoamConstraint> constraints = new LinkedHashSet<>();
+	public Collection<GipsConstraint> split(final GipsConstraint constraint) throws Exception {
+		Collection<GipsConstraint> constraints = new LinkedHashSet<>();
 		if (constraint.getExpr() == null || constraint.getExpr().getExpr() == null) {
 			throw new NullPointerException("Constraint can not be split, since its boolean expression is empty!");
 		}
@@ -32,24 +32,24 @@ public class RoamConstraintSplitter {
 		return constraints;
 	}
 
-	protected void splitAtAND(final RoamConstraint parent, final RoamBoolExpr expr,
-			Collection<RoamConstraint> constraints) {
-		if (expr instanceof RoamBooleanLiteral || expr instanceof RoamRelExpr) {
-			RoamConstraint constraint = factory.createRoamConstraint();
+	protected void splitAtAND(final GipsConstraint parent, final GipsBoolExpr expr,
+			Collection<GipsConstraint> constraints) {
+		if (expr instanceof GipsBooleanLiteral || expr instanceof GipsRelExpr) {
+			GipsConstraint constraint = factory.createGipsConstraint();
 			constraint.setContext(EcoreUtil.copy(parent.getContext()));
-			RoamBool boolContainer = factory.createRoamBool();
+			GipsBool boolContainer = factory.createGipsBool();
 			boolContainer.setExpr(EcoreUtil.copy(expr));
 			constraint.setExpr(boolContainer);
 			constraints.add(constraint);
-		} else if (expr instanceof RoamBinaryBoolExpr bin) {
+		} else if (expr instanceof GipsBinaryBoolExpr bin) {
 			splitAtAND(parent, bin.getLeft(), constraints);
 			splitAtAND(parent, bin.getRight(), constraints);
 		} else {
-			splitAtAND(parent, ((RoamUnaryBoolExpr) expr).getOperand(), constraints);
+			splitAtAND(parent, ((GipsUnaryBoolExpr) expr).getOperand(), constraints);
 		}
 	}
 
-	protected void normalizeConstraint(final RoamConstraint constraint) throws Exception {
+	protected void normalizeConstraint(final GipsConstraint constraint) throws Exception {
 		// TODO: This method should transform boolean expressions into a canonical
 		// conjunctive normal form, e.g., x & y & !z & k
 		// -> For now just make sure that there are no "OR" and "NOT" operations used in
@@ -60,10 +60,10 @@ public class RoamConstraintSplitter {
 
 	}
 
-	protected boolean hasForbiddenOperations(final RoamBoolExpr expr) {
-		if (expr instanceof RoamBooleanLiteral || expr instanceof RoamRelExpr) {
+	protected boolean hasForbiddenOperations(final GipsBoolExpr expr) {
+		if (expr instanceof GipsBooleanLiteral || expr instanceof GipsRelExpr) {
 			return false;
-		} else if (expr instanceof RoamBinaryBoolExpr bin) {
+		} else if (expr instanceof GipsBinaryBoolExpr bin) {
 			switch (bin.getOperator()) {
 			case AND:
 				return hasForbiddenOperations(bin.getLeft()) || hasForbiddenOperations(bin.getRight());

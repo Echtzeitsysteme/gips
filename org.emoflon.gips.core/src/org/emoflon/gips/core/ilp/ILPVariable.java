@@ -1,4 +1,4 @@
-package org.emoflon.roam.core.ilp;
+package org.emoflon.gips.core.ilp;
 
 public interface ILPVariable<T extends Number> {
 

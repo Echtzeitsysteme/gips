@@ -1,12 +1,12 @@
-package org.emoflon.roam.core;
+package org.emoflon.gips.core;
 
-import org.emoflon.roam.core.ilp.ILPVariable;
+import org.emoflon.gips.core.ilp.ILPVariable;
 
-public abstract class RoamMapping implements ILPVariable<Integer> {
+public abstract class GipsMapping implements ILPVariable<Integer> {
 	final public String ilpVariable;
 	protected int value = 0;
 
-	protected RoamMapping(final String ilpVariable) {
+	protected GipsMapping(final String ilpVariable) {
 		this.ilpVariable = ilpVariable;
 	}
 
@@ -32,7 +32,7 @@ public abstract class RoamMapping implements ILPVariable<Integer> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof RoamMapping other) {
+		if (obj instanceof GipsMapping other) {
 			return ilpVariable.equals(other.ilpVariable);
 		} else {
 			return false;

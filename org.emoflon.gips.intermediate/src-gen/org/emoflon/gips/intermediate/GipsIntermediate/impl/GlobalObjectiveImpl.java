@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -11,10 +11,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective;
-import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Global
@@ -23,9 +23,9 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.GlobalObjectiveImpl#getExpression
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GlobalObjectiveImpl#getExpression
  * <em>Expression</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.GlobalObjectiveImpl#getTarget
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GlobalObjectiveImpl#getTarget
  * <em>Target</em>}</li>
  * </ul>
  *
@@ -78,7 +78,7 @@ public class GlobalObjectiveImpl extends MinimalEObjectImpl.Container implements
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.GLOBAL_OBJECTIVE;
+		return GipsIntermediatePackage.Literals.GLOBAL_OBJECTIVE;
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class GlobalObjectiveImpl extends MinimalEObjectImpl.Container implements
 		expression = newExpression;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION, oldExpression, newExpression);
+					GipsIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION, oldExpression, newExpression);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -119,15 +119,15 @@ public class GlobalObjectiveImpl extends MinimalEObjectImpl.Container implements
 			NotificationChain msgs = null;
 			if (expression != null)
 				msgs = ((InternalEObject) expression).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION, null, msgs);
 			if (newExpression != null)
 				msgs = ((InternalEObject) newExpression).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION, null, msgs);
 			msgs = basicSetExpression(newExpression, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION,
 					newExpression, newExpression));
 	}
 
@@ -149,7 +149,7 @@ public class GlobalObjectiveImpl extends MinimalEObjectImpl.Container implements
 		ObjectiveTarget oldTarget = target;
 		target = newTarget == null ? TARGET_EDEFAULT : newTarget;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.GLOBAL_OBJECTIVE__TARGET,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.GLOBAL_OBJECTIVE__TARGET,
 					oldTarget, target));
 	}
 
@@ -161,7 +161,7 @@ public class GlobalObjectiveImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION:
+		case GipsIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION:
 			return basicSetExpression(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -175,9 +175,9 @@ public class GlobalObjectiveImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION:
+		case GipsIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION:
 			return getExpression();
-		case RoamIntermediatePackage.GLOBAL_OBJECTIVE__TARGET:
+		case GipsIntermediatePackage.GLOBAL_OBJECTIVE__TARGET:
 			return getTarget();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -191,10 +191,10 @@ public class GlobalObjectiveImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION:
+		case GipsIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION:
 			setExpression((ArithmeticExpression) newValue);
 			return;
-		case RoamIntermediatePackage.GLOBAL_OBJECTIVE__TARGET:
+		case GipsIntermediatePackage.GLOBAL_OBJECTIVE__TARGET:
 			setTarget((ObjectiveTarget) newValue);
 			return;
 		}
@@ -209,10 +209,10 @@ public class GlobalObjectiveImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION:
+		case GipsIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION:
 			setExpression((ArithmeticExpression) null);
 			return;
-		case RoamIntermediatePackage.GLOBAL_OBJECTIVE__TARGET:
+		case GipsIntermediatePackage.GLOBAL_OBJECTIVE__TARGET:
 			setTarget(TARGET_EDEFAULT);
 			return;
 		}
@@ -227,9 +227,9 @@ public class GlobalObjectiveImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION:
+		case GipsIntermediatePackage.GLOBAL_OBJECTIVE__EXPRESSION:
 			return expression != null;
-		case RoamIntermediatePackage.GLOBAL_OBJECTIVE__TARGET:
+		case GipsIntermediatePackage.GLOBAL_OBJECTIVE__TARGET:
 			return target != TARGET_EDEFAULT;
 		}
 		return super.eIsSet(featureID);

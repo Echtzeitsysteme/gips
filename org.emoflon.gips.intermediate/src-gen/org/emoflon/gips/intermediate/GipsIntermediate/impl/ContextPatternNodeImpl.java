@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -11,9 +11,9 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode;
-import org.emoflon.roam.intermediate.RoamIntermediate.Pattern;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode;
+import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Context
@@ -22,9 +22,9 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextPatternNodeImpl#getPatternContext
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternNodeImpl#getPatternContext
  * <em>Pattern Context</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextPatternNodeImpl#getNode
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternNodeImpl#getNode
  * <em>Node</em>}</li>
  * </ul>
  *
@@ -67,7 +67,7 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.CONTEXT_PATTERN_NODE;
+		return GipsIntermediatePackage.Literals.CONTEXT_PATTERN_NODE;
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 			if (patternContext != oldPatternContext) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.CONTEXT_PATTERN_NODE__PATTERN_CONTEXT, oldPatternContext,
+							GipsIntermediatePackage.CONTEXT_PATTERN_NODE__PATTERN_CONTEXT, oldPatternContext,
 							patternContext));
 			}
 		}
@@ -108,7 +108,7 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 		patternContext = newPatternContext;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.CONTEXT_PATTERN_NODE__PATTERN_CONTEXT, oldPatternContext, patternContext));
+					GipsIntermediatePackage.CONTEXT_PATTERN_NODE__PATTERN_CONTEXT, oldPatternContext, patternContext));
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 			if (node != oldNode) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.CONTEXT_PATTERN_NODE__NODE, oldNode, node));
+							GipsIntermediatePackage.CONTEXT_PATTERN_NODE__NODE, oldNode, node));
 			}
 		}
 		return node;
@@ -147,7 +147,7 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 		IBeXNode oldNode = node;
 		node = newNode;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.CONTEXT_PATTERN_NODE__NODE,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.CONTEXT_PATTERN_NODE__NODE,
 					oldNode, node));
 	}
 
@@ -159,11 +159,11 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE__PATTERN_CONTEXT:
+		case GipsIntermediatePackage.CONTEXT_PATTERN_NODE__PATTERN_CONTEXT:
 			if (resolve)
 				return getPatternContext();
 			return basicGetPatternContext();
-		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE__NODE:
+		case GipsIntermediatePackage.CONTEXT_PATTERN_NODE__NODE:
 			if (resolve)
 				return getNode();
 			return basicGetNode();
@@ -179,10 +179,10 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE__PATTERN_CONTEXT:
+		case GipsIntermediatePackage.CONTEXT_PATTERN_NODE__PATTERN_CONTEXT:
 			setPatternContext((Pattern) newValue);
 			return;
-		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE__NODE:
+		case GipsIntermediatePackage.CONTEXT_PATTERN_NODE__NODE:
 			setNode((IBeXNode) newValue);
 			return;
 		}
@@ -197,10 +197,10 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE__PATTERN_CONTEXT:
+		case GipsIntermediatePackage.CONTEXT_PATTERN_NODE__PATTERN_CONTEXT:
 			setPatternContext((Pattern) null);
 			return;
-		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE__NODE:
+		case GipsIntermediatePackage.CONTEXT_PATTERN_NODE__NODE:
 			setNode((IBeXNode) null);
 			return;
 		}
@@ -215,9 +215,9 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE__PATTERN_CONTEXT:
+		case GipsIntermediatePackage.CONTEXT_PATTERN_NODE__PATTERN_CONTEXT:
 			return patternContext != null;
-		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE__NODE:
+		case GipsIntermediatePackage.CONTEXT_PATTERN_NODE__NODE:
 			return node != null;
 		}
 		return super.eIsSet(featureID);

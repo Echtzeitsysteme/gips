@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -9,8 +9,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -19,7 +19,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.VariableSetImpl#getName
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.VariableSetImpl#getName
  * <em>Name</em>}</li>
  * </ul>
  *
@@ -62,7 +62,7 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.VARIABLE_SET;
+		return GipsIntermediatePackage.Literals.VARIABLE_SET;
 	}
 
 	/**
@@ -83,7 +83,7 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.VARIABLE_SET__NAME, oldName,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.VARIABLE_SET__NAME, oldName,
 					name));
 	}
 
@@ -95,7 +95,7 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.VARIABLE_SET__NAME:
+		case GipsIntermediatePackage.VARIABLE_SET__NAME:
 			return getName();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -109,7 +109,7 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.VARIABLE_SET__NAME:
+		case GipsIntermediatePackage.VARIABLE_SET__NAME:
 			setName((String) newValue);
 			return;
 		}
@@ -124,7 +124,7 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.VARIABLE_SET__NAME:
+		case GipsIntermediatePackage.VARIABLE_SET__NAME:
 			setName(NAME_EDEFAULT);
 			return;
 		}
@@ -139,7 +139,7 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.VARIABLE_SET__NAME:
+		case GipsIntermediatePackage.VARIABLE_SET__NAME:
 			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
 		return super.eIsSet(featureID);

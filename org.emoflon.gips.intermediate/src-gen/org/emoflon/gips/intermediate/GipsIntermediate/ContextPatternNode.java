@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 
@@ -12,13 +12,13 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode#getPatternContext
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode#getPatternContext
  * <em>Pattern Context</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode#getNode
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode#getNode
  * <em>Node</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getContextPatternNode()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getContextPatternNode()
  * @model
  * @generated
  */
@@ -29,7 +29,7 @@ public interface ContextPatternNode extends ValueExpression {
 	 * 
 	 * @return the value of the '<em>Pattern Context</em>' reference.
 	 * @see #setPatternContext(Pattern)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getContextPatternNode_PatternContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getContextPatternNode_PatternContext()
 	 * @model
 	 * @generated
 	 */
@@ -37,7 +37,7 @@ public interface ContextPatternNode extends ValueExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode#getPatternContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode#getPatternContext
 	 * <em>Pattern Context</em>}' reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -53,7 +53,7 @@ public interface ContextPatternNode extends ValueExpression {
 	 * 
 	 * @return the value of the '<em>Node</em>' reference.
 	 * @see #setNode(IBeXNode)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getContextPatternNode_Node()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getContextPatternNode_Node()
 	 * @model
 	 * @generated
 	 */
@@ -61,7 +61,7 @@ public interface ContextPatternNode extends ValueExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode#getNode
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode#getNode
 	 * <em>Node</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Node</em>' reference.

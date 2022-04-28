@@ -1,11 +1,11 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -30,7 +30,7 @@ public abstract class ArithmeticLiteralImpl extends ArithmeticValueExpressionImp
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.ARITHMETIC_LITERAL;
+		return GipsIntermediatePackage.Literals.ARITHMETIC_LITERAL;
 	}
 
 } // ArithmeticLiteralImpl

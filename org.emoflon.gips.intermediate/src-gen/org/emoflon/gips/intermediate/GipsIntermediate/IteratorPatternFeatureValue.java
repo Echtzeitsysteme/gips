@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Iterator
@@ -10,13 +10,13 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue#getPatternContext
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue#getPatternContext
  * <em>Pattern Context</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue#getFeatureExpression
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue#getFeatureExpression
  * <em>Feature Expression</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorPatternFeatureValue()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorPatternFeatureValue()
  * @model
  * @generated
  */
@@ -27,7 +27,7 @@ public interface IteratorPatternFeatureValue extends ValueExpression, Iterator {
 	 * 
 	 * @return the value of the '<em>Pattern Context</em>' reference.
 	 * @see #setPatternContext(Pattern)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorPatternFeatureValue_PatternContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorPatternFeatureValue_PatternContext()
 	 * @model
 	 * @generated
 	 */
@@ -35,7 +35,7 @@ public interface IteratorPatternFeatureValue extends ValueExpression, Iterator {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue#getPatternContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue#getPatternContext
 	 * <em>Pattern Context</em>}' reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -51,7 +51,7 @@ public interface IteratorPatternFeatureValue extends ValueExpression, Iterator {
 	 * 
 	 * @return the value of the '<em>Feature Expression</em>' containment reference.
 	 * @see #setFeatureExpression(FeatureExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorPatternFeatureValue_FeatureExpression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorPatternFeatureValue_FeatureExpression()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -59,7 +59,7 @@ public interface IteratorPatternFeatureValue extends ValueExpression, Iterator {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue#getFeatureExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue#getFeatureExpression
 	 * <em>Feature Expression</em>}' containment reference. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 

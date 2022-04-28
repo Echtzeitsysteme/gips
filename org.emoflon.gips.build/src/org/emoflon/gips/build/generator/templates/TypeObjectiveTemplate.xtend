@@ -1,15 +1,15 @@
-package org.emoflon.roam.build.generator.templates
+package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.roam.build.generator.TemplateData
-import org.emoflon.roam.build.transformation.helper.ArithmeticExpressionType
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression
-import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet
+import org.emoflon.gips.build.generator.TemplateData
+import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet
 
 class TypeObjectiveTemplate extends ObjectiveTemplate<TypeObjective> {
 	
@@ -18,20 +18,20 @@ class TypeObjectiveTemplate extends ObjectiveTemplate<TypeObjective> {
 	}
 	
 		override init() {
-		packageName = data.apiData.roamObjectivePkg
+		packageName = data.apiData.gipsObjectivePkg
 		className = data.objective2objectiveClassName.get(context)
 		fqn = packageName + "." + className;
-		filePath = data.apiData.roamObjectivePkgPath + "/" + className + ".java"
+		filePath = data.apiData.gipsObjectivePkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
 		imports.add("org.eclipse.emf.ecore.EClass")
 		imports.add("org.eclipse.emf.ecore.EObject")
-		imports.add("org.emoflon.roam.core.RoamEngine")
-		imports.add("org.emoflon.roam.core.RoamMapping")
-		imports.add("org.emoflon.roam.core.RoamTypeObjective")
-		imports.add("org.emoflon.roam.core.ilp.ILPTerm")
-		imports.add("org.emoflon.roam.core.ilp.ILPConstant")
-		imports.add("org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective")
+		imports.add("org.emoflon.gips.core.GipsEngine")
+		imports.add("org.emoflon.gips.core.GipsMapping")
+		imports.add("org.emoflon.gips.core.GipsTypeObjective")
+		imports.add("org.emoflon.gips.core.ilp.ILPTerm")
+		imports.add("org.emoflon.gips.core.ilp.ILPConstant")
+		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective")
 		imports.add(data.classToPackage.getImportsForType(context.modelType.type))
 	}
 	
@@ -47,8 +47,8 @@ import «imp»;
 	
 	override String generateClassContent() {
 		return '''
-public class «className» extends RoamTypeConstraint<«context.modelType.type.name»> {
-	public «className»(final RoamEngine engine, final TypeConstraint constraint) {
+public class «className» extends GipsTypeConstraint<«context.modelType.type.name»> {
+	public «className»(final GipsEngine engine, final TypeConstraint constraint) {
 		super(engine, constraint);
 	}
 	
@@ -120,7 +120,7 @@ protected void buildTerms(final «context.modelType.type.name» context) {
 	override generateForeignBuilder(MappingSumExpression expr) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
-		imports.add(data.apiData.roamMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
+		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
 		imports.add("java.util.stream.Collectors")
 		val method = '''
 	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «context.modelType.type.name» context) {

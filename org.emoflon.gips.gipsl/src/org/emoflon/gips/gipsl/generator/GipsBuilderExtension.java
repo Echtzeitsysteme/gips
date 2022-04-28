@@ -1,10 +1,10 @@
-package org.emoflon.roam.roamslang.generator;
+package org.emoflon.gips.gipsl.generator;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.resource.Resource;
 
-public interface RoamBuilderExtension {
-	static final String BUILDER_EXTENSON_ID = "org.emoflon.roam.roamslang.RoamBuilderExtension";
+public interface GipsBuilderExtension {
+	static final String BUILDER_EXTENSON_ID = "org.emoflon.gips.gipsl.GipsBuilderExtension";
 
 	/**
 	 * Builds the project.

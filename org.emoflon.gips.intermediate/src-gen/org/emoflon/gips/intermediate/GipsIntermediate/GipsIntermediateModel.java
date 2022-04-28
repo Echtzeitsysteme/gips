@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.eclipse.emf.common.util.EList;
 
@@ -16,34 +16,34 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getName
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getName
  * <em>Name</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getVariables
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getVariables
  * <em>Variables</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getConstraints
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getConstraints
  * <em>Constraints</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getObjectives
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getObjectives
  * <em>Objectives</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getGlobalObjective
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getGlobalObjective
  * <em>Global Objective</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getIbexModel
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getIbexModel
  * <em>Ibex Model</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getConfig
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getConfig
  * <em>Config</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getRoamIntermediateModel()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getGipsIntermediateModel()
  * @model
  * @generated
  */
-public interface RoamIntermediateModel extends EObject {
+public interface GipsIntermediateModel extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getRoamIntermediateModel_Name()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getGipsIntermediateModel_Name()
 	 * @model
 	 * @generated
 	 */
@@ -51,7 +51,7 @@ public interface RoamIntermediateModel extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getName
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getName
 	 * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Name</em>' attribute.
@@ -63,11 +63,11 @@ public interface RoamIntermediateModel extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Variables</b></em>' containment reference
 	 * list. The list contents are of type
-	 * {@link org.emoflon.roam.intermediate.RoamIntermediate.VariableSet}. <!--
+	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.VariableSet}. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the value of the '<em>Variables</em>' containment reference list.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getRoamIntermediateModel_Variables()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getGipsIntermediateModel_Variables()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -76,11 +76,11 @@ public interface RoamIntermediateModel extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Constraints</b></em>' containment reference
 	 * list. The list contents are of type
-	 * {@link org.emoflon.roam.intermediate.RoamIntermediate.Constraint}. <!--
+	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint}. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the value of the '<em>Constraints</em>' containment reference list.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getRoamIntermediateModel_Constraints()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getGipsIntermediateModel_Constraints()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -89,11 +89,11 @@ public interface RoamIntermediateModel extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Objectives</b></em>' containment reference
 	 * list. The list contents are of type
-	 * {@link org.emoflon.roam.intermediate.RoamIntermediate.Objective}. <!--
+	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.Objective}. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the value of the '<em>Objectives</em>' containment reference list.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getRoamIntermediateModel_Objectives()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getGipsIntermediateModel_Objectives()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -105,7 +105,7 @@ public interface RoamIntermediateModel extends EObject {
 	 * 
 	 * @return the value of the '<em>Global Objective</em>' containment reference.
 	 * @see #setGlobalObjective(GlobalObjective)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getRoamIntermediateModel_GlobalObjective()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getGipsIntermediateModel_GlobalObjective()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -113,7 +113,7 @@ public interface RoamIntermediateModel extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getGlobalObjective
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getGlobalObjective
 	 * <em>Global Objective</em>}' containment reference. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -130,7 +130,7 @@ public interface RoamIntermediateModel extends EObject {
 	 * 
 	 * @return the value of the '<em>Ibex Model</em>' containment reference.
 	 * @see #setIbexModel(IBeXModel)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getRoamIntermediateModel_IbexModel()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getGipsIntermediateModel_IbexModel()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -138,7 +138,7 @@ public interface RoamIntermediateModel extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getIbexModel
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getIbexModel
 	 * <em>Ibex Model</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -155,7 +155,7 @@ public interface RoamIntermediateModel extends EObject {
 	 * 
 	 * @return the value of the '<em>Config</em>' containment reference.
 	 * @see #setConfig(ILPConfig)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getRoamIntermediateModel_Config()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getGipsIntermediateModel_Config()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -163,7 +163,7 @@ public interface RoamIntermediateModel extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel#getConfig
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getConfig
 	 * <em>Config</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -173,4 +173,4 @@ public interface RoamIntermediateModel extends EObject {
 	 */
 	void setConfig(ILPConfig value);
 
-} // RoamIntermediateModel
+} // GipsIntermediateModel

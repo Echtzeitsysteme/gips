@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -11,8 +11,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Value
@@ -21,7 +21,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ValueExpressionImpl#getReturnType
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ValueExpressionImpl#getReturnType
  * <em>Return Type</em>}</li>
  * </ul>
  *
@@ -54,7 +54,7 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.VALUE_EXPRESSION;
+		return GipsIntermediatePackage.Literals.VALUE_EXPRESSION;
 	}
 
 	/**
@@ -69,7 +69,7 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 			if (returnType != oldReturnType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.VALUE_EXPRESSION__RETURN_TYPE, oldReturnType, returnType));
+							GipsIntermediatePackage.VALUE_EXPRESSION__RETURN_TYPE, oldReturnType, returnType));
 			}
 		}
 		return returnType;
@@ -93,7 +93,7 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 		EClassifier oldReturnType = returnType;
 		returnType = newReturnType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.VALUE_EXPRESSION__RETURN_TYPE,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.VALUE_EXPRESSION__RETURN_TYPE,
 					oldReturnType, returnType));
 	}
 
@@ -105,7 +105,7 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.VALUE_EXPRESSION__RETURN_TYPE:
+		case GipsIntermediatePackage.VALUE_EXPRESSION__RETURN_TYPE:
 			if (resolve)
 				return getReturnType();
 			return basicGetReturnType();
@@ -121,7 +121,7 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.VALUE_EXPRESSION__RETURN_TYPE:
+		case GipsIntermediatePackage.VALUE_EXPRESSION__RETURN_TYPE:
 			setReturnType((EClassifier) newValue);
 			return;
 		}
@@ -136,7 +136,7 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.VALUE_EXPRESSION__RETURN_TYPE:
+		case GipsIntermediatePackage.VALUE_EXPRESSION__RETURN_TYPE:
 			setReturnType((EClassifier) null);
 			return;
 		}
@@ -151,7 +151,7 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.VALUE_EXPRESSION__RETURN_TYPE:
+		case GipsIntermediatePackage.VALUE_EXPRESSION__RETURN_TYPE:
 			return returnType != null;
 		}
 		return super.eIsSet(featureID);

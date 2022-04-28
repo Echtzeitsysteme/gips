@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -12,13 +12,13 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective#getExpression
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective#getExpression
  * <em>Expression</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective#getTarget
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective#getTarget
  * <em>Target</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getGlobalObjective()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getGlobalObjective()
  * @model
  * @generated
  */
@@ -29,7 +29,7 @@ public interface GlobalObjective extends EObject {
 	 * 
 	 * @return the value of the '<em>Expression</em>' containment reference.
 	 * @see #setExpression(ArithmeticExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getGlobalObjective_Expression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getGlobalObjective_Expression()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -37,7 +37,7 @@ public interface GlobalObjective extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective#getExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective#getExpression
 	 * <em>Expression</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -51,13 +51,13 @@ public interface GlobalObjective extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Target</b></em>' attribute. The literals are
 	 * from the enumeration
-	 * {@link org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget}. <!--
+	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget}. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the value of the '<em>Target</em>' attribute.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget
 	 * @see #setTarget(ObjectiveTarget)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getGlobalObjective_Target()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getGlobalObjective_Target()
 	 * @model
 	 * @generated
 	 */
@@ -65,11 +65,11 @@ public interface GlobalObjective extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective#getTarget
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective#getTarget
 	 * <em>Target</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Target</em>' attribute.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget
 	 * @see #getTarget()
 	 * @generated
 	 */

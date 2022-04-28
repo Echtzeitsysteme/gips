@@ -1,55 +1,55 @@
-package org.emoflon.roam.build.transformation.transformer;
+package org.emoflon.gips.build.transformation.transformer;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.emoflon.roam.build.transformation.helper.RoamTransformationData;
-import org.emoflon.roam.build.transformation.helper.RoamTransformationUtils;
-import org.emoflon.roam.build.transformation.helper.TransformationContext;
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral;
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator;
-import org.emoflon.roam.roamslang.roamSLang.RoamAttributeExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamContextExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamContextOperationExpression;
-import org.emoflon.roam.roamslang.roamSLang.RoamMappingAttributeExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamMappingContext;
-import org.emoflon.roam.roamslang.roamSLang.RoamRelExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamStreamBoolExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamStreamExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamTypeContext;
-import org.emoflon.roam.roamslang.scoping.RoamSLangScopeContextUtil;
+import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
+import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
+import org.emoflon.gips.build.transformation.helper.TransformationContext;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
+import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
+import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
+import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 
 public class RelationalInConstraintTransformer extends TransformationContext<Constraint>
 		implements RelationalExpressionTransformer {
 
-	protected RelationalInConstraintTransformer(RoamTransformationData data, Constraint context,
+	protected RelationalInConstraintTransformer(GipsTransformationData data, Constraint context,
 			TransformerFactory factory) {
 		super(data, context, factory);
 	}
 
 	@Override
-	public RelationalExpression transform(RoamRelExpr eRelational) throws Exception {
+	public RelationalExpression transform(GipsRelExpr eRelational) throws Exception {
 		// Check whether this is a simple boolean result of some attribute or stream
 		// expression, or a true relational expression, which compares two numeric
 		// values.
 		if (eRelational.getRight() == null) {
-			if (eRelational.getLeft() instanceof RoamAttributeExpr eAttributeExpr) {
-				if (eAttributeExpr instanceof RoamMappingAttributeExpr eMappingAttribute
+			if (eRelational.getLeft() instanceof GipsAttributeExpr eAttributeExpr) {
+				if (eAttributeExpr instanceof GipsMappingAttributeExpr eMappingAttribute
 						&& eMappingAttribute.getExpr() != null) {
 					return createUnaryConstraintCondition(eMappingAttribute);
-				} else if (eAttributeExpr instanceof RoamContextExpr eContextAttribute) {
+				} else if (eAttributeExpr instanceof GipsContextExpr eContextAttribute) {
 					if (eContextAttribute.getExpr() == null && eContextAttribute.getStream() == null) {
 						throw new IllegalArgumentException(
 								"Some constrains contain invalid values within boolean expressions, e.g., entire matches, ILP variables or objects.");
 					} else if (eContextAttribute.getExpr() != null && eContextAttribute.getStream() == null) {
-						EObject contextType = RoamSLangScopeContextUtil.getContextType(eContextAttribute);
-						if (contextType instanceof RoamMappingContext mappingContext) {
+						EObject contextType = GipslScopeContextUtil.getContextType(eContextAttribute);
+						if (contextType instanceof GipsMappingContext mappingContext) {
 							if (eContextAttribute
-									.getExpr() instanceof RoamContextOperationExpression contextOperation) {
+									.getExpr() instanceof GipsContextOperationExpression contextOperation) {
 								return createUnaryConstraintCondition(contextOperation);
 							} else {
 								// TODO: It is conceptually possible to define simple boolean expressions that
@@ -59,7 +59,7 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 								throw new UnsupportedOperationException(
 										"Checking model preconditions within constraints is not yet supported. Instead, rules or patterns should be used for this purpose.");
 							}
-						} else if (contextType instanceof RoamTypeContext typeContext) {
+						} else if (contextType instanceof GipsTypeContext typeContext) {
 							// TODO: It is conceptually possible to define simple boolean expressions that
 							// can be evaluated during ILP build time.
 							// -> Since constraints of this kind should be checked using patterns, we'll
@@ -119,7 +119,7 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 		}
 	}
 
-	protected RelationalExpression createUnaryConstraintCondition(final RoamContextOperationExpression contextOperation)
+	protected RelationalExpression createUnaryConstraintCondition(final GipsContextOperationExpression contextOperation)
 			throws Exception {
 		switch (contextOperation.getOperation()) {
 		case MAPPED -> {
@@ -153,10 +153,10 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 	 * into an ILP constraint. E.g.: <stream>.notExists() ==> Sum(Set of Variables)
 	 * = 0
 	 */
-	protected RelationalExpression createUnaryConstraintCondition(final RoamMappingAttributeExpr eMappingAttribute)
+	protected RelationalExpression createUnaryConstraintCondition(final GipsMappingAttributeExpr eMappingAttribute)
 			throws Exception {
-		RoamStreamExpr terminalExpr = RoamTransformationUtils.getTerminalStreamExpression(eMappingAttribute.getExpr());
-		if (terminalExpr instanceof RoamStreamBoolExpr streamBool) {
+		GipsStreamExpr terminalExpr = GipsTransformationUtils.getTerminalStreamExpression(eMappingAttribute.getExpr());
+		if (terminalExpr instanceof GipsStreamBoolExpr streamBool) {
 			switch (streamBool.getOperator()) {
 			case COUNT -> {
 				throw new IllegalArgumentException(

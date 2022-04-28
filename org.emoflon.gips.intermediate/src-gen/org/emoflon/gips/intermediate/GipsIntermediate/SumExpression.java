@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Sum
@@ -10,13 +10,13 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getExpression
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.SumExpression#getExpression
  * <em>Expression</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getFilter
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.SumExpression#getFilter
  * <em>Filter</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getSumExpression()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getSumExpression()
  * @model abstract="true"
  * @generated
  */
@@ -27,7 +27,7 @@ public interface SumExpression extends ValueExpression, SetOperation {
 	 * 
 	 * @return the value of the '<em>Expression</em>' containment reference.
 	 * @see #setExpression(ArithmeticExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getSumExpression_Expression()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getSumExpression_Expression()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -35,7 +35,7 @@ public interface SumExpression extends ValueExpression, SetOperation {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getExpression
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.SumExpression#getExpression
 	 * <em>Expression</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -52,7 +52,7 @@ public interface SumExpression extends ValueExpression, SetOperation {
 	 * 
 	 * @return the value of the '<em>Filter</em>' containment reference.
 	 * @see #setFilter(StreamExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getSumExpression_Filter()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getSumExpression_Filter()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -60,7 +60,7 @@ public interface SumExpression extends ValueExpression, SetOperation {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.SumExpression#getFilter
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.SumExpression#getFilter
 	 * <em>Filter</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 

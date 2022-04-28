@@ -1,79 +1,79 @@
-package org.emoflon.roam.build.transformation.helper;
+package org.emoflon.gips.build.transformation.helper;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral;
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral;
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.FeatureLiteral;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
-import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateFactory;
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation;
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet;
-import org.emoflon.roam.roamslang.roamSLang.RoamFeatureExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamFeatureLit;
-import org.emoflon.roam.roamslang.roamSLang.RoamFeatureNavigation;
-import org.emoflon.roam.roamslang.roamSLang.RoamStreamExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamStreamNavigation;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
+import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
+import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
+import org.emoflon.gips.gipsl.gipsl.GipsFeatureNavigation;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamNavigation;
 
-public final class RoamTransformationUtils {
+public final class GipsTransformationUtils {
 
-	public static RoamStreamExpr getTerminalStreamExpression(final RoamStreamExpr expr) {
-		if (expr instanceof RoamStreamNavigation nav) {
+	public static GipsStreamExpr getTerminalStreamExpression(final GipsStreamExpr expr) {
+		if (expr instanceof GipsStreamNavigation nav) {
 			return getTerminalStreamExpression(nav.getRight());
 		} else {
 			return expr;
 		}
 	}
 
-	public static FeatureExpression transformFeatureExpression(final RoamFeatureExpr eFeature) {
-		FeatureExpression feature = RoamIntermediateFactory.eINSTANCE.createFeatureExpression();
-		if (eFeature instanceof RoamFeatureNavigation nav) {
-			feature.setCurrent(createFeatureLiteral((RoamFeatureLit) nav.getLeft()));
+	public static FeatureExpression transformFeatureExpression(final GipsFeatureExpr eFeature) {
+		FeatureExpression feature = GipsIntermediateFactory.eINSTANCE.createFeatureExpression();
+		if (eFeature instanceof GipsFeatureNavigation nav) {
+			feature.setCurrent(createFeatureLiteral((GipsFeatureLit) nav.getLeft()));
 			feature.setChild(transformFeatureExpression(nav.getRight()));
 		} else {
-			feature.setCurrent(createFeatureLiteral((RoamFeatureLit) eFeature));
+			feature.setCurrent(createFeatureLiteral((GipsFeatureLit) eFeature));
 		}
 		return feature;
 	}
 
-	public static FeatureLiteral createFeatureLiteral(final RoamFeatureLit eFeature) {
-		FeatureLiteral lit = RoamIntermediateFactory.eINSTANCE.createFeatureLiteral();
+	public static FeatureLiteral createFeatureLiteral(final GipsFeatureLit eFeature) {
+		FeatureLiteral lit = GipsIntermediateFactory.eINSTANCE.createFeatureLiteral();
 		lit.setFeature(eFeature.getFeature());
 		return lit;
 	}

@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -12,13 +12,13 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression#getCurrent
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression#getCurrent
  * <em>Current</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression#getChild
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression#getChild
  * <em>Child</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getFeatureExpression()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getFeatureExpression()
  * @model
  * @generated
  */
@@ -29,7 +29,7 @@ public interface FeatureExpression extends EObject {
 	 * 
 	 * @return the value of the '<em>Current</em>' containment reference.
 	 * @see #setCurrent(FeatureLiteral)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getFeatureExpression_Current()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getFeatureExpression_Current()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -37,7 +37,7 @@ public interface FeatureExpression extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression#getCurrent
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression#getCurrent
 	 * <em>Current</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -53,7 +53,7 @@ public interface FeatureExpression extends EObject {
 	 * 
 	 * @return the value of the '<em>Child</em>' containment reference.
 	 * @see #setChild(FeatureExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getFeatureExpression_Child()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getFeatureExpression_Child()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -61,7 +61,7 @@ public interface FeatureExpression extends EObject {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression#getChild
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression#getChild
 	 * <em>Child</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 

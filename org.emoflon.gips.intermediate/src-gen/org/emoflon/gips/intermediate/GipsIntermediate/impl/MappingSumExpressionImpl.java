@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -9,9 +9,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Mapping
@@ -20,7 +20,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingSumExpressionImpl#getMapping
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingSumExpressionImpl#getMapping
  * <em>Mapping</em>}</li>
  * </ul>
  *
@@ -53,7 +53,7 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.MAPPING_SUM_EXPRESSION;
+		return GipsIntermediatePackage.Literals.MAPPING_SUM_EXPRESSION;
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 			if (mapping != oldMapping) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.MAPPING_SUM_EXPRESSION__MAPPING, oldMapping, mapping));
+							GipsIntermediatePackage.MAPPING_SUM_EXPRESSION__MAPPING, oldMapping, mapping));
 			}
 		}
 		return mapping;
@@ -93,7 +93,7 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 		mapping = newMapping;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.MAPPING_SUM_EXPRESSION__MAPPING, oldMapping, mapping));
+					GipsIntermediatePackage.MAPPING_SUM_EXPRESSION__MAPPING, oldMapping, mapping));
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.MAPPING_SUM_EXPRESSION__MAPPING:
+		case GipsIntermediatePackage.MAPPING_SUM_EXPRESSION__MAPPING:
 			if (resolve)
 				return getMapping();
 			return basicGetMapping();
@@ -120,7 +120,7 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.MAPPING_SUM_EXPRESSION__MAPPING:
+		case GipsIntermediatePackage.MAPPING_SUM_EXPRESSION__MAPPING:
 			setMapping((Mapping) newValue);
 			return;
 		}
@@ -135,7 +135,7 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.MAPPING_SUM_EXPRESSION__MAPPING:
+		case GipsIntermediatePackage.MAPPING_SUM_EXPRESSION__MAPPING:
 			setMapping((Mapping) null);
 			return;
 		}
@@ -150,7 +150,7 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.MAPPING_SUM_EXPRESSION__MAPPING:
+		case GipsIntermediatePackage.MAPPING_SUM_EXPRESSION__MAPPING:
 			return mapping != null;
 		}
 		return super.eIsSet(featureID);

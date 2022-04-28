@@ -1,4 +1,4 @@
-package org.emoflon.roam.build;
+package org.emoflon.gips.build;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,25 +34,25 @@ import org.emoflon.ibex.gt.codegen.GTEngineExtension;
 import org.emoflon.ibex.gt.codegen.JavaFileGenerator;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPattern;
-import org.emoflon.roam.build.generator.RoamImportManager;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
+import org.emoflon.gips.build.generator.GipsImportManager;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.gervarro.eclipse.workspace.util.AntPatternCondition;
 import org.moflon.core.build.CleanVisitor;
 import org.moflon.core.plugins.manifest.ManifestFileUpdater;
 import org.moflon.core.utilities.ExtensionsUtil;
 import org.moflon.core.utilities.WorkspaceHelper;
 
-public final class RoamBuilderUtils {
+public final class GipsBuilderUtils {
 	final public static String GEN_FOLDER = "src-gen";
 	final public static String API_FOLDER = "api";
 	final public static String MATCHES_FOLDER = API_FOLDER + "/matches";
 	final public static String RULES_FOLDER = API_FOLDER + "/rules";
-	final public static String ROAM_API_FOLDER = API_FOLDER + "/roam";
-	final public static String MAPPING_FOLDER = ROAM_API_FOLDER + "/mapping";
-	final public static String MAPPER_FOLDER = ROAM_API_FOLDER + "/mapper";
-	final public static String CONSTRAINT_FOLDER = ROAM_API_FOLDER + "/constraint";
-	final public static String OBJECTIVE_FOLDER = ROAM_API_FOLDER + "/objective";
+	final public static String GIPS_API_FOLDER = API_FOLDER + "/gips";
+	final public static String MAPPING_FOLDER = GIPS_API_FOLDER + "/mapping";
+	final public static String MAPPER_FOLDER = GIPS_API_FOLDER + "/mapper";
+	final public static String CONSTRAINT_FOLDER = GIPS_API_FOLDER + "/constraint";
+	final public static String OBJECTIVE_FOLDER = GIPS_API_FOLDER + "/objective";
 
 	/**
 	 * Removes generated code in the project matching the deletion pattern
@@ -85,7 +85,7 @@ public final class RoamBuilderUtils {
 				new NullProgressMonitor());
 		WorkspaceHelper.createFolderIfNotExists(getGeneratedProjectFolder(project, RULES_FOLDER),
 				new NullProgressMonitor());
-		WorkspaceHelper.createFolderIfNotExists(getGeneratedProjectFolder(project, ROAM_API_FOLDER),
+		WorkspaceHelper.createFolderIfNotExists(getGeneratedProjectFolder(project, GIPS_API_FOLDER),
 				new NullProgressMonitor());
 		WorkspaceHelper.createFolderIfNotExists(getGeneratedProjectFolder(project, MAPPING_FOLDER),
 				new NullProgressMonitor());
@@ -123,8 +123,8 @@ public final class RoamBuilderUtils {
 	 */
 	public static boolean processManifestForPackage(IProject project, Manifest manifest) {
 		List<String> dependencies = new ArrayList<>();
-//		TODO: Add dependencies on Roam runtime libraries!
-		dependencies.addAll(Arrays.asList("org.emoflon.ibex.common", "org.emoflon.ibex.gt", "org.emoflon.roam.core"));
+//		TODO: Add dependencies on Gips runtime libraries!
+		dependencies.addAll(Arrays.asList("org.emoflon.ibex.common", "org.emoflon.ibex.gt", "org.emoflon.gips.core"));
 		collectEngineExtensions().forEach(engine -> dependencies.addAll(engine.getDependencies()));
 		boolean changedBasics = ManifestFileUpdater.setBasicProperties(manifest, project.getName());
 		boolean updatedDependencies = ManifestFileUpdater.updateDependencies(manifest, dependencies);
@@ -167,11 +167,11 @@ public final class RoamBuilderUtils {
 	 * @throws CoreException if hte API folder does not exist or API generation
 	 *                       fails
 	 */
-	public static RoamAPIData buildEMoflonAPI(IProject project, IBeXModel ibexModel) throws CoreException {
+	public static GipsAPIData buildEMoflonAPI(IProject project, IBeXModel ibexModel) throws CoreException {
 		final Registry packageRegistry = createEPackageRegistry(ibexModel);
 		IFolder apiPackage = project
 				.getFolder(GEN_FOLDER + "/" + project.getName().replace(".", "/") + "/" + API_FOLDER);
-		RoamAPIData apiData = new RoamAPIData(apiPackage);
+		GipsAPIData apiData = new GipsAPIData(apiPackage);
 		ensureFolderExists(apiPackage);
 		generateEMoflonAPI(project, apiData, ibexModel, packageRegistry);
 		return apiData;
@@ -182,7 +182,7 @@ public final class RoamBuilderUtils {
 	 *
 	 * @param model which includes the ePackages, that should be registered
 	 */
-	public static Registry createEPackageRegistry(final RoamIntermediateModel model) {
+	public static Registry createEPackageRegistry(final GipsIntermediateModel model) {
 		Registry packageRegistry = new EPackageRegistryImpl();
 		findAllEPackages(model.getIbexModel(), packageRegistry);
 		model.getConstraints().stream().filter(constr -> constr instanceof TypeConstraint)
@@ -247,7 +247,7 @@ public final class RoamBuilderUtils {
 	 * @throws CoreException if API generation fails due to missing folders/ invalid
 	 *                       generation paths
 	 */
-	public static void generateEMoflonAPI(final IProject project, final RoamAPIData apiData, final IBeXModel ibexModel,
+	public static void generateEMoflonAPI(final IProject project, final GipsAPIData apiData, final IBeXModel ibexModel,
 			final Registry packageRegistry) throws CoreException {
 		JavaFileGenerator generator = new JavaFileGenerator(getClassNamePrefix(project), project.getName(),
 				createEClassifierManager(packageRegistry));
@@ -311,8 +311,8 @@ public final class RoamBuilderUtils {
 	 *                        that should be present in the EClassifier manager
 	 * @return an EClassifier manager for the EPackages in the package registry
 	 */
-	public static RoamImportManager createRoamImportManager(final Registry packageRegistry) {
-		RoamImportManager eClassifiersManager = new RoamImportManager(new HashMap<>());
+	public static GipsImportManager createGipsImportManager(final Registry packageRegistry) {
+		GipsImportManager eClassifiersManager = new GipsImportManager(new HashMap<>());
 		packageRegistry.values().stream().filter(x -> (x instanceof EPackage)).forEach(obj -> {
 			EPackage epackage = (EPackage) obj;
 			eClassifiersManager.loadMetaModelClasses(epackage.eResource());

@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.eclipse.emf.ecore.EClass;
 
@@ -12,11 +12,11 @@ import org.eclipse.emf.ecore.EClass;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation#getType
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation#getType
  * <em>Type</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getStreamSelectOperation()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getStreamSelectOperation()
  * @model
  * @generated
  */
@@ -27,7 +27,7 @@ public interface StreamSelectOperation extends StreamOperation {
 	 * 
 	 * @return the value of the '<em>Type</em>' containment reference.
 	 * @see #setType(EClass)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getStreamSelectOperation_Type()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getStreamSelectOperation_Type()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -35,7 +35,7 @@ public interface StreamSelectOperation extends StreamOperation {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation#getType
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation#getType
 	 * <em>Type</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 

@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Context
@@ -10,11 +10,11 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue#getMappingContext
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue#getMappingContext
  * <em>Mapping Context</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getContextMappingValue()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getContextMappingValue()
  * @model
  * @generated
  */
@@ -25,7 +25,7 @@ public interface ContextMappingValue extends ValueExpression {
 	 * 
 	 * @return the value of the '<em>Mapping Context</em>' reference.
 	 * @see #setMappingContext(Mapping)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getContextMappingValue_MappingContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getContextMappingValue_MappingContext()
 	 * @model
 	 * @generated
 	 */
@@ -33,7 +33,7 @@ public interface ContextMappingValue extends ValueExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue#getMappingContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue#getMappingContext
 	 * <em>Mapping Context</em>}' reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 

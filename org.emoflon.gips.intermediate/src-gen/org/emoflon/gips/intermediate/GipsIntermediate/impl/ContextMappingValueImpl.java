@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -9,9 +9,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Context
@@ -20,7 +20,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingValueImpl#getMappingContext
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextMappingValueImpl#getMappingContext
  * <em>Mapping Context</em>}</li>
  * </ul>
  *
@@ -53,7 +53,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.CONTEXT_MAPPING_VALUE;
+		return GipsIntermediatePackage.Literals.CONTEXT_MAPPING_VALUE;
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 			if (mappingContext != oldMappingContext) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT, oldMappingContext,
+							GipsIntermediatePackage.CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT, oldMappingContext,
 							mappingContext));
 			}
 		}
@@ -94,7 +94,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 		mappingContext = newMappingContext;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT, oldMappingContext, mappingContext));
+					GipsIntermediatePackage.CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT, oldMappingContext, mappingContext));
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT:
+		case GipsIntermediatePackage.CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT:
 			if (resolve)
 				return getMappingContext();
 			return basicGetMappingContext();
@@ -121,7 +121,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT:
+		case GipsIntermediatePackage.CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT:
 			setMappingContext((Mapping) newValue);
 			return;
 		}
@@ -136,7 +136,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT:
+		case GipsIntermediatePackage.CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT:
 			setMappingContext((Mapping) null);
 			return;
 		}
@@ -151,7 +151,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT:
+		case GipsIntermediatePackage.CONTEXT_MAPPING_VALUE__MAPPING_CONTEXT:
 			return mappingContext != null;
 		}
 		return super.eIsSet(featureID);

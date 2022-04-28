@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -11,11 +11,11 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.Pattern;
-import org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Pattern
@@ -24,13 +24,13 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternConstraintImpl#getName
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternConstraintImpl#getName
  * <em>Name</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternConstraintImpl#isElementwise
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternConstraintImpl#isElementwise
  * <em>Elementwise</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternConstraintImpl#getExpression
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternConstraintImpl#getExpression
  * <em>Expression</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.PatternConstraintImpl#getPattern
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternConstraintImpl#getPattern
  * <em>Pattern</em>}</li>
  * </ul>
  *
@@ -113,7 +113,7 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.PATTERN_CONSTRAINT;
+		return GipsIntermediatePackage.Literals.PATTERN_CONSTRAINT;
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.PATTERN_CONSTRAINT__NAME,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.PATTERN_CONSTRAINT__NAME,
 					oldName, name));
 	}
 
@@ -157,7 +157,7 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 		elementwise = newElementwise;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.PATTERN_CONSTRAINT__ELEMENTWISE, oldElementwise, elementwise));
+					GipsIntermediatePackage.PATTERN_CONSTRAINT__ELEMENTWISE, oldElementwise, elementwise));
 	}
 
 	/**
@@ -179,7 +179,7 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 		expression = newExpression;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION, oldExpression, newExpression);
+					GipsIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION, oldExpression, newExpression);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -198,16 +198,16 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 			NotificationChain msgs = null;
 			if (expression != null)
 				msgs = ((InternalEObject) expression).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION, null, msgs);
 			if (newExpression != null)
 				msgs = ((InternalEObject) newExpression).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION, null, msgs);
 			msgs = basicSetExpression(newExpression, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION, newExpression, newExpression));
+					GipsIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION, newExpression, newExpression));
 	}
 
 	/**
@@ -222,7 +222,7 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 			if (pattern != oldPattern) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.PATTERN_CONSTRAINT__PATTERN, oldPattern, pattern));
+							GipsIntermediatePackage.PATTERN_CONSTRAINT__PATTERN, oldPattern, pattern));
 			}
 		}
 		return pattern;
@@ -246,7 +246,7 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 		Pattern oldPattern = pattern;
 		pattern = newPattern;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.PATTERN_CONSTRAINT__PATTERN,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.PATTERN_CONSTRAINT__PATTERN,
 					oldPattern, pattern));
 	}
 
@@ -258,7 +258,7 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION:
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION:
 			return basicSetExpression(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -272,13 +272,13 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.PATTERN_CONSTRAINT__NAME:
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__NAME:
 			return getName();
-		case RoamIntermediatePackage.PATTERN_CONSTRAINT__ELEMENTWISE:
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__ELEMENTWISE:
 			return isElementwise();
-		case RoamIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION:
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION:
 			return getExpression();
-		case RoamIntermediatePackage.PATTERN_CONSTRAINT__PATTERN:
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__PATTERN:
 			if (resolve)
 				return getPattern();
 			return basicGetPattern();
@@ -294,16 +294,16 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.PATTERN_CONSTRAINT__NAME:
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__NAME:
 			setName((String) newValue);
 			return;
-		case RoamIntermediatePackage.PATTERN_CONSTRAINT__ELEMENTWISE:
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__ELEMENTWISE:
 			setElementwise((Boolean) newValue);
 			return;
-		case RoamIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION:
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION:
 			setExpression((RelationalExpression) newValue);
 			return;
-		case RoamIntermediatePackage.PATTERN_CONSTRAINT__PATTERN:
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__PATTERN:
 			setPattern((Pattern) newValue);
 			return;
 		}
@@ -318,16 +318,16 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.PATTERN_CONSTRAINT__NAME:
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__NAME:
 			setName(NAME_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.PATTERN_CONSTRAINT__ELEMENTWISE:
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__ELEMENTWISE:
 			setElementwise(ELEMENTWISE_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION:
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION:
 			setExpression((RelationalExpression) null);
 			return;
-		case RoamIntermediatePackage.PATTERN_CONSTRAINT__PATTERN:
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__PATTERN:
 			setPattern((Pattern) null);
 			return;
 		}
@@ -342,13 +342,13 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.PATTERN_CONSTRAINT__NAME:
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__NAME:
 			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-		case RoamIntermediatePackage.PATTERN_CONSTRAINT__ELEMENTWISE:
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__ELEMENTWISE:
 			return elementwise != ELEMENTWISE_EDEFAULT;
-		case RoamIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION:
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION:
 			return expression != null;
-		case RoamIntermediatePackage.PATTERN_CONSTRAINT__PATTERN:
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__PATTERN:
 			return pattern != null;
 		}
 		return super.eIsSet(featureID);
@@ -363,12 +363,12 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == Constraint.class) {
 			switch (derivedFeatureID) {
-			case RoamIntermediatePackage.PATTERN_CONSTRAINT__NAME:
-				return RoamIntermediatePackage.CONSTRAINT__NAME;
-			case RoamIntermediatePackage.PATTERN_CONSTRAINT__ELEMENTWISE:
-				return RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE;
-			case RoamIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION:
-				return RoamIntermediatePackage.CONSTRAINT__EXPRESSION;
+			case GipsIntermediatePackage.PATTERN_CONSTRAINT__NAME:
+				return GipsIntermediatePackage.CONSTRAINT__NAME;
+			case GipsIntermediatePackage.PATTERN_CONSTRAINT__ELEMENTWISE:
+				return GipsIntermediatePackage.CONSTRAINT__ELEMENTWISE;
+			case GipsIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION:
+				return GipsIntermediatePackage.CONSTRAINT__EXPRESSION;
 			default:
 				return -1;
 			}
@@ -385,12 +385,12 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == Constraint.class) {
 			switch (baseFeatureID) {
-			case RoamIntermediatePackage.CONSTRAINT__NAME:
-				return RoamIntermediatePackage.PATTERN_CONSTRAINT__NAME;
-			case RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE:
-				return RoamIntermediatePackage.PATTERN_CONSTRAINT__ELEMENTWISE;
-			case RoamIntermediatePackage.CONSTRAINT__EXPRESSION:
-				return RoamIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION;
+			case GipsIntermediatePackage.CONSTRAINT__NAME:
+				return GipsIntermediatePackage.PATTERN_CONSTRAINT__NAME;
+			case GipsIntermediatePackage.CONSTRAINT__ELEMENTWISE:
+				return GipsIntermediatePackage.PATTERN_CONSTRAINT__ELEMENTWISE;
+			case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
+				return GipsIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION;
 			default:
 				return -1;
 			}

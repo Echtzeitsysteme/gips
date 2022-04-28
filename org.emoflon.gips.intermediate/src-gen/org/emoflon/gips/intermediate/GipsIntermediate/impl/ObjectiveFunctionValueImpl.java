@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -9,9 +9,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
-import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
+import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -20,7 +20,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ObjectiveFunctionValueImpl#getObjective
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ObjectiveFunctionValueImpl#getObjective
  * <em>Objective</em>}</li>
  * </ul>
  *
@@ -53,7 +53,7 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.OBJECTIVE_FUNCTION_VALUE;
+		return GipsIntermediatePackage.Literals.OBJECTIVE_FUNCTION_VALUE;
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 			if (objective != oldObjective) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.OBJECTIVE_FUNCTION_VALUE__OBJECTIVE, oldObjective, objective));
+							GipsIntermediatePackage.OBJECTIVE_FUNCTION_VALUE__OBJECTIVE, oldObjective, objective));
 			}
 		}
 		return objective;
@@ -93,7 +93,7 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 		objective = newObjective;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.OBJECTIVE_FUNCTION_VALUE__OBJECTIVE, oldObjective, objective));
+					GipsIntermediatePackage.OBJECTIVE_FUNCTION_VALUE__OBJECTIVE, oldObjective, objective));
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.OBJECTIVE_FUNCTION_VALUE__OBJECTIVE:
+		case GipsIntermediatePackage.OBJECTIVE_FUNCTION_VALUE__OBJECTIVE:
 			if (resolve)
 				return getObjective();
 			return basicGetObjective();
@@ -120,7 +120,7 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.OBJECTIVE_FUNCTION_VALUE__OBJECTIVE:
+		case GipsIntermediatePackage.OBJECTIVE_FUNCTION_VALUE__OBJECTIVE:
 			setObjective((Objective) newValue);
 			return;
 		}
@@ -135,7 +135,7 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.OBJECTIVE_FUNCTION_VALUE__OBJECTIVE:
+		case GipsIntermediatePackage.OBJECTIVE_FUNCTION_VALUE__OBJECTIVE:
 			setObjective((Objective) null);
 			return;
 		}
@@ -150,7 +150,7 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.OBJECTIVE_FUNCTION_VALUE__OBJECTIVE:
+		case GipsIntermediatePackage.OBJECTIVE_FUNCTION_VALUE__OBJECTIVE:
 			return objective != null;
 		}
 		return super.eIsSet(featureID);

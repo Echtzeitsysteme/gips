@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -9,7 +9,7 @@ import org.eclipse.emf.ecore.EObject;
  * '<em><b>Context</b></em>'. <!-- end-user-doc -->
  *
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getContext()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getContext()
  * @model interface="true" abstract="true"
  * @generated
  */

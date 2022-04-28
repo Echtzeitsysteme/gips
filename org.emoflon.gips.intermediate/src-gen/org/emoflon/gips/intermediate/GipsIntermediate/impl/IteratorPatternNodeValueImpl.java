@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -11,11 +11,11 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.Iterator;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.Pattern;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.Iterator;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -24,11 +24,11 @@ import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternNodeValueImpl#getStream
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternNodeValueImpl#getStream
  * <em>Stream</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternNodeValueImpl#getPatternContext
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternNodeValueImpl#getPatternContext
  * <em>Pattern Context</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorPatternNodeValueImpl#getNode
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternNodeValueImpl#getNode
  * <em>Node</em>}</li>
  * </ul>
  *
@@ -81,7 +81,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.ITERATOR_PATTERN_NODE_VALUE;
+		return GipsIntermediatePackage.Literals.ITERATOR_PATTERN_NODE_VALUE;
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 			if (stream != oldStream) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__STREAM, oldStream, stream));
+							GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__STREAM, oldStream, stream));
 			}
 		}
 		return stream;
@@ -121,7 +121,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 		stream = newStream;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__STREAM, oldStream, stream));
+					GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__STREAM, oldStream, stream));
 	}
 
 	/**
@@ -136,7 +136,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 			if (patternContext != oldPatternContext) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__PATTERN_CONTEXT, oldPatternContext,
+							GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__PATTERN_CONTEXT, oldPatternContext,
 							patternContext));
 			}
 		}
@@ -162,7 +162,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 		patternContext = newPatternContext;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__PATTERN_CONTEXT, oldPatternContext,
+					GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__PATTERN_CONTEXT, oldPatternContext,
 					patternContext));
 	}
 
@@ -178,7 +178,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 			if (node != oldNode) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__NODE, oldNode, node));
+							GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__NODE, oldNode, node));
 			}
 		}
 		return node;
@@ -203,7 +203,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 		node = newNode;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__NODE, oldNode, node));
+					GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__NODE, oldNode, node));
 	}
 
 	/**
@@ -214,15 +214,15 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__STREAM:
+		case GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__STREAM:
 			if (resolve)
 				return getStream();
 			return basicGetStream();
-		case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__PATTERN_CONTEXT:
+		case GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__PATTERN_CONTEXT:
 			if (resolve)
 				return getPatternContext();
 			return basicGetPatternContext();
-		case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__NODE:
+		case GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__NODE:
 			if (resolve)
 				return getNode();
 			return basicGetNode();
@@ -238,13 +238,13 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__STREAM:
+		case GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__STREAM:
 			setStream((SetOperation) newValue);
 			return;
-		case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__PATTERN_CONTEXT:
+		case GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__PATTERN_CONTEXT:
 			setPatternContext((Pattern) newValue);
 			return;
-		case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__NODE:
+		case GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__NODE:
 			setNode((IBeXNode) newValue);
 			return;
 		}
@@ -259,13 +259,13 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__STREAM:
+		case GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__STREAM:
 			setStream((SetOperation) null);
 			return;
-		case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__PATTERN_CONTEXT:
+		case GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__PATTERN_CONTEXT:
 			setPatternContext((Pattern) null);
 			return;
-		case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__NODE:
+		case GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__NODE:
 			setNode((IBeXNode) null);
 			return;
 		}
@@ -280,11 +280,11 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__STREAM:
+		case GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__STREAM:
 			return stream != null;
-		case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__PATTERN_CONTEXT:
+		case GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__PATTERN_CONTEXT:
 			return patternContext != null;
-		case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__NODE:
+		case GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__NODE:
 			return node != null;
 		}
 		return super.eIsSet(featureID);
@@ -299,8 +299,8 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == Iterator.class) {
 			switch (derivedFeatureID) {
-			case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__STREAM:
-				return RoamIntermediatePackage.ITERATOR__STREAM;
+			case GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__STREAM:
+				return GipsIntermediatePackage.ITERATOR__STREAM;
 			default:
 				return -1;
 			}
@@ -317,8 +317,8 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == Iterator.class) {
 			switch (baseFeatureID) {
-			case RoamIntermediatePackage.ITERATOR__STREAM:
-				return RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__STREAM;
+			case GipsIntermediatePackage.ITERATOR__STREAM:
+				return GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE__STREAM;
 			default:
 				return -1;
 			}

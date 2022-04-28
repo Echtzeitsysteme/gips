@@ -1,52 +1,52 @@
-package org.emoflon.roam.build.transformation.transformer;
+package org.emoflon.gips.build.transformation.transformer;
 
 import org.eclipse.emf.ecore.EObject;
-import org.emoflon.roam.build.transformation.helper.RoamTransformationData;
-import org.emoflon.roam.build.transformation.helper.TransformationContext;
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator;
-import org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral;
-import org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral;
-import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator;
-import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamArithmeticLiteral;
-import org.emoflon.roam.roamslang.roamSLang.RoamAttributeExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamBracketExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamExpArithmeticExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamObjectiveExpression;
-import org.emoflon.roam.roamslang.roamSLang.RoamProductArithmeticExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamSumArithmeticExpr;
-import org.emoflon.roam.roamslang.roamSLang.RoamUnaryArithmeticExpr;
+import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
+import org.emoflon.gips.build.transformation.helper.TransformationContext;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator;
+import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsArithmeticLiteral;
+import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsBracketExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsExpArithmeticExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsObjectiveExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsProductArithmeticExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsSumArithmeticExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
 
 public class ArithmeticExpressionTransformer<T extends EObject> extends TransformationContext<T> {
-	protected ArithmeticExpressionTransformer(RoamTransformationData data, T context, TransformerFactory factory) {
+	protected ArithmeticExpressionTransformer(GipsTransformationData data, T context, TransformerFactory factory) {
 		super(data, context, factory);
 	}
 
-	public ArithmeticExpression transform(final RoamArithmeticExpr eArithmetic) throws Exception {
-		if (eArithmetic instanceof RoamSumArithmeticExpr sumExpr) {
+	public ArithmeticExpression transform(final GipsArithmeticExpr eArithmetic) throws Exception {
+		if (eArithmetic instanceof GipsSumArithmeticExpr sumExpr) {
 			return transform(sumExpr);
-		} else if (eArithmetic instanceof RoamProductArithmeticExpr prodExpr) {
+		} else if (eArithmetic instanceof GipsProductArithmeticExpr prodExpr) {
 			return transform(prodExpr);
-		} else if (eArithmetic instanceof RoamExpArithmeticExpr expExpr) {
+		} else if (eArithmetic instanceof GipsExpArithmeticExpr expExpr) {
 			return transform(expExpr);
-		} else if (eArithmetic instanceof RoamUnaryArithmeticExpr unaryExpr) {
+		} else if (eArithmetic instanceof GipsUnaryArithmeticExpr unaryExpr) {
 			return transform(unaryExpr);
-		} else if (eArithmetic instanceof RoamBracketExpr bracketExpr) {
+		} else if (eArithmetic instanceof GipsBracketExpr bracketExpr) {
 			return transform(bracketExpr);
-		} else if (eArithmetic instanceof RoamArithmeticLiteral lit) {
+		} else if (eArithmetic instanceof GipsArithmeticLiteral lit) {
 			return transform(lit);
-		} else if (eArithmetic instanceof RoamObjectiveExpression objExpr) {
+		} else if (eArithmetic instanceof GipsObjectiveExpression objExpr) {
 			return transform(objExpr);
 		} else {
-			return transform((RoamAttributeExpr) eArithmetic);
+			return transform((GipsAttributeExpr) eArithmetic);
 		}
 	}
 
-	public ArithmeticExpression transform(final RoamSumArithmeticExpr sumExpr) throws Exception {
+	public ArithmeticExpression transform(final GipsSumArithmeticExpr sumExpr) throws Exception {
 		BinaryArithmeticExpression binExpr = factory.createBinaryArithmeticExpression();
 		switch (sumExpr.getOperator()) {
 		case MINUS -> {
@@ -64,7 +64,7 @@ public class ArithmeticExpressionTransformer<T extends EObject> extends Transfor
 		return binExpr;
 	}
 
-	public ArithmeticExpression transform(final RoamProductArithmeticExpr prodExpr) throws Exception {
+	public ArithmeticExpression transform(final GipsProductArithmeticExpr prodExpr) throws Exception {
 		BinaryArithmeticExpression binExpr = factory.createBinaryArithmeticExpression();
 		switch (prodExpr.getOperator()) {
 		case MULT -> {
@@ -82,7 +82,7 @@ public class ArithmeticExpressionTransformer<T extends EObject> extends Transfor
 		return binExpr;
 	}
 
-	public ArithmeticExpression transform(final RoamExpArithmeticExpr expExpr) throws Exception {
+	public ArithmeticExpression transform(final GipsExpArithmeticExpr expExpr) throws Exception {
 		BinaryArithmeticExpression binExpr = factory.createBinaryArithmeticExpression();
 		switch (expExpr.getOperator()) {
 		case POW -> {
@@ -97,7 +97,7 @@ public class ArithmeticExpressionTransformer<T extends EObject> extends Transfor
 		return binExpr;
 	}
 
-	public ArithmeticExpression transform(final RoamUnaryArithmeticExpr unaryExpr) throws Exception {
+	public ArithmeticExpression transform(final GipsUnaryArithmeticExpr unaryExpr) throws Exception {
 		UnaryArithmeticExpression unExpr = factory.createUnaryArithmeticExpression();
 		switch (unaryExpr.getOperator()) {
 		case ABS -> {
@@ -123,14 +123,14 @@ public class ArithmeticExpressionTransformer<T extends EObject> extends Transfor
 		return unExpr;
 	}
 
-	public ArithmeticExpression transform(final RoamBracketExpr bracketExpr) throws Exception {
+	public ArithmeticExpression transform(final GipsBracketExpr bracketExpr) throws Exception {
 		UnaryArithmeticExpression unExpr = factory.createUnaryArithmeticExpression();
 		unExpr.setOperator(UnaryArithmeticOperator.BRACKET);
 		unExpr.setExpression(transform(bracketExpr.getOperand()));
 		return unExpr;
 	}
 
-	public ArithmeticExpression transform(final RoamArithmeticLiteral lit) throws Exception {
+	public ArithmeticExpression transform(final GipsArithmeticLiteral lit) throws Exception {
 		try {
 			int value = Integer.parseInt(lit.getValue());
 			IntegerLiteral intLit = factory.createIntegerLiteral();
@@ -149,12 +149,12 @@ public class ArithmeticExpressionTransformer<T extends EObject> extends Transfor
 		}
 	}
 
-	public ArithmeticExpression transform(final RoamObjectiveExpression objExpr) throws Exception {
+	public ArithmeticExpression transform(final GipsObjectiveExpression objExpr) throws Exception {
 		throw new UnsupportedOperationException(
 				"References to objective function values not permitted within constraints or objective functions.");
 	}
 
-	public ArithmeticExpression transform(final RoamAttributeExpr objExpr) throws Exception {
+	public ArithmeticExpression transform(final GipsAttributeExpr objExpr) throws Exception {
 		ArithmeticValue aValue = factory.createArithmeticValue();
 		AttributeExpressionTransformer transformer = transformerFactory.createAttributeTransformer(context);
 		aValue.setValue(transformer.transform(objExpr));

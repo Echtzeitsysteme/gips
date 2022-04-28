@@ -2,9 +2,9 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.emoflon.roam.roamslang.RoamBuilderExtension">
+         point="org.emoflon.gips.gipsl.GipsBuilderExtension">
       <builder_extension
-            class="org.emoflon.roam.build.RoamProjectBuilder">
+            class="org.emoflon.gips.build.GipsProjectBuilder">
       </builder_extension>
    </extension>
 

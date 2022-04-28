@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -11,8 +11,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -21,7 +21,7 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.MappingImpl#getRule
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingImpl#getRule
  * <em>Rule</em>}</li>
  * </ul>
  *
@@ -54,7 +54,7 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.MAPPING;
+		return GipsIntermediatePackage.Literals.MAPPING;
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 			rule = (IBeXRule) eResolveProxy(oldRule);
 			if (rule != oldRule) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, RoamIntermediatePackage.MAPPING__RULE,
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, GipsIntermediatePackage.MAPPING__RULE,
 							oldRule, rule));
 			}
 		}
@@ -93,7 +93,7 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 		IBeXRule oldRule = rule;
 		rule = newRule;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.MAPPING__RULE, oldRule,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.MAPPING__RULE, oldRule,
 					rule));
 	}
 
@@ -105,7 +105,7 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.MAPPING__RULE:
+		case GipsIntermediatePackage.MAPPING__RULE:
 			if (resolve)
 				return getRule();
 			return basicGetRule();
@@ -121,7 +121,7 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.MAPPING__RULE:
+		case GipsIntermediatePackage.MAPPING__RULE:
 			setRule((IBeXRule) newValue);
 			return;
 		}
@@ -136,7 +136,7 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.MAPPING__RULE:
+		case GipsIntermediatePackage.MAPPING__RULE:
 			setRule((IBeXRule) null);
 			return;
 		}
@@ -151,7 +151,7 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.MAPPING__RULE:
+		case GipsIntermediatePackage.MAPPING__RULE:
 			return rule != null;
 		}
 		return super.eIsSet(featureID);

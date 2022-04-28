@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.eclipse.emf.ecore.EClassifier;
 
@@ -12,15 +12,15 @@ import org.eclipse.emf.ecore.EClassifier;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression#getReturnType
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getReturnType
  * <em>Return Type</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression#getCurrent
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getCurrent
  * <em>Current</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression#getChild
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getChild
  * <em>Child</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getStreamExpression()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getStreamExpression()
  * @model
  * @generated
  */
@@ -31,7 +31,7 @@ public interface StreamExpression extends SetOperation {
 	 * 
 	 * @return the value of the '<em>Return Type</em>' reference.
 	 * @see #setReturnType(EClassifier)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getStreamExpression_ReturnType()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getStreamExpression_ReturnType()
 	 * @model
 	 * @generated
 	 */
@@ -39,7 +39,7 @@ public interface StreamExpression extends SetOperation {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression#getReturnType
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getReturnType
 	 * <em>Return Type</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
@@ -55,7 +55,7 @@ public interface StreamExpression extends SetOperation {
 	 * 
 	 * @return the value of the '<em>Current</em>' containment reference.
 	 * @see #setCurrent(StreamOperation)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getStreamExpression_Current()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getStreamExpression_Current()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -63,7 +63,7 @@ public interface StreamExpression extends SetOperation {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression#getCurrent
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getCurrent
 	 * <em>Current</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -79,7 +79,7 @@ public interface StreamExpression extends SetOperation {
 	 * 
 	 * @return the value of the '<em>Child</em>' containment reference.
 	 * @see #setChild(StreamExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getStreamExpression_Child()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getStreamExpression_Child()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -87,7 +87,7 @@ public interface StreamExpression extends SetOperation {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression#getChild
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getChild
 	 * <em>Child</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 

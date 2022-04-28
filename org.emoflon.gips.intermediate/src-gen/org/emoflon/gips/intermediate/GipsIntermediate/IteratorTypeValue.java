@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Iterator
@@ -10,11 +10,11 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue#getTypeContext
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue#getTypeContext
  * <em>Type Context</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorTypeValue()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorTypeValue()
  * @model
  * @generated
  */
@@ -25,7 +25,7 @@ public interface IteratorTypeValue extends ValueExpression, Iterator {
 	 * 
 	 * @return the value of the '<em>Type Context</em>' reference.
 	 * @see #setTypeContext(Type)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorTypeValue_TypeContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorTypeValue_TypeContext()
 	 * @model
 	 * @generated
 	 */
@@ -33,7 +33,7 @@ public interface IteratorTypeValue extends ValueExpression, Iterator {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue#getTypeContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue#getTypeContext
 	 * <em>Type Context</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 

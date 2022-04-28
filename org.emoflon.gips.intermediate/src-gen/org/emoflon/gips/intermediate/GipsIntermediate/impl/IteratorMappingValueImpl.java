@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -9,11 +9,11 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.Iterator;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.Iterator;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -22,9 +22,9 @@ import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingValueImpl#getStream
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingValueImpl#getStream
  * <em>Stream</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.IteratorMappingValueImpl#getMappingContext
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingValueImpl#getMappingContext
  * <em>Mapping Context</em>}</li>
  * </ul>
  *
@@ -67,7 +67,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.ITERATOR_MAPPING_VALUE;
+		return GipsIntermediatePackage.Literals.ITERATOR_MAPPING_VALUE;
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 			if (stream != oldStream) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.ITERATOR_MAPPING_VALUE__STREAM, oldStream, stream));
+							GipsIntermediatePackage.ITERATOR_MAPPING_VALUE__STREAM, oldStream, stream));
 			}
 		}
 		return stream;
@@ -107,7 +107,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 		stream = newStream;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ITERATOR_MAPPING_VALUE__STREAM, oldStream, stream));
+					GipsIntermediatePackage.ITERATOR_MAPPING_VALUE__STREAM, oldStream, stream));
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 			if (mappingContext != oldMappingContext) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.ITERATOR_MAPPING_VALUE__MAPPING_CONTEXT, oldMappingContext,
+							GipsIntermediatePackage.ITERATOR_MAPPING_VALUE__MAPPING_CONTEXT, oldMappingContext,
 							mappingContext));
 			}
 		}
@@ -148,7 +148,7 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 		mappingContext = newMappingContext;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.ITERATOR_MAPPING_VALUE__MAPPING_CONTEXT, oldMappingContext,
+					GipsIntermediatePackage.ITERATOR_MAPPING_VALUE__MAPPING_CONTEXT, oldMappingContext,
 					mappingContext));
 	}
 
@@ -160,11 +160,11 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_MAPPING_VALUE__STREAM:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_VALUE__STREAM:
 			if (resolve)
 				return getStream();
 			return basicGetStream();
-		case RoamIntermediatePackage.ITERATOR_MAPPING_VALUE__MAPPING_CONTEXT:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_VALUE__MAPPING_CONTEXT:
 			if (resolve)
 				return getMappingContext();
 			return basicGetMappingContext();
@@ -180,10 +180,10 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_MAPPING_VALUE__STREAM:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_VALUE__STREAM:
 			setStream((SetOperation) newValue);
 			return;
-		case RoamIntermediatePackage.ITERATOR_MAPPING_VALUE__MAPPING_CONTEXT:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_VALUE__MAPPING_CONTEXT:
 			setMappingContext((Mapping) newValue);
 			return;
 		}
@@ -198,10 +198,10 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_MAPPING_VALUE__STREAM:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_VALUE__STREAM:
 			setStream((SetOperation) null);
 			return;
-		case RoamIntermediatePackage.ITERATOR_MAPPING_VALUE__MAPPING_CONTEXT:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_VALUE__MAPPING_CONTEXT:
 			setMappingContext((Mapping) null);
 			return;
 		}
@@ -216,9 +216,9 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.ITERATOR_MAPPING_VALUE__STREAM:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_VALUE__STREAM:
 			return stream != null;
-		case RoamIntermediatePackage.ITERATOR_MAPPING_VALUE__MAPPING_CONTEXT:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_VALUE__MAPPING_CONTEXT:
 			return mappingContext != null;
 		}
 		return super.eIsSet(featureID);
@@ -233,8 +233,8 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == Iterator.class) {
 			switch (derivedFeatureID) {
-			case RoamIntermediatePackage.ITERATOR_MAPPING_VALUE__STREAM:
-				return RoamIntermediatePackage.ITERATOR__STREAM;
+			case GipsIntermediatePackage.ITERATOR_MAPPING_VALUE__STREAM:
+				return GipsIntermediatePackage.ITERATOR__STREAM;
 			default:
 				return -1;
 			}
@@ -251,8 +251,8 @@ public class IteratorMappingValueImpl extends ValueExpressionImpl implements Ite
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == Iterator.class) {
 			switch (baseFeatureID) {
-			case RoamIntermediatePackage.ITERATOR__STREAM:
-				return RoamIntermediatePackage.ITERATOR_MAPPING_VALUE__STREAM;
+			case GipsIntermediatePackage.ITERATOR__STREAM:
+				return GipsIntermediatePackage.ITERATOR_MAPPING_VALUE__STREAM;
 			default:
 				return -1;
 			}

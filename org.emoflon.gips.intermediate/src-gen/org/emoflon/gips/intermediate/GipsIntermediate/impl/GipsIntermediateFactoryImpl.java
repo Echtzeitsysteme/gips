@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.*;
+import org.emoflon.gips.intermediate.GipsIntermediate.*;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!--
@@ -19,24 +19,24 @@ import org.emoflon.roam.intermediate.RoamIntermediate.*;
  * 
  * @generated
  */
-public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamIntermediateFactory {
+public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsIntermediateFactory {
 	/**
 	 * Creates the default factory implementation. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	public static RoamIntermediateFactory init() {
+	public static GipsIntermediateFactory init() {
 		try {
-			RoamIntermediateFactory theRoamIntermediateFactory = (RoamIntermediateFactory) EPackage.Registry.INSTANCE
-					.getEFactory(RoamIntermediatePackage.eNS_URI);
-			if (theRoamIntermediateFactory != null) {
-				return theRoamIntermediateFactory;
+			GipsIntermediateFactory theGipsIntermediateFactory = (GipsIntermediateFactory) EPackage.Registry.INSTANCE
+					.getEFactory(GipsIntermediatePackage.eNS_URI);
+			if (theGipsIntermediateFactory != null) {
+				return theGipsIntermediateFactory;
 			}
 		} catch (Exception exception) {
 			EcorePlugin.INSTANCE.log(exception);
 		}
-		return new RoamIntermediateFactoryImpl();
+		return new GipsIntermediateFactoryImpl();
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	 * 
 	 * @generated
 	 */
-	public RoamIntermediateFactoryImpl() {
+	public GipsIntermediateFactoryImpl() {
 		super();
 	}
 
@@ -57,105 +57,105 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL:
-			return createRoamIntermediateModel();
-		case RoamIntermediatePackage.ILP_CONFIG:
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL:
+			return createGipsIntermediateModel();
+		case GipsIntermediatePackage.ILP_CONFIG:
 			return createILPConfig();
-		case RoamIntermediatePackage.PATTERN:
+		case GipsIntermediatePackage.PATTERN:
 			return createPattern();
-		case RoamIntermediatePackage.TYPE:
+		case GipsIntermediatePackage.TYPE:
 			return createType();
-		case RoamIntermediatePackage.MAPPING:
+		case GipsIntermediatePackage.MAPPING:
 			return createMapping();
-		case RoamIntermediatePackage.OBJECTIVE:
+		case GipsIntermediatePackage.OBJECTIVE:
 			return createObjective();
-		case RoamIntermediatePackage.GLOBAL_OBJECTIVE:
+		case GipsIntermediatePackage.GLOBAL_OBJECTIVE:
 			return createGlobalObjective();
-		case RoamIntermediatePackage.PATTERN_CONSTRAINT:
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT:
 			return createPatternConstraint();
-		case RoamIntermediatePackage.TYPE_CONSTRAINT:
+		case GipsIntermediatePackage.TYPE_CONSTRAINT:
 			return createTypeConstraint();
-		case RoamIntermediatePackage.MAPPING_CONSTRAINT:
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT:
 			return createMappingConstraint();
-		case RoamIntermediatePackage.PATTERN_OBJECTIVE:
+		case GipsIntermediatePackage.PATTERN_OBJECTIVE:
 			return createPatternObjective();
-		case RoamIntermediatePackage.TYPE_OBJECTIVE:
+		case GipsIntermediatePackage.TYPE_OBJECTIVE:
 			return createTypeObjective();
-		case RoamIntermediatePackage.MAPPING_OBJECTIVE:
+		case GipsIntermediatePackage.MAPPING_OBJECTIVE:
 			return createMappingObjective();
-		case RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION:
+		case GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION:
 			return createBinaryArithmeticExpression();
-		case RoamIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION:
+		case GipsIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION:
 			return createUnaryArithmeticExpression();
-		case RoamIntermediatePackage.ARITHMETIC_VALUE:
+		case GipsIntermediatePackage.ARITHMETIC_VALUE:
 			return createArithmeticValue();
-		case RoamIntermediatePackage.INTEGER_LITERAL:
+		case GipsIntermediatePackage.INTEGER_LITERAL:
 			return createIntegerLiteral();
-		case RoamIntermediatePackage.DOUBLE_LITERAL:
+		case GipsIntermediatePackage.DOUBLE_LITERAL:
 			return createDoubleLiteral();
-		case RoamIntermediatePackage.BOOL_BINARY_EXPRESSION:
+		case GipsIntermediatePackage.BOOL_BINARY_EXPRESSION:
 			return createBoolBinaryExpression();
-		case RoamIntermediatePackage.BOOL_UNARY_EXPRESSION:
+		case GipsIntermediatePackage.BOOL_UNARY_EXPRESSION:
 			return createBoolUnaryExpression();
-		case RoamIntermediatePackage.BOOL_VALUE:
+		case GipsIntermediatePackage.BOOL_VALUE:
 			return createBoolValue();
-		case RoamIntermediatePackage.BOOL_STREAM_EXPRESSION:
+		case GipsIntermediatePackage.BOOL_STREAM_EXPRESSION:
 			return createBoolStreamExpression();
-		case RoamIntermediatePackage.RELATIONAL_EXPRESSION:
+		case GipsIntermediatePackage.RELATIONAL_EXPRESSION:
 			return createRelationalExpression();
-		case RoamIntermediatePackage.BOOL_LITERAL:
+		case GipsIntermediatePackage.BOOL_LITERAL:
 			return createBoolLiteral();
-		case RoamIntermediatePackage.MAPPING_SUM_EXPRESSION:
+		case GipsIntermediatePackage.MAPPING_SUM_EXPRESSION:
 			return createMappingSumExpression();
-		case RoamIntermediatePackage.TYPE_SUM_EXPRESSION:
+		case GipsIntermediatePackage.TYPE_SUM_EXPRESSION:
 			return createTypeSumExpression();
-		case RoamIntermediatePackage.CONTEXT_TYPE_VALUE:
+		case GipsIntermediatePackage.CONTEXT_TYPE_VALUE:
 			return createContextTypeValue();
-		case RoamIntermediatePackage.CONTEXT_PATTERN_VALUE:
+		case GipsIntermediatePackage.CONTEXT_PATTERN_VALUE:
 			return createContextPatternValue();
-		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE:
+		case GipsIntermediatePackage.CONTEXT_PATTERN_NODE:
 			return createContextPatternNode();
-		case RoamIntermediatePackage.CONTEXT_MAPPING_VALUE:
+		case GipsIntermediatePackage.CONTEXT_MAPPING_VALUE:
 			return createContextMappingValue();
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE:
+		case GipsIntermediatePackage.CONTEXT_MAPPING_NODE:
 			return createContextMappingNode();
-		case RoamIntermediatePackage.OBJECTIVE_FUNCTION_VALUE:
+		case GipsIntermediatePackage.OBJECTIVE_FUNCTION_VALUE:
 			return createObjectiveFunctionValue();
-		case RoamIntermediatePackage.FEATURE_EXPRESSION:
+		case GipsIntermediatePackage.FEATURE_EXPRESSION:
 			return createFeatureExpression();
-		case RoamIntermediatePackage.FEATURE_LITERAL:
+		case GipsIntermediatePackage.FEATURE_LITERAL:
 			return createFeatureLiteral();
-		case RoamIntermediatePackage.CONTEXT_TYPE_FEATURE_VALUE:
+		case GipsIntermediatePackage.CONTEXT_TYPE_FEATURE_VALUE:
 			return createContextTypeFeatureValue();
-		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE_FEATURE_VALUE:
+		case GipsIntermediatePackage.CONTEXT_PATTERN_NODE_FEATURE_VALUE:
 			return createContextPatternNodeFeatureValue();
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE:
+		case GipsIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE:
 			return createContextMappingNodeFeatureValue();
-		case RoamIntermediatePackage.ITERATOR_PATTERN_VALUE:
+		case GipsIntermediatePackage.ITERATOR_PATTERN_VALUE:
 			return createIteratorPatternValue();
-		case RoamIntermediatePackage.ITERATOR_PATTERN_FEATURE_VALUE:
+		case GipsIntermediatePackage.ITERATOR_PATTERN_FEATURE_VALUE:
 			return createIteratorPatternFeatureValue();
-		case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE:
+		case GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE:
 			return createIteratorPatternNodeValue();
-		case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_FEATURE_VALUE:
+		case GipsIntermediatePackage.ITERATOR_PATTERN_NODE_FEATURE_VALUE:
 			return createIteratorPatternNodeFeatureValue();
-		case RoamIntermediatePackage.ITERATOR_MAPPING_VALUE:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_VALUE:
 			return createIteratorMappingValue();
-		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE:
 			return createIteratorMappingFeatureValue();
-		case RoamIntermediatePackage.ITERATOR_MAPPING_NODE_VALUE:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_NODE_VALUE:
 			return createIteratorMappingNodeValue();
-		case RoamIntermediatePackage.ITERATOR_MAPPING_NODE_FEATURE_VALUE:
+		case GipsIntermediatePackage.ITERATOR_MAPPING_NODE_FEATURE_VALUE:
 			return createIteratorMappingNodeFeatureValue();
-		case RoamIntermediatePackage.ITERATOR_TYPE_VALUE:
+		case GipsIntermediatePackage.ITERATOR_TYPE_VALUE:
 			return createIteratorTypeValue();
-		case RoamIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE:
+		case GipsIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE:
 			return createIteratorTypeFeatureValue();
-		case RoamIntermediatePackage.STREAM_EXPRESSION:
+		case GipsIntermediatePackage.STREAM_EXPRESSION:
 			return createStreamExpression();
-		case RoamIntermediatePackage.STREAM_FILTER_OPERATION:
+		case GipsIntermediatePackage.STREAM_FILTER_OPERATION:
 			return createStreamFilterOperation();
-		case RoamIntermediatePackage.STREAM_SELECT_OPERATION:
+		case GipsIntermediatePackage.STREAM_SELECT_OPERATION:
 			return createStreamSelectOperation();
 		default:
 			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -170,23 +170,23 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
-		case RoamIntermediatePackage.ILP_SOLVER_TYPE:
+		case GipsIntermediatePackage.ILP_SOLVER_TYPE:
 			return createILPSolverTypeFromString(eDataType, initialValue);
-		case RoamIntermediatePackage.OBJECTIVE_TARGET:
+		case GipsIntermediatePackage.OBJECTIVE_TARGET:
 			return createObjectiveTargetFromString(eDataType, initialValue);
-		case RoamIntermediatePackage.RELATIONAL_OPERATOR:
+		case GipsIntermediatePackage.RELATIONAL_OPERATOR:
 			return createRelationalOperatorFromString(eDataType, initialValue);
-		case RoamIntermediatePackage.BINARY_ARITHMETIC_OPERATOR:
+		case GipsIntermediatePackage.BINARY_ARITHMETIC_OPERATOR:
 			return createBinaryArithmeticOperatorFromString(eDataType, initialValue);
-		case RoamIntermediatePackage.UNARY_ARITHMETIC_OPERATOR:
+		case GipsIntermediatePackage.UNARY_ARITHMETIC_OPERATOR:
 			return createUnaryArithmeticOperatorFromString(eDataType, initialValue);
-		case RoamIntermediatePackage.STREAM_ARITHMETIC_OPERATOR:
+		case GipsIntermediatePackage.STREAM_ARITHMETIC_OPERATOR:
 			return createStreamArithmeticOperatorFromString(eDataType, initialValue);
-		case RoamIntermediatePackage.BINARY_BOOL_OPERATOR:
+		case GipsIntermediatePackage.BINARY_BOOL_OPERATOR:
 			return createBinaryBoolOperatorFromString(eDataType, initialValue);
-		case RoamIntermediatePackage.UNARY_BOOL_OPERATOR:
+		case GipsIntermediatePackage.UNARY_BOOL_OPERATOR:
 			return createUnaryBoolOperatorFromString(eDataType, initialValue);
-		case RoamIntermediatePackage.STREAM_BOOL_OPERATOR:
+		case GipsIntermediatePackage.STREAM_BOOL_OPERATOR:
 			return createStreamBoolOperatorFromString(eDataType, initialValue);
 		default:
 			throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
@@ -201,23 +201,23 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
-		case RoamIntermediatePackage.ILP_SOLVER_TYPE:
+		case GipsIntermediatePackage.ILP_SOLVER_TYPE:
 			return convertILPSolverTypeToString(eDataType, instanceValue);
-		case RoamIntermediatePackage.OBJECTIVE_TARGET:
+		case GipsIntermediatePackage.OBJECTIVE_TARGET:
 			return convertObjectiveTargetToString(eDataType, instanceValue);
-		case RoamIntermediatePackage.RELATIONAL_OPERATOR:
+		case GipsIntermediatePackage.RELATIONAL_OPERATOR:
 			return convertRelationalOperatorToString(eDataType, instanceValue);
-		case RoamIntermediatePackage.BINARY_ARITHMETIC_OPERATOR:
+		case GipsIntermediatePackage.BINARY_ARITHMETIC_OPERATOR:
 			return convertBinaryArithmeticOperatorToString(eDataType, instanceValue);
-		case RoamIntermediatePackage.UNARY_ARITHMETIC_OPERATOR:
+		case GipsIntermediatePackage.UNARY_ARITHMETIC_OPERATOR:
 			return convertUnaryArithmeticOperatorToString(eDataType, instanceValue);
-		case RoamIntermediatePackage.STREAM_ARITHMETIC_OPERATOR:
+		case GipsIntermediatePackage.STREAM_ARITHMETIC_OPERATOR:
 			return convertStreamArithmeticOperatorToString(eDataType, instanceValue);
-		case RoamIntermediatePackage.BINARY_BOOL_OPERATOR:
+		case GipsIntermediatePackage.BINARY_BOOL_OPERATOR:
 			return convertBinaryBoolOperatorToString(eDataType, instanceValue);
-		case RoamIntermediatePackage.UNARY_BOOL_OPERATOR:
+		case GipsIntermediatePackage.UNARY_BOOL_OPERATOR:
 			return convertUnaryBoolOperatorToString(eDataType, instanceValue);
-		case RoamIntermediatePackage.STREAM_BOOL_OPERATOR:
+		case GipsIntermediatePackage.STREAM_BOOL_OPERATOR:
 			return convertStreamBoolOperatorToString(eDataType, instanceValue);
 		default:
 			throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
@@ -229,9 +229,9 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	 * 
 	 * @generated
 	 */
-	public RoamIntermediateModel createRoamIntermediateModel() {
-		RoamIntermediateModelImpl roamIntermediateModel = new RoamIntermediateModelImpl();
-		return roamIntermediateModel;
+	public GipsIntermediateModel createGipsIntermediateModel() {
+		GipsIntermediateModelImpl gipsIntermediateModel = new GipsIntermediateModelImpl();
+		return gipsIntermediateModel;
 	}
 
 	/**
@@ -927,8 +927,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	 * 
 	 * @generated
 	 */
-	public RoamIntermediatePackage getRoamIntermediatePackage() {
-		return (RoamIntermediatePackage) getEPackage();
+	public GipsIntermediatePackage getGipsIntermediatePackage() {
+		return (GipsIntermediatePackage) getEPackage();
 	}
 
 	/**
@@ -938,8 +938,8 @@ public class RoamIntermediateFactoryImpl extends EFactoryImpl implements RoamInt
 	 * @generated
 	 */
 	@Deprecated
-	public static RoamIntermediatePackage getPackage() {
-		return RoamIntermediatePackage.eINSTANCE;
+	public static GipsIntermediatePackage getPackage() {
+		return GipsIntermediatePackage.eINSTANCE;
 	}
 
-} // RoamIntermediateFactoryImpl
+} // GipsIntermediateFactoryImpl

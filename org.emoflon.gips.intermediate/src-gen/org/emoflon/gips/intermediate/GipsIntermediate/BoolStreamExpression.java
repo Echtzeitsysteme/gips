@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Bool
@@ -10,13 +10,13 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression#getStream
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression#getStream
  * <em>Stream</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression#getOperator
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression#getOperator
  * <em>Operator</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBoolStreamExpression()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getBoolStreamExpression()
  * @model
  * @generated
  */
@@ -27,7 +27,7 @@ public interface BoolStreamExpression extends BoolValueExpression {
 	 * 
 	 * @return the value of the '<em>Stream</em>' containment reference.
 	 * @see #setStream(StreamExpression)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBoolStreamExpression_Stream()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getBoolStreamExpression_Stream()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -35,7 +35,7 @@ public interface BoolStreamExpression extends BoolValueExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression#getStream
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression#getStream
 	 * <em>Stream</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -48,13 +48,13 @@ public interface BoolStreamExpression extends BoolValueExpression {
 	/**
 	 * Returns the value of the '<em><b>Operator</b></em>' attribute. The literals
 	 * are from the enumeration
-	 * {@link org.emoflon.roam.intermediate.RoamIntermediate.StreamBoolOperator}.
+	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.StreamBoolOperator}.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the value of the '<em>Operator</em>' attribute.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamBoolOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamBoolOperator
 	 * @see #setOperator(StreamBoolOperator)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getBoolStreamExpression_Operator()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getBoolStreamExpression_Operator()
 	 * @model
 	 * @generated
 	 */
@@ -62,11 +62,11 @@ public interface BoolStreamExpression extends BoolValueExpression {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression#getOperator
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression#getOperator
 	 * <em>Operator</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Operator</em>' attribute.
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.StreamBoolOperator
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamBoolOperator
 	 * @see #getOperator()
 	 * @generated
 	 */

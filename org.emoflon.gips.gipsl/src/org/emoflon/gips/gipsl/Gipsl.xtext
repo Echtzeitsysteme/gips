@@ -1,30 +1,30 @@
-grammar org.emoflon.roam.roamslang.RoamSLang with org.emoflon.ibex.gt.editor.GT
+grammar org.emoflon.gips.gipsl.Gipsl with org.emoflon.ibex.gt.editor.GT
 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 import "http://www.emoflon.org/ibex/gt/editor/GT" as GT
 
-generate roamSLang "http://www.emoflon.org/roam/roamslang/RoamSLang"
+generate gipsl "http://www.emoflon.org/gips/gipsl/Gipsl"
 
 @Override 
 EditorGTFile: {EditorGTFile} 
 	(imports+=EditorImport)*
-	config = RoamConfig
+	config = GipsConfig
   	(patterns+=EditorPattern |
   	conditions+=EditorCondition |
-  	mappings += RoamMapping |
-  	constraints += RoamConstraint |
-  	objectives += RoamObjective)*
-  	(globalObjective = RoamGlobalObjective)?	
+  	mappings += GipsMapping |
+  	constraints += GipsConstraint |
+  	objectives += GipsObjective)*
+  	(globalObjective = GipsGlobalObjective)?	
 ;
 
-RoamConfig : {RoamConfig}
+GipsConfig : {GipsConfig}
 	'config' '{'
-	'solver' ':=' solver=SolverType '[' 'home' ':=' home=RoamStringLiteral ',' 'license' ':=' license=RoamStringLiteral ']' ';'
-	('launchConfig' ':=' enableLaunchConfig = RoamBoolean '[' 'main' ':=' mainLoc=RoamStringLiteral ']' ';')?
-	('timeLimit' ':=' enableLimit = RoamBoolean '[' 'value' ':=' timeLimit=RoamDouble ']' ';')?
-	('randomSeed' ':=' enableSeed = RoamBoolean '[' 'value' ':=' rndSeed=RoamInteger ']' ';')?
-	('presolve' ':=' enablePresolve = RoamBoolean ';')?
-	('debugOutput' ':=' enableDebugOutput = RoamBoolean ';')?
+	'solver' ':=' solver=SolverType '[' 'home' ':=' home=GipsStringLiteral ',' 'license' ':=' license=GipsStringLiteral ']' ';'
+	('launchConfig' ':=' enableLaunchConfig = GipsBoolean '[' 'main' ':=' mainLoc=GipsStringLiteral ']' ';')?
+	('timeLimit' ':=' enableLimit = GipsBoolean '[' 'value' ':=' timeLimit=GipsDouble ']' ';')?
+	('randomSeed' ':=' enableSeed = GipsBoolean '[' 'value' ':=' rndSeed=GipsInteger ']' ';')?
+	('presolve' ':=' enablePresolve = GipsBoolean ';')?
+	('debugOutput' ':=' enableDebugOutput = GipsBoolean ';')?
 	'}'
 ;
 
@@ -32,82 +32,82 @@ enum SolverType:
 	GUROBI='GUROBI'
 ;
 
-RoamMapping :
+GipsMapping :
 	'mapping' name=ID 'with' rule=[GT::EditorPattern|ID] ';'
 ;
 
-RoamConstraint : 
-	'constraint' '->' context=(RoamMappingContext | RoamTypeContext | RoamMatchContext) '{'
-		expr = RoamBool
+GipsConstraint : 
+	'constraint' '->' context=(GipsMappingContext | GipsTypeContext | GipsMatchContext) '{'
+		expr = GipsBool
 	'}'
 ;
 
-RoamObjective : 
-	'objective' name=ID '->' context=(RoamMappingContext | RoamTypeContext | RoamMatchContext) '{'
-		expr = RoamArithmeticExpr
+GipsObjective : 
+	'objective' name=ID '->' context=(GipsMappingContext | GipsTypeContext | GipsMatchContext) '{'
+		expr = GipsArithmeticExpr
 	'}'
 ;
 
-RoamMappingContext:
-	'mapping::' mapping = [RoamMapping|ID]
+GipsMappingContext:
+	'mapping::' mapping = [GipsMapping|ID]
 ;
 
-RoamTypeContext:
+GipsTypeContext:
 	'class::' type = [ecore::EClassifier]
 ;
 
-RoamMatchContext:
+GipsMatchContext:
 	'match::' pattern = [GT::EditorPattern|ID]
 ;
 
-RoamObjectiveExpression:
-	objective=[RoamObjective|ID]
+GipsObjectiveExpression:
+	objective=[GipsObjective|ID]
 ;
 
-RoamGlobalObjective :
-	'global' 'objective' ':' objectiveGoal = RoamObjectiveGoal ('{'
-		expr = RoamArithmeticExpr
+GipsGlobalObjective :
+	'global' 'objective' ':' objectiveGoal = GipsObjectiveGoal ('{'
+		expr = GipsArithmeticExpr
 	'}')?
 ;
 
-enum RoamObjectiveGoal:
+enum GipsObjectiveGoal:
 	MIN = 'min' | MAX = 'max'
 ;
 
-RoamBool:
-	expr=RoamBoolExpr
+GipsBool:
+	expr=GipsBoolExpr
 ;
 
-RoamBoolExpr:
-	RoamBinaryBoolExpr
+GipsBoolExpr:
+	GipsBinaryBoolExpr
 ;
 
-RoamBinaryBoolExpr returns RoamBoolExpr:
-	RoamUnaryBoolExpr({RoamBinaryBoolExpr.left = current} operator=RoamBoolBinaryOperator right=RoamUnaryBoolExpr)*
+GipsBinaryBoolExpr returns GipsBoolExpr:
+	GipsUnaryBoolExpr({GipsBinaryBoolExpr.left = current} operator=GipsBoolBinaryOperator right=GipsUnaryBoolExpr)*
 ;
 
-RoamUnaryBoolExpr returns RoamBoolExpr: {RoamUnaryBoolExpr}
-	(operator=RoamBoolUnaryOperator '(' operand=RoamBoolExpr ')' ) | RoamBooleanLiteral | RoamRelExpr
+GipsUnaryBoolExpr returns GipsBoolExpr: {GipsUnaryBoolExpr}
+	(operator=GipsBoolUnaryOperator '(' operand=GipsBoolExpr ')' ) | GipsBooleanLiteral | GipsRelExpr
 ;
 
-RoamBooleanLiteral:
-	literal = RoamBoolean
+GipsBooleanLiteral:
+	literal = GipsBoolean
 ;
 
-enum RoamBoolBinaryOperator:
+enum GipsBoolBinaryOperator:
 	AND='&' 	|
 	OR='|'	
 ;
 
-enum RoamBoolUnaryOperator:
+enum GipsBoolUnaryOperator:
 	NOT = '!'
 ;
 
-RoamRelExpr:
-	left=RoamArithmeticExpr (operator=RoamRelOperator right=RoamArithmeticExpr)?
+GipsRelExpr:
+	left=GipsArithmeticExpr (operator=GipsRelOperator right=GipsArithmeticExpr)?
 ;
 
-enum RoamRelOperator:
+enum GipsRelOperator:
   GREATER='>' |
   GREATER_OR_EQUAL='>=' |
   EQUAL='==' |
@@ -116,100 +116,100 @@ enum RoamRelOperator:
   SMALLER='<'
 ;
 
-RoamAttributeExpr:
-	RoamMappingAttributeExpr |  RoamContextExpr | RoamLambdaAttributeExpression
+GipsAttributeExpr:
+	GipsMappingAttributeExpr |  GipsContextExpr | GipsLambdaAttributeExpression
 ;
 
-RoamMappingAttributeExpr returns RoamAttributeExpr: {RoamMappingAttributeExpr}
-	'mappings.' mapping=[RoamMapping|ID] '->' expr = RoamStreamExpr
+GipsMappingAttributeExpr returns GipsAttributeExpr: {GipsMappingAttributeExpr}
+	'mappings.' mapping=[GipsMapping|ID] '->' expr = GipsStreamExpr
 ;
 
 //TODO: Allow optional nested lambda expressions
 //TODO: Allow omission of "expr" rule call to enable usage of objects in lambda expression, e.g., for identity / type checks.
-RoamLambdaAttributeExpression returns RoamAttributeExpr: {RoamLambdaAttributeExpression}
-	var=[RoamLambdaExpression|ID] '.' (expr = RoamNodeAttributeExpr | expr = RoamContextOperationExpression | expr = RoamFeatureExpr) // ('->' stream = RoamStreamExpr)?
+GipsLambdaAttributeExpression returns GipsAttributeExpr: {GipsLambdaAttributeExpression}
+	var=[GipsLambdaExpression|ID] '.' (expr = GipsNodeAttributeExpr | expr = GipsContextOperationExpression | expr = GipsFeatureExpr) // ('->' stream = GipsStreamExpr)?
 ;
 
-RoamContextExpr returns RoamAttributeExpr: {RoamContextExpr}
-	'self' ('.' typeCast=RoamTypeCast)? ('.' (expr = RoamNodeAttributeExpr | expr = RoamContextOperationExpression | expr = RoamFeatureExpr) ('->' stream = RoamStreamExpr)?)?
+GipsContextExpr returns GipsAttributeExpr: {GipsContextExpr}
+	'self' ('.' typeCast=GipsTypeCast)? ('.' (expr = GipsNodeAttributeExpr | expr = GipsContextOperationExpression | expr = GipsFeatureExpr) ('->' stream = GipsStreamExpr)?)?
 ;
 
-RoamContextOperationExpression:
-	operation=RoamContextOperation
+GipsContextOperationExpression:
+	operation=GipsContextOperation
 ;
 
-enum RoamContextOperation:
+enum GipsContextOperation:
 	VALUE = 'value()' |
  	MAPPED = 'isMapped()'
 ;
 
-RoamTypeCast:
+GipsTypeCast:
 	'toType(' type=[ecore::EClass] ')'
 ;
 
-RoamNodeAttributeExpr: {RoamNodeAttributeExpr}
-	'nodes().' node=[GT::EditorNode|ID] ('.' typeCast=RoamTypeCast)? ('.' expr = RoamFeatureExpr)?
+GipsNodeAttributeExpr: {GipsNodeAttributeExpr}
+	'nodes().' node=[GT::EditorNode|ID] ('.' typeCast=GipsTypeCast)? ('.' expr = GipsFeatureExpr)?
 ;
 
-RoamFeatureExpr:
-	RoamFeatureNavigation
+GipsFeatureExpr:
+	GipsFeatureNavigation
 ;
 
-RoamFeatureNavigation returns RoamFeatureExpr:
-	RoamFeatureLit ({RoamFeatureNavigation.left=current} '.' right=RoamFeatureNavigation)?
+GipsFeatureNavigation returns GipsFeatureExpr:
+	GipsFeatureLit ({GipsFeatureNavigation.left=current} '.' right=GipsFeatureNavigation)?
 ;
 
-RoamFeatureLit returns RoamFeatureExpr: {RoamFeatureLit}
-	feature = [ecore::EStructuralFeature] ('.' typeCast=RoamTypeCast)?
+GipsFeatureLit returns GipsFeatureExpr: {GipsFeatureLit}
+	feature = [ecore::EStructuralFeature] ('.' typeCast=GipsTypeCast)?
 ;
 
-RoamArithmeticExpr:
-	RoamSumArithmeticExpr
+GipsArithmeticExpr:
+	GipsSumArithmeticExpr
 ;
 
-RoamSumArithmeticExpr returns RoamArithmeticExpr:
-	RoamProductArithmeticExpr({RoamSumArithmeticExpr.left = current} operator=RoamSumOperator right=RoamProductArithmeticExpr)*
+GipsSumArithmeticExpr returns GipsArithmeticExpr:
+	GipsProductArithmeticExpr({GipsSumArithmeticExpr.left = current} operator=GipsSumOperator right=GipsProductArithmeticExpr)*
 ;
 
-RoamProductArithmeticExpr returns RoamArithmeticExpr:
-	RoamExpArithmeticExpr({RoamProductArithmeticExpr.left = current} operator=RoamProductOperator right=RoamExpArithmeticExpr)*
+GipsProductArithmeticExpr returns GipsArithmeticExpr:
+	GipsExpArithmeticExpr({GipsProductArithmeticExpr.left = current} operator=GipsProductOperator right=GipsExpArithmeticExpr)*
 ;
 
-RoamExpArithmeticExpr returns RoamArithmeticExpr:
-	RoamUnaryArithmeticExpr({RoamExpArithmeticExpr.left = current} operator=RoamExpOperator right=RoamUnaryArithmeticExpr)*
+GipsExpArithmeticExpr returns GipsArithmeticExpr:
+	GipsUnaryArithmeticExpr({GipsExpArithmeticExpr.left = current} operator=GipsExpOperator right=GipsUnaryArithmeticExpr)*
 ;
 
-RoamUnaryArithmeticExpr returns RoamArithmeticExpr: {RoamUnaryArithmeticExpr}
-	operator=RoamArithmeticUnaryOperator  '(' operand=RoamBracketExpr ')' | RoamBracketExpr
+GipsUnaryArithmeticExpr returns GipsArithmeticExpr: {GipsUnaryArithmeticExpr}
+	operator=GipsArithmeticUnaryOperator  '(' operand=GipsBracketExpr ')' | GipsBracketExpr
 ;
 
-RoamBracketExpr returns RoamArithmeticExpr: {RoamBracketExpr}
-	'(' operand=RoamArithmeticExpr ')' | RoamExpressionOperand
+GipsBracketExpr returns GipsArithmeticExpr: {GipsBracketExpr}
+	'(' operand=GipsArithmeticExpr ')' | GipsExpressionOperand
 ;
 
-RoamExpressionOperand:
-	RoamAttributeExpr | RoamObjectiveExpression | RoamArithmeticLiteral
+GipsExpressionOperand:
+	GipsAttributeExpr | GipsObjectiveExpression | GipsArithmeticLiteral
 ;
 
-RoamArithmeticLiteral:
-	value = (RoamDoubleLiteral | RoamIntegerLiteral)
+GipsArithmeticLiteral:
+	value = (GipsDoubleLiteral | GipsIntegerLiteral)
 ;
 
-enum RoamProductOperator:
+enum GipsProductOperator:
 	MULT='*' |
  	DIV='/'  
 ;
 
-enum RoamExpOperator:
+enum GipsExpOperator:
  	POW='^'	
 ;
 
-enum RoamSumOperator:
+enum GipsSumOperator:
 	PLUS='+' 	|
 	MINUS='-' 	
 ;
 
-enum RoamArithmeticUnaryOperator:
+enum GipsArithmeticUnaryOperator:
 	NEG='-'	|
 	ABS='abs'	|
 	SQRT='sqrt' |
@@ -217,52 +217,52 @@ enum RoamArithmeticUnaryOperator:
 	cos='cos'	
 ;
 
-RoamStreamExpr:
-	RoamStreamNavigation
+GipsStreamExpr:
+	GipsStreamNavigation
 ;
 
-RoamStreamNavigation returns RoamStreamExpr:
-	RoamStreamLit({RoamStreamNavigation.left=current}'->' right=RoamStreamNavigation)?
+GipsStreamNavigation returns GipsStreamExpr:
+	GipsStreamLit({GipsStreamNavigation.left=current}'->' right=GipsStreamNavigation)?
 ;
 
-RoamStreamLit returns RoamStreamExpr:
-	{RoamSelect} 'typesOf' '(' type=[ecore::EClassifier] ')' |
-	{RoamStreamSet} operator=RoamStreamSetOperator lambda = RoamLambdaExpression |
-	{RoamStreamArithmetic} operator=RoamStreamArithmeticOperator lambda = RoamLambdaExpression |
-	{RoamStreamBoolExpr} operator=RoamStreamNoArgOperator
+GipsStreamLit returns GipsStreamExpr:
+	{GipsSelect} 'typesOf' '(' type=[ecore::EClassifier] ')' |
+	{GipsStreamSet} operator=GipsStreamSetOperator lambda = GipsLambdaExpression |
+	{GipsStreamArithmetic} operator=GipsStreamArithmeticOperator lambda = GipsLambdaExpression |
+	{GipsStreamBoolExpr} operator=GipsStreamNoArgOperator
 ;
 
-RoamLambdaExpression:
-	'(' name=ID '|' expr=RoamBoolExpr ')'
+GipsLambdaExpression:
+	'(' name=ID '|' expr=GipsBoolExpr ')'
 ;
 
-enum RoamStreamSetOperator:
+enum GipsStreamSetOperator:
 	FILTER='filter'
 ;
 
-enum RoamStreamArithmeticOperator:
+enum GipsStreamArithmeticOperator:
 	SUM = 'sum'
 ;
 
-enum RoamStreamNoArgOperator:
+enum GipsStreamNoArgOperator:
 	EXISTS = 'exists()' |
 	NOTEXISTS = 'notExists()' |
 	count = 'count()'
 ;
 
-RoamDoubleLiteral:
-	RoamDouble
+GipsDoubleLiteral:
+	GipsDouble
 ;
 
-RoamIntegerLiteral:
-	RoamInteger
+GipsIntegerLiteral:
+	GipsInteger
 ;
 
-RoamDouble returns ecore::EDouble:
+GipsDouble returns ecore::EDouble:
 	('-')?INT '.' INT
 ;
 
-RoamInteger returns ecore::EInt:
+GipsInteger returns ecore::EInt:
 	(('-')? INT)
 ;
 
@@ -271,7 +271,7 @@ terminal INT returns ecore::EInt:
 	'0'..'9' ('0'..'9')*
 ;
 
-RoamBoolean returns ecore::EBoolean:
+GipsBoolean returns ecore::EBoolean:
 	TRUE | FALSE
 ;
 
@@ -283,7 +283,7 @@ terminal FALSE returns ecore::EBoolean:
 	'false'
 ;
 
-RoamStringLiteral:
+GipsStringLiteral:
 	STRING
 ;
 

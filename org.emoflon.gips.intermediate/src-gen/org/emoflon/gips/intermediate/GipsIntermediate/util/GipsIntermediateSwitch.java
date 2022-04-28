@@ -1,13 +1,13 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.util;
+package org.emoflon.gips.intermediate.GipsIntermediate.util;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.*;
+import org.emoflon.gips.intermediate.GipsIntermediate.*;
 
 /**
  * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance
@@ -17,16 +17,16 @@ import org.emoflon.roam.intermediate.RoamIntermediate.*;
  * inheritance hierarchy until a non-null result is returned, which is the
  * result of the switch. <!-- end-user-doc -->
  * 
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage
  * @generated
  */
-public class RoamIntermediateSwitch<T> extends Switch<T> {
+public class GipsIntermediateSwitch<T> extends Switch<T> {
 	/**
 	 * The cached model package <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	protected static RoamIntermediatePackage modelPackage;
+	protected static GipsIntermediatePackage modelPackage;
 
 	/**
 	 * Creates an instance of the switch. <!-- begin-user-doc --> <!-- end-user-doc
@@ -34,9 +34,9 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	 * 
 	 * @generated
 	 */
-	public RoamIntermediateSwitch() {
+	public GipsIntermediateSwitch() {
 		if (modelPackage == null) {
-			modelPackage = RoamIntermediatePackage.eINSTANCE;
+			modelPackage = GipsIntermediatePackage.eINSTANCE;
 		}
 	}
 
@@ -64,28 +64,28 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	@Override
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
-		case RoamIntermediatePackage.ROAM_INTERMEDIATE_MODEL: {
-			RoamIntermediateModel roamIntermediateModel = (RoamIntermediateModel) theEObject;
-			T result = caseRoamIntermediateModel(roamIntermediateModel);
+		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL: {
+			GipsIntermediateModel gipsIntermediateModel = (GipsIntermediateModel) theEObject;
+			T result = caseGipsIntermediateModel(gipsIntermediateModel);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.ILP_CONFIG: {
+		case GipsIntermediatePackage.ILP_CONFIG: {
 			ILPConfig ilpConfig = (ILPConfig) theEObject;
 			T result = caseILPConfig(ilpConfig);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.VARIABLE_SET: {
+		case GipsIntermediatePackage.VARIABLE_SET: {
 			VariableSet variableSet = (VariableSet) theEObject;
 			T result = caseVariableSet(variableSet);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.PATTERN: {
+		case GipsIntermediatePackage.PATTERN: {
 			Pattern pattern = (Pattern) theEObject;
 			T result = casePattern(pattern);
 			if (result == null)
@@ -94,7 +94,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.TYPE: {
+		case GipsIntermediatePackage.TYPE: {
 			Type type = (Type) theEObject;
 			T result = caseType(type);
 			if (result == null)
@@ -103,7 +103,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.MAPPING: {
+		case GipsIntermediatePackage.MAPPING: {
 			Mapping mapping = (Mapping) theEObject;
 			T result = caseMapping(mapping);
 			if (result == null)
@@ -112,35 +112,35 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.CONSTRAINT: {
+		case GipsIntermediatePackage.CONSTRAINT: {
 			Constraint constraint = (Constraint) theEObject;
 			T result = caseConstraint(constraint);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.OBJECTIVE: {
+		case GipsIntermediatePackage.OBJECTIVE: {
 			Objective objective = (Objective) theEObject;
 			T result = caseObjective(objective);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.GLOBAL_OBJECTIVE: {
+		case GipsIntermediatePackage.GLOBAL_OBJECTIVE: {
 			GlobalObjective globalObjective = (GlobalObjective) theEObject;
 			T result = caseGlobalObjective(globalObjective);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.CONTEXT: {
+		case GipsIntermediatePackage.CONTEXT: {
 			Context context = (Context) theEObject;
 			T result = caseContext(context);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.PATTERN_CONSTRAINT: {
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT: {
 			PatternConstraint patternConstraint = (PatternConstraint) theEObject;
 			T result = casePatternConstraint(patternConstraint);
 			if (result == null)
@@ -151,7 +151,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.TYPE_CONSTRAINT: {
+		case GipsIntermediatePackage.TYPE_CONSTRAINT: {
 			TypeConstraint typeConstraint = (TypeConstraint) theEObject;
 			T result = caseTypeConstraint(typeConstraint);
 			if (result == null)
@@ -162,7 +162,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.MAPPING_CONSTRAINT: {
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT: {
 			MappingConstraint mappingConstraint = (MappingConstraint) theEObject;
 			T result = caseMappingConstraint(mappingConstraint);
 			if (result == null)
@@ -173,7 +173,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.PATTERN_OBJECTIVE: {
+		case GipsIntermediatePackage.PATTERN_OBJECTIVE: {
 			PatternObjective patternObjective = (PatternObjective) theEObject;
 			T result = casePatternObjective(patternObjective);
 			if (result == null)
@@ -184,7 +184,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.TYPE_OBJECTIVE: {
+		case GipsIntermediatePackage.TYPE_OBJECTIVE: {
 			TypeObjective typeObjective = (TypeObjective) theEObject;
 			T result = caseTypeObjective(typeObjective);
 			if (result == null)
@@ -195,7 +195,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.MAPPING_OBJECTIVE: {
+		case GipsIntermediatePackage.MAPPING_OBJECTIVE: {
 			MappingObjective mappingObjective = (MappingObjective) theEObject;
 			T result = caseMappingObjective(mappingObjective);
 			if (result == null)
@@ -206,14 +206,14 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.ARITHMETIC_EXPRESSION: {
+		case GipsIntermediatePackage.ARITHMETIC_EXPRESSION: {
 			ArithmeticExpression arithmeticExpression = (ArithmeticExpression) theEObject;
 			T result = caseArithmeticExpression(arithmeticExpression);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION: {
+		case GipsIntermediatePackage.BINARY_ARITHMETIC_EXPRESSION: {
 			BinaryArithmeticExpression binaryArithmeticExpression = (BinaryArithmeticExpression) theEObject;
 			T result = caseBinaryArithmeticExpression(binaryArithmeticExpression);
 			if (result == null)
@@ -222,7 +222,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION: {
+		case GipsIntermediatePackage.UNARY_ARITHMETIC_EXPRESSION: {
 			UnaryArithmeticExpression unaryArithmeticExpression = (UnaryArithmeticExpression) theEObject;
 			T result = caseUnaryArithmeticExpression(unaryArithmeticExpression);
 			if (result == null)
@@ -231,14 +231,14 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.SET_OPERATION: {
+		case GipsIntermediatePackage.SET_OPERATION: {
 			SetOperation setOperation = (SetOperation) theEObject;
 			T result = caseSetOperation(setOperation);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.ARITHMETIC_VALUE_EXPRESSION: {
+		case GipsIntermediatePackage.ARITHMETIC_VALUE_EXPRESSION: {
 			ArithmeticValueExpression arithmeticValueExpression = (ArithmeticValueExpression) theEObject;
 			T result = caseArithmeticValueExpression(arithmeticValueExpression);
 			if (result == null)
@@ -247,7 +247,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.ARITHMETIC_VALUE: {
+		case GipsIntermediatePackage.ARITHMETIC_VALUE: {
 			ArithmeticValue arithmeticValue = (ArithmeticValue) theEObject;
 			T result = caseArithmeticValue(arithmeticValue);
 			if (result == null)
@@ -258,7 +258,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.ARITHMETIC_LITERAL: {
+		case GipsIntermediatePackage.ARITHMETIC_LITERAL: {
 			ArithmeticLiteral arithmeticLiteral = (ArithmeticLiteral) theEObject;
 			T result = caseArithmeticLiteral(arithmeticLiteral);
 			if (result == null)
@@ -269,7 +269,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.INTEGER_LITERAL: {
+		case GipsIntermediatePackage.INTEGER_LITERAL: {
 			IntegerLiteral integerLiteral = (IntegerLiteral) theEObject;
 			T result = caseIntegerLiteral(integerLiteral);
 			if (result == null)
@@ -282,7 +282,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.DOUBLE_LITERAL: {
+		case GipsIntermediatePackage.DOUBLE_LITERAL: {
 			DoubleLiteral doubleLiteral = (DoubleLiteral) theEObject;
 			T result = caseDoubleLiteral(doubleLiteral);
 			if (result == null)
@@ -295,14 +295,14 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.BOOL_EXPRESSION: {
+		case GipsIntermediatePackage.BOOL_EXPRESSION: {
 			BoolExpression boolExpression = (BoolExpression) theEObject;
 			T result = caseBoolExpression(boolExpression);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.BOOL_BINARY_EXPRESSION: {
+		case GipsIntermediatePackage.BOOL_BINARY_EXPRESSION: {
 			BoolBinaryExpression boolBinaryExpression = (BoolBinaryExpression) theEObject;
 			T result = caseBoolBinaryExpression(boolBinaryExpression);
 			if (result == null)
@@ -311,7 +311,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.BOOL_UNARY_EXPRESSION: {
+		case GipsIntermediatePackage.BOOL_UNARY_EXPRESSION: {
 			BoolUnaryExpression boolUnaryExpression = (BoolUnaryExpression) theEObject;
 			T result = caseBoolUnaryExpression(boolUnaryExpression);
 			if (result == null)
@@ -320,7 +320,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.BOOL_VALUE_EXPRESSION: {
+		case GipsIntermediatePackage.BOOL_VALUE_EXPRESSION: {
 			BoolValueExpression boolValueExpression = (BoolValueExpression) theEObject;
 			T result = caseBoolValueExpression(boolValueExpression);
 			if (result == null)
@@ -329,7 +329,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.BOOL_VALUE: {
+		case GipsIntermediatePackage.BOOL_VALUE: {
 			BoolValue boolValue = (BoolValue) theEObject;
 			T result = caseBoolValue(boolValue);
 			if (result == null)
@@ -340,7 +340,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.BOOL_STREAM_EXPRESSION: {
+		case GipsIntermediatePackage.BOOL_STREAM_EXPRESSION: {
 			BoolStreamExpression boolStreamExpression = (BoolStreamExpression) theEObject;
 			T result = caseBoolStreamExpression(boolStreamExpression);
 			if (result == null)
@@ -351,7 +351,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.RELATIONAL_EXPRESSION: {
+		case GipsIntermediatePackage.RELATIONAL_EXPRESSION: {
 			RelationalExpression relationalExpression = (RelationalExpression) theEObject;
 			T result = caseRelationalExpression(relationalExpression);
 			if (result == null)
@@ -362,7 +362,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.BOOL_LITERAL: {
+		case GipsIntermediatePackage.BOOL_LITERAL: {
 			BoolLiteral boolLiteral = (BoolLiteral) theEObject;
 			T result = caseBoolLiteral(boolLiteral);
 			if (result == null)
@@ -373,14 +373,14 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.VALUE_EXPRESSION: {
+		case GipsIntermediatePackage.VALUE_EXPRESSION: {
 			ValueExpression valueExpression = (ValueExpression) theEObject;
 			T result = caseValueExpression(valueExpression);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.SUM_EXPRESSION: {
+		case GipsIntermediatePackage.SUM_EXPRESSION: {
 			SumExpression sumExpression = (SumExpression) theEObject;
 			T result = caseSumExpression(sumExpression);
 			if (result == null)
@@ -391,7 +391,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.MAPPING_SUM_EXPRESSION: {
+		case GipsIntermediatePackage.MAPPING_SUM_EXPRESSION: {
 			MappingSumExpression mappingSumExpression = (MappingSumExpression) theEObject;
 			T result = caseMappingSumExpression(mappingSumExpression);
 			if (result == null)
@@ -404,7 +404,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.TYPE_SUM_EXPRESSION: {
+		case GipsIntermediatePackage.TYPE_SUM_EXPRESSION: {
 			TypeSumExpression typeSumExpression = (TypeSumExpression) theEObject;
 			T result = caseTypeSumExpression(typeSumExpression);
 			if (result == null)
@@ -417,7 +417,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.CONTEXT_TYPE_VALUE: {
+		case GipsIntermediatePackage.CONTEXT_TYPE_VALUE: {
 			ContextTypeValue contextTypeValue = (ContextTypeValue) theEObject;
 			T result = caseContextTypeValue(contextTypeValue);
 			if (result == null)
@@ -426,7 +426,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.CONTEXT_PATTERN_VALUE: {
+		case GipsIntermediatePackage.CONTEXT_PATTERN_VALUE: {
 			ContextPatternValue contextPatternValue = (ContextPatternValue) theEObject;
 			T result = caseContextPatternValue(contextPatternValue);
 			if (result == null)
@@ -435,7 +435,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE: {
+		case GipsIntermediatePackage.CONTEXT_PATTERN_NODE: {
 			ContextPatternNode contextPatternNode = (ContextPatternNode) theEObject;
 			T result = caseContextPatternNode(contextPatternNode);
 			if (result == null)
@@ -444,7 +444,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.CONTEXT_MAPPING_VALUE: {
+		case GipsIntermediatePackage.CONTEXT_MAPPING_VALUE: {
 			ContextMappingValue contextMappingValue = (ContextMappingValue) theEObject;
 			T result = caseContextMappingValue(contextMappingValue);
 			if (result == null)
@@ -453,7 +453,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE: {
+		case GipsIntermediatePackage.CONTEXT_MAPPING_NODE: {
 			ContextMappingNode contextMappingNode = (ContextMappingNode) theEObject;
 			T result = caseContextMappingNode(contextMappingNode);
 			if (result == null)
@@ -462,7 +462,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.OBJECTIVE_FUNCTION_VALUE: {
+		case GipsIntermediatePackage.OBJECTIVE_FUNCTION_VALUE: {
 			ObjectiveFunctionValue objectiveFunctionValue = (ObjectiveFunctionValue) theEObject;
 			T result = caseObjectiveFunctionValue(objectiveFunctionValue);
 			if (result == null)
@@ -471,21 +471,21 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.FEATURE_EXPRESSION: {
+		case GipsIntermediatePackage.FEATURE_EXPRESSION: {
 			FeatureExpression featureExpression = (FeatureExpression) theEObject;
 			T result = caseFeatureExpression(featureExpression);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.FEATURE_LITERAL: {
+		case GipsIntermediatePackage.FEATURE_LITERAL: {
 			FeatureLiteral featureLiteral = (FeatureLiteral) theEObject;
 			T result = caseFeatureLiteral(featureLiteral);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.CONTEXT_TYPE_FEATURE_VALUE: {
+		case GipsIntermediatePackage.CONTEXT_TYPE_FEATURE_VALUE: {
 			ContextTypeFeatureValue contextTypeFeatureValue = (ContextTypeFeatureValue) theEObject;
 			T result = caseContextTypeFeatureValue(contextTypeFeatureValue);
 			if (result == null)
@@ -496,7 +496,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.CONTEXT_PATTERN_NODE_FEATURE_VALUE: {
+		case GipsIntermediatePackage.CONTEXT_PATTERN_NODE_FEATURE_VALUE: {
 			ContextPatternNodeFeatureValue contextPatternNodeFeatureValue = (ContextPatternNodeFeatureValue) theEObject;
 			T result = caseContextPatternNodeFeatureValue(contextPatternNodeFeatureValue);
 			if (result == null)
@@ -507,7 +507,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE: {
+		case GipsIntermediatePackage.CONTEXT_MAPPING_NODE_FEATURE_VALUE: {
 			ContextMappingNodeFeatureValue contextMappingNodeFeatureValue = (ContextMappingNodeFeatureValue) theEObject;
 			T result = caseContextMappingNodeFeatureValue(contextMappingNodeFeatureValue);
 			if (result == null)
@@ -518,14 +518,14 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.ITERATOR: {
+		case GipsIntermediatePackage.ITERATOR: {
 			Iterator iterator = (Iterator) theEObject;
 			T result = caseIterator(iterator);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.ITERATOR_PATTERN_VALUE: {
+		case GipsIntermediatePackage.ITERATOR_PATTERN_VALUE: {
 			IteratorPatternValue iteratorPatternValue = (IteratorPatternValue) theEObject;
 			T result = caseIteratorPatternValue(iteratorPatternValue);
 			if (result == null)
@@ -536,7 +536,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.ITERATOR_PATTERN_FEATURE_VALUE: {
+		case GipsIntermediatePackage.ITERATOR_PATTERN_FEATURE_VALUE: {
 			IteratorPatternFeatureValue iteratorPatternFeatureValue = (IteratorPatternFeatureValue) theEObject;
 			T result = caseIteratorPatternFeatureValue(iteratorPatternFeatureValue);
 			if (result == null)
@@ -547,7 +547,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE: {
+		case GipsIntermediatePackage.ITERATOR_PATTERN_NODE_VALUE: {
 			IteratorPatternNodeValue iteratorPatternNodeValue = (IteratorPatternNodeValue) theEObject;
 			T result = caseIteratorPatternNodeValue(iteratorPatternNodeValue);
 			if (result == null)
@@ -558,7 +558,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.ITERATOR_PATTERN_NODE_FEATURE_VALUE: {
+		case GipsIntermediatePackage.ITERATOR_PATTERN_NODE_FEATURE_VALUE: {
 			IteratorPatternNodeFeatureValue iteratorPatternNodeFeatureValue = (IteratorPatternNodeFeatureValue) theEObject;
 			T result = caseIteratorPatternNodeFeatureValue(iteratorPatternNodeFeatureValue);
 			if (result == null)
@@ -571,7 +571,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.ITERATOR_MAPPING_VALUE: {
+		case GipsIntermediatePackage.ITERATOR_MAPPING_VALUE: {
 			IteratorMappingValue iteratorMappingValue = (IteratorMappingValue) theEObject;
 			T result = caseIteratorMappingValue(iteratorMappingValue);
 			if (result == null)
@@ -582,7 +582,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE: {
+		case GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE: {
 			IteratorMappingFeatureValue iteratorMappingFeatureValue = (IteratorMappingFeatureValue) theEObject;
 			T result = caseIteratorMappingFeatureValue(iteratorMappingFeatureValue);
 			if (result == null)
@@ -593,7 +593,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.ITERATOR_MAPPING_NODE_VALUE: {
+		case GipsIntermediatePackage.ITERATOR_MAPPING_NODE_VALUE: {
 			IteratorMappingNodeValue iteratorMappingNodeValue = (IteratorMappingNodeValue) theEObject;
 			T result = caseIteratorMappingNodeValue(iteratorMappingNodeValue);
 			if (result == null)
@@ -604,7 +604,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.ITERATOR_MAPPING_NODE_FEATURE_VALUE: {
+		case GipsIntermediatePackage.ITERATOR_MAPPING_NODE_FEATURE_VALUE: {
 			IteratorMappingNodeFeatureValue iteratorMappingNodeFeatureValue = (IteratorMappingNodeFeatureValue) theEObject;
 			T result = caseIteratorMappingNodeFeatureValue(iteratorMappingNodeFeatureValue);
 			if (result == null)
@@ -617,7 +617,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.ITERATOR_TYPE_VALUE: {
+		case GipsIntermediatePackage.ITERATOR_TYPE_VALUE: {
 			IteratorTypeValue iteratorTypeValue = (IteratorTypeValue) theEObject;
 			T result = caseIteratorTypeValue(iteratorTypeValue);
 			if (result == null)
@@ -628,7 +628,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE: {
+		case GipsIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE: {
 			IteratorTypeFeatureValue iteratorTypeFeatureValue = (IteratorTypeFeatureValue) theEObject;
 			T result = caseIteratorTypeFeatureValue(iteratorTypeFeatureValue);
 			if (result == null)
@@ -641,7 +641,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.STREAM_EXPRESSION: {
+		case GipsIntermediatePackage.STREAM_EXPRESSION: {
 			StreamExpression streamExpression = (StreamExpression) theEObject;
 			T result = caseStreamExpression(streamExpression);
 			if (result == null)
@@ -650,14 +650,14 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.STREAM_OPERATION: {
+		case GipsIntermediatePackage.STREAM_OPERATION: {
 			StreamOperation streamOperation = (StreamOperation) theEObject;
 			T result = caseStreamOperation(streamOperation);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.STREAM_FILTER_OPERATION: {
+		case GipsIntermediatePackage.STREAM_FILTER_OPERATION: {
 			StreamFilterOperation streamFilterOperation = (StreamFilterOperation) theEObject;
 			T result = caseStreamFilterOperation(streamFilterOperation);
 			if (result == null)
@@ -666,7 +666,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case RoamIntermediatePackage.STREAM_SELECT_OPERATION: {
+		case GipsIntermediatePackage.STREAM_SELECT_OPERATION: {
 			StreamSelectOperation streamSelectOperation = (StreamSelectOperation) theEObject;
 			T result = caseStreamSelectOperation(streamSelectOperation);
 			if (result == null)
@@ -691,7 +691,7 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseRoamIntermediateModel(RoamIntermediateModel object) {
+	public T caseGipsIntermediateModel(GipsIntermediateModel object) {
 		return null;
 	}
 
@@ -1674,4 +1674,4 @@ public class RoamIntermediateSwitch<T> extends Switch<T> {
 		return null;
 	}
 
-} // RoamIntermediateSwitch
+} // GipsIntermediateSwitch

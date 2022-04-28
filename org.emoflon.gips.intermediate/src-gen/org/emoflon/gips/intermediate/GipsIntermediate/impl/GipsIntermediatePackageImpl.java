@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -12,80 +12,80 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPatternModelPackage;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticLiteral;
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.ArithmeticValueExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.BinaryArithmeticOperator;
-import org.emoflon.roam.intermediate.RoamIntermediate.BinaryBoolOperator;
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolBinaryExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolLiteral;
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolStreamExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolUnaryExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.BoolValueExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.Context;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNodeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNode;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternNodeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextPatternValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextTypeValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral;
-import org.emoflon.roam.intermediate.RoamIntermediate.FeatureExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.FeatureLiteral;
-import org.emoflon.roam.intermediate.RoamIntermediate.GlobalObjective;
-import org.emoflon.roam.intermediate.RoamIntermediate.ILPConfig;
-import org.emoflon.roam.intermediate.RoamIntermediate.ILPSolverType;
-import org.emoflon.roam.intermediate.RoamIntermediate.IntegerLiteral;
-import org.emoflon.roam.intermediate.RoamIntermediate.Iterator;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingNodeValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorMappingValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeFeatureValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.IteratorTypeValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingConstraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingObjective;
-import org.emoflon.roam.intermediate.RoamIntermediate.MappingSumExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.Objective;
-import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveFunctionValue;
-import org.emoflon.roam.intermediate.RoamIntermediate.ObjectiveTarget;
-import org.emoflon.roam.intermediate.RoamIntermediate.Pattern;
-import org.emoflon.roam.intermediate.RoamIntermediate.PatternConstraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.PatternObjective;
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateFactory;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediateModel;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
-import org.emoflon.roam.intermediate.RoamIntermediate.SetOperation;
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamArithmeticOperator;
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamBoolOperator;
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamFilterOperation;
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamOperation;
-import org.emoflon.roam.intermediate.RoamIntermediate.StreamSelectOperation;
-import org.emoflon.roam.intermediate.RoamIntermediate.SumExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.Type;
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeConstraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeObjective;
-import org.emoflon.roam.intermediate.RoamIntermediate.TypeSumExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.UnaryArithmeticOperator;
-import org.emoflon.roam.intermediate.RoamIntermediate.UnaryBoolOperator;
-import org.emoflon.roam.intermediate.RoamIntermediate.ValueExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValueExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.BinaryBoolOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.Context;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
+import org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType;
+import org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.Iterator;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
+import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget;
+import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamArithmeticOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamBoolOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.Type;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.UnaryBoolOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!--
@@ -93,13 +93,13 @@ import org.emoflon.roam.intermediate.RoamIntermediate.VariableSet;
  * 
  * @generated
  */
-public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamIntermediatePackage {
+public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsIntermediatePackage {
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	private EClass roamIntermediateModelEClass = null;
+	private EClass gipsIntermediateModelEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -609,12 +609,12 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.emf.ecore.EPackage.Registry
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#eNS_URI
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#eNS_URI
 	 * @see #init()
 	 * @generated
 	 */
-	private RoamIntermediatePackageImpl() {
-		super(eNS_URI, RoamIntermediateFactory.eINSTANCE);
+	private GipsIntermediatePackageImpl() {
+		super(eNS_URI, GipsIntermediateFactory.eINSTANCE);
 	}
 
 	/**
@@ -629,7 +629,7 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * for any others upon which it depends.
 	 *
 	 * <p>
-	 * This method is used to initialize {@link RoamIntermediatePackage#eINSTANCE}
+	 * This method is used to initialize {@link GipsIntermediatePackage#eINSTANCE}
 	 * when that field is accessed. Clients should not invoke it directly. Instead,
 	 * they should simply access that field to obtain the package. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
@@ -639,15 +639,15 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * @see #initializePackageContents()
 	 * @generated
 	 */
-	public static RoamIntermediatePackage init() {
+	public static GipsIntermediatePackage init() {
 		if (isInited)
-			return (RoamIntermediatePackage) EPackage.Registry.INSTANCE.getEPackage(RoamIntermediatePackage.eNS_URI);
+			return (GipsIntermediatePackage) EPackage.Registry.INSTANCE.getEPackage(GipsIntermediatePackage.eNS_URI);
 
 		// Obtain or create and register package
-		Object registeredRoamIntermediatePackage = EPackage.Registry.INSTANCE.get(eNS_URI);
-		RoamIntermediatePackageImpl theRoamIntermediatePackage = registeredRoamIntermediatePackage instanceof RoamIntermediatePackageImpl
-				? (RoamIntermediatePackageImpl) registeredRoamIntermediatePackage
-				: new RoamIntermediatePackageImpl();
+		Object registeredGipsIntermediatePackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		GipsIntermediatePackageImpl theGipsIntermediatePackage = registeredGipsIntermediatePackage instanceof GipsIntermediatePackageImpl
+				? (GipsIntermediatePackageImpl) registeredGipsIntermediatePackage
+				: new GipsIntermediatePackageImpl();
 
 		isInited = true;
 
@@ -655,17 +655,17 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		IBeXPatternModelPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
-		theRoamIntermediatePackage.createPackageContents();
+		theGipsIntermediatePackage.createPackageContents();
 
 		// Initialize created meta-data
-		theRoamIntermediatePackage.initializePackageContents();
+		theGipsIntermediatePackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
-		theRoamIntermediatePackage.freeze();
+		theGipsIntermediatePackage.freeze();
 
 		// Update the registry and return the package
-		EPackage.Registry.INSTANCE.put(RoamIntermediatePackage.eNS_URI, theRoamIntermediatePackage);
-		return theRoamIntermediatePackage;
+		EPackage.Registry.INSTANCE.put(GipsIntermediatePackage.eNS_URI, theGipsIntermediatePackage);
+		return theGipsIntermediatePackage;
 	}
 
 	/**
@@ -673,8 +673,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * 
 	 * @generated
 	 */
-	public EClass getRoamIntermediateModel() {
-		return roamIntermediateModelEClass;
+	public EClass getGipsIntermediateModel() {
+		return gipsIntermediateModelEClass;
 	}
 
 	/**
@@ -682,8 +682,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * 
 	 * @generated
 	 */
-	public EAttribute getRoamIntermediateModel_Name() {
-		return (EAttribute) roamIntermediateModelEClass.getEStructuralFeatures().get(0);
+	public EAttribute getGipsIntermediateModel_Name() {
+		return (EAttribute) gipsIntermediateModelEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -691,8 +691,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * 
 	 * @generated
 	 */
-	public EReference getRoamIntermediateModel_Variables() {
-		return (EReference) roamIntermediateModelEClass.getEStructuralFeatures().get(1);
+	public EReference getGipsIntermediateModel_Variables() {
+		return (EReference) gipsIntermediateModelEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -700,8 +700,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * 
 	 * @generated
 	 */
-	public EReference getRoamIntermediateModel_Constraints() {
-		return (EReference) roamIntermediateModelEClass.getEStructuralFeatures().get(2);
+	public EReference getGipsIntermediateModel_Constraints() {
+		return (EReference) gipsIntermediateModelEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -709,8 +709,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * 
 	 * @generated
 	 */
-	public EReference getRoamIntermediateModel_Objectives() {
-		return (EReference) roamIntermediateModelEClass.getEStructuralFeatures().get(3);
+	public EReference getGipsIntermediateModel_Objectives() {
+		return (EReference) gipsIntermediateModelEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -718,8 +718,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * 
 	 * @generated
 	 */
-	public EReference getRoamIntermediateModel_GlobalObjective() {
-		return (EReference) roamIntermediateModelEClass.getEStructuralFeatures().get(4);
+	public EReference getGipsIntermediateModel_GlobalObjective() {
+		return (EReference) gipsIntermediateModelEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -727,8 +727,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * 
 	 * @generated
 	 */
-	public EReference getRoamIntermediateModel_IbexModel() {
-		return (EReference) roamIntermediateModelEClass.getEStructuralFeatures().get(5);
+	public EReference getGipsIntermediateModel_IbexModel() {
+		return (EReference) gipsIntermediateModelEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -736,8 +736,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * 
 	 * @generated
 	 */
-	public EReference getRoamIntermediateModel_Config() {
-		return (EReference) roamIntermediateModelEClass.getEStructuralFeatures().get(6);
+	public EReference getGipsIntermediateModel_Config() {
+		return (EReference) gipsIntermediateModelEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -2212,8 +2212,8 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 	 * 
 	 * @generated
 	 */
-	public RoamIntermediateFactory getRoamIntermediateFactory() {
-		return (RoamIntermediateFactory) getEFactoryInstance();
+	public GipsIntermediateFactory getGipsIntermediateFactory() {
+		return (GipsIntermediateFactory) getEFactoryInstance();
 	}
 
 	/**
@@ -2236,14 +2236,14 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		isCreated = true;
 
 		// Create classes and their features
-		roamIntermediateModelEClass = createEClass(ROAM_INTERMEDIATE_MODEL);
-		createEAttribute(roamIntermediateModelEClass, ROAM_INTERMEDIATE_MODEL__NAME);
-		createEReference(roamIntermediateModelEClass, ROAM_INTERMEDIATE_MODEL__VARIABLES);
-		createEReference(roamIntermediateModelEClass, ROAM_INTERMEDIATE_MODEL__CONSTRAINTS);
-		createEReference(roamIntermediateModelEClass, ROAM_INTERMEDIATE_MODEL__OBJECTIVES);
-		createEReference(roamIntermediateModelEClass, ROAM_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE);
-		createEReference(roamIntermediateModelEClass, ROAM_INTERMEDIATE_MODEL__IBEX_MODEL);
-		createEReference(roamIntermediateModelEClass, ROAM_INTERMEDIATE_MODEL__CONFIG);
+		gipsIntermediateModelEClass = createEClass(GIPS_INTERMEDIATE_MODEL);
+		createEAttribute(gipsIntermediateModelEClass, GIPS_INTERMEDIATE_MODEL__NAME);
+		createEReference(gipsIntermediateModelEClass, GIPS_INTERMEDIATE_MODEL__VARIABLES);
+		createEReference(gipsIntermediateModelEClass, GIPS_INTERMEDIATE_MODEL__CONSTRAINTS);
+		createEReference(gipsIntermediateModelEClass, GIPS_INTERMEDIATE_MODEL__OBJECTIVES);
+		createEReference(gipsIntermediateModelEClass, GIPS_INTERMEDIATE_MODEL__GLOBAL_OBJECTIVE);
+		createEReference(gipsIntermediateModelEClass, GIPS_INTERMEDIATE_MODEL__IBEX_MODEL);
+		createEReference(gipsIntermediateModelEClass, GIPS_INTERMEDIATE_MODEL__CONFIG);
 
 		ilpConfigEClass = createEClass(ILP_CONFIG);
 		createEAttribute(ilpConfigEClass, ILP_CONFIG__SOLVER);
@@ -2572,28 +2572,28 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		streamSelectOperationEClass.getESuperTypes().add(this.getStreamOperation());
 
 		// Initialize classes, features, and operations; add parameters
-		initEClass(roamIntermediateModelEClass, RoamIntermediateModel.class, "RoamIntermediateModel", !IS_ABSTRACT,
+		initEClass(gipsIntermediateModelEClass, GipsIntermediateModel.class, "GipsIntermediateModel", !IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getRoamIntermediateModel_Name(), ecorePackage.getEString(), "name", null, 0, 1,
-				RoamIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+		initEAttribute(getGipsIntermediateModel_Name(), ecorePackage.getEString(), "name", null, 0, 1,
+				GipsIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRoamIntermediateModel_Variables(), this.getVariableSet(), null, "variables", null, 0, -1,
-				RoamIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+		initEReference(getGipsIntermediateModel_Variables(), this.getVariableSet(), null, "variables", null, 0, -1,
+				GipsIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRoamIntermediateModel_Constraints(), this.getConstraint(), null, "constraints", null, 0, -1,
-				RoamIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+		initEReference(getGipsIntermediateModel_Constraints(), this.getConstraint(), null, "constraints", null, 0, -1,
+				GipsIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRoamIntermediateModel_Objectives(), this.getObjective(), null, "objectives", null, 0, -1,
-				RoamIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+		initEReference(getGipsIntermediateModel_Objectives(), this.getObjective(), null, "objectives", null, 0, -1,
+				GipsIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRoamIntermediateModel_GlobalObjective(), this.getGlobalObjective(), null, "globalObjective",
-				null, 0, 1, RoamIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+		initEReference(getGipsIntermediateModel_GlobalObjective(), this.getGlobalObjective(), null, "globalObjective",
+				null, 0, 1, GipsIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRoamIntermediateModel_IbexModel(), theIBeXPatternModelPackage.getIBeXModel(), null,
-				"ibexModel", null, 1, 1, RoamIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+		initEReference(getGipsIntermediateModel_IbexModel(), theIBeXPatternModelPackage.getIBeXModel(), null,
+				"ibexModel", null, 1, 1, GipsIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
 				IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRoamIntermediateModel_Config(), this.getILPConfig(), null, "config", null, 1, 1,
-				RoamIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+		initEReference(getGipsIntermediateModel_Config(), this.getILPConfig(), null, "config", null, 1, 1,
+				GipsIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(ilpConfigEClass, ILPConfig.class, "ILPConfig", !IS_ABSTRACT, !IS_INTERFACE,
@@ -3092,4 +3092,4 @@ public class RoamIntermediatePackageImpl extends EPackageImpl implements RoamInt
 		createResource(eNS_URI);
 	}
 
-} // RoamIntermediatePackageImpl
+} // GipsIntermediatePackageImpl

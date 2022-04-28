@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Double
@@ -10,11 +10,11 @@ package org.emoflon.roam.intermediate.RoamIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral#getLiteral
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral#getLiteral
  * <em>Literal</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getDoubleLiteral()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getDoubleLiteral()
  * @model
  * @generated
  */
@@ -25,7 +25,7 @@ public interface DoubleLiteral extends ArithmeticLiteral {
 	 * 
 	 * @return the value of the '<em>Literal</em>' attribute.
 	 * @see #setLiteral(double)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getDoubleLiteral_Literal()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getDoubleLiteral_Literal()
 	 * @model
 	 * @generated
 	 */
@@ -33,7 +33,7 @@ public interface DoubleLiteral extends ArithmeticLiteral {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.DoubleLiteral#getLiteral
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral#getLiteral
 	 * <em>Literal</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Literal</em>' attribute.

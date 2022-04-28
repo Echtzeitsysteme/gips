@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -11,9 +11,9 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.ContextMappingNode;
-import org.emoflon.roam.intermediate.RoamIntermediate.Mapping;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode;
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Context
@@ -22,9 +22,9 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingNodeImpl#getMappingContext
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextMappingNodeImpl#getMappingContext
  * <em>Mapping Context</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ContextMappingNodeImpl#getNode
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextMappingNodeImpl#getNode
  * <em>Node</em>}</li>
  * </ul>
  *
@@ -67,7 +67,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.CONTEXT_MAPPING_NODE;
+		return GipsIntermediatePackage.Literals.CONTEXT_MAPPING_NODE;
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 			if (mappingContext != oldMappingContext) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.CONTEXT_MAPPING_NODE__MAPPING_CONTEXT, oldMappingContext,
+							GipsIntermediatePackage.CONTEXT_MAPPING_NODE__MAPPING_CONTEXT, oldMappingContext,
 							mappingContext));
 			}
 		}
@@ -108,7 +108,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 		mappingContext = newMappingContext;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.CONTEXT_MAPPING_NODE__MAPPING_CONTEXT, oldMappingContext, mappingContext));
+					GipsIntermediatePackage.CONTEXT_MAPPING_NODE__MAPPING_CONTEXT, oldMappingContext, mappingContext));
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 			if (node != oldNode) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							RoamIntermediatePackage.CONTEXT_MAPPING_NODE__NODE, oldNode, node));
+							GipsIntermediatePackage.CONTEXT_MAPPING_NODE__NODE, oldNode, node));
 			}
 		}
 		return node;
@@ -147,7 +147,7 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 		IBeXNode oldNode = node;
 		node = newNode;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.CONTEXT_MAPPING_NODE__NODE,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.CONTEXT_MAPPING_NODE__NODE,
 					oldNode, node));
 	}
 
@@ -159,11 +159,11 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE__MAPPING_CONTEXT:
+		case GipsIntermediatePackage.CONTEXT_MAPPING_NODE__MAPPING_CONTEXT:
 			if (resolve)
 				return getMappingContext();
 			return basicGetMappingContext();
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE__NODE:
+		case GipsIntermediatePackage.CONTEXT_MAPPING_NODE__NODE:
 			if (resolve)
 				return getNode();
 			return basicGetNode();
@@ -179,10 +179,10 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE__MAPPING_CONTEXT:
+		case GipsIntermediatePackage.CONTEXT_MAPPING_NODE__MAPPING_CONTEXT:
 			setMappingContext((Mapping) newValue);
 			return;
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE__NODE:
+		case GipsIntermediatePackage.CONTEXT_MAPPING_NODE__NODE:
 			setNode((IBeXNode) newValue);
 			return;
 		}
@@ -197,10 +197,10 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE__MAPPING_CONTEXT:
+		case GipsIntermediatePackage.CONTEXT_MAPPING_NODE__MAPPING_CONTEXT:
 			setMappingContext((Mapping) null);
 			return;
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE__NODE:
+		case GipsIntermediatePackage.CONTEXT_MAPPING_NODE__NODE:
 			setNode((IBeXNode) null);
 			return;
 		}
@@ -215,9 +215,9 @@ public class ContextMappingNodeImpl extends ValueExpressionImpl implements Conte
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE__MAPPING_CONTEXT:
+		case GipsIntermediatePackage.CONTEXT_MAPPING_NODE__MAPPING_CONTEXT:
 			return mappingContext != null;
-		case RoamIntermediatePackage.CONTEXT_MAPPING_NODE__NODE:
+		case GipsIntermediatePackage.CONTEXT_MAPPING_NODE__NODE:
 			return node != null;
 		}
 		return super.eIsSet(featureID);

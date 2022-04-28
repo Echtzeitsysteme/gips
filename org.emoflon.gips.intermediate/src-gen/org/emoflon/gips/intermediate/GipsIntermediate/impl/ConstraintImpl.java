@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate.impl;
+package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -11,9 +11,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.emoflon.roam.intermediate.RoamIntermediate.Constraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalExpression;
-import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -22,11 +22,11 @@ import org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ConstraintImpl#getName
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getName
  * <em>Name</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ConstraintImpl#isElementwise
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#isElementwise
  * <em>Elementwise</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.impl.ConstraintImpl#getExpression
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getExpression
  * <em>Expression</em>}</li>
  * </ul>
  *
@@ -99,7 +99,7 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return RoamIntermediatePackage.Literals.CONSTRAINT;
+		return GipsIntermediatePackage.Literals.CONSTRAINT;
 	}
 
 	/**
@@ -120,7 +120,7 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.CONSTRAINT__NAME, oldName,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.CONSTRAINT__NAME, oldName,
 					name));
 	}
 
@@ -142,7 +142,7 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 		boolean oldElementwise = elementwise;
 		elementwise = newElementwise;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.CONSTRAINT__ELEMENTWISE,
 					oldElementwise, elementwise));
 	}
 
@@ -165,7 +165,7 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 		expression = newExpression;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					RoamIntermediatePackage.CONSTRAINT__EXPRESSION, oldExpression, newExpression);
+					GipsIntermediatePackage.CONSTRAINT__EXPRESSION, oldExpression, newExpression);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -184,15 +184,15 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 			NotificationChain msgs = null;
 			if (expression != null)
 				msgs = ((InternalEObject) expression).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.CONSTRAINT__EXPRESSION, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.CONSTRAINT__EXPRESSION, null, msgs);
 			if (newExpression != null)
 				msgs = ((InternalEObject) newExpression).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - RoamIntermediatePackage.CONSTRAINT__EXPRESSION, null, msgs);
+						EOPPOSITE_FEATURE_BASE - GipsIntermediatePackage.CONSTRAINT__EXPRESSION, null, msgs);
 			msgs = basicSetExpression(newExpression, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RoamIntermediatePackage.CONSTRAINT__EXPRESSION,
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.CONSTRAINT__EXPRESSION,
 					newExpression, newExpression));
 	}
 
@@ -204,7 +204,7 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONSTRAINT__EXPRESSION:
+		case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
 			return basicSetExpression(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -218,11 +218,11 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONSTRAINT__NAME:
+		case GipsIntermediatePackage.CONSTRAINT__NAME:
 			return getName();
-		case RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE:
+		case GipsIntermediatePackage.CONSTRAINT__ELEMENTWISE:
 			return isElementwise();
-		case RoamIntermediatePackage.CONSTRAINT__EXPRESSION:
+		case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
 			return getExpression();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -236,13 +236,13 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONSTRAINT__NAME:
+		case GipsIntermediatePackage.CONSTRAINT__NAME:
 			setName((String) newValue);
 			return;
-		case RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE:
+		case GipsIntermediatePackage.CONSTRAINT__ELEMENTWISE:
 			setElementwise((Boolean) newValue);
 			return;
-		case RoamIntermediatePackage.CONSTRAINT__EXPRESSION:
+		case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
 			setExpression((RelationalExpression) newValue);
 			return;
 		}
@@ -257,13 +257,13 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONSTRAINT__NAME:
+		case GipsIntermediatePackage.CONSTRAINT__NAME:
 			setName(NAME_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE:
+		case GipsIntermediatePackage.CONSTRAINT__ELEMENTWISE:
 			setElementwise(ELEMENTWISE_EDEFAULT);
 			return;
-		case RoamIntermediatePackage.CONSTRAINT__EXPRESSION:
+		case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
 			setExpression((RelationalExpression) null);
 			return;
 		}
@@ -278,11 +278,11 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case RoamIntermediatePackage.CONSTRAINT__NAME:
+		case GipsIntermediatePackage.CONSTRAINT__NAME:
 			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-		case RoamIntermediatePackage.CONSTRAINT__ELEMENTWISE:
+		case GipsIntermediatePackage.CONSTRAINT__ELEMENTWISE:
 			return elementwise != ELEMENTWISE_EDEFAULT;
-		case RoamIntermediatePackage.CONSTRAINT__EXPRESSION:
+		case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
 			return expression != null;
 		}
 		return super.eIsSet(featureID);

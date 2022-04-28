@@ -1,6 +1,6 @@
 /**
  */
-package org.emoflon.roam.intermediate.RoamIntermediate;
+package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 
@@ -12,13 +12,13 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue#getPatternContext
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue#getPatternContext
  * <em>Pattern Context</em>}</li>
- * <li>{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue#getNode
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue#getNode
  * <em>Node</em>}</li>
  * </ul>
  *
- * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorPatternNodeValue()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorPatternNodeValue()
  * @model
  * @generated
  */
@@ -29,7 +29,7 @@ public interface IteratorPatternNodeValue extends ValueExpression, Iterator {
 	 * 
 	 * @return the value of the '<em>Pattern Context</em>' reference.
 	 * @see #setPatternContext(Pattern)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorPatternNodeValue_PatternContext()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorPatternNodeValue_PatternContext()
 	 * @model
 	 * @generated
 	 */
@@ -37,7 +37,7 @@ public interface IteratorPatternNodeValue extends ValueExpression, Iterator {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue#getPatternContext
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue#getPatternContext
 	 * <em>Pattern Context</em>}' reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -53,7 +53,7 @@ public interface IteratorPatternNodeValue extends ValueExpression, Iterator {
 	 * 
 	 * @return the value of the '<em>Node</em>' reference.
 	 * @see #setNode(IBeXNode)
-	 * @see org.emoflon.roam.intermediate.RoamIntermediate.RoamIntermediatePackage#getIteratorPatternNodeValue_Node()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorPatternNodeValue_Node()
 	 * @model
 	 * @generated
 	 */
@@ -61,7 +61,7 @@ public interface IteratorPatternNodeValue extends ValueExpression, Iterator {
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.roam.intermediate.RoamIntermediate.IteratorPatternNodeValue#getNode
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue#getNode
 	 * <em>Node</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Node</em>' reference.

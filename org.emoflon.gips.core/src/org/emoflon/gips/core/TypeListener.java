@@ -1,4 +1,4 @@
-package org.emoflon.roam.core;
+package org.emoflon.gips.core;
 
 import java.util.List;
 

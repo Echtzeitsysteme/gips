@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="GipsBuilderExtension" name="GipsBuilderExtension" schema="schema/GipsBuilderExtension.exsd"/>
+	<extension point="org.eclipse.emf.ecore.generated_package">
+		<package
+			uri = "http://www.emoflon.org/gips/gipsl/Gipsl"
+			class = "org.emoflon.gips.gipsl.gipsl.GipslPackage"
+			genModel = "model/generated/Gipsl.genmodel" />
+	</extension>
+</plugin>

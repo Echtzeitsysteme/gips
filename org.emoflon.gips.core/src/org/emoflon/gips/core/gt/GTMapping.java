@@ -2,9 +2,9 @@ package org.emoflon.gips.core.gt;
 
 import java.util.Objects;
 
+import org.emoflon.gips.core.GipsMapping;
 import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 import org.emoflon.ibex.gt.api.GraphTransformationPattern;
-import org.emoflon.gips.core.GipsMapping;
 
 public abstract class GTMapping<M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
 		extends GipsMapping {

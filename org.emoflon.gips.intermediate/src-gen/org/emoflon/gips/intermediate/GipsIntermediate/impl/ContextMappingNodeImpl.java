@@ -3,17 +3,13 @@
 package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
-
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode;
-import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Context

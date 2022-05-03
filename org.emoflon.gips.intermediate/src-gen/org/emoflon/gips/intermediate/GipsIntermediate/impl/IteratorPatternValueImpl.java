@@ -3,16 +3,13 @@
 package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.Iterator;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
 
 /**

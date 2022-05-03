@@ -17,9 +17,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EContentAdapter;
-import org.emoflon.ibex.gt.api.GraphTransformationAPI;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
+import org.emoflon.ibex.gt.api.GraphTransformationAPI;
 
 public class TypeIndexer {
 

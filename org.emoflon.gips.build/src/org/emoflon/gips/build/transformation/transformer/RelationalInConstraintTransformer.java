@@ -5,13 +5,6 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
 import org.emoflon.gips.build.transformation.helper.TransformationContext;
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
@@ -22,6 +15,13 @@ import org.emoflon.gips.gipsl.gipsl.GipsStreamBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 
 public class RelationalInConstraintTransformer extends TransformationContext<Constraint>
 		implements RelationalExpressionTransformer {

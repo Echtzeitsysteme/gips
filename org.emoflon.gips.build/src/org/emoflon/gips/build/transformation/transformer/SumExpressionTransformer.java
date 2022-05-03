@@ -6,15 +6,15 @@ import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
 import org.emoflon.gips.build.transformation.helper.TransformationContext;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamArithmetic;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression;
-import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsStreamArithmetic;
-import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
 
 public class SumExpressionTransformer<T extends EObject> extends TransformationContext<T> {
 

@@ -3,13 +3,6 @@ package org.emoflon.gips.build.transformation.transformer;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.TransformationContext;
-import org.emoflon.gips.intermediate.GipsIntermediate.BinaryBoolOperator;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.UnaryBoolOperator;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsBinaryBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsBoolExpr;
@@ -17,6 +10,13 @@ import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsExpressionOperand;
 import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryBoolExpr;
+import org.emoflon.gips.intermediate.GipsIntermediate.BinaryBoolOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.UnaryBoolOperator;
 
 public class BooleanExpressionTransformer<T extends EObject> extends TransformationContext<T> {
 

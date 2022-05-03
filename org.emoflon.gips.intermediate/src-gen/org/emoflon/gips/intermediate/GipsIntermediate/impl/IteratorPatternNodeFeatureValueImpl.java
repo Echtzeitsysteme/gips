@@ -4,15 +4,12 @@ package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object

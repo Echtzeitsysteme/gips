@@ -3,6 +3,11 @@ package org.emoflon.gips.build.transformation.helper;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
+import org.emoflon.gips.gipsl.gipsl.GipsFeatureNavigation;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamNavigation;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
@@ -23,6 +28,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue;
@@ -38,18 +44,12 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
 import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
-import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
-import org.emoflon.gips.gipsl.gipsl.GipsFeatureNavigation;
-import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsStreamNavigation;
 
 public final class GipsTransformationUtils {
 

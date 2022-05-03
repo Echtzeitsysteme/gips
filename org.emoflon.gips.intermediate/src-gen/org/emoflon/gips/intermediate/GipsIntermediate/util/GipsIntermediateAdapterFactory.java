@@ -4,12 +4,72 @@ package org.emoflon.gips.intermediate.GipsIntermediate.util;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
-
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
-
 import org.eclipse.emf.ecore.EObject;
-
-import org.emoflon.gips.intermediate.GipsIntermediate.*;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValueExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.Context;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
+import org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.Iterator;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
+import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.Type;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
 
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides

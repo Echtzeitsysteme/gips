@@ -1,12 +1,12 @@
 package org.emoflon.gips.build.transformation.transformer;
 
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
+import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsObjectiveExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue;
-import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsObjectiveExpression;
 
 public class ArithmeticInGlobalObjectiveTransformer extends ArithmeticExpressionTransformer<GlobalObjective> {
 

@@ -1,9 +1,9 @@
 package org.emoflon.gips.core.api;
 
-import org.emoflon.ibex.gt.api.GraphTransformationAPI;
 import org.emoflon.gips.core.GipsConstraint;
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
+import org.emoflon.ibex.gt.api.GraphTransformationAPI;
 
 public abstract class GipsConstraintFactory<EMOFLON_API extends GraphTransformationAPI> {
 	protected final GipsEngine engine;

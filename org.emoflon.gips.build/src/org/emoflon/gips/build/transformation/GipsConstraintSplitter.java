@@ -11,8 +11,8 @@ import org.emoflon.gips.gipsl.gipsl.GipsBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
-import org.emoflon.gips.gipsl.gipsl.GipslFactory;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipslFactory;
 
 public class GipsConstraintSplitter {
 	protected GipslFactory factory = GipslFactory.eINSTANCE;

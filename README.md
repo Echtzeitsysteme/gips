@@ -1,6 +1,6 @@
-# Roam
+# GIPS
 
-**Roam** is an open-source framework for **R**ule-based **o**ptim**a**l **m**apping.
+**GIPS** is an open-source framework for **G**raph-Based **I**LP **P**roblem **S**pecification.
 
 
 ## Installation (development)
@@ -8,14 +8,14 @@
 * Install [AdoptOpenJDK 17 (HotSpot JVM)](https://adoptopenjdk.net/releases.html?variant=openjdk17&jvmVariant=hotspot) or newer.
 * Install eMoflon::IBeX as described [here](https://github.com/eMoflon/emoflon-ibex#how-to-develop).
 * Install [Gurobi](https://www.gurobi.com/) in version `9.5.0` and activate a license for your computer.
-    * Currently, Gurobi is the default ILP solver used in iflye.
+    * Currently, Gurobi is the default ILP solver used in GIPS.
 * Launch a runtime workspace (while using a runtime Eclipse) as stated in the eMoflon::IBeX installation steps.
 * Clone this Git repository to your local machine and import it into Eclipse: *File -> Import -> General -> Existing Projects into Workspace*. Import all projects.
 * Inside the runtime workspace ...
-    * ... Run `GenerateRoamSLang.mwe2` from `org.emoflon.roam.roamslang/src/org.emoflon.roam.roamslang` with right click _Run As_ -> _MWE2 workflow_.
+    * ... Run `GenerateGipsl.mwe2` from `org.emoflon.gips.gipsl/src/org.emoflon.gips.gipsl` with right click _Run As_ -> _MWE2 workflow_.
     * ... build all projects (*Project -> Clean... -> Clean all projects*) to trigger code generation.
 
-A good start point to verify your installation is to run some of the examples from [this repository](https://github.com/Echtzeitsysteme/roam-examples).
+A good start point to verify your installation is to run some of the examples from [this repository](https://github.com/Echtzeitsysteme/gips-examples).
 
 ### Code-Style
 
@@ -38,7 +38,7 @@ By using this settings, you should be unable to commit unformatted code.
 
 ## Usage (running simulations)
 
-Please refer to the [Roam examples reposiory](https://github.com/Echtzeitsysteme/roam-examples).
+Please refer to the [GIPS examples reposiory](https://github.com/Echtzeitsysteme/gips-examples).
 
 
 ## License

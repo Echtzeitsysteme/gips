@@ -9,13 +9,13 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
 import org.emoflon.gips.build.generator.GipsCodeGenerator;
 import org.emoflon.gips.build.generator.GipsImportManager;
 import org.emoflon.gips.build.transformation.GipsToIntermediate;
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.gipsl.generator.GipsBuilderExtension;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
 import org.moflon.core.utilities.LogUtils;
 
 public class GipsProjectBuilder implements GipsBuilderExtension {

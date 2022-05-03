@@ -5,10 +5,10 @@ import java.util.Map;
 
 import org.emoflon.gips.build.GipsAPIData;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 
 public class TemplateData {
 	final public GipsIntermediateModel model;

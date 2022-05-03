@@ -2,10 +2,10 @@ package org.emoflon.gips.build.transformation.transformer;
 
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.TransformationContext;
+import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
-import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
 
 public class RelationalInStreamTransformer extends TransformationContext<StreamExpression>
 		implements RelationalExpressionTransformer {

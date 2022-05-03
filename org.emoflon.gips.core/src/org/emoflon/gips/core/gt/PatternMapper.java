@@ -4,11 +4,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.emoflon.ibex.gt.api.GraphTransformationMatch;
-import org.emoflon.ibex.gt.api.GraphTransformationPattern;
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsMapper;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
+import org.emoflon.ibex.gt.api.GraphTransformationMatch;
+import org.emoflon.ibex.gt.api.GraphTransformationPattern;
 
 public abstract class PatternMapper<GTM extends GTMapping<M, P>, M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
 		extends GipsMapper<GTM> {

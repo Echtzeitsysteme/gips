@@ -8,11 +8,11 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.emoflon.ibex.gt.api.GraphTransformationMatch;
-import org.emoflon.ibex.gt.api.GraphTransformationRule;
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsMapper;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
+import org.emoflon.ibex.gt.api.GraphTransformationMatch;
+import org.emoflon.ibex.gt.api.GraphTransformationRule;
 
 public abstract class GTMapper<GTM extends GTMapping<M, R>, M extends GraphTransformationMatch<M, R>, R extends GraphTransformationRule<M, R>>
 		extends GipsMapper<GTM> {

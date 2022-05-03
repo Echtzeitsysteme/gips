@@ -4,14 +4,14 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.TransformationContext;
-import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation;
-import org.emoflon.gips.intermediate.GipsIntermediate.StreamOperation;
-import org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsSelect;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamNavigation;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamSet;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation;
 
 public class StreamExpressionTransformer<T extends EObject> extends TransformationContext<T> {
 

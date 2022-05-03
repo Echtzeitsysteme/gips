@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.emoflon.gips.build.GipsAPIData;
 import org.emoflon.gips.build.generator.templates.ConstraintFactoryTemplate;
+import org.emoflon.gips.build.generator.templates.GipsAPITemplate;
 import org.emoflon.gips.build.generator.templates.GlobalObjectiveTemplate;
 import org.emoflon.gips.build.generator.templates.LaunchFileTemplate;
 import org.emoflon.gips.build.generator.templates.MapperFactoryTemplate;
@@ -16,15 +17,14 @@ import org.emoflon.gips.build.generator.templates.MappingTemplate;
 import org.emoflon.gips.build.generator.templates.ObjectiveFactoryTemplate;
 import org.emoflon.gips.build.generator.templates.PatternConstraintTemplate;
 import org.emoflon.gips.build.generator.templates.PatternObjectiveTemplate;
-import org.emoflon.gips.build.generator.templates.GipsAPITemplate;
 import org.emoflon.gips.build.generator.templates.TypeConstraintTemplate;
 import org.emoflon.gips.build.generator.templates.TypeObjectiveTemplate;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective;
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective;
 

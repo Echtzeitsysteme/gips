@@ -2,13 +2,13 @@ package org.emoflon.gips.core.gt;
 
 import java.util.List;
 
-import org.emoflon.ibex.gt.api.GraphTransformationMatch;
-import org.emoflon.ibex.gt.api.GraphTransformationPattern;
 import org.emoflon.gips.core.GipsConstraint;
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.ilp.ILPConstraint;
 import org.emoflon.gips.core.ilp.ILPTerm;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
+import org.emoflon.ibex.gt.api.GraphTransformationMatch;
+import org.emoflon.ibex.gt.api.GraphTransformationPattern;
 
 public abstract class GipsPatternConstraint<M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
 		extends GipsConstraint<PatternConstraint, M, Integer> {

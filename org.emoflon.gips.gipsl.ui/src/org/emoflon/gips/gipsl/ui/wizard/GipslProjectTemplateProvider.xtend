@@ -57,6 +57,15 @@ final class HelloWorldProject {
 				import "http://www.eclipse.org/emf/2002/Ecore"
 				// ^import a metamodel here
 				
+				config {  
+					solver := GUROBI [home:="fu", license:="bar"];
+					launchConfig := true [main := "TODO"];
+					timeLimit := true [value := 42.0];
+					randomSeed := true [value := 73];
+					presolve := true;
+					debugOutput := true;
+				}
+				
 				// specify an example rule
 				rule exampleRule {
 					clazz : EClass {

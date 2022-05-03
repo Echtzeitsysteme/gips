@@ -3,7 +3,6 @@
 package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.ecore.EClass;
-
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 

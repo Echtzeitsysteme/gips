@@ -21,8 +21,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternNodeFeatureValueImpl#getFeatureExpression
- * <em>Feature Expression</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternNodeFeatureValueImpl#getFeatureExpression <em>Feature Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -30,10 +29,9 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 		implements ContextPatternNodeFeatureValue {
 	/**
-	 * The cached value of the '{@link #getFeatureExpression() <em>Feature
-	 * Expression</em>}' containment reference. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getFeatureExpression() <em>Feature Expression</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @see #getFeatureExpression()
 	 * @generated
 	 * @ordered
@@ -42,7 +40,6 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ContextPatternNodeFeatureValueImpl() {
@@ -51,7 +48,6 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -61,7 +57,6 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public FeatureExpression getFeatureExpression() {
@@ -70,7 +65,6 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetFeatureExpression(FeatureExpression newFeatureExpression, NotificationChain msgs) {
@@ -90,7 +84,6 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setFeatureExpression(FeatureExpression newFeatureExpression) {
@@ -117,7 +110,6 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -131,7 +123,6 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -145,7 +136,6 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -160,7 +150,6 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -175,7 +164,6 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

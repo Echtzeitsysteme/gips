@@ -20,8 +20,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingSumExpressionImpl#getMapping
- * <em>Mapping</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingSumExpressionImpl#getMapping <em>Mapping</em>}</li>
  * </ul>
  *
  * @generated
@@ -30,7 +29,6 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 	/**
 	 * The cached value of the '{@link #getMapping() <em>Mapping</em>}' reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @see #getMapping()
 	 * @generated
 	 * @ordered
@@ -39,7 +37,6 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected MappingSumExpressionImpl() {
@@ -48,7 +45,6 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -58,7 +54,6 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public Mapping getMapping() {
@@ -76,7 +71,6 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public Mapping basicGetMapping() {
@@ -85,7 +79,6 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setMapping(Mapping newMapping) {
@@ -98,7 +91,6 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -114,7 +106,6 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -129,7 +120,6 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -144,7 +134,6 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

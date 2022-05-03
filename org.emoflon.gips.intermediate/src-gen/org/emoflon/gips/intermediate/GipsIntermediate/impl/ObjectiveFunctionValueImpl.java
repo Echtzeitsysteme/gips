@@ -20,17 +20,15 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ObjectiveFunctionValueImpl#getObjective
- * <em>Objective</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ObjectiveFunctionValueImpl#getObjective <em>Objective</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements ObjectiveFunctionValue {
 	/**
-	 * The cached value of the '{@link #getObjective() <em>Objective</em>}'
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getObjective() <em>Objective</em>}' reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getObjective()
 	 * @generated
 	 * @ordered
@@ -39,7 +37,6 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ObjectiveFunctionValueImpl() {
@@ -48,7 +45,6 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -58,7 +54,6 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public Objective getObjective() {
@@ -76,7 +71,6 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public Objective basicGetObjective() {
@@ -85,7 +79,6 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setObjective(Objective newObjective) {
@@ -98,7 +91,6 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -114,7 +106,6 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -129,7 +120,6 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -144,7 +134,6 @@ public class ObjectiveFunctionValueImpl extends ValueExpressionImpl implements O
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

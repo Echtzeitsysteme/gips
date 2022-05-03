@@ -12,12 +12,9 @@ import org.eclipse.emf.ecore.EClassifier;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getReturnType
- * <em>Return Type</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getCurrent
- * <em>Current</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getChild
- * <em>Child</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getReturnType <em>Return Type</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getCurrent <em>Current</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getChild <em>Child</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getStreamExpression()
@@ -52,7 +49,6 @@ public interface StreamExpression extends SetOperation {
 	/**
 	 * Returns the value of the '<em><b>Current</b></em>' containment reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Current</em>' containment reference.
 	 * @see #setCurrent(StreamOperation)
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getStreamExpression_Current()
@@ -62,11 +58,9 @@ public interface StreamExpression extends SetOperation {
 	StreamOperation getCurrent();
 
 	/**
-	 * Sets the value of the
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getCurrent
-	 * <em>Current</em>}' containment reference. <!-- begin-user-doc --> <!--
+	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getCurrent <em>Current</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Current</em>' containment reference.
 	 * @see #getCurrent()
 	 * @generated
@@ -86,11 +80,9 @@ public interface StreamExpression extends SetOperation {
 	StreamExpression getChild();
 
 	/**
-	 * Sets the value of the
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getChild
-	 * <em>Child</em>}' containment reference. <!-- begin-user-doc --> <!--
+	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression#getChild <em>Child</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Child</em>' containment reference.
 	 * @see #getChild()
 	 * @generated

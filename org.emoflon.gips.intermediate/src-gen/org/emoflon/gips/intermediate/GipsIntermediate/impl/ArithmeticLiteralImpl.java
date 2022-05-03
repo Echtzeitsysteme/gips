@@ -16,7 +16,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 public abstract class ArithmeticLiteralImpl extends ArithmeticValueExpressionImpl implements ArithmeticLiteral {
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ArithmeticLiteralImpl() {
@@ -25,7 +24,6 @@ public abstract class ArithmeticLiteralImpl extends ArithmeticValueExpressionImp
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

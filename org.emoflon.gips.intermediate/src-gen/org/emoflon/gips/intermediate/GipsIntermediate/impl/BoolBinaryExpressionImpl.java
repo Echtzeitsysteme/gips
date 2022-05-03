@@ -22,21 +22,17 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolBinaryExpressionImpl#getLhs
- * <em>Lhs</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolBinaryExpressionImpl#getRhs
- * <em>Rhs</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolBinaryExpressionImpl#getOperator
- * <em>Operator</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolBinaryExpressionImpl#getLhs <em>Lhs</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolBinaryExpressionImpl#getRhs <em>Rhs</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolBinaryExpressionImpl#getOperator <em>Operator</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements BoolBinaryExpression {
 	/**
-	 * The cached value of the '{@link #getLhs() <em>Lhs</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getLhs() <em>Lhs</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getLhs()
 	 * @generated
 	 * @ordered
@@ -44,9 +40,8 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 	protected BoolExpression lhs;
 
 	/**
-	 * The cached value of the '{@link #getRhs() <em>Rhs</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getRhs() <em>Rhs</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getRhs()
 	 * @generated
 	 * @ordered
@@ -54,9 +49,8 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 	protected BoolExpression rhs;
 
 	/**
-	 * The default value of the '{@link #getOperator() <em>Operator</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #getOperator() <em>Operator</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getOperator()
 	 * @generated
 	 * @ordered
@@ -66,7 +60,6 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 	/**
 	 * The cached value of the '{@link #getOperator() <em>Operator</em>}' attribute.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @see #getOperator()
 	 * @generated
 	 * @ordered
@@ -75,7 +68,6 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected BoolBinaryExpressionImpl() {
@@ -84,7 +76,6 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -94,7 +85,6 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public BoolExpression getLhs() {
@@ -103,7 +93,6 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetLhs(BoolExpression newLhs, NotificationChain msgs) {
@@ -122,7 +111,6 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setLhs(BoolExpression newLhs) {
@@ -144,7 +132,6 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public BoolExpression getRhs() {
@@ -153,7 +140,6 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetRhs(BoolExpression newRhs, NotificationChain msgs) {
@@ -172,7 +158,6 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setRhs(BoolExpression newRhs) {
@@ -194,7 +179,6 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public BinaryBoolOperator getOperator() {
@@ -203,7 +187,6 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setOperator(BinaryBoolOperator newOperator) {
@@ -216,7 +199,6 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -232,7 +214,6 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -250,7 +231,6 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -271,7 +251,6 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -292,7 +271,6 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -310,7 +288,6 @@ public class BoolBinaryExpressionImpl extends BoolExpressionImpl implements Bool
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

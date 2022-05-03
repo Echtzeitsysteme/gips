@@ -12,8 +12,7 @@ import org.eclipse.emf.ecore.EClass;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Type#getType
- * <em>Type</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Type#getType <em>Type</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getType()
@@ -34,10 +33,8 @@ public interface Type extends VariableSet {
 	EClass getType();
 
 	/**
-	 * Sets the value of the
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Type#getType
-	 * <em>Type</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.Type#getType <em>Type</em>}' reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Type</em>' reference.
 	 * @see #getType()
 	 * @generated

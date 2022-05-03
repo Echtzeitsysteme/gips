@@ -12,16 +12,15 @@ import org.eclipse.emf.common.util.Enumerator;
  * <!-- begin-user-doc --> A representation of the literals of the enumeration
  * '<em><b>Binary Arithmetic Operator</b></em>', and utility methods for working
  * with them. <!-- end-user-doc -->
- * 
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getBinaryArithmeticOperator()
  * @model
  * @generated
  */
 public enum BinaryArithmeticOperator implements Enumerator {
 	/**
-	 * The '<em><b>ADD</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * The '<em><b>ADD</b></em>' literal object.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @see #ADD_VALUE
 	 * @generated
 	 * @ordered
@@ -29,9 +28,9 @@ public enum BinaryArithmeticOperator implements Enumerator {
 	ADD(0, "ADD", "ADD"),
 
 	/**
-	 * The '<em><b>SUBTRACT</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * The '<em><b>SUBTRACT</b></em>' literal object.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @see #SUBTRACT_VALUE
 	 * @generated
 	 * @ordered
@@ -39,9 +38,9 @@ public enum BinaryArithmeticOperator implements Enumerator {
 	SUBTRACT(1, "SUBTRACT", "SUBTRACT"),
 
 	/**
-	 * The '<em><b>MULTIPLY</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * The '<em><b>MULTIPLY</b></em>' literal object.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @see #MULTIPLY_VALUE
 	 * @generated
 	 * @ordered
@@ -49,9 +48,9 @@ public enum BinaryArithmeticOperator implements Enumerator {
 	MULTIPLY(2, "MULTIPLY", "MULTIPLY"),
 
 	/**
-	 * The '<em><b>DIVIDE</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * The '<em><b>DIVIDE</b></em>' literal object.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @see #DIVIDE_VALUE
 	 * @generated
 	 * @ordered
@@ -59,9 +58,9 @@ public enum BinaryArithmeticOperator implements Enumerator {
 	DIVIDE(3, "DIVIDE", "DIVIDE"),
 
 	/**
-	 * The '<em><b>POW</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * The '<em><b>POW</b></em>' literal object.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @see #POW_VALUE
 	 * @generated
 	 * @ordered
@@ -69,9 +68,9 @@ public enum BinaryArithmeticOperator implements Enumerator {
 	POW(4, "POW", "POW");
 
 	/**
-	 * The '<em><b>ADD</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * The '<em><b>ADD</b></em>' literal value.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @see #ADD
 	 * @model
 	 * @generated
@@ -80,9 +79,9 @@ public enum BinaryArithmeticOperator implements Enumerator {
 	public static final int ADD_VALUE = 0;
 
 	/**
-	 * The '<em><b>SUBTRACT</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * The '<em><b>SUBTRACT</b></em>' literal value.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @see #SUBTRACT
 	 * @model
 	 * @generated
@@ -91,9 +90,9 @@ public enum BinaryArithmeticOperator implements Enumerator {
 	public static final int SUBTRACT_VALUE = 1;
 
 	/**
-	 * The '<em><b>MULTIPLY</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * The '<em><b>MULTIPLY</b></em>' literal value.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @see #MULTIPLY
 	 * @model
 	 * @generated
@@ -102,9 +101,9 @@ public enum BinaryArithmeticOperator implements Enumerator {
 	public static final int MULTIPLY_VALUE = 2;
 
 	/**
-	 * The '<em><b>DIVIDE</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * The '<em><b>DIVIDE</b></em>' literal value.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @see #DIVIDE
 	 * @model
 	 * @generated
@@ -113,9 +112,9 @@ public enum BinaryArithmeticOperator implements Enumerator {
 	public static final int DIVIDE_VALUE = 3;
 
 	/**
-	 * The '<em><b>POW</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * The '<em><b>POW</b></em>' literal value.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @see #POW
 	 * @model
 	 * @generated
@@ -126,25 +125,22 @@ public enum BinaryArithmeticOperator implements Enumerator {
 	/**
 	 * An array of all the '<em><b>Binary Arithmetic Operator</b></em>' enumerators.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private static final BinaryArithmeticOperator[] VALUES_ARRAY = new BinaryArithmeticOperator[] { ADD, SUBTRACT,
 			MULTIPLY, DIVIDE, POW, };
 
 	/**
-	 * A public read-only list of all the '<em><b>Binary Arithmetic
-	 * Operator</b></em>' enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * A public read-only list of all the '<em><b>Binary Arithmetic Operator</b></em>' enumerators.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	public static final List<BinaryArithmeticOperator> VALUES = Collections
 			.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
-	 * Returns the '<em><b>Binary Arithmetic Operator</b></em>' literal with the
-	 * specified literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the '<em><b>Binary Arithmetic Operator</b></em>' literal with the specified literal value.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @param literal the literal.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
@@ -160,9 +156,8 @@ public enum BinaryArithmeticOperator implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>Binary Arithmetic Operator</b></em>' literal with the
-	 * specified name. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the '<em><b>Binary Arithmetic Operator</b></em>' literal with the specified name.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @param name the name.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
@@ -178,9 +173,8 @@ public enum BinaryArithmeticOperator implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>Binary Arithmetic Operator</b></em>' literal with the
-	 * specified integer value. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the '<em><b>Binary Arithmetic Operator</b></em>' literal with the specified integer value.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @param value the integer value.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
@@ -203,29 +197,26 @@ public enum BinaryArithmeticOperator implements Enumerator {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private final int value;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private final String name;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private final String literal;
 
 	/**
-	 * Only this class can construct instances. <!-- begin-user-doc --> <!--
+	 * Only this class can construct instances.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private BinaryArithmeticOperator(int value, String name, String literal) {
@@ -236,7 +227,6 @@ public enum BinaryArithmeticOperator implements Enumerator {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public int getValue() {
@@ -245,7 +235,6 @@ public enum BinaryArithmeticOperator implements Enumerator {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public String getName() {
@@ -254,7 +243,6 @@ public enum BinaryArithmeticOperator implements Enumerator {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public String getLiteral() {
@@ -262,9 +250,8 @@ public enum BinaryArithmeticOperator implements Enumerator {
 	}
 
 	/**
-	 * Returns the literal value of the enumerator, which is its string
-	 * representation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the literal value of the enumerator, which is its string representation.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override

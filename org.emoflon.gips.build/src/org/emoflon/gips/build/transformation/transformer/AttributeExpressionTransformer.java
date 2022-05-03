@@ -17,6 +17,8 @@ import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
 import org.emoflon.gips.gipsl.gipsl.GipsNodeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamArithmetic;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
@@ -26,6 +28,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue;
@@ -34,6 +37,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValu
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
@@ -244,10 +248,131 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 
 	protected ValueExpression transformExprAndStream(final GipsContextExpr eContext, final EObject contextType)
 			throws Exception {
-		// Case: The context expression is followed by some stream expression
-		// TODO: This should be allowed in arithemtic Expressions, hence, TODO but on a
-		// later date!
-		throw new UnsupportedOperationException("Nested stream operations not yet supported.");
+		if (contextType instanceof GipsTypeContext typeContext) {
+			if (eContext.getExpr() instanceof GipsFeatureExpr eFeature) {
+				Type tc = data.getType((EClass) typeContext.getType());
+				FeatureExpression fe = GipsTransformationUtils.transformFeatureExpression(eFeature);
+				GipsStreamExpr terminalExpr = GipsTransformationUtils.getTerminalStreamExpression(eContext.getStream());
+				if (terminalExpr instanceof GipsStreamBoolExpr streamBool) {
+					switch (streamBool.getOperator()) {
+					case COUNT -> {
+						SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
+						return transformer.transform(tc, fe, eContext.getStream());
+					}
+					case EXISTS -> {
+						throw new IllegalArgumentException(
+								"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
+					}
+					case NOTEXISTS -> {
+						throw new IllegalArgumentException(
+								"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
+					}
+					default -> {
+						throw new UnsupportedOperationException("Unknown stream operator: " + streamBool.getOperator());
+					}
+					}
+				} else if (terminalExpr instanceof GipsStreamArithmetic streamArithmetic) {
+					SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
+					return transformer.transform(tc, fe, eContext.getStream(), streamArithmetic);
+				} else {
+					throw new UnsupportedOperationException(
+							"Some constrains contain invalid values within arithmetic expressions, e.g., objects or streams of objects instead of arithmetic values.");
+				}
+			} else {
+				throw new UnsupportedOperationException(
+						"Node and ILP variable (e.g., .value(), .isMapped()) expressions are not applicable to model objects.");
+			}
+		} else if (contextType instanceof GipsPatternContext matchContext) {
+			if (eContext.getExpr() instanceof GipsNodeAttributeExpr eNodeExpr) {
+				Pattern pc = data.getPattern(matchContext.getPattern());
+				if (eNodeExpr.getExpr() == null) {
+					throw new UnsupportedOperationException(
+							"Filter expressions are not applicable to non-container objects.");
+				} else {
+					FeatureExpression fe = GipsTransformationUtils.transformFeatureExpression(eNodeExpr.getExpr());
+					GipsStreamExpr terminalExpr = GipsTransformationUtils
+							.getTerminalStreamExpression(eContext.getStream());
+					if (terminalExpr instanceof GipsStreamBoolExpr streamBool) {
+						switch (streamBool.getOperator()) {
+						case COUNT -> {
+							SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
+							return transformer.transform(pc, data.eNode2Node().get(eNodeExpr.getNode()), fe,
+									eContext.getStream());
+						}
+						case EXISTS -> {
+							throw new IllegalArgumentException(
+									"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
+						}
+						case NOTEXISTS -> {
+							throw new IllegalArgumentException(
+									"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
+						}
+						default -> {
+							throw new UnsupportedOperationException(
+									"Unknown stream operator: " + streamBool.getOperator());
+						}
+						}
+					} else if (terminalExpr instanceof GipsStreamArithmetic streamArithmetic) {
+						SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
+						return transformer.transform(pc, data.eNode2Node().get(eNodeExpr.getNode()), fe,
+								eContext.getStream(), streamArithmetic);
+					} else {
+						throw new UnsupportedOperationException(
+								"Some constrains contain invalid values within arithmetic expressions, e.g., objects or streams of objects instead of arithmetic values.");
+					}
+				}
+			} else {
+				throw new UnsupportedOperationException(
+						"Node and ILP variable (e.g., .value(), .isMapped()) expressions are not applicable to model objects.");
+			}
+		} else {
+			GipsMappingContext mc = (GipsMappingContext) contextType;
+			if (eContext.getExpr() instanceof GipsNodeAttributeExpr eNodeExpr) {
+				if (eNodeExpr.getExpr() == null) {
+					throw new UnsupportedOperationException(
+							"Filter expressions are not applicable to non-container objects.");
+				} else {
+					Mapping mapping = data.eMapping2Mapping().get(mc.getMapping());
+					FeatureExpression fe = GipsTransformationUtils.transformFeatureExpression(eNodeExpr.getExpr());
+					GipsStreamExpr terminalExpr = GipsTransformationUtils
+							.getTerminalStreamExpression(eContext.getStream());
+					if (terminalExpr instanceof GipsStreamBoolExpr streamBool) {
+						switch (streamBool.getOperator()) {
+						case COUNT -> {
+							SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
+							return transformer.transform(mapping, data.eNode2Node().get(eNodeExpr.getNode()), fe,
+									eContext.getStream());
+						}
+						case EXISTS -> {
+							throw new IllegalArgumentException(
+									"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
+						}
+						case NOTEXISTS -> {
+							throw new IllegalArgumentException(
+									"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
+						}
+						default -> {
+							throw new UnsupportedOperationException(
+									"Unknown stream operator: " + streamBool.getOperator());
+						}
+						}
+					} else if (terminalExpr instanceof GipsStreamArithmetic streamArithmetic) {
+						SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
+						return transformer.transform(mapping, data.eNode2Node().get(eNodeExpr.getNode()), fe,
+								eContext.getStream(), streamArithmetic);
+					} else {
+						throw new UnsupportedOperationException(
+								"Some constrains contain invalid values within arithmetic expressions, e.g., objects or streams of objects instead of arithmetic values.");
+					}
+				}
+			} else if (eContext.getExpr() instanceof GipsContextOperationExpression eContextOp) {
+				throw new UnsupportedOperationException(
+						"Node and ILP variable (e.g., .value(), .isMapped()) expressions may not followed by stream expressions.");
+			} else {
+				throw new UnsupportedOperationException(
+						"Feature expressions can not be invoked directly upon mapping variables.");
+			}
+		}
 	}
 
 	protected ValueExpression transformIteratorMappingNodeValue(final GipsNodeAttributeExpr eNodeAttribute,

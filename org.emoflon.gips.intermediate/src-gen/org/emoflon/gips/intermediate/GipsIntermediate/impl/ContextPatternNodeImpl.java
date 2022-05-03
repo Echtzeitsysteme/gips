@@ -22,19 +22,16 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternNodeImpl#getPatternContext
- * <em>Pattern Context</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternNodeImpl#getNode
- * <em>Node</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternNodeImpl#getPatternContext <em>Pattern Context</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternNodeImpl#getNode <em>Node</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ContextPatternNodeImpl extends ValueExpressionImpl implements ContextPatternNode {
 	/**
-	 * The cached value of the '{@link #getPatternContext() <em>Pattern
-	 * Context</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getPatternContext() <em>Pattern Context</em>}' reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getPatternContext()
 	 * @generated
 	 * @ordered
@@ -53,7 +50,6 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ContextPatternNodeImpl() {
@@ -62,7 +58,6 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -72,7 +67,6 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public Pattern getPatternContext() {
@@ -91,7 +85,6 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public Pattern basicGetPatternContext() {
@@ -100,7 +93,6 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setPatternContext(Pattern newPatternContext) {
@@ -113,7 +105,6 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public IBeXNode getNode() {
@@ -131,7 +122,6 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public IBeXNode basicGetNode() {
@@ -140,7 +130,6 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setNode(IBeXNode newNode) {
@@ -153,7 +142,6 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -173,7 +161,6 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -191,7 +178,6 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -209,7 +195,6 @@ public class ContextPatternNodeImpl extends ValueExpressionImpl implements Conte
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

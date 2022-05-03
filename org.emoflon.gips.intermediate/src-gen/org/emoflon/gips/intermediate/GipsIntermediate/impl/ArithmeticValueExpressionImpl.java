@@ -17,7 +17,6 @@ public abstract class ArithmeticValueExpressionImpl extends ArithmeticExpression
 		implements ArithmeticValueExpression {
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ArithmeticValueExpressionImpl() {
@@ -26,7 +25,6 @@ public abstract class ArithmeticValueExpressionImpl extends ArithmeticExpression
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

@@ -23,21 +23,17 @@ import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.SumExpressionImpl#getOperandName
- * <em>Operand Name</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.SumExpressionImpl#getExpression
- * <em>Expression</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.SumExpressionImpl#getFilter
- * <em>Filter</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.SumExpressionImpl#getOperandName <em>Operand Name</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.SumExpressionImpl#getExpression <em>Expression</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.SumExpressionImpl#getFilter <em>Filter</em>}</li>
  * </ul>
  *
  * @generated
  */
 public abstract class SumExpressionImpl extends ValueExpressionImpl implements SumExpression {
 	/**
-	 * The default value of the '{@link #getOperandName() <em>Operand Name</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #getOperandName() <em>Operand Name</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getOperandName()
 	 * @generated
 	 * @ordered
@@ -45,9 +41,8 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 	protected static final String OPERAND_NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getOperandName() <em>Operand Name</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getOperandName() <em>Operand Name</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getOperandName()
 	 * @generated
 	 * @ordered
@@ -55,9 +50,8 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 	protected String operandName = OPERAND_NAME_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getExpression() <em>Expression</em>}'
-	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getExpression()
 	 * @generated
 	 * @ordered
@@ -65,9 +59,8 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 	protected ArithmeticExpression expression;
 
 	/**
-	 * The cached value of the '{@link #getFilter() <em>Filter</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getFilter() <em>Filter</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getFilter()
 	 * @generated
 	 * @ordered
@@ -76,7 +69,6 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected SumExpressionImpl() {
@@ -85,7 +77,6 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -95,7 +86,6 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public String getOperandName() {
@@ -104,7 +94,6 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setOperandName(String newOperandName) {
@@ -117,7 +106,6 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public ArithmeticExpression getExpression() {
@@ -126,7 +114,6 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetExpression(ArithmeticExpression newExpression, NotificationChain msgs) {
@@ -145,7 +132,6 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setExpression(ArithmeticExpression newExpression) {
@@ -167,7 +153,6 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public StreamExpression getFilter() {
@@ -176,7 +161,6 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetFilter(StreamExpression newFilter, NotificationChain msgs) {
@@ -195,7 +179,6 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setFilter(StreamExpression newFilter) {
@@ -217,7 +200,6 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -233,7 +215,6 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -251,7 +232,6 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -272,7 +252,6 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -293,7 +272,6 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -311,7 +289,6 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -329,7 +306,6 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -347,7 +323,6 @@ public abstract class SumExpressionImpl extends ValueExpressionImpl implements S
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

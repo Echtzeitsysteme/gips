@@ -12,16 +12,15 @@ import org.eclipse.emf.common.util.Enumerator;
  * <!-- begin-user-doc --> A representation of the literals of the enumeration
  * '<em><b>ILP Solver Type</b></em>', and utility methods for working with them.
  * <!-- end-user-doc -->
- * 
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPSolverType()
  * @model
  * @generated
  */
 public enum ILPSolverType implements Enumerator {
 	/**
-	 * The '<em><b>GUROBI</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * The '<em><b>GUROBI</b></em>' literal object.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @see #GUROBI_VALUE
 	 * @generated
 	 * @ordered
@@ -29,9 +28,9 @@ public enum ILPSolverType implements Enumerator {
 	GUROBI(0, "GUROBI", "GUROBI");
 
 	/**
-	 * The '<em><b>GUROBI</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * The '<em><b>GUROBI</b></em>' literal value.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @see #GUROBI
 	 * @model
 	 * @generated
@@ -48,17 +47,15 @@ public enum ILPSolverType implements Enumerator {
 	private static final ILPSolverType[] VALUES_ARRAY = new ILPSolverType[] { GUROBI, };
 
 	/**
-	 * A public read-only list of all the '<em><b>ILP Solver Type</b></em>'
-	 * enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * A public read-only list of all the '<em><b>ILP Solver Type</b></em>' enumerators.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	public static final List<ILPSolverType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
-	 * Returns the '<em><b>ILP Solver Type</b></em>' literal with the specified
-	 * literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the '<em><b>ILP Solver Type</b></em>' literal with the specified literal value.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @param literal the literal.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
@@ -74,9 +71,8 @@ public enum ILPSolverType implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>ILP Solver Type</b></em>' literal with the specified
-	 * name. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the '<em><b>ILP Solver Type</b></em>' literal with the specified name.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @param name the name.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
@@ -92,9 +88,8 @@ public enum ILPSolverType implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>ILP Solver Type</b></em>' literal with the specified
-	 * integer value. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the '<em><b>ILP Solver Type</b></em>' literal with the specified integer value.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @param value the integer value.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
@@ -109,29 +104,26 @@ public enum ILPSolverType implements Enumerator {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private final int value;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private final String name;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private final String literal;
 
 	/**
-	 * Only this class can construct instances. <!-- begin-user-doc --> <!--
+	 * Only this class can construct instances.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private ILPSolverType(int value, String name, String literal) {
@@ -142,7 +134,6 @@ public enum ILPSolverType implements Enumerator {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public int getValue() {
@@ -151,7 +142,6 @@ public enum ILPSolverType implements Enumerator {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public String getName() {
@@ -160,7 +150,6 @@ public enum ILPSolverType implements Enumerator {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public String getLiteral() {
@@ -168,9 +157,8 @@ public enum ILPSolverType implements Enumerator {
 	}
 
 	/**
-	 * Returns the literal value of the enumerator, which is its string
-	 * representation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the literal value of the enumerator, which is its string representation.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override

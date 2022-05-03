@@ -21,8 +21,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingImpl#getRule
- * <em>Rule</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingImpl#getRule <em>Rule</em>}</li>
  * </ul>
  *
  * @generated
@@ -40,7 +39,6 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected MappingImpl() {
@@ -49,7 +47,6 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -59,7 +56,6 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public IBeXRule getRule() {
@@ -77,7 +73,6 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public IBeXRule basicGetRule() {
@@ -86,7 +81,6 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setRule(IBeXRule newRule) {
@@ -99,7 +93,6 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -115,7 +108,6 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -130,7 +122,6 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -145,7 +136,6 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

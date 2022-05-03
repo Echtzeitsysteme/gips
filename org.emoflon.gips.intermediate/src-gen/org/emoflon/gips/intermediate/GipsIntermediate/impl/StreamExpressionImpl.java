@@ -23,23 +23,18 @@ import org.emoflon.gips.intermediate.GipsIntermediate.StreamOperation;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamExpressionImpl#getOperandName
- * <em>Operand Name</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamExpressionImpl#getReturnType
- * <em>Return Type</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamExpressionImpl#getCurrent
- * <em>Current</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamExpressionImpl#getChild
- * <em>Child</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamExpressionImpl#getOperandName <em>Operand Name</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamExpressionImpl#getReturnType <em>Return Type</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamExpressionImpl#getCurrent <em>Current</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamExpressionImpl#getChild <em>Child</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class StreamExpressionImpl extends MinimalEObjectImpl.Container implements StreamExpression {
 	/**
-	 * The default value of the '{@link #getOperandName() <em>Operand Name</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #getOperandName() <em>Operand Name</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getOperandName()
 	 * @generated
 	 * @ordered
@@ -47,9 +42,8 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	protected static final String OPERAND_NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getOperandName() <em>Operand Name</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getOperandName() <em>Operand Name</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getOperandName()
 	 * @generated
 	 * @ordered
@@ -57,9 +51,8 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	protected String operandName = OPERAND_NAME_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getReturnType() <em>Return Type</em>}'
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getReturnType() <em>Return Type</em>}' reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getReturnType()
 	 * @generated
 	 * @ordered
@@ -67,9 +60,8 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	protected EClassifier returnType;
 
 	/**
-	 * The cached value of the '{@link #getCurrent() <em>Current</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getCurrent() <em>Current</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getCurrent()
 	 * @generated
 	 * @ordered
@@ -77,9 +69,8 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 	protected StreamOperation current;
 
 	/**
-	 * The cached value of the '{@link #getChild() <em>Child</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getChild() <em>Child</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getChild()
 	 * @generated
 	 * @ordered
@@ -88,7 +79,6 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected StreamExpressionImpl() {
@@ -97,7 +87,6 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -107,7 +96,6 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public String getOperandName() {
@@ -116,7 +104,6 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setOperandName(String newOperandName) {
@@ -129,7 +116,6 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EClassifier getReturnType() {
@@ -147,7 +133,6 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EClassifier basicGetReturnType() {
@@ -156,7 +141,6 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setReturnType(EClassifier newReturnType) {
@@ -169,7 +153,6 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public StreamOperation getCurrent() {
@@ -178,7 +161,6 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetCurrent(StreamOperation newCurrent, NotificationChain msgs) {
@@ -197,7 +179,6 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setCurrent(StreamOperation newCurrent) {
@@ -219,7 +200,6 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public StreamExpression getChild() {
@@ -228,7 +208,6 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetChild(StreamExpression newChild, NotificationChain msgs) {
@@ -247,7 +226,6 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setChild(StreamExpression newChild) {
@@ -269,7 +247,6 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -285,7 +262,6 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -307,7 +283,6 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -331,7 +306,6 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -355,7 +329,6 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -375,7 +348,6 @@ public class StreamExpressionImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

@@ -22,17 +22,15 @@ import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamFilterOperationImpl#getPredicate
- * <em>Predicate</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamFilterOperationImpl#getPredicate <em>Predicate</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class StreamFilterOperationImpl extends MinimalEObjectImpl.Container implements StreamFilterOperation {
 	/**
-	 * The cached value of the '{@link #getPredicate() <em>Predicate</em>}'
-	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getPredicate() <em>Predicate</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getPredicate()
 	 * @generated
 	 * @ordered
@@ -41,7 +39,6 @@ public class StreamFilterOperationImpl extends MinimalEObjectImpl.Container impl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected StreamFilterOperationImpl() {
@@ -50,7 +47,6 @@ public class StreamFilterOperationImpl extends MinimalEObjectImpl.Container impl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -60,7 +56,6 @@ public class StreamFilterOperationImpl extends MinimalEObjectImpl.Container impl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public BoolExpression getPredicate() {
@@ -69,7 +64,6 @@ public class StreamFilterOperationImpl extends MinimalEObjectImpl.Container impl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetPredicate(BoolExpression newPredicate, NotificationChain msgs) {
@@ -88,7 +82,6 @@ public class StreamFilterOperationImpl extends MinimalEObjectImpl.Container impl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setPredicate(BoolExpression newPredicate) {
@@ -112,7 +105,6 @@ public class StreamFilterOperationImpl extends MinimalEObjectImpl.Container impl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -126,7 +118,6 @@ public class StreamFilterOperationImpl extends MinimalEObjectImpl.Container impl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -140,7 +131,6 @@ public class StreamFilterOperationImpl extends MinimalEObjectImpl.Container impl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -155,7 +145,6 @@ public class StreamFilterOperationImpl extends MinimalEObjectImpl.Container impl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -170,7 +159,6 @@ public class StreamFilterOperationImpl extends MinimalEObjectImpl.Container impl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

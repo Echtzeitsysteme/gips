@@ -21,17 +21,15 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolValueImpl#getValue
- * <em>Value</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolValueImpl#getValue <em>Value</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue {
 	/**
-	 * The cached value of the '{@link #getValue() <em>Value</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getValue()
 	 * @generated
 	 * @ordered
@@ -40,7 +38,6 @@ public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected BoolValueImpl() {
@@ -49,7 +46,6 @@ public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -59,7 +55,6 @@ public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public ValueExpression getValue() {
@@ -68,7 +63,6 @@ public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetValue(ValueExpression newValue, NotificationChain msgs) {
@@ -87,7 +81,6 @@ public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setValue(ValueExpression newValue) {
@@ -109,7 +102,6 @@ public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -123,7 +115,6 @@ public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -137,7 +128,6 @@ public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -152,7 +142,6 @@ public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -167,7 +156,6 @@ public class BoolValueImpl extends BoolValueExpressionImpl implements BoolValue 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

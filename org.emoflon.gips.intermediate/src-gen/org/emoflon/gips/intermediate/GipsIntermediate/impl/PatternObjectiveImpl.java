@@ -24,14 +24,10 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternObjectiveImpl#getName
- * <em>Name</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternObjectiveImpl#isElementwise
- * <em>Elementwise</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternObjectiveImpl#getExpression
- * <em>Expression</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternObjectiveImpl#getPattern
- * <em>Pattern</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternObjectiveImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternObjectiveImpl#isElementwise <em>Elementwise</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternObjectiveImpl#getExpression <em>Expression</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternObjectiveImpl#getPattern <em>Pattern</em>}</li>
  * </ul>
  *
  * @generated
@@ -58,9 +54,8 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isElementwise() <em>Elementwise</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #isElementwise() <em>Elementwise</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #isElementwise()
 	 * @generated
 	 * @ordered
@@ -68,9 +63,8 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 	protected static final boolean ELEMENTWISE_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isElementwise() <em>Elementwise</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #isElementwise() <em>Elementwise</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #isElementwise()
 	 * @generated
 	 * @ordered
@@ -78,9 +72,8 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 	protected boolean elementwise = ELEMENTWISE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getExpression() <em>Expression</em>}'
-	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getExpression()
 	 * @generated
 	 * @ordered
@@ -90,7 +83,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 	/**
 	 * The cached value of the '{@link #getPattern() <em>Pattern</em>}' reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @see #getPattern()
 	 * @generated
 	 * @ordered
@@ -99,7 +91,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected PatternObjectiveImpl() {
@@ -108,7 +99,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -118,7 +108,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public String getName() {
@@ -127,7 +116,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setName(String newName) {
@@ -140,7 +128,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public boolean isElementwise() {
@@ -149,7 +136,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setElementwise(boolean newElementwise) {
@@ -162,7 +148,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public ArithmeticExpression getExpression() {
@@ -171,7 +156,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetExpression(ArithmeticExpression newExpression, NotificationChain msgs) {
@@ -190,7 +174,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setExpression(ArithmeticExpression newExpression) {
@@ -212,7 +195,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public Pattern getPattern() {
@@ -230,7 +212,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public Pattern basicGetPattern() {
@@ -239,7 +220,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setPattern(Pattern newPattern) {
@@ -252,7 +232,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -266,7 +245,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -288,7 +266,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -312,7 +289,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -336,7 +312,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -356,7 +331,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -378,7 +352,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -400,7 +373,6 @@ public class PatternObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

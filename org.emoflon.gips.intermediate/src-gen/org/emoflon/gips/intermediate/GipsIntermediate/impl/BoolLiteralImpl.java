@@ -18,8 +18,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolLiteralImpl#isLiteral
- * <em>Literal</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolLiteralImpl#isLiteral <em>Literal</em>}</li>
  * </ul>
  *
  * @generated
@@ -28,7 +27,6 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 	/**
 	 * The default value of the '{@link #isLiteral() <em>Literal</em>}' attribute.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @see #isLiteral()
 	 * @generated
 	 * @ordered
@@ -38,7 +36,6 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 	/**
 	 * The cached value of the '{@link #isLiteral() <em>Literal</em>}' attribute.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @see #isLiteral()
 	 * @generated
 	 * @ordered
@@ -47,7 +44,6 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected BoolLiteralImpl() {
@@ -56,7 +52,6 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -66,7 +61,6 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public boolean isLiteral() {
@@ -75,7 +69,6 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setLiteral(boolean newLiteral) {
@@ -88,7 +81,6 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -102,7 +94,6 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -117,7 +108,6 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -132,7 +122,6 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -146,7 +135,6 @@ public class BoolLiteralImpl extends BoolValueExpressionImpl implements BoolLite
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

@@ -183,6 +183,11 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//SumExpression/expression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//SumExpression/filter"/>
     </genClasses>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//ContextSumExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//ContextSumExpression/context"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//ContextSumExpression/node"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//ContextSumExpression/feature"/>
+    </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//MappingSumExpression">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//MappingSumExpression/mapping"/>
     </genClasses>

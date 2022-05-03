@@ -13,8 +13,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral#getFeature
- * <em>Feature</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral#getFeature <em>Feature</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getFeatureLiteral()
@@ -35,10 +34,8 @@ public interface FeatureLiteral extends EObject {
 	EStructuralFeature getFeature();
 
 	/**
-	 * Sets the value of the
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral#getFeature
-	 * <em>Feature</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral#getFeature <em>Feature</em>}' reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Feature</em>' reference.
 	 * @see #getFeature()
 	 * @generated

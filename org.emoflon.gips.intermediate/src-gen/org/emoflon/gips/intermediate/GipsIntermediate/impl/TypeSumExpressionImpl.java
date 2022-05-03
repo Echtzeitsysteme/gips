@@ -20,8 +20,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeSumExpressionImpl#getType
- * <em>Type</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeSumExpressionImpl#getType <em>Type</em>}</li>
  * </ul>
  *
  * @generated
@@ -39,7 +38,6 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected TypeSumExpressionImpl() {
@@ -48,7 +46,6 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -58,7 +55,6 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public Type getType() {
@@ -76,7 +72,6 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public Type basicGetType() {
@@ -85,7 +80,6 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setType(Type newType) {
@@ -98,7 +92,6 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -114,7 +107,6 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -129,7 +121,6 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -144,7 +135,6 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

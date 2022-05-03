@@ -10,10 +10,8 @@ package org.emoflon.gips.intermediate.GipsIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue#getPatternContext
- * <em>Pattern Context</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue#getFeatureExpression
- * <em>Feature Expression</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue#getPatternContext <em>Pattern Context</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue#getFeatureExpression <em>Feature Expression</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorPatternFeatureValue()
@@ -34,11 +32,9 @@ public interface IteratorPatternFeatureValue extends ValueExpression, Iterator {
 	Pattern getPatternContext();
 
 	/**
-	 * Sets the value of the
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue#getPatternContext
-	 * <em>Pattern Context</em>}' reference. <!-- begin-user-doc --> <!--
+	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue#getPatternContext <em>Pattern Context</em>}' reference.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Pattern Context</em>' reference.
 	 * @see #getPatternContext()
 	 * @generated
@@ -46,9 +42,8 @@ public interface IteratorPatternFeatureValue extends ValueExpression, Iterator {
 	void setPatternContext(Pattern value);
 
 	/**
-	 * Returns the value of the '<em><b>Feature Expression</b></em>' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the value of the '<em><b>Feature Expression</b></em>' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the value of the '<em>Feature Expression</em>' containment reference.
 	 * @see #setFeatureExpression(FeatureExpression)
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorPatternFeatureValue_FeatureExpression()
@@ -58,13 +53,10 @@ public interface IteratorPatternFeatureValue extends ValueExpression, Iterator {
 	FeatureExpression getFeatureExpression();
 
 	/**
-	 * Sets the value of the
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue#getFeatureExpression
-	 * <em>Feature Expression</em>}' containment reference. <!-- begin-user-doc -->
+	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue#getFeatureExpression <em>Feature Expression</em>}' containment reference.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
-	 * @param value the new value of the '<em>Feature Expression</em>' containment
-	 *              reference.
+	 * @param value the new value of the '<em>Feature Expression</em>' containment reference.
 	 * @see #getFeatureExpression()
 	 * @generated
 	 */

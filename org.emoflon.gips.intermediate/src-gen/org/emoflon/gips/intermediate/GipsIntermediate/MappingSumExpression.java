@@ -10,8 +10,7 @@ package org.emoflon.gips.intermediate.GipsIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression#getMapping
- * <em>Mapping</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression#getMapping <em>Mapping</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getMappingSumExpression()
@@ -32,10 +31,8 @@ public interface MappingSumExpression extends SumExpression {
 	Mapping getMapping();
 
 	/**
-	 * Sets the value of the
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression#getMapping
-	 * <em>Mapping</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression#getMapping <em>Mapping</em>}' reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Mapping</em>' reference.
 	 * @see #getMapping()
 	 * @generated

@@ -12,8 +12,7 @@ import org.eclipse.emf.ecore.EClass;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation#getType
- * <em>Type</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation#getType <em>Type</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getStreamSelectOperation()
@@ -34,11 +33,9 @@ public interface StreamSelectOperation extends StreamOperation {
 	EClass getType();
 
 	/**
-	 * Sets the value of the
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation#getType
-	 * <em>Type</em>}' containment reference. <!-- begin-user-doc --> <!--
+	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation#getType <em>Type</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Type</em>' containment reference.
 	 * @see #getType()
 	 * @generated

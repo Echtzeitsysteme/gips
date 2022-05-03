@@ -12,8 +12,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Iterator#getStream
- * <em>Stream</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Iterator#getStream <em>Stream</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIterator()
@@ -34,10 +33,8 @@ public interface Iterator extends EObject {
 	SetOperation getStream();
 
 	/**
-	 * Sets the value of the
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Iterator#getStream
-	 * <em>Stream</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.Iterator#getStream <em>Stream</em>}' reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Stream</em>' reference.
 	 * @see #getStream()
 	 * @generated

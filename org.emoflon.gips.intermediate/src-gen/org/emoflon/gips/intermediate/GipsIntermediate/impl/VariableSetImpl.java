@@ -19,8 +19,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.VariableSetImpl#getName
- * <em>Name</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.VariableSetImpl#getName <em>Name</em>}</li>
  * </ul>
  *
  * @generated
@@ -48,7 +47,6 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected VariableSetImpl() {
@@ -57,7 +55,6 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -67,7 +64,6 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public String getName() {
@@ -76,7 +72,6 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setName(String newName) {
@@ -89,7 +84,6 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -103,7 +97,6 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -118,7 +111,6 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -133,7 +125,6 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -147,7 +138,6 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

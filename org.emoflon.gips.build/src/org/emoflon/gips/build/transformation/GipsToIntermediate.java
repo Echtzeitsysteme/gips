@@ -5,27 +5,31 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.emoflon.ibex.gt.editor.gT.EditorNode;
-import org.emoflon.ibex.gt.editor.gT.EditorPattern;
-import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
-import org.emoflon.ibex.gt.transformations.EditorToIBeXPatternTransformation;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
 import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
 import org.emoflon.gips.build.transformation.transformer.ArithmeticExpressionTransformer;
 import org.emoflon.gips.build.transformation.transformer.RelationalExpressionTransformer;
 import org.emoflon.gips.build.transformation.transformer.TransformerFactory;
+import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.GipsBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
+import org.emoflon.gips.gipsl.gipsl.GipsConfig;
+import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsGlobalObjective;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
+import org.emoflon.gips.gipsl.gipsl.GipsObjective;
+import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
+import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
 import org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType;
@@ -38,25 +42,21 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator;
-import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
-import org.emoflon.gips.gipsl.gipsl.GipsBoolExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
-import org.emoflon.gips.gipsl.gipsl.GipsConfig;
-import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
-import org.emoflon.gips.gipsl.gipsl.GipsGlobalObjective;
-import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
-import org.emoflon.gips.gipsl.gipsl.GipsMatchContext;
-import org.emoflon.gips.gipsl.gipsl.GipsObjective;
-import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
+import org.emoflon.ibex.gt.editor.gT.EditorNode;
+import org.emoflon.ibex.gt.editor.gT.EditorPattern;
+import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
+import org.emoflon.ibex.gt.transformations.EditorToIBeXPatternTransformation;
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives;
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern;
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
 
 public class GipsToIntermediate {
 	protected GipsIntermediateFactory factory = GipsIntermediateFactory.eINSTANCE;
@@ -289,7 +289,7 @@ public class GipsToIntermediate {
 			constraint.setName("MappingConstraint" + counter + "On" + mapping.getMapping().getName());
 			constraint.setMapping(data.eMapping2Mapping().get(mapping.getMapping()));
 			return constraint;
-		} else if (eConstraint.getContext() instanceof GipsMatchContext pattern) {
+		} else if (eConstraint.getContext() instanceof GipsPatternContext pattern) {
 			PatternConstraint constraint = factory.createPatternConstraint();
 			constraint.setName("PatternConstraint" + counter + "On" + pattern.getPattern().getName());
 			constraint.setPattern(data.getPattern(pattern.getPattern()));
@@ -310,7 +310,7 @@ public class GipsToIntermediate {
 			objective.setName(eObjective.getName());
 			objective.setMapping(data.eMapping2Mapping().get(mapping.getMapping()));
 			return objective;
-		} else if (eObjective.getContext() instanceof GipsMatchContext pattern) {
+		} else if (eObjective.getContext() instanceof GipsPatternContext pattern) {
 			PatternObjective constraint = factory.createPatternObjective();
 			constraint.setName(eObjective.getName());
 			constraint.setPattern(data.getPattern(pattern.getPattern()));

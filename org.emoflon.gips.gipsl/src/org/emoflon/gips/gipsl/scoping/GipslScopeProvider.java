@@ -12,9 +12,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.Scopes;
-import org.emoflon.ibex.gt.editor.gT.EditorOperator;
-import org.emoflon.ibex.gt.editor.utils.GTEditorModelUtils;
-import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
@@ -25,9 +22,9 @@ import org.emoflon.gips.gipsl.gipsl.GipsLambdaAttributeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
-import org.emoflon.gips.gipsl.gipsl.GipsMatchContext;
 import org.emoflon.gips.gipsl.gipsl.GipsNodeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
+import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
 import org.emoflon.gips.gipsl.gipsl.GipsSelect;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamArithmetic;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamNavigation;
@@ -44,6 +41,9 @@ import org.emoflon.gips.gipsl.gipsl.impl.GipsSelectImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsStreamArithmeticImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsStreamNavigationImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsStreamSetImpl;
+import org.emoflon.ibex.gt.editor.gT.EditorOperator;
+import org.emoflon.ibex.gt.editor.utils.GTEditorModelUtils;
+import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
 
 /**
  * This class contains custom scoping description.
@@ -71,8 +71,8 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			return scopeForGipsMappingContext((GipsMappingContext) context, reference);
 		} else if (GipslScopeContextUtil.isGipsTypeContext(context, reference)) {
 			return scopeForGipsTypeContext((GipsTypeContext) context, reference);
-		} else if (GipslScopeContextUtil.isGipsMatchContext(context, reference)) {
-			return scopeForGipsMatchContext((GipsMatchContext) context, reference);
+		} else if (GipslScopeContextUtil.isGipsPatternContext(context, reference)) {
+			return scopeForGipsPatternContext((GipsPatternContext) context, reference);
 		} else if (GipslScopeContextUtil.isGipsMappingAttributeExprMapping(context, reference)) {
 			return scopeForGipsMappingAttributeExprMapping((GipsMappingAttributeExpr) context, reference);
 		} else if (GipslScopeContextUtil.isGipsMappingAttributeExprNode(context, reference)) {
@@ -104,7 +104,7 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 		}
 	}
 
-	private IScope scopeForGipsMatchContext(GipsMatchContext context, EReference reference) {
+	private IScope scopeForGipsPatternContext(GipsPatternContext context, EReference reference) {
 		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
 		return Scopes.scopeFor(editorFile.getPatterns());
 	}
@@ -152,9 +152,9 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			return Scopes.scopeFor(mappingContext.getMapping().getRule().getNodes().stream()
 					.filter(node -> !node.isLocal() && node.getOperator() != EditorOperator.CREATE)
 					.collect(Collectors.toList()));
-		} else if (contextType instanceof GipsMatchContext matchContext) {
+		} else if (contextType instanceof GipsPatternContext patternContext) {
 			// Return context nodes only!
-			return Scopes.scopeFor(matchContext.getPattern().getNodes().stream()
+			return Scopes.scopeFor(patternContext.getPattern().getNodes().stream()
 					.filter(node -> !node.isLocal() && node.getOperator() != EditorOperator.CREATE)
 					.collect(Collectors.toList()));
 		} else {
@@ -331,9 +331,9 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 				return Scopes.scopeFor(mappingContext.getMapping().getRule().getNodes().stream()
 						.filter(node -> !node.isLocal() && node.getOperator() != EditorOperator.CREATE)
 						.collect(Collectors.toList()));
-			} else if (contextType instanceof GipsMatchContext matchContext) {
+			} else if (contextType instanceof GipsPatternContext patternContext) {
 				// Return context nodes only!
-				return Scopes.scopeFor(matchContext.getPattern().getNodes().stream()
+				return Scopes.scopeFor(patternContext.getPattern().getNodes().stream()
 						.filter(node -> !node.isLocal() && node.getOperator() != EditorOperator.CREATE)
 						.collect(Collectors.toList()));
 			} else {

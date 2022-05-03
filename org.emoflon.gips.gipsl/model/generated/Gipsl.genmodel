@@ -100,8 +100,8 @@
     <genClasses ecoreClass="Gipsl.ecore#//GipsTypeContext">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsTypeContext/type"/>
     </genClasses>
-    <genClasses ecoreClass="Gipsl.ecore#//GipsMatchContext">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsMatchContext/pattern"/>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsPatternContext">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsPatternContext/pattern"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsObjectiveExpression">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsObjectiveExpression/objective"/>

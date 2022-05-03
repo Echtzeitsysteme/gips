@@ -37,27 +37,27 @@ GipsMapping :
 ;
 
 GipsConstraint : 
-	'constraint' '->' context=(GipsMappingContext | GipsTypeContext | GipsMatchContext) '{'
+	'constraint' '->' context=(GipsMappingContext | GipsTypeContext | GipsPatternContext) '{'
 		expr = GipsBool
 	'}'
 ;
 
 GipsObjective : 
-	'objective' name=ID '->' context=(GipsMappingContext | GipsTypeContext | GipsMatchContext) '{'
+	'objective' name=ID '->' context=(GipsMappingContext | GipsTypeContext | GipsPatternContext) '{'
 		expr = GipsArithmeticExpr
 	'}'
 ;
 
 GipsMappingContext:
-	'mapping::' mapping = [GipsMapping|ID]
+	'mapping' '::' mapping = [GipsMapping|ID]
 ;
 
 GipsTypeContext:
-	'class::' type = [ecore::EClassifier]
+	'class' '::' type = [ecore::EClassifier]
 ;
 
-GipsMatchContext:
-	'match::' pattern = [GT::EditorPattern|ID]
+GipsPatternContext:
+	'pattern' '::' pattern = [GT::EditorPattern|ID]
 ;
 
 GipsObjectiveExpression:

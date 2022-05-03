@@ -14,13 +14,13 @@ import org.emoflon.gips.gipsl.gipsl.GipsLambdaAttributeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
-import org.emoflon.gips.gipsl.gipsl.GipsMatchContext;
 import org.emoflon.gips.gipsl.gipsl.GipsNodeAttributeExpr;
-import org.emoflon.gips.gipsl.gipsl.GipslPackage;
+import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
 import org.emoflon.gips.gipsl.gipsl.GipsSelect;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeCast;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
+import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsContextExprImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsMappingAttributeExprImpl;
@@ -36,8 +36,8 @@ public final class GipslScopeContextUtil {
 		return context instanceof GipsMapping;
 	}
 
-	public static boolean isGipsMatchContext(EObject context, EReference reference) {
-		return context instanceof GipsMatchContext;
+	public static boolean isGipsPatternContext(EObject context, EReference reference) {
+		return context instanceof GipsPatternContext;
 	}
 
 	public static boolean isGipsMappingContext(final EObject context, final EReference reference) {
@@ -59,8 +59,7 @@ public final class GipslScopeContextUtil {
 	}
 
 	public static boolean isGipsContextExprNode(final EObject context, final EReference reference) {
-		return context instanceof GipsContextExpr
-				&& reference == GipslPackage.Literals.GIPS_NODE_ATTRIBUTE_EXPR__NODE;
+		return context instanceof GipsContextExpr && reference == GipslPackage.Literals.GIPS_NODE_ATTRIBUTE_EXPR__NODE;
 	}
 
 	public static boolean isGipsContextExprFeature(final EObject context, final EReference reference) {
@@ -73,8 +72,7 @@ public final class GipslScopeContextUtil {
 	}
 
 	public static boolean isGipsNodeAttributeExprFeature(final EObject context, final EReference reference) {
-		return context instanceof GipsNodeAttributeExpr
-				&& reference == GipslPackage.Literals.GIPS_FEATURE_LIT__FEATURE;
+		return context instanceof GipsNodeAttributeExpr && reference == GipslPackage.Literals.GIPS_FEATURE_LIT__FEATURE;
 	}
 
 	public static boolean isGipsLambdaAttributeExpressionVariable(final EObject context, final EReference reference) {
@@ -92,8 +90,7 @@ public final class GipslScopeContextUtil {
 	}
 
 	public static boolean isGipsFeatureNavigationFeature(final EObject context, final EReference reference) {
-		return context instanceof GipsFeatureNavigation
-				&& reference == GipslPackage.Literals.GIPS_FEATURE_LIT__FEATURE;
+		return context instanceof GipsFeatureNavigation && reference == GipslPackage.Literals.GIPS_FEATURE_LIT__FEATURE;
 	}
 
 	public static boolean isGipsFeatureLit(final EObject context, final EReference reference) {

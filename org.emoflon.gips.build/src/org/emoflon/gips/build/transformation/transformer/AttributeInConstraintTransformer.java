@@ -3,6 +3,13 @@ package org.emoflon.gips.build.transformation.transformer;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
+import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamArithmetic;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue;
@@ -10,13 +17,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
-import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsMatchContext;
-import org.emoflon.gips.gipsl.gipsl.GipsStreamArithmetic;
-import org.emoflon.gips.gipsl.gipsl.GipsStreamBoolExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 
 public class AttributeInConstraintTransformer extends AttributeExpressionTransformer<Constraint> {
 
@@ -72,7 +72,7 @@ public class AttributeInConstraintTransformer extends AttributeExpressionTransfo
 			typeValue.setReturnType(tc.getModelType().getType());
 			typeValue.setTypeContext(tc.getModelType());
 			return typeValue;
-		} else if (contextType instanceof GipsMatchContext matchContext) {
+		} else if (contextType instanceof GipsPatternContext matchContext) {
 			PatternConstraint pc = (PatternConstraint) context;
 			ContextPatternValue patternValue = factory.createContextPatternValue();
 			patternValue.setReturnType(pc.getPattern().getPattern().eClass());

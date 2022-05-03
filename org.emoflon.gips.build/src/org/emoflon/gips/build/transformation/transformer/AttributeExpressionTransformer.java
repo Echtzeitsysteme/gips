@@ -6,6 +6,20 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
 import org.emoflon.gips.build.transformation.helper.TransformationContext;
+import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
+import org.emoflon.gips.gipsl.gipsl.GipsLambdaAttributeExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsMapping;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
+import org.emoflon.gips.gipsl.gipsl.GipsNodeAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
+import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
@@ -23,20 +37,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
-import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
-import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
-import org.emoflon.gips.gipsl.gipsl.GipsLambdaAttributeExpression;
-import org.emoflon.gips.gipsl.gipsl.GipsMapping;
-import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
-import org.emoflon.gips.gipsl.gipsl.GipsMatchContext;
-import org.emoflon.gips.gipsl.gipsl.GipsNodeAttributeExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
-import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 
 public abstract class AttributeExpressionTransformer<T extends EObject> extends TransformationContext<T> {
 	protected AttributeExpressionTransformer(GipsTransformationData data, T context, TransformerFactory factory) {
@@ -90,7 +90,7 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 			} else if (streamRoot instanceof GipsContextExpr eContextExpr) {
 				// CASE: streamRoot is an instance of GipsContextExpression
 				EObject contextType = GipslScopeContextUtil.getContextType(eContextExpr);
-				if (contextType instanceof GipsMatchContext eMatchContext) {
+				if (contextType instanceof GipsPatternContext eMatchContext) {
 					if (eNodeAttribute.getExpr() == null) {
 						return transformIteratorPatternNodeValue(eNodeAttribute, eMatchContext,
 								streamIteratorContainer);
@@ -139,7 +139,7 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 						&& eNodeExpr.getExpr() != null) {
 					return transformIteratorMappingFeatureValue(streamIteratorContainer, eMappingContext, eNodeExpr,
 							eFeature);
-				} else if (contextType instanceof GipsMatchContext ePatternContext
+				} else if (contextType instanceof GipsPatternContext ePatternContext
 						&& eContext.getExpr() instanceof GipsNodeAttributeExpr eNodeExpr
 						&& eNodeExpr.getExpr() != null) {
 					return transformIteratorPatternFeatureValue(streamIteratorContainer, ePatternContext, eNodeExpr,
@@ -178,7 +178,7 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 				throw new UnsupportedOperationException(
 						"Node and ILP variable (e.g., .value(), .isMapped()) expressions are not applicable to model objects.");
 			}
-		} else if (contextType instanceof GipsMatchContext matchContext) {
+		} else if (contextType instanceof GipsPatternContext matchContext) {
 			if (eContext.getExpr() instanceof GipsNodeAttributeExpr eNodeExpr) {
 				Pattern pc = data.getPattern(matchContext.getPattern());
 				if (eNodeExpr.getExpr() == null) {
@@ -274,7 +274,7 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 	}
 
 	protected ValueExpression transformIteratorPatternNodeValue(final GipsNodeAttributeExpr eNodeAttribute,
-			GipsMatchContext eMatchContext, final GipsStreamExpr streamIteratorContainer) throws Exception {
+			GipsPatternContext eMatchContext, final GipsStreamExpr streamIteratorContainer) throws Exception {
 		IteratorPatternNodeValue patternNode = factory.createIteratorPatternNodeValue();
 		patternNode.setNode(data.eNode2Node().get(eNodeAttribute.getNode()));
 		patternNode.setReturnType(patternNode.getNode().getType());
@@ -284,7 +284,7 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 	}
 
 	protected ValueExpression transformIteratorPatternNodeFeatureValue(final GipsNodeAttributeExpr eNodeAttribute,
-			GipsMatchContext eMatchContext, GipsFeatureExpr featureExpr, final GipsStreamExpr streamIteratorContainer)
+			GipsPatternContext eMatchContext, GipsFeatureExpr featureExpr, final GipsStreamExpr streamIteratorContainer)
 			throws Exception {
 		IteratorPatternNodeFeatureValue patternFeature = factory.createIteratorPatternNodeFeatureValue();
 		patternFeature.setNode(data.eNode2Node().get(eNodeAttribute.getNode()));
@@ -332,8 +332,8 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 	}
 
 	protected ValueExpression transformIteratorPatternFeatureValue(final GipsStreamExpr streamIteratorContainer,
-			final GipsMatchContext eMatchContext, final GipsNodeAttributeExpr eNodeExpr, final GipsFeatureExpr eFeature)
-			throws Exception {
+			final GipsPatternContext eMatchContext, final GipsNodeAttributeExpr eNodeExpr,
+			final GipsFeatureExpr eFeature) throws Exception {
 		IteratorPatternFeatureValue patternFeatureValue = factory.createIteratorPatternFeatureValue();
 		patternFeatureValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
 		patternFeatureValue.setPatternContext(data.ePattern2Pattern().get(eMatchContext.getPattern()));

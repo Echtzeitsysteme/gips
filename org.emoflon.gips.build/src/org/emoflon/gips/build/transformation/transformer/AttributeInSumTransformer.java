@@ -3,18 +3,18 @@ package org.emoflon.gips.build.transformation.transformer;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
+import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
 import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
-import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
-import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsMatchContext;
-import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 
 public class AttributeInSumTransformer extends AttributeExpressionTransformer<SumExpression> {
 
@@ -38,7 +38,7 @@ public class AttributeInSumTransformer extends AttributeExpressionTransformer<Su
 			typeValue.setReturnType(tc.getType());
 			typeValue.setTypeContext(tc);
 			return typeValue;
-		} else if (contextType instanceof GipsMatchContext matchContext) {
+		} else if (contextType instanceof GipsPatternContext matchContext) {
 			Pattern pc = data.getPattern(matchContext.getPattern());
 			ContextPatternValue patternValue = factory.createContextPatternValue();
 			patternValue.setPatternContext(pc);

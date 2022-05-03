@@ -12,7 +12,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.xtext.validation.Check;
-import org.emoflon.ibex.gt.editor.gT.EditorNode;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticLiteral;
@@ -41,15 +40,14 @@ import org.emoflon.gips.gipsl.gipsl.GipsLambdaExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
-import org.emoflon.gips.gipsl.gipsl.GipsMatchContext;
 import org.emoflon.gips.gipsl.gipsl.GipsNodeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsObjectiveExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
 import org.emoflon.gips.gipsl.gipsl.GipsProductArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsProductOperator;
 import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsRelOperator;
-import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.GipsSelect;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamArithmetic;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamBoolExpr;
@@ -64,6 +62,8 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeCast;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipslPackage;
+import org.emoflon.ibex.gt.editor.gT.EditorNode;
 
 /**
  * This class contains custom validation rules.
@@ -570,8 +570,8 @@ public class GipslValidator extends AbstractGipslValidator {
 	public ContextType getContextType(final EObject e) {
 		ContextType type = ContextType.ERROR;
 
-		if (e instanceof GipsMatchContext) {
-			type = ContextType.MATCH;
+		if (e instanceof GipsPatternContext) {
+			type = ContextType.PATTERN;
 		} else if (e instanceof GipsTypeContext) {
 			type = ContextType.TYPE;
 		} else if (e instanceof GipsMappingContext) {
@@ -1522,7 +1522,7 @@ public class GipslValidator extends AbstractGipslValidator {
 	 */
 	protected enum ContextType {
 		MAPPING, //
-		MATCH, //
+		PATTERN, //
 		TYPE, //
 		ERROR //
 	}

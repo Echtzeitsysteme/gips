@@ -52,7 +52,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="GipsTypeContext">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsMatchContext">
+  <eClassifiers xsi:type="ecore:EClass" name="GipsPatternContext">
     <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorPattern"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsObjectiveExpression" eSuperTypes="#//GipsExpressionOperand">

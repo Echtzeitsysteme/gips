@@ -30,6 +30,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet
 import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping
 
 class MappingConstraintTemplate extends ConstraintTemplate<MappingConstraint> {
 
@@ -108,6 +110,10 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.mapping
 			} else {
 				throw new UnsupportedOperationException("Referencing other mapping variables from within a mapping context is not allowed.")
 			}
+		} if(expr instanceof ContextSumExpression) {
+			val builderMethodName = generateBuilder(expr)
+			val instruction = '''«builderMethodName»(terms, context);'''
+			builderMethodCalls.add(instruction)
 		} else if(expr instanceof TypeSumExpression) {
 			val builderMethodName = generateBuilder(expr)
 			val instruction = '''«builderMethodName»(terms, context);'''
@@ -194,6 +200,28 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.mapping
 			ILPTerm<Integer, Double> term = new ILPTerm<Integer, Double>(context, (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»);
 			terms.add(term);
 		}
+	}
+		'''
+		
+		builderMethodDefinitions.put(expr, method)
+		return methodName
+	}
+	
+	override String generateBuilder(ContextSumExpression expr) {
+		if(!(expr.context instanceof Mapping && expr.context != context.mapping))
+			throw new UnsupportedOperationException("Wrong context type!")
+		
+		val methodName = '''builder_«builderMethods.size»'''
+		builderMethods.put(expr, methodName)
+				val method = '''
+	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		double constant = context.«expr.node.name»().«parseFeatureExpression(expr.feature)».values().parallelStream()
+					.«parseExpression(expr.filter, ExpressionContext.varStream)»
+					.reduce(0.0, (sum, «getIteratorVariableName(expr)») -> {
+									sum + «parseExpression(expr.expression, ExpressionContext.constConstraint)»
+								});
+								
+		terms.add(new ILPTerm<Integer, Double>(context, constant));
 	}
 		'''
 		

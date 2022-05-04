@@ -12,18 +12,30 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolver <em>Solver</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolverHomeDir <em>Solver Home Dir</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolverLicenseFile <em>Solver License File</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isBuildLaunchConfig <em>Build Launch Config</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getMainFile <em>Main File</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableTimeLimit <em>Enable Time Limit</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getIlpTimeLimit <em>Ilp Time Limit</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableRndSeed <em>Enable Rnd Seed</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getIlpRndSeed <em>Ilp Rnd Seed</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isPresolve <em>Presolve</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnablePresolve <em>Enable Presolve</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableDebugOutput <em>Enable Debug Output</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolver
+ * <em>Solver</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolverHomeDir
+ * <em>Solver Home Dir</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolverLicenseFile
+ * <em>Solver License File</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isBuildLaunchConfig
+ * <em>Build Launch Config</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getMainFile
+ * <em>Main File</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableTimeLimit
+ * <em>Enable Time Limit</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getIlpTimeLimit
+ * <em>Ilp Time Limit</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableRndSeed
+ * <em>Enable Rnd Seed</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getIlpRndSeed
+ * <em>Ilp Rnd Seed</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isPresolve
+ * <em>Presolve</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnablePresolve
+ * <em>Enable Presolve</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableDebugOutput
+ * <em>Enable Debug Output</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig()
@@ -47,8 +59,10 @@ public interface ILPConfig extends EObject {
 	ILPSolverType getSolver();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolver <em>Solver</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolver
+	 * <em>Solver</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Solver</em>' attribute.
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType
 	 * @see #getSolver()
@@ -69,9 +83,11 @@ public interface ILPConfig extends EObject {
 	String getSolverHomeDir();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolverHomeDir <em>Solver Home Dir</em>}' attribute.
-	 * <!-- begin-user-doc --> <!--
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolverHomeDir
+	 * <em>Solver Home Dir</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Solver Home Dir</em>' attribute.
 	 * @see #getSolverHomeDir()
 	 * @generated
@@ -81,6 +97,7 @@ public interface ILPConfig extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Solver License File</b></em>' attribute.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Solver License File</em>' attribute.
 	 * @see #setSolverLicenseFile(String)
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig_SolverLicenseFile()
@@ -90,9 +107,11 @@ public interface ILPConfig extends EObject {
 	String getSolverLicenseFile();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolverLicenseFile <em>Solver License File</em>}' attribute.
-	 * <!-- begin-user-doc --> <!--
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getSolverLicenseFile
+	 * <em>Solver License File</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Solver License File</em>' attribute.
 	 * @see #getSolverLicenseFile()
 	 * @generated
@@ -102,6 +121,7 @@ public interface ILPConfig extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Build Launch Config</b></em>' attribute.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Build Launch Config</em>' attribute.
 	 * @see #setBuildLaunchConfig(boolean)
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig_BuildLaunchConfig()
@@ -111,9 +131,11 @@ public interface ILPConfig extends EObject {
 	boolean isBuildLaunchConfig();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isBuildLaunchConfig <em>Build Launch Config</em>}' attribute.
-	 * <!-- begin-user-doc --> <!--
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isBuildLaunchConfig
+	 * <em>Build Launch Config</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Build Launch Config</em>' attribute.
 	 * @see #isBuildLaunchConfig()
 	 * @generated
@@ -133,8 +155,10 @@ public interface ILPConfig extends EObject {
 	String getMainFile();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getMainFile <em>Main File</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getMainFile
+	 * <em>Main File</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Main File</em>' attribute.
 	 * @see #getMainFile()
 	 * @generated
@@ -154,9 +178,11 @@ public interface ILPConfig extends EObject {
 	boolean isEnableTimeLimit();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableTimeLimit <em>Enable Time Limit</em>}' attribute.
-	 * <!-- begin-user-doc --> <!--
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableTimeLimit
+	 * <em>Enable Time Limit</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Enable Time Limit</em>' attribute.
 	 * @see #isEnableTimeLimit()
 	 * @generated
@@ -176,9 +202,11 @@ public interface ILPConfig extends EObject {
 	double getIlpTimeLimit();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getIlpTimeLimit <em>Ilp Time Limit</em>}' attribute.
-	 * <!-- begin-user-doc --> <!--
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getIlpTimeLimit
+	 * <em>Ilp Time Limit</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Ilp Time Limit</em>' attribute.
 	 * @see #getIlpTimeLimit()
 	 * @generated
@@ -198,9 +226,11 @@ public interface ILPConfig extends EObject {
 	boolean isEnableRndSeed();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableRndSeed <em>Enable Rnd Seed</em>}' attribute.
-	 * <!-- begin-user-doc --> <!--
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableRndSeed
+	 * <em>Enable Rnd Seed</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Enable Rnd Seed</em>' attribute.
 	 * @see #isEnableRndSeed()
 	 * @generated
@@ -244,8 +274,10 @@ public interface ILPConfig extends EObject {
 	boolean isPresolve();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isPresolve <em>Presolve</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isPresolve
+	 * <em>Presolve</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Presolve</em>' attribute.
 	 * @see #isPresolve()
 	 * @generated
@@ -265,9 +297,11 @@ public interface ILPConfig extends EObject {
 	boolean isEnablePresolve();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnablePresolve <em>Enable Presolve</em>}' attribute.
-	 * <!-- begin-user-doc --> <!--
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnablePresolve
+	 * <em>Enable Presolve</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Enable Presolve</em>' attribute.
 	 * @see #isEnablePresolve()
 	 * @generated
@@ -277,6 +311,7 @@ public interface ILPConfig extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Enable Debug Output</b></em>' attribute.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Enable Debug Output</em>' attribute.
 	 * @see #setEnableDebugOutput(boolean)
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig_EnableDebugOutput()
@@ -286,9 +321,11 @@ public interface ILPConfig extends EObject {
 	boolean isEnableDebugOutput();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableDebugOutput <em>Enable Debug Output</em>}' attribute.
-	 * <!-- begin-user-doc --> <!--
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableDebugOutput
+	 * <em>Enable Debug Output</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Enable Debug Output</em>' attribute.
 	 * @see #isEnableDebugOutput()
 	 * @generated

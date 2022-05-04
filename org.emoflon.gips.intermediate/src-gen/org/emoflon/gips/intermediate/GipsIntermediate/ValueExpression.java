@@ -13,7 +13,8 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression#getReturnType <em>Return Type</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression#getReturnType
+ * <em>Return Type</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getValueExpression()

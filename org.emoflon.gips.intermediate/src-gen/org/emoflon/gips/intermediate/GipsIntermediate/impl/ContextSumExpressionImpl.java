@@ -18,16 +18,18 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Context Sum Expression</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Context
+ * Sum Expression</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextSumExpressionImpl#getContext <em>Context</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextSumExpressionImpl#getNode <em>Node</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextSumExpressionImpl#getFeature <em>Feature</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextSumExpressionImpl#getContext
+ * <em>Context</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextSumExpressionImpl#getNode
+ * <em>Node</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextSumExpressionImpl#getFeature
+ * <em>Feature</em>}</li>
  * </ul>
  *
  * @generated
@@ -35,8 +37,8 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 public class ContextSumExpressionImpl extends SumExpressionImpl implements ContextSumExpression {
 	/**
 	 * The cached value of the '{@link #getContext() <em>Context</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getContext()
 	 * @generated
 	 * @ordered
@@ -44,9 +46,9 @@ public class ContextSumExpressionImpl extends SumExpressionImpl implements Conte
 	protected VariableSet context;
 
 	/**
-	 * The cached value of the '{@link #getNode() <em>Node</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getNode() <em>Node</em>}' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getNode()
 	 * @generated
 	 * @ordered
@@ -54,9 +56,9 @@ public class ContextSumExpressionImpl extends SumExpressionImpl implements Conte
 	protected IBeXNode node;
 
 	/**
-	 * The cached value of the '{@link #getFeature() <em>Feature</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getFeature() <em>Feature</em>}' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getFeature()
 	 * @generated
 	 * @ordered
@@ -64,8 +66,8 @@ public class ContextSumExpressionImpl extends SumExpressionImpl implements Conte
 	protected FeatureExpression feature;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ContextSumExpressionImpl() {
@@ -73,8 +75,8 @@ public class ContextSumExpressionImpl extends SumExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -83,8 +85,8 @@ public class ContextSumExpressionImpl extends SumExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public VariableSet getContext() {
@@ -101,8 +103,8 @@ public class ContextSumExpressionImpl extends SumExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public VariableSet basicGetContext() {
@@ -110,8 +112,8 @@ public class ContextSumExpressionImpl extends SumExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setContext(VariableSet newContext) {
@@ -123,8 +125,8 @@ public class ContextSumExpressionImpl extends SumExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IBeXNode getNode() {
@@ -141,8 +143,8 @@ public class ContextSumExpressionImpl extends SumExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IBeXNode basicGetNode() {
@@ -150,8 +152,8 @@ public class ContextSumExpressionImpl extends SumExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setNode(IBeXNode newNode) {
@@ -163,8 +165,8 @@ public class ContextSumExpressionImpl extends SumExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public FeatureExpression getFeature() {
@@ -172,8 +174,8 @@ public class ContextSumExpressionImpl extends SumExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetFeature(FeatureExpression newFeature, NotificationChain msgs) {
@@ -191,8 +193,8 @@ public class ContextSumExpressionImpl extends SumExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setFeature(FeatureExpression newFeature) {
@@ -213,8 +215,8 @@ public class ContextSumExpressionImpl extends SumExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -227,8 +229,8 @@ public class ContextSumExpressionImpl extends SumExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -249,8 +251,8 @@ public class ContextSumExpressionImpl extends SumExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -270,8 +272,8 @@ public class ContextSumExpressionImpl extends SumExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -291,8 +293,8 @@ public class ContextSumExpressionImpl extends SumExpressionImpl implements Conte
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -308,4 +310,4 @@ public class ContextSumExpressionImpl extends SumExpressionImpl implements Conte
 		return super.eIsSet(featureID);
 	}
 
-} //ContextSumExpressionImpl
+} // ContextSumExpressionImpl

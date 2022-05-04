@@ -10,8 +10,10 @@ package org.emoflon.gips.intermediate.GipsIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue#getMappingContext <em>Mapping Context</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue#getFeatureExpression <em>Feature Expression</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue#getMappingContext
+ * <em>Mapping Context</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue#getFeatureExpression
+ * <em>Feature Expression</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorMappingFeatureValue()
@@ -32,9 +34,11 @@ public interface IteratorMappingFeatureValue extends ValueExpression, Iterator {
 	Mapping getMappingContext();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue#getMappingContext <em>Mapping Context</em>}' reference.
-	 * <!-- begin-user-doc --> <!--
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue#getMappingContext
+	 * <em>Mapping Context</em>}' reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Mapping Context</em>' reference.
 	 * @see #getMappingContext()
 	 * @generated
@@ -42,8 +46,9 @@ public interface IteratorMappingFeatureValue extends ValueExpression, Iterator {
 	void setMappingContext(Mapping value);
 
 	/**
-	 * Returns the value of the '<em><b>Feature Expression</b></em>' containment reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the value of the '<em><b>Feature Expression</b></em>' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Feature Expression</em>' containment reference.
 	 * @see #setFeatureExpression(FeatureExpression)
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorMappingFeatureValue_FeatureExpression()
@@ -53,10 +58,13 @@ public interface IteratorMappingFeatureValue extends ValueExpression, Iterator {
 	FeatureExpression getFeatureExpression();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue#getFeatureExpression <em>Feature Expression</em>}' containment reference.
-	 * <!-- begin-user-doc -->
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue#getFeatureExpression
+	 * <em>Feature Expression</em>}' containment reference. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Feature Expression</em>' containment reference.
+	 * 
+	 * @param value the new value of the '<em>Feature Expression</em>' containment
+	 *              reference.
 	 * @see #getFeatureExpression()
 	 * @generated
 	 */

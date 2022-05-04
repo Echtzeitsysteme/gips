@@ -3,11 +3,14 @@
 package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 
@@ -18,15 +21,17 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ValueExpressionImpl#getReturnType <em>Return Type</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ValueExpressionImpl#getReturnType
+ * <em>Return Type</em>}</li>
  * </ul>
  *
  * @generated
  */
 public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container implements ValueExpression {
 	/**
-	 * The cached value of the '{@link #getReturnType() <em>Return Type</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getReturnType() <em>Return Type</em>}'
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getReturnType()
 	 * @generated
 	 * @ordered
@@ -35,6 +40,7 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ValueExpressionImpl() {
@@ -43,6 +49,7 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -52,6 +59,7 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClassifier getReturnType() {
@@ -69,6 +77,7 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClassifier basicGetReturnType() {
@@ -77,6 +86,7 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setReturnType(EClassifier newReturnType) {
@@ -89,6 +99,7 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -104,6 +115,7 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -118,6 +130,7 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -132,6 +145,7 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

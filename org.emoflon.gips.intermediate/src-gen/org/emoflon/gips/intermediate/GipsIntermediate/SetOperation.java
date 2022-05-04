@@ -12,7 +12,8 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.SetOperation#getOperandName <em>Operand Name</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.SetOperation#getOperandName
+ * <em>Operand Name</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getSetOperation()

@@ -3,9 +3,12 @@
 package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
@@ -17,15 +20,17 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextMappingValueImpl#getMappingContext <em>Mapping Context</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextMappingValueImpl#getMappingContext
+ * <em>Mapping Context</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ContextMappingValueImpl extends ValueExpressionImpl implements ContextMappingValue {
 	/**
-	 * The cached value of the '{@link #getMappingContext() <em>Mapping Context</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMappingContext() <em>Mapping
+	 * Context</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMappingContext()
 	 * @generated
 	 * @ordered
@@ -34,6 +39,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ContextMappingValueImpl() {
@@ -42,6 +48,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -51,6 +58,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Mapping getMappingContext() {
@@ -69,6 +77,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Mapping basicGetMappingContext() {
@@ -77,6 +86,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setMappingContext(Mapping newMappingContext) {
@@ -89,6 +99,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -104,6 +115,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -118,6 +130,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -132,6 +145,7 @@ public class ContextMappingValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

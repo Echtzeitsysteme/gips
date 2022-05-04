@@ -7,68 +7,69 @@ import org.eclipse.emf.ecore.EFactory;
 /**
  * <!-- begin-user-doc --> The <b>Factory</b> for the model. It provides a
  * create method for each non-abstract class of the model. <!-- end-user-doc -->
+ * 
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage
  * @generated
  */
 public interface GipsIntermediateFactory extends EFactory {
 	/**
-	 * The singleton instance of the factory.
-	 * <!-- begin-user-doc --> <!--
+	 * The singleton instance of the factory. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	GipsIntermediateFactory eINSTANCE = org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateFactoryImpl
 			.init();
 
 	/**
-	 * Returns a new object of class '<em>Model</em>'.
-	 * <!-- begin-user-doc --> <!--
+	 * Returns a new object of class '<em>Model</em>'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Model</em>'.
 	 * @generated
 	 */
 	GipsIntermediateModel createGipsIntermediateModel();
 
 	/**
-	 * Returns a new object of class '<em>ILP Config</em>'.
-	 * <!-- begin-user-doc -->
+	 * Returns a new object of class '<em>ILP Config</em>'. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>ILP Config</em>'.
 	 * @generated
 	 */
 	ILPConfig createILPConfig();
 
 	/**
-	 * Returns a new object of class '<em>Pattern</em>'.
-	 * <!-- begin-user-doc -->
+	 * Returns a new object of class '<em>Pattern</em>'. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Pattern</em>'.
 	 * @generated
 	 */
 	Pattern createPattern();
 
 	/**
-	 * Returns a new object of class '<em>Type</em>'.
-	 * <!-- begin-user-doc --> <!--
+	 * Returns a new object of class '<em>Type</em>'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Type</em>'.
 	 * @generated
 	 */
 	Type createType();
 
 	/**
-	 * Returns a new object of class '<em>Mapping</em>'.
-	 * <!-- begin-user-doc -->
+	 * Returns a new object of class '<em>Mapping</em>'. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Mapping</em>'.
 	 * @generated
 	 */
 	Mapping createMapping();
 
 	/**
-	 * Returns a new object of class '<em>Objective</em>'.
-	 * <!-- begin-user-doc -->
+	 * Returns a new object of class '<em>Objective</em>'. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Objective</em>'.
 	 * @generated
 	 */
@@ -93,9 +94,9 @@ public interface GipsIntermediateFactory extends EFactory {
 	PatternConstraint createPatternConstraint();
 
 	/**
-	 * Returns a new object of class '<em>Type Constraint</em>'.
-	 * <!-- begin-user-doc
+	 * Returns a new object of class '<em>Type Constraint</em>'. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Type Constraint</em>'.
 	 * @generated
 	 */
@@ -120,9 +121,9 @@ public interface GipsIntermediateFactory extends EFactory {
 	PatternObjective createPatternObjective();
 
 	/**
-	 * Returns a new object of class '<em>Type Objective</em>'.
-	 * <!-- begin-user-doc
+	 * Returns a new object of class '<em>Type Objective</em>'. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Type Objective</em>'.
 	 * @generated
 	 */
@@ -165,18 +166,18 @@ public interface GipsIntermediateFactory extends EFactory {
 	ArithmeticValue createArithmeticValue();
 
 	/**
-	 * Returns a new object of class '<em>Integer Literal</em>'.
-	 * <!-- begin-user-doc
+	 * Returns a new object of class '<em>Integer Literal</em>'. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Integer Literal</em>'.
 	 * @generated
 	 */
 	IntegerLiteral createIntegerLiteral();
 
 	/**
-	 * Returns a new object of class '<em>Double Literal</em>'.
-	 * <!-- begin-user-doc
+	 * Returns a new object of class '<em>Double Literal</em>'. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Double Literal</em>'.
 	 * @generated
 	 */
@@ -201,9 +202,9 @@ public interface GipsIntermediateFactory extends EFactory {
 	BoolUnaryExpression createBoolUnaryExpression();
 
 	/**
-	 * Returns a new object of class '<em>Bool Value</em>'.
-	 * <!-- begin-user-doc -->
+	 * Returns a new object of class '<em>Bool Value</em>'. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Bool Value</em>'.
 	 * @generated
 	 */
@@ -228,18 +229,18 @@ public interface GipsIntermediateFactory extends EFactory {
 	RelationalExpression createRelationalExpression();
 
 	/**
-	 * Returns a new object of class '<em>Bool Literal</em>'.
-	 * <!-- begin-user-doc
+	 * Returns a new object of class '<em>Bool Literal</em>'. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Bool Literal</em>'.
 	 * @generated
 	 */
 	BoolLiteral createBoolLiteral();
 
 	/**
-	 * Returns a new object of class '<em>Context Sum Expression</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns a new object of class '<em>Context Sum Expression</em>'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Context Sum Expression</em>'.
 	 * @generated
 	 */
@@ -327,9 +328,9 @@ public interface GipsIntermediateFactory extends EFactory {
 	FeatureExpression createFeatureExpression();
 
 	/**
-	 * Returns a new object of class '<em>Feature Literal</em>'.
-	 * <!-- begin-user-doc
+	 * Returns a new object of class '<em>Feature Literal</em>'. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Feature Literal</em>'.
 	 * @generated
 	 */
@@ -347,6 +348,7 @@ public interface GipsIntermediateFactory extends EFactory {
 	/**
 	 * Returns a new object of class '<em>Context Pattern Node Feature Value</em>'.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Context Pattern Node Feature Value</em>'.
 	 * @generated
 	 */
@@ -355,6 +357,7 @@ public interface GipsIntermediateFactory extends EFactory {
 	/**
 	 * Returns a new object of class '<em>Context Mapping Node Feature Value</em>'.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Context Mapping Node Feature Value</em>'.
 	 * @generated
 	 */
@@ -390,6 +393,7 @@ public interface GipsIntermediateFactory extends EFactory {
 	/**
 	 * Returns a new object of class '<em>Iterator Pattern Node Feature Value</em>'.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Iterator Pattern Node Feature Value</em>'.
 	 * @generated
 	 */
@@ -425,6 +429,7 @@ public interface GipsIntermediateFactory extends EFactory {
 	/**
 	 * Returns a new object of class '<em>Iterator Mapping Node Feature Value</em>'.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Iterator Mapping Node Feature Value</em>'.
 	 * @generated
 	 */
@@ -476,9 +481,9 @@ public interface GipsIntermediateFactory extends EFactory {
 	StreamSelectOperation createStreamSelectOperation();
 
 	/**
-	 * Returns the package supported by this factory.
-	 * <!-- begin-user-doc --> <!--
+	 * Returns the package supported by this factory. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @return the package supported by this factory.
 	 * @generated
 	 */

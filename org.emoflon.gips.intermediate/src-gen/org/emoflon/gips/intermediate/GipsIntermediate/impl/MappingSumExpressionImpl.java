@@ -3,9 +3,12 @@
 package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression;
@@ -17,7 +20,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingSumExpressionImpl#getMapping <em>Mapping</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingSumExpressionImpl#getMapping
+ * <em>Mapping</em>}</li>
  * </ul>
  *
  * @generated
@@ -26,6 +30,7 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 	/**
 	 * The cached value of the '{@link #getMapping() <em>Mapping</em>}' reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMapping()
 	 * @generated
 	 * @ordered
@@ -34,6 +39,7 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected MappingSumExpressionImpl() {
@@ -42,6 +48,7 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -51,6 +58,7 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Mapping getMapping() {
@@ -68,6 +76,7 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Mapping basicGetMapping() {
@@ -76,6 +85,7 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setMapping(Mapping newMapping) {
@@ -88,6 +98,7 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -103,6 +114,7 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -117,6 +129,7 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -131,6 +144,7 @@ public class MappingSumExpressionImpl extends SumExpressionImpl implements Mappi
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

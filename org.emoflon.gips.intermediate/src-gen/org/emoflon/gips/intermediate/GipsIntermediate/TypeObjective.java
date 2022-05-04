@@ -10,7 +10,8 @@ package org.emoflon.gips.intermediate.GipsIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective#getModelType <em>Model Type</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective#getModelType
+ * <em>Model Type</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getTypeObjective()

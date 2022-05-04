@@ -3,11 +3,15 @@
 package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
+
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
 
 /**
@@ -17,7 +21,8 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingImpl#getRule <em>Rule</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingImpl#getRule
+ * <em>Rule</em>}</li>
  * </ul>
  *
  * @generated
@@ -35,6 +40,7 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected MappingImpl() {
@@ -43,6 +49,7 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -52,6 +59,7 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IBeXRule getRule() {
@@ -69,6 +77,7 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IBeXRule basicGetRule() {
@@ -77,6 +86,7 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setRule(IBeXRule newRule) {
@@ -89,6 +99,7 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -104,6 +115,7 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -118,6 +130,7 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -132,6 +145,7 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

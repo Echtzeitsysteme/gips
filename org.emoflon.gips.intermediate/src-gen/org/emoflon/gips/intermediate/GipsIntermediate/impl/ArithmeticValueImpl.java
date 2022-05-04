@@ -4,9 +4,12 @@ package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
@@ -18,15 +21,17 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ArithmeticValueImpl#getValue <em>Value</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ArithmeticValueImpl#getValue
+ * <em>Value</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implements ArithmeticValue {
 	/**
-	 * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getValue() <em>Value</em>}' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getValue()
 	 * @generated
 	 * @ordered
@@ -35,6 +40,7 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ArithmeticValueImpl() {
@@ -43,6 +49,7 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -52,6 +59,7 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ValueExpression getValue() {
@@ -60,6 +68,7 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetValue(ValueExpression newValue, NotificationChain msgs) {
@@ -78,6 +87,7 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setValue(ValueExpression newValue) {
@@ -99,6 +109,7 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -112,6 +123,7 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -125,6 +137,7 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -139,6 +152,7 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -153,6 +167,7 @@ public class ArithmeticValueImpl extends ArithmeticValueExpressionImpl implement
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

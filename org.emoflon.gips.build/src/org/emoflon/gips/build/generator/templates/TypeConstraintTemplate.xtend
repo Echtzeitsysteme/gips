@@ -30,6 +30,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
 
 class TypeConstraintTemplate extends ConstraintTemplate<TypeConstraint> {
 	
@@ -112,6 +113,8 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «context.mode
 			val builderMethodName = generateBuilder(expr)
 			val instruction = '''«builderMethodName»(terms, context);'''
 				builderMethodCalls.add(instruction)
+		} else if(expr instanceof ContextSumExpression) {
+			generateBuilder(expr);
 		} else if(expr instanceof ContextTypeFeatureValue) {
 			throw new UnsupportedOperationException("Ilp term may not be constant.")
 		} else if(expr instanceof ContextTypeValue) {
@@ -151,6 +154,10 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «context.mode
 	
 	override getContextVariable(VariableSet variable) {
 		throw new UnsupportedOperationException("Mapping context access is not possible within a type context.")
+	}
+	
+	override generateBuilder(ContextSumExpression expr) {
+		throw new UnsupportedOperationException("Ilp term may not be constant.")
 	}
 	
 	override generateBuilder(BinaryArithmeticExpression expr) {

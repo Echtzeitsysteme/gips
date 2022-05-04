@@ -3,7 +3,9 @@
 package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.ecore.EClass;
+
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
@@ -16,6 +18,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 public abstract class BoolExpressionImpl extends MinimalEObjectImpl.Container implements BoolExpression {
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected BoolExpressionImpl() {
@@ -24,6 +27,7 @@ public abstract class BoolExpressionImpl extends MinimalEObjectImpl.Container im
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

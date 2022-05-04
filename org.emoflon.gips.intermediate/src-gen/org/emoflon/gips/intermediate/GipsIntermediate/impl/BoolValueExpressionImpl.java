@@ -3,6 +3,7 @@
 package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.ecore.EClass;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
@@ -15,6 +16,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 public abstract class BoolValueExpressionImpl extends BoolExpressionImpl implements BoolValueExpression {
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected BoolValueExpressionImpl() {
@@ -23,6 +25,7 @@ public abstract class BoolValueExpressionImpl extends BoolExpressionImpl impleme
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

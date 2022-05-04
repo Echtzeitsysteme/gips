@@ -4,9 +4,12 @@ package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator;
@@ -19,17 +22,21 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BinaryArithmeticExpressionImpl#getLhs <em>Lhs</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BinaryArithmeticExpressionImpl#getRhs <em>Rhs</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BinaryArithmeticExpressionImpl#getOperator <em>Operator</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BinaryArithmeticExpressionImpl#getLhs
+ * <em>Lhs</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BinaryArithmeticExpressionImpl#getRhs
+ * <em>Rhs</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BinaryArithmeticExpressionImpl#getOperator
+ * <em>Operator</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl implements BinaryArithmeticExpression {
 	/**
-	 * The cached value of the '{@link #getLhs() <em>Lhs</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getLhs() <em>Lhs</em>}' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getLhs()
 	 * @generated
 	 * @ordered
@@ -37,8 +44,9 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	protected ArithmeticExpression lhs;
 
 	/**
-	 * The cached value of the '{@link #getRhs() <em>Rhs</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getRhs() <em>Rhs</em>}' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getRhs()
 	 * @generated
 	 * @ordered
@@ -46,8 +54,9 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	protected ArithmeticExpression rhs;
 
 	/**
-	 * The default value of the '{@link #getOperator() <em>Operator</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The default value of the '{@link #getOperator() <em>Operator</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getOperator()
 	 * @generated
 	 * @ordered
@@ -57,6 +66,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 	/**
 	 * The cached value of the '{@link #getOperator() <em>Operator</em>}' attribute.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getOperator()
 	 * @generated
 	 * @ordered
@@ -65,6 +75,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected BinaryArithmeticExpressionImpl() {
@@ -73,6 +84,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -82,6 +94,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ArithmeticExpression getLhs() {
@@ -90,6 +103,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetLhs(ArithmeticExpression newLhs, NotificationChain msgs) {
@@ -108,6 +122,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setLhs(ArithmeticExpression newLhs) {
@@ -129,6 +144,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ArithmeticExpression getRhs() {
@@ -137,6 +153,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetRhs(ArithmeticExpression newRhs, NotificationChain msgs) {
@@ -155,6 +172,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setRhs(ArithmeticExpression newRhs) {
@@ -176,6 +194,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public BinaryArithmeticOperator getOperator() {
@@ -184,6 +203,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setOperator(BinaryArithmeticOperator newOperator) {
@@ -196,6 +216,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -211,6 +232,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -228,6 +250,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -248,6 +271,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -268,6 +292,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -285,6 +310,7 @@ public class BinaryArithmeticExpressionImpl extends ArithmeticExpressionImpl imp
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

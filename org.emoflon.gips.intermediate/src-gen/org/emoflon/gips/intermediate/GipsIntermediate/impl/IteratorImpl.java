@@ -3,10 +3,13 @@
 package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.Iterator;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
@@ -18,7 +21,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorImpl#getStream <em>Stream</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorImpl#getStream
+ * <em>Stream</em>}</li>
  * </ul>
  *
  * @generated
@@ -27,6 +31,7 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 	/**
 	 * The cached value of the '{@link #getStream() <em>Stream</em>}' reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getStream()
 	 * @generated
 	 * @ordered
@@ -35,6 +40,7 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected IteratorImpl() {
@@ -43,6 +49,7 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -52,6 +59,7 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public SetOperation getStream() {
@@ -69,6 +77,7 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public SetOperation basicGetStream() {
@@ -77,6 +86,7 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setStream(SetOperation newStream) {
@@ -89,6 +99,7 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -104,6 +115,7 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -118,6 +130,7 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -132,6 +145,7 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

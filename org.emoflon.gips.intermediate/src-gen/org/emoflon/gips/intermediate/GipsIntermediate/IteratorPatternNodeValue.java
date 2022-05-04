@@ -12,8 +12,10 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue#getPatternContext <em>Pattern Context</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue#getNode <em>Node</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue#getPatternContext
+ * <em>Pattern Context</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue#getNode
+ * <em>Node</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getIteratorPatternNodeValue()
@@ -34,9 +36,11 @@ public interface IteratorPatternNodeValue extends ValueExpression, Iterator {
 	Pattern getPatternContext();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue#getPatternContext <em>Pattern Context</em>}' reference.
-	 * <!-- begin-user-doc --> <!--
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue#getPatternContext
+	 * <em>Pattern Context</em>}' reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Pattern Context</em>' reference.
 	 * @see #getPatternContext()
 	 * @generated
@@ -56,8 +60,10 @@ public interface IteratorPatternNodeValue extends ValueExpression, Iterator {
 	IBeXNode getNode();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue#getNode <em>Node</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue#getNode
+	 * <em>Node</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Node</em>' reference.
 	 * @see #getNode()
 	 * @generated

@@ -10,7 +10,8 @@ package org.emoflon.gips.intermediate.GipsIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression#getType <em>Type</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression#getType
+ * <em>Type</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getTypeSumExpression()
@@ -31,8 +32,10 @@ public interface TypeSumExpression extends SumExpression {
 	Type getType();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression#getType <em>Type</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression#getType
+	 * <em>Type</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Type</em>' reference.
 	 * @see #getType()
 	 * @generated

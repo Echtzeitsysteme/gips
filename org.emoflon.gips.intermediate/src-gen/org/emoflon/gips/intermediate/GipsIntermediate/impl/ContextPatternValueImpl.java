@@ -3,9 +3,12 @@
 package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
@@ -17,15 +20,17 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternValueImpl#getPatternContext <em>Pattern Context</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternValueImpl#getPatternContext
+ * <em>Pattern Context</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ContextPatternValueImpl extends ValueExpressionImpl implements ContextPatternValue {
 	/**
-	 * The cached value of the '{@link #getPatternContext() <em>Pattern Context</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getPatternContext() <em>Pattern
+	 * Context</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getPatternContext()
 	 * @generated
 	 * @ordered
@@ -34,6 +39,7 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ContextPatternValueImpl() {
@@ -42,6 +48,7 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -51,6 +58,7 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Pattern getPatternContext() {
@@ -69,6 +77,7 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Pattern basicGetPatternContext() {
@@ -77,6 +86,7 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setPatternContext(Pattern newPatternContext) {
@@ -89,6 +99,7 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -104,6 +115,7 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -118,6 +130,7 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -132,6 +145,7 @@ public class ContextPatternValueImpl extends ValueExpressionImpl implements Cont
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

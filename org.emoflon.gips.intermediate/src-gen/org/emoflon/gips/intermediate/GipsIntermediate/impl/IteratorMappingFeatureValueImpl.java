@@ -4,9 +4,12 @@ package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.Iterator;
@@ -21,9 +24,12 @@ import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingFeatureValueImpl#getStream <em>Stream</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingFeatureValueImpl#getMappingContext <em>Mapping Context</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingFeatureValueImpl#getFeatureExpression <em>Feature Expression</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingFeatureValueImpl#getStream
+ * <em>Stream</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingFeatureValueImpl#getMappingContext
+ * <em>Mapping Context</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingFeatureValueImpl#getFeatureExpression
+ * <em>Feature Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -32,6 +38,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 	/**
 	 * The cached value of the '{@link #getStream() <em>Stream</em>}' reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getStream()
 	 * @generated
 	 * @ordered
@@ -39,8 +46,9 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 	protected SetOperation stream;
 
 	/**
-	 * The cached value of the '{@link #getMappingContext() <em>Mapping Context</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMappingContext() <em>Mapping
+	 * Context</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMappingContext()
 	 * @generated
 	 * @ordered
@@ -48,9 +56,10 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 	protected Mapping mappingContext;
 
 	/**
-	 * The cached value of the '{@link #getFeatureExpression() <em>Feature Expression</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getFeatureExpression() <em>Feature
+	 * Expression</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @see #getFeatureExpression()
 	 * @generated
 	 * @ordered
@@ -59,6 +68,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected IteratorMappingFeatureValueImpl() {
@@ -67,6 +77,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -76,6 +87,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public SetOperation getStream() {
@@ -93,6 +105,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public SetOperation basicGetStream() {
@@ -101,6 +114,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setStream(SetOperation newStream) {
@@ -113,6 +127,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Mapping getMappingContext() {
@@ -131,6 +146,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Mapping basicGetMappingContext() {
@@ -139,6 +155,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setMappingContext(Mapping newMappingContext) {
@@ -152,6 +169,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public FeatureExpression getFeatureExpression() {
@@ -160,6 +178,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetFeatureExpression(FeatureExpression newFeatureExpression, NotificationChain msgs) {
@@ -179,6 +198,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setFeatureExpression(FeatureExpression newFeatureExpression) {
@@ -205,6 +225,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -218,6 +239,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -239,6 +261,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -259,6 +282,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -279,6 +303,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -296,6 +321,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -313,6 +339,7 @@ public class IteratorMappingFeatureValueImpl extends ValueExpressionImpl impleme
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

@@ -3,7 +3,9 @@
 package org.emoflon.gips.intermediate.GipsIntermediate;
 
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
+
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
 
 /**
@@ -14,13 +16,20 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getName <em>Name</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getVariables <em>Variables</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getConstraints <em>Constraints</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getObjectives <em>Objectives</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getGlobalObjective <em>Global Objective</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getIbexModel <em>Ibex Model</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getConfig <em>Config</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getName
+ * <em>Name</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getVariables
+ * <em>Variables</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getConstraints
+ * <em>Constraints</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getObjectives
+ * <em>Objectives</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getGlobalObjective
+ * <em>Global Objective</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getIbexModel
+ * <em>Ibex Model</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getConfig
+ * <em>Config</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getGipsIntermediateModel()
@@ -41,8 +50,10 @@ public interface GipsIntermediateModel extends EObject {
 	String getName();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getName <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getName
+	 * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Name</em>' attribute.
 	 * @see #getName()
 	 * @generated
@@ -89,8 +100,9 @@ public interface GipsIntermediateModel extends EObject {
 	EList<Objective> getObjectives();
 
 	/**
-	 * Returns the value of the '<em><b>Global Objective</b></em>' containment reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the value of the '<em><b>Global Objective</b></em>' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Global Objective</em>' containment reference.
 	 * @see #setGlobalObjective(GlobalObjective)
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getGipsIntermediateModel_GlobalObjective()
@@ -100,10 +112,13 @@ public interface GipsIntermediateModel extends EObject {
 	GlobalObjective getGlobalObjective();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getGlobalObjective <em>Global Objective</em>}' containment reference.
-	 * <!-- begin-user-doc -->
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getGlobalObjective
+	 * <em>Global Objective</em>}' containment reference. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Global Objective</em>' containment reference.
+	 * 
+	 * @param value the new value of the '<em>Global Objective</em>' containment
+	 *              reference.
 	 * @see #getGlobalObjective()
 	 * @generated
 	 */
@@ -112,6 +127,7 @@ public interface GipsIntermediateModel extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Ibex Model</b></em>' containment reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Ibex Model</em>' containment reference.
 	 * @see #setIbexModel(IBeXModel)
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getGipsIntermediateModel_IbexModel()
@@ -121,10 +137,13 @@ public interface GipsIntermediateModel extends EObject {
 	IBeXModel getIbexModel();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getIbexModel <em>Ibex Model</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!--
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getIbexModel
+	 * <em>Ibex Model</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * @param value the new value of the '<em>Ibex Model</em>' containment reference.
+	 * 
+	 * @param value the new value of the '<em>Ibex Model</em>' containment
+	 *              reference.
 	 * @see #getIbexModel()
 	 * @generated
 	 */
@@ -143,9 +162,11 @@ public interface GipsIntermediateModel extends EObject {
 	ILPConfig getConfig();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getConfig <em>Config</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!--
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel#getConfig
+	 * <em>Config</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Config</em>' containment reference.
 	 * @see #getConfig()
 	 * @generated

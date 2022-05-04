@@ -53,6 +53,10 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeature
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue
 import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression
 import org.eclipse.emf.ecore.EcorePackage
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping
+import org.emoflon.gips.intermediate.GipsIntermediate.Pattern
+import org.emoflon.gips.intermediate.GipsIntermediate.Type
 
 abstract class ConstraintTemplate <CONTEXT extends Constraint> extends GeneratorTemplate<CONTEXT> {
 
@@ -129,6 +133,8 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 	def String generateBuilder(UnaryArithmeticExpression expr);
 	
 	def String generateBuilder(MappingSumExpression expr);
+	
+	def String generateBuilder(ContextSumExpression expr);
 	
 	def String generateBuilder(TypeSumExpression expr);
 	
@@ -359,6 +365,24 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			.reduce(0, (sum, «getIteratorVariableName(constExpr)») -> {
 				sum + «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»
 			})'''
+		} else if(constExpr instanceof ContextSumExpression) {
+			if(constExpr.context instanceof Mapping) {
+				throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
+			} else if(constExpr.context instanceof Pattern) {
+				return '''context.«constExpr.node.name»().«parseFeatureExpression(constExpr.feature)».stream()
+			.«parseExpression(constExpr.filter, ExpressionContext.constConstraint)»
+			.reduce(0, (sum, «getIteratorVariableName(constExpr)») -> {
+				sum + «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»
+			})'''
+			} else if(constExpr.context instanceof Type) {
+				return '''context.«parseFeatureExpression(constExpr.feature)».stream()
+			.«parseExpression(constExpr.filter, ExpressionContext.constConstraint)»
+			.reduce(0, (sum, «getIteratorVariableName(constExpr)») -> {
+				sum + «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»
+			})'''
+			} else {
+				throw new UnsupportedOperationException("Unknown context type.");
+			}
 		} else if(constExpr instanceof ContextTypeFeatureValue) {
 			return '''context.«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else if(constExpr instanceof ContextTypeValue) {
@@ -405,6 +429,8 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		if(constExpr instanceof MappingSumExpression) {
 			throw new UnsupportedOperationException("Nested mapping streams not allowed in mapping stream expressions.");
 		} else if(constExpr instanceof TypeSumExpression) {
+			throw new UnsupportedOperationException("Nested stream expressions are not allowed.");
+		} else if(constExpr instanceof ContextSumExpression) {
 			throw new UnsupportedOperationException("Nested stream expressions are not allowed.");
 		} else if(constExpr instanceof ContextTypeFeatureValue) {
 			return '''context.«parseFeatureExpression(constExpr.featureExpression)»'''
@@ -458,6 +484,24 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			.reduce(0, (sum, «getIteratorVariableName(varExpr)») -> {
 				sum + «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»
 			})'''
+		} else if(varExpr instanceof ContextSumExpression) {
+			if(varExpr.context instanceof Mapping) {
+				throw new UnsupportedOperationException("Mapping stream expressions may not be part of multiplications, fractions, exponentials, roots etc.");
+			} else if(varExpr.context instanceof Pattern) {
+				return '''context.«varExpr.node.name»().«parseFeatureExpression(varExpr.feature)».stream()
+			.«parseExpression(varExpr.filter, ExpressionContext.varConstraint)»
+			.reduce(0, (sum, «getIteratorVariableName(varExpr)») -> {
+				sum + «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»
+			})'''
+			} else if(varExpr.context instanceof Type) {
+				return '''context.«parseFeatureExpression(varExpr.feature)».stream()
+			.«parseExpression(varExpr.filter, ExpressionContext.varConstraint)»
+			.reduce(0, (sum, «getIteratorVariableName(varExpr)») -> {
+				sum + «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»
+			})'''
+			} else {
+				throw new UnsupportedOperationException("Unknown context type.");
+			}
 		} else if(varExpr instanceof ContextTypeFeatureValue) {
 			return '''context.«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else if(varExpr instanceof ContextTypeValue) {
@@ -506,6 +550,8 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		if(varExpr instanceof MappingSumExpression) {
 			throw new UnsupportedOperationException("Nested mapping streams not allowed in mapping stream expressions.");
 		} else if(varExpr instanceof TypeSumExpression) {
+			throw new UnsupportedOperationException("Nested stream expressions are not allowed.");
+		} else if(varExpr instanceof ContextSumExpression) {
 			throw new UnsupportedOperationException("Nested stream expressions are not allowed.");
 		} else if(varExpr instanceof ContextTypeFeatureValue) {
 			return '''context.«parseFeatureExpression(varExpr.featureExpression)»'''

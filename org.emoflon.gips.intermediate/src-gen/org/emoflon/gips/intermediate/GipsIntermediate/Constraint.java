@@ -12,9 +12,12 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getName <em>Name</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isElementwise <em>Elementwise</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getExpression <em>Expression</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getName
+ * <em>Name</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isElementwise
+ * <em>Elementwise</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getExpression
+ * <em>Expression</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint()
@@ -35,8 +38,10 @@ public interface Constraint extends EObject {
 	String getName();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getName <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getName
+	 * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Name</em>' attribute.
 	 * @see #getName()
 	 * @generated
@@ -70,6 +75,7 @@ public interface Constraint extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Expression</b></em>' containment reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Expression</em>' containment reference.
 	 * @see #setExpression(RelationalExpression)
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_Expression()
@@ -79,10 +85,13 @@ public interface Constraint extends EObject {
 	RelationalExpression getExpression();
 
 	/**
-	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getExpression <em>Expression</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!--
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getExpression
+	 * <em>Expression</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * @param value the new value of the '<em>Expression</em>' containment reference.
+	 * 
+	 * @param value the new value of the '<em>Expression</em>' containment
+	 *              reference.
 	 * @see #getExpression()
 	 * @generated
 	 */

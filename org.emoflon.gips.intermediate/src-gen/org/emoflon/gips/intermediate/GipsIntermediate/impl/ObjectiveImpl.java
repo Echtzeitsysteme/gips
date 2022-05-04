@@ -4,10 +4,13 @@ package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
@@ -19,9 +22,12 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ObjectiveImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ObjectiveImpl#isElementwise <em>Elementwise</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ObjectiveImpl#getExpression <em>Expression</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ObjectiveImpl#getName
+ * <em>Name</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ObjectiveImpl#isElementwise
+ * <em>Elementwise</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ObjectiveImpl#getExpression
+ * <em>Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -48,8 +54,9 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isElementwise() <em>Elementwise</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The default value of the '{@link #isElementwise() <em>Elementwise</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #isElementwise()
 	 * @generated
 	 * @ordered
@@ -57,8 +64,9 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 	protected static final boolean ELEMENTWISE_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isElementwise() <em>Elementwise</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #isElementwise() <em>Elementwise</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #isElementwise()
 	 * @generated
 	 * @ordered
@@ -66,8 +74,9 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 	protected boolean elementwise = ELEMENTWISE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getExpression() <em>Expression</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getExpression()
 	 * @generated
 	 * @ordered
@@ -76,6 +85,7 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ObjectiveImpl() {
@@ -84,6 +94,7 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -93,6 +104,7 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String getName() {
@@ -101,6 +113,7 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setName(String newName) {
@@ -113,6 +126,7 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean isElementwise() {
@@ -121,6 +135,7 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setElementwise(boolean newElementwise) {
@@ -133,6 +148,7 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ArithmeticExpression getExpression() {
@@ -141,6 +157,7 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetExpression(ArithmeticExpression newExpression, NotificationChain msgs) {
@@ -159,6 +176,7 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setExpression(ArithmeticExpression newExpression) {
@@ -180,6 +198,7 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -193,6 +212,7 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -210,6 +230,7 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -230,6 +251,7 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -250,6 +272,7 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -267,6 +290,7 @@ public class ObjectiveImpl extends MinimalEObjectImpl.Container implements Objec
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

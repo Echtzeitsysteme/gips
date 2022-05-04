@@ -4,10 +4,13 @@ package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation;
 
@@ -18,15 +21,17 @@ import org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamSelectOperationImpl#getType <em>Type</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamSelectOperationImpl#getType
+ * <em>Type</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class StreamSelectOperationImpl extends MinimalEObjectImpl.Container implements StreamSelectOperation {
 	/**
-	 * The cached value of the '{@link #getType() <em>Type</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getType() <em>Type</em>}' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getType()
 	 * @generated
 	 * @ordered
@@ -35,6 +40,7 @@ public class StreamSelectOperationImpl extends MinimalEObjectImpl.Container impl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected StreamSelectOperationImpl() {
@@ -43,6 +49,7 @@ public class StreamSelectOperationImpl extends MinimalEObjectImpl.Container impl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -52,6 +59,7 @@ public class StreamSelectOperationImpl extends MinimalEObjectImpl.Container impl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getType() {
@@ -60,6 +68,7 @@ public class StreamSelectOperationImpl extends MinimalEObjectImpl.Container impl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetType(EClass newType, NotificationChain msgs) {
@@ -78,6 +87,7 @@ public class StreamSelectOperationImpl extends MinimalEObjectImpl.Container impl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setType(EClass newType) {
@@ -99,6 +109,7 @@ public class StreamSelectOperationImpl extends MinimalEObjectImpl.Container impl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -112,6 +123,7 @@ public class StreamSelectOperationImpl extends MinimalEObjectImpl.Container impl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -125,6 +137,7 @@ public class StreamSelectOperationImpl extends MinimalEObjectImpl.Container impl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -139,6 +152,7 @@ public class StreamSelectOperationImpl extends MinimalEObjectImpl.Container impl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -153,6 +167,7 @@ public class StreamSelectOperationImpl extends MinimalEObjectImpl.Container impl
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

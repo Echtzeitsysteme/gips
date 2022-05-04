@@ -3,14 +3,18 @@
 package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.Iterator;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
+
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 
 /**
@@ -20,9 +24,12 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternNodeValueImpl#getStream <em>Stream</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternNodeValueImpl#getPatternContext <em>Pattern Context</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternNodeValueImpl#getNode <em>Node</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternNodeValueImpl#getStream
+ * <em>Stream</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternNodeValueImpl#getPatternContext
+ * <em>Pattern Context</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorPatternNodeValueImpl#getNode
+ * <em>Node</em>}</li>
  * </ul>
  *
  * @generated
@@ -31,6 +38,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 	/**
 	 * The cached value of the '{@link #getStream() <em>Stream</em>}' reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getStream()
 	 * @generated
 	 * @ordered
@@ -38,8 +46,9 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 	protected SetOperation stream;
 
 	/**
-	 * The cached value of the '{@link #getPatternContext() <em>Pattern Context</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getPatternContext() <em>Pattern
+	 * Context</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getPatternContext()
 	 * @generated
 	 * @ordered
@@ -58,6 +67,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected IteratorPatternNodeValueImpl() {
@@ -66,6 +76,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -75,6 +86,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public SetOperation getStream() {
@@ -92,6 +104,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public SetOperation basicGetStream() {
@@ -100,6 +113,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setStream(SetOperation newStream) {
@@ -112,6 +126,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Pattern getPatternContext() {
@@ -130,6 +145,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Pattern basicGetPatternContext() {
@@ -138,6 +154,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setPatternContext(Pattern newPatternContext) {
@@ -151,6 +168,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IBeXNode getNode() {
@@ -168,6 +186,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IBeXNode basicGetNode() {
@@ -176,6 +195,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setNode(IBeXNode newNode) {
@@ -188,6 +208,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -211,6 +232,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -231,6 +253,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -251,6 +274,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -268,6 +292,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -285,6 +310,7 @@ public class IteratorPatternNodeValueImpl extends ValueExpressionImpl implements
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

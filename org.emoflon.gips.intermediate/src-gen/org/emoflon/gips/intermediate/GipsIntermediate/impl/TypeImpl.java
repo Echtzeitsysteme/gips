@@ -3,9 +3,12 @@
 package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 
@@ -16,7 +19,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Type;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeImpl#getType <em>Type</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeImpl#getType
+ * <em>Type</em>}</li>
  * </ul>
  *
  * @generated
@@ -34,6 +38,7 @@ public class TypeImpl extends VariableSetImpl implements Type {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected TypeImpl() {
@@ -42,6 +47,7 @@ public class TypeImpl extends VariableSetImpl implements Type {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -51,6 +57,7 @@ public class TypeImpl extends VariableSetImpl implements Type {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getType() {
@@ -68,6 +75,7 @@ public class TypeImpl extends VariableSetImpl implements Type {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass basicGetType() {
@@ -76,6 +84,7 @@ public class TypeImpl extends VariableSetImpl implements Type {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setType(EClass newType) {
@@ -87,6 +96,7 @@ public class TypeImpl extends VariableSetImpl implements Type {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -102,6 +112,7 @@ public class TypeImpl extends VariableSetImpl implements Type {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -116,6 +127,7 @@ public class TypeImpl extends VariableSetImpl implements Type {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -130,6 +142,7 @@ public class TypeImpl extends VariableSetImpl implements Type {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

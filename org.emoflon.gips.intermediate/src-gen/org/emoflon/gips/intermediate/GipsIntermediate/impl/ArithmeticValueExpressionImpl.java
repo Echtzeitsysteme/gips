@@ -3,6 +3,7 @@
 package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.ecore.EClass;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
@@ -16,6 +17,7 @@ public abstract class ArithmeticValueExpressionImpl extends ArithmeticExpression
 		implements ArithmeticValueExpression {
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ArithmeticValueExpressionImpl() {
@@ -24,6 +26,7 @@ public abstract class ArithmeticValueExpressionImpl extends ArithmeticExpression
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

@@ -4,9 +4,12 @@ package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue;
@@ -18,7 +21,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeature
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingNodeFeatureValueImpl#getFeatureExpression <em>Feature Expression</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingNodeFeatureValueImpl#getFeatureExpression
+ * <em>Feature Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -26,9 +30,10 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeature
 public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValueImpl
 		implements IteratorMappingNodeFeatureValue {
 	/**
-	 * The cached value of the '{@link #getFeatureExpression() <em>Feature Expression</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getFeatureExpression() <em>Feature
+	 * Expression</em>}' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @see #getFeatureExpression()
 	 * @generated
 	 * @ordered
@@ -37,6 +42,7 @@ public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValu
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected IteratorMappingNodeFeatureValueImpl() {
@@ -45,6 +51,7 @@ public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValu
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -54,6 +61,7 @@ public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValu
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public FeatureExpression getFeatureExpression() {
@@ -62,6 +70,7 @@ public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValu
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetFeatureExpression(FeatureExpression newFeatureExpression, NotificationChain msgs) {
@@ -81,6 +90,7 @@ public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValu
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setFeatureExpression(FeatureExpression newFeatureExpression) {
@@ -107,6 +117,7 @@ public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValu
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -120,6 +131,7 @@ public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValu
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -133,6 +145,7 @@ public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValu
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -147,6 +160,7 @@ public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValu
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -161,6 +175,7 @@ public class IteratorMappingNodeFeatureValueImpl extends IteratorMappingNodeValu
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

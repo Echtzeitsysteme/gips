@@ -3,11 +3,15 @@
 package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
+
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
 
 /**
@@ -17,8 +21,10 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternImpl#getPattern <em>Pattern</em>}</li>
- *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternImpl#isIsRule <em>Is Rule</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternImpl#getPattern
+ * <em>Pattern</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternImpl#isIsRule
+ * <em>Is Rule</em>}</li>
  * </ul>
  *
  * @generated
@@ -27,6 +33,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	/**
 	 * The cached value of the '{@link #getPattern() <em>Pattern</em>}' reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getPattern()
 	 * @generated
 	 * @ordered
@@ -36,6 +43,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	/**
 	 * The default value of the '{@link #isIsRule() <em>Is Rule</em>}' attribute.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #isIsRule()
 	 * @generated
 	 * @ordered
@@ -45,6 +53,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	/**
 	 * The cached value of the '{@link #isIsRule() <em>Is Rule</em>}' attribute.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #isIsRule()
 	 * @generated
 	 * @ordered
@@ -53,6 +62,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected PatternImpl() {
@@ -61,6 +71,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -70,6 +81,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IBeXContext getPattern() {
@@ -87,6 +99,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IBeXContext basicGetPattern() {
@@ -95,6 +108,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setPattern(IBeXContext newPattern) {
@@ -107,6 +121,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean isIsRule() {
@@ -115,6 +130,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setIsRule(boolean newIsRule) {
@@ -127,6 +143,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -144,6 +161,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -161,6 +179,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -178,6 +197,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -193,6 +213,7 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

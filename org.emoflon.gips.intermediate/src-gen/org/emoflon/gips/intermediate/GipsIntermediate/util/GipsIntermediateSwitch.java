@@ -4,71 +4,10 @@ package org.emoflon.gips.intermediate.GipsIntermediate.util;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+
 import org.eclipse.emf.ecore.util.Switch;
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValueExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.Context;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
-import org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective;
-import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
-import org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.Iterator;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
-import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective;
-import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
-import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
-import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective;
-import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
-import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation;
-import org.emoflon.gips.intermediate.GipsIntermediate.StreamOperation;
-import org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation;
-import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.Type;
-import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective;
-import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
+
+import org.emoflon.gips.intermediate.GipsIntermediate.*;
 
 /**
  * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance
@@ -77,13 +16,14 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
  * starting with the actual class of the object and proceeding up the
  * inheritance hierarchy until a non-null result is returned, which is the
  * result of the switch. <!-- end-user-doc -->
+ * 
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage
  * @generated
  */
 public class GipsIntermediateSwitch<T> extends Switch<T> {
 	/**
-	 * The cached model package
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached model package <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected static GipsIntermediatePackage modelPackage;
@@ -101,9 +41,9 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Checks whether this is a switch for the given package.
-	 * <!-- begin-user-doc
+	 * Checks whether this is a switch for the given package. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
+	 * 
 	 * @param ePackage the package in question.
 	 * @return whether this is a switch for the given package.
 	 * @generated
@@ -114,9 +54,10 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
-	 * <!-- begin-user-doc --> <!--
+	 * Calls <code>caseXXX</code> for each class of the model until one returns a
+	 * non null result; it yields that result. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @return the first non-null result returned by a <code>caseXXX</code> call.
 	 * @generated
 	 */
@@ -753,11 +694,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Model</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of
+	 * '<em>Model</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Model</em>'.
+	 * @return the result of interpreting the object as an instance of
+	 *         '<em>Model</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -766,11 +709,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>ILP Config</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>ILP
+	 * Config</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>ILP Config</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>ILP
+	 *         Config</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -779,11 +724,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Variable Set</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Variable
+	 * Set</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Variable Set</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Variable
+	 *         Set</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -792,11 +739,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Pattern</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of
+	 * '<em>Pattern</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Pattern</em>'.
+	 * @return the result of interpreting the object as an instance of
+	 *         '<em>Pattern</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -805,11 +754,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Type</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of
+	 * '<em>Type</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Type</em>'.
+	 * @return the result of interpreting the object as an instance of
+	 *         '<em>Type</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -818,11 +769,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Mapping</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of
+	 * '<em>Mapping</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of
+	 *         '<em>Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -831,12 +784,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Constraint</em>'.
-	 * <!-- begin-user-doc --> This implementation returns
+	 * Returns the result of interpreting the object as an instance of
+	 * '<em>Constraint</em>'. <!-- begin-user-doc --> This implementation returns
 	 * null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Constraint</em>'.
+	 * @return the result of interpreting the object as an instance of
+	 *         '<em>Constraint</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -845,12 +800,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Objective</em>'.
-	 * <!-- begin-user-doc --> This implementation returns
+	 * Returns the result of interpreting the object as an instance of
+	 * '<em>Objective</em>'. <!-- begin-user-doc --> This implementation returns
 	 * null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Objective</em>'.
+	 * @return the result of interpreting the object as an instance of
+	 *         '<em>Objective</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -859,11 +816,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Global Objective</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Global
+	 * Objective</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Global Objective</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Global
+	 *         Objective</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -872,11 +831,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Context</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of
+	 * '<em>Context</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Context</em>'.
+	 * @return the result of interpreting the object as an instance of
+	 *         '<em>Context</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -885,11 +846,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Pattern Constraint</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Pattern
+	 * Constraint</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Pattern Constraint</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Pattern
+	 *         Constraint</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -898,11 +861,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Type Constraint</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Type
+	 * Constraint</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Type Constraint</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Type
+	 *         Constraint</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -911,11 +876,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Mapping Constraint</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Mapping
+	 * Constraint</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Mapping Constraint</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Mapping
+	 *         Constraint</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -924,11 +891,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Pattern Objective</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Pattern
+	 * Objective</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Pattern Objective</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Pattern
+	 *         Objective</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -937,11 +906,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Type Objective</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Type
+	 * Objective</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Type Objective</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Type
+	 *         Objective</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -950,11 +921,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Mapping Objective</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Mapping
+	 * Objective</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Mapping Objective</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Mapping
+	 *         Objective</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -963,12 +936,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Arithmetic Expression</em>'.
-	 * <!-- begin-user-doc --> This implementation
+	 * Returns the result of interpreting the object as an instance of
+	 * '<em>Arithmetic Expression</em>'. <!-- begin-user-doc --> This implementation
 	 * returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Arithmetic Expression</em>'.
+	 * @return the result of interpreting the object as an instance of
+	 *         '<em>Arithmetic Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -977,12 +952,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Binary Arithmetic Expression</em>'.
-	 * <!-- begin-user-doc --> This implementation
+	 * Returns the result of interpreting the object as an instance of '<em>Binary
+	 * Arithmetic Expression</em>'. <!-- begin-user-doc --> This implementation
 	 * returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Binary Arithmetic Expression</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Binary
+	 *         Arithmetic Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -991,12 +968,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Unary Arithmetic Expression</em>'.
-	 * <!-- begin-user-doc --> This implementation
+	 * Returns the result of interpreting the object as an instance of '<em>Unary
+	 * Arithmetic Expression</em>'. <!-- begin-user-doc --> This implementation
 	 * returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Unary Arithmetic Expression</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Unary
+	 *         Arithmetic Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1005,11 +984,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Set Operation</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Set
+	 * Operation</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Set Operation</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Set
+	 *         Operation</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1018,12 +999,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Arithmetic Value Expression</em>'.
-	 * <!-- begin-user-doc --> This
+	 * Returns the result of interpreting the object as an instance of
+	 * '<em>Arithmetic Value Expression</em>'. <!-- begin-user-doc --> This
 	 * implementation returns null; returning a non-null result will terminate the
 	 * switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Arithmetic Value Expression</em>'.
+	 * @return the result of interpreting the object as an instance of
+	 *         '<em>Arithmetic Value Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1032,12 +1015,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Arithmetic Value</em>'.
-	 * <!-- begin-user-doc --> This implementation
+	 * Returns the result of interpreting the object as an instance of
+	 * '<em>Arithmetic Value</em>'. <!-- begin-user-doc --> This implementation
 	 * returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Arithmetic Value</em>'.
+	 * @return the result of interpreting the object as an instance of
+	 *         '<em>Arithmetic Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1046,12 +1031,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Arithmetic Literal</em>'.
-	 * <!-- begin-user-doc --> This implementation
+	 * Returns the result of interpreting the object as an instance of
+	 * '<em>Arithmetic Literal</em>'. <!-- begin-user-doc --> This implementation
 	 * returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Arithmetic Literal</em>'.
+	 * @return the result of interpreting the object as an instance of
+	 *         '<em>Arithmetic Literal</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1060,11 +1047,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Integer Literal</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Integer
+	 * Literal</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Integer Literal</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Integer
+	 *         Literal</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1073,11 +1062,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Double Literal</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Double
+	 * Literal</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Double Literal</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Double
+	 *         Literal</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1086,11 +1077,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Bool Expression</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Bool
+	 * Expression</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Bool Expression</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Bool
+	 *         Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1099,12 +1092,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Bool Binary Expression</em>'.
-	 * <!-- begin-user-doc --> This implementation returns
+	 * Returns the result of interpreting the object as an instance of '<em>Bool
+	 * Binary Expression</em>'. <!-- begin-user-doc --> This implementation returns
 	 * null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Bool Binary Expression</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Bool
+	 *         Binary Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1113,12 +1108,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Bool Unary Expression</em>'.
-	 * <!-- begin-user-doc --> This implementation returns
+	 * Returns the result of interpreting the object as an instance of '<em>Bool
+	 * Unary Expression</em>'. <!-- begin-user-doc --> This implementation returns
 	 * null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Bool Unary Expression</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Bool
+	 *         Unary Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1127,12 +1124,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Bool Value Expression</em>'.
-	 * <!-- begin-user-doc --> This implementation returns
+	 * Returns the result of interpreting the object as an instance of '<em>Bool
+	 * Value Expression</em>'. <!-- begin-user-doc --> This implementation returns
 	 * null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Bool Value Expression</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Bool
+	 *         Value Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1141,11 +1140,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Bool Value</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Bool
+	 * Value</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Bool Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Bool
+	 *         Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1154,12 +1155,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Bool Stream Expression</em>'.
-	 * <!-- begin-user-doc --> This implementation returns
+	 * Returns the result of interpreting the object as an instance of '<em>Bool
+	 * Stream Expression</em>'. <!-- begin-user-doc --> This implementation returns
 	 * null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Bool Stream Expression</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Bool
+	 *         Stream Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1168,12 +1171,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Relational Expression</em>'.
-	 * <!-- begin-user-doc --> This implementation
+	 * Returns the result of interpreting the object as an instance of
+	 * '<em>Relational Expression</em>'. <!-- begin-user-doc --> This implementation
 	 * returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Relational Expression</em>'.
+	 * @return the result of interpreting the object as an instance of
+	 *         '<em>Relational Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1182,11 +1187,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Bool Literal</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Bool
+	 * Literal</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Bool Literal</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Bool
+	 *         Literal</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1195,11 +1202,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Value Expression</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Value
+	 * Expression</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Value Expression</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Value
+	 *         Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1208,11 +1217,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Sum Expression</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Sum
+	 * Expression</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Sum Expression</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Sum
+	 *         Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1221,13 +1232,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Context Sum Expression</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
+	 * Returns the result of interpreting the object as an instance of '<em>Context
+	 * Sum Expression</em>'. <!-- begin-user-doc --> This implementation returns
+	 * null; returning a non-null result will terminate the switch. <!--
+	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Context Sum Expression</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Context
+	 *         Sum Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1236,12 +1248,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Mapping Sum Expression</em>'.
-	 * <!-- begin-user-doc --> This implementation returns
+	 * Returns the result of interpreting the object as an instance of '<em>Mapping
+	 * Sum Expression</em>'. <!-- begin-user-doc --> This implementation returns
 	 * null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Mapping Sum Expression</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Mapping
+	 *         Sum Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1250,11 +1264,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Type Sum Expression</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Type Sum
+	 * Expression</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Type Sum Expression</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Type Sum
+	 *         Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1263,11 +1279,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Context Type Value</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Context
+	 * Type Value</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Context Type Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Context
+	 *         Type Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1276,12 +1294,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Context Pattern Value</em>'.
-	 * <!-- begin-user-doc --> This implementation returns
+	 * Returns the result of interpreting the object as an instance of '<em>Context
+	 * Pattern Value</em>'. <!-- begin-user-doc --> This implementation returns
 	 * null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Context Pattern Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Context
+	 *         Pattern Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1290,11 +1310,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Context Pattern Node</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Context
+	 * Pattern Node</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Context Pattern Node</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Context
+	 *         Pattern Node</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1303,12 +1325,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Context Mapping Value</em>'.
-	 * <!-- begin-user-doc --> This implementation returns
+	 * Returns the result of interpreting the object as an instance of '<em>Context
+	 * Mapping Value</em>'. <!-- begin-user-doc --> This implementation returns
 	 * null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Context Mapping Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Context
+	 *         Mapping Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1317,11 +1341,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Context Mapping Node</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Context
+	 * Mapping Node</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Context Mapping Node</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Context
+	 *         Mapping Node</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1330,12 +1356,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Objective Function Value</em>'.
-	 * <!-- begin-user-doc --> This
+	 * Returns the result of interpreting the object as an instance of
+	 * '<em>Objective Function Value</em>'. <!-- begin-user-doc --> This
 	 * implementation returns null; returning a non-null result will terminate the
 	 * switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Objective Function Value</em>'.
+	 * @return the result of interpreting the object as an instance of
+	 *         '<em>Objective Function Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1344,11 +1372,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Feature Expression</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Feature
+	 * Expression</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Feature Expression</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Feature
+	 *         Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1357,11 +1387,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Feature Literal</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Feature
+	 * Literal</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Feature Literal</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Feature
+	 *         Literal</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1370,12 +1402,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Context Type Feature Value</em>'.
-	 * <!-- begin-user-doc --> This implementation returns
+	 * Returns the result of interpreting the object as an instance of '<em>Context
+	 * Type Feature Value</em>'. <!-- begin-user-doc --> This implementation returns
 	 * null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Context Type Feature Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Context
+	 *         Type Feature Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1384,12 +1418,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Context Pattern Node Feature Value</em>'.
-	 * <!-- begin-user-doc --> This implementation
+	 * Returns the result of interpreting the object as an instance of '<em>Context
+	 * Pattern Node Feature Value</em>'. <!-- begin-user-doc --> This implementation
 	 * returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Context Pattern Node Feature Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Context
+	 *         Pattern Node Feature Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1398,12 +1434,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Context Mapping Node Feature Value</em>'.
-	 * <!-- begin-user-doc --> This implementation
+	 * Returns the result of interpreting the object as an instance of '<em>Context
+	 * Mapping Node Feature Value</em>'. <!-- begin-user-doc --> This implementation
 	 * returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Context Mapping Node Feature Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Context
+	 *         Mapping Node Feature Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1412,12 +1450,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Iterator</em>'.
-	 * <!-- begin-user-doc --> This implementation returns
+	 * Returns the result of interpreting the object as an instance of
+	 * '<em>Iterator</em>'. <!-- begin-user-doc --> This implementation returns
 	 * null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Iterator</em>'.
+	 * @return the result of interpreting the object as an instance of
+	 *         '<em>Iterator</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1426,12 +1466,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Iterator Pattern Value</em>'.
-	 * <!-- begin-user-doc --> This implementation returns
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator
+	 * Pattern Value</em>'. <!-- begin-user-doc --> This implementation returns
 	 * null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Iterator Pattern Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator
+	 *         Pattern Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1440,12 +1482,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Iterator Pattern Feature Value</em>'.
-	 * <!-- begin-user-doc --> This implementation
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator
+	 * Pattern Feature Value</em>'. <!-- begin-user-doc --> This implementation
 	 * returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Iterator Pattern Feature Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator
+	 *         Pattern Feature Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1454,12 +1498,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Iterator Pattern Node Value</em>'.
-	 * <!-- begin-user-doc --> This implementation returns
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator
+	 * Pattern Node Value</em>'. <!-- begin-user-doc --> This implementation returns
 	 * null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Iterator Pattern Node Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator
+	 *         Pattern Node Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1468,12 +1514,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Iterator Pattern Node Feature Value</em>'.
-	 * <!-- begin-user-doc --> This implementation
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator
+	 * Pattern Node Feature Value</em>'. <!-- begin-user-doc --> This implementation
 	 * returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Iterator Pattern Node Feature Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator
+	 *         Pattern Node Feature Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1482,12 +1530,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Iterator Mapping Value</em>'.
-	 * <!-- begin-user-doc --> This implementation returns
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator
+	 * Mapping Value</em>'. <!-- begin-user-doc --> This implementation returns
 	 * null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Iterator Mapping Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator
+	 *         Mapping Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1496,12 +1546,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Iterator Mapping Feature Value</em>'.
-	 * <!-- begin-user-doc --> This implementation
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator
+	 * Mapping Feature Value</em>'. <!-- begin-user-doc --> This implementation
 	 * returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Iterator Mapping Feature Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator
+	 *         Mapping Feature Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1510,12 +1562,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Iterator Mapping Node Value</em>'.
-	 * <!-- begin-user-doc --> This implementation returns
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator
+	 * Mapping Node Value</em>'. <!-- begin-user-doc --> This implementation returns
 	 * null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Iterator Mapping Node Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator
+	 *         Mapping Node Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1524,12 +1578,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Iterator Mapping Node Feature Value</em>'.
-	 * <!-- begin-user-doc --> This implementation
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator
+	 * Mapping Node Feature Value</em>'. <!-- begin-user-doc --> This implementation
 	 * returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Iterator Mapping Node Feature Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator
+	 *         Mapping Node Feature Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1538,11 +1594,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Iterator Type Value</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator
+	 * Type Value</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Iterator Type Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator
+	 *         Type Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1551,12 +1609,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Iterator Type Feature Value</em>'.
-	 * <!-- begin-user-doc --> This implementation returns
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator
+	 * Type Feature Value</em>'. <!-- begin-user-doc --> This implementation returns
 	 * null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Iterator Type Feature Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator
+	 *         Type Feature Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1565,11 +1625,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Stream Expression</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Stream
+	 * Expression</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Stream Expression</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Stream
+	 *         Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1578,11 +1640,13 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Stream Operation</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of '<em>Stream
+	 * Operation</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Stream Operation</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Stream
+	 *         Operation</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1591,12 +1655,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Stream Filter Operation</em>'.
-	 * <!-- begin-user-doc --> This implementation returns
+	 * Returns the result of interpreting the object as an instance of '<em>Stream
+	 * Filter Operation</em>'. <!-- begin-user-doc --> This implementation returns
 	 * null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Stream Filter Operation</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Stream
+	 *         Filter Operation</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1605,12 +1671,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Stream Select Operation</em>'.
-	 * <!-- begin-user-doc --> This implementation returns
+	 * Returns the result of interpreting the object as an instance of '<em>Stream
+	 * Select Operation</em>'. <!-- begin-user-doc --> This implementation returns
 	 * null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Stream Select Operation</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Stream
+	 *         Select Operation</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1619,12 +1687,14 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
-	 * <!-- begin-user-doc --> This implementation returns null;
+	 * Returns the result of interpreting the object as an instance of
+	 * '<em>EObject</em>'. <!-- begin-user-doc --> This implementation returns null;
 	 * returning a non-null result will terminate the switch, but this is the last
 	 * case anyway. <!-- end-user-doc -->
+	 * 
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
+	 * @return the result of interpreting the object as an instance of
+	 *         '<em>EObject</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
 	 */

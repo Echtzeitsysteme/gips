@@ -215,11 +215,10 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.mapping
 		builderMethods.put(expr, methodName)
 				val method = '''
 	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		double constant = context.«expr.node.name»().«parseFeatureExpression(expr.feature)».values().parallelStream()
+		double constant = context.get«expr.node.name.toFirstUpper»().«parseFeatureExpression(expr.feature)».values().parallelStream()
 					.«parseExpression(expr.filter, ExpressionContext.varStream)»
-					.reduce(0.0, (sum, «getIteratorVariableName(expr)») -> {
-									sum + «parseExpression(expr.expression, ExpressionContext.constConstraint)»
-								});
+					.map(«getIteratorVariableName(expr)» -> «parseExpression(expr.expression, ExpressionContext.constConstraint)»)
+					.reduce(0.0, (sum, value) -> sum + value);
 								
 		terms.add(new ILPTerm<Integer, Double>(context, constant));
 	}

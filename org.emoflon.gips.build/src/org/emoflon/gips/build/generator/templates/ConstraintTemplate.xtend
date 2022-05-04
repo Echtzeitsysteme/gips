@@ -369,17 +369,15 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			if(constExpr.context instanceof Mapping) {
 				throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 			} else if(constExpr.context instanceof Pattern) {
-				return '''context.«constExpr.node.name»().«parseFeatureExpression(constExpr.feature)».stream()
+				return '''context.get«constExpr.node.name.toFirstUpper»().«parseFeatureExpression(constExpr.feature)».stream()
 			.«parseExpression(constExpr.filter, ExpressionContext.constConstraint)»
-			.reduce(0, (sum, «getIteratorVariableName(constExpr)») -> {
-				sum + «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»
-			})'''
+			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
+			.reduce(0.0, (sum, value) -> sum + value)'''
 			} else if(constExpr.context instanceof Type) {
 				return '''context.«parseFeatureExpression(constExpr.feature)».stream()
 			.«parseExpression(constExpr.filter, ExpressionContext.constConstraint)»
-			.reduce(0, (sum, «getIteratorVariableName(constExpr)») -> {
-				sum + «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»
-			})'''
+			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
+			.reduce(0.0, (sum, value) -> sum + value)'''
 			} else {
 				throw new UnsupportedOperationException("Unknown context type.");
 			}
@@ -488,17 +486,15 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			if(varExpr.context instanceof Mapping) {
 				throw new UnsupportedOperationException("Mapping stream expressions may not be part of multiplications, fractions, exponentials, roots etc.");
 			} else if(varExpr.context instanceof Pattern) {
-				return '''context.«varExpr.node.name»().«parseFeatureExpression(varExpr.feature)».stream()
+				return '''context.get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.feature)».stream()
 			.«parseExpression(varExpr.filter, ExpressionContext.varConstraint)»
-			.reduce(0, (sum, «getIteratorVariableName(varExpr)») -> {
-				sum + «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»
-			})'''
+			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
+			.reduce(0.0, (sum, value) -> sum + value)'''
 			} else if(varExpr.context instanceof Type) {
 				return '''context.«parseFeatureExpression(varExpr.feature)».stream()
 			.«parseExpression(varExpr.filter, ExpressionContext.varConstraint)»
-			.reduce(0, (sum, «getIteratorVariableName(varExpr)») -> {
-				sum + «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»
-			})'''
+			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
+			.reduce(0.0, (sum, value) -> sum + value)'''
 			} else {
 				throw new UnsupportedOperationException("Unknown context type.");
 			}

@@ -12,8 +12,8 @@ import org.emoflon.gips.gipsl.gipsl.GipsStreamArithmetic;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression;
@@ -98,7 +98,8 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 		typeSum.setFeature(fe);
 		typeSum.setReturnType(EcorePackage.Literals.EINT);
 		// Simple expression: Just count all filtered (!) objects
-		IntegerLiteral lit = factory.createIntegerLiteral();
+		DoubleLiteral lit = factory.createDoubleLiteral();
+		lit.setLiteral(1);
 		typeSum.setExpression(lit);
 		// Create filter expression
 		StreamExpressionTransformer transformer = transformerFactory.createStreamTransformer(typeSum);
@@ -156,7 +157,8 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 		patternSum.setFeature(fe);
 		patternSum.setReturnType(EcorePackage.Literals.EINT);
 		// Simple expression: Just count all filtered (!) objects
-		IntegerLiteral lit = factory.createIntegerLiteral();
+		DoubleLiteral lit = factory.createDoubleLiteral();
+		lit.setLiteral(1);
 		patternSum.setExpression(lit);
 		// Create filter expression
 		StreamExpressionTransformer transformer = transformerFactory.createStreamTransformer(patternSum);
@@ -215,7 +217,8 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 		mappingSum.setFeature(fe);
 		mappingSum.setReturnType(EcorePackage.Literals.EINT);
 		// Simple expression: Just count all filtered (!) objects
-		IntegerLiteral lit = factory.createIntegerLiteral();
+		DoubleLiteral lit = factory.createDoubleLiteral();
+		lit.setLiteral(1);
 		mappingSum.setExpression(lit);
 		// Create filter expression
 		StreamExpressionTransformer transformer = transformerFactory.createStreamTransformer(mappingSum);

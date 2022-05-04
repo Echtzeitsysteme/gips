@@ -24,7 +24,7 @@ public abstract class GipsPatternObjective<M extends GraphTransformationMatch<M,
 	public void buildObjectiveFunction() {
 		terms = Collections.synchronizedList(new LinkedList<>());
 		constantTerms = Collections.synchronizedList(new LinkedList<>());
-		pattern.findMatches().parallelStream().forEach(context -> buildTerms(context));
+		pattern.findMatches(false).parallelStream().forEach(context -> buildTerms(context));
 		ilpObjective = new ILPLinearFunction<>(terms, constantTerms);
 	}
 

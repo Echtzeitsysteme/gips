@@ -22,7 +22,7 @@ public abstract class GipsPatternConstraint<M extends GraphTransformationMatch<M
 
 	@Override
 	public void buildConstraints() {
-		pattern.findMatches().parallelStream().forEach(context -> {
+		pattern.findMatches(false).parallelStream().forEach(context -> {
 			final ILPConstraint<Integer> candidate = buildConstraint(context);
 			if (!candidate.lhsTerms().isEmpty()) {
 				ilpConstraints.put(context, buildConstraint(context));

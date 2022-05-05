@@ -463,6 +463,15 @@ public interface GipsIntermediateFactory extends EFactory {
 	StreamExpression createStreamExpression();
 
 	/**
+	 * Returns a new object of class '<em>Stream No Operation</em>'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Stream No Operation</em>'.
+	 * @generated
+	 */
+	StreamNoOperation createStreamNoOperation();
+
+	/**
 	 * Returns a new object of class '<em>Stream Filter Operation</em>'. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 

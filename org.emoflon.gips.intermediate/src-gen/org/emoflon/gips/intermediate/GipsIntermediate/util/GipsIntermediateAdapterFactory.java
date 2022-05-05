@@ -377,6 +377,11 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseStreamNoOperation(StreamNoOperation object) {
+			return createStreamNoOperationAdapter();
+		}
+
+		@Override
 		public Adapter caseStreamFilterOperation(StreamFilterOperation object) {
 			return createStreamFilterOperationAdapter();
 		}
@@ -1379,6 +1384,22 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createStreamOperationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamNoOperation
+	 * <em>Stream No Operation</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamNoOperation
+	 * @generated
+	 */
+	public Adapter createStreamNoOperationAdapter() {
 		return null;
 	}
 

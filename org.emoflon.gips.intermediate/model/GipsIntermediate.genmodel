@@ -273,6 +273,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//StreamExpression/child"/>
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//StreamOperation"/>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//StreamNoOperation"/>
     <genClasses ecoreClass="GipsIntermediate.ecore#//StreamFilterOperation">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//StreamFilterOperation/predicate"/>
     </genClasses>

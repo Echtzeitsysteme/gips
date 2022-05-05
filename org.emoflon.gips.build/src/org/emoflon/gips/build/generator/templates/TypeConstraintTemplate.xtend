@@ -193,7 +193,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «context.mode
 	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «context.modelType.type.name» context) {
 		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper("«expr.mapping.name»").getMappings().values().parallelStream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
-			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
+			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}
 	}
@@ -203,20 +203,21 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «context.mode
 	}
 	
 	override generateBuilder(TypeSumExpression expr) {
-		val methodName = '''builder_«builderMethods.size»'''
-		builderMethods.put(expr, methodName)
-		imports.add("java.util.stream.Collectors")
-		val method = '''
-	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «context.modelType.type.name» context) {
-		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.name»").parallelStream()
-			.map(type -> («expr.type.type.name») type)
-			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
-		}
-	}
-		'''
-		builderMethodDefinitions.put(expr, method)
-		return methodName
+//		val methodName = '''builder_«builderMethods.size»'''
+//		builderMethods.put(expr, methodName)
+//		imports.add("java.util.stream.Collectors")
+//		val method = '''
+//	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «context.modelType.type.name» context) {
+//		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.name»").parallelStream()
+//			.map(type -> («expr.type.type.name») type)
+//			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
+//			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+//		}
+//	}
+//		'''
+//		builderMethodDefinitions.put(expr, method)
+//		return methodName
+		throw new UnsupportedOperationException("Foreign type stream expr not yet implemented.");
 	}
 	
 	override generateBuilder(MappingSumExpression expr) {

@@ -3542,6 +3542,36 @@ public interface GipsIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamNoOperationImpl
+	 * <em>Stream No Operation</em>}' class. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamNoOperationImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamNoOperation()
+	 * @generated
+	 */
+	int STREAM_NO_OPERATION = 62;
+
+	/**
+	 * The number of structural features of the '<em>Stream No Operation</em>'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int STREAM_NO_OPERATION_FEATURE_COUNT = STREAM_OPERATION_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Stream No Operation</em>' class. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int STREAM_NO_OPERATION_OPERATION_COUNT = STREAM_OPERATION_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the
 	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamFilterOperationImpl
 	 * <em>Stream Filter Operation</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
@@ -3550,7 +3580,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamFilterOperation()
 	 * @generated
 	 */
-	int STREAM_FILTER_OPERATION = 62;
+	int STREAM_FILTER_OPERATION = 63;
 
 	/**
 	 * The feature id for the '<em><b>Predicate</b></em>' containment reference.
@@ -3589,7 +3619,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamSelectOperation()
 	 * @generated
 	 */
-	int STREAM_SELECT_OPERATION = 63;
+	int STREAM_SELECT_OPERATION = 64;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' containment reference. <!--
@@ -3627,7 +3657,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getILPSolverType()
 	 * @generated
 	 */
-	int ILP_SOLVER_TYPE = 64;
+	int ILP_SOLVER_TYPE = 65;
 
 	/**
 	 * The meta object id for the
@@ -3639,7 +3669,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getObjectiveTarget()
 	 * @generated
 	 */
-	int OBJECTIVE_TARGET = 65;
+	int OBJECTIVE_TARGET = 66;
 
 	/**
 	 * The meta object id for the
@@ -3651,7 +3681,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getRelationalOperator()
 	 * @generated
 	 */
-	int RELATIONAL_OPERATOR = 66;
+	int RELATIONAL_OPERATOR = 67;
 
 	/**
 	 * The meta object id for the
@@ -3663,7 +3693,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBinaryArithmeticOperator()
 	 * @generated
 	 */
-	int BINARY_ARITHMETIC_OPERATOR = 67;
+	int BINARY_ARITHMETIC_OPERATOR = 68;
 
 	/**
 	 * The meta object id for the
@@ -3675,7 +3705,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getUnaryArithmeticOperator()
 	 * @generated
 	 */
-	int UNARY_ARITHMETIC_OPERATOR = 68;
+	int UNARY_ARITHMETIC_OPERATOR = 69;
 
 	/**
 	 * The meta object id for the
@@ -3687,7 +3717,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamArithmeticOperator()
 	 * @generated
 	 */
-	int STREAM_ARITHMETIC_OPERATOR = 69;
+	int STREAM_ARITHMETIC_OPERATOR = 70;
 
 	/**
 	 * The meta object id for the
@@ -3699,7 +3729,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBinaryBoolOperator()
 	 * @generated
 	 */
-	int BINARY_BOOL_OPERATOR = 70;
+	int BINARY_BOOL_OPERATOR = 71;
 
 	/**
 	 * The meta object id for the
@@ -3711,7 +3741,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getUnaryBoolOperator()
 	 * @generated
 	 */
-	int UNARY_BOOL_OPERATOR = 71;
+	int UNARY_BOOL_OPERATOR = 72;
 
 	/**
 	 * The meta object id for the
@@ -3723,7 +3753,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamBoolOperator()
 	 * @generated
 	 */
-	int STREAM_BOOL_OPERATOR = 72;
+	int STREAM_BOOL_OPERATOR = 73;
 
 	/**
 	 * Returns the meta object for class
@@ -5653,6 +5683,17 @@ public interface GipsIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamNoOperation
+	 * <em>Stream No Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Stream No Operation</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamNoOperation
+	 * @generated
+	 */
+	EClass getStreamNoOperation();
+
+	/**
+	 * Returns the meta object for class
 	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation
 	 * <em>Stream Filter Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
@@ -7368,6 +7409,18 @@ public interface GipsIntermediatePackage extends EPackage {
 		 * @generated
 		 */
 		EClass STREAM_OPERATION = eINSTANCE.getStreamOperation();
+
+		/**
+		 * The meta object literal for the
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamNoOperationImpl
+		 * <em>Stream No Operation</em>}' class. <!-- begin-user-doc --> <!--
+		 * end-user-doc -->
+		 * 
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamNoOperationImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamNoOperation()
+		 * @generated
+		 */
+		EClass STREAM_NO_OPERATION = eINSTANCE.getStreamNoOperation();
 
 		/**
 		 * The meta object literal for the

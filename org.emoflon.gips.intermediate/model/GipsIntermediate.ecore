@@ -309,6 +309,7 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="StreamOperation" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="StreamNoOperation" eSuperTypes="#//StreamOperation"/>
   <eClassifiers xsi:type="ecore:EClass" name="StreamFilterOperation" eSuperTypes="#//StreamOperation">
     <eStructuralFeatures xsi:type="ecore:EReference" name="predicate" eType="#//BoolExpression"
         containment="true"/>

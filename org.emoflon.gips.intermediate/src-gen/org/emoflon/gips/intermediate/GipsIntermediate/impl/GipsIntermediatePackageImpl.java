@@ -73,6 +73,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.StreamArithmeticOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamBoolOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamNoOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression;
@@ -528,6 +529,13 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * @generated
 	 */
 	private EClass streamOperationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass streamNoOperationEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2139,6 +2147,15 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public EClass getStreamNoOperation() {
+		return streamNoOperationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getStreamFilterOperation() {
 		return streamFilterOperationEClass;
 	}
@@ -2506,6 +2523,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 
 		streamOperationEClass = createEClass(STREAM_OPERATION);
 
+		streamNoOperationEClass = createEClass(STREAM_NO_OPERATION);
+
 		streamFilterOperationEClass = createEClass(STREAM_FILTER_OPERATION);
 		createEReference(streamFilterOperationEClass, STREAM_FILTER_OPERATION__PREDICATE);
 
@@ -2618,6 +2637,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		iteratorTypeValueEClass.getESuperTypes().add(this.getIterator());
 		iteratorTypeFeatureValueEClass.getESuperTypes().add(this.getIteratorTypeValue());
 		streamExpressionEClass.getESuperTypes().add(this.getSetOperation());
+		streamNoOperationEClass.getESuperTypes().add(this.getStreamOperation());
 		streamFilterOperationEClass.getESuperTypes().add(this.getStreamOperation());
 		streamSelectOperationEClass.getESuperTypes().add(this.getStreamOperation());
 
@@ -3091,6 +3111,9 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(streamOperationEClass, StreamOperation.class, "StreamOperation", IS_ABSTRACT, IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(streamNoOperationEClass, StreamNoOperation.class, "StreamNoOperation", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(streamFilterOperationEClass, StreamFilterOperation.class, "StreamFilterOperation", !IS_ABSTRACT,

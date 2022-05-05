@@ -86,6 +86,8 @@ public class TransformerFactory {
 	public SumExpressionTransformer<? extends EObject> createSumTransformer(final EObject context) throws Exception {
 		if (context instanceof Constraint constraint) {
 			return new SumExpressionTransformer<>(data, constraint, this);
+		} else if (context instanceof Objective objective) {
+			return new SumExpressionTransformer<>(data, objective, this);
 		} else {
 			throw new IllegalArgumentException(
 					"Transforming arithmetic expressions within the given context is undefined. Context: " + context);

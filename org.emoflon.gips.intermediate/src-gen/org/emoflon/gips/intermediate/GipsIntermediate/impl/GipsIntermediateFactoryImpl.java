@@ -155,6 +155,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createIteratorTypeFeatureValue();
 		case GipsIntermediatePackage.STREAM_EXPRESSION:
 			return createStreamExpression();
+		case GipsIntermediatePackage.STREAM_NO_OPERATION:
+			return createStreamNoOperation();
 		case GipsIntermediatePackage.STREAM_FILTER_OPERATION:
 			return createStreamFilterOperation();
 		case GipsIntermediatePackage.STREAM_SELECT_OPERATION:
@@ -714,6 +716,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	public StreamExpression createStreamExpression() {
 		StreamExpressionImpl streamExpression = new StreamExpressionImpl();
 		return streamExpression;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public StreamNoOperation createStreamNoOperation() {
+		StreamNoOperationImpl streamNoOperation = new StreamNoOperationImpl();
+		return streamNoOperation;
 	}
 
 	/**

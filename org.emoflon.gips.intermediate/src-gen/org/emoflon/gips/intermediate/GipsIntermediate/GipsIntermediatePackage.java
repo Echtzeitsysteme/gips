@@ -1932,6 +1932,99 @@ public interface GipsIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextSumExpressionImpl
+	 * <em>Context Sum Expression</em>}' class. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextSumExpressionImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextSumExpression()
+	 * @generated
+	 */
+	int CONTEXT_SUM_EXPRESSION = 35;
+
+	/**
+	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int CONTEXT_SUM_EXPRESSION__RETURN_TYPE = SUM_EXPRESSION__RETURN_TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Operand Name</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int CONTEXT_SUM_EXPRESSION__OPERAND_NAME = SUM_EXPRESSION__OPERAND_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Expression</b></em>' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int CONTEXT_SUM_EXPRESSION__EXPRESSION = SUM_EXPRESSION__EXPRESSION;
+
+	/**
+	 * The feature id for the '<em><b>Filter</b></em>' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int CONTEXT_SUM_EXPRESSION__FILTER = SUM_EXPRESSION__FILTER;
+
+	/**
+	 * The feature id for the '<em><b>Context</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int CONTEXT_SUM_EXPRESSION__CONTEXT = SUM_EXPRESSION_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Node</b></em>' reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int CONTEXT_SUM_EXPRESSION__NODE = SUM_EXPRESSION_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Feature</b></em>' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int CONTEXT_SUM_EXPRESSION__FEATURE = SUM_EXPRESSION_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '<em>Context Sum Expression</em>'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int CONTEXT_SUM_EXPRESSION_FEATURE_COUNT = SUM_EXPRESSION_FEATURE_COUNT + 3;
+
+	/**
+	 * The number of operations of the '<em>Context Sum Expression</em>' class. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int CONTEXT_SUM_EXPRESSION_OPERATION_COUNT = SUM_EXPRESSION_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the
 	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingSumExpressionImpl
 	 * <em>Mapping Sum Expression</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
@@ -1940,7 +2033,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getMappingSumExpression()
 	 * @generated
 	 */
-	int MAPPING_SUM_EXPRESSION = 35;
+	int MAPPING_SUM_EXPRESSION = 36;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -2015,7 +2108,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getTypeSumExpression()
 	 * @generated
 	 */
-	int TYPE_SUM_EXPRESSION = 36;
+	int TYPE_SUM_EXPRESSION = 37;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -2090,7 +2183,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextTypeValue()
 	 * @generated
 	 */
-	int CONTEXT_TYPE_VALUE = 37;
+	int CONTEXT_TYPE_VALUE = 38;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -2138,7 +2231,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextPatternValue()
 	 * @generated
 	 */
-	int CONTEXT_PATTERN_VALUE = 38;
+	int CONTEXT_PATTERN_VALUE = 39;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -2186,7 +2279,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextPatternNode()
 	 * @generated
 	 */
-	int CONTEXT_PATTERN_NODE = 39;
+	int CONTEXT_PATTERN_NODE = 40;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -2243,7 +2336,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextMappingValue()
 	 * @generated
 	 */
-	int CONTEXT_MAPPING_VALUE = 40;
+	int CONTEXT_MAPPING_VALUE = 41;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -2291,7 +2384,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextMappingNode()
 	 * @generated
 	 */
-	int CONTEXT_MAPPING_NODE = 41;
+	int CONTEXT_MAPPING_NODE = 42;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -2348,7 +2441,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getObjectiveFunctionValue()
 	 * @generated
 	 */
-	int OBJECTIVE_FUNCTION_VALUE = 42;
+	int OBJECTIVE_FUNCTION_VALUE = 43;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -2396,7 +2489,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getFeatureExpression()
 	 * @generated
 	 */
-	int FEATURE_EXPRESSION = 43;
+	int FEATURE_EXPRESSION = 44;
 
 	/**
 	 * The feature id for the '<em><b>Current</b></em>' containment reference. <!--
@@ -2444,7 +2537,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getFeatureLiteral()
 	 * @generated
 	 */
-	int FEATURE_LITERAL = 44;
+	int FEATURE_LITERAL = 45;
 
 	/**
 	 * The feature id for the '<em><b>Feature</b></em>' reference. <!--
@@ -2483,7 +2576,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextTypeFeatureValue()
 	 * @generated
 	 */
-	int CONTEXT_TYPE_FEATURE_VALUE = 45;
+	int CONTEXT_TYPE_FEATURE_VALUE = 46;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -2540,7 +2633,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextPatternNodeFeatureValue()
 	 * @generated
 	 */
-	int CONTEXT_PATTERN_NODE_FEATURE_VALUE = 46;
+	int CONTEXT_PATTERN_NODE_FEATURE_VALUE = 47;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -2606,7 +2699,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextMappingNodeFeatureValue()
 	 * @generated
 	 */
-	int CONTEXT_MAPPING_NODE_FEATURE_VALUE = 47;
+	int CONTEXT_MAPPING_NODE_FEATURE_VALUE = 48;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -2671,7 +2764,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIterator()
 	 * @generated
 	 */
-	int ITERATOR = 48;
+	int ITERATOR = 49;
 
 	/**
 	 * The feature id for the '<em><b>Stream</b></em>' reference. <!--
@@ -2710,7 +2803,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorPatternValue()
 	 * @generated
 	 */
-	int ITERATOR_PATTERN_VALUE = 49;
+	int ITERATOR_PATTERN_VALUE = 50;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -2767,7 +2860,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorPatternFeatureValue()
 	 * @generated
 	 */
-	int ITERATOR_PATTERN_FEATURE_VALUE = 50;
+	int ITERATOR_PATTERN_FEATURE_VALUE = 51;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -2833,7 +2926,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorPatternNodeValue()
 	 * @generated
 	 */
-	int ITERATOR_PATTERN_NODE_VALUE = 51;
+	int ITERATOR_PATTERN_NODE_VALUE = 52;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -2899,7 +2992,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorPatternNodeFeatureValue()
 	 * @generated
 	 */
-	int ITERATOR_PATTERN_NODE_FEATURE_VALUE = 52;
+	int ITERATOR_PATTERN_NODE_FEATURE_VALUE = 53;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -2974,7 +3067,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorMappingValue()
 	 * @generated
 	 */
-	int ITERATOR_MAPPING_VALUE = 53;
+	int ITERATOR_MAPPING_VALUE = 54;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -3031,7 +3124,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorMappingFeatureValue()
 	 * @generated
 	 */
-	int ITERATOR_MAPPING_FEATURE_VALUE = 54;
+	int ITERATOR_MAPPING_FEATURE_VALUE = 55;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -3097,7 +3190,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorMappingNodeValue()
 	 * @generated
 	 */
-	int ITERATOR_MAPPING_NODE_VALUE = 55;
+	int ITERATOR_MAPPING_NODE_VALUE = 56;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -3163,7 +3256,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorMappingNodeFeatureValue()
 	 * @generated
 	 */
-	int ITERATOR_MAPPING_NODE_FEATURE_VALUE = 56;
+	int ITERATOR_MAPPING_NODE_FEATURE_VALUE = 57;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -3238,7 +3331,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorTypeValue()
 	 * @generated
 	 */
-	int ITERATOR_TYPE_VALUE = 57;
+	int ITERATOR_TYPE_VALUE = 58;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -3295,7 +3388,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getIteratorTypeFeatureValue()
 	 * @generated
 	 */
-	int ITERATOR_TYPE_FEATURE_VALUE = 58;
+	int ITERATOR_TYPE_FEATURE_VALUE = 59;
 
 	/**
 	 * The feature id for the '<em><b>Return Type</b></em>' reference. <!--
@@ -3361,7 +3454,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamExpression()
 	 * @generated
 	 */
-	int STREAM_EXPRESSION = 59;
+	int STREAM_EXPRESSION = 60;
 
 	/**
 	 * The feature id for the '<em><b>Operand Name</b></em>' attribute. <!--
@@ -3427,7 +3520,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamOperation()
 	 * @generated
 	 */
-	int STREAM_OPERATION = 60;
+	int STREAM_OPERATION = 61;
 
 	/**
 	 * The number of structural features of the '<em>Stream Operation</em>' class.
@@ -3449,6 +3542,36 @@ public interface GipsIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamNoOperationImpl
+	 * <em>Stream No Operation</em>}' class. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamNoOperationImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamNoOperation()
+	 * @generated
+	 */
+	int STREAM_NO_OPERATION = 62;
+
+	/**
+	 * The number of structural features of the '<em>Stream No Operation</em>'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int STREAM_NO_OPERATION_FEATURE_COUNT = STREAM_OPERATION_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Stream No Operation</em>' class. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int STREAM_NO_OPERATION_OPERATION_COUNT = STREAM_OPERATION_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the
 	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamFilterOperationImpl
 	 * <em>Stream Filter Operation</em>}' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
@@ -3457,7 +3580,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamFilterOperation()
 	 * @generated
 	 */
-	int STREAM_FILTER_OPERATION = 61;
+	int STREAM_FILTER_OPERATION = 63;
 
 	/**
 	 * The feature id for the '<em><b>Predicate</b></em>' containment reference.
@@ -3496,7 +3619,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamSelectOperation()
 	 * @generated
 	 */
-	int STREAM_SELECT_OPERATION = 62;
+	int STREAM_SELECT_OPERATION = 64;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' containment reference. <!--
@@ -3534,7 +3657,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getILPSolverType()
 	 * @generated
 	 */
-	int ILP_SOLVER_TYPE = 63;
+	int ILP_SOLVER_TYPE = 65;
 
 	/**
 	 * The meta object id for the
@@ -3546,7 +3669,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getObjectiveTarget()
 	 * @generated
 	 */
-	int OBJECTIVE_TARGET = 64;
+	int OBJECTIVE_TARGET = 66;
 
 	/**
 	 * The meta object id for the
@@ -3558,7 +3681,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getRelationalOperator()
 	 * @generated
 	 */
-	int RELATIONAL_OPERATOR = 65;
+	int RELATIONAL_OPERATOR = 67;
 
 	/**
 	 * The meta object id for the
@@ -3570,7 +3693,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBinaryArithmeticOperator()
 	 * @generated
 	 */
-	int BINARY_ARITHMETIC_OPERATOR = 66;
+	int BINARY_ARITHMETIC_OPERATOR = 68;
 
 	/**
 	 * The meta object id for the
@@ -3582,7 +3705,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getUnaryArithmeticOperator()
 	 * @generated
 	 */
-	int UNARY_ARITHMETIC_OPERATOR = 67;
+	int UNARY_ARITHMETIC_OPERATOR = 69;
 
 	/**
 	 * The meta object id for the
@@ -3594,7 +3717,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamArithmeticOperator()
 	 * @generated
 	 */
-	int STREAM_ARITHMETIC_OPERATOR = 68;
+	int STREAM_ARITHMETIC_OPERATOR = 70;
 
 	/**
 	 * The meta object id for the
@@ -3606,7 +3729,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBinaryBoolOperator()
 	 * @generated
 	 */
-	int BINARY_BOOL_OPERATOR = 69;
+	int BINARY_BOOL_OPERATOR = 71;
 
 	/**
 	 * The meta object id for the
@@ -3618,7 +3741,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getUnaryBoolOperator()
 	 * @generated
 	 */
-	int UNARY_BOOL_OPERATOR = 70;
+	int UNARY_BOOL_OPERATOR = 72;
 
 	/**
 	 * The meta object id for the
@@ -3630,7 +3753,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamBoolOperator()
 	 * @generated
 	 */
-	int STREAM_BOOL_OPERATOR = 71;
+	int STREAM_BOOL_OPERATOR = 73;
 
 	/**
 	 * Returns the meta object for class
@@ -4788,6 +4911,54 @@ public interface GipsIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
+	 * <em>Context Sum Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @return the meta object for class '<em>Context Sum Expression</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
+	 * @generated
+	 */
+	EClass getContextSumExpression();
+
+	/**
+	 * Returns the meta object for the reference
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression#getContext
+	 * <em>Context</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the reference '<em>Context</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression#getContext()
+	 * @see #getContextSumExpression()
+	 * @generated
+	 */
+	EReference getContextSumExpression_Context();
+
+	/**
+	 * Returns the meta object for the reference
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression#getNode
+	 * <em>Node</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the reference '<em>Node</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression#getNode()
+	 * @see #getContextSumExpression()
+	 * @generated
+	 */
+	EReference getContextSumExpression_Node();
+
+	/**
+	 * Returns the meta object for the containment reference
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression#getFeature
+	 * <em>Feature</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the containment reference '<em>Feature</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression#getFeature()
+	 * @see #getContextSumExpression()
+	 * @generated
+	 */
+	EReference getContextSumExpression_Feature();
+
+	/**
+	 * Returns the meta object for class
 	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression
 	 * <em>Mapping Sum Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
@@ -5509,6 +5680,17 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 */
 	EClass getStreamOperation();
+
+	/**
+	 * Returns the meta object for class
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamNoOperation
+	 * <em>Stream No Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Stream No Operation</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamNoOperation
+	 * @generated
+	 */
+	EClass getStreamNoOperation();
 
 	/**
 	 * Returns the meta object for class
@@ -6599,6 +6781,42 @@ public interface GipsIntermediatePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextSumExpressionImpl
+		 * <em>Context Sum Expression</em>}' class. <!-- begin-user-doc --> <!--
+		 * end-user-doc -->
+		 * 
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextSumExpressionImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getContextSumExpression()
+		 * @generated
+		 */
+		EClass CONTEXT_SUM_EXPRESSION = eINSTANCE.getContextSumExpression();
+
+		/**
+		 * The meta object literal for the '<em><b>Context</b></em>' reference feature.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference CONTEXT_SUM_EXPRESSION__CONTEXT = eINSTANCE.getContextSumExpression_Context();
+
+		/**
+		 * The meta object literal for the '<em><b>Node</b></em>' reference feature.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference CONTEXT_SUM_EXPRESSION__NODE = eINSTANCE.getContextSumExpression_Node();
+
+		/**
+		 * The meta object literal for the '<em><b>Feature</b></em>' containment
+		 * reference feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference CONTEXT_SUM_EXPRESSION__FEATURE = eINSTANCE.getContextSumExpression_Feature();
+
+		/**
+		 * The meta object literal for the
 		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingSumExpressionImpl
 		 * <em>Mapping Sum Expression</em>}' class. <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
@@ -7191,6 +7409,18 @@ public interface GipsIntermediatePackage extends EPackage {
 		 * @generated
 		 */
 		EClass STREAM_OPERATION = eINSTANCE.getStreamOperation();
+
+		/**
+		 * The meta object literal for the
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamNoOperationImpl
+		 * <em>Stream No Operation</em>}' class. <!-- begin-user-doc --> <!--
+		 * end-user-doc -->
+		 * 
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamNoOperationImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamNoOperation()
+		 * @generated
+		 */
+		EClass STREAM_NO_OPERATION = eINSTANCE.getStreamNoOperation();
 
 		/**
 		 * The meta object literal for the

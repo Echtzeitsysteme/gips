@@ -10,6 +10,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
 
 class TypeObjectiveTemplate extends ObjectiveTemplate<TypeObjective> {
 	
@@ -75,6 +76,8 @@ protected void buildTerms(final «context.modelType.type.name» context) {
 	override generateIteratingBuilder(ValueExpression expr) {
 		if(expr instanceof MappingSumExpression) {
 			return generateForeignBuilder(expr)
+		} else if(expr instanceof ContextSumExpression) {
+			return generateBuilder(expr)
 		} else {
 			val tse = expr as TypeSumExpression
 			return generateBuilder(tse)
@@ -123,7 +126,7 @@ protected void buildTerms(final «context.modelType.type.name» context) {
 		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
 		imports.add("java.util.stream.Collectors")
 		val method = '''
-	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «context.modelType.type.name» context) {
+	protected void «methodName»(final «context.modelType.type.name» context) {
 		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper("«expr.mapping.name»").getMappings().values().parallelStream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
 			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
@@ -136,24 +139,29 @@ protected void buildTerms(final «context.modelType.type.name» context) {
 	}
 	
 	override generateBuilder(TypeSumExpression expr) {
-		val methodName = '''builder_«builderMethods.size»'''
-		builderMethods.put(expr, methodName)
-		imports.add("java.util.stream.Collectors")
-		val method = '''
-	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «context.modelType.type.name» context) {
-		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.name»").parallelStream()
-			.map(type -> («expr.type.type.name») type)
-			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
-		}
-	}
-		'''
-		builderMethodDefinitions.put(expr, method)
-		return methodName
+//		val methodName = '''builder_«builderMethods.size»'''
+//		builderMethods.put(expr, methodName)
+//		imports.add("java.util.stream.Collectors")
+//		val method = '''
+//	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «context.modelType.type.name» context) {
+//		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.name»").parallelStream()
+//			.map(type -> («expr.type.type.name») type)
+//			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
+//			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+//		}
+//	}
+//		'''
+//		builderMethodDefinitions.put(expr, method)
+//		return methodName
+		throw new UnsupportedOperationException("Foreign type stream expr not yet implemented.");
 	}
 	
 	override generateBuilder(MappingSumExpression expr) {
 		throw new UnsupportedOperationException("Mapping context access is not possible within a type context.")
+	}
+	
+	override generateBuilder(ContextSumExpression expr) {
+		throw new UnsupportedOperationException("Ilp term may not be constant.")
 	}
 
 }

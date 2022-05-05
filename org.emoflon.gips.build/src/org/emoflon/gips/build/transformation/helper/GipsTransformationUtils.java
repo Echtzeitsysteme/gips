@@ -24,6 +24,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
@@ -39,6 +40,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
 import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue;
@@ -197,6 +199,25 @@ public final class GipsTransformationUtils {
 			} else {
 				return ArithmeticExpressionType.constant;
 			}
+		} else if (expr instanceof ContextSumExpression contextSum) {
+			if (contextSum.getContext() instanceof Mapping) {
+				return ArithmeticExpressionType.variableVector;
+			} else {
+				ArithmeticExpressionType exprType = isConstantExpression(contextSum.getExpression());
+				ArithmeticExpressionType filterType = isConstantExpression(contextSum.getFilter());
+				if (exprType == ArithmeticExpressionType.variableVector
+						|| filterType == ArithmeticExpressionType.variableVector) {
+					return ArithmeticExpressionType.variableVector;
+				} else if (exprType == ArithmeticExpressionType.variableValue
+						|| filterType == ArithmeticExpressionType.variableValue) {
+					return ArithmeticExpressionType.variableValue;
+				} else if (exprType == ArithmeticExpressionType.variableScalar
+						|| filterType == ArithmeticExpressionType.variableScalar) {
+					return ArithmeticExpressionType.variableScalar;
+				} else {
+					return ArithmeticExpressionType.constant;
+				}
+			}
 		} else if (expr instanceof ContextTypeFeatureValue) {
 			return ArithmeticExpressionType.constant;
 		} else if (expr instanceof ContextTypeValue) {
@@ -327,6 +348,8 @@ public final class GipsTransformationUtils {
 			return containsContextExpression(mapSum.getFilter()) || containsContextExpression(mapSum.getExpression());
 		} else if (expr instanceof TypeSumExpression typeSum) {
 			return containsContextExpression(typeSum.getFilter()) || containsContextExpression(typeSum.getExpression());
+		} else if (expr instanceof ContextSumExpression) {
+			return true;
 		} else if (expr instanceof ContextTypeFeatureValue) {
 			return true;
 		} else if (expr instanceof ContextTypeValue) {
@@ -381,6 +404,12 @@ public final class GipsTransformationUtils {
 		} else if (expr instanceof TypeSumExpression typeSum) {
 			variables.addAll(extractVariable(typeSum.getExpression()));
 			variables.addAll(extractVariable(typeSum.getFilter()));
+		} else if (expr instanceof ContextSumExpression contextSum) {
+			if (contextSum.getContext() instanceof Mapping mapping) {
+				variables.add(mapping);
+			}
+			variables.addAll(extractVariable(contextSum.getExpression()));
+			variables.addAll(extractVariable(contextSum.getFilter()));
 		} else if (expr instanceof ContextMappingNodeFeatureValue val) {
 			variables.add(val.getMappingContext());
 		} else if (expr instanceof ContextMappingNode val) {

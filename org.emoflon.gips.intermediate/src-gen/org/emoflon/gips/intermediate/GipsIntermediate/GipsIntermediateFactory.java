@@ -238,6 +238,15 @@ public interface GipsIntermediateFactory extends EFactory {
 	BoolLiteral createBoolLiteral();
 
 	/**
+	 * Returns a new object of class '<em>Context Sum Expression</em>'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Context Sum Expression</em>'.
+	 * @generated
+	 */
+	ContextSumExpression createContextSumExpression();
+
+	/**
 	 * Returns a new object of class '<em>Mapping Sum Expression</em>'. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -452,6 +461,15 @@ public interface GipsIntermediateFactory extends EFactory {
 	 * @generated
 	 */
 	StreamExpression createStreamExpression();
+
+	/**
+	 * Returns a new object of class '<em>Stream No Operation</em>'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Stream No Operation</em>'.
+	 * @generated
+	 */
+	StreamNoOperation createStreamNoOperation();
 
 	/**
 	 * Returns a new object of class '<em>Stream Filter Operation</em>'. <!--

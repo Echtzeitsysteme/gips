@@ -38,9 +38,11 @@ public class StreamExpressionTransformer<T extends EObject> extends Transformati
 		} else if (streamExpr instanceof GipsSelect select) {
 			expr.setCurrent(createStreamFilterOperation(expr, select));
 			return expr;
-		} else {
-			GipsStreamSet set = (GipsStreamSet) streamExpr;
+		} else if (streamExpr instanceof GipsStreamSet set) {
 			expr.setCurrent(createStreamFilterOperation(expr, set));
+			return expr;
+		} else {
+			expr.setCurrent(factory.createStreamNoOperation());
 			return expr;
 		}
 	}

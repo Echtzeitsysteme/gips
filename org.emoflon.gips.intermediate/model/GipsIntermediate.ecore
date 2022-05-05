@@ -204,6 +204,12 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="filter" eType="#//StreamExpression"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContextSumExpression" eSuperTypes="#//SumExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="#//VariableSet"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXNode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="#//FeatureExpression"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MappingSumExpression" eSuperTypes="#//SumExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" lowerBound="1"
         eType="#//Mapping"/>
@@ -303,6 +309,7 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="StreamOperation" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="StreamNoOperation" eSuperTypes="#//StreamOperation"/>
   <eClassifiers xsi:type="ecore:EClass" name="StreamFilterOperation" eSuperTypes="#//StreamOperation">
     <eStructuralFeatures xsi:type="ecore:EReference" name="predicate" eType="#//BoolExpression"
         containment="true"/>

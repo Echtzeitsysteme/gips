@@ -4,71 +4,10 @@ package org.emoflon.gips.intermediate.GipsIntermediate.util;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+
 import org.eclipse.emf.ecore.util.Switch;
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValueExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.Context;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
-import org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective;
-import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
-import org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.Iterator;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
-import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective;
-import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
-import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
-import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective;
-import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
-import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation;
-import org.emoflon.gips.intermediate.GipsIntermediate.StreamOperation;
-import org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation;
-import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.Type;
-import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective;
-import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
+
+import org.emoflon.gips.intermediate.GipsIntermediate.*;
 
 /**
  * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance
@@ -452,6 +391,19 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case GipsIntermediatePackage.CONTEXT_SUM_EXPRESSION: {
+			ContextSumExpression contextSumExpression = (ContextSumExpression) theEObject;
+			T result = caseContextSumExpression(contextSumExpression);
+			if (result == null)
+				result = caseSumExpression(contextSumExpression);
+			if (result == null)
+				result = caseValueExpression(contextSumExpression);
+			if (result == null)
+				result = caseSetOperation(contextSumExpression);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case GipsIntermediatePackage.MAPPING_SUM_EXPRESSION: {
 			MappingSumExpression mappingSumExpression = (MappingSumExpression) theEObject;
 			T result = caseMappingSumExpression(mappingSumExpression);
@@ -714,6 +666,15 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 		case GipsIntermediatePackage.STREAM_OPERATION: {
 			StreamOperation streamOperation = (StreamOperation) theEObject;
 			T result = caseStreamOperation(streamOperation);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case GipsIntermediatePackage.STREAM_NO_OPERATION: {
+			StreamNoOperation streamNoOperation = (StreamNoOperation) theEObject;
+			T result = caseStreamNoOperation(streamNoOperation);
+			if (result == null)
+				result = caseStreamOperation(streamNoOperation);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -1280,6 +1241,22 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Context
+	 * Sum Expression</em>'. <!-- begin-user-doc --> This implementation returns
+	 * null; returning a non-null result will terminate the switch. <!--
+	 * end-user-doc -->
+	 * 
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Context
+	 *         Sum Expression</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseContextSumExpression(ContextSumExpression object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Mapping
 	 * Sum Expression</em>'. <!-- begin-user-doc --> This implementation returns
 	 * null; returning a non-null result will terminate the switch. <!--
@@ -1683,6 +1660,21 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseStreamOperation(StreamOperation object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Stream
+	 * No Operation</em>'. <!-- begin-user-doc --> This implementation returns null;
+	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Stream
+	 *         No Operation</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseStreamNoOperation(StreamNoOperation object) {
 		return null;
 	}
 

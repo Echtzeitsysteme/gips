@@ -7,7 +7,9 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
@@ -30,6 +32,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
@@ -70,6 +73,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.StreamArithmeticOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamBoolOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamNoOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression;
@@ -82,6 +86,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.UnaryBoolOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
+
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPatternModelPackage;
 
 /**
@@ -341,6 +346,13 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	private EClass contextSumExpressionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	private EClass mappingSumExpressionEClass = null;
 
 	/**
@@ -517,6 +529,13 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * @generated
 	 */
 	private EClass streamOperationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass streamNoOperationEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1552,6 +1571,42 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public EClass getContextSumExpression() {
+		return contextSumExpressionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getContextSumExpression_Context() {
+		return (EReference) contextSumExpressionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getContextSumExpression_Node() {
+		return (EReference) contextSumExpressionEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getContextSumExpression_Feature() {
+		return (EReference) contextSumExpressionEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getMappingSumExpression() {
 		return mappingSumExpressionEClass;
 	}
@@ -2092,6 +2147,15 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public EClass getStreamNoOperation() {
+		return streamNoOperationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getStreamFilterOperation() {
 		return streamFilterOperationEClass;
 	}
@@ -2366,6 +2430,11 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		createEReference(sumExpressionEClass, SUM_EXPRESSION__EXPRESSION);
 		createEReference(sumExpressionEClass, SUM_EXPRESSION__FILTER);
 
+		contextSumExpressionEClass = createEClass(CONTEXT_SUM_EXPRESSION);
+		createEReference(contextSumExpressionEClass, CONTEXT_SUM_EXPRESSION__CONTEXT);
+		createEReference(contextSumExpressionEClass, CONTEXT_SUM_EXPRESSION__NODE);
+		createEReference(contextSumExpressionEClass, CONTEXT_SUM_EXPRESSION__FEATURE);
+
 		mappingSumExpressionEClass = createEClass(MAPPING_SUM_EXPRESSION);
 		createEReference(mappingSumExpressionEClass, MAPPING_SUM_EXPRESSION__MAPPING);
 
@@ -2454,6 +2523,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 
 		streamOperationEClass = createEClass(STREAM_OPERATION);
 
+		streamNoOperationEClass = createEClass(STREAM_NO_OPERATION);
+
 		streamFilterOperationEClass = createEClass(STREAM_FILTER_OPERATION);
 		createEReference(streamFilterOperationEClass, STREAM_FILTER_OPERATION__PREDICATE);
 
@@ -2536,6 +2607,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		boolLiteralEClass.getESuperTypes().add(this.getBoolValueExpression());
 		sumExpressionEClass.getESuperTypes().add(this.getValueExpression());
 		sumExpressionEClass.getESuperTypes().add(this.getSetOperation());
+		contextSumExpressionEClass.getESuperTypes().add(this.getSumExpression());
 		mappingSumExpressionEClass.getESuperTypes().add(this.getSumExpression());
 		typeSumExpressionEClass.getESuperTypes().add(this.getSumExpression());
 		contextTypeValueEClass.getESuperTypes().add(this.getValueExpression());
@@ -2565,6 +2637,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		iteratorTypeValueEClass.getESuperTypes().add(this.getIterator());
 		iteratorTypeFeatureValueEClass.getESuperTypes().add(this.getIteratorTypeValue());
 		streamExpressionEClass.getESuperTypes().add(this.getSetOperation());
+		streamNoOperationEClass.getESuperTypes().add(this.getStreamOperation());
 		streamFilterOperationEClass.getESuperTypes().add(this.getStreamOperation());
 		streamSelectOperationEClass.getESuperTypes().add(this.getStreamOperation());
 
@@ -2849,6 +2922,18 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 				SumExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(contextSumExpressionEClass, ContextSumExpression.class, "ContextSumExpression", !IS_ABSTRACT,
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getContextSumExpression_Context(), this.getVariableSet(), null, "context", null, 0, 1,
+				ContextSumExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getContextSumExpression_Node(), theIBeXPatternModelPackage.getIBeXNode(), null, "node", null, 0,
+				1, ContextSumExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getContextSumExpression_Feature(), this.getFeatureExpression(), null, "feature", null, 0, 1,
+				ContextSumExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(mappingSumExpressionEClass, MappingSumExpression.class, "MappingSumExpression", !IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getMappingSumExpression_Mapping(), this.getMapping(), null, "mapping", null, 1, 1,
@@ -3026,6 +3111,9 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(streamOperationEClass, StreamOperation.class, "StreamOperation", IS_ABSTRACT, IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(streamNoOperationEClass, StreamNoOperation.class, "StreamNoOperation", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(streamFilterOperationEClass, StreamFilterOperation.class, "StreamFilterOperation", !IS_ABSTRACT,

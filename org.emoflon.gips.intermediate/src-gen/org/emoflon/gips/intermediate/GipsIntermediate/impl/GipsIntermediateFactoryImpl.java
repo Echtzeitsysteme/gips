@@ -6,69 +6,12 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
+
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator;
-import org.emoflon.gips.intermediate.GipsIntermediate.BinaryBoolOperator;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
-import org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective;
-import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
-import org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType;
-import org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
-import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective;
-import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
-import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget;
-import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
-import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective;
-import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
-import org.emoflon.gips.intermediate.GipsIntermediate.StreamArithmeticOperator;
-import org.emoflon.gips.intermediate.GipsIntermediate.StreamBoolOperator;
-import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation;
-import org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation;
-import org.emoflon.gips.intermediate.GipsIntermediate.Type;
-import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective;
-import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator;
-import org.emoflon.gips.intermediate.GipsIntermediate.UnaryBoolOperator;
+
+import org.emoflon.gips.intermediate.GipsIntermediate.*;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!--
@@ -162,6 +105,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createRelationalExpression();
 		case GipsIntermediatePackage.BOOL_LITERAL:
 			return createBoolLiteral();
+		case GipsIntermediatePackage.CONTEXT_SUM_EXPRESSION:
+			return createContextSumExpression();
 		case GipsIntermediatePackage.MAPPING_SUM_EXPRESSION:
 			return createMappingSumExpression();
 		case GipsIntermediatePackage.TYPE_SUM_EXPRESSION:
@@ -210,6 +155,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createIteratorTypeFeatureValue();
 		case GipsIntermediatePackage.STREAM_EXPRESSION:
 			return createStreamExpression();
+		case GipsIntermediatePackage.STREAM_NO_OPERATION:
+			return createStreamNoOperation();
 		case GipsIntermediatePackage.STREAM_FILTER_OPERATION:
 			return createStreamFilterOperation();
 		case GipsIntermediatePackage.STREAM_SELECT_OPERATION:
@@ -526,6 +473,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public ContextSumExpression createContextSumExpression() {
+		ContextSumExpressionImpl contextSumExpression = new ContextSumExpressionImpl();
+		return contextSumExpression;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public MappingSumExpression createMappingSumExpression() {
 		MappingSumExpressionImpl mappingSumExpression = new MappingSumExpressionImpl();
 		return mappingSumExpression;
@@ -759,6 +716,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	public StreamExpression createStreamExpression() {
 		StreamExpressionImpl streamExpression = new StreamExpressionImpl();
 		return streamExpression;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public StreamNoOperation createStreamNoOperation() {
+		StreamNoOperationImpl streamNoOperation = new StreamNoOperationImpl();
+		return streamNoOperation;
 	}
 
 	/**

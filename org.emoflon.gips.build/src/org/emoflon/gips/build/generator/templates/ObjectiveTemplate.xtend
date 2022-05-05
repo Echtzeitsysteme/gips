@@ -54,6 +54,11 @@ import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective
 import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.Mapping
+import org.emoflon.gips.intermediate.GipsIntermediate.Pattern
+import org.emoflon.gips.intermediate.GipsIntermediate.Type
+import org.eclipse.emf.ecore.EcorePackage
 
 abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends GeneratorTemplate<OBJECTIVE> {
 
@@ -154,10 +159,8 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		}
 	}
 	
-	def String getContextVariable(VariableSet variable);
-	
 	def void generateBuilder(ValueExpression expr) {
-		if(expr instanceof MappingSumExpression || expr instanceof TypeSumExpression) {
+		if(expr instanceof MappingSumExpression || expr instanceof TypeSumExpression || expr instanceof ContextSumExpression) {
 			val builderMethodName = generateIteratingBuilder(expr);
 			builderMethodCalls.add('''«builderMethodName»(context);''')
 		} else {
@@ -182,6 +185,8 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		}
 	}
 	
+	def String getContextVariable(VariableSet variable);
+	
 	def String generateIteratingBuilder(ValueExpression expr);
 	
 	def String generateConstantBuilder(ValueExpression expr, ArithmeticExpressionType type);
@@ -191,6 +196,8 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 	def String generateBuilder(UnaryArithmeticExpression expr);
 	
 	def String generateBuilder(MappingSumExpression expr);
+	
+	def String generateBuilder(ContextSumExpression expr);
 	
 	def String generateBuilder(TypeSumExpression expr);
 	
@@ -358,7 +365,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 				return '''filter(«getIteratorVariableName(expr)» -> «parseExpression((expr.current as StreamFilterOperation).predicate, ExpressionContext.constStream)»)
 				.«parseExpression(expr.child, ExpressionContext.constStream)»'''
 			}
-		} else {
+		} else if (expr.current instanceof StreamSelectOperation) {
 			val selectOp = expr.current as StreamSelectOperation
 			imports.add(data.classToPackage.getImportsForType(selectOp.type))
 			if(expr.child === null) {
@@ -369,6 +376,8 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 				.map(«getIteratorVariableName(expr)» -> («selectOp.type.name») «getIteratorVariableName(expr)»)
 				.«parseExpression(expr.child, ExpressionContext.constStream)»'''
 			}
+		} else {
+			return ''''''
 		}
 	}
 	
@@ -380,7 +389,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 				return '''filter(«getIteratorVariableName(expr)» -> «parseExpression((expr.current as StreamFilterOperation).predicate, ExpressionContext.varStream)»)
 				.«parseExpression(expr.child, ExpressionContext.varStream)»'''
 			}
-		} else {
+		} else if (expr.current instanceof StreamSelectOperation) {
 			val selectOp = expr.current as StreamSelectOperation
 			imports.add(data.classToPackage.getImportsForType(selectOp.type))
 			if(expr.child === null) {
@@ -391,6 +400,8 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 				.map(«getIteratorVariableName(expr)» -> («selectOp.type.name») «getIteratorVariableName(expr)»)
 				.«parseExpression(expr.child, ExpressionContext.varStream)»'''
 			}
+		} else {
+			return ''''''
 		}
 	}
 	
@@ -415,12 +426,29 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		if(constExpr instanceof MappingSumExpression) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof TypeSumExpression) {
-			imports.add(data.classToPackage.getPackage(constExpr.type.type.EPackage))
-			return '''indexer.getObjectsOfType(«constExpr.type.type.EPackage.name».eINSTANCE.get«constExpr.type.type.name»()).stream()
-			.«parseExpression(constExpr.filter, ExpressionContext.constConstraint)»
-			.reduce(0, (sum, «getIteratorVariableName(constExpr)») -> {
-				sum + «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»
-			})'''
+//			imports.add(data.classToPackage.getPackage(constExpr.type.type.EPackage))
+//			return '''indexer.getObjectsOfType(«constExpr.type.type.EPackage.name».eINSTANCE.get«constExpr.type.type.name»()).stream()
+//			.«parseExpression(constExpr.filter, ExpressionContext.constConstraint)»
+//			.reduce(0, (sum, «getIteratorVariableName(constExpr)») -> {
+//				sum + «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»
+//			})'''
+			throw new UnsupportedOperationException("Foreign type stream expr not yet implemented.");
+		} else if(constExpr instanceof ContextSumExpression) {
+			if(constExpr.context instanceof Mapping) {
+				throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
+			} else if(constExpr.context instanceof Pattern) {
+				return '''context.get«constExpr.node.name.toFirstUpper»().«parseFeatureExpression(constExpr.feature)».stream()
+			«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
+			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
+			.reduce(0.0, (sum, value) -> sum + value)'''
+			} else if(constExpr.context instanceof Type) {
+				return '''context.«parseFeatureExpression(constExpr.feature)».stream()
+			«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
+			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
+			.reduce(0.0, (sum, value) -> sum + value)'''
+			} else {
+				throw new UnsupportedOperationException("Unknown context type.");
+			}
 		} else if(constExpr instanceof ContextTypeFeatureValue) {
 			return '''context.«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else if(constExpr instanceof ContextTypeValue) {
@@ -514,12 +542,29 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		if(varExpr instanceof MappingSumExpression) {
 			throw new UnsupportedOperationException("Mapping stream expressions may not be part of multiplications, fractions, exponentials, roots etc.");
 		} else if(varExpr instanceof TypeSumExpression) {
-			imports.add(data.classToPackage.getPackage(varExpr.type.type.EPackage))
-			return '''indexer.getObjectsOfType(«varExpr.type.type.EPackage.name».eINSTANCE.get«varExpr.type.type.name»()).stream()
-			.«parseExpression(varExpr.filter, ExpressionContext.varConstraint)»
-			.reduce(0, (sum, «getIteratorVariableName(varExpr)») -> {
-				sum + «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»
-			})'''
+//			imports.add(data.classToPackage.getPackage(varExpr.type.type.EPackage))
+//			return '''indexer.getObjectsOfType(«varExpr.type.type.EPackage.name».eINSTANCE.get«varExpr.type.type.name»()).stream()
+//			.«parseExpression(varExpr.filter, ExpressionContext.varConstraint)»
+//			.reduce(0, (sum, «getIteratorVariableName(varExpr)») -> {
+//				sum + «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»
+//			})'''
+			throw new UnsupportedOperationException("Foreign type stream expr not yet implemented.");
+		} else if(varExpr instanceof ContextSumExpression) {
+			if(varExpr.context instanceof Mapping) {
+				throw new UnsupportedOperationException("Mapping stream expressions may not be part of multiplications, fractions, exponentials, roots etc.");
+			} else if(varExpr.context instanceof Pattern) {
+				return '''context.get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.feature)».stream()
+			«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
+			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
+			.reduce(0.0, (sum, value) -> sum + value)'''
+			} else if(varExpr.context instanceof Type) {
+				return '''context.«parseFeatureExpression(varExpr.feature)».stream()
+			«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
+			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
+			.reduce(0.0, (sum, value) -> sum + value)'''
+			} else {
+				throw new UnsupportedOperationException("Unknown context type.");
+			}
 		} else if(varExpr instanceof ContextTypeFeatureValue) {
 			return '''context.«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else if(varExpr instanceof ContextTypeValue) {
@@ -613,12 +658,24 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		}
 	}
 	
+	def String getFilterExpr(StreamExpression expr, ExpressionContext context) {
+		val fltr = parseExpression(expr, context)
+		if(fltr.isEmpty)
+			return fltr
+			
+		return "." + fltr
+	}
+	
 	def String parseFeatureExpression(FeatureExpression expr) {
+		var getOrIs = "get"
+		if(expr.current.feature.EType == EcorePackage.Literals.EBOOLEAN)
+			getOrIs = "is";
+			
 		if(expr.child === null) {
 			//TODO: Watch out for boolean attributes -> isXXXX() instead of getXXXX()
-			return '''get«expr.current.feature.name.toFirstUpper»()'''
+			return '''«getOrIs»«expr.current.feature.name.toFirstUpper»()'''
 		} else {
-			return '''get«expr.current.feature.name.toFirstUpper»().«parseFeatureExpression(expr.child)»'''
+			return '''«getOrIs»«expr.current.feature.name.toFirstUpper»().«parseFeatureExpression(expr.child)»'''
 		}
 	}
 

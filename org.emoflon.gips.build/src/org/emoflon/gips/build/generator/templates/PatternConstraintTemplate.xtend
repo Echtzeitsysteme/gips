@@ -30,6 +30,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValu
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
 
 class PatternConstraintTemplate extends ConstraintTemplate<PatternConstraint> {
 
@@ -109,7 +110,9 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.pattern
 			val builderMethodName = generateBuilder(expr)
 			val instruction = '''«builderMethodName»(terms, context);'''
 				builderMethodCalls.add(instruction)
-		} else if(expr instanceof ContextTypeFeatureValue) {
+		} else if(expr instanceof ContextSumExpression) {
+			generateBuilder(expr);
+		}  else if(expr instanceof ContextTypeFeatureValue) {
 			throw new UnsupportedOperationException("Type context access is not possible within a pattern context.")
 		} else if(expr instanceof ContextTypeValue) {
 			throw new UnsupportedOperationException("Type context access is not possible within a pattern context.")
@@ -150,6 +153,11 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.pattern
 		throw new UnsupportedOperationException("Mapping context access is not possible within a pattern context.")
 	}
 	
+		
+	override generateBuilder(ContextSumExpression expr) {
+		throw new UnsupportedOperationException("Ilp term may not be constant.")
+	}
+	
 	override generateBuilder(BinaryArithmeticExpression expr) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
@@ -184,10 +192,10 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.pattern
 		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
 		imports.add("java.util.stream.Collectors")
 		val method = '''
-	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
+	protected void «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
 		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper("«expr.mapping.name»").getMappings().values().parallelStream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
-			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
+			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}
 	}
@@ -197,20 +205,22 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.pattern
 	}
 	
 	override String generateBuilder(TypeSumExpression expr) {
-		val methodName = '''builder_«builderMethods.size»'''
-		builderMethods.put(expr, methodName)
-		imports.add("java.util.stream.Collectors")
-		val method = '''
-	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
-		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.name»").parallelStream()
-			.map(type -> («expr.type.type.name») type)
-			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
-		}
+//		val methodName = '''builder_«builderMethods.size»'''
+//		builderMethods.put(expr, methodName)
+//		imports.add("java.util.stream.Collectors")
+//		val method = '''
+//	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
+//		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.name»").parallelStream()
+//			.map(type -> («expr.type.type.name») type)
+//			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
+//			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+//		}
+//	}
+//		'''
+//		builderMethodDefinitions.put(expr, method)
+//		return methodName
+		throw new UnsupportedOperationException("Foreign type stream expr not yet implemented.");
 	}
-		'''
-		builderMethodDefinitions.put(expr, method)
-		return methodName
-	}
+
 	
 }

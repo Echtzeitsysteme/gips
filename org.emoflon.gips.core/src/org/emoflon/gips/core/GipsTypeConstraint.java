@@ -22,10 +22,12 @@ public abstract class GipsTypeConstraint<CONTEXT extends EObject>
 	@Override
 	public void buildConstraints() {
 		indexer.getObjectsOfType(type).parallelStream().forEach(context -> {
-			final ILPConstraint<Integer> candidate = buildConstraint((CONTEXT) context);
-			if (!candidate.lhsTerms().isEmpty()) {
-				ilpConstraints.put((CONTEXT) context, buildConstraint((CONTEXT) context));
-			}
+//			final ILPConstraint<Integer> candidate = buildConstraint((CONTEXT) context);
+//			if (!candidate.lhsTerms().isEmpty()) {
+			ilpConstraints.put((CONTEXT) context, buildConstraint((CONTEXT) context));
+//			}
+			// TODO: Throw an exception if the collection of LHS terms is empty (and the
+			// presolver functionality is implemented.
 		});
 	}
 

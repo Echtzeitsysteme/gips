@@ -224,9 +224,11 @@ public class GurobiSolver extends ILPSolver {
 			final GRBLinExpr grbLinExpr = new GRBLinExpr();
 
 			// Check if constraints of form "<empty> == const" exist and throw an exception
-			if (curr.lhsTerms().isEmpty()) {
-				throw new RuntimeException("LHS (variable terms) is empty. This produces an infeasible ILP problem.");
-			}
+//			if (curr.lhsTerms().isEmpty()) {
+//				throw new RuntimeException("LHS (variable terms) is empty. This produces an infeasible ILP problem.");
+//			}
+			// TODO: Throw an exception if the collection of LHS terms is empty (and the
+			// presolver functionality is implemented.
 
 			//
 			// Operator

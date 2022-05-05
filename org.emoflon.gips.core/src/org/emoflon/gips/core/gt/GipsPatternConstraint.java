@@ -23,10 +23,13 @@ public abstract class GipsPatternConstraint<M extends GraphTransformationMatch<M
 	@Override
 	public void buildConstraints() {
 		pattern.findMatches(false).parallelStream().forEach(context -> {
-			final ILPConstraint<Integer> candidate = buildConstraint(context);
-			if (!candidate.lhsTerms().isEmpty()) {
-				ilpConstraints.put(context, buildConstraint(context));
-			}
+//			final ILPConstraint<Integer> candidate = buildConstraint(context);
+//			if (!candidate.lhsTerms().isEmpty()) {
+			ilpConstraints.put(context, buildConstraint(context));
+//			}
+			// TODO: Throw an exception if the collection of LHS terms is empty (and the
+			// presolver functionality is implemented.
+
 		});
 	}
 

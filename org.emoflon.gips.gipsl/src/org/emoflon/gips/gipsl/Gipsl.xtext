@@ -229,7 +229,7 @@ GipsStreamLit returns GipsStreamExpr:
 	{GipsSelect} 'typesOf' '(' type=[ecore::EClassifier] ')' |
 	{GipsStreamSet} operator=GipsStreamSetOperator lambda = GipsLambdaExpression |
 	{GipsStreamArithmetic} operator=GipsStreamArithmeticOperator lambda = GipsLambdaExpression |
-	{GipsContains} 'contains' '(' expr = GipsAttributeExpr ')' |
+	{GipsContains} 'contains' '(' expr = GipsContextExpr ')' |
 	{GipsStreamBoolExpr} operator=GipsStreamNoArgOperator
 ;
 

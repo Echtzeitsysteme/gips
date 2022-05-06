@@ -193,7 +193,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.mapping
 		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
 		imports.add("java.util.stream.Collectors")
 		val method = '''
-	protected void «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper("«expr.mapping.name»").getMappings().values().parallelStream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
@@ -215,7 +215,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.mapping
 		builderMethods.put(expr, methodName)
 		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.context))
 		val method = '''
-	protected void «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		double constant = context.get«expr.node.name.toFirstUpper»().«parseFeatureExpression(expr.feature)».parallelStream()
 					«getFilterExpr(expr.filter, ExpressionContext.varStream)»
 					.map(«getIteratorVariableName(expr)» -> «parseExpression(expr.expression, ExpressionContext.constConstraint)»)

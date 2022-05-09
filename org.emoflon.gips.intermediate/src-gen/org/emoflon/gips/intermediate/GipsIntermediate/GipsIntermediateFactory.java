@@ -490,6 +490,15 @@ public interface GipsIntermediateFactory extends EFactory {
 	StreamSelectOperation createStreamSelectOperation();
 
 	/**
+	 * Returns a new object of class '<em>Stream Contains Operation</em>'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Stream Contains Operation</em>'.
+	 * @generated
+	 */
+	StreamContainsOperation createStreamContainsOperation();
+
+	/**
 	 * Returns the package supported by this factory. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 

@@ -71,6 +71,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamArithmeticOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamBoolOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamContainsOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamNoOperation;
@@ -550,6 +551,13 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * @generated
 	 */
 	private EClass streamSelectOperationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass streamContainsOperationEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2192,6 +2200,24 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public EClass getStreamContainsOperation() {
+		return streamContainsOperationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getStreamContainsOperation_Expr() {
+		return (EReference) streamContainsOperationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EEnum getILPSolverType() {
 		return ilpSolverTypeEEnum;
 	}
@@ -2531,6 +2557,9 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		streamSelectOperationEClass = createEClass(STREAM_SELECT_OPERATION);
 		createEReference(streamSelectOperationEClass, STREAM_SELECT_OPERATION__TYPE);
 
+		streamContainsOperationEClass = createEClass(STREAM_CONTAINS_OPERATION);
+		createEReference(streamContainsOperationEClass, STREAM_CONTAINS_OPERATION__EXPR);
+
 		// Create enums
 		ilpSolverTypeEEnum = createEEnum(ILP_SOLVER_TYPE);
 		objectiveTargetEEnum = createEEnum(OBJECTIVE_TARGET);
@@ -2640,6 +2669,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		streamNoOperationEClass.getESuperTypes().add(this.getStreamOperation());
 		streamFilterOperationEClass.getESuperTypes().add(this.getStreamOperation());
 		streamSelectOperationEClass.getESuperTypes().add(this.getStreamOperation());
+		streamContainsOperationEClass.getESuperTypes().add(this.getStreamOperation());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(gipsIntermediateModelEClass, GipsIntermediateModel.class, "GipsIntermediateModel", !IS_ABSTRACT,
@@ -3126,6 +3156,12 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getStreamSelectOperation_Type(), ecorePackage.getEClass(), null, "type", null, 0, 1,
 				StreamSelectOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(streamContainsOperationEClass, StreamContainsOperation.class, "StreamContainsOperation",
+				!IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getStreamContainsOperation_Expr(), this.getValueExpression(), null, "expr", null, 0, 1,
+				StreamContainsOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals

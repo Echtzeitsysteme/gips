@@ -318,4 +318,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StreamContainsOperation" eSuperTypes="#//StreamOperation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//ValueExpression"
+        containment="true"/>
+  </eClassifiers>
 </ecore:EPackage>

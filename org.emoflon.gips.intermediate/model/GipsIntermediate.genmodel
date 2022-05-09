@@ -280,5 +280,8 @@
     <genClasses ecoreClass="GipsIntermediate.ecore#//StreamSelectOperation">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//StreamSelectOperation/type"/>
     </genClasses>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//StreamContainsOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//StreamContainsOperation/expr"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

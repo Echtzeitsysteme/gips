@@ -3650,6 +3650,45 @@ public interface GipsIntermediatePackage extends EPackage {
 
 	/**
 	 * The meta object id for the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamContainsOperationImpl
+	 * <em>Stream Contains Operation</em>}' class. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamContainsOperationImpl
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamContainsOperation()
+	 * @generated
+	 */
+	int STREAM_CONTAINS_OPERATION = 65;
+
+	/**
+	 * The feature id for the '<em><b>Expr</b></em>' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int STREAM_CONTAINS_OPERATION__EXPR = STREAM_OPERATION_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Stream Contains Operation</em>'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int STREAM_CONTAINS_OPERATION_FEATURE_COUNT = STREAM_OPERATION_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Stream Contains Operation</em>' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int STREAM_CONTAINS_OPERATION_OPERATION_COUNT = STREAM_OPERATION_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the
 	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType <em>ILP
 	 * Solver Type</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -3657,7 +3696,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getILPSolverType()
 	 * @generated
 	 */
-	int ILP_SOLVER_TYPE = 65;
+	int ILP_SOLVER_TYPE = 66;
 
 	/**
 	 * The meta object id for the
@@ -3669,7 +3708,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getObjectiveTarget()
 	 * @generated
 	 */
-	int OBJECTIVE_TARGET = 66;
+	int OBJECTIVE_TARGET = 67;
 
 	/**
 	 * The meta object id for the
@@ -3681,7 +3720,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getRelationalOperator()
 	 * @generated
 	 */
-	int RELATIONAL_OPERATOR = 67;
+	int RELATIONAL_OPERATOR = 68;
 
 	/**
 	 * The meta object id for the
@@ -3693,7 +3732,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBinaryArithmeticOperator()
 	 * @generated
 	 */
-	int BINARY_ARITHMETIC_OPERATOR = 68;
+	int BINARY_ARITHMETIC_OPERATOR = 69;
 
 	/**
 	 * The meta object id for the
@@ -3705,7 +3744,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getUnaryArithmeticOperator()
 	 * @generated
 	 */
-	int UNARY_ARITHMETIC_OPERATOR = 69;
+	int UNARY_ARITHMETIC_OPERATOR = 70;
 
 	/**
 	 * The meta object id for the
@@ -3717,7 +3756,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamArithmeticOperator()
 	 * @generated
 	 */
-	int STREAM_ARITHMETIC_OPERATOR = 70;
+	int STREAM_ARITHMETIC_OPERATOR = 71;
 
 	/**
 	 * The meta object id for the
@@ -3729,7 +3768,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getBinaryBoolOperator()
 	 * @generated
 	 */
-	int BINARY_BOOL_OPERATOR = 71;
+	int BINARY_BOOL_OPERATOR = 72;
 
 	/**
 	 * The meta object id for the
@@ -3741,7 +3780,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getUnaryBoolOperator()
 	 * @generated
 	 */
-	int UNARY_BOOL_OPERATOR = 72;
+	int UNARY_BOOL_OPERATOR = 73;
 
 	/**
 	 * The meta object id for the
@@ -3753,7 +3792,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamBoolOperator()
 	 * @generated
 	 */
-	int STREAM_BOOL_OPERATOR = 73;
+	int STREAM_BOOL_OPERATOR = 74;
 
 	/**
 	 * Returns the meta object for class
@@ -5741,6 +5780,30 @@ public interface GipsIntermediatePackage extends EPackage {
 	EReference getStreamSelectOperation_Type();
 
 	/**
+	 * Returns the meta object for class
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamContainsOperation
+	 * <em>Stream Contains Operation</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Stream Contains Operation</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamContainsOperation
+	 * @generated
+	 */
+	EClass getStreamContainsOperation();
+
+	/**
+	 * Returns the meta object for the containment reference
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamContainsOperation#getExpr
+	 * <em>Expr</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the containment reference '<em>Expr</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamContainsOperation#getExpr()
+	 * @see #getStreamContainsOperation()
+	 * @generated
+	 */
+	EReference getStreamContainsOperation_Expr();
+
+	/**
 	 * Returns the meta object for enum
 	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType <em>ILP
 	 * Solver Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -7461,6 +7524,26 @@ public interface GipsIntermediatePackage extends EPackage {
 		 * @generated
 		 */
 		EReference STREAM_SELECT_OPERATION__TYPE = eINSTANCE.getStreamSelectOperation_Type();
+
+		/**
+		 * The meta object literal for the
+		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamContainsOperationImpl
+		 * <em>Stream Contains Operation</em>}' class. <!-- begin-user-doc --> <!--
+		 * end-user-doc -->
+		 * 
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamContainsOperationImpl
+		 * @see org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediatePackageImpl#getStreamContainsOperation()
+		 * @generated
+		 */
+		EClass STREAM_CONTAINS_OPERATION = eINSTANCE.getStreamContainsOperation();
+
+		/**
+		 * The meta object literal for the '<em><b>Expr</b></em>' containment reference
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference STREAM_CONTAINS_OPERATION__EXPR = eINSTANCE.getStreamContainsOperation_Expr();
 
 		/**
 		 * The meta object literal for the

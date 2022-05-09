@@ -57,6 +57,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern
 import org.emoflon.gips.intermediate.GipsIntermediate.Type
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamContainsOperation
 
 abstract class ConstraintTemplate <CONTEXT extends Constraint> extends GeneratorTemplate<CONTEXT> {
 
@@ -313,6 +314,14 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 				.map(«getIteratorVariableName(expr)» -> («selectOp.type.name») «getIteratorVariableName(expr)»)
 				.«parseExpression(expr.child, ExpressionContext.constStream)»'''
 			}
+		} else if (expr.current instanceof StreamContainsOperation) {
+			val selectOp = expr.current as StreamContainsOperation
+			if(expr.child !== null) {
+				throw new UnsupportedOperationException("Contains returns a boolean value, not a collection or stream of elements.")
+			} else {
+				return '''filter(«getIteratorVariableName(expr)» -> «getIteratorVariableName(expr)».getMatch().equals(«parseExpression(selectOp.expr, ExpressionContext.constStream)»))
+				.distinct()'''
+			}
 		} else {
 			return ''''''
 		}
@@ -336,6 +345,14 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 				return '''filter(«getIteratorVariableName(expr)» -> «getIteratorVariableName(expr)» instanceof «selectOp.type.name»)
 				.map(«getIteratorVariableName(expr)» -> («selectOp.type.name») «getIteratorVariableName(expr)»)
 				.«parseExpression(expr.child, ExpressionContext.varStream)»'''
+			}
+		}  else if (expr.current instanceof StreamContainsOperation) {
+			val selectOp = expr.current as StreamContainsOperation
+			if(expr.child !== null) {
+				throw new UnsupportedOperationException("Contains returns a boolean value, not a collection or stream of elements.")
+			} else {
+				return '''filter(«getIteratorVariableName(expr)» -> «getIteratorVariableName(expr)».getMatch().equals(«parseExpression(selectOp.expr, ExpressionContext.varStream)»))
+				.distinct()'''
 			}
 		} else {
 			return ''''''

@@ -177,8 +177,9 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsContextExpr/expr"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsContextExpr/stream"/>
     </genClasses>
-    <genClasses ecoreClass="Gipsl.ecore#//GipsMappingValue">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsMappingValue/count"/>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsMappingValue"/>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsMappingCount">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsMappingCount/count"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsFeatureNavigation">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsFeatureNavigation/left"/>

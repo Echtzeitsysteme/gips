@@ -144,7 +144,7 @@ GipsContextExpr returns GipsAttributeExpr: {GipsContextExpr}
 
 GipsContextOperationExpression returns GipsContextOperationExpression: 
 	{GipsMappingValue} 'value()' |
-	{GipsMappingValue} 'isMapped' '(' (count=GipsContextExpr)? ')'
+	{GipsMappingCount} 'isMapped' '(' (count=GipsContextExpr)? ')'
 ;
 
 GipsTypeCast:

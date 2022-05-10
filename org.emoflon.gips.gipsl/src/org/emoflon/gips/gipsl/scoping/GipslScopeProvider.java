@@ -134,7 +134,7 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 	}
 
 	public IScope scopeForGipsMappingAttributeExprNode(GipsMappingAttributeExpr context, EReference reference) {
-		return Scopes.scopeFor(context.getMapping().getRule().getNodes());
+		return Scopes.scopeFor(context.getMapping().getPattern().getNodes());
 	}
 
 	public IScope scopeForGipsContextExprNode(GipsContextExpr context, EReference reference) {
@@ -153,7 +153,7 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 
 		if (contextType instanceof GipsMappingContext mappingContext) {
 			// Return context nodes only!
-			return Scopes.scopeFor(mappingContext.getMapping().getRule().getNodes().stream()
+			return Scopes.scopeFor(mappingContext.getMapping().getPattern().getNodes().stream()
 					.filter(node -> !node.isLocal() && node.getOperator() != EditorOperator.CREATE)
 					.collect(Collectors.toList()));
 		} else if (contextType instanceof GipsPatternContext patternContext) {
@@ -195,7 +195,7 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			if (parent instanceof GipsSelect select) {
 				return Scopes.scopeFor(((EClass) select.getType()).getEAllStructuralFeatures());
 			} else if (parent instanceof GipsMappingAttributeExpr mapping) {
-				return Scopes.scopeFor(mapping.getMapping().getRule().getNodes());
+				return Scopes.scopeFor(mapping.getMapping().getPattern().getNodes());
 			} else if (parent instanceof GipsContextExpr contextExpr) {
 				if (contextExpr.getExpr() != null) {
 					if (contextExpr.getExpr() instanceof GipsNodeAttributeExpr nodeExpr) {
@@ -337,7 +337,7 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 
 			if (contextType instanceof GipsMappingContext mappingContext) {
 				// Return context nodes only!
-				return Scopes.scopeFor(mappingContext.getMapping().getRule().getNodes().stream()
+				return Scopes.scopeFor(mappingContext.getMapping().getPattern().getNodes().stream()
 						.filter(node -> !node.isLocal() && node.getOperator() != EditorOperator.CREATE)
 						.collect(Collectors.toList()));
 			} else if (contextType instanceof GipsPatternContext patternContext) {
@@ -352,7 +352,7 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			return scopeForGipsLambdaAttributeExpression(lambda, reference);
 		} else {
 			GipsMappingAttributeExpr parentExpr = (GipsMappingAttributeExpr) context.eContainer();
-			return Scopes.scopeFor(parentExpr.getMapping().getRule().getNodes());
+			return Scopes.scopeFor(parentExpr.getMapping().getPattern().getNodes());
 		}
 	}
 

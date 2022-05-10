@@ -27,7 +27,6 @@ import org.emoflon.gips.gipsl.gipsl.GipsBracketExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsContains;
 import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsContextOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsExpArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsExpOperator;
@@ -41,6 +40,8 @@ import org.emoflon.gips.gipsl.gipsl.GipsLambdaExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingCount;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingValue;
 import org.emoflon.gips.gipsl.gipsl.GipsNodeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsObjectiveExpression;
@@ -1207,7 +1208,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		final int val = op.getValue();
 		if (val == GipsStreamNoArgOperator.COUNT_VALUE) {
 			return EvalType.INTEGER;
-		} else if (val == GipsStreamNoArgOperator.EXISTS_VALUE || val == GipsStreamNoArgOperator.NOTEXISTS_VALUE) {
+		} else if (val == GipsStreamNoArgOperator.NOT_EMPTY_VALUE) {
 			return EvalType.BOOLEAN;
 		}
 
@@ -1268,10 +1269,9 @@ public class GipslValidator extends AbstractGipslValidator {
 	}
 
 	public EvalType getEvalTypeFromContextOpExpr(final GipsContextOperationExpression expr) {
-		final int val = expr.getOperation().getValue();
-		if (val == GipsContextOperation.MAPPED_VALUE) {
+		if (expr instanceof GipsMappingCount) {
 			return EvalType.BOOLEAN;
-		} else if (val == GipsContextOperation.VALUE_VALUE) {
+		} else if (expr instanceof GipsMappingValue) {
 			return EvalType.INTEGER;
 		}
 

@@ -198,7 +198,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="stream" eType="#//GipsStreamExpr"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsMappingValue" eSuperTypes="#//GipsContextOperationExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="GipsMappingValue" eSuperTypes="#//GipsContextOperationExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsMappingCount" eSuperTypes="#//GipsContextOperationExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="count" eType="#//GipsAttributeExpr"
         containment="true"/>
   </eClassifiers>

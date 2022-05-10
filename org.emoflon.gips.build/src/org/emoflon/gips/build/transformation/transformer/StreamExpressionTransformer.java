@@ -4,10 +4,12 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.TransformationContext;
+import org.emoflon.gips.gipsl.gipsl.GipsContains;
 import org.emoflon.gips.gipsl.gipsl.GipsSelect;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamNavigation;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamSet;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamContainsOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamOperation;
@@ -41,6 +43,9 @@ public class StreamExpressionTransformer<T extends EObject> extends Transformati
 		} else if (streamExpr instanceof GipsStreamSet set) {
 			expr.setCurrent(createStreamFilterOperation(expr, set));
 			return expr;
+		} else if (streamExpr instanceof GipsContains contains) {
+			expr.setCurrent(createStreamFilterOperation(expr, contains));
+			return expr;
 		} else {
 			expr.setCurrent(factory.createStreamNoOperation());
 			return expr;
@@ -58,6 +63,12 @@ public class StreamExpressionTransformer<T extends EObject> extends Transformati
 			BooleanExpressionTransformer transformer = transformerFactory.createBooleanTransformer(parent);
 			op.setPredicate(transformer.transform(set.getLambda().getExpr()));
 			return op;
+		} else if (streamExpr instanceof GipsContains contains) {
+			StreamContainsOperation op = factory.createStreamContainsOperation();
+			AttributeExpressionTransformer transformer = transformerFactory.createAttributeTransformer(parent);
+			op.setExpr(transformer.transform(contains.getExpr()));
+			return op;
+
 		} else {
 			throw new IllegalArgumentException(
 					"Stream expression <" + streamExpr + "> is not a valid filter operation.");

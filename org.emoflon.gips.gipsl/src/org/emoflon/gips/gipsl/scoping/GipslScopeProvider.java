@@ -87,7 +87,11 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			return scopeForGipsLambdaAttributeExpression((GipsLambdaAttributeExpression) context, reference);
 		} else if (GipslScopeContextUtil.isGipsSelect(context, reference)) {
 			return scopeForGipsSelect((GipsSelect) context, reference);
-		} else if (GipslScopeContextUtil.isGipsNodeAttributeExprNode(context, reference)) {
+		}
+//		else if (GipslScopeContextUtil.isGipsContains(context, reference)) {
+//			return scopeForGipsContains((GipsContains) context, reference);
+//		} 
+		else if (GipslScopeContextUtil.isGipsNodeAttributeExprNode(context, reference)) {
 			return scopeForGipsNodeAttributeExprNode((GipsNodeAttributeExpr) context, reference);
 		} else if (GipslScopeContextUtil.isGipsNodeAttributeExprFeature(context, reference)) {
 			return scopeForGipsNodeAttributeExprFeature((GipsNodeAttributeExpr) context, reference);
@@ -275,6 +279,11 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			return super.getScope(context, reference);
 		}
 	}
+
+//	private IScope scopeForGipsContains(GipsContains context, EReference reference) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	public IScope scopeForGipsContextExprFeature(GipsContextExpr context, EReference reference) {
 		if (context.getTypeCast() == null) {

@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsContains;
 import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
@@ -22,6 +23,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeCast;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsContainsImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsContextExprImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsMappingAttributeExprImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
@@ -89,6 +91,10 @@ public final class GipslScopeContextUtil {
 		return context instanceof GipsSelect;
 	}
 
+	public static boolean isGipsContains(final EObject context, final EReference reference) {
+		return context instanceof GipsContains;
+	}
+
 	public static boolean isGipsFeatureNavigationFeature(final EObject context, final EReference reference) {
 		return context instanceof GipsFeatureNavigation && reference == GipslPackage.Literals.GIPS_FEATURE_LIT__FEATURE;
 	}
@@ -139,7 +145,7 @@ public final class GipslScopeContextUtil {
 
 	public static GipsStreamExpr getStreamIteratorContainer(GipsLambdaAttributeExpression context) {
 		Set<Class<?>> classes = Set.of(GipsStreamNavigationImpl.class, GipsStreamSetImpl.class, GipsSelectImpl.class,
-				GipsStreamArithmeticImpl.class);
+				GipsStreamArithmeticImpl.class, GipsContainsImpl.class);
 		return (GipsStreamExpr) GipslScopeContextUtil.getContainer(context, classes);
 	}
 
@@ -152,13 +158,14 @@ public final class GipslScopeContextUtil {
 		classes.add(GipsStreamSetImpl.class);
 		classes.add(GipsSelectImpl.class);
 		classes.add(GipsStreamArithmeticImpl.class);
+		classes.add(GipsContainsImpl.class);
 		return (GipsStreamExpr) GipslScopeContextUtil.getContainer(context, classes);
 	}
 
 	public static EObject getStreamContainer(GipsLambdaAttributeExpression context) {
 		Set<Class<?>> classes = Set.of(GipsContextExprImpl.class, GipsMappingAttributeExprImpl.class,
 				GipsStreamNavigationImpl.class, GipsStreamSetImpl.class, GipsSelectImpl.class,
-				GipsStreamArithmeticImpl.class);
+				GipsStreamArithmeticImpl.class, GipsContainsImpl.class);
 		return (EObject) GipslScopeContextUtil.getContainer(context, classes);
 	}
 

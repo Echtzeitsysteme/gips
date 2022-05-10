@@ -46,6 +46,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
 import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.StreamContainsOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression;
@@ -330,6 +331,8 @@ public final class GipsTransformationUtils {
 		if (expr.getChild() == null) {
 			if (expr.getCurrent() instanceof StreamFilterOperation filterOp) {
 				return containsContextExpression(filterOp.getPredicate());
+			} else if (expr.getCurrent() instanceof StreamContainsOperation containsOp) {
+				return containsContextExpression(containsOp.getExpr());
 			} else {
 				return false;
 			}
@@ -337,6 +340,8 @@ public final class GipsTransformationUtils {
 			boolean currentExpr = false;
 			if (expr.getCurrent() instanceof StreamFilterOperation filterOp) {
 				currentExpr = containsContextExpression(filterOp.getPredicate());
+			} else if (expr.getCurrent() instanceof StreamContainsOperation containsOp) {
+				currentExpr = containsContextExpression(containsOp.getExpr());
 			}
 			boolean childExpr = containsContextExpression(expr.getChild());
 			return currentExpr || childExpr;

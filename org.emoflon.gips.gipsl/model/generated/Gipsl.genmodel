@@ -212,6 +212,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsStreamArithmetic/operator"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsStreamArithmetic/lambda"/>
     </genClasses>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsContains">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsContains/expr"/>
+    </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsStreamBoolExpr">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsStreamBoolExpr/operator"/>
     </genClasses>

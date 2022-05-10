@@ -192,7 +192,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.pattern
 		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
 		imports.add("java.util.stream.Collectors")
 		val method = '''
-	protected void «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
+	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
 		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper("«expr.mapping.name»").getMappings().values().parallelStream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {

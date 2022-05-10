@@ -7,6 +7,7 @@ import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
 import org.emoflon.gips.build.transformation.helper.TransformationContext;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsContains;
 import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
@@ -274,6 +275,9 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 				} else if (terminalExpr instanceof GipsStreamArithmetic streamArithmetic) {
 					SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
 					return transformer.transform(tc, fe, eContext.getStream(), streamArithmetic);
+				} else if (terminalExpr instanceof GipsContains streamContains) {
+					throw new IllegalArgumentException(
+							"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
 				} else {
 					throw new UnsupportedOperationException(
 							"Some constrains contain invalid values within arithmetic expressions, e.g., objects or streams of objects instead of arithmetic values.");
@@ -316,6 +320,9 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 						SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
 						return transformer.transform(pc, data.eNode2Node().get(eNodeExpr.getNode()), fe,
 								eContext.getStream(), streamArithmetic);
+					} else if (terminalExpr instanceof GipsContains streamContains) {
+						throw new IllegalArgumentException(
+								"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
 					} else {
 						throw new UnsupportedOperationException(
 								"Some constrains contain invalid values within arithmetic expressions, e.g., objects or streams of objects instead of arithmetic values.");
@@ -360,6 +367,9 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 						SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
 						return transformer.transform(mapping, data.eNode2Node().get(eNodeExpr.getNode()), fe,
 								eContext.getStream(), streamArithmetic);
+					} else if (terminalExpr instanceof GipsContains streamContains) {
+						throw new IllegalArgumentException(
+								"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
 					} else {
 						throw new UnsupportedOperationException(
 								"Some constrains contain invalid values within arithmetic expressions, e.g., objects or streams of objects instead of arithmetic values.");

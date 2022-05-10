@@ -33,4 +33,8 @@ public abstract class GTMapping<M extends GraphTransformationMatch<M, P>, P exte
 			return false;
 		}
 	}
+
+	public M getMatch() {
+		return match;
+	}
 }

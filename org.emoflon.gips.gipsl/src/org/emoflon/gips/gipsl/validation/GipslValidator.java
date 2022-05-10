@@ -25,6 +25,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsBoolUnaryOperator;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsBracketExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsContains;
 import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsContextOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
@@ -476,6 +477,8 @@ public class GipslValidator extends AbstractGipslValidator {
 		} else if (expr instanceof GipsStreamSet) {
 			final GipsStreamSet set = (GipsStreamSet) expr;
 			return containsMappingsCall(set.getLambda().getExpr());
+		} else if (expr instanceof GipsContains contains) {
+			return containsMappingsCall(contains.getExpr());
 		}
 
 		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
@@ -654,6 +657,8 @@ public class GipslValidator extends AbstractGipslValidator {
 			// filter() -> validate lambda
 			final GipsStreamSet setExpr = (GipsStreamSet) expr;
 			return containsSelf(setExpr.getLambda().getExpr(), type);
+		} else if (expr instanceof GipsContains contains) {
+			return containsSelf(contains.getExpr(), type);
 		}
 
 		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
@@ -843,6 +848,8 @@ public class GipslValidator extends AbstractGipslValidator {
 			return validateBoolExprDynamic(arith.getLambda().getExpr());
 		} else if (expr instanceof GipsStreamBoolExpr) { // .exists(); .notExists(); .count()
 			return false;
+		} else if (expr instanceof GipsContains contains) {
+			return validateArithExprDynamic(contains.getExpr());
 		} else if (expr instanceof GipsSelect) {
 			return false;
 		}
@@ -1165,6 +1172,8 @@ public class GipslValidator extends AbstractGipslValidator {
 			return getEvalTypeFromStreamNoArgOp(boolExpr.getOperator());
 		} else if (expr instanceof GipsSelect) {
 			return EvalType.STREAM;
+		} else if (expr instanceof GipsContains) {
+			return EvalType.BOOLEAN;
 		}
 
 		return EvalType.ERROR;

@@ -392,6 +392,11 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseStreamContainsOperation(StreamContainsOperation object) {
+			return createStreamContainsOperationAdapter();
+		}
+
+		@Override
 		public Adapter defaultCase(EObject object) {
 			return createEObjectAdapter();
 		}
@@ -1432,6 +1437,22 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createStreamSelectOperationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamContainsOperation
+	 * <em>Stream Contains Operation</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.StreamContainsOperation
+	 * @generated
+	 */
+	public Adapter createStreamContainsOperationAdapter() {
 		return null;
 	}
 

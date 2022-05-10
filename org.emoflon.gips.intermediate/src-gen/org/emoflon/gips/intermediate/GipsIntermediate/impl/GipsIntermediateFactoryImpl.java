@@ -161,6 +161,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createStreamFilterOperation();
 		case GipsIntermediatePackage.STREAM_SELECT_OPERATION:
 			return createStreamSelectOperation();
+		case GipsIntermediatePackage.STREAM_CONTAINS_OPERATION:
+			return createStreamContainsOperation();
 		default:
 			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -746,6 +748,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	public StreamSelectOperation createStreamSelectOperation() {
 		StreamSelectOperationImpl streamSelectOperation = new StreamSelectOperationImpl();
 		return streamSelectOperation;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public StreamContainsOperation createStreamContainsOperation() {
+		StreamContainsOperationImpl streamContainsOperation = new StreamContainsOperationImpl();
+		return streamContainsOperation;
 	}
 
 	/**

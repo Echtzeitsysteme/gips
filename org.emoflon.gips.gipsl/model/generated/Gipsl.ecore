@@ -246,6 +246,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="lambda" eType="#//GipsLambdaExpression"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsContains" eSuperTypes="#//GipsStreamExpr">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//GipsAttributeExpr"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsStreamBoolExpr" eSuperTypes="#//GipsStreamExpr">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//GipsStreamNoArgOperator"/>
   </eClassifiers>

@@ -6,6 +6,7 @@ import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
 import org.emoflon.gips.build.transformation.helper.TransformationContext;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsContains;
 import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
@@ -165,9 +166,9 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 			case EXISTS -> {
 				RelationalExpression expr = factory.createRelationalExpression();
 				DoubleLiteral constZero = factory.createDoubleLiteral();
-				constZero.setLiteral(0);
+				constZero.setLiteral(1);
 				expr.setLhs(constZero);
-				expr.setOperator(RelationalOperator.GREATER);
+				expr.setOperator(RelationalOperator.GREATER_OR_EQUAL);
 				SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
 				ArithmeticValue val = factory.createArithmeticValue();
 				val.setValue(transformer.transform(eMappingAttribute));
@@ -179,7 +180,7 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 				DoubleLiteral constZero = factory.createDoubleLiteral();
 				constZero.setLiteral(0);
 				expr.setLhs(constZero);
-				expr.setOperator(RelationalOperator.EQUAL);
+				expr.setOperator(RelationalOperator.LESS_OR_EQUAL);
 				SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
 				ArithmeticValue val = factory.createArithmeticValue();
 				val.setValue(transformer.transform(eMappingAttribute));
@@ -190,6 +191,17 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 				throw new UnsupportedOperationException("Unknown stream operator: " + streamBool.getOperator());
 			}
 			}
+		} else if (terminalExpr instanceof GipsContains streamContains) {
+			RelationalExpression expr = factory.createRelationalExpression();
+			DoubleLiteral constZero = factory.createDoubleLiteral();
+			constZero.setLiteral(1);
+			expr.setLhs(constZero);
+			expr.setOperator(RelationalOperator.GREATER_OR_EQUAL);
+			SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
+			ArithmeticValue val = factory.createArithmeticValue();
+			val.setValue(transformer.transform(eMappingAttribute));
+			expr.setRhs(val);
+			return expr;
 		} else {
 			throw new IllegalArgumentException(
 					"Some constrains contain invalid values within boolean expressions, e.g., arithmetic values instead of boolean values.");

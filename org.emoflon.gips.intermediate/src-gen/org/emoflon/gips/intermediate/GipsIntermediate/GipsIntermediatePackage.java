@@ -529,13 +529,22 @@ public interface GipsIntermediatePackage extends EPackage {
 	int CONSTRAINT__EXPRESSION = 2;
 
 	/**
+	 * The feature id for the '<em><b>Constant</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int CONSTRAINT__CONSTANT = 3;
+
+	/**
 	 * The number of structural features of the '<em>Constraint</em>' class. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int CONSTRAINT_FEATURE_COUNT = 3;
+	int CONSTRAINT_FEATURE_COUNT = 4;
 
 	/**
 	 * The number of operations of the '<em>Constraint</em>' class. <!--
@@ -584,6 +593,15 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @ordered
 	 */
 	int GLOBAL_CONSTRAINT__EXPRESSION = CONSTRAINT__EXPRESSION;
+
+	/**
+	 * The feature id for the '<em><b>Constant</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_CONSTRAINT__CONSTANT = CONSTRAINT__CONSTANT;
 
 	/**
 	 * The number of structural features of the '<em>Global Constraint</em>' class.
@@ -776,13 +794,22 @@ public interface GipsIntermediatePackage extends EPackage {
 	int PATTERN_CONSTRAINT__EXPRESSION = CONTEXT_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Constant</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int PATTERN_CONSTRAINT__CONSTANT = CONTEXT_FEATURE_COUNT + 3;
+
+	/**
 	 * The feature id for the '<em><b>Pattern</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int PATTERN_CONSTRAINT__PATTERN = CONTEXT_FEATURE_COUNT + 3;
+	int PATTERN_CONSTRAINT__PATTERN = CONTEXT_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Pattern Constraint</em>' class.
@@ -791,7 +818,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PATTERN_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 4;
+	int PATTERN_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Pattern Constraint</em>' class. <!--
@@ -842,13 +869,22 @@ public interface GipsIntermediatePackage extends EPackage {
 	int TYPE_CONSTRAINT__EXPRESSION = CONTEXT_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Constant</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_CONSTRAINT__CONSTANT = CONTEXT_FEATURE_COUNT + 3;
+
+	/**
 	 * The feature id for the '<em><b>Model Type</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT__MODEL_TYPE = CONTEXT_FEATURE_COUNT + 3;
+	int TYPE_CONSTRAINT__MODEL_TYPE = CONTEXT_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Type Constraint</em>' class.
@@ -857,7 +893,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 4;
+	int TYPE_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Type Constraint</em>' class. <!--
@@ -908,13 +944,22 @@ public interface GipsIntermediatePackage extends EPackage {
 	int MAPPING_CONSTRAINT__EXPRESSION = CONTEXT_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Constant</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int MAPPING_CONSTRAINT__CONSTANT = CONTEXT_FEATURE_COUNT + 3;
+
+	/**
 	 * The feature id for the '<em><b>Mapping</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT__MAPPING = CONTEXT_FEATURE_COUNT + 3;
+	int MAPPING_CONSTRAINT__MAPPING = CONTEXT_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Mapping Constraint</em>' class.
@@ -923,7 +968,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 4;
+	int MAPPING_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Mapping Constraint</em>' class. <!--
@@ -4339,6 +4384,18 @@ public interface GipsIntermediatePackage extends EPackage {
 	EReference getConstraint_Expression();
 
 	/**
+	 * Returns the meta object for the attribute
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isConstant
+	 * <em>Constant</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Constant</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isConstant()
+	 * @see #getConstraint()
+	 * @generated
+	 */
+	EAttribute getConstraint_Constant();
+
+	/**
 	 * Returns the meta object for class
 	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint
 	 * <em>Global Constraint</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6400,6 +6457,14 @@ public interface GipsIntermediatePackage extends EPackage {
 		 * @generated
 		 */
 		EReference CONSTRAINT__EXPRESSION = eINSTANCE.getConstraint_Expression();
+
+		/**
+		 * The meta object literal for the '<em><b>Constant</b></em>' attribute feature.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute CONSTRAINT__CONSTANT = eINSTANCE.getConstraint_Constant();
 
 		/**
 		 * The meta object literal for the

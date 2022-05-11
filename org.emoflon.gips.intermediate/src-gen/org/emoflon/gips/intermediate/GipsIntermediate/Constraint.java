@@ -18,6 +18,8 @@ import org.eclipse.emf.ecore.EObject;
  * <em>Elementwise</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getExpression
  * <em>Expression</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isConstant
+ * <em>Constant</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint()
@@ -96,5 +98,28 @@ public interface Constraint extends EObject {
 	 * @generated
 	 */
 	void setExpression(RelationalExpression value);
+
+	/**
+	 * Returns the value of the '<em><b>Constant</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Constant</em>' attribute.
+	 * @see #setConstant(boolean)
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_Constant()
+	 * @model
+	 * @generated
+	 */
+	boolean isConstant();
+
+	/**
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isConstant
+	 * <em>Constant</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value the new value of the '<em>Constant</em>' attribute.
+	 * @see #isConstant()
+	 * @generated
+	 */
+	void setConstant(boolean value);
 
 } // Constraint

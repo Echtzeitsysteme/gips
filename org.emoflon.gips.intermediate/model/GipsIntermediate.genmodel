@@ -98,6 +98,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Constraint/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Constraint/elementwise"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Constraint/expression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Constraint/constant"/>
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//GlobalConstraint"/>
     <genClasses ecoreClass="GipsIntermediate.ecore#//Objective">

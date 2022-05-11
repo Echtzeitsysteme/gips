@@ -30,6 +30,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
+import org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
 import org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType;
@@ -154,8 +155,6 @@ public class GipsToIntermediate {
 
 				Constraint constraint = createConstraint(eSubConstraint, constraintCounter);
 				constraintCounter++;
-				// TODO: For now we'll generate a constraint for each context element. In the
-				// future, this should be optimized.
 				constraint.setElementwise(true);
 				data.model().getConstraints().add(constraint);
 				data.eConstraint2Constraint().put(eSubConstraint, constraint);
@@ -164,9 +163,12 @@ public class GipsToIntermediate {
 						.createRelationalTransformer(constraint);
 				constraint.setExpression(transformer.transform((GipsRelExpr) boolExpr));
 				if (GipsTransformationUtils
-						.isConstantExpression(constraint.getExpression()) == ArithmeticExpressionType.constant)
-					throw new UnsupportedOperationException(
-							"Expressions that can be evaluated statically at ILP problem build time are currently not allowed.");
+						.isConstantExpression(constraint.getExpression()) == ArithmeticExpressionType.constant) {
+					// Check whether this constraint is constant at ILP problem build time. If true
+					// -> return
+					constraint.setConstant(true);
+					return;
+				}
 
 				boolean isLhsConst = (GipsTransformationUtils
 						.isConstantExpression(constraint.getExpression().getLhs()) == ArithmeticExpressionType.constant)
@@ -218,8 +220,9 @@ public class GipsToIntermediate {
 
 				// Final check: Was the context used?
 				if (!GipsTransformationUtils.containsContextExpression(constraint.getExpression().getRhs())
-						&& !GipsTransformationUtils.containsContextExpression(constraint.getExpression().getLhs())) {
-					throw new IllegalArgumentException("Context must be used at least once per constraint.");
+						&& !GipsTransformationUtils.containsContextExpression(constraint.getExpression().getLhs())
+						&& !(constraint instanceof GlobalConstraint)) {
+					throw new IllegalArgumentException("Context must be used at least once per non-global constraint.");
 				}
 			}
 		}
@@ -294,12 +297,15 @@ public class GipsToIntermediate {
 			constraint.setName("PatternConstraint" + counter + "On" + pattern.getPattern().getName());
 			constraint.setPattern(data.getPattern(pattern.getPattern()));
 			return constraint;
-		} else {
-			GipsTypeContext type = (GipsTypeContext) eConstraint.getContext();
+		} else if (eConstraint.getContext() instanceof GipsTypeContext type) {
 			TypeConstraint constraint = factory.createTypeConstraint();
 			constraint.setName("TypeConstraint" + counter + "On" + type.getType().getName());
 			Type varType = data.getType((EClass) type.getType());
 			constraint.setModelType(varType);
+			return constraint;
+		} else {
+			GlobalConstraint constraint = factory.createGlobalConstraint();
+			constraint.setName("GlobalConstraint" + counter);
 			return constraint;
 		}
 	}

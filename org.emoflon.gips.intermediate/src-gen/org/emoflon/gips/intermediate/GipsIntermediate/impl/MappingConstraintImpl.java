@@ -30,6 +30,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
  * <em>Elementwise</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingConstraintImpl#getExpression
  * <em>Expression</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingConstraintImpl#isConstant
+ * <em>Constant</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingConstraintImpl#getMapping
  * <em>Mapping</em>}</li>
  * </ul>
@@ -86,6 +88,26 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 	 * @ordered
 	 */
 	protected RelationalExpression expression;
+
+	/**
+	 * The default value of the '{@link #isConstant() <em>Constant</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isConstant()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean CONSTANT_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isConstant() <em>Constant</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isConstant()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean constant = CONSTANT_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getMapping() <em>Mapping</em>}' reference.
@@ -215,6 +237,28 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 	 * 
 	 * @generated
 	 */
+	public boolean isConstant() {
+		return constant;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setConstant(boolean newConstant) {
+		boolean oldConstant = constant;
+		constant = newConstant;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.MAPPING_CONSTRAINT__CONSTANT,
+					oldConstant, constant));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public Mapping getMapping() {
 		if (mapping != null && mapping.eIsProxy()) {
 			InternalEObject oldMapping = (InternalEObject) mapping;
@@ -278,6 +322,8 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 			return isElementwise();
 		case GipsIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION:
 			return getExpression();
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__CONSTANT:
+			return isConstant();
 		case GipsIntermediatePackage.MAPPING_CONSTRAINT__MAPPING:
 			if (resolve)
 				return getMapping();
@@ -303,6 +349,9 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 		case GipsIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION:
 			setExpression((RelationalExpression) newValue);
 			return;
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__CONSTANT:
+			setConstant((Boolean) newValue);
+			return;
 		case GipsIntermediatePackage.MAPPING_CONSTRAINT__MAPPING:
 			setMapping((Mapping) newValue);
 			return;
@@ -327,6 +376,9 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 		case GipsIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION:
 			setExpression((RelationalExpression) null);
 			return;
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__CONSTANT:
+			setConstant(CONSTANT_EDEFAULT);
+			return;
 		case GipsIntermediatePackage.MAPPING_CONSTRAINT__MAPPING:
 			setMapping((Mapping) null);
 			return;
@@ -348,6 +400,8 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 			return elementwise != ELEMENTWISE_EDEFAULT;
 		case GipsIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION:
 			return expression != null;
+		case GipsIntermediatePackage.MAPPING_CONSTRAINT__CONSTANT:
+			return constant != CONSTANT_EDEFAULT;
 		case GipsIntermediatePackage.MAPPING_CONSTRAINT__MAPPING:
 			return mapping != null;
 		}
@@ -369,6 +423,8 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 				return GipsIntermediatePackage.CONSTRAINT__ELEMENTWISE;
 			case GipsIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION:
 				return GipsIntermediatePackage.CONSTRAINT__EXPRESSION;
+			case GipsIntermediatePackage.MAPPING_CONSTRAINT__CONSTANT:
+				return GipsIntermediatePackage.CONSTRAINT__CONSTANT;
 			default:
 				return -1;
 			}
@@ -391,6 +447,8 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 				return GipsIntermediatePackage.MAPPING_CONSTRAINT__ELEMENTWISE;
 			case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
 				return GipsIntermediatePackage.MAPPING_CONSTRAINT__EXPRESSION;
+			case GipsIntermediatePackage.CONSTRAINT__CONSTANT:
+				return GipsIntermediatePackage.MAPPING_CONSTRAINT__CONSTANT;
 			default:
 				return -1;
 			}
@@ -413,6 +471,8 @@ public class MappingConstraintImpl extends MinimalEObjectImpl.Container implemen
 		result.append(name);
 		result.append(", elementwise: ");
 		result.append(elementwise);
+		result.append(", constant: ");
+		result.append(constant);
 		result.append(')');
 		return result.toString();
 	}

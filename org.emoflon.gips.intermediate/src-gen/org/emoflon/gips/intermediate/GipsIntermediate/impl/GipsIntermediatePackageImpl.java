@@ -1037,6 +1037,15 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public EAttribute getConstraint_Constant() {
+		return (EAttribute) constraintEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getGlobalConstraint() {
 		return globalConstraintEClass;
 	}
@@ -2417,6 +2426,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		createEAttribute(constraintEClass, CONSTRAINT__NAME);
 		createEAttribute(constraintEClass, CONSTRAINT__ELEMENTWISE);
 		createEReference(constraintEClass, CONSTRAINT__EXPRESSION);
+		createEAttribute(constraintEClass, CONSTRAINT__CONSTANT);
 
 		globalConstraintEClass = createEClass(GLOBAL_CONSTRAINT);
 
@@ -2828,6 +2838,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEReference(getConstraint_Expression(), this.getRelationalExpression(), null, "expression", null, 1, 1,
 				Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getConstraint_Constant(), ecorePackage.getEBoolean(), "constant", null, 0, 1, Constraint.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(globalConstraintEClass, GlobalConstraint.class, "GlobalConstraint", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);

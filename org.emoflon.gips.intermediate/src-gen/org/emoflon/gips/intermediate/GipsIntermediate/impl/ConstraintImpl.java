@@ -28,6 +28,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
  * <em>Elementwise</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getExpression
  * <em>Expression</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#isConstant
+ * <em>Constant</em>}</li>
  * </ul>
  *
  * @generated
@@ -82,6 +84,26 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * @ordered
 	 */
 	protected RelationalExpression expression;
+
+	/**
+	 * The default value of the '{@link #isConstant() <em>Constant</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isConstant()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean CONSTANT_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isConstant() <em>Constant</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isConstant()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean constant = CONSTANT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -201,6 +223,28 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * 
 	 * @generated
 	 */
+	public boolean isConstant() {
+		return constant;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setConstant(boolean newConstant) {
+		boolean oldConstant = constant;
+		constant = newConstant;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.CONSTRAINT__CONSTANT,
+					oldConstant, constant));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -224,6 +268,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 			return isElementwise();
 		case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
 			return getExpression();
+		case GipsIntermediatePackage.CONSTRAINT__CONSTANT:
+			return isConstant();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -244,6 +290,9 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 			return;
 		case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
 			setExpression((RelationalExpression) newValue);
+			return;
+		case GipsIntermediatePackage.CONSTRAINT__CONSTANT:
+			setConstant((Boolean) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -266,6 +315,9 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 		case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
 			setExpression((RelationalExpression) null);
 			return;
+		case GipsIntermediatePackage.CONSTRAINT__CONSTANT:
+			setConstant(CONSTANT_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -284,6 +336,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 			return elementwise != ELEMENTWISE_EDEFAULT;
 		case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
 			return expression != null;
+		case GipsIntermediatePackage.CONSTRAINT__CONSTANT:
+			return constant != CONSTANT_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -303,6 +357,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 		result.append(name);
 		result.append(", elementwise: ");
 		result.append(elementwise);
+		result.append(", constant: ");
+		result.append(constant);
 		result.append(')');
 		return result.toString();
 	}

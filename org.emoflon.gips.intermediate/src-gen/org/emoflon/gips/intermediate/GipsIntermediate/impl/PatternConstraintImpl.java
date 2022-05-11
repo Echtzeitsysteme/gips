@@ -30,6 +30,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
  * <em>Elementwise</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternConstraintImpl#getExpression
  * <em>Expression</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternConstraintImpl#isConstant
+ * <em>Constant</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternConstraintImpl#getPattern
  * <em>Pattern</em>}</li>
  * </ul>
@@ -86,6 +88,26 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	 * @ordered
 	 */
 	protected RelationalExpression expression;
+
+	/**
+	 * The default value of the '{@link #isConstant() <em>Constant</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isConstant()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean CONSTANT_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isConstant() <em>Constant</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isConstant()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean constant = CONSTANT_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getPattern() <em>Pattern</em>}' reference.
@@ -215,6 +237,28 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 	 * 
 	 * @generated
 	 */
+	public boolean isConstant() {
+		return constant;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setConstant(boolean newConstant) {
+		boolean oldConstant = constant;
+		constant = newConstant;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.PATTERN_CONSTRAINT__CONSTANT,
+					oldConstant, constant));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public Pattern getPattern() {
 		if (pattern != null && pattern.eIsProxy()) {
 			InternalEObject oldPattern = (InternalEObject) pattern;
@@ -278,6 +322,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 			return isElementwise();
 		case GipsIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION:
 			return getExpression();
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__CONSTANT:
+			return isConstant();
 		case GipsIntermediatePackage.PATTERN_CONSTRAINT__PATTERN:
 			if (resolve)
 				return getPattern();
@@ -303,6 +349,9 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 		case GipsIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION:
 			setExpression((RelationalExpression) newValue);
 			return;
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__CONSTANT:
+			setConstant((Boolean) newValue);
+			return;
 		case GipsIntermediatePackage.PATTERN_CONSTRAINT__PATTERN:
 			setPattern((Pattern) newValue);
 			return;
@@ -327,6 +376,9 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 		case GipsIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION:
 			setExpression((RelationalExpression) null);
 			return;
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__CONSTANT:
+			setConstant(CONSTANT_EDEFAULT);
+			return;
 		case GipsIntermediatePackage.PATTERN_CONSTRAINT__PATTERN:
 			setPattern((Pattern) null);
 			return;
@@ -348,6 +400,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 			return elementwise != ELEMENTWISE_EDEFAULT;
 		case GipsIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION:
 			return expression != null;
+		case GipsIntermediatePackage.PATTERN_CONSTRAINT__CONSTANT:
+			return constant != CONSTANT_EDEFAULT;
 		case GipsIntermediatePackage.PATTERN_CONSTRAINT__PATTERN:
 			return pattern != null;
 		}
@@ -369,6 +423,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 				return GipsIntermediatePackage.CONSTRAINT__ELEMENTWISE;
 			case GipsIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION:
 				return GipsIntermediatePackage.CONSTRAINT__EXPRESSION;
+			case GipsIntermediatePackage.PATTERN_CONSTRAINT__CONSTANT:
+				return GipsIntermediatePackage.CONSTRAINT__CONSTANT;
 			default:
 				return -1;
 			}
@@ -391,6 +447,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 				return GipsIntermediatePackage.PATTERN_CONSTRAINT__ELEMENTWISE;
 			case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
 				return GipsIntermediatePackage.PATTERN_CONSTRAINT__EXPRESSION;
+			case GipsIntermediatePackage.CONSTRAINT__CONSTANT:
+				return GipsIntermediatePackage.PATTERN_CONSTRAINT__CONSTANT;
 			default:
 				return -1;
 			}
@@ -413,6 +471,8 @@ public class PatternConstraintImpl extends MinimalEObjectImpl.Container implemen
 		result.append(name);
 		result.append(", elementwise: ");
 		result.append(elementwise);
+		result.append(", constant: ");
+		result.append(constant);
 		result.append(')');
 		return result.toString();
 	}

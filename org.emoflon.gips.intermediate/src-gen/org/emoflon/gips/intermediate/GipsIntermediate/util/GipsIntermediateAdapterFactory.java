@@ -102,6 +102,11 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseGlobalConstraint(GlobalConstraint object) {
+			return createGlobalConstraintAdapter();
+		}
+
+		@Override
 		public Adapter caseObjective(Objective object) {
 			return createObjectiveAdapter();
 		}
@@ -179,6 +184,11 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseArithmeticLiteral(ArithmeticLiteral object) {
 			return createArithmeticLiteralAdapter();
+		}
+
+		@Override
+		public Adapter caseArithmeticNullLiteral(ArithmeticNullLiteral object) {
+			return createArithmeticNullLiteralAdapter();
 		}
 
 		@Override
@@ -522,6 +532,22 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint
+	 * <em>Global Constraint</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint
+	 * @generated
+	 */
+	public Adapter createGlobalConstraintAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class
 	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Objective
 	 * <em>Objective</em>}'. <!-- begin-user-doc --> This default implementation
 	 * returns null so that we can easily ignore cases; it's useful to ignore a case
@@ -769,6 +795,22 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createArithmeticLiteralAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticNullLiteral
+	 * <em>Arithmetic Null Literal</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticNullLiteral
+	 * @generated
+	 */
+	public Adapter createArithmeticNullLiteralAdapter() {
 		return null;
 	}
 

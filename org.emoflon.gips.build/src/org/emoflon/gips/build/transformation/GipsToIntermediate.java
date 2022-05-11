@@ -123,7 +123,7 @@ public class GipsToIntermediate {
 		data.gipsSlangFile().getMappings().forEach(eMapping -> {
 			Mapping mapping = factory.createMapping();
 			mapping.setName(eMapping.getName());
-			mapping.setRule(data.ePattern2Rule().get(eMapping.getRule()));
+			mapping.setRule(data.ePattern2Rule().get(eMapping.getPattern()));
 			data.model().getVariables().add(mapping);
 			data.eMapping2Mapping().put(eMapping, mapping);
 		});

@@ -67,6 +67,15 @@ public interface GipsIntermediateFactory extends EFactory {
 	Mapping createMapping();
 
 	/**
+	 * Returns a new object of class '<em>Global Constraint</em>'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Global Constraint</em>'.
+	 * @generated
+	 */
+	GlobalConstraint createGlobalConstraint();
+
+	/**
 	 * Returns a new object of class '<em>Objective</em>'. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -164,6 +173,15 @@ public interface GipsIntermediateFactory extends EFactory {
 	 * @generated
 	 */
 	ArithmeticValue createArithmeticValue();
+
+	/**
+	 * Returns a new object of class '<em>Arithmetic Null Literal</em>'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Arithmetic Null Literal</em>'.
+	 * @generated
+	 */
+	ArithmeticNullLiteral createArithmeticNullLiteral();
 
 	/**
 	 * Returns a new object of class '<em>Integer Literal</em>'. <!-- begin-user-doc

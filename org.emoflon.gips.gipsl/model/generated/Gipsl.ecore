@@ -25,6 +25,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="rndSeed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="enablePresolve" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="enableDebugOutput" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enableTolernace" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tolerance" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="SolverType">
     <eLiterals name="GUROBI" literal="GUROBI"/>
@@ -46,6 +48,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//GipsArithmeticExpr"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsGlobalContext"/>
   <eClassifiers xsi:type="ecore:EClass" name="GipsMappingContext">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" eType="#//GipsMapping"/>
   </eClassifiers>
@@ -158,6 +161,7 @@
     <eLiterals name="NOT_EMPTY" literal="notEmpty()"/>
     <eLiterals name="COUNT" value="1" literal="count()"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GlobalContext" eSuperTypes="#//GipsGlobalContext"/>
   <eClassifiers xsi:type="ecore:EClass" name="GipsBinaryBoolExpr" eSuperTypes="#//GipsBoolExpr">
     <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//GipsBoolExpr"
         containment="true"/>
@@ -199,7 +203,7 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsMappingValue" eSuperTypes="#//GipsContextOperationExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsMappingCount" eSuperTypes="#//GipsContextOperationExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="GipsMappingCheckValue" eSuperTypes="#//GipsContextOperationExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="count" eType="#//GipsAttributeExpr"
         containment="true"/>
   </eClassifiers>

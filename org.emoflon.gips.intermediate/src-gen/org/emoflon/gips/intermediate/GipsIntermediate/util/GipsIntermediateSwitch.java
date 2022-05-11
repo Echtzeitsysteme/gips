@@ -119,6 +119,15 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case GipsIntermediatePackage.GLOBAL_CONSTRAINT: {
+			GlobalConstraint globalConstraint = (GlobalConstraint) theEObject;
+			T result = caseGlobalConstraint(globalConstraint);
+			if (result == null)
+				result = caseConstraint(globalConstraint);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case GipsIntermediatePackage.OBJECTIVE: {
 			Objective objective = (Objective) theEObject;
 			T result = caseObjective(objective);
@@ -265,6 +274,19 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 				result = caseArithmeticValueExpression(arithmeticLiteral);
 			if (result == null)
 				result = caseArithmeticExpression(arithmeticLiteral);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case GipsIntermediatePackage.ARITHMETIC_NULL_LITERAL: {
+			ArithmeticNullLiteral arithmeticNullLiteral = (ArithmeticNullLiteral) theEObject;
+			T result = caseArithmeticNullLiteral(arithmeticNullLiteral);
+			if (result == null)
+				result = caseArithmeticLiteral(arithmeticNullLiteral);
+			if (result == null)
+				result = caseArithmeticValueExpression(arithmeticNullLiteral);
+			if (result == null)
+				result = caseArithmeticExpression(arithmeticNullLiteral);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -818,6 +840,21 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Global
+	 * Constraint</em>'. <!-- begin-user-doc --> This implementation returns null;
+	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Global
+	 *         Constraint</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGlobalConstraint(GlobalConstraint object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of
 	 * '<em>Objective</em>'. <!-- begin-user-doc --> This implementation returns
 	 * null; returning a non-null result will terminate the switch. <!--
@@ -1061,6 +1098,22 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseArithmeticLiteral(ArithmeticLiteral object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of
+	 * '<em>Arithmetic Null Literal</em>'. <!-- begin-user-doc --> This
+	 * implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of
+	 *         '<em>Arithmetic Null Literal</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseArithmeticNullLiteral(ArithmeticNullLiteral object) {
 		return null;
 	}
 

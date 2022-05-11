@@ -38,11 +38,7 @@ public class AttributeInObjectiveTransformer extends AttributeExpressionTransfor
 					SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
 					return transformer.transform(eMapping);
 				}
-				case EXISTS -> {
-					throw new IllegalArgumentException(
-							"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
-				}
-				case NOTEXISTS -> {
+				case NOT_EMPTY -> {
 					throw new IllegalArgumentException(
 							"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
 				}

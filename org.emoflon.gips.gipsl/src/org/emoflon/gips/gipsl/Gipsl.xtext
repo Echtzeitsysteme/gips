@@ -25,6 +25,7 @@ GipsConfig : {GipsConfig}
 	('randomSeed' ':=' enableSeed = GipsBoolean '[' 'value' ':=' rndSeed=GipsInteger ']' ';')?
 	('presolve' ':=' enablePresolve = GipsBoolean ';')?
 	('debugOutput' ':=' enableDebugOutput = GipsBoolean ';')?
+	('tolerance' ':=' enableTolernace = GipsBoolean '[' 'value' ':=' tolerance=GipsDouble ']' ';')?
 	'}'
 ;
 
@@ -37,7 +38,7 @@ GipsMapping :
 ;
 
 GipsConstraint : 
-	'constraint' '->' context=(GipsMappingContext | GipsTypeContext | GipsPatternContext) '{'
+	'constraint' '->' context=(GipsGlobalContext | GipsMappingContext | GipsTypeContext | GipsPatternContext) '{'
 		expr = GipsBool
 	'}'
 ;
@@ -46,6 +47,10 @@ GipsObjective :
 	'objective' name=ID '->' context=(GipsMappingContext | GipsTypeContext | GipsPatternContext) '{'
 		expr = GipsArithmeticExpr
 	'}'
+;
+
+GipsGlobalContext: {GlobalContext}
+	'global'
 ;
 
 GipsMappingContext:
@@ -144,7 +149,7 @@ GipsContextExpr returns GipsAttributeExpr: {GipsContextExpr}
 
 GipsContextOperationExpression returns GipsContextOperationExpression: 
 	{GipsMappingValue} 'value()' |
-	{GipsMappingCount} 'isMapped' '(' (count=GipsContextExpr)? ')'
+	{GipsMappingCheckValue} 'isMapped' '(' (count=GipsContextExpr)? ')'
 ;
 
 GipsTypeCast:

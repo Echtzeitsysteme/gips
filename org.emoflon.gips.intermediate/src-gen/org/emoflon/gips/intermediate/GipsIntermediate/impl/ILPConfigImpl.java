@@ -44,6 +44,10 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType;
  * <em>Enable Presolve</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isEnableDebugOutput
  * <em>Enable Debug Output</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isEnableCustomTolerance
+ * <em>Enable Custom Tolerance</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getTolerance
+ * <em>Tolerance</em>}</li>
  * </ul>
  *
  * @generated
@@ -288,6 +292,46 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	 * @ordered
 	 */
 	protected boolean enableDebugOutput = ENABLE_DEBUG_OUTPUT_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isEnableCustomTolerance() <em>Enable Custom
+	 * Tolerance</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isEnableCustomTolerance()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean ENABLE_CUSTOM_TOLERANCE_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isEnableCustomTolerance() <em>Enable Custom
+	 * Tolerance</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isEnableCustomTolerance()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean enableCustomTolerance = ENABLE_CUSTOM_TOLERANCE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getTolerance() <em>Tolerance</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getTolerance()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final double TOLERANCE_EDEFAULT = 0.0;
+
+	/**
+	 * The cached value of the '{@link #getTolerance() <em>Tolerance</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getTolerance()
+	 * @generated
+	 * @ordered
+	 */
+	protected double tolerance = TOLERANCE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -577,6 +621,51 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	 * 
 	 * @generated
 	 */
+	public boolean isEnableCustomTolerance() {
+		return enableCustomTolerance;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setEnableCustomTolerance(boolean newEnableCustomTolerance) {
+		boolean oldEnableCustomTolerance = enableCustomTolerance;
+		enableCustomTolerance = newEnableCustomTolerance;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					GipsIntermediatePackage.ILP_CONFIG__ENABLE_CUSTOM_TOLERANCE, oldEnableCustomTolerance,
+					enableCustomTolerance));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public double getTolerance() {
+		return tolerance;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setTolerance(double newTolerance) {
+		double oldTolerance = tolerance;
+		tolerance = newTolerance;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.ILP_CONFIG__TOLERANCE,
+					oldTolerance, tolerance));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -604,6 +693,10 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 			return isEnablePresolve();
 		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_DEBUG_OUTPUT:
 			return isEnableDebugOutput();
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_CUSTOM_TOLERANCE:
+			return isEnableCustomTolerance();
+		case GipsIntermediatePackage.ILP_CONFIG__TOLERANCE:
+			return getTolerance();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -651,6 +744,12 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 			return;
 		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_DEBUG_OUTPUT:
 			setEnableDebugOutput((Boolean) newValue);
+			return;
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_CUSTOM_TOLERANCE:
+			setEnableCustomTolerance((Boolean) newValue);
+			return;
+		case GipsIntermediatePackage.ILP_CONFIG__TOLERANCE:
+			setTolerance((Double) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -700,6 +799,12 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_DEBUG_OUTPUT:
 			setEnableDebugOutput(ENABLE_DEBUG_OUTPUT_EDEFAULT);
 			return;
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_CUSTOM_TOLERANCE:
+			setEnableCustomTolerance(ENABLE_CUSTOM_TOLERANCE_EDEFAULT);
+			return;
+		case GipsIntermediatePackage.ILP_CONFIG__TOLERANCE:
+			setTolerance(TOLERANCE_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -738,6 +843,10 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 			return enablePresolve != ENABLE_PRESOLVE_EDEFAULT;
 		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_DEBUG_OUTPUT:
 			return enableDebugOutput != ENABLE_DEBUG_OUTPUT_EDEFAULT;
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_CUSTOM_TOLERANCE:
+			return enableCustomTolerance != ENABLE_CUSTOM_TOLERANCE_EDEFAULT;
+		case GipsIntermediatePackage.ILP_CONFIG__TOLERANCE:
+			return tolerance != TOLERANCE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -777,6 +886,10 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 		result.append(enablePresolve);
 		result.append(", enableDebugOutput: ");
 		result.append(enableDebugOutput);
+		result.append(", enableCustomTolerance: ");
+		result.append(enableCustomTolerance);
+		result.append(", tolerance: ");
+		result.append(tolerance);
 		result.append(')');
 		return result.toString();
 	}

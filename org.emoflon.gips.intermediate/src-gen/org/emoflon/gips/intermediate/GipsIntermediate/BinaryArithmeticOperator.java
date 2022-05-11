@@ -66,7 +66,16 @@ public enum BinaryArithmeticOperator implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	POW(4, "POW", "POW");
+	POW(4, "POW", "POW"),
+	/**
+	 * The '<em><b>LOG</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see #LOG_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	LOG(5, "LOG", "LOG");
 
 	/**
 	 * The '<em><b>ADD</b></em>' literal value. <!-- begin-user-doc --> <!--
@@ -124,13 +133,24 @@ public enum BinaryArithmeticOperator implements Enumerator {
 	public static final int POW_VALUE = 4;
 
 	/**
+	 * The '<em><b>LOG</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see #LOG
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
+	public static final int LOG_VALUE = 5;
+
+	/**
 	 * An array of all the '<em><b>Binary Arithmetic Operator</b></em>' enumerators.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
 	private static final BinaryArithmeticOperator[] VALUES_ARRAY = new BinaryArithmeticOperator[] { ADD, SUBTRACT,
-			MULTIPLY, DIVIDE, POW, };
+			MULTIPLY, DIVIDE, POW, LOG, };
 
 	/**
 	 * A public read-only list of all the '<em><b>Binary Arithmetic
@@ -197,6 +217,8 @@ public enum BinaryArithmeticOperator implements Enumerator {
 			return DIVIDE;
 		case POW_VALUE:
 			return POW;
+		case LOG_VALUE:
+			return LOG;
 		}
 		return null;
 	}

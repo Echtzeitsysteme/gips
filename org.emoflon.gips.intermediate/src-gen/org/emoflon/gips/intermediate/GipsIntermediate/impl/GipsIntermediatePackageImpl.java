@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticNullLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression;
@@ -41,6 +42,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
 import org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType;
@@ -145,6 +147,13 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * @generated
 	 */
 	private EClass constraintEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass globalConstraintEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -257,6 +266,13 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * @generated
 	 */
 	private EClass arithmeticLiteralEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass arithmeticNullLiteralEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -886,6 +902,24 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public EAttribute getILPConfig_EnableCustomTolerance() {
+		return (EAttribute) ilpConfigEClass.getEStructuralFeatures().get(12);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getILPConfig_Tolerance() {
+		return (EAttribute) ilpConfigEClass.getEStructuralFeatures().get(13);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getVariableSet() {
 		return variableSetEClass;
 	}
@@ -996,6 +1030,15 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 */
 	public EReference getConstraint_Expression() {
 		return (EReference) constraintEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EClass getGlobalConstraint() {
+		return globalConstraintEClass;
 	}
 
 	/**
@@ -1311,6 +1354,15 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 */
 	public EClass getArithmeticLiteral() {
 		return arithmeticLiteralEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EClass getArithmeticNullLiteral() {
+		return arithmeticNullLiteralEClass;
 	}
 
 	/**
@@ -2345,6 +2397,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		createEAttribute(ilpConfigEClass, ILP_CONFIG__PRESOLVE);
 		createEAttribute(ilpConfigEClass, ILP_CONFIG__ENABLE_PRESOLVE);
 		createEAttribute(ilpConfigEClass, ILP_CONFIG__ENABLE_DEBUG_OUTPUT);
+		createEAttribute(ilpConfigEClass, ILP_CONFIG__ENABLE_CUSTOM_TOLERANCE);
+		createEAttribute(ilpConfigEClass, ILP_CONFIG__TOLERANCE);
 
 		variableSetEClass = createEClass(VARIABLE_SET);
 		createEAttribute(variableSetEClass, VARIABLE_SET__NAME);
@@ -2363,6 +2417,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		createEAttribute(constraintEClass, CONSTRAINT__NAME);
 		createEAttribute(constraintEClass, CONSTRAINT__ELEMENTWISE);
 		createEReference(constraintEClass, CONSTRAINT__EXPRESSION);
+
+		globalConstraintEClass = createEClass(GLOBAL_CONSTRAINT);
 
 		objectiveEClass = createEClass(OBJECTIVE);
 		createEAttribute(objectiveEClass, OBJECTIVE__NAME);
@@ -2414,6 +2470,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		createEReference(arithmeticValueEClass, ARITHMETIC_VALUE__VALUE);
 
 		arithmeticLiteralEClass = createEClass(ARITHMETIC_LITERAL);
+
+		arithmeticNullLiteralEClass = createEClass(ARITHMETIC_NULL_LITERAL);
 
 		integerLiteralEClass = createEClass(INTEGER_LITERAL);
 		createEAttribute(integerLiteralEClass, INTEGER_LITERAL__LITERAL);
@@ -2608,6 +2666,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		patternEClass.getESuperTypes().add(this.getVariableSet());
 		typeEClass.getESuperTypes().add(this.getVariableSet());
 		mappingEClass.getESuperTypes().add(this.getVariableSet());
+		globalConstraintEClass.getESuperTypes().add(this.getConstraint());
 		patternConstraintEClass.getESuperTypes().add(this.getContext());
 		patternConstraintEClass.getESuperTypes().add(this.getConstraint());
 		typeConstraintEClass.getESuperTypes().add(this.getContext());
@@ -2625,6 +2684,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		arithmeticValueExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
 		arithmeticValueEClass.getESuperTypes().add(this.getArithmeticValueExpression());
 		arithmeticLiteralEClass.getESuperTypes().add(this.getArithmeticValueExpression());
+		arithmeticNullLiteralEClass.getESuperTypes().add(this.getArithmeticLiteral());
 		integerLiteralEClass.getESuperTypes().add(this.getArithmeticLiteral());
 		doubleLiteralEClass.getESuperTypes().add(this.getArithmeticLiteral());
 		boolBinaryExpressionEClass.getESuperTypes().add(this.getBoolExpression());
@@ -2730,6 +2790,11 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEAttribute(getILPConfig_EnableDebugOutput(), ecorePackage.getEBoolean(), "enableDebugOutput", null, 0, 1,
 				ILPConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
 				!IS_DERIVED, IS_ORDERED);
+		initEAttribute(getILPConfig_EnableCustomTolerance(), ecorePackage.getEBoolean(), "enableCustomTolerance", null,
+				0, 1, ILPConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
+		initEAttribute(getILPConfig_Tolerance(), ecorePackage.getEDouble(), "tolerance", null, 0, 1, ILPConfig.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(variableSetEClass, VariableSet.class, "VariableSet", IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
@@ -2763,6 +2828,9 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEReference(getConstraint_Expression(), this.getRelationalExpression(), null, "expression", null, 1, 1,
 				Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(globalConstraintEClass, GlobalConstraint.class, "GlobalConstraint", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(objectiveEClass, Objective.class, "Objective", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
@@ -2866,6 +2934,9 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 
 		initEClass(arithmeticLiteralEClass, ArithmeticLiteral.class, "ArithmeticLiteral", IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(arithmeticNullLiteralEClass, ArithmeticNullLiteral.class, "ArithmeticNullLiteral", !IS_ABSTRACT,
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(integerLiteralEClass, IntegerLiteral.class, "IntegerLiteral", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
@@ -3186,6 +3257,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		addEEnumLiteral(binaryArithmeticOperatorEEnum, BinaryArithmeticOperator.MULTIPLY);
 		addEEnumLiteral(binaryArithmeticOperatorEEnum, BinaryArithmeticOperator.DIVIDE);
 		addEEnumLiteral(binaryArithmeticOperatorEEnum, BinaryArithmeticOperator.POW);
+		addEEnumLiteral(binaryArithmeticOperatorEEnum, BinaryArithmeticOperator.LOG);
 
 		initEEnum(unaryArithmeticOperatorEEnum, UnaryArithmeticOperator.class, "UnaryArithmeticOperator");
 		addEEnumLiteral(unaryArithmeticOperatorEEnum, UnaryArithmeticOperator.BRACKET);

@@ -31,6 +31,9 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="presolve" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="enablePresolve" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="enableDebugOutput" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enableCustomTolerance"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tolerance" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="ILPSolverType">
     <eLiterals name="GUROBI"/>
@@ -55,6 +58,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
         eType="#//RelationalExpression" containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GlobalConstraint" eSuperTypes="#//Constraint"/>
   <eClassifiers xsi:type="ecore:EClass" name="Objective">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementwise" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -125,6 +129,7 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ArithmeticLiteral" abstract="true" eSuperTypes="#//ArithmeticValueExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ArithmeticNullLiteral" eSuperTypes="#//ArithmeticLiteral"/>
   <eClassifiers xsi:type="ecore:EClass" name="IntegerLiteral" eSuperTypes="#//ArithmeticLiteral">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="literal" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
@@ -138,6 +143,7 @@
     <eLiterals name="MULTIPLY" value="2"/>
     <eLiterals name="DIVIDE" value="3"/>
     <eLiterals name="POW" value="4"/>
+    <eLiterals name="LOG" value="5"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="UnaryArithmeticOperator">
     <eLiterals name="BRACKET"/>

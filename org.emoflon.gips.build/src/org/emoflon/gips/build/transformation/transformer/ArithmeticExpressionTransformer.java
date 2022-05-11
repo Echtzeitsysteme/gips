@@ -7,12 +7,14 @@ import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsBracketExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsConstant;
 import org.emoflon.gips.gipsl.gipsl.GipsExpArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsObjectiveExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsProductArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsSumArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticNullLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator;
@@ -39,6 +41,8 @@ public class ArithmeticExpressionTransformer<T extends EObject> extends Transfor
 			return transform(bracketExpr);
 		} else if (eArithmetic instanceof GipsArithmeticLiteral lit) {
 			return transform(lit);
+		} else if (eArithmetic instanceof GipsConstant constant) {
+			return transform(constant);
 		} else if (eArithmetic instanceof GipsObjectiveExpression objExpr) {
 			return transform(objExpr);
 		} else {
@@ -87,6 +91,9 @@ public class ArithmeticExpressionTransformer<T extends EObject> extends Transfor
 		switch (expExpr.getOperator()) {
 		case POW -> {
 			binExpr.setOperator(BinaryArithmeticOperator.POW);
+		}
+		case LOG -> {
+			binExpr.setOperator(BinaryArithmeticOperator.LOG);
 		}
 		default -> {
 			throw new UnsupportedOperationException("Unknown arithmetic operator: " + expExpr.getOperator());
@@ -147,6 +154,28 @@ public class ArithmeticExpressionTransformer<T extends EObject> extends Transfor
 						"Value <" + lit.getValue() + "> can't be parsed to neither integer nor double value.");
 			}
 		}
+	}
+
+	public ArithmeticExpression transform(final GipsConstant constant) throws Exception {
+		return switch (constant.getValue()) {
+		case E -> {
+			DoubleLiteral doubleLit = factory.createDoubleLiteral();
+			doubleLit.setLiteral(Math.E);
+			yield doubleLit;
+		}
+		case NULL -> {
+			ArithmeticNullLiteral nullLit = factory.createArithmeticNullLiteral();
+			yield nullLit;
+		}
+		case PI -> {
+			DoubleLiteral doubleLit = factory.createDoubleLiteral();
+			doubleLit.setLiteral(Math.PI);
+			yield doubleLit;
+		}
+		default -> {
+			throw new IllegalArgumentException("Unknown constant type " + constant.getValue());
+		}
+		};
 	}
 
 	public ArithmeticExpression transform(final GipsObjectiveExpression objExpr) throws Exception {

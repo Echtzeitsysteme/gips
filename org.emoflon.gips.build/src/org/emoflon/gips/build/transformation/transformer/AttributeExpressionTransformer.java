@@ -15,7 +15,9 @@ import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
 import org.emoflon.gips.gipsl.gipsl.GipsLambdaAttributeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingCheckValue;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingValue;
 import org.emoflon.gips.gipsl.gipsl.GipsNodeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamArithmetic;
@@ -222,24 +224,13 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 							GipsTransformationUtils.transformFeatureExpression(eNodeExpr.getExpr()));
 					return featureValue;
 				}
-			} else if (eContext.getExpr() instanceof GipsContextOperationExpression eContextOp) {
-				switch (eContextOp.getOperation()) {
-				case MAPPED -> {
-					throw new UnsupportedOperationException(
-							"Operation isMapped() is not allowed within nested (stream) expressions.");
-				}
-				case VALUE -> {
-					// TODO:
-					// On a serious note: Accessing ILP variable values should not be allowed in
-					// filter stream expressions since it is impractical.
-					ContextMappingValue value = factory.createContextMappingValue();
-					value.setMappingContext(data.eMapping2Mapping().get(mc.getMapping()));
-					return value;
-				}
-				default -> {
-					throw new UnsupportedOperationException("Unkown operation: " + eContextOp.getOperation());
-				}
-				}
+			} else if (eContext.getExpr() instanceof GipsMappingCheckValue mappingCountOp) {
+				throw new UnsupportedOperationException(
+						"Operation isMapped() is not allowed within nested (stream) expressions.");
+			} else if (eContext.getExpr() instanceof GipsMappingValue mappingValOp) {
+				ContextMappingValue value = factory.createContextMappingValue();
+				value.setMappingContext(data.eMapping2Mapping().get(mc.getMapping()));
+				return value;
 			} else {
 				throw new UnsupportedOperationException(
 						"Feature expressions can not be invoked directly upon mapping variables.");
@@ -260,11 +251,7 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 						SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
 						return transformer.transform(tc, fe, eContext.getStream());
 					}
-					case EXISTS -> {
-						throw new IllegalArgumentException(
-								"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
-					}
-					case NOTEXISTS -> {
+					case NOT_EMPTY -> {
 						throw new IllegalArgumentException(
 								"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
 					}
@@ -303,11 +290,7 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 							return transformer.transform(pc, data.eNode2Node().get(eNodeExpr.getNode()), fe,
 									eContext.getStream());
 						}
-						case EXISTS -> {
-							throw new IllegalArgumentException(
-									"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
-						}
-						case NOTEXISTS -> {
+						case NOT_EMPTY -> {
 							throw new IllegalArgumentException(
 									"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
 						}
@@ -350,11 +333,7 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 							return transformer.transform(mapping, data.eNode2Node().get(eNodeExpr.getNode()), fe,
 									eContext.getStream());
 						}
-						case EXISTS -> {
-							throw new IllegalArgumentException(
-									"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
-						}
-						case NOTEXISTS -> {
+						case NOT_EMPTY -> {
 							throw new IllegalArgumentException(
 									"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
 						}
@@ -433,12 +412,7 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 	protected ValueExpression transformVariableStreamOperation(final GipsContextOperationExpression eContextOp,
 			final GipsMappingAttributeExpr eMappingAttribute, final GipsStreamExpr streamIteratorContainer)
 			throws Exception {
-		switch (eContextOp.getOperation()) {
-		case MAPPED -> {
-			throw new UnsupportedOperationException(
-					"Operation isMapped() is not allowed within nested (stream) expressions.");
-		}
-		case VALUE -> {
+		if (eContextOp instanceof GipsMappingValue mappingValueOp) {
 			// TODO:
 			// On a serious note: Accessing ILP variable values should not be allowed in
 			// filter stream expressions since it is impractical.
@@ -447,10 +421,11 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 			mappingValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
 			mappingValue.setReturnType(EcorePackage.Literals.EINT);
 			return mappingValue;
-		}
-		default -> {
-			throw new UnsupportedOperationException("Unkown operation: " + eContextOp.getOperation());
-		}
+		} else if (eContextOp instanceof GipsMappingCheckValue mappingCountOp) {
+			throw new UnsupportedOperationException(
+					"Operation isMapped() is not allowed within nested (stream) expressions.");
+		} else {
+			throw new UnsupportedOperationException("Unkown operation: " + eContextOp.eClass());
 		}
 	}
 

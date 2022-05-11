@@ -39,8 +39,8 @@ import org.emoflon.gips.gipsl.gipsl.GipsLambdaAttributeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsLambdaExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingCheckValue;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
-import org.emoflon.gips.gipsl.gipsl.GipsMappingCount;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingValue;
 import org.emoflon.gips.gipsl.gipsl.GipsNodeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
@@ -1269,7 +1269,7 @@ public class GipslValidator extends AbstractGipslValidator {
 	}
 
 	public EvalType getEvalTypeFromContextOpExpr(final GipsContextOperationExpression expr) {
-		if (expr instanceof GipsMappingCount) {
+		if (expr instanceof GipsMappingCheckValue) {
 			return EvalType.BOOLEAN;
 		} else if (expr instanceof GipsMappingValue) {
 			return EvalType.INTEGER;

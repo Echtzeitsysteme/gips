@@ -36,6 +36,10 @@ import org.eclipse.emf.ecore.EObject;
  * <em>Enable Presolve</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableDebugOutput
  * <em>Enable Debug Output</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableCustomTolerance
+ * <em>Enable Custom Tolerance</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getTolerance
+ * <em>Tolerance</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig()
@@ -331,5 +335,53 @@ public interface ILPConfig extends EObject {
 	 * @generated
 	 */
 	void setEnableDebugOutput(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Enable Custom Tolerance</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Enable Custom Tolerance</em>' attribute.
+	 * @see #setEnableCustomTolerance(boolean)
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig_EnableCustomTolerance()
+	 * @model
+	 * @generated
+	 */
+	boolean isEnableCustomTolerance();
+
+	/**
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableCustomTolerance
+	 * <em>Enable Custom Tolerance</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @param value the new value of the '<em>Enable Custom Tolerance</em>'
+	 *              attribute.
+	 * @see #isEnableCustomTolerance()
+	 * @generated
+	 */
+	void setEnableCustomTolerance(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Tolerance</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Tolerance</em>' attribute.
+	 * @see #setTolerance(double)
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig_Tolerance()
+	 * @model
+	 * @generated
+	 */
+	double getTolerance();
+
+	/**
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getTolerance
+	 * <em>Tolerance</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value the new value of the '<em>Tolerance</em>' attribute.
+	 * @see #getTolerance()
+	 * @generated
+	 */
+	void setTolerance(double value);
 
 } // ILPConfig

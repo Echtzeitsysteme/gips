@@ -32,6 +32,7 @@
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//BinaryArithmeticOperator/MULTIPLY"/>
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//BinaryArithmeticOperator/DIVIDE"/>
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//BinaryArithmeticOperator/POW"/>
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//BinaryArithmeticOperator/LOG"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="GipsIntermediate.ecore#//UnaryArithmeticOperator">
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//UnaryArithmeticOperator/BRACKET"/>
@@ -77,6 +78,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//ILPConfig/presolve"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//ILPConfig/enablePresolve"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//ILPConfig/enableDebugOutput"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//ILPConfig/enableCustomTolerance"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//ILPConfig/tolerance"/>
     </genClasses>
     <genClasses image="false" ecoreClass="GipsIntermediate.ecore#//VariableSet">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//VariableSet/name"/>
@@ -96,6 +99,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Constraint/elementwise"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Constraint/expression"/>
     </genClasses>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//GlobalConstraint"/>
     <genClasses ecoreClass="GipsIntermediate.ecore#//Objective">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Objective/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Objective/elementwise"/>
@@ -144,6 +148,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//ArithmeticValue/value"/>
     </genClasses>
     <genClasses image="false" ecoreClass="GipsIntermediate.ecore#//ArithmeticLiteral"/>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//ArithmeticNullLiteral"/>
     <genClasses ecoreClass="GipsIntermediate.ecore#//IntegerLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//IntegerLiteral/literal"/>
     </genClasses>

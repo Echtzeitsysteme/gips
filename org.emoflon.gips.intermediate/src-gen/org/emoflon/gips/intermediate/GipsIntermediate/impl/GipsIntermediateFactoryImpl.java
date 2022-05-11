@@ -67,6 +67,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createType();
 		case GipsIntermediatePackage.MAPPING:
 			return createMapping();
+		case GipsIntermediatePackage.GLOBAL_CONSTRAINT:
+			return createGlobalConstraint();
 		case GipsIntermediatePackage.OBJECTIVE:
 			return createObjective();
 		case GipsIntermediatePackage.GLOBAL_OBJECTIVE:
@@ -89,6 +91,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createUnaryArithmeticExpression();
 		case GipsIntermediatePackage.ARITHMETIC_VALUE:
 			return createArithmeticValue();
+		case GipsIntermediatePackage.ARITHMETIC_NULL_LITERAL:
+			return createArithmeticNullLiteral();
 		case GipsIntermediatePackage.INTEGER_LITERAL:
 			return createIntegerLiteral();
 		case GipsIntermediatePackage.DOUBLE_LITERAL:
@@ -285,6 +289,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public GlobalConstraint createGlobalConstraint() {
+		GlobalConstraintImpl globalConstraint = new GlobalConstraintImpl();
+		return globalConstraint;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public Objective createObjective() {
 		ObjectiveImpl objective = new ObjectiveImpl();
 		return objective;
@@ -388,6 +402,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	public ArithmeticValue createArithmeticValue() {
 		ArithmeticValueImpl arithmeticValue = new ArithmeticValueImpl();
 		return arithmeticValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public ArithmeticNullLiteral createArithmeticNullLiteral() {
+		ArithmeticNullLiteralImpl arithmeticNullLiteral = new ArithmeticNullLiteralImpl();
+		return arithmeticNullLiteral;
 	}
 
 	/**

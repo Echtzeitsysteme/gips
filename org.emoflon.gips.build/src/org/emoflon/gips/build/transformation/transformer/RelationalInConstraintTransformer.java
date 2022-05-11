@@ -10,7 +10,9 @@ import org.emoflon.gips.gipsl.gipsl.GipsContains;
 import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingCheckValue;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingValue;
 import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
@@ -122,30 +124,30 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 
 	protected RelationalExpression createUnaryConstraintCondition(final GipsContextOperationExpression contextOperation)
 			throws Exception {
-		switch (contextOperation.getOperation()) {
-		case MAPPED -> {
+		if (contextOperation instanceof GipsMappingValue mappingValueOp) {
+			throw new UnsupportedOperationException(
+					"Some constrains contain invalid values within boolean expressions, e.g., arithmetic values instead of boolean values.");
+		} else if (contextOperation instanceof GipsMappingCheckValue mappingCountOp) {
 			RelationalExpression expr = factory.createRelationalExpression();
-			DoubleLiteral constOne = factory.createDoubleLiteral();
-			constOne.setLiteral(1);
-			expr.setLhs(constOne);
+			if (mappingCountOp.getCount() == null) {
+				DoubleLiteral constOne = factory.createDoubleLiteral();
+				constOne.setLiteral(1);
+				expr.setLhs(constOne);
+			} else {
+				ArithmeticExpressionTransformer transformer = transformerFactory.createArithmeticTransformer(context);
+				expr.setLhs(transformer.transform(mappingCountOp.getCount()));
+			}
 			expr.setOperator(RelationalOperator.EQUAL);
 			ArithmeticValue val = factory.createArithmeticValue();
 			expr.setRhs(val);
 			ContextMappingValue mapVal = factory.createContextMappingValue();
 			val.setValue(mapVal);
-			val.setReturnType(EcorePackage.Literals.EINT);
+			val.setReturnType(EcorePackage.Literals.EDOUBLE);
 			mapVal.setMappingContext(((MappingConstraint) context).getMapping());
 			return expr;
+		} else {
+			throw new UnsupportedOperationException("Unkown context operation: " + contextOperation.eClass());
 		}
-		case VALUE -> {
-			throw new UnsupportedOperationException(
-					"Some constrains contain invalid values within boolean expressions, e.g., arithmetic values instead of boolean values.");
-		}
-		default -> {
-			throw new UnsupportedOperationException("Unknown context operation: " + contextOperation.getOperation());
-		}
-		}
-
 	}
 
 	/*
@@ -163,24 +165,12 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 				throw new IllegalArgumentException(
 						"Some constrains contain invalid values within boolean expressions, e.g., arithmetic values instead of boolean values.");
 			}
-			case EXISTS -> {
+			case NOT_EMPTY -> {
 				RelationalExpression expr = factory.createRelationalExpression();
-				DoubleLiteral constZero = factory.createDoubleLiteral();
-				constZero.setLiteral(1);
-				expr.setLhs(constZero);
+				DoubleLiteral constOne = factory.createDoubleLiteral();
+				constOne.setLiteral(1);
+				expr.setLhs(constOne);
 				expr.setOperator(RelationalOperator.GREATER_OR_EQUAL);
-				SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
-				ArithmeticValue val = factory.createArithmeticValue();
-				val.setValue(transformer.transform(eMappingAttribute));
-				expr.setRhs(val);
-				return expr;
-			}
-			case NOTEXISTS -> {
-				RelationalExpression expr = factory.createRelationalExpression();
-				DoubleLiteral constZero = factory.createDoubleLiteral();
-				constZero.setLiteral(0);
-				expr.setLhs(constZero);
-				expr.setOperator(RelationalOperator.LESS_OR_EQUAL);
 				SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
 				ArithmeticValue val = factory.createArithmeticValue();
 				val.setValue(transformer.transform(eMappingAttribute));
@@ -193,9 +183,9 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 			}
 		} else if (terminalExpr instanceof GipsContains streamContains) {
 			RelationalExpression expr = factory.createRelationalExpression();
-			DoubleLiteral constZero = factory.createDoubleLiteral();
-			constZero.setLiteral(1);
-			expr.setLhs(constZero);
+			DoubleLiteral constOne = factory.createDoubleLiteral();
+			constOne.setLiteral(1);
+			expr.setLhs(constOne);
 			expr.setOperator(RelationalOperator.GREATER_OR_EQUAL);
 			SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
 			ArithmeticValue val = factory.createArithmeticValue();

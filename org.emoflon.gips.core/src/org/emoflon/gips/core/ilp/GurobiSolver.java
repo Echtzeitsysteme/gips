@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsEngine;
+import org.emoflon.gips.core.GipsGlobalConstraint;
 import org.emoflon.gips.core.GipsGlobalObjective;
 import org.emoflon.gips.core.GipsMapper;
 import org.emoflon.gips.core.GipsMapping;
@@ -144,6 +145,11 @@ public class GurobiSolver extends ILPSolver {
 
 	@Override
 	protected void translateConstraint(final GipsTypeConstraint<? extends EObject> constraint) {
+		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
+	}
+
+	@Override
+	protected void translateConstraint(GipsGlobalConstraint constraint) {
 		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
 	}
 

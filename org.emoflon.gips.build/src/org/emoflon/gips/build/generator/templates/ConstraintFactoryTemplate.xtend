@@ -22,11 +22,13 @@ class ConstraintFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel>
 		imports.add("org.emoflon.gips.core.GipsConstraint")
 		imports.add("org.emoflon.gips.core.GipsTypeConstraint")
 		imports.add("org.emoflon.gips.core.GipsMappingConstraint")
+		imports.add("org.emoflon.gips.core.GipsGlobalConstraint")
 		imports.add("org.emoflon.gips.core.gt.GipsPatternConstraint")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.Constraint")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint")
+		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint")
 		data.constraint2constraintClassName.values.forEach[c | imports.add(data.apiData.gipsConstraintPkg+"."+c)]
 	}
 	

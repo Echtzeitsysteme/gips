@@ -14,6 +14,7 @@ import org.emoflon.gips.core.GipsGlobalObjective;
 import org.emoflon.gips.core.TypeIndexer;
 import org.emoflon.gips.core.ilp.ILPSolver;
 import org.emoflon.gips.core.ilp.ILPSolverConfig;
+import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
@@ -93,6 +94,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		eMoflonAPI = eMoflonApp.initAPI();
 		loadIntermediateModel(gipsModelURI);
 		initTypeIndexer();
+		validationLog = new GipsConstraintValidationLog();
 		setSolverConfig(gipsModel.getConfig());
 		initMapperFactory();
 		createMappers();

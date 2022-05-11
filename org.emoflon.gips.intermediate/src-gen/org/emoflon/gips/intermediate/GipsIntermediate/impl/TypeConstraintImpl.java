@@ -11,9 +11,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
-import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 
@@ -87,7 +87,7 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * @generated
 	 * @ordered
 	 */
-	protected RelationalExpression expression;
+	protected BoolValueExpression expression;
 
 	/**
 	 * The default value of the '{@link #isConstant() <em>Constant</em>}' attribute.
@@ -187,7 +187,7 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * 
 	 * @generated
 	 */
-	public RelationalExpression getExpression() {
+	public BoolValueExpression getExpression() {
 		return expression;
 	}
 
@@ -196,8 +196,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * 
 	 * @generated
 	 */
-	public NotificationChain basicSetExpression(RelationalExpression newExpression, NotificationChain msgs) {
-		RelationalExpression oldExpression = expression;
+	public NotificationChain basicSetExpression(BoolValueExpression newExpression, NotificationChain msgs) {
+		BoolValueExpression oldExpression = expression;
 		expression = newExpression;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
@@ -215,7 +215,7 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * 
 	 * @generated
 	 */
-	public void setExpression(RelationalExpression newExpression) {
+	public void setExpression(BoolValueExpression newExpression) {
 		if (newExpression != expression) {
 			NotificationChain msgs = null;
 			if (expression != null)
@@ -347,7 +347,7 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 			setElementwise((Boolean) newValue);
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
-			setExpression((RelationalExpression) newValue);
+			setExpression((BoolValueExpression) newValue);
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT:
 			setConstant((Boolean) newValue);
@@ -374,7 +374,7 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 			setElementwise(ELEMENTWISE_EDEFAULT);
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
-			setExpression((RelationalExpression) null);
+			setExpression((BoolValueExpression) null);
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT:
 			setConstant(CONSTANT_EDEFAULT);

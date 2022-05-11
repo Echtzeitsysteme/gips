@@ -171,56 +171,59 @@ public class GipsToIntermediate {
 				}
 
 				boolean isLhsConst = (GipsTransformationUtils
-						.isConstantExpression(constraint.getExpression().getLhs()) == ArithmeticExpressionType.constant)
-								? true
-								: false;
+						.isConstantExpression(((RelationalExpression) constraint.getExpression())
+								.getLhs()) == ArithmeticExpressionType.constant) ? true : false;
 				boolean isRhsConst = (GipsTransformationUtils
-						.isConstantExpression(constraint.getExpression().getRhs()) == ArithmeticExpressionType.constant)
-								? true
-								: false;
+						.isConstantExpression(((RelationalExpression) constraint.getExpression())
+								.getRhs()) == ArithmeticExpressionType.constant) ? true : false;
 				if (!isLhsConst && !isRhsConst) {
 					// Fix this malformed constraint by subtracting the rhs from the lhs.
 					// E.g.: c: x < y is transformed to c: x - y < 0
 					BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
 					rewrite.setOperator(BinaryArithmeticOperator.SUBTRACT);
-					rewrite.setLhs(constraint.getExpression().getLhs());
-					rewrite.setRhs(constraint.getExpression().getRhs());
+					rewrite.setLhs(((RelationalExpression) constraint.getExpression()).getLhs());
+					rewrite.setRhs(((RelationalExpression) constraint.getExpression()).getRhs());
 					DoubleLiteral lit = factory.createDoubleLiteral();
 					lit.setLiteral(0);
-					constraint.getExpression().setLhs(rewrite);
-					constraint.getExpression().setRhs(lit);
+					((RelationalExpression) constraint.getExpression()).setLhs(rewrite);
+					((RelationalExpression) constraint.getExpression()).setRhs(lit);
 				}
 
 				isLhsConst = (GipsTransformationUtils
-						.isConstantExpression(constraint.getExpression().getLhs()) == ArithmeticExpressionType.constant)
-								? true
-								: false;
+						.isConstantExpression(((RelationalExpression) constraint.getExpression())
+								.getLhs()) == ArithmeticExpressionType.constant) ? true : false;
 
 				// Rewrite the non-constant expression, which will be translated into ILP-Terms,
 				// into a sum of products.
 				if (isLhsConst) {
-					ArithmeticExpression rhs = rewriteToSumOfProducts(constraint.getExpression().getRhs(), null, null);
-					constraint.getExpression().setRhs(constraint.getExpression().getLhs());
-					constraint.getExpression().setLhs(rhs);
-					GipsTransformationUtils.flipOperator(constraint.getExpression());
+					ArithmeticExpression rhs = rewriteToSumOfProducts(
+							((RelationalExpression) constraint.getExpression()).getRhs(), null, null);
+					((RelationalExpression) constraint.getExpression())
+							.setRhs(((RelationalExpression) constraint.getExpression()).getLhs());
+					((RelationalExpression) constraint.getExpression()).setLhs(rhs);
+					GipsTransformationUtils.flipOperator((RelationalExpression) constraint.getExpression());
 				} else {
-					constraint.getExpression()
-							.setLhs(rewriteToSumOfProducts(constraint.getExpression().getLhs(), null, null));
+					((RelationalExpression) constraint.getExpression()).setLhs(rewriteToSumOfProducts(
+							((RelationalExpression) constraint.getExpression()).getLhs(), null, null));
 				}
 				// Move constant terms from the sum of products to the constant side of the
 				// relational constraint.
-				constraint.setExpression(rewriteMoveConstantTerms(constraint.getExpression()));
+				constraint.setExpression(rewriteMoveConstantTerms((RelationalExpression) constraint.getExpression()));
 
 				// Remove subtractions, e.g.: a - b becomes a + -b
 				if (isLhsConst) {
-					constraint.getExpression().setRhs(rewriteRemoveSubtractions(constraint.getExpression().getRhs()));
+					((RelationalExpression) constraint.getExpression()).setRhs(
+							rewriteRemoveSubtractions(((RelationalExpression) constraint.getExpression()).getRhs()));
 				} else {
-					constraint.getExpression().setLhs(rewriteRemoveSubtractions(constraint.getExpression().getLhs()));
+					((RelationalExpression) constraint.getExpression()).setLhs(
+							rewriteRemoveSubtractions(((RelationalExpression) constraint.getExpression()).getLhs()));
 				}
 
 				// Final check: Was the context used?
-				if (!GipsTransformationUtils.containsContextExpression(constraint.getExpression().getRhs())
-						&& !GipsTransformationUtils.containsContextExpression(constraint.getExpression().getLhs())
+				if (!GipsTransformationUtils
+						.containsContextExpression(((RelationalExpression) constraint.getExpression()).getRhs())
+						&& !GipsTransformationUtils
+								.containsContextExpression(((RelationalExpression) constraint.getExpression()).getLhs())
 						&& !(constraint instanceof GlobalConstraint)) {
 					throw new IllegalArgumentException("Context must be used at least once per non-global constraint.");
 				}

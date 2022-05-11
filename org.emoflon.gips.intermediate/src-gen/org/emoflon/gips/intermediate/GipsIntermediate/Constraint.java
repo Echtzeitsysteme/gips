@@ -79,12 +79,12 @@ public interface Constraint extends EObject {
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the value of the '<em>Expression</em>' containment reference.
-	 * @see #setExpression(RelationalExpression)
+	 * @see #setExpression(BoolValueExpression)
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_Expression()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
-	RelationalExpression getExpression();
+	BoolValueExpression getExpression();
 
 	/**
 	 * Sets the value of the
@@ -97,7 +97,7 @@ public interface Constraint extends EObject {
 	 * @see #getExpression()
 	 * @generated
 	 */
-	void setExpression(RelationalExpression value);
+	void setExpression(BoolValueExpression value);
 
 	/**
 	 * Returns the value of the '<em><b>Constant</b></em>' attribute. <!--

@@ -11,9 +11,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
-import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -83,7 +83,7 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * @generated
 	 * @ordered
 	 */
-	protected RelationalExpression expression;
+	protected BoolValueExpression expression;
 
 	/**
 	 * The default value of the '{@link #isConstant() <em>Constant</em>}' attribute.
@@ -173,7 +173,7 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * 
 	 * @generated
 	 */
-	public RelationalExpression getExpression() {
+	public BoolValueExpression getExpression() {
 		return expression;
 	}
 
@@ -182,8 +182,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * 
 	 * @generated
 	 */
-	public NotificationChain basicSetExpression(RelationalExpression newExpression, NotificationChain msgs) {
-		RelationalExpression oldExpression = expression;
+	public NotificationChain basicSetExpression(BoolValueExpression newExpression, NotificationChain msgs) {
+		BoolValueExpression oldExpression = expression;
 		expression = newExpression;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
@@ -201,7 +201,7 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * 
 	 * @generated
 	 */
-	public void setExpression(RelationalExpression newExpression) {
+	public void setExpression(BoolValueExpression newExpression) {
 		if (newExpression != expression) {
 			NotificationChain msgs = null;
 			if (expression != null)
@@ -289,7 +289,7 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 			setElementwise((Boolean) newValue);
 			return;
 		case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
-			setExpression((RelationalExpression) newValue);
+			setExpression((BoolValueExpression) newValue);
 			return;
 		case GipsIntermediatePackage.CONSTRAINT__CONSTANT:
 			setConstant((Boolean) newValue);
@@ -313,7 +313,7 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 			setElementwise(ELEMENTWISE_EDEFAULT);
 			return;
 		case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
-			setExpression((RelationalExpression) null);
+			setExpression((BoolValueExpression) null);
 			return;
 		case GipsIntermediatePackage.CONSTRAINT__CONSTANT:
 			setConstant(CONSTANT_EDEFAULT);

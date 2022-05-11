@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.emoflon.gips.core.ilp.ILPConstraint;
 import org.emoflon.gips.core.ilp.ILPTerm;
+import org.emoflon.gips.core.validation.GipsValidationEventType;
 import org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 
 public abstract class GipsGlobalConstraint extends GipsConstraint<GlobalConstraint, GlobalConstraint, Integer> {
 
@@ -18,14 +20,50 @@ public abstract class GipsGlobalConstraint extends GipsConstraint<GlobalConstrai
 	}
 
 	protected ILPConstraint<Integer> buildConstraint() {
-		double constTerm = buildConstantTerm();
-		List<ILPTerm<Integer, Double>> terms = buildVariableTerms();
-		return new ILPConstraint<>(terms, constraint.getExpression().getOperator(), constTerm);
+		if (!isConstant) {
+			double constTerm = buildConstantRhs();
+			List<ILPTerm<Integer, Double>> terms = buildVariableLhs();
+			return new ILPConstraint<>(terms, ((RelationalExpression) constraint.getExpression()).getOperator(),
+					constTerm);
+		} else {
+			if (constraint.getExpression() instanceof RelationalExpression relExpr) {
+				double lhs = buildConstantLhs();
+				double rhs = buildConstantRhs();
+				boolean result = evaluateConstantConstraint(lhs, rhs, relExpr.getOperator());
+				if (!result) {
+					StringBuilder sb = new StringBuilder();
+					sb.append(lhs);
+					sb.append(" ");
+					sb.append(relExpr.getOperator());
+					sb.append(" ");
+					sb.append(rhs);
+					sb.append(" -> ");
+					sb.append(result ? "true" : "false");
+					validationLog.addValidatorEvent(GipsValidationEventType.CONST_CONSTRAINT_VIOLATION, this.getClass(),
+							sb.toString());
+				}
+			} else {
+				boolean result = buildConstantExpression();
+				if (!result) {
+					StringBuilder sb = new StringBuilder();
+					sb.append(" -> ");
+					sb.append(result ? "true" : "false");
+					validationLog.addValidatorEvent(GipsValidationEventType.CONST_CONSTRAINT_VIOLATION, this.getClass(),
+							sb.toString());
+				}
+			}
+			return null;
+		}
+
 	}
 
-	abstract protected double buildConstantTerm();
+	abstract protected double buildConstantRhs();
 
-	abstract protected List<ILPTerm<Integer, Double>> buildVariableTerms();
+	abstract protected double buildConstantLhs();
+
+	abstract protected boolean buildConstantExpression();
+
+	abstract protected List<ILPTerm<Integer, Double>> buildVariableLhs();
 
 	@Override
 	protected ILPConstraint<Integer> buildConstraint(GlobalConstraint context) {
@@ -33,12 +71,22 @@ public abstract class GipsGlobalConstraint extends GipsConstraint<GlobalConstrai
 	}
 
 	@Override
-	protected double buildConstantTerm(GlobalConstraint context) {
+	protected double buildConstantRhs(GlobalConstraint context) {
 		throw new UnsupportedOperationException("There is no specific context available for global constraints.");
 	}
 
 	@Override
-	protected List<ILPTerm<Integer, Double>> buildVariableTerms(GlobalConstraint context) {
+	protected double buildConstantLhs(GlobalConstraint context) {
+		throw new UnsupportedOperationException("There is no specific context available for global constraints.");
+	}
+
+	@Override
+	protected boolean buildConstantExpression(GlobalConstraint context) {
+		throw new UnsupportedOperationException("There is no specific context available for global constraints.");
+	}
+
+	@Override
+	protected List<ILPTerm<Integer, Double>> buildVariableLhs(GlobalConstraint context) {
 		throw new UnsupportedOperationException("There is no specific context available for global constraints.");
 	}
 

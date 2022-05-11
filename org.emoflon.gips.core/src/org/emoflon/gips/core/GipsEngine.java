@@ -7,11 +7,13 @@ import java.util.Map;
 import org.emoflon.gips.core.ilp.ILPSolver;
 import org.emoflon.gips.core.ilp.ILPSolverOutput;
 import org.emoflon.gips.core.ilp.ILPSolverStatus;
+import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 
 public abstract class GipsEngine {
 
 	final protected Map<String, GipsMapper<?>> mappers = new HashMap<>();
 	protected TypeIndexer indexer;
+	protected GipsConstraintValidationLog validationLog;
 	final protected Map<String, GipsConstraint<?, ?, ?>> constraints = new HashMap<>();
 	final protected Map<String, GipsObjective<?, ?, ?>> objectives = new HashMap<>();
 	protected GipsGlobalObjective globalObjective;
@@ -60,6 +62,10 @@ public abstract class GipsEngine {
 
 	public TypeIndexer getIndexer() {
 		return indexer;
+	}
+
+	public GipsConstraintValidationLog getValidationLog() {
+		return validationLog;
 	}
 
 	public GipsGlobalObjective getGlobalObjective() {

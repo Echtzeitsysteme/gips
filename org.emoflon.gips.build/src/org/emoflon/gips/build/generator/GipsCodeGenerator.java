@@ -7,6 +7,7 @@ import java.util.List;
 import org.emoflon.gips.build.GipsAPIData;
 import org.emoflon.gips.build.generator.templates.ConstraintFactoryTemplate;
 import org.emoflon.gips.build.generator.templates.GipsAPITemplate;
+import org.emoflon.gips.build.generator.templates.GlobalConstraintTemplate;
 import org.emoflon.gips.build.generator.templates.GlobalObjectiveTemplate;
 import org.emoflon.gips.build.generator.templates.LaunchFileTemplate;
 import org.emoflon.gips.build.generator.templates.MapperFactoryTemplate;
@@ -20,6 +21,7 @@ import org.emoflon.gips.build.generator.templates.PatternObjectiveTemplate;
 import org.emoflon.gips.build.generator.templates.TypeConstraintTemplate;
 import org.emoflon.gips.build.generator.templates.TypeObjectiveTemplate;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
+import org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective;
@@ -53,9 +55,11 @@ public class GipsCodeGenerator {
 				templates.add(new MappingConstraintTemplate(data, mappingConstraint));
 			} else if (constraint instanceof PatternConstraint patternConstraint) {
 				templates.add(new PatternConstraintTemplate(data, patternConstraint));
-			} else {
-				TypeConstraint typeConstraint = (TypeConstraint) constraint;
+			} else if (constraint instanceof TypeConstraint typeConstraint) {
 				templates.add(new TypeConstraintTemplate(data, typeConstraint));
+			} else {
+				GlobalConstraint globalConstraint = (GlobalConstraint) constraint;
+				templates.add(new GlobalConstraintTemplate(data, globalConstraint));
 			}
 		});
 		data.model.getObjectives().parallelStream().forEach(objective -> {

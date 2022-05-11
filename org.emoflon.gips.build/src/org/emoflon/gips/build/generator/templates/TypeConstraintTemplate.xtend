@@ -31,6 +31,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression
 
 class TypeConstraintTemplate extends ConstraintTemplate<TypeConstraint> {
 	
@@ -65,19 +67,94 @@ class TypeConstraintTemplate extends ConstraintTemplate<TypeConstraint> {
 import «imp»;
 «ENDFOR»'''
 	}
-	
-	override String generateClassContent() {
+
+	override String generateVariableClassContent(RelationalExpression relExpr) {
 		return '''
 public class «className» extends GipsTypeConstraint<«context.modelType.type.name»> {
 	public «className»(final GipsEngine engine, final TypeConstraint constraint) {
 		super(engine, constraint);
 	}
-	«IF GipsTransformationUtils.isConstantExpression(context.expression.lhs) == ArithmeticExpressionType.constant»
-	«generateComplexConstraint(context.expression.lhs, context.expression.rhs)»
+	«IF GipsTransformationUtils.isConstantExpression( relExpr.lhs) == ArithmeticExpressionType.constant»
+	«generateComplexConstraint(relExpr.lhs, relExpr.rhs)»
 	«ELSE»
-	«generateComplexConstraint(context.expression.rhs, context.expression.lhs)»
+	«generateComplexConstraint(relExpr.rhs, relExpr.lhs)»
 	«ENDIF»
 	
+	@Overide
+	protected boolean buildConstantLhs(final «context.modelType.type.name» context) {
+		throw new UnsupportedOperationException("Constraint has an lhs that contains ilp variables.");
+	}
+	
+	@Overide
+	protected boolean buildConstantExpression(final «context.modelType.type.name» context) {
+		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
+	}
+		
+	«FOR methods : builderMethodDefinitions.values»
+	«methods»
+	«ENDFOR»
+}'''
+	}
+	
+	override String generateConstantClassContent(RelationalExpression relExpr) {
+		return '''
+public class «className» extends GipsTypeConstraint<«context.modelType.type.name»> {
+	public «className»(final GipsEngine engine, final TypeConstraint constraint) {
+		super(engine, constraint);
+	}
+	
+	@Override
+	protected double buildConstantLhs(final «context.modelType.type.name» context) {
+		return «generateConstTermBuilder(relExpr.lhs)»;
+	}
+	
+	@Override
+	protected double buildConstantRhs(final «context.modelType.type.name» context) {
+		return «generateConstTermBuilder(relExpr.rhs)»;
+	}
+	
+	@Overide
+	protected boolean buildVariableLhs(final «context.modelType.type.name» context) {
+		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
+	}
+	
+	@Overide
+	protected boolean buildConstantExpression(final «context.modelType.type.name» context) {
+		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
+	}
+		
+	«FOR methods : builderMethodDefinitions.values»
+	«methods»
+	«ENDFOR»
+}'''
+	}
+	
+	override String generateConstantClassContent(BoolValueExpression boolExpr) {
+		return '''
+public class «className» extends GipsTypeConstraint<«context.modelType.type.name»> {
+	public «className»(final GipsEngine engine, final TypeConstraint constraint) {
+		super(engine, constraint);
+	}
+	
+	@Override
+	protected double buildConstantLhs(final «context.modelType.type.name» context) {
+		throw new UnsupportedOperationException("Constraint has no relational expression.");
+	}
+	
+	@Override
+	protected double buildConstantRhs(final «context.modelType.type.name» context) {
+		throw new UnsupportedOperationException("Constraint has no relational expression.");
+	}
+	
+	@Overide
+	protected boolean buildVariableLhs(final «context.modelType.type.name» context) {
+		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
+	}
+	
+	@Overide
+	protected boolean buildConstantExpression(final «context.modelType.type.name» context) {
+		return «parseExpression(boolExpr, ExpressionContext.constConstraint)»
+	}
 		
 	«FOR methods : builderMethodDefinitions.values»
 	«methods»

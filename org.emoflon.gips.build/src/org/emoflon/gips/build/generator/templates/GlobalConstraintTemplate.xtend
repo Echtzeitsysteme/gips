@@ -31,6 +31,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression
 
 class GlobalConstraintTemplate extends ConstraintTemplate<GlobalConstraint> {
 	
@@ -65,18 +67,93 @@ import «imp»;
 «ENDFOR»'''
 	}
 	
-	override String generateClassContent() {
+	override String generateVariableClassContent(RelationalExpression relExpr) {
 		return '''
 public class «className» extends GipsGlobalConstraint {
 	public «className»(final GipsEngine engine, final TypeConstraint constraint) {
 		super(engine, constraint);
 	}
-	«IF GipsTransformationUtils.isConstantExpression(context.expression.lhs) == ArithmeticExpressionType.constant»
-	«generateComplexConstraint(context.expression.lhs, context.expression.rhs)»
+	«IF GipsTransformationUtils.isConstantExpression( relExpr.lhs) == ArithmeticExpressionType.constant»
+	«generateComplexConstraint(relExpr.lhs, relExpr.rhs)»
 	«ELSE»
-	«generateComplexConstraint(context.expression.rhs, context.expression.lhs)»
+	«generateComplexConstraint(relExpr.rhs, relExpr.lhs)»
 	«ENDIF»
 	
+	@Overide
+	protected boolean buildConstantLhs() {
+		throw new UnsupportedOperationException("Constraint has an lhs that contains ilp variables.");
+	}
+	
+	@Overide
+	protected boolean buildConstantExpression() {
+		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
+	}
+		
+	«FOR methods : builderMethodDefinitions.values»
+	«methods»
+	«ENDFOR»
+}'''
+	}
+	
+	override String generateConstantClassContent(RelationalExpression relExpr) {
+		return '''
+public class «className» extends GipsGlobalConstraint {
+	public «className»(final GipsEngine engine, final TypeConstraint constraint) {
+		super(engine, constraint);
+	}
+	
+	@Override
+	protected double buildConstantLhs() {
+		return «generateConstTermBuilder(relExpr.lhs)»;
+	}
+	
+	@Override
+	protected double buildConstantRhs() {
+		return «generateConstTermBuilder(relExpr.rhs)»;
+	}
+	
+	@Overide
+	protected boolean buildVariableLhs() {
+		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
+	}
+	
+	@Overide
+	protected boolean buildConstantExpression() {
+		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
+	}
+		
+	«FOR methods : builderMethodDefinitions.values»
+	«methods»
+	«ENDFOR»
+}'''
+	}
+	
+	override String generateConstantClassContent(BoolValueExpression boolExpr) {
+		return '''
+public class «className» extends GipsGlobalConstraint {
+	public «className»(final GipsEngine engine, final TypeConstraint constraint) {
+		super(engine, constraint);
+	}
+	
+	@Override
+	protected double buildConstantLhs() {
+		throw new UnsupportedOperationException("Constraint has no relational expression.");
+	}
+	
+	@Override
+	protected double buildConstantRhs() {
+		throw new UnsupportedOperationException("Constraint has no relational expression.");
+	}
+	
+	@Overide
+	protected boolean buildVariableLhs() {
+		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
+	}
+	
+	@Overide
+	protected boolean buildConstantExpression() {
+		return «parseExpression(boolExpr, ExpressionContext.constConstraint)»
+	}
 		
 	«FOR methods : builderMethodDefinitions.values»
 	«methods»
@@ -88,12 +165,12 @@ public class «className» extends GipsGlobalConstraint {
 		generateVariableTermBuilder(dynamicExpr)
 		return '''
 @Override
-protected double buildConstantTerm() {
+protected double buildConstantRhs() {
 	return «generateConstTermBuilder(constExpr)»;
 }
 	
 @Override
-protected List<ILPTerm<Integer, Double>> buildVariableTerms() {
+protected List<ILPTerm<Integer, Double>> buildVariableLhs() {
 	List<ILPTerm<Integer, Double>> terms = Collections.synchronizedList(new LinkedList<>());
 	«FOR instruction : builderMethodCalls»
 	«instruction»

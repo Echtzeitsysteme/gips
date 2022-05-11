@@ -31,6 +31,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression
 
 class PatternConstraintTemplate extends ConstraintTemplate<PatternConstraint> {
 
@@ -64,18 +66,94 @@ import «imp»;
 «ENDFOR»'''
 	}
 	
-	override String generateClassContent() {
+	override String generateVariableClassContent(RelationalExpression relExpr) {
 		return '''
 public class «className» extends GipsPatternConstraint<«data.pattern2matchClassName.get(context.pattern)», «data.pattern2patternClassName.get(context.pattern)»>{
 	public «className»(final GipsEngine engine, final PatternConstraint constraint, final «data.pattern2patternClassName.get(context.pattern)» pattern) {
 		super(engine, constraint, pattern);
 	}
-	«IF GipsTransformationUtils.isConstantExpression(context.expression.lhs) == ArithmeticExpressionType.constant»
-	«generateComplexConstraint(context.expression.lhs, context.expression.rhs)»
+	«IF GipsTransformationUtils.isConstantExpression( relExpr.lhs) == ArithmeticExpressionType.constant»
+	«generateComplexConstraint(relExpr.lhs, relExpr.rhs)»
 	«ELSE»
-	«generateComplexConstraint(context.expression.rhs, context.expression.lhs)»
+	«generateComplexConstraint(relExpr.rhs, relExpr.lhs)»
 	«ENDIF»
 	
+	@Overide
+	protected boolean buildConstantLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("Constraint has an lhs that contains ilp variables.");
+	}
+	
+	@Overide
+	protected boolean buildConstantExpression(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
+	}
+		
+	«FOR methods : builderMethodDefinitions.values»
+	«methods»
+	«ENDFOR»
+}'''
+	}
+	
+	override String generateConstantClassContent(RelationalExpression relExpr) {
+		return '''
+public class «className» extends GipsPatternConstraint<«data.pattern2matchClassName.get(context.pattern)», «data.pattern2patternClassName.get(context.pattern)»>{
+	public «className»(final GipsEngine engine, final PatternConstraint constraint, final «data.pattern2patternClassName.get(context.pattern)» pattern) {
+		super(engine, constraint, pattern);
+	}
+	
+	@Override
+	protected double buildConstantLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		return «generateConstTermBuilder(relExpr.lhs)»;
+	}
+	
+	@Override
+	protected double buildConstantRhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		return «generateConstTermBuilder(relExpr.rhs)»;
+	}
+	
+	@Overide
+	protected boolean buildVariableLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
+	}
+	
+	@Overide
+	protected boolean buildConstantExpression(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
+	}
+		
+	«FOR methods : builderMethodDefinitions.values»
+	«methods»
+	«ENDFOR»
+}'''
+	}
+	
+	override String generateConstantClassContent(BoolValueExpression boolExpr) {
+		return '''
+public class «className» extends GipsPatternConstraint<«data.pattern2matchClassName.get(context.pattern)», «data.pattern2patternClassName.get(context.pattern)»>{
+	public «className»(final GipsEngine engine, final PatternConstraint constraint, final «data.pattern2patternClassName.get(context.pattern)» pattern) {
+		super(engine, constraint, pattern);
+	}
+	
+	@Override
+	protected double buildConstantLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("Constraint has no relational expression.");
+	}
+	
+	@Override
+	protected double buildConstantRhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("Constraint has no relational expression.");
+	}
+	
+	@Overide
+	protected boolean buildVariableLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
+	}
+	
+	@Overide
+	protected boolean buildConstantExpression(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		return «parseExpression(boolExpr, ExpressionContext.constConstraint)»
+	}
+		
 	«FOR methods : builderMethodDefinitions.values»
 	«methods»
 	«ENDFOR»

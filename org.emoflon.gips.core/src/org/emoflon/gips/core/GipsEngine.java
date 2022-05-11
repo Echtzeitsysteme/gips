@@ -37,6 +37,10 @@ public abstract class GipsEngine {
 	}
 
 	public ILPSolverOutput solveILPProblem() {
+		if (validationLog.isNotValid()) {
+			ILPSolverOutput output = new ILPSolverOutput(ILPSolverStatus.INFEASIBLE, Double.NaN, validationLog);
+			return output;
+		}
 		ILPSolverOutput output = ilpSolver.solve();
 		if (output.status() != ILPSolverStatus.INFEASIBLE)
 			ilpSolver.updateValuesFromSolution();

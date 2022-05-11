@@ -32,6 +32,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression
 
 class MappingConstraintTemplate extends ConstraintTemplate<MappingConstraint> {
 
@@ -64,18 +66,94 @@ import «imp»;
 «ENDFOR»'''
 	}
 	
-	override String generateClassContent() {
+	override String generateVariableClassContent(RelationalExpression relExpr) {
 		return '''
 public class «className» extends GipsMappingConstraint<«data.mapping2mappingClassName.get(context.mapping)»>{
 	public «className»(final GipsEngine engine, final MappingConstraint constraint) {
 		super(engine, constraint);
 	}
-	«IF GipsTransformationUtils.isConstantExpression(context.expression.lhs) == ArithmeticExpressionType.constant»
-	«generateComplexConstraint(context.expression.lhs, context.expression.rhs)»
+	«IF GipsTransformationUtils.isConstantExpression( relExpr.lhs) == ArithmeticExpressionType.constant»
+	«generateComplexConstraint(relExpr.lhs, relExpr.rhs)»
 	«ELSE»
-	«generateComplexConstraint(context.expression.rhs, context.expression.lhs)»
+	«generateComplexConstraint(relExpr.rhs, relExpr.lhs)»
 	«ENDIF»
 	
+	@Overide
+	protected boolean buildConstantLhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		throw new UnsupportedOperationException("Constraint has an lhs that contains ilp variables.");
+	}
+	
+	@Overide
+	protected boolean buildConstantExpression(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
+	}
+		
+	«FOR methods : builderMethodDefinitions.values»
+	«methods»
+	«ENDFOR»
+}'''
+	}
+	
+	override String generateConstantClassContent(RelationalExpression relExpr) {
+		return '''
+public class «className» extends GipsMappingConstraint<«data.mapping2mappingClassName.get(context.mapping)»>{
+	public «className»(final GipsEngine engine, final MappingConstraint constraint) {
+		super(engine, constraint);
+	}
+	
+	@Override
+	protected double buildConstantLhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		return «generateConstTermBuilder(relExpr.lhs)»;
+	}
+	
+	@Override
+	protected double buildConstantRhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		return «generateConstTermBuilder(relExpr.rhs)»;
+	}
+	
+	@Overide
+	protected boolean buildVariableLhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
+	}
+	
+	@Overide
+	protected boolean buildConstantExpression(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
+	}
+		
+	«FOR methods : builderMethodDefinitions.values»
+	«methods»
+	«ENDFOR»
+}'''
+	}
+	
+	override String generateConstantClassContent(BoolValueExpression boolExpr) {
+		return '''
+public class «className» extends GipsMappingConstraint<«data.mapping2mappingClassName.get(context.mapping)»>{
+	public «className»(final GipsEngine engine, final MappingConstraint constraint) {
+		super(engine, constraint);
+	}
+	
+	@Override
+	protected double buildConstantLhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		throw new UnsupportedOperationException("Constraint has no relational expression.");
+	}
+	
+	@Override
+	protected double buildConstantRhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		throw new UnsupportedOperationException("Constraint has no relational expression.");
+	}
+	
+	@Overide
+	protected boolean buildVariableLhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
+	}
+	
+	@Overide
+	protected boolean buildConstantExpression(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		return «parseExpression(boolExpr, ExpressionContext.constConstraint)»
+	}
+		
 	«FOR methods : builderMethodDefinitions.values»
 	«methods»
 	«ENDFOR»

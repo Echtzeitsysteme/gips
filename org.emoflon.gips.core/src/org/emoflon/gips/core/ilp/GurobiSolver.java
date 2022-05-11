@@ -95,7 +95,7 @@ public class GurobiSolver extends ILPSolver {
 			throw new RuntimeException(e);
 		}
 
-		return new ILPSolverOutput(status, objVal);
+		return new ILPSolverOutput(status, objVal, engine.getValidationLog());
 	}
 
 	@Override

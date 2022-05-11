@@ -58,6 +58,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Mapping
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern
 import org.emoflon.gips.intermediate.GipsIntermediate.Type
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamContainsOperation
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression
 
 abstract class ConstraintTemplate <CONTEXT extends Constraint> extends GeneratorTemplate<CONTEXT> {
 
@@ -72,7 +73,20 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 	}
 	
 	override generate() {
-		val classContent = generateClassContent()
+		var classContent = "";
+		if(context.isConstant) {
+			if(context.expression instanceof RelationalExpression) {
+				classContent = generateConstantClassContent(context.expression as RelationalExpression)
+			} else {
+				classContent = generateConstantClassContent(context.expression);
+			}
+		} else {
+			if(context.expression instanceof RelationalExpression) {
+				classContent = generateVariableClassContent(context.expression as RelationalExpression)
+			} else {
+				throw new IllegalArgumentException("Boolean values can not be transformed to ilp relational constraints.");
+			}
+		}
 		val importStatements = generateImports();
 		code = '''«generatePackageDeclaration»		
 
@@ -86,7 +100,11 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 	
 	def String generateImports();
 	
-	def String generateClassContent();
+	def String generateVariableClassContent(RelationalExpression relExpr);
+	
+	def String generateConstantClassContent(RelationalExpression relExpr);
+	
+	def String generateConstantClassContent(BoolValueExpression boolExpr);
 	
 	def String generateComplexConstraint(ArithmeticExpression constExpr, ArithmeticExpression dynamicExpr);
 	

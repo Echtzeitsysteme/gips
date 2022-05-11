@@ -31,4 +31,15 @@ public class GipsConstraintValidationLog {
 		return containsInvalidConstraints;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Constraint builder validation log:\n");
+		for (GipsValidationEvent event : events) {
+			sb.append(event);
+			sb.append("\n");
+		}
+		return super.toString();
+	}
+
 }

@@ -4,7 +4,7 @@ public enum GipsValidationEventType {
 	CONST_CONSTRAINT_VIOLATION("Constant_Constraint_Violation"),
 	VAR_CONSTRAINT_VIOLATION("Variable_Constraint_Violation"), CONSTRAINT_INFO("Constraint_Info");
 
-	private final String name;
+	public final String name;
 
 	private GipsValidationEventType(final String name) {
 		this.name = name;

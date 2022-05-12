@@ -78,12 +78,12 @@ public class «className» extends GipsPatternConstraint<«data.pattern2matchCla
 	«generateComplexConstraint(relExpr.rhs, relExpr.lhs)»
 	«ENDIF»
 	
-	@Overide
+	@Override
 	protected boolean buildConstantLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
 		throw new UnsupportedOperationException("Constraint has an lhs that contains ilp variables.");
 	}
 	
-	@Overide
+	@Override
 	protected boolean buildConstantExpression(final «data.pattern2matchClassName.get(context.pattern)» context) {
 		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
 	}
@@ -111,12 +111,12 @@ public class «className» extends GipsPatternConstraint<«data.pattern2matchCla
 		return «generateConstTermBuilder(relExpr.rhs)»;
 	}
 	
-	@Overide
+	@Override
 	protected boolean buildVariableLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
 		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
 	}
 	
-	@Overide
+	@Override
 	protected boolean buildConstantExpression(final «data.pattern2matchClassName.get(context.pattern)» context) {
 		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
 	}
@@ -144,12 +144,12 @@ public class «className» extends GipsPatternConstraint<«data.pattern2matchCla
 		throw new UnsupportedOperationException("Constraint has no relational expression.");
 	}
 	
-	@Overide
+	@Override
 	protected boolean buildVariableLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
 		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
 	}
 	
-	@Overide
+	@Override
 	protected boolean buildConstantExpression(final «data.pattern2matchClassName.get(context.pattern)» context) {
 		return «parseExpression(boolExpr, ExpressionContext.constConstraint)»
 	}

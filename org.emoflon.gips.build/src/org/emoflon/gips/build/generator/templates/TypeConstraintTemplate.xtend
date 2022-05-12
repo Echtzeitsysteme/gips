@@ -80,12 +80,12 @@ public class «className» extends GipsTypeConstraint<«context.modelType.type.n
 	«generateComplexConstraint(relExpr.rhs, relExpr.lhs)»
 	«ENDIF»
 	
-	@Overide
+	@Override
 	protected boolean buildConstantLhs(final «context.modelType.type.name» context) {
 		throw new UnsupportedOperationException("Constraint has an lhs that contains ilp variables.");
 	}
 	
-	@Overide
+	@Override
 	protected boolean buildConstantExpression(final «context.modelType.type.name» context) {
 		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
 	}
@@ -113,7 +113,7 @@ public class «className» extends GipsTypeConstraint<«context.modelType.type.n
 		return «generateConstTermBuilder(relExpr.rhs)»;
 	}
 	
-	@Overide
+	@Override
 	protected boolean buildVariableLhs(final «context.modelType.type.name» context) {
 		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
 	}
@@ -146,12 +146,12 @@ public class «className» extends GipsTypeConstraint<«context.modelType.type.n
 		throw new UnsupportedOperationException("Constraint has no relational expression.");
 	}
 	
-	@Overide
+	@Override
 	protected boolean buildVariableLhs(final «context.modelType.type.name» context) {
 		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
 	}
 	
-	@Overide
+	@Override
 	protected boolean buildConstantExpression(final «context.modelType.type.name» context) {
 		return «parseExpression(boolExpr, ExpressionContext.constConstraint)»
 	}

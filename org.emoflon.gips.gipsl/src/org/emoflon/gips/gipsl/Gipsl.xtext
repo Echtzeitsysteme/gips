@@ -1,0 +1,294 @@
+grammar org.emoflon.gips.gipsl.Gipsl with org.emoflon.ibex.gt.editor.GT
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+import "http://www.emoflon.org/ibex/gt/editor/GT" as GT
+
+generate gipsl "http://www.emoflon.org/gips/gipsl/Gipsl"
+
+@Override 
+EditorGTFile: {EditorGTFile} 
+	(imports+=EditorImport)*
+	config = GipsConfig
+  	(patterns+=EditorPattern |
+  	conditions+=EditorCondition |
+  	mappings += GipsMapping |
+  	constraints += GipsConstraint |
+  	objectives += GipsObjective)*
+  	(globalObjective = GipsGlobalObjective)?	
+;
+
+GipsConfig : {GipsConfig}
+	'config' '{'
+	'solver' ':=' solver=SolverType '[' 'home' ':=' home=GipsStringLiteral ',' 'license' ':=' license=GipsStringLiteral ']' ';'
+	('launchConfig' ':=' enableLaunchConfig = GipsBoolean '[' 'main' ':=' mainLoc=GipsStringLiteral ']' ';')?
+	('timeLimit' ':=' enableLimit = GipsBoolean '[' 'value' ':=' timeLimit=GipsDouble ']' ';')?
+	('randomSeed' ':=' enableSeed = GipsBoolean '[' 'value' ':=' rndSeed=GipsInteger ']' ';')?
+	('presolve' ':=' enablePresolve = GipsBoolean ';')?
+	('debugOutput' ':=' enableDebugOutput = GipsBoolean ';')?
+	'}'
+;
+
+enum SolverType:
+	GUROBI='GUROBI'
+;
+
+GipsMapping :
+	'mapping' name=ID 'with' rule=[GT::EditorPattern|ID] ';'
+;
+
+GipsConstraint : 
+	'constraint' '->' context=(GipsMappingContext | GipsTypeContext | GipsPatternContext) '{'
+		expr = GipsBool
+	'}'
+;
+
+GipsObjective : 
+	'objective' name=ID '->' context=(GipsMappingContext | GipsTypeContext | GipsPatternContext) '{'
+		expr = GipsArithmeticExpr
+	'}'
+;
+
+GipsMappingContext:
+	'mapping' '::' mapping = [GipsMapping|ID]
+;
+
+GipsTypeContext:
+	'class' '::' type = [ecore::EClassifier]
+;
+
+GipsPatternContext:
+	'pattern' '::' pattern = [GT::EditorPattern|ID]
+;
+
+GipsObjectiveExpression:
+	objective=[GipsObjective|ID]
+;
+
+GipsGlobalObjective :
+	'global' 'objective' ':' objectiveGoal = GipsObjectiveGoal ('{'
+		expr = GipsArithmeticExpr
+	'}')?
+;
+
+enum GipsObjectiveGoal:
+	MIN = 'min' | MAX = 'max'
+;
+
+GipsBool:
+	expr=GipsBoolExpr
+;
+
+GipsBoolExpr:
+	GipsBinaryBoolExpr
+;
+
+GipsBinaryBoolExpr returns GipsBoolExpr:
+	GipsUnaryBoolExpr({GipsBinaryBoolExpr.left = current} operator=GipsBoolBinaryOperator right=GipsUnaryBoolExpr)*
+;
+
+GipsUnaryBoolExpr returns GipsBoolExpr: {GipsUnaryBoolExpr}
+	(operator=GipsBoolUnaryOperator '(' operand=GipsBoolExpr ')' ) | GipsBooleanLiteral | GipsRelExpr
+;
+
+GipsBooleanLiteral:
+	literal = GipsBoolean
+;
+
+enum GipsBoolBinaryOperator:
+	AND='&' 	|
+	OR='|'	
+;
+
+enum GipsBoolUnaryOperator:
+	NOT = '!'
+;
+
+GipsRelExpr:
+	left=GipsArithmeticExpr (operator=GipsRelOperator right=GipsArithmeticExpr)?
+;
+
+enum GipsRelOperator:
+  GREATER='>' |
+  GREATER_OR_EQUAL='>=' |
+  EQUAL='==' |
+  UNEQUAL='!=' |
+  SMALLER_OR_EQUAL='<=' |
+  SMALLER='<'
+;
+
+GipsAttributeExpr:
+	GipsMappingAttributeExpr |  GipsContextExpr | GipsLambdaAttributeExpression
+;
+
+GipsMappingAttributeExpr returns GipsAttributeExpr: {GipsMappingAttributeExpr}
+	'mappings.' mapping=[GipsMapping|ID] '->' expr = GipsStreamExpr
+;
+
+//TODO: Allow optional nested lambda expressions
+//TODO: Allow omission of "expr" rule call to enable usage of objects in lambda expression, e.g., for identity / type checks.
+GipsLambdaAttributeExpression returns GipsAttributeExpr: {GipsLambdaAttributeExpression}
+	var=[GipsLambdaExpression|ID] '.' (expr = GipsNodeAttributeExpr | expr = GipsContextOperationExpression | expr = GipsFeatureExpr) // ('->' stream = GipsStreamExpr)?
+;
+
+GipsContextExpr returns GipsAttributeExpr: {GipsContextExpr}
+	'self' ('.' typeCast=GipsTypeCast)? ('.' (expr = GipsNodeAttributeExpr | expr = GipsContextOperationExpression | expr = GipsFeatureExpr) ('->' stream = GipsStreamExpr)?)?
+;
+
+GipsContextOperationExpression:
+	operation=GipsContextOperation
+;
+
+enum GipsContextOperation:
+	VALUE = 'value()' |
+ 	MAPPED = 'isMapped()'
+;
+
+GipsTypeCast:
+	'toType(' type=[ecore::EClass] ')'
+;
+
+GipsNodeAttributeExpr: {GipsNodeAttributeExpr}
+	'nodes().' node=[GT::EditorNode|ID] ('.' typeCast=GipsTypeCast)? ('.' expr = GipsFeatureExpr)?
+;
+
+GipsFeatureExpr:
+	GipsFeatureNavigation
+;
+
+GipsFeatureNavigation returns GipsFeatureExpr:
+	GipsFeatureLit ({GipsFeatureNavigation.left=current} '.' right=GipsFeatureNavigation)?
+;
+
+GipsFeatureLit returns GipsFeatureExpr: {GipsFeatureLit}
+	feature = [ecore::EStructuralFeature] ('.' typeCast=GipsTypeCast)?
+;
+
+GipsArithmeticExpr:
+	GipsSumArithmeticExpr
+;
+
+GipsSumArithmeticExpr returns GipsArithmeticExpr:
+	GipsProductArithmeticExpr({GipsSumArithmeticExpr.left = current} operator=GipsSumOperator right=GipsProductArithmeticExpr)*
+;
+
+GipsProductArithmeticExpr returns GipsArithmeticExpr:
+	GipsExpArithmeticExpr({GipsProductArithmeticExpr.left = current} operator=GipsProductOperator right=GipsExpArithmeticExpr)*
+;
+
+GipsExpArithmeticExpr returns GipsArithmeticExpr:
+	GipsUnaryArithmeticExpr({GipsExpArithmeticExpr.left = current} operator=GipsExpOperator right=GipsUnaryArithmeticExpr)*
+;
+
+GipsUnaryArithmeticExpr returns GipsArithmeticExpr: {GipsUnaryArithmeticExpr}
+	operator=GipsArithmeticUnaryOperator  '(' operand=GipsBracketExpr ')' | GipsBracketExpr
+;
+
+GipsBracketExpr returns GipsArithmeticExpr: {GipsBracketExpr}
+	'(' operand=GipsArithmeticExpr ')' | GipsExpressionOperand
+;
+
+GipsExpressionOperand:
+	GipsAttributeExpr | GipsObjectiveExpression | GipsArithmeticLiteral
+;
+
+GipsArithmeticLiteral:
+	value = (GipsDoubleLiteral | GipsIntegerLiteral)
+;
+
+enum GipsProductOperator:
+	MULT='*' |
+ 	DIV='/'  
+;
+
+enum GipsExpOperator:
+ 	POW='^'	
+;
+
+enum GipsSumOperator:
+	PLUS='+' 	|
+	MINUS='-' 	
+;
+
+enum GipsArithmeticUnaryOperator:
+	NEG='-'	|
+	ABS='abs'	|
+	SQRT='sqrt' |
+	sin='sin'	|
+	cos='cos'	
+;
+
+GipsStreamExpr:
+	GipsStreamNavigation
+;
+
+GipsStreamNavigation returns GipsStreamExpr:
+	GipsStreamLit({GipsStreamNavigation.left=current}'->' right=GipsStreamNavigation)?
+;
+
+GipsStreamLit returns GipsStreamExpr:
+	{GipsSelect} 'typesOf' '(' type=[ecore::EClassifier] ')' |
+	{GipsStreamSet} operator=GipsStreamSetOperator lambda = GipsLambdaExpression |
+	{GipsStreamArithmetic} operator=GipsStreamArithmeticOperator lambda = GipsLambdaExpression |
+	{GipsContains} 'contains' '(' expr = GipsContextExpr ')' |
+	{GipsStreamBoolExpr} operator=GipsStreamNoArgOperator
+;
+
+GipsLambdaExpression:
+	'(' name=ID '|' expr=GipsBoolExpr ')'
+;
+
+enum GipsStreamSetOperator:
+	FILTER='filter'
+;
+
+enum GipsStreamArithmeticOperator:
+	SUM = 'sum'
+;
+
+enum GipsStreamNoArgOperator:
+	EXISTS = 'exists()' |
+	NOTEXISTS = 'notExists()' |
+	count = 'count()'
+;
+
+GipsDoubleLiteral:
+	GipsDouble
+;
+
+GipsIntegerLiteral:
+	GipsInteger
+;
+
+GipsDouble returns ecore::EDouble:
+	('-')?INT '.' INT
+;
+
+GipsInteger returns ecore::EInt:
+	(('-')? INT)
+;
+
+@Override
+terminal INT returns ecore::EInt:
+	'0'..'9' ('0'..'9')*
+;
+
+GipsBoolean returns ecore::EBoolean:
+	TRUE | FALSE
+;
+
+terminal TRUE returns ecore::EBoolean:
+	'true'
+;
+
+terminal FALSE returns ecore::EBoolean:
+	'false'
+;
+
+GipsStringLiteral:
+	STRING
+;
+
+@Override
+terminal STRING returns ecore::EString:
+	'"' ( '""' | !('"') )* '"'
+;

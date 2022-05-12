@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+<provider id="org.eclipse.egit.core.GitProvider">
+<project reference="1.0,git@github.com:Echtzeitsysteme/gips.git,master,org.emoflon.gips.build"/>
+<project reference="1.0,git@github.com:Echtzeitsysteme/gips.git,master,org.emoflon.gips.core"/>
+<project reference="1.0,git@github.com:Echtzeitsysteme/gips.git,master,org.emoflon.gips.core.dependencies"/>
+<project reference="1.0,git@github.com:Echtzeitsysteme/gips.git,master,org.emoflon.gips.gipsl"/>
+<project reference="1.0,git@github.com:Echtzeitsysteme/gips.git,master,org.emoflon.gips.gipsl.ide"/>
+<project reference="1.0,git@github.com:Echtzeitsysteme/gips.git,master,org.emoflon.gips.gipsl.ui"/>
+<project reference="1.0,git@github.com:Echtzeitsysteme/gips.git,master,org.emoflon.gips.intermediate"/>
+</provider>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1651585362484_18" label="gips" name="gips">
+<item elementID="=org.emoflon.gips.core" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=org.emoflon.gips.gipsl.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=org.emoflon.gips.build" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=org.emoflon.gips.gipsl" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=org.emoflon.gips.intermediate" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=org.emoflon.gips.gipsl.ide" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=org.emoflon.gips.core.dependencies" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+</psf>

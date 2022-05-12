@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use GIPS in your research, please cite it using these metadata."
+abstract: GIPS is an open-source framework for Graph-Based ILP Problem Specification.
+authors:
+  - family-names: Ehmes
+    given-names: Sebastian
+    orcid: https://orcid.org/0000-0001-8001-6827
+  - family-names: Kratz
+    given-names: Maximilian
+    orcid: https://orcid.org/0000-0001-7396-7763
+title: Graph-Based ILP Problem Specification Tool
+version: 1.0.0
+date-released: 2022-05-03
+repository-code: "https://github.com/Echtzeitsysteme/gips"
+keywords:
+  - "virtual network embedding"
+  - "model-driven software engineering"
+  - simulation
+  - "eclipse modeling framework"
+  - pattern-matching
+  - model
+  - "integer linear programming"
+  - emoflon
+  - "graph transformation"
+license: "GPL-3.0"

@@ -1,4 +1,4 @@
-package org.emoflon.roam.core.ilp;
+package org.emoflon.gips.core.ilp;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -6,14 +6,14 @@ import java.util.HashSet;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
-import org.emoflon.roam.core.RoamEngine;
-import org.emoflon.roam.core.RoamGlobalObjective;
-import org.emoflon.roam.core.RoamMapper;
-import org.emoflon.roam.core.RoamMapping;
-import org.emoflon.roam.core.RoamMappingConstraint;
-import org.emoflon.roam.core.RoamTypeConstraint;
-import org.emoflon.roam.core.gt.RoamPatternConstraint;
-import org.emoflon.roam.intermediate.RoamIntermediate.RelationalOperator;
+import org.emoflon.gips.core.GipsEngine;
+import org.emoflon.gips.core.GipsGlobalObjective;
+import org.emoflon.gips.core.GipsMapper;
+import org.emoflon.gips.core.GipsMapping;
+import org.emoflon.gips.core.GipsMappingConstraint;
+import org.emoflon.gips.core.GipsTypeConstraint;
+import org.emoflon.gips.core.gt.GipsPatternConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 import org.gnu.glpk.GLPK;
 import org.gnu.glpk.GLPKConstants;
 import org.gnu.glpk.SWIGTYPE_p_double;
@@ -28,7 +28,7 @@ public class GlpkSolver extends ILPSolver {
 	private Collection<ILPConstraint<Integer>> constraints;
 	private Map<String, Integer> ilpVars;
 
-	public GlpkSolver(final RoamEngine engine, final ILPSolverConfig config) {
+	public GlpkSolver(final GipsEngine engine, final ILPSolverConfig config) {
 		super(engine);
 		constraints = new HashSet<>();
 		ilpVars = new HashMap<>();
@@ -74,7 +74,7 @@ public class GlpkSolver extends ILPSolver {
 	public void updateValuesFromSolution() {
 		// Iterate over all mappers
 		for (final String key : engine.getMappers().keySet()) {
-			final RoamMapper<?> mapper = engine.getMapper(key);
+			final GipsMapper<?> mapper = engine.getMapper(key);
 			// Iterate over all mappings of each mapper
 			for (final String k : mapper.getMappings().keySet()) {
 				// Get corresponding ILP variable name
@@ -88,27 +88,27 @@ public class GlpkSolver extends ILPSolver {
 	}
 
 	@Override
-	protected void translateMapping(final RoamMapping mapping) {
+	protected void translateMapping(final GipsMapping mapping) {
 		ilpVars.put(mapping.ilpVariable, ilpVars.size() + 1);
 	}
 
 	@Override
-	protected void translateConstraint(final RoamMappingConstraint<? extends EObject> constraint) {
+	protected void translateConstraint(final GipsMappingConstraint<? extends EObject> constraint) {
 		constraints.addAll(constraint.getConstraints());
 	}
 
 	@Override
-	protected void translateConstraint(final RoamPatternConstraint<?, ?> constraint) {
+	protected void translateConstraint(final GipsPatternConstraint<?, ?> constraint) {
 		constraints.addAll(constraint.getConstraints());
 	}
 
 	@Override
-	protected void translateConstraint(final RoamTypeConstraint<? extends EObject> constraint) {
+	protected void translateConstraint(final GipsTypeConstraint<? extends EObject> constraint) {
 		constraints.addAll(constraint.getConstraints());
 	}
 
 	@Override
-	protected void translateObjective(final RoamGlobalObjective objective) {
+	protected void translateObjective(final GipsGlobalObjective objective) {
 		final ILPNestedLinearFunction<?> nestFunc = objective.getObjectiveFunction();
 
 		// Set goal

@@ -221,6 +221,9 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" lowerBound="1"
         eType="#//Mapping"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternSumExpression" eSuperTypes="#//SumExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" eType="#//Pattern"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TypeSumExpression" eSuperTypes="#//SumExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="#//Type"/>
   </eClassifiers>

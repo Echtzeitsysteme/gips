@@ -33,6 +33,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureV
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
 
 class TypeConstraintTemplate extends ConstraintTemplate<TypeConstraint> {
 	
@@ -187,7 +188,11 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «context.modelT
 				val instruction = '''«builderMethodName»(terms, context);'''
 				builderMethodCalls.add(instruction)
 		} else if(expr instanceof TypeSumExpression) {
-			val builderMethodName = generateBuilder(expr)
+			val builderMethodName = generateForeignBuilder(expr)
+			val instruction = '''«builderMethodName»(terms, context);'''
+				builderMethodCalls.add(instruction)
+		} else if(expr instanceof PatternSumExpression) {
+			val builderMethodName = generateForeignBuilder(expr)
 			val instruction = '''«builderMethodName»(terms, context);'''
 				builderMethodCalls.add(instruction)
 		} else if(expr instanceof ContextSumExpression) {
@@ -279,7 +284,25 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «context.modelT
 		return methodName
 	}
 	
-	override generateBuilder(TypeSumExpression expr) {
+	override generateForeignBuilder(TypeSumExpression expr) {
+//		val methodName = '''builder_«builderMethods.size»'''
+//		builderMethods.put(expr, methodName)
+//		imports.add("java.util.stream.Collectors")
+//		val method = '''
+//	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «context.modelType.type.name» context) {
+//		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.name»").parallelStream()
+//			.map(type -> («expr.type.type.name») type)
+//			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
+//			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+//		}
+//	}
+//		'''
+//		builderMethodDefinitions.put(expr, method)
+//		return methodName
+		throw new UnsupportedOperationException("Foreign type stream expr not yet implemented.");
+	}
+	
+	override generateForeignBuilder(PatternSumExpression expr) {
 //		val methodName = '''builder_«builderMethods.size»'''
 //		builderMethods.put(expr, methodName)
 //		imports.add("java.util.stream.Collectors")

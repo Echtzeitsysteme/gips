@@ -113,6 +113,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createContextSumExpression();
 		case GipsIntermediatePackage.MAPPING_SUM_EXPRESSION:
 			return createMappingSumExpression();
+		case GipsIntermediatePackage.PATTERN_SUM_EXPRESSION:
+			return createPatternSumExpression();
 		case GipsIntermediatePackage.TYPE_SUM_EXPRESSION:
 			return createTypeSumExpression();
 		case GipsIntermediatePackage.CONTEXT_TYPE_VALUE:
@@ -512,6 +514,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	public MappingSumExpression createMappingSumExpression() {
 		MappingSumExpressionImpl mappingSumExpression = new MappingSumExpressionImpl();
 		return mappingSumExpression;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public PatternSumExpression createPatternSumExpression() {
+		PatternSumExpressionImpl patternSumExpression = new PatternSumExpressionImpl();
+		return patternSumExpression;
 	}
 
 	/**

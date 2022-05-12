@@ -19,10 +19,12 @@ import org.emoflon.gips.gipsl.gipsl.GipsMappingCheckValue;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingValue;
 import org.emoflon.gips.gipsl.gipsl.GipsNodeAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsPatternAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamArithmetic;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode;
@@ -53,6 +55,10 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 	public ValueExpression transform(final GipsAttributeExpr eAttribute) throws Exception {
 		if (eAttribute instanceof GipsMappingAttributeExpr eMapping) {
 			return transform(eMapping);
+		} else if (eAttribute instanceof GipsTypeAttributeExpr eType) {
+			return transform(eType);
+		} else if (eAttribute instanceof GipsPatternAttributeExpr ePattern) {
+			return transform(ePattern);
 		} else if (eAttribute instanceof GipsContextExpr eContext) {
 			return transform(eContext);
 		} else {
@@ -61,6 +67,56 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 	}
 
 	protected abstract ValueExpression transform(final GipsMappingAttributeExpr eMapping) throws Exception;
+
+	protected ValueExpression transform(final GipsTypeAttributeExpr eType) throws Exception {
+		GipsStreamExpr terminalExpr = GipsTransformationUtils.getTerminalStreamExpression(eType.getExpr());
+		if (terminalExpr instanceof GipsStreamBoolExpr streamBool) {
+			switch (streamBool.getOperator()) {
+			case COUNT -> {
+				SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
+				return transformer.transform(eType);
+			}
+			case NOT_EMPTY -> {
+				throw new IllegalArgumentException(
+						"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
+			}
+			default -> {
+				throw new UnsupportedOperationException("Unknown stream operator: " + streamBool.getOperator());
+			}
+			}
+		} else if (terminalExpr instanceof GipsStreamArithmetic streamArithmetic) {
+			SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
+			return transformer.transform(eType, streamArithmetic);
+		} else {
+			throw new UnsupportedOperationException(
+					"Some constrains contain invalid values within arithmetic expressions, e.g., objects or streams of objects instead of arithmetic values.");
+		}
+	}
+
+	protected ValueExpression transform(final GipsPatternAttributeExpr ePattern) throws Exception {
+		GipsStreamExpr terminalExpr = GipsTransformationUtils.getTerminalStreamExpression(ePattern.getExpr());
+		if (terminalExpr instanceof GipsStreamBoolExpr streamBool) {
+			switch (streamBool.getOperator()) {
+			case COUNT -> {
+				SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
+				return transformer.transform(ePattern);
+			}
+			case NOT_EMPTY -> {
+				throw new IllegalArgumentException(
+						"Some constrains contain invalid values within arithmetic expressions, e.g., boolean values instead of arithmetic values.");
+			}
+			default -> {
+				throw new UnsupportedOperationException("Unknown stream operator: " + streamBool.getOperator());
+			}
+			}
+		} else if (terminalExpr instanceof GipsStreamArithmetic streamArithmetic) {
+			SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
+			return transformer.transform(ePattern, streamArithmetic);
+		} else {
+			throw new UnsupportedOperationException(
+					"Some constrains contain invalid values within arithmetic expressions, e.g., objects or streams of objects instead of arithmetic values.");
+		}
+	}
 
 	protected ValueExpression transform(final GipsContextExpr eContext) throws Exception {
 		EObject contextType = GipslScopeContextUtil.getContextType(eContext);

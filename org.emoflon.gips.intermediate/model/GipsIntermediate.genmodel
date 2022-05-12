@@ -197,6 +197,9 @@
     <genClasses ecoreClass="GipsIntermediate.ecore#//MappingSumExpression">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//MappingSumExpression/mapping"/>
     </genClasses>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//PatternSumExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//PatternSumExpression/pattern"/>
+    </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//TypeSumExpression">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//TypeSumExpression/type"/>
     </genClasses>

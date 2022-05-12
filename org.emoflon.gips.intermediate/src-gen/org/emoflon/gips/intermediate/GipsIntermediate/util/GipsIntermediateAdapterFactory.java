@@ -262,6 +262,11 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter casePatternSumExpression(PatternSumExpression object) {
+			return createPatternSumExpressionAdapter();
+		}
+
+		@Override
 		public Adapter caseTypeSumExpression(TypeSumExpression object) {
 			return createTypeSumExpressionAdapter();
 		}
@@ -1032,6 +1037,22 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createMappingSumExpressionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
+	 * <em>Pattern Sum Expression</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
+	 * @generated
+	 */
+	public Adapter createPatternSumExpressionAdapter() {
 		return null;
 	}
 

@@ -59,6 +59,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Pattern
 import org.emoflon.gips.intermediate.GipsIntermediate.Type
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamContainsOperation
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
 
 abstract class ConstraintTemplate <CONTEXT extends Constraint> extends GeneratorTemplate<CONTEXT> {
 
@@ -155,7 +156,9 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 	
 	def String generateBuilder(ContextSumExpression expr);
 	
-	def String generateBuilder(TypeSumExpression expr);
+	def String generateForeignBuilder(TypeSumExpression expr);
+	
+	def String generateForeignBuilder(PatternSumExpression expr);
 	
 	def String generateForeignBuilder(MappingSumExpression expr);
 	
@@ -403,13 +406,17 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		if(constExpr instanceof MappingSumExpression) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.")
 		} else if(constExpr instanceof TypeSumExpression) {
-			//			imports.add(data.classToPackage.getPackage(varExpr.type.type.EPackage))
-//			return '''indexer.getObjectsOfType(«varExpr.type.type.EPackage.name».eINSTANCE.get«varExpr.type.type.name»()).stream()
-//			.«parseExpression(varExpr.filter, ExpressionContext.varConstraint)»
-//			.reduce(0, (sum, «getIteratorVariableName(varExpr)») -> {
-//				sum + «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»
-//			})'''
-			throw new UnsupportedOperationException("Foreign type stream expr not yet implemented.");
+			imports.add(data.classToPackage.getPackage(constExpr.type.type.EPackage))
+			return '''indexer.getObjectsOfType(«constExpr.type.type.EPackage.name».eINSTANCE.get«constExpr.type.type.name»()).stream()
+			.«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
+			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
+			.reduce(0.0, (sum, value) -> sum + value)'''
+		} else if(constExpr instanceof PatternSumExpression) {
+			imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(constExpr.pattern))
+			return '''engine.getEMoflonAPI().«constExpr.pattern.name»().findMatches(false).stream()
+			.«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
+			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
+			.reduce(0.0, (sum, value) -> sum + value)'''
 		} else if(constExpr instanceof ContextSumExpression) {
 			if(constExpr.context instanceof Mapping) {
 				throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
@@ -520,14 +527,18 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 	def String parseVarExpression(ValueExpression varExpr) {
 		if(varExpr instanceof MappingSumExpression) {
 			throw new UnsupportedOperationException("Mapping stream expressions may not be part of multiplications, fractions, exponentials, roots etc.");
-		} else if(varExpr instanceof TypeSumExpression) {
-//			imports.add(data.classToPackage.getPackage(varExpr.type.type.EPackage))
-//			return '''indexer.getObjectsOfType(«varExpr.type.type.EPackage.name».eINSTANCE.get«varExpr.type.type.name»()).stream()
-//			.«parseExpression(varExpr.filter, ExpressionContext.varConstraint)»
-//			.reduce(0, (sum, «getIteratorVariableName(varExpr)») -> {
-//				sum + «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»
-//			})'''
-			throw new UnsupportedOperationException("Foreign type stream expr not yet implemented.");
+		}else if(varExpr instanceof TypeSumExpression) {
+			imports.add(data.classToPackage.getPackage(varExpr.type.type.EPackage))
+			return '''indexer.getObjectsOfType(«varExpr.type.type.EPackage.name».eINSTANCE.get«varExpr.type.type.name»()).stream()
+			.«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
+			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
+			.reduce(0.0, (sum, value) -> sum + value)'''
+		} else if(varExpr instanceof PatternSumExpression) {
+			imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(varExpr.pattern))
+			return '''engine.getEMoflonAPI().«varExpr.pattern.name»().findMatches(false).stream()
+			.«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
+			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
+			.reduce(0.0, (sum, value) -> sum + value)'''
 		} else if(varExpr instanceof ContextSumExpression) {
 			if(varExpr.context instanceof Mapping) {
 				throw new UnsupportedOperationException("Mapping stream expressions may not be part of multiplications, fractions, exponentials, roots etc.");

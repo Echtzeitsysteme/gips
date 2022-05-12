@@ -274,6 +274,15 @@ public interface GipsIntermediateFactory extends EFactory {
 	MappingSumExpression createMappingSumExpression();
 
 	/**
+	 * Returns a new object of class '<em>Pattern Sum Expression</em>'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Pattern Sum Expression</em>'.
+	 * @generated
+	 */
+	PatternSumExpression createPatternSumExpression();
+
+	/**
 	 * Returns a new object of class '<em>Type Sum Expression</em>'. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 

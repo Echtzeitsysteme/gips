@@ -68,6 +68,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
@@ -371,6 +372,13 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * @generated
 	 */
 	private EClass mappingSumExpressionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass patternSumExpressionEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1694,6 +1702,24 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public EClass getPatternSumExpression() {
+		return patternSumExpressionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getPatternSumExpression_Pattern() {
+		return (EReference) patternSumExpressionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getTypeSumExpression() {
 		return typeSumExpressionEClass;
 	}
@@ -2532,6 +2558,9 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		mappingSumExpressionEClass = createEClass(MAPPING_SUM_EXPRESSION);
 		createEReference(mappingSumExpressionEClass, MAPPING_SUM_EXPRESSION__MAPPING);
 
+		patternSumExpressionEClass = createEClass(PATTERN_SUM_EXPRESSION);
+		createEReference(patternSumExpressionEClass, PATTERN_SUM_EXPRESSION__PATTERN);
+
 		typeSumExpressionEClass = createEClass(TYPE_SUM_EXPRESSION);
 		createEReference(typeSumExpressionEClass, TYPE_SUM_EXPRESSION__TYPE);
 
@@ -2708,6 +2737,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		sumExpressionEClass.getESuperTypes().add(this.getSetOperation());
 		contextSumExpressionEClass.getESuperTypes().add(this.getSumExpression());
 		mappingSumExpressionEClass.getESuperTypes().add(this.getSumExpression());
+		patternSumExpressionEClass.getESuperTypes().add(this.getSumExpression());
 		typeSumExpressionEClass.getESuperTypes().add(this.getSumExpression());
 		contextTypeValueEClass.getESuperTypes().add(this.getValueExpression());
 		contextPatternValueEClass.getESuperTypes().add(this.getValueExpression());
@@ -3051,6 +3081,12 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getMappingSumExpression_Mapping(), this.getMapping(), null, "mapping", null, 1, 1,
 				MappingSumExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(patternSumExpressionEClass, PatternSumExpression.class, "PatternSumExpression", !IS_ABSTRACT,
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getPatternSumExpression_Pattern(), this.getPattern(), null, "pattern", null, 0, 1,
+				PatternSumExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(typeSumExpressionEClass, TypeSumExpression.class, "TypeSumExpression", !IS_ABSTRACT, !IS_INTERFACE,

@@ -439,6 +439,19 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case GipsIntermediatePackage.PATTERN_SUM_EXPRESSION: {
+			PatternSumExpression patternSumExpression = (PatternSumExpression) theEObject;
+			T result = casePatternSumExpression(patternSumExpression);
+			if (result == null)
+				result = caseSumExpression(patternSumExpression);
+			if (result == null)
+				result = caseValueExpression(patternSumExpression);
+			if (result == null)
+				result = caseSetOperation(patternSumExpression);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case GipsIntermediatePackage.TYPE_SUM_EXPRESSION: {
 			TypeSumExpression typeSumExpression = (TypeSumExpression) theEObject;
 			T result = caseTypeSumExpression(typeSumExpression);
@@ -1331,6 +1344,22 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseMappingSumExpression(MappingSumExpression object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Pattern
+	 * Sum Expression</em>'. <!-- begin-user-doc --> This implementation returns
+	 * null; returning a non-null result will terminate the switch. <!--
+	 * end-user-doc -->
+	 * 
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Pattern
+	 *         Sum Expression</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T casePatternSumExpression(PatternSumExpression object) {
 		return null;
 	}
 

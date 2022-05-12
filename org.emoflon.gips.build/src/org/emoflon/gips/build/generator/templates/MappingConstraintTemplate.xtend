@@ -79,7 +79,7 @@ public class «className» extends GipsMappingConstraint<«data.mapping2mappingC
 	«ENDIF»
 	
 	@Override
-	protected boolean buildConstantLhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+	protected double buildConstantLhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		throw new UnsupportedOperationException("Constraint has an lhs that contains ilp variables.");
 	}
 	
@@ -112,7 +112,7 @@ public class «className» extends GipsMappingConstraint<«data.mapping2mappingC
 	}
 	
 	@Override
-	protected boolean buildVariableLhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+	protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
 	}
 	
@@ -145,7 +145,7 @@ public class «className» extends GipsMappingConstraint<«data.mapping2mappingC
 	}
 	
 	@Override
-	protected boolean buildVariableLhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+	protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
 	}
 	
@@ -164,12 +164,12 @@ public class «className» extends GipsMappingConstraint<«data.mapping2mappingC
 		generateVariableTermBuilder(dynamicExpr)
 		return '''
 @Override
-protected double buildConstantTerm(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+protected double buildConstantRhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
 	return «generateConstTermBuilder(constExpr)»;
 }
 	
 @Override
-protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
 	List<ILPTerm<Integer, Double>> terms = Collections.synchronizedList(new LinkedList<>());
 	«FOR instruction : builderMethodCalls»
 	«instruction»

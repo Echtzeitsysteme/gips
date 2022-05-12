@@ -81,7 +81,7 @@ public class «className» extends GipsTypeConstraint<«context.modelType.type.n
 	«ENDIF»
 	
 	@Override
-	protected boolean buildConstantLhs(final «context.modelType.type.name» context) {
+	protected double buildConstantLhs(final «context.modelType.type.name» context) {
 		throw new UnsupportedOperationException("Constraint has an lhs that contains ilp variables.");
 	}
 	
@@ -114,7 +114,7 @@ public class «className» extends GipsTypeConstraint<«context.modelType.type.n
 	}
 	
 	@Override
-	protected boolean buildVariableLhs(final «context.modelType.type.name» context) {
+	protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «context.modelType.type.name» context) {
 		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
 	}
 	
@@ -147,7 +147,7 @@ public class «className» extends GipsTypeConstraint<«context.modelType.type.n
 	}
 	
 	@Override
-	protected boolean buildVariableLhs(final «context.modelType.type.name» context) {
+	protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «context.modelType.type.name» context) {
 		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
 	}
 	
@@ -166,12 +166,12 @@ public class «className» extends GipsTypeConstraint<«context.modelType.type.n
 		generateVariableTermBuilder(dynamicExpr)
 		return '''
 @Override
-protected double buildConstantTerm(final «context.modelType.type.name» context) {
+protected double buildConstantRhs(final «context.modelType.type.name» context) {
 	return «generateConstTermBuilder(constExpr)»;
 }
 	
 @Override
-protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «context.modelType.type.name» context) {
+protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «context.modelType.type.name» context) {
 	List<ILPTerm<Integer, Double>> terms = Collections.synchronizedList(new LinkedList<>());
 	«FOR instruction : builderMethodCalls»
 	«instruction»

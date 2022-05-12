@@ -79,7 +79,7 @@ public class «className» extends GipsPatternConstraint<«data.pattern2matchCla
 	«ENDIF»
 	
 	@Override
-	protected boolean buildConstantLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
+	protected double buildConstantLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
 		throw new UnsupportedOperationException("Constraint has an lhs that contains ilp variables.");
 	}
 	
@@ -112,7 +112,7 @@ public class «className» extends GipsPatternConstraint<«data.pattern2matchCla
 	}
 	
 	@Override
-	protected boolean buildVariableLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
+	protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
 		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
 	}
 	
@@ -145,7 +145,7 @@ public class «className» extends GipsPatternConstraint<«data.pattern2matchCla
 	}
 	
 	@Override
-	protected boolean buildVariableLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
+	protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
 		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
 	}
 	
@@ -164,12 +164,12 @@ public class «className» extends GipsPatternConstraint<«data.pattern2matchCla
 		generateVariableTermBuilder(dynamicExpr)
 		return '''
 @Override
-protected double buildConstantTerm(final «data.pattern2matchClassName.get(context.pattern)» context) {
+protected double buildConstantRhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
 	return «generateConstTermBuilder(constExpr)»;
 }
 	
 @Override
-protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.pattern2matchClassName.get(context.pattern)» context) {
+protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
 	List<ILPTerm<Integer, Double>> terms = Collections.synchronizedList(new LinkedList<>());
 	«FOR instruction : builderMethodCalls»
 	«instruction»

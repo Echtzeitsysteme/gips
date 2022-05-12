@@ -80,7 +80,7 @@ public class «className» extends GipsGlobalConstraint {
 	«ENDIF»
 	
 	@Overide
-	protected boolean buildConstantLhs() {
+	protected double buildConstantLhs() {
 		throw new UnsupportedOperationException("Constraint has an lhs that contains ilp variables.");
 	}
 	
@@ -113,7 +113,7 @@ public class «className» extends GipsGlobalConstraint {
 	}
 	
 	@Overide
-	protected boolean buildVariableLhs() {
+	protected List<ILPTerm<Integer, Double>> buildVariableLhs() {
 		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
 	}
 	
@@ -146,7 +146,7 @@ public class «className» extends GipsGlobalConstraint {
 	}
 	
 	@Overide
-	protected boolean buildVariableLhs() {
+	protected List<ILPTerm<Integer, Double>> buildVariableLhs() {
 		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
 	}
 	

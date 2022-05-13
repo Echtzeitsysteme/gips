@@ -45,33 +45,17 @@ public class GlpkSolver extends ILPSolver {
 		if (config.enablePresolve()) {
 			iocp.setPresolve(GLPK.GLP_ON);
 		}
-		iocp.setTm_lim((int) config.timeLimit() * 1000);
-		// TODO: Random seed
+		iocp.setTm_lim((int) config.timeLimit() * 1000); // seconds to milliseconds
+		// Random seed not supported by the GLPK Java interface
 		// TODO: Set output flag
+
+		GLPK.glp_set_prob_name(model, "GIPS problem");
 	}
 
 	@Override
 	public ILPSolverOutput solve() {
 //		setUpVars();
 //		setUpCnstrs();
-//
-//		// Solve
-//		final int ret = GLPK.glp_intopt(model, iocp);
-//		final boolean unbounded = GLPK.glp_get_status(model) == GLPK.GLP_UNBND;
-//		final boolean feasible = ret == 0;
-//
-//		// Determine status
-//		ILPSolverStatus status = null;
-//		if (feasible) {
-//			status = ILPSolverStatus.OPTIMAL;
-//		} else if (unbounded) {
-//			status = ILPSolverStatus.UNBOUNDED;
-//		} else {
-//			throw new RuntimeException("GLPK: Something went wrong.");
-//		}
-//		return new ILPSolverOutput(status, GLPK.glp_mip_obj_val(model));
-
-		GLPK.glp_set_prob_name(model, "GIPS problem");
 
 		// Variables
 		GLPK.glp_add_cols(model, ilpVars.size());
@@ -112,8 +96,6 @@ public class GlpkSolver extends ILPSolver {
 		// Objective
 		final ILPNestedLinearFunction<?> nestFunc = objective.getObjectiveFunction();
 
-		GLPK.glp_write_lp(model, null, "glpk.lp");
-
 		// Set goal
 		int goal = 0;
 		switch (nestFunc.goal()) {
@@ -147,10 +129,13 @@ public class GlpkSolver extends ILPSolver {
 		// Add global constant sum
 		GLPK.glp_set_obj_coef(model, 0, constSum);
 
+//		GLPK.glp_write_lp(model, null, "glpk.lp");
+
 		// Solving
 		final int ret = GLPK.glp_intopt(model, iocp);
 		final boolean unbounded = GLPK.glp_get_status(model) == GLPK.GLP_UNBND;
 		final boolean feasible = ret == 0;
+		final boolean timeout = ret == GLPK.GLP_ETMLIM;
 
 		// Determine status
 		ILPSolverStatus status = null;
@@ -158,6 +143,8 @@ public class GlpkSolver extends ILPSolver {
 			status = ILPSolverStatus.OPTIMAL;
 		} else if (unbounded) {
 			status = ILPSolverStatus.UNBOUNDED;
+		} else if (timeout) {
+			status = ILPSolverStatus.TIME_OUT;
 		} else {
 			throw new RuntimeException("GLPK: Something went wrong.");
 		}

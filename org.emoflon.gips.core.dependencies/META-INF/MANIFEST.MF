@@ -4,6 +4,9 @@ Bundle-Name: Gips::Core::Dependencies
 Bundle-SymbolicName: org.emoflon.gips.core.dependencies
 Bundle-Version: 1.0.0
 Bundle-ClassPath: gurobi-javadoc-9.5.0.jar,
- gurobi-9.5.0.jar
-Export-Package: gurobi;version="1.0.0"
+ gurobi-9.5.0.jar,
+ glpk-java-1.12.0.jar,
+ glpk-java-1.12.0-javadoc.jar
+Export-Package: gurobi;version="1.0.0",
+ org.gnu.glpk;version="1.12.0"
 Automatic-Module-Name: org.emoflon.gips.core.dependencies

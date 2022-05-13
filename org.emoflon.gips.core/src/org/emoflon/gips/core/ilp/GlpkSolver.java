@@ -3,7 +3,6 @@ package org.emoflon.gips.core.ilp;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
@@ -35,9 +34,9 @@ public class GlpkSolver extends ILPSolver {
 	private glp_iocp iocp;
 
 	/**
-	 * Collection to collect all ILP constraints.
+	 * Map to collect all ILP constraints (name -> collection of constraints).
 	 */
-	private Collection<ILPConstraint<Integer>> constraints;
+	private Map<String, Collection<ILPConstraint<Integer>>> constraints;
 
 	/**
 	 * Map to collect all ILP variables (name -> integer).
@@ -51,7 +50,7 @@ public class GlpkSolver extends ILPSolver {
 
 	public GlpkSolver(final GipsEngine engine, final ILPSolverConfig config) {
 		super(engine);
-		constraints = new LinkedList<>();
+		constraints = new HashMap<>();
 		ilpVars = new HashMap<>();
 
 		GLPK.glp_free_env();
@@ -145,17 +144,17 @@ public class GlpkSolver extends ILPSolver {
 
 	@Override
 	protected void translateConstraint(final GipsMappingConstraint<? extends EObject> constraint) {
-		constraints.addAll(constraint.getConstraints());
+		constraints.put(constraint.getName(), constraint.getConstraints());
 	}
 
 	@Override
 	protected void translateConstraint(final GipsPatternConstraint<?, ?> constraint) {
-		constraints.addAll(constraint.getConstraints());
+		constraints.put(constraint.getName(), constraint.getConstraints());
 	}
 
 	@Override
 	protected void translateConstraint(final GipsTypeConstraint<? extends EObject> constraint) {
-		constraints.addAll(constraint.getConstraints());
+		constraints.put(constraint.getName(), constraint.getConstraints());
 	}
 
 	@Override
@@ -181,28 +180,40 @@ public class GlpkSolver extends ILPSolver {
 	 * Sets all constraints for GLPK up. Variable setup must be done before.
 	 */
 	private void setUpCnstrs() {
-		GLPK.glp_add_rows(model, constraints.size());
+		// Determine total number of constraints
+		int numRows = 0;
+		for (final Collection<ILPConstraint<Integer>> col : constraints.values()) {
+			numRows += col.size();
+		}
+		GLPK.glp_add_rows(model, numRows);
 
-		final Iterator<ILPConstraint<Integer>> cnstrIt = constraints.iterator();
-		int cnstrCounter = 1;
-		while (cnstrIt.hasNext()) {
-			final ILPConstraint<Integer> cnstr = cnstrIt.next();
-			final int size = cnstr.lhsTerms().size();
-			final SWIGTYPE_p_int vars = GLPK.new_intArray(size + 1);
-			final SWIGTYPE_p_double coeffs = GLPK.new_doubleArray(size + 1);
+		// Iterate over all constraint name
+		int globalCnstrCounter = 1;
+		for (final String name : constraints.keySet()) {
+			final Iterator<ILPConstraint<Integer>> cnstrIt = constraints.get(name).iterator();
 
-			for (int termCounter = 0; termCounter < cnstr.lhsTerms().size(); termCounter++) {
-				GLPK.intArray_setitem(vars, termCounter + 1,
-						ilpVars.get(cnstr.lhsTerms().get(termCounter).variable().getName()));
-				GLPK.doubleArray_setitem(coeffs, termCounter + 1, cnstr.lhsTerms().get(termCounter).weight());
+			// Iterate over each "sub" constraint (if any)
+			int localCnstrCounter = 0;
+			while (cnstrIt.hasNext()) {
+				final ILPConstraint<Integer> cnstr = cnstrIt.next();
+				final int size = cnstr.lhsTerms().size();
+				final SWIGTYPE_p_int vars = GLPK.new_intArray(size + 1);
+				final SWIGTYPE_p_double coeffs = GLPK.new_doubleArray(size + 1);
+
+				for (int termCounter = 0; termCounter < cnstr.lhsTerms().size(); termCounter++) {
+					GLPK.intArray_setitem(vars, termCounter + 1,
+							ilpVars.get(cnstr.lhsTerms().get(termCounter).variable().getName()));
+					GLPK.doubleArray_setitem(coeffs, termCounter + 1, cnstr.lhsTerms().get(termCounter).weight());
+				}
+
+				GLPK.glp_set_row_name(model, globalCnstrCounter, name + "_" + localCnstrCounter);
+				GLPK.glp_set_mat_row(model, globalCnstrCounter, size, vars, coeffs);
+				GLPK.glp_set_row_bnds(model, globalCnstrCounter, convertOperator(cnstr.operator()),
+						cnstr.rhsConstantTerm(), cnstr.rhsConstantTerm());
+
+				globalCnstrCounter++;
+				localCnstrCounter++;
 			}
-
-			GLPK.glp_set_row_name(model, cnstrCounter, String.valueOf(cnstrCounter));
-			GLPK.glp_set_mat_row(model, cnstrCounter, size, vars, coeffs);
-			GLPK.glp_set_row_bnds(model, cnstrCounter, convertOperator(cnstr.operator()), cnstr.rhsConstantTerm(),
-					cnstr.rhsConstantTerm());
-
-			cnstrCounter++;
 		}
 	}
 

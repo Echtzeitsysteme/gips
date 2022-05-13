@@ -54,99 +54,39 @@ public class GlpkSolver extends ILPSolver {
 
 	@Override
 	public ILPSolverOutput solve() {
-//		setUpVars();
-//		setUpCnstrs();
-
-		// Variables
-		GLPK.glp_add_cols(model, ilpVars.size());
-
-		int varCounter = 1;
-		for (final String k : ilpVars.keySet()) {
-			GLPK.glp_set_col_name(model, varCounter, k);
-			GLPK.glp_set_col_kind(model, varCounter, GLPKConstants.GLP_BV); // binary
-			GLPK.glp_set_col_bnds(model, varCounter, GLPKConstants.GLP_DB, 0, 1);
-			varCounter++;
-		}
-
-		// Constraints
-		GLPK.glp_add_rows(model, constraints.size());
-
-		final Iterator<ILPConstraint<Integer>> cnstrIt = constraints.iterator();
-		int cnstrCounter = 1;
-		while (cnstrIt.hasNext()) {
-			final ILPConstraint<Integer> cnstr = cnstrIt.next();
-			final int size = cnstr.lhsTerms().size();
-			final SWIGTYPE_p_int vars = GLPK.new_intArray(size + 1);
-			final SWIGTYPE_p_double coeffs = GLPK.new_doubleArray(size + 1);
-
-			for (int termCounter = 0; termCounter < cnstr.lhsTerms().size(); termCounter++) {
-				GLPK.intArray_setitem(vars, termCounter + 1,
-						ilpVars.get(cnstr.lhsTerms().get(termCounter).variable().getName()));
-				GLPK.doubleArray_setitem(coeffs, termCounter + 1, cnstr.lhsTerms().get(termCounter).weight());
-			}
-
-			GLPK.glp_set_row_name(model, cnstrCounter, String.valueOf(cnstrCounter));
-			GLPK.glp_set_mat_row(model, cnstrCounter, size, vars, coeffs);
-			GLPK.glp_set_row_bnds(model, cnstrCounter, convertOperator(cnstr.operator()), cnstr.rhsConstantTerm(),
-					cnstr.rhsConstantTerm());
-
-			cnstrCounter++;
-		}
-
-		// Objective
-		final ILPNestedLinearFunction<?> nestFunc = objective.getObjectiveFunction();
-
-		// Set goal
-		int goal = 0;
-		switch (nestFunc.goal()) {
-		case MAX -> {
-			goal = GLPKConstants.GLP_MAX;
-		}
-		case MIN -> {
-			goal = GLPKConstants.GLP_MIN;
-		}
-		}
-		GLPK.glp_set_obj_dir(model, goal);
-		GLPK.glp_set_obj_coef(model, 0, 0);
-
-		// Constants
-		double constSum = 0;
-		for (ILPConstant<Double> c : nestFunc.constants()) {
-			constSum += c.weight();
-		}
-
-		// Terms
-		for (final ILPWeightedLinearFunction<?> lf : nestFunc.linearFunctions()) {
-			lf.linearFunction().terms().forEach(t -> {
-				GLPK.glp_set_obj_coef(model, ilpVars.get(t.variable().getName()), t.weight());
-			});
-
-			for (final ILPConstant<Double> c : lf.linearFunction().constantTerms()) {
-				constSum += c.weight();
-			}
-		}
-
-		// Add global constant sum
-		GLPK.glp_set_obj_coef(model, 0, constSum);
+		setUpVars();
+		setUpCnstrs();
+		setUpObj();
 
 //		GLPK.glp_write_lp(model, null, "glpk.lp");
 
 		// Solving
 		final int ret = GLPK.glp_intopt(model, iocp);
-		final boolean unbounded = GLPK.glp_get_status(model) == GLPK.GLP_UNBND;
-		final boolean feasible = ret == 0;
+		final int modelStatus = GLPK.glp_get_status(model);
+		final boolean solved = ret == 0;
 		final boolean timeout = ret == GLPK.GLP_ETMLIM;
+		final boolean unbounded = modelStatus == GLPK.GLP_UNBND;
+		final boolean optimal = modelStatus == GLPK.GLP_OPT;
+		final boolean infeasible = modelStatus == GLPK.GLP_INFEAS;
+		final boolean noFeasibleSol = modelStatus == GLPK.GLP_NOFEAS;
+		final boolean invalid = ret == GLPK.GLP_EBADB;
+		final boolean noPrimalFeasSol = ret == GLPK.GLP_ENOPFS;
+		final boolean noDualFeasSol = ret == GLPK.GLP_ENODFS;
 
 		// Determine status
 		ILPSolverStatus status = null;
-		if (feasible) {
+		if (solved && optimal) {
 			status = ILPSolverStatus.OPTIMAL;
 		} else if (unbounded) {
 			status = ILPSolverStatus.UNBOUNDED;
 		} else if (timeout) {
 			status = ILPSolverStatus.TIME_OUT;
+		} else if (infeasible || noFeasibleSol || noPrimalFeasSol || noDualFeasSol || modelStatus == 1) {
+			status = ILPSolverStatus.INFEASIBLE;
+		} else if (invalid) {
+			status = ILPSolverStatus.INF_OR_UNBD;
 		} else {
-			throw new RuntimeException("GLPK: Something went wrong.");
+			throw new RuntimeException("GLPK: Solver status could not be determined.");
 		}
 		return new ILPSolverOutput(status, GLPK.glp_mip_obj_val(model));
 	}
@@ -190,77 +130,82 @@ public class GlpkSolver extends ILPSolver {
 
 	@Override
 	protected void translateObjective(final GipsGlobalObjective objective) {
-//		final ILPNestedLinearFunction<?> nestFunc = objective.getObjectiveFunction();
-//
-//		// Set goal
-//		int goal = 0;
-//		switch (nestFunc.goal()) {
-//		case MAX -> {
-//			goal = GLPKConstants.GLP_MAX;
-//		}
-//		case MIN -> {
-//			goal = GLPKConstants.GLP_MIN;
-//		}
-//		}
-//		GLPK.glp_set_obj_dir(model, goal);
-//
-//		// Constants
-//		double constSum = 0;
-//		for (ILPConstant<Double> c : nestFunc.constants()) {
-//			constSum += c.weight();
-//		}
-//
-//		// Terms
-//		for (final ILPWeightedLinearFunction<?> lf : nestFunc.linearFunctions()) {
-//			lf.linearFunction().terms().forEach(t -> {
-//				GLPK.glp_set_obj_coef(model, ilpVars.get(t.variable().getName()), t.weight());
-//			});
-//
-//			for (final ILPConstant<Double> c : lf.linearFunction().constantTerms()) {
-//				constSum += c.weight();
-//			}
-//		}
-//
-//		// Add global constant sum
-//		GLPK.glp_set_obj_coef(model, 0, constSum);
-
 		this.objective = objective;
 	}
 
-//	private void setUpVars() {
-//		// Set number of variables
-//		GLPK.glp_add_cols(model, ilpVars.size());
-//		for (final String var : ilpVars.keySet()) {
-//			GLPK.glp_set_col_name(model, ilpVars.get(var), var);
-//
-//			// Currently, only binary variables are supported
-//			GLPK.glp_set_col_kind(model, ilpVars.get(var), GLPKConstants.GLP_BV);
-//			GLPK.glp_set_col_bnds(model, ilpVars.get(var), GLPKConstants.GLP_DB, 0, 1);
-//		}
-//	}
-//
-//	private void setUpCnstrs() {
-//		int cnstrRowCounter = 1;
-//		GLPK.glp_add_rows(model, constraints.size());
-//		for (final ILPConstraint<Integer> cnstr : constraints) {
-//			final SWIGTYPE_p_int ind = GLPK.new_intArray(cnstr.lhsTerms().size());
-//			final SWIGTYPE_p_double val = GLPK.new_doubleArray(cnstr.lhsTerms().size());
-//
-//			GLPK.glp_set_row_name(model, cnstrRowCounter, "cnstr_" + cnstrRowCounter);
-//			int termIndexCounter = 0;
-//			for (final ILPTerm<Integer, Double> term : cnstr.lhsTerms()) {
-//				final int var = ilpVars.get(term.variable().getName());
-//
-//				GLPK.intArray_setitem(ind, termIndexCounter + 1, var);
-//				GLPK.doubleArray_setitem(val, termIndexCounter + 1, term.weight());
-//				termIndexCounter++;
-//			}
-//
-//			setOperator(cnstr.operator(), cnstr.rhsConstantTerm(), cnstrRowCounter);
-//			GLPK.glp_set_mat_row(model, cnstrRowCounter, cnstr.lhsTerms().size(), ind, val);
-//		}
-//
-//	}
+	private void setUpVars() {
+		GLPK.glp_add_cols(model, ilpVars.size());
+		int varCounter = 1;
+		for (final String k : ilpVars.keySet()) {
+			GLPK.glp_set_col_name(model, varCounter, k);
+			GLPK.glp_set_col_kind(model, varCounter, GLPKConstants.GLP_BV); // binary
+			GLPK.glp_set_col_bnds(model, varCounter, GLPKConstants.GLP_DB, 0, 1);
+			varCounter++;
+		}
+	}
+
+	private void setUpCnstrs() {
+		GLPK.glp_add_rows(model, constraints.size());
+
+		final Iterator<ILPConstraint<Integer>> cnstrIt = constraints.iterator();
+		int cnstrCounter = 1;
+		while (cnstrIt.hasNext()) {
+			final ILPConstraint<Integer> cnstr = cnstrIt.next();
+			final int size = cnstr.lhsTerms().size();
+			final SWIGTYPE_p_int vars = GLPK.new_intArray(size + 1);
+			final SWIGTYPE_p_double coeffs = GLPK.new_doubleArray(size + 1);
+
+			for (int termCounter = 0; termCounter < cnstr.lhsTerms().size(); termCounter++) {
+				GLPK.intArray_setitem(vars, termCounter + 1,
+						ilpVars.get(cnstr.lhsTerms().get(termCounter).variable().getName()));
+				GLPK.doubleArray_setitem(coeffs, termCounter + 1, cnstr.lhsTerms().get(termCounter).weight());
+			}
+
+			GLPK.glp_set_row_name(model, cnstrCounter, String.valueOf(cnstrCounter));
+			GLPK.glp_set_mat_row(model, cnstrCounter, size, vars, coeffs);
+			GLPK.glp_set_row_bnds(model, cnstrCounter, convertOperator(cnstr.operator()), cnstr.rhsConstantTerm(),
+					cnstr.rhsConstantTerm());
+
+			cnstrCounter++;
+		}
+	}
+
+	private void setUpObj() {
+		final ILPNestedLinearFunction<?> nestFunc = objective.getObjectiveFunction();
+
+		// Set goal
+		int goal = 0;
+		switch (nestFunc.goal()) {
+		case MAX -> {
+			goal = GLPKConstants.GLP_MAX;
+		}
+		case MIN -> {
+			goal = GLPKConstants.GLP_MIN;
+		}
+		}
+		GLPK.glp_set_obj_dir(model, goal);
+		GLPK.glp_set_obj_coef(model, 0, 0);
+
+		// Constants
+		double constSum = 0;
+		for (ILPConstant<Double> c : nestFunc.constants()) {
+			constSum += c.weight();
+		}
+
+		// Terms
+		for (final ILPWeightedLinearFunction<?> lf : nestFunc.linearFunctions()) {
+			lf.linearFunction().terms().forEach(t -> {
+				GLPK.glp_set_obj_coef(model, ilpVars.get(t.variable().getName()), t.weight());
+			});
+
+			for (final ILPConstant<Double> c : lf.linearFunction().constantTerms()) {
+				constSum += c.weight();
+			}
+		}
+
+		// Add global constant sum
+		GLPK.glp_set_obj_coef(model, 0, constSum);
+	}
 
 	/**
 	 * Converts a given operator value (from RelationalOperator) to the

@@ -73,9 +73,12 @@ public class GlpkSolver extends ILPSolver {
 		final boolean noPrimalFeasSol = ret == GLPK.GLP_ENOPFS;
 		final boolean noDualFeasSol = ret == GLPK.GLP_ENODFS;
 
+		final int mipModelStatus = GLPK.glp_mip_status(model);
+		final boolean mipIntOptimal = mipModelStatus == GLPK.GLP_OPT;
+
 		// Determine status
 		ILPSolverStatus status = null;
-		if (solved && optimal) {
+		if (solved && (optimal || mipIntOptimal)) {
 			status = ILPSolverStatus.OPTIMAL;
 		} else if (unbounded) {
 			status = ILPSolverStatus.UNBOUNDED;

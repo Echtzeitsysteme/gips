@@ -7,7 +7,7 @@
 
 * Install [AdoptOpenJDK 17 (HotSpot JVM)](https://adoptopenjdk.net/releases.html?variant=openjdk17&jvmVariant=hotspot) or newer.
 * Install eMoflon::IBeX as described [here](https://github.com/eMoflon/emoflon-ibex#how-to-develop).
-* Install [Gurobi](https://www.gurobi.com/) in version `9.5.0` and activate a license for your computer.
+* Install [Gurobi](https://www.gurobi.com/) in version `9.5.1` and activate a license for your computer.
     * Currently, Gurobi is the default ILP solver used in GIPS.
 * Launch a runtime workspace (while using a runtime Eclipse) as stated in the eMoflon::IBeX installation steps.
 * Clone this Git repository to your local machine and import it into Eclipse: *File -> Import -> General -> Existing Projects into Workspace*. Import all projects.

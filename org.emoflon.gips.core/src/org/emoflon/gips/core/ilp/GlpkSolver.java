@@ -24,10 +24,29 @@ import org.gnu.glpk.glp_prob;
 
 public class GlpkSolver extends ILPSolver {
 
+	/**
+	 * GLPK model.
+	 */
 	private glp_prob model;
+
+	/**
+	 * GLPK environment (for configuration etc.).
+	 */
 	private glp_iocp iocp;
+
+	/**
+	 * Collection to collect all ILP constraints.
+	 */
 	private Collection<ILPConstraint<Integer>> constraints;
+
+	/**
+	 * Map to collect all ILP variables (name -> integer).
+	 */
 	private Map<String, Integer> ilpVars;
+
+	/**
+	 * Global objective.
+	 */
 	private GipsGlobalObjective objective;
 
 	public GlpkSolver(final GipsEngine engine, final ILPSolverConfig config) {
@@ -63,6 +82,16 @@ public class GlpkSolver extends ILPSolver {
 		// Solving
 		final int ret = GLPK.glp_intopt(model, iocp);
 		final int modelStatus = GLPK.glp_get_status(model);
+		final int mipModelStatus = GLPK.glp_mip_status(model);
+
+		// GLPK is extremely detailed regarding of the output. Therefore, the three
+		// variables above capture:
+		// * Return value of the solving process
+		// * status of the overall model
+		// * MIP status of the model
+		// These three status will be checked against various constants to determine the
+		// "overall" output/status of the solving process.
+
 		final boolean solved = ret == 0;
 		final boolean timeout = ret == GLPK.GLP_ETMLIM;
 		final boolean unbounded = modelStatus == GLPK.GLP_UNBND;
@@ -72,8 +101,6 @@ public class GlpkSolver extends ILPSolver {
 		final boolean invalid = ret == GLPK.GLP_EBADB;
 		final boolean noPrimalFeasSol = ret == GLPK.GLP_ENOPFS;
 		final boolean noDualFeasSol = ret == GLPK.GLP_ENODFS;
-
-		final int mipModelStatus = GLPK.glp_mip_status(model);
 		final boolean mipIntOptimal = mipModelStatus == GLPK.GLP_OPT;
 
 		// Determine status
@@ -136,6 +163,9 @@ public class GlpkSolver extends ILPSolver {
 		this.objective = objective;
 	}
 
+	/**
+	 * Sets all ILP variables for GLPK up.
+	 */
 	private void setUpVars() {
 		GLPK.glp_add_cols(model, ilpVars.size());
 		int varCounter = 1;
@@ -147,6 +177,9 @@ public class GlpkSolver extends ILPSolver {
 		}
 	}
 
+	/**
+	 * Sets all constraints for GLPK up. Variable setup must be done before.
+	 */
 	private void setUpCnstrs() {
 		GLPK.glp_add_rows(model, constraints.size());
 
@@ -173,6 +206,9 @@ public class GlpkSolver extends ILPSolver {
 		}
 	}
 
+	/**
+	 * Sets the objective function for GLPK up. Variable setup must be done before.
+	 */
 	private void setUpObj() {
 		final ILPNestedLinearFunction<?> nestFunc = objective.getObjectiveFunction();
 
@@ -187,7 +223,6 @@ public class GlpkSolver extends ILPSolver {
 		}
 		}
 		GLPK.glp_set_obj_dir(model, goal);
-		GLPK.glp_set_obj_coef(model, 0, 0);
 
 		// Constants
 		double constSum = 0;

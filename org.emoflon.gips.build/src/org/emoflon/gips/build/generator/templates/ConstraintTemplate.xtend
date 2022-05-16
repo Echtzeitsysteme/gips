@@ -406,6 +406,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		if(constExpr instanceof MappingSumExpression) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.")
 		} else if(constExpr instanceof TypeSumExpression) {
+			imports.add(data.classToPackage.getImportsForType(constExpr.type.type))
 			imports.add(data.classToPackage.getPackage(constExpr.type.type.EPackage))
 			return '''indexer.getObjectsOfType(«constExpr.type.type.EPackage.name».eINSTANCE.get«constExpr.type.type.name»()).parallelStream()
 			.«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
@@ -527,8 +528,9 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 	def String parseVarExpression(ValueExpression varExpr) {
 		if(varExpr instanceof MappingSumExpression) {
 			throw new UnsupportedOperationException("Mapping stream expressions may not be part of multiplications, fractions, exponentials, roots etc.");
-		}else if(varExpr instanceof TypeSumExpression) {
+		} else if(varExpr instanceof TypeSumExpression) {
 			imports.add(data.classToPackage.getPackage(varExpr.type.type.EPackage))
+			imports.add(data.classToPackage.getImportsForType(varExpr.type.type))
 			return '''indexer.getObjectsOfType(«varExpr.type.type.EPackage.name».eINSTANCE.get«varExpr.type.type.name»()).parallelStream()
 			.«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
 			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)

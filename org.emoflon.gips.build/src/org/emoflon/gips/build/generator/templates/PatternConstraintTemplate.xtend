@@ -292,6 +292,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «data.pattern2m
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		imports.add("java.util.stream.Collectors")
+		imports.add(data.classToPackage.getImportsForType(expr.type.type))
 		imports.add(data.classToPackage.getPackage(expr.type.type.EPackage))
 		var method = "";
 		
@@ -329,7 +330,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «data.pattern2m
 		return methodName
 	}
 
-		override String generateForeignBuilder(PatternSumExpression expr) {
+	override String generateForeignBuilder(PatternSumExpression expr) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		imports.add("java.util.stream.Collectors")

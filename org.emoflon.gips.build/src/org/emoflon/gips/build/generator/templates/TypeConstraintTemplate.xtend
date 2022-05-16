@@ -290,6 +290,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «context.modelT
 		builderMethods.put(expr, methodName)
 		imports.add("java.util.stream.Collectors")
 		imports.add(data.classToPackage.getPackage(expr.type.type.EPackage))
+		imports.add(data.classToPackage.getImportsForType(expr.type.type))
 		var method = "";
 		
 		if(context.isConstant && context.expression instanceof RelationException) {

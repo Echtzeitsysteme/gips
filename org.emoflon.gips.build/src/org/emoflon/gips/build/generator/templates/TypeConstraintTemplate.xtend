@@ -290,14 +290,13 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «context.modelT
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		imports.add("java.util.stream.Collectors")
-		imports.add(data.classToPackage.getPackage(expr.type.type.EPackage))
 		imports.add(data.classToPackage.getImportsForType(expr.type.type))
 		var method = "";
 		
 		if(context.isConstant && context.expression instanceof RelationException) {
 			method = '''
 	protected double «methodName»(final List<ILPTerm<Integer, Double>> terms, final «context.modelType.type.name» context) {
-		return indexer.getObjectsOfType(«expr.type.type.EPackage.name».eINSTANCE.get«expr.type.type.name»()).parallelStream()
+		return indexer.getObjectsOfType("«expr.type.type.name»").parallelStream()
 			.map(type -> («expr.type.type.name») type)
 			«getFilterExpr(expr.filter, ExpressionContext.constStream)»
 			.map(type -> (double)«parseExpression(expr.expression, ExpressionContext.constConstraint)»)
@@ -307,7 +306,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «context.modelT
 		} else if(!context.isConstant && context.expression instanceof RelationException) {
 			method = '''
 	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «context.modelType.type.name» context) {
-		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType(«expr.type.type.EPackage.name».eINSTANCE.get«expr.type.type.name»()).parallelStream()
+		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.type.name»").parallelStream()
 			.map(type -> («expr.type.type.name») type)
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));

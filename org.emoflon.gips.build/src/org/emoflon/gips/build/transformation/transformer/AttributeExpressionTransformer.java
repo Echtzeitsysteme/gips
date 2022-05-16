@@ -226,6 +226,8 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 					throw new UnsupportedOperationException(
 							"Unsuited context expression type for iterator feature access.");
 				}
+			} else if (streamRoot instanceof GipsTypeAttributeExpr typeExpr) {
+				return transformIteratorTypeFeatureValue(streamIteratorContainer, typeExpr.getType(), eFeature);
 			} else {
 				// Case: The root expression is a mapping expression, i.e., mappings.
 				// Either way, this case makes it impossible to iterate over a model elements
@@ -549,6 +551,17 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 		typeFeatureValue.setTypeContext(data.getType(eTypeContext));
 		typeFeatureValue.setReturnType(eTypeContext);
 		typeFeatureValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
+		return typeFeatureValue;
+	}
+
+	protected ValueExpression transformIteratorTypeFeatureValue(final GipsStreamExpr streamIteratorContainer,
+			final EClass eTypeContext, final GipsFeatureExpr eFeature) throws Exception {
+		IteratorTypeFeatureValue typeFeatureValue = factory.createIteratorTypeFeatureValue();
+		typeFeatureValue.setTypeContext(data.getType(eTypeContext));
+		GipsFeatureLit rootFeatureType = GipslScopeContextUtil.findLeafExpression(eFeature);
+		typeFeatureValue.setReturnType(rootFeatureType.getFeature().getEType());
+		typeFeatureValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
+		typeFeatureValue.setFeatureExpression(GipsTransformationUtils.transformFeatureExpression(eFeature));
 		return typeFeatureValue;
 	}
 

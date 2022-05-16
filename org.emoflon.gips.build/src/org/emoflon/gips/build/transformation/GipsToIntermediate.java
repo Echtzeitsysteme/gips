@@ -167,7 +167,7 @@ public class GipsToIntermediate {
 					// Check whether this constraint is constant at ILP problem build time. If true
 					// -> return
 					constraint.setConstant(true);
-					return;
+					continue;
 				}
 
 				boolean isLhsConst = (GipsTransformationUtils

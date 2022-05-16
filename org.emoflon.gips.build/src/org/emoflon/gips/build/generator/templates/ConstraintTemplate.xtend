@@ -407,8 +407,8 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.")
 		} else if(constExpr instanceof TypeSumExpression) {
 			imports.add(data.classToPackage.getImportsForType(constExpr.type.type))
-			imports.add(data.classToPackage.getPackage(constExpr.type.type.EPackage))
-			return '''indexer.getObjectsOfType(«constExpr.type.type.EPackage.name».eINSTANCE.get«constExpr.type.type.name»()).parallelStream()
+			return '''indexer.getObjectsOfType("«constExpr.type.type.name»").parallelStream()
+			.map(type -> («constExpr.type.type.name») type)
 			«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
 			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
@@ -469,7 +469,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		} else if(constExpr instanceof IteratorPatternNodeValue) {
 			return '''«getIteratorVariableName(constExpr.stream)».get«constExpr.node.name.toFirstUpper»()'''
 		} else if(constExpr instanceof IteratorTypeFeatureValue){
-			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)».«parseFeatureExpression(constExpr.featureExpression)»'''
+			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else {
 			val itrTypVal = constExpr as IteratorTypeValue
 			return '''«getIteratorVariableName(itrTypVal.stream)»'''
@@ -518,7 +518,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		} else if(constExpr instanceof IteratorPatternNodeValue) {
 			return '''«getIteratorVariableName(constExpr.stream)».get«constExpr.node.name.toFirstUpper»()'''
 		} else if(constExpr instanceof IteratorTypeFeatureValue){
-			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)».«parseFeatureExpression(constExpr.featureExpression)»'''
+			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else {
 			val itrTypVal = constExpr as IteratorTypeValue
 			return '''«getIteratorVariableName(itrTypVal.stream)»'''
@@ -529,9 +529,9 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		if(varExpr instanceof MappingSumExpression) {
 			throw new UnsupportedOperationException("Mapping stream expressions may not be part of multiplications, fractions, exponentials, roots etc.");
 		} else if(varExpr instanceof TypeSumExpression) {
-			imports.add(data.classToPackage.getPackage(varExpr.type.type.EPackage))
 			imports.add(data.classToPackage.getImportsForType(varExpr.type.type))
-			return '''indexer.getObjectsOfType(«varExpr.type.type.EPackage.name».eINSTANCE.get«varExpr.type.type.name»()).parallelStream()
+			return '''indexer.getObjectsOfType("«varExpr.type.type.name»").parallelStream()
+			.map(type -> («varExpr.type.type.name») type)
 			«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
 			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
@@ -594,7 +594,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		} else if(varExpr instanceof IteratorPatternNodeValue) {
 			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»()'''
 		} else if(varExpr instanceof IteratorTypeFeatureValue){
-			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)».«parseFeatureExpression(varExpr.featureExpression)»'''
+			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else {
 			val itrTypVal = varExpr as IteratorTypeValue
 			return '''«getIteratorVariableName(itrTypVal.stream)»'''
@@ -645,7 +645,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		} else if(varExpr instanceof IteratorPatternNodeValue) {
 			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»()'''
 		} else if(varExpr instanceof IteratorTypeFeatureValue){
-			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)».«parseFeatureExpression(varExpr.featureExpression)»'''
+			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else {
 			val itrTypVal = varExpr as IteratorTypeValue
 			return '''«getIteratorVariableName(itrTypVal.stream)»'''

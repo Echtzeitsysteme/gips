@@ -55,6 +55,7 @@ class MappingConstraintTemplate extends ConstraintTemplate<MappingConstraint> {
 		imports.add("org.emoflon.gips.core.GipsMappingConstraint")
 		imports.add("org.emoflon.gips.core.ilp.ILPTerm")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint")
+		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
 		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(context.mapping))
 	}
 	
@@ -70,8 +71,8 @@ import «imp»;
 	
 	override String generateVariableClassContent(RelationalExpression relExpr) {
 		return '''
-public class «className» extends GipsMappingConstraint<«data.mapping2mappingClassName.get(context.mapping)»>{
-	public «className»(final GipsEngine engine, final MappingConstraint constraint) {
+public class «className» extends GipsMappingConstraint<«data.gipsApiClassName», «data.mapping2mappingClassName.get(context.mapping)»>{
+	public «className»(final «data.gipsApiClassName» engine, final MappingConstraint constraint) {
 		super(engine, constraint);
 	}
 	«IF GipsTransformationUtils.isConstantExpression( relExpr.lhs) == ArithmeticExpressionType.constant»
@@ -98,8 +99,8 @@ public class «className» extends GipsMappingConstraint<«data.mapping2mappingC
 	
 	override String generateConstantClassContent(RelationalExpression relExpr) {
 		return '''
-public class «className» extends GipsMappingConstraint<«data.mapping2mappingClassName.get(context.mapping)»>{
-	public «className»(final GipsEngine engine, final MappingConstraint constraint) {
+public class «className» extends GipsMappingConstraint<«data.gipsApiClassName», «data.mapping2mappingClassName.get(context.mapping)»>{
+	public «className»(final «data.gipsApiClassName» engine, final MappingConstraint constraint) {
 		super(engine, constraint);
 	}
 	
@@ -131,8 +132,8 @@ public class «className» extends GipsMappingConstraint<«data.mapping2mappingC
 	
 	override String generateConstantClassContent(BoolValueExpression boolExpr) {
 		return '''
-public class «className» extends GipsMappingConstraint<«data.mapping2mappingClassName.get(context.mapping)»>{
-	public «className»(final GipsEngine engine, final MappingConstraint constraint) {
+public class «className» extends GipsMappingConstraint<«data.gipsApiClassName», «data.mapping2mappingClassName.get(context.mapping)»>{
+	public «className»(final «data.gipsApiClassName» engine, final MappingConstraint constraint) {
 		super(engine, constraint);
 	}
 	
@@ -330,7 +331,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «data.mapping2m
 	protected double «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		return indexer.getObjectsOfType(«expr.type.type.EPackage.name».eINSTANCE.get«expr.type.type.name»()).parallelStream()
 			.map(type -> («expr.type.type.name») type)
-			.«parseExpression(expr.filter, ExpressionContext.constStream)»
+			«getFilterExpr(expr.filter, ExpressionContext.constStream)»
 			.map(type -> (double)«parseExpression(expr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value);
 	}
@@ -340,7 +341,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «data.mapping2m
 	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType(«expr.type.type.EPackage.name».eINSTANCE.get«expr.type.type.name»()).parallelStream()
 			.map(type -> («expr.type.type.name») type)
-			.«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
+			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}
 	}
@@ -371,7 +372,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «data.mapping2m
 			method = '''
 	protected double «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		return engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()
-			.«getFilterExpr(expr.filter, ExpressionContext.constStream)»
+			«getFilterExpr(expr.filter, ExpressionContext.constStream)»
 			.map(type -> (double)«parseExpression(expr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value);
 	}
@@ -381,7 +382,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «data.mapping2m
 			method = '''
 	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		for(«data.pattern2matchClassName.get(expr.pattern)» «getIteratorVariableName(expr)» : engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()
-			.«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
+			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}
 	}

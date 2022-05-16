@@ -9,13 +9,13 @@ import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 
-public abstract class GipsMappingConstraint<CONTEXT extends GipsMapping>
-		extends GipsConstraint<MappingConstraint, CONTEXT, Integer> {
+public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT extends GipsMapping>
+		extends GipsConstraint<ENGINE, MappingConstraint, CONTEXT, Integer> {
 
 	final protected GipsMapper<CONTEXT> mapper;
 
 	@SuppressWarnings("unchecked")
-	public GipsMappingConstraint(GipsEngine engine, MappingConstraint constraint) {
+	public GipsMappingConstraint(ENGINE engine, MappingConstraint constraint) {
 		super(engine, constraint);
 		mapper = (GipsMapper<CONTEXT>) engine.getMapper(constraint.getMapping().getName());
 	}

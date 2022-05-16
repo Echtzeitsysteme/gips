@@ -42,10 +42,12 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValu
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
+import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 
 public abstract class AttributeExpressionTransformer<T extends EObject> extends TransformationContext<T> {
 	protected AttributeExpressionTransformer(GipsTransformationData data, T context, TransformerFactory factory) {
@@ -150,6 +152,16 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 					return transformIteratorMappingNodeFeatureValue(eNodeAttribute, eMappingAttribute.getMapping(),
 							eNodeAttribute.getExpr(), streamIteratorContainer);
 				}
+			} else if (streamRoot instanceof GipsPatternAttributeExpr ePatternAttribute) {
+				if (eNodeAttribute.getExpr() == null) {
+					return transformIteratorPatternNodeValue(eNodeAttribute, ePatternAttribute.getPattern(),
+							streamIteratorContainer);
+				} else {
+					return transformIteratorPatternNodeFeatureValue(eNodeAttribute, ePatternAttribute.getPattern(),
+							eNodeAttribute.getExpr(), streamIteratorContainer);
+				}
+			} else if (streamRoot instanceof GipsTypeAttributeExpr eTypeAttribute) {
+				return transformIteratorTypeValue(streamIteratorContainer, eTypeAttribute.getType());
 			} else if (streamRoot instanceof GipsContextExpr eContextExpr) {
 				// CASE: streamRoot is an instance of GipsContextExpression
 				EObject contextType = GipslScopeContextUtil.getContextType(eContextExpr);
@@ -453,12 +465,34 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 		return patternNode;
 	}
 
+	protected ValueExpression transformIteratorPatternNodeValue(final GipsNodeAttributeExpr eNodeAttribute,
+			final EditorPattern pattern, final GipsStreamExpr streamIteratorContainer) throws Exception {
+		IteratorPatternNodeValue patternNode = factory.createIteratorPatternNodeValue();
+		patternNode.setNode(data.eNode2Node().get(eNodeAttribute.getNode()));
+		patternNode.setReturnType(patternNode.getNode().getType());
+		patternNode.setPatternContext(data.ePattern2Pattern().get(pattern));
+		patternNode.setStream(data.eStream2SetOp().get(streamIteratorContainer));
+		return patternNode;
+	}
+
 	protected ValueExpression transformIteratorPatternNodeFeatureValue(final GipsNodeAttributeExpr eNodeAttribute,
-			GipsPatternContext eMatchContext, GipsFeatureExpr featureExpr, final GipsStreamExpr streamIteratorContainer)
-			throws Exception {
+			final GipsPatternContext eMatchContext, final GipsFeatureExpr featureExpr,
+			final GipsStreamExpr streamIteratorContainer) throws Exception {
 		IteratorPatternNodeFeatureValue patternFeature = factory.createIteratorPatternNodeFeatureValue();
 		patternFeature.setNode(data.eNode2Node().get(eNodeAttribute.getNode()));
 		patternFeature.setPatternContext(data.ePattern2Pattern().get(eMatchContext.getPattern()));
+		patternFeature.setStream(data.eStream2SetOp().get(streamIteratorContainer));
+		patternFeature
+				.setFeatureExpression(GipsTransformationUtils.transformFeatureExpression(eNodeAttribute.getExpr()));
+		return patternFeature;
+	}
+
+	protected ValueExpression transformIteratorPatternNodeFeatureValue(final GipsNodeAttributeExpr eNodeAttribute,
+			final EditorPattern pattern, final GipsFeatureExpr featureExpr,
+			final GipsStreamExpr streamIteratorContainer) throws Exception {
+		IteratorPatternNodeFeatureValue patternFeature = factory.createIteratorPatternNodeFeatureValue();
+		patternFeature.setNode(data.eNode2Node().get(eNodeAttribute.getNode()));
+		patternFeature.setPatternContext(data.ePattern2Pattern().get(pattern));
 		patternFeature.setStream(data.eStream2SetOp().get(streamIteratorContainer));
 		patternFeature
 				.setFeatureExpression(GipsTransformationUtils.transformFeatureExpression(eNodeAttribute.getExpr()));
@@ -507,6 +541,15 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 		patternFeatureValue.setReturnType(rootFeatureType.getFeature().getEType());
 		patternFeatureValue.setFeatureExpression(GipsTransformationUtils.transformFeatureExpression(eFeature));
 		return patternFeatureValue;
+	}
+
+	protected ValueExpression transformIteratorTypeValue(final GipsStreamExpr streamIteratorContainer,
+			final EClass eTypeContext) throws Exception {
+		IteratorTypeValue typeFeatureValue = factory.createIteratorTypeValue();
+		typeFeatureValue.setTypeContext(data.getType(eTypeContext));
+		typeFeatureValue.setReturnType(eTypeContext);
+		typeFeatureValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
+		return typeFeatureValue;
 	}
 
 	protected ValueExpression transformIteratorTypeFeatureValue(final GipsStreamExpr streamIteratorContainer,

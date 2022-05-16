@@ -8,9 +8,10 @@ import org.emoflon.gips.core.validation.GipsValidationEventType;
 import org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 
-public abstract class GipsGlobalConstraint extends GipsConstraint<GlobalConstraint, GlobalConstraint, Integer> {
+public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
+		extends GipsConstraint<ENGINE, GlobalConstraint, GlobalConstraint, Integer> {
 
-	public GipsGlobalConstraint(GipsEngine engine, GlobalConstraint constraint) {
+	public GipsGlobalConstraint(ENGINE engine, GlobalConstraint constraint) {
 		super(engine, constraint);
 	}
 

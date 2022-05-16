@@ -32,25 +32,25 @@ public abstract class ILPSolver {
 
 	protected abstract void translateMapping(final GipsMapping mapping);
 
-	protected void translateConstraint(final GipsConstraint<?, ?, ?> constraint) {
-		if (constraint instanceof GipsMappingConstraint<?> mapping) {
+	protected void translateConstraint(final GipsConstraint<?, ?, ?, ?> constraint) {
+		if (constraint instanceof GipsMappingConstraint<?, ?> mapping) {
 			translateConstraint(mapping);
-		} else if (constraint instanceof GipsPatternConstraint<?, ?> pattern) {
+		} else if (constraint instanceof GipsPatternConstraint<?, ?, ?> pattern) {
 			translateConstraint(pattern);
-		} else if (constraint instanceof GipsTypeConstraint<?> type) {
+		} else if (constraint instanceof GipsTypeConstraint<?, ?> type) {
 			translateConstraint(type);
 		} else {
-			translateConstraint((GipsGlobalConstraint) constraint);
+			translateConstraint((GipsGlobalConstraint<?>) constraint);
 		}
 	}
 
-	protected abstract void translateConstraint(final GipsMappingConstraint<? extends EObject> constraint);
+	protected abstract void translateConstraint(final GipsMappingConstraint<?, ? extends EObject> constraint);
 
-	protected abstract void translateConstraint(final GipsPatternConstraint<?, ?> constraint);
+	protected abstract void translateConstraint(final GipsPatternConstraint<?, ?, ?> constraint);
 
-	protected abstract void translateConstraint(final GipsTypeConstraint<? extends EObject> constraint);
+	protected abstract void translateConstraint(final GipsTypeConstraint<?, ? extends EObject> constraint);
 
-	protected abstract void translateConstraint(final GipsGlobalConstraint constraint);
+	protected abstract void translateConstraint(final GipsGlobalConstraint<?> constraint);
 
 	protected abstract void translateObjective(final GipsGlobalObjective objective);
 }

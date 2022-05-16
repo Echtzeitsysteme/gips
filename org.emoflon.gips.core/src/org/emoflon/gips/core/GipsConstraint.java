@@ -12,8 +12,8 @@ import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 
-public abstract class GipsConstraint<CONSTR extends Constraint, CONTEXT extends Object, VARTYPE extends Number> {
-	final protected GipsEngine engine;
+public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends Constraint, CONTEXT extends Object, VARTYPE extends Number> {
+	final protected ENGINE engine;
 	final protected GipsConstraintValidationLog validationLog;
 	final protected TypeIndexer indexer;
 	final protected CONSTR constraint;
@@ -22,7 +22,7 @@ public abstract class GipsConstraint<CONSTR extends Constraint, CONTEXT extends 
 	final protected Map<CONTEXT, ILPConstraint<VARTYPE>> ilpConstraints = Collections.synchronizedMap(new HashMap<>());
 	final public static double EPSILON = 0.000001d;
 
-	public GipsConstraint(final GipsEngine engine, final CONSTR constraint) {
+	public GipsConstraint(final ENGINE engine, final CONSTR constraint) {
 		this.engine = engine;
 		validationLog = engine.getValidationLog();
 		this.indexer = engine.getIndexer();

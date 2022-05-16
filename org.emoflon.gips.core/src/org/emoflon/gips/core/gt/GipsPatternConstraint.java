@@ -13,12 +13,12 @@ import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 import org.emoflon.ibex.gt.api.GraphTransformationPattern;
 
-public abstract class GipsPatternConstraint<M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
-		extends GipsConstraint<PatternConstraint, M, Integer> {
+public abstract class GipsPatternConstraint<ENGINE extends GipsEngine, M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
+		extends GipsConstraint<ENGINE, PatternConstraint, M, Integer> {
 
 	final protected GraphTransformationPattern<M, P> pattern;
 
-	public GipsPatternConstraint(GipsEngine engine, PatternConstraint constraint, final P pattern) {
+	public GipsPatternConstraint(ENGINE engine, PatternConstraint constraint, final P pattern) {
 		super(engine, constraint);
 		this.pattern = pattern;
 	}

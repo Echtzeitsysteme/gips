@@ -157,6 +157,16 @@ public class GipslValidator extends AbstractGipslValidator {
 	public static final String CONSTRAINT_CONTEXT_UNKNOWN_EXCEPTION_MESSAGE = "Context is neither a GipsType nor a GipsMapping.";
 
 	/**
+	 * This prevents all exceptions being "swallowed" by the default validator
+	 * implementation. TODO: Remove this or make it a little nice for future stable
+	 * release candidates.
+	 */
+	@Override
+	protected void handleExceptionDuringValidation(Throwable targetException) throws RuntimeException {
+		targetException.printStackTrace();
+	}
+
+	/**
 	 * Checks if a global objective is specified in a given file. This must hold if
 	 * there is any local objective defined. Furthermore, it displays a warning if
 	 * the user specified a global objective but there is no local objective in the

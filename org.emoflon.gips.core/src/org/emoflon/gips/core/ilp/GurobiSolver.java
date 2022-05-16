@@ -134,22 +134,22 @@ public class GurobiSolver extends ILPSolver {
 	}
 
 	@Override
-	protected void translateConstraint(final GipsMappingConstraint<? extends EObject> constraint) {
+	protected void translateConstraint(final GipsMappingConstraint<?, ? extends EObject> constraint) {
 		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
 	}
 
 	@Override
-	protected void translateConstraint(final GipsPatternConstraint<?, ?> constraint) {
+	protected void translateConstraint(final GipsPatternConstraint<?, ?, ?> constraint) {
 		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
 	}
 
 	@Override
-	protected void translateConstraint(final GipsTypeConstraint<? extends EObject> constraint) {
+	protected void translateConstraint(final GipsTypeConstraint<?, ? extends EObject> constraint) {
 		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
 	}
 
 	@Override
-	protected void translateConstraint(GipsGlobalConstraint constraint) {
+	protected void translateConstraint(GipsGlobalConstraint<?> constraint) {
 		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
 	}
 

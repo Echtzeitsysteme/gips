@@ -32,7 +32,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	final protected Map<String, Mapping> name2Mapping = new HashMap<>();
 	protected ILPSolverConfig solverConfig;
 	protected GipsMapperFactory<EMOFLON_API> mapperFactory;
-	protected GipsConstraintFactory<EMOFLON_API> constraintFactory;
+	protected GipsConstraintFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> constraintFactory;
 	protected GipsObjectiveFactory<EMOFLON_API> objectiveFactory;
 
 	protected GipsEngineAPI(final EMOFLON_APP eMoflonApp) {

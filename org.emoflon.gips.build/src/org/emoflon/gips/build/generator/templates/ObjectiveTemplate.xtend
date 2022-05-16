@@ -437,13 +437,13 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			imports.add(data.classToPackage.getImportsForType(constExpr.type.type))
 			imports.add(data.classToPackage.getPackage(constExpr.type.type.EPackage))
 			return '''indexer.getObjectsOfType(«constExpr.type.type.EPackage.name».eINSTANCE.get«constExpr.type.type.name»()).parallelStream()
-			.«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
+			«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
 			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
 		} else if(constExpr instanceof PatternSumExpression) {
 			imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(constExpr.pattern))
 			return '''engine.getEMoflonAPI().«constExpr.pattern.name»().findMatches(false).parallelStream()
-			.«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
+			«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
 			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
 		} else if(constExpr instanceof ContextSumExpression) {
@@ -558,13 +558,13 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			imports.add(data.classToPackage.getImportsForType(varExpr.type.type))
 			imports.add(data.classToPackage.getPackage(varExpr.type.type.EPackage))
 			return '''indexer.getObjectsOfType(«varExpr.type.type.EPackage.name».eINSTANCE.get«varExpr.type.type.name»()).parallelStream()
-			.«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
+			«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
 			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
 		} else if(varExpr instanceof PatternSumExpression) {
 			imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(varExpr.pattern))
 			return '''engine.getEMoflonAPI().«varExpr.pattern.name»().findMatches(false).parallelStream()
-			.«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
+			«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
 			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
 		} else if(varExpr instanceof ContextSumExpression) {

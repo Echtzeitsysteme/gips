@@ -57,6 +57,7 @@ class GlobalConstraintTemplate extends ConstraintTemplate<GlobalConstraint> {
 		imports.add("org.emoflon.gips.core.GipsGlobalConstraint")
 		imports.add("org.emoflon.gips.core.ilp.ILPTerm")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint")
+		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
 	}
 	
 	override String generatePackageDeclaration() {
@@ -71,8 +72,8 @@ import «imp»;
 	
 	override String generateVariableClassContent(RelationalExpression relExpr) {
 		return '''
-public class «className» extends GipsGlobalConstraint {
-	public «className»(final GipsEngine engine, final TypeConstraint constraint) {
+public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName»> {
+	public «className»(final «data.gipsApiClassName» engine, final TypeConstraint constraint) {
 		super(engine, constraint);
 	}
 	«IF GipsTransformationUtils.isConstantExpression( relExpr.lhs) == ArithmeticExpressionType.constant»
@@ -99,8 +100,8 @@ public class «className» extends GipsGlobalConstraint {
 	
 	override String generateConstantClassContent(RelationalExpression relExpr) {
 		return '''
-public class «className» extends GipsGlobalConstraint {
-	public «className»(final GipsEngine engine, final TypeConstraint constraint) {
+public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName»> {
+	public «className»(final «data.gipsApiClassName» engine, final TypeConstraint constraint) {
 		super(engine, constraint);
 	}
 	
@@ -132,8 +133,8 @@ public class «className» extends GipsGlobalConstraint {
 	
 	override String generateConstantClassContent(BoolValueExpression boolExpr) {
 		return '''
-public class «className» extends GipsGlobalConstraint {
-	public «className»(final GipsEngine engine, final TypeConstraint constraint) {
+public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName»> {
+	public «className»(final «data.gipsApiClassName» engine, final TypeConstraint constraint) {
 		super(engine, constraint);
 	}
 	
@@ -296,7 +297,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs() {
 	protected double «methodName»(final List<ILPTerm<Integer, Double>> terms) {
 		return indexer.getObjectsOfType(«expr.type.type.EPackage.name».eINSTANCE.get«expr.type.type.name»()).parallelStream()
 			.map(type -> («expr.type.type.name») type)
-			.«parseExpression(expr.filter, ExpressionContext.constStream)»
+			«getFilterExpr(expr.filter, ExpressionContext.constStream)»
 			.map(type -> (double)«parseExpression(expr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value);
 	}
@@ -306,7 +307,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs() {
 	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms) {
 		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType(«expr.type.type.EPackage.name».eINSTANCE.get«expr.type.type.name»()).parallelStream()
 			.map(type -> («expr.type.type.name») type)
-			.«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
+			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}
 	}
@@ -337,7 +338,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs() {
 			method = '''
 	protected double «methodName»(final List<ILPTerm<Integer, Double>> terms) {
 		return engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()
-			.«getFilterExpr(expr.filter, ExpressionContext.constStream)»
+			«getFilterExpr(expr.filter, ExpressionContext.constStream)»
 			.map(type -> (double)«parseExpression(expr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value);
 	}
@@ -347,7 +348,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs() {
 			method = '''
 	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms) {
 		for(«data.pattern2matchClassName.get(expr.pattern)» «getIteratorVariableName(expr)» : engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()
-			.«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
+			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}
 	}

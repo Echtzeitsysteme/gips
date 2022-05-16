@@ -11,12 +11,12 @@ import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 
-public abstract class GipsTypeConstraint<CONTEXT extends EObject>
-		extends GipsConstraint<TypeConstraint, CONTEXT, Integer> {
+public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT extends EObject>
+		extends GipsConstraint<ENGINE, TypeConstraint, CONTEXT, Integer> {
 
 	final protected EClass type;
 
-	public GipsTypeConstraint(GipsEngine engine, TypeConstraint constraint) {
+	public GipsTypeConstraint(ENGINE engine, TypeConstraint constraint) {
 		super(engine, constraint);
 		type = constraint.getModelType().getType();
 	}

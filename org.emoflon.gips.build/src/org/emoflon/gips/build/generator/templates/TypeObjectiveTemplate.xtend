@@ -146,10 +146,9 @@ protected void buildTerms(final «context.modelType.type.name» context) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		imports.add(data.classToPackage.getImportsForType(expr.type.type))
-		imports.add(data.classToPackage.getPackage(expr.type.type.EPackage))
 		val method = '''
 	protected void «methodName»(final «context.modelType.type.name» context) {
-		double constant = indexer.getObjectsOfType(«expr.type.type.EPackage.name».eINSTANCE.get«expr.type.type.name»()).parallelStream()
+		double constant = indexer.getObjectsOfType("«expr.type.type.name»").parallelStream()
 					.map(type -> («expr.type.type.name») type)
 					«getFilterExpr(expr.filter, ExpressionContext.constStream)»
 					.map(«getIteratorVariableName(expr)» -> «parseExpression(expr.expression, ExpressionContext.constConstraint)»)

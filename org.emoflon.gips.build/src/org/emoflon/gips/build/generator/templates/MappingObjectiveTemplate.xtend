@@ -213,11 +213,10 @@ protected void buildTerms(final «data.mapping2mappingClassName.get(context.mapp
 	override generateForeignBuilder(TypeSumExpression expr) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
-		imports.add(data.classToPackage.getPackage(expr.type.type.EPackage))
 		imports.add(data.classToPackage.getImportsForType(expr.type.type))
 		val method = '''
 	protected void «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		double constant = indexer.getObjectsOfType(«expr.type.type.EPackage.name».eINSTANCE.get«expr.type.type.name»()).parallelStream()
+		double constant = indexer.getObjectsOfType("«expr.type.type.name»").parallelStream()
 					.map(type -> («expr.type.type.name») type)
 					«getFilterExpr(expr.filter, ExpressionContext.varStream)»
 					.map(«getIteratorVariableName(expr)» -> «parseExpression(expr.expression, ExpressionContext.varConstraint)»)

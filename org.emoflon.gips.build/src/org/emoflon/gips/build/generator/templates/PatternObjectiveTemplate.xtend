@@ -147,11 +147,10 @@ protected void buildTerms(final «data.pattern2matchClassName.get(context.patter
 	override generateForeignBuilder(TypeSumExpression expr) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
-		imports.add(data.classToPackage.getPackage(expr.type.type.EPackage))
 		imports.add(data.classToPackage.getImportsForType(expr.type.type))
 		val method = '''
 	protected void «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
-		double constant = indexer.getObjectsOfType(«expr.type.type.EPackage.name».eINSTANCE.get«expr.type.type.name»()).parallelStream()
+		double constant = indexer.getObjectsOfType("«expr.type.type.name»").parallelStream()
 					.map(type -> («expr.type.type.name») type)
 					«getFilterExpr(expr.filter, ExpressionContext.constStream)»
 					.map(«getIteratorVariableName(expr)» -> «parseExpression(expr.expression, ExpressionContext.constConstraint)»)

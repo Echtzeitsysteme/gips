@@ -166,6 +166,11 @@ public class GlpkSolver extends ILPSolver {
 	 * Sets all ILP variables for GLPK up.
 	 */
 	private void setUpVars() {
+		// In case of 0 variables, simply return
+		if (ilpVars.size() == 0) {
+			return;
+		}
+
 		GLPK.glp_add_cols(model, ilpVars.size());
 		int varCounter = 1;
 		for (final String k : ilpVars.keySet()) {
@@ -185,6 +190,12 @@ public class GlpkSolver extends ILPSolver {
 		for (final Collection<ILPConstraint<Integer>> col : constraints.values()) {
 			numRows += col.size();
 		}
+
+		// In case of 0 constraints, simply return
+		if (numRows == 0) {
+			return;
+		}
+
 		GLPK.glp_add_rows(model, numRows);
 
 		// Iterate over all constraint name

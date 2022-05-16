@@ -34,6 +34,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
+import javax.management.relation.RelationException
 
 class PatternConstraintTemplate extends ConstraintTemplate<PatternConstraint> {
 
@@ -288,38 +289,84 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «data.pattern2m
 	}
 	
 	override String generateForeignBuilder(TypeSumExpression expr) {
-//		val methodName = '''builder_«builderMethods.size»'''
-//		builderMethods.put(expr, methodName)
-//		imports.add("java.util.stream.Collectors")
-//		val method = '''
-//	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
-//		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.name»").parallelStream()
-//			.map(type -> («expr.type.type.name») type)
-//			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-//			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
-//		}
-//	}
-//		'''
-//		builderMethodDefinitions.put(expr, method)
-//		return methodName
-		throw new UnsupportedOperationException("Foreign type stream expr not yet implemented.");
+		val methodName = '''builder_«builderMethods.size»'''
+		builderMethods.put(expr, methodName)
+		imports.add("java.util.stream.Collectors")
+		imports.add(data.classToPackage.getPackage(expr.type.type.EPackage))
+		var method = "";
+		
+		if(context.isConstant && context.expression instanceof RelationException) {
+			method = '''
+	protected double «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
+		return indexer.getObjectsOfType(«expr.type.type.EPackage.name».eINSTANCE.get«expr.type.type.name»()).parallelStream()
+			.map(type -> («expr.type.type.name») type)
+			.«parseExpression(expr.filter, ExpressionContext.constStream)»
+			.map(type -> (double)«parseExpression(expr.expression, ExpressionContext.constConstraint)»)
+			.reduce(0.0, (sum, value) -> sum + value);
+	}
+		'''
+		} else if(!context.isConstant && context.expression instanceof RelationException) {
+			method = '''
+	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
+		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType(«expr.type.type.EPackage.name».eINSTANCE.get«expr.type.type.name»()).parallelStream()
+			.map(type -> («expr.type.type.name») type)
+			.«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
+			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+		}
+	}
+		'''
+		} else if(context.isConstant && !(context.expression instanceof RelationException)) {
+			method = '''
+	protected boolean «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("TODO: Implement stream-boolean expressions at root level.");
+	}
+		''' 
+		} else {
+			throw new UnsupportedOperationException("Boolean values can not be translated into ILP constraints.");
+		}
+		
+		builderMethodDefinitions.put(expr, method)
+		return methodName
 	}
 
 		override String generateForeignBuilder(PatternSumExpression expr) {
-//		val methodName = '''builder_«builderMethods.size»'''
-//		builderMethods.put(expr, methodName)
-//		imports.add("java.util.stream.Collectors")
-//		val method = '''
-//	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
-//		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.name»").parallelStream()
-//			.map(type -> («expr.type.type.name») type)
-//			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-//			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
-//		}
-//	}
-//		'''
-//		builderMethodDefinitions.put(expr, method)
-//		return methodName
-		throw new UnsupportedOperationException("Foreign type stream expr not yet implemented.");
+		val methodName = '''builder_«builderMethods.size»'''
+		builderMethods.put(expr, methodName)
+		imports.add("java.util.stream.Collectors")
+		imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(expr.pattern))
+		var method = "";
+		
+		if(context.isConstant && context.expression instanceof RelationException) {
+			
+			method = '''
+	protected double «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
+		return engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()
+			.«getFilterExpr(expr.filter, ExpressionContext.constStream)»
+			.map(type -> (double)«parseExpression(expr.expression, ExpressionContext.constConstraint)»)
+			.reduce(0.0, (sum, value) -> sum + value);
+	}
+		'''
+		} else if(!context.isConstant && context.expression instanceof RelationException) {
+			
+			method = '''
+	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
+		for(«data.pattern2matchClassName.get(expr.pattern)» «getIteratorVariableName(expr)» : engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()
+			.«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
+			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+		}
+	}
+		'''
+		} else if(context.isConstant && !(context.expression instanceof RelationException)) {
+			method = '''
+	protected boolean «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("TODO: Implement stream-boolean expressions at root level.");
+	}
+		''' 
+		} else {
+			throw new UnsupportedOperationException("Boolean values can not be translated into ILP constraints.");
+		}
+		
+		builderMethodDefinitions.put(expr, method)
+		return methodName
 	}
 }

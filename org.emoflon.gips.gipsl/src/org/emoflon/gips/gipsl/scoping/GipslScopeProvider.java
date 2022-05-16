@@ -24,11 +24,13 @@ import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
 import org.emoflon.gips.gipsl.gipsl.GipsNodeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
+import org.emoflon.gips.gipsl.gipsl.GipsPatternAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
 import org.emoflon.gips.gipsl.gipsl.GipsSelect;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamArithmetic;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamNavigation;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamSet;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeCast;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
@@ -37,10 +39,12 @@ import org.emoflon.gips.gipsl.gipsl.impl.GipsContextExprImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsMappingAttributeExprImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsNodeAttributeExprImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsPatternAttributeExprImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsSelectImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsStreamArithmeticImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsStreamNavigationImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsStreamSetImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsTypeAttributeExprImpl;
 import org.emoflon.ibex.gt.editor.gT.EditorOperator;
 import org.emoflon.ibex.gt.editor.utils.GTEditorModelUtils;
 import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
@@ -75,6 +79,10 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			return scopeForGipsPatternContext((GipsPatternContext) context, reference);
 		} else if (GipslScopeContextUtil.isGipsMappingAttributeExprMapping(context, reference)) {
 			return scopeForGipsMappingAttributeExprMapping((GipsMappingAttributeExpr) context, reference);
+		} else if (GipslScopeContextUtil.isGipsPatternAttributeExprMapping(context, reference)) {
+			return scopeForGipsPatternAttributeExprMapping((GipsPatternAttributeExpr) context, reference);
+		} else if (GipslScopeContextUtil.isGipsTypeAttributeExprMapping(context, reference)) {
+			return scopeForGipsTypeAttributeExprMapping((GipsTypeAttributeExpr) context, reference);
 		} else if (GipslScopeContextUtil.isGipsMappingAttributeExprNode(context, reference)) {
 			return scopeForGipsMappingAttributeExprNode((GipsMappingAttributeExpr) context, reference);
 		} else if (GipslScopeContextUtil.isGipsContextExprNode(context, reference)) {
@@ -137,6 +145,16 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 		return Scopes.scopeFor(context.getMapping().getPattern().getNodes());
 	}
 
+	private IScope scopeForGipsTypeAttributeExprMapping(GipsTypeAttributeExpr context, EReference reference) {
+		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
+		return Scopes.scopeFor(GTEditorModelUtils.getClasses(editorFile));
+	}
+
+	private IScope scopeForGipsPatternAttributeExprMapping(GipsPatternAttributeExpr context, EReference reference) {
+		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
+		return Scopes.scopeFor(editorFile.getPatterns());
+	}
+
 	public IScope scopeForGipsContextExprNode(GipsContextExpr context, EReference reference) {
 		EObject contextType = null;
 		GipsConstraint parent = GTEditorPatternUtils.getContainer(context, GipsConstraintImpl.class);
@@ -184,8 +202,8 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 
 	public IScope scopeForGipsLambdaAttributeExpression(GipsLambdaAttributeExpression context, EReference reference) {
 		Set<Class<?>> classes = Set.of(GipsContextExprImpl.class, GipsMappingAttributeExprImpl.class,
-				GipsStreamNavigationImpl.class, GipsStreamSetImpl.class, GipsSelectImpl.class,
-				GipsStreamArithmeticImpl.class);
+				GipsPatternAttributeExprImpl.class, GipsTypeAttributeExprImpl.class, GipsStreamNavigationImpl.class,
+				GipsStreamSetImpl.class, GipsSelectImpl.class, GipsStreamArithmeticImpl.class);
 		EObject parent = (EObject) GipslScopeContextUtil.getContainer(context, classes);
 		if (parent == null) {
 			return super.getScope(context, reference);
@@ -196,6 +214,10 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 				return Scopes.scopeFor(((EClass) select.getType()).getEAllStructuralFeatures());
 			} else if (parent instanceof GipsMappingAttributeExpr mapping) {
 				return Scopes.scopeFor(mapping.getMapping().getPattern().getNodes());
+			} else if (parent instanceof GipsPatternAttributeExpr pattern) {
+				return Scopes.scopeFor(pattern.getPattern().getNodes());
+			} else if (parent instanceof GipsTypeAttributeExpr type) {
+				return Scopes.scopeFor(type.getType().getEAllStructuralFeatures());
 			} else if (parent instanceof GipsContextExpr contextExpr) {
 				if (contextExpr.getExpr() != null) {
 					if (contextExpr.getExpr() instanceof GipsNodeAttributeExpr nodeExpr) {
@@ -239,14 +261,18 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 
 	public IScope scopeForGipsSelect(GipsSelect context, EReference reference) {
 		Set<Class<?>> classes = Set.of(GipsContextExprImpl.class, GipsMappingAttributeExprImpl.class,
-				GipsNodeAttributeExprImpl.class);
+				GipsPatternAttributeExprImpl.class, GipsTypeAttributeExprImpl.class, GipsNodeAttributeExprImpl.class);
 		EObject parent = (EObject) GipslScopeContextUtil.getContainer(context, classes);
-		if (parent instanceof GipsMappingAttributeExpr mapping) {
+		if (parent instanceof GipsMappingAttributeExpr || parent instanceof GipsPatternAttributeExpr) {
 			// TODO: Find all rules that refine the rule that corresponds to this mapping
 			// TODO: Deactivated for now, since we do not support rule inheritance in any
 			// meaningful way
 			// return Scopes.scopeFor(List.of(mapping.getMapping().getRule()));
 			return super.getScope(context, reference);
+		} else if (parent instanceof GipsTypeAttributeExpr typeExpr) {
+			EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
+			return Scopes.scopeFor(GTEditorModelUtils.getClasses(editorFile).stream()
+					.filter(c -> c.getEAllSuperTypes().contains(typeExpr.getType())).collect(Collectors.toSet()));
 		} else if (parent instanceof GipsContextExpr contextExpr) {
 			if (contextExpr.getExpr() != null) {
 				if (contextExpr.getExpr() instanceof GipsNodeAttributeExpr nodeExpr) {

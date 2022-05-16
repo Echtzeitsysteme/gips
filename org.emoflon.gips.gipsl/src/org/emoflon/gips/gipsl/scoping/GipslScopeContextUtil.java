@@ -16,9 +16,11 @@ import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
 import org.emoflon.gips.gipsl.gipsl.GipsNodeAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsPatternAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
 import org.emoflon.gips.gipsl.gipsl.GipsSelect;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeCast;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
@@ -27,10 +29,12 @@ import org.emoflon.gips.gipsl.gipsl.impl.GipsContainsImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsContextExprImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsMappingAttributeExprImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsPatternAttributeExprImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsSelectImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsStreamArithmeticImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsStreamNavigationImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsStreamSetImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsTypeAttributeExprImpl;
 
 public final class GipslScopeContextUtil {
 
@@ -58,6 +62,16 @@ public final class GipslScopeContextUtil {
 	public static boolean isGipsMappingAttributeExprNode(final EObject context, final EReference reference) {
 		return context instanceof GipsMappingAttributeExpr
 				&& reference == GipslPackage.Literals.GIPS_NODE_ATTRIBUTE_EXPR__NODE;
+	}
+
+	public static boolean isGipsPatternAttributeExprMapping(final EObject context, final EReference reference) {
+		return context instanceof GipsPatternAttributeExpr
+				&& reference == GipslPackage.Literals.GIPS_PATTERN_ATTRIBUTE_EXPR__PATTERN;
+	}
+
+	public static boolean isGipsTypeAttributeExprMapping(final EObject context, final EReference reference) {
+		return context instanceof GipsTypeAttributeExpr
+				&& reference == GipslPackage.Literals.GIPS_TYPE_ATTRIBUTE_EXPR__TYPE;
 	}
 
 	public static boolean isGipsContextExprNode(final EObject context, final EReference reference) {
@@ -139,7 +153,8 @@ public final class GipslScopeContextUtil {
 	}
 
 	public static GipsAttributeExpr getStreamRootContainer(GipsLambdaAttributeExpression context) {
-		Set<Class<?>> classes = Set.of(GipsContextExprImpl.class, GipsMappingAttributeExprImpl.class);
+		Set<Class<?>> classes = Set.of(GipsContextExprImpl.class, GipsMappingAttributeExprImpl.class,
+				GipsPatternAttributeExprImpl.class, GipsTypeAttributeExprImpl.class);
 		return (GipsAttributeExpr) GipslScopeContextUtil.getContainer(context, classes);
 	}
 
@@ -164,8 +179,8 @@ public final class GipslScopeContextUtil {
 
 	public static EObject getStreamContainer(GipsLambdaAttributeExpression context) {
 		Set<Class<?>> classes = Set.of(GipsContextExprImpl.class, GipsMappingAttributeExprImpl.class,
-				GipsStreamNavigationImpl.class, GipsStreamSetImpl.class, GipsSelectImpl.class,
-				GipsStreamArithmeticImpl.class, GipsContainsImpl.class);
+				GipsPatternAttributeExprImpl.class, GipsTypeAttributeExprImpl.class, GipsStreamNavigationImpl.class,
+				GipsStreamSetImpl.class, GipsSelectImpl.class, GipsStreamArithmeticImpl.class, GipsContainsImpl.class);
 		return (EObject) GipslScopeContextUtil.getContainer(context, classes);
 	}
 

@@ -82,13 +82,15 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 
 	public abstract void init(final URI modelUri);
 
+	public abstract void init(final URI gipsModelURI, final URI modelUri);
+
 	protected void setSolverConfig(final ILPConfig config) {
 		solverConfig = new ILPSolverConfig(config.isEnableTimeLimit(), config.getIlpTimeLimit(),
 				config.isEnableRndSeed(), config.getIlpRndSeed(), config.isEnablePresolve(),
 				config.isEnableDebugOutput(), config.isEnableCustomTolerance(), config.getTolerance());
 	}
 
-	protected void init(final URI gipsModelURI, final URI modelUri) {
+	protected void initInternal(final URI gipsModelURI, final URI modelUri) {
 		eMoflonApp.registerMetaModels();
 		eMoflonApp.loadModel(modelUri);
 		eMoflonAPI = eMoflonApp.initAPI();

@@ -26,6 +26,7 @@ class ObjectiveFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> 
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective")
+		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
 		data.objective2objectiveClassName.values.forEach[o | imports.add(data.apiData.gipsObjectivePkg+"."+o)]
 	}
 	
@@ -36,13 +37,13 @@ class ObjectiveFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> 
 import «imp»;
 «ENDFOR»
 
-public class «className» extends GipsObjectiveFactory<«data.apiData.apiClass»> {
-	public «className»(final GipsEngine engine, final «data.apiData.apiClass» eMoflonApi) {
+public class «className» extends GipsObjectiveFactory<«data.gipsApiClassName», «data.apiData.apiClass»> {
+	public «className»(final «data.gipsApiClassName» engine, final «data.apiData.apiClass» eMoflonApi) {
 		super(engine, eMoflonApi);
 	}
 	
 	@Override
-	public GipsObjective<? extends Objective, ? extends Object, ? extends Number> createObjective(final Objective objective) {
+	public GipsObjective<«data.gipsApiClassName», ? extends Objective, ? extends Object, ? extends Number> createObjective(final Objective objective) {
 		«IF context.objectives.isNullOrEmpty»
 		throw new IllegalArgumentException("Unknown objective type: "+objective);
 		«ELSE»

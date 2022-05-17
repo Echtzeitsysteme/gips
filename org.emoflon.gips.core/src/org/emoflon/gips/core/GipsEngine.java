@@ -15,7 +15,7 @@ public abstract class GipsEngine {
 	protected TypeIndexer indexer;
 	protected GipsConstraintValidationLog validationLog;
 	final protected Map<String, GipsConstraint<?, ?, ?, ?>> constraints = new HashMap<>();
-	final protected Map<String, GipsObjective<?, ?, ?>> objectives = new HashMap<>();
+	final protected Map<String, GipsObjective<?, ?, ?, ?>> objectives = new HashMap<>();
 	protected GipsGlobalObjective globalObjective;
 	protected ILPSolver ilpSolver;
 
@@ -60,7 +60,7 @@ public abstract class GipsEngine {
 		return constraints;
 	}
 
-	public Map<String, GipsObjective<?, ?, ?>> getObjectives() {
+	public Map<String, GipsObjective<?, ?, ?, ?>> getObjectives() {
 		return objectives;
 	}
 
@@ -91,7 +91,7 @@ public abstract class GipsEngine {
 		constraints.put(constraint.getName(), constraint);
 	}
 
-	protected void addObjective(final GipsObjective<?, ?, ?> objective) {
+	protected void addObjective(final GipsObjective<?, ?, ?, ?> objective) {
 		objectives.put(objective.getName(), objective);
 	}
 

@@ -8,15 +8,13 @@ import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.ilp.ILPLinearFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective;
 
-public abstract class GipsTypeObjective<CONTEXT extends EObject>
-		extends GipsObjective<TypeObjective, CONTEXT, Integer> {
+public abstract class GipsTypeObjective<ENGINE extends GipsEngine, CONTEXT extends EObject>
+		extends GipsObjective<ENGINE, TypeObjective, CONTEXT, Integer> {
 
-	final protected TypeIndexer indexer;
 	final protected EClass type;
 
-	public GipsTypeObjective(GipsEngine engine, TypeObjective objective) {
+	public GipsTypeObjective(ENGINE engine, TypeObjective objective) {
 		super(engine, objective);
-		indexer = engine.getIndexer();
 		type = objective.getModelType().getType();
 	}
 

@@ -10,12 +10,12 @@ import org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective;
 import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 import org.emoflon.ibex.gt.api.GraphTransformationPattern;
 
-public abstract class GipsPatternObjective<M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
-		extends GipsObjective<PatternObjective, GraphTransformationMatch<M, P>, Integer> {
+public abstract class GipsPatternObjective<ENGINE extends GipsEngine, M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
+		extends GipsObjective<ENGINE, PatternObjective, M, Integer> {
 
-	final protected GraphTransformationPattern<M, P> pattern;
+	final protected P pattern;
 
-	public GipsPatternObjective(GipsEngine engine, PatternObjective objective, final P pattern) {
+	public GipsPatternObjective(ENGINE engine, PatternObjective objective, final P pattern) {
 		super(engine, objective);
 		this.pattern = pattern;
 	}

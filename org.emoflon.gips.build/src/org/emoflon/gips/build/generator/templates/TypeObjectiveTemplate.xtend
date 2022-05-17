@@ -34,6 +34,7 @@ class TypeObjectiveTemplate extends ObjectiveTemplate<TypeObjective> {
 		imports.add("org.emoflon.gips.core.ilp.ILPTerm")
 		imports.add("org.emoflon.gips.core.ilp.ILPConstant")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective")
+		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
 		imports.add(data.classToPackage.getImportsForType(context.modelType.type))
 	}
 	
@@ -49,8 +50,8 @@ import «imp»;
 	
 	override String generateClassContent() {
 		return '''
-public class «className» extends GipsTypeConstraint<«context.modelType.type.name»> {
-	public «className»(final GipsEngine engine, final TypeConstraint constraint) {
+public class «className» extends GipsTypeConstraint<«data.gipsApiClassName», «context.modelType.type.name»> {
+	public «className»(final «data.gipsApiClassName» engine, final TypeConstraint constraint) {
 		super(engine, constraint);
 	}
 	

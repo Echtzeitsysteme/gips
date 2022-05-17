@@ -34,6 +34,7 @@ class MappingObjectiveTemplate extends ObjectiveTemplate<MappingObjective> {
 		imports.add("org.emoflon.gips.core.ilp.ILPTerm")
 		imports.add("org.emoflon.gips.core.ilp.ILPConstant")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective")
+		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
 		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(context.mapping))
 	}
 	
@@ -49,8 +50,8 @@ import «imp»;
 	
 	override String generateClassContent() {
 		return '''
-public class «className» extends GipsMappingObjective<«data.mapping2mappingClassName.get(context.mapping)»>{
-	public «className»(final GipsEngine engine, final MappingObjective objective) {
+public class «className» extends GipsMappingObjective<«data.gipsApiClassName», «data.mapping2mappingClassName.get(context.mapping)»>{
+	public «className»(final «data.gipsApiClassName» engine, final MappingObjective objective) {
 		super(engine, objective);
 	}
 	

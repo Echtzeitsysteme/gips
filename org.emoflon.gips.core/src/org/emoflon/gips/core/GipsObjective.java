@@ -7,18 +7,20 @@ import org.emoflon.gips.core.ilp.ILPLinearFunction;
 import org.emoflon.gips.core.ilp.ILPTerm;
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
 
-public abstract class GipsObjective<OBJECTIVE extends Objective, CONTEXT extends Object, VARTYPE extends Number> {
-	final protected GipsEngine engine;
+public abstract class GipsObjective<ENGINE extends GipsEngine, OBJECTIVE extends Objective, CONTEXT extends Object, VARTYPE extends Number> {
+	final protected ENGINE engine;
 	final protected OBJECTIVE objective;
 	final protected String name;
+	final protected TypeIndexer indexer;
 	protected List<ILPTerm<Integer, Double>> terms;
 	protected List<ILPConstant<Double>> constantTerms;
 	protected ILPLinearFunction<VARTYPE> ilpObjective;
 
-	public GipsObjective(final GipsEngine engine, final OBJECTIVE objective) {
+	public GipsObjective(final ENGINE engine, final OBJECTIVE objective) {
 		this.engine = engine;
 		this.objective = objective;
 		this.name = objective.getName();
+		indexer = engine.getIndexer();
 	}
 
 	public abstract void buildObjectiveFunction();

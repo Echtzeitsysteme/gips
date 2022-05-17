@@ -31,6 +31,7 @@ class PatternObjectiveTemplate extends ObjectiveTemplate<PatternObjective> {
 		imports.add("org.emoflon.gips.core.ilp.ILPTerm")
 		imports.add("org.emoflon.gips.core.ilp.ILPConstant")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective")
+		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
 		imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(context.pattern))
 		imports.add(data.apiData.rulesPkg+"."+data.pattern2patternClassName.get(context.pattern))
 	}
@@ -47,8 +48,8 @@ import «imp»;
 	
 	override String generateClassContent() {
 		return '''
-public class «className» extends GipsPatternObjective<«data.pattern2matchClassName.get(context.pattern)», «data.pattern2patternClassName.get(context.pattern)»>{
-	public «className»(final GipsEngine engine, final PatternObjective objective, final «data.pattern2patternClassName.get(context.pattern)» pattern) {
+public class «className» extends GipsPatternObjective<«data.gipsApiClassName», «data.pattern2matchClassName.get(context.pattern)», «data.pattern2patternClassName.get(context.pattern)»>{
+	public «className»(final «data.gipsApiClassName» engine, final PatternObjective objective, final «data.pattern2patternClassName.get(context.pattern)» pattern) {
 		super(engine, objective, pattern);
 	}
 	

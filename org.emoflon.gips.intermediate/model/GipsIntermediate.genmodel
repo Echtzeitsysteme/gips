@@ -13,6 +13,7 @@
       disposableProviderFactory="true" ecorePackage="GipsIntermediate.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="GipsIntermediate.ecore#//ILPSolverType">
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//ILPSolverType/GUROBI"/>
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//ILPSolverType/GLPK"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="GipsIntermediate.ecore#//ObjectiveTarget">
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//ObjectiveTarget/MIN"/>

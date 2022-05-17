@@ -26,7 +26,16 @@ public enum ILPSolverType implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	GUROBI(0, "GUROBI", "GUROBI");
+	GUROBI(0, "GUROBI", "GUROBI"),
+	/**
+	 * The '<em><b>GLPK</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see #GLPK_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	GLPK(1, "GLPK", "GLPK");
 
 	/**
 	 * The '<em><b>GUROBI</b></em>' literal value. <!-- begin-user-doc --> <!--
@@ -40,12 +49,23 @@ public enum ILPSolverType implements Enumerator {
 	public static final int GUROBI_VALUE = 0;
 
 	/**
+	 * The '<em><b>GLPK</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see #GLPK
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
+	public static final int GLPK_VALUE = 1;
+
+	/**
 	 * An array of all the '<em><b>ILP Solver Type</b></em>' enumerators. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	private static final ILPSolverType[] VALUES_ARRAY = new ILPSolverType[] { GUROBI, };
+	private static final ILPSolverType[] VALUES_ARRAY = new ILPSolverType[] { GUROBI, GLPK, };
 
 	/**
 	 * A public read-only list of all the '<em><b>ILP Solver Type</b></em>'
@@ -103,6 +123,8 @@ public enum ILPSolverType implements Enumerator {
 		switch (value) {
 		case GUROBI_VALUE:
 			return GUROBI;
+		case GLPK_VALUE:
+			return GLPK;
 		}
 		return null;
 	}

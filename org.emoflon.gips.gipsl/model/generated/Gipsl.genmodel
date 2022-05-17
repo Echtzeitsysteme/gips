@@ -8,6 +8,7 @@
       fileExtensions="gipsl" ecorePackage="Gipsl.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//SolverType">
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//SolverType/GUROBI"/>
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//SolverType/GLPK"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//GipsObjectiveGoal">
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsObjectiveGoal/MIN"/>

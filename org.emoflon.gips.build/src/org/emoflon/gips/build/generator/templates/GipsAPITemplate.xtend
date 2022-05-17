@@ -21,6 +21,7 @@ class GipsAPITemplate extends GeneratorTemplate<GipsIntermediateModel> {
 		imports.add("org.emoflon.gips.core.GipsGlobalObjective")
 		imports.add("org.emoflon.gips.core.ilp.ILPSolver")
 		imports.add("org.emoflon.gips.core.ilp.GurobiSolver")
+		imports.add("org.emoflon.gips.core.ilp.GlpkSolver")
 		imports.add("org.emoflon.gips.core.ilp.ILPSolverConfig")
 		imports.add(data.apiData.apiPkg + "." + data.apiData.engineAppClasses.get(GipsAPIData.HIPE_ENGINE_NAME))
 		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)
@@ -113,6 +114,9 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 		switch(data.model.config.solver) {
 			case GUROBI: {
 				return '''new GurobiSolver(this, solverConfig)'''
+			}
+			case GLPK: {
+				return '''new GlpkSolver(this, solverConfig)'''
 			}
 		}
 	}

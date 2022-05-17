@@ -3286,6 +3286,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		// Initialize enums and add enum literals
 		initEEnum(ilpSolverTypeEEnum, ILPSolverType.class, "ILPSolverType");
 		addEEnumLiteral(ilpSolverTypeEEnum, ILPSolverType.GUROBI);
+		addEEnumLiteral(ilpSolverTypeEEnum, ILPSolverType.GLPK);
 
 		initEEnum(objectiveTargetEEnum, ObjectiveTarget.class, "ObjectiveTarget");
 		addEEnumLiteral(objectiveTargetEEnum, ObjectiveTarget.MIN);

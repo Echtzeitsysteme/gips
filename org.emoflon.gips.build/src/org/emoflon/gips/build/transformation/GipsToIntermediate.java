@@ -95,6 +95,9 @@ public class GipsToIntermediate {
 		case GUROBI -> {
 			config.setSolver(ILPSolverType.GUROBI);
 		}
+		case GLPK -> {
+			config.setSolver(ILPSolverType.GLPK);
+		}
 		default -> {
 			throw new IllegalArgumentException("Unsupported solver type: " + eConfig.getSolver());
 		}

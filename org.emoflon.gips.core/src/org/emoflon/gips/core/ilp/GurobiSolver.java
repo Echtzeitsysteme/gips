@@ -53,6 +53,9 @@ public class GurobiSolver extends ILPSolver {
 		if (!config.enableOutput()) {
 			env.set(IntParam.OutputFlag, 0);
 		}
+		if (config.enableTolerance()) {
+			env.set(DoubleParam.OptimalityTol, config.tolerance());
+		}
 		model = new GRBModel(env);
 		model.set(DoubleParam.TimeLimit, config.timeLimit());
 		model.set(IntParam.Seed, config.randomSeed());

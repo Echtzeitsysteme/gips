@@ -85,7 +85,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	protected void setSolverConfig(final ILPConfig config) {
 		solverConfig = new ILPSolverConfig(config.isEnableTimeLimit(), config.getIlpTimeLimit(),
 				config.isEnableRndSeed(), config.getIlpRndSeed(), config.isEnablePresolve(),
-				config.isEnableDebugOutput());
+				config.isEnableDebugOutput(), config.isEnableCustomTolerance(), config.getTolerance());
 	}
 
 	protected void init(final URI gipsModelURI, final URI modelUri) {

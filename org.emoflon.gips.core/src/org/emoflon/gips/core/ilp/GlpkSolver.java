@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsEngine;
+import org.emoflon.gips.core.GipsGlobalConstraint;
 import org.emoflon.gips.core.GipsGlobalObjective;
 import org.emoflon.gips.core.GipsMapper;
 import org.emoflon.gips.core.GipsMapping;
@@ -64,6 +65,9 @@ public class GlpkSolver extends ILPSolver {
 			iocp.setPresolve(GLPK.GLP_ON);
 		}
 		iocp.setTm_lim((int) config.timeLimit() * 1000); // seconds to milliseconds
+		if (config.enableTolerance()) {
+			iocp.setTol_obj(config.tolerance());
+		}
 		// Random seed not supported by the GLPK Java interface
 		// TODO: Set output flag
 
@@ -117,7 +121,7 @@ public class GlpkSolver extends ILPSolver {
 		} else {
 			throw new RuntimeException("GLPK: Solver status could not be determined.");
 		}
-		return new ILPSolverOutput(status, GLPK.glp_mip_obj_val(model));
+		return new ILPSolverOutput(status, GLPK.glp_mip_obj_val(model), engine.getValidationLog());
 	}
 
 	@Override
@@ -143,17 +147,22 @@ public class GlpkSolver extends ILPSolver {
 	}
 
 	@Override
-	protected void translateConstraint(final GipsMappingConstraint<? extends EObject> constraint) {
+	protected void translateConstraint(final GipsMappingConstraint<?, ? extends EObject> constraint) {
 		constraints.put(constraint.getName(), constraint.getConstraints());
 	}
 
 	@Override
-	protected void translateConstraint(final GipsPatternConstraint<?, ?> constraint) {
+	protected void translateConstraint(final GipsPatternConstraint<?, ?, ?> constraint) {
 		constraints.put(constraint.getName(), constraint.getConstraints());
 	}
 
 	@Override
-	protected void translateConstraint(final GipsTypeConstraint<? extends EObject> constraint) {
+	protected void translateConstraint(final GipsTypeConstraint<?, ? extends EObject> constraint) {
+		constraints.put(constraint.getName(), constraint.getConstraints());
+	}
+
+	@Override
+	protected void translateConstraint(GipsGlobalConstraint<?> constraint) {
 		constraints.put(constraint.getName(), constraint.getConstraints());
 	}
 

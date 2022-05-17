@@ -7,9 +7,11 @@ import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
 import org.emoflon.gips.build.transformation.helper.TransformationContext;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsPatternAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamArithmetic;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeAttributeExpr;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
@@ -18,8 +20,10 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 
 public class SumExpressionTransformer<T extends EObject> extends TransformationContext<T> {
@@ -88,6 +92,116 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 					"A sum stream expression may only contain arithmetic expressions or arithmetic values.");
 		}
 
+	}
+
+	public SumExpression transform(final GipsTypeAttributeExpr eGipsType, final GipsStreamArithmetic streamArithmetic)
+			throws Exception {
+		TypeSumExpression typeSum = factory.createTypeSumExpression();
+		Type type = data.getType(eGipsType.getType());
+		GipsStreamExpr streamExpr = eGipsType.getExpr();
+		data.eStream2SetOp().put(streamExpr, typeSum);
+		typeSum.setType(type);
+		typeSum.setReturnType(EcorePackage.Literals.EDOUBLE);
+
+		StreamExpressionTransformer streamTransformer = transformerFactory.createStreamTransformer(typeSum);
+		typeSum.setFilter(streamTransformer.transform(streamExpr));
+		ArithmeticExpressionType filterExpressionType = GipsTransformationUtils
+				.isConstantExpression(typeSum.getFilter());
+
+		ArithmeticExpressionTransformer arithmeticTransformer = transformerFactory.createArithmeticTransformer(typeSum);
+		if (streamArithmetic.getLambda().getExpr() instanceof GipsRelExpr relExpr && relExpr.getRight() == null) {
+			typeSum.setExpression(arithmeticTransformer.transform(relExpr.getLeft()));
+
+			ArithmeticExpressionType arithmeticExpressionType = GipsTransformationUtils
+					.isConstantExpression(typeSum.getExpression());
+//			TODO: rethink this check...
+//			if((filterExpressionType == ArithmeticExpressionType.variableVector || filterExpressionType == ArithmeticExpressionType.variableValue) &&
+//					(arithmeticExpressionType == ArithmeticExpressionType.variableVector || arithmeticExpressionType == ArithmeticExpressionType.variableValue)) {
+//				throw new UnsupportedOperationException("Variable simultaneous value access in filter and arithmetic expression is forbidden.");
+//			}
+			return typeSum;
+		} else {
+			throw new IllegalArgumentException(
+					"A sum stream expression may only contain arithmetic expressions or arithmetic values.");
+		}
+
+	}
+
+	public SumExpression transform(final GipsTypeAttributeExpr eGipsType) throws Exception {
+		TypeSumExpression typeSum = factory.createTypeSumExpression();
+		Type type = data.getType(eGipsType.getType());
+		GipsStreamExpr streamExpr = eGipsType.getExpr();
+		data.eStream2SetOp().put(streamExpr, typeSum);
+		typeSum.setType(type);
+		typeSum.setReturnType(EcorePackage.Literals.EINT);
+		// Simple expression: Just count all filtered (!) objects
+		DoubleLiteral lit = factory.createDoubleLiteral();
+		lit.setLiteral(1);
+		typeSum.setExpression(lit);
+		// Create filter expression
+
+		StreamExpressionTransformer streamTransformer = transformerFactory.createStreamTransformer(typeSum);
+		typeSum.setFilter(streamTransformer.transform(streamExpr));
+		ArithmeticExpressionType filterExpressionType = GipsTransformationUtils
+				.isConstantExpression(typeSum.getFilter());
+
+		return typeSum;
+	}
+
+	public SumExpression transform(final GipsPatternAttributeExpr eGipsPattern,
+			final GipsStreamArithmetic streamArithmetic) throws Exception {
+		PatternSumExpression patternSum = factory.createPatternSumExpression();
+		Pattern pattern = data.getPattern(eGipsPattern.getPattern());
+		GipsStreamExpr streamExpr = eGipsPattern.getExpr();
+		data.eStream2SetOp().put(streamExpr, patternSum);
+		patternSum.setPattern(pattern);
+		patternSum.setReturnType(EcorePackage.Literals.EDOUBLE);
+
+		StreamExpressionTransformer streamTransformer = transformerFactory.createStreamTransformer(patternSum);
+		patternSum.setFilter(streamTransformer.transform(streamExpr));
+		ArithmeticExpressionType filterExpressionType = GipsTransformationUtils
+				.isConstantExpression(patternSum.getFilter());
+
+		ArithmeticExpressionTransformer arithmeticTransformer = transformerFactory
+				.createArithmeticTransformer(patternSum);
+		if (streamArithmetic.getLambda().getExpr() instanceof GipsRelExpr relExpr && relExpr.getRight() == null) {
+			patternSum.setExpression(arithmeticTransformer.transform(relExpr.getLeft()));
+
+			ArithmeticExpressionType arithmeticExpressionType = GipsTransformationUtils
+					.isConstantExpression(patternSum.getExpression());
+//			TODO: rethink this check...
+//			if((filterExpressionType == ArithmeticExpressionType.variableVector || filterExpressionType == ArithmeticExpressionType.variableValue) &&
+//					(arithmeticExpressionType == ArithmeticExpressionType.variableVector || arithmeticExpressionType == ArithmeticExpressionType.variableValue)) {
+//				throw new UnsupportedOperationException("Variable simultaneous value access in filter and arithmetic expression is forbidden.");
+//			}
+			return patternSum;
+		} else {
+			throw new IllegalArgumentException(
+					"A sum stream expression may only contain arithmetic expressions or arithmetic values.");
+		}
+
+	}
+
+	public SumExpression transform(final GipsPatternAttributeExpr eGipsPattern) throws Exception {
+		PatternSumExpression patternSum = factory.createPatternSumExpression();
+		Pattern pattern = data.getPattern(eGipsPattern.getPattern());
+		GipsStreamExpr streamExpr = eGipsPattern.getExpr();
+		data.eStream2SetOp().put(streamExpr, patternSum);
+		patternSum.setPattern(pattern);
+		patternSum.setReturnType(EcorePackage.Literals.EDOUBLE);
+
+		// Simple expression: Just count all filtered (!) objects
+		DoubleLiteral lit = factory.createDoubleLiteral();
+		lit.setLiteral(1);
+		patternSum.setExpression(lit);
+		// Create filter expression
+
+		StreamExpressionTransformer streamTransformer = transformerFactory.createStreamTransformer(patternSum);
+		patternSum.setFilter(streamTransformer.transform(streamExpr));
+		ArithmeticExpressionType filterExpressionType = GipsTransformationUtils
+				.isConstantExpression(patternSum.getFilter());
+
+		return patternSum;
 	}
 
 	public SumExpression transform(final Type typeContext, final FeatureExpression fe, GipsStreamExpr streamExpr)

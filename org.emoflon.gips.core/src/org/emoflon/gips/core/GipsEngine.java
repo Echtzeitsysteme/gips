@@ -7,13 +7,15 @@ import java.util.Map;
 import org.emoflon.gips.core.ilp.ILPSolver;
 import org.emoflon.gips.core.ilp.ILPSolverOutput;
 import org.emoflon.gips.core.ilp.ILPSolverStatus;
+import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 
 public abstract class GipsEngine {
 
 	final protected Map<String, GipsMapper<?>> mappers = new HashMap<>();
 	protected TypeIndexer indexer;
-	final protected Map<String, GipsConstraint<?, ?, ?>> constraints = new HashMap<>();
-	final protected Map<String, GipsObjective<?, ?, ?>> objectives = new HashMap<>();
+	protected GipsConstraintValidationLog validationLog;
+	final protected Map<String, GipsConstraint<?, ?, ?, ?>> constraints = new HashMap<>();
+	final protected Map<String, GipsObjective<?, ?, ?, ?>> objectives = new HashMap<>();
 	protected GipsGlobalObjective globalObjective;
 	protected ILPSolver ilpSolver;
 
@@ -35,6 +37,10 @@ public abstract class GipsEngine {
 	}
 
 	public ILPSolverOutput solveILPProblem() {
+		if (validationLog.isNotValid()) {
+			ILPSolverOutput output = new ILPSolverOutput(ILPSolverStatus.INFEASIBLE, Double.NaN, validationLog);
+			return output;
+		}
 		ILPSolverOutput output = ilpSolver.solve();
 		if (output.status() != ILPSolverStatus.INFEASIBLE)
 			ilpSolver.updateValuesFromSolution();
@@ -50,16 +56,20 @@ public abstract class GipsEngine {
 		return mappers;
 	}
 
-	public Map<String, GipsConstraint<?, ?, ?>> getConstraints() {
+	public Map<String, GipsConstraint<?, ?, ?, ?>> getConstraints() {
 		return constraints;
 	}
 
-	public Map<String, GipsObjective<?, ?, ?>> getObjectives() {
+	public Map<String, GipsObjective<?, ?, ?, ?>> getObjectives() {
 		return objectives;
 	}
 
 	public TypeIndexer getIndexer() {
 		return indexer;
+	}
+
+	public GipsConstraintValidationLog getValidationLog() {
+		return validationLog;
 	}
 
 	public GipsGlobalObjective getGlobalObjective() {
@@ -77,11 +87,11 @@ public abstract class GipsEngine {
 		mappers.put(mapper.getName(), mapper);
 	}
 
-	protected void addConstraint(final GipsConstraint<?, ?, ?> constraint) {
+	protected void addConstraint(final GipsConstraint<?, ?, ?, ?> constraint) {
 		constraints.put(constraint.getName(), constraint);
 	}
 
-	protected void addObjective(final GipsObjective<?, ?, ?> objective) {
+	protected void addObjective(final GipsObjective<?, ?, ?, ?> objective) {
 		objectives.put(objective.getName(), objective);
 	}
 

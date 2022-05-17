@@ -25,6 +25,7 @@ GipsConfig : {GipsConfig}
 	('randomSeed' ':=' enableSeed = GipsBoolean '[' 'value' ':=' rndSeed=GipsInteger ']' ';')?
 	('presolve' ':=' enablePresolve = GipsBoolean ';')?
 	('debugOutput' ':=' enableDebugOutput = GipsBoolean ';')?
+	('tolerance' ':=' enableTolernace = GipsBoolean '[' 'value' ':=' tolerance=GipsDouble ']' ';')?
 	'}'
 ;
 
@@ -33,11 +34,11 @@ enum SolverType:
 ;
 
 GipsMapping :
-	'mapping' name=ID 'with' rule=[GT::EditorPattern|ID] ';'
+	'mapping' name=ID 'with' pattern=[GT::EditorPattern|ID] ';'
 ;
 
 GipsConstraint : 
-	'constraint' '->' context=(GipsMappingContext | GipsTypeContext | GipsPatternContext) '{'
+	'constraint' '->' context=(GipsGlobalContext | GipsMappingContext | GipsTypeContext | GipsPatternContext) '{'
 		expr = GipsBool
 	'}'
 ;
@@ -46,6 +47,10 @@ GipsObjective :
 	'objective' name=ID '->' context=(GipsMappingContext | GipsTypeContext | GipsPatternContext) '{'
 		expr = GipsArithmeticExpr
 	'}'
+;
+
+GipsGlobalContext: {GlobalContext}
+	'global'
 ;
 
 GipsMappingContext:
@@ -117,11 +122,19 @@ enum GipsRelOperator:
 ;
 
 GipsAttributeExpr:
-	GipsMappingAttributeExpr |  GipsContextExpr | GipsLambdaAttributeExpression
+	GipsMappingAttributeExpr | GipsTypeAttributeExpr | GipsPatternAttributeExpr | GipsContextExpr | GipsLambdaAttributeExpression
 ;
 
 GipsMappingAttributeExpr returns GipsAttributeExpr: {GipsMappingAttributeExpr}
-	'mappings.' mapping=[GipsMapping|ID] '->' expr = GipsStreamExpr
+	'mappings' '.' mapping=[GipsMapping|ID] '->' expr = GipsStreamExpr
+;
+
+GipsTypeAttributeExpr returns GipsAttributeExpr: {GipsTypeAttributeExpr}
+	'classes' '.' type=[ecore::EClass] '->' expr = GipsStreamExpr
+;
+
+GipsPatternAttributeExpr returns GipsAttributeExpr: {GipsPatternAttributeExpr}
+	'patterns' '.' pattern=[GT::EditorPattern|ID] '->' expr = GipsStreamExpr
 ;
 
 //TODO: Allow optional nested lambda expressions
@@ -134,13 +147,9 @@ GipsContextExpr returns GipsAttributeExpr: {GipsContextExpr}
 	'self' ('.' typeCast=GipsTypeCast)? ('.' (expr = GipsNodeAttributeExpr | expr = GipsContextOperationExpression | expr = GipsFeatureExpr) ('->' stream = GipsStreamExpr)?)?
 ;
 
-GipsContextOperationExpression:
-	operation=GipsContextOperation
-;
-
-enum GipsContextOperation:
-	VALUE = 'value()' |
- 	MAPPED = 'isMapped()'
+GipsContextOperationExpression returns GipsContextOperationExpression: 
+	{GipsMappingValue} 'value()' |
+	{GipsMappingCheckValue} 'isMapped' '(' (count=GipsContextExpr)? ')'
 ;
 
 GipsTypeCast:
@@ -188,20 +197,31 @@ GipsBracketExpr returns GipsArithmeticExpr: {GipsBracketExpr}
 ;
 
 GipsExpressionOperand:
-	GipsAttributeExpr | GipsObjectiveExpression | GipsArithmeticLiteral
+	GipsAttributeExpr | GipsObjectiveExpression | GipsArithmeticLiteral | GipsConstant
 ;
 
 GipsArithmeticLiteral:
 	value = (GipsDoubleLiteral | GipsIntegerLiteral)
 ;
 
+GipsConstant:
+	value = GipsConstantLiteral
+;
+
+enum GipsConstantLiteral:
+	PI = 'pi' |
+	E = 'e' |
+	NULL = 'null'
+;
+
 enum GipsProductOperator:
 	MULT='*' |
- 	DIV='/'  
+ 	DIV='/'
 ;
 
 enum GipsExpOperator:
- 	POW='^'	
+ 	POW='^'	|
+ 	LOG='log'
 ;
 
 enum GipsSumOperator:
@@ -210,11 +230,11 @@ enum GipsSumOperator:
 ;
 
 enum GipsArithmeticUnaryOperator:
-	NEG='-'	|
+	NEG='-'		|
 	ABS='abs'	|
 	SQRT='sqrt' |
 	sin='sin'	|
-	cos='cos'	
+	cos='cos'
 ;
 
 GipsStreamExpr:
@@ -246,9 +266,8 @@ enum GipsStreamArithmeticOperator:
 ;
 
 enum GipsStreamNoArgOperator:
-	EXISTS = 'exists()' |
-	NOTEXISTS = 'notExists()' |
-	count = 'count()'
+	NOT_EMPTY = 'notEmpty()' |
+	COUNT = 'count()'
 ;
 
 GipsDoubleLiteral:

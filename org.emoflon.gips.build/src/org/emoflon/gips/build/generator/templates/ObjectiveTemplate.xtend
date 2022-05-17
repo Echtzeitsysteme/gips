@@ -59,6 +59,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Mapping
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern
 import org.emoflon.gips.intermediate.GipsIntermediate.Type
 import org.eclipse.emf.ecore.EcorePackage
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
 
 abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends GeneratorTemplate<OBJECTIVE> {
 
@@ -199,7 +200,9 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 	
 	def String generateBuilder(ContextSumExpression expr);
 	
-	def String generateBuilder(TypeSumExpression expr);
+	def String generateForeignBuilder(TypeSumExpression expr);
+	
+	def String generateForeignBuilder(PatternSumExpression expr);
 	
 	def String generateForeignBuilder(MappingSumExpression expr);
 	
@@ -220,6 +223,9 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 				}
 				case SUBTRACT: {
 					return '''«parseExpression(expr.lhs, contextType)» - «parseExpression(expr.rhs, contextType)»'''
+				}
+				case LOG: {
+					return '''Math.log(«parseExpression(expr.lhs, contextType)») / Math.log(«parseExpression(expr.rhs, contextType)»)'''
 				}
 			}
 		} else if(expr instanceof UnaryArithmeticExpression) {
@@ -246,8 +252,10 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		} else if(expr instanceof ArithmeticLiteral) {
 			if(expr instanceof DoubleLiteral) {
 				return String.valueOf(expr.literal)
+			} else if(expr instanceof IntegerLiteral) {
+				return String.valueOf(expr.literal)
 			} else {
-				return String.valueOf((expr as IntegerLiteral).literal)
+				return '''null'''
 			}
 		} else {
 			val value = expr as ArithmeticValue
@@ -426,13 +434,18 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		if(constExpr instanceof MappingSumExpression) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof TypeSumExpression) {
-//			imports.add(data.classToPackage.getPackage(constExpr.type.type.EPackage))
-//			return '''indexer.getObjectsOfType(«constExpr.type.type.EPackage.name».eINSTANCE.get«constExpr.type.type.name»()).stream()
-//			.«parseExpression(constExpr.filter, ExpressionContext.constConstraint)»
-//			.reduce(0, (sum, «getIteratorVariableName(constExpr)») -> {
-//				sum + «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»
-//			})'''
-			throw new UnsupportedOperationException("Foreign type stream expr not yet implemented.");
+			imports.add(data.classToPackage.getImportsForType(constExpr.type.type))
+			return '''indexer.getObjectsOfType("«constExpr.type.type.name»").parallelStream()
+			.map(type -> («constExpr.type.type.name») type)
+			«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
+			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
+			.reduce(0.0, (sum, value) -> sum + value)'''
+		} else if(constExpr instanceof PatternSumExpression) {
+			imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(constExpr.pattern))
+			return '''engine.getEMoflonAPI().«constExpr.pattern.name»().findMatches(false).parallelStream()
+			«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
+			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
+			.reduce(0.0, (sum, value) -> sum + value)'''
 		} else if(constExpr instanceof ContextSumExpression) {
 			if(constExpr.context instanceof Mapping) {
 				throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
@@ -484,7 +497,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		} else if(constExpr instanceof IteratorPatternNodeValue) {
 			return '''«getIteratorVariableName(constExpr.stream)».get«constExpr.node.name.toFirstUpper»()'''
 		} else if(constExpr instanceof IteratorTypeFeatureValue){
-			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)».«parseFeatureExpression(constExpr.featureExpression)»'''
+			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else {
 			val itrTypVal = constExpr as IteratorTypeValue
 			return '''«getIteratorVariableName(itrTypVal.stream)»'''
@@ -531,7 +544,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		} else if(constExpr instanceof IteratorPatternNodeValue) {
 			return '''«getIteratorVariableName(constExpr.stream)».get«constExpr.node.name.toFirstUpper»()'''
 		} else if(constExpr instanceof IteratorTypeFeatureValue){
-			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)».«parseFeatureExpression(constExpr.featureExpression)»'''
+			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else {
 			val itrTypVal = constExpr as IteratorTypeValue
 			return '''«getIteratorVariableName(itrTypVal.stream)»'''
@@ -542,13 +555,18 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		if(varExpr instanceof MappingSumExpression) {
 			throw new UnsupportedOperationException("Mapping stream expressions may not be part of multiplications, fractions, exponentials, roots etc.");
 		} else if(varExpr instanceof TypeSumExpression) {
-//			imports.add(data.classToPackage.getPackage(varExpr.type.type.EPackage))
-//			return '''indexer.getObjectsOfType(«varExpr.type.type.EPackage.name».eINSTANCE.get«varExpr.type.type.name»()).stream()
-//			.«parseExpression(varExpr.filter, ExpressionContext.varConstraint)»
-//			.reduce(0, (sum, «getIteratorVariableName(varExpr)») -> {
-//				sum + «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»
-//			})'''
-			throw new UnsupportedOperationException("Foreign type stream expr not yet implemented.");
+			imports.add(data.classToPackage.getImportsForType(varExpr.type.type))
+			return '''indexer.getObjectsOfType("«varExpr.type.type.name»").parallelStream()
+			.map(type -> («varExpr.type.type.name») type)
+			«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
+			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
+			.reduce(0.0, (sum, value) -> sum + value)'''
+		} else if(varExpr instanceof PatternSumExpression) {
+			imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(varExpr.pattern))
+			return '''engine.getEMoflonAPI().«varExpr.pattern.name»().findMatches(false).parallelStream()
+			«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
+			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
+			.reduce(0.0, (sum, value) -> sum + value)'''
 		} else if(varExpr instanceof ContextSumExpression) {
 			if(varExpr.context instanceof Mapping) {
 				throw new UnsupportedOperationException("Mapping stream expressions may not be part of multiplications, fractions, exponentials, roots etc.");
@@ -602,7 +620,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		} else if(varExpr instanceof IteratorPatternNodeValue) {
 			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»()'''
 		} else if(varExpr instanceof IteratorTypeFeatureValue){
-			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)».«parseFeatureExpression(varExpr.featureExpression)»'''
+			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else {
 			val itrTypVal = varExpr as IteratorTypeValue
 			return '''«getIteratorVariableName(itrTypVal.stream)»'''
@@ -651,7 +669,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		} else if(varExpr instanceof IteratorPatternNodeValue) {
 			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»()'''
 		} else if(varExpr instanceof IteratorTypeFeatureValue){
-			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)».«parseFeatureExpression(varExpr.featureExpression)»'''
+			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else {
 			val itrTypVal = varExpr as IteratorTypeValue
 			return '''«getIteratorVariableName(itrTypVal.stream)»'''
@@ -672,7 +690,6 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			getOrIs = "is";
 			
 		if(expr.child === null) {
-			//TODO: Watch out for boolean attributes -> isXXXX() instead of getXXXX()
 			return '''«getOrIs»«expr.current.feature.name.toFirstUpper»()'''
 		} else {
 			return '''«getOrIs»«expr.current.feature.name.toFirstUpper»().«parseFeatureExpression(expr.child)»'''

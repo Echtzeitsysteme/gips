@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsEngine;
+import org.emoflon.gips.core.GipsGlobalConstraint;
 import org.emoflon.gips.core.GipsGlobalObjective;
 import org.emoflon.gips.core.GipsMapper;
 import org.emoflon.gips.core.GipsMapping;
@@ -52,6 +53,9 @@ public class GurobiSolver extends ILPSolver {
 		if (!config.enableOutput()) {
 			env.set(IntParam.OutputFlag, 0);
 		}
+		if (config.enableTolerance()) {
+			env.set(DoubleParam.OptimalityTol, config.tolerance());
+		}
 		model = new GRBModel(env);
 		model.set(DoubleParam.TimeLimit, config.timeLimit());
 		model.set(IntParam.Seed, config.randomSeed());
@@ -94,7 +98,7 @@ public class GurobiSolver extends ILPSolver {
 			throw new RuntimeException(e);
 		}
 
-		return new ILPSolverOutput(status, objVal);
+		return new ILPSolverOutput(status, objVal, engine.getValidationLog());
 	}
 
 	@Override
@@ -133,17 +137,22 @@ public class GurobiSolver extends ILPSolver {
 	}
 
 	@Override
-	protected void translateConstraint(final GipsMappingConstraint<? extends EObject> constraint) {
+	protected void translateConstraint(final GipsMappingConstraint<?, ? extends EObject> constraint) {
 		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
 	}
 
 	@Override
-	protected void translateConstraint(final GipsPatternConstraint<?, ?> constraint) {
+	protected void translateConstraint(final GipsPatternConstraint<?, ?, ?> constraint) {
 		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
 	}
 
 	@Override
-	protected void translateConstraint(final GipsTypeConstraint<? extends EObject> constraint) {
+	protected void translateConstraint(final GipsTypeConstraint<?, ? extends EObject> constraint) {
+		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
+	}
+
+	@Override
+	protected void translateConstraint(GipsGlobalConstraint<?> constraint) {
 		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
 	}
 

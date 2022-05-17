@@ -22,11 +22,14 @@ class ConstraintFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel>
 		imports.add("org.emoflon.gips.core.GipsConstraint")
 		imports.add("org.emoflon.gips.core.GipsTypeConstraint")
 		imports.add("org.emoflon.gips.core.GipsMappingConstraint")
+		imports.add("org.emoflon.gips.core.GipsGlobalConstraint")
 		imports.add("org.emoflon.gips.core.gt.GipsPatternConstraint")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.Constraint")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint")
+		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint")
+		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
 		data.constraint2constraintClassName.values.forEach[c | imports.add(data.apiData.gipsConstraintPkg+"."+c)]
 	}
 	
@@ -37,13 +40,13 @@ class ConstraintFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel>
 import «imp»;
 «ENDFOR»
 
-public class «className» extends GipsConstraintFactory<«data.apiData.apiClass»> {
-	public «className»(final GipsEngine engine, final «data.apiData.apiClass» eMoflonApi) {
+public class «className» extends GipsConstraintFactory<«data.gipsApiClassName», «data.apiData.apiClass»> {
+	public «className»(final «data.gipsApiClassName» engine, final «data.apiData.apiClass» eMoflonApi) {
 		super(engine, eMoflonApi);
 	}
 	
 	@Override
-	public GipsConstraint<? extends Constraint, ? extends Object, ? extends Number> createConstraint(final Constraint constraint) {
+	public GipsConstraint<«data.gipsApiClassName», ? extends Constraint, ? extends Object, ? extends Number> createConstraint(final Constraint constraint) {
 		«IF context.constraints.isNullOrEmpty»
 		throw new IllegalArgumentException("Unknown constraint type: "+constraint);
 		«ELSE»

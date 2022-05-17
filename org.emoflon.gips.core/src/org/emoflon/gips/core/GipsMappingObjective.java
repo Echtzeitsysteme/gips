@@ -6,13 +6,13 @@ import java.util.LinkedList;
 import org.emoflon.gips.core.ilp.ILPLinearFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective;
 
-public abstract class GipsMappingObjective<CONTEXT extends GipsMapping>
-		extends GipsObjective<MappingObjective, CONTEXT, Integer> {
+public abstract class GipsMappingObjective<ENGINE extends GipsEngine, CONTEXT extends GipsMapping>
+		extends GipsObjective<ENGINE, MappingObjective, CONTEXT, Integer> {
 
 	final protected GipsMapper<CONTEXT> mapper;
 
 	@SuppressWarnings("unchecked")
-	public GipsMappingObjective(GipsEngine engine, MappingObjective objective) {
+	public GipsMappingObjective(ENGINE engine, MappingObjective objective) {
 		super(engine, objective);
 		mapper = (GipsMapper<CONTEXT>) engine.getMapper(objective.getMapping().getName());
 	}

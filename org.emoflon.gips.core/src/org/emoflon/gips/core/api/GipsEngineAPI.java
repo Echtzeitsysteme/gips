@@ -14,6 +14,7 @@ import org.emoflon.gips.core.GipsGlobalObjective;
 import org.emoflon.gips.core.TypeIndexer;
 import org.emoflon.gips.core.ilp.ILPSolver;
 import org.emoflon.gips.core.ilp.ILPSolverConfig;
+import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
@@ -31,8 +32,8 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	final protected Map<String, Mapping> name2Mapping = new HashMap<>();
 	protected ILPSolverConfig solverConfig;
 	protected GipsMapperFactory<EMOFLON_API> mapperFactory;
-	protected GipsConstraintFactory<EMOFLON_API> constraintFactory;
-	protected GipsObjectiveFactory<EMOFLON_API> objectiveFactory;
+	protected GipsConstraintFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> constraintFactory;
+	protected GipsObjectiveFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> objectiveFactory;
 
 	protected GipsEngineAPI(final EMOFLON_APP eMoflonApp) {
 		this.eMoflonApp = eMoflonApp;
@@ -81,18 +82,21 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 
 	public abstract void init(final URI modelUri);
 
+	public abstract void init(final URI gipsModelURI, final URI modelUri);
+
 	protected void setSolverConfig(final ILPConfig config) {
 		solverConfig = new ILPSolverConfig(config.isEnableTimeLimit(), config.getIlpTimeLimit(),
 				config.isEnableRndSeed(), config.getIlpRndSeed(), config.isEnablePresolve(),
-				config.isEnableDebugOutput());
+				config.isEnableDebugOutput(), config.isEnableCustomTolerance(), config.getTolerance());
 	}
 
-	protected void init(final URI gipsModelURI, final URI modelUri) {
+	protected void initInternal(final URI gipsModelURI, final URI modelUri) {
 		eMoflonApp.registerMetaModels();
 		eMoflonApp.loadModel(modelUri);
 		eMoflonAPI = eMoflonApp.initAPI();
 		loadIntermediateModel(gipsModelURI);
 		initTypeIndexer();
+		validationLog = new GipsConstraintValidationLog();
 		setSolverConfig(gipsModel.getConfig());
 		initMapperFactory();
 		createMappers();

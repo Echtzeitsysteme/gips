@@ -11,9 +11,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
-import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 
@@ -30,6 +30,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
  * <em>Elementwise</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getExpression
  * <em>Expression</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#isConstant
+ * <em>Constant</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getModelType
  * <em>Model Type</em>}</li>
  * </ul>
@@ -85,7 +87,27 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * @generated
 	 * @ordered
 	 */
-	protected RelationalExpression expression;
+	protected BoolValueExpression expression;
+
+	/**
+	 * The default value of the '{@link #isConstant() <em>Constant</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isConstant()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean CONSTANT_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isConstant() <em>Constant</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isConstant()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean constant = CONSTANT_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getModelType() <em>Model Type</em>}'
@@ -165,7 +187,7 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * 
 	 * @generated
 	 */
-	public RelationalExpression getExpression() {
+	public BoolValueExpression getExpression() {
 		return expression;
 	}
 
@@ -174,8 +196,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * 
 	 * @generated
 	 */
-	public NotificationChain basicSetExpression(RelationalExpression newExpression, NotificationChain msgs) {
-		RelationalExpression oldExpression = expression;
+	public NotificationChain basicSetExpression(BoolValueExpression newExpression, NotificationChain msgs) {
+		BoolValueExpression oldExpression = expression;
 		expression = newExpression;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
@@ -193,7 +215,7 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * 
 	 * @generated
 	 */
-	public void setExpression(RelationalExpression newExpression) {
+	public void setExpression(BoolValueExpression newExpression) {
 		if (newExpression != expression) {
 			NotificationChain msgs = null;
 			if (expression != null)
@@ -208,6 +230,28 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION,
 					newExpression, newExpression));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public boolean isConstant() {
+		return constant;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setConstant(boolean newConstant) {
+		boolean oldConstant = constant;
+		constant = newConstant;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT,
+					oldConstant, constant));
 	}
 
 	/**
@@ -278,6 +322,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 			return isElementwise();
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
 			return getExpression();
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT:
+			return isConstant();
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE:
 			if (resolve)
 				return getModelType();
@@ -301,7 +347,10 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 			setElementwise((Boolean) newValue);
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
-			setExpression((RelationalExpression) newValue);
+			setExpression((BoolValueExpression) newValue);
+			return;
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT:
+			setConstant((Boolean) newValue);
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE:
 			setModelType((Type) newValue);
@@ -325,7 +374,10 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 			setElementwise(ELEMENTWISE_EDEFAULT);
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
-			setExpression((RelationalExpression) null);
+			setExpression((BoolValueExpression) null);
+			return;
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT:
+			setConstant(CONSTANT_EDEFAULT);
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE:
 			setModelType((Type) null);
@@ -348,6 +400,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 			return elementwise != ELEMENTWISE_EDEFAULT;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
 			return expression != null;
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT:
+			return constant != CONSTANT_EDEFAULT;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE:
 			return modelType != null;
 		}
@@ -369,6 +423,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 				return GipsIntermediatePackage.CONSTRAINT__ELEMENTWISE;
 			case GipsIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
 				return GipsIntermediatePackage.CONSTRAINT__EXPRESSION;
+			case GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT:
+				return GipsIntermediatePackage.CONSTRAINT__CONSTANT;
 			default:
 				return -1;
 			}
@@ -391,6 +447,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 				return GipsIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE;
 			case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
 				return GipsIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION;
+			case GipsIntermediatePackage.CONSTRAINT__CONSTANT:
+				return GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT;
 			default:
 				return -1;
 			}
@@ -413,6 +471,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		result.append(name);
 		result.append(", elementwise: ");
 		result.append(elementwise);
+		result.append(", constant: ");
+		result.append(constant);
 		result.append(')');
 		return result.toString();
 	}

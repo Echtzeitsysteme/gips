@@ -10,10 +10,15 @@ import org.emoflon.gips.gipsl.gipsl.GipsContains;
 import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingCheckValue;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingValue;
+import org.emoflon.gips.gipsl.gipsl.GipsNodeAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsPatternAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
@@ -42,6 +47,12 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 				if (eAttributeExpr instanceof GipsMappingAttributeExpr eMappingAttribute
 						&& eMappingAttribute.getExpr() != null) {
 					return createUnaryConstraintCondition(eMappingAttribute);
+				} else if (eAttributeExpr instanceof GipsTypeAttributeExpr eTypeAttribute
+						&& eTypeAttribute.getExpr() != null) {
+					return createUnaryConstraintCondition(eTypeAttribute);
+				} else if (eAttributeExpr instanceof GipsPatternAttributeExpr ePatternAttribute
+						&& ePatternAttribute.getExpr() != null) {
+					return createUnaryConstraintCondition(ePatternAttribute);
 				} else if (eAttributeExpr instanceof GipsContextExpr eContextAttribute) {
 					if (eContextAttribute.getExpr() == null && eContextAttribute.getStream() == null) {
 						throw new IllegalArgumentException(
@@ -52,13 +63,13 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 							if (eContextAttribute
 									.getExpr() instanceof GipsContextOperationExpression contextOperation) {
 								return createUnaryConstraintCondition(contextOperation);
+							} else if (eContextAttribute
+									.getExpr() instanceof GipsNodeAttributeExpr nodeAttributeExpression
+									&& nodeAttributeExpression.getExpr() != null) {
+								throw new UnsupportedOperationException("TODO...");
 							} else {
-								// TODO: It is conceptually possible to define simple boolean expressions that
-								// can be evaluated during ILP build time.
-								// -> Since constraints of this kind should be checked using patterns, we'll
-								// implement this feature some time in the future.
 								throw new UnsupportedOperationException(
-										"Checking model preconditions within constraints is not yet supported. Instead, rules or patterns should be used for this purpose.");
+										"Some constrains contain invalid values within boolean expressions, e.g., entire matches, ILP variables or objects.");
 							}
 						} else if (contextType instanceof GipsTypeContext typeContext) {
 							// TODO: It is conceptually possible to define simple boolean expressions that
@@ -122,30 +133,30 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 
 	protected RelationalExpression createUnaryConstraintCondition(final GipsContextOperationExpression contextOperation)
 			throws Exception {
-		switch (contextOperation.getOperation()) {
-		case MAPPED -> {
+		if (contextOperation instanceof GipsMappingValue mappingValueOp) {
+			throw new UnsupportedOperationException(
+					"Some constrains contain invalid values within boolean expressions, e.g., arithmetic values instead of boolean values.");
+		} else if (contextOperation instanceof GipsMappingCheckValue mappingCountOp) {
 			RelationalExpression expr = factory.createRelationalExpression();
-			DoubleLiteral constOne = factory.createDoubleLiteral();
-			constOne.setLiteral(1);
-			expr.setLhs(constOne);
+			if (mappingCountOp.getCount() == null) {
+				DoubleLiteral constOne = factory.createDoubleLiteral();
+				constOne.setLiteral(1);
+				expr.setLhs(constOne);
+			} else {
+				ArithmeticExpressionTransformer transformer = transformerFactory.createArithmeticTransformer(context);
+				expr.setLhs(transformer.transform(mappingCountOp.getCount()));
+			}
 			expr.setOperator(RelationalOperator.EQUAL);
 			ArithmeticValue val = factory.createArithmeticValue();
 			expr.setRhs(val);
 			ContextMappingValue mapVal = factory.createContextMappingValue();
 			val.setValue(mapVal);
-			val.setReturnType(EcorePackage.Literals.EINT);
+			val.setReturnType(EcorePackage.Literals.EDOUBLE);
 			mapVal.setMappingContext(((MappingConstraint) context).getMapping());
 			return expr;
+		} else {
+			throw new UnsupportedOperationException("Unkown context operation: " + contextOperation.eClass());
 		}
-		case VALUE -> {
-			throw new UnsupportedOperationException(
-					"Some constrains contain invalid values within boolean expressions, e.g., arithmetic values instead of boolean values.");
-		}
-		default -> {
-			throw new UnsupportedOperationException("Unknown context operation: " + contextOperation.getOperation());
-		}
-		}
-
 	}
 
 	/*
@@ -163,24 +174,12 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 				throw new IllegalArgumentException(
 						"Some constrains contain invalid values within boolean expressions, e.g., arithmetic values instead of boolean values.");
 			}
-			case EXISTS -> {
+			case NOT_EMPTY -> {
 				RelationalExpression expr = factory.createRelationalExpression();
-				DoubleLiteral constZero = factory.createDoubleLiteral();
-				constZero.setLiteral(1);
-				expr.setLhs(constZero);
+				DoubleLiteral constOne = factory.createDoubleLiteral();
+				constOne.setLiteral(1);
+				expr.setLhs(constOne);
 				expr.setOperator(RelationalOperator.GREATER_OR_EQUAL);
-				SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
-				ArithmeticValue val = factory.createArithmeticValue();
-				val.setValue(transformer.transform(eMappingAttribute));
-				expr.setRhs(val);
-				return expr;
-			}
-			case NOTEXISTS -> {
-				RelationalExpression expr = factory.createRelationalExpression();
-				DoubleLiteral constZero = factory.createDoubleLiteral();
-				constZero.setLiteral(0);
-				expr.setLhs(constZero);
-				expr.setOperator(RelationalOperator.LESS_OR_EQUAL);
 				SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
 				ArithmeticValue val = factory.createArithmeticValue();
 				val.setValue(transformer.transform(eMappingAttribute));
@@ -193,13 +192,97 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 			}
 		} else if (terminalExpr instanceof GipsContains streamContains) {
 			RelationalExpression expr = factory.createRelationalExpression();
-			DoubleLiteral constZero = factory.createDoubleLiteral();
-			constZero.setLiteral(1);
-			expr.setLhs(constZero);
+			DoubleLiteral constOne = factory.createDoubleLiteral();
+			constOne.setLiteral(1);
+			expr.setLhs(constOne);
 			expr.setOperator(RelationalOperator.GREATER_OR_EQUAL);
 			SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
 			ArithmeticValue val = factory.createArithmeticValue();
 			val.setValue(transformer.transform(eMappingAttribute));
+			expr.setRhs(val);
+			return expr;
+		} else {
+			throw new IllegalArgumentException(
+					"Some constrains contain invalid values within boolean expressions, e.g., arithmetic values instead of boolean values.");
+		}
+	}
+
+	protected RelationalExpression createUnaryConstraintCondition(final GipsTypeAttributeExpr eTypeAttribute)
+			throws Exception {
+		GipsStreamExpr terminalExpr = GipsTransformationUtils.getTerminalStreamExpression(eTypeAttribute.getExpr());
+		if (terminalExpr instanceof GipsStreamBoolExpr streamBool) {
+			switch (streamBool.getOperator()) {
+			case COUNT -> {
+				throw new IllegalArgumentException(
+						"Some constrains contain invalid values within boolean expressions, e.g., arithmetic values instead of boolean values.");
+			}
+			case NOT_EMPTY -> {
+				RelationalExpression expr = factory.createRelationalExpression();
+				DoubleLiteral constOne = factory.createDoubleLiteral();
+				constOne.setLiteral(1);
+				expr.setLhs(constOne);
+				expr.setOperator(RelationalOperator.GREATER_OR_EQUAL);
+				SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
+				ArithmeticValue val = factory.createArithmeticValue();
+				val.setValue(transformer.transform(eTypeAttribute));
+				expr.setRhs(val);
+				return expr;
+			}
+			default -> {
+				throw new UnsupportedOperationException("Unknown stream operator: " + streamBool.getOperator());
+			}
+			}
+		} else if (terminalExpr instanceof GipsContains streamContains) {
+			RelationalExpression expr = factory.createRelationalExpression();
+			DoubleLiteral constOne = factory.createDoubleLiteral();
+			constOne.setLiteral(1);
+			expr.setLhs(constOne);
+			expr.setOperator(RelationalOperator.GREATER_OR_EQUAL);
+			SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
+			ArithmeticValue val = factory.createArithmeticValue();
+			val.setValue(transformer.transform(eTypeAttribute));
+			expr.setRhs(val);
+			return expr;
+		} else {
+			throw new IllegalArgumentException(
+					"Some constrains contain invalid values within boolean expressions, e.g., arithmetic values instead of boolean values.");
+		}
+	}
+
+	protected RelationalExpression createUnaryConstraintCondition(final GipsPatternAttributeExpr ePatternAttribute)
+			throws Exception {
+		GipsStreamExpr terminalExpr = GipsTransformationUtils.getTerminalStreamExpression(ePatternAttribute.getExpr());
+		if (terminalExpr instanceof GipsStreamBoolExpr streamBool) {
+			switch (streamBool.getOperator()) {
+			case COUNT -> {
+				throw new IllegalArgumentException(
+						"Some constrains contain invalid values within boolean expressions, e.g., arithmetic values instead of boolean values.");
+			}
+			case NOT_EMPTY -> {
+				RelationalExpression expr = factory.createRelationalExpression();
+				DoubleLiteral constOne = factory.createDoubleLiteral();
+				constOne.setLiteral(1);
+				expr.setLhs(constOne);
+				expr.setOperator(RelationalOperator.GREATER_OR_EQUAL);
+				SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
+				ArithmeticValue val = factory.createArithmeticValue();
+				val.setValue(transformer.transform(ePatternAttribute));
+				expr.setRhs(val);
+				return expr;
+			}
+			default -> {
+				throw new UnsupportedOperationException("Unknown stream operator: " + streamBool.getOperator());
+			}
+			}
+		} else if (terminalExpr instanceof GipsContains streamContains) {
+			RelationalExpression expr = factory.createRelationalExpression();
+			DoubleLiteral constOne = factory.createDoubleLiteral();
+			constOne.setLiteral(1);
+			expr.setLhs(constOne);
+			expr.setOperator(RelationalOperator.GREATER_OR_EQUAL);
+			SumExpressionTransformer transformer = transformerFactory.createSumTransformer(context);
+			ArithmeticValue val = factory.createArithmeticValue();
+			val.setValue(transformer.transform(ePatternAttribute));
 			expr.setRhs(val);
 			return expr;
 		} else {

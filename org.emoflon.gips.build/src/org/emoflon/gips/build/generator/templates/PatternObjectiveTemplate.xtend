@@ -11,6 +11,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
 
 class PatternObjectiveTemplate extends ObjectiveTemplate<PatternObjective> {
 
@@ -30,6 +31,7 @@ class PatternObjectiveTemplate extends ObjectiveTemplate<PatternObjective> {
 		imports.add("org.emoflon.gips.core.ilp.ILPTerm")
 		imports.add("org.emoflon.gips.core.ilp.ILPConstant")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective")
+		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
 		imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(context.pattern))
 		imports.add(data.apiData.rulesPkg+"."+data.pattern2patternClassName.get(context.pattern))
 	}
@@ -46,8 +48,8 @@ import «imp»;
 	
 	override String generateClassContent() {
 		return '''
-public class «className» extends GipsPatternObjective<«data.pattern2matchClassName.get(context.pattern)», «data.pattern2patternClassName.get(context.pattern)»>{
-	public «className»(final GipsEngine engine, final PatternObjective objective, final «data.pattern2patternClassName.get(context.pattern)» pattern) {
+public class «className» extends GipsPatternObjective<«data.gipsApiClassName», «data.pattern2matchClassName.get(context.pattern)», «data.pattern2patternClassName.get(context.pattern)»>{
+	public «className»(final «data.gipsApiClassName» engine, final PatternObjective objective, final «data.pattern2patternClassName.get(context.pattern)» pattern) {
 		super(engine, objective, pattern);
 	}
 	
@@ -76,9 +78,12 @@ protected void buildTerms(final «data.pattern2matchClassName.get(context.patter
 			return generateForeignBuilder(expr)
 		} else if(expr instanceof ContextSumExpression) {
 			return generateBuilder(expr)
+		} else if (expr instanceof TypeSumExpression) {
+			return generateForeignBuilder(expr)
+		} else if (expr instanceof PatternSumExpression) {
+			return generateForeignBuilder(expr)
 		} else {
-			val tse = expr as TypeSumExpression
-			return generateBuilder(tse)
+			throw new UnsupportedOperationException("Unknown sum expression type.")
 		}
 	}
 	
@@ -131,7 +136,7 @@ protected void buildTerms(final «data.pattern2matchClassName.get(context.patter
 	protected void «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
 		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper("«expr.mapping.name»").getMappings().values().parallelStream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
-			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
+			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}
 	}
@@ -140,22 +145,43 @@ protected void buildTerms(final «data.pattern2matchClassName.get(context.patter
 		return methodName
 	}
 	
-	override String generateBuilder(TypeSumExpression expr) {
-//		val methodName = '''builder_«builderMethods.size»'''
-//		builderMethods.put(expr, methodName)
-//		imports.add("java.util.stream.Collectors")
-//		val method = '''
-//	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
-//		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.name»").parallelStream()
-//			.map(type -> («expr.type.type.name») type)
-//			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-//			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
-//		}
-//	}
-//		'''
-//		builderMethodDefinitions.put(expr, method)
-//		return methodName
-		throw new UnsupportedOperationException("Foreign type stream expr not yet implemented.");
+	override generateForeignBuilder(TypeSumExpression expr) {
+		val methodName = '''builder_«builderMethods.size»'''
+		builderMethods.put(expr, methodName)
+		imports.add(data.classToPackage.getImportsForType(expr.type.type))
+		val method = '''
+	protected void «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		double constant = indexer.getObjectsOfType("«expr.type.type.name»").parallelStream()
+					.map(type -> («expr.type.type.name») type)
+					«getFilterExpr(expr.filter, ExpressionContext.constStream)»
+					.map(«getIteratorVariableName(expr)» -> «parseExpression(expr.expression, ExpressionContext.constConstraint)»)
+					.reduce(0.0, (sum, value) -> sum + value);
+					
+		constantTerms.add(new ILPConstant<Double>(constant));		
+	}
+		'''
+		
+		builderMethodDefinitions.put(expr, method)
+		return methodName
+	}
+	
+	override generateForeignBuilder(PatternSumExpression expr) {
+		val methodName = '''builder_«builderMethods.size»'''
+		builderMethods.put(expr, methodName)
+		imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(expr.pattern))
+		val method = '''
+	protected void «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		double constant = engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()
+					«getFilterExpr(expr.filter, ExpressionContext.constStream)»
+					.map(«getIteratorVariableName(expr)» -> «parseExpression(expr.expression, ExpressionContext.constConstraint)»)
+					.reduce(0.0, (sum, value) -> sum + value);
+								
+		constantTerms.add(new ILPConstant<Double>(constant));	
+	}
+		'''
+		
+		builderMethodDefinitions.put(expr, method)
+		return methodName
 	}
 	
 	override String generateBuilder(ContextSumExpression expr) {

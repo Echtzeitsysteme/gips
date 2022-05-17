@@ -3,6 +3,7 @@ package org.emoflon.gips.core.ilp;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsConstraint;
 import org.emoflon.gips.core.GipsEngine;
+import org.emoflon.gips.core.GipsGlobalConstraint;
 import org.emoflon.gips.core.GipsGlobalObjective;
 import org.emoflon.gips.core.GipsMapping;
 import org.emoflon.gips.core.GipsMappingConstraint;
@@ -31,21 +32,25 @@ public abstract class ILPSolver {
 
 	protected abstract void translateMapping(final GipsMapping mapping);
 
-	protected void translateConstraint(final GipsConstraint<?, ?, ?> constraint) {
-		if (constraint instanceof GipsMappingConstraint<?> mapping) {
+	protected void translateConstraint(final GipsConstraint<?, ?, ?, ?> constraint) {
+		if (constraint instanceof GipsMappingConstraint<?, ?> mapping) {
 			translateConstraint(mapping);
-		} else if (constraint instanceof GipsPatternConstraint<?, ?> pattern) {
+		} else if (constraint instanceof GipsPatternConstraint<?, ?, ?> pattern) {
 			translateConstraint(pattern);
+		} else if (constraint instanceof GipsTypeConstraint<?, ?> type) {
+			translateConstraint(type);
 		} else {
-			translateConstraint((GipsTypeConstraint<?>) constraint);
+			translateConstraint((GipsGlobalConstraint<?>) constraint);
 		}
 	}
 
-	protected abstract void translateConstraint(final GipsMappingConstraint<? extends EObject> constraint);
+	protected abstract void translateConstraint(final GipsMappingConstraint<?, ? extends EObject> constraint);
 
-	protected abstract void translateConstraint(final GipsPatternConstraint<?, ?> constraint);
+	protected abstract void translateConstraint(final GipsPatternConstraint<?, ?, ?> constraint);
 
-	protected abstract void translateConstraint(final GipsTypeConstraint<? extends EObject> constraint);
+	protected abstract void translateConstraint(final GipsTypeConstraint<?, ? extends EObject> constraint);
+
+	protected abstract void translateConstraint(final GipsGlobalConstraint<?> constraint);
 
 	protected abstract void translateObjective(final GipsGlobalObjective objective);
 }

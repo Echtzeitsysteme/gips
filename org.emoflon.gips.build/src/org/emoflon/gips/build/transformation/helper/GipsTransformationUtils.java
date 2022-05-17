@@ -44,6 +44,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
 import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamContainsOperation;
@@ -188,6 +189,21 @@ public final class GipsTransformationUtils {
 		} else if (expr instanceof TypeSumExpression typeSum) {
 			ArithmeticExpressionType exprType = isConstantExpression(typeSum.getExpression());
 			ArithmeticExpressionType filterType = isConstantExpression(typeSum.getFilter());
+			if (exprType == ArithmeticExpressionType.variableVector
+					|| filterType == ArithmeticExpressionType.variableVector) {
+				return ArithmeticExpressionType.variableVector;
+			} else if (exprType == ArithmeticExpressionType.variableValue
+					|| filterType == ArithmeticExpressionType.variableValue) {
+				return ArithmeticExpressionType.variableValue;
+			} else if (exprType == ArithmeticExpressionType.variableScalar
+					|| filterType == ArithmeticExpressionType.variableScalar) {
+				return ArithmeticExpressionType.variableScalar;
+			} else {
+				return ArithmeticExpressionType.constant;
+			}
+		} else if (expr instanceof PatternSumExpression patternSum) {
+			ArithmeticExpressionType exprType = isConstantExpression(patternSum.getExpression());
+			ArithmeticExpressionType filterType = isConstantExpression(patternSum.getFilter());
 			if (exprType == ArithmeticExpressionType.variableVector
 					|| filterType == ArithmeticExpressionType.variableVector) {
 				return ArithmeticExpressionType.variableVector;
@@ -353,6 +369,9 @@ public final class GipsTransformationUtils {
 			return containsContextExpression(mapSum.getFilter()) || containsContextExpression(mapSum.getExpression());
 		} else if (expr instanceof TypeSumExpression typeSum) {
 			return containsContextExpression(typeSum.getFilter()) || containsContextExpression(typeSum.getExpression());
+		} else if (expr instanceof PatternSumExpression patternSum) {
+			return containsContextExpression(patternSum.getFilter())
+					|| containsContextExpression(patternSum.getExpression());
 		} else if (expr instanceof ContextSumExpression) {
 			return true;
 		} else if (expr instanceof ContextTypeFeatureValue) {
@@ -409,6 +428,9 @@ public final class GipsTransformationUtils {
 		} else if (expr instanceof TypeSumExpression typeSum) {
 			variables.addAll(extractVariable(typeSum.getExpression()));
 			variables.addAll(extractVariable(typeSum.getFilter()));
+		} else if (expr instanceof PatternSumExpression patternSum) {
+			variables.addAll(extractVariable(patternSum.getExpression()));
+			variables.addAll(extractVariable(patternSum.getFilter()));
 		} else if (expr instanceof ContextSumExpression contextSum) {
 			if (contextSum.getContext() instanceof Mapping mapping) {
 				variables.add(mapping);

@@ -224,6 +224,9 @@ protected void buildTerms() {
 				case SUBTRACT: {
 					return '''«parseExpression(expr.lhs, contextType)» - «parseExpression(expr.rhs, contextType)»'''
 				}
+				case LOG: {
+					return '''Math.log(«parseExpression(expr.lhs, contextType)») / Math.log(«parseExpression(expr.rhs, contextType)»)'''
+				}
 			}
 		} else if(expr instanceof UnaryArithmeticExpression) {
 			switch(expr.operator) {
@@ -249,8 +252,10 @@ protected void buildTerms() {
 		} else if(expr instanceof ArithmeticLiteral) {
 			if(expr instanceof DoubleLiteral) {
 				return String.valueOf(expr.literal)
+			} else if(expr instanceof IntegerLiteral) {
+				return String.valueOf(expr.literal)
 			} else {
-				return String.valueOf((expr as IntegerLiteral).literal)
+				return '''null'''
 			}
 		} else {
 			val value = expr as ArithmeticValue

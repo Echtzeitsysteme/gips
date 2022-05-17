@@ -31,6 +31,10 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
+import javax.management.relation.RelationException
 
 class PatternConstraintTemplate extends ConstraintTemplate<PatternConstraint> {
 
@@ -50,6 +54,7 @@ class PatternConstraintTemplate extends ConstraintTemplate<PatternConstraint> {
 		imports.add("org.emoflon.gips.core.gt.GipsPatternConstraint")
 		imports.add("org.emoflon.gips.core.ilp.ILPTerm")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint")
+		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
 		imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(context.pattern))
 		imports.add(data.apiData.rulesPkg+"."+data.pattern2patternClassName.get(context.pattern))
 	}
@@ -64,18 +69,94 @@ import «imp»;
 «ENDFOR»'''
 	}
 	
-	override String generateClassContent() {
+	override String generateVariableClassContent(RelationalExpression relExpr) {
 		return '''
-public class «className» extends GipsPatternConstraint<«data.pattern2matchClassName.get(context.pattern)», «data.pattern2patternClassName.get(context.pattern)»>{
-	public «className»(final GipsEngine engine, final PatternConstraint constraint, final «data.pattern2patternClassName.get(context.pattern)» pattern) {
+public class «className» extends GipsPatternConstraint<«data.gipsApiClassName», «data.pattern2matchClassName.get(context.pattern)», «data.pattern2patternClassName.get(context.pattern)»>{
+	public «className»(final «data.gipsApiClassName» engine, final PatternConstraint constraint, final «data.pattern2patternClassName.get(context.pattern)» pattern) {
 		super(engine, constraint, pattern);
 	}
-	«IF GipsTransformationUtils.isConstantExpression(context.expression.lhs) == ArithmeticExpressionType.constant»
-	«generateComplexConstraint(context.expression.lhs, context.expression.rhs)»
+	«IF GipsTransformationUtils.isConstantExpression( relExpr.lhs) == ArithmeticExpressionType.constant»
+	«generateComplexConstraint(relExpr.lhs, relExpr.rhs)»
 	«ELSE»
-	«generateComplexConstraint(context.expression.rhs, context.expression.lhs)»
+	«generateComplexConstraint(relExpr.rhs, relExpr.lhs)»
 	«ENDIF»
 	
+	@Override
+	protected double buildConstantLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("Constraint has an lhs that contains ilp variables.");
+	}
+	
+	@Override
+	protected boolean buildConstantExpression(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
+	}
+		
+	«FOR methods : builderMethodDefinitions.values»
+	«methods»
+	«ENDFOR»
+}'''
+	}
+	
+	override String generateConstantClassContent(RelationalExpression relExpr) {
+		return '''
+public class «className» extends GipsPatternConstraint<«data.gipsApiClassName», «data.pattern2matchClassName.get(context.pattern)», «data.pattern2patternClassName.get(context.pattern)»>{
+	public «className»(final «data.gipsApiClassName» engine, final PatternConstraint constraint, final «data.pattern2patternClassName.get(context.pattern)» pattern) {
+		super(engine, constraint, pattern);
+	}
+	
+	@Override
+	protected double buildConstantLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		return «generateConstTermBuilder(relExpr.lhs)»;
+	}
+	
+	@Override
+	protected double buildConstantRhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		return «generateConstTermBuilder(relExpr.rhs)»;
+	}
+	
+	@Override
+	protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
+	}
+	
+	@Override
+	protected boolean buildConstantExpression(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
+	}
+		
+	«FOR methods : builderMethodDefinitions.values»
+	«methods»
+	«ENDFOR»
+}'''
+	}
+	
+	override String generateConstantClassContent(BoolValueExpression boolExpr) {
+		return '''
+public class «className» extends GipsPatternConstraint<«data.gipsApiClassName», «data.pattern2matchClassName.get(context.pattern)», «data.pattern2patternClassName.get(context.pattern)»>{
+	public «className»(final «data.gipsApiClassName» engine, final PatternConstraint constraint, final «data.pattern2patternClassName.get(context.pattern)» pattern) {
+		super(engine, constraint, pattern);
+	}
+	
+	@Override
+	protected double buildConstantLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("Constraint has no relational expression.");
+	}
+	
+	@Override
+	protected double buildConstantRhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("Constraint has no relational expression.");
+	}
+	
+	@Override
+	protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
+	}
+	
+	@Override
+	protected boolean buildConstantExpression(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		return «parseExpression(boolExpr, ExpressionContext.constConstraint)»
+	}
+		
 	«FOR methods : builderMethodDefinitions.values»
 	«methods»
 	«ENDFOR»
@@ -86,12 +167,12 @@ public class «className» extends GipsPatternConstraint<«data.pattern2matchCla
 		generateVariableTermBuilder(dynamicExpr)
 		return '''
 @Override
-protected double buildConstantTerm(final «data.pattern2matchClassName.get(context.pattern)» context) {
+protected double buildConstantRhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
 	return «generateConstTermBuilder(constExpr)»;
 }
 	
 @Override
-protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.pattern2matchClassName.get(context.pattern)» context) {
+protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
 	List<ILPTerm<Integer, Double>> terms = Collections.synchronizedList(new LinkedList<>());
 	«FOR instruction : builderMethodCalls»
 	«instruction»
@@ -107,7 +188,11 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.pattern
 				val instruction = '''«builderMethodName»(terms, context);'''
 				builderMethodCalls.add(instruction)
 		} else if(expr instanceof TypeSumExpression) {
-			val builderMethodName = generateBuilder(expr)
+			val builderMethodName = generateForeignBuilder(expr)
+			val instruction = '''«builderMethodName»(terms, context);'''
+				builderMethodCalls.add(instruction)
+		} else if(expr instanceof PatternSumExpression) {
+			val builderMethodName = generateForeignBuilder(expr)
 			val instruction = '''«builderMethodName»(terms, context);'''
 				builderMethodCalls.add(instruction)
 		} else if(expr instanceof ContextSumExpression) {
@@ -204,23 +289,85 @@ protected List<ILPTerm<Integer, Double>> buildVariableTerms(final «data.pattern
 		return methodName
 	}
 	
-	override String generateBuilder(TypeSumExpression expr) {
-//		val methodName = '''builder_«builderMethods.size»'''
-//		builderMethods.put(expr, methodName)
-//		imports.add("java.util.stream.Collectors")
-//		val method = '''
-//	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
-//		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.name»").parallelStream()
-//			.map(type -> («expr.type.type.name») type)
-//			.«parseExpression(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-//			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
-//		}
-//	}
-//		'''
-//		builderMethodDefinitions.put(expr, method)
-//		return methodName
-		throw new UnsupportedOperationException("Foreign type stream expr not yet implemented.");
+	override String generateForeignBuilder(TypeSumExpression expr) {
+		val methodName = '''builder_«builderMethods.size»'''
+		builderMethods.put(expr, methodName)
+		imports.add("java.util.stream.Collectors")
+		imports.add(data.classToPackage.getImportsForType(expr.type.type))
+		var method = "";
+		
+		if(context.isConstant && context.expression instanceof RelationException) {
+			method = '''
+	protected double «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
+		return indexer.getObjectsOfType("«expr.type.type.name»").parallelStream()
+			.map(type -> («expr.type.type.name») type)
+			.«parseExpression(expr.filter, ExpressionContext.constStream)»
+			.map(type -> (double)«parseExpression(expr.expression, ExpressionContext.constConstraint)»)
+			.reduce(0.0, (sum, value) -> sum + value);
+	}
+		'''
+		} else if(!context.isConstant && context.expression instanceof RelationException) {
+			method = '''
+	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
+		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.type.name»").parallelStream()
+			.map(type -> («expr.type.type.name») type)
+			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
+			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+		}
+	}
+		'''
+		} else if(context.isConstant && !(context.expression instanceof RelationException)) {
+			method = '''
+	protected boolean «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("TODO: Implement stream-boolean expressions at root level.");
+	}
+		''' 
+		} else {
+			throw new UnsupportedOperationException("Boolean values can not be translated into ILP constraints.");
+		}
+		
+		builderMethodDefinitions.put(expr, method)
+		return methodName
 	}
 
-	
+	override String generateForeignBuilder(PatternSumExpression expr) {
+		val methodName = '''builder_«builderMethods.size»'''
+		builderMethods.put(expr, methodName)
+		imports.add("java.util.stream.Collectors")
+		imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(expr.pattern))
+		var method = "";
+		
+		if(context.isConstant && context.expression instanceof RelationException) {
+			
+			method = '''
+	protected double «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
+		return engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()
+			«getFilterExpr(expr.filter, ExpressionContext.constStream)»
+			.map(type -> (double)«parseExpression(expr.expression, ExpressionContext.constConstraint)»)
+			.reduce(0.0, (sum, value) -> sum + value);
+	}
+		'''
+		} else if(!context.isConstant && context.expression instanceof RelationException) {
+			
+			method = '''
+	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
+		for(«data.pattern2matchClassName.get(expr.pattern)» «getIteratorVariableName(expr)» : engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()
+			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
+			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+		}
+	}
+		'''
+		} else if(context.isConstant && !(context.expression instanceof RelationException)) {
+			method = '''
+	protected boolean «methodName»(final List<ILPTerm<Integer, Double>> terms, final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("TODO: Implement stream-boolean expressions at root level.");
+	}
+		''' 
+		} else {
+			throw new UnsupportedOperationException("Boolean values can not be translated into ILP constraints.");
+		}
+		
+		builderMethodDefinitions.put(expr, method)
+		return methodName
+	}
 }

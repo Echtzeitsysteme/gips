@@ -30,6 +30,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
+import org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
 import org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType;
@@ -119,6 +120,11 @@ public class GipsToIntermediate {
 		if (eConfig.isEnableLimit()) {
 			config.setIlpTimeLimit(eConfig.getTimeLimit());
 		}
+
+		config.setEnableCustomTolerance(eConfig.isEnableTolernace());
+		if (eConfig.isEnableTolernace()) {
+			config.setTolerance(eConfig.getTolerance());
+		}
 		data.model().setConfig(config);
 	}
 
@@ -126,7 +132,7 @@ public class GipsToIntermediate {
 		data.gipsSlangFile().getMappings().forEach(eMapping -> {
 			Mapping mapping = factory.createMapping();
 			mapping.setName(eMapping.getName());
-			mapping.setRule(data.ePattern2Rule().get(eMapping.getRule()));
+			mapping.setRule(data.ePattern2Rule().get(eMapping.getPattern()));
 			data.model().getVariables().add(mapping);
 			data.eMapping2Mapping().put(eMapping, mapping);
 		});
@@ -157,8 +163,6 @@ public class GipsToIntermediate {
 
 				Constraint constraint = createConstraint(eSubConstraint, constraintCounter);
 				constraintCounter++;
-				// TODO: For now we'll generate a constraint for each context element. In the
-				// future, this should be optimized.
 				constraint.setElementwise(true);
 				data.model().getConstraints().add(constraint);
 				data.eConstraint2Constraint().put(eSubConstraint, constraint);
@@ -167,62 +171,69 @@ public class GipsToIntermediate {
 						.createRelationalTransformer(constraint);
 				constraint.setExpression(transformer.transform((GipsRelExpr) boolExpr));
 				if (GipsTransformationUtils
-						.isConstantExpression(constraint.getExpression()) == ArithmeticExpressionType.constant)
-					throw new UnsupportedOperationException(
-							"Expressions that can be evaluated statically at ILP problem build time are currently not allowed.");
+						.isConstantExpression(constraint.getExpression()) == ArithmeticExpressionType.constant) {
+					// Check whether this constraint is constant at ILP problem build time. If true
+					// -> return
+					constraint.setConstant(true);
+					continue;
+				}
 
 				boolean isLhsConst = (GipsTransformationUtils
-						.isConstantExpression(constraint.getExpression().getLhs()) == ArithmeticExpressionType.constant)
-								? true
-								: false;
+						.isConstantExpression(((RelationalExpression) constraint.getExpression())
+								.getLhs()) == ArithmeticExpressionType.constant) ? true : false;
 				boolean isRhsConst = (GipsTransformationUtils
-						.isConstantExpression(constraint.getExpression().getRhs()) == ArithmeticExpressionType.constant)
-								? true
-								: false;
+						.isConstantExpression(((RelationalExpression) constraint.getExpression())
+								.getRhs()) == ArithmeticExpressionType.constant) ? true : false;
 				if (!isLhsConst && !isRhsConst) {
 					// Fix this malformed constraint by subtracting the rhs from the lhs.
 					// E.g.: c: x < y is transformed to c: x - y < 0
 					BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
 					rewrite.setOperator(BinaryArithmeticOperator.SUBTRACT);
-					rewrite.setLhs(constraint.getExpression().getLhs());
-					rewrite.setRhs(constraint.getExpression().getRhs());
+					rewrite.setLhs(((RelationalExpression) constraint.getExpression()).getLhs());
+					rewrite.setRhs(((RelationalExpression) constraint.getExpression()).getRhs());
 					DoubleLiteral lit = factory.createDoubleLiteral();
 					lit.setLiteral(0);
-					constraint.getExpression().setLhs(rewrite);
-					constraint.getExpression().setRhs(lit);
+					((RelationalExpression) constraint.getExpression()).setLhs(rewrite);
+					((RelationalExpression) constraint.getExpression()).setRhs(lit);
 				}
 
 				isLhsConst = (GipsTransformationUtils
-						.isConstantExpression(constraint.getExpression().getLhs()) == ArithmeticExpressionType.constant)
-								? true
-								: false;
+						.isConstantExpression(((RelationalExpression) constraint.getExpression())
+								.getLhs()) == ArithmeticExpressionType.constant) ? true : false;
 
 				// Rewrite the non-constant expression, which will be translated into ILP-Terms,
 				// into a sum of products.
 				if (isLhsConst) {
-					ArithmeticExpression rhs = rewriteToSumOfProducts(constraint.getExpression().getRhs(), null, null);
-					constraint.getExpression().setRhs(constraint.getExpression().getLhs());
-					constraint.getExpression().setLhs(rhs);
-					GipsTransformationUtils.flipOperator(constraint.getExpression());
+					ArithmeticExpression rhs = rewriteToSumOfProducts(
+							((RelationalExpression) constraint.getExpression()).getRhs(), null, null);
+					((RelationalExpression) constraint.getExpression())
+							.setRhs(((RelationalExpression) constraint.getExpression()).getLhs());
+					((RelationalExpression) constraint.getExpression()).setLhs(rhs);
+					GipsTransformationUtils.flipOperator((RelationalExpression) constraint.getExpression());
 				} else {
-					constraint.getExpression()
-							.setLhs(rewriteToSumOfProducts(constraint.getExpression().getLhs(), null, null));
+					((RelationalExpression) constraint.getExpression()).setLhs(rewriteToSumOfProducts(
+							((RelationalExpression) constraint.getExpression()).getLhs(), null, null));
 				}
 				// Move constant terms from the sum of products to the constant side of the
 				// relational constraint.
-				constraint.setExpression(rewriteMoveConstantTerms(constraint.getExpression()));
+				constraint.setExpression(rewriteMoveConstantTerms((RelationalExpression) constraint.getExpression()));
 
 				// Remove subtractions, e.g.: a - b becomes a + -b
 				if (isLhsConst) {
-					constraint.getExpression().setRhs(rewriteRemoveSubtractions(constraint.getExpression().getRhs()));
+					((RelationalExpression) constraint.getExpression()).setRhs(
+							rewriteRemoveSubtractions(((RelationalExpression) constraint.getExpression()).getRhs()));
 				} else {
-					constraint.getExpression().setLhs(rewriteRemoveSubtractions(constraint.getExpression().getLhs()));
+					((RelationalExpression) constraint.getExpression()).setLhs(
+							rewriteRemoveSubtractions(((RelationalExpression) constraint.getExpression()).getLhs()));
 				}
 
 				// Final check: Was the context used?
-				if (!GipsTransformationUtils.containsContextExpression(constraint.getExpression().getRhs())
-						&& !GipsTransformationUtils.containsContextExpression(constraint.getExpression().getLhs())) {
-					throw new IllegalArgumentException("Context must be used at least once per constraint.");
+				if (!GipsTransformationUtils
+						.containsContextExpression(((RelationalExpression) constraint.getExpression()).getRhs())
+						&& !GipsTransformationUtils
+								.containsContextExpression(((RelationalExpression) constraint.getExpression()).getLhs())
+						&& !(constraint instanceof GlobalConstraint)) {
+					throw new IllegalArgumentException("Context must be used at least once per non-global constraint.");
 				}
 			}
 		}
@@ -297,12 +308,15 @@ public class GipsToIntermediate {
 			constraint.setName("PatternConstraint" + counter + "On" + pattern.getPattern().getName());
 			constraint.setPattern(data.getPattern(pattern.getPattern()));
 			return constraint;
-		} else {
-			GipsTypeContext type = (GipsTypeContext) eConstraint.getContext();
+		} else if (eConstraint.getContext() instanceof GipsTypeContext type) {
 			TypeConstraint constraint = factory.createTypeConstraint();
 			constraint.setName("TypeConstraint" + counter + "On" + type.getType().getName());
 			Type varType = data.getType((EClass) type.getType());
 			constraint.setModelType(varType);
+			return constraint;
+		} else {
+			GlobalConstraint constraint = factory.createGlobalConstraint();
+			constraint.setName("GlobalConstraint" + counter);
 			return constraint;
 		}
 	}

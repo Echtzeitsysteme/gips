@@ -55,7 +55,12 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 	
 	@Override
 	public void init(final URI modelUri) {
-		super.init(INTERMEDIATE_MODEL_URI, modelUri);
+		super.initInternal(INTERMEDIATE_MODEL_URI, modelUri);
+	}
+	
+	@Override
+	public void init(final URI gipsModelURI, final URI modelUri) {
+		super.initInternal(gipsModelURI, modelUri);
 	}
 	
 	«FOR mapping : data.model.variables.filter[v | v instanceof Mapping]»

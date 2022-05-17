@@ -67,6 +67,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createType();
 		case GipsIntermediatePackage.MAPPING:
 			return createMapping();
+		case GipsIntermediatePackage.GLOBAL_CONSTRAINT:
+			return createGlobalConstraint();
 		case GipsIntermediatePackage.OBJECTIVE:
 			return createObjective();
 		case GipsIntermediatePackage.GLOBAL_OBJECTIVE:
@@ -89,6 +91,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createUnaryArithmeticExpression();
 		case GipsIntermediatePackage.ARITHMETIC_VALUE:
 			return createArithmeticValue();
+		case GipsIntermediatePackage.ARITHMETIC_NULL_LITERAL:
+			return createArithmeticNullLiteral();
 		case GipsIntermediatePackage.INTEGER_LITERAL:
 			return createIntegerLiteral();
 		case GipsIntermediatePackage.DOUBLE_LITERAL:
@@ -109,6 +113,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createContextSumExpression();
 		case GipsIntermediatePackage.MAPPING_SUM_EXPRESSION:
 			return createMappingSumExpression();
+		case GipsIntermediatePackage.PATTERN_SUM_EXPRESSION:
+			return createPatternSumExpression();
 		case GipsIntermediatePackage.TYPE_SUM_EXPRESSION:
 			return createTypeSumExpression();
 		case GipsIntermediatePackage.CONTEXT_TYPE_VALUE:
@@ -285,6 +291,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public GlobalConstraint createGlobalConstraint() {
+		GlobalConstraintImpl globalConstraint = new GlobalConstraintImpl();
+		return globalConstraint;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public Objective createObjective() {
 		ObjectiveImpl objective = new ObjectiveImpl();
 		return objective;
@@ -395,6 +411,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public ArithmeticNullLiteral createArithmeticNullLiteral() {
+		ArithmeticNullLiteralImpl arithmeticNullLiteral = new ArithmeticNullLiteralImpl();
+		return arithmeticNullLiteral;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public IntegerLiteral createIntegerLiteral() {
 		IntegerLiteralImpl integerLiteral = new IntegerLiteralImpl();
 		return integerLiteral;
@@ -488,6 +514,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	public MappingSumExpression createMappingSumExpression() {
 		MappingSumExpressionImpl mappingSumExpression = new MappingSumExpressionImpl();
 		return mappingSumExpression;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public PatternSumExpression createPatternSumExpression() {
+		PatternSumExpressionImpl patternSumExpression = new PatternSumExpressionImpl();
+		return patternSumExpression;
 	}
 
 	/**

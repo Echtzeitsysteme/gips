@@ -219,7 +219,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 					return '''«parseExpression(expr.lhs, contextType)» * «parseExpression(expr.rhs, contextType)»'''
 				}
 				case POW: {
-					return '''Math.pow(«parseExpression(expr.lhs, contextType)», «parseExpression(expr.rhs, contextType)»'''
+					return '''Math.pow(«parseExpression(expr.lhs, contextType)», «parseExpression(expr.rhs, contextType)»)'''
 				}
 				case SUBTRACT: {
 					return '''«parseExpression(expr.lhs, contextType)» - «parseExpression(expr.rhs, contextType)»'''

@@ -82,12 +82,12 @@ public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName�
 	«generateComplexConstraint(relExpr.rhs, relExpr.lhs)»
 	«ENDIF»
 	
-	@Overide
+	@Override
 	protected double buildConstantLhs() {
 		throw new UnsupportedOperationException("Constraint has an lhs that contains ilp variables.");
 	}
 	
-	@Overide
+	@Override
 	protected boolean buildConstantExpression() {
 		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
 	}
@@ -115,12 +115,12 @@ public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName�
 		return «generateConstTermBuilder(relExpr.rhs)»;
 	}
 	
-	@Overide
+	@Override
 	protected List<ILPTerm<Integer, Double>> buildVariableLhs() {
 		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
 	}
 	
-	@Overide
+	@Override
 	protected boolean buildConstantExpression() {
 		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
 	}
@@ -148,12 +148,12 @@ public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName�
 		throw new UnsupportedOperationException("Constraint has no relational expression.");
 	}
 	
-	@Overide
+	@Override
 	protected List<ILPTerm<Integer, Double>> buildVariableLhs() {
 		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
 	}
 	
-	@Overide
+	@Override
 	protected boolean buildConstantExpression() {
 		return «parseExpression(boolExpr, ExpressionContext.constConstraint)»
 	}

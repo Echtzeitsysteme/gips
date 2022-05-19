@@ -264,11 +264,18 @@ public class GlpkSolver extends ILPSolver {
 		// Terms
 		for (final ILPWeightedLinearFunction<?> lf : nestFunc.linearFunctions()) {
 			lf.linearFunction().terms().forEach(t -> {
-				GLPK.glp_set_obj_coef(model, ilpVars.get(t.variable().getName()), t.weight());
+				// Get index of current variable
+				final int varIndex = ilpVars.get(t.variable().getName());
+
+				// Get previous aggregated weight
+				final double prevCoef = GLPK.glp_get_obj_coef(model, varIndex);
+
+				// Update aggregated weight = prev + weight(var) * weight(term)
+				GLPK.glp_set_obj_coef(model, varIndex, prevCoef + (t.weight() * lf.weight()));
 			});
 
 			for (final ILPConstant<Double> c : lf.linearFunction().constantTerms()) {
-				constSum += c.weight();
+				constSum += (c.weight() * lf.weight());
 			}
 		}
 

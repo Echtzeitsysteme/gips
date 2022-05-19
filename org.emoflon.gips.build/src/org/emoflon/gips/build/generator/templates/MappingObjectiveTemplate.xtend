@@ -190,8 +190,8 @@ protected void buildTerms(final «data.mapping2mappingClassName.get(context.mapp
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		val method = '''
-	protected ILPTerm<Integer, Double> «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		return new ILPTerm<Integer, Double>(context, 1.0);
+	protected double «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		return 1.0;
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)
@@ -202,9 +202,8 @@ protected void buildTerms(final «data.mapping2mappingClassName.get(context.mapp
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		val method = '''
-	protected ILPTerm<Integer, Double> «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		double value = (double)«parseExpression(expr, ExpressionContext.varConstraint)»;
-		return new ILPTerm<Integer, Double>(context, value);
+	protected double «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		return (double)«parseExpression(expr, ExpressionContext.varConstraint)»;
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)

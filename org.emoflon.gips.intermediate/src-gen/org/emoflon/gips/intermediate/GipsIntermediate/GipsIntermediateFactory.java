@@ -40,6 +40,15 @@ public interface GipsIntermediateFactory extends EFactory {
 	ILPConfig createILPConfig();
 
 	/**
+	 * Returns a new object of class '<em>Simple Variable Set</em>'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Simple Variable Set</em>'.
+	 * @generated
+	 */
+	SimpleVariableSet createSimpleVariableSet();
+
+	/**
 	 * Returns a new object of class '<em>Pattern</em>'. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -74,6 +83,15 @@ public interface GipsIntermediateFactory extends EFactory {
 	 * @generated
 	 */
 	GlobalConstraint createGlobalConstraint();
+
+	/**
+	 * Returns a new object of class '<em>Dependency Constraint</em>'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Dependency Constraint</em>'.
+	 * @generated
+	 */
+	DependencyConstraint createDependencyConstraint();
 
 	/**
 	 * Returns a new object of class '<em>Objective</em>'. <!-- begin-user-doc -->
@@ -524,6 +542,15 @@ public interface GipsIntermediateFactory extends EFactory {
 	 * @generated
 	 */
 	StreamContainsOperation createStreamContainsOperation();
+
+	/**
+	 * Returns a new object of class '<em>Variable</em>'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Variable</em>'.
+	 * @generated
+	 */
+	Variable createVariable();
 
 	/**
 	 * Returns the package supported by this factory. <!-- begin-user-doc --> <!--

@@ -29,6 +29,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.DependencyConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
@@ -45,12 +46,16 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.SimpleVariableSet;
 import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
@@ -66,6 +71,7 @@ public class GipsToIntermediate {
 	final protected GipsTransformationData data;
 	final protected TransformerFactory transformationFactory;
 	protected int constraintCounter = 0;
+	protected SimpleVariableSet dependencyVariables;
 
 	public GipsToIntermediate(final EditorGTFile gipsSlangFile) {
 		data = new GipsTransformationData(factory.createGipsIntermediateModel(), gipsSlangFile);
@@ -73,6 +79,11 @@ public class GipsToIntermediate {
 	}
 
 	public GipsIntermediateModel transform() throws Exception {
+		// add a variable set for dependency constraints
+		dependencyVariables = factory.createSimpleVariableSet();
+		dependencyVariables.setName("VirtualDependencyVariables");
+		data.model().getVariables().add(dependencyVariables);
+
 		// transform GT to IBeXPatterns
 		EditorToIBeXPatternTransformation ibexTransformer = new EditorToIBeXPatternTransformation();
 		data.model().setIbexModel(ibexTransformer.transform(data.gipsSlangFile()));
@@ -88,6 +99,7 @@ public class GipsToIntermediate {
 		// add all required data types
 		data.model().getVariables().addAll(data.eType2Type().values());
 		data.model().getVariables().addAll(data.ePattern2Pattern().values());
+
 		return data.model();
 	}
 
@@ -158,7 +170,7 @@ public class GipsToIntermediate {
 					for (GipsConstraint subConstraint : eSubConstraint.result().values()) {
 						transformed.put(subConstraint, transformConstraint(subConstraint));
 					}
-					// Add virtual constraint to connect all subconstraints
+					// Add virtual constraint to connect all sub-constraints
 
 				}
 				case LITERAL -> {
@@ -166,7 +178,70 @@ public class GipsToIntermediate {
 				}
 				case NEGATED_LITERAL -> {
 					Constraint constraint = transformConstraint(eSubConstraint.result().values().iterator().next());
+					// TODO: We'll ignore build time constant constraints for now -> This must be
+					// fixed at some point in time.
+					if (constraint.isConstant()) {
+						throw new UnsupportedOperationException(
+								"Negation for constraints that are constant at build time is currently not supported");
+					}
+
+					if (!(constraint.getExpression() instanceof RelationalExpression)) {
+						throw new UnsupportedOperationException(
+								"Negation for constraints that are constant at build time is currently not supported");
+					}
+
+					DependencyConstraint dConstraint = factory.createDependencyConstraint();
+					dConstraint.setName("Virtual" + constraint.getName());
+					data.model().getConstraints().add(dConstraint);
+
 					// Add virtual variable to produce negation!
+					RelationalExpression orginalRelation = (RelationalExpression) constraint.getExpression();
+					ArithmeticExpression varSide = (GipsTransformationUtils
+							.isConstantExpression(orginalRelation.getLhs()) == ArithmeticExpressionType.constant)
+									? orginalRelation.getRhs()
+									: orginalRelation.getLhs();
+
+					BinaryArithmeticExpression sum = factory.createBinaryArithmeticExpression();
+					sum.setOperator(BinaryArithmeticOperator.ADD);
+					sum.setLhs(varSide);
+					Variable realVar = factory.createVariable();
+					dependencyVariables.getVariables().add(realVar);
+					realVar.setType(VariableType.REAL);
+					realVar.setName(constraint.getName() + "_negate_variable");
+					sum.setRhs(realVar);
+					if (GipsTransformationUtils
+							.isConstantExpression(orginalRelation.getLhs()) == ArithmeticExpressionType.constant) {
+						orginalRelation.setRhs(sum);
+					} else {
+						orginalRelation.setLhs(sum);
+					}
+
+					// Add negation constraint
+					RelationalExpression negationRelation = factory.createRelationalExpression();
+					negationRelation.setOperator(RelationalOperator.GREATER_OR_EQUAL);
+					DoubleLiteral dl = factory.createDoubleLiteral();
+					dl.setLiteral(1.0);
+					negationRelation.setRhs(dl);
+					BinaryArithmeticExpression sum2 = factory.createBinaryArithmeticExpression();
+					sum2.setOperator(BinaryArithmeticOperator.ADD);
+					DoubleLiteral dl2 = factory.createDoubleLiteral();
+					dl2.setLiteral(1.0);
+					sum2.setLhs(dl2);
+					BinaryArithmeticExpression prod = factory.createBinaryArithmeticExpression();
+					prod.setOperator(BinaryArithmeticOperator.MULTIPLY);
+					DoubleLiteral dl3 = factory.createDoubleLiteral();
+					dl2.setLiteral(-1.0);
+					prod.setLhs(dl3);
+					Variable binaryVar = factory.createVariable();
+					dependencyVariables.getVariables().add(binaryVar);
+					binaryVar.setType(VariableType.BINARY);
+					binaryVar.setName(constraint.getName() + "_symbolic_variable");
+					prod.setRhs(binaryVar);
+					sum2.setRhs(prod);
+					negationRelation.setRhs(sum2);
+
+					// Add semantic correctness constraints
+
 				}
 				default -> {
 					throw new IllegalArgumentException("Unknown constraint annotation type.");

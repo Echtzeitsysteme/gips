@@ -85,6 +85,15 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case GipsIntermediatePackage.SIMPLE_VARIABLE_SET: {
+			SimpleVariableSet simpleVariableSet = (SimpleVariableSet) theEObject;
+			T result = caseSimpleVariableSet(simpleVariableSet);
+			if (result == null)
+				result = caseVariableSet(simpleVariableSet);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case GipsIntermediatePackage.PATTERN: {
 			Pattern pattern = (Pattern) theEObject;
 			T result = casePattern(pattern);
@@ -124,6 +133,15 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 			T result = caseGlobalConstraint(globalConstraint);
 			if (result == null)
 				result = caseConstraint(globalConstraint);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case GipsIntermediatePackage.DEPENDENCY_CONSTRAINT: {
+			DependencyConstraint dependencyConstraint = (DependencyConstraint) theEObject;
+			T result = caseDependencyConstraint(dependencyConstraint);
+			if (result == null)
+				result = caseConstraint(dependencyConstraint);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -741,6 +759,17 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case GipsIntermediatePackage.VARIABLE: {
+			Variable variable = (Variable) theEObject;
+			T result = caseVariable(variable);
+			if (result == null)
+				result = caseArithmeticValueExpression(variable);
+			if (result == null)
+				result = caseArithmeticExpression(variable);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		default:
 			return defaultCase(theEObject);
 		}
@@ -788,6 +817,21 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseVariableSet(VariableSet object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Simple
+	 * Variable Set</em>'. <!-- begin-user-doc --> This implementation returns null;
+	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Simple
+	 *         Variable Set</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSimpleVariableSet(SimpleVariableSet object) {
 		return null;
 	}
 
@@ -864,6 +908,22 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseGlobalConstraint(GlobalConstraint object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of
+	 * '<em>Dependency Constraint</em>'. <!-- begin-user-doc --> This implementation
+	 * returns null; returning a non-null result will terminate the switch. <!--
+	 * end-user-doc -->
+	 * 
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of
+	 *         '<em>Dependency Constraint</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseDependencyConstraint(DependencyConstraint object) {
 		return null;
 	}
 
@@ -1814,6 +1874,22 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseStreamContainsOperation(StreamContainsOperation object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of
+	 * '<em>Variable</em>'. <!-- begin-user-doc --> This implementation returns
+	 * null; returning a non-null result will terminate the switch. <!--
+	 * end-user-doc -->
+	 * 
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of
+	 *         '<em>Variable</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseVariable(Variable object) {
 		return null;
 	}
 

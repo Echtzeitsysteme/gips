@@ -61,6 +61,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createGipsIntermediateModel();
 		case GipsIntermediatePackage.ILP_CONFIG:
 			return createILPConfig();
+		case GipsIntermediatePackage.SIMPLE_VARIABLE_SET:
+			return createSimpleVariableSet();
 		case GipsIntermediatePackage.PATTERN:
 			return createPattern();
 		case GipsIntermediatePackage.TYPE:
@@ -69,6 +71,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createMapping();
 		case GipsIntermediatePackage.GLOBAL_CONSTRAINT:
 			return createGlobalConstraint();
+		case GipsIntermediatePackage.DEPENDENCY_CONSTRAINT:
+			return createDependencyConstraint();
 		case GipsIntermediatePackage.OBJECTIVE:
 			return createObjective();
 		case GipsIntermediatePackage.GLOBAL_OBJECTIVE:
@@ -169,6 +173,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createStreamSelectOperation();
 		case GipsIntermediatePackage.STREAM_CONTAINS_OPERATION:
 			return createStreamContainsOperation();
+		case GipsIntermediatePackage.VARIABLE:
+			return createVariable();
 		default:
 			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -200,6 +206,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createUnaryBoolOperatorFromString(eDataType, initialValue);
 		case GipsIntermediatePackage.STREAM_BOOL_OPERATOR:
 			return createStreamBoolOperatorFromString(eDataType, initialValue);
+		case GipsIntermediatePackage.VARIABLE_TYPE:
+			return createVariableTypeFromString(eDataType, initialValue);
 		default:
 			throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -231,6 +239,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return convertUnaryBoolOperatorToString(eDataType, instanceValue);
 		case GipsIntermediatePackage.STREAM_BOOL_OPERATOR:
 			return convertStreamBoolOperatorToString(eDataType, instanceValue);
+		case GipsIntermediatePackage.VARIABLE_TYPE:
+			return convertVariableTypeToString(eDataType, instanceValue);
 		default:
 			throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -254,6 +264,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	public ILPConfig createILPConfig() {
 		ILPConfigImpl ilpConfig = new ILPConfigImpl();
 		return ilpConfig;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public SimpleVariableSet createSimpleVariableSet() {
+		SimpleVariableSetImpl simpleVariableSet = new SimpleVariableSetImpl();
+		return simpleVariableSet;
 	}
 
 	/**
@@ -294,6 +314,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	public GlobalConstraint createGlobalConstraint() {
 		GlobalConstraintImpl globalConstraint = new GlobalConstraintImpl();
 		return globalConstraint;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public DependencyConstraint createDependencyConstraint() {
+		DependencyConstraintImpl dependencyConstraint = new DependencyConstraintImpl();
+		return dependencyConstraint;
 	}
 
 	/**
@@ -801,6 +831,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public Variable createVariable() {
+		VariableImpl variable = new VariableImpl();
+		return variable;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public ILPSolverType createILPSolverTypeFromString(EDataType eDataType, String initialValue) {
 		ILPSolverType result = ILPSolverType.get(initialValue);
 		if (result == null)
@@ -991,6 +1031,28 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	 * @generated
 	 */
 	public String convertStreamBoolOperatorToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public VariableType createVariableTypeFromString(EDataType eDataType, String initialValue) {
+		VariableType result = VariableType.get(initialValue);
+		if (result == null)
+			throw new IllegalArgumentException(
+					"The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public String convertVariableTypeToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 

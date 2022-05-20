@@ -159,6 +159,9 @@ public class GipslValidator extends AbstractGipslValidator {
 	public static final String NOT_IMPLEMENTED_EXCEPTION_MESSAGE = "Not yet implemented";
 	public static final String CONSTRAINT_CONTEXT_UNKNOWN_EXCEPTION_MESSAGE = "Context is neither a GipsType nor a GipsMapping.";
 
+	// Number error messages
+	public static final String SQRT_VALUE_SMALLER_THAN_ZERO = "Value in SQRT is smaller than 0.";
+
 	/**
 	 * This prevents all exceptions being "swallowed" by the default validator
 	 * implementation. TODO: Remove this or make it a little nice for future stable
@@ -1115,6 +1118,29 @@ public class GipslValidator extends AbstractGipslValidator {
 		} else if (expr instanceof GipsUnaryArithmeticExpr) {
 			final EvalType operand = getEvalTypeFromArithExpr(((GipsUnaryArithmeticExpr) expr).getOperand());
 			output = combine(operand, ((GipsUnaryArithmeticExpr) expr).getOperator());
+
+			// Special case: sqrt(<0) should display an error -> Implementation for
+			// constants (basic)
+			// This could later be extended to also check more complex expressions or it
+			// could be integrated into the ILP validator
+			if (((GipsUnaryArithmeticExpr) expr).getOperator() == GipsArithmeticUnaryOperator.SQRT) {
+				final GipsArithmeticExpr inSqrt = ((GipsUnaryArithmeticExpr) expr).getOperand();
+				if (inSqrt instanceof GipsArithmeticLiteral) {
+					final GipsArithmeticLiteral lit = (GipsArithmeticLiteral) inSqrt;
+					try {
+						double val = Double.valueOf(lit.getValue());
+						if (val < 0) {
+							error( //
+									SQRT_VALUE_SMALLER_THAN_ZERO, //
+									expr, //
+									getLiteralType(expr) //
+							);
+						}
+					} catch (final NumberFormatException ex) {
+						// This case is covered by type evaluation
+					}
+				}
+			}
 		} else if (expr instanceof GipsExpressionOperand) {
 			output = getEvalTypeFromExprOp((GipsExpressionOperand) expr);
 			leaf = false;

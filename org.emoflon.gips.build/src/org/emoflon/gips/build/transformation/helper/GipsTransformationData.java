@@ -5,9 +5,12 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.EClass;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.GipsBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
+import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
@@ -26,6 +29,8 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
 
 public record GipsTransformationData(GipsIntermediateModel model, //
 		EditorGTFile gipsSlangFile, //
+		Map<String, GipsBoolExpr> symbol2Expr, //
+		Map<GipsBoolExpr, String> expr2Symbol, //
 		Map<EditorPattern, IBeXRule> ePattern2Rule, //
 		Map<EditorPattern, IBeXContext> ePattern2Context, //
 		Map<EditorPattern, Pattern> ePattern2Pattern, //
@@ -38,7 +43,30 @@ public record GipsTransformationData(GipsIntermediateModel model, //
 
 	public GipsTransformationData(final GipsIntermediateModel model, final EditorGTFile gipsSlangFile) {
 		this(model, gipsSlangFile, new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(),
-				new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+				new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+	}
+
+	public String addSymbol(final GipsBoolExpr expr) {
+		if (expr2Symbol.containsKey(expr))
+			return expr2Symbol.get(expr);
+
+		int count = symbol2Expr.size();
+		String symbol = count + "_";
+
+		if (expr instanceof GipsBooleanLiteral lit) {
+			symbol += "LIT";
+		} else if (expr instanceof GipsRelExpr rel && rel.getRight() != null) {
+			symbol += "REL_EXPR";
+		} else if (expr instanceof GipsRelExpr rel && rel.getRight() == null) {
+			symbol += "EXPR";
+		} else {
+			throw new UnsupportedOperationException("Only boolean terminal expressions can be translated into symbols");
+		}
+
+		expr2Symbol.put(expr, symbol);
+		symbol2Expr.put(symbol, expr);
+
+		return symbol;
 	}
 
 	public Type getType(final EClass eType) {

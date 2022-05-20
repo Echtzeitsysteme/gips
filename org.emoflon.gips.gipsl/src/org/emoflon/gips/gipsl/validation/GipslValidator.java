@@ -1501,6 +1501,14 @@ public class GipslValidator extends AbstractGipslValidator {
 				&& (right == EvalType.ECLASS || right == EvalType.CONTEXT)) {
 			// Case: Comparing two from {EClass, Context}
 			return EvalType.BOOLEAN;
+		} else if ((left == EvalType.ECLASS || left == EvalType.NULL)
+				&& (right == EvalType.ECLASS || right == EvalType.NULL)) {
+			// Case: Comparing null with EClass
+			return EvalType.BOOLEAN;
+		} else if ((left == EvalType.CONTEXT || left == EvalType.NULL)
+				&& (right == EvalType.CONTEXT || right == EvalType.NULL)) {
+			// Case: Comparing null with Context
+			return EvalType.BOOLEAN;
 		} else {
 			return EvalType.ERROR;
 		}

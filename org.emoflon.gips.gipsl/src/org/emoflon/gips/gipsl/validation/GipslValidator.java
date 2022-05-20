@@ -1180,9 +1180,25 @@ public class GipslValidator extends AbstractGipslValidator {
 			return getEvalTypeFromAttrExpr((GipsAttributeExpr) op);
 		} else if (op instanceof GipsObjectiveExpression) {
 			return EvalType.OBJECTIVE;
+		} else if (op instanceof GipsConstant) {
+			return getEvalTypeFromGipsConst((GipsConstant) op);
 		}
 
 		return EvalType.ERROR;
+	}
+
+	public EvalType getEvalTypeFromGipsConst(final GipsConstant con) {
+		switch (con.getValue()) {
+		case E, PI -> {
+			return EvalType.DOUBLE;
+		}
+		case NULL -> {
+			return EvalType.NULL;
+		}
+		default -> {
+			return EvalType.ERROR;
+		}
+		}
 	}
 
 	public EvalType getEvalTypeFromAttrExpr(final GipsAttributeExpr expr) {
@@ -1566,6 +1582,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		INTEGER, //
 		DOUBLE, //
 		STRING, //
+		NULL, //
 		SET, // Sets like output of a filter
 		OBJECTIVE, // GipsObjective
 		MAPPING, // GipsMapping

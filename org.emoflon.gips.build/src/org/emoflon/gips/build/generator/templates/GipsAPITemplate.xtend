@@ -124,6 +124,9 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 			case GLPK: {
 				return '''new GlpkSolver(this, solverConfig)'''
 			}
+			case OR: {
+				return '''new OrSolver(this, solverConfig)'''
+			}
 		}
 	}
 	

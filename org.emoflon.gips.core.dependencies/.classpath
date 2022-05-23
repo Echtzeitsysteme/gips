@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="cbc4j-win-x86_64-1.2-3.jar"/>
+	<classpathentry exported="true" kind="lib" path="cbc4j-win-x86_64-1.2-3-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="glpk-java-1.12.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="glpk-java-1.12.0-javadoc.jar"/>
 	<classpathentry exported="true" kind="lib" path="gurobi-9.5.1.jar"/>

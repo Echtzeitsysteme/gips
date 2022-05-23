@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="ortools-java-9.3.10497.jar"/>
+	<classpathentry exported="true" kind="lib" path="ortools-java-9.3.10497-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="ortools-java-9.3.10497-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="glpk-java-1.12.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="glpk-java-1.12.0-javadoc.jar"/>
 	<classpathentry exported="true" kind="lib" path="gurobi-9.5.1.jar"/>

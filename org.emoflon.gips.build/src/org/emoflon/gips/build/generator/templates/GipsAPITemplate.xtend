@@ -22,6 +22,7 @@ class GipsAPITemplate extends GeneratorTemplate<GipsIntermediateModel> {
 		imports.add("org.emoflon.gips.core.ilp.ILPSolver")
 		imports.add("org.emoflon.gips.core.ilp.GurobiSolver")
 		imports.add("org.emoflon.gips.core.ilp.GlpkSolver")
+		imports.add("org.emoflon.gips.core.ilp.OrSolver")
 		imports.add("org.emoflon.gips.core.ilp.ILPSolverConfig")
 		imports.add(data.apiData.apiPkg + "." + data.apiData.engineAppClasses.get(GipsAPIData.HIPE_ENGINE_NAME))
 		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)

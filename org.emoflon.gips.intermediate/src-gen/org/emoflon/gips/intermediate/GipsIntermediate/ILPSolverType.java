@@ -35,7 +35,16 @@ public enum ILPSolverType implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	GLPK(1, "GLPK", "GLPK");
+	GLPK(1, "GLPK", "GLPK"),
+	/**
+	 * The '<em><b>OR</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see #OR_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	OR(2, "OR", "OR");
 
 	/**
 	 * The '<em><b>GUROBI</b></em>' literal value. <!-- begin-user-doc --> <!--
@@ -60,12 +69,23 @@ public enum ILPSolverType implements Enumerator {
 	public static final int GLPK_VALUE = 1;
 
 	/**
+	 * The '<em><b>OR</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see #OR
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
+	public static final int OR_VALUE = 2;
+
+	/**
 	 * An array of all the '<em><b>ILP Solver Type</b></em>' enumerators. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	private static final ILPSolverType[] VALUES_ARRAY = new ILPSolverType[] { GUROBI, GLPK, };
+	private static final ILPSolverType[] VALUES_ARRAY = new ILPSolverType[] { GUROBI, GLPK, OR, };
 
 	/**
 	 * A public read-only list of all the '<em><b>ILP Solver Type</b></em>'
@@ -125,6 +145,8 @@ public enum ILPSolverType implements Enumerator {
 			return GUROBI;
 		case GLPK_VALUE:
 			return GLPK;
+		case OR_VALUE:
+			return OR;
 		}
 		return null;
 	}

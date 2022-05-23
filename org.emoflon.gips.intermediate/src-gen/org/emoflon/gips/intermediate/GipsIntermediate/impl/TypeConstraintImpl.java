@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression;
@@ -24,6 +25,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Type
@@ -42,6 +44,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
  * <em>Constant</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getDependencies
  * <em>Dependencies</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getHelperVariables
+ * <em>Helper Variables</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getRealVarCorrectnessConstraints
  * <em>Real Var Correctness Constraints</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getBinaryVarCorrectnessConstraints
@@ -125,13 +129,24 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 
 	/**
 	 * The cached value of the '{@link #getDependencies() <em>Dependencies</em>}'
-	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see #getDependencies()
 	 * @generated
 	 * @ordered
 	 */
 	protected EList<Constraint> dependencies;
+
+	/**
+	 * The cached value of the '{@link #getHelperVariables() <em>Helper
+	 * Variables</em>}' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @see #getHelperVariables()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Variable> helperVariables;
 
 	/**
 	 * The cached value of the '{@link #getRealVarCorrectnessConstraints() <em>Real
@@ -307,10 +322,23 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 */
 	public EList<Constraint> getDependencies() {
 		if (dependencies == null) {
-			dependencies = new EObjectContainmentEList<Constraint>(Constraint.class, this,
+			dependencies = new EObjectResolvingEList<Constraint>(Constraint.class, this,
 					GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES);
 		}
 		return dependencies;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EList<Variable> getHelperVariables() {
+		if (helperVariables == null) {
+			helperVariables = new EObjectResolvingEList<Variable>(Variable.class, this,
+					GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_VARIABLES);
+		}
+		return helperVariables;
 	}
 
 	/**
@@ -391,8 +419,6 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		switch (featureID) {
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
 			return basicSetExpression(null, msgs);
-		case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES:
-			return ((InternalEList<?>) getDependencies()).basicRemove(otherEnd, msgs);
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS:
 			return ((InternalEList<?>) getRealVarCorrectnessConstraints()).basicRemove(otherEnd, msgs);
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS:
@@ -419,6 +445,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 			return isConstant();
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES:
 			return getDependencies();
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_VARIABLES:
+			return getHelperVariables();
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS:
 			return getRealVarCorrectnessConstraints();
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS:
@@ -455,6 +483,10 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES:
 			getDependencies().clear();
 			getDependencies().addAll((Collection<? extends Constraint>) newValue);
+			return;
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_VARIABLES:
+			getHelperVariables().clear();
+			getHelperVariables().addAll((Collection<? extends Variable>) newValue);
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS:
 			getRealVarCorrectnessConstraints().clear();
@@ -494,6 +526,9 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES:
 			getDependencies().clear();
 			return;
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_VARIABLES:
+			getHelperVariables().clear();
+			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS:
 			getRealVarCorrectnessConstraints().clear();
 			return;
@@ -525,6 +560,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 			return constant != CONSTANT_EDEFAULT;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES:
 			return dependencies != null && !dependencies.isEmpty();
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_VARIABLES:
+			return helperVariables != null && !helperVariables.isEmpty();
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS:
 			return realVarCorrectnessConstraints != null && !realVarCorrectnessConstraints.isEmpty();
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS:
@@ -554,6 +591,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 				return GipsIntermediatePackage.CONSTRAINT__CONSTANT;
 			case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES:
 				return GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES;
+			case GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_VARIABLES:
+				return GipsIntermediatePackage.CONSTRAINT__HELPER_VARIABLES;
 			case GipsIntermediatePackage.TYPE_CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS:
 				return GipsIntermediatePackage.CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS;
 			case GipsIntermediatePackage.TYPE_CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS:
@@ -584,6 +623,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 				return GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT;
 			case GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES:
 				return GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES;
+			case GipsIntermediatePackage.CONSTRAINT__HELPER_VARIABLES:
+				return GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_VARIABLES;
 			case GipsIntermediatePackage.CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS:
 				return GipsIntermediatePackage.TYPE_CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS;
 			case GipsIntermediatePackage.CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS:

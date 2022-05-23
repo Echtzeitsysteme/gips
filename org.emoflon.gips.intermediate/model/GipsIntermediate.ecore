@@ -68,7 +68,9 @@
         eType="#//BoolValueExpression" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="constant" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="dependencies" upperBound="-1"
-        eType="#//Constraint" containment="true"/>
+        eType="#//Constraint"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="helperVariables" upperBound="-1"
+        eType="#//Variable"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="realVarCorrectnessConstraints"
         upperBound="-1" eType="#//RelationalExpression" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="binaryVarCorrectnessConstraints"

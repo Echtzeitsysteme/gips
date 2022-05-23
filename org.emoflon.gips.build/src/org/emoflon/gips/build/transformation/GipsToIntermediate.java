@@ -174,6 +174,7 @@ public class GipsToIntermediate {
 					Map<GipsConstraint, Variable> constraint2binary = new HashMap<>();
 					for (GipsConstraint subConstraint : eSubConstraint.result().values()) {
 						Constraint constraint = transformConstraint(subConstraint);
+						data.model().getConstraints().add(constraint);
 						transformed.put(subConstraint, constraint);
 						dConstraint.getDependencies().add(constraint);
 
@@ -195,6 +196,7 @@ public class GipsToIntermediate {
 						realVar.setType(VariableType.REAL);
 						realVar.setName(constraint.getName() + "_substitute_variable");
 						data.model().getVariables().add(realVar);
+						dConstraint.getHelperVariables().add(realVar);
 						constraint2real.put(subConstraint, realVar);
 						boolean realVarNegative = insertSubstituteRealVariable(constraint, orginalRelation, realVar);
 
@@ -202,14 +204,16 @@ public class GipsToIntermediate {
 						binaryVar.setType(VariableType.BINARY);
 						binaryVar.setName(constraint.getName() + "_symbolic_variable");
 						data.model().getVariables().add(binaryVar);
+						dConstraint.getHelperVariables().add(binaryVar);
 						constraint2binary.put(subConstraint, binaryVar);
 
 						// Add semantic correctness constraints
 						// (1) Force symbolic variable correctness
 						insertBinaryVaribaleCorrectnessConstraint(dConstraint, realVar, binaryVar, realVarNegative);
 						// (2) Force substitute variable correctness (via quasi-sos1 constraint)
-						insertRealVaribaleCorrectnessConstraint(dConstraint, constraint, realVar, binaryVar,
-								realVarNegative);
+						Variable sos1var = insertRealVaribaleCorrectnessConstraint(dConstraint, constraint, realVar,
+								binaryVar, realVarNegative);
+						dConstraint.getHelperVariables().add(sos1var);
 					}
 
 					// Create substitute relational constraint
@@ -309,17 +313,20 @@ public class GipsToIntermediate {
 					realVar.setType(VariableType.REAL);
 					realVar.setName(dConstraint.getName() + "_substitute_variable");
 					data.model().getVariables().add(realVar);
+					dConstraint.getHelperVariables().add(realVar);
 					boolean realVarNegative = insertSubstituteRealVariable(constraint, orginalRelation, realVar);
 
 					// Add negation constraint
 					Variable binaryVar = insertNegationConstraint(constraint, dConstraint);
+					dConstraint.getHelperVariables().add(binaryVar);
 
 					// Add semantic correctness constraints
 					// (1) Force symbolic variable correctness
 					insertBinaryVaribaleCorrectnessConstraint(dConstraint, realVar, binaryVar, realVarNegative);
 					// (2) Force substitute variable correctness (via quasi-sos1 constraint)
-					insertRealVaribaleCorrectnessConstraint(dConstraint, constraint, realVar, binaryVar,
-							realVarNegative);
+					Variable sos1Var = insertRealVaribaleCorrectnessConstraint(dConstraint, constraint, realVar,
+							binaryVar, realVarNegative);
+					dConstraint.getHelperVariables().add(sos1Var);
 				}
 				default -> {
 					throw new IllegalArgumentException("Unknown constraint annotation type.");
@@ -442,8 +449,8 @@ public class GipsToIntermediate {
 		dConstraint.getBinaryVarCorrectnessConstraints().add(relation);
 	}
 
-	protected void insertRealVaribaleCorrectnessConstraint(final Constraint dConstraint, final Constraint constraint,
-			final Variable realVar, final Variable binaryVar, boolean negativeReal) {
+	protected Variable insertRealVaribaleCorrectnessConstraint(final Constraint dConstraint,
+			final Constraint constraint, final Variable realVar, final Variable binaryVar, boolean negativeReal) {
 		Variable symbolicSos1Var = factory.createVariable();
 		symbolicSos1Var.setType(VariableType.BINARY);
 		binaryVar.setName(constraint.getName() + "_symbolic_sos1_variable");
@@ -508,6 +515,8 @@ public class GipsToIntermediate {
 		sum2.setRhs(binaryVarRef);
 
 		sos1Relation.setLhs(sum2);
+
+		return symbolicSos1Var;
 	}
 
 	protected Constraint transformConstraint(final GipsConstraint subConstraint) throws Exception {

@@ -36,6 +36,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
 import javax.management.relation.RelationException
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableType
 
 class MappingConstraintTemplate extends ConstraintTemplate<MappingConstraint> {
 
@@ -54,6 +55,10 @@ class MappingConstraintTemplate extends ConstraintTemplate<MappingConstraint> {
 		imports.add("org.emoflon.gips.core.GipsEngine")
 		imports.add("org.emoflon.gips.core.GipsMappingConstraint")
 		imports.add("org.emoflon.gips.core.ilp.ILPTerm")
+		if(context.isDepending) {
+			imports.add("org.emoflon.gips.core.ilp.ILPBinaryVariable");
+			imports.add("org.emoflon.gips.core.ilp.ILPRealVariable");
+		}
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint")
 		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
 		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(context.mapping))
@@ -91,6 +96,7 @@ public class «className» extends GipsMappingConstraint<«data.gipsApiClassName
 		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
 	}
 		
+	«generateDependencyConstraints()»
 	«FOR methods : builderMethodDefinitions.values»
 	«methods»
 	«ENDFOR»
@@ -123,7 +129,8 @@ public class «className» extends GipsMappingConstraint<«data.gipsApiClassName
 	protected boolean buildConstantExpression(final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
 	}
-		
+	
+	«generateDependencyConstraints()»
 	«FOR methods : builderMethodDefinitions.values»
 	«methods»
 	«ENDFOR»
@@ -157,10 +164,44 @@ public class «className» extends GipsMappingConstraint<«data.gipsApiClassName
 		return «parseExpression(boolExpr, ExpressionContext.constConstraint)»
 	}
 		
+	«generateDependencyConstraints()»
 	«FOR methods : builderMethodDefinitions.values»
 	«methods»
 	«ENDFOR»
 }'''
+	}
+	
+	override generateDependencyConstraints() {
+		if(!context.isDepending) {
+			return '''
+	@Override
+	protected List<ILPConstraint<?>> buildDependingConstraints(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		throw new UnsupportedOperationException("Constraint has no depending or substitute constraints.");
+	}
+		'''
+		} else {
+			return '''
+	@Override
+	protected List<ILPConstraint<?>> buildDependingConstraints(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		«FOR variable : context.helperVariables»
+		«IF variable.type == VariableType.BINARY»
+		ILPBinaryVariable «variable.name» = new ILPBinaryVariable(context.getName()+"->«variable.name»");
+		«ELSEIF variable.type == VariableType.INTEGER»
+		ILPIntegerVariable «variable.name» = new ILPIntegerVariable(context.getName()+"->«variable.name»");
+		«ELSE»
+		ILPRealVariable «variable.name» = new ILPRealVariable(context.getName()+"->«variable.name»");
+		«ENDIF»
+		additionalVariables.add(«variable.name»);
+		«ENDFOR»
+		
+		List<ILPConstraint<?>> dependingConstraints = new LinkedList<>();
+		
+		
+		return dependingConstraints;
+	}
+		'''
+		}
+		
 	}
 	
 	override String generateComplexConstraint(ArithmeticExpression constExpr, ArithmeticExpression dynamicExpr) {

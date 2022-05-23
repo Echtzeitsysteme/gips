@@ -24,6 +24,8 @@ import org.eclipse.emf.ecore.EObject;
  * <em>Constant</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getDependencies
  * <em>Dependencies</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getHelperVariables
+ * <em>Helper Variables</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getRealVarCorrectnessConstraints
  * <em>Real Var Correctness Constraints</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getBinaryVarCorrectnessConstraints
@@ -141,6 +143,19 @@ public interface Constraint extends EObject {
 	 * @generated
 	 */
 	EList<Constraint> getDependencies();
+
+	/**
+	 * Returns the value of the '<em><b>Helper Variables</b></em>' reference list.
+	 * The list contents are of type
+	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.Variable}. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Helper Variables</em>' reference list.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_HelperVariables()
+	 * @model
+	 * @generated
+	 */
+	EList<Variable> getHelperVariables();
 
 	/**
 	 * Returns the value of the '<em><b>Real Var Correctness Constraints</b></em>'

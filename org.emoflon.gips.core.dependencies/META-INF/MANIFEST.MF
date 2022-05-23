@@ -6,7 +6,9 @@ Bundle-Version: 1.0.0
 Bundle-ClassPath: gurobi-javadoc-9.5.1.jar,
  gurobi-9.5.1.jar,
  glpk-java-1.12.0.jar,
- glpk-java-1.12.0-javadoc.jar
-Export-Package: gurobi;version="9.5.1",
+ glpk-java-1.12.0-javadoc.jar,
+ clp-java-1.16.11-full.jar
+Export-Package: com.quantego.clp;version="1.16.11",
+ gurobi;version="9.5.1",
  org.gnu.glpk;version="1.12.0"
 Automatic-Module-Name: org.emoflon.gips.core.dependencies

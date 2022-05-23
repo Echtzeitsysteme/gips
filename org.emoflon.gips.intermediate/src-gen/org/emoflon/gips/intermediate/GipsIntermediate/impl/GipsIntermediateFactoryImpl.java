@@ -71,8 +71,6 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createVariable();
 		case GipsIntermediatePackage.GLOBAL_CONSTRAINT:
 			return createGlobalConstraint();
-		case GipsIntermediatePackage.DEPENDENCY_CONSTRAINT:
-			return createDependencyConstraint();
 		case GipsIntermediatePackage.OBJECTIVE:
 			return createObjective();
 		case GipsIntermediatePackage.GLOBAL_OBJECTIVE:
@@ -314,16 +312,6 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	public GlobalConstraint createGlobalConstraint() {
 		GlobalConstraintImpl globalConstraint = new GlobalConstraintImpl();
 		return globalConstraint;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public DependencyConstraint createDependencyConstraint() {
-		DependencyConstraintImpl dependencyConstraint = new DependencyConstraintImpl();
-		return dependencyConstraint;
 	}
 
 	/**

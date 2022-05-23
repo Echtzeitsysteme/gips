@@ -137,15 +137,6 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case GipsIntermediatePackage.DEPENDENCY_CONSTRAINT: {
-			DependencyConstraint dependencyConstraint = (DependencyConstraint) theEObject;
-			T result = caseDependencyConstraint(dependencyConstraint);
-			if (result == null)
-				result = caseConstraint(dependencyConstraint);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
 		case GipsIntermediatePackage.OBJECTIVE: {
 			Objective objective = (Objective) theEObject;
 			T result = caseObjective(objective);
@@ -909,22 +900,6 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseGlobalConstraint(GlobalConstraint object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of
-	 * '<em>Dependency Constraint</em>'. <!-- begin-user-doc --> This implementation
-	 * returns null; returning a non-null result will terminate the switch. <!--
-	 * end-user-doc -->
-	 * 
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of
-	 *         '<em>Dependency Constraint</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseDependencyConstraint(DependencyConstraint object) {
 		return null;
 	}
 

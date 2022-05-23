@@ -18,6 +18,9 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 	@Override
 	public void buildConstraints() {
 		ilpConstraints.put(constraint, buildConstraint());
+		if (constraint.isDepending()) {
+			dependingIlpConstraints.put(constraint, buildDependingConstraints());
+		}
 	}
 
 	protected ILPConstraint<Integer> buildConstraint() {
@@ -58,6 +61,8 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 
 	}
 
+	abstract protected List<ILPConstraint<?>> buildDependingConstraints();
+
 	abstract protected double buildConstantRhs();
 
 	abstract protected double buildConstantLhs();
@@ -65,6 +70,11 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 	abstract protected boolean buildConstantExpression();
 
 	abstract protected List<ILPTerm<Integer, Double>> buildVariableLhs();
+
+	@Override
+	protected List<ILPConstraint<?>> buildDependingConstraints(GlobalConstraint context) {
+		throw new UnsupportedOperationException("There is no specific context available for global constraints.");
+	}
 
 	@Override
 	protected ILPConstraint<Integer> buildConstraint(GlobalConstraint context) {

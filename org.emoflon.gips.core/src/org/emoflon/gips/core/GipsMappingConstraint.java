@@ -28,6 +28,14 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 				ilpConstraints.put(context, candidate);
 			}
 		});
+
+		if (constraint.isDepending()) {
+			mapper.getMappings().values().parallelStream().forEach(context -> {
+				final List<ILPConstraint<?>> constraints = buildDependingConstraints(context);
+				dependingIlpConstraints.put(context, constraints);
+			});
+
+		}
 	}
 
 	@Override

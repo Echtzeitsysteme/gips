@@ -112,11 +112,6 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
-		public Adapter caseDependencyConstraint(DependencyConstraint object) {
-			return createDependencyConstraintAdapter();
-		}
-
-		@Override
 		public Adapter caseObjective(Objective object) {
 			return createObjectiveAdapter();
 		}
@@ -578,22 +573,6 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createGlobalConstraintAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.DependencyConstraint
-	 * <em>Dependency Constraint</em>}'. <!-- begin-user-doc --> This default
-	 * implementation returns null so that we can easily ignore cases; it's useful
-	 * to ignore a case when inheritance will catch all the cases anyway. <!--
-	 * end-user-doc -->
-	 * 
-	 * @return the new adapter.
-	 * @see org.emoflon.gips.intermediate.GipsIntermediate.DependencyConstraint
-	 * @generated
-	 */
-	public Adapter createDependencyConstraintAdapter() {
 		return null;
 	}
 

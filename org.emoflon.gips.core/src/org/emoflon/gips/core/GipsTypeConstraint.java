@@ -30,6 +30,14 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 				ilpConstraints.put((CONTEXT) context, candidate);
 			}
 		});
+
+		if (constraint.isDepending()) {
+			indexer.getObjectsOfType(type).parallelStream().forEach(context -> {
+				final List<ILPConstraint<?>> constraints = buildDependingConstraints((CONTEXT) context);
+				dependingIlpConstraints.put((CONTEXT) context, constraints);
+			});
+
+		}
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.emoflon.gips.core.ilp.ILPConstraint;
 import org.emoflon.gips.core.ilp.ILPTerm;
@@ -22,6 +23,8 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends C
 	final protected String name;
 	final protected boolean isConstant;
 	final protected Map<CONTEXT, ILPConstraint<VARTYPE>> ilpConstraints = Collections.synchronizedMap(new HashMap<>());
+	final protected Map<CONTEXT, List<ILPConstraint<?>>> dependingIlpConstraints = Collections
+			.synchronizedMap(new HashMap<>());
 	final protected List<ILPVariable<?>> additionalVariables = Collections.synchronizedList(new LinkedList<>());
 	final public static double EPSILON = 0.000001d;
 
@@ -48,7 +51,14 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends C
 		return ilpConstraints.values();
 	}
 
+	public Collection<ILPConstraint<?>> getDependingConstraints() {
+		return dependingIlpConstraints.values().stream().flatMap(constraints -> constraints.stream())
+				.collect(Collectors.toList());
+	}
+
 	protected abstract ILPConstraint<VARTYPE> buildConstraint(final CONTEXT context);
+
+	protected abstract List<ILPConstraint<?>> buildDependingConstraints(final CONTEXT context);
 
 	protected abstract double buildConstantRhs(final CONTEXT context);
 

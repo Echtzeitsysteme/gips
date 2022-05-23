@@ -109,6 +109,11 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 	
 	def String generateComplexConstraint(ArithmeticExpression constExpr, ArithmeticExpression dynamicExpr);
 	
+	def String generateDependencyConstraints() {
+		return '''
+		'''
+	}
+	
 	def String generateConstTermBuilder(ArithmeticExpression constExpr) {
 		return '''«parseExpression(constExpr, ExpressionContext.constConstraint)»'''
 	}

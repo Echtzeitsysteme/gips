@@ -30,7 +30,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.DependencyConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
@@ -166,8 +165,9 @@ public class GipsToIntermediate {
 			for (GipsAnnotatedConstraint eSubConstraint : eConstraints) {
 				switch (eSubConstraint.type()) {
 				case CONJUCTION_OF_LITERALS -> {
-					DependencyConstraint dConstraint = factory.createDependencyConstraint();
+					Constraint dConstraint = createDependencyConstraint(eSubConstraint, constraintCounter);
 					data.model().getConstraints().add(dConstraint);
+					constraintCounter++;
 
 					Map<GipsConstraint, Constraint> transformed = new HashMap<>();
 					Map<GipsConstraint, Variable> constraint2real = new HashMap<>();
@@ -280,15 +280,15 @@ public class GipsToIntermediate {
 					substituteRelation.setRhs(d1);
 					substituteRelation.setLhs(substituteSum);
 					dConstraint.setExpression(substituteRelation);
-
-					// Set name
-					dConstraint.setName("Disjunction" + transformed.values().iterator().next().getName());
-
 				}
 				case LITERAL -> {
 					transformConstraint(eSubConstraint.result().values().iterator().next());
 				}
 				case NEGATED_LITERAL -> {
+					Constraint dConstraint = createDependencyConstraint(eSubConstraint, constraintCounter);
+					data.model().getConstraints().add(dConstraint);
+					constraintCounter++;
+
 					Constraint constraint = transformConstraint(eSubConstraint.result().values().iterator().next());
 					// TODO: We'll ignore build time constant constraints for now -> This must be
 					// fixed at some point in time.
@@ -301,10 +301,6 @@ public class GipsToIntermediate {
 						throw new UnsupportedOperationException(
 								"Negation for constraints that are constant at build time is currently not supported");
 					}
-
-					DependencyConstraint dConstraint = factory.createDependencyConstraint();
-					dConstraint.setName("Negation" + constraint.getName());
-					data.model().getConstraints().add(dConstraint);
 					dConstraint.getDependencies().add(constraint);
 
 					// Add substitute variable to produce negation!
@@ -381,7 +377,7 @@ public class GipsToIntermediate {
 		return varNegativeReal;
 	}
 
-	protected Variable insertNegationConstraint(final Constraint constraint, final DependencyConstraint dConstraint) {
+	protected Variable insertNegationConstraint(final Constraint constraint, final Constraint dConstraint) {
 		RelationalExpression negationRelation = factory.createRelationalExpression();
 		negationRelation.setOperator(RelationalOperator.GREATER_OR_EQUAL);
 		DoubleLiteral dl = factory.createDoubleLiteral();
@@ -411,8 +407,8 @@ public class GipsToIntermediate {
 		return binaryVar;
 	}
 
-	protected void insertBinaryVaribaleCorrectnessConstraint(final DependencyConstraint dConstraint,
-			final Variable realVar, final Variable binaryVar, boolean negativeReal) {
+	protected void insertBinaryVaribaleCorrectnessConstraint(final Constraint dConstraint, final Variable realVar,
+			final Variable binaryVar, boolean negativeReal) {
 		RelationalExpression relation = factory.createRelationalExpression();
 		relation.setOperator(RelationalOperator.GREATER_OR_EQUAL);
 		DoubleLiteral dl = factory.createDoubleLiteral();
@@ -446,8 +442,8 @@ public class GipsToIntermediate {
 		dConstraint.getBinaryVarCorrectnessConstraints().add(relation);
 	}
 
-	protected void insertRealVaribaleCorrectnessConstraint(final DependencyConstraint dConstraint,
-			final Constraint constraint, final Variable realVar, final Variable binaryVar, boolean negativeReal) {
+	protected void insertRealVaribaleCorrectnessConstraint(final Constraint dConstraint, final Constraint constraint,
+			final Variable realVar, final Variable binaryVar, boolean negativeReal) {
 		Variable symbolicSos1Var = factory.createVariable();
 		symbolicSos1Var.setType(VariableType.BINARY);
 		binaryVar.setName(constraint.getName() + "_symbolic_sos1_variable");
@@ -531,7 +527,7 @@ public class GipsToIntermediate {
 
 		Constraint constraint = createConstraint(subConstraint, constraintCounter);
 		constraintCounter++;
-		constraint.setElementwise(true);
+		constraint.setDepending(false);
 		data.model().getConstraints().add(constraint);
 		data.eConstraint2Constraint().put(subConstraint, constraint);
 
@@ -687,6 +683,34 @@ public class GipsToIntermediate {
 		} else {
 			GlobalConstraint constraint = factory.createGlobalConstraint();
 			constraint.setName("GlobalConstraint" + counter);
+			return constraint;
+		}
+	}
+
+	protected Constraint createDependencyConstraint(final GipsAnnotatedConstraint eConstraint, int counter) {
+		if (eConstraint.input() instanceof GipsMappingContext mapping) {
+			MappingConstraint constraint = factory.createMappingConstraint();
+			constraint.setName("DependingMappingConstraint" + counter + "On" + mapping.getMapping().getName());
+			constraint.setMapping(data.eMapping2Mapping().get(mapping.getMapping()));
+			constraint.setDepending(true);
+			return constraint;
+		} else if (eConstraint.input() instanceof GipsPatternContext pattern) {
+			PatternConstraint constraint = factory.createPatternConstraint();
+			constraint.setName("DependingPatternConstraint" + counter + "On" + pattern.getPattern().getName());
+			constraint.setPattern(data.getPattern(pattern.getPattern()));
+			constraint.setDepending(true);
+			return constraint;
+		} else if (eConstraint.input() instanceof GipsTypeContext type) {
+			TypeConstraint constraint = factory.createTypeConstraint();
+			constraint.setName("DependingTypeConstraint" + counter + "On" + type.getType().getName());
+			Type varType = data.getType((EClass) type.getType());
+			constraint.setDepending(true);
+			constraint.setModelType(varType);
+			return constraint;
+		} else {
+			GlobalConstraint constraint = factory.createGlobalConstraint();
+			constraint.setName("DependingGlobalConstraint" + counter);
+			constraint.setDepending(true);
 			return constraint;
 		}
 	}

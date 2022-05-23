@@ -36,7 +36,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.DependencyConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral;
@@ -166,13 +165,6 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * @generated
 	 */
 	private EClass globalConstraintEClass = null;
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	private EClass dependencyConstraintEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1077,7 +1069,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	public EAttribute getConstraint_Elementwise() {
+	public EAttribute getConstraint_Depending() {
 		return (EAttribute) constraintEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -1104,44 +1096,35 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public EReference getConstraint_Dependencies() {
+		return (EReference) constraintEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getConstraint_RealVarCorrectnessConstraints() {
+		return (EReference) constraintEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getConstraint_BinaryVarCorrectnessConstraints() {
+		return (EReference) constraintEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getGlobalConstraint() {
 		return globalConstraintEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EClass getDependencyConstraint() {
-		return dependencyConstraintEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EReference getDependencyConstraint_Dependencies() {
-		return (EReference) dependencyConstraintEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EReference getDependencyConstraint_RealVarCorrectnessConstraints() {
-		return (EReference) dependencyConstraintEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EReference getDependencyConstraint_BinaryVarCorrectnessConstraints() {
-		return (EReference) dependencyConstraintEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -2566,16 +2549,14 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 
 		constraintEClass = createEClass(CONSTRAINT);
 		createEAttribute(constraintEClass, CONSTRAINT__NAME);
-		createEAttribute(constraintEClass, CONSTRAINT__ELEMENTWISE);
+		createEAttribute(constraintEClass, CONSTRAINT__DEPENDING);
 		createEReference(constraintEClass, CONSTRAINT__EXPRESSION);
 		createEAttribute(constraintEClass, CONSTRAINT__CONSTANT);
+		createEReference(constraintEClass, CONSTRAINT__DEPENDENCIES);
+		createEReference(constraintEClass, CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS);
+		createEReference(constraintEClass, CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS);
 
 		globalConstraintEClass = createEClass(GLOBAL_CONSTRAINT);
-
-		dependencyConstraintEClass = createEClass(DEPENDENCY_CONSTRAINT);
-		createEReference(dependencyConstraintEClass, DEPENDENCY_CONSTRAINT__DEPENDENCIES);
-		createEReference(dependencyConstraintEClass, DEPENDENCY_CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS);
-		createEReference(dependencyConstraintEClass, DEPENDENCY_CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS);
 
 		objectiveEClass = createEClass(OBJECTIVE);
 		createEAttribute(objectiveEClass, OBJECTIVE__NAME);
@@ -2832,7 +2813,6 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		mappingEClass.getESuperTypes().add(this.getVariableSet());
 		variableEClass.getESuperTypes().add(this.getVariableSet());
 		globalConstraintEClass.getESuperTypes().add(this.getConstraint());
-		dependencyConstraintEClass.getESuperTypes().add(this.getConstraint());
 		patternConstraintEClass.getESuperTypes().add(this.getContext());
 		patternConstraintEClass.getESuperTypes().add(this.getConstraint());
 		typeConstraintEClass.getESuperTypes().add(this.getContext());
@@ -2995,29 +2975,25 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 				IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getConstraint_Name(), ecorePackage.getEString(), "name", null, 0, 1, Constraint.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getConstraint_Elementwise(), ecorePackage.getEBoolean(), "elementwise", null, 0, 1,
-				Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-				!IS_DERIVED, IS_ORDERED);
+		initEAttribute(getConstraint_Depending(), ecorePackage.getEBoolean(), "depending", null, 0, 1, Constraint.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getConstraint_Expression(), this.getBoolValueExpression(), null, "expression", null, 1, 1,
 				Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConstraint_Constant(), ecorePackage.getEBoolean(), "constant", null, 0, 1, Constraint.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getConstraint_Dependencies(), this.getConstraint(), null, "dependencies", null, 0, -1,
+				Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getConstraint_RealVarCorrectnessConstraints(), this.getRelationalExpression(), null,
+				"realVarCorrectnessConstraints", null, 0, -1, Constraint.class, !IS_TRANSIENT, !IS_VOLATILE,
+				IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getConstraint_BinaryVarCorrectnessConstraints(), this.getRelationalExpression(), null,
+				"binaryVarCorrectnessConstraints", null, 0, -1, Constraint.class, !IS_TRANSIENT, !IS_VOLATILE,
+				IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(globalConstraintEClass, GlobalConstraint.class, "GlobalConstraint", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(dependencyConstraintEClass, DependencyConstraint.class, "DependencyConstraint", !IS_ABSTRACT,
-				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getDependencyConstraint_Dependencies(), this.getConstraint(), null, "dependencies", null, 0, -1,
-				DependencyConstraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getDependencyConstraint_RealVarCorrectnessConstraints(), this.getRelationalExpression(), null,
-				"realVarCorrectnessConstraints", null, 0, -1, DependencyConstraint.class, !IS_TRANSIENT, !IS_VOLATILE,
-				IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getDependencyConstraint_BinaryVarCorrectnessConstraints(), this.getRelationalExpression(), null,
-				"binaryVarCorrectnessConstraints", null, 0, -1, DependencyConstraint.class, !IS_TRANSIENT, !IS_VOLATILE,
-				IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(objectiveEClass, Objective.class, "Objective", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);

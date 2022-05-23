@@ -139,25 +139,29 @@ public class GurobiSolver extends ILPSolver {
 	@Override
 	protected void translateConstraint(final GipsMappingConstraint<?, ? extends EObject> constraint) {
 		createOrGetAdditionalVars(constraint.getAdditionalVariables());
-		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
+		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
+		addIlpConstraintsToGrb(constraint.getDependingConstraints(), constraint.getName(), counter);
 	}
 
 	@Override
 	protected void translateConstraint(final GipsPatternConstraint<?, ?, ?> constraint) {
 		createOrGetAdditionalVars(constraint.getAdditionalVariables());
-		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
+		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
+		addIlpConstraintsToGrb(constraint.getDependingConstraints(), constraint.getName(), counter);
 	}
 
 	@Override
 	protected void translateConstraint(final GipsTypeConstraint<?, ? extends EObject> constraint) {
 		createOrGetAdditionalVars(constraint.getAdditionalVariables());
-		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
+		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
+		addIlpConstraintsToGrb(constraint.getDependingConstraints(), constraint.getName(), counter);
 	}
 
 	@Override
 	protected void translateConstraint(GipsGlobalConstraint<?> constraint) {
 		createOrGetAdditionalVars(constraint.getAdditionalVariables());
-		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
+		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
+		addIlpConstraintsToGrb(constraint.getDependingConstraints(), constraint.getName(), counter);
 	}
 
 	protected void createOrGetAdditionalVars(final Collection<ILPVariable<?>> variables) {
@@ -240,10 +244,8 @@ public class GurobiSolver extends ILPSolver {
 	 * @param constraints Collection of integer ILP constraints to add.
 	 * @param name        Name of the overall constraint to add.
 	 */
-	private void addIlpConstraintsToGrb(final Collection<ILPConstraint<Integer>> constraints, final String name) {
-		// For each constraint, create a Gurobi constraint
-		int counter = 0;
-
+	private int addIlpIntegerConstraintsToGrb(final Collection<ILPConstraint<Integer>> constraints, final String name,
+			int counter) {
 		// Have to use an iterator to be able to increment the counter
 		final Iterator<ILPConstraint<Integer>> cnstrsIt = constraints.iterator();
 		while (cnstrsIt.hasNext()) {
@@ -280,6 +282,56 @@ public class GurobiSolver extends ILPSolver {
 				throw new RuntimeException(e);
 			}
 		}
+
+		return counter;
+	}
+
+	/**
+	 * Adds a given collection of ILP constraints and a given constraint name to the
+	 * Gurobi model.
+	 *
+	 * @param constraints Collection of integer ILP constraints to add.
+	 * @param name        Name of the overall constraint to add.
+	 */
+	private int addIlpConstraintsToGrb(final Collection<ILPConstraint<?>> constraints, final String name, int counter) {
+		// Have to use an iterator to be able to increment the counter
+		final Iterator<ILPConstraint<?>> cnstrsIt = constraints.iterator();
+		while (cnstrsIt.hasNext()) {
+			final ILPConstraint<?> curr = cnstrsIt.next();
+			final GRBLinExpr grbLinExpr = new GRBLinExpr();
+
+			// Check if constraints of form "<empty> == const" exist and throw an exception
+//			if (curr.lhsTerms().isEmpty()) {
+//				throw new RuntimeException("LHS (variable terms) is empty. This produces an infeasible ILP problem.");
+//			}
+			// TODO: Throw an exception if the collection of LHS terms is empty (and the
+			// presolver functionality is implemented.
+
+			//
+			// Operator
+			//
+
+			final char op = convertOperator(curr.operator());
+
+			//
+			// Terms
+			//
+
+			// Add each term to the GRB linear expression
+			curr.lhsTerms().forEach(t -> {
+				grbLinExpr.addTerm(t.weight(), createOrGetBinVar(t.variable().getName()));
+			});
+
+			// Add current constructed constraint to the GRB model
+			try {
+				// TODO: Use model.addLConstr instead (up to ~50% faster)
+				model.addConstr(grbLinExpr, op, curr.rhsConstantTerm(), name + "_" + counter++);
+			} catch (final GRBException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		return counter;
 	}
 
 	/**

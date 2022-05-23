@@ -85,15 +85,6 @@ public interface GipsIntermediateFactory extends EFactory {
 	GlobalConstraint createGlobalConstraint();
 
 	/**
-	 * Returns a new object of class '<em>Dependency Constraint</em>'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @return a new object of class '<em>Dependency Constraint</em>'.
-	 * @generated
-	 */
-	DependencyConstraint createDependencyConstraint();
-
-	/**
 	 * Returns a new object of class '<em>Objective</em>'. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 

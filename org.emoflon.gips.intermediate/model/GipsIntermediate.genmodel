@@ -105,16 +105,14 @@
     </genClasses>
     <genClasses image="false" ecoreClass="GipsIntermediate.ecore#//Constraint">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Constraint/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Constraint/elementwise"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Constraint/depending"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Constraint/expression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Constraint/constant"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Constraint/dependencies"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Constraint/realVarCorrectnessConstraints"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Constraint/binaryVarCorrectnessConstraints"/>
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//GlobalConstraint"/>
-    <genClasses ecoreClass="GipsIntermediate.ecore#//DependencyConstraint">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//DependencyConstraint/dependencies"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//DependencyConstraint/realVarCorrectnessConstraints"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//DependencyConstraint/binaryVarCorrectnessConstraints"/>
-    </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//Objective">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Objective/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Objective/elementwise"/>

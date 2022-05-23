@@ -10,8 +10,6 @@ package org.emoflon.gips.intermediate.GipsIntermediate;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Variable#getName
- * <em>Name</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Variable#getType
  * <em>Type</em>}</li>
  * </ul>
@@ -20,30 +18,7 @@ package org.emoflon.gips.intermediate.GipsIntermediate;
  * @model
  * @generated
  */
-public interface Variable extends ArithmeticValueExpression {
-	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see #setName(String)
-	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getVariable_Name()
-	 * @model
-	 * @generated
-	 */
-	String getName();
-
-	/**
-	 * Sets the value of the
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Variable#getName
-	 * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @param value the new value of the '<em>Name</em>' attribute.
-	 * @see #getName()
-	 * @generated
-	 */
-	void setName(String value);
-
+public interface Variable extends VariableSet {
 	/**
 	 * Returns the value of the '<em><b>Type</b></em>' attribute. The literals are
 	 * from the enumeration

@@ -61,14 +61,14 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createGipsIntermediateModel();
 		case GipsIntermediatePackage.ILP_CONFIG:
 			return createILPConfig();
-		case GipsIntermediatePackage.SIMPLE_VARIABLE_SET:
-			return createSimpleVariableSet();
 		case GipsIntermediatePackage.PATTERN:
 			return createPattern();
 		case GipsIntermediatePackage.TYPE:
 			return createType();
 		case GipsIntermediatePackage.MAPPING:
 			return createMapping();
+		case GipsIntermediatePackage.VARIABLE:
+			return createVariable();
 		case GipsIntermediatePackage.GLOBAL_CONSTRAINT:
 			return createGlobalConstraint();
 		case GipsIntermediatePackage.DEPENDENCY_CONSTRAINT:
@@ -95,6 +95,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createUnaryArithmeticExpression();
 		case GipsIntermediatePackage.ARITHMETIC_VALUE:
 			return createArithmeticValue();
+		case GipsIntermediatePackage.VARIABLE_REFERENCE:
+			return createVariableReference();
 		case GipsIntermediatePackage.ARITHMETIC_NULL_LITERAL:
 			return createArithmeticNullLiteral();
 		case GipsIntermediatePackage.INTEGER_LITERAL:
@@ -173,8 +175,6 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createStreamSelectOperation();
 		case GipsIntermediatePackage.STREAM_CONTAINS_OPERATION:
 			return createStreamContainsOperation();
-		case GipsIntermediatePackage.VARIABLE:
-			return createVariable();
 		default:
 			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -190,6 +190,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 		switch (eDataType.getClassifierID()) {
 		case GipsIntermediatePackage.ILP_SOLVER_TYPE:
 			return createILPSolverTypeFromString(eDataType, initialValue);
+		case GipsIntermediatePackage.VARIABLE_TYPE:
+			return createVariableTypeFromString(eDataType, initialValue);
 		case GipsIntermediatePackage.OBJECTIVE_TARGET:
 			return createObjectiveTargetFromString(eDataType, initialValue);
 		case GipsIntermediatePackage.RELATIONAL_OPERATOR:
@@ -206,8 +208,6 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createUnaryBoolOperatorFromString(eDataType, initialValue);
 		case GipsIntermediatePackage.STREAM_BOOL_OPERATOR:
 			return createStreamBoolOperatorFromString(eDataType, initialValue);
-		case GipsIntermediatePackage.VARIABLE_TYPE:
-			return createVariableTypeFromString(eDataType, initialValue);
 		default:
 			throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -223,6 +223,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 		switch (eDataType.getClassifierID()) {
 		case GipsIntermediatePackage.ILP_SOLVER_TYPE:
 			return convertILPSolverTypeToString(eDataType, instanceValue);
+		case GipsIntermediatePackage.VARIABLE_TYPE:
+			return convertVariableTypeToString(eDataType, instanceValue);
 		case GipsIntermediatePackage.OBJECTIVE_TARGET:
 			return convertObjectiveTargetToString(eDataType, instanceValue);
 		case GipsIntermediatePackage.RELATIONAL_OPERATOR:
@@ -239,8 +241,6 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return convertUnaryBoolOperatorToString(eDataType, instanceValue);
 		case GipsIntermediatePackage.STREAM_BOOL_OPERATOR:
 			return convertStreamBoolOperatorToString(eDataType, instanceValue);
-		case GipsIntermediatePackage.VARIABLE_TYPE:
-			return convertVariableTypeToString(eDataType, instanceValue);
 		default:
 			throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -271,16 +271,6 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	public SimpleVariableSet createSimpleVariableSet() {
-		SimpleVariableSetImpl simpleVariableSet = new SimpleVariableSetImpl();
-		return simpleVariableSet;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
 	public Pattern createPattern() {
 		PatternImpl pattern = new PatternImpl();
 		return pattern;
@@ -304,6 +294,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	public Mapping createMapping() {
 		MappingImpl mapping = new MappingImpl();
 		return mapping;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public Variable createVariable() {
+		VariableImpl variable = new VariableImpl();
+		return variable;
 	}
 
 	/**
@@ -434,6 +434,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	public ArithmeticValue createArithmeticValue() {
 		ArithmeticValueImpl arithmeticValue = new ArithmeticValueImpl();
 		return arithmeticValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public VariableReference createVariableReference() {
+		VariableReferenceImpl variableReference = new VariableReferenceImpl();
+		return variableReference;
 	}
 
 	/**
@@ -831,16 +841,6 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	public Variable createVariable() {
-		VariableImpl variable = new VariableImpl();
-		return variable;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
 	public ILPSolverType createILPSolverTypeFromString(EDataType eDataType, String initialValue) {
 		ILPSolverType result = ILPSolverType.get(initialValue);
 		if (result == null)
@@ -855,6 +855,28 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	 * @generated
 	 */
 	public String convertILPSolverTypeToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public VariableType createVariableTypeFromString(EDataType eDataType, String initialValue) {
+		VariableType result = VariableType.get(initialValue);
+		if (result == null)
+			throw new IllegalArgumentException(
+					"The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public String convertVariableTypeToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 
@@ -1031,28 +1053,6 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	 * @generated
 	 */
 	public String convertStreamBoolOperatorToString(EDataType eDataType, Object instanceValue) {
-		return instanceValue == null ? null : instanceValue.toString();
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public VariableType createVariableTypeFromString(EDataType eDataType, String initialValue) {
-		VariableType result = VariableType.get(initialValue);
-		if (result == null)
-			throw new IllegalArgumentException(
-					"The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-		return result;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public String convertVariableTypeToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 

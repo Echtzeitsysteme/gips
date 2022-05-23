@@ -19,35 +19,13 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.VariableImpl#getName
- * <em>Name</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.VariableImpl#getType
  * <em>Type</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class VariableImpl extends ArithmeticValueExpressionImpl implements Variable {
-	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
-
+public class VariableImpl extends VariableSetImpl implements Variable {
 	/**
 	 * The default value of the '{@link #getType() <em>Type</em>}' attribute. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
@@ -92,28 +70,6 @@ public class VariableImpl extends ArithmeticValueExpressionImpl implements Varia
 	 * 
 	 * @generated
 	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public void setName(String newName) {
-		String oldName = name;
-		name = newName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.VARIABLE__NAME, oldName,
-					name));
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
 	public VariableType getType() {
 		return type;
 	}
@@ -139,8 +95,6 @@ public class VariableImpl extends ArithmeticValueExpressionImpl implements Varia
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case GipsIntermediatePackage.VARIABLE__NAME:
-			return getName();
 		case GipsIntermediatePackage.VARIABLE__TYPE:
 			return getType();
 		}
@@ -155,9 +109,6 @@ public class VariableImpl extends ArithmeticValueExpressionImpl implements Varia
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case GipsIntermediatePackage.VARIABLE__NAME:
-			setName((String) newValue);
-			return;
 		case GipsIntermediatePackage.VARIABLE__TYPE:
 			setType((VariableType) newValue);
 			return;
@@ -173,9 +124,6 @@ public class VariableImpl extends ArithmeticValueExpressionImpl implements Varia
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case GipsIntermediatePackage.VARIABLE__NAME:
-			setName(NAME_EDEFAULT);
-			return;
 		case GipsIntermediatePackage.VARIABLE__TYPE:
 			setType(TYPE_EDEFAULT);
 			return;
@@ -191,8 +139,6 @@ public class VariableImpl extends ArithmeticValueExpressionImpl implements Varia
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case GipsIntermediatePackage.VARIABLE__NAME:
-			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		case GipsIntermediatePackage.VARIABLE__TYPE:
 			return type != TYPE_EDEFAULT;
 		}
@@ -210,9 +156,7 @@ public class VariableImpl extends ArithmeticValueExpressionImpl implements Varia
 			return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (name: ");
-		result.append(name);
-		result.append(", type: ");
+		result.append(" (type: ");
 		result.append(type);
 		result.append(')');
 		return result.toString();

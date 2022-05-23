@@ -73,7 +73,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
-import org.emoflon.gips.intermediate.GipsIntermediate.SimpleVariableSet;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamArithmeticOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamBoolOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamContainsOperation;
@@ -92,9 +91,10 @@ import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.UnaryBoolOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
-
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
+
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPatternModelPackage;
 
 /**
@@ -130,13 +130,6 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	private EClass simpleVariableSetEClass = null;
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
 	private EClass patternEClass = null;
 
 	/**
@@ -152,6 +145,13 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * @generated
 	 */
 	private EClass mappingEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass variableEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -285,6 +285,13 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * @generated
 	 */
 	private EClass arithmeticLiteralEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass variableReferenceEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -606,14 +613,14 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	private EClass variableEClass = null;
+	private EEnum ilpSolverTypeEEnum = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	private EEnum ilpSolverTypeEEnum = null;
+	private EEnum variableTypeEEnum = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -670,13 +677,6 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * @generated
 	 */
 	private EEnum streamBoolOperatorEEnum = null;
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	private EEnum variableTypeEEnum = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -978,24 +978,6 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	public EClass getSimpleVariableSet() {
-		return simpleVariableSetEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EReference getSimpleVariableSet_Variables() {
-		return (EReference) simpleVariableSetEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
 	public EClass getPattern() {
 		return patternEClass;
 	}
@@ -1052,6 +1034,24 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 */
 	public EReference getMapping_Rule() {
 		return (EReference) mappingEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EClass getVariable() {
+		return variableEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getVariable_Type() {
+		return (EAttribute) variableEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -1124,6 +1124,24 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 */
 	public EReference getDependencyConstraint_Dependencies() {
 		return (EReference) dependencyConstraintEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getDependencyConstraint_RealVarCorrectnessConstraints() {
+		return (EReference) dependencyConstraintEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getDependencyConstraint_BinaryVarCorrectnessConstraints() {
+		return (EReference) dependencyConstraintEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -1439,6 +1457,24 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 */
 	public EClass getArithmeticLiteral() {
 		return arithmeticLiteralEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EClass getVariableReference() {
+		return variableReferenceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getVariableReference_Variable() {
+		return (EReference) variableReferenceEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -2373,35 +2409,17 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	public EClass getVariable() {
-		return variableEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EAttribute getVariable_Name() {
-		return (EAttribute) variableEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EAttribute getVariable_Type() {
-		return (EAttribute) variableEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
 	public EEnum getILPSolverType() {
 		return ilpSolverTypeEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EEnum getVariableType() {
+		return variableTypeEEnum;
 	}
 
 	/**
@@ -2481,15 +2499,6 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	public EEnum getVariableType() {
-		return variableTypeEEnum;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
 	public GipsIntermediateFactory getGipsIntermediateFactory() {
 		return (GipsIntermediateFactory) getEFactoryInstance();
 	}
@@ -2542,9 +2551,6 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		variableSetEClass = createEClass(VARIABLE_SET);
 		createEAttribute(variableSetEClass, VARIABLE_SET__NAME);
 
-		simpleVariableSetEClass = createEClass(SIMPLE_VARIABLE_SET);
-		createEReference(simpleVariableSetEClass, SIMPLE_VARIABLE_SET__VARIABLES);
-
 		patternEClass = createEClass(PATTERN);
 		createEReference(patternEClass, PATTERN__PATTERN);
 		createEAttribute(patternEClass, PATTERN__IS_RULE);
@@ -2554,6 +2560,9 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 
 		mappingEClass = createEClass(MAPPING);
 		createEReference(mappingEClass, MAPPING__RULE);
+
+		variableEClass = createEClass(VARIABLE);
+		createEAttribute(variableEClass, VARIABLE__TYPE);
 
 		constraintEClass = createEClass(CONSTRAINT);
 		createEAttribute(constraintEClass, CONSTRAINT__NAME);
@@ -2565,6 +2574,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 
 		dependencyConstraintEClass = createEClass(DEPENDENCY_CONSTRAINT);
 		createEReference(dependencyConstraintEClass, DEPENDENCY_CONSTRAINT__DEPENDENCIES);
+		createEReference(dependencyConstraintEClass, DEPENDENCY_CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS);
+		createEReference(dependencyConstraintEClass, DEPENDENCY_CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS);
 
 		objectiveEClass = createEClass(OBJECTIVE);
 		createEAttribute(objectiveEClass, OBJECTIVE__NAME);
@@ -2616,6 +2627,9 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		createEReference(arithmeticValueEClass, ARITHMETIC_VALUE__VALUE);
 
 		arithmeticLiteralEClass = createEClass(ARITHMETIC_LITERAL);
+
+		variableReferenceEClass = createEClass(VARIABLE_REFERENCE);
+		createEReference(variableReferenceEClass, VARIABLE_REFERENCE__VARIABLE);
 
 		arithmeticNullLiteralEClass = createEClass(ARITHMETIC_NULL_LITERAL);
 
@@ -2767,12 +2781,9 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		streamContainsOperationEClass = createEClass(STREAM_CONTAINS_OPERATION);
 		createEReference(streamContainsOperationEClass, STREAM_CONTAINS_OPERATION__EXPR);
 
-		variableEClass = createEClass(VARIABLE);
-		createEAttribute(variableEClass, VARIABLE__NAME);
-		createEAttribute(variableEClass, VARIABLE__TYPE);
-
 		// Create enums
 		ilpSolverTypeEEnum = createEEnum(ILP_SOLVER_TYPE);
+		variableTypeEEnum = createEEnum(VARIABLE_TYPE);
 		objectiveTargetEEnum = createEEnum(OBJECTIVE_TARGET);
 		relationalOperatorEEnum = createEEnum(RELATIONAL_OPERATOR);
 		binaryArithmeticOperatorEEnum = createEEnum(BINARY_ARITHMETIC_OPERATOR);
@@ -2781,7 +2792,6 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		binaryBoolOperatorEEnum = createEEnum(BINARY_BOOL_OPERATOR);
 		unaryBoolOperatorEEnum = createEEnum(UNARY_BOOL_OPERATOR);
 		streamBoolOperatorEEnum = createEEnum(STREAM_BOOL_OPERATOR);
-		variableTypeEEnum = createEEnum(VARIABLE_TYPE);
 	}
 
 	/**
@@ -2817,10 +2827,10 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		simpleVariableSetEClass.getESuperTypes().add(this.getVariableSet());
 		patternEClass.getESuperTypes().add(this.getVariableSet());
 		typeEClass.getESuperTypes().add(this.getVariableSet());
 		mappingEClass.getESuperTypes().add(this.getVariableSet());
+		variableEClass.getESuperTypes().add(this.getVariableSet());
 		globalConstraintEClass.getESuperTypes().add(this.getConstraint());
 		dependencyConstraintEClass.getESuperTypes().add(this.getConstraint());
 		patternConstraintEClass.getESuperTypes().add(this.getContext());
@@ -2840,6 +2850,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		arithmeticValueExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
 		arithmeticValueEClass.getESuperTypes().add(this.getArithmeticValueExpression());
 		arithmeticLiteralEClass.getESuperTypes().add(this.getArithmeticValueExpression());
+		variableReferenceEClass.getESuperTypes().add(this.getArithmeticValueExpression());
 		arithmeticNullLiteralEClass.getESuperTypes().add(this.getArithmeticLiteral());
 		integerLiteralEClass.getESuperTypes().add(this.getArithmeticLiteral());
 		doubleLiteralEClass.getESuperTypes().add(this.getArithmeticLiteral());
@@ -2887,7 +2898,6 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		streamFilterOperationEClass.getESuperTypes().add(this.getStreamOperation());
 		streamSelectOperationEClass.getESuperTypes().add(this.getStreamOperation());
 		streamContainsOperationEClass.getESuperTypes().add(this.getStreamOperation());
-		variableEClass.getESuperTypes().add(this.getArithmeticValueExpression());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(gipsIntermediateModelEClass, GipsIntermediateModel.class, "GipsIntermediateModel", !IS_ABSTRACT,
@@ -2959,12 +2969,6 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEAttribute(getVariableSet_Name(), ecorePackage.getEString(), "name", null, 0, 1, VariableSet.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(simpleVariableSetEClass, SimpleVariableSet.class, "SimpleVariableSet", !IS_ABSTRACT, !IS_INTERFACE,
-				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getSimpleVariableSet_Variables(), this.getVariable(), null, "variables", null, 0, -1,
-				SimpleVariableSet.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
-				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
 		initEClass(patternEClass, Pattern.class, "Pattern", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getPattern_Pattern(), theIBeXPatternModelPackage.getIBeXContext(), null, "pattern", null, 1, 1,
 				Pattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
@@ -2981,6 +2985,11 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEReference(getMapping_Rule(), theIBeXPatternModelPackage.getIBeXRule(), null, "rule", null, 1, 1,
 				Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(variableEClass, Variable.class, "Variable", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getVariable_Type(), this.getVariableType(), "type", null, 0, 1, Variable.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(constraintEClass, Constraint.class, "Constraint", IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
@@ -3001,8 +3010,14 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEClass(dependencyConstraintEClass, DependencyConstraint.class, "DependencyConstraint", !IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getDependencyConstraint_Dependencies(), this.getConstraint(), null, "dependencies", null, 0, -1,
-				DependencyConstraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
-				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+				DependencyConstraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDependencyConstraint_RealVarCorrectnessConstraints(), this.getRelationalExpression(), null,
+				"realVarCorrectnessConstraints", null, 0, -1, DependencyConstraint.class, !IS_TRANSIENT, !IS_VOLATILE,
+				IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDependencyConstraint_BinaryVarCorrectnessConstraints(), this.getRelationalExpression(), null,
+				"binaryVarCorrectnessConstraints", null, 0, -1, DependencyConstraint.class, !IS_TRANSIENT, !IS_VOLATILE,
+				IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(objectiveEClass, Objective.class, "Objective", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
@@ -3106,6 +3121,12 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 
 		initEClass(arithmeticLiteralEClass, ArithmeticLiteral.class, "ArithmeticLiteral", IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(variableReferenceEClass, VariableReference.class, "VariableReference", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getVariableReference_Variable(), this.getVariable(), null, "variable", null, 1, 1,
+				VariableReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(arithmeticNullLiteralEClass, ArithmeticNullLiteral.class, "ArithmeticNullLiteral", !IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -3413,17 +3434,15 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 				StreamContainsOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(variableEClass, Variable.class, "Variable", !IS_ABSTRACT, !IS_INTERFACE,
-				IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getVariable_Name(), ecorePackage.getEString(), "name", null, 0, 1, Variable.class, !IS_TRANSIENT,
-				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getVariable_Type(), this.getVariableType(), "type", null, 0, 1, Variable.class, !IS_TRANSIENT,
-				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
 		// Initialize enums and add enum literals
 		initEEnum(ilpSolverTypeEEnum, ILPSolverType.class, "ILPSolverType");
 		addEEnumLiteral(ilpSolverTypeEEnum, ILPSolverType.GUROBI);
 		addEEnumLiteral(ilpSolverTypeEEnum, ILPSolverType.GLPK);
+
+		initEEnum(variableTypeEEnum, VariableType.class, "VariableType");
+		addEEnumLiteral(variableTypeEEnum, VariableType.BINARY);
+		addEEnumLiteral(variableTypeEEnum, VariableType.INTEGER);
+		addEEnumLiteral(variableTypeEEnum, VariableType.REAL);
 
 		initEEnum(objectiveTargetEEnum, ObjectiveTarget.class, "ObjectiveTarget");
 		addEEnumLiteral(objectiveTargetEEnum, ObjectiveTarget.MIN);
@@ -3466,11 +3485,6 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEEnum(streamBoolOperatorEEnum, StreamBoolOperator.class, "StreamBoolOperator");
 		addEEnumLiteral(streamBoolOperatorEEnum, StreamBoolOperator.EXISTS);
 		addEEnumLiteral(streamBoolOperatorEEnum, StreamBoolOperator.NOTEXISTS);
-
-		initEEnum(variableTypeEEnum, VariableType.class, "VariableType");
-		addEEnumLiteral(variableTypeEEnum, VariableType.BINARY);
-		addEEnumLiteral(variableTypeEEnum, VariableType.INTEGER);
-		addEEnumLiteral(variableTypeEEnum, VariableType.REAL);
 
 		// Create resource
 		createResource(eNS_URI);

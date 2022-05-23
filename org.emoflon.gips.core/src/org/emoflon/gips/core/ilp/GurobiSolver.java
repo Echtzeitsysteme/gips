@@ -138,22 +138,40 @@ public class GurobiSolver extends ILPSolver {
 
 	@Override
 	protected void translateConstraint(final GipsMappingConstraint<?, ? extends EObject> constraint) {
+		createOrGetAdditionalVars(constraint.getAdditionalVariables());
 		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
 	}
 
 	@Override
 	protected void translateConstraint(final GipsPatternConstraint<?, ?, ?> constraint) {
+		createOrGetAdditionalVars(constraint.getAdditionalVariables());
 		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
 	}
 
 	@Override
 	protected void translateConstraint(final GipsTypeConstraint<?, ? extends EObject> constraint) {
+		createOrGetAdditionalVars(constraint.getAdditionalVariables());
 		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
 	}
 
 	@Override
 	protected void translateConstraint(GipsGlobalConstraint<?> constraint) {
+		createOrGetAdditionalVars(constraint.getAdditionalVariables());
 		addIlpConstraintsToGrb(constraint.getConstraints(), constraint.getName());
+	}
+
+	protected void createOrGetAdditionalVars(final Collection<ILPVariable<?>> variables) {
+		for (ILPVariable<?> variable : variables) {
+			if (variable instanceof ILPBinaryVariable binVar) {
+				createOrGetBinVar(binVar.name);
+			} else if (variable instanceof ILPIntegerVariable intVar) {
+				createOrGetIntegerVar(intVar.name);
+			} else if (variable instanceof ILPRealVariable realVar) {
+				createOrGetRealVar(realVar.name);
+			} else {
+				throw new IllegalArgumentException("Unsupported variable type: " + variable.getClass().getSimpleName());
+			}
+		}
 	}
 
 	@Override
@@ -337,6 +355,48 @@ public class GurobiSolver extends ILPSolver {
 		} else {
 			try {
 				final GRBVar var = model.addVar(0.0, 1.0, 0.0, GRB.BINARY, name);
+				grbVars.put(name, var);
+				return var;
+			} catch (final GRBException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
+	/**
+	 * Creates a new integer Gurobi variable for a given name if it does not exist
+	 * already. If it exists, the method returns the already existing variable.
+	 *
+	 * @param name Name to create new integer Gurobi variable for.
+	 * @return New binary Gurobi variable.
+	 */
+	private GRBVar createOrGetIntegerVar(final String name) {
+		if (getVar(name) != null) {
+			return getVar(name);
+		} else {
+			try {
+				final GRBVar var = model.addVar(Integer.MIN_VALUE, Integer.MAX_VALUE, 0.0, GRB.INTEGER, name);
+				grbVars.put(name, var);
+				return var;
+			} catch (final GRBException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
+	/**
+	 * Creates a new real Gurobi variable for a given name if it does not exist
+	 * already. If it exists, the method returns the already existing variable.
+	 *
+	 * @param name Name to create new real Gurobi variable for.
+	 * @return New binary Gurobi variable.
+	 */
+	private GRBVar createOrGetRealVar(final String name) {
+		if (getVar(name) != null) {
+			return getVar(name);
+		} else {
+			try {
+				final GRBVar var = model.addVar(-Double.MAX_VALUE, Double.MAX_VALUE, 0.0, GRB.CONTINUOUS, name);
 				grbVars.put(name, var);
 				return var;
 			} catch (final GRBException e) {

@@ -3,11 +3,13 @@ package org.emoflon.gips.core;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.emoflon.gips.core.ilp.ILPConstraint;
 import org.emoflon.gips.core.ilp.ILPTerm;
+import org.emoflon.gips.core.ilp.ILPVariable;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
@@ -20,6 +22,7 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends C
 	final protected String name;
 	final protected boolean isConstant;
 	final protected Map<CONTEXT, ILPConstraint<VARTYPE>> ilpConstraints = Collections.synchronizedMap(new HashMap<>());
+	final protected List<ILPVariable<?>> additionalVariables = Collections.synchronizedList(new LinkedList<>());
 	final public static double EPSILON = 0.000001d;
 
 	public GipsConstraint(final ENGINE engine, final CONSTR constraint) {
@@ -35,6 +38,10 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends C
 
 	public String getName() {
 		return name;
+	}
+
+	public Collection<ILPVariable<?>> getAdditionalVariables() {
+		return additionalVariables;
 	}
 
 	public Collection<ILPConstraint<VARTYPE>> getConstraints() {

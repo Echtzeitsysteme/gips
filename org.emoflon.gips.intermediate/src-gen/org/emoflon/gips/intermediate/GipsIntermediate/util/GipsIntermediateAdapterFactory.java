@@ -82,11 +82,6 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
-		public Adapter caseSimpleVariableSet(SimpleVariableSet object) {
-			return createSimpleVariableSetAdapter();
-		}
-
-		@Override
 		public Adapter casePattern(Pattern object) {
 			return createPatternAdapter();
 		}
@@ -99,6 +94,11 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseMapping(Mapping object) {
 			return createMappingAdapter();
+		}
+
+		@Override
+		public Adapter caseVariable(Variable object) {
+			return createVariableAdapter();
 		}
 
 		@Override
@@ -194,6 +194,11 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseArithmeticLiteral(ArithmeticLiteral object) {
 			return createArithmeticLiteralAdapter();
+		}
+
+		@Override
+		public Adapter caseVariableReference(VariableReference object) {
+			return createVariableReferenceAdapter();
 		}
 
 		@Override
@@ -422,11 +427,6 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
-		public Adapter caseVariable(Variable object) {
-			return createVariableAdapter();
-		}
-
-		@Override
 		public Adapter defaultCase(EObject object) {
 			return createEObjectAdapter();
 		}
@@ -492,22 +492,6 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.SimpleVariableSet
-	 * <em>Simple Variable Set</em>}'. <!-- begin-user-doc --> This default
-	 * implementation returns null so that we can easily ignore cases; it's useful
-	 * to ignore a case when inheritance will catch all the cases anyway. <!--
-	 * end-user-doc -->
-	 * 
-	 * @return the new adapter.
-	 * @see org.emoflon.gips.intermediate.GipsIntermediate.SimpleVariableSet
-	 * @generated
-	 */
-	public Adapter createSimpleVariableSetAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class
 	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Pattern
 	 * <em>Pattern</em>}'. <!-- begin-user-doc --> This default implementation
 	 * returns null so that we can easily ignore cases; it's useful to ignore a case
@@ -548,6 +532,21 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createMappingAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Variable
+	 * <em>Variable</em>}'. <!-- begin-user-doc --> This default implementation
+	 * returns null so that we can easily ignore cases; it's useful to ignore a case
+	 * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Variable
+	 * @generated
+	 */
+	public Adapter createVariableAdapter() {
 		return null;
 	}
 
@@ -847,6 +846,22 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createArithmeticLiteralAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
+	 * <em>Variable Reference</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
+	 * @generated
+	 */
+	public Adapter createVariableReferenceAdapter() {
 		return null;
 	}
 
@@ -1563,21 +1578,6 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createStreamContainsOperationAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Variable
-	 * <em>Variable</em>}'. <!-- begin-user-doc --> This default implementation
-	 * returns null so that we can easily ignore cases; it's useful to ignore a case
-	 * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-	 * 
-	 * @return the new adapter.
-	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Variable
-	 * @generated
-	 */
-	public Adapter createVariableAdapter() {
 		return null;
 	}
 

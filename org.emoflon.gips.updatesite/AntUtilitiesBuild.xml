@@ -1,0 +1,32 @@
+<project name="org.emoflon.gips.updatesite" default="clean" basedir=".">
+	<description>
+    Helper ant file for the update site of GIPS.
+    </description>
+
+	<property name="buildDirectory" value="build" />
+	<property name="updateSiteArchive" value="${buildDirectory}/updatesite.zip" />
+
+	<target name="createArchive" description="Creates an archive that contains a ready-to-release update site for GIPS.">
+		<delete file="${updateSiteArchive}" />
+		<zip destfile="${updateSiteArchive}" update="false">
+			<fileset dir="." includes="features/*" excludes="**/*.signedjar" />
+			<fileset dir="." includes="plugins/*" excludes="**/*.signedjar" />
+			<fileset dir="." includes="artifacts.jar" />
+			<fileset dir="." includes="associateSites.xml" />
+			<fileset dir="." includes="changelog.txt" />
+			<fileset dir="." includes="content.jar" />
+			<fileset dir="." includes="ea-ecore-addin.zip" />
+			<fileset dir="." includes="index.html" />
+			<fileset dir="." includes="site.xml" />
+		</zip>
+	</target>
+
+	<target name="clean" description="Remove generated artifacts">
+		<delete dir="${buildDirectory}" />
+		<delete dir="features" />
+		<delete dir="plugins" />
+		<delete file="artifacts.jar" />
+		<delete file="content.jar" />
+		<delete file="logs.zip" />
+	</target>
+</project>

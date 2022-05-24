@@ -417,7 +417,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs(final «data.mapping2m
 		builderMethods.put(expr, methodName)
 		val method = '''
 	protected ILPTerm<Integer, Double> «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		return new ILPTerm<Integer, Double>(context, (double)context.«parseFeatureExpression(expr.featureExpression)»);
+		return new ILPTerm<Integer, Double>(context, (double)context.get«expr.node.name.toFirstUpper»().«parseFeatureExpression(expr.featureExpression)»);
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)

@@ -153,7 +153,8 @@ public class GipslValidator extends AbstractGipslValidator {
 
 	public static final String TYPE_DOES_NOT_CONTAIN_SELF_MESSAGE = "'%s' does not contain any self reference.";
 
-	public static final String MAPPING_IN_MAPPING_FORBIDDED_MESSAGE = "Mapping access within mapping context is forbidden.";
+	public static final String MAPPING_IN_MAPPING_FORBIDDEN_MESSAGE = "Mapping access within mapping context is forbidden.";
+	public static final String IS_MAPPED_CALL_IN_CONTEXT_FORBIDDEN_MESSAGE = "\"isMapped()\" call in non mapping context is not possible.";
 
 	// Exception error messages
 	public static final String NOT_IMPLEMENTED_EXCEPTION_MESSAGE = "Not yet implemented";
@@ -348,6 +349,110 @@ public class GipslValidator extends AbstractGipslValidator {
 
 		// Validate that no mapping gets accessed if context is mapping
 		validateNoMappingAccessIfMappingContext(constraint);
+
+		// Validation: No "self.isMapped()" in context != mapping
+		validateNoIsMappedInContextNotMapping(constraint);
+	}
+
+	/**
+	 * This method validates that "isMapped()" is only usable if the context is a
+	 * mapping.
+	 * 
+	 * @param constraint Constraint to check "isMapped()" in contexts for.
+	 */
+	public void validateNoIsMappedInContextNotMapping(final GipsConstraint constraint) {
+		if (!(constraint.getContext() instanceof GipsMappingContext)) {
+			final GipsBoolExpr expr = constraint.getExpr().getExpr();
+			final boolean containsMappingCheckValue = containsMappingCheckValue(expr);
+			if (containsMappingCheckValue) {
+				error( //
+						IS_MAPPED_CALL_IN_CONTEXT_FORBIDDEN_MESSAGE, //
+						constraint, //
+						GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
+				);
+			}
+		}
+	}
+
+	/**
+	 * Returns true if the given boolean expression contains an isMapped call.
+	 * 
+	 * @param expr Arithmetic expression to check.
+	 * @return True if the given arithmetic expression contains an isMapped call.
+	 */
+	public boolean containsMappingCheckValue(final GipsArithmeticExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof GipsBracketExpr) {
+			final GipsBracketExpr bracketExpr = (GipsBracketExpr) expr;
+			return containsMappingCheckValue(bracketExpr.getOperand());
+		} else if (expr instanceof GipsExpArithmeticExpr) {
+			final GipsExpArithmeticExpr expExpr = (GipsExpArithmeticExpr) expr;
+			return containsMappingCheckValue(expExpr.getLeft()) || containsMappingCheckValue(expExpr.getRight());
+		} else if (expr instanceof GipsExpressionOperand) {
+			final GipsExpressionOperand exprOp = (GipsExpressionOperand) expr;
+			if (exprOp instanceof GipsArithmeticLiteral) {
+				return false;
+			} else if (exprOp instanceof GipsAttributeExpr) {
+				if (exprOp instanceof GipsContextExpr) {
+					final GipsContextExpr conExpr = (GipsContextExpr) exprOp;
+					// Streams can be ignored
+					return conExpr.getExpr() instanceof GipsContextOperationExpression;
+				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
+					// A GipsLambdaAttributeExpression can not contain an isMapped call
+					return false;
+				} else if (exprOp instanceof GipsMappingAttributeExpr) {
+					// Streams can be ignored
+					return false;
+				} else if (exprOp instanceof GipsPatternAttributeExpr patternExpr) {
+					// Streams can be ignored
+					return false;
+				} else if (exprOp instanceof GipsTypeAttributeExpr typeExpr) {
+					// Streams can be ignored
+					return false;
+				}
+			}
+		} else if (expr instanceof GipsProductArithmeticExpr) {
+			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
+			return containsMappingCheckValue(prodExpr.getLeft()) || containsMappingCheckValue(prodExpr.getRight());
+		} else if (expr instanceof GipsSumArithmeticExpr) {
+			final GipsSumArithmeticExpr sumExpr = (GipsSumArithmeticExpr) expr;
+			return containsMappingCheckValue(sumExpr.getLeft()) || containsMappingCheckValue(sumExpr.getRight());
+		} else if (expr instanceof GipsUnaryArithmeticExpr) {
+			final GipsUnaryArithmeticExpr unExpr = (GipsUnaryArithmeticExpr) expr;
+			return containsMappingCheckValue(unExpr.getOperand());
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	/**
+	 * Returns true if the given boolean expression contains an isMapped call.
+	 * 
+	 * @param expr Boolean expression to check.
+	 * @return True if the given boolean expression contains an isMapped call.
+	 */
+	public boolean containsMappingCheckValue(final GipsBoolExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof GipsBinaryBoolExpr) {
+			final GipsBinaryBoolExpr binExpr = (GipsBinaryBoolExpr) expr;
+			return containsMappingCheckValue(binExpr.getLeft()) || containsMappingCheckValue(binExpr.getRight());
+		} else if (expr instanceof GipsBooleanLiteral) {
+			return false;
+		} else if (expr instanceof GipsRelExpr) {
+			final GipsRelExpr relExpr = (GipsRelExpr) expr;
+			return containsMappingCheckValue(relExpr.getLeft()) || containsMappingCheckValue(relExpr.getRight());
+		} else if (expr instanceof GipsUnaryBoolExpr) {
+			final GipsUnaryBoolExpr unExpr = (GipsUnaryBoolExpr) expr;
+			return containsMappingCheckValue(unExpr.getOperand());
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	/**
@@ -386,7 +491,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		// Generate an error if mappings are referenced
 		if (leftMapping || rightMapping) {
 			error( //
-					MAPPING_IN_MAPPING_FORBIDDED_MESSAGE, //
+					MAPPING_IN_MAPPING_FORBIDDEN_MESSAGE, //
 					constraint, //
 					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
 			);
@@ -447,7 +552,8 @@ public class GipslValidator extends AbstractGipslValidator {
 					if (streamContainsMappingsCall(conExpr.getStream())) {
 						return true;
 					}
-					return conExpr.getExpr() instanceof GipsContextOperationExpression;
+					return (conExpr.getExpr() instanceof GipsContextOperationExpression
+							&& !(conExpr.getExpr() instanceof GipsMappingCheckValue));
 				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
 					// A GipsLambdaAttributeExpression can not contain a mappings call
 					return false;

@@ -37,7 +37,7 @@ public class GlpkSolver extends ILPSolver {
 	/**
 	 * Map to collect all ILP constraints (name -> collection of constraints).
 	 */
-	private Map<String, Collection<ILPConstraint<Integer>>> constraints;
+	private Map<String, Collection<ILPConstraint>> constraints;
 
 	/**
 	 * Map to collect all ILP variables (name -> integer).
@@ -196,7 +196,7 @@ public class GlpkSolver extends ILPSolver {
 	private void setUpCnstrs() {
 		// Determine total number of constraints
 		int numRows = 0;
-		for (final Collection<ILPConstraint<Integer>> col : constraints.values()) {
+		for (final Collection<ILPConstraint> col : constraints.values()) {
 			numRows += col.size();
 		}
 
@@ -210,12 +210,12 @@ public class GlpkSolver extends ILPSolver {
 		// Iterate over all constraint name
 		int globalCnstrCounter = 1;
 		for (final String name : constraints.keySet()) {
-			final Iterator<ILPConstraint<Integer>> cnstrIt = constraints.get(name).iterator();
+			final Iterator<ILPConstraint> cnstrIt = constraints.get(name).iterator();
 
 			// Iterate over each "sub" constraint (if any)
 			int localCnstrCounter = 0;
 			while (cnstrIt.hasNext()) {
-				final ILPConstraint<Integer> cnstr = cnstrIt.next();
+				final ILPConstraint cnstr = cnstrIt.next();
 				final int size = cnstr.lhsTerms().size();
 				final SWIGTYPE_p_int vars = GLPK.new_intArray(size + 1);
 				final SWIGTYPE_p_double coeffs = GLPK.new_doubleArray(size + 1);
@@ -241,7 +241,7 @@ public class GlpkSolver extends ILPSolver {
 	 * Sets the objective function for GLPK up. Variable setup must be done before.
 	 */
 	private void setUpObj() {
-		final ILPNestedLinearFunction<?> nestFunc = objective.getObjectiveFunction();
+		final ILPNestedLinearFunction nestFunc = objective.getObjectiveFunction();
 
 		// Set goal
 		int goal = 0;
@@ -257,17 +257,17 @@ public class GlpkSolver extends ILPSolver {
 
 		// Constants
 		double constSum = 0;
-		for (ILPConstant<Double> c : nestFunc.constants()) {
+		for (ILPConstant c : nestFunc.constants()) {
 			constSum += c.weight();
 		}
 
 		// Terms
-		for (final ILPWeightedLinearFunction<?> lf : nestFunc.linearFunctions()) {
+		for (final ILPWeightedLinearFunction lf : nestFunc.linearFunctions()) {
 			lf.linearFunction().terms().forEach(t -> {
 				GLPK.glp_set_obj_coef(model, ilpVars.get(t.variable().getName()), t.weight());
 			});
 
-			for (final ILPConstant<Double> c : lf.linearFunction().constantTerms()) {
+			for (final ILPConstant c : lf.linearFunction().constantTerms()) {
 				constSum += c.weight();
 			}
 		}

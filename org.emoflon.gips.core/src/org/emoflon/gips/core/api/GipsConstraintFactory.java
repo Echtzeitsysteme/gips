@@ -14,6 +14,6 @@ public abstract class GipsConstraintFactory<ENGINE extends GipsEngine, EMOFLON_A
 		this.eMoflonApi = eMoflonApi;
 	}
 
-	public abstract GipsConstraint<ENGINE, ? extends Constraint, ? extends Object, ? extends Number> createConstraint(
+	public abstract GipsConstraint<ENGINE, ? extends Constraint, ? extends Object> createConstraint(
 			final Constraint constraint);
 }

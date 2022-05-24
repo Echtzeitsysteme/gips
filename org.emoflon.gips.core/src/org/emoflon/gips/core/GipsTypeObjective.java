@@ -9,7 +9,7 @@ import org.emoflon.gips.core.ilp.ILPLinearFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective;
 
 public abstract class GipsTypeObjective<ENGINE extends GipsEngine, CONTEXT extends EObject>
-		extends GipsObjective<ENGINE, TypeObjective, CONTEXT, Integer> {
+		extends GipsObjective<ENGINE, TypeObjective, CONTEXT> {
 
 	final protected EClass type;
 
@@ -24,7 +24,7 @@ public abstract class GipsTypeObjective<ENGINE extends GipsEngine, CONTEXT exten
 		terms = Collections.synchronizedList(new LinkedList<>());
 		constantTerms = Collections.synchronizedList(new LinkedList<>());
 		indexer.getObjectsOfType(type).parallelStream().forEach(context -> buildTerms((CONTEXT) context));
-		ilpObjective = new ILPLinearFunction<>(terms, constantTerms);
+		ilpObjective = new ILPLinearFunction(terms, constantTerms);
 	}
 
 }

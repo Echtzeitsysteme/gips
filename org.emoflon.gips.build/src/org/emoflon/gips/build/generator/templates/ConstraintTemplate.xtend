@@ -67,7 +67,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 	public val builderMethodNames = new HashSet<String>
 	public val builderMethods = new HashMap<EObject,String>
 	public val builderMethodDefinitions = new HashMap<EObject,String>
-	public val builderMethodCalls = new LinkedList<String>
+	public val builderMethodCalls2 = new LinkedList<String>
 
 	new(TemplateData data, CONTEXT context) {
 		super(data, context)
@@ -115,11 +115,11 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		return '''«parseExpression(constExpr, ExpressionContext.constConstraint)»'''
 	}
 	
-	def void generateVariableTermBuilder(ArithmeticExpression expr) {
+	def void generateVariableTermBuilder(ArithmeticExpression expr, LinkedList<String> methodCalls) {
 		if(expr instanceof BinaryArithmeticExpression) {
 			if(expr.operator == BinaryArithmeticOperator.ADD) {
-				generateVariableTermBuilder(expr.lhs)
-				generateVariableTermBuilder(expr.rhs)
+				generateVariableTermBuilder(expr.lhs, methodCalls)
+				generateVariableTermBuilder(expr.rhs, methodCalls)
 			} else if(expr.operator == BinaryArithmeticOperator.SUBTRACT) {
 				throw new UnsupportedOperationException("Code generator does not support subtraction expressions.");
 			} else {
@@ -127,20 +127,20 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 				if(variable.size != 1)
 					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 				
-				val builderMethodName = generateBuilder(expr)
+				val builderMethodName = generateBuilder(expr, methodCalls)
 				val instruction = '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable.iterator.next)», «builderMethodName»(context)));'''
-				builderMethodCalls.add(instruction)
+				methodCalls.add(instruction)
 			}
 		} else if(expr instanceof UnaryArithmeticExpression) {
 				val variable = GipsTransformationUtils.extractVariable(expr);
 				if(variable.size != 1)
 					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 				
-				val builderMethodName = generateBuilder(expr)
+				val builderMethodName = generateBuilder(expr, methodCalls)
 				val instruction = '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable.iterator.next)», «builderMethodName»(context)));'''
-				builderMethodCalls.add(instruction)
+				methodCalls.add(instruction)
 		} else if(expr instanceof ArithmeticValue) {
-			generateBuilder(expr.value)
+			generateBuilder(expr.value, methodCalls)
 		} else {
 			throw new IllegalAccessException("Ilp term may not be constant")
 		}
@@ -148,21 +148,21 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 	
 	def String getContextVariable(VariableSet variable);
 	
-	def void generateBuilder(ValueExpression expr);
+	def void generateBuilder(ValueExpression expr, LinkedList<String> methodCalls);
 	
-	def String generateBuilder(BinaryArithmeticExpression expr);
+	def String generateBuilder(BinaryArithmeticExpression expr, LinkedList<String> methodCalls);
 	
-	def String generateBuilder(UnaryArithmeticExpression expr);
+	def String generateBuilder(UnaryArithmeticExpression expr, LinkedList<String> methodCalls);
 	
-	def String generateBuilder(MappingSumExpression expr);
+	def String generateBuilder(MappingSumExpression expr, LinkedList<String> methodCalls);
 	
-	def String generateBuilder(ContextSumExpression expr);
+	def String generateBuilder(ContextSumExpression expr, LinkedList<String> methodCalls);
 	
-	def String generateForeignBuilder(TypeSumExpression expr);
+	def String generateForeignBuilder(TypeSumExpression expr, LinkedList<String> methodCalls);
 	
-	def String generateForeignBuilder(PatternSumExpression expr);
+	def String generateForeignBuilder(PatternSumExpression expr, LinkedList<String> methodCalls);
 	
-	def String generateForeignBuilder(MappingSumExpression expr);
+	def String generateForeignBuilder(MappingSumExpression expr, LinkedList<String> methodCalls);
 	
 	def String parseExpression(ArithmeticExpression expr, ExpressionContext contextType) {
 		if(expr instanceof BinaryArithmeticExpression) {

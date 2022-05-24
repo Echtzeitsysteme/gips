@@ -22,7 +22,6 @@ import java.util.List;
  *                      in terms} ( term.variable * term.constant ) + Sum_{cterm
  *                      in constantTerms} ( cterm.constant )
  */
-public record ILPLinearFunction<T extends Number> (List<ILPTerm<T, Double>> terms,
-		List<ILPConstant<Double>> constantTerms) {
+public record ILPLinearFunction(List<ILPTerm> terms, List<ILPConstant> constantTerms) {
 
 }

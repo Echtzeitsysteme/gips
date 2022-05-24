@@ -140,28 +140,28 @@ public class GurobiSolver extends ILPSolver {
 	protected void translateConstraint(final GipsMappingConstraint<?, ? extends EObject> constraint) {
 		createOrGetAdditionalVars(constraint.getAdditionalVariables());
 		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
-		addIlpConstraintsToGrb(constraint.getDependingConstraints(), constraint.getName(), counter);
+		addIlpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
 	}
 
 	@Override
 	protected void translateConstraint(final GipsPatternConstraint<?, ?, ?> constraint) {
 		createOrGetAdditionalVars(constraint.getAdditionalVariables());
 		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
-		addIlpConstraintsToGrb(constraint.getDependingConstraints(), constraint.getName(), counter);
+		addIlpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
 	}
 
 	@Override
 	protected void translateConstraint(final GipsTypeConstraint<?, ? extends EObject> constraint) {
 		createOrGetAdditionalVars(constraint.getAdditionalVariables());
 		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
-		addIlpConstraintsToGrb(constraint.getDependingConstraints(), constraint.getName(), counter);
+		addIlpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
 	}
 
 	@Override
 	protected void translateConstraint(GipsGlobalConstraint<?> constraint) {
 		createOrGetAdditionalVars(constraint.getAdditionalVariables());
 		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
-		addIlpConstraintsToGrb(constraint.getDependingConstraints(), constraint.getName(), counter);
+		addIlpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
 	}
 
 	protected void createOrGetAdditionalVars(final Collection<ILPVariable<?>> variables) {
@@ -181,7 +181,7 @@ public class GurobiSolver extends ILPSolver {
 	@Override
 	protected void translateObjective(final GipsGlobalObjective objective) {
 		final GRBLinExpr obj = new GRBLinExpr();
-		final ILPNestedLinearFunction<?> nestFunc = objective.getObjectiveFunction();
+		final ILPNestedLinearFunction nestFunc = objective.getObjectiveFunction();
 
 		// Add all constants
 		nestFunc.constants().forEach(c -> {
@@ -244,12 +244,12 @@ public class GurobiSolver extends ILPSolver {
 	 * @param constraints Collection of integer ILP constraints to add.
 	 * @param name        Name of the overall constraint to add.
 	 */
-	private int addIlpIntegerConstraintsToGrb(final Collection<ILPConstraint<Integer>> constraints, final String name,
+	private int addIlpIntegerConstraintsToGrb(final Collection<ILPConstraint> constraints, final String name,
 			int counter) {
 		// Have to use an iterator to be able to increment the counter
-		final Iterator<ILPConstraint<Integer>> cnstrsIt = constraints.iterator();
+		final Iterator<ILPConstraint> cnstrsIt = constraints.iterator();
 		while (cnstrsIt.hasNext()) {
-			final ILPConstraint<Integer> curr = cnstrsIt.next();
+			final ILPConstraint curr = cnstrsIt.next();
 			final GRBLinExpr grbLinExpr = new GRBLinExpr();
 
 			// Check if constraints of form "<empty> == const" exist and throw an exception
@@ -293,11 +293,11 @@ public class GurobiSolver extends ILPSolver {
 	 * @param constraints Collection of integer ILP constraints to add.
 	 * @param name        Name of the overall constraint to add.
 	 */
-	private int addIlpConstraintsToGrb(final Collection<ILPConstraint<?>> constraints, final String name, int counter) {
+	private int addIlpConstraintsToGrb(final Collection<ILPConstraint> constraints, final String name, int counter) {
 		// Have to use an iterator to be able to increment the counter
-		final Iterator<ILPConstraint<?>> cnstrsIt = constraints.iterator();
+		final Iterator<ILPConstraint> cnstrsIt = constraints.iterator();
 		while (cnstrsIt.hasNext()) {
-			final ILPConstraint<?> curr = cnstrsIt.next();
+			final ILPConstraint curr = cnstrsIt.next();
 			final GRBLinExpr grbLinExpr = new GRBLinExpr();
 
 			// Check if constraints of form "<empty> == const" exist and throw an exception

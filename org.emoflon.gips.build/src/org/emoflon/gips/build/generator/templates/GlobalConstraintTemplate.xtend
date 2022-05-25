@@ -73,7 +73,7 @@ import «imp»;
 	override String generateVariableClassContent(RelationalExpression relExpr) {
 		return '''
 public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName»> {
-	public «className»(final «data.gipsApiClassName» engine, final TypeConstraint constraint) {
+	public «className»(final «data.gipsApiClassName» engine, final GlobalConstraint constraint) {
 		super(engine, constraint);
 	}
 	«IF GipsTransformationUtils.isConstantExpression( relExpr.lhs) == ArithmeticExpressionType.constant»
@@ -101,7 +101,7 @@ public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName�
 	override String generateConstantClassContent(RelationalExpression relExpr) {
 		return '''
 public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName»> {
-	public «className»(final «data.gipsApiClassName» engine, final TypeConstraint constraint) {
+	public «className»(final «data.gipsApiClassName» engine, final GlobalConstraint constraint) {
 		super(engine, constraint);
 	}
 	
@@ -134,7 +134,7 @@ public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName�
 	override String generateConstantClassContent(BoolValueExpression boolExpr) {
 		return '''
 public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName»> {
-	public «className»(final «data.gipsApiClassName» engine, final TypeConstraint constraint) {
+	public «className»(final «data.gipsApiClassName» engine, final GlobalConstraint constraint) {
 		super(engine, constraint);
 	}
 	

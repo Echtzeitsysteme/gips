@@ -241,6 +241,10 @@ public class GlpkSolver extends ILPSolver {
 	 * Sets the objective function for GLPK up. Variable setup must be done before.
 	 */
 	private void setUpObj() {
+		if (objective == null) {
+			return;
+		}
+
 		final ILPNestedLinearFunction<?> nestFunc = objective.getObjectiveFunction();
 
 		// Set goal

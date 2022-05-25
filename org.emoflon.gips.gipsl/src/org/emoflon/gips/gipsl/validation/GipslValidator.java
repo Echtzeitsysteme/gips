@@ -68,6 +68,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
+import org.emoflon.gips.gipsl.gipsl.GlobalContext;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
 
 /**
@@ -341,8 +342,11 @@ public class GipslValidator extends AbstractGipslValidator {
 		// Check if constraint is unique
 		checkConstraintUnique(constraint);
 
-		// Check if constraint contains at least one 'self' call
-		validateConstraintHasSelf(constraint);
+		// Check if constraint contains at least one 'self' call (only if context is not
+		// global)
+		if (!(constraint.getContext() instanceof GlobalContext)) {
+			validateConstraintHasSelf(constraint);
+		}
 
 		// Validate expression -> Non-linear operations must be constant in ILP time
 		validateConstraintDynamic(constraint);

@@ -38,6 +38,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
 import java.util.LinkedList
 import java.util.List
 import java.util.HashMap
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 
 class MappingConstraintTemplate extends ConstraintTemplate<MappingConstraint> {
 
@@ -297,6 +298,10 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 	
 	override String getContextVariable(VariableSet variable) {
 		return '''context'''
+	}
+		
+	override getAdditionalVariableName(VariableReference varRef) {
+		return '''context.getName() + "->" + «varRef.variable.name»'''
 	}
 	
 	override String generateBuilder(BinaryArithmeticExpression expr, LinkedList<String> methodCalls) {

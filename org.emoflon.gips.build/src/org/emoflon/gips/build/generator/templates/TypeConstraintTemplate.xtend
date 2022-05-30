@@ -38,6 +38,7 @@ import java.util.LinkedList
 import java.util.HashMap
 import java.util.List
 import org.emoflon.gips.intermediate.GipsIntermediate.Type
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 
 class TypeConstraintTemplate extends ConstraintTemplate<TypeConstraint> {
 	
@@ -287,6 +288,10 @@ protected List<ILPTerm> buildVariableLhs(final «context.modelType.type.name» c
 	
 	override getContextVariable(VariableSet variable) {
 		throw new UnsupportedOperationException("Mapping context access is not possible within a type context.")
+	}
+	
+	override getAdditionalVariableName(VariableReference varRef) {
+		return '''context + "->" + «varRef.variable.name»'''
 	}
 	
 	override generateBuilder(ContextSumExpression expr, LinkedList<String> methodCalls) {

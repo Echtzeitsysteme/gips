@@ -60,6 +60,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Type
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamContainsOperation
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 
 abstract class ConstraintTemplate <CONTEXT extends Constraint> extends GeneratorTemplate<CONTEXT> {
 
@@ -128,7 +129,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 				
 				val builderMethodName = generateBuilder(expr, methodCalls)
-				val instruction = '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable.iterator.next)», «builderMethodName»(context)));'''
+				val instruction = '''terms.add(new ILPTerm(«getContextVariable(variable.iterator.next)», «builderMethodName»(context)));'''
 				methodCalls.add(instruction)
 			}
 		} else if(expr instanceof UnaryArithmeticExpression) {
@@ -137,16 +138,21 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 				
 				val builderMethodName = generateBuilder(expr, methodCalls)
-				val instruction = '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable.iterator.next)», «builderMethodName»(context)));'''
+				val instruction = '''terms.add(new ILPTerm(«getContextVariable(variable.iterator.next)», «builderMethodName»(context)));'''
 				methodCalls.add(instruction)
 		} else if(expr instanceof ArithmeticValue) {
 			generateBuilder(expr.value, methodCalls)
+		} else if(expr instanceof VariableReference) {
+			val instruction = '''terms.add(new ILPTerm(engine.getNonMappingVariable(«getAdditionalVariableName(expr)»), 1.0));'''
+			methodCalls.add(instruction)
 		} else {
 			throw new IllegalAccessException("Ilp term may not be constant")
 		}
 	}
 	
 	def String getContextVariable(VariableSet variable);
+	
+	def String getAdditionalVariableName(VariableReference varRef);
 	
 	def void generateBuilder(ValueExpression expr, LinkedList<String> methodCalls);
 	
@@ -215,7 +221,9 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			} else {
 				return '''null'''
 			}
-		} else {
+		} else if(expr instanceof VariableReference) {
+			return '''engine.getNonMappingVariable(«getAdditionalVariableName(expr)»)'''
+		}  else {
 			val value = expr as ArithmeticValue
 			switch(contextType) {
 				case constConstraint: {

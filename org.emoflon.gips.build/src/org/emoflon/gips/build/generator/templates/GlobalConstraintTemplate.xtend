@@ -37,6 +37,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
 import java.util.LinkedList
 import java.util.HashMap
 import java.util.List
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 
 class GlobalConstraintTemplate extends ConstraintTemplate<GlobalConstraint> {
 	
@@ -283,6 +284,10 @@ protected List<ILPTerm> buildVariableLhs() {
 	
 	override getContextVariable(VariableSet variable) {
 		throw new UnsupportedOperationException("Mapping context access is not possible within a type context.")
+	}
+	
+	override getAdditionalVariableName(VariableReference varRef) {
+		return '''"global->" + «varRef.variable.name»'''
 	}
 	
 	override generateBuilder(ContextSumExpression expr, LinkedList<String> methodCalls) {

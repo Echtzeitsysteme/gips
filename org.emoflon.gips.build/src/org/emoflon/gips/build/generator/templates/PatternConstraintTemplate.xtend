@@ -39,6 +39,7 @@ import java.util.LinkedList
 import java.util.HashMap
 import java.util.List
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 
 class PatternConstraintTemplate extends ConstraintTemplate<PatternConstraint> {
 
@@ -288,6 +289,9 @@ protected List<ILPTerm> buildVariableLhs(final «data.pattern2matchClassName.get
 		throw new UnsupportedOperationException("Mapping context access is not possible within a pattern context.")
 	}
 	
+	override getAdditionalVariableName(VariableReference varRef) {
+		return '''context + "->" + «varRef.variable.name»'''
+	}
 		
 	override generateBuilder(ContextSumExpression expr, LinkedList<String> methodCalls) {
 		if(!(expr.context instanceof Pattern && expr.context == context.pattern))

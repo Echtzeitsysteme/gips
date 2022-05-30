@@ -34,7 +34,9 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
-import javax.management.relation.RelationException
+import java.util.LinkedList
+import java.util.HashMap
+import java.util.List
 
 class GlobalConstraintTemplate extends ConstraintTemplate<GlobalConstraint> {
 	
@@ -91,7 +93,8 @@ public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName�
 	protected boolean buildConstantExpression() {
 		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
 	}
-		
+	
+	«generateDependencyConstraints()»
 	«FOR methods : builderMethodDefinitions.values»
 	«methods»
 	«ENDFOR»
@@ -116,7 +119,7 @@ public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName�
 	}
 	
 	@Overide
-	protected List<ILPTerm<Integer, Double>> buildVariableLhs() {
+	protected List<ILPTerm> buildVariableLhs() {
 		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
 	}
 	
@@ -124,7 +127,8 @@ public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName�
 	protected boolean buildConstantExpression() {
 		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
 	}
-		
+	
+	«generateDependencyConstraints()»
 	«FOR methods : builderMethodDefinitions.values»
 	«methods»
 	«ENDFOR»
@@ -149,7 +153,7 @@ public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName�
 	}
 	
 	@Overide
-	protected List<ILPTerm<Integer, Double>> buildVariableLhs() {
+	protected List<ILPTerm> buildVariableLhs() {
 		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
 	}
 	
@@ -157,15 +161,57 @@ public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName�
 	protected boolean buildConstantExpression() {
 		return «parseExpression(boolExpr, ExpressionContext.constConstraint)»
 	}
-		
+	
+	«generateDependencyConstraints()»
 	«FOR methods : builderMethodDefinitions.values»
 	«methods»
 	«ENDFOR»
 }'''
 	}
 	
+	override generateDependencyConstraints() {
+		if(!context.isDepending) {
+			return '''
+	@Override
+	protected List<ILPConstraint> buildAdditionalConstraints() {
+		throw new UnsupportedOperationException("Constraint has no depending or substitute constraints.");
+	}
+		'''
+		} else {
+			imports.add("org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator")
+			val constraint2methodCalls = new HashMap<RelationalExpression, List<String>>
+			for(RelationalExpression constraint : context.binaryVarCorrectnessConstraints) {
+				val methodCalls = new LinkedList<String>
+				constraint2methodCalls.put(constraint, methodCalls);
+				generateVariableTermBuilder(constraint.lhs, methodCalls)
+			}
+			return '''
+	@Override
+	protected List<ILPConstraint> buildAdditionalConstraints() {
+		List<ILPConstraint> additionalConstraints = new LinkedList<>();
+		ILPConstraint constraint = null;
+		List<ILPTerm> terms = new LinkedList<>();
+		double constTerm = 0.0;
+		
+		«FOR constraint : context.binaryVarCorrectnessConstraints»
+		«FOR instruction : constraint2methodCalls.get(constraint)»
+		«instruction»
+		«ENDFOR»
+		constTerm = «generateConstTermBuilder(constraint.rhs)»;
+		constraint = new ILPConstraint(terms, RelationalOperator.«constraint.operator.literal», constTerm);
+		additionalConstraints.add(constraint);
+		terms = new LinkedList<>();
+		
+		«ENDFOR»
+		
+		return additionalConstraints;
+	}
+		'''
+		}
+	}
+	
 	override String generateComplexConstraint(ArithmeticExpression constExpr, ArithmeticExpression dynamicExpr) {
-		generateVariableTermBuilder(dynamicExpr)
+		generateVariableTermBuilder(dynamicExpr, builderMethodCalls2)
 		return '''
 @Override
 protected double buildConstantRhs() {
@@ -173,9 +219,9 @@ protected double buildConstantRhs() {
 }
 	
 @Override
-protected List<ILPTerm<Integer, Double>> buildVariableLhs() {
-	List<ILPTerm<Integer, Double>> terms = Collections.synchronizedList(new LinkedList<>());
-	«FOR instruction : builderMethodCalls»
+protected List<ILPTerm> buildVariableLhs() {
+	List<ILPTerm> terms = Collections.synchronizedList(new LinkedList<>());
+	«FOR instruction :  builderMethodCalls2»
 	«instruction»
 	«ENDFOR»
 	return terms;
@@ -183,19 +229,19 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs() {
 		'''
 	}
 	
-	override generateBuilder(ValueExpression expr) {
+	override generateBuilder(ValueExpression expr, LinkedList<String> methodCalls) {
 		if(expr instanceof MappingSumExpression) {
-				val builderMethodName = generateForeignBuilder(expr)
+				val builderMethodName = generateForeignBuilder(expr, methodCalls)
 				val instruction = '''«builderMethodName»(terms);'''
-				builderMethodCalls.add(instruction)
+				methodCalls.add(instruction)
 		} else if(expr instanceof TypeSumExpression) {
-			val builderMethodName = generateForeignBuilder(expr)
+			val builderMethodName = generateForeignBuilder(expr, methodCalls)
 			val instruction = '''«builderMethodName»(terms);'''
-				builderMethodCalls.add(instruction)
+				methodCalls.add(instruction)
 		} else if(expr instanceof PatternSumExpression) {
-			val builderMethodName = generateForeignBuilder(expr)
+			val builderMethodName = generateForeignBuilder(expr, methodCalls)
 			val instruction = '''«builderMethodName»(terms);'''
-				builderMethodCalls.add(instruction)
+				methodCalls.add(instruction)
 		} else if(expr instanceof ContextSumExpression) {
 			throw new UnsupportedOperationException("There is no specific context available for global constraints.")
 		} else if(expr instanceof ContextTypeFeatureValue) {
@@ -239,11 +285,11 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs() {
 		throw new UnsupportedOperationException("Mapping context access is not possible within a type context.")
 	}
 	
-	override generateBuilder(ContextSumExpression expr) {
-		throw new UnsupportedOperationException("Ilp term may not be constant.")
+	override generateBuilder(ContextSumExpression expr, LinkedList<String> methodCalls) {
+		throw new UnsupportedOperationException("There is no specific context available for global constraints.")
 	}
 	
-	override generateBuilder(BinaryArithmeticExpression expr) {
+	override generateBuilder(BinaryArithmeticExpression expr, LinkedList<String> methodCalls) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		val method = '''
@@ -255,7 +301,7 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs() {
 		return methodName
 	}
 	
-	override generateBuilder(UnaryArithmeticExpression expr) {
+	override generateBuilder(UnaryArithmeticExpression expr, LinkedList<String> methodCalls) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		val method = '''
@@ -267,17 +313,17 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs() {
 		return methodName
 	}
 	
-	override generateForeignBuilder(MappingSumExpression expr) {
+	override generateForeignBuilder(MappingSumExpression expr, LinkedList<String> methodCalls) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
 		imports.add("java.util.stream.Collectors")
 		val method = '''
-	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms) {
+	protected void «methodName»(final List<ILPTerm> terms) {
 		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper("«expr.mapping.name»").getMappings().values().parallelStream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+			terms.add(new ILPTerm(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}
 	}
 		'''
@@ -285,16 +331,16 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs() {
 		return methodName
 	}
 	
-	override generateForeignBuilder(TypeSumExpression expr) {
+	override generateForeignBuilder(TypeSumExpression expr, LinkedList<String> methodCalls) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		imports.add("java.util.stream.Collectors")
 		imports.add(data.classToPackage.getPackage(expr.type.type.EPackage))
 		var method = "";
 		
-		if(context.isConstant && context.expression instanceof RelationException) {
+		if(context.isConstant && context.expression instanceof RelationalExpression) {
 			method = '''
-	protected double «methodName»(final List<ILPTerm<Integer, Double>> terms) {
+	protected double «methodName»(final List<ILPTerm> terms) {
 		return indexer.getObjectsOfType(«expr.type.type.EPackage.name».eINSTANCE.get«expr.type.type.name»()).parallelStream()
 			.map(type -> («expr.type.type.name») type)
 			«getFilterExpr(expr.filter, ExpressionContext.constStream)»
@@ -302,19 +348,19 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs() {
 			.reduce(0.0, (sum, value) -> sum + value);
 	}
 		'''
-		} else if(!context.isConstant && context.expression instanceof RelationException) {
+		} else if(!context.isConstant && context.expression instanceof RelationalExpression) {
 			method = '''
-	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms) {
+	protected void «methodName»(final List<ILPTerm> terms) {
 		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType(«expr.type.type.EPackage.name».eINSTANCE.get«expr.type.type.name»()).parallelStream()
 			.map(type -> («expr.type.type.name») type)
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+			terms.add(new ILPTerm(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}
 	}
 		'''
-		} else if(context.isConstant && !(context.expression instanceof RelationException)) {
+		} else if(context.isConstant && !(context.expression instanceof RelationalExpression)) {
 			method = '''
-	protected boolean «methodName»(final List<ILPTerm<Integer, Double>> terms) {
+	protected boolean «methodName»(final List<ILPTerm> terms) {
 		throw new UnsupportedOperationException("TODO: Implement stream-boolean expressions at root level.");
 	}
 		''' 
@@ -326,36 +372,36 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs() {
 		return methodName
 	}
 	
-	override generateForeignBuilder(PatternSumExpression expr) {
+	override generateForeignBuilder(PatternSumExpression expr, LinkedList<String> methodCalls) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		imports.add("java.util.stream.Collectors")
 		imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(expr.pattern))
 		var method = "";
 		
-		if(context.isConstant && context.expression instanceof RelationException) {
+		if(context.isConstant && context.expression instanceof RelationalExpression) {
 			
 			method = '''
-	protected double «methodName»(final List<ILPTerm<Integer, Double>> terms) {
+	protected double «methodName»(final List<ILPTerm> terms) {
 		return engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()
 			«getFilterExpr(expr.filter, ExpressionContext.constStream)»
 			.map(type -> (double)«parseExpression(expr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value);
 	}
 		'''
-		} else if(!context.isConstant && context.expression instanceof RelationException) {
+		} else if(!context.isConstant && context.expression instanceof RelationalExpression) {
 			
 			method = '''
-	protected void «methodName»(final List<ILPTerm<Integer, Double>> terms) {
+	protected void «methodName»(final List<ILPTerm> terms) {
 		for(«data.pattern2matchClassName.get(expr.pattern)» «getIteratorVariableName(expr)» : engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+			terms.add(new ILPTerm(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}
 	}
 		'''
-		} else if(context.isConstant && !(context.expression instanceof RelationException)) {
+		} else if(context.isConstant && !(context.expression instanceof RelationalExpression)) {
 			method = '''
-	protected boolean «methodName»(final List<ILPTerm<Integer, Double>> terms) {
+	protected boolean «methodName»(final List<ILPTerm> terms) {
 		throw new UnsupportedOperationException("TODO: Implement stream-boolean expressions at root level.");
 	}
 		''' 
@@ -367,8 +413,8 @@ protected List<ILPTerm<Integer, Double>> buildVariableLhs() {
 		return methodName
 	}
 	
-	override generateBuilder(MappingSumExpression expr) {
-		throw new UnsupportedOperationException("Mapping context access is not possible within a type context.")
+	override generateBuilder(MappingSumExpression expr, LinkedList<String> methodCalls) {
+		throw new UnsupportedOperationException("Mapping context not available in global context.")
 	}
 
 }

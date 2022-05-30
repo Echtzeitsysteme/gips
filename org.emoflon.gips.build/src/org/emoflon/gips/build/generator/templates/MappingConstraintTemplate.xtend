@@ -35,11 +35,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Mapping
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
-import javax.management.relation.RelationException
-import org.emoflon.gips.intermediate.GipsIntermediate.VariableType
 import java.util.LinkedList
-import java.util.Map
-import org.emoflon.gips.intermediate.GipsIntermediate.Constraint
 import java.util.List
 import java.util.HashMap
 
@@ -380,7 +376,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		imports.add(data.classToPackage.getImportsForType(expr.type.type))
 		var method = "";
 		
-		if(context.isConstant && context.expression instanceof RelationException) {
+		if(context.isConstant && context.expression instanceof RelationalExpression) {
 			method = '''
 	protected double «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		return indexer.getObjectsOfType("«expr.type.type.name»").parallelStream()
@@ -390,7 +386,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 			.reduce(0.0, (sum, value) -> sum + value);
 	}
 		'''
-		} else if(!context.isConstant && context.expression instanceof RelationException) {
+		} else if(!context.isConstant && context.expression instanceof RelationalExpression) {
 			method = '''
 	protected void «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.type.name»").parallelStream()
@@ -400,7 +396,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		}
 	}
 		'''
-		} else if(context.isConstant && !(context.expression instanceof RelationException)) {
+		} else if(context.isConstant && !(context.expression instanceof RelationalExpression)) {
 			method = '''
 	protected boolean «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		throw new UnsupportedOperationException("TODO: Implement stream-boolean expressions at root level.");
@@ -421,7 +417,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(expr.pattern))
 		var method = "";
 		
-		if(context.isConstant && context.expression instanceof RelationException) {
+		if(context.isConstant && context.expression instanceof RelationalExpression) {
 			
 			method = '''
 	protected double «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
@@ -431,7 +427,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 			.reduce(0.0, (sum, value) -> sum + value);
 	}
 		'''
-		} else if(!context.isConstant && context.expression instanceof RelationException) {
+		} else if(!context.isConstant && context.expression instanceof RelationalExpression) {
 			
 			method = '''
 	protected void «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
@@ -441,7 +437,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		}
 	}
 		'''
-		} else if(context.isConstant && !(context.expression instanceof RelationException)) {
+		} else if(context.isConstant && !(context.expression instanceof RelationalExpression)) {
 			method = '''
 	protected boolean «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		throw new UnsupportedOperationException("TODO: Implement stream-boolean expressions at root level.");

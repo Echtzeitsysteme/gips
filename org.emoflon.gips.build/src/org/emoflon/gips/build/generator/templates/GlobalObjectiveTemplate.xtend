@@ -138,7 +138,7 @@ protected void buildTerms() {
 					
 					val objective = objectives.iterator.next
 					referencedObjectives.add(objective)
-					instruction = '''weightedFunctions.add(new ILPWeightedLinearFunction<Integer>(«objective.name».getObjectiveFunction(), «builderMethodName»()));'''
+					instruction = '''weightedFunctions.add(new ILPWeightedLinearFunction(«objective.name».getObjectiveFunction(), «builderMethodName»()));'''
 				}
 				builderMethodCalls.add(instruction)
 			}
@@ -154,7 +154,7 @@ protected void buildTerms() {
 					
 					val objective = objectives.iterator.next
 					referencedObjectives.add(objective)
-					instruction = '''weightedFunctions.add(new ILPWeightedLinearFunction<Integer>(«objective.name».getObjectiveFunction(), «builderMethodName»()));'''
+					instruction = '''weightedFunctions.add(new ILPWeightedLinearFunction(«objective.name».getObjectiveFunction(), «builderMethodName»()));'''
 				}
 				builderMethodCalls.add(instruction)
 		} else if(expr instanceof ArithmeticValue) {
@@ -167,7 +167,7 @@ protected void buildTerms() {
 						
 					val objective = objectives.iterator.next
 					referencedObjectives.add(objective)
-					val instruction = '''weightedFunctions.add(new ILPWeightedLinearFunction<Integer>(«objective.name».getObjectiveFunction(), 1.0));'''
+					val instruction = '''weightedFunctions.add(new ILPWeightedLinearFunction(«objective.name».getObjectiveFunction(), 1.0));'''
 					builderMethodCalls.add(instruction)
 				}
 		} else {

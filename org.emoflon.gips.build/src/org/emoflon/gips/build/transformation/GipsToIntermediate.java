@@ -67,7 +67,6 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
 import org.logicng.formulas.Formula;
 import org.logicng.formulas.Literal;
-import org.logicng.formulas.Not;
 
 public class GipsToIntermediate {
 	final public static double EPSILON = 0.000001d;
@@ -228,7 +227,7 @@ public class GipsToIntermediate {
 						Variable symbolicVar = constraint2binary.get(splitConstraint);
 						VariableReference varRef = factory.createVariableReference();
 						varRef.setVariable(symbolicVar);
-						if (subformula instanceof Literal lit) {
+						if (subformula instanceof Literal lit && lit.phase()) {
 							if (currentSum.getLhs() == null && !subformulas.isEmpty()) {
 								currentSum.setLhs(varRef);
 							} else if (currentSum.getLhs() != null && !subformulas.isEmpty()) {
@@ -243,7 +242,7 @@ public class GipsToIntermediate {
 								throw new UnsupportedOperationException(
 										"Disjunction of boolean literals must have more than one literal.");
 							}
-						} else if (subformula instanceof Not not) {
+						} else if (subformula instanceof Literal lit && !lit.phase()) {
 							BinaryArithmeticExpression negSum = factory.createBinaryArithmeticExpression();
 							negSum.setOperator(BinaryArithmeticOperator.ADD);
 							DoubleLiteral d1 = factory.createDoubleLiteral();
@@ -284,6 +283,10 @@ public class GipsToIntermediate {
 					substituteRelation.setRhs(d1);
 					substituteRelation.setLhs(substituteSum);
 					dConstraint.setExpression(substituteRelation);
+
+					// Move constant terms from the non-constant to the constant side
+					dConstraint.setExpression(
+							rewriteMoveConstantTerms((RelationalExpression) dConstraint.getExpression()));
 				}
 				case LITERAL -> {
 					transformConstraint(eSubConstraint.result().values().iterator().next());
@@ -305,20 +308,25 @@ public class GipsToIntermediate {
 						throw new UnsupportedOperationException(
 								"Negation for constraints that are constant at build time is currently not supported");
 					}
+
+					data.model().getConstraints().add(constraint);
 					dConstraint.getDependencies().add(constraint);
 
 					// Add substitute variable to produce negation!
 					RelationalExpression orginalRelation = (RelationalExpression) constraint.getExpression();
 					Variable realVar = factory.createVariable();
 					realVar.setType(VariableType.REAL);
-					realVar.setName(dConstraint.getName() + "_substitute_variable");
+					realVar.setName(constraint.getName() + "_substitute_variable");
 					data.model().getVariables().add(realVar);
 					dConstraint.getHelperVariables().add(realVar);
 					boolean realVarNegative = insertSubstituteRealVariable(constraint, orginalRelation, realVar);
 
 					// Add negation constraint
-					Variable binaryVar = insertNegationConstraint(constraint, dConstraint);
+					Variable binaryVar = insertNegationConstraint(dConstraint, constraint);
 					dConstraint.getHelperVariables().add(binaryVar);
+					// Move constant terms from the non-constant to the constant side
+					dConstraint.setExpression(
+							rewriteMoveConstantTerms((RelationalExpression) dConstraint.getExpression()));
 
 					// Add semantic correctness constraints
 					// (1) Force symbolic variable correctness
@@ -342,6 +350,7 @@ public class GipsToIntermediate {
 			final RelationalExpression originalRelation, final Variable realVar) {
 		boolean varNegativeReal = false;
 		ArithmeticExpression varSide = null;
+		boolean leftIsConst = true;
 
 		if (GipsTransformationUtils
 				.isConstantExpression(originalRelation.getLhs()) == ArithmeticExpressionType.constant) {
@@ -366,6 +375,7 @@ public class GipsToIntermediate {
 			} else {
 				varNegativeReal = false;
 			}
+			leftIsConst = false;
 		}
 
 		BinaryArithmeticExpression sum = factory.createBinaryArithmeticExpression();
@@ -374,8 +384,7 @@ public class GipsToIntermediate {
 		VariableReference realVarRef = factory.createVariableReference();
 		realVarRef.setVariable(realVar);
 		sum.setRhs(realVarRef);
-		if (GipsTransformationUtils
-				.isConstantExpression(originalRelation.getLhs()) == ArithmeticExpressionType.constant) {
+		if (leftIsConst) {
 			originalRelation.setRhs(sum);
 		} else {
 			originalRelation.setLhs(sum);
@@ -384,7 +393,7 @@ public class GipsToIntermediate {
 		return varNegativeReal;
 	}
 
-	protected Variable insertNegationConstraint(final Constraint constraint, final Constraint dConstraint) {
+	protected Variable insertNegationConstraint(final Constraint dConstraint, final Constraint constraint) {
 		RelationalExpression negationRelation = factory.createRelationalExpression();
 		negationRelation.setOperator(RelationalOperator.GREATER_OR_EQUAL);
 		DoubleLiteral dl = factory.createDoubleLiteral();
@@ -403,12 +412,12 @@ public class GipsToIntermediate {
 		Variable binaryVar = factory.createVariable();
 		data.model().getVariables().add(binaryVar);
 		binaryVar.setType(VariableType.BINARY);
-		binaryVar.setName(dConstraint.getName() + "_symbolic_variable");
+		binaryVar.setName(constraint.getName() + "_symbolic_variable");
 		VariableReference binaryVarRef = factory.createVariableReference();
 		binaryVarRef.setVariable(binaryVar);
 		prod.setRhs(binaryVarRef);
 		sum.setRhs(prod);
-		negationRelation.setRhs(sum);
+		negationRelation.setLhs(sum);
 		dConstraint.setExpression(negationRelation);
 
 		return binaryVar;
@@ -453,7 +462,7 @@ public class GipsToIntermediate {
 			final Constraint constraint, final Variable realVar, final Variable binaryVar, boolean negativeReal) {
 		Variable symbolicSos1Var = factory.createVariable();
 		symbolicSos1Var.setType(VariableType.BINARY);
-		binaryVar.setName(constraint.getName() + "_symbolic_sos1_variable");
+		symbolicSos1Var.setName(constraint.getName() + "_symbolic_sos1_variable");
 		data.model().getVariables().add(symbolicSos1Var);
 
 		// Part 1. of the quasi-sos1 constraint
@@ -515,6 +524,7 @@ public class GipsToIntermediate {
 		sum2.setRhs(binaryVarRef);
 
 		sos1Relation.setLhs(sum2);
+		dConstraint.getRealVarCorrectnessConstraints().add(sos1Relation);
 
 		return symbolicSos1Var;
 	}
@@ -697,19 +707,19 @@ public class GipsToIntermediate {
 	}
 
 	protected Constraint createDependencyConstraint(final GipsAnnotatedConstraint eConstraint, int counter) {
-		if (eConstraint.input() instanceof GipsMappingContext mapping) {
+		if (eConstraint.input().getContext() instanceof GipsMappingContext mapping) {
 			MappingConstraint constraint = factory.createMappingConstraint();
 			constraint.setName("DependingMappingConstraint" + counter + "On" + mapping.getMapping().getName());
 			constraint.setMapping(data.eMapping2Mapping().get(mapping.getMapping()));
 			constraint.setDepending(true);
 			return constraint;
-		} else if (eConstraint.input() instanceof GipsPatternContext pattern) {
+		} else if (eConstraint.input().getContext() instanceof GipsPatternContext pattern) {
 			PatternConstraint constraint = factory.createPatternConstraint();
 			constraint.setName("DependingPatternConstraint" + counter + "On" + pattern.getPattern().getName());
 			constraint.setPattern(data.getPattern(pattern.getPattern()));
 			constraint.setDepending(true);
 			return constraint;
-		} else if (eConstraint.input() instanceof GipsTypeContext type) {
+		} else if (eConstraint.input().getContext() instanceof GipsTypeContext type) {
 			TypeConstraint constraint = factory.createTypeConstraint();
 			constraint.setName("DependingTypeConstraint" + counter + "On" + type.getType().getName());
 			Type varType = data.getType((EClass) type.getType());

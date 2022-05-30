@@ -39,6 +39,7 @@ import java.util.LinkedList
 import java.util.List
 import java.util.HashMap
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
+import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 
 class MappingConstraintTemplate extends ConstraintTemplate<MappingConstraint> {
 
@@ -57,6 +58,7 @@ class MappingConstraintTemplate extends ConstraintTemplate<MappingConstraint> {
 		imports.add("org.emoflon.gips.core.GipsEngine")
 		imports.add("org.emoflon.gips.core.GipsMappingConstraint")
 		imports.add("org.emoflon.gips.core.ilp.ILPTerm")
+		imports.add("org.emoflon.gips.core.ilp.ILPConstraint")
 		if(context.isDepending) {
 			imports.add("org.emoflon.gips.core.ilp.ILPBinaryVariable");
 			imports.add("org.emoflon.gips.core.ilp.ILPRealVariable");
@@ -189,6 +191,11 @@ public class «className» extends GipsMappingConstraint<«data.gipsApiClassName
 				constraint2methodCalls.put(constraint, methodCalls);
 				generateVariableTermBuilder(constraint.lhs, methodCalls)
 			}
+			for(RelationalExpression constraint : context.realVarCorrectnessConstraints) {
+				val methodCalls = new LinkedList<String>
+				constraint2methodCalls.put(constraint, methodCalls);
+				generateVariableTermBuilder(constraint.lhs, methodCalls)
+			}
 			return '''
 	@Override
 	protected List<ILPConstraint> buildAdditionalConstraints(final «data.mapping2mappingClassName.get(context.mapping)» context) {
@@ -202,7 +209,17 @@ public class «className» extends GipsMappingConstraint<«data.gipsApiClassName
 		«instruction»
 		«ENDFOR»
 		constTerm = «generateConstTermBuilder(constraint.rhs)»;
-		constraint = new ILPConstraint(terms, RelationalOperator.«constraint.operator.literal», constTerm);
+		constraint = new ILPConstraint(terms, RelationalOperator.«constraint.operator.name()», constTerm);
+		additionalConstraints.add(constraint);
+		terms = new LinkedList<>();
+		
+		«ENDFOR»
+		«FOR constraint : context.realVarCorrectnessConstraints»
+		«FOR instruction : constraint2methodCalls.get(constraint)»
+		«instruction»
+		«ENDFOR»
+		constTerm = «generateConstTermBuilder(constraint.rhs)»;
+		constraint = new ILPConstraint(terms, RelationalOperator.«constraint.operator.name()», constTerm);
 		additionalConstraints.add(constraint);
 		terms = new LinkedList<>();
 		
@@ -296,12 +313,19 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		}
 	}
 	
-	override String getContextVariable(VariableSet variable) {
-		return '''context'''
+	override String getVariable(VariableSet variable) {
+		if(variable instanceof Mapping && variable == context.mapping) {
+			return '''context'''
+		} else if(variable instanceof Variable) {
+			return '''engine.getNonMappingVariable(context.getName() + "->«variable.name»")'''
+		} else {
+			throw new UnsupportedOperationException("Foreign mapping context access is not possible within another mapping context.")
+		}
+		
 	}
 		
 	override getAdditionalVariableName(VariableReference varRef) {
-		return '''context.getName() + "->" + «varRef.variable.name»'''
+		return '''context.getName() + "->«varRef.variable.name»"'''
 	}
 	
 	override String generateBuilder(BinaryArithmeticExpression expr, LinkedList<String> methodCalls) {

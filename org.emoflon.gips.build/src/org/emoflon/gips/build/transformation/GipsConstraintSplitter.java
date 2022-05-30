@@ -12,6 +12,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsBool;
 import org.emoflon.gips.gipsl.gipsl.GipsBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
 import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipslFactory;
@@ -19,7 +20,6 @@ import org.logicng.formulas.Formula;
 import org.logicng.formulas.FormulaFactory;
 import org.logicng.formulas.Literal;
 import org.logicng.formulas.NAryOperator;
-import org.logicng.formulas.Not;
 import org.logicng.io.parsers.PropositionalParser;
 
 public class GipsConstraintSplitter {
@@ -37,6 +37,10 @@ public class GipsConstraintSplitter {
 		if (constraint.getExpr() == null || constraint.getExpr().getExpr() == null) {
 			throw new NullPointerException("Constraint can not be split, since its boolean expression is empty!");
 		}
+
+		if ((constraint.getContext() instanceof GipsPatternContext)
+				&& ((GipsPatternContext) constraint.getContext()).getPattern().getName().contains("vlNotMapped"))
+			System.out.println("Bingo");
 
 		StringBuilder expressionBuilder = new StringBuilder();
 		parseToString(expressionBuilder, constraint.getExpr().getExpr());
@@ -88,7 +92,7 @@ public class GipsConstraintSplitter {
 	}
 
 	protected void splitAtAND(final Formula formula, Collection<GipsAnnotatedConstraint> constraints) throws Exception {
-		if (formula instanceof Literal literal) {
+		if (formula instanceof Literal literal && literal.phase()) {
 			GipsBoolExpr expr = data.symbol2Expr().get(literal.name());
 			Map<Formula, GipsConstraint> result = new HashMap<>();
 			if (expr instanceof GipsBooleanLiteral gipsLit) {
@@ -103,21 +107,15 @@ public class GipsConstraintSplitter {
 				throw new UnsupportedOperationException(
 						"Literals in a boolean expression in CNF-form should not be boolean expressions themselves.");
 			}
-		} else if (formula instanceof Not not) {
-			if (not.literals().size() > 1) {
-				throw new UnsupportedOperationException(
-						"Literals in a boolean expression in CNF-form should not be boolean expressions themselves.");
-			}
-
-			Literal literal = not.literals().first();
+		} else if (formula instanceof Literal literal && !literal.phase()) {
 			GipsBoolExpr expr = data.symbol2Expr().get(literal.name());
 			Map<Formula, GipsConstraint> result = new HashMap<>();
 			if (expr instanceof GipsBooleanLiteral gipsLit) {
-				result.put(not, transform(gipsLit));
+				result.put(literal, transform(gipsLit));
 				constraints.add(new GipsAnnotatedConstraint(this.constraint, formula,
 						AnnotatedConstraintType.NEGATED_LITERAL, result));
 			} else if (expr instanceof GipsRelExpr gipsRel) {
-				result.put(not, transform(gipsRel));
+				result.put(literal, transform(gipsRel));
 				constraints.add(new GipsAnnotatedConstraint(this.constraint, formula,
 						AnnotatedConstraintType.NEGATED_LITERAL, result));
 			} else {
@@ -135,7 +133,7 @@ public class GipsConstraintSplitter {
 			case OR -> {
 				Map<Formula, GipsConstraint> result = new HashMap<>();
 				for (Formula child : nAry) {
-					if (child instanceof Literal literal) {
+					if (child instanceof Literal literal && literal.phase()) {
 						GipsBoolExpr expr = data.symbol2Expr().get(literal.name());
 						if (expr instanceof GipsBooleanLiteral gipsLit) {
 							result.put(literal, transform(gipsLit));
@@ -145,18 +143,12 @@ public class GipsConstraintSplitter {
 							throw new UnsupportedOperationException(
 									"Literals in a boolean expression in CNF-form should not be boolean expressions themselves.");
 						}
-					} else if (child instanceof Not not) {
-						if (not.literals().size() > 1) {
-							throw new UnsupportedOperationException(
-									"Literals in a boolean expression in CNF-form should not be boolean expressions themselves.");
-						}
-
-						Literal literal = not.literals().first();
+					} else if (child instanceof Literal literal && !literal.phase()) {
 						GipsBoolExpr expr = data.symbol2Expr().get(literal.name());
 						if (expr instanceof GipsBooleanLiteral gipsLit) {
-							result.put(not, transform(gipsLit));
+							result.put(literal, transform(gipsLit));
 						} else if (expr instanceof GipsRelExpr gipsRel) {
-							result.put(not, transform(gipsRel));
+							result.put(literal, transform(gipsRel));
 						} else {
 							throw new UnsupportedOperationException(
 									"Literals in a boolean expression in CNF-form should not be boolean expressions themselves.");

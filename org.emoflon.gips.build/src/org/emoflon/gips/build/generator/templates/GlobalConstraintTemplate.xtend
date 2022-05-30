@@ -38,6 +38,7 @@ import java.util.LinkedList
 import java.util.HashMap
 import java.util.List
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
+import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 
 class GlobalConstraintTemplate extends ConstraintTemplate<GlobalConstraint> {
 	
@@ -59,6 +60,7 @@ class GlobalConstraintTemplate extends ConstraintTemplate<GlobalConstraint> {
 		imports.add("org.emoflon.gips.core.GipsMapping")
 		imports.add("org.emoflon.gips.core.GipsGlobalConstraint")
 		imports.add("org.emoflon.gips.core.ilp.ILPTerm")
+		imports.add("org.emoflon.gips.core.ilp.ILPConstraint")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint")
 		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
 	}
@@ -186,6 +188,11 @@ public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName�
 				constraint2methodCalls.put(constraint, methodCalls);
 				generateVariableTermBuilder(constraint.lhs, methodCalls)
 			}
+			for(RelationalExpression constraint : context.realVarCorrectnessConstraints) {
+				val methodCalls = new LinkedList<String>
+				constraint2methodCalls.put(constraint, methodCalls);
+				generateVariableTermBuilder(constraint.lhs, methodCalls)
+			}
 			return '''
 	@Override
 	protected List<ILPConstraint> buildAdditionalConstraints() {
@@ -199,7 +206,17 @@ public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName�
 		«instruction»
 		«ENDFOR»
 		constTerm = «generateConstTermBuilder(constraint.rhs)»;
-		constraint = new ILPConstraint(terms, RelationalOperator.«constraint.operator.literal», constTerm);
+		constraint = new ILPConstraint(terms, RelationalOperator.«constraint.operator.name()», constTerm);
+		additionalConstraints.add(constraint);
+		terms = new LinkedList<>();
+		
+		«ENDFOR»
+		«FOR constraint : context.realVarCorrectnessConstraints»
+		«FOR instruction : constraint2methodCalls.get(constraint)»
+		«instruction»
+		«ENDFOR»
+		constTerm = «generateConstTermBuilder(constraint.rhs)»;
+		constraint = new ILPConstraint(terms, RelationalOperator.«constraint.operator.name()», constTerm);
 		additionalConstraints.add(constraint);
 		terms = new LinkedList<>();
 		
@@ -282,12 +299,17 @@ protected List<ILPTerm> buildVariableLhs() {
 		}
 	}
 	
-	override getContextVariable(VariableSet variable) {
-		throw new UnsupportedOperationException("Mapping context access is not possible within a type context.")
+	override getVariable(VariableSet variable) {
+		if(variable instanceof Variable) {
+			return '''engine.getNonMappingVariable("global->«variable.name»")'''
+		} else {
+			throw new UnsupportedOperationException("Mapping context access is not possible within the global context.")
+		}
+		
 	}
 	
 	override getAdditionalVariableName(VariableReference varRef) {
-		return '''"global->" + «varRef.variable.name»'''
+		return '''"global->«varRef.variable.name»"'''
 	}
 	
 	override generateBuilder(ContextSumExpression expr, LinkedList<String> methodCalls) {

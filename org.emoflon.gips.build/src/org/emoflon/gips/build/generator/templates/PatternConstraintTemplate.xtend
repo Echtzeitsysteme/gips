@@ -40,6 +40,7 @@ import java.util.HashMap
 import java.util.List
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
+import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 
 class PatternConstraintTemplate extends ConstraintTemplate<PatternConstraint> {
 
@@ -58,6 +59,7 @@ class PatternConstraintTemplate extends ConstraintTemplate<PatternConstraint> {
 		imports.add("org.emoflon.gips.core.GipsEngine")
 		imports.add("org.emoflon.gips.core.gt.GipsPatternConstraint")
 		imports.add("org.emoflon.gips.core.ilp.ILPTerm")
+		imports.add("org.emoflon.gips.core.ilp.ILPConstraint")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint")
 		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
 		imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(context.pattern))
@@ -187,6 +189,11 @@ public class «className» extends GipsPatternConstraint<«data.gipsApiClassName
 				constraint2methodCalls.put(constraint, methodCalls);
 				generateVariableTermBuilder(constraint.lhs, methodCalls)
 			}
+			for(RelationalExpression constraint : context.realVarCorrectnessConstraints) {
+				val methodCalls = new LinkedList<String>
+				constraint2methodCalls.put(constraint, methodCalls);
+				generateVariableTermBuilder(constraint.lhs, methodCalls)
+			}
 			return '''
 	@Override
 	protected List<ILPConstraint> buildAdditionalConstraints(final «data.pattern2matchClassName.get(context.pattern)» context) {
@@ -200,7 +207,17 @@ public class «className» extends GipsPatternConstraint<«data.gipsApiClassName
 		«instruction»
 		«ENDFOR»
 		constTerm = «generateConstTermBuilder(constraint.rhs)»;
-		constraint = new ILPConstraint(terms, RelationalOperator.«constraint.operator.literal», constTerm);
+		constraint = new ILPConstraint(terms, RelationalOperator.«constraint.operator.name()», constTerm);
+		additionalConstraints.add(constraint);
+		terms = new LinkedList<>();
+		
+		«ENDFOR»
+		«FOR constraint : context.realVarCorrectnessConstraints»
+		«FOR instruction : constraint2methodCalls.get(constraint)»
+		«instruction»
+		«ENDFOR»
+		constTerm = «generateConstTermBuilder(constraint.rhs)»;
+		constraint = new ILPConstraint(terms, RelationalOperator.«constraint.operator.name()», constTerm);
 		additionalConstraints.add(constraint);
 		terms = new LinkedList<>();
 		
@@ -285,12 +302,17 @@ protected List<ILPTerm> buildVariableLhs(final «data.pattern2matchClassName.get
 		}
 	}
 	
-	override String getContextVariable(VariableSet variable) {
-		throw new UnsupportedOperationException("Mapping context access is not possible within a pattern context.")
+	override String getVariable(VariableSet variable) {
+		if(variable instanceof Variable) {
+			return '''engine.getNonMappingVariable(context + "->«variable.name»")'''
+		} else {
+			throw new UnsupportedOperationException("Mapping context access is not possible within a pattern context.")
+		}
+		
 	}
 	
 	override getAdditionalVariableName(VariableReference varRef) {
-		return '''context + "->" + «varRef.variable.name»'''
+		return '''context + "->«varRef.variable.name»"'''
 	}
 		
 	override generateBuilder(ContextSumExpression expr, LinkedList<String> methodCalls) {

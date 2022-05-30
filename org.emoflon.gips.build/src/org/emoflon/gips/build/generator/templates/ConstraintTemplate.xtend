@@ -129,7 +129,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 				
 				val builderMethodName = generateBuilder(expr, methodCalls)
-				val instruction = '''terms.add(new ILPTerm(«getContextVariable(variable.iterator.next)», «builderMethodName»(context)));'''
+				val instruction = '''terms.add(new ILPTerm(«getVariable(variable.iterator.next)», «builderMethodName»(context)));'''
 				methodCalls.add(instruction)
 			}
 		} else if(expr instanceof UnaryArithmeticExpression) {
@@ -138,7 +138,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 				
 				val builderMethodName = generateBuilder(expr, methodCalls)
-				val instruction = '''terms.add(new ILPTerm(«getContextVariable(variable.iterator.next)», «builderMethodName»(context)));'''
+				val instruction = '''terms.add(new ILPTerm(«getVariable(variable.iterator.next)», «builderMethodName»(context)));'''
 				methodCalls.add(instruction)
 		} else if(expr instanceof ArithmeticValue) {
 			generateBuilder(expr.value, methodCalls)
@@ -150,7 +150,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		}
 	}
 	
-	def String getContextVariable(VariableSet variable);
+	def String getVariable(VariableSet variable);
 	
 	def String getAdditionalVariableName(VariableReference varRef);
 	
@@ -222,7 +222,9 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 				return '''null'''
 			}
 		} else if(expr instanceof VariableReference) {
-			return '''engine.getNonMappingVariable(«getAdditionalVariableName(expr)»)'''
+			//This should have been taken care of already. -> Constant 1 doesn't hurt... 
+//			return '''engine.getNonMappingVariable(«getAdditionalVariableName(expr)»)'''
+			return '''1.0'''
 		}  else {
 			val value = expr as ArithmeticValue
 			switch(contextType) {

@@ -130,7 +130,7 @@ protected void buildTerms() {
 				val builderMethodName = generateBuilder(expr)
 				var instruction = ""
 				if(GipsTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
-					instruction = '''constantTerms.add(new ILPConstant<Double>(«builderMethodName»()));'''
+					instruction = '''constantTerms.add(new ILPConstant(«builderMethodName»()));'''
 				} else {
 					val objectives = GipsTransformationUtils.extractObjective(expr);
 					if(objectives.size != 1)
@@ -146,7 +146,7 @@ protected void buildTerms() {
 				val builderMethodName = generateBuilder(expr)
 				var instruction = ""
 				if(GipsTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
-					instruction = '''constantTerms.add(new ILPConstant<Double>(«builderMethodName»()));'''
+					instruction = '''constantTerms.add(new ILPConstant(«builderMethodName»()));'''
 				} else {
 					val objectives = GipsTransformationUtils.extractObjective(expr);
 					if(objectives.size != 1)
@@ -172,11 +172,11 @@ protected void buildTerms() {
 				}
 		} else {
 			if(expr instanceof IntegerLiteral) {
-				val instruction = '''constantTerms.add(new ILPConstant<Double>((double)«expr.literal»));'''
+				val instruction = '''constantTerms.add(new ILPConstant((double)«expr.literal»));'''
 				builderMethodCalls.add(instruction);
 			} else {
 				val doubleLit = expr as DoubleLiteral
-				val instruction = '''constantTerms.add(new ILPConstant<Double>(«doubleLit.literal»));'''
+				val instruction = '''constantTerms.add(new ILPConstant(«doubleLit.literal»));'''
 				builderMethodCalls.add(instruction);
 			}
 		}

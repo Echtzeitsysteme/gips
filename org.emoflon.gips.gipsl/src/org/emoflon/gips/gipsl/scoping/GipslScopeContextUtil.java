@@ -93,7 +93,7 @@ public final class GipslScopeContextUtil {
 
 	public static boolean isGipsLambdaAttributeExpressionVariable(final EObject context, final EReference reference) {
 		return context instanceof GipsLambdaAttributeExpression
-				&& reference == GipslPackage.Literals.GIPS_LAMBDA_ATTRIBUTE_EXPRESSION__VAR;
+				&& reference == GipslPackage.Literals.GIPS_ATTRIBUTE_EXPR__VAR;
 	}
 
 	public static boolean isGipsLambdaAttributeExpression(final EObject context, final EReference reference) {

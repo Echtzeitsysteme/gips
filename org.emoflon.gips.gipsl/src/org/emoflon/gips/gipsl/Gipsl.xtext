@@ -84,28 +84,40 @@ GipsBool:
 ;
 
 GipsBoolExpr:
-	GipsBinaryBoolExpr
+	GipsImplicationBoolExpr
 ;
 
-GipsBinaryBoolExpr returns GipsBoolExpr:
-	GipsUnaryBoolExpr({GipsBinaryBoolExpr.left = current} operator=GipsBoolBinaryOperator right=GipsUnaryBoolExpr)*
+GipsImplicationBoolExpr returns GipsBoolExpr:
+	GipsOrBoolExpr({GipsImplicationBoolExpr.left = current} '=>' right=GipsOrBoolExpr)*
 ;
 
-GipsUnaryBoolExpr returns GipsBoolExpr: {GipsUnaryBoolExpr}
-	(operator=GipsBoolUnaryOperator '(' operand=GipsBoolExpr ')' ) | GipsBooleanLiteral | GipsRelExpr
+GipsOrBoolExpr returns GipsBoolExpr:
+	GipsAndBoolExpr({GipsOrBoolExpr.left = current} operator=GipsOrOperator right=GipsAndBoolExpr)*
+;
+
+GipsAndBoolExpr returns GipsBoolExpr:
+	GipsNotBoolExpr({GipsAndBoolExpr.left = current} operator=GipsAndOperator right=GipsNotBoolExpr)*
+;
+
+GipsNotBoolExpr returns GipsBoolExpr: {GipsNotBoolExpr}
+	'!' operand=GipsBracketBoolExpr | GipsBracketBoolExpr
+;
+
+GipsBracketBoolExpr returns GipsBoolExpr: {GipsBracketBoolExpr}
+	'[' operand=GipsBoolExpr ']'  | GipsBooleanLiteral | GipsRelExpr
+;
+
+enum GipsOrOperator:
+  OR='|' |
+  XOR='^'
+;
+
+enum GipsAndOperator:
+  AND='&'
 ;
 
 GipsBooleanLiteral:
 	literal = GipsBoolean
-;
-
-enum GipsBoolBinaryOperator:
-	AND='&' 	|
-	OR='|'	
-;
-
-enum GipsBoolUnaryOperator:
-	NOT = '!'
 ;
 
 GipsRelExpr:
@@ -138,8 +150,8 @@ GipsPatternAttributeExpr returns GipsAttributeExpr: {GipsPatternAttributeExpr}
 ;
 
 //TODO: Allow optional nested lambda expressions
-//TODO: Allow omission of "expr" rule call to enable usage of objects in lambda expression, e.g., for identity / type checks.
 GipsLambdaAttributeExpression returns GipsAttributeExpr: {GipsLambdaAttributeExpression}
+	var=[GipsLambdaExpression|ID] '()' | 
 	var=[GipsLambdaExpression|ID] '.' (expr = GipsNodeAttributeExpr | expr = GipsContextOperationExpression | expr = GipsFeatureExpr) // ('->' stream = GipsStreamExpr)?
 ;
 
@@ -189,7 +201,7 @@ GipsExpArithmeticExpr returns GipsArithmeticExpr:
 ;
 
 GipsUnaryArithmeticExpr returns GipsArithmeticExpr: {GipsUnaryArithmeticExpr}
-	operator=GipsArithmeticUnaryOperator  '(' operand=GipsBracketExpr ')' | GipsBracketExpr
+	operator=GipsArithmeticUnaryOperator '(' operand=GipsBracketExpr ')' | GipsBracketExpr
 ;
 
 GipsBracketExpr returns GipsArithmeticExpr: {GipsBracketExpr}
@@ -220,7 +232,7 @@ enum GipsProductOperator:
 ;
 
 enum GipsExpOperator:
- 	POW='^'	|
+ 	POW='pow'	|
  	LOG='log'
 ;
 

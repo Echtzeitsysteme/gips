@@ -2,6 +2,8 @@
  */
 package org.emoflon.gips.intermediate.GipsIntermediate;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -14,12 +16,20 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getName
  * <em>Name</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isElementwise
- * <em>Elementwise</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isDepending
+ * <em>Depending</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getExpression
  * <em>Expression</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isConstant
  * <em>Constant</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getDependencies
+ * <em>Dependencies</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getHelperVariables
+ * <em>Helper Variables</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getRealVarCorrectnessConstraints
+ * <em>Real Var Correctness Constraints</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getBinaryVarCorrectnessConstraints
+ * <em>Binary Var Correctness Constraints</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint()
@@ -51,28 +61,27 @@ public interface Constraint extends EObject {
 	void setName(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Elementwise</b></em>' attribute. <!--
+	 * Returns the value of the '<em><b>Depending</b></em>' attribute. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @return the value of the '<em>Elementwise</em>' attribute.
-	 * @see #setElementwise(boolean)
-	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_Elementwise()
+	 * @return the value of the '<em>Depending</em>' attribute.
+	 * @see #setDepending(boolean)
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_Depending()
 	 * @model
 	 * @generated
 	 */
-	boolean isElementwise();
+	boolean isDepending();
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isElementwise
-	 * <em>Elementwise</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-	 * -->
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isDepending
+	 * <em>Depending</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @param value the new value of the '<em>Elementwise</em>' attribute.
-	 * @see #isElementwise()
+	 * @param value the new value of the '<em>Depending</em>' attribute.
+	 * @see #isDepending()
 	 * @generated
 	 */
-	void setElementwise(boolean value);
+	void setDepending(boolean value);
 
 	/**
 	 * Returns the value of the '<em><b>Expression</b></em>' containment reference.
@@ -121,5 +130,59 @@ public interface Constraint extends EObject {
 	 * @generated
 	 */
 	void setConstant(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Dependencies</b></em>' containment reference
+	 * list. The list contents are of type
+	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint}. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Dependencies</em>' containment reference list.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_Dependencies()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<Constraint> getDependencies();
+
+	/**
+	 * Returns the value of the '<em><b>Helper Variables</b></em>' reference list.
+	 * The list contents are of type
+	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.Variable}. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Helper Variables</em>' reference list.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_HelperVariables()
+	 * @model
+	 * @generated
+	 */
+	EList<Variable> getHelperVariables();
+
+	/**
+	 * Returns the value of the '<em><b>Real Var Correctness Constraints</b></em>'
+	 * containment reference list. The list contents are of type
+	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Real Var Correctness Constraints</em>'
+	 *         containment reference list.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_RealVarCorrectnessConstraints()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<RelationalExpression> getRealVarCorrectnessConstraints();
+
+	/**
+	 * Returns the value of the '<em><b>Binary Var Correctness Constraints</b></em>'
+	 * containment reference list. The list contents are of type
+	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Binary Var Correctness Constraints</em>'
+	 *         containment reference list.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_BinaryVarCorrectnessConstraints()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<RelationalExpression> getBinaryVarCorrectnessConstraints();
 
 } // Constraint

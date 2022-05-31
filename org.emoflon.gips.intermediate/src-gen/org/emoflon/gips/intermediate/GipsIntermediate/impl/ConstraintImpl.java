@@ -2,8 +2,12 @@
  */
 package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -11,9 +15,15 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -24,12 +34,20 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
  * <ul>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getName
  * <em>Name</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#isElementwise
- * <em>Elementwise</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#isDepending
+ * <em>Depending</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getExpression
  * <em>Expression</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#isConstant
  * <em>Constant</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getDependencies
+ * <em>Dependencies</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getHelperVariables
+ * <em>Helper Variables</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getRealVarCorrectnessConstraints
+ * <em>Real Var Correctness Constraints</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getBinaryVarCorrectnessConstraints
+ * <em>Binary Var Correctness Constraints</em>}</li>
  * </ul>
  *
  * @generated
@@ -56,24 +74,24 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isElementwise() <em>Elementwise</em>}'
+	 * The default value of the '{@link #isDepending() <em>Depending</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see #isElementwise()
+	 * @see #isDepending()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean ELEMENTWISE_EDEFAULT = false;
+	protected static final boolean DEPENDING_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isElementwise() <em>Elementwise</em>}'
+	 * The cached value of the '{@link #isDepending() <em>Depending</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see #isElementwise()
+	 * @see #isDepending()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean elementwise = ELEMENTWISE_EDEFAULT;
+	protected boolean depending = DEPENDING_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getExpression() <em>Expression</em>}'
@@ -104,6 +122,49 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * @ordered
 	 */
 	protected boolean constant = CONSTANT_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getDependencies() <em>Dependencies</em>}'
+	 * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getDependencies()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Constraint> dependencies;
+
+	/**
+	 * The cached value of the '{@link #getHelperVariables() <em>Helper
+	 * Variables</em>}' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @see #getHelperVariables()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Variable> helperVariables;
+
+	/**
+	 * The cached value of the '{@link #getRealVarCorrectnessConstraints() <em>Real
+	 * Var Correctness Constraints</em>}' containment reference list. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getRealVarCorrectnessConstraints()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<RelationalExpression> realVarCorrectnessConstraints;
+
+	/**
+	 * The cached value of the '{@link #getBinaryVarCorrectnessConstraints()
+	 * <em>Binary Var Correctness Constraints</em>}' containment reference list.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getBinaryVarCorrectnessConstraints()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<RelationalExpression> binaryVarCorrectnessConstraints;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -151,8 +212,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * 
 	 * @generated
 	 */
-	public boolean isElementwise() {
-		return elementwise;
+	public boolean isDepending() {
+		return depending;
 	}
 
 	/**
@@ -160,12 +221,12 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * 
 	 * @generated
 	 */
-	public void setElementwise(boolean newElementwise) {
-		boolean oldElementwise = elementwise;
-		elementwise = newElementwise;
+	public void setDepending(boolean newDepending) {
+		boolean oldDepending = depending;
+		depending = newDepending;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.CONSTRAINT__ELEMENTWISE,
-					oldElementwise, elementwise));
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.CONSTRAINT__DEPENDING,
+					oldDepending, depending));
 	}
 
 	/**
@@ -245,11 +306,69 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * 
 	 * @generated
 	 */
+	public EList<Constraint> getDependencies() {
+		if (dependencies == null) {
+			dependencies = new EObjectResolvingEList<Constraint>(Constraint.class, this,
+					GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES);
+		}
+		return dependencies;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EList<Variable> getHelperVariables() {
+		if (helperVariables == null) {
+			helperVariables = new EObjectResolvingEList<Variable>(Variable.class, this,
+					GipsIntermediatePackage.CONSTRAINT__HELPER_VARIABLES);
+		}
+		return helperVariables;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EList<RelationalExpression> getRealVarCorrectnessConstraints() {
+		if (realVarCorrectnessConstraints == null) {
+			realVarCorrectnessConstraints = new EObjectContainmentEList<RelationalExpression>(
+					RelationalExpression.class, this,
+					GipsIntermediatePackage.CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS);
+		}
+		return realVarCorrectnessConstraints;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EList<RelationalExpression> getBinaryVarCorrectnessConstraints() {
+		if (binaryVarCorrectnessConstraints == null) {
+			binaryVarCorrectnessConstraints = new EObjectContainmentEList<RelationalExpression>(
+					RelationalExpression.class, this,
+					GipsIntermediatePackage.CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS);
+		}
+		return binaryVarCorrectnessConstraints;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 		case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
 			return basicSetExpression(null, msgs);
+		case GipsIntermediatePackage.CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS:
+			return ((InternalEList<?>) getRealVarCorrectnessConstraints()).basicRemove(otherEnd, msgs);
+		case GipsIntermediatePackage.CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS:
+			return ((InternalEList<?>) getBinaryVarCorrectnessConstraints()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -264,12 +383,20 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 		switch (featureID) {
 		case GipsIntermediatePackage.CONSTRAINT__NAME:
 			return getName();
-		case GipsIntermediatePackage.CONSTRAINT__ELEMENTWISE:
-			return isElementwise();
+		case GipsIntermediatePackage.CONSTRAINT__DEPENDING:
+			return isDepending();
 		case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
 			return getExpression();
 		case GipsIntermediatePackage.CONSTRAINT__CONSTANT:
 			return isConstant();
+		case GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES:
+			return getDependencies();
+		case GipsIntermediatePackage.CONSTRAINT__HELPER_VARIABLES:
+			return getHelperVariables();
+		case GipsIntermediatePackage.CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS:
+			return getRealVarCorrectnessConstraints();
+		case GipsIntermediatePackage.CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS:
+			return getBinaryVarCorrectnessConstraints();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -279,20 +406,37 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 		case GipsIntermediatePackage.CONSTRAINT__NAME:
 			setName((String) newValue);
 			return;
-		case GipsIntermediatePackage.CONSTRAINT__ELEMENTWISE:
-			setElementwise((Boolean) newValue);
+		case GipsIntermediatePackage.CONSTRAINT__DEPENDING:
+			setDepending((Boolean) newValue);
 			return;
 		case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
 			setExpression((BoolValueExpression) newValue);
 			return;
 		case GipsIntermediatePackage.CONSTRAINT__CONSTANT:
 			setConstant((Boolean) newValue);
+			return;
+		case GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES:
+			getDependencies().clear();
+			getDependencies().addAll((Collection<? extends Constraint>) newValue);
+			return;
+		case GipsIntermediatePackage.CONSTRAINT__HELPER_VARIABLES:
+			getHelperVariables().clear();
+			getHelperVariables().addAll((Collection<? extends Variable>) newValue);
+			return;
+		case GipsIntermediatePackage.CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS:
+			getRealVarCorrectnessConstraints().clear();
+			getRealVarCorrectnessConstraints().addAll((Collection<? extends RelationalExpression>) newValue);
+			return;
+		case GipsIntermediatePackage.CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS:
+			getBinaryVarCorrectnessConstraints().clear();
+			getBinaryVarCorrectnessConstraints().addAll((Collection<? extends RelationalExpression>) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -309,14 +453,26 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 		case GipsIntermediatePackage.CONSTRAINT__NAME:
 			setName(NAME_EDEFAULT);
 			return;
-		case GipsIntermediatePackage.CONSTRAINT__ELEMENTWISE:
-			setElementwise(ELEMENTWISE_EDEFAULT);
+		case GipsIntermediatePackage.CONSTRAINT__DEPENDING:
+			setDepending(DEPENDING_EDEFAULT);
 			return;
 		case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
 			setExpression((BoolValueExpression) null);
 			return;
 		case GipsIntermediatePackage.CONSTRAINT__CONSTANT:
 			setConstant(CONSTANT_EDEFAULT);
+			return;
+		case GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES:
+			getDependencies().clear();
+			return;
+		case GipsIntermediatePackage.CONSTRAINT__HELPER_VARIABLES:
+			getHelperVariables().clear();
+			return;
+		case GipsIntermediatePackage.CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS:
+			getRealVarCorrectnessConstraints().clear();
+			return;
+		case GipsIntermediatePackage.CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS:
+			getBinaryVarCorrectnessConstraints().clear();
 			return;
 		}
 		super.eUnset(featureID);
@@ -332,12 +488,20 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 		switch (featureID) {
 		case GipsIntermediatePackage.CONSTRAINT__NAME:
 			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-		case GipsIntermediatePackage.CONSTRAINT__ELEMENTWISE:
-			return elementwise != ELEMENTWISE_EDEFAULT;
+		case GipsIntermediatePackage.CONSTRAINT__DEPENDING:
+			return depending != DEPENDING_EDEFAULT;
 		case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
 			return expression != null;
 		case GipsIntermediatePackage.CONSTRAINT__CONSTANT:
 			return constant != CONSTANT_EDEFAULT;
+		case GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES:
+			return dependencies != null && !dependencies.isEmpty();
+		case GipsIntermediatePackage.CONSTRAINT__HELPER_VARIABLES:
+			return helperVariables != null && !helperVariables.isEmpty();
+		case GipsIntermediatePackage.CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS:
+			return realVarCorrectnessConstraints != null && !realVarCorrectnessConstraints.isEmpty();
+		case GipsIntermediatePackage.CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS:
+			return binaryVarCorrectnessConstraints != null && !binaryVarCorrectnessConstraints.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -355,8 +519,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (name: ");
 		result.append(name);
-		result.append(", elementwise: ");
-		result.append(elementwise);
+		result.append(", depending: ");
+		result.append(depending);
 		result.append(", constant: ");
 		result.append(constant);
 		result.append(')');

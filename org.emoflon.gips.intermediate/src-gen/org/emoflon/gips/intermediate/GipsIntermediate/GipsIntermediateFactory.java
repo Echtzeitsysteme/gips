@@ -67,6 +67,15 @@ public interface GipsIntermediateFactory extends EFactory {
 	Mapping createMapping();
 
 	/**
+	 * Returns a new object of class '<em>Variable</em>'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Variable</em>'.
+	 * @generated
+	 */
+	Variable createVariable();
+
+	/**
 	 * Returns a new object of class '<em>Global Constraint</em>'. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -173,6 +182,15 @@ public interface GipsIntermediateFactory extends EFactory {
 	 * @generated
 	 */
 	ArithmeticValue createArithmeticValue();
+
+	/**
+	 * Returns a new object of class '<em>Variable Reference</em>'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Variable Reference</em>'.
+	 * @generated
+	 */
+	VariableReference createVariableReference();
 
 	/**
 	 * Returns a new object of class '<em>Arithmetic Null Literal</em>'. <!--

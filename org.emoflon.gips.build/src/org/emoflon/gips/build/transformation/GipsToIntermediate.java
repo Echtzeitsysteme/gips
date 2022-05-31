@@ -1,6 +1,9 @@
 package org.emoflon.gips.build.transformation;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
@@ -43,12 +46,16 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
@@ -58,11 +65,16 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
+import org.logicng.formulas.Formula;
+import org.logicng.formulas.Literal;
 
 public class GipsToIntermediate {
+	final public static double EPSILON = 0.000001d;
+
 	protected GipsIntermediateFactory factory = GipsIntermediateFactory.eINSTANCE;
 	final protected GipsTransformationData data;
 	final protected TransformerFactory transformationFactory;
+	protected int constraintCounter = 0;
 
 	public GipsToIntermediate(final EditorGTFile gipsSlangFile) {
 		data = new GipsTransformationData(factory.createGipsIntermediateModel(), gipsSlangFile);
@@ -85,6 +97,7 @@ public class GipsToIntermediate {
 		// add all required data types
 		data.model().getVariables().addAll(data.eType2Type().values());
 		data.model().getVariables().addAll(data.ePattern2Pattern().values());
+
 		return data.model();
 	}
 
@@ -139,104 +152,476 @@ public class GipsToIntermediate {
 	}
 
 	protected void transformConstraints() throws Exception {
-		GipsConstraintSplitter splitter = new GipsConstraintSplitter(data);
-		int constraintCounter = 0;
+
 		for (GipsConstraint eConstraint : data.gipsSlangFile().getConstraints()) {
 			if (eConstraint.getExpr() == null || eConstraint.getExpr().getExpr() == null) {
 				continue;
 			}
-			Collection<GipsConstraint> eConstraints = splitter.split(eConstraint);
-			for (GipsConstraint eSubConstraint : eConstraints) {
-				// check primitive or impossible expressions
-				GipsBoolExpr boolExpr = eSubConstraint.getExpr().getExpr();
-				if (boolExpr instanceof GipsBooleanLiteral lit) {
-					if (lit.isLiteral()) {
-						// Ignore this constraint, since it will always be satisfied
-						continue;
-					} else {
-						// This constraint will never be satisfied, hence this is an impossible to solve
-						// problem
-						throw new IllegalArgumentException(
-								"Optimization problem is impossible to solve: One ore more constraints return false by definition.");
+
+			GipsConstraintSplitter splitter = new GipsConstraintSplitter(data, eConstraint);
+			Collection<GipsAnnotatedConstraint> eConstraints = splitter.split();
+
+			for (GipsAnnotatedConstraint eSubConstraint : eConstraints) {
+				switch (eSubConstraint.type()) {
+				case CONJUCTION_OF_LITERALS -> {
+					Constraint dConstraint = createDependencyConstraint(eSubConstraint, constraintCounter);
+					data.model().getConstraints().add(dConstraint);
+					constraintCounter++;
+
+					Map<GipsConstraint, Constraint> transformed = new HashMap<>();
+					Map<GipsConstraint, Variable> constraint2real = new HashMap<>();
+					Map<GipsConstraint, Variable> constraint2binary = new HashMap<>();
+					for (GipsConstraint subConstraint : eSubConstraint.result().values()) {
+						Constraint constraint = transformConstraint(subConstraint);
+						data.model().getConstraints().add(constraint);
+						transformed.put(subConstraint, constraint);
+						dConstraint.getDependencies().add(constraint);
+
+						// TODO: We'll ignore build time constant constraints for now -> This must be
+						// fixed at some point in time.
+						if (constraint.isConstant()) {
+							throw new UnsupportedOperationException(
+									"Negation for constraints that are constant at build time is currently not supported");
+						}
+
+						if (!(constraint.getExpression() instanceof RelationalExpression)) {
+							throw new UnsupportedOperationException(
+									"Negation for constraints that are constant at build time is currently not supported");
+						}
+
+						// Add substitute variable to relation
+						RelationalExpression orginalRelation = (RelationalExpression) constraint.getExpression();
+						Variable realVar = factory.createVariable();
+						realVar.setType(VariableType.REAL);
+						realVar.setName(constraint.getName() + "_substitute_variable");
+						data.model().getVariables().add(realVar);
+						dConstraint.getHelperVariables().add(realVar);
+						constraint2real.put(subConstraint, realVar);
+						boolean realVarNegative = insertSubstituteRealVariable(constraint, orginalRelation, realVar);
+
+						Variable binaryVar = factory.createVariable();
+						binaryVar.setType(VariableType.BINARY);
+						binaryVar.setName(constraint.getName() + "_symbolic_variable");
+						data.model().getVariables().add(binaryVar);
+						dConstraint.getHelperVariables().add(binaryVar);
+						constraint2binary.put(subConstraint, binaryVar);
+
+						// Add semantic correctness constraints
+						// (1) Force symbolic variable correctness
+						insertBinaryVaribaleCorrectnessConstraint(dConstraint, realVar, binaryVar, realVarNegative);
+						// (2) Force substitute variable correctness (via quasi-sos1 constraint)
+						Variable sos1var = insertRealVaribaleCorrectnessConstraint(dConstraint, constraint, realVar,
+								binaryVar, realVarNegative);
+						dConstraint.getHelperVariables().add(sos1var);
 					}
+
+					// Create substitute relational constraint
+					BinaryArithmeticExpression substituteSum = factory.createBinaryArithmeticExpression();
+					substituteSum.setOperator(BinaryArithmeticOperator.ADD);
+
+					BinaryArithmeticExpression currentSum = substituteSum;
+					LinkedList<Formula> subformulas = new LinkedList<>(eSubConstraint.formula().stream().toList());
+					while (!subformulas.isEmpty()) {
+						Formula subformula = subformulas.poll();
+						GipsConstraint splitConstraint = eSubConstraint.result().get(subformula);
+						Variable symbolicVar = constraint2binary.get(splitConstraint);
+						VariableReference varRef = factory.createVariableReference();
+						varRef.setVariable(symbolicVar);
+						if (subformula instanceof Literal lit && lit.phase()) {
+							if (currentSum.getLhs() == null && !subformulas.isEmpty()) {
+								currentSum.setLhs(varRef);
+							} else if (currentSum.getLhs() != null && !subformulas.isEmpty()) {
+								BinaryArithmeticExpression subSum = factory.createBinaryArithmeticExpression();
+								subSum.setOperator(BinaryArithmeticOperator.ADD);
+								currentSum.setRhs(subSum);
+								currentSum = subSum;
+								subSum.setLhs(varRef);
+							} else if (currentSum.getLhs() != null && subformulas.isEmpty()) {
+								currentSum.setRhs(varRef);
+							} else {
+								throw new UnsupportedOperationException(
+										"Disjunction of boolean literals must have more than one literal.");
+							}
+						} else if (subformula instanceof Literal lit && !lit.phase()) {
+							BinaryArithmeticExpression negSum = factory.createBinaryArithmeticExpression();
+							negSum.setOperator(BinaryArithmeticOperator.ADD);
+							DoubleLiteral d1 = factory.createDoubleLiteral();
+							d1.setLiteral(1.0);
+							negSum.setLhs(d1);
+							BinaryArithmeticExpression negation = factory.createBinaryArithmeticExpression();
+							negation.setOperator(BinaryArithmeticOperator.MULTIPLY);
+							DoubleLiteral d2 = factory.createDoubleLiteral();
+							d2.setLiteral(-1.0);
+							negation.setLhs(d2);
+							negation.setRhs(varRef);
+							negSum.setRhs(negation);
+
+							if (currentSum.getLhs() == null && !subformulas.isEmpty()) {
+								currentSum.setLhs(negSum);
+							} else if (currentSum.getLhs() != null && !subformulas.isEmpty()) {
+								BinaryArithmeticExpression subSum = factory.createBinaryArithmeticExpression();
+								subSum.setOperator(BinaryArithmeticOperator.ADD);
+								currentSum.setRhs(subSum);
+								currentSum = subSum;
+								subSum.setLhs(negSum);
+							} else if (currentSum.getLhs() != null && subformulas.isEmpty()) {
+								currentSum.setRhs(negSum);
+							} else {
+								throw new UnsupportedOperationException(
+										"Disjunction of boolean literals must have more than one literal.");
+							}
+						} else {
+							throw new UnsupportedOperationException(
+									"Literals in a boolean expression in CNF-form should not be boolean expressions themselves.");
+						}
+					}
+
+					RelationalExpression substituteRelation = factory.createRelationalExpression();
+					substituteRelation.setOperator(RelationalOperator.GREATER_OR_EQUAL);
+					DoubleLiteral d1 = factory.createDoubleLiteral();
+					d1.setLiteral(1.0);
+					substituteRelation.setRhs(d1);
+					substituteRelation.setLhs(substituteSum);
+					dConstraint.setExpression(substituteRelation);
+
+					// Move constant terms from the non-constant to the constant side
+					dConstraint.setExpression(
+							rewriteMoveConstantTerms((RelationalExpression) dConstraint.getExpression()));
+				}
+				case LITERAL -> {
+					transformConstraint(eSubConstraint.result().values().iterator().next());
+				}
+				case NEGATED_LITERAL -> {
+					Constraint dConstraint = createDependencyConstraint(eSubConstraint, constraintCounter);
+					data.model().getConstraints().add(dConstraint);
+					constraintCounter++;
+
+					Constraint constraint = transformConstraint(eSubConstraint.result().values().iterator().next());
+					// TODO: We'll ignore build time constant constraints for now -> This must be
+					// fixed at some point in time.
+					if (constraint.isConstant()) {
+						throw new UnsupportedOperationException(
+								"Negation for constraints that are constant at build time is currently not supported");
+					}
+
+					if (!(constraint.getExpression() instanceof RelationalExpression)) {
+						throw new UnsupportedOperationException(
+								"Negation for constraints that are constant at build time is currently not supported");
+					}
+
+					data.model().getConstraints().add(constraint);
+					dConstraint.getDependencies().add(constraint);
+
+					// Add substitute variable to produce negation!
+					RelationalExpression orginalRelation = (RelationalExpression) constraint.getExpression();
+					Variable realVar = factory.createVariable();
+					realVar.setType(VariableType.REAL);
+					realVar.setName(constraint.getName() + "_substitute_variable");
+					data.model().getVariables().add(realVar);
+					dConstraint.getHelperVariables().add(realVar);
+					boolean realVarNegative = insertSubstituteRealVariable(constraint, orginalRelation, realVar);
+
+					// Add negation constraint
+					Variable binaryVar = insertNegationConstraint(dConstraint, constraint);
+					dConstraint.getHelperVariables().add(binaryVar);
+					// Move constant terms from the non-constant to the constant side
+					dConstraint.setExpression(
+							rewriteMoveConstantTerms((RelationalExpression) dConstraint.getExpression()));
+
+					// Add semantic correctness constraints
+					// (1) Force symbolic variable correctness
+					insertBinaryVaribaleCorrectnessConstraint(dConstraint, realVar, binaryVar, realVarNegative);
+					// (2) Force substitute variable correctness (via quasi-sos1 constraint)
+					Variable sos1Var = insertRealVaribaleCorrectnessConstraint(dConstraint, constraint, realVar,
+							binaryVar, realVarNegative);
+					dConstraint.getHelperVariables().add(sos1Var);
+				}
+				default -> {
+					throw new IllegalArgumentException("Unknown constraint annotation type.");
 				}
 
-				Constraint constraint = createConstraint(eSubConstraint, constraintCounter);
-				constraintCounter++;
-				constraint.setElementwise(true);
-				data.model().getConstraints().add(constraint);
-				data.eConstraint2Constraint().put(eSubConstraint, constraint);
-
-				RelationalExpressionTransformer transformer = transformationFactory
-						.createRelationalTransformer(constraint);
-				constraint.setExpression(transformer.transform((GipsRelExpr) boolExpr));
-				if (GipsTransformationUtils
-						.isConstantExpression(constraint.getExpression()) == ArithmeticExpressionType.constant) {
-					// Check whether this constraint is constant at ILP problem build time. If true
-					// -> return
-					constraint.setConstant(true);
-					continue;
 				}
 
-				boolean isLhsConst = (GipsTransformationUtils
-						.isConstantExpression(((RelationalExpression) constraint.getExpression())
-								.getLhs()) == ArithmeticExpressionType.constant) ? true : false;
-				boolean isRhsConst = (GipsTransformationUtils
-						.isConstantExpression(((RelationalExpression) constraint.getExpression())
-								.getRhs()) == ArithmeticExpressionType.constant) ? true : false;
-				if (!isLhsConst && !isRhsConst) {
-					// Fix this malformed constraint by subtracting the rhs from the lhs.
-					// E.g.: c: x < y is transformed to c: x - y < 0
-					BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
-					rewrite.setOperator(BinaryArithmeticOperator.SUBTRACT);
-					rewrite.setLhs(((RelationalExpression) constraint.getExpression()).getLhs());
-					rewrite.setRhs(((RelationalExpression) constraint.getExpression()).getRhs());
-					DoubleLiteral lit = factory.createDoubleLiteral();
-					lit.setLiteral(0);
-					((RelationalExpression) constraint.getExpression()).setLhs(rewrite);
-					((RelationalExpression) constraint.getExpression()).setRhs(lit);
-				}
-
-				isLhsConst = (GipsTransformationUtils
-						.isConstantExpression(((RelationalExpression) constraint.getExpression())
-								.getLhs()) == ArithmeticExpressionType.constant) ? true : false;
-
-				// Rewrite the non-constant expression, which will be translated into ILP-Terms,
-				// into a sum of products.
-				if (isLhsConst) {
-					ArithmeticExpression rhs = rewriteToSumOfProducts(
-							((RelationalExpression) constraint.getExpression()).getRhs(), null, null);
-					((RelationalExpression) constraint.getExpression())
-							.setRhs(((RelationalExpression) constraint.getExpression()).getLhs());
-					((RelationalExpression) constraint.getExpression()).setLhs(rhs);
-					GipsTransformationUtils.flipOperator((RelationalExpression) constraint.getExpression());
-				} else {
-					((RelationalExpression) constraint.getExpression()).setLhs(rewriteToSumOfProducts(
-							((RelationalExpression) constraint.getExpression()).getLhs(), null, null));
-				}
-				// Move constant terms from the sum of products to the constant side of the
-				// relational constraint.
-				constraint.setExpression(rewriteMoveConstantTerms((RelationalExpression) constraint.getExpression()));
-
-				// Remove subtractions, e.g.: a - b becomes a + -b
-				if (isLhsConst) {
-					((RelationalExpression) constraint.getExpression()).setRhs(
-							rewriteRemoveSubtractions(((RelationalExpression) constraint.getExpression()).getRhs()));
-				} else {
-					((RelationalExpression) constraint.getExpression()).setLhs(
-							rewriteRemoveSubtractions(((RelationalExpression) constraint.getExpression()).getLhs()));
-				}
-
-				// Final check: Was the context used?
-				if (!GipsTransformationUtils
-						.containsContextExpression(((RelationalExpression) constraint.getExpression()).getRhs())
-						&& !GipsTransformationUtils
-								.containsContextExpression(((RelationalExpression) constraint.getExpression()).getLhs())
-						&& !(constraint instanceof GlobalConstraint)) {
-					throw new IllegalArgumentException("Context must be used at least once per non-global constraint.");
-				}
 			}
 		}
+	}
+
+	protected boolean insertSubstituteRealVariable(final Constraint constraint,
+			final RelationalExpression originalRelation, final Variable realVar) {
+		boolean varNegativeReal = false;
+		ArithmeticExpression varSide = null;
+		boolean leftIsConst = true;
+
+		if (GipsTransformationUtils
+				.isConstantExpression(originalRelation.getLhs()) == ArithmeticExpressionType.constant) {
+			// RHS -> contains variable
+			varSide = originalRelation.getRhs();
+			if (originalRelation.getOperator() == RelationalOperator.LESS
+					|| originalRelation.getOperator() == RelationalOperator.LESS_OR_EQUAL
+					|| originalRelation.getOperator() == RelationalOperator.EQUAL
+					|| originalRelation.getOperator() == RelationalOperator.NOT_EQUAL) {
+				varNegativeReal = false;
+			} else {
+				varNegativeReal = true;
+			}
+		} else {
+			// LHS -> constains variable
+			varSide = originalRelation.getLhs();
+			if (originalRelation.getOperator() == RelationalOperator.LESS
+					|| originalRelation.getOperator() == RelationalOperator.LESS_OR_EQUAL
+					|| originalRelation.getOperator() == RelationalOperator.EQUAL
+					|| originalRelation.getOperator() == RelationalOperator.NOT_EQUAL) {
+				varNegativeReal = true;
+			} else {
+				varNegativeReal = false;
+			}
+			leftIsConst = false;
+		}
+
+		BinaryArithmeticExpression sum = factory.createBinaryArithmeticExpression();
+		sum.setOperator(BinaryArithmeticOperator.ADD);
+		sum.setLhs(varSide);
+		VariableReference realVarRef = factory.createVariableReference();
+		realVarRef.setVariable(realVar);
+		sum.setRhs(realVarRef);
+		if (leftIsConst) {
+			originalRelation.setRhs(sum);
+		} else {
+			originalRelation.setLhs(sum);
+		}
+
+		return varNegativeReal;
+	}
+
+	protected Variable insertNegationConstraint(final Constraint dConstraint, final Constraint constraint) {
+		RelationalExpression negationRelation = factory.createRelationalExpression();
+		negationRelation.setOperator(RelationalOperator.GREATER_OR_EQUAL);
+		DoubleLiteral dl = factory.createDoubleLiteral();
+		dl.setLiteral(1.0);
+		negationRelation.setRhs(dl);
+		BinaryArithmeticExpression sum = factory.createBinaryArithmeticExpression();
+		sum.setOperator(BinaryArithmeticOperator.ADD);
+		DoubleLiteral dl2 = factory.createDoubleLiteral();
+		dl2.setLiteral(1.0);
+		sum.setLhs(dl2);
+		BinaryArithmeticExpression prod = factory.createBinaryArithmeticExpression();
+		prod.setOperator(BinaryArithmeticOperator.MULTIPLY);
+		DoubleLiteral dl3 = factory.createDoubleLiteral();
+		dl3.setLiteral(-1.0);
+		prod.setLhs(dl3);
+		Variable binaryVar = factory.createVariable();
+		data.model().getVariables().add(binaryVar);
+		binaryVar.setType(VariableType.BINARY);
+		binaryVar.setName(constraint.getName() + "_symbolic_variable");
+		VariableReference binaryVarRef = factory.createVariableReference();
+		binaryVarRef.setVariable(binaryVar);
+		prod.setRhs(binaryVarRef);
+		sum.setRhs(prod);
+		negationRelation.setLhs(sum);
+		dConstraint.setExpression(negationRelation);
+
+		return binaryVar;
+	}
+
+	protected void insertBinaryVaribaleCorrectnessConstraint(final Constraint dConstraint, final Variable realVar,
+			final Variable binaryVar, boolean negativeReal) {
+		RelationalExpression relation = factory.createRelationalExpression();
+		relation.setOperator(RelationalOperator.GREATER_OR_EQUAL);
+		DoubleLiteral dl = factory.createDoubleLiteral();
+		if (negativeReal) {
+			dl.setLiteral(-EPSILON);
+		} else {
+			dl.setLiteral(EPSILON);
+		}
+		relation.setRhs(dl);
+
+		VariableReference realVarRef = factory.createVariableReference();
+		realVarRef.setVariable(realVar);
+		VariableReference binaryVarRef = factory.createVariableReference();
+		binaryVarRef.setVariable(binaryVar);
+
+		BinaryArithmeticExpression sum = factory.createBinaryArithmeticExpression();
+		sum.setOperator(BinaryArithmeticOperator.ADD);
+		if (negativeReal) {
+			BinaryArithmeticExpression prod = factory.createBinaryArithmeticExpression();
+			prod.setOperator(BinaryArithmeticOperator.MULTIPLY);
+			DoubleLiteral dl2 = factory.createDoubleLiteral();
+			dl2.setLiteral(-1.0);
+			prod.setLhs(dl2);
+			prod.setRhs(binaryVarRef);
+			sum.setLhs(prod);
+		} else {
+			sum.setLhs(binaryVarRef);
+		}
+		sum.setRhs(realVarRef);
+		relation.setLhs(sum);
+		dConstraint.getBinaryVarCorrectnessConstraints().add(relation);
+	}
+
+	protected Variable insertRealVaribaleCorrectnessConstraint(final Constraint dConstraint,
+			final Constraint constraint, final Variable realVar, final Variable binaryVar, boolean negativeReal) {
+		Variable symbolicSos1Var = factory.createVariable();
+		symbolicSos1Var.setType(VariableType.BINARY);
+		symbolicSos1Var.setName(constraint.getName() + "_symbolic_sos1_variable");
+		data.model().getVariables().add(symbolicSos1Var);
+
+		// Part 1. of the quasi-sos1 constraint
+		RelationalExpression relation = factory.createRelationalExpression();
+		relation.setOperator(RelationalOperator.GREATER_OR_EQUAL);
+		DoubleLiteral dl = factory.createDoubleLiteral();
+		if (negativeReal) {
+			dl.setLiteral(-EPSILON);
+		} else {
+			dl.setLiteral(EPSILON);
+		}
+		relation.setRhs(dl);
+
+		BinaryArithmeticExpression sum = factory.createBinaryArithmeticExpression();
+		sum.setOperator(BinaryArithmeticOperator.ADD);
+
+		BinaryArithmeticExpression prod1 = factory.createBinaryArithmeticExpression();
+		prod1.setOperator(BinaryArithmeticOperator.MULTIPLY);
+		DoubleLiteral d2 = factory.createDoubleLiteral();
+		if (negativeReal) {
+			d2.setLiteral(-Double.MAX_VALUE);
+		} else {
+			d2.setLiteral(Double.MAX_VALUE);
+		}
+		prod1.setLhs(d2);
+		VariableReference symbolicVarRef = factory.createVariableReference();
+		symbolicVarRef.setVariable(symbolicSos1Var);
+		prod1.setRhs(symbolicVarRef);
+		sum.setLhs(prod1);
+
+		BinaryArithmeticExpression prod2 = factory.createBinaryArithmeticExpression();
+		prod2.setOperator(BinaryArithmeticOperator.MULTIPLY);
+		DoubleLiteral d3 = factory.createDoubleLiteral();
+		d3.setLiteral(-1.0);
+		prod2.setLhs(d3);
+		VariableReference realVarRef = factory.createVariableReference();
+		realVarRef.setVariable(realVar);
+		prod2.setRhs(realVarRef);
+		sum.setRhs(prod2);
+		relation.setLhs(sum);
+		dConstraint.getRealVarCorrectnessConstraints().add(relation);
+
+		// Part 2. of the quasi-sos1 constraint
+		RelationalExpression sos1Relation = factory.createRelationalExpression();
+		sos1Relation.setOperator(RelationalOperator.EQUAL);
+		DoubleLiteral d4 = factory.createDoubleLiteral();
+		d4.setLiteral(1.0);
+		sos1Relation.setRhs(d4);
+
+		BinaryArithmeticExpression sum2 = factory.createBinaryArithmeticExpression();
+		sum2.setOperator(BinaryArithmeticOperator.ADD);
+
+		VariableReference symbolicVarRef2 = factory.createVariableReference();
+		symbolicVarRef2.setVariable(symbolicSos1Var);
+		sum2.setLhs(symbolicVarRef2);
+
+		VariableReference binaryVarRef = factory.createVariableReference();
+		binaryVarRef.setVariable(binaryVar);
+		sum2.setRhs(binaryVarRef);
+
+		sos1Relation.setLhs(sum2);
+		dConstraint.getRealVarCorrectnessConstraints().add(sos1Relation);
+
+		return symbolicSos1Var;
+	}
+
+	protected Constraint transformConstraint(final GipsConstraint subConstraint) throws Exception {
+		// check primitive or impossible expressions
+		GipsBoolExpr boolExpr = subConstraint.getExpr().getExpr();
+		if (boolExpr instanceof GipsBooleanLiteral lit) {
+			if (lit.isLiteral()) {
+				// Ignore this constraint, since it will always be satisfied
+				return null;
+			} else {
+				// This constraint will never be satisfied, hence this is an impossible to solve
+				// problem
+				throw new IllegalArgumentException(
+						"Optimization problem is impossible to solve: One ore more constraints return false by definition.");
+			}
+		}
+
+		Constraint constraint = createConstraint(subConstraint, constraintCounter);
+		constraintCounter++;
+		constraint.setDepending(false);
+		data.model().getConstraints().add(constraint);
+		data.eConstraint2Constraint().put(subConstraint, constraint);
+
+		RelationalExpressionTransformer transformer = transformationFactory.createRelationalTransformer(constraint);
+		constraint.setExpression(transformer.transform((GipsRelExpr) boolExpr));
+		if (GipsTransformationUtils
+				.isConstantExpression(constraint.getExpression()) == ArithmeticExpressionType.constant) {
+			// Check whether this constraint is constant at ILP problem build time. If true
+			// -> return
+			constraint.setConstant(true);
+			return constraint;
+		}
+
+		boolean isLhsConst = (GipsTransformationUtils.isConstantExpression(
+				((RelationalExpression) constraint.getExpression()).getLhs()) == ArithmeticExpressionType.constant)
+						? true
+						: false;
+		boolean isRhsConst = (GipsTransformationUtils.isConstantExpression(
+				((RelationalExpression) constraint.getExpression()).getRhs()) == ArithmeticExpressionType.constant)
+						? true
+						: false;
+		if (!isLhsConst && !isRhsConst) {
+			// Fix this malformed constraint by subtracting the rhs from the lhs.
+			// E.g.: c: x < y is transformed to c: x - y < 0
+			BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
+			rewrite.setOperator(BinaryArithmeticOperator.SUBTRACT);
+			rewrite.setLhs(((RelationalExpression) constraint.getExpression()).getLhs());
+			rewrite.setRhs(((RelationalExpression) constraint.getExpression()).getRhs());
+			DoubleLiteral lit = factory.createDoubleLiteral();
+			lit.setLiteral(0);
+			((RelationalExpression) constraint.getExpression()).setLhs(rewrite);
+			((RelationalExpression) constraint.getExpression()).setRhs(lit);
+		}
+
+		isLhsConst = (GipsTransformationUtils.isConstantExpression(
+				((RelationalExpression) constraint.getExpression()).getLhs()) == ArithmeticExpressionType.constant)
+						? true
+						: false;
+
+		// Rewrite the non-constant expression, which will be translated into ILP-Terms,
+		// into a sum of products.
+		if (isLhsConst) {
+			ArithmeticExpression rhs = rewriteToSumOfProducts(
+					((RelationalExpression) constraint.getExpression()).getRhs(), null, null);
+			((RelationalExpression) constraint.getExpression())
+					.setRhs(((RelationalExpression) constraint.getExpression()).getLhs());
+			((RelationalExpression) constraint.getExpression()).setLhs(rhs);
+			GipsTransformationUtils.flipOperator((RelationalExpression) constraint.getExpression());
+		} else {
+			((RelationalExpression) constraint.getExpression()).setLhs(
+					rewriteToSumOfProducts(((RelationalExpression) constraint.getExpression()).getLhs(), null, null));
+		}
+		// Move constant terms from the sum of products to the constant side of the
+		// relational constraint.
+		constraint.setExpression(rewriteMoveConstantTerms((RelationalExpression) constraint.getExpression()));
+
+		// Remove subtractions, e.g.: a - b becomes a + -b
+		if (isLhsConst) {
+			((RelationalExpression) constraint.getExpression())
+					.setRhs(rewriteRemoveSubtractions(((RelationalExpression) constraint.getExpression()).getRhs()));
+		} else {
+			((RelationalExpression) constraint.getExpression())
+					.setLhs(rewriteRemoveSubtractions(((RelationalExpression) constraint.getExpression()).getLhs()));
+		}
+
+		// Final check: Was the context used?
+		if (!GipsTransformationUtils
+				.containsContextExpression(((RelationalExpression) constraint.getExpression()).getRhs())
+				&& !GipsTransformationUtils
+						.containsContextExpression(((RelationalExpression) constraint.getExpression()).getLhs())
+				&& !(constraint instanceof GlobalConstraint)) {
+			throw new IllegalArgumentException("Context must be used at least once per non-global constraint.");
+		}
+
+		return constraint;
 	}
 
 	protected void transformObjectives() throws Exception {
@@ -317,6 +702,34 @@ public class GipsToIntermediate {
 		} else {
 			GlobalConstraint constraint = factory.createGlobalConstraint();
 			constraint.setName("GlobalConstraint" + counter);
+			return constraint;
+		}
+	}
+
+	protected Constraint createDependencyConstraint(final GipsAnnotatedConstraint eConstraint, int counter) {
+		if (eConstraint.input().getContext() instanceof GipsMappingContext mapping) {
+			MappingConstraint constraint = factory.createMappingConstraint();
+			constraint.setName("DependingMappingConstraint" + counter + "On" + mapping.getMapping().getName());
+			constraint.setMapping(data.eMapping2Mapping().get(mapping.getMapping()));
+			constraint.setDepending(true);
+			return constraint;
+		} else if (eConstraint.input().getContext() instanceof GipsPatternContext pattern) {
+			PatternConstraint constraint = factory.createPatternConstraint();
+			constraint.setName("DependingPatternConstraint" + counter + "On" + pattern.getPattern().getName());
+			constraint.setPattern(data.getPattern(pattern.getPattern()));
+			constraint.setDepending(true);
+			return constraint;
+		} else if (eConstraint.input().getContext() instanceof GipsTypeContext type) {
+			TypeConstraint constraint = factory.createTypeConstraint();
+			constraint.setName("DependingTypeConstraint" + counter + "On" + type.getType().getName());
+			Type varType = data.getType((EClass) type.getType());
+			constraint.setDepending(true);
+			constraint.setModelType(varType);
+			return constraint;
+		} else {
+			GlobalConstraint constraint = factory.createGlobalConstraint();
+			constraint.setName("DependingGlobalConstraint" + counter);
+			constraint.setDepending(true);
 			return constraint;
 		}
 	}

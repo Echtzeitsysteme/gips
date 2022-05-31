@@ -10,83 +10,104 @@ import org.eclipse.emf.common.util.Enumerator;
 
 /**
  * <!-- begin-user-doc --> A representation of the literals of the enumeration
- * '<em><b>ILP Solver Type</b></em>', and utility methods for working with them.
+ * '<em><b>Variable Type</b></em>', and utility methods for working with them.
  * <!-- end-user-doc -->
  * 
- * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPSolverType()
+ * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getVariableType()
  * @model
  * @generated
  */
-public enum ILPSolverType implements Enumerator {
+public enum VariableType implements Enumerator {
 	/**
-	 * The '<em><b>GUROBI</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * The '<em><b>BINARY</b></em>' literal object. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see #GUROBI_VALUE
+	 * @see #BINARY_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	GUROBI(0, "GUROBI", "GUROBI"),
+	BINARY(0, "BINARY", "BINARY"),
 
 	/**
-	 * The '<em><b>GLPK</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * The '<em><b>INTEGER</b></em>' literal object. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see #GLPK_VALUE
+	 * @see #INTEGER_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	GLPK(1, "GLPK", "GLPK");
+	INTEGER(1, "INTEGER", "INTEGER"),
 
 	/**
-	 * The '<em><b>GUROBI</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * The '<em><b>REAL</b></em>' literal object. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see #GUROBI
+	 * @see #REAL_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	REAL(2, "REAL", "REAL");
+
+	/**
+	 * The '<em><b>BINARY</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see #BINARY
 	 * @model
 	 * @generated
 	 * @ordered
 	 */
-	public static final int GUROBI_VALUE = 0;
+	public static final int BINARY_VALUE = 0;
 
 	/**
-	 * The '<em><b>GLPK</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * The '<em><b>INTEGER</b></em>' literal value. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @see #GLPK
+	 * @see #INTEGER
 	 * @model
 	 * @generated
 	 * @ordered
 	 */
-	public static final int GLPK_VALUE = 1;
+	public static final int INTEGER_VALUE = 1;
 
 	/**
-	 * An array of all the '<em><b>ILP Solver Type</b></em>' enumerators. <!--
+	 * The '<em><b>REAL</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see #REAL
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
+	public static final int REAL_VALUE = 2;
+
+	/**
+	 * An array of all the '<em><b>Variable Type</b></em>' enumerators. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	private static final ILPSolverType[] VALUES_ARRAY = new ILPSolverType[] { GUROBI, GLPK, };
+	private static final VariableType[] VALUES_ARRAY = new VariableType[] { BINARY, INTEGER, REAL, };
 
 	/**
-	 * A public read-only list of all the '<em><b>ILP Solver Type</b></em>'
+	 * A public read-only list of all the '<em><b>Variable Type</b></em>'
 	 * enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	public static final List<ILPSolverType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+	public static final List<VariableType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
-	 * Returns the '<em><b>ILP Solver Type</b></em>' literal with the specified
+	 * Returns the '<em><b>Variable Type</b></em>' literal with the specified
 	 * literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param literal the literal.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
-	public static ILPSolverType get(String literal) {
+	public static VariableType get(String literal) {
 		for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-			ILPSolverType result = VALUES_ARRAY[i];
+			VariableType result = VALUES_ARRAY[i];
 			if (result.toString().equals(literal)) {
 				return result;
 			}
@@ -95,16 +116,16 @@ public enum ILPSolverType implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>ILP Solver Type</b></em>' literal with the specified
-	 * name. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the '<em><b>Variable Type</b></em>' literal with the specified name.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param name the name.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
-	public static ILPSolverType getByName(String name) {
+	public static VariableType getByName(String name) {
 		for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-			ILPSolverType result = VALUES_ARRAY[i];
+			VariableType result = VALUES_ARRAY[i];
 			if (result.getName().equals(name)) {
 				return result;
 			}
@@ -113,19 +134,21 @@ public enum ILPSolverType implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>ILP Solver Type</b></em>' literal with the specified
+	 * Returns the '<em><b>Variable Type</b></em>' literal with the specified
 	 * integer value. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value the integer value.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
-	public static ILPSolverType get(int value) {
+	public static VariableType get(int value) {
 		switch (value) {
-		case GUROBI_VALUE:
-			return GUROBI;
-		case GLPK_VALUE:
-			return GLPK;
+		case BINARY_VALUE:
+			return BINARY;
+		case INTEGER_VALUE:
+			return INTEGER;
+		case REAL_VALUE:
+			return REAL;
 		}
 		return null;
 	}
@@ -157,7 +180,7 @@ public enum ILPSolverType implements Enumerator {
 	 * 
 	 * @generated
 	 */
-	private ILPSolverType(int value, String name, String literal) {
+	private VariableType(int value, String name, String literal) {
 		this.value = value;
 		this.name = name;
 		this.literal = literal;
@@ -201,4 +224,4 @@ public enum ILPSolverType implements Enumerator {
 		return literal;
 	}
 
-} // ILPSolverType
+} // VariableType

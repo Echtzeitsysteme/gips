@@ -67,6 +67,7 @@ public enum BinaryArithmeticOperator implements Enumerator {
 	 * @ordered
 	 */
 	POW(4, "POW", "POW"),
+
 	/**
 	 * The '<em><b>LOG</b></em>' literal object. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->

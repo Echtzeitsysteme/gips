@@ -60,6 +60,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Type
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamContainsOperation
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 
 abstract class ConstraintTemplate <CONTEXT extends Constraint> extends GeneratorTemplate<CONTEXT> {
 
@@ -67,7 +68,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 	public val builderMethodNames = new HashSet<String>
 	public val builderMethods = new HashMap<EObject,String>
 	public val builderMethodDefinitions = new HashMap<EObject,String>
-	public val builderMethodCalls = new LinkedList<String>
+	public val builderMethodCalls2 = new LinkedList<String>
 
 	new(TemplateData data, CONTEXT context) {
 		super(data, context)
@@ -109,15 +110,17 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 	
 	def String generateComplexConstraint(ArithmeticExpression constExpr, ArithmeticExpression dynamicExpr);
 	
+	def String generateDependencyConstraints();
+	
 	def String generateConstTermBuilder(ArithmeticExpression constExpr) {
 		return '''«parseExpression(constExpr, ExpressionContext.constConstraint)»'''
 	}
 	
-	def void generateVariableTermBuilder(ArithmeticExpression expr) {
+	def void generateVariableTermBuilder(ArithmeticExpression expr, LinkedList<String> methodCalls) {
 		if(expr instanceof BinaryArithmeticExpression) {
 			if(expr.operator == BinaryArithmeticOperator.ADD) {
-				generateVariableTermBuilder(expr.lhs)
-				generateVariableTermBuilder(expr.rhs)
+				generateVariableTermBuilder(expr.lhs, methodCalls)
+				generateVariableTermBuilder(expr.rhs, methodCalls)
 			} else if(expr.operator == BinaryArithmeticOperator.SUBTRACT) {
 				throw new UnsupportedOperationException("Code generator does not support subtraction expressions.");
 			} else {
@@ -125,42 +128,47 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 				if(variable.size != 1)
 					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 				
-				val builderMethodName = generateBuilder(expr)
-				val instruction = '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable.iterator.next)», «builderMethodName»(context)));'''
-				builderMethodCalls.add(instruction)
+				val builderMethodName = generateBuilder(expr, methodCalls)
+				val instruction = '''terms.add(new ILPTerm(«getVariable(variable.iterator.next)», «builderMethodName»(context)));'''
+				methodCalls.add(instruction)
 			}
 		} else if(expr instanceof UnaryArithmeticExpression) {
 				val variable = GipsTransformationUtils.extractVariable(expr);
 				if(variable.size != 1)
 					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 				
-				val builderMethodName = generateBuilder(expr)
-				val instruction = '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable.iterator.next)», «builderMethodName»(context)));'''
-				builderMethodCalls.add(instruction)
+				val builderMethodName = generateBuilder(expr, methodCalls)
+				val instruction = '''terms.add(new ILPTerm(«getVariable(variable.iterator.next)», «builderMethodName»(context)));'''
+				methodCalls.add(instruction)
 		} else if(expr instanceof ArithmeticValue) {
-			generateBuilder(expr.value)
+			generateBuilder(expr.value, methodCalls)
+		} else if(expr instanceof VariableReference) {
+			val instruction = '''terms.add(new ILPTerm(engine.getNonMappingVariable(«getAdditionalVariableName(expr)»), 1.0));'''
+			methodCalls.add(instruction)
 		} else {
 			throw new IllegalAccessException("Ilp term may not be constant")
 		}
 	}
 	
-	def String getContextVariable(VariableSet variable);
+	def String getVariable(VariableSet variable);
 	
-	def void generateBuilder(ValueExpression expr);
+	def String getAdditionalVariableName(VariableReference varRef);
 	
-	def String generateBuilder(BinaryArithmeticExpression expr);
+	def void generateBuilder(ValueExpression expr, LinkedList<String> methodCalls);
 	
-	def String generateBuilder(UnaryArithmeticExpression expr);
+	def String generateBuilder(BinaryArithmeticExpression expr, LinkedList<String> methodCalls);
 	
-	def String generateBuilder(MappingSumExpression expr);
+	def String generateBuilder(UnaryArithmeticExpression expr, LinkedList<String> methodCalls);
 	
-	def String generateBuilder(ContextSumExpression expr);
+	def String generateBuilder(MappingSumExpression expr, LinkedList<String> methodCalls);
 	
-	def String generateForeignBuilder(TypeSumExpression expr);
+	def String generateBuilder(ContextSumExpression expr, LinkedList<String> methodCalls);
 	
-	def String generateForeignBuilder(PatternSumExpression expr);
+	def String generateForeignBuilder(TypeSumExpression expr, LinkedList<String> methodCalls);
 	
-	def String generateForeignBuilder(MappingSumExpression expr);
+	def String generateForeignBuilder(PatternSumExpression expr, LinkedList<String> methodCalls);
+	
+	def String generateForeignBuilder(MappingSumExpression expr, LinkedList<String> methodCalls);
 	
 	def String parseExpression(ArithmeticExpression expr, ExpressionContext contextType) {
 		if(expr instanceof BinaryArithmeticExpression) {
@@ -213,7 +221,11 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			} else {
 				return '''null'''
 			}
-		} else {
+		} else if(expr instanceof VariableReference) {
+			//This should have been taken care of already. -> Constant 1 doesn't hurt... 
+//			return '''engine.getNonMappingVariable(«getAdditionalVariableName(expr)»)'''
+			return '''1.0'''
+		}  else {
 			val value = expr as ArithmeticValue
 			switch(contextType) {
 				case constConstraint: {

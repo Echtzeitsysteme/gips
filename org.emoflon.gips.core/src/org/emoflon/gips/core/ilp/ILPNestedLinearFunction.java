@@ -29,7 +29,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget;
  *                      * term.constant ) + Sum_{cterm in func.constants} (
  *                      cterm.constant ) )
  */
-public record ILPNestedLinearFunction<T extends Number> (List<ILPWeightedLinearFunction<T>> linearFunctions,
-		List<ILPConstant<Double>> constants, ObjectiveTarget goal) {
+public record ILPNestedLinearFunction(List<ILPWeightedLinearFunction> linearFunctions, List<ILPConstant> constants,
+		ObjectiveTarget goal) {
 
 }

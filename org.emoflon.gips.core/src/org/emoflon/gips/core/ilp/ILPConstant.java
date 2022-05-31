@@ -1,5 +1,5 @@
 package org.emoflon.gips.core.ilp;
 
-public record ILPConstant<W extends Number> (W weight) {
+public record ILPConstant(double weight) {
 
 }

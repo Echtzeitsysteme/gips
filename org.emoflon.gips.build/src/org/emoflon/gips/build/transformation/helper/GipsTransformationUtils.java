@@ -53,6 +53,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
 
 public final class GipsTransformationUtils {
@@ -177,6 +178,8 @@ public final class GipsTransformationUtils {
 			return isConstantExpression(unary.getExpression());
 		} else if (expr instanceof ArithmeticLiteral) {
 			return ArithmeticExpressionType.constant;
+		} else if (expr instanceof VariableReference) {
+			return ArithmeticExpressionType.variableScalar;
 		} else {
 			ArithmeticValue value = (ArithmeticValue) expr;
 			return isConstantExpression(value.getValue());
@@ -308,6 +311,8 @@ public final class GipsTransformationUtils {
 			return containsContextExpression(unary.getExpression());
 		} else if (expr instanceof ArithmeticLiteral) {
 			return false;
+		} else if (expr instanceof VariableReference) {
+			return false;
 		} else {
 			ArithmeticValue value = (ArithmeticValue) expr;
 			return containsContextExpression(value.getValue());
@@ -415,6 +420,10 @@ public final class GipsTransformationUtils {
 			return extractVariable(unary.getExpression());
 		} else if (expr instanceof ArithmeticLiteral) {
 			return new HashSet<>();
+		} else if (expr instanceof VariableReference varRef) {
+			Set<VariableSet> variables = new HashSet<>();
+			variables.add(varRef.getVariable());
+			return variables;
 		} else {
 			ArithmeticValue value = (ArithmeticValue) expr;
 			return extractVariable(value.getValue());
@@ -512,6 +521,8 @@ public final class GipsTransformationUtils {
 		} else if (expr instanceof UnaryArithmeticExpression unary) {
 			return extractObjective(unary.getExpression());
 		} else if (expr instanceof ArithmeticLiteral) {
+			return new HashSet<>();
+		} else if (expr instanceof VariableReference) {
 			return new HashSet<>();
 		} else {
 			ArithmeticValue value = (ArithmeticValue) expr;

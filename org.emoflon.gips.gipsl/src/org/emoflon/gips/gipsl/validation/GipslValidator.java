@@ -126,6 +126,7 @@ public class GipslValidator extends AbstractGipslValidator {
 	// Other errors for types
 	public static final String OBJECTIVE_VALUE_IS_ZERO_MESSAGE = "Objective '%s' can be removed because its value is 0.";
 
+	public static final String CONSTRAINT_EMPTY_MESSAGE = "Constraint is empty.";
 	public static final String CONSTRAINT_EVAL_NOT_BOOLEAN_MESSAGE = "Constraint does not evaluate to a boolean";
 	public static final String CONSTRAINT_EVAL_LITERAL_MESSAGE = "Constraint is always '%s'.";
 
@@ -328,6 +329,24 @@ public class GipslValidator extends AbstractGipslValidator {
 	 */
 	@Check
 	public void checkConstraint(final GipsConstraint constraint) {
+		if (constraint.getExpr() == null) {
+			error( //
+					String.format(CONSTRAINT_EMPTY_MESSAGE), //
+					constraint, //
+					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
+			);
+			return;
+		}
+
+		if (constraint.getExpr().getExpr() == null) {
+			error( //
+					String.format(CONSTRAINT_EMPTY_MESSAGE), //
+					constraint, //
+					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
+			);
+			return;
+		}
+
 		// Trigger validation of boolean expression
 		getEvalTypeFromBoolExpr(constraint.getExpr().getExpr());
 
@@ -563,11 +582,21 @@ public class GipslValidator extends AbstractGipslValidator {
 			leftSelf = containsSelf(relExpr.getLeft(), type);
 			rightSelf = containsSelf(relExpr.getRight(), type);
 		} else if (expr instanceof GipsBoolExpr) {
-			if (!(expr instanceof GipsBooleanLiteral)) {
-				final GipsBinaryBoolExpr binExpr = (GipsBinaryBoolExpr) expr;
-				leftSelf = containsSelf(binExpr.getLeft(), type);
-				rightSelf = containsSelf(binExpr.getRight(), type);
+			if (expr instanceof GipsBinaryBoolExpr binaryExpr) {
+				leftSelf = containsSelf(binaryExpr.getLeft(), type);
+				rightSelf = containsSelf(binaryExpr.getRight(), type);
+			} else if (expr instanceof GipsUnaryBoolExpr unaryExpr) {
+				leftSelf = containsSelf(unaryExpr.getOperand(), type);
+				rightSelf = leftSelf;
+			} else {
+				leftSelf = rightSelf = false;
 			}
+		} else if (expr == null) {
+			error( //
+					String.format(CONSTRAINT_EMPTY_MESSAGE), //
+					constraint, //
+					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
+			);
 		} else {
 			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		}
@@ -747,13 +776,16 @@ public class GipslValidator extends AbstractGipslValidator {
 			leftDynamic = validateArithExprDynamic(relExpr.getLeft());
 			rightDynamic = validateArithExprDynamic(relExpr.getRight());
 		} else if (expr instanceof GipsBoolExpr) {
-			// Special case: Complete boolean expression is just a literal
-			if (expr instanceof GipsBooleanLiteral) {
+			if (expr instanceof GipsBinaryBoolExpr binExpr) {
+				leftDynamic = validateBoolExprDynamic(binExpr.getLeft());
+				rightDynamic = validateBoolExprDynamic(binExpr.getRight());
+			} else if (expr instanceof GipsUnaryBoolExpr unaryExpr) {
+				leftDynamic = validateBoolExprDynamic(unaryExpr.getOperand());
+				rightDynamic = leftDynamic;
+			} else {
+				// Special case: Complete boolean expression is just a literal
 				return;
 			}
-			final GipsBinaryBoolExpr binExpr = (GipsBinaryBoolExpr) expr;
-			leftDynamic = validateBoolExprDynamic(binExpr.getLeft());
-			rightDynamic = validateBoolExprDynamic(binExpr.getRight());
 		} else {
 			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		}

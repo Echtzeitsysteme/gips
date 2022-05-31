@@ -12,9 +12,9 @@ public abstract class GipsGlobalObjective {
 
 	final protected GipsEngine engine;
 	final protected GlobalObjective objective;
-	protected ILPNestedLinearFunction<Integer> globalObjective;
-	protected List<ILPWeightedLinearFunction<Integer>> weightedFunctions;
-	protected List<ILPConstant<Double>> constantTerms;
+	protected ILPNestedLinearFunction globalObjective;
+	protected List<ILPWeightedLinearFunction> weightedFunctions;
+	protected List<ILPConstant> constantTerms;
 
 	public GipsGlobalObjective(final GipsEngine engine, final GlobalObjective objective) {
 		this.engine = engine;
@@ -27,10 +27,10 @@ public abstract class GipsGlobalObjective {
 		constantTerms = new LinkedList<>();
 		buildLocalObjectives();
 		buildTerms();
-		globalObjective = new ILPNestedLinearFunction<>(weightedFunctions, constantTerms, objective.getTarget());
+		globalObjective = new ILPNestedLinearFunction(weightedFunctions, constantTerms, objective.getTarget());
 	}
 
-	public ILPNestedLinearFunction<? extends Number> getObjectiveFunction() {
+	public ILPNestedLinearFunction getObjectiveFunction() {
 		return globalObjective;
 	}
 

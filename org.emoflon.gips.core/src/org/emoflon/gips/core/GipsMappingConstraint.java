@@ -2,15 +2,20 @@ package org.emoflon.gips.core;
 
 import java.util.List;
 
+import org.emoflon.gips.core.ilp.ILPBinaryVariable;
 import org.emoflon.gips.core.ilp.ILPConstraint;
+import org.emoflon.gips.core.ilp.ILPIntegerVariable;
+import org.emoflon.gips.core.ilp.ILPRealVariable;
 import org.emoflon.gips.core.ilp.ILPTerm;
+import org.emoflon.gips.core.ilp.ILPVariable;
 import org.emoflon.gips.core.validation.GipsValidationEventType;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 
 public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT extends GipsMapping>
-		extends GipsConstraint<ENGINE, MappingConstraint, CONTEXT, Integer> {
+		extends GipsConstraint<ENGINE, MappingConstraint, CONTEXT> {
 
 	final protected GipsMapper<CONTEXT> mapper;
 
@@ -23,15 +28,23 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 	@Override
 	public void buildConstraints() {
 		mapper.getMappings().values().parallelStream().forEach(context -> {
-			final ILPConstraint<Integer> candidate = buildConstraint(context);
+			final ILPConstraint candidate = buildConstraint(context);
 			if (candidate != null) {
 				ilpConstraints.put(context, candidate);
 			}
 		});
+
+		if (constraint.isDepending()) {
+			mapper.getMappings().values().parallelStream().forEach(context -> {
+				final List<ILPConstraint> constraints = buildAdditionalConstraints(context);
+				additionalIlpConstraints.put(context, constraints);
+			});
+
+		}
 	}
 
 	@Override
-	public ILPConstraint<Integer> buildConstraint(final CONTEXT context) {
+	public ILPConstraint buildConstraint(final CONTEXT context) {
 		if (isConstant)
 			throw new IllegalArgumentException("Mapping constraints must not be constant.");
 
@@ -39,10 +52,10 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 			throw new IllegalArgumentException("Boolean values can not be transformed to ilp relational constraints.");
 
 		double constTerm = buildConstantRhs(context);
-		List<ILPTerm<Integer, Double>> terms = buildVariableLhs(context);
+		List<ILPTerm> terms = buildVariableLhs(context);
 		RelationalOperator operator = ((RelationalExpression) constraint.getExpression()).getOperator();
 		if (!terms.isEmpty())
-			return new ILPConstraint<>(terms, operator, constTerm);
+			return new ILPConstraint(terms, operator, constTerm);
 
 		// If the terms list is empty, no suitable mapping candidates are present in the
 		// model. Therefore, zero variables are created, which in turn, can only result
@@ -61,7 +74,37 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 					sb.toString());
 		}
 
+		// Remove possible additional variables
+		additionalVariables.values().forEach(variable -> engine.removeNonMappingVariable(variable));
+		additionalVariables.clear();
+
 		return null;
+	}
+
+	@Override
+	public void calcAdditionalVariables() {
+		for (Variable variable : constraint.getHelperVariables()) {
+			for (CONTEXT context : mapper.getMappings().values()) {
+				ILPVariable<?> ilpVar = switch (variable.getType()) {
+				case BINARY -> {
+					yield new ILPBinaryVariable(context.getName() + "->" + variable.getName());
+				}
+				case INTEGER -> {
+					yield new ILPIntegerVariable(context.getName() + "->" + variable.getName());
+				}
+				case REAL -> {
+					yield new ILPRealVariable(context.getName() + "->" + variable.getName());
+				}
+				default -> {
+					throw new IllegalArgumentException("Unknown ilp variable type: " + variable.getType());
+				}
+
+				};
+				additionalVariables.put(ilpVar.getName(), ilpVar);
+				engine.addNonMappingVariable(ilpVar);
+			}
+
+		}
 	}
 
 }

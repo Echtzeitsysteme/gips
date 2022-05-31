@@ -7,7 +7,7 @@ import org.emoflon.gips.core.ilp.ILPLinearFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective;
 
 public abstract class GipsMappingObjective<ENGINE extends GipsEngine, CONTEXT extends GipsMapping>
-		extends GipsObjective<ENGINE, MappingObjective, CONTEXT, Integer> {
+		extends GipsObjective<ENGINE, MappingObjective, CONTEXT> {
 
 	final protected GipsMapper<CONTEXT> mapper;
 
@@ -22,7 +22,7 @@ public abstract class GipsMappingObjective<ENGINE extends GipsEngine, CONTEXT ex
 		terms = Collections.synchronizedList(new LinkedList<>());
 		constantTerms = Collections.synchronizedList(new LinkedList<>());
 		mapper.getMappings().values().parallelStream().forEach(context -> buildTerms(context));
-		ilpObjective = new ILPLinearFunction<>(terms, constantTerms);
+		ilpObjective = new ILPLinearFunction(terms, constantTerms);
 	}
 
 }

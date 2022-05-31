@@ -7,14 +7,14 @@ import org.emoflon.gips.core.ilp.ILPLinearFunction;
 import org.emoflon.gips.core.ilp.ILPTerm;
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
 
-public abstract class GipsObjective<ENGINE extends GipsEngine, OBJECTIVE extends Objective, CONTEXT extends Object, VARTYPE extends Number> {
+public abstract class GipsObjective<ENGINE extends GipsEngine, OBJECTIVE extends Objective, CONTEXT extends Object> {
 	final protected ENGINE engine;
 	final protected OBJECTIVE objective;
 	final protected String name;
 	final protected TypeIndexer indexer;
-	protected List<ILPTerm<Integer, Double>> terms;
-	protected List<ILPConstant<Double>> constantTerms;
-	protected ILPLinearFunction<VARTYPE> ilpObjective;
+	protected List<ILPTerm> terms;
+	protected List<ILPConstant> constantTerms;
+	protected ILPLinearFunction ilpObjective;
 
 	public GipsObjective(final ENGINE engine, final OBJECTIVE objective) {
 		this.engine = engine;
@@ -29,7 +29,7 @@ public abstract class GipsObjective<ENGINE extends GipsEngine, OBJECTIVE extends
 		return name;
 	}
 
-	public ILPLinearFunction<VARTYPE> getObjectiveFunction() {
+	public ILPLinearFunction getObjectiveFunction() {
 		return ilpObjective;
 	}
 

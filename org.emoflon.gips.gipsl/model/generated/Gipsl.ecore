@@ -101,11 +101,7 @@
     <eLiterals name="SMALLER_OR_EQUAL" value="4" literal="&lt;="/>
     <eLiterals name="SMALLER" value="5" literal="&lt;"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsAttributeExpr" eSuperTypes="#//GipsExpressionOperand">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//GipsLambdaExpression"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
-        containment="true"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsAttributeExpr" eSuperTypes="#//GipsExpressionOperand"/>
   <eClassifiers xsi:type="ecore:EClass" name="GipsContextOperationExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="GipsTypeCast">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
@@ -197,16 +193,31 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsMappingAttributeExpr" eSuperTypes="#//GipsAttributeExpr">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" eType="#//GipsMapping"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//GipsStreamExpr"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsTypeAttributeExpr" eSuperTypes="#//GipsAttributeExpr">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//GipsStreamExpr"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsPatternAttributeExpr" eSuperTypes="#//GipsAttributeExpr">
     <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorPattern"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//GipsStreamExpr"
+        containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsLambdaAttributeExpression" eSuperTypes="#//GipsAttributeExpr"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsLambdaAttributeExpression" eSuperTypes="#//GipsAttributeExpr">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//GipsLambdaExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsLambdaSelfExpression" eSuperTypes="#//GipsAttributeExpr">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//GipsLambdaExpression"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsContextExpr" eSuperTypes="#//GipsAttributeExpr">
     <eStructuralFeatures xsi:type="ecore:EReference" name="typeCast" eType="#//GipsTypeCast"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="stream" eType="#//GipsStreamExpr"
         containment="true"/>

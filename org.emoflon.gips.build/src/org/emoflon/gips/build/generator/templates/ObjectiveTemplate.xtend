@@ -286,11 +286,17 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 				case OR: {
 					return '''«parseExpression(expr.lhs, contextType)» || «parseExpression(expr.rhs, contextType)»'''			
 				}
+				case XOR: {
+					return '''«parseExpression(expr.lhs, contextType)» ^ «parseExpression(expr.rhs, contextType)»'''
+				}
 			}
 		} else if(expr instanceof BoolUnaryExpression) {
 			switch(expr.operator) {
 				case NOT: {
 					return '''!«parseExpression(expr.expression, contextType)»'''
+				}
+				case BRACKET: {
+					return '''(«parseExpression(expr.expression, contextType)»)'''
 				}
 			}
 		} else if(expr instanceof BoolLiteral) {

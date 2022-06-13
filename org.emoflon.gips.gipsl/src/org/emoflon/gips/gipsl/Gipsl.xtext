@@ -134,7 +134,7 @@ enum GipsRelOperator:
 ;
 
 GipsAttributeExpr:
-	GipsMappingAttributeExpr | GipsTypeAttributeExpr | GipsPatternAttributeExpr | GipsContextExpr | GipsLambdaAttributeExpression
+	GipsMappingAttributeExpr | GipsTypeAttributeExpr | GipsPatternAttributeExpr | GipsContextExpr | GipsLambdaAttributeExpression | GipsLambdaSelfExpression
 ;
 
 GipsMappingAttributeExpr returns GipsAttributeExpr: {GipsMappingAttributeExpr}
@@ -151,8 +151,11 @@ GipsPatternAttributeExpr returns GipsAttributeExpr: {GipsPatternAttributeExpr}
 
 //TODO: Allow optional nested lambda expressions
 GipsLambdaAttributeExpression returns GipsAttributeExpr: {GipsLambdaAttributeExpression}
-	var=[GipsLambdaExpression|ID] '()' | 
 	var=[GipsLambdaExpression|ID] '.' (expr = GipsNodeAttributeExpr | expr = GipsContextOperationExpression | expr = GipsFeatureExpr) // ('->' stream = GipsStreamExpr)?
+;
+
+GipsLambdaSelfExpression returns GipsAttributeExpr: {GipsLambdaSelfExpression}
+	var=[GipsLambdaExpression|ID] '()'
 ;
 
 GipsContextExpr returns GipsAttributeExpr: {GipsContextExpr}

@@ -12,6 +12,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureNavigation;
 import org.emoflon.gips.gipsl.gipsl.GipsLambdaAttributeExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsLambdaSelfExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
@@ -93,7 +94,12 @@ public final class GipslScopeContextUtil {
 
 	public static boolean isGipsLambdaAttributeExpressionVariable(final EObject context, final EReference reference) {
 		return context instanceof GipsLambdaAttributeExpression
-				&& reference == GipslPackage.Literals.GIPS_ATTRIBUTE_EXPR__VAR;
+				&& reference == GipslPackage.Literals.GIPS_LAMBDA_ATTRIBUTE_EXPRESSION__VAR;
+	}
+
+	public static boolean isGipsLambdaSelfExpressionVariable(final EObject context, final EReference reference) {
+		return context instanceof GipsLambdaSelfExpression
+				&& reference == GipslPackage.Literals.GIPS_LAMBDA_SELF_EXPRESSION__VAR;
 	}
 
 	public static boolean isGipsLambdaAttributeExpression(final EObject context, final EReference reference) {

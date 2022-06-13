@@ -54,9 +54,11 @@
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="GipsIntermediate.ecore#//BinaryBoolOperator">
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//BinaryBoolOperator/AND"/>
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//BinaryBoolOperator/OR"/>
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//BinaryBoolOperator/XOR"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="GipsIntermediate.ecore#//UnaryBoolOperator">
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//UnaryBoolOperator/NOT"/>
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//UnaryBoolOperator/BRACKET"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="GipsIntermediate.ecore#//StreamBoolOperator">
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//StreamBoolOperator/EXISTS"/>

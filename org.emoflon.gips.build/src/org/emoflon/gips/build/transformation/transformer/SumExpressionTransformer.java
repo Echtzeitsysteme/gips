@@ -35,7 +35,7 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 	public SumExpression transform(GipsMappingAttributeExpr eGipsMapping) throws Exception {
 		MappingSumExpression mapSum = factory.createMappingSumExpression();
 		Mapping mapping = data.eMapping2Mapping().get(eGipsMapping.getMapping());
-		GipsStreamExpr streamExpr = eGipsMapping.getExpr();
+		GipsStreamExpr streamExpr = (GipsStreamExpr) eGipsMapping.getExpr();
 		data.eStream2SetOp().put(streamExpr, mapSum);
 		mapSum.setMapping(mapping);
 		mapSum.setReturnType(EcorePackage.Literals.EINT);
@@ -65,7 +65,7 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 			final GipsStreamArithmetic streamArithmetic) throws Exception {
 		MappingSumExpression mapSum = factory.createMappingSumExpression();
 		Mapping mapping = data.eMapping2Mapping().get(eGipsMapping.getMapping());
-		GipsStreamExpr streamExpr = eGipsMapping.getExpr();
+		GipsStreamExpr streamExpr = (GipsStreamExpr) eGipsMapping.getExpr();
 		data.eStream2SetOp().put(streamExpr, mapSum);
 		mapSum.setMapping(mapping);
 		mapSum.setReturnType(EcorePackage.Literals.EDOUBLE);
@@ -98,7 +98,7 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 			throws Exception {
 		TypeSumExpression typeSum = factory.createTypeSumExpression();
 		Type type = data.getType(eGipsType.getType());
-		GipsStreamExpr streamExpr = eGipsType.getExpr();
+		GipsStreamExpr streamExpr = (GipsStreamExpr) eGipsType.getExpr();
 		data.eStream2SetOp().put(streamExpr, typeSum);
 		typeSum.setType(type);
 		typeSum.setReturnType(EcorePackage.Literals.EDOUBLE);
@@ -130,7 +130,7 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 	public SumExpression transform(final GipsTypeAttributeExpr eGipsType) throws Exception {
 		TypeSumExpression typeSum = factory.createTypeSumExpression();
 		Type type = data.getType(eGipsType.getType());
-		GipsStreamExpr streamExpr = eGipsType.getExpr();
+		GipsStreamExpr streamExpr = (GipsStreamExpr) eGipsType.getExpr();
 		data.eStream2SetOp().put(streamExpr, typeSum);
 		typeSum.setType(type);
 		typeSum.setReturnType(EcorePackage.Literals.EINT);
@@ -152,7 +152,7 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 			final GipsStreamArithmetic streamArithmetic) throws Exception {
 		PatternSumExpression patternSum = factory.createPatternSumExpression();
 		Pattern pattern = data.getPattern(eGipsPattern.getPattern());
-		GipsStreamExpr streamExpr = eGipsPattern.getExpr();
+		GipsStreamExpr streamExpr = (GipsStreamExpr) eGipsPattern.getExpr();
 		data.eStream2SetOp().put(streamExpr, patternSum);
 		patternSum.setPattern(pattern);
 		patternSum.setReturnType(EcorePackage.Literals.EDOUBLE);
@@ -185,7 +185,7 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 	public SumExpression transform(final GipsPatternAttributeExpr eGipsPattern) throws Exception {
 		PatternSumExpression patternSum = factory.createPatternSumExpression();
 		Pattern pattern = data.getPattern(eGipsPattern.getPattern());
-		GipsStreamExpr streamExpr = eGipsPattern.getExpr();
+		GipsStreamExpr streamExpr = (GipsStreamExpr) eGipsPattern.getExpr();
 		data.eStream2SetOp().put(streamExpr, patternSum);
 		patternSum.setPattern(pattern);
 		patternSum.setReturnType(EcorePackage.Literals.EDOUBLE);

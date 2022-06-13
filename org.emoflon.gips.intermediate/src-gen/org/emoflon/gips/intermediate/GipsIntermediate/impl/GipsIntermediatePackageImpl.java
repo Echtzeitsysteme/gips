@@ -3467,9 +3467,11 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEEnum(binaryBoolOperatorEEnum, BinaryBoolOperator.class, "BinaryBoolOperator");
 		addEEnumLiteral(binaryBoolOperatorEEnum, BinaryBoolOperator.AND);
 		addEEnumLiteral(binaryBoolOperatorEEnum, BinaryBoolOperator.OR);
+		addEEnumLiteral(binaryBoolOperatorEEnum, BinaryBoolOperator.XOR);
 
 		initEEnum(unaryBoolOperatorEEnum, UnaryBoolOperator.class, "UnaryBoolOperator");
 		addEEnumLiteral(unaryBoolOperatorEEnum, UnaryBoolOperator.NOT);
+		addEEnumLiteral(unaryBoolOperatorEEnum, UnaryBoolOperator.BRACKET);
 
 		initEEnum(streamBoolOperatorEEnum, StreamBoolOperator.class, "StreamBoolOperator");
 		addEEnumLiteral(streamBoolOperatorEEnum, StreamBoolOperator.EXISTS);

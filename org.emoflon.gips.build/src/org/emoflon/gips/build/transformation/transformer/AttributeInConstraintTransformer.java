@@ -31,7 +31,8 @@ public class AttributeInConstraintTransformer extends AttributeExpressionTransfo
 			throw new UnsupportedOperationException("Other mappings are not accessible from within mapping contexts!");
 
 		if (eMapping.getExpr() != null) {
-			GipsStreamExpr terminalExpr = GipsTransformationUtils.getTerminalStreamExpression(eMapping.getExpr());
+			GipsStreamExpr terminalExpr = GipsTransformationUtils
+					.getTerminalStreamExpression((GipsStreamExpr) eMapping.getExpr());
 			if (terminalExpr instanceof GipsStreamBoolExpr streamBool) {
 				switch (streamBool.getOperator()) {
 				case COUNT -> {

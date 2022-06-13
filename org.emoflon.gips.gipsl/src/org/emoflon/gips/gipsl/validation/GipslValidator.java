@@ -39,6 +39,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsGlobalObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsImplicationBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsLambdaAttributeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsLambdaExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsLambdaSelfExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingCheckValue;
@@ -489,13 +490,16 @@ public class GipslValidator extends AbstractGipslValidator {
 				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
 					// A GipsLambdaAttributeExpression can not contain a mappings call
 					return false;
+				} else if (exprOp instanceof GipsLambdaSelfExpression) {
+					// A GipsLambdaSelfExpression can not contain a mappings call
+					return false;
 				} else if (exprOp instanceof GipsMappingAttributeExpr) {
 					// A GipsMappingAttributeExpr always contains a mappings call
 					return true;
 				} else if (exprOp instanceof GipsPatternAttributeExpr patternExpr) {
-					return streamContainsMappingsCall((GipsStreamExpr) patternExpr.getExpr());
+					return streamContainsMappingsCall(patternExpr.getExpr());
 				} else if (exprOp instanceof GipsTypeAttributeExpr typeExpr) {
-					return streamContainsMappingsCall((GipsStreamExpr) typeExpr.getExpr());
+					return streamContainsMappingsCall(typeExpr.getExpr());
 				}
 			}
 		} else if (expr instanceof GipsProductArithmeticExpr) {
@@ -693,12 +697,16 @@ public class GipslValidator extends AbstractGipslValidator {
 				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
 					// A GipsLambdaAttributeExpression can not contain a 'self' access
 					return false;
+				} else if (exprOp instanceof GipsLambdaSelfExpression) {
+					// A GipsLambdaSelfExpression, despite its name, can not contain 'self' access
+					// to the constraint / objective context.
+					return false;
 				} else if (exprOp instanceof GipsMappingAttributeExpr attrExpr) {
-					return containsSelf((GipsStreamExpr) attrExpr.getExpr(), type);
+					return containsSelf(attrExpr.getExpr(), type);
 				} else if (exprOp instanceof GipsPatternAttributeExpr patternExpr) {
-					return containsSelf((GipsStreamExpr) patternExpr.getExpr(), type);
+					return containsSelf(patternExpr.getExpr(), type);
 				} else if (exprOp instanceof GipsTypeAttributeExpr typeExpr) {
-					return containsSelf((GipsStreamExpr) typeExpr.getExpr(), type);
+					return containsSelf(typeExpr.getExpr(), type);
 				} else if (expr instanceof GipsConstant) {
 					return false;
 				}
@@ -913,13 +921,16 @@ public class GipslValidator extends AbstractGipslValidator {
 				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
 					// Nothing to do here
 					return false;
+				} else if (exprOp instanceof GipsLambdaSelfExpression) {
+					// Nothing to do here
+					return false;
 				} else if (exprOp instanceof GipsMappingAttributeExpr mappingExpr) {
-					validateStreamExprDynamic((GipsStreamExpr) mappingExpr.getExpr());
+					validateStreamExprDynamic(mappingExpr.getExpr());
 					return true;
 				} else if (exprOp instanceof GipsPatternAttributeExpr patternExpr) {
-					return validateStreamExprDynamic((GipsStreamExpr) patternExpr.getExpr());
+					return validateStreamExprDynamic(patternExpr.getExpr());
 				} else if (exprOp instanceof GipsTypeAttributeExpr typeExpr) {
-					return validateStreamExprDynamic((GipsStreamExpr) typeExpr.getExpr());
+					return validateStreamExprDynamic(typeExpr.getExpr());
 				}
 			} else if (exprOp instanceof GipsObjectiveExpression) {
 				// Only relevant for the global objective function
@@ -1243,15 +1254,17 @@ public class GipslValidator extends AbstractGipslValidator {
 				type = GipslPackage.Literals.GIPS_ARITHMETIC_LITERAL__VALUE;
 			} else if (expr instanceof GipsAttributeExpr) {
 				if (expr instanceof GipsMappingAttributeExpr) {
-					type = GipslPackage.Literals.GIPS_ATTRIBUTE_EXPR__EXPR;
+					type = GipslPackage.Literals.GIPS_MAPPING_ATTRIBUTE_EXPR__EXPR;
 				} else if (expr instanceof GipsPatternAttributeExpr) {
-					type = GipslPackage.Literals.GIPS_ATTRIBUTE_EXPR__EXPR;
+					type = GipslPackage.Literals.GIPS_PATTERN_ATTRIBUTE_EXPR__EXPR;
 				} else if (expr instanceof GipsTypeAttributeExpr) {
-					type = GipslPackage.Literals.GIPS_ATTRIBUTE_EXPR__EXPR;
+					type = GipslPackage.Literals.GIPS_TYPE_ATTRIBUTE_EXPR__EXPR;
 				} else if (expr instanceof GipsContextExpr) {
-					type = GipslPackage.Literals.GIPS_ATTRIBUTE_EXPR__EXPR;
+					type = GipslPackage.Literals.GIPS_CONTEXT_EXPR__EXPR;
 				} else if (expr instanceof GipsLambdaAttributeExpression) {
-					type = GipslPackage.Literals.GIPS_ATTRIBUTE_EXPR__EXPR;
+					type = GipslPackage.Literals.GIPS_LAMBDA_ATTRIBUTE_EXPRESSION__EXPR;
+				} else if (expr instanceof GipsLambdaSelfExpression) {
+					type = GipslPackage.Literals.GIPS_LAMBDA_SELF_EXPRESSION__VAR;
 				}
 			} else if (expr instanceof GipsObjectiveExpression) {
 				type = GipslPackage.Literals.GIPS_OBJECTIVE_EXPRESSION__OBJECTIVE;
@@ -1275,17 +1288,19 @@ public class GipslValidator extends AbstractGipslValidator {
 
 	public EvalType getEvalTypeFromAttrExpr(final GipsAttributeExpr expr) {
 		if (expr instanceof GipsMappingAttributeExpr mapExpr) {
-			return getEvalTypeFromStreamExpr((GipsStreamExpr) mapExpr.getExpr());
+			return getEvalTypeFromStreamExpr(mapExpr.getExpr());
 		} else if (expr instanceof GipsPatternAttributeExpr patternExpr) {
-			return getEvalTypeFromStreamExpr((GipsStreamExpr) patternExpr.getExpr());
+			return getEvalTypeFromStreamExpr(patternExpr.getExpr());
 		} else if (expr instanceof GipsTypeAttributeExpr typeExpr) {
-			return getEvalTypeFromStreamExpr((GipsStreamExpr) typeExpr.getExpr());
+			return getEvalTypeFromStreamExpr(typeExpr.getExpr());
 		} else if (expr instanceof GipsContextExpr) {
 			final GipsContextExpr conExpr = (GipsContextExpr) expr;
 			return getEvalTypeFromContextExpr(conExpr);
 		} else if (expr instanceof GipsLambdaAttributeExpression) {
 			final GipsLambdaAttributeExpression lambExpr = (GipsLambdaAttributeExpression) expr;
 			return getEvalTypeFromLambdaAttrExpr(lambExpr);
+		} else if (expr instanceof GipsLambdaSelfExpression lSelf) {
+			return getEvalTypeFromLambdaAttrExpr(lSelf);
 		}
 
 		return EvalType.ERROR;
@@ -1372,6 +1387,10 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 
 		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	public EvalType getEvalTypeFromLambdaAttrExpr(final GipsLambdaSelfExpression expr) {
+		return EvalType.ECLASS;
 	}
 
 	public EvalType getEvalTypeFromContextExpr(final GipsContextExpr expr) {

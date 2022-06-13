@@ -7,14 +7,17 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
-import org.emoflon.gips.gipsl.gipsl.GipsBinaryBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsAndBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsBool;
 import org.emoflon.gips.gipsl.gipsl.GipsBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
+import org.emoflon.gips.gipsl.gipsl.GipsBracketBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsImplicationBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsNotBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsOrBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
 import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsUnaryBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipslFactory;
 import org.logicng.formulas.Formula;
 import org.logicng.formulas.FormulaFactory;
@@ -57,35 +60,58 @@ public class GipsConstraintSplitter {
 	protected void parseToString(final StringBuilder sb, final GipsBoolExpr expr) {
 		if (expr instanceof GipsBooleanLiteral || expr instanceof GipsRelExpr) {
 			sb.append(data.addSymbol(expr));
-		} else if (expr instanceof GipsBinaryBoolExpr bin) {
-			switch (bin.getOperator()) {
-			case AND -> {
-				parseToString(sb, bin.getLeft());
-				sb.append(" & ");
-				parseToString(sb, bin.getRight());
-			}
+		} else if (expr instanceof GipsImplicationBoolExpr implication) {
+			parseToString(sb, implication.getLeft());
+			sb.append(" => ");
+			parseToString(sb, implication.getRight());
+		} else if (expr instanceof GipsOrBoolExpr orExpression) {
+			switch (orExpression.getOperator()) {
 			case OR -> {
-				parseToString(sb, bin.getLeft());
+				parseToString(sb, orExpression.getLeft());
 				sb.append(" | ");
-				parseToString(sb, bin.getRight());
+				parseToString(sb, orExpression.getRight());
 			}
-			default -> {
-				throw new UnsupportedOperationException("Unknown boolean operator type: " + bin.getOperator());
-			}
+			case XOR -> { // A ^ B = (A & !B) | (!A & B)
+				sb.append("(");
+				parseToString(sb, orExpression.getLeft());
+				sb.append(" & ~(");
+				parseToString(sb, orExpression.getRight());
+				sb.append("))");
 
-			}
-		} else if (expr instanceof GipsUnaryBoolExpr un) {
-			switch (un.getOperator()) {
-			case NOT -> {
-				sb.append("~(");
-				parseToString(sb, un.getOperand());
+				sb.append(" | ");
+
+				sb.append("( ~(");
+				parseToString(sb, orExpression.getLeft());
+				sb.append(") & ");
+				parseToString(sb, orExpression.getRight());
 				sb.append(")");
 			}
 			default -> {
-				throw new UnsupportedOperationException("Unknown boolean operator type: " + un.getOperator());
+				throw new UnsupportedOperationException("Unknown boolean operator type: " + orExpression.getOperator());
 			}
 
 			}
+		} else if (expr instanceof GipsAndBoolExpr andExpression) {
+			switch (andExpression.getOperator()) {
+			case AND -> {
+				parseToString(sb, andExpression.getLeft());
+				sb.append(" & ");
+				parseToString(sb, andExpression.getRight());
+			}
+			default -> {
+				throw new UnsupportedOperationException(
+						"Unknown boolean operator type: " + andExpression.getOperator());
+			}
+
+			}
+		} else if (expr instanceof GipsNotBoolExpr not) {
+			sb.append("~(");
+			parseToString(sb, not.getOperand());
+			sb.append(")");
+		} else if (expr instanceof GipsBracketBoolExpr bracket) {
+			sb.append("(");
+			parseToString(sb, bracket.getOperand());
+			sb.append(")");
 		} else {
 			throw new UnsupportedOperationException("Unknown boolean expression type: " + expr);
 		}

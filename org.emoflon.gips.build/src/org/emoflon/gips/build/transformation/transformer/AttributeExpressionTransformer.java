@@ -71,7 +71,8 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 	protected abstract ValueExpression transform(final GipsMappingAttributeExpr eMapping) throws Exception;
 
 	protected ValueExpression transform(final GipsTypeAttributeExpr eType) throws Exception {
-		GipsStreamExpr terminalExpr = GipsTransformationUtils.getTerminalStreamExpression(eType.getExpr());
+		GipsStreamExpr terminalExpr = GipsTransformationUtils
+				.getTerminalStreamExpression((GipsStreamExpr) eType.getExpr());
 		if (terminalExpr instanceof GipsStreamBoolExpr streamBool) {
 			switch (streamBool.getOperator()) {
 			case COUNT -> {
@@ -96,7 +97,8 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 	}
 
 	protected ValueExpression transform(final GipsPatternAttributeExpr ePattern) throws Exception {
-		GipsStreamExpr terminalExpr = GipsTransformationUtils.getTerminalStreamExpression(ePattern.getExpr());
+		GipsStreamExpr terminalExpr = GipsTransformationUtils
+				.getTerminalStreamExpression((GipsStreamExpr) ePattern.getExpr());
 		if (terminalExpr instanceof GipsStreamBoolExpr streamBool) {
 			switch (streamBool.getOperator()) {
 			case COUNT -> {

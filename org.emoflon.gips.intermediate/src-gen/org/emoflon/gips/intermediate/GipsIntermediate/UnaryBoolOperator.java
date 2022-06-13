@@ -26,7 +26,16 @@ public enum UnaryBoolOperator implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	NOT(0, "NOT", "NOT");
+	NOT(0, "NOT", "NOT"),
+	/**
+	 * The '<em><b>BRACKET</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see #BRACKET_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	BRACKET(1, "BRACKET", "BRACKET");
 
 	/**
 	 * The '<em><b>NOT</b></em>' literal value. <!-- begin-user-doc --> <!--
@@ -40,12 +49,23 @@ public enum UnaryBoolOperator implements Enumerator {
 	public static final int NOT_VALUE = 0;
 
 	/**
+	 * The '<em><b>BRACKET</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see #BRACKET
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
+	public static final int BRACKET_VALUE = 1;
+
+	/**
 	 * An array of all the '<em><b>Unary Bool Operator</b></em>' enumerators. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	private static final UnaryBoolOperator[] VALUES_ARRAY = new UnaryBoolOperator[] { NOT, };
+	private static final UnaryBoolOperator[] VALUES_ARRAY = new UnaryBoolOperator[] { NOT, BRACKET, };
 
 	/**
 	 * A public read-only list of all the '<em><b>Unary Bool Operator</b></em>'
@@ -103,6 +123,8 @@ public enum UnaryBoolOperator implements Enumerator {
 		switch (value) {
 		case NOT_VALUE:
 			return NOT;
+		case BRACKET_VALUE:
+			return BRACKET;
 		}
 		return null;
 	}

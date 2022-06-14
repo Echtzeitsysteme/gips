@@ -16,7 +16,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
@@ -35,13 +35,13 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 	public SumExpression transform(GipsMappingAttributeExpr eGipsMapping) throws Exception {
 		MappingSumExpression mapSum = factory.createMappingSumExpression();
 		Mapping mapping = data.eMapping2Mapping().get(eGipsMapping.getMapping());
-		GipsStreamExpr streamExpr = (GipsStreamExpr) eGipsMapping.getExpr();
+		GipsStreamExpr streamExpr = eGipsMapping.getExpr();
 		data.eStream2SetOp().put(streamExpr, mapSum);
 		mapSum.setMapping(mapping);
 		mapSum.setReturnType(EcorePackage.Literals.EINT);
 		// Simple expression: Just add all filtered (!) mapping variable values v={0,1}
 		ArithmeticValue val = factory.createArithmeticValue();
-		IteratorMappingValue itr = factory.createIteratorMappingValue();
+		IteratorMappingVariableValue itr = factory.createIteratorMappingVariableValue();
 //		TODO: Is this next line necessary?
 		itr.setMappingContext(mapping);
 		itr.setStream(mapSum);
@@ -65,7 +65,7 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 			final GipsStreamArithmetic streamArithmetic) throws Exception {
 		MappingSumExpression mapSum = factory.createMappingSumExpression();
 		Mapping mapping = data.eMapping2Mapping().get(eGipsMapping.getMapping());
-		GipsStreamExpr streamExpr = (GipsStreamExpr) eGipsMapping.getExpr();
+		GipsStreamExpr streamExpr = eGipsMapping.getExpr();
 		data.eStream2SetOp().put(streamExpr, mapSum);
 		mapSum.setMapping(mapping);
 		mapSum.setReturnType(EcorePackage.Literals.EDOUBLE);
@@ -98,7 +98,7 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 			throws Exception {
 		TypeSumExpression typeSum = factory.createTypeSumExpression();
 		Type type = data.getType(eGipsType.getType());
-		GipsStreamExpr streamExpr = (GipsStreamExpr) eGipsType.getExpr();
+		GipsStreamExpr streamExpr = eGipsType.getExpr();
 		data.eStream2SetOp().put(streamExpr, typeSum);
 		typeSum.setType(type);
 		typeSum.setReturnType(EcorePackage.Literals.EDOUBLE);
@@ -130,7 +130,7 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 	public SumExpression transform(final GipsTypeAttributeExpr eGipsType) throws Exception {
 		TypeSumExpression typeSum = factory.createTypeSumExpression();
 		Type type = data.getType(eGipsType.getType());
-		GipsStreamExpr streamExpr = (GipsStreamExpr) eGipsType.getExpr();
+		GipsStreamExpr streamExpr = eGipsType.getExpr();
 		data.eStream2SetOp().put(streamExpr, typeSum);
 		typeSum.setType(type);
 		typeSum.setReturnType(EcorePackage.Literals.EINT);
@@ -152,7 +152,7 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 			final GipsStreamArithmetic streamArithmetic) throws Exception {
 		PatternSumExpression patternSum = factory.createPatternSumExpression();
 		Pattern pattern = data.getPattern(eGipsPattern.getPattern());
-		GipsStreamExpr streamExpr = (GipsStreamExpr) eGipsPattern.getExpr();
+		GipsStreamExpr streamExpr = eGipsPattern.getExpr();
 		data.eStream2SetOp().put(streamExpr, patternSum);
 		patternSum.setPattern(pattern);
 		patternSum.setReturnType(EcorePackage.Literals.EDOUBLE);
@@ -185,7 +185,7 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 	public SumExpression transform(final GipsPatternAttributeExpr eGipsPattern) throws Exception {
 		PatternSumExpression patternSum = factory.createPatternSumExpression();
 		Pattern pattern = data.getPattern(eGipsPattern.getPattern());
-		GipsStreamExpr streamExpr = (GipsStreamExpr) eGipsPattern.getExpr();
+		GipsStreamExpr streamExpr = eGipsPattern.getExpr();
 		data.eStream2SetOp().put(streamExpr, patternSum);
 		patternSum.setPattern(pattern);
 		patternSum.setReturnType(EcorePackage.Literals.EDOUBLE);

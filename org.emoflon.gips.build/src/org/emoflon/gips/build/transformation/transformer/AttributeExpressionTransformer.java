@@ -13,6 +13,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
 import org.emoflon.gips.gipsl.gipsl.GipsLambdaAttributeExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsLambdaSelfExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingCheckValue;
@@ -38,9 +39,11 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValu
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
@@ -63,16 +66,19 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 			return transform(ePattern);
 		} else if (eAttribute instanceof GipsContextExpr eContext) {
 			return transform(eContext);
+		} else if (eAttribute instanceof GipsLambdaAttributeExpression eLambdaExpression) {
+			return transform(eLambdaExpression);
+		} else if (eAttribute instanceof GipsLambdaSelfExpression eLambdaSelf) {
+			return transform(eLambdaSelf);
 		} else {
-			return transform((GipsLambdaAttributeExpression) eAttribute);
+			throw new UnsupportedOperationException("Unkown value expression: " + eAttribute);
 		}
 	}
 
 	protected abstract ValueExpression transform(final GipsMappingAttributeExpr eMapping) throws Exception;
 
 	protected ValueExpression transform(final GipsTypeAttributeExpr eType) throws Exception {
-		GipsStreamExpr terminalExpr = GipsTransformationUtils
-				.getTerminalStreamExpression((GipsStreamExpr) eType.getExpr());
+		GipsStreamExpr terminalExpr = GipsTransformationUtils.getTerminalStreamExpression(eType.getExpr());
 		if (terminalExpr instanceof GipsStreamBoolExpr streamBool) {
 			switch (streamBool.getOperator()) {
 			case COUNT -> {
@@ -97,8 +103,7 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 	}
 
 	protected ValueExpression transform(final GipsPatternAttributeExpr ePattern) throws Exception {
-		GipsStreamExpr terminalExpr = GipsTransformationUtils
-				.getTerminalStreamExpression((GipsStreamExpr) ePattern.getExpr());
+		GipsStreamExpr terminalExpr = GipsTransformationUtils.getTerminalStreamExpression(ePattern.getExpr());
 		if (terminalExpr instanceof GipsStreamBoolExpr streamBool) {
 			switch (streamBool.getOperator()) {
 			case COUNT -> {
@@ -237,6 +242,48 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 				throw new UnsupportedOperationException(
 						"Matches / ILP variables do not have directly accessible features.");
 			}
+		}
+	}
+
+	protected ValueExpression transform(final GipsLambdaSelfExpression eLambda) throws Exception {
+		GipsAttributeExpr streamRoot = GipslScopeContextUtil.getStreamRootContainer(eLambda);
+		GipsStreamExpr streamIteratorContainer = GipslScopeContextUtil.getStreamIteratorNavigationRoot(eLambda);
+
+		if (streamRoot == null) {
+			throw new UnsupportedOperationException("Unknown stream lhs-operand.");
+		}
+
+		if (streamRoot instanceof GipsLambdaAttributeExpression) {
+			throw new UnsupportedOperationException("Nested stream operations not yet supported.");
+		}
+
+		if (streamRoot instanceof GipsMappingAttributeExpr eMappingAttribute) {
+			return transformIteratorMappingValue(eMappingAttribute.getMapping(), streamIteratorContainer);
+		} else if (streamRoot instanceof GipsPatternAttributeExpr ePatternAttribute) {
+			return transformIteratorPatternValue(ePatternAttribute.getPattern(), streamIteratorContainer);
+		} else if (streamRoot instanceof GipsTypeAttributeExpr eTypeAttribute) {
+			return transformIteratorTypeValue(streamIteratorContainer, eTypeAttribute.getType());
+		} else if (streamRoot instanceof GipsContextExpr eContext) {
+			// TODO: This is probably not correct -> Fix me! Semantically we want to
+			// iterate over some collection that is described by a feature. But
+			// here we iterate over something and access a feature. This is the wrong way
+			// around!
+			EObject contextType = GipslScopeContextUtil.getContextType(eContext);
+			if (contextType instanceof GipsMappingContext eMappingContext
+					&& eContext.getExpr() instanceof GipsNodeAttributeExpr eNodeExpr && eNodeExpr.getExpr() != null) {
+				return transformIteratorMappingValue(eMappingContext.getMapping(), streamIteratorContainer);
+			} else if (contextType instanceof GipsPatternContext ePatternContext
+					&& eContext.getExpr() instanceof GipsNodeAttributeExpr eNodeExpr && eNodeExpr.getExpr() != null) {
+				return transformIteratorPatternValue(ePatternContext.getPattern(), streamIteratorContainer);
+			} else if (contextType instanceof GipsTypeContext eTypeContext
+					&& eContext.getExpr() instanceof GipsFeatureExpr eRootFeature) {
+				return transformIteratorTypeValue(streamIteratorContainer, (EClass) eTypeContext.getType());
+			} else {
+				throw new UnsupportedOperationException(
+						"Unsuited context expression type for iterator feature access.");
+			}
+		} else {
+			throw new UnsupportedOperationException("Nested stream expressions are not yet allowed!");
 		}
 	}
 
@@ -436,6 +483,14 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 		}
 	}
 
+	protected ValueExpression transformIteratorMappingValue(GipsMapping eMapping,
+			final GipsStreamExpr streamIteratorContainer) throws Exception {
+		IteratorMappingValue mappingValue = factory.createIteratorMappingValue();
+		mappingValue.setMappingContext(data.eMapping2Mapping().get(eMapping));
+		mappingValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
+		return mappingValue;
+	}
+
 	protected ValueExpression transformIteratorMappingNodeValue(final GipsNodeAttributeExpr eNodeAttribute,
 			GipsMapping eMapping, final GipsStreamExpr streamIteratorContainer) throws Exception {
 		IteratorMappingNodeValue mappingNode = factory.createIteratorMappingNodeValue();
@@ -457,6 +512,14 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 		mappingFeature
 				.setFeatureExpression(GipsTransformationUtils.transformFeatureExpression(eNodeAttribute.getExpr()));
 		return mappingFeature;
+	}
+
+	protected ValueExpression transformIteratorPatternValue(EditorPattern eMatchContext,
+			final GipsStreamExpr streamIteratorContainer) throws Exception {
+		IteratorPatternValue patternValue = factory.createIteratorPatternValue();
+		patternValue.setPatternContext(data.ePattern2Pattern().get(eMatchContext));
+		patternValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
+		return patternValue;
 	}
 
 	protected ValueExpression transformIteratorPatternNodeValue(final GipsNodeAttributeExpr eNodeAttribute,
@@ -510,7 +573,7 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 			// TODO:
 			// On a serious note: Accessing ILP variable values should not be allowed in
 			// filter stream expressions since it is impractical.
-			IteratorMappingValue mappingValue = factory.createIteratorMappingValue();
+			IteratorMappingVariableValue mappingValue = factory.createIteratorMappingVariableValue();
 			mappingValue.setMappingContext(data.eMapping2Mapping().get(eMappingAttribute.getMapping()));
 			mappingValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
 			mappingValue.setReturnType(EcorePackage.Literals.EINT);
@@ -549,11 +612,11 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 
 	protected ValueExpression transformIteratorTypeValue(final GipsStreamExpr streamIteratorContainer,
 			final EClass eTypeContext) throws Exception {
-		IteratorTypeValue typeFeatureValue = factory.createIteratorTypeValue();
-		typeFeatureValue.setTypeContext(data.getType(eTypeContext));
-		typeFeatureValue.setReturnType(eTypeContext);
-		typeFeatureValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
-		return typeFeatureValue;
+		IteratorTypeValue typeValue = factory.createIteratorTypeValue();
+		typeValue.setTypeContext(data.getType(eTypeContext));
+		typeValue.setReturnType(eTypeContext);
+		typeValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
+		return typeValue;
 	}
 
 	protected ValueExpression transformIteratorTypeFeatureValue(final GipsStreamExpr streamIteratorContainer,

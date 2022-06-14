@@ -37,6 +37,7 @@ public enum BinaryBoolOperator implements Enumerator {
 	 * @ordered
 	 */
 	OR(1, "OR", "OR"),
+
 	/**
 	 * The '<em><b>XOR</b></em>' literal object. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->

@@ -27,6 +27,7 @@ public enum UnaryBoolOperator implements Enumerator {
 	 * @ordered
 	 */
 	NOT(0, "NOT", "NOT"),
+
 	/**
 	 * The '<em><b>BRACKET</b></em>' literal object. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->

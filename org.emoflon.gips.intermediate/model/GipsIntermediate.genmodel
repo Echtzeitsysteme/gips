@@ -277,6 +277,9 @@
     <genClasses ecoreClass="GipsIntermediate.ecore#//IteratorMappingValue">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//IteratorMappingValue/mappingContext"/>
     </genClasses>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//IteratorMappingVariableValue">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//IteratorMappingVariableValue/mappingContext"/>
+    </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//IteratorMappingFeatureValue">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//IteratorMappingFeatureValue/mappingContext"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//IteratorMappingFeatureValue/featureExpression"/>

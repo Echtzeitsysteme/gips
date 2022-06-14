@@ -170,7 +170,32 @@ public final class GipslScopeContextUtil {
 		return (GipsStreamExpr) GipslScopeContextUtil.getContainer(context, classes);
 	}
 
+	public static GipsAttributeExpr getStreamRootContainer(GipsLambdaSelfExpression context) {
+		Set<Class<?>> classes = Set.of(GipsContextExprImpl.class, GipsMappingAttributeExprImpl.class,
+				GipsPatternAttributeExprImpl.class, GipsTypeAttributeExprImpl.class);
+		return (GipsAttributeExpr) GipslScopeContextUtil.getContainer(context, classes);
+	}
+
+	public static GipsStreamExpr getStreamIteratorContainer(GipsLambdaSelfExpression context) {
+		Set<Class<?>> classes = Set.of(GipsStreamNavigationImpl.class, GipsStreamSetImpl.class, GipsSelectImpl.class,
+				GipsStreamArithmeticImpl.class, GipsContainsImpl.class);
+		return (GipsStreamExpr) GipslScopeContextUtil.getContainer(context, classes);
+	}
+
 	public static GipsStreamExpr getStreamIteratorNavigationRoot(GipsLambdaAttributeExpression context) {
+		Set<Class<?>> classes = Set.of(GipsStreamNavigationImpl.class);
+		GipsStreamExpr root = (GipsStreamExpr) GipslScopeContextUtil.getContainer(context, classes);
+		if (root != null)
+			return root;
+
+		classes.add(GipsStreamSetImpl.class);
+		classes.add(GipsSelectImpl.class);
+		classes.add(GipsStreamArithmeticImpl.class);
+		classes.add(GipsContainsImpl.class);
+		return (GipsStreamExpr) GipslScopeContextUtil.getContainer(context, classes);
+	}
+
+	public static GipsStreamExpr getStreamIteratorNavigationRoot(GipsLambdaSelfExpression context) {
 		Set<Class<?>> classes = Set.of(GipsStreamNavigationImpl.class);
 		GipsStreamExpr root = (GipsStreamExpr) GipslScopeContextUtil.getContainer(context, classes);
 		if (root != null)

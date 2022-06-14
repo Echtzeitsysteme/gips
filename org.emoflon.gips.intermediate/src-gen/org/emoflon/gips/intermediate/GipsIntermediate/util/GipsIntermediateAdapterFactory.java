@@ -367,6 +367,11 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseIteratorMappingVariableValue(IteratorMappingVariableValue object) {
+			return createIteratorMappingVariableValueAdapter();
+		}
+
+		@Override
 		public Adapter caseIteratorMappingFeatureValue(IteratorMappingFeatureValue object) {
 			return createIteratorMappingFeatureValueAdapter();
 		}
@@ -1381,6 +1386,22 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createIteratorMappingValueAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue
+	 * <em>Iterator Mapping Variable Value</em>}'. <!-- begin-user-doc --> This
+	 * default implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue
+	 * @generated
+	 */
+	public Adapter createIteratorMappingVariableValueAdapter() {
 		return null;
 	}
 

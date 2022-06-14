@@ -52,6 +52,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValu
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue;
@@ -522,6 +523,13 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * @generated
 	 */
 	private EClass iteratorMappingValueEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass iteratorMappingVariableValueEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2185,6 +2193,24 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public EClass getIteratorMappingVariableValue() {
+		return iteratorMappingVariableValueEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getIteratorMappingVariableValue_MappingContext() {
+		return (EReference) iteratorMappingVariableValueEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getIteratorMappingFeatureValue() {
 		return iteratorMappingFeatureValueEClass;
 	}
@@ -2736,6 +2762,9 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		iteratorMappingValueEClass = createEClass(ITERATOR_MAPPING_VALUE);
 		createEReference(iteratorMappingValueEClass, ITERATOR_MAPPING_VALUE__MAPPING_CONTEXT);
 
+		iteratorMappingVariableValueEClass = createEClass(ITERATOR_MAPPING_VARIABLE_VALUE);
+		createEReference(iteratorMappingVariableValueEClass, ITERATOR_MAPPING_VARIABLE_VALUE__MAPPING_CONTEXT);
+
 		iteratorMappingFeatureValueEClass = createEClass(ITERATOR_MAPPING_FEATURE_VALUE);
 		createEReference(iteratorMappingFeatureValueEClass, ITERATOR_MAPPING_FEATURE_VALUE__MAPPING_CONTEXT);
 		createEReference(iteratorMappingFeatureValueEClass, ITERATOR_MAPPING_FEATURE_VALUE__FEATURE_EXPRESSION);
@@ -2875,6 +2904,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		iteratorPatternNodeFeatureValueEClass.getESuperTypes().add(this.getIteratorPatternNodeValue());
 		iteratorMappingValueEClass.getESuperTypes().add(this.getValueExpression());
 		iteratorMappingValueEClass.getESuperTypes().add(this.getIterator());
+		iteratorMappingVariableValueEClass.getESuperTypes().add(this.getValueExpression());
+		iteratorMappingVariableValueEClass.getESuperTypes().add(this.getIterator());
 		iteratorMappingFeatureValueEClass.getESuperTypes().add(this.getValueExpression());
 		iteratorMappingFeatureValueEClass.getESuperTypes().add(this.getIterator());
 		iteratorMappingNodeValueEClass.getESuperTypes().add(this.getValueExpression());
@@ -3350,6 +3381,12 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEReference(getIteratorMappingValue_MappingContext(), this.getMapping(), null, "mappingContext", null, 0, 1,
 				IteratorMappingValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(iteratorMappingVariableValueEClass, IteratorMappingVariableValue.class,
+				"IteratorMappingVariableValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getIteratorMappingVariableValue_MappingContext(), this.getMapping(), null, "mappingContext",
+				null, 0, 1, IteratorMappingVariableValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(iteratorMappingFeatureValueEClass, IteratorMappingFeatureValue.class, "IteratorMappingFeatureValue",
 				!IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

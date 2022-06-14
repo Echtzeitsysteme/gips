@@ -198,6 +198,9 @@ public class GipsToIntermediate {
 						dConstraint.getHelperVariables().add(realVar);
 						constraint2real.put(subConstraint, realVar);
 						boolean realVarNegative = insertSubstituteRealVariable(constraint, orginalRelation, realVar);
+						// Fix relation s.t. the variable side does not contain constant expressions
+						constraint.setExpression(
+								rewriteMoveConstantTerms((RelationalExpression) constraint.getExpression()));
 
 						Variable binaryVar = factory.createVariable();
 						binaryVar.setType(VariableType.BINARY);
@@ -216,6 +219,12 @@ public class GipsToIntermediate {
 					}
 
 					// Create substitute relational constraint
+					RelationalExpression substituteRelation = factory.createRelationalExpression();
+					substituteRelation.setOperator(RelationalOperator.GREATER_OR_EQUAL);
+					DoubleLiteral d1 = factory.createDoubleLiteral();
+					d1.setLiteral(1.0);
+					substituteRelation.setRhs(d1);
+
 					BinaryArithmeticExpression substituteSum = factory.createBinaryArithmeticExpression();
 					substituteSum.setOperator(BinaryArithmeticOperator.ADD);
 
@@ -245,27 +254,29 @@ public class GipsToIntermediate {
 						} else if (subformula instanceof Literal lit && !lit.phase()) {
 							BinaryArithmeticExpression negSum = factory.createBinaryArithmeticExpression();
 							negSum.setOperator(BinaryArithmeticOperator.ADD);
-							DoubleLiteral d1 = factory.createDoubleLiteral();
-							d1.setLiteral(1.0);
-							negSum.setLhs(d1);
-							BinaryArithmeticExpression negation = factory.createBinaryArithmeticExpression();
-							negation.setOperator(BinaryArithmeticOperator.MULTIPLY);
 							DoubleLiteral d2 = factory.createDoubleLiteral();
 							d2.setLiteral(-1.0);
-							negation.setLhs(d2);
+							negSum.setRhs(d2);
+							negSum.setLhs(substituteRelation.getRhs());
+							substituteRelation.setRhs(negSum);
+
+							BinaryArithmeticExpression negation = factory.createBinaryArithmeticExpression();
+							negation.setOperator(BinaryArithmeticOperator.MULTIPLY);
+							DoubleLiteral d3 = factory.createDoubleLiteral();
+							d3.setLiteral(-1.0);
+							negation.setLhs(d3);
 							negation.setRhs(varRef);
-							negSum.setRhs(negation);
 
 							if (currentSum.getLhs() == null && !subformulas.isEmpty()) {
-								currentSum.setLhs(negSum);
+								currentSum.setLhs(negation);
 							} else if (currentSum.getLhs() != null && !subformulas.isEmpty()) {
 								BinaryArithmeticExpression subSum = factory.createBinaryArithmeticExpression();
 								subSum.setOperator(BinaryArithmeticOperator.ADD);
 								currentSum.setRhs(subSum);
 								currentSum = subSum;
-								subSum.setLhs(negSum);
+								subSum.setLhs(negation);
 							} else if (currentSum.getLhs() != null && subformulas.isEmpty()) {
-								currentSum.setRhs(negSum);
+								currentSum.setRhs(negation);
 							} else {
 								throw new UnsupportedOperationException(
 										"Disjunction of boolean literals must have more than one literal.");
@@ -276,11 +287,6 @@ public class GipsToIntermediate {
 						}
 					}
 
-					RelationalExpression substituteRelation = factory.createRelationalExpression();
-					substituteRelation.setOperator(RelationalOperator.GREATER_OR_EQUAL);
-					DoubleLiteral d1 = factory.createDoubleLiteral();
-					d1.setLiteral(1.0);
-					substituteRelation.setRhs(d1);
 					substituteRelation.setLhs(substituteSum);
 					dConstraint.setExpression(substituteRelation);
 

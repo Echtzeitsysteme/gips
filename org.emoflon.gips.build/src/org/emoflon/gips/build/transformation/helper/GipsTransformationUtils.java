@@ -180,7 +180,7 @@ public final class GipsTransformationUtils {
 		} else if (expr instanceof ArithmeticLiteral) {
 			return ArithmeticExpressionType.constant;
 		} else if (expr instanceof VariableReference) {
-			return ArithmeticExpressionType.variableScalar;
+			return ArithmeticExpressionType.variableValue;
 		} else {
 			ArithmeticValue value = (ArithmeticValue) expr;
 			return isConstantExpression(value.getValue());

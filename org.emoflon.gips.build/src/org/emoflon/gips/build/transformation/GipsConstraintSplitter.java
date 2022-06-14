@@ -16,7 +16,6 @@ import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsImplicationBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsNotBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsOrBoolExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
 import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
 import org.emoflon.gips.gipsl.gipsl.GipslFactory;
 import org.logicng.formulas.Formula;
@@ -40,10 +39,6 @@ public class GipsConstraintSplitter {
 		if (constraint.getExpr() == null || constraint.getExpr().getExpr() == null) {
 			throw new NullPointerException("Constraint can not be split, since its boolean expression is empty!");
 		}
-
-		if ((constraint.getContext() instanceof GipsPatternContext)
-				&& ((GipsPatternContext) constraint.getContext()).getPattern().getName().contains("vlNotMapped"))
-			System.out.println("Bingo");
 
 		StringBuilder expressionBuilder = new StringBuilder();
 		parseToString(expressionBuilder, constraint.getExpr().getExpr());

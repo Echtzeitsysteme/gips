@@ -466,17 +466,20 @@ public class GipslValidator extends AbstractGipslValidator {
 			return false;
 		}
 
-		if (expr instanceof GipsBinaryBoolExpr) {
-			final GipsBinaryBoolExpr binExpr = (GipsBinaryBoolExpr) expr;
-			return containsMappingCheckValue(binExpr.getLeft()) || containsMappingCheckValue(binExpr.getRight());
+		if (expr instanceof GipsAndBoolExpr andExpr) {
+			return containsMappingCheckValue(andExpr.getLeft()) || containsMappingCheckValue(andExpr.getRight());
 		} else if (expr instanceof GipsBooleanLiteral) {
 			return false;
-		} else if (expr instanceof GipsRelExpr) {
-			final GipsRelExpr relExpr = (GipsRelExpr) expr;
+		} else if (expr instanceof GipsBracketBoolExpr brackExpr) {
+			return containsMappingCheckValue(brackExpr.getOperand());
+		} else if (expr instanceof GipsImplicationBoolExpr implExpr) {
+			return containsMappingCheckValue(implExpr.getLeft()) || containsMappingCheckValue(implExpr.getRight());
+		} else if (expr instanceof GipsNotBoolExpr notExpr) {
+			return containsMappingCheckValue(notExpr.getOperand());
+		} else if (expr instanceof GipsOrBoolExpr orExpr) {
+			return containsMappingCheckValue(orExpr.getLeft()) || containsMappingCheckValue(orExpr.getRight());
+		} else if (expr instanceof GipsRelExpr relExpr) {
 			return containsMappingCheckValue(relExpr.getLeft()) || containsMappingCheckValue(relExpr.getRight());
-		} else if (expr instanceof GipsUnaryBoolExpr) {
-			final GipsUnaryBoolExpr unExpr = (GipsUnaryBoolExpr) expr;
-			return containsMappingCheckValue(unExpr.getOperand());
 		}
 
 		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);

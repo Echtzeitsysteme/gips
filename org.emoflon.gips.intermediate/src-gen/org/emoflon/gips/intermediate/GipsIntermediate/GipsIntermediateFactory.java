@@ -454,6 +454,15 @@ public interface GipsIntermediateFactory extends EFactory {
 	IteratorMappingValue createIteratorMappingValue();
 
 	/**
+	 * Returns a new object of class '<em>Iterator Mapping Variable Value</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Iterator Mapping Variable Value</em>'.
+	 * @generated
+	 */
+	IteratorMappingVariableValue createIteratorMappingVariableValue();
+
+	/**
 	 * Returns a new object of class '<em>Iterator Mapping Feature Value</em>'. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 

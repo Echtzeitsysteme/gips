@@ -12,6 +12,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureNavigation;
 import org.emoflon.gips.gipsl.gipsl.GipsLambdaAttributeExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsLambdaSelfExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
@@ -96,6 +97,11 @@ public final class GipslScopeContextUtil {
 				&& reference == GipslPackage.Literals.GIPS_LAMBDA_ATTRIBUTE_EXPRESSION__VAR;
 	}
 
+	public static boolean isGipsLambdaSelfExpressionVariable(final EObject context, final EReference reference) {
+		return context instanceof GipsLambdaSelfExpression
+				&& reference == GipslPackage.Literals.GIPS_LAMBDA_SELF_EXPRESSION__VAR;
+	}
+
 	public static boolean isGipsLambdaAttributeExpression(final EObject context, final EReference reference) {
 		return context instanceof GipsLambdaAttributeExpression
 				&& reference == GipslPackage.Literals.GIPS_FEATURE_LIT__FEATURE;
@@ -164,7 +170,32 @@ public final class GipslScopeContextUtil {
 		return (GipsStreamExpr) GipslScopeContextUtil.getContainer(context, classes);
 	}
 
+	public static GipsAttributeExpr getStreamRootContainer(GipsLambdaSelfExpression context) {
+		Set<Class<?>> classes = Set.of(GipsContextExprImpl.class, GipsMappingAttributeExprImpl.class,
+				GipsPatternAttributeExprImpl.class, GipsTypeAttributeExprImpl.class);
+		return (GipsAttributeExpr) GipslScopeContextUtil.getContainer(context, classes);
+	}
+
+	public static GipsStreamExpr getStreamIteratorContainer(GipsLambdaSelfExpression context) {
+		Set<Class<?>> classes = Set.of(GipsStreamNavigationImpl.class, GipsStreamSetImpl.class, GipsSelectImpl.class,
+				GipsStreamArithmeticImpl.class, GipsContainsImpl.class);
+		return (GipsStreamExpr) GipslScopeContextUtil.getContainer(context, classes);
+	}
+
 	public static GipsStreamExpr getStreamIteratorNavigationRoot(GipsLambdaAttributeExpression context) {
+		Set<Class<?>> classes = Set.of(GipsStreamNavigationImpl.class);
+		GipsStreamExpr root = (GipsStreamExpr) GipslScopeContextUtil.getContainer(context, classes);
+		if (root != null)
+			return root;
+
+		classes.add(GipsStreamSetImpl.class);
+		classes.add(GipsSelectImpl.class);
+		classes.add(GipsStreamArithmeticImpl.class);
+		classes.add(GipsContainsImpl.class);
+		return (GipsStreamExpr) GipslScopeContextUtil.getContainer(context, classes);
+	}
+
+	public static GipsStreamExpr getStreamIteratorNavigationRoot(GipsLambdaSelfExpression context) {
 		Set<Class<?>> classes = Set.of(GipsStreamNavigationImpl.class);
 		GipsStreamExpr root = (GipsStreamExpr) GipslScopeContextUtil.getContainer(context, classes);
 		if (root != null)

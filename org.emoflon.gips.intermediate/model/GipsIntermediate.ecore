@@ -215,9 +215,11 @@
   <eClassifiers xsi:type="ecore:EEnum" name="BinaryBoolOperator">
     <eLiterals name="AND"/>
     <eLiterals name="OR" value="1"/>
+    <eLiterals name="XOR" value="2"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="UnaryBoolOperator">
     <eLiterals name="NOT"/>
+    <eLiterals name="BRACKET" value="1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="StreamBoolOperator">
     <eLiterals name="EXISTS"/>
@@ -310,6 +312,9 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IteratorMappingValue" eSuperTypes="#//ValueExpression #//Iterator">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//Mapping"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IteratorMappingVariableValue" eSuperTypes="#//ValueExpression #//Iterator">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//Mapping"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IteratorMappingFeatureValue" eSuperTypes="#//ValueExpression #//Iterator">

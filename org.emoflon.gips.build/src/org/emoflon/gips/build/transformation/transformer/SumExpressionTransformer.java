@@ -16,7 +16,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
@@ -41,7 +41,7 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 		mapSum.setReturnType(EcorePackage.Literals.EINT);
 		// Simple expression: Just add all filtered (!) mapping variable values v={0,1}
 		ArithmeticValue val = factory.createArithmeticValue();
-		IteratorMappingValue itr = factory.createIteratorMappingValue();
+		IteratorMappingVariableValue itr = factory.createIteratorMappingVariableValue();
 //		TODO: Is this next line necessary?
 		itr.setMappingContext(mapping);
 		itr.setStream(mapSum);

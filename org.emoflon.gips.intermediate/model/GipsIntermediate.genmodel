@@ -54,9 +54,11 @@
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="GipsIntermediate.ecore#//BinaryBoolOperator">
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//BinaryBoolOperator/AND"/>
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//BinaryBoolOperator/OR"/>
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//BinaryBoolOperator/XOR"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="GipsIntermediate.ecore#//UnaryBoolOperator">
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//UnaryBoolOperator/NOT"/>
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//UnaryBoolOperator/BRACKET"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="GipsIntermediate.ecore#//StreamBoolOperator">
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//StreamBoolOperator/EXISTS"/>
@@ -274,6 +276,9 @@
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//IteratorMappingValue">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//IteratorMappingValue/mappingContext"/>
+    </genClasses>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//IteratorMappingVariableValue">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//IteratorMappingVariableValue/mappingContext"/>
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//IteratorMappingFeatureValue">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//IteratorMappingFeatureValue/mappingContext"/>

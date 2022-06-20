@@ -34,7 +34,6 @@ public abstract class GipsEngine {
 
 		nonMappingVariables.clear();
 		constraints.values().parallelStream().forEach(constraint -> constraint.calcAdditionalVariables());
-
 		constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints());
 		if (globalObjective != null)
 			globalObjective.buildObjectiveFunction();

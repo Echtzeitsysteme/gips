@@ -14,12 +14,12 @@
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsObjectiveGoal/MIN"/>
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsObjectiveGoal/MAX"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//GipsBoolBinaryOperator">
-      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsBoolBinaryOperator/AND"/>
-      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsBoolBinaryOperator/OR"/>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//GipsOrOperator">
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsOrOperator/OR"/>
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsOrOperator/XOR"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//GipsBoolUnaryOperator">
-      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsBoolUnaryOperator/NOT"/>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//GipsAndOperator">
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsAndOperator/AND"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//GipsRelOperator">
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsRelOperator/GREATER"/>
@@ -152,14 +152,25 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsLambdaExpression/expr"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GlobalContext"/>
-    <genClasses ecoreClass="Gipsl.ecore#//GipsBinaryBoolExpr">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsBinaryBoolExpr/left"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsBinaryBoolExpr/operator"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsBinaryBoolExpr/right"/>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsImplicationBoolExpr">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsImplicationBoolExpr/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsImplicationBoolExpr/right"/>
     </genClasses>
-    <genClasses ecoreClass="Gipsl.ecore#//GipsUnaryBoolExpr">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsUnaryBoolExpr/operator"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsUnaryBoolExpr/operand"/>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsOrBoolExpr">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsOrBoolExpr/left"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsOrBoolExpr/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsOrBoolExpr/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsAndBoolExpr">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsAndBoolExpr/left"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsAndBoolExpr/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsAndBoolExpr/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsNotBoolExpr">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsNotBoolExpr/operand"/>
+    </genClasses>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsBracketBoolExpr">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsBracketBoolExpr/operand"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsMappingAttributeExpr">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsMappingAttributeExpr/mapping"/>
@@ -176,6 +187,9 @@
     <genClasses ecoreClass="Gipsl.ecore#//GipsLambdaAttributeExpression">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsLambdaAttributeExpression/var"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsLambdaAttributeExpression/expr"/>
+    </genClasses>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsLambdaSelfExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsLambdaSelfExpression/var"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsContextExpr">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsContextExpr/typeCast"/>

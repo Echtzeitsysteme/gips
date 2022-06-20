@@ -13,16 +13,16 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.xtext.validation.Check;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.GipsAndBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsAndOperator;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticUnaryOperator;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsBinaryBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsBool;
-import org.emoflon.gips.gipsl.gipsl.GipsBoolBinaryOperator;
 import org.emoflon.gips.gipsl.gipsl.GipsBoolExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsBoolUnaryOperator;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
+import org.emoflon.gips.gipsl.gipsl.GipsBracketBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsBracketExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsConstant;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
@@ -36,16 +36,21 @@ import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureNavigation;
 import org.emoflon.gips.gipsl.gipsl.GipsGlobalObjective;
+import org.emoflon.gips.gipsl.gipsl.GipsImplicationBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsLambdaAttributeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsLambdaExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsLambdaSelfExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingCheckValue;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingValue;
 import org.emoflon.gips.gipsl.gipsl.GipsNodeAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsNotBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsObjectiveExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsOrBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsOrOperator;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
 import org.emoflon.gips.gipsl.gipsl.GipsProductArithmeticExpr;
@@ -66,7 +71,6 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeCast;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsUnaryBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.GlobalContext;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
@@ -503,10 +507,24 @@ public class GipslValidator extends AbstractGipslValidator {
 			// Special case: Complete boolean expression is just a literal
 			if (expr instanceof GipsBooleanLiteral) {
 				return;
+			} else if (expr instanceof GipsImplicationBoolExpr impl) {
+				leftMapping = containsMappingsCall(impl.getLeft());
+				rightMapping = containsMappingsCall(impl.getRight());
+			} else if (expr instanceof GipsOrBoolExpr or) {
+				leftMapping = containsMappingsCall(or.getLeft());
+				rightMapping = containsMappingsCall(or.getRight());
+			} else if (expr instanceof GipsAndBoolExpr and) {
+				leftMapping = containsMappingsCall(and.getLeft());
+				rightMapping = containsMappingsCall(and.getRight());
+			} else if (expr instanceof GipsNotBoolExpr not) {
+				leftMapping = containsMappingsCall(not.getOperand());
+				rightMapping = leftMapping;
+			} else if (expr instanceof GipsBracketBoolExpr brack) {
+				leftMapping = containsMappingsCall(brack.getOperand());
+				rightMapping = leftMapping;
+			} else {
+				throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 			}
-			final GipsBinaryBoolExpr binExpr = (GipsBinaryBoolExpr) expr;
-			leftMapping = containsMappingsCall(binExpr.getLeft());
-			rightMapping = containsMappingsCall(binExpr.getRight());
 		} else {
 			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		}
@@ -532,20 +550,25 @@ public class GipslValidator extends AbstractGipslValidator {
 			return false;
 		}
 
-		if (expr instanceof GipsBinaryBoolExpr) {
-			final GipsBinaryBoolExpr binExpr = (GipsBinaryBoolExpr) expr;
-			return containsMappingsCall(binExpr.getLeft()) || containsMappingsCall(binExpr.getRight());
+		if (expr instanceof GipsImplicationBoolExpr impl) {
+			return containsMappingsCall(impl.getLeft()) || containsMappingsCall(impl.getRight());
+		} else if (expr instanceof GipsOrBoolExpr or) {
+			return containsMappingsCall(or.getLeft()) || containsMappingsCall(or.getRight());
+		} else if (expr instanceof GipsAndBoolExpr and) {
+			return containsMappingsCall(and.getLeft()) || containsMappingsCall(and.getRight());
+		} else if (expr instanceof GipsNotBoolExpr not) {
+			return containsMappingsCall(not.getOperand());
+		} else if (expr instanceof GipsBracketBoolExpr brack) {
+			return containsMappingsCall(brack.getOperand());
 		} else if (expr instanceof GipsBooleanLiteral) {
 			return false;
 		} else if (expr instanceof GipsRelExpr) {
 			final GipsRelExpr relExpr = (GipsRelExpr) expr;
 			return containsMappingsCall(relExpr.getLeft()) || containsMappingsCall(relExpr.getRight());
-		} else if (expr instanceof GipsUnaryBoolExpr) {
-			final GipsUnaryBoolExpr unExpr = (GipsUnaryBoolExpr) expr;
-			return containsMappingsCall(unExpr.getOperand());
+		} else {
+			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	/**
@@ -579,6 +602,9 @@ public class GipslValidator extends AbstractGipslValidator {
 							&& !(conExpr.getExpr() instanceof GipsMappingCheckValue));
 				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
 					// A GipsLambdaAttributeExpression can not contain a mappings call
+					return false;
+				} else if (exprOp instanceof GipsLambdaSelfExpression) {
+					// A GipsLambdaSelfExpression can not contain a mappings call
 					return false;
 				} else if (exprOp instanceof GipsMappingAttributeExpr) {
 					// A GipsMappingAttributeExpr always contains a mappings call
@@ -695,14 +721,25 @@ public class GipslValidator extends AbstractGipslValidator {
 			leftSelf = containsSelf(relExpr.getLeft(), type);
 			rightSelf = containsSelf(relExpr.getRight(), type);
 		} else if (expr instanceof GipsBoolExpr) {
-			if (expr instanceof GipsBinaryBoolExpr binaryExpr) {
-				leftSelf = containsSelf(binaryExpr.getLeft(), type);
-				rightSelf = containsSelf(binaryExpr.getRight(), type);
-			} else if (expr instanceof GipsUnaryBoolExpr unaryExpr) {
-				leftSelf = containsSelf(unaryExpr.getOperand(), type);
+			if (expr instanceof GipsImplicationBoolExpr impl) {
+				leftSelf = containsSelf(impl.getLeft(), type);
+				rightSelf = containsSelf(impl.getRight(), type);
+			} else if (expr instanceof GipsOrBoolExpr or) {
+				leftSelf = containsSelf(or.getLeft(), type);
+				rightSelf = containsSelf(or.getRight(), type);
+			} else if (expr instanceof GipsAndBoolExpr and) {
+				leftSelf = containsSelf(and.getLeft(), type);
+				rightSelf = containsSelf(and.getRight(), type);
+			} else if (expr instanceof GipsNotBoolExpr not) {
+				leftSelf = containsSelf(not.getOperand(), type);
 				rightSelf = leftSelf;
-			} else {
+			} else if (expr instanceof GipsBracketBoolExpr brack) {
+				leftSelf = containsSelf(brack.getOperand(), type);
+				rightSelf = leftSelf;
+			} else if (expr instanceof GipsBooleanLiteral) {
 				leftSelf = rightSelf = false;
+			} else {
+				throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 			}
 		} else if (expr == null) {
 			error( //
@@ -773,8 +810,11 @@ public class GipslValidator extends AbstractGipslValidator {
 				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
 					// A GipsLambdaAttributeExpression can not contain a 'self' access
 					return false;
-				} else if (exprOp instanceof GipsMappingAttributeExpr) {
-					final GipsMappingAttributeExpr attrExpr = (GipsMappingAttributeExpr) exprOp;
+				} else if (exprOp instanceof GipsLambdaSelfExpression) {
+					// A GipsLambdaSelfExpression, despite its name, can not contain 'self' access
+					// to the constraint / objective context.
+					return false;
+				} else if (exprOp instanceof GipsMappingAttributeExpr attrExpr) {
 					return containsSelf(attrExpr.getExpr(), type);
 				} else if (exprOp instanceof GipsPatternAttributeExpr patternExpr) {
 					return containsSelf(patternExpr.getExpr(), type);
@@ -851,20 +891,25 @@ public class GipslValidator extends AbstractGipslValidator {
 			return false;
 		}
 
-		if (expr instanceof GipsBinaryBoolExpr) {
-			final GipsBinaryBoolExpr binExpr = (GipsBinaryBoolExpr) expr;
-			return containsSelf(binExpr.getLeft(), type) || containsSelf(binExpr.getRight(), type);
+		if (expr instanceof GipsImplicationBoolExpr impl) {
+			return containsSelf(impl.getLeft(), type) || containsSelf(impl.getRight(), type);
+		} else if (expr instanceof GipsOrBoolExpr or) {
+			return containsSelf(or.getLeft(), type) || containsSelf(or.getRight(), type);
+		} else if (expr instanceof GipsAndBoolExpr and) {
+			return containsSelf(and.getLeft(), type) || containsSelf(and.getRight(), type);
+		} else if (expr instanceof GipsNotBoolExpr not) {
+			return containsSelf(not.getOperand(), type);
+		} else if (expr instanceof GipsBracketBoolExpr brack) {
+			return containsSelf(brack.getOperand(), type);
 		} else if (expr instanceof GipsBooleanLiteral) {
 			return false;
 		} else if (expr instanceof GipsRelExpr) {
 			final GipsRelExpr relExpr = (GipsRelExpr) expr;
 			return containsSelf(relExpr.getLeft(), type) || containsSelf(relExpr.getRight(), type);
-		} else if (expr instanceof GipsUnaryBoolExpr) {
-			final GipsUnaryBoolExpr unExpr = (GipsUnaryBoolExpr) expr;
-			return containsSelf(unExpr.getOperand(), type);
+		} else {
+			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	// TODO: Das andere was ich gemerkt habe ist auch, dass du keine mapping.value()
@@ -889,15 +934,26 @@ public class GipslValidator extends AbstractGipslValidator {
 			leftDynamic = validateArithExprDynamic(relExpr.getLeft());
 			rightDynamic = validateArithExprDynamic(relExpr.getRight());
 		} else if (expr instanceof GipsBoolExpr) {
-			if (expr instanceof GipsBinaryBoolExpr binExpr) {
-				leftDynamic = validateBoolExprDynamic(binExpr.getLeft());
-				rightDynamic = validateBoolExprDynamic(binExpr.getRight());
-			} else if (expr instanceof GipsUnaryBoolExpr unaryExpr) {
-				leftDynamic = validateBoolExprDynamic(unaryExpr.getOperand());
+			if (expr instanceof GipsImplicationBoolExpr impl) {
+				leftDynamic = validateBoolExprDynamic(impl.getLeft());
+				rightDynamic = validateBoolExprDynamic(impl.getRight());
+			} else if (expr instanceof GipsOrBoolExpr or) {
+				leftDynamic = validateBoolExprDynamic(or.getLeft());
+				rightDynamic = validateBoolExprDynamic(or.getRight());
+			} else if (expr instanceof GipsAndBoolExpr and) {
+				leftDynamic = validateBoolExprDynamic(and.getLeft());
+				rightDynamic = validateBoolExprDynamic(and.getRight());
+			} else if (expr instanceof GipsNotBoolExpr not) {
+				leftDynamic = validateBoolExprDynamic(not.getOperand());
 				rightDynamic = leftDynamic;
-			} else {
+			} else if (expr instanceof GipsBracketBoolExpr brack) {
+				leftDynamic = validateBoolExprDynamic(brack.getOperand());
+				rightDynamic = leftDynamic;
+			} else if (expr instanceof GipsBooleanLiteral) {
 				// Special case: Complete boolean expression is just a literal
 				return;
+			} else {
+				throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 			}
 		} else {
 			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
@@ -918,20 +974,25 @@ public class GipslValidator extends AbstractGipslValidator {
 			return false;
 		}
 
-		if (expr instanceof GipsBinaryBoolExpr) {
-			final GipsBinaryBoolExpr binExpr = (GipsBinaryBoolExpr) expr;
-			return validateBoolExprDynamic(binExpr.getLeft()) || validateBoolExprDynamic(binExpr.getRight());
+		if (expr instanceof GipsImplicationBoolExpr impl) {
+			return validateBoolExprDynamic(impl.getLeft()) || validateBoolExprDynamic(impl.getRight());
+		} else if (expr instanceof GipsOrBoolExpr or) {
+			return validateBoolExprDynamic(or.getLeft()) || validateBoolExprDynamic(or.getRight());
+		} else if (expr instanceof GipsAndBoolExpr and) {
+			return validateBoolExprDynamic(and.getLeft()) || validateBoolExprDynamic(and.getRight());
+		} else if (expr instanceof GipsNotBoolExpr not) {
+			return validateBoolExprDynamic(not.getOperand());
+		} else if (expr instanceof GipsBracketBoolExpr brack) {
+			return validateBoolExprDynamic(brack.getOperand());
 		} else if (expr instanceof GipsBooleanLiteral) {
+			// Special case: Complete boolean expression is just a literal
 			return false;
 		} else if (expr instanceof GipsRelExpr) {
 			final GipsRelExpr relExpr = (GipsRelExpr) expr;
 			return validateArithExprDynamic(relExpr.getLeft()) || validateArithExprDynamic(relExpr.getRight());
-		} else if (expr instanceof GipsUnaryBoolExpr) {
-			final GipsUnaryBoolExpr unExpr = (GipsUnaryBoolExpr) expr;
-			return validateBoolExprDynamic(unExpr.getOperand());
+		} else {
+			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		}
-
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	public boolean validateArithExprDynamic(final GipsArithmeticExpr expr) {
@@ -971,6 +1032,9 @@ public class GipslValidator extends AbstractGipslValidator {
 					// Currently only MAPPED and VALUE are supported -> Both are dynamic
 					return conExpr.getExpr() instanceof GipsContextOperationExpression;
 				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
+					// Nothing to do here
+					return false;
+				} else if (exprOp instanceof GipsLambdaSelfExpression) {
 					// Nothing to do here
 					return false;
 				} else if (exprOp instanceof GipsMappingAttributeExpr mappingExpr) {
@@ -1189,16 +1253,19 @@ public class GipslValidator extends AbstractGipslValidator {
 		EvalType output = EvalType.ERROR;
 
 		// Determine output type of this expression
-		if (expr instanceof GipsBooleanLiteral) {
+		if (expr instanceof GipsImplicationBoolExpr impl) {
+			output = getEvalLeftRightSideOp(impl.getLeft(), impl.getRight());
+		} else if (expr instanceof GipsOrBoolExpr or) {
+			output = getEvalLeftRightSideOp(or.getLeft(), or.getRight(), or.getOperator());
+		} else if (expr instanceof GipsAndBoolExpr and) {
+			output = getEvalLeftRightSideOp(and.getLeft(), and.getRight(), and.getOperator());
+		} else if (expr instanceof GipsNotBoolExpr not) {
+			output = getEvalLEftRightSideOp(not.getOperand());
+		} else if (expr instanceof GipsBracketBoolExpr brack) {
+			output = getEvalLEftRightSideOp(brack.getOperand());
+		} else if (expr instanceof GipsBooleanLiteral) {
 			output = EvalType.BOOLEAN;
-		} else if (expr instanceof GipsBinaryBoolExpr) {
-			final GipsBinaryBoolExpr boolExpr = (GipsBinaryBoolExpr) expr;
-			output = getEvalLeftRightSideOp(boolExpr.getLeft(), boolExpr.getRight(), boolExpr.getOperator());
-		} else if (expr instanceof GipsUnaryBoolExpr) {
-			final GipsUnaryBoolExpr boolExpr = (GipsUnaryBoolExpr) expr;
-			output = getEvalLEftRightSideOp(boolExpr.getOperand(), boolExpr.getOperator());
-		} else if (expr instanceof GipsRelExpr) {
-			final GipsRelExpr relExpr = (GipsRelExpr) expr;
+		} else if (expr instanceof GipsRelExpr relExpr) {
 			final EvalType leftType = getEvalTypeDelegate(relExpr.getLeft());
 			final EvalType rightType = getEvalTypeDelegate(relExpr.getRight());
 			output = combine(leftType, rightType, relExpr.getOperator());
@@ -1332,6 +1399,8 @@ public class GipslValidator extends AbstractGipslValidator {
 					type = GipslPackage.Literals.GIPS_CONTEXT_EXPR__EXPR;
 				} else if (expr instanceof GipsLambdaAttributeExpression) {
 					type = GipslPackage.Literals.GIPS_LAMBDA_ATTRIBUTE_EXPRESSION__EXPR;
+				} else if (expr instanceof GipsLambdaSelfExpression) {
+					type = GipslPackage.Literals.GIPS_LAMBDA_SELF_EXPRESSION__VAR;
 				}
 			} else if (expr instanceof GipsObjectiveExpression) {
 				type = GipslPackage.Literals.GIPS_OBJECTIVE_EXPRESSION__OBJECTIVE;
@@ -1382,6 +1451,8 @@ public class GipslValidator extends AbstractGipslValidator {
 		} else if (expr instanceof GipsLambdaAttributeExpression) {
 			final GipsLambdaAttributeExpression lambExpr = (GipsLambdaAttributeExpression) expr;
 			return getEvalTypeFromLambdaAttrExpr(lambExpr);
+		} else if (expr instanceof GipsLambdaSelfExpression lSelf) {
+			return getEvalTypeFromLambdaAttrExpr(lSelf);
 		}
 
 		return EvalType.ERROR;
@@ -1468,6 +1539,10 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 
 		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	public EvalType getEvalTypeFromLambdaAttrExpr(final GipsLambdaSelfExpression expr) {
+		return EvalType.ECLASS;
 	}
 
 	public EvalType getEvalTypeFromContextExpr(final GipsContextExpr expr) {
@@ -1614,7 +1689,7 @@ public class GipslValidator extends AbstractGipslValidator {
 	}
 
 	public EvalType getEvalLeftRightSideOp(final GipsBoolExpr left, final GipsBoolExpr right,
-			final GipsBoolBinaryOperator op) {
+			final GipsAndOperator op) {
 		if (right == null) {
 			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		} else {
@@ -1624,9 +1699,29 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 	}
 
-	public EvalType getEvalLEftRightSideOp(final GipsBoolExpr operand, final GipsBoolUnaryOperator op) {
+	public EvalType getEvalLeftRightSideOp(final GipsBoolExpr left, final GipsBoolExpr right, final GipsOrOperator op) {
+		if (right == null) {
+			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		} else {
+			final EvalType leftType = getEvalTypeDelegate(left);
+			final EvalType rightType = getEvalTypeDelegate(right);
+			return combine(leftType, rightType, op);
+		}
+	}
+
+	public EvalType getEvalLeftRightSideOp(final GipsBoolExpr left, final GipsBoolExpr right) {
+		if (right == null) {
+			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		} else {
+			final EvalType leftType = getEvalTypeDelegate(left);
+			final EvalType rightType = getEvalTypeDelegate(right);
+			return combine(leftType, rightType);
+		}
+	}
+
+	public EvalType getEvalLEftRightSideOp(final GipsBoolExpr operand) {
 		final EvalType opType = getEvalTypeDelegate(operand);
-		return combine(opType, op);
+		return combine(opType);
 	}
 
 	public EvalType combine(final EvalType left, final EvalType right, final GipsRelOperator op) {
@@ -1695,11 +1790,19 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 	}
 
-	public EvalType combine(final EvalType left, final EvalType right, final GipsBoolBinaryOperator op) {
+	public EvalType combine(final EvalType left, final EvalType right, final GipsAndOperator op) {
+		return combine(left, right);
+	}
+
+	public EvalType combine(final EvalType left, final EvalType right, final GipsOrOperator op) {
+		return combine(left, right);
+	}
+
+	public EvalType combine(final EvalType left, final EvalType right) {
 		return (left == EvalType.BOOLEAN && right == EvalType.BOOLEAN) ? EvalType.BOOLEAN : EvalType.ERROR;
 	}
 
-	public EvalType combine(final EvalType left, final GipsBoolUnaryOperator op) {
+	public EvalType combine(final EvalType left) {
 		return left == EvalType.BOOLEAN ? EvalType.BOOLEAN : EvalType.ERROR;
 	}
 

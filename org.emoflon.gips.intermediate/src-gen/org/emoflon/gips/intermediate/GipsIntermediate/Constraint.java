@@ -132,14 +132,14 @@ public interface Constraint extends EObject {
 	void setConstant(boolean value);
 
 	/**
-	 * Returns the value of the '<em><b>Dependencies</b></em>' containment reference
-	 * list. The list contents are of type
+	 * Returns the value of the '<em><b>Dependencies</b></em>' reference list. The
+	 * list contents are of type
 	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint}. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @return the value of the '<em>Dependencies</em>' containment reference list.
+	 * @return the value of the '<em>Dependencies</em>' reference list.
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_Dependencies()
-	 * @model containment="true"
+	 * @model
 	 * @generated
 	 */
 	EList<Constraint> getDependencies();

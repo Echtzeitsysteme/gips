@@ -11,7 +11,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression
@@ -41,6 +40,8 @@ import java.util.List
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue
 
 class PatternConstraintTemplate extends ConstraintTemplate<PatternConstraint> {
 
@@ -284,6 +285,8 @@ protected List<ILPTerm> buildVariableLhs(final «data.pattern2matchClassName.get
 		} else if(expr instanceof ObjectiveFunctionValue) {
 			throw new UnsupportedOperationException("Ilp term may not contain references to objective functions.")
 		} else if(expr instanceof IteratorMappingValue) {
+			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
+		} else if(expr instanceof IteratorMappingVariableValue) {
 			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
 		} else if(expr instanceof IteratorMappingFeatureValue) {
 			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")

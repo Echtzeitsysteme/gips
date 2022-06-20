@@ -34,6 +34,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValu
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue;
@@ -179,7 +180,7 @@ public final class GipsTransformationUtils {
 		} else if (expr instanceof ArithmeticLiteral) {
 			return ArithmeticExpressionType.constant;
 		} else if (expr instanceof VariableReference) {
-			return ArithmeticExpressionType.variableScalar;
+			return ArithmeticExpressionType.variableValue;
 		} else {
 			ArithmeticValue value = (ArithmeticValue) expr;
 			return isConstantExpression(value.getValue());
@@ -257,6 +258,8 @@ public final class GipsTransformationUtils {
 		} else if (expr instanceof ObjectiveFunctionValue) {
 			return ArithmeticExpressionType.variableVector;
 		} else if (expr instanceof IteratorMappingValue) {
+			return ArithmeticExpressionType.variableScalar;
+		} else if (expr instanceof IteratorMappingVariableValue) {
 			return ArithmeticExpressionType.variableValue;
 		} else if (expr instanceof IteratorMappingFeatureValue || expr instanceof IteratorMappingNodeValue
 				|| expr instanceof IteratorMappingNodeFeatureValue) {
@@ -397,8 +400,9 @@ public final class GipsTransformationUtils {
 			return true;
 		} else if (expr instanceof ObjectiveFunctionValue) {
 			return false;
-		} else if (expr instanceof IteratorMappingValue || expr instanceof IteratorMappingFeatureValue
-				|| expr instanceof IteratorMappingNodeValue || expr instanceof IteratorMappingNodeFeatureValue) {
+		} else if (expr instanceof IteratorMappingValue || expr instanceof IteratorMappingVariableValue
+				|| expr instanceof IteratorMappingFeatureValue || expr instanceof IteratorMappingNodeValue
+				|| expr instanceof IteratorMappingNodeFeatureValue) {
 			return false;
 		} else if (expr instanceof IteratorTypeValue || expr instanceof IteratorTypeFeatureValue) {
 			return false;
@@ -453,6 +457,8 @@ public final class GipsTransformationUtils {
 		} else if (expr instanceof ContextMappingValue val) {
 			variables.add(val.getMappingContext());
 		} else if (expr instanceof IteratorMappingValue val) {
+			variables.add(val.getMappingContext());
+		} else if (expr instanceof IteratorMappingVariableValue val) {
 			variables.add(val.getMappingContext());
 		} else if (expr instanceof IteratorMappingFeatureValue val) {
 			variables.add(val.getMappingContext());

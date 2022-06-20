@@ -13,7 +13,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue
@@ -61,6 +60,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.StreamContainsOperation
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue
 
 abstract class ConstraintTemplate <CONTEXT extends Constraint> extends GeneratorTemplate<CONTEXT> {
 
@@ -254,11 +255,17 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 				case OR: {
 					return '''«parseExpression(expr.lhs, contextType)» || «parseExpression(expr.rhs, contextType)»'''			
 				}
+				case XOR: {
+					return '''«parseExpression(expr.lhs, contextType)» ^ «parseExpression(expr.rhs, contextType)»'''		
+				}
 			}
 		} else if(expr instanceof BoolUnaryExpression) {
 			switch(expr.operator) {
 				case NOT: {
 					return '''!«parseExpression(expr.expression, contextType)»'''
+				}
+				case BRACKET: {
+					return '''(«parseExpression(expr.expression, contextType)»)'''
 				}
 			}
 		} else if(expr instanceof BoolLiteral) {
@@ -466,6 +473,8 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingValue) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
+		} else if(constExpr instanceof IteratorMappingVariableValue) {
+			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingFeatureValue) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingNodeFeatureValue) {
@@ -514,6 +523,8 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		} else if(constExpr instanceof ContextMappingNode) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingValue) {
+			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
+		} else if(constExpr instanceof IteratorMappingVariableValue) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingFeatureValue) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
@@ -589,6 +600,8 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		} else if(varExpr instanceof ContextMappingNode) {
 			return '''context.get«varExpr.node.name.toFirstUpper»()'''
 		} else if(varExpr instanceof IteratorMappingValue) {
+			return '''«getIteratorVariableName(varExpr.stream)»'''
+		} else if(varExpr instanceof IteratorMappingVariableValue) {
 			//This should have been taken care of already. -> Constant 1 doesn't hurt... 
 			return '''1.0'''
 		} else if(varExpr instanceof IteratorMappingFeatureValue) {
@@ -640,9 +653,11 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		} else if(varExpr instanceof ContextMappingNode) {
 			return '''context.get«varExpr.node.name.toFirstUpper»()'''
 		} else if(varExpr instanceof IteratorMappingValue) {
+			return '''«getIteratorVariableName(varExpr.stream)»'''
+		} else if(varExpr instanceof IteratorMappingVariableValue) {
 			//This should have been taken care of already. -> Constant 1 doesn't hurt... 
 			return '''1.0'''
-		} else if(varExpr instanceof IteratorMappingFeatureValue) {
+		}  else if(varExpr instanceof IteratorMappingFeatureValue) {
 			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else if(varExpr instanceof IteratorMappingNodeFeatureValue) {
 			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.featureExpression)»'''

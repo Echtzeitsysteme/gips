@@ -153,6 +153,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createIteratorPatternNodeFeatureValue();
 		case GipsIntermediatePackage.ITERATOR_MAPPING_VALUE:
 			return createIteratorMappingValue();
+		case GipsIntermediatePackage.ITERATOR_MAPPING_VARIABLE_VALUE:
+			return createIteratorMappingVariableValue();
 		case GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE:
 			return createIteratorMappingFeatureValue();
 		case GipsIntermediatePackage.ITERATOR_MAPPING_NODE_VALUE:
@@ -722,6 +724,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	public IteratorMappingValue createIteratorMappingValue() {
 		IteratorMappingValueImpl iteratorMappingValue = new IteratorMappingValueImpl();
 		return iteratorMappingValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public IteratorMappingVariableValue createIteratorMappingVariableValue() {
+		IteratorMappingVariableValueImpl iteratorMappingVariableValue = new IteratorMappingVariableValueImpl();
+		return iteratorMappingVariableValue;
 	}
 
 	/**

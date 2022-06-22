@@ -132,7 +132,7 @@ public class GlpkSolver extends ILPSolver {
 			// Iterate over all mappings of each mapper
 			for (final String k : mapper.getMappings().keySet()) {
 				// Get corresponding ILP variable name
-				final String varName = mapper.getMapping(k).ilpVariable;
+				final String varName = mapper.getMapping(k).getName();
 				// Get value of the ILP variable and round it (to eliminate small deltas)
 				double result = Math.round(GLPK.glp_mip_col_val(model, ilpVars.get(varName)));
 				// Save result value in specific mapping
@@ -143,7 +143,7 @@ public class GlpkSolver extends ILPSolver {
 
 	@Override
 	protected void translateMapping(final GipsMapping mapping) {
-		ilpVars.put(mapping.ilpVariable, ilpVars.size() + 1);
+		ilpVars.put(mapping.getName(), ilpVars.size() + 1);
 	}
 
 	@Override

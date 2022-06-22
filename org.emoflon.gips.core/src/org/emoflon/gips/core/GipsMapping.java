@@ -1,39 +1,22 @@
 package org.emoflon.gips.core;
 
-import org.emoflon.gips.core.ilp.ILPVariable;
+import org.emoflon.gips.core.ilp.ILPBinaryVariable;
 
-public abstract class GipsMapping implements ILPVariable<Integer> {
-	final public String ilpVariable;
-	protected int value = 0;
+public abstract class GipsMapping extends ILPBinaryVariable {
 
 	protected GipsMapping(final String ilpVariable) {
-		this.ilpVariable = ilpVariable;
-	}
-
-	@Override
-	public String getName() {
-		return ilpVariable;
-	}
-
-	@Override
-	public Integer getValue() {
-		return value;
-	}
-
-	@Override
-	public void setValue(Integer value) {
-		this.value = value;
+		super(ilpVariable);
 	}
 
 	@Override
 	public int hashCode() {
-		return ilpVariable.hashCode();
+		return name.hashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof GipsMapping other) {
-			return ilpVariable.equals(other.ilpVariable);
+			return name.equals(other.name);
 		} else {
 			return false;
 		}

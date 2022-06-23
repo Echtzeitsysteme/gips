@@ -10,32 +10,32 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 import org.emoflon.ibex.gt.api.GraphTransformationPattern;
 
-public abstract class PatternMapper<GTM extends GTMapping<M, P>, M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
-		extends GipsMapper<GTM> {
+public abstract class PatternMapper<PM extends GTMapping<M, P>, M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
+		extends GipsMapper<PM> {
 
 	final protected P pattern;
-	final protected Map<M, GTM> match2Mappings = Collections.synchronizedMap(new HashMap<>());
+	final protected Map<M, PM> match2Mappings = Collections.synchronizedMap(new HashMap<>());
 	private int mappingCounter = 0;
 
 	public PatternMapper(final GipsEngine engine, final Mapping mapping, final P pattern) {
 		super(engine, mapping);
 		this.pattern = pattern;
-		// TODO: this.init() see GTMapper.java
+		this.init();
 	}
 
-	protected abstract GTM convertMatch(final String ilpVariable, final M match);
+	protected abstract PM convertMatch(final String ilpVariable, final M match);
 
 	protected void addMapping(final M match) {
 		if (match2Mappings.containsKey(match))
 			return;
 
-		GTM mapping = convertMatch(this.mapping.getName() + "#" + mappingCounter++, match);
+		PM mapping = convertMatch(this.mapping.getName() + "#" + mappingCounter++, match);
 		match2Mappings.put(match, mapping);
 		super.putMapping(mapping);
 	}
 
 	protected void removeMapping(final M match) {
-		GTM mapping = match2Mappings.get(match);
+		PM mapping = match2Mappings.get(match);
 		if (mapping == null)
 			return;
 
@@ -45,6 +45,17 @@ public abstract class PatternMapper<GTM extends GTMapping<M, P>, M extends Graph
 
 	public P getGTPattern() {
 		return pattern;
+	}
+
+	protected void init() {
+		pattern.subscribeAppearing(this::addMapping);
+		pattern.subscribeDisappearing(this::removeMapping);
+	}
+
+	@Override
+	protected void terminate() {
+		pattern.unsubscribeAppearing(this::addMapping);
+		pattern.unsubscribeDisappearing(this::removeMapping);
 	}
 
 }

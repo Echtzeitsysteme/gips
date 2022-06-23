@@ -12,7 +12,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
@@ -21,22 +21,22 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingImpl#getRule
- * <em>Rule</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingImpl#getContextPattern
+ * <em>Context Pattern</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class MappingImpl extends VariableSetImpl implements Mapping {
+public abstract class MappingImpl extends VariableSetImpl implements Mapping {
 	/**
-	 * The cached value of the '{@link #getRule() <em>Rule</em>}' reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getContextPattern() <em>Context
+	 * Pattern</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see #getRule()
+	 * @see #getContextPattern()
 	 * @generated
 	 * @ordered
 	 */
-	protected IBeXRule rule;
+	protected IBeXContextPattern contextPattern;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -62,17 +62,17 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	 * 
 	 * @generated
 	 */
-	public IBeXRule getRule() {
-		if (rule != null && rule.eIsProxy()) {
-			InternalEObject oldRule = (InternalEObject) rule;
-			rule = (IBeXRule) eResolveProxy(oldRule);
-			if (rule != oldRule) {
+	public IBeXContextPattern getContextPattern() {
+		if (contextPattern != null && contextPattern.eIsProxy()) {
+			InternalEObject oldContextPattern = (InternalEObject) contextPattern;
+			contextPattern = (IBeXContextPattern) eResolveProxy(oldContextPattern);
+			if (contextPattern != oldContextPattern) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, GipsIntermediatePackage.MAPPING__RULE,
-							oldRule, rule));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+							GipsIntermediatePackage.MAPPING__CONTEXT_PATTERN, oldContextPattern, contextPattern));
 			}
 		}
-		return rule;
+		return contextPattern;
 	}
 
 	/**
@@ -80,8 +80,8 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	 * 
 	 * @generated
 	 */
-	public IBeXRule basicGetRule() {
-		return rule;
+	public IBeXContextPattern basicGetContextPattern() {
+		return contextPattern;
 	}
 
 	/**
@@ -89,12 +89,12 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	 * 
 	 * @generated
 	 */
-	public void setRule(IBeXRule newRule) {
-		IBeXRule oldRule = rule;
-		rule = newRule;
+	public void setContextPattern(IBeXContextPattern newContextPattern) {
+		IBeXContextPattern oldContextPattern = contextPattern;
+		contextPattern = newContextPattern;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.MAPPING__RULE, oldRule,
-					rule));
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.MAPPING__CONTEXT_PATTERN,
+					oldContextPattern, contextPattern));
 	}
 
 	/**
@@ -105,10 +105,10 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case GipsIntermediatePackage.MAPPING__RULE:
+		case GipsIntermediatePackage.MAPPING__CONTEXT_PATTERN:
 			if (resolve)
-				return getRule();
-			return basicGetRule();
+				return getContextPattern();
+			return basicGetContextPattern();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -121,8 +121,8 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case GipsIntermediatePackage.MAPPING__RULE:
-			setRule((IBeXRule) newValue);
+		case GipsIntermediatePackage.MAPPING__CONTEXT_PATTERN:
+			setContextPattern((IBeXContextPattern) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -136,8 +136,8 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case GipsIntermediatePackage.MAPPING__RULE:
-			setRule((IBeXRule) null);
+		case GipsIntermediatePackage.MAPPING__CONTEXT_PATTERN:
+			setContextPattern((IBeXContextPattern) null);
 			return;
 		}
 		super.eUnset(featureID);
@@ -151,8 +151,8 @@ public class MappingImpl extends VariableSetImpl implements Mapping {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case GipsIntermediatePackage.MAPPING__RULE:
-			return rule != null;
+		case GipsIntermediatePackage.MAPPING__CONTEXT_PATTERN:
+			return contextPattern != null;
 		}
 		return super.eIsSet(featureID);
 	}

@@ -65,8 +65,10 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createPattern();
 		case GipsIntermediatePackage.TYPE:
 			return createType();
-		case GipsIntermediatePackage.MAPPING:
-			return createMapping();
+		case GipsIntermediatePackage.GT_MAPPING:
+			return createGTMapping();
+		case GipsIntermediatePackage.PATTERN_MAPPING:
+			return createPatternMapping();
 		case GipsIntermediatePackage.VARIABLE:
 			return createVariable();
 		case GipsIntermediatePackage.GLOBAL_CONSTRAINT:
@@ -291,9 +293,19 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	public Mapping createMapping() {
-		MappingImpl mapping = new MappingImpl();
-		return mapping;
+	public GTMapping createGTMapping() {
+		GTMappingImpl gtMapping = new GTMappingImpl();
+		return gtMapping;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public PatternMapping createPatternMapping() {
+		PatternMappingImpl patternMapping = new PatternMappingImpl();
+		return patternMapping;
 	}
 
 	/**

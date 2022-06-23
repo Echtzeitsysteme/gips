@@ -39,6 +39,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.GTMapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
@@ -68,6 +69,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternMapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
@@ -145,6 +147,20 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * @generated
 	 */
 	private EClass mappingEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass gtMappingEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass patternMappingEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1032,8 +1048,44 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	public EReference getMapping_Rule() {
+	public EReference getMapping_ContextPattern() {
 		return (EReference) mappingEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EClass getGTMapping() {
+		return gtMappingEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getGTMapping_Rule() {
+		return (EReference) gtMappingEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EClass getPatternMapping() {
+		return patternMappingEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getPatternMapping_Pattern() {
+		return (EReference) patternMappingEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -2577,7 +2629,13 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		createEReference(typeEClass, TYPE__TYPE);
 
 		mappingEClass = createEClass(MAPPING);
-		createEReference(mappingEClass, MAPPING__RULE);
+		createEReference(mappingEClass, MAPPING__CONTEXT_PATTERN);
+
+		gtMappingEClass = createEClass(GT_MAPPING);
+		createEReference(gtMappingEClass, GT_MAPPING__RULE);
+
+		patternMappingEClass = createEClass(PATTERN_MAPPING);
+		createEReference(patternMappingEClass, PATTERN_MAPPING__PATTERN);
 
 		variableEClass = createEClass(VARIABLE);
 		createEAttribute(variableEClass, VARIABLE__TYPE);
@@ -2850,6 +2908,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		patternEClass.getESuperTypes().add(this.getVariableSet());
 		typeEClass.getESuperTypes().add(this.getVariableSet());
 		mappingEClass.getESuperTypes().add(this.getVariableSet());
+		gtMappingEClass.getESuperTypes().add(this.getMapping());
+		patternMappingEClass.getESuperTypes().add(this.getMapping());
 		variableEClass.getESuperTypes().add(this.getVariableSet());
 		globalConstraintEClass.getESuperTypes().add(this.getConstraint());
 		patternConstraintEClass.getESuperTypes().add(this.getContext());
@@ -3002,10 +3062,22 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 				!IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
 
-		initEClass(mappingEClass, Mapping.class, "Mapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getMapping_Rule(), theIBeXPatternModelPackage.getIBeXRule(), null, "rule", null, 1, 1,
-				Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+		initEClass(mappingEClass, Mapping.class, "Mapping", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getMapping_ContextPattern(), theIBeXPatternModelPackage.getIBeXContextPattern(), null,
+				"contextPattern", null, 1, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(gtMappingEClass, GTMapping.class, "GTMapping", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGTMapping_Rule(), theIBeXPatternModelPackage.getIBeXRule(), null, "rule", null, 1, 1,
+				GTMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(patternMappingEClass, PatternMapping.class, "PatternMapping", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getPatternMapping_Pattern(), theIBeXPatternModelPackage.getIBeXContext(), null, "pattern", null,
+				1, 1, PatternMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(variableEClass, Variable.class, "Variable", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);

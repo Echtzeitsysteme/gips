@@ -340,22 +340,25 @@ public class GipslValidator extends AbstractGipslValidator {
 	 */
 	public void checkMappingUnused(final GipsMapping mapping) {
 		final EditorGTFile container = (EditorGTFile) mapping.eContainer();
-		boolean usedAsContext = container.getConstraints().stream()
+		boolean usedAsContext = container.getConstraints().stream().filter(c -> c.getContext() != null)
 				.filter(c -> (c.getContext() instanceof GipsMappingContext))
 				.map(c -> (GipsMappingContext) c.getContext()).filter(mc -> mc.getMapping().equals(mapping)).findAny()
 				.isPresent();
 		if (usedAsContext)
 			return;
 
-		List<GipsConstraint> otherConstraints = container.getConstraints().stream().filter(c -> {
-			if (c.getContext() instanceof GipsMappingContext mapContext && !mapContext.getMapping().equals(mapping)) {
-				return true;
-			} else if (!(c.getContext() instanceof GipsMappingContext)) {
-				return true;
-			} else {
-				return false;
-			}
-		}).collect(Collectors.toList());
+		List<GipsConstraint> otherConstraints = container.getConstraints().stream()
+				.filter(c -> c.getContext() != null && c.getExpr() != null && c.getExpr().getExpr() != null)
+				.filter(c -> {
+					if (c.getContext() instanceof GipsMappingContext mapContext
+							&& !mapContext.getMapping().equals(mapping)) {
+						return true;
+					} else if (!(c.getContext() instanceof GipsMappingContext)) {
+						return true;
+					} else {
+						return false;
+					}
+				}).collect(Collectors.toList());
 
 		for (GipsConstraint constraint : otherConstraints) {
 			Set<GipsMapping> mappings = GipslScopeContextUtil.extractMappings(constraint.getExpr().getExpr());
@@ -367,21 +370,24 @@ public class GipslValidator extends AbstractGipslValidator {
 				String.format(MAPPING_W_O_CONSTRAINTS_MESSAGE, mapping.getName()), //
 				GipslPackage.Literals.GIPS_MAPPING__NAME);
 
-		usedAsContext = container.getObjectives().stream().filter(c -> (c.getContext() instanceof GipsMappingContext))
+		usedAsContext = container.getObjectives().stream().filter(c -> c.getContext() != null)
+				.filter(c -> (c.getContext() instanceof GipsMappingContext))
 				.map(c -> (GipsMappingContext) c.getContext()).filter(mc -> mc.getMapping().equals(mapping)).findAny()
 				.isPresent();
 		if (usedAsContext)
 			return;
 
-		List<GipsObjective> otherObjectives = container.getObjectives().stream().filter(c -> {
-			if (c.getContext() instanceof GipsMappingContext mapContext && !mapContext.getMapping().equals(mapping)) {
-				return true;
-			} else if (!(c.getContext() instanceof GipsMappingContext)) {
-				return true;
-			} else {
-				return false;
-			}
-		}).collect(Collectors.toList());
+		List<GipsObjective> otherObjectives = container.getObjectives().stream()
+				.filter(c -> c.getContext() != null && c.getExpr() != null).filter(c -> {
+					if (c.getContext() instanceof GipsMappingContext mapContext
+							&& !mapContext.getMapping().equals(mapping)) {
+						return true;
+					} else if (!(c.getContext() instanceof GipsMappingContext)) {
+						return true;
+					} else {
+						return false;
+					}
+				}).collect(Collectors.toList());
 
 		for (GipsObjective objective : otherObjectives) {
 			Set<GipsMapping> mappings = GipslScopeContextUtil.extractMappings(objective.getExpr());

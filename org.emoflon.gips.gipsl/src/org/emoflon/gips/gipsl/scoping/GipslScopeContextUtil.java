@@ -240,6 +240,9 @@ public final class GipslScopeContextUtil {
 	public static Set<GipsMapping> extractMappings(final GipsBoolExpr expr) {
 		Set<GipsMapping> mappings = new HashSet<>();
 
+		if (expr == null)
+			return mappings;
+
 		if (expr instanceof GipsImplicationBoolExpr implication) {
 			mappings.addAll(extractMappings(implication.getLeft()));
 			mappings.addAll(extractMappings(implication.getRight()));
@@ -268,6 +271,9 @@ public final class GipslScopeContextUtil {
 	public static Set<GipsMapping> extractMappings(final GipsRelExpr expr) {
 		Set<GipsMapping> mappings = new HashSet<>();
 
+		if (expr == null)
+			return mappings;
+
 		if (expr.getRight() == null) {
 			mappings.addAll(extractMappings(expr.getLeft()));
 		} else {
@@ -280,6 +286,9 @@ public final class GipslScopeContextUtil {
 
 	public static Set<GipsMapping> extractMappings(final GipsArithmeticExpr expr) {
 		Set<GipsMapping> mappings = new HashSet<>();
+
+		if (expr == null)
+			return mappings;
 
 		if (expr instanceof GipsSumArithmeticExpr sum) {
 			mappings.addAll(extractMappings(sum.getLeft()));
@@ -295,7 +304,7 @@ public final class GipslScopeContextUtil {
 		} else if (expr instanceof GipsBracketExpr bracket) {
 			mappings.addAll(extractMappings(bracket.getOperand()));
 		} else if (expr instanceof GipsAttributeExpr atr) {
-
+			mappings.addAll(extractMappings(atr));
 		} else if (expr instanceof GipsObjectiveExpression) {
 			return mappings;
 		} else if (expr instanceof GipsArithmeticLiteral) {
@@ -311,6 +320,9 @@ public final class GipslScopeContextUtil {
 
 	public static Set<GipsMapping> extractMappings(final GipsAttributeExpr expr) {
 		Set<GipsMapping> mappings = new HashSet<>();
+
+		if (expr == null)
+			return mappings;
 
 		if (expr instanceof GipsMappingAttributeExpr mappingAtr) {
 			mappings.add(mappingAtr.getMapping());
@@ -341,6 +353,9 @@ public final class GipslScopeContextUtil {
 
 	public static Set<GipsMapping> extractMappings(final GipsStreamExpr expr) {
 		Set<GipsMapping> mappings = new HashSet<>();
+
+		if (expr == null)
+			return mappings;
 
 		if (expr instanceof GipsSelect select) {
 			return mappings;

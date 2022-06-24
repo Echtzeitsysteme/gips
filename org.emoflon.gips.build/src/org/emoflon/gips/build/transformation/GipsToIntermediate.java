@@ -358,25 +358,26 @@ public class GipsToIntermediate {
 		ArithmeticExpression varSide = null;
 		boolean leftIsConst = true;
 
+		if (originalRelation.getOperator() == RelationalOperator.EQUAL
+				|| originalRelation.getOperator() == RelationalOperator.NOT_EQUAL) {
+			throw new UnsupportedOperationException();
+		}
+
 		if (GipsTransformationUtils
 				.isConstantExpression(originalRelation.getLhs()) == ArithmeticExpressionType.constant) {
 			// RHS -> contains variable
 			varSide = originalRelation.getRhs();
-			if (originalRelation.getOperator() == RelationalOperator.LESS
-					|| originalRelation.getOperator() == RelationalOperator.LESS_OR_EQUAL
-					|| originalRelation.getOperator() == RelationalOperator.EQUAL
-					|| originalRelation.getOperator() == RelationalOperator.NOT_EQUAL) {
-				varNegativeReal = false;
-			} else {
+			if (originalRelation.getOperator() == RelationalOperator.GREATER
+					|| originalRelation.getOperator() == RelationalOperator.GREATER_OR_EQUAL) {
 				varNegativeReal = true;
+			} else {
+				varNegativeReal = false;
 			}
 		} else {
 			// LHS -> constains variable
 			varSide = originalRelation.getLhs();
 			if (originalRelation.getOperator() == RelationalOperator.LESS
-					|| originalRelation.getOperator() == RelationalOperator.LESS_OR_EQUAL
-					|| originalRelation.getOperator() == RelationalOperator.EQUAL
-					|| originalRelation.getOperator() == RelationalOperator.NOT_EQUAL) {
+					|| originalRelation.getOperator() == RelationalOperator.LESS_OR_EQUAL) {
 				varNegativeReal = true;
 			} else {
 				varNegativeReal = false;

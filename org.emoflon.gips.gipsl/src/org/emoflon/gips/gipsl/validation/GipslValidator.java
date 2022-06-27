@@ -992,6 +992,25 @@ public class GipslValidator extends AbstractGipslValidator {
 					final GipsContextExpr conExpr = (GipsContextExpr) exprOp;
 					// Currently only MAPPED and VALUE are supported -> Both are dynamic
 					return conExpr.getExpr() instanceof GipsContextOperationExpression;
+					// TODO: Use the solution below. But, in order for this to work, we need to
+					// implement a multivariate return value (Enum type), which conveys more
+					// information that just "there is a mapping access of some kind".
+//					EObject container = (EObject) GipslScopeContextUtil.getContainer(expr,
+//							Set.of(GipsConstraintImpl.class, GipsObjectiveImpl.class));
+//					EObject context = null;
+//					if (container instanceof GipsConstraint constraint) {
+//						context = constraint.getContext();
+//					} else if (container instanceof GipsObjective objective) {
+//						context = objective.getContext();
+//					} else {
+//						return false;
+//					}
+//
+//					if (context instanceof GipsMappingContext) {
+//						return true;
+//					} else {
+//						return false;
+//					}
 				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
 					// Nothing to do here
 					return false;

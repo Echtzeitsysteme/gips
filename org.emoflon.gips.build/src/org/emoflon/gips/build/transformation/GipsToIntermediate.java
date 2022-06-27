@@ -168,6 +168,7 @@ public class GipsToIntermediate {
 				pmMapping.setPattern(context);
 			}
 
+			mapping.setName(eMapping.getName());
 			data.model().getVariables().add(mapping);
 			data.eMapping2Mapping().put(eMapping, mapping);
 		});

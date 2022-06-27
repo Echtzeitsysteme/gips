@@ -1,16 +1,16 @@
 package org.emoflon.gips.build.generator.templates
 
 import org.emoflon.gips.build.generator.GeneratorTemplate
-import org.emoflon.gips.intermediate.GipsIntermediate.Mapping
 import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives
+import org.emoflon.gips.intermediate.GipsIntermediate.GTMapping
 
-class MappingTemplate extends GeneratorTemplate<Mapping> {
+class GTMappingTemplate extends GeneratorTemplate<GTMapping> {
 	
 	IBeXContextPattern pattern;
 	
-	new(TemplateData data, Mapping context) {
+	new(TemplateData data, GTMapping context) {
 		super(data, context)
 	}
 	

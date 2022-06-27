@@ -5,6 +5,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
 import org.emoflon.gips.build.generator.TemplateData
 import java.util.List
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping
+import org.emoflon.gips.intermediate.GipsIntermediate.GTMapping
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternMapping
 
 class MapperFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 	
@@ -48,9 +50,14 @@ public class «className» extends GipsMapperFactory<«data.apiData.apiClass»> 
 		throw new IllegalArgumentException("Unknown mapping type: "+mapping);
 		«ELSE»
 		switch(mapping.getName()) {
-			«FOR mapping : mappings»
+			«FOR mapping : mappings.filter[m | m instanceof GTMapping].map[m | m as GTMapping]»
 			case "«mapping.name»" -> {
 				return new «data.mapping2mapperClassName.get(mapping)»(engine, mapping, eMoflonApi.«mapping.rule.name.toFirstLower»());
+			}
+			«ENDFOR»
+			«FOR mapping : mappings.filter[m | m instanceof PatternMapping].map[m | m as PatternMapping]»
+			case "«mapping.name»" -> {
+				return new «data.mapping2mapperClassName.get(mapping)»(engine, mapping, eMoflonApi.«mapping.pattern.name.toFirstLower»());
 			}
 			«ENDFOR»
 			default -> {

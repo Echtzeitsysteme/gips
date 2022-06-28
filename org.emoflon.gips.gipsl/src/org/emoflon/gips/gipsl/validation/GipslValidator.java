@@ -170,7 +170,7 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * release candidates.
 	 */
 	@Override
-	protected void handleExceptionDuringValidation(Throwable targetException) throws RuntimeException {
+	protected void handleExceptionDuringValidation(final Throwable targetException) throws RuntimeException {
 		targetException.printStackTrace();
 	}
 
@@ -184,6 +184,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	 */
 	@Check
 	public void checkGlobalObjectiveNotNull(final EditorGTFile file) {
+		if (file == null) {
+			return;
+		}
+
 		if (file.getObjectives() != null && !file.getObjectives().isEmpty() && file.getGlobalObjective() == null) {
 			error( //
 					GLOBAL_OBJECTIVE_IS_NULL_MESSAGE, //
@@ -208,6 +212,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	 */
 	@Check
 	public void checkGlobalObjective(final GipsGlobalObjective globObj) {
+		if (globObj == null) {
+			return;
+		}
+
 		// Validate expression regarding dynamic uses (like self.value())
 		validateArithExprDynamic(globObj.getExpr());
 
@@ -266,6 +274,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	 */
 	@Check
 	public void checkMapping(final GipsMapping mapping) {
+		if (mapping == null) {
+			return;
+		}
+
 		checkMappingNameValid(mapping);
 		checkMappingNameUnique(mapping);
 	}
@@ -278,7 +290,7 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * @param mapping Gips mapping to check.
 	 */
 	public void checkMappingNameValid(final GipsMapping mapping) {
-		if (mapping.getName() == null) {
+		if (mapping == null || mapping.getName() == null) {
 			return;
 		}
 
@@ -314,6 +326,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * @param mapping Gips mapping to check uniqueness of the name for.
 	 */
 	public void checkMappingNameUnique(final GipsMapping mapping) {
+		if (mapping == null || mapping.getName() == null) {
+			return;
+		}
+
 		final EditorGTFile container = (EditorGTFile) mapping.eContainer();
 		final long count = container.getMappings().stream()
 				.filter(m -> m.getName() != null && m.getName().equals(mapping.getName())).count();
@@ -333,6 +349,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	 */
 	@Check
 	public void checkConstraint(final GipsConstraint constraint) {
+		if (constraint == null) {
+			return;
+		}
+
 		if (constraint.getExpr() == null) {
 			error( //
 					String.format(CONSTRAINT_EMPTY_MESSAGE), //
@@ -377,6 +397,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * @param constraint Constraint to check mapping in mapping access for.
 	 */
 	public void validateNoMappingAccessIfMappingContext(final GipsConstraint constraint) {
+		if (constraint == null) {
+			return;
+		}
+
 		// If context is not a mapping, return immediately
 		if (getContextType(constraint.getContext()) != ContextType.MAPPING) {
 			return;
@@ -553,6 +577,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * @param constraint Constraint to check.
 	 */
 	public void checkConstraintIsLiteral(final GipsConstraint constraint) {
+		if (constraint == null) {
+			return;
+		}
+
 		if (constraint.getExpr().getExpr() instanceof GipsBooleanLiteral) {
 			final GipsBooleanLiteral lit = (GipsBooleanLiteral) constraint.getExpr().getExpr();
 			final String warning = String.valueOf(lit.isLiteral());
@@ -570,6 +598,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * @param constraint Constraint to check uniqueness for.
 	 */
 	public void checkConstraintUnique(final GipsConstraint constraint) {
+		if (constraint == null) {
+			return;
+		}
+
 		final EditorGTFile file = (EditorGTFile) constraint.eContainer();
 		final HashSet<GipsConstraint> others = new HashSet<>();
 		for (final GipsConstraint other : file.getConstraints()) {
@@ -597,6 +629,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * @param constraint Constraint to validate.
 	 */
 	public void validateConstraintHasSelf(final GipsConstraint constraint) {
+		if (constraint == null || constraint.getExpr() == null) {
+			return;
+		}
+
 		final GipsBoolExpr expr = constraint.getExpr().getExpr();
 		boolean leftSelf = false;
 		boolean rightSelf = false;
@@ -680,6 +716,10 @@ public class GipslValidator extends AbstractGipslValidator {
 			return false;
 		}
 
+		if (type == null) {
+			throw new IllegalArgumentException();
+		}
+
 		if (expr instanceof GipsBracketExpr) {
 			final GipsBracketExpr bracketExpr = (GipsBracketExpr) expr;
 			return containsSelf(bracketExpr.getOperand(), type);
@@ -742,6 +782,14 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * @return True if given stream expression contains a self reference.
 	 */
 	public boolean containsSelf(final GipsStreamExpr expr, final ContextType type) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (type == null) {
+			throw new IllegalArgumentException();
+		}
+
 		if (expr instanceof GipsSelect) {
 			// Stream -> no self
 			return false;
@@ -778,6 +826,10 @@ public class GipslValidator extends AbstractGipslValidator {
 			return false;
 		}
 
+		if (type == null) {
+			throw new IllegalArgumentException();
+		}
+
 		if (expr instanceof GipsImplicationBoolExpr impl) {
 			return containsSelf(impl.getLeft(), type) || containsSelf(impl.getRight(), type);
 		} else if (expr instanceof GipsOrBoolExpr or) {
@@ -811,6 +863,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * @param constraint Constraint to check dynamic elements for.
 	 */
 	public void validateConstraintDynamic(final GipsConstraint constraint) {
+		if (constraint == null || constraint.getExpr() == null || constraint.getExpr().getExpr() == null) {
+			return;
+		}
+
 		final GipsBoolExpr expr = constraint.getExpr().getExpr();
 
 		boolean leftDynamic = false;
@@ -974,6 +1030,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	}
 
 	public boolean validateStreamExprDynamic(final GipsStreamExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
 		if (expr instanceof GipsStreamNavigation) {
 			final GipsStreamNavigation nav = (GipsStreamNavigation) expr;
 			return validateStreamExprDynamic(nav.getLeft()) | validateStreamExprDynamic(nav.getRight());
@@ -1003,6 +1063,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	 */
 	@Check
 	public void checkObjective(final GipsObjective objective) {
+		if (objective == null) {
+			return;
+		}
+
 		// Check for bad names
 		checkObjectiveNameValid(objective);
 
@@ -1035,6 +1099,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * @param objective Objective to validate.
 	 */
 	public void checkObjectiveHasSelf(final GipsObjective objective) {
+		if (objective == null || objective.getExpr() == null || objective.getContext() == null) {
+			return;
+		}
+
 		final GipsArithmeticExpr expr = objective.getExpr();
 		final ContextType type = getContextType(objective.getContext());
 
@@ -1056,7 +1124,7 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * @param objective Gips objective to check.
 	 */
 	public void checkObjectiveNameValid(final GipsObjective objective) {
-		if (objective.getName() == null) {
+		if (objective == null || objective.getName() == null) {
 			return;
 		}
 
@@ -1093,6 +1161,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * @param objective Gips objective to check uniqueness of the name for.
 	 */
 	public void checkObjectiveNameUnique(final GipsObjective objective) {
+		if (objective == null || objective.eContainer() == null) {
+			return;
+		}
+
 		final EditorGTFile container = (EditorGTFile) objective.eContainer();
 		final long count = container.getObjectives().stream()
 				.filter(o -> o.getName() != null && o.getName().equals(objective.getName())).count();
@@ -1112,6 +1184,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * @param objective Gips objective to check for uselessness.
 	 */
 	public void checkObjectiveIsNotUseless(final GipsObjective objective) {
+		if (objective == null) {
+			return;
+		}
+
 		if (objective.getExpr() instanceof GipsArithmeticLiteral) {
 			final GipsArithmeticLiteral lit = (GipsArithmeticLiteral) objective.getExpr();
 			if (lit.getValue() != null && lit.getValue().equals("0")) {
@@ -1126,6 +1202,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	// TODO: Is this even necessary?
 	@Check
 	public void checkArithmeticLiteralParsable(final GipsArithmeticLiteral literal) {
+		if (literal == null) {
+			return;
+		}
+
 		try {
 			Double.valueOf(literal.getValue());
 		} catch (final NumberFormatException ex) {
@@ -1666,6 +1746,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * @param expr Lambda expression to check.
 	 */
 	public void validateLambdaExpr(final GipsLambdaExpression expr) {
+		if (expr == null || expr.getExpr() == null) {
+			return;
+		}
+
 		// Check return type
 		final EvalType lambdaEval = getEvalTypeFromBoolExpr(expr.getExpr());
 		if (!isPrimitiveType(lambdaEval)) {

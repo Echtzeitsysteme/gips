@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
@@ -375,36 +376,97 @@ public class GipsToIntermediate {
 		}
 	}
 
-	protected boolean insertSubstituteRealVariable(final Constraint constraint,
-			final RelationalExpression originalRelation, final Variable realVar) {
-		boolean varNegativeReal = false;
+	protected void insertSlackVariables(final Constraint dependingConstraint, final Constraint constraint) {
+		// Add substitute variable to produce negation!
+		RelationalExpression orginalRelation = (RelationalExpression) constraint.getExpression();
+		Variable realVarPos = factory.createVariable();
+		realVarPos.setType(VariableType.REAL);
+		realVarPos.setName(constraint.getName() + "_slackVPos");
+		data.model().getVariables().add(realVarPos);
+		dependingConstraint.getHelperVariables().add(realVarPos);
+
+		Variable realVarNeg = factory.createVariable();
+		realVarPos.setType(VariableType.REAL);
+		realVarPos.setName(constraint.getName() + "_slackVNeg");
+		data.model().getVariables().add(realVarNeg);
+		dependingConstraint.getHelperVariables().add(realVarNeg);
+
+		insertSubstituteRealVariable(orginalRelation, realVarPos);
+	}
+
+	protected RelationalExpression createInvertedRelationAndSlack(final RelationalExpression relation,
+			final Variable realVar) {
+		RelationalExpression invRelation = EcoreUtil.copy(relation);
+
 		ArithmeticExpression varSide = null;
 		boolean leftIsConst = true;
 
-		if (GipsTransformationUtils
-				.isConstantExpression(originalRelation.getLhs()) == ArithmeticExpressionType.constant) {
-			// RHS -> contains variable
-			varSide = originalRelation.getRhs();
-			if (originalRelation.getOperator() == RelationalOperator.LESS
-					|| originalRelation.getOperator() == RelationalOperator.LESS_OR_EQUAL
-					|| originalRelation.getOperator() == RelationalOperator.EQUAL
-					|| originalRelation.getOperator() == RelationalOperator.NOT_EQUAL) {
-				varNegativeReal = false;
-			} else {
-				varNegativeReal = true;
-			}
+		if (GipsTransformationUtils.isConstantExpression(invRelation.getLhs()) == ArithmeticExpressionType.constant) {
+			leftIsConst = true;
+			varSide = invRelation.getRhs();
 		} else {
-			// LHS -> constains variable
-			varSide = originalRelation.getLhs();
-			if (originalRelation.getOperator() == RelationalOperator.LESS
-					|| originalRelation.getOperator() == RelationalOperator.LESS_OR_EQUAL
-					|| originalRelation.getOperator() == RelationalOperator.EQUAL
-					|| originalRelation.getOperator() == RelationalOperator.NOT_EQUAL) {
-				varNegativeReal = true;
-			} else {
-				varNegativeReal = false;
-			}
 			leftIsConst = false;
+			varSide = invRelation.getLhs();
+		}
+
+		BinaryArithmeticExpression sum = factory.createBinaryArithmeticExpression();
+		sum.setOperator(BinaryArithmeticOperator.ADD);
+		sum.setLhs(varSide);
+		VariableReference realVarRef = factory.createVariableReference();
+		realVarRef.setVariable(realVar);
+		sum.setRhs(realVarRef);
+		invRelation.setLhs(sum);
+
+		switch (invRelation.getOperator()) {
+		case EQUAL -> {
+			throw new UnsupportedOperationException(
+					"Currently relational expressions containing the '==' operator can not be part of boolean expressions containing operators other than '&' ");
+		}
+		case GREATER -> {
+			// In case of "true" greater, we do not need an additional epsilon
+
+		}
+		case GREATER_OR_EQUAL -> {
+			if (leftIsConst) {
+
+			} else {
+
+			}
+		}
+		case LESS -> {
+			// In case of "true" lesser, we do not need an additional epsilon
+
+		}
+		case LESS_OR_EQUAL -> {
+			if (leftIsConst) {
+
+			} else {
+
+			}
+		}
+		case NOT_EQUAL -> {
+			throw new UnsupportedOperationException(
+					"Currently relational expressions containing the '!=' operator can not be part of boolean expressions containing operators other than '&' ");
+		}
+		default -> {
+
+		}
+
+		}
+
+		return invRelation;
+	}
+
+	protected void insertSubstituteRealVariable(final RelationalExpression relation, final Variable realVar) {
+		ArithmeticExpression varSide = null;
+		boolean leftIsConst = true;
+
+		if (GipsTransformationUtils.isConstantExpression(relation.getLhs()) == ArithmeticExpressionType.constant) {
+			leftIsConst = true;
+			varSide = relation.getRhs();
+		} else {
+			leftIsConst = false;
+			varSide = relation.getLhs();
 		}
 
 		BinaryArithmeticExpression sum = factory.createBinaryArithmeticExpression();
@@ -414,12 +476,11 @@ public class GipsToIntermediate {
 		realVarRef.setVariable(realVar);
 		sum.setRhs(realVarRef);
 		if (leftIsConst) {
-			originalRelation.setRhs(sum);
+			relation.setRhs(sum);
 		} else {
-			originalRelation.setLhs(sum);
+			relation.setLhs(sum);
 		}
 
-		return varNegativeReal;
 	}
 
 	protected Variable insertNegationConstraint(final Constraint dConstraint, final Constraint constraint) {

@@ -129,7 +129,7 @@ public class «className» extends GipsTypeConstraint<«data.gipsApiClassName»,
 		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
 	}
 	
-	@Overide
+	@Override
 	protected boolean buildConstantExpression(final «context.modelType.type.name» context) {
 		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
 	}

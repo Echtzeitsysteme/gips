@@ -72,6 +72,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeCast;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
+import org.emoflon.gips.gipsl.gipsl.GlobalContext;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
 
 /**
@@ -158,11 +159,15 @@ public class GipslValidator extends AbstractGipslValidator {
 
 	public static final String TYPE_DOES_NOT_CONTAIN_SELF_MESSAGE = "'%s' does not contain any self reference.";
 
-	public static final String MAPPING_IN_MAPPING_FORBIDDED_MESSAGE = "Mapping access within mapping context is forbidden.";
+	public static final String MAPPING_IN_MAPPING_FORBIDDEN_MESSAGE = "Mapping access within mapping context is forbidden.";
+	public static final String IS_MAPPED_CALL_IN_CONTEXT_FORBIDDEN_MESSAGE = "\"isMapped()\" call in non mapping context is not possible.";
 
 	// Exception error messages
 	public static final String NOT_IMPLEMENTED_EXCEPTION_MESSAGE = "Not yet implemented";
 	public static final String CONSTRAINT_CONTEXT_UNKNOWN_EXCEPTION_MESSAGE = "Context is neither a GipsType nor a GipsMapping.";
+
+	// Number error messages
+	public static final String SQRT_VALUE_SMALLER_THAN_ZERO = "Value in SQRT is smaller than 0.";
 
 	/**
 	 * This prevents all exceptions being "swallowed" by the default validator
@@ -380,14 +385,124 @@ public class GipslValidator extends AbstractGipslValidator {
 		// Check if constraint is unique
 		checkConstraintUnique(constraint);
 
-		// Check if constraint contains at least one 'self' call
-		validateConstraintHasSelf(constraint);
+		// Check if constraint contains at least one 'self' call (only if context is not
+		// global)
+		if (!(constraint.getContext() instanceof GlobalContext)) {
+			validateConstraintHasSelf(constraint);
+		}
 
 		// Validate expression -> Non-linear operations must be constant in ILP time
 		validateConstraintDynamic(constraint);
 
 		// Validate that no mapping gets accessed if context is mapping
 		validateNoMappingAccessIfMappingContext(constraint);
+
+		// Validation: No "self.isMapped()" in context != mapping
+		validateNoIsMappedInContextNotMapping(constraint);
+	}
+
+	/**
+	 * This method validates that "isMapped()" is only usable if the context is a
+	 * mapping.
+	 * 
+	 * @param constraint Constraint to check "isMapped()" in contexts for.
+	 */
+	public void validateNoIsMappedInContextNotMapping(final GipsConstraint constraint) {
+		if (!(constraint.getContext() instanceof GipsMappingContext)) {
+			final GipsBoolExpr expr = constraint.getExpr().getExpr();
+			final boolean containsMappingCheckValue = containsMappingCheckValue(expr);
+			if (containsMappingCheckValue) {
+				error( //
+						IS_MAPPED_CALL_IN_CONTEXT_FORBIDDEN_MESSAGE, //
+						constraint, //
+						GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
+				);
+			}
+		}
+	}
+
+	/**
+	 * Returns true if the given boolean expression contains an isMapped call.
+	 * 
+	 * @param expr Arithmetic expression to check.
+	 * @return True if the given arithmetic expression contains an isMapped call.
+	 */
+	public boolean containsMappingCheckValue(final GipsArithmeticExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof GipsBracketExpr) {
+			final GipsBracketExpr bracketExpr = (GipsBracketExpr) expr;
+			return containsMappingCheckValue(bracketExpr.getOperand());
+		} else if (expr instanceof GipsExpArithmeticExpr) {
+			final GipsExpArithmeticExpr expExpr = (GipsExpArithmeticExpr) expr;
+			return containsMappingCheckValue(expExpr.getLeft()) || containsMappingCheckValue(expExpr.getRight());
+		} else if (expr instanceof GipsExpressionOperand) {
+			final GipsExpressionOperand exprOp = (GipsExpressionOperand) expr;
+			if (exprOp instanceof GipsArithmeticLiteral) {
+				return false;
+			} else if (exprOp instanceof GipsAttributeExpr) {
+				if (exprOp instanceof GipsContextExpr) {
+					final GipsContextExpr conExpr = (GipsContextExpr) exprOp;
+					// Streams can be ignored
+					return conExpr.getExpr() instanceof GipsContextOperationExpression;
+				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
+					// A GipsLambdaAttributeExpression can not contain an isMapped call
+					return false;
+				} else if (exprOp instanceof GipsMappingAttributeExpr) {
+					// Streams can be ignored
+					return false;
+				} else if (exprOp instanceof GipsPatternAttributeExpr patternExpr) {
+					// Streams can be ignored
+					return false;
+				} else if (exprOp instanceof GipsTypeAttributeExpr typeExpr) {
+					// Streams can be ignored
+					return false;
+				}
+			}
+		} else if (expr instanceof GipsProductArithmeticExpr) {
+			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
+			return containsMappingCheckValue(prodExpr.getLeft()) || containsMappingCheckValue(prodExpr.getRight());
+		} else if (expr instanceof GipsSumArithmeticExpr) {
+			final GipsSumArithmeticExpr sumExpr = (GipsSumArithmeticExpr) expr;
+			return containsMappingCheckValue(sumExpr.getLeft()) || containsMappingCheckValue(sumExpr.getRight());
+		} else if (expr instanceof GipsUnaryArithmeticExpr) {
+			final GipsUnaryArithmeticExpr unExpr = (GipsUnaryArithmeticExpr) expr;
+			return containsMappingCheckValue(unExpr.getOperand());
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	/**
+	 * Returns true if the given boolean expression contains an isMapped call.
+	 * 
+	 * @param expr Boolean expression to check.
+	 * @return True if the given boolean expression contains an isMapped call.
+	 */
+	public boolean containsMappingCheckValue(final GipsBoolExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof GipsAndBoolExpr andExpr) {
+			return containsMappingCheckValue(andExpr.getLeft()) || containsMappingCheckValue(andExpr.getRight());
+		} else if (expr instanceof GipsBooleanLiteral) {
+			return false;
+		} else if (expr instanceof GipsBracketBoolExpr brackExpr) {
+			return containsMappingCheckValue(brackExpr.getOperand());
+		} else if (expr instanceof GipsImplicationBoolExpr implExpr) {
+			return containsMappingCheckValue(implExpr.getLeft()) || containsMappingCheckValue(implExpr.getRight());
+		} else if (expr instanceof GipsNotBoolExpr notExpr) {
+			return containsMappingCheckValue(notExpr.getOperand());
+		} else if (expr instanceof GipsOrBoolExpr orExpr) {
+			return containsMappingCheckValue(orExpr.getLeft()) || containsMappingCheckValue(orExpr.getRight());
+		} else if (expr instanceof GipsRelExpr relExpr) {
+			return containsMappingCheckValue(relExpr.getLeft()) || containsMappingCheckValue(relExpr.getRight());
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	/**
@@ -444,7 +559,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		// Generate an error if mappings are referenced
 		if (leftMapping || rightMapping) {
 			error( //
-					MAPPING_IN_MAPPING_FORBIDDED_MESSAGE, //
+					MAPPING_IN_MAPPING_FORBIDDEN_MESSAGE, //
 					constraint, //
 					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
 			);
@@ -510,7 +625,8 @@ public class GipslValidator extends AbstractGipslValidator {
 					if (streamContainsMappingsCall(conExpr.getStream())) {
 						return true;
 					}
-					return conExpr.getExpr() instanceof GipsContextOperationExpression;
+					return (conExpr.getExpr() instanceof GipsContextOperationExpression
+							&& !(conExpr.getExpr() instanceof GipsMappingCheckValue));
 				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
 					// A GipsLambdaAttributeExpression can not contain a mappings call
 					return false;
@@ -1294,6 +1410,29 @@ public class GipslValidator extends AbstractGipslValidator {
 		} else if (expr instanceof GipsUnaryArithmeticExpr) {
 			final EvalType operand = getEvalTypeFromArithExpr(((GipsUnaryArithmeticExpr) expr).getOperand());
 			output = combine(operand, ((GipsUnaryArithmeticExpr) expr).getOperator());
+
+			// Special case: sqrt(<0) should display an error -> Implementation for
+			// constants (basic)
+			// This could later be extended to also check more complex expressions or it
+			// could be integrated into the ILP validator
+			if (((GipsUnaryArithmeticExpr) expr).getOperator() == GipsArithmeticUnaryOperator.SQRT) {
+				final GipsArithmeticExpr inSqrt = ((GipsUnaryArithmeticExpr) expr).getOperand();
+				if (inSqrt instanceof GipsArithmeticLiteral) {
+					final GipsArithmeticLiteral lit = (GipsArithmeticLiteral) inSqrt;
+					try {
+						double val = Double.valueOf(lit.getValue());
+						if (val < 0) {
+							error( //
+									SQRT_VALUE_SMALLER_THAN_ZERO, //
+									expr, //
+									getLiteralType(expr) //
+							);
+						}
+					} catch (final NumberFormatException ex) {
+						// This case is covered by type evaluation
+					}
+				}
+			}
 		} else if (expr instanceof GipsExpressionOperand) {
 			output = getEvalTypeFromExprOp((GipsExpressionOperand) expr);
 			leaf = false;
@@ -1361,9 +1500,25 @@ public class GipslValidator extends AbstractGipslValidator {
 			return getEvalTypeFromAttrExpr((GipsAttributeExpr) op);
 		} else if (op instanceof GipsObjectiveExpression) {
 			return EvalType.OBJECTIVE;
+		} else if (op instanceof GipsConstant) {
+			return getEvalTypeFromGipsConst((GipsConstant) op);
 		}
 
 		return EvalType.ERROR;
+	}
+
+	public EvalType getEvalTypeFromGipsConst(final GipsConstant con) {
+		switch (con.getValue()) {
+		case E, PI -> {
+			return EvalType.DOUBLE;
+		}
+		case NULL -> {
+			return EvalType.NULL;
+		}
+		default -> {
+			return EvalType.ERROR;
+		}
+		}
 	}
 
 	public EvalType getEvalTypeFromAttrExpr(final GipsAttributeExpr expr) {
@@ -1666,6 +1821,14 @@ public class GipslValidator extends AbstractGipslValidator {
 				&& (right == EvalType.ECLASS || right == EvalType.CONTEXT)) {
 			// Case: Comparing two from {EClass, Context}
 			return EvalType.BOOLEAN;
+		} else if ((left == EvalType.ECLASS || left == EvalType.NULL)
+				&& (right == EvalType.ECLASS || right == EvalType.NULL)) {
+			// Case: Comparing null with EClass
+			return EvalType.BOOLEAN;
+		} else if ((left == EvalType.CONTEXT || left == EvalType.NULL)
+				&& (right == EvalType.CONTEXT || right == EvalType.NULL)) {
+			// Case: Comparing null with Context
+			return EvalType.BOOLEAN;
 		} else {
 			return EvalType.ERROR;
 		}
@@ -1785,6 +1948,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		INTEGER, //
 		DOUBLE, //
 		STRING, //
+		NULL, //
 		SET, // Sets like output of a filter
 		OBJECTIVE, // GipsObjective
 		MAPPING, // GipsMapping

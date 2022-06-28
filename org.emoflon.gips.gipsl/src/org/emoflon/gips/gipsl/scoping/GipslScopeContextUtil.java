@@ -1,5 +1,6 @@
 package org.emoflon.gips.gipsl.scoping;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
@@ -183,7 +184,8 @@ public final class GipslScopeContextUtil {
 	}
 
 	public static GipsStreamExpr getStreamIteratorNavigationRoot(GipsLambdaAttributeExpression context) {
-		Set<Class<?>> classes = Set.of(GipsStreamNavigationImpl.class);
+		final Set<Class<?>> classes = new HashSet<>();
+		classes.add(GipsStreamNavigationImpl.class);
 		GipsStreamExpr root = (GipsStreamExpr) GipslScopeContextUtil.getContainer(context, classes);
 		if (root != null)
 			return root;

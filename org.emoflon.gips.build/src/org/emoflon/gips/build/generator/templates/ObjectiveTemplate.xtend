@@ -105,9 +105,9 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 				var instruction = ""
 				if(GipsTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
 					if(context instanceof MappingObjective) {
-						instruction = '''terms.add(new ILPTerm(context, «builderMethodName»()));'''
+						instruction = '''terms.add(new ILPTerm(context, «builderMethodName»(context)));'''
 					} else {
-						instruction = '''constantTerms.add(new ILPConstant(«builderMethodName»()));'''
+						instruction = '''constantTerms.add(new ILPConstant(«builderMethodName»(context)));'''
 					}
 				} else {
 					val variables = GipsTransformationUtils.extractVariable(expr);
@@ -124,9 +124,9 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 				var instruction = ""
 				if(GipsTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
 					if(context instanceof MappingObjective) {
-						instruction = '''terms.add(new ILPTerm(context, «builderMethodName»()));'''
+						instruction = '''terms.add(new ILPTerm(context, «builderMethodName»(context)));'''
 					} else {
-						instruction = '''constantTerms.add(new ILPConstant(«builderMethodName»()));'''
+						instruction = '''constantTerms.add(new ILPConstant(«builderMethodName»(context)));'''
 					}
 				} else {
 					val variables = GipsTransformationUtils.extractVariable(expr);
@@ -220,7 +220,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 					return '''«parseExpression(expr.lhs, contextType)» * «parseExpression(expr.rhs, contextType)»'''
 				}
 				case POW: {
-					return '''Math.pow(«parseExpression(expr.lhs, contextType)», «parseExpression(expr.rhs, contextType)»'''
+					return '''Math.pow(«parseExpression(expr.lhs, contextType)», «parseExpression(expr.rhs, contextType)»)'''
 				}
 				case SUBTRACT: {
 					return '''«parseExpression(expr.lhs, contextType)» - «parseExpression(expr.rhs, contextType)»'''

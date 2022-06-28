@@ -158,7 +158,7 @@ public class GlpkSolver extends ILPSolver {
 
 	@Override
 	protected void translateMapping(final GipsMapping mapping) {
-		createBinVar(mapping.ilpVariable);
+		createBinVar(mapping.getName());
 	}
 
 	@Override

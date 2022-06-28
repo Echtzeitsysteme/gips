@@ -2,8 +2,10 @@ package org.emoflon.gips.core.ilp;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsEngine;
@@ -25,6 +27,13 @@ import org.gnu.glpk.glp_prob;
 public class GlpkSolver extends ILPSolver {
 
 	/**
+	 * Variable type (binary, integer, double).
+	 */
+	private enum VarType {
+		BIN, INT, DBL
+	}
+
+	/**
 	 * GLPK model.
 	 */
 	private glp_prob model;
@@ -40,9 +49,14 @@ public class GlpkSolver extends ILPSolver {
 	private Map<String, Collection<ILPConstraint>> constraints;
 
 	/**
-	 * Map to collect all ILP variables (name -> integer).
+	 * Map to collect all ILP variables (name -> integer (=index)).
 	 */
-	private Map<String, Integer> ilpVars;
+	private Map<String, Integer> ilpVarIndex;
+
+	/**
+	 * Map to collect all ILP variables (name -> type).
+	 */
+	private Map<String, VarType> ilpVarType;
 
 	/**
 	 * Global objective.
@@ -52,7 +66,8 @@ public class GlpkSolver extends ILPSolver {
 	public GlpkSolver(final GipsEngine engine, final ILPSolverConfig config) {
 		super(engine);
 		constraints = new HashMap<>();
-		ilpVars = new HashMap<>();
+		ilpVarIndex = new HashMap<>();
+		ilpVarType = new HashMap<>();
 
 		GLPK.glp_free_env();
 		model = GLPK.glp_create_prob();
@@ -134,7 +149,7 @@ public class GlpkSolver extends ILPSolver {
 				// Get corresponding ILP variable name
 				final String varName = mapper.getMapping(k).getName();
 				// Get value of the ILP variable and round it (to eliminate small deltas)
-				double result = Math.round(GLPK.glp_mip_col_val(model, ilpVars.get(varName)));
+				double result = Math.round(GLPK.glp_mip_col_val(model, ilpVarIndex.get(varName)));
 				// Save result value in specific mapping
 				mapper.getMapping(k).setValue((int) result);
 			}
@@ -143,27 +158,43 @@ public class GlpkSolver extends ILPSolver {
 
 	@Override
 	protected void translateMapping(final GipsMapping mapping) {
-		ilpVars.put(mapping.getName(), ilpVars.size() + 1);
+		createBinVar(mapping.ilpVariable);
 	}
 
 	@Override
 	protected void translateConstraint(final GipsMappingConstraint<?, ? extends EObject> constraint) {
-		constraints.put(constraint.getName(), constraint.getConstraints());
+		createAdditionalVars(constraint.getAdditionalVariables());
+		final Set<ILPConstraint> collectedCnstr = new HashSet<>();
+		collectedCnstr.addAll(constraint.getConstraints());
+		collectedCnstr.addAll(constraint.getAdditionalConstraints());
+		constraints.put(constraint.getName(), collectedCnstr);
 	}
 
 	@Override
 	protected void translateConstraint(final GipsPatternConstraint<?, ?, ?> constraint) {
-		constraints.put(constraint.getName(), constraint.getConstraints());
+		createAdditionalVars(constraint.getAdditionalVariables());
+		final Set<ILPConstraint> collectedCnstr = new HashSet<>();
+		collectedCnstr.addAll(constraint.getConstraints());
+		collectedCnstr.addAll(constraint.getAdditionalConstraints());
+		constraints.put(constraint.getName(), collectedCnstr);
 	}
 
 	@Override
 	protected void translateConstraint(final GipsTypeConstraint<?, ? extends EObject> constraint) {
-		constraints.put(constraint.getName(), constraint.getConstraints());
+		createAdditionalVars(constraint.getAdditionalVariables());
+		final Set<ILPConstraint> collectedCnstr = new HashSet<>();
+		collectedCnstr.addAll(constraint.getConstraints());
+		collectedCnstr.addAll(constraint.getAdditionalConstraints());
+		constraints.put(constraint.getName(), collectedCnstr);
 	}
 
 	@Override
 	protected void translateConstraint(GipsGlobalConstraint<?> constraint) {
-		constraints.put(constraint.getName(), constraint.getConstraints());
+		createAdditionalVars(constraint.getAdditionalVariables());
+		final Set<ILPConstraint> collectedCnstr = new HashSet<>();
+		collectedCnstr.addAll(constraint.getConstraints());
+		collectedCnstr.addAll(constraint.getAdditionalConstraints());
+		constraints.put(constraint.getName(), collectedCnstr);
 	}
 
 	@Override
@@ -176,17 +207,28 @@ public class GlpkSolver extends ILPSolver {
 	 */
 	private void setUpVars() {
 		// In case of 0 variables, simply return
-		if (ilpVars.size() == 0) {
+		if (ilpVarIndex.size() == 0) {
 			return;
 		}
 
-		GLPK.glp_add_cols(model, ilpVars.size());
-		int varCounter = 1;
-		for (final String k : ilpVars.keySet()) {
+		GLPK.glp_add_cols(model, ilpVarIndex.size());
+		for (final String k : ilpVarIndex.keySet()) {
+			final int varCounter = ilpVarIndex.get(k);
 			GLPK.glp_set_col_name(model, varCounter, k);
-			GLPK.glp_set_col_kind(model, varCounter, GLPKConstants.GLP_BV); // binary
-			GLPK.glp_set_col_bnds(model, varCounter, GLPKConstants.GLP_DB, 0, 1);
-			varCounter++;
+
+			// Type
+			if (ilpVarType.get(k) == VarType.BIN) {
+				GLPK.glp_set_col_kind(model, varCounter, GLPKConstants.GLP_BV); // binary
+				GLPK.glp_set_col_bnds(model, varCounter, GLPKConstants.GLP_DB, 0, 1);
+			} else if (ilpVarType.get(k) == VarType.INT) {
+				GLPK.glp_set_col_kind(model, varCounter, GLPKConstants.GLP_IV); // integer
+				GLPK.glp_set_col_bnds(model, varCounter, GLPKConstants.GLP_DB, Integer.MIN_VALUE, Integer.MAX_VALUE);
+			} else if (ilpVarType.get(k) == VarType.DBL) {
+				GLPK.glp_set_col_kind(model, varCounter, GLPKConstants.GLP_CV); // double = continuous
+				GLPK.glp_set_col_bnds(model, varCounter, GLPKConstants.GLP_DB, Double.MIN_VALUE, Double.MAX_VALUE);
+			} else {
+				throw new UnsupportedOperationException("ILP var type not known.");
+			}
 		}
 	}
 
@@ -222,7 +264,7 @@ public class GlpkSolver extends ILPSolver {
 
 				for (int termCounter = 0; termCounter < cnstr.lhsTerms().size(); termCounter++) {
 					GLPK.intArray_setitem(vars, termCounter + 1,
-							ilpVars.get(cnstr.lhsTerms().get(termCounter).variable().getName()));
+							ilpVarIndex.get(cnstr.lhsTerms().get(termCounter).variable().getName()));
 					GLPK.doubleArray_setitem(coeffs, termCounter + 1, cnstr.lhsTerms().get(termCounter).weight());
 				}
 
@@ -241,6 +283,10 @@ public class GlpkSolver extends ILPSolver {
 	 * Sets the objective function for GLPK up. Variable setup must be done before.
 	 */
 	private void setUpObj() {
+		if (objective == null) {
+			return;
+		}
+
 		final ILPNestedLinearFunction nestFunc = objective.getObjectiveFunction();
 
 		// Set goal
@@ -264,11 +310,18 @@ public class GlpkSolver extends ILPSolver {
 		// Terms
 		for (final ILPWeightedLinearFunction lf : nestFunc.linearFunctions()) {
 			lf.linearFunction().terms().forEach(t -> {
-				GLPK.glp_set_obj_coef(model, ilpVars.get(t.variable().getName()), t.weight());
+				// Get index of current variable
+				final int varIndex = ilpVarIndex.get(t.variable().getName());
+
+				// Get previous aggregated weight
+				final double prevCoef = GLPK.glp_get_obj_coef(model, varIndex);
+
+				// Update aggregated weight = prev + weight(var) * weight(term)
+				GLPK.glp_set_obj_coef(model, varIndex, prevCoef + (t.weight() * lf.weight()));
 			});
 
 			for (final ILPConstant c : lf.linearFunction().constantTerms()) {
-				constSum += c.weight();
+				constSum += (c.weight() * lf.weight());
 			}
 		}
 
@@ -304,6 +357,57 @@ public class GlpkSolver extends ILPSolver {
 		default:
 			throw new UnsupportedOperationException("Not yet implemented.");
 		}
+	}
+
+	/**
+	 * Checks the type of each given variable and creates corresponding (additional)
+	 * variables in the GLPK model.
+	 * 
+	 * @param variables Collection of variables to create additional GLPK variables
+	 *                  for.
+	 */
+	protected void createAdditionalVars(final Collection<ILPVariable<?>> variables) {
+		for (final ILPVariable<?> variable : variables) {
+			if (variable instanceof ILPBinaryVariable binVar) {
+				createBinVar(binVar.name);
+			} else if (variable instanceof ILPIntegerVariable intVar) {
+				createIntVar(intVar.name);
+			} else if (variable instanceof ILPRealVariable realVar) {
+				createDblVar(realVar.name);
+			} else {
+				throw new IllegalArgumentException("Unsupported variable type: " + variable.getClass().getSimpleName());
+			}
+		}
+	}
+
+	/**
+	 * Adds a binary variable with given name to the model.
+	 * 
+	 * @param name Variable name.
+	 */
+	private void createBinVar(final String name) {
+		ilpVarIndex.put(name, ilpVarIndex.size() + 1);
+		ilpVarType.put(name, VarType.BIN);
+	}
+
+	/**
+	 * Adds an integer variable with given name to the model.
+	 * 
+	 * @param name Variable name.
+	 */
+	private void createIntVar(final String name) {
+		ilpVarIndex.put(name, ilpVarIndex.size() + 1);
+		ilpVarType.put(name, VarType.INT);
+	}
+
+	/**
+	 * Adds a double variable with given name to the model.
+	 * 
+	 * @param name Variable name.
+	 */
+	private void createDblVar(final String name) {
+		ilpVarIndex.put(name, ilpVarIndex.size() + 1);
+		ilpVarType.put(name, VarType.DBL);
 	}
 
 }

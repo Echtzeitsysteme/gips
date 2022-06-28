@@ -100,7 +100,13 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Type/type"/>
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//Mapping">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Mapping/rule"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Mapping/contextPattern"/>
+    </genClasses>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//GTMapping">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//GTMapping/rule"/>
+    </genClasses>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//PatternMapping">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//PatternMapping/pattern"/>
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//Variable">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Variable/type"/>

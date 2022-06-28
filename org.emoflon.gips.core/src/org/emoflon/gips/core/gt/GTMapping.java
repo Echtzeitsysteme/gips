@@ -18,13 +18,13 @@ public abstract class GTMapping<M extends GraphTransformationMatch<M, P>, P exte
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(ilpVariable, match);
+		return Objects.hash(name, match);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof GTMapping<?, ?> other) {
-			if (ilpVariable.equals(other.ilpVariable) && match.equals(other.match)) {
+			if (name.equals(other.name) && match.equals(other.match)) {
 				return true;
 			} else {
 				return false;

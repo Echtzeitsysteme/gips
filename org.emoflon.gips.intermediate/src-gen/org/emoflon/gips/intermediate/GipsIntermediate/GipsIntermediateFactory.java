@@ -58,13 +58,22 @@ public interface GipsIntermediateFactory extends EFactory {
 	Type createType();
 
 	/**
-	 * Returns a new object of class '<em>Mapping</em>'. <!-- begin-user-doc -->
+	 * Returns a new object of class '<em>GT Mapping</em>'. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
-	 * @return a new object of class '<em>Mapping</em>'.
+	 * @return a new object of class '<em>GT Mapping</em>'.
 	 * @generated
 	 */
-	Mapping createMapping();
+	GTMapping createGTMapping();
+
+	/**
+	 * Returns a new object of class '<em>Pattern Mapping</em>'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Pattern Mapping</em>'.
+	 * @generated
+	 */
+	PatternMapping createPatternMapping();
 
 	/**
 	 * Returns a new object of class '<em>Variable</em>'. <!-- begin-user-doc -->

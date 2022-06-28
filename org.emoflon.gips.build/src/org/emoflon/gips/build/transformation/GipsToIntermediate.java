@@ -31,6 +31,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.GTMapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint;
@@ -44,6 +45,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
 import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternMapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
@@ -143,9 +145,30 @@ public class GipsToIntermediate {
 
 	protected void transformMappings() {
 		data.gipsSlangFile().getMappings().forEach(eMapping -> {
-			Mapping mapping = factory.createMapping();
+			Mapping mapping = null;
+			if (GTEditorPatternUtils.containsCreatedOrDeletedElements(eMapping.getPattern())) {
+				GTMapping gtMapping = factory.createGTMapping();
+				gtMapping.setRule(data.ePattern2Rule().get(eMapping.getPattern()));
+				if (gtMapping.getRule().getLhs() instanceof IBeXContextAlternatives alt) {
+					gtMapping.setContextPattern(alt.getContext());
+				} else {
+					gtMapping.setContextPattern((IBeXContextPattern) gtMapping.getRule().getLhs());
+				}
+				mapping = gtMapping;
+			} else {
+				PatternMapping pmMapping = factory.createPatternMapping();
+				mapping = pmMapping;
+
+				IBeXContext context = data.ePattern2Context().get(eMapping.getPattern());
+				if (context instanceof IBeXContextAlternatives alt) {
+					pmMapping.setContextPattern(alt.getContext());
+				} else {
+					pmMapping.setContextPattern((IBeXContextPattern) context);
+				}
+				pmMapping.setPattern(context);
+			}
+
 			mapping.setName(eMapping.getName());
-			mapping.setRule(data.ePattern2Rule().get(eMapping.getPattern()));
 			data.model().getVariables().add(mapping);
 			data.eMapping2Mapping().put(eMapping, mapping);
 		});

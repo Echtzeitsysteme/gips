@@ -500,7 +500,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		builderMethods.put(expr, methodName)
 		val method = '''
 	protected ILPTerm «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		return new ILPTerm(context, (double)context.«parseFeatureExpression(expr.featureExpression)»);
+		return new ILPTerm(context, (double)context.get«expr.node.name.toFirstUpper»().«parseFeatureExpression(expr.featureExpression)»);
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)

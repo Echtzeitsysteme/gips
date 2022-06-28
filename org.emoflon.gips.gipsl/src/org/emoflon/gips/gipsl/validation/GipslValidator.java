@@ -5,7 +5,9 @@ package org.emoflon.gips.gipsl.validation;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -72,6 +74,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeCast;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
+import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.gipsl.gipsl.GlobalContext;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
 
@@ -122,6 +125,8 @@ public class GipslValidator extends AbstractGipslValidator {
 	public static final String MAPPING_NAME_FORBIDDEN_MESSAGE = "Mappings cannot be be named '%s'. Use a different name.";
 	public static final String MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Mapping name '%s' contains underscores. Use camelCase instead.";
 	public static final String MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Mapping '%s' should start with a lower case character.";
+	public static final String MAPPING_W_O_CONSTRAINTS_MESSAGE = "Mapping '%s' is not subject to any constraints.";
+	public static final String MAPPING_W_O_CONSTRAINTS_AND_OBJECTIVE_MESSAGE = "Mapping '%s' is not subject to any constraints and not part of any objective function.";
 
 	public static final String OBJECTIVE_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Objective '%s' must not be declared '%s'";
 	public static final String OBJECTIVE_NAME_FORBIDDEN_MESSAGE = "Objectives cannot be be named '%s'. Use a different name.";
@@ -285,6 +290,7 @@ public class GipslValidator extends AbstractGipslValidator {
 
 		checkMappingNameValid(mapping);
 		checkMappingNameUnique(mapping);
+		checkMappingUnused(mapping);
 	}
 
 	/**
@@ -345,6 +351,74 @@ public class GipslValidator extends AbstractGipslValidator {
 					NAME_EXPECT_UNIQUE //
 			);
 		}
+	}
+
+	/**
+	 * Checks if a mapping is either unconstrained or not used in an objective and
+	 * throws a warning accordingly.
+	 * 
+	 * @param mapping Gips mapping to be checked.
+	 */
+	public void checkMappingUnused(final GipsMapping mapping) {
+		final EditorGTFile container = (EditorGTFile) mapping.eContainer();
+		boolean usedAsContext = container.getConstraints().stream().filter(c -> c.getContext() != null)
+				.filter(c -> (c.getContext() instanceof GipsMappingContext))
+				.map(c -> (GipsMappingContext) c.getContext()).filter(mc -> mc.getMapping().equals(mapping)).findAny()
+				.isPresent();
+		if (usedAsContext)
+			return;
+
+		List<GipsConstraint> otherConstraints = container.getConstraints().stream()
+				.filter(c -> c.getContext() != null && c.getExpr() != null && c.getExpr().getExpr() != null)
+				.filter(c -> {
+					if (c.getContext() instanceof GipsMappingContext mapContext
+							&& !mapContext.getMapping().equals(mapping)) {
+						return true;
+					} else if (!(c.getContext() instanceof GipsMappingContext)) {
+						return true;
+					} else {
+						return false;
+					}
+				}).collect(Collectors.toList());
+
+		for (GipsConstraint constraint : otherConstraints) {
+			Set<GipsMapping> mappings = GipslScopeContextUtil.extractMappings(constraint.getExpr().getExpr());
+			if (mappings.contains(mapping))
+				return;
+		}
+
+		warning( //
+				String.format(MAPPING_W_O_CONSTRAINTS_MESSAGE, mapping.getName()), //
+				GipslPackage.Literals.GIPS_MAPPING__NAME);
+
+		usedAsContext = container.getObjectives().stream().filter(c -> c.getContext() != null)
+				.filter(c -> (c.getContext() instanceof GipsMappingContext))
+				.map(c -> (GipsMappingContext) c.getContext()).filter(mc -> mc.getMapping().equals(mapping)).findAny()
+				.isPresent();
+		if (usedAsContext)
+			return;
+
+		List<GipsObjective> otherObjectives = container.getObjectives().stream()
+				.filter(c -> c.getContext() != null && c.getExpr() != null).filter(c -> {
+					if (c.getContext() instanceof GipsMappingContext mapContext
+							&& !mapContext.getMapping().equals(mapping)) {
+						return true;
+					} else if (!(c.getContext() instanceof GipsMappingContext)) {
+						return true;
+					} else {
+						return false;
+					}
+				}).collect(Collectors.toList());
+
+		for (GipsObjective objective : otherObjectives) {
+			Set<GipsMapping> mappings = GipslScopeContextUtil.extractMappings(objective.getExpr());
+			if (mappings.contains(mapping))
+				return;
+		}
+
+		warning( //
+				String.format(MAPPING_W_O_CONSTRAINTS_AND_OBJECTIVE_MESSAGE, mapping.getName()), //
+				GipslPackage.Literals.GIPS_MAPPING__NAME);
 	}
 
 	/**
@@ -1090,6 +1164,25 @@ public class GipslValidator extends AbstractGipslValidator {
 					final GipsContextExpr conExpr = (GipsContextExpr) exprOp;
 					// Currently only MAPPED and VALUE are supported -> Both are dynamic
 					return conExpr.getExpr() instanceof GipsContextOperationExpression;
+					// TODO: Use the solution below. But, in order for this to work, we need to
+					// implement a multivariate return value (Enum type), which conveys more
+					// information that just "there is a mapping access of some kind".
+//					EObject container = (EObject) GipslScopeContextUtil.getContainer(expr,
+//							Set.of(GipsConstraintImpl.class, GipsObjectiveImpl.class));
+//					EObject context = null;
+//					if (container instanceof GipsConstraint constraint) {
+//						context = constraint.getContext();
+//					} else if (container instanceof GipsObjective objective) {
+//						context = objective.getContext();
+//					} else {
+//						return false;
+//					}
+//
+//					if (context instanceof GipsMappingContext) {
+//						return true;
+//					} else {
+//						return false;
+//					}
 				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
 					// Nothing to do here
 					return false;

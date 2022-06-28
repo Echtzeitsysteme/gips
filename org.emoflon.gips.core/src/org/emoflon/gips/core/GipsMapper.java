@@ -24,11 +24,11 @@ public abstract class GipsMapper<M extends GipsMapping> {
 	}
 
 	protected M putMapping(final M mapping) {
-		return mappings.put(mapping.ilpVariable, mapping);
+		return mappings.put(mapping.getName(), mapping);
 	}
 
 	protected M removeMapping(final M mapping) {
-		return mappings.remove(mapping.ilpVariable);
+		return mappings.remove(mapping.getName());
 	}
 
 	public String getName() {

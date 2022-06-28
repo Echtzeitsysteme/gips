@@ -50,8 +50,16 @@
   <eClassifiers xsi:type="ecore:EClass" name="Type" eSuperTypes="#//VariableSet">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Mapping" eSuperTypes="#//VariableSet">
+  <eClassifiers xsi:type="ecore:EClass" name="Mapping" abstract="true" eSuperTypes="#//VariableSet">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contextPattern" lowerBound="1"
+        eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXContextPattern"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GTMapping" eSuperTypes="#//Mapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="rule" lowerBound="1" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXRule"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternMapping" eSuperTypes="#//Mapping">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" lowerBound="1"
+        eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXContext"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Variable" eSuperTypes="#//VariableSet">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//VariableType"/>

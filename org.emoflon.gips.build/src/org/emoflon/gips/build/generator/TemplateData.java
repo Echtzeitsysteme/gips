@@ -5,10 +5,12 @@ import java.util.Map;
 
 import org.emoflon.gips.build.GipsAPIData;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.GTMapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternMapping;
 
 public class TemplateData {
 	final public GipsIntermediateModel model;
@@ -23,7 +25,8 @@ public class TemplateData {
 
 	final public Map<Mapping, String> mapping2mappingClassName = new HashMap<>();
 	final public Map<Mapping, String> mapping2mapperClassName = new HashMap<>();
-	final public Map<Mapping, String> mapping2ruleClassName = new HashMap<>();
+	final public Map<GTMapping, String> mapping2ruleClassName = new HashMap<>();
+	final public Map<PatternMapping, String> mapping2patternClassName = new HashMap<>();
 	final public Map<Mapping, String> mapping2matchClassName = new HashMap<>();
 	final public Map<Pattern, String> pattern2matchClassName = new HashMap<>();
 	final public Map<Pattern, String> pattern2patternClassName = new HashMap<>();
@@ -48,8 +51,16 @@ public class TemplateData {
 				.forEach(mapping -> {
 					mapping2mapperClassName.put(mapping, firstToUpper(mapping.getName()) + "Mapper");
 					mapping2mappingClassName.put(mapping, firstToUpper(mapping.getName()) + "Mapping");
-					mapping2ruleClassName.put(mapping, firstToUpper(mapping.getRule().getName()) + "Rule");
-					mapping2matchClassName.put(mapping, firstToUpper(mapping.getRule().getName()) + "Match");
+					if (mapping instanceof GTMapping gtMapping) {
+						mapping2ruleClassName.put(gtMapping, firstToUpper(gtMapping.getRule().getName()) + "Rule");
+						mapping2matchClassName.put(gtMapping, firstToUpper(gtMapping.getRule().getName()) + "Match");
+					} else {
+						PatternMapping pmMapping = (PatternMapping) mapping;
+						mapping2patternClassName.put(pmMapping,
+								firstToUpper(pmMapping.getPattern().getName()) + "Pattern");
+						mapping2matchClassName.put(pmMapping, firstToUpper(pmMapping.getPattern().getName()) + "Match");
+					}
+
 				});
 		model.getVariables().stream().filter(var -> var instanceof Pattern).map(var -> (Pattern) var)
 				.forEach(pattern -> {

@@ -44,10 +44,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
  * <em>Dependencies</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getHelperVariables
  * <em>Helper Variables</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getRealVarCorrectnessConstraints
- * <em>Real Var Correctness Constraints</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getBinaryVarCorrectnessConstraints
- * <em>Binary Var Correctness Constraints</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getHelperConstraints
+ * <em>Helper Constraints</em>}</li>
  * </ul>
  *
  * @generated
@@ -145,26 +143,15 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	protected EList<Variable> helperVariables;
 
 	/**
-	 * The cached value of the '{@link #getRealVarCorrectnessConstraints() <em>Real
-	 * Var Correctness Constraints</em>}' containment reference list. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getHelperConstraints() <em>Helper
+	 * Constraints</em>}' containment reference list. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
-	 * @see #getRealVarCorrectnessConstraints()
+	 * @see #getHelperConstraints()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<RelationalExpression> realVarCorrectnessConstraints;
-
-	/**
-	 * The cached value of the '{@link #getBinaryVarCorrectnessConstraints()
-	 * <em>Binary Var Correctness Constraints</em>}' containment reference list.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @see #getBinaryVarCorrectnessConstraints()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<RelationalExpression> binaryVarCorrectnessConstraints;
+	protected EList<RelationalExpression> helperConstraints;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -332,27 +319,12 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * 
 	 * @generated
 	 */
-	public EList<RelationalExpression> getRealVarCorrectnessConstraints() {
-		if (realVarCorrectnessConstraints == null) {
-			realVarCorrectnessConstraints = new EObjectContainmentEList<RelationalExpression>(
-					RelationalExpression.class, this,
-					GipsIntermediatePackage.CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS);
+	public EList<RelationalExpression> getHelperConstraints() {
+		if (helperConstraints == null) {
+			helperConstraints = new EObjectContainmentEList<RelationalExpression>(RelationalExpression.class, this,
+					GipsIntermediatePackage.CONSTRAINT__HELPER_CONSTRAINTS);
 		}
-		return realVarCorrectnessConstraints;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EList<RelationalExpression> getBinaryVarCorrectnessConstraints() {
-		if (binaryVarCorrectnessConstraints == null) {
-			binaryVarCorrectnessConstraints = new EObjectContainmentEList<RelationalExpression>(
-					RelationalExpression.class, this,
-					GipsIntermediatePackage.CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS);
-		}
-		return binaryVarCorrectnessConstraints;
+		return helperConstraints;
 	}
 
 	/**
@@ -365,10 +337,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 		switch (featureID) {
 		case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
 			return basicSetExpression(null, msgs);
-		case GipsIntermediatePackage.CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS:
-			return ((InternalEList<?>) getRealVarCorrectnessConstraints()).basicRemove(otherEnd, msgs);
-		case GipsIntermediatePackage.CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS:
-			return ((InternalEList<?>) getBinaryVarCorrectnessConstraints()).basicRemove(otherEnd, msgs);
+		case GipsIntermediatePackage.CONSTRAINT__HELPER_CONSTRAINTS:
+			return ((InternalEList<?>) getHelperConstraints()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -393,10 +363,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 			return getDependencies();
 		case GipsIntermediatePackage.CONSTRAINT__HELPER_VARIABLES:
 			return getHelperVariables();
-		case GipsIntermediatePackage.CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS:
-			return getRealVarCorrectnessConstraints();
-		case GipsIntermediatePackage.CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS:
-			return getBinaryVarCorrectnessConstraints();
+		case GipsIntermediatePackage.CONSTRAINT__HELPER_CONSTRAINTS:
+			return getHelperConstraints();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -430,13 +398,9 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 			getHelperVariables().clear();
 			getHelperVariables().addAll((Collection<? extends Variable>) newValue);
 			return;
-		case GipsIntermediatePackage.CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS:
-			getRealVarCorrectnessConstraints().clear();
-			getRealVarCorrectnessConstraints().addAll((Collection<? extends RelationalExpression>) newValue);
-			return;
-		case GipsIntermediatePackage.CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS:
-			getBinaryVarCorrectnessConstraints().clear();
-			getBinaryVarCorrectnessConstraints().addAll((Collection<? extends RelationalExpression>) newValue);
+		case GipsIntermediatePackage.CONSTRAINT__HELPER_CONSTRAINTS:
+			getHelperConstraints().clear();
+			getHelperConstraints().addAll((Collection<? extends RelationalExpression>) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -468,11 +432,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 		case GipsIntermediatePackage.CONSTRAINT__HELPER_VARIABLES:
 			getHelperVariables().clear();
 			return;
-		case GipsIntermediatePackage.CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS:
-			getRealVarCorrectnessConstraints().clear();
-			return;
-		case GipsIntermediatePackage.CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS:
-			getBinaryVarCorrectnessConstraints().clear();
+		case GipsIntermediatePackage.CONSTRAINT__HELPER_CONSTRAINTS:
+			getHelperConstraints().clear();
 			return;
 		}
 		super.eUnset(featureID);
@@ -498,10 +459,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 			return dependencies != null && !dependencies.isEmpty();
 		case GipsIntermediatePackage.CONSTRAINT__HELPER_VARIABLES:
 			return helperVariables != null && !helperVariables.isEmpty();
-		case GipsIntermediatePackage.CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS:
-			return realVarCorrectnessConstraints != null && !realVarCorrectnessConstraints.isEmpty();
-		case GipsIntermediatePackage.CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS:
-			return binaryVarCorrectnessConstraints != null && !binaryVarCorrectnessConstraints.isEmpty();
+		case GipsIntermediatePackage.CONSTRAINT__HELPER_CONSTRAINTS:
+			return helperConstraints != null && !helperConstraints.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

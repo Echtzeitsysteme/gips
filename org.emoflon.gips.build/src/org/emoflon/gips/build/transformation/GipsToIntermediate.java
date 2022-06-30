@@ -248,6 +248,11 @@ public class GipsToIntermediate {
 						VariableTuple symbolicVars = new VariableTuple(binaryVarPos, binaryVarNeg);
 						constraint2Symbolic.put(splitConstraint, symbolicVars);
 
+						// Force symbolic variables non-zero constraint
+						// symVPos + symVNeg == 1
+						GipsConstraintUtils.insertSymbolicVariableNonZeroConstraint(factory, dConstraint,
+								symbolicVars.nonInverted(), symbolicVars.inverted());
+
 						// Link symbolic and slack variables
 						GipsConstraintUtils.insertSymbolicSlackLinkConstraint(factory, dConstraint,
 								symbolicVars.nonInverted(), slackVars.nonInverted());

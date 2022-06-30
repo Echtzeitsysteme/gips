@@ -30,8 +30,8 @@ public final class GipsConstraintUtils {
 		dependingConstraint.getHelperVariables().add(realVarPos);
 
 		Variable realVarNeg = factory.createVariable();
-		realVarPos.setType(VariableType.REAL);
-		realVarPos.setName(constraint.getName() + "_slackVNeg");
+		realVarNeg.setType(VariableType.REAL);
+		realVarNeg.setName(constraint.getName() + "_slackVNeg");
 		data.model().getVariables().add(realVarNeg);
 		dependingConstraint.getHelperVariables().add(realVarNeg);
 
@@ -74,14 +74,17 @@ public final class GipsConstraintUtils {
 		RelationalExpression invRelation = EcoreUtil.copy(relation);
 
 		ArithmeticExpression varSide = null;
+		ArithmeticExpression constSide = null;
 		boolean leftIsConst = true;
 
 		if (GipsTransformationUtils.isConstantExpression(invRelation.getLhs()) == ArithmeticExpressionType.constant) {
 			leftIsConst = true;
 			varSide = invRelation.getRhs();
+			constSide = invRelation.getLhs();
 		} else {
 			leftIsConst = false;
 			varSide = invRelation.getLhs();
+			constSide = invRelation.getRhs();
 		}
 
 		BinaryArithmeticExpression sum = factory.createBinaryArithmeticExpression();
@@ -90,7 +93,13 @@ public final class GipsConstraintUtils {
 		VariableReference realVarRef = factory.createVariableReference();
 		realVarRef.setVariable(realVar);
 		sum.setRhs(realVarRef);
-		invRelation.setLhs(sum);
+
+		if (leftIsConst) {
+			invRelation.setRhs(sum);
+		} else {
+			invRelation.setLhs(sum);
+		}
+		varSide = sum;
 
 		switch (invRelation.getOperator()) {
 		case EQUAL -> {
@@ -106,11 +115,11 @@ public final class GipsConstraintUtils {
 			negEps.setLiteral(-EPSILON);
 
 			if (leftIsConst) { // c - eps <= varExpr
-				constSum.setLhs(invRelation.getLhs());
+				constSum.setLhs(constSide);
 				constSum.setRhs(negEps);
 				invRelation.setLhs(constSum);
 			} else { // varExpr <= c - eps
-				constSum.setLhs(invRelation.getRhs());
+				constSum.setLhs(constSide);
 				constSum.setRhs(negEps);
 				invRelation.setRhs(constSum);
 			}
@@ -128,11 +137,11 @@ public final class GipsConstraintUtils {
 			eps.setLiteral(EPSILON);
 
 			if (leftIsConst) { // c + eps >= varExpr
-				constSum.setLhs(invRelation.getLhs());
+				constSum.setLhs(constSide);
 				constSum.setRhs(eps);
 				invRelation.setLhs(constSum);
 			} else { // varExpr >= c + eps
-				constSum.setLhs(invRelation.getRhs());
+				constSum.setLhs(constSide);
 				constSum.setRhs(eps);
 				invRelation.setRhs(constSum);
 			}
@@ -190,6 +199,15 @@ public final class GipsConstraintUtils {
 
 		// Force symbolic variables non-zero constraint
 		// symVPos + symVNeg == 1
+		insertSymbolicVariableNonZeroConstraint(factory, dConstraint, binaryVarPos, binaryVarNeg);
+
+		return new VariableTuple(binaryVarPos, binaryVarNeg);
+	}
+
+	static protected void insertSymbolicVariableNonZeroConstraint(final GipsIntermediateFactory factory,
+			final Constraint constraint, final Variable var1, final Variable var2) {
+		// Force symbolic variables non-zero constraint
+		// var1 + var2 == 1
 		RelationalExpression nonZeroRelation = factory.createRelationalExpression();
 		nonZeroRelation.setOperator(RelationalOperator.EQUAL);
 
@@ -200,16 +218,14 @@ public final class GipsConstraintUtils {
 		BinaryArithmeticExpression varSum = factory.createBinaryArithmeticExpression();
 		varSum.setOperator(BinaryArithmeticOperator.ADD);
 		VariableReference posVarRef = factory.createVariableReference();
-		posVarRef.setVariable(binaryVarPos);
+		posVarRef.setVariable(var1);
 		VariableReference negVarRef = factory.createVariableReference();
-		negVarRef.setVariable(binaryVarNeg);
+		negVarRef.setVariable(var2);
 		varSum.setLhs(posVarRef);
 		varSum.setRhs(negVarRef);
 		nonZeroRelation.setLhs(varSum);
 
-		dConstraint.getHelperConstraints().add(nonZeroRelation);
-
-		return new VariableTuple(binaryVarPos, binaryVarNeg);
+		constraint.getHelperConstraints().add(nonZeroRelation);
 	}
 
 	/*
@@ -221,6 +237,7 @@ public final class GipsConstraintUtils {
 		// symbolicVar + slackVar >= EPS
 		RelationalExpression linkRelation = factory.createRelationalExpression();
 		linkRelation.setOperator(RelationalOperator.GREATER_OR_EQUAL);
+
 		BinaryArithmeticExpression varSum = factory.createBinaryArithmeticExpression();
 		varSum.setOperator(BinaryArithmeticOperator.ADD);
 		VariableReference symbolicVarRef = factory.createVariableReference();
@@ -229,10 +246,13 @@ public final class GipsConstraintUtils {
 		slackVarRef.setVariable(slackVar);
 		varSum.setLhs(symbolicVarRef);
 		varSum.setRhs(slackVarRef);
+
 		linkRelation.setLhs(varSum);
+
 		DoubleLiteral eps = factory.createDoubleLiteral();
 		eps.setLiteral(EPSILON);
 		linkRelation.setRhs(eps);
+
 		constraint.getHelperConstraints().add(linkRelation);
 	}
 
@@ -257,7 +277,7 @@ public final class GipsConstraintUtils {
 		var1Sum1.setOperator(BinaryArithmeticOperator.ADD);
 		VariableReference var1Ref1 = factory.createVariableReference();
 		var1Ref1.setVariable(var1);
-		var1Sum1.setLhs(var1Sum1);
+		var1Sum1.setLhs(var1Ref1);
 		BinaryArithmeticExpression var1Prod1 = factory.createBinaryArithmeticExpression();
 		var1Prod1.setOperator(BinaryArithmeticOperator.MULTIPLY);
 		DoubleLiteral MAX_Double1 = factory.createDoubleLiteral();
@@ -280,7 +300,7 @@ public final class GipsConstraintUtils {
 		var1Sum2.setOperator(BinaryArithmeticOperator.ADD);
 		VariableReference var1Ref2 = factory.createVariableReference();
 		var1Ref2.setVariable(var1);
-		var1Sum2.setLhs(var1Sum2);
+		var1Sum2.setLhs(var1Ref2);
 		BinaryArithmeticExpression var1Prod2 = factory.createBinaryArithmeticExpression();
 		var1Prod2.setOperator(BinaryArithmeticOperator.MULTIPLY);
 		DoubleLiteral MAX_Double2 = factory.createDoubleLiteral();
@@ -303,7 +323,7 @@ public final class GipsConstraintUtils {
 		var2Sum1.setOperator(BinaryArithmeticOperator.ADD);
 		VariableReference var2Ref1 = factory.createVariableReference();
 		var2Ref1.setVariable(var2);
-		var2Sum1.setLhs(var2Sum1);
+		var2Sum1.setLhs(var2Ref1);
 		BinaryArithmeticExpression var2Prod1 = factory.createBinaryArithmeticExpression();
 		var2Prod1.setOperator(BinaryArithmeticOperator.MULTIPLY);
 		DoubleLiteral MAX_Double3 = factory.createDoubleLiteral();
@@ -326,7 +346,7 @@ public final class GipsConstraintUtils {
 		var2Sum2.setOperator(BinaryArithmeticOperator.ADD);
 		VariableReference var2Ref2 = factory.createVariableReference();
 		var2Ref2.setVariable(var2);
-		var2Sum2.setLhs(var2Sum2);
+		var2Sum2.setLhs(var2Ref2);
 		BinaryArithmeticExpression var2Prod2 = factory.createBinaryArithmeticExpression();
 		var2Prod2.setOperator(BinaryArithmeticOperator.MULTIPLY);
 		DoubleLiteral MAX_Double4 = factory.createDoubleLiteral();

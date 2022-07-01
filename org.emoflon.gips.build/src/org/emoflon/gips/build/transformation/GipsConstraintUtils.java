@@ -22,7 +22,8 @@ public final class GipsConstraintUtils {
 	static protected VariableTuple insertSlackVariables(final GipsTransformationData data,
 			final GipsIntermediateFactory factory, final Constraint dependingConstraint, final Constraint constraint) {
 		// Add substitute variable to produce negation!
-		RelationalExpression orginalRelation = (RelationalExpression) constraint.getExpression();
+		RelationalExpression originalRelation = (RelationalExpression) constraint.getExpression();
+		RelationalExpression originalRelationBackup = EcoreUtil.copy(originalRelation);
 		Variable realVarPos = factory.createVariable();
 		realVarPos.setType(VariableType.REAL);
 		realVarPos.setName(constraint.getName() + "_slackVPos");
@@ -35,8 +36,8 @@ public final class GipsConstraintUtils {
 		data.model().getVariables().add(realVarNeg);
 		dependingConstraint.getHelperVariables().add(realVarNeg);
 
-		insertSubstituteRealVariable(factory, orginalRelation, realVarPos);
-		RelationalExpression invRelation = createInvertedRelationAndSlack(factory, orginalRelation, realVarNeg);
+		insertSubstituteRealVariable(factory, originalRelation, realVarPos);
+		RelationalExpression invRelation = createInvertedRelationAndSlack(factory, originalRelationBackup, realVarNeg);
 		dependingConstraint.getHelperConstraints().add(invRelation);
 
 		return new VariableTuple(realVarPos, realVarNeg);

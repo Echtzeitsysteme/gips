@@ -250,6 +250,11 @@ public class GurobiSolver extends ILPSolver {
 		final Iterator<ILPConstraint> cnstrsIt = constraints.iterator();
 		while (cnstrsIt.hasNext()) {
 			final ILPConstraint curr = cnstrsIt.next();
+
+			if (curr == null) {
+				continue;
+			}
+
 			final GRBLinExpr grbLinExpr = new GRBLinExpr();
 
 			// Check if constraints of form "<empty> == const" exist and throw an exception
@@ -298,6 +303,11 @@ public class GurobiSolver extends ILPSolver {
 		final Iterator<ILPConstraint> cnstrsIt = constraints.iterator();
 		while (cnstrsIt.hasNext()) {
 			final ILPConstraint curr = cnstrsIt.next();
+
+			if (curr == null) {
+				continue;
+			}
+
 			final GRBLinExpr grbLinExpr = new GRBLinExpr();
 
 			// Check if constraints of form "<empty> == const" exist and throw an exception

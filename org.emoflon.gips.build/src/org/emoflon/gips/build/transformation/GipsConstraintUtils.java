@@ -59,9 +59,53 @@ public final class GipsConstraintUtils {
 		BinaryArithmeticExpression sum = factory.createBinaryArithmeticExpression();
 		sum.setOperator(BinaryArithmeticOperator.ADD);
 		sum.setLhs(varSide);
+
 		VariableReference realVarRef = factory.createVariableReference();
 		realVarRef.setVariable(realVar);
-		sum.setRhs(realVarRef);
+
+		// Check whether the slack variable will become positive or negative
+		switch (relation.getOperator()) {
+		case EQUAL -> {
+			throw new UnsupportedOperationException(
+					"Currently relational expressions containing the '==' operator can not be part of boolean expressions containing operators other than '&' ");
+		}
+		case GREATER, GREATER_OR_EQUAL -> {
+			if (leftIsConst) {
+				BinaryArithmeticExpression negation = factory.createBinaryArithmeticExpression();
+				negation.setOperator(BinaryArithmeticOperator.MULTIPLY);
+				DoubleLiteral negOne = factory.createDoubleLiteral();
+				negOne.setLiteral(-1.0);
+				negation.setLhs(negOne);
+				negation.setRhs(realVarRef);
+				sum.setRhs(negation);
+			} else {
+				sum.setRhs(realVarRef);
+			}
+		}
+		case LESS, LESS_OR_EQUAL -> {
+			if (leftIsConst) {
+				sum.setRhs(realVarRef);
+			} else {
+				BinaryArithmeticExpression negation = factory.createBinaryArithmeticExpression();
+				negation.setOperator(BinaryArithmeticOperator.MULTIPLY);
+				DoubleLiteral negOne = factory.createDoubleLiteral();
+				negOne.setLiteral(-1.0);
+				negation.setLhs(negOne);
+				negation.setRhs(realVarRef);
+				sum.setRhs(negation);
+			}
+		}
+		case NOT_EQUAL -> {
+			throw new UnsupportedOperationException(
+					"Currently relational expressions containing the '!=' operator can not be part of boolean expressions containing operators other than '&' ");
+		}
+
+		default -> {
+			throw new UnsupportedOperationException("Unknown relational operator: " + relation.getOperator());
+		}
+
+		}
+
 		if (leftIsConst) {
 			relation.setRhs(sum);
 		} else {
@@ -93,7 +137,6 @@ public final class GipsConstraintUtils {
 		sum.setLhs(varSide);
 		VariableReference realVarRef = factory.createVariableReference();
 		realVarRef.setVariable(realVar);
-		sum.setRhs(realVarRef);
 
 		if (leftIsConst) {
 			invRelation.setRhs(sum);
@@ -110,10 +153,33 @@ public final class GipsConstraintUtils {
 		case GREATER -> { // lhs > rhs => lhs <= rhs
 			invRelation.setOperator(RelationalOperator.LESS_OR_EQUAL);
 
+			if (leftIsConst) {
+				sum.setRhs(realVarRef);
+			} else {
+				BinaryArithmeticExpression negation = factory.createBinaryArithmeticExpression();
+				negation.setOperator(BinaryArithmeticOperator.MULTIPLY);
+				DoubleLiteral negOne = factory.createDoubleLiteral();
+				negOne.setLiteral(-1.0);
+				negation.setLhs(negOne);
+				negation.setRhs(realVarRef);
+				sum.setRhs(negation);
+			}
 		}
 		case GREATER_OR_EQUAL -> { // lhs >= rhs => lhs < rhs
 			// In case of "true" lesser, we do not need an additional epsilon
 			invRelation.setOperator(RelationalOperator.LESS_OR_EQUAL);
+
+			if (leftIsConst) {
+				sum.setRhs(realVarRef);
+			} else {
+				BinaryArithmeticExpression negation = factory.createBinaryArithmeticExpression();
+				negation.setOperator(BinaryArithmeticOperator.MULTIPLY);
+				DoubleLiteral negOne = factory.createDoubleLiteral();
+				negOne.setLiteral(-1.0);
+				negation.setLhs(negOne);
+				negation.setRhs(realVarRef);
+				sum.setRhs(negation);
+			}
 
 			BinaryArithmeticExpression constSum = factory.createBinaryArithmeticExpression();
 			constSum.setOperator(BinaryArithmeticOperator.ADD);
@@ -133,10 +199,33 @@ public final class GipsConstraintUtils {
 		case LESS -> { // lhs < rhs => lhs >= rhs
 			invRelation.setOperator(RelationalOperator.GREATER_OR_EQUAL);
 
+			if (leftIsConst) {
+				BinaryArithmeticExpression negation = factory.createBinaryArithmeticExpression();
+				negation.setOperator(BinaryArithmeticOperator.MULTIPLY);
+				DoubleLiteral negOne = factory.createDoubleLiteral();
+				negOne.setLiteral(-1.0);
+				negation.setLhs(negOne);
+				negation.setRhs(realVarRef);
+				sum.setRhs(negation);
+			} else {
+				sum.setRhs(realVarRef);
+			}
 		}
 		case LESS_OR_EQUAL -> { // lhs <= rhs => lhs > rhs
 			// In case of "true" greater, we do not need an additional epsilon
 			invRelation.setOperator(RelationalOperator.GREATER_OR_EQUAL);
+
+			if (leftIsConst) {
+				BinaryArithmeticExpression negation = factory.createBinaryArithmeticExpression();
+				negation.setOperator(BinaryArithmeticOperator.MULTIPLY);
+				DoubleLiteral negOne = factory.createDoubleLiteral();
+				negOne.setLiteral(-1.0);
+				negation.setLhs(negOne);
+				negation.setRhs(realVarRef);
+				sum.setRhs(negation);
+			} else {
+				sum.setRhs(realVarRef);
+			}
 
 			BinaryArithmeticExpression constSum = factory.createBinaryArithmeticExpression();
 			constSum.setOperator(BinaryArithmeticOperator.ADD);

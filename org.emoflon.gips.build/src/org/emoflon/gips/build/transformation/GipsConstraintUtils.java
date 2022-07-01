@@ -18,6 +18,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
 
 public final class GipsConstraintUtils {
 	final public static double EPSILON = 0.000001d;
+	final public static double INF = Double.MAX_VALUE * 0.01;
 
 	static protected VariableTuple insertSlackVariables(final GipsTransformationData data,
 			final GipsIntermediateFactory factory, final Constraint dependingConstraint, final Constraint constraint) {
@@ -373,7 +374,7 @@ public final class GipsConstraintUtils {
 		BinaryArithmeticExpression var1Prod1 = factory.createBinaryArithmeticExpression();
 		var1Prod1.setOperator(BinaryArithmeticOperator.MULTIPLY);
 		DoubleLiteral MAX_Double1 = factory.createDoubleLiteral();
-		MAX_Double1.setLiteral(-Double.MAX_VALUE);
+		MAX_Double1.setLiteral(-INF);
 		var1Prod1.setLhs(MAX_Double1);
 		VariableReference var1SosRef1 = factory.createVariableReference();
 		var1SosRef1.setVariable(var1Sos);
@@ -396,7 +397,7 @@ public final class GipsConstraintUtils {
 		BinaryArithmeticExpression var1Prod2 = factory.createBinaryArithmeticExpression();
 		var1Prod2.setOperator(BinaryArithmeticOperator.MULTIPLY);
 		DoubleLiteral MAX_Double2 = factory.createDoubleLiteral();
-		MAX_Double2.setLiteral(Double.MAX_VALUE);
+		MAX_Double2.setLiteral(INF);
 		var1Prod2.setLhs(MAX_Double2);
 		VariableReference var1SosRef2 = factory.createVariableReference();
 		var1SosRef2.setVariable(var1Sos);
@@ -419,7 +420,7 @@ public final class GipsConstraintUtils {
 		BinaryArithmeticExpression var2Prod1 = factory.createBinaryArithmeticExpression();
 		var2Prod1.setOperator(BinaryArithmeticOperator.MULTIPLY);
 		DoubleLiteral MAX_Double3 = factory.createDoubleLiteral();
-		MAX_Double3.setLiteral(-Double.MAX_VALUE);
+		MAX_Double3.setLiteral(-INF);
 		var2Prod1.setLhs(MAX_Double3);
 		VariableReference var2SosRef1 = factory.createVariableReference();
 		var2SosRef1.setVariable(var2Sos);
@@ -442,7 +443,7 @@ public final class GipsConstraintUtils {
 		BinaryArithmeticExpression var2Prod2 = factory.createBinaryArithmeticExpression();
 		var2Prod2.setOperator(BinaryArithmeticOperator.MULTIPLY);
 		DoubleLiteral MAX_Double4 = factory.createDoubleLiteral();
-		MAX_Double4.setLiteral(Double.MAX_VALUE);
+		MAX_Double4.setLiteral(INF);
 		var2Prod2.setLhs(MAX_Double4);
 		VariableReference var2SosRef2 = factory.createVariableReference();
 		var2SosRef2.setVariable(var2Sos);

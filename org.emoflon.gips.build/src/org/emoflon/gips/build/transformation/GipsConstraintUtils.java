@@ -109,6 +109,11 @@ public final class GipsConstraintUtils {
 		case GREATER -> { // lhs > rhs => lhs <= rhs
 			invRelation.setOperator(RelationalOperator.LESS_OR_EQUAL);
 
+		}
+		case GREATER_OR_EQUAL -> { // lhs >= rhs => lhs < rhs
+			// In case of "true" lesser, we do not need an additional epsilon
+			invRelation.setOperator(RelationalOperator.LESS_OR_EQUAL);
+
 			BinaryArithmeticExpression constSum = factory.createBinaryArithmeticExpression();
 			constSum.setOperator(BinaryArithmeticOperator.ADD);
 			DoubleLiteral negEps = factory.createDoubleLiteral();
@@ -124,11 +129,12 @@ public final class GipsConstraintUtils {
 				invRelation.setRhs(constSum);
 			}
 		}
-		case GREATER_OR_EQUAL -> { // lhs >= rhs => lhs < rhs
-			// In case of "true" lesser, we do not need an additional epsilon
-			invRelation.setOperator(RelationalOperator.LESS);
-		}
 		case LESS -> { // lhs < rhs => lhs >= rhs
+			invRelation.setOperator(RelationalOperator.GREATER_OR_EQUAL);
+
+		}
+		case LESS_OR_EQUAL -> { // lhs <= rhs => lhs > rhs
+			// In case of "true" greater, we do not need an additional epsilon
 			invRelation.setOperator(RelationalOperator.GREATER_OR_EQUAL);
 
 			BinaryArithmeticExpression constSum = factory.createBinaryArithmeticExpression();
@@ -145,10 +151,6 @@ public final class GipsConstraintUtils {
 				constSum.setRhs(eps);
 				invRelation.setRhs(constSum);
 			}
-		}
-		case LESS_OR_EQUAL -> { // lhs <= rhs => lhs > rhs
-			// In case of "true" greater, we do not need an additional epsilon
-			invRelation.setOperator(RelationalOperator.GREATER);
 		}
 		case NOT_EQUAL -> {
 			throw new UnsupportedOperationException(

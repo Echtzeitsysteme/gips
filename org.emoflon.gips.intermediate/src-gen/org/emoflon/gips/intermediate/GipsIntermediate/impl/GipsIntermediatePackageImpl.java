@@ -1174,17 +1174,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	public EReference getConstraint_RealVarCorrectnessConstraints() {
+	public EReference getConstraint_HelperConstraints() {
 		return (EReference) constraintEClass.getEStructuralFeatures().get(6);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EReference getConstraint_BinaryVarCorrectnessConstraints() {
-		return (EReference) constraintEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
@@ -2647,8 +2638,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		createEAttribute(constraintEClass, CONSTRAINT__CONSTANT);
 		createEReference(constraintEClass, CONSTRAINT__DEPENDENCIES);
 		createEReference(constraintEClass, CONSTRAINT__HELPER_VARIABLES);
-		createEReference(constraintEClass, CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS);
-		createEReference(constraintEClass, CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS);
+		createEReference(constraintEClass, CONSTRAINT__HELPER_CONSTRAINTS);
 
 		globalConstraintEClass = createEClass(GLOBAL_CONSTRAINT);
 
@@ -3101,12 +3091,9 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEReference(getConstraint_HelperVariables(), this.getVariable(), null, "helperVariables", null, 0, -1,
 				Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getConstraint_RealVarCorrectnessConstraints(), this.getRelationalExpression(), null,
-				"realVarCorrectnessConstraints", null, 0, -1, Constraint.class, !IS_TRANSIENT, !IS_VOLATILE,
-				IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getConstraint_BinaryVarCorrectnessConstraints(), this.getRelationalExpression(), null,
-				"binaryVarCorrectnessConstraints", null, 0, -1, Constraint.class, !IS_TRANSIENT, !IS_VOLATILE,
-				IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getConstraint_HelperConstraints(), this.getRelationalExpression(), null, "helperConstraints",
+				null, 0, -1, Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(globalConstraintEClass, GlobalConstraint.class, "GlobalConstraint", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);

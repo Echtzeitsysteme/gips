@@ -716,22 +716,13 @@ public interface GipsIntermediatePackage extends EPackage {
 	int CONSTRAINT__HELPER_VARIABLES = 5;
 
 	/**
-	 * The feature id for the '<em><b>Real Var Correctness Constraints</b></em>'
-	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The feature id for the '<em><b>Helper Constraints</b></em>' containment
+	 * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS = 6;
-
-	/**
-	 * The feature id for the '<em><b>Binary Var Correctness Constraints</b></em>'
-	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS = 7;
+	int CONSTRAINT__HELPER_CONSTRAINTS = 6;
 
 	/**
 	 * The number of structural features of the '<em>Constraint</em>' class. <!--
@@ -740,7 +731,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONSTRAINT_FEATURE_COUNT = 8;
+	int CONSTRAINT_FEATURE_COUNT = 7;
 
 	/**
 	 * The number of operations of the '<em>Constraint</em>' class. <!--
@@ -818,22 +809,13 @@ public interface GipsIntermediatePackage extends EPackage {
 	int GLOBAL_CONSTRAINT__HELPER_VARIABLES = CONSTRAINT__HELPER_VARIABLES;
 
 	/**
-	 * The feature id for the '<em><b>Real Var Correctness Constraints</b></em>'
-	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The feature id for the '<em><b>Helper Constraints</b></em>' containment
+	 * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int GLOBAL_CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS = CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS;
-
-	/**
-	 * The feature id for the '<em><b>Binary Var Correctness Constraints</b></em>'
-	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int GLOBAL_CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS = CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS;
+	int GLOBAL_CONSTRAINT__HELPER_CONSTRAINTS = CONSTRAINT__HELPER_CONSTRAINTS;
 
 	/**
 	 * The number of structural features of the '<em>Global Constraint</em>' class.
@@ -1053,22 +1035,13 @@ public interface GipsIntermediatePackage extends EPackage {
 	int PATTERN_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 5;
 
 	/**
-	 * The feature id for the '<em><b>Real Var Correctness Constraints</b></em>'
-	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The feature id for the '<em><b>Helper Constraints</b></em>' containment
+	 * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int PATTERN_CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 6;
-
-	/**
-	 * The feature id for the '<em><b>Binary Var Correctness Constraints</b></em>'
-	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int PATTERN_CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 7;
+	int PATTERN_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Pattern</b></em>' reference. <!--
@@ -1077,7 +1050,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PATTERN_CONSTRAINT__PATTERN = CONTEXT_FEATURE_COUNT + 8;
+	int PATTERN_CONSTRAINT__PATTERN = CONTEXT_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of structural features of the '<em>Pattern Constraint</em>' class.
@@ -1086,7 +1059,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PATTERN_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 9;
+	int PATTERN_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of operations of the '<em>Pattern Constraint</em>' class. <!--
@@ -1164,22 +1137,13 @@ public interface GipsIntermediatePackage extends EPackage {
 	int TYPE_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 5;
 
 	/**
-	 * The feature id for the '<em><b>Real Var Correctness Constraints</b></em>'
-	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The feature id for the '<em><b>Helper Constraints</b></em>' containment
+	 * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 6;
-
-	/**
-	 * The feature id for the '<em><b>Binary Var Correctness Constraints</b></em>'
-	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int TYPE_CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 7;
+	int TYPE_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Model Type</b></em>' reference. <!--
@@ -1188,7 +1152,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT__MODEL_TYPE = CONTEXT_FEATURE_COUNT + 8;
+	int TYPE_CONSTRAINT__MODEL_TYPE = CONTEXT_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of structural features of the '<em>Type Constraint</em>' class.
@@ -1197,7 +1161,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 9;
+	int TYPE_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of operations of the '<em>Type Constraint</em>' class. <!--
@@ -1275,22 +1239,13 @@ public interface GipsIntermediatePackage extends EPackage {
 	int MAPPING_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 5;
 
 	/**
-	 * The feature id for the '<em><b>Real Var Correctness Constraints</b></em>'
-	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The feature id for the '<em><b>Helper Constraints</b></em>' containment
+	 * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 6;
-
-	/**
-	 * The feature id for the '<em><b>Binary Var Correctness Constraints</b></em>'
-	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int MAPPING_CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 7;
+	int MAPPING_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Mapping</b></em>' reference. <!--
@@ -1299,7 +1254,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT__MAPPING = CONTEXT_FEATURE_COUNT + 8;
+	int MAPPING_CONSTRAINT__MAPPING = CONTEXT_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of structural features of the '<em>Mapping Constraint</em>' class.
@@ -1308,7 +1263,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 9;
+	int MAPPING_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of operations of the '<em>Mapping Constraint</em>' class. <!--
@@ -5021,31 +4976,16 @@ public interface GipsIntermediatePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getRealVarCorrectnessConstraints
-	 * <em>Real Var Correctness Constraints</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getHelperConstraints
+	 * <em>Helper Constraints</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference list '<em>Real Var
-	 *         Correctness Constraints</em>'.
-	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getRealVarCorrectnessConstraints()
+	 * @return the meta object for the containment reference list '<em>Helper
+	 *         Constraints</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getHelperConstraints()
 	 * @see #getConstraint()
 	 * @generated
 	 */
-	EReference getConstraint_RealVarCorrectnessConstraints();
-
-	/**
-	 * Returns the meta object for the containment reference list
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getBinaryVarCorrectnessConstraints
-	 * <em>Binary Var Correctness Constraints</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
-	 * @return the meta object for the containment reference list '<em>Binary Var
-	 *         Correctness Constraints</em>'.
-	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getBinaryVarCorrectnessConstraints()
-	 * @see #getConstraint()
-	 * @generated
-	 */
-	EReference getConstraint_BinaryVarCorrectnessConstraints();
+	EReference getConstraint_HelperConstraints();
 
 	/**
 	 * Returns the meta object for class
@@ -7275,24 +7215,13 @@ public interface GipsIntermediatePackage extends EPackage {
 		EReference CONSTRAINT__HELPER_VARIABLES = eINSTANCE.getConstraint_HelperVariables();
 
 		/**
-		 * The meta object literal for the '<em><b>Real Var Correctness
-		 * Constraints</b></em>' containment reference list feature. <!-- begin-user-doc
-		 * --> <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Helper Constraints</b></em>'
+		 * containment reference list feature. <!-- begin-user-doc --> <!-- end-user-doc
+		 * -->
 		 * 
 		 * @generated
 		 */
-		EReference CONSTRAINT__REAL_VAR_CORRECTNESS_CONSTRAINTS = eINSTANCE
-				.getConstraint_RealVarCorrectnessConstraints();
-
-		/**
-		 * The meta object literal for the '<em><b>Binary Var Correctness
-		 * Constraints</b></em>' containment reference list feature. <!-- begin-user-doc
-		 * --> <!-- end-user-doc -->
-		 * 
-		 * @generated
-		 */
-		EReference CONSTRAINT__BINARY_VAR_CORRECTNESS_CONSTRAINTS = eINSTANCE
-				.getConstraint_BinaryVarCorrectnessConstraints();
+		EReference CONSTRAINT__HELPER_CONSTRAINTS = eINSTANCE.getConstraint_HelperConstraints();
 
 		/**
 		 * The meta object literal for the

@@ -79,10 +79,8 @@
         eType="#//Constraint"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="helperVariables" upperBound="-1"
         eType="#//Variable"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="realVarCorrectnessConstraints"
-        upperBound="-1" eType="#//RelationalExpression" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="binaryVarCorrectnessConstraints"
-        upperBound="-1" eType="#//RelationalExpression" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="helperConstraints" upperBound="-1"
+        eType="#//RelationalExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GlobalConstraint" eSuperTypes="#//Constraint"/>
   <eClassifiers xsi:type="ecore:EClass" name="Objective">

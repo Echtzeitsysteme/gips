@@ -26,10 +26,8 @@ import org.eclipse.emf.ecore.EObject;
  * <em>Dependencies</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getHelperVariables
  * <em>Helper Variables</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getRealVarCorrectnessConstraints
- * <em>Real Var Correctness Constraints</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getBinaryVarCorrectnessConstraints
- * <em>Binary Var Correctness Constraints</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getHelperConstraints
+ * <em>Helper Constraints</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint()
@@ -158,31 +156,17 @@ public interface Constraint extends EObject {
 	EList<Variable> getHelperVariables();
 
 	/**
-	 * Returns the value of the '<em><b>Real Var Correctness Constraints</b></em>'
-	 * containment reference list. The list contents are of type
+	 * Returns the value of the '<em><b>Helper Constraints</b></em>' containment
+	 * reference list. The list contents are of type
 	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression}.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @return the value of the '<em>Real Var Correctness Constraints</em>'
-	 *         containment reference list.
-	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_RealVarCorrectnessConstraints()
+	 * @return the value of the '<em>Helper Constraints</em>' containment reference
+	 *         list.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_HelperConstraints()
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<RelationalExpression> getRealVarCorrectnessConstraints();
-
-	/**
-	 * Returns the value of the '<em><b>Binary Var Correctness Constraints</b></em>'
-	 * containment reference list. The list contents are of type
-	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression}.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @return the value of the '<em>Binary Var Correctness Constraints</em>'
-	 *         containment reference list.
-	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_BinaryVarCorrectnessConstraints()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<RelationalExpression> getBinaryVarCorrectnessConstraints();
+	EList<RelationalExpression> getHelperConstraints();
 
 } // Constraint

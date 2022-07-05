@@ -184,12 +184,7 @@ public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName�
 		} else {
 			imports.add("org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator")
 			val constraint2methodCalls = new HashMap<RelationalExpression, List<String>>
-			for(RelationalExpression constraint : context.binaryVarCorrectnessConstraints) {
-				val methodCalls = new LinkedList<String>
-				constraint2methodCalls.put(constraint, methodCalls);
-				generateVariableTermBuilder(constraint.lhs, methodCalls)
-			}
-			for(RelationalExpression constraint : context.realVarCorrectnessConstraints) {
+			for(RelationalExpression constraint : context.helperConstraints) {
 				val methodCalls = new LinkedList<String>
 				constraint2methodCalls.put(constraint, methodCalls);
 				generateVariableTermBuilder(constraint.lhs, methodCalls)
@@ -202,17 +197,7 @@ public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName�
 		List<ILPTerm> terms = new LinkedList<>();
 		double constTerm = 0.0;
 		
-		«FOR constraint : context.binaryVarCorrectnessConstraints»
-		«FOR instruction : constraint2methodCalls.get(constraint)»
-		«instruction»
-		«ENDFOR»
-		constTerm = «generateConstTermBuilder(constraint.rhs)»;
-		constraint = new ILPConstraint(terms, RelationalOperator.«constraint.operator.name()», constTerm);
-		additionalConstraints.add(constraint);
-		terms = new LinkedList<>();
-		
-		«ENDFOR»
-		«FOR constraint : context.realVarCorrectnessConstraints»
+		«FOR constraint : context.helperConstraints»
 		«FOR instruction : constraint2methodCalls.get(constraint)»
 		«instruction»
 		«ENDFOR»

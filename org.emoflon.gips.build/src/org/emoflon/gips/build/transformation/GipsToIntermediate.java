@@ -52,7 +52,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
-import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
@@ -163,6 +162,8 @@ public class GipsToIntermediate {
 			}
 
 			mapping.setName(eMapping.getName());
+			mapping.setUpperBound(1.0);
+			mapping.setLowerBound(0.0);
 			data.model().getVariables().add(mapping);
 			data.eMapping2Mapping().put(eMapping, mapping);
 		});
@@ -234,17 +235,14 @@ public class GipsToIntermediate {
 						Constraint constraint = transformed.get(splitConstraint);
 						VariableTuple slackVars = constraint2Slack.get(splitConstraint);
 
-						Variable binaryVarPos = factory.createVariable();
-						data.model().getVariables().add(binaryVarPos);
+						Variable binaryVarPos = GipsConstraintUtils.createBinaryVariable(data, factory,
+								constraint.getName() + "_symVPos");
 						dConstraint.getHelperVariables().add(binaryVarPos);
-						binaryVarPos.setType(VariableType.BINARY);
-						binaryVarPos.setName(constraint.getName() + "_symVPos");
 
-						Variable binaryVarNeg = factory.createVariable();
-						data.model().getVariables().add(binaryVarNeg);
+						Variable binaryVarNeg = GipsConstraintUtils.createBinaryVariable(data, factory,
+								constraint.getName() + "_symVNeg");
 						dConstraint.getHelperVariables().add(binaryVarNeg);
-						binaryVarNeg.setType(VariableType.BINARY);
-						binaryVarNeg.setName(constraint.getName() + "_symVNeg");
+
 						VariableTuple symbolicVars = new VariableTuple(binaryVarPos, binaryVarNeg);
 						constraint2Symbolic.put(splitConstraint, symbolicVars);
 

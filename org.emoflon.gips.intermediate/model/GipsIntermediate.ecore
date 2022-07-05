@@ -41,6 +41,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VariableSet" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="upperBound" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lowerBound" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Pattern" eSuperTypes="#//VariableSet">
     <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" lowerBound="1"

@@ -323,13 +323,31 @@ public interface GipsIntermediatePackage extends EPackage {
 	int VARIABLE_SET__NAME = 0;
 
 	/**
+	 * The feature id for the '<em><b>Upper Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int VARIABLE_SET__UPPER_BOUND = 1;
+
+	/**
+	 * The feature id for the '<em><b>Lower Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int VARIABLE_SET__LOWER_BOUND = 2;
+
+	/**
 	 * The number of structural features of the '<em>Variable Set</em>' class. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int VARIABLE_SET_FEATURE_COUNT = 1;
+	int VARIABLE_SET_FEATURE_COUNT = 3;
 
 	/**
 	 * The number of operations of the '<em>Variable Set</em>' class. <!--
@@ -359,6 +377,24 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @ordered
 	 */
 	int PATTERN__NAME = VARIABLE_SET__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Upper Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int PATTERN__UPPER_BOUND = VARIABLE_SET__UPPER_BOUND;
+
+	/**
+	 * The feature id for the '<em><b>Lower Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int PATTERN__LOWER_BOUND = VARIABLE_SET__LOWER_BOUND;
 
 	/**
 	 * The feature id for the '<em><b>Pattern</b></em>' reference. <!--
@@ -417,6 +453,24 @@ public interface GipsIntermediatePackage extends EPackage {
 	int TYPE__NAME = VARIABLE_SET__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Upper Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE__UPPER_BOUND = VARIABLE_SET__UPPER_BOUND;
+
+	/**
+	 * The feature id for the '<em><b>Lower Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE__LOWER_BOUND = VARIABLE_SET__LOWER_BOUND;
+
+	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
 	 * 
@@ -464,6 +518,24 @@ public interface GipsIntermediatePackage extends EPackage {
 	int MAPPING__NAME = VARIABLE_SET__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Upper Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int MAPPING__UPPER_BOUND = VARIABLE_SET__UPPER_BOUND;
+
+	/**
+	 * The feature id for the '<em><b>Lower Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int MAPPING__LOWER_BOUND = VARIABLE_SET__LOWER_BOUND;
+
+	/**
 	 * The feature id for the '<em><b>Context Pattern</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -509,6 +581,24 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @ordered
 	 */
 	int GT_MAPPING__NAME = MAPPING__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Upper Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int GT_MAPPING__UPPER_BOUND = MAPPING__UPPER_BOUND;
+
+	/**
+	 * The feature id for the '<em><b>Lower Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int GT_MAPPING__LOWER_BOUND = MAPPING__LOWER_BOUND;
 
 	/**
 	 * The feature id for the '<em><b>Context Pattern</b></em>' reference. <!--
@@ -568,6 +658,24 @@ public interface GipsIntermediatePackage extends EPackage {
 	int PATTERN_MAPPING__NAME = MAPPING__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Upper Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int PATTERN_MAPPING__UPPER_BOUND = MAPPING__UPPER_BOUND;
+
+	/**
+	 * The feature id for the '<em><b>Lower Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int PATTERN_MAPPING__LOWER_BOUND = MAPPING__LOWER_BOUND;
+
+	/**
 	 * The feature id for the '<em><b>Context Pattern</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -622,6 +730,24 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @ordered
 	 */
 	int VARIABLE__NAME = VARIABLE_SET__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Upper Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int VARIABLE__UPPER_BOUND = VARIABLE_SET__UPPER_BOUND;
+
+	/**
+	 * The feature id for the '<em><b>Lower Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int VARIABLE__LOWER_BOUND = VARIABLE_SET__LOWER_BOUND;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute. <!-- begin-user-doc
@@ -4742,6 +4868,30 @@ public interface GipsIntermediatePackage extends EPackage {
 	EAttribute getVariableSet_Name();
 
 	/**
+	 * Returns the meta object for the attribute
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.VariableSet#getUpperBound
+	 * <em>Upper Bound</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Upper Bound</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.VariableSet#getUpperBound()
+	 * @see #getVariableSet()
+	 * @generated
+	 */
+	EAttribute getVariableSet_UpperBound();
+
+	/**
+	 * Returns the meta object for the attribute
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.VariableSet#getLowerBound
+	 * <em>Lower Bound</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Lower Bound</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.VariableSet#getLowerBound()
+	 * @see #getVariableSet()
+	 * @generated
+	 */
+	EAttribute getVariableSet_LowerBound();
+
+	/**
 	 * Returns the meta object for class
 	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Pattern
 	 * <em>Pattern</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -7031,6 +7181,22 @@ public interface GipsIntermediatePackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute VARIABLE_SET__NAME = eINSTANCE.getVariableSet_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Upper Bound</b></em>' attribute
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute VARIABLE_SET__UPPER_BOUND = eINSTANCE.getVariableSet_UpperBound();
+
+		/**
+		 * The meta object literal for the '<em><b>Lower Bound</b></em>' attribute
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute VARIABLE_SET__LOWER_BOUND = eINSTANCE.getVariableSet_LowerBound();
 
 		/**
 		 * The meta object literal for the

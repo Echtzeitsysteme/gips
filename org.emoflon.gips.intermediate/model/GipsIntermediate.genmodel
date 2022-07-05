@@ -91,6 +91,8 @@
     </genClasses>
     <genClasses image="false" ecoreClass="GipsIntermediate.ecore#//VariableSet">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//VariableSet/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//VariableSet/upperBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//VariableSet/lowerBound"/>
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//Pattern">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Pattern/pattern"/>

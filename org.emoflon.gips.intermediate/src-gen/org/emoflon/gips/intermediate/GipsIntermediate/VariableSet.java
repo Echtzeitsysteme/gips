@@ -14,6 +14,10 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.VariableSet#getName
  * <em>Name</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.VariableSet#getUpperBound
+ * <em>Upper Bound</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.VariableSet#getLowerBound
+ * <em>Lower Bound</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getVariableSet()
@@ -43,5 +47,53 @@ public interface VariableSet extends EObject {
 	 * @generated
 	 */
 	void setName(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Upper Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Upper Bound</em>' attribute.
+	 * @see #setUpperBound(double)
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getVariableSet_UpperBound()
+	 * @model
+	 * @generated
+	 */
+	double getUpperBound();
+
+	/**
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.VariableSet#getUpperBound
+	 * <em>Upper Bound</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @param value the new value of the '<em>Upper Bound</em>' attribute.
+	 * @see #getUpperBound()
+	 * @generated
+	 */
+	void setUpperBound(double value);
+
+	/**
+	 * Returns the value of the '<em><b>Lower Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Lower Bound</em>' attribute.
+	 * @see #setLowerBound(double)
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getVariableSet_LowerBound()
+	 * @model
+	 * @generated
+	 */
+	double getLowerBound();
+
+	/**
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.VariableSet#getLowerBound
+	 * <em>Lower Bound</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @param value the new value of the '<em>Lower Bound</em>' attribute.
+	 * @see #getLowerBound()
+	 * @generated
+	 */
+	void setLowerBound(double value);
 
 } // VariableSet

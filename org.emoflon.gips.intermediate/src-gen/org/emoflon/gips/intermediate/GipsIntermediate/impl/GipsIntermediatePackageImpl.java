@@ -994,6 +994,24 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public EAttribute getVariableSet_UpperBound() {
+		return (EAttribute) variableSetEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getVariableSet_LowerBound() {
+		return (EAttribute) variableSetEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getPattern() {
 		return patternEClass;
 	}
@@ -2611,6 +2629,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 
 		variableSetEClass = createEClass(VARIABLE_SET);
 		createEAttribute(variableSetEClass, VARIABLE_SET__NAME);
+		createEAttribute(variableSetEClass, VARIABLE_SET__UPPER_BOUND);
+		createEAttribute(variableSetEClass, VARIABLE_SET__LOWER_BOUND);
 
 		patternEClass = createEClass(PATTERN);
 		createEReference(patternEClass, PATTERN__PATTERN);
@@ -3039,6 +3059,12 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 				IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getVariableSet_Name(), ecorePackage.getEString(), "name", null, 0, 1, VariableSet.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVariableSet_UpperBound(), ecorePackage.getEDouble(), "upperBound", null, 0, 1,
+				VariableSet.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVariableSet_LowerBound(), ecorePackage.getEDouble(), "lowerBound", null, 0, 1,
+				VariableSet.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
 
 		initEClass(patternEClass, Pattern.class, "Pattern", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getPattern_Pattern(), theIBeXPatternModelPackage.getIBeXContext(), null, "pattern", null, 1, 1,

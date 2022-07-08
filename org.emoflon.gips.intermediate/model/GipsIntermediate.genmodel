@@ -31,6 +31,8 @@
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//RelationalOperator/GreaterOrEqual"/>
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//RelationalOperator/Greater"/>
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//RelationalOperator/NotEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//RelationalOperator/ObjectEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//RelationalOperator/ObjectNotEqual"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="GipsIntermediate.ecore#//BinaryArithmeticOperator">
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//BinaryArithmeticOperator/ADD"/>

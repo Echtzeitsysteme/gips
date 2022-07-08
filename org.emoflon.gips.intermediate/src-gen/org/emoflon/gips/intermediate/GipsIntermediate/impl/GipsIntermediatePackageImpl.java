@@ -3578,6 +3578,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		addEEnumLiteral(relationalOperatorEEnum, RelationalOperator.GREATER_OR_EQUAL);
 		addEEnumLiteral(relationalOperatorEEnum, RelationalOperator.GREATER);
 		addEEnumLiteral(relationalOperatorEEnum, RelationalOperator.NOT_EQUAL);
+		addEEnumLiteral(relationalOperatorEEnum, RelationalOperator.OBJECT_EQUAL);
+		addEEnumLiteral(relationalOperatorEEnum, RelationalOperator.OBJECT_NOT_EQUAL);
 
 		initEEnum(binaryArithmeticOperatorEEnum, BinaryArithmeticOperator.class, "BinaryArithmeticOperator");
 		addEEnumLiteral(binaryArithmeticOperatorEEnum, BinaryArithmeticOperator.ADD);

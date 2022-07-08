@@ -129,6 +129,8 @@
     <eLiterals name="GreaterOrEqual" value="3"/>
     <eLiterals name="Greater" value="4"/>
     <eLiterals name="NotEqual" value="5"/>
+    <eLiterals name="ObjectEqual" value="6"/>
+    <eLiterals name="ObjectNotEqual" value="7"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ArithmeticExpression" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" lowerBound="1"

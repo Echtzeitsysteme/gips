@@ -191,15 +191,9 @@ public class GipsToIntermediate {
 						data.model().getConstraints().add(constraint);
 						transformed.put(subConstraint, constraint);
 						dConstraint.getDependencies().add(constraint);
+						constraint.setNegated(false);
 
-						// TODO: We'll ignore build time constant constraints for now -> This must be
-						// fixed at some point in time.
-						if (constraint.isConstant()) {
-							throw new UnsupportedOperationException(
-									"Negation for constraints that are constant at build time is currently not supported");
-						}
-
-						if (!(constraint.getExpression() instanceof RelationalExpression)) {
+						if (!constraint.isConstant() && !(constraint.getExpression() instanceof RelationalExpression)) {
 							throw new UnsupportedOperationException(
 									"Negation for constraints that are constant at build time is currently not supported");
 						}
@@ -324,8 +318,6 @@ public class GipsToIntermediate {
 					Constraint constraint = transformConstraint(eSubConstraint.result().values().iterator().next());
 					data.model().getConstraints().add(constraint);
 
-					// TODO: We'll ignore build time constant constraints for now -> This must be
-					// fixed at some point in time.
 					if (constraint.isConstant()) {
 						constraint.setNegated(true);
 						return;
@@ -379,6 +371,7 @@ public class GipsToIntermediate {
 		data.eConstraint2Constraint().put(subConstraint, constraint);
 		constraintCounter++;
 
+		@SuppressWarnings("rawtypes")
 		BooleanExpressionTransformer transformer = transformationFactory.createBooleanTransformer(constraint);
 		constraint.setExpression(transformer.transform(subConstraint.getExpr().getExpr()));
 

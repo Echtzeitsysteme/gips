@@ -71,7 +71,6 @@ public class GlpkSolver extends ILPSolver {
 
 		GLPK.glp_free_env();
 		model = GLPK.glp_create_prob();
-		GLPK.glp_set_prob_name(model, "model");
 
 		// GLPK initialization
 		iocp = new glp_iocp();

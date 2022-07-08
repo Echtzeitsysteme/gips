@@ -22,6 +22,8 @@ import org.eclipse.emf.ecore.EObject;
  * <em>Expression</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isConstant
  * <em>Constant</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isNegated
+ * <em>Negated</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getDependencies
  * <em>Dependencies</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getHelperVariables
@@ -86,12 +88,12 @@ public interface Constraint extends EObject {
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the value of the '<em>Expression</em>' containment reference.
-	 * @see #setExpression(BoolValueExpression)
+	 * @see #setExpression(BoolExpression)
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_Expression()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
-	BoolValueExpression getExpression();
+	BoolExpression getExpression();
 
 	/**
 	 * Sets the value of the
@@ -104,7 +106,7 @@ public interface Constraint extends EObject {
 	 * @see #getExpression()
 	 * @generated
 	 */
-	void setExpression(BoolValueExpression value);
+	void setExpression(BoolExpression value);
 
 	/**
 	 * Returns the value of the '<em><b>Constant</b></em>' attribute. <!--
@@ -128,6 +130,29 @@ public interface Constraint extends EObject {
 	 * @generated
 	 */
 	void setConstant(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Negated</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Negated</em>' attribute.
+	 * @see #setNegated(boolean)
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_Negated()
+	 * @model
+	 * @generated
+	 */
+	boolean isNegated();
+
+	/**
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isNegated
+	 * <em>Negated</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value the new value of the '<em>Negated</em>' attribute.
+	 * @see #isNegated()
+	 * @generated
+	 */
+	void setNegated(boolean value);
 
 	/**
 	 * Returns the value of the '<em><b>Dependencies</b></em>' reference list. The

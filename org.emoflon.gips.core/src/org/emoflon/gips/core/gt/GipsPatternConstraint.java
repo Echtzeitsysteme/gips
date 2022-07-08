@@ -116,13 +116,22 @@ public abstract class GipsPatternConstraint<ENGINE extends GipsEngine, M extends
 			for (M context : pattern.findMatches(false)) {
 				ILPVariable<?> ilpVar = switch (variable.getType()) {
 				case BINARY -> {
-					yield new ILPBinaryVariable(context + "->" + variable.getName());
+					ILPBinaryVariable var = new ILPBinaryVariable(context + "->" + variable.getName());
+					var.setLowerBound((int) variable.getLowerBound());
+					var.setUpperBound((int) variable.getUpperBound());
+					yield var;
 				}
 				case INTEGER -> {
-					yield new ILPIntegerVariable(context + "->" + variable.getName());
+					ILPIntegerVariable var = new ILPIntegerVariable(context + "->" + variable.getName());
+					var.setLowerBound((int) variable.getLowerBound());
+					var.setUpperBound((int) variable.getUpperBound());
+					yield var;
 				}
 				case REAL -> {
-					yield new ILPRealVariable(context + "->" + variable.getName());
+					ILPRealVariable var = new ILPRealVariable(context + "->" + variable.getName());
+					var.setLowerBound(variable.getLowerBound());
+					var.setUpperBound(variable.getUpperBound());
+					yield var;
 				}
 				default -> {
 					throw new IllegalArgumentException("Unknown ilp variable type: " + variable.getType());

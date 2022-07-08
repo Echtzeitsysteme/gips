@@ -99,13 +99,22 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 		for (Variable variable : constraint.getHelperVariables()) {
 			ILPVariable<?> ilpVar = switch (variable.getType()) {
 			case BINARY -> {
-				yield new ILPBinaryVariable("global->" + variable.getName());
+				ILPBinaryVariable var = new ILPBinaryVariable("global->" + variable.getName());
+				var.setLowerBound((int) variable.getLowerBound());
+				var.setUpperBound((int) variable.getUpperBound());
+				yield var;
 			}
 			case INTEGER -> {
-				yield new ILPIntegerVariable("global->" + variable.getName());
+				ILPIntegerVariable var = new ILPIntegerVariable("global->" + variable.getName());
+				var.setLowerBound((int) variable.getLowerBound());
+				var.setUpperBound((int) variable.getUpperBound());
+				yield var;
 			}
 			case REAL -> {
-				yield new ILPRealVariable("global->" + variable.getName());
+				ILPRealVariable var = new ILPRealVariable("global->" + variable.getName());
+				var.setLowerBound(variable.getLowerBound());
+				var.setUpperBound(variable.getUpperBound());
+				yield var;
 			}
 			default -> {
 				throw new IllegalArgumentException("Unknown ilp variable type: " + variable.getType());

@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
@@ -40,6 +40,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
  * <em>Expression</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#isConstant
  * <em>Constant</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#isNegated
+ * <em>Negated</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getDependencies
  * <em>Dependencies</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getHelperVariables
@@ -99,7 +101,7 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * @generated
 	 * @ordered
 	 */
-	protected BoolValueExpression expression;
+	protected BoolExpression expression;
 
 	/**
 	 * The default value of the '{@link #isConstant() <em>Constant</em>}' attribute.
@@ -120,6 +122,26 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * @ordered
 	 */
 	protected boolean constant = CONSTANT_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isNegated() <em>Negated</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isNegated()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean NEGATED_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isNegated() <em>Negated</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isNegated()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean negated = NEGATED_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getDependencies() <em>Dependencies</em>}'
@@ -221,7 +243,7 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * 
 	 * @generated
 	 */
-	public BoolValueExpression getExpression() {
+	public BoolExpression getExpression() {
 		return expression;
 	}
 
@@ -230,8 +252,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * 
 	 * @generated
 	 */
-	public NotificationChain basicSetExpression(BoolValueExpression newExpression, NotificationChain msgs) {
-		BoolValueExpression oldExpression = expression;
+	public NotificationChain basicSetExpression(BoolExpression newExpression, NotificationChain msgs) {
+		BoolExpression oldExpression = expression;
 		expression = newExpression;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
@@ -249,7 +271,7 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * 
 	 * @generated
 	 */
-	public void setExpression(BoolValueExpression newExpression) {
+	public void setExpression(BoolExpression newExpression) {
 		if (newExpression != expression) {
 			NotificationChain msgs = null;
 			if (expression != null)
@@ -286,6 +308,28 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.CONSTRAINT__CONSTANT,
 					oldConstant, constant));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public boolean isNegated() {
+		return negated;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setNegated(boolean newNegated) {
+		boolean oldNegated = negated;
+		negated = newNegated;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.CONSTRAINT__NEGATED,
+					oldNegated, negated));
 	}
 
 	/**
@@ -359,6 +403,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 			return getExpression();
 		case GipsIntermediatePackage.CONSTRAINT__CONSTANT:
 			return isConstant();
+		case GipsIntermediatePackage.CONSTRAINT__NEGATED:
+			return isNegated();
 		case GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES:
 			return getDependencies();
 		case GipsIntermediatePackage.CONSTRAINT__HELPER_VARIABLES:
@@ -385,10 +431,13 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 			setDepending((Boolean) newValue);
 			return;
 		case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
-			setExpression((BoolValueExpression) newValue);
+			setExpression((BoolExpression) newValue);
 			return;
 		case GipsIntermediatePackage.CONSTRAINT__CONSTANT:
 			setConstant((Boolean) newValue);
+			return;
+		case GipsIntermediatePackage.CONSTRAINT__NEGATED:
+			setNegated((Boolean) newValue);
 			return;
 		case GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES:
 			getDependencies().clear();
@@ -421,10 +470,13 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 			setDepending(DEPENDING_EDEFAULT);
 			return;
 		case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
-			setExpression((BoolValueExpression) null);
+			setExpression((BoolExpression) null);
 			return;
 		case GipsIntermediatePackage.CONSTRAINT__CONSTANT:
 			setConstant(CONSTANT_EDEFAULT);
+			return;
+		case GipsIntermediatePackage.CONSTRAINT__NEGATED:
+			setNegated(NEGATED_EDEFAULT);
 			return;
 		case GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES:
 			getDependencies().clear();
@@ -455,6 +507,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 			return expression != null;
 		case GipsIntermediatePackage.CONSTRAINT__CONSTANT:
 			return constant != CONSTANT_EDEFAULT;
+		case GipsIntermediatePackage.CONSTRAINT__NEGATED:
+			return negated != NEGATED_EDEFAULT;
 		case GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES:
 			return dependencies != null && !dependencies.isEmpty();
 		case GipsIntermediatePackage.CONSTRAINT__HELPER_VARIABLES:
@@ -482,6 +536,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 		result.append(depending);
 		result.append(", constant: ");
 		result.append(constant);
+		result.append(", negated: ");
+		result.append(negated);
 		result.append(')');
 		return result.toString();
 	}

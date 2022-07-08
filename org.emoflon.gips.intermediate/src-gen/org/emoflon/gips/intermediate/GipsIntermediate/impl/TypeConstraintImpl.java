@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
@@ -42,6 +42,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
  * <em>Expression</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#isConstant
  * <em>Constant</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#isNegated
+ * <em>Negated</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getDependencies
  * <em>Dependencies</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getHelperVariables
@@ -103,7 +105,7 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * @generated
 	 * @ordered
 	 */
-	protected BoolValueExpression expression;
+	protected BoolExpression expression;
 
 	/**
 	 * The default value of the '{@link #isConstant() <em>Constant</em>}' attribute.
@@ -124,6 +126,26 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * @ordered
 	 */
 	protected boolean constant = CONSTANT_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isNegated() <em>Negated</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isNegated()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean NEGATED_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isNegated() <em>Negated</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isNegated()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean negated = NEGATED_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getDependencies() <em>Dependencies</em>}'
@@ -235,7 +257,7 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * 
 	 * @generated
 	 */
-	public BoolValueExpression getExpression() {
+	public BoolExpression getExpression() {
 		return expression;
 	}
 
@@ -244,8 +266,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * 
 	 * @generated
 	 */
-	public NotificationChain basicSetExpression(BoolValueExpression newExpression, NotificationChain msgs) {
-		BoolValueExpression oldExpression = expression;
+	public NotificationChain basicSetExpression(BoolExpression newExpression, NotificationChain msgs) {
+		BoolExpression oldExpression = expression;
 		expression = newExpression;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
@@ -263,7 +285,7 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * 
 	 * @generated
 	 */
-	public void setExpression(BoolValueExpression newExpression) {
+	public void setExpression(BoolExpression newExpression) {
 		if (newExpression != expression) {
 			NotificationChain msgs = null;
 			if (expression != null)
@@ -300,6 +322,28 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT,
 					oldConstant, constant));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public boolean isNegated() {
+		return negated;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setNegated(boolean newNegated) {
+		boolean oldNegated = negated;
+		negated = newNegated;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.TYPE_CONSTRAINT__NEGATED,
+					oldNegated, negated));
 	}
 
 	/**
@@ -413,6 +457,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 			return getExpression();
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT:
 			return isConstant();
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__NEGATED:
+			return isNegated();
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES:
 			return getDependencies();
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_VARIABLES:
@@ -443,10 +489,13 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 			setDepending((Boolean) newValue);
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
-			setExpression((BoolValueExpression) newValue);
+			setExpression((BoolExpression) newValue);
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT:
 			setConstant((Boolean) newValue);
+			return;
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__NEGATED:
+			setNegated((Boolean) newValue);
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES:
 			getDependencies().clear();
@@ -482,10 +531,13 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 			setDepending(DEPENDING_EDEFAULT);
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
-			setExpression((BoolValueExpression) null);
+			setExpression((BoolExpression) null);
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT:
 			setConstant(CONSTANT_EDEFAULT);
+			return;
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__NEGATED:
+			setNegated(NEGATED_EDEFAULT);
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES:
 			getDependencies().clear();
@@ -519,6 +571,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 			return expression != null;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT:
 			return constant != CONSTANT_EDEFAULT;
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__NEGATED:
+			return negated != NEGATED_EDEFAULT;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES:
 			return dependencies != null && !dependencies.isEmpty();
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_VARIABLES:
@@ -548,6 +602,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 				return GipsIntermediatePackage.CONSTRAINT__EXPRESSION;
 			case GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT:
 				return GipsIntermediatePackage.CONSTRAINT__CONSTANT;
+			case GipsIntermediatePackage.TYPE_CONSTRAINT__NEGATED:
+				return GipsIntermediatePackage.CONSTRAINT__NEGATED;
 			case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES:
 				return GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES;
 			case GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_VARIABLES:
@@ -578,6 +634,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 				return GipsIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION;
 			case GipsIntermediatePackage.CONSTRAINT__CONSTANT:
 				return GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT;
+			case GipsIntermediatePackage.CONSTRAINT__NEGATED:
+				return GipsIntermediatePackage.TYPE_CONSTRAINT__NEGATED;
 			case GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES:
 				return GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES;
 			case GipsIntermediatePackage.CONSTRAINT__HELPER_VARIABLES:
@@ -608,6 +666,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		result.append(depending);
 		result.append(", constant: ");
 		result.append(constant);
+		result.append(", negated: ");
+		result.append(negated);
 		result.append(')');
 		return result.toString();
 	}

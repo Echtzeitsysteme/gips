@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.emoflon.gips.build.transformation.GipsConstraintUtils;
 import org.emoflon.gips.core.ilp.ILPConstraint;
 import org.emoflon.gips.core.ilp.ILPTerm;
 import org.emoflon.gips.core.ilp.ILPVariable;
@@ -25,7 +26,7 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends C
 	final protected Map<CONTEXT, List<ILPConstraint>> additionalIlpConstraints = Collections
 			.synchronizedMap(new HashMap<>());
 	final protected Map<String, ILPVariable<?>> additionalVariables = Collections.synchronizedMap(new HashMap<>());
-	final public static double EPSILON = 0.000001d;
+	final public static double EPSILON = GipsConstraintUtils.EPSILON;
 
 	public GipsConstraint(final ENGINE engine, final CONSTR constraint) {
 		this.engine = engine;

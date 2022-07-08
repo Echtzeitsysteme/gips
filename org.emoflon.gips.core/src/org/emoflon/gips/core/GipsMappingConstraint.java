@@ -87,19 +87,30 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 			for (CONTEXT context : mapper.getMappings().values()) {
 				ILPVariable<?> ilpVar = switch (variable.getType()) {
 				case BINARY -> {
-					yield new ILPBinaryVariable(context.getName() + "->" + variable.getName());
+					ILPBinaryVariable var = new ILPBinaryVariable(context.getName() + "->" + variable.getName());
+					var.setLowerBound((int) variable.getLowerBound());
+					var.setUpperBound((int) variable.getUpperBound());
+					yield var;
 				}
 				case INTEGER -> {
-					yield new ILPIntegerVariable(context.getName() + "->" + variable.getName());
+					ILPIntegerVariable var = new ILPIntegerVariable(context.getName() + "->" + variable.getName());
+					var.setLowerBound((int) variable.getLowerBound());
+					var.setUpperBound((int) variable.getUpperBound());
+					yield var;
 				}
 				case REAL -> {
-					yield new ILPRealVariable(context.getName() + "->" + variable.getName());
+					ILPRealVariable var = new ILPRealVariable(context.getName() + "->" + variable.getName());
+					var.setLowerBound(variable.getLowerBound());
+					var.setUpperBound(variable.getUpperBound());
+					yield var;
 				}
+
 				default -> {
 					throw new IllegalArgumentException("Unknown ilp variable type: " + variable.getType());
 				}
 
 				};
+
 				additionalVariables.put(ilpVar.getName(), ilpVar);
 				engine.addNonMappingVariable(ilpVar);
 			}

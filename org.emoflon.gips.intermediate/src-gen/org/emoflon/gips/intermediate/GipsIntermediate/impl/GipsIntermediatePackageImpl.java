@@ -1174,8 +1174,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	public EReference getConstraint_Dependencies() {
-		return (EReference) constraintEClass.getEStructuralFeatures().get(4);
+	public EAttribute getConstraint_Negated() {
+		return (EAttribute) constraintEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -1183,7 +1183,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	public EReference getConstraint_HelperVariables() {
+	public EReference getConstraint_Dependencies() {
 		return (EReference) constraintEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -1192,8 +1192,17 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	public EReference getConstraint_HelperConstraints() {
+	public EReference getConstraint_HelperVariables() {
 		return (EReference) constraintEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getConstraint_HelperConstraints() {
+		return (EReference) constraintEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
@@ -2656,6 +2665,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		createEAttribute(constraintEClass, CONSTRAINT__DEPENDING);
 		createEReference(constraintEClass, CONSTRAINT__EXPRESSION);
 		createEAttribute(constraintEClass, CONSTRAINT__CONSTANT);
+		createEAttribute(constraintEClass, CONSTRAINT__NEGATED);
 		createEReference(constraintEClass, CONSTRAINT__DEPENDENCIES);
 		createEReference(constraintEClass, CONSTRAINT__HELPER_VARIABLES);
 		createEReference(constraintEClass, CONSTRAINT__HELPER_CONSTRAINTS);
@@ -3106,10 +3116,12 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConstraint_Depending(), ecorePackage.getEBoolean(), "depending", null, 0, 1, Constraint.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getConstraint_Expression(), this.getBoolValueExpression(), null, "expression", null, 1, 1,
+		initEReference(getConstraint_Expression(), this.getBoolExpression(), null, "expression", null, 1, 1,
 				Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConstraint_Constant(), ecorePackage.getEBoolean(), "constant", null, 0, 1, Constraint.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getConstraint_Negated(), ecorePackage.getEBoolean(), "negated", null, 0, 1, Constraint.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getConstraint_Dependencies(), this.getConstraint(), null, "dependencies", null, 0, -1,
 				Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,

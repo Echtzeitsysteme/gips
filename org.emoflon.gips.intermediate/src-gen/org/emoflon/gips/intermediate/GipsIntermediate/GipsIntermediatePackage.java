@@ -824,13 +824,22 @@ public interface GipsIntermediatePackage extends EPackage {
 	int CONSTRAINT__CONSTANT = 3;
 
 	/**
+	 * The feature id for the '<em><b>Negated</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int CONSTRAINT__NEGATED = 4;
+
+	/**
 	 * The feature id for the '<em><b>Dependencies</b></em>' reference list. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int CONSTRAINT__DEPENDENCIES = 4;
+	int CONSTRAINT__DEPENDENCIES = 5;
 
 	/**
 	 * The feature id for the '<em><b>Helper Variables</b></em>' reference list.
@@ -839,7 +848,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONSTRAINT__HELPER_VARIABLES = 5;
+	int CONSTRAINT__HELPER_VARIABLES = 6;
 
 	/**
 	 * The feature id for the '<em><b>Helper Constraints</b></em>' containment
@@ -848,7 +857,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONSTRAINT__HELPER_CONSTRAINTS = 6;
+	int CONSTRAINT__HELPER_CONSTRAINTS = 7;
 
 	/**
 	 * The number of structural features of the '<em>Constraint</em>' class. <!--
@@ -857,7 +866,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONSTRAINT_FEATURE_COUNT = 7;
+	int CONSTRAINT_FEATURE_COUNT = 8;
 
 	/**
 	 * The number of operations of the '<em>Constraint</em>' class. <!--
@@ -915,6 +924,15 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @ordered
 	 */
 	int GLOBAL_CONSTRAINT__CONSTANT = CONSTRAINT__CONSTANT;
+
+	/**
+	 * The feature id for the '<em><b>Negated</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_CONSTRAINT__NEGATED = CONSTRAINT__NEGATED;
 
 	/**
 	 * The feature id for the '<em><b>Dependencies</b></em>' reference list. <!--
@@ -1143,13 +1161,22 @@ public interface GipsIntermediatePackage extends EPackage {
 	int PATTERN_CONSTRAINT__CONSTANT = CONTEXT_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Negated</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int PATTERN_CONSTRAINT__NEGATED = CONTEXT_FEATURE_COUNT + 4;
+
+	/**
 	 * The feature id for the '<em><b>Dependencies</b></em>' reference list. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int PATTERN_CONSTRAINT__DEPENDENCIES = CONTEXT_FEATURE_COUNT + 4;
+	int PATTERN_CONSTRAINT__DEPENDENCIES = CONTEXT_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Helper Variables</b></em>' reference list.
@@ -1158,7 +1185,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PATTERN_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 5;
+	int PATTERN_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Helper Constraints</b></em>' containment
@@ -1167,7 +1194,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PATTERN_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 6;
+	int PATTERN_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Pattern</b></em>' reference. <!--
@@ -1176,7 +1203,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PATTERN_CONSTRAINT__PATTERN = CONTEXT_FEATURE_COUNT + 7;
+	int PATTERN_CONSTRAINT__PATTERN = CONTEXT_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of structural features of the '<em>Pattern Constraint</em>' class.
@@ -1185,7 +1212,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PATTERN_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 8;
+	int PATTERN_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of operations of the '<em>Pattern Constraint</em>' class. <!--
@@ -1245,13 +1272,22 @@ public interface GipsIntermediatePackage extends EPackage {
 	int TYPE_CONSTRAINT__CONSTANT = CONTEXT_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Negated</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_CONSTRAINT__NEGATED = CONTEXT_FEATURE_COUNT + 4;
+
+	/**
 	 * The feature id for the '<em><b>Dependencies</b></em>' reference list. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT__DEPENDENCIES = CONTEXT_FEATURE_COUNT + 4;
+	int TYPE_CONSTRAINT__DEPENDENCIES = CONTEXT_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Helper Variables</b></em>' reference list.
@@ -1260,7 +1296,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 5;
+	int TYPE_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Helper Constraints</b></em>' containment
@@ -1269,7 +1305,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 6;
+	int TYPE_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Model Type</b></em>' reference. <!--
@@ -1278,7 +1314,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT__MODEL_TYPE = CONTEXT_FEATURE_COUNT + 7;
+	int TYPE_CONSTRAINT__MODEL_TYPE = CONTEXT_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of structural features of the '<em>Type Constraint</em>' class.
@@ -1287,7 +1323,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 8;
+	int TYPE_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of operations of the '<em>Type Constraint</em>' class. <!--
@@ -1347,13 +1383,22 @@ public interface GipsIntermediatePackage extends EPackage {
 	int MAPPING_CONSTRAINT__CONSTANT = CONTEXT_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Negated</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int MAPPING_CONSTRAINT__NEGATED = CONTEXT_FEATURE_COUNT + 4;
+
+	/**
 	 * The feature id for the '<em><b>Dependencies</b></em>' reference list. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT__DEPENDENCIES = CONTEXT_FEATURE_COUNT + 4;
+	int MAPPING_CONSTRAINT__DEPENDENCIES = CONTEXT_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Helper Variables</b></em>' reference list.
@@ -1362,7 +1407,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 5;
+	int MAPPING_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Helper Constraints</b></em>' containment
@@ -1371,7 +1416,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 6;
+	int MAPPING_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Mapping</b></em>' reference. <!--
@@ -1380,7 +1425,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT__MAPPING = CONTEXT_FEATURE_COUNT + 7;
+	int MAPPING_CONSTRAINT__MAPPING = CONTEXT_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of structural features of the '<em>Mapping Constraint</em>' class.
@@ -1389,7 +1434,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 8;
+	int MAPPING_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of operations of the '<em>Mapping Constraint</em>' class. <!--
@@ -5101,6 +5146,18 @@ public interface GipsIntermediatePackage extends EPackage {
 	EAttribute getConstraint_Constant();
 
 	/**
+	 * Returns the meta object for the attribute
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isNegated
+	 * <em>Negated</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Negated</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isNegated()
+	 * @see #getConstraint()
+	 * @generated
+	 */
+	EAttribute getConstraint_Negated();
+
+	/**
 	 * Returns the meta object for the reference list
 	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getDependencies
 	 * <em>Dependencies</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -7363,6 +7420,14 @@ public interface GipsIntermediatePackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CONSTRAINT__CONSTANT = eINSTANCE.getConstraint_Constant();
+
+		/**
+		 * The meta object literal for the '<em><b>Negated</b></em>' attribute feature.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute CONSTRAINT__NEGATED = eINSTANCE.getConstraint_Negated();
 
 		/**
 		 * The meta object literal for the '<em><b>Dependencies</b></em>' reference list

@@ -190,7 +190,7 @@ public class CplexSolver extends ILPSolver {
 
 		try {
 
-			// Iterate over all constraint name
+			// Iterate over all constraint names
 			for (final String name : constraints.keySet()) {
 				final Iterator<ILPConstraint> cnstrIt = constraints.get(name).iterator();
 
@@ -205,10 +205,11 @@ public class CplexSolver extends ILPSolver {
 					case EQUAL -> {
 						cplex.addEq(cnstr.rhsConstantTerm(), linearNumExpr);
 					}
-					case LESS_OR_EQUAL -> {
+					// TODO: Switched operators???
+					case GREATER_OR_EQUAL -> {
 						cplex.addLe(cnstr.rhsConstantTerm(), linearNumExpr);
 					}
-					case GREATER_OR_EQUAL -> {
+					case LESS_OR_EQUAL -> {
 						cplex.addGe(cnstr.rhsConstantTerm(), linearNumExpr);
 					}
 					default -> {
@@ -259,10 +260,10 @@ public class CplexSolver extends ILPSolver {
 				lf.linearFunction().terms().forEach(t -> {
 					final String name = t.variable().getName();
 					if (!objCoeffs.containsKey(name)) {
-						objCoeffs.put(name, t.weight());
+						objCoeffs.put(name, t.weight() * lf.weight());
 					} else {
 						final double oldWeight = objCoeffs.remove(name);
-						objCoeffs.put(name, oldWeight + t.weight());
+						objCoeffs.put(name, oldWeight + t.weight() * lf.weight());
 					}
 
 				});
@@ -278,7 +279,7 @@ public class CplexSolver extends ILPSolver {
 			}
 
 			// Add global constant sum
-			obj.setConstant(constSum);
+			obj.setExpr(cplex.sum(obj.getExpr(), cplex.constant(constSum)));
 		} catch (final IloException ex) {
 			throw new RuntimeException(ex);
 		}

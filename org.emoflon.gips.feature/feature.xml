@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.emoflon.gips.feature"
-      label="Feature"
-      version="1.0.0.qualifier">
+      label="GIPS"
+      version="1.0.0.qualifier"
+      provider-name="Real-Time Systems Lab TU Darmstadt">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+   <description url="https://github.com/Echtzeitsysteme/gips">
+      Graph-Based ILP Problem Specification Tool
    </description>
 
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
+   <copyright url="https://github.com/Echtzeitsysteme/gips/blob/master/CITATION.cff">
+      Copyright Real-Time System Lab TU Darmstadt
    </copyright>
 
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
+   <license url="https://github.com/Echtzeitsysteme/gips/blob/master/LICENSE">
+      GNU General Public License v3.0
    </license>
+
+   <requires>
+      <import feature="org.emoflon.ibex.ide.feature" version="1.0.0.qualifier"/>
+      <import feature="org.emoflon.ibex.ide.hipe.feature" version="1.0.0.qualifier"/>
+      <import feature="org.emoflon.ibex.tgg.editor.feature" version="1.0.0.qualifier"/>
+      <import feature="org.emoflon.jar.feature" version="1.0.0.qualifier"/>
+      <import feature="org.emoflon.site.feature" version="1.0.0.qualifier"/>
+      <import feature="org.moflon.core.feature" version="1.7.0.qualifier"/>
+   </requires>
 
    <plugin
          id="org.emoflon.gips.build"

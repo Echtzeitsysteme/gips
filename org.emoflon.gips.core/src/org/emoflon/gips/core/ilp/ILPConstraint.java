@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 
-public record ILPConstraint<T extends Number> (List<ILPTerm<T, Double>> lhsTerms, RelationalOperator operator,
-		Double rhsConstantTerm) {
+public record ILPConstraint(List<ILPTerm> lhsTerms, RelationalOperator operator, Double rhsConstantTerm) {
 
 }

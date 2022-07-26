@@ -13,7 +13,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue
@@ -60,6 +59,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Pattern
 import org.emoflon.gips.intermediate.GipsIntermediate.Type
 import org.eclipse.emf.ecore.EcorePackage
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
 
 abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends GeneratorTemplate<OBJECTIVE> {
 
@@ -104,9 +105,9 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 				var instruction = ""
 				if(GipsTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
 					if(context instanceof MappingObjective) {
-						instruction = '''terms.add(new ILPTerm<Integer, Double>(context, «builderMethodName»()));'''
+						instruction = '''terms.add(new ILPTerm(context, «builderMethodName»(context)));'''
 					} else {
-						instruction = '''constantTerms.add(new ILPConstant<Double>(«builderMethodName»()));'''
+						instruction = '''constantTerms.add(new ILPConstant(«builderMethodName»(context)));'''
 					}
 				} else {
 					val variables = GipsTransformationUtils.extractVariable(expr);
@@ -114,7 +115,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 						throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 		
 					val variable = variables.iterator.next
-					instruction = '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable)», «builderMethodName»(context)));'''
+					instruction = '''terms.add(new ILPTerm(«getContextVariable(variable)», «builderMethodName»(context)));'''
 				}
 				builderMethodCalls.add(instruction)
 			}
@@ -123,9 +124,9 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 				var instruction = ""
 				if(GipsTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
 					if(context instanceof MappingObjective) {
-						instruction = '''terms.add(new ILPTerm<Integer, Double>(context, «builderMethodName»()));'''
+						instruction = '''terms.add(new ILPTerm(context, «builderMethodName»(context)));'''
 					} else {
-						instruction = '''constantTerms.add(new ILPConstant<Double>(«builderMethodName»()));'''
+						instruction = '''constantTerms.add(new ILPConstant(«builderMethodName»(context)));'''
 					}
 				} else {
 					val variables = GipsTransformationUtils.extractVariable(expr);
@@ -133,7 +134,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 						throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 		
 					val variable = variables.iterator.next
-					instruction =  '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable)», «builderMethodName»(context)));'''
+					instruction =  '''terms.add(new ILPTerm(«getContextVariable(variable)», «builderMethodName»(context)));'''
 				}
 				builderMethodCalls.add(instruction)
 		} else if(expr instanceof ArithmeticValue) {
@@ -142,18 +143,18 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			if(expr instanceof IntegerLiteral) {
 				var instruction = ""
 				if(context instanceof MappingObjective) {
-					instruction = '''terms.add(new ILPTerm<Integer, Double>(context, (double)«expr.literal»));'''
+					instruction = '''terms.add(new ILPTerm(context, (double)«expr.literal»));'''
 				} else {
-					instruction = '''constantTerms.add(new ILPConstant<Double>((double)«expr.literal»));'''
+					instruction = '''constantTerms.add(new ILPConstant((double)«expr.literal»));'''
 				}
 				builderMethodCalls.add(instruction);
 			} else {
 				val doubleLit = expr as DoubleLiteral
 				var instruction = ""
 				if(context instanceof MappingObjective) {
-					instruction = '''terms.add(new ILPTerm<Integer, Double>(context, «doubleLit.literal»));'''
+					instruction = '''terms.add(new ILPTerm(context, «doubleLit.literal»));'''
 				} else {
-					instruction = '''constantTerms.add(new ILPConstant<Double>(«doubleLit.literal»));'''
+					instruction = '''constantTerms.add(new ILPConstant(«doubleLit.literal»));'''
 				}
 				builderMethodCalls.add(instruction);
 			}
@@ -169,9 +170,9 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			val type = GipsTransformationUtils.isConstantExpression(expr)
 			if(type == ArithmeticExpressionType.constant) {
 				if(context instanceof MappingObjective) {
-					instruction = '''terms.add(new ILPTerm<Integer, Double>(context, «generateConstantBuilder(expr, type)»));'''
+					instruction = '''terms.add(new ILPTerm(context, «generateConstantBuilder(expr, type)»));'''
 				} else {
-					instruction = '''constantTerms.add(new ILPConstant<Double>(«generateConstantBuilder(expr, type)»));'''
+					instruction = '''constantTerms.add(new ILPConstant(«generateConstantBuilder(expr, type)»));'''
 				}
 			} else {
 				val variables = GipsTransformationUtils.extractVariable(expr);
@@ -180,7 +181,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 				
 				val builderMethodName = generateConstantBuilder(expr, type);
 				val variable = variables.iterator.next
-				instruction = '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable)», «builderMethodName»(context)));'''
+				instruction = '''terms.add(new ILPTerm(«getContextVariable(variable)», «builderMethodName»(context)));'''
 			}
 			builderMethodCalls.add(instruction);
 		}
@@ -219,7 +220,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 					return '''«parseExpression(expr.lhs, contextType)» * «parseExpression(expr.rhs, contextType)»'''
 				}
 				case POW: {
-					return '''Math.pow(«parseExpression(expr.lhs, contextType)», «parseExpression(expr.rhs, contextType)»'''
+					return '''Math.pow(«parseExpression(expr.lhs, contextType)», «parseExpression(expr.rhs, contextType)»)'''
 				}
 				case SUBTRACT: {
 					return '''«parseExpression(expr.lhs, contextType)» - «parseExpression(expr.rhs, contextType)»'''
@@ -286,11 +287,17 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 				case OR: {
 					return '''«parseExpression(expr.lhs, contextType)» || «parseExpression(expr.rhs, contextType)»'''			
 				}
+				case XOR: {
+					return '''«parseExpression(expr.lhs, contextType)» ^ «parseExpression(expr.rhs, contextType)»'''
+				}
 			}
 		} else if(expr instanceof BoolUnaryExpression) {
 			switch(expr.operator) {
 				case NOT: {
 					return '''!«parseExpression(expr.expression, contextType)»'''
+				}
+				case BRACKET: {
+					return '''(«parseExpression(expr.expression, contextType)»)'''
 				}
 			}
 		} else if(expr instanceof BoolLiteral) {
@@ -482,6 +489,8 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingValue) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
+		} else if(constExpr instanceof IteratorMappingVariableValue) {
+			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingFeatureValue) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingNodeFeatureValue) {
@@ -528,6 +537,8 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		} else if(constExpr instanceof ContextMappingNode) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingValue) {
+			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
+		} else if(constExpr instanceof IteratorMappingVariableValue) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingFeatureValue) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
@@ -603,6 +614,8 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		} else if(varExpr instanceof ContextMappingNode) {
 			return '''context.get«varExpr.node.name.toFirstUpper»()'''
 		} else if(varExpr instanceof IteratorMappingValue) {
+			return '''«getIteratorVariableName(varExpr.stream)»'''
+		} else if(varExpr instanceof IteratorMappingVariableValue) {
 			//This should have been taken care of already. -> Constant 1 doesn't hurt... 
 			return '''1.0'''
 		} else if(varExpr instanceof IteratorMappingFeatureValue) {
@@ -652,6 +665,8 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		} else if(varExpr instanceof ContextMappingNode) {
 			return '''context.get«varExpr.node.name.toFirstUpper»()'''
 		} else if(varExpr instanceof IteratorMappingValue) {
+			return '''«getIteratorVariableName(varExpr.stream)»'''
+		} else if(varExpr instanceof IteratorMappingVariableValue) {
 			//This should have been taken care of already. -> Constant 1 doesn't hurt... 
 			return '''1.0'''
 		} else if(varExpr instanceof IteratorMappingFeatureValue) {

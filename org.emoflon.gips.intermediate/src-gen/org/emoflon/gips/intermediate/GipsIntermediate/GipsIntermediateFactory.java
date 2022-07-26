@@ -58,13 +58,31 @@ public interface GipsIntermediateFactory extends EFactory {
 	Type createType();
 
 	/**
-	 * Returns a new object of class '<em>Mapping</em>'. <!-- begin-user-doc -->
+	 * Returns a new object of class '<em>GT Mapping</em>'. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
-	 * @return a new object of class '<em>Mapping</em>'.
+	 * @return a new object of class '<em>GT Mapping</em>'.
 	 * @generated
 	 */
-	Mapping createMapping();
+	GTMapping createGTMapping();
+
+	/**
+	 * Returns a new object of class '<em>Pattern Mapping</em>'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Pattern Mapping</em>'.
+	 * @generated
+	 */
+	PatternMapping createPatternMapping();
+
+	/**
+	 * Returns a new object of class '<em>Variable</em>'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Variable</em>'.
+	 * @generated
+	 */
+	Variable createVariable();
 
 	/**
 	 * Returns a new object of class '<em>Global Constraint</em>'. <!--
@@ -173,6 +191,15 @@ public interface GipsIntermediateFactory extends EFactory {
 	 * @generated
 	 */
 	ArithmeticValue createArithmeticValue();
+
+	/**
+	 * Returns a new object of class '<em>Variable Reference</em>'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Variable Reference</em>'.
+	 * @generated
+	 */
+	VariableReference createVariableReference();
 
 	/**
 	 * Returns a new object of class '<em>Arithmetic Null Literal</em>'. <!--
@@ -434,6 +461,15 @@ public interface GipsIntermediateFactory extends EFactory {
 	 * @generated
 	 */
 	IteratorMappingValue createIteratorMappingValue();
+
+	/**
+	 * Returns a new object of class '<em>Iterator Mapping Variable Value</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Iterator Mapping Variable Value</em>'.
+	 * @generated
+	 */
+	IteratorMappingVariableValue createIteratorMappingVariableValue();
 
 	/**
 	 * Returns a new object of class '<em>Iterator Mapping Feature Value</em>'. <!--

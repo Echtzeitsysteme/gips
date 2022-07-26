@@ -65,8 +65,12 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createPattern();
 		case GipsIntermediatePackage.TYPE:
 			return createType();
-		case GipsIntermediatePackage.MAPPING:
-			return createMapping();
+		case GipsIntermediatePackage.GT_MAPPING:
+			return createGTMapping();
+		case GipsIntermediatePackage.PATTERN_MAPPING:
+			return createPatternMapping();
+		case GipsIntermediatePackage.VARIABLE:
+			return createVariable();
 		case GipsIntermediatePackage.GLOBAL_CONSTRAINT:
 			return createGlobalConstraint();
 		case GipsIntermediatePackage.OBJECTIVE:
@@ -91,6 +95,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createUnaryArithmeticExpression();
 		case GipsIntermediatePackage.ARITHMETIC_VALUE:
 			return createArithmeticValue();
+		case GipsIntermediatePackage.VARIABLE_REFERENCE:
+			return createVariableReference();
 		case GipsIntermediatePackage.ARITHMETIC_NULL_LITERAL:
 			return createArithmeticNullLiteral();
 		case GipsIntermediatePackage.INTEGER_LITERAL:
@@ -149,6 +155,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createIteratorPatternNodeFeatureValue();
 		case GipsIntermediatePackage.ITERATOR_MAPPING_VALUE:
 			return createIteratorMappingValue();
+		case GipsIntermediatePackage.ITERATOR_MAPPING_VARIABLE_VALUE:
+			return createIteratorMappingVariableValue();
 		case GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE:
 			return createIteratorMappingFeatureValue();
 		case GipsIntermediatePackage.ITERATOR_MAPPING_NODE_VALUE:
@@ -184,6 +192,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 		switch (eDataType.getClassifierID()) {
 		case GipsIntermediatePackage.ILP_SOLVER_TYPE:
 			return createILPSolverTypeFromString(eDataType, initialValue);
+		case GipsIntermediatePackage.VARIABLE_TYPE:
+			return createVariableTypeFromString(eDataType, initialValue);
 		case GipsIntermediatePackage.OBJECTIVE_TARGET:
 			return createObjectiveTargetFromString(eDataType, initialValue);
 		case GipsIntermediatePackage.RELATIONAL_OPERATOR:
@@ -215,6 +225,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 		switch (eDataType.getClassifierID()) {
 		case GipsIntermediatePackage.ILP_SOLVER_TYPE:
 			return convertILPSolverTypeToString(eDataType, instanceValue);
+		case GipsIntermediatePackage.VARIABLE_TYPE:
+			return convertVariableTypeToString(eDataType, instanceValue);
 		case GipsIntermediatePackage.OBJECTIVE_TARGET:
 			return convertObjectiveTargetToString(eDataType, instanceValue);
 		case GipsIntermediatePackage.RELATIONAL_OPERATOR:
@@ -281,9 +293,29 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	public Mapping createMapping() {
-		MappingImpl mapping = new MappingImpl();
-		return mapping;
+	public GTMapping createGTMapping() {
+		GTMappingImpl gtMapping = new GTMappingImpl();
+		return gtMapping;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public PatternMapping createPatternMapping() {
+		PatternMappingImpl patternMapping = new PatternMappingImpl();
+		return patternMapping;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public Variable createVariable() {
+		VariableImpl variable = new VariableImpl();
+		return variable;
 	}
 
 	/**
@@ -404,6 +436,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	public ArithmeticValue createArithmeticValue() {
 		ArithmeticValueImpl arithmeticValue = new ArithmeticValueImpl();
 		return arithmeticValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public VariableReference createVariableReference() {
+		VariableReferenceImpl variableReference = new VariableReferenceImpl();
+		return variableReference;
 	}
 
 	/**
@@ -701,6 +743,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public IteratorMappingVariableValue createIteratorMappingVariableValue() {
+		IteratorMappingVariableValueImpl iteratorMappingVariableValue = new IteratorMappingVariableValueImpl();
+		return iteratorMappingVariableValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public IteratorMappingFeatureValue createIteratorMappingFeatureValue() {
 		IteratorMappingFeatureValueImpl iteratorMappingFeatureValue = new IteratorMappingFeatureValueImpl();
 		return iteratorMappingFeatureValue;
@@ -815,6 +867,28 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	 * @generated
 	 */
 	public String convertILPSolverTypeToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public VariableType createVariableTypeFromString(EDataType eDataType, String initialValue) {
+		VariableType result = VariableType.get(initialValue);
+		if (result == null)
+			throw new IllegalArgumentException(
+					"The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public String convertVariableTypeToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 

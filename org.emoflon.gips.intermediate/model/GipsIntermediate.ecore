@@ -50,15 +50,37 @@
   <eClassifiers xsi:type="ecore:EClass" name="Type" eSuperTypes="#//VariableSet">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Mapping" eSuperTypes="#//VariableSet">
+  <eClassifiers xsi:type="ecore:EClass" name="Mapping" abstract="true" eSuperTypes="#//VariableSet">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contextPattern" lowerBound="1"
+        eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXContextPattern"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GTMapping" eSuperTypes="#//Mapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="rule" lowerBound="1" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXRule"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternMapping" eSuperTypes="#//Mapping">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" lowerBound="1"
+        eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXContext"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Variable" eSuperTypes="#//VariableSet">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//VariableType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="VariableType">
+    <eLiterals name="BINARY"/>
+    <eLiterals name="INTEGER" value="1"/>
+    <eLiterals name="REAL" value="2"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Constraint" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementwise" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="depending" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
         eType="#//BoolValueExpression" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="constant" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dependencies" upperBound="-1"
+        eType="#//Constraint"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="helperVariables" upperBound="-1"
+        eType="#//Variable"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="helperConstraints" upperBound="-1"
+        eType="#//RelationalExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GlobalConstraint" eSuperTypes="#//Constraint"/>
   <eClassifiers xsi:type="ecore:EClass" name="Objective">
@@ -131,6 +153,10 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ArithmeticLiteral" abstract="true" eSuperTypes="#//ArithmeticValueExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="VariableReference" eSuperTypes="#//ArithmeticValueExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variable" lowerBound="1"
+        eType="#//Variable"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ArithmeticNullLiteral" eSuperTypes="#//ArithmeticLiteral"/>
   <eClassifiers xsi:type="ecore:EClass" name="IntegerLiteral" eSuperTypes="#//ArithmeticLiteral">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="literal" lowerBound="1"
@@ -195,9 +221,11 @@
   <eClassifiers xsi:type="ecore:EEnum" name="BinaryBoolOperator">
     <eLiterals name="AND"/>
     <eLiterals name="OR" value="1"/>
+    <eLiterals name="XOR" value="2"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="UnaryBoolOperator">
     <eLiterals name="NOT"/>
+    <eLiterals name="BRACKET" value="1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="StreamBoolOperator">
     <eLiterals name="EXISTS"/>
@@ -290,6 +318,9 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IteratorMappingValue" eSuperTypes="#//ValueExpression #//Iterator">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//Mapping"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IteratorMappingVariableValue" eSuperTypes="#//ValueExpression #//Iterator">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//Mapping"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IteratorMappingFeatureValue" eSuperTypes="#//ValueExpression #//Iterator">

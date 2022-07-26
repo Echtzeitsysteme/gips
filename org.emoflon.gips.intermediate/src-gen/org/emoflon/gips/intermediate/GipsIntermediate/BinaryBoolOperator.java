@@ -36,7 +36,17 @@ public enum BinaryBoolOperator implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	OR(1, "OR", "OR");
+	OR(1, "OR", "OR"),
+
+	/**
+	 * The '<em><b>XOR</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see #XOR_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	XOR(2, "XOR", "XOR");
 
 	/**
 	 * The '<em><b>AND</b></em>' literal value. <!-- begin-user-doc --> <!--
@@ -61,12 +71,23 @@ public enum BinaryBoolOperator implements Enumerator {
 	public static final int OR_VALUE = 1;
 
 	/**
+	 * The '<em><b>XOR</b></em>' literal value. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see #XOR
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XOR_VALUE = 2;
+
+	/**
 	 * An array of all the '<em><b>Binary Bool Operator</b></em>' enumerators. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	private static final BinaryBoolOperator[] VALUES_ARRAY = new BinaryBoolOperator[] { AND, OR, };
+	private static final BinaryBoolOperator[] VALUES_ARRAY = new BinaryBoolOperator[] { AND, OR, XOR, };
 
 	/**
 	 * A public read-only list of all the '<em><b>Binary Bool Operator</b></em>'
@@ -126,6 +147,8 @@ public enum BinaryBoolOperator implements Enumerator {
 			return AND;
 		case OR_VALUE:
 			return OR;
+		case XOR_VALUE:
+			return XOR;
 		}
 		return null;
 	}

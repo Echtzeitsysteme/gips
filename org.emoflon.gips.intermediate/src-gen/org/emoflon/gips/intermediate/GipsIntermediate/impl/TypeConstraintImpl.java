@@ -2,8 +2,12 @@
  */
 package org.emoflon.gips.intermediate.GipsIntermediate.impl;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -11,11 +15,17 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Type
@@ -26,12 +36,18 @@ import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
  * <ul>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getName
  * <em>Name</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#isElementwise
- * <em>Elementwise</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#isDepending
+ * <em>Depending</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getExpression
  * <em>Expression</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#isConstant
  * <em>Constant</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getDependencies
+ * <em>Dependencies</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getHelperVariables
+ * <em>Helper Variables</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getHelperConstraints
+ * <em>Helper Constraints</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getModelType
  * <em>Model Type</em>}</li>
  * </ul>
@@ -60,24 +76,24 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isElementwise() <em>Elementwise</em>}'
+	 * The default value of the '{@link #isDepending() <em>Depending</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see #isElementwise()
+	 * @see #isDepending()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean ELEMENTWISE_EDEFAULT = false;
+	protected static final boolean DEPENDING_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isElementwise() <em>Elementwise</em>}'
+	 * The cached value of the '{@link #isDepending() <em>Depending</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see #isElementwise()
+	 * @see #isDepending()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean elementwise = ELEMENTWISE_EDEFAULT;
+	protected boolean depending = DEPENDING_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getExpression() <em>Expression</em>}'
@@ -108,6 +124,38 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * @ordered
 	 */
 	protected boolean constant = CONSTANT_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getDependencies() <em>Dependencies</em>}'
+	 * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getDependencies()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Constraint> dependencies;
+
+	/**
+	 * The cached value of the '{@link #getHelperVariables() <em>Helper
+	 * Variables</em>}' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @see #getHelperVariables()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Variable> helperVariables;
+
+	/**
+	 * The cached value of the '{@link #getHelperConstraints() <em>Helper
+	 * Constraints</em>}' containment reference list. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see #getHelperConstraints()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<RelationalExpression> helperConstraints;
 
 	/**
 	 * The cached value of the '{@link #getModelType() <em>Model Type</em>}'
@@ -165,8 +213,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * 
 	 * @generated
 	 */
-	public boolean isElementwise() {
-		return elementwise;
+	public boolean isDepending() {
+		return depending;
 	}
 
 	/**
@@ -174,12 +222,12 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * 
 	 * @generated
 	 */
-	public void setElementwise(boolean newElementwise) {
-		boolean oldElementwise = elementwise;
-		elementwise = newElementwise;
+	public void setDepending(boolean newDepending) {
+		boolean oldDepending = depending;
+		depending = newDepending;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE,
-					oldElementwise, elementwise));
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDING,
+					oldDepending, depending));
 	}
 
 	/**
@@ -259,6 +307,45 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * 
 	 * @generated
 	 */
+	public EList<Constraint> getDependencies() {
+		if (dependencies == null) {
+			dependencies = new EObjectResolvingEList<Constraint>(Constraint.class, this,
+					GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES);
+		}
+		return dependencies;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EList<Variable> getHelperVariables() {
+		if (helperVariables == null) {
+			helperVariables = new EObjectResolvingEList<Variable>(Variable.class, this,
+					GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_VARIABLES);
+		}
+		return helperVariables;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EList<RelationalExpression> getHelperConstraints() {
+		if (helperConstraints == null) {
+			helperConstraints = new EObjectContainmentEList<RelationalExpression>(RelationalExpression.class, this,
+					GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_CONSTRAINTS);
+		}
+		return helperConstraints;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public Type getModelType() {
 		if (modelType != null && modelType.eIsProxy()) {
 			InternalEObject oldModelType = (InternalEObject) modelType;
@@ -304,6 +391,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		switch (featureID) {
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
 			return basicSetExpression(null, msgs);
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_CONSTRAINTS:
+			return ((InternalEList<?>) getHelperConstraints()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -318,12 +407,18 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		switch (featureID) {
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__NAME:
 			return getName();
-		case GipsIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE:
-			return isElementwise();
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDING:
+			return isDepending();
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
 			return getExpression();
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT:
 			return isConstant();
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES:
+			return getDependencies();
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_VARIABLES:
+			return getHelperVariables();
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_CONSTRAINTS:
+			return getHelperConstraints();
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE:
 			if (resolve)
 				return getModelType();
@@ -337,20 +432,33 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__NAME:
 			setName((String) newValue);
 			return;
-		case GipsIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE:
-			setElementwise((Boolean) newValue);
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDING:
+			setDepending((Boolean) newValue);
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
 			setExpression((BoolValueExpression) newValue);
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT:
 			setConstant((Boolean) newValue);
+			return;
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES:
+			getDependencies().clear();
+			getDependencies().addAll((Collection<? extends Constraint>) newValue);
+			return;
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_VARIABLES:
+			getHelperVariables().clear();
+			getHelperVariables().addAll((Collection<? extends Variable>) newValue);
+			return;
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_CONSTRAINTS:
+			getHelperConstraints().clear();
+			getHelperConstraints().addAll((Collection<? extends RelationalExpression>) newValue);
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE:
 			setModelType((Type) newValue);
@@ -370,14 +478,23 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__NAME:
 			setName(NAME_EDEFAULT);
 			return;
-		case GipsIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE:
-			setElementwise(ELEMENTWISE_EDEFAULT);
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDING:
+			setDepending(DEPENDING_EDEFAULT);
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
 			setExpression((BoolValueExpression) null);
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT:
 			setConstant(CONSTANT_EDEFAULT);
+			return;
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES:
+			getDependencies().clear();
+			return;
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_VARIABLES:
+			getHelperVariables().clear();
+			return;
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_CONSTRAINTS:
+			getHelperConstraints().clear();
 			return;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE:
 			setModelType((Type) null);
@@ -396,12 +513,18 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		switch (featureID) {
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__NAME:
 			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-		case GipsIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE:
-			return elementwise != ELEMENTWISE_EDEFAULT;
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDING:
+			return depending != DEPENDING_EDEFAULT;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
 			return expression != null;
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT:
 			return constant != CONSTANT_EDEFAULT;
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES:
+			return dependencies != null && !dependencies.isEmpty();
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_VARIABLES:
+			return helperVariables != null && !helperVariables.isEmpty();
+		case GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_CONSTRAINTS:
+			return helperConstraints != null && !helperConstraints.isEmpty();
 		case GipsIntermediatePackage.TYPE_CONSTRAINT__MODEL_TYPE:
 			return modelType != null;
 		}
@@ -419,12 +542,18 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 			switch (derivedFeatureID) {
 			case GipsIntermediatePackage.TYPE_CONSTRAINT__NAME:
 				return GipsIntermediatePackage.CONSTRAINT__NAME;
-			case GipsIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE:
-				return GipsIntermediatePackage.CONSTRAINT__ELEMENTWISE;
+			case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDING:
+				return GipsIntermediatePackage.CONSTRAINT__DEPENDING;
 			case GipsIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION:
 				return GipsIntermediatePackage.CONSTRAINT__EXPRESSION;
 			case GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT:
 				return GipsIntermediatePackage.CONSTRAINT__CONSTANT;
+			case GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES:
+				return GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES;
+			case GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_VARIABLES:
+				return GipsIntermediatePackage.CONSTRAINT__HELPER_VARIABLES;
+			case GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_CONSTRAINTS:
+				return GipsIntermediatePackage.CONSTRAINT__HELPER_CONSTRAINTS;
 			default:
 				return -1;
 			}
@@ -443,12 +572,18 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 			switch (baseFeatureID) {
 			case GipsIntermediatePackage.CONSTRAINT__NAME:
 				return GipsIntermediatePackage.TYPE_CONSTRAINT__NAME;
-			case GipsIntermediatePackage.CONSTRAINT__ELEMENTWISE:
-				return GipsIntermediatePackage.TYPE_CONSTRAINT__ELEMENTWISE;
+			case GipsIntermediatePackage.CONSTRAINT__DEPENDING:
+				return GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDING;
 			case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
 				return GipsIntermediatePackage.TYPE_CONSTRAINT__EXPRESSION;
 			case GipsIntermediatePackage.CONSTRAINT__CONSTANT:
 				return GipsIntermediatePackage.TYPE_CONSTRAINT__CONSTANT;
+			case GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES:
+				return GipsIntermediatePackage.TYPE_CONSTRAINT__DEPENDENCIES;
+			case GipsIntermediatePackage.CONSTRAINT__HELPER_VARIABLES:
+				return GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_VARIABLES;
+			case GipsIntermediatePackage.CONSTRAINT__HELPER_CONSTRAINTS:
+				return GipsIntermediatePackage.TYPE_CONSTRAINT__HELPER_CONSTRAINTS;
 			default:
 				return -1;
 			}
@@ -469,8 +604,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (name: ");
 		result.append(name);
-		result.append(", elementwise: ");
-		result.append(elementwise);
+		result.append(", depending: ");
+		result.append(depending);
 		result.append(", constant: ");
 		result.append(constant);
 		result.append(')');

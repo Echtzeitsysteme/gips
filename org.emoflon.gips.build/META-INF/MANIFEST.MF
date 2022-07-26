@@ -14,4 +14,5 @@ Require-Bundle: org.emoflon.gips.intermediate;bundle-version="0.1.0",
  org.moflon.core.utilities,
  org.emoflon.ibex.gt.editor;bundle-version="1.1.0",
  org.emoflon.ibex.gt,
- org.moflon.core.plugins
+ org.moflon.core.plugins,
+ org.emoflon.gips.core.dependencies

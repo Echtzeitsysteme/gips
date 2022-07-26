@@ -50,9 +50,9 @@ import «imp»;
 	
 	override String generateClassContent() {
 		return '''
-public class «className» extends GipsTypeConstraint<«data.gipsApiClassName», «context.modelType.type.name»> {
-	public «className»(final «data.gipsApiClassName» engine, final TypeConstraint constraint) {
-		super(engine, constraint);
+public class «className» extends GipsTypeObjective<«data.gipsApiClassName», «context.modelType.type.name»> {
+	public «className»(final «data.gipsApiClassName» engine, final TypeObjective objective) {
+		super(engine, objective);
 	}
 	
 	«generateObjective(context.expression)»
@@ -135,7 +135,7 @@ protected void buildTerms(final «context.modelType.type.name» context) {
 		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper("«expr.mapping.name»").getMappings().values().parallelStream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-			terms.add(new ILPTerm<Integer, Double>(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+			terms.add(new ILPTerm(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}
 	}
 		'''
@@ -155,7 +155,7 @@ protected void buildTerms(final «context.modelType.type.name» context) {
 					.map(«getIteratorVariableName(expr)» -> «parseExpression(expr.expression, ExpressionContext.constConstraint)»)
 					.reduce(0.0, (sum, value) -> sum + value);
 					
-		constantTerms.add(new ILPConstant<Double>(constant));		
+		constantTerms.add(new ILPConstant(constant));		
 	}
 		'''
 		
@@ -174,7 +174,7 @@ protected void buildTerms(final «context.modelType.type.name» context) {
 					.map(«getIteratorVariableName(expr)» -> «parseExpression(expr.expression, ExpressionContext.constConstraint)»)
 					.reduce(0.0, (sum, value) -> sum + value);
 								
-		constantTerms.add(new ILPConstant<Double>(constant));	
+		constantTerms.add(new ILPConstant(constant));	
 	}
 		'''
 		

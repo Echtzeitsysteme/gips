@@ -20,6 +20,6 @@ package org.emoflon.gips.core.ilp;
  *               term.constant ) + Sum_{cterm in linearFunction.constants} (
  *               cterm.constant ) )
  */
-public record ILPWeightedLinearFunction<T extends Number> (ILPLinearFunction<T> linearFunction, double weight) {
+public record ILPWeightedLinearFunction(ILPLinearFunction linearFunction, double weight) {
 
 }

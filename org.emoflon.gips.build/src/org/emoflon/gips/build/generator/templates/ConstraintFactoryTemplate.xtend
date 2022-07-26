@@ -46,7 +46,7 @@ public class «className» extends GipsConstraintFactory<«data.gipsApiClassName
 	}
 	
 	@Override
-	public GipsConstraint<«data.gipsApiClassName», ? extends Constraint, ? extends Object, ? extends Number> createConstraint(final Constraint constraint) {
+	public GipsConstraint<«data.gipsApiClassName», ? extends Constraint, ? extends Object> createConstraint(final Constraint constraint) {
 		«IF context.constraints.isNullOrEmpty»
 		throw new IllegalArgumentException("Unknown constraint type: "+constraint);
 		«ELSE»

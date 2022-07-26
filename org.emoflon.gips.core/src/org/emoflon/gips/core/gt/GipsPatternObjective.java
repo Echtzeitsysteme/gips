@@ -11,7 +11,7 @@ import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 import org.emoflon.ibex.gt.api.GraphTransformationPattern;
 
 public abstract class GipsPatternObjective<ENGINE extends GipsEngine, M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
-		extends GipsObjective<ENGINE, PatternObjective, M, Integer> {
+		extends GipsObjective<ENGINE, PatternObjective, M> {
 
 	final protected P pattern;
 
@@ -25,7 +25,7 @@ public abstract class GipsPatternObjective<ENGINE extends GipsEngine, M extends 
 		terms = Collections.synchronizedList(new LinkedList<>());
 		constantTerms = Collections.synchronizedList(new LinkedList<>());
 		pattern.findMatches(false).parallelStream().forEach(context -> buildTerms(context));
-		ilpObjective = new ILPLinearFunction<>(terms, constantTerms);
+		ilpObjective = new ILPLinearFunction(terms, constantTerms);
 	}
 
 }

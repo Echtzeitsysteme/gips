@@ -19,6 +19,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureNavigation;
 import org.emoflon.gips.gipsl.gipsl.GipsLambdaAttributeExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsLambdaSelfExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
@@ -91,15 +92,13 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			return scopeForGipsContextExprFeature((GipsContextExpr) context, reference);
 		} else if (GipslScopeContextUtil.isGipsLambdaAttributeExpressionVariable(context, reference)) {
 			return scopeForGipsLambdaAttributeExpressionVariable((GipsLambdaAttributeExpression) context, reference);
+		} else if (GipslScopeContextUtil.isGipsLambdaSelfExpressionVariable(context, reference)) {
+			return scopeForGipsLambdaSelfExpressionVariable((GipsLambdaSelfExpression) context, reference);
 		} else if (GipslScopeContextUtil.isGipsLambdaAttributeExpression(context, reference)) {
 			return scopeForGipsLambdaAttributeExpression((GipsLambdaAttributeExpression) context, reference);
 		} else if (GipslScopeContextUtil.isGipsSelect(context, reference)) {
 			return scopeForGipsSelect((GipsSelect) context, reference);
-		}
-//		else if (GipslScopeContextUtil.isGipsContains(context, reference)) {
-//			return scopeForGipsContains((GipsContains) context, reference);
-//		} 
-		else if (GipslScopeContextUtil.isGipsNodeAttributeExprNode(context, reference)) {
+		} else if (GipslScopeContextUtil.isGipsNodeAttributeExprNode(context, reference)) {
 			return scopeForGipsNodeAttributeExprNode((GipsNodeAttributeExpr) context, reference);
 		} else if (GipslScopeContextUtil.isGipsNodeAttributeExprFeature(context, reference)) {
 			return scopeForGipsNodeAttributeExprFeature((GipsNodeAttributeExpr) context, reference);
@@ -186,6 +185,21 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 
 	public IScope scopeForGipsLambdaAttributeExpressionVariable(GipsLambdaAttributeExpression context,
 			EReference reference) {
+		Set<Class<?>> classes = Set.of(GipsStreamSetImpl.class, GipsStreamArithmeticImpl.class);
+		EObject parent = (EObject) GipslScopeContextUtil.getContainer(context, classes);
+		if (parent == null) {
+			return super.getScope(context, reference);
+		}
+
+		if (parent instanceof GipsStreamSet streamSet) {
+			return Scopes.scopeFor(List.of(streamSet.getLambda()));
+		} else {
+			GipsStreamArithmetic streamArithmetic = (GipsStreamArithmetic) parent;
+			return Scopes.scopeFor(List.of(streamArithmetic.getLambda()));
+		}
+	}
+
+	private IScope scopeForGipsLambdaSelfExpressionVariable(GipsLambdaSelfExpression context, EReference reference) {
 		Set<Class<?>> classes = Set.of(GipsStreamSetImpl.class, GipsStreamArithmeticImpl.class);
 		EObject parent = (EObject) GipslScopeContextUtil.getContainer(context, classes);
 		if (parent == null) {

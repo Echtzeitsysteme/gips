@@ -14,6 +14,6 @@ public abstract class GipsObjectiveFactory<ENGINE extends GipsEngine, EMOFLON_AP
 		this.eMoflonApi = eMoflonApi;
 	}
 
-	public abstract GipsObjective<ENGINE, ? extends Objective, ? extends Object, ? extends Number> createObjective(
+	public abstract GipsObjective<ENGINE, ? extends Objective, ? extends Object> createObjective(
 			final Objective objective);
 }

@@ -15,6 +15,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingValue;
 import org.emoflon.gips.gipsl.gipsl.GipsNodeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
 import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
@@ -78,6 +79,10 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 							// implement this feature some time in the future.
 							throw new UnsupportedOperationException(
 									"Checking model preconditions within constraints is not yet supported. Instead, rules or patterns should be used for this purpose.");
+						} else if (contextType instanceof GipsPatternContext) {
+							// TODO: Implement this
+							throw new UnsupportedOperationException(
+									"isMapped() usage on pattern context is not yet implemented.");
 						} else {
 							throw new UnsupportedOperationException("Unknown context type: " + contextType);
 						}
@@ -167,7 +172,8 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 	 */
 	protected RelationalExpression createUnaryConstraintCondition(final GipsMappingAttributeExpr eMappingAttribute)
 			throws Exception {
-		GipsStreamExpr terminalExpr = GipsTransformationUtils.getTerminalStreamExpression(eMappingAttribute.getExpr());
+		GipsStreamExpr terminalExpr = GipsTransformationUtils
+				.getTerminalStreamExpression((GipsStreamExpr) eMappingAttribute.getExpr());
 		if (terminalExpr instanceof GipsStreamBoolExpr streamBool) {
 			switch (streamBool.getOperator()) {
 			case COUNT -> {
@@ -209,7 +215,8 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 
 	protected RelationalExpression createUnaryConstraintCondition(final GipsTypeAttributeExpr eTypeAttribute)
 			throws Exception {
-		GipsStreamExpr terminalExpr = GipsTransformationUtils.getTerminalStreamExpression(eTypeAttribute.getExpr());
+		GipsStreamExpr terminalExpr = GipsTransformationUtils
+				.getTerminalStreamExpression((GipsStreamExpr) eTypeAttribute.getExpr());
 		if (terminalExpr instanceof GipsStreamBoolExpr streamBool) {
 			switch (streamBool.getOperator()) {
 			case COUNT -> {
@@ -251,7 +258,8 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 
 	protected RelationalExpression createUnaryConstraintCondition(final GipsPatternAttributeExpr ePatternAttribute)
 			throws Exception {
-		GipsStreamExpr terminalExpr = GipsTransformationUtils.getTerminalStreamExpression(ePatternAttribute.getExpr());
+		GipsStreamExpr terminalExpr = GipsTransformationUtils
+				.getTerminalStreamExpression((GipsStreamExpr) ePatternAttribute.getExpr());
 		if (terminalExpr instanceof GipsStreamBoolExpr streamBool) {
 			switch (streamBool.getOperator()) {
 			case COUNT -> {

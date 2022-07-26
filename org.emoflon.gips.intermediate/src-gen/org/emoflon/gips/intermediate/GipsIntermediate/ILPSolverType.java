@@ -27,6 +27,7 @@ public enum ILPSolverType implements Enumerator {
 	 * @ordered
 	 */
 	GUROBI(0, "GUROBI", "GUROBI"),
+
 	/**
 	 * The '<em><b>GLPK</b></em>' literal object. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->

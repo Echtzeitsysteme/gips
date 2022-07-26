@@ -15,6 +15,11 @@
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//ILPSolverType/GUROBI"/>
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//ILPSolverType/GLPK"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="GipsIntermediate.ecore#//VariableType">
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//VariableType/BINARY"/>
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//VariableType/INTEGER"/>
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//VariableType/REAL"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="GipsIntermediate.ecore#//ObjectiveTarget">
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//ObjectiveTarget/MIN"/>
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//ObjectiveTarget/MAX"/>
@@ -49,9 +54,11 @@
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="GipsIntermediate.ecore#//BinaryBoolOperator">
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//BinaryBoolOperator/AND"/>
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//BinaryBoolOperator/OR"/>
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//BinaryBoolOperator/XOR"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="GipsIntermediate.ecore#//UnaryBoolOperator">
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//UnaryBoolOperator/NOT"/>
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//UnaryBoolOperator/BRACKET"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="GipsIntermediate.ecore#//StreamBoolOperator">
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//StreamBoolOperator/EXISTS"/>
@@ -93,13 +100,25 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Type/type"/>
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//Mapping">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Mapping/rule"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Mapping/contextPattern"/>
+    </genClasses>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//GTMapping">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//GTMapping/rule"/>
+    </genClasses>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//PatternMapping">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//PatternMapping/pattern"/>
+    </genClasses>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//Variable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Variable/type"/>
     </genClasses>
     <genClasses image="false" ecoreClass="GipsIntermediate.ecore#//Constraint">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Constraint/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Constraint/elementwise"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Constraint/depending"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Constraint/expression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Constraint/constant"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Constraint/dependencies"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Constraint/helperVariables"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Constraint/helperConstraints"/>
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//GlobalConstraint"/>
     <genClasses ecoreClass="GipsIntermediate.ecore#//Objective">
@@ -150,6 +169,9 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//ArithmeticValue/value"/>
     </genClasses>
     <genClasses image="false" ecoreClass="GipsIntermediate.ecore#//ArithmeticLiteral"/>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//VariableReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//VariableReference/variable"/>
+    </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//ArithmeticNullLiteral"/>
     <genClasses ecoreClass="GipsIntermediate.ecore#//IntegerLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//IntegerLiteral/literal"/>
@@ -259,6 +281,9 @@
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//IteratorMappingValue">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//IteratorMappingValue/mappingContext"/>
+    </genClasses>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//IteratorMappingVariableValue">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//IteratorMappingVariableValue/mappingContext"/>
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//IteratorMappingFeatureValue">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//IteratorMappingFeatureValue/mappingContext"/>

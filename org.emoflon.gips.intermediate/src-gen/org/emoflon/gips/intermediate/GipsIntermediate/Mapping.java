@@ -2,7 +2,7 @@
  */
 package org.emoflon.gips.intermediate.GipsIntermediate;
 
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object
@@ -12,36 +12,37 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Mapping#getRule
- * <em>Rule</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Mapping#getContextPattern
+ * <em>Context Pattern</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getMapping()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface Mapping extends VariableSet {
 	/**
-	 * Returns the value of the '<em><b>Rule</b></em>' reference. <!--
+	 * Returns the value of the '<em><b>Context Pattern</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @return the value of the '<em>Rule</em>' reference.
-	 * @see #setRule(IBeXRule)
-	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getMapping_Rule()
+	 * @return the value of the '<em>Context Pattern</em>' reference.
+	 * @see #setContextPattern(IBeXContextPattern)
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getMapping_ContextPattern()
 	 * @model required="true"
 	 * @generated
 	 */
-	IBeXRule getRule();
+	IBeXContextPattern getContextPattern();
 
 	/**
 	 * Sets the value of the
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Mapping#getRule
-	 * <em>Rule</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Mapping#getContextPattern
+	 * <em>Context Pattern</em>}' reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
-	 * @param value the new value of the '<em>Rule</em>' reference.
-	 * @see #getRule()
+	 * @param value the new value of the '<em>Context Pattern</em>' reference.
+	 * @see #getContextPattern()
 	 * @generated
 	 */
-	void setRule(IBeXRule value);
+	void setContextPattern(IBeXContextPattern value);
 
 } // Mapping

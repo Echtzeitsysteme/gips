@@ -13,7 +13,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue
@@ -60,6 +59,9 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Type
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamContainsOperation
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue
 
 abstract class ConstraintTemplate <CONTEXT extends Constraint> extends GeneratorTemplate<CONTEXT> {
 
@@ -67,7 +69,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 	public val builderMethodNames = new HashSet<String>
 	public val builderMethods = new HashMap<EObject,String>
 	public val builderMethodDefinitions = new HashMap<EObject,String>
-	public val builderMethodCalls = new LinkedList<String>
+	public val builderMethodCalls2 = new LinkedList<String>
 
 	new(TemplateData data, CONTEXT context) {
 		super(data, context)
@@ -109,15 +111,17 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 	
 	def String generateComplexConstraint(ArithmeticExpression constExpr, ArithmeticExpression dynamicExpr);
 	
+	def String generateDependencyConstraints();
+	
 	def String generateConstTermBuilder(ArithmeticExpression constExpr) {
 		return '''«parseExpression(constExpr, ExpressionContext.constConstraint)»'''
 	}
 	
-	def void generateVariableTermBuilder(ArithmeticExpression expr) {
+	def void generateVariableTermBuilder(ArithmeticExpression expr, LinkedList<String> methodCalls) {
 		if(expr instanceof BinaryArithmeticExpression) {
 			if(expr.operator == BinaryArithmeticOperator.ADD) {
-				generateVariableTermBuilder(expr.lhs)
-				generateVariableTermBuilder(expr.rhs)
+				generateVariableTermBuilder(expr.lhs, methodCalls)
+				generateVariableTermBuilder(expr.rhs, methodCalls)
 			} else if(expr.operator == BinaryArithmeticOperator.SUBTRACT) {
 				throw new UnsupportedOperationException("Code generator does not support subtraction expressions.");
 			} else {
@@ -125,42 +129,47 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 				if(variable.size != 1)
 					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 				
-				val builderMethodName = generateBuilder(expr)
-				val instruction = '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable.iterator.next)», «builderMethodName»(context)));'''
-				builderMethodCalls.add(instruction)
+				val builderMethodName = generateBuilder(expr, methodCalls)
+				val instruction = '''terms.add(new ILPTerm(«getVariable(variable.iterator.next)», «builderMethodName»(context)));'''
+				methodCalls.add(instruction)
 			}
 		} else if(expr instanceof UnaryArithmeticExpression) {
 				val variable = GipsTransformationUtils.extractVariable(expr);
 				if(variable.size != 1)
 					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 				
-				val builderMethodName = generateBuilder(expr)
-				val instruction = '''terms.add(new ILPTerm<Integer, Double>(«getContextVariable(variable.iterator.next)», «builderMethodName»(context)));'''
-				builderMethodCalls.add(instruction)
+				val builderMethodName = generateBuilder(expr, methodCalls)
+				val instruction = '''terms.add(new ILPTerm(«getVariable(variable.iterator.next)», «builderMethodName»(context)));'''
+				methodCalls.add(instruction)
 		} else if(expr instanceof ArithmeticValue) {
-			generateBuilder(expr.value)
+			generateBuilder(expr.value, methodCalls)
+		} else if(expr instanceof VariableReference) {
+			val instruction = '''terms.add(new ILPTerm(engine.getNonMappingVariable(«getAdditionalVariableName(expr)»), 1.0));'''
+			methodCalls.add(instruction)
 		} else {
 			throw new IllegalAccessException("Ilp term may not be constant")
 		}
 	}
 	
-	def String getContextVariable(VariableSet variable);
+	def String getVariable(VariableSet variable);
 	
-	def void generateBuilder(ValueExpression expr);
+	def String getAdditionalVariableName(VariableReference varRef);
 	
-	def String generateBuilder(BinaryArithmeticExpression expr);
+	def void generateBuilder(ValueExpression expr, LinkedList<String> methodCalls);
 	
-	def String generateBuilder(UnaryArithmeticExpression expr);
+	def String generateBuilder(BinaryArithmeticExpression expr, LinkedList<String> methodCalls);
 	
-	def String generateBuilder(MappingSumExpression expr);
+	def String generateBuilder(UnaryArithmeticExpression expr, LinkedList<String> methodCalls);
 	
-	def String generateBuilder(ContextSumExpression expr);
+	def String generateBuilder(MappingSumExpression expr, LinkedList<String> methodCalls);
 	
-	def String generateForeignBuilder(TypeSumExpression expr);
+	def String generateBuilder(ContextSumExpression expr, LinkedList<String> methodCalls);
 	
-	def String generateForeignBuilder(PatternSumExpression expr);
+	def String generateForeignBuilder(TypeSumExpression expr, LinkedList<String> methodCalls);
 	
-	def String generateForeignBuilder(MappingSumExpression expr);
+	def String generateForeignBuilder(PatternSumExpression expr, LinkedList<String> methodCalls);
+	
+	def String generateForeignBuilder(MappingSumExpression expr, LinkedList<String> methodCalls);
 	
 	def String parseExpression(ArithmeticExpression expr, ExpressionContext contextType) {
 		if(expr instanceof BinaryArithmeticExpression) {
@@ -175,7 +184,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 					return '''«parseExpression(expr.lhs, contextType)» * «parseExpression(expr.rhs, contextType)»'''
 				}
 				case POW: {
-					return '''Math.pow(«parseExpression(expr.lhs, contextType)», «parseExpression(expr.rhs, contextType)»'''
+					return '''Math.pow(«parseExpression(expr.lhs, contextType)», «parseExpression(expr.rhs, contextType)»)'''
 				}
 				case SUBTRACT: {
 					return '''«parseExpression(expr.lhs, contextType)» - «parseExpression(expr.rhs, contextType)»'''
@@ -213,7 +222,11 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			} else {
 				return '''null'''
 			}
-		} else {
+		} else if(expr instanceof VariableReference) {
+			//This should have been taken care of already. -> Constant 1 doesn't hurt... 
+//			return '''engine.getNonMappingVariable(«getAdditionalVariableName(expr)»)'''
+			return '''1.0'''
+		}  else {
 			val value = expr as ArithmeticValue
 			switch(contextType) {
 				case constConstraint: {
@@ -242,11 +255,17 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 				case OR: {
 					return '''«parseExpression(expr.lhs, contextType)» || «parseExpression(expr.rhs, contextType)»'''			
 				}
+				case XOR: {
+					return '''«parseExpression(expr.lhs, contextType)» ^ «parseExpression(expr.rhs, contextType)»'''		
+				}
 			}
 		} else if(expr instanceof BoolUnaryExpression) {
 			switch(expr.operator) {
 				case NOT: {
 					return '''!«parseExpression(expr.expression, contextType)»'''
+				}
+				case BRACKET: {
+					return '''(«parseExpression(expr.expression, contextType)»)'''
 				}
 			}
 		} else if(expr instanceof BoolLiteral) {
@@ -454,6 +473,8 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingValue) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
+		} else if(constExpr instanceof IteratorMappingVariableValue) {
+			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingFeatureValue) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingNodeFeatureValue) {
@@ -502,6 +523,8 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		} else if(constExpr instanceof ContextMappingNode) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingValue) {
+			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
+		} else if(constExpr instanceof IteratorMappingVariableValue) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingFeatureValue) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
@@ -577,6 +600,8 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		} else if(varExpr instanceof ContextMappingNode) {
 			return '''context.get«varExpr.node.name.toFirstUpper»()'''
 		} else if(varExpr instanceof IteratorMappingValue) {
+			return '''«getIteratorVariableName(varExpr.stream)»'''
+		} else if(varExpr instanceof IteratorMappingVariableValue) {
 			//This should have been taken care of already. -> Constant 1 doesn't hurt... 
 			return '''1.0'''
 		} else if(varExpr instanceof IteratorMappingFeatureValue) {
@@ -628,9 +653,11 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		} else if(varExpr instanceof ContextMappingNode) {
 			return '''context.get«varExpr.node.name.toFirstUpper»()'''
 		} else if(varExpr instanceof IteratorMappingValue) {
+			return '''«getIteratorVariableName(varExpr.stream)»'''
+		} else if(varExpr instanceof IteratorMappingVariableValue) {
 			//This should have been taken care of already. -> Constant 1 doesn't hurt... 
 			return '''1.0'''
-		} else if(varExpr instanceof IteratorMappingFeatureValue) {
+		}  else if(varExpr instanceof IteratorMappingFeatureValue) {
 			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else if(varExpr instanceof IteratorMappingNodeFeatureValue) {
 			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.featureExpression)»'''

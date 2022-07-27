@@ -2,6 +2,7 @@ package org.emoflon.gips.build.transformation.transformer;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.emoflon.gips.build.transformation.helper.ExpressionReturnType;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
 import org.emoflon.gips.build.transformation.helper.TransformationContext;
@@ -132,7 +133,28 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 			ArithmeticExpressionTransformer transformer = transformerFactory.createArithmeticTransformer(context);
 			expr.setLhs(transformer.transform(eRelational.getLeft()));
 			expr.setRhs(transformer.transform(eRelational.getRight()));
-			return expr;
+			ExpressionReturnType lhsReturn = GipsTransformationUtils.extractReturnType(expr.getLhs());
+			ExpressionReturnType rhsReturn = GipsTransformationUtils.extractReturnType(expr.getRhs());
+
+			if (lhsReturn == ExpressionReturnType.object && rhsReturn == ExpressionReturnType.object) {
+				if (expr.getOperator() == RelationalOperator.EQUAL) {
+					expr.setOperator(RelationalOperator.OBJECT_EQUAL);
+					return expr;
+				} else if (expr.getOperator() == RelationalOperator.NOT_EQUAL) {
+					expr.setOperator(RelationalOperator.OBJECT_NOT_EQUAL);
+					return expr;
+				} else {
+					throw new UnsupportedOperationException("Unsupported comparison operation between type ("
+							+ lhsReturn + " " + expr.getOperator() + " " + rhsReturn + ")");
+				}
+			} else if (lhsReturn == ExpressionReturnType.number && rhsReturn == ExpressionReturnType.number) {
+				return expr;
+			} else if (lhsReturn == ExpressionReturnType.bool && rhsReturn == ExpressionReturnType.bool) {
+				return expr;
+			} else {
+				throw new IllegalArgumentException("Comparison of incompatible types (" + lhsReturn + " "
+						+ expr.getOperator() + " " + rhsReturn + ")");
+			}
 		}
 	}
 
@@ -172,8 +194,7 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 	 */
 	protected RelationalExpression createUnaryConstraintCondition(final GipsMappingAttributeExpr eMappingAttribute)
 			throws Exception {
-		GipsStreamExpr terminalExpr = GipsTransformationUtils
-				.getTerminalStreamExpression((GipsStreamExpr) eMappingAttribute.getExpr());
+		GipsStreamExpr terminalExpr = GipsTransformationUtils.getTerminalStreamExpression(eMappingAttribute.getExpr());
 		if (terminalExpr instanceof GipsStreamBoolExpr streamBool) {
 			switch (streamBool.getOperator()) {
 			case COUNT -> {
@@ -215,8 +236,7 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 
 	protected RelationalExpression createUnaryConstraintCondition(final GipsTypeAttributeExpr eTypeAttribute)
 			throws Exception {
-		GipsStreamExpr terminalExpr = GipsTransformationUtils
-				.getTerminalStreamExpression((GipsStreamExpr) eTypeAttribute.getExpr());
+		GipsStreamExpr terminalExpr = GipsTransformationUtils.getTerminalStreamExpression(eTypeAttribute.getExpr());
 		if (terminalExpr instanceof GipsStreamBoolExpr streamBool) {
 			switch (streamBool.getOperator()) {
 			case COUNT -> {
@@ -258,8 +278,7 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 
 	protected RelationalExpression createUnaryConstraintCondition(final GipsPatternAttributeExpr ePatternAttribute)
 			throws Exception {
-		GipsStreamExpr terminalExpr = GipsTransformationUtils
-				.getTerminalStreamExpression((GipsStreamExpr) ePatternAttribute.getExpr());
+		GipsStreamExpr terminalExpr = GipsTransformationUtils.getTerminalStreamExpression(ePatternAttribute.getExpr());
 		if (terminalExpr instanceof GipsStreamBoolExpr streamBool) {
 			switch (streamBool.getOperator()) {
 			case COUNT -> {

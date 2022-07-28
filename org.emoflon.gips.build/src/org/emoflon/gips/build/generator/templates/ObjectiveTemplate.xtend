@@ -352,6 +352,12 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			case NOT_EQUAL: {
 				return '''«parseExpression(expr.lhs, contextType)» != «parseExpression(expr.rhs, contextType)»'''
 			}
+			case OBJECT_EQUAL: {
+				return '''«parseExpression(expr.lhs, contextType)».equals(«parseExpression(expr.rhs, contextType)»)'''
+			}
+			case OBJECT_NOT_EQUAL: {
+				return '''!«parseExpression(expr.lhs, contextType)».equals(«parseExpression(expr.rhs, contextType)»)'''
+			}
 		}
 	}
 	

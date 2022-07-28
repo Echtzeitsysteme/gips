@@ -16,3 +16,4 @@ Require-Bundle: org.emoflon.gips.intermediate;bundle-version="0.1.0",
  org.emoflon.ibex.gt,
  org.moflon.core.plugins,
  org.emoflon.gips.core.dependencies
+Bundle-Vendor: Real-Time Systems Lab - TU Darmstadt

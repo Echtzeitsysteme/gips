@@ -3,7 +3,7 @@
       id="org.emoflon.gips.feature"
       label="GIPS"
       version="1.0.0.qualifier"
-      provider-name="Real-Time Systems Lab TU Darmstadt">
+      provider-name="Real-Time Systems Lab - TU Darmstadt">
 
    <description url="https://github.com/Echtzeitsysteme/gips">
       Graph-Based ILP Problem Specification Tool

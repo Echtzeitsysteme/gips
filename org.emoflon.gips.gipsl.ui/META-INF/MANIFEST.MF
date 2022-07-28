@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Automatic-Module-Name: org.emoflon.gips.gipsl.ui
 Bundle-ManifestVersion: 2
 Bundle-Name: org.emoflon.gips.gipsl.ui
-Bundle-Vendor: My Company
+Bundle-Vendor: Real-Time Systems Lab - TU Darmstadt
 Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: org.emoflon.gips.gipsl.ui; singleton:=true
 Bundle-ActivationPolicy: lazy

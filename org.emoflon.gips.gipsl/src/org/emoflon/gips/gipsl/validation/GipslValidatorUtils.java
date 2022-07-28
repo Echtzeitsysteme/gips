@@ -10,6 +10,35 @@ import java.util.Set;
 public class GipslValidatorUtils {
 
 	/**
+	 * Enumeration for the type of the leaf. This represents the output type of an
+	 * evaluation.
+	 */
+	protected enum EvalType {
+		BOOLEAN, // GipsBooleanLiteral
+		INTEGER, //
+		DOUBLE, //
+		STRING, //
+		NULL, //
+		SET, // Sets like output of a filter
+		OBJECTIVE, // GipsObjective
+		MAPPING, // GipsMapping
+		STREAM, // GipsStream
+		ECLASS, // EClass for casts
+		CONTEXT, // Context, e.g.: 'match::xy'
+		ERROR // If leaf type can not be evaluated, e.g.: '1 + true'
+	}
+
+	/**
+	 * Enumeration for the context (self) type.
+	 */
+	protected enum ContextType {
+		MAPPING, //
+		PATTERN, //
+		TYPE, //
+		ERROR //
+	}
+
+	/**
 	 * The list of invalid mapping/objective names. Will be filled in the static
 	 * block.
 	 */
@@ -97,33 +126,8 @@ public class GipslValidatorUtils {
 	// Number error messages
 	public static final String SQRT_VALUE_SMALLER_THAN_ZERO = "Value in SQRT is smaller than 0.";
 
-	/**
-	 * Enumeration for the type of the leaf. This represents the output type of an
-	 * evaluation.
-	 */
-	protected enum EvalType {
-		BOOLEAN, // GipsBooleanLiteral
-		INTEGER, //
-		DOUBLE, //
-		STRING, //
-		NULL, //
-		SET, // Sets like output of a filter
-		OBJECTIVE, // GipsObjective
-		MAPPING, // GipsMapping
-		STREAM, // GipsStream
-		ECLASS, // EClass for casts
-		CONTEXT, // Context, e.g.: 'match::xy'
-		ERROR // If leaf type can not be evaluated, e.g.: '1 + true'
-	}
-
-	/**
-	 * Enumeration for the context (self) type.
-	 */
-	protected enum ContextType {
-		MAPPING, //
-		PATTERN, //
-		TYPE, //
-		ERROR //
+	public static boolean isPrimitiveType(final EvalType input) {
+		return input == EvalType.BOOLEAN || input != EvalType.INTEGER || input != EvalType.DOUBLE;
 	}
 
 }

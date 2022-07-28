@@ -74,8 +74,8 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeCast;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
-import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.gipsl.gipsl.GlobalContext;
+import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
 
 /**
@@ -85,6 +85,11 @@ import org.emoflon.ibex.gt.editor.gT.EditorNode;
  * https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 public class GipslValidator extends AbstractGipslValidator {
+
+	/**
+	 * Global switch to turn off the whole validation.
+	 */
+	private static final boolean DISABLE_VALIDATOR = false;
 
 	/**
 	 * The list of invalid mapping/objective names. Will be filled in the static
@@ -194,6 +199,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	 */
 	@Check
 	public void checkGlobalObjectiveNotNull(final EditorGTFile file) {
+		if (DISABLE_VALIDATOR) {
+			return;
+		}
+
 		if (file == null) {
 			return;
 		}
@@ -222,6 +231,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	 */
 	@Check
 	public void checkGlobalObjective(final GipsGlobalObjective globObj) {
+		if (DISABLE_VALIDATOR) {
+			return;
+		}
+
 		if (globObj == null) {
 			return;
 		}
@@ -284,6 +297,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	 */
 	@Check
 	public void checkMapping(final GipsMapping mapping) {
+		if (DISABLE_VALIDATOR) {
+			return;
+		}
+
 		if (mapping == null) {
 			return;
 		}
@@ -428,6 +445,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	 */
 	@Check
 	public void checkConstraint(final GipsConstraint constraint) {
+		if (DISABLE_VALIDATOR) {
+			return;
+		}
+
 		if (constraint == null) {
 			return;
 		}
@@ -1272,6 +1293,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	 */
 	@Check
 	public void checkObjective(final GipsObjective objective) {
+		if (DISABLE_VALIDATOR) {
+			return;
+		}
+
 		if (objective == null) {
 			return;
 		}
@@ -1411,6 +1436,10 @@ public class GipslValidator extends AbstractGipslValidator {
 	// TODO: Is this even necessary?
 	@Check
 	public void checkArithmeticLiteralParsable(final GipsArithmeticLiteral literal) {
+		if (DISABLE_VALIDATOR) {
+			return;
+		}
+
 		if (literal == null) {
 			return;
 		}

@@ -3,7 +3,6 @@
  */
 package org.emoflon.gips.gipsl.validation;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -92,94 +91,6 @@ public class GipslValidator extends AbstractGipslValidator {
 	private static final boolean DISABLE_VALIDATOR = false;
 
 	/**
-	 * The list of invalid mapping/objective names. Will be filled in the static
-	 * block.
-	 */
-	public static final Set<String> INVALID_NAMES = new HashSet<String>();
-
-	static {
-		final String[] invalidNames = new String[] { "clone", "equals", "finalize", "getClass", "hashCode", "notify",
-				"notifyAll", "toString", "wait", "abstract", "assert", "boolean", "break", "byte", "case", "catch",
-				"char", "class", "const", "continue", "default", "do", "double", "EAttribute", "EBoolean", "EDataType",
-				"EClass", "EClassifier", "EDouble", "EFloat", "EInt", "else", "enum", "EPackage", "EReference",
-				"EString", "extends", "final", "finally", "float", "for", "goto", "if", "implements", "import",
-				"instanceof", "int", "interface", "long", "native", "new", "package", "private", "protected", "public",
-				"return", "short", "static", "strictfp", "super", "switch", "synchronized", "this", "throw", "throws",
-				"transient", "try", "void", "volatile", "while",
-
-				// New values
-				"mapping", "objective", "global objective", "global", "min", "max", "constraint" };
-		INVALID_NAMES.addAll(Arrays.asList(invalidNames));
-	}
-
-	static final String CODE_PREFIX = "org.emoflon.gips.gipsl.";
-
-	// General errors for named elements.
-	public static final String NAME_BLOCKED = CODE_PREFIX + "name.blocked";
-	public static final String NAME_EXPECT_CAMEL_CASE = CODE_PREFIX + "name.expectCamelCase";
-	public static final String NAME_EXPECT_LOWER_CASE = CODE_PREFIX + "name.expectLowerCase";
-	public static final String NAME_EXPECT_UNIQUE = CODE_PREFIX + "name.expectUnique";
-
-	public static final String GLOBAL_OBJECTIVE_DOES_NOT_EXIST = CODE_PREFIX + "objective.global.doesNotExist";
-
-	public static final String GLOBAL_OBJECTIVE_IS_NULL_MESSAGE = "You need to specify a global objective.";
-	public static final String GLOBAL_OBJECTIVE_IS_OPTIONAL_MESSAGE = "The global objective is optional if no local objective is defined.";
-	public static final String GLOBAL_OBJECTIVE_DOES_NOT_CONTAIN_LOCAL_OBJECTIVE_MESSAGE = "Global objective does not contain any reference to a local objective.";
-
-	public static final String MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Mapping '%s' must not be declared '%s'.";
-	public static final String MAPPING_NAME_FORBIDDEN_MESSAGE = "Mappings cannot be be named '%s'. Use a different name.";
-	public static final String MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Mapping name '%s' contains underscores. Use camelCase instead.";
-	public static final String MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Mapping '%s' should start with a lower case character.";
-	public static final String MAPPING_W_O_CONSTRAINTS_MESSAGE = "Mapping '%s' is not subject to any constraints.";
-	public static final String MAPPING_W_O_CONSTRAINTS_AND_OBJECTIVE_MESSAGE = "Mapping '%s' is not subject to any constraints and not part of any objective function.";
-
-	public static final String OBJECTIVE_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Objective '%s' must not be declared '%s'";
-	public static final String OBJECTIVE_NAME_FORBIDDEN_MESSAGE = "Objectives cannot be be named '%s'. Use a different name.";
-	public static final String OBJECTIVE_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Objective name '%s' contains underscores. Use camelCase instead.";
-	public static final String OBJECTIVE_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Objective '%s' should start with a lower case character.";
-
-	// Other errors for types
-	public static final String OBJECTIVE_VALUE_IS_ZERO_MESSAGE = "Objective '%s' can be removed because its value is 0.";
-
-	public static final String CONSTRAINT_EMPTY_MESSAGE = "Constraint is empty.";
-	public static final String CONSTRAINT_EVAL_NOT_BOOLEAN_MESSAGE = "Constraint does not evaluate to a boolean";
-	public static final String CONSTRAINT_EVAL_LITERAL_MESSAGE = "Constraint is always '%s'.";
-
-	public static final String OBJECTIVE_EVAL_NOT_NUMBER_MESSAGE = "Objective does not evaluate to an integer or double.";
-	public static final String OBJECTIVE_CONTEXT_CLASS_MESSAGE = "Objectives can not have a class as context.";
-
-	public static final String LITERAL_NOT_PARSABLE_MESSAGE = "Literal is not parsable.";
-
-	public static final String LAMBDA_EXPR_EVAL_NOT_PRIMITIVE_MESSAGE = "Lambda expression does not evaluate to a primitve type.";
-	public static final String LAMBDA_EXPR_EVAL_LITERAL_MESSAGE = "Lambda expression is always '%s'.";
-	public static final String LAMBDA_EXPR_EVAL_TYPE_ERROR = "Type error in lambda expression.";
-
-	public static final String CONSTRAINT_DEFINED_MULTIPLE_TIMES_MESSAGE = "Constraint defined multiple times.";
-	public static final String CONSTRAINT_HAS_NO_CONSTANT_SIDE_MESSAGE = "Constraint has no constant side.";
-	public static final String CONSTRAINT_HAS_TWO_CONSTANT_SIDES_MESSAGE = "Constraint has only constant sides. Use GT to express this condition.";
-
-	public static final String STREAM_ON_NON_COLLECTION_TYPE_MESSAGE = "Stream used on non collection type.";
-
-	public static final String EXP_EXPR_NOT_CONSTANT_MESSAGE = "Exponential expression must be constant due to ILP.";
-	public static final String PRODUCT_EXPR_NOT_CONSTANT_MESSAGE = "Product expressions can only have one dynamic sub expression due to ILP.";
-	public static final String UNARY_ARITH_EXPR_NOT_CONSTANT_MESSAGE = "Unary arithmetic expression with operator '%s' must be constant due to ILP.";
-
-	public static final String BOOL_EXPR_EVAL_ERROR_MESSAGE = "Boolean expression does not evaluate to boolean.";
-	public static final String ARITH_EXPR_EVAL_ERROR_MESSAGE = "Arithmetic expression does not evaluate to a primitive type.";
-
-	public static final String TYPE_DOES_NOT_CONTAIN_SELF_MESSAGE = "'%s' does not contain any self reference.";
-
-	public static final String MAPPING_IN_MAPPING_FORBIDDEN_MESSAGE = "Mapping access within mapping context is forbidden.";
-	public static final String IS_MAPPED_CALL_IN_CONTEXT_FORBIDDEN_MESSAGE = "\"isMapped()\" call in non mapping context is not possible.";
-
-	// Exception error messages
-	public static final String NOT_IMPLEMENTED_EXCEPTION_MESSAGE = "Not yet implemented";
-	public static final String CONSTRAINT_CONTEXT_UNKNOWN_EXCEPTION_MESSAGE = "Context is neither a GipsType nor a GipsMapping.";
-
-	// Number error messages
-	public static final String SQRT_VALUE_SMALLER_THAN_ZERO = "Value in SQRT is smaller than 0.";
-
-	/**
 	 * This prevents all exceptions being "swallowed" by the default validator
 	 * implementation. TODO: Remove this or make it a little nice for future stable
 	 * release candidates.
@@ -209,15 +120,15 @@ public class GipslValidator extends AbstractGipslValidator {
 
 		if (file.getObjectives() != null && !file.getObjectives().isEmpty() && file.getGlobalObjective() == null) {
 			error( //
-					GLOBAL_OBJECTIVE_IS_NULL_MESSAGE, //
+					GipslValidatorUtils.GLOBAL_OBJECTIVE_IS_NULL_MESSAGE, //
 					// TODO: Change scope of the warning:
 					GipslPackage.Literals.EDITOR_GT_FILE__GLOBAL_OBJECTIVE, //
-					GLOBAL_OBJECTIVE_DOES_NOT_EXIST //
+					GipslValidatorUtils.GLOBAL_OBJECTIVE_DOES_NOT_EXIST //
 			);
 		} else if (file.getObjectives() != null && file.getObjectives().isEmpty()
 				&& file.getGlobalObjective() != null) {
 			warning( //
-					GLOBAL_OBJECTIVE_IS_OPTIONAL_MESSAGE, //
+					GipslValidatorUtils.GLOBAL_OBJECTIVE_IS_OPTIONAL_MESSAGE, //
 					GipslPackage.Literals.EDITOR_GT_FILE__GLOBAL_OBJECTIVE //
 			);
 		}
@@ -247,7 +158,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		// constant
 		if (!containsLocalObjectiveCall(globObj.getExpr())) {
 			warning( //
-					GLOBAL_OBJECTIVE_DOES_NOT_CONTAIN_LOCAL_OBJECTIVE_MESSAGE, //
+					GipslValidatorUtils.GLOBAL_OBJECTIVE_DOES_NOT_CONTAIN_LOCAL_OBJECTIVE_MESSAGE, //
 					GipslPackage.Literals.GIPS_GLOBAL_OBJECTIVE__EXPR //
 			);
 		}
@@ -287,7 +198,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			return containsLocalObjectiveCall(unExpr.getOperand());
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	/**
@@ -322,9 +233,9 @@ public class GipslValidator extends AbstractGipslValidator {
 			return;
 		}
 
-		if (INVALID_NAMES.contains(mapping.getName())) {
+		if (GipslValidatorUtils.INVALID_NAMES.contains(mapping.getName())) {
 			error( //
-					String.format(MAPPING_NAME_FORBIDDEN_MESSAGE, mapping.getName()), //
+					String.format(GipslValidatorUtils.MAPPING_NAME_FORBIDDEN_MESSAGE, mapping.getName()), //
 					GipslPackage.Literals.GIPS_MAPPING__NAME, //
 					NAME_EXPECT_UNIQUE //
 			);
@@ -332,15 +243,15 @@ public class GipslValidator extends AbstractGipslValidator {
 			// The mapping name should be lowerCamelCase.
 			if (mapping.getName().contains("_")) {
 				warning( //
-						String.format(MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE, mapping.getName()), //
+						String.format(GipslValidatorUtils.MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE, mapping.getName()), //
 						GipslPackage.Literals.GIPS_MAPPING__NAME, //
-						NAME_BLOCKED //
-				);
+						GipslValidatorUtils.NAME_BLOCKED);
 			} else {
 				// The mapping name should start with a lower case character.
 				if (!Character.isLowerCase(mapping.getName().charAt(0))) {
 					warning( //
-							String.format(MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE, mapping.getName()), //
+							String.format(GipslValidatorUtils.MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE,
+									mapping.getName()), //
 							GipslPackage.Literals.GIPS_MAPPING__NAME, NAME_EXPECT_LOWER_CASE //
 					);
 				}
@@ -363,7 +274,8 @@ public class GipslValidator extends AbstractGipslValidator {
 				.filter(m -> m.getName() != null && m.getName().equals(mapping.getName())).count();
 		if (count != 1) {
 			error( //
-					String.format(MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE, mapping.getName(), getTimes((int) count)), //
+					String.format(GipslValidatorUtils.MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE, mapping.getName(),
+							getTimes((int) count)), //
 					GipslPackage.Literals.GIPS_MAPPING__NAME, //
 					NAME_EXPECT_UNIQUE //
 			);
@@ -405,7 +317,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 
 		warning( //
-				String.format(MAPPING_W_O_CONSTRAINTS_MESSAGE, mapping.getName()), //
+				String.format(GipslValidatorUtils.MAPPING_W_O_CONSTRAINTS_MESSAGE, mapping.getName()), //
 				GipslPackage.Literals.GIPS_MAPPING__NAME);
 
 		usedAsContext = container.getObjectives().stream().filter(c -> c.getContext() != null)
@@ -434,7 +346,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 
 		warning( //
-				String.format(MAPPING_W_O_CONSTRAINTS_AND_OBJECTIVE_MESSAGE, mapping.getName()), //
+				String.format(GipslValidatorUtils.MAPPING_W_O_CONSTRAINTS_AND_OBJECTIVE_MESSAGE, mapping.getName()), //
 				GipslPackage.Literals.GIPS_MAPPING__NAME);
 	}
 
@@ -455,7 +367,7 @@ public class GipslValidator extends AbstractGipslValidator {
 
 		if (constraint.getExpr() == null) {
 			error( //
-					String.format(CONSTRAINT_EMPTY_MESSAGE), //
+					String.format(GipslValidatorUtils.CONSTRAINT_EMPTY_MESSAGE), //
 					constraint, //
 					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
 			);
@@ -464,7 +376,7 @@ public class GipslValidator extends AbstractGipslValidator {
 
 		if (constraint.getExpr().getExpr() == null) {
 			error( //
-					String.format(CONSTRAINT_EMPTY_MESSAGE), //
+					String.format(GipslValidatorUtils.CONSTRAINT_EMPTY_MESSAGE), //
 					constraint, //
 					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
 			);
@@ -508,7 +420,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			final boolean containsMappingCheckValue = containsMappingCheckValue(expr);
 			if (containsMappingCheckValue) {
 				error( //
-						IS_MAPPED_CALL_IN_CONTEXT_FORBIDDEN_MESSAGE, //
+						GipslValidatorUtils.IS_MAPPED_CALL_IN_CONTEXT_FORBIDDEN_MESSAGE, //
 						constraint, //
 						GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
 				);
@@ -567,7 +479,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			return containsMappingCheckValue(unExpr.getOperand());
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	/**
@@ -597,7 +509,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			return containsMappingCheckValue(relExpr.getLeft()) || containsMappingCheckValue(relExpr.getRight());
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	/**
@@ -645,16 +557,16 @@ public class GipslValidator extends AbstractGipslValidator {
 				leftMapping = containsMappingsCall(brack.getOperand());
 				rightMapping = leftMapping;
 			} else {
-				throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+				throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 			}
 		} else {
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+			throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		}
 
 		// Generate an error if mappings are referenced
 		if (leftMapping || rightMapping) {
 			error( //
-					MAPPING_IN_MAPPING_FORBIDDEN_MESSAGE, //
+					GipslValidatorUtils.MAPPING_IN_MAPPING_FORBIDDEN_MESSAGE, //
 					constraint, //
 					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
 			);
@@ -688,7 +600,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			final GipsRelExpr relExpr = (GipsRelExpr) expr;
 			return containsMappingsCall(relExpr.getLeft()) || containsMappingsCall(relExpr.getRight());
 		} else {
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+			throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		}
 
 	}
@@ -748,7 +660,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			return containsMappingsCall(unExpr.getOperand());
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	/**
@@ -779,7 +691,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			return containsMappingsCall(contains.getExpr());
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	/**
@@ -796,7 +708,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			final GipsBooleanLiteral lit = (GipsBooleanLiteral) constraint.getExpr().getExpr();
 			final String warning = String.valueOf(lit.isLiteral());
 			warning( //
-					String.format(CONSTRAINT_EVAL_LITERAL_MESSAGE, warning), //
+					String.format(GipslValidatorUtils.CONSTRAINT_EVAL_LITERAL_MESSAGE, warning), //
 					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
 			);
 		}
@@ -826,7 +738,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		if (others.size() > 1) {
 			for (final GipsConstraint other : others) {
 				warning( //
-						CONSTRAINT_DEFINED_MULTIPLE_TIMES_MESSAGE, //
+						GipslValidatorUtils.CONSTRAINT_DEFINED_MULTIPLE_TIMES_MESSAGE, //
 						other, //
 						GipslPackage.Literals.GIPS_CONSTRAINT__CONTEXT //
 				);
@@ -873,22 +785,22 @@ public class GipslValidator extends AbstractGipslValidator {
 			} else if (expr instanceof GipsBooleanLiteral) {
 				leftSelf = rightSelf = false;
 			} else {
-				throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+				throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 			}
 		} else if (expr == null) {
 			error( //
-					String.format(CONSTRAINT_EMPTY_MESSAGE), //
+					String.format(GipslValidatorUtils.CONSTRAINT_EMPTY_MESSAGE), //
 					constraint, //
 					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
 			);
 		} else {
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+			throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		}
 
 		// Generate an error if both sides of the constraint does not contain 'self'
 		if (!(leftSelf || rightSelf)) {
 			error( //
-					String.format(TYPE_DOES_NOT_CONTAIN_SELF_MESSAGE, "Constraint"), //
+					String.format(GipslValidatorUtils.TYPE_DOES_NOT_CONTAIN_SELF_MESSAGE, "Constraint"), //
 					constraint, //
 					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
 			);
@@ -963,12 +875,13 @@ public class GipslValidator extends AbstractGipslValidator {
 				}
 
 				throw new UnsupportedOperationException(
-						NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr.eClass() + ">");
+						GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr.eClass() + ">");
 			} else if (expr instanceof GipsConstant) {
 				return false;
 			}
 
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr.eClass() + ">");
+			throw new UnsupportedOperationException(
+					GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr.eClass() + ">");
 		} else if (expr instanceof GipsProductArithmeticExpr) {
 			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
 			return containsSelf(prodExpr.getLeft(), type) || containsSelf(prodExpr.getRight(), type);
@@ -982,7 +895,8 @@ public class GipslValidator extends AbstractGipslValidator {
 			return false;
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr.eClass() + ">");
+		throw new UnsupportedOperationException(
+				GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr.eClass() + ">");
 	}
 
 	/**
@@ -1022,7 +936,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			return containsSelf(contains.getExpr(), type);
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	/**
@@ -1057,7 +971,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			final GipsRelExpr relExpr = (GipsRelExpr) expr;
 			return containsSelf(relExpr.getLeft(), type) || containsSelf(relExpr.getRight(), type);
 		} else {
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+			throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		}
 
 	}
@@ -1107,16 +1021,16 @@ public class GipslValidator extends AbstractGipslValidator {
 				// Special case: Complete boolean expression is just a literal
 				return;
 			} else {
-				throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+				throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 			}
 		} else {
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+			throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		}
 
 		// Generate a warning if both sides of the constraint are constant
 		if (!leftDynamic && !rightDynamic) {
 			warning( //
-					CONSTRAINT_HAS_TWO_CONSTANT_SIDES_MESSAGE, //
+					GipslValidatorUtils.CONSTRAINT_HAS_TWO_CONSTANT_SIDES_MESSAGE, //
 					constraint, //
 					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
 			);
@@ -1145,7 +1059,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			final GipsRelExpr relExpr = (GipsRelExpr) expr;
 			return validateArithExprDynamic(relExpr.getLeft()) || validateArithExprDynamic(relExpr.getRight());
 		} else {
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+			throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		}
 	}
 
@@ -1163,14 +1077,14 @@ public class GipslValidator extends AbstractGipslValidator {
 			final boolean dynRight = validateArithExprDynamic(expExpr.getRight());
 			if (dynLeft) {
 				error( //
-						EXP_EXPR_NOT_CONSTANT_MESSAGE, //
+						GipslValidatorUtils.EXP_EXPR_NOT_CONSTANT_MESSAGE, //
 						expr, //
 						GipslPackage.Literals.GIPS_EXP_ARITHMETIC_EXPR__LEFT //
 				);
 			}
 			if (dynRight) {
 				error( //
-						EXP_EXPR_NOT_CONSTANT_MESSAGE, //
+						GipslValidatorUtils.EXP_EXPR_NOT_CONSTANT_MESSAGE, //
 						expr, //
 						GipslPackage.Literals.GIPS_EXP_ARITHMETIC_EXPR__RIGHT //
 				);
@@ -1225,14 +1139,15 @@ public class GipslValidator extends AbstractGipslValidator {
 				return false;
 			}
 
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr + ">");
+			throw new UnsupportedOperationException(
+					GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr + ">");
 		} else if (expr instanceof GipsProductArithmeticExpr) {
 			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
 			final boolean dynLeft = validateArithExprDynamic(prodExpr.getLeft());
 			final boolean dynRight = validateArithExprDynamic(prodExpr.getRight());
 			if (dynLeft && dynRight) {
 				error( //
-						PRODUCT_EXPR_NOT_CONSTANT_MESSAGE, //
+						GipslValidatorUtils.PRODUCT_EXPR_NOT_CONSTANT_MESSAGE, //
 						expr, //
 						GipslPackage.Literals.GIPS_PRODUCT_ARITHMETIC_EXPR__RIGHT //
 				);
@@ -1246,7 +1161,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			final boolean isDyn = validateArithExprDynamic(unExpr.getOperand());
 			if (isDyn && unExpr.getOperator() != GipsArithmeticUnaryOperator.NEG) {
 				error( //
-						String.format(UNARY_ARITH_EXPR_NOT_CONSTANT_MESSAGE, unExpr.getOperator()), //
+						String.format(GipslValidatorUtils.UNARY_ARITH_EXPR_NOT_CONSTANT_MESSAGE, unExpr.getOperator()), //
 						expr, //
 						GipslPackage.Literals.GIPS_UNARY_ARITHMETIC_EXPR__OPERAND //
 				);
@@ -1256,7 +1171,8 @@ public class GipslValidator extends AbstractGipslValidator {
 			return false;
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr + ">");
+		throw new UnsupportedOperationException(
+				GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr + ">");
 	}
 
 	public boolean validateStreamExprDynamic(final GipsStreamExpr expr) {
@@ -1283,7 +1199,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			return false;
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	/**
@@ -1321,7 +1237,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		final EvalType eval = getEvalTypeFromArithExpr(objective.getExpr());
 		if (eval != EvalType.INTEGER && eval != EvalType.DOUBLE) {
 			error( //
-					OBJECTIVE_EVAL_NOT_NUMBER_MESSAGE, //
+					GipslValidatorUtils.OBJECTIVE_EVAL_NOT_NUMBER_MESSAGE, //
 					GipslPackage.Literals.GIPS_OBJECTIVE__EXPR //
 			);
 		}
@@ -1343,7 +1259,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		// Generate a warning if the objective does not contain 'self'
 		if (!containsSelf(expr, type)) {
 			warning( //
-					String.format(TYPE_DOES_NOT_CONTAIN_SELF_MESSAGE, "Objective"), //
+					String.format(GipslValidatorUtils.TYPE_DOES_NOT_CONTAIN_SELF_MESSAGE, "Objective"), //
 					objective, //
 					GipslPackage.Literals.GIPS_OBJECTIVE__EXPR //
 			);
@@ -1362,25 +1278,23 @@ public class GipslValidator extends AbstractGipslValidator {
 			return;
 		}
 
-		if (INVALID_NAMES.contains(objective.getName())) {
+		if (GipslValidatorUtils.INVALID_NAMES.contains(objective.getName())) {
 			error( //
-					String.format(OBJECTIVE_NAME_FORBIDDEN_MESSAGE, objective.getName()), //
-					GipslPackage.Literals.GIPS_OBJECTIVE__NAME, //
-					NAME_BLOCKED //
-			);
+					String.format(GipslValidatorUtils.OBJECTIVE_NAME_FORBIDDEN_MESSAGE, objective.getName()), //
+					GipslPackage.Literals.GIPS_OBJECTIVE__NAME, GipslValidatorUtils.NAME_BLOCKED);
 		} else {
 			// The objective name should be lowerCamelCase.
 			if (objective.getName().contains("_")) {
 				warning( //
-						String.format(OBJECTIVE_NAME_CONTAINS_UNDERSCORES_MESSAGE, objective.getName()), //
-						GipslPackage.Literals.GIPS_OBJECTIVE__NAME, //
-						NAME_BLOCKED //
-				);
+						String.format(GipslValidatorUtils.OBJECTIVE_NAME_CONTAINS_UNDERSCORES_MESSAGE,
+								objective.getName()), //
+						GipslPackage.Literals.GIPS_OBJECTIVE__NAME, GipslValidatorUtils.NAME_BLOCKED);
 			} else {
 				// The objective name should start with a lower case character.
 				if (!Character.isLowerCase(objective.getName().charAt(0))) {
 					warning( //
-							String.format(OBJECTIVE_NAME_STARTS_WITH_LOWER_CASE_MESSAGE, objective.getName()), //
+							String.format(GipslValidatorUtils.OBJECTIVE_NAME_STARTS_WITH_LOWER_CASE_MESSAGE,
+									objective.getName()), //
 							GipslPackage.Literals.GIPS_OBJECTIVE__NAME, //
 							NAME_EXPECT_LOWER_CASE //
 					);
@@ -1404,7 +1318,7 @@ public class GipslValidator extends AbstractGipslValidator {
 				.filter(o -> o.getName() != null && o.getName().equals(objective.getName())).count();
 		if (count != 1) {
 			error( //
-					String.format(OBJECTIVE_NAME_MULTIPLE_DECLARATIONS_MESSAGE, objective.getName(),
+					String.format(GipslValidatorUtils.OBJECTIVE_NAME_MULTIPLE_DECLARATIONS_MESSAGE, objective.getName(),
 							getTimes((int) count)), //
 					GipslPackage.Literals.GIPS_OBJECTIVE__NAME, //
 					NAME_EXPECT_UNIQUE //
@@ -1426,7 +1340,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			final GipsArithmeticLiteral lit = (GipsArithmeticLiteral) objective.getExpr();
 			if (lit.getValue() != null && lit.getValue().equals("0")) {
 				warning( //
-						String.format(OBJECTIVE_VALUE_IS_ZERO_MESSAGE, objective.getName()), //
+						String.format(GipslValidatorUtils.OBJECTIVE_VALUE_IS_ZERO_MESSAGE, objective.getName()), //
 						GipslPackage.Literals.GIPS_OBJECTIVE__EXPR //
 				);
 			}
@@ -1448,7 +1362,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			Double.valueOf(literal.getValue());
 		} catch (final NumberFormatException ex) {
 			error( //
-					LITERAL_NOT_PARSABLE_MESSAGE, //
+					GipslValidatorUtils.LITERAL_NOT_PARSABLE_MESSAGE, //
 					GipslPackage.Literals.GIPS_ARITHMETIC_LITERAL__VALUE //
 			);
 		}
@@ -1486,7 +1400,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			// produced an error, we have to generate an error
 			if (output == EvalType.ERROR && leftType != EvalType.ERROR && rightType != EvalType.ERROR) {
 				error( //
-						BOOL_EXPR_EVAL_ERROR_MESSAGE, //
+						GipslValidatorUtils.BOOL_EXPR_EVAL_ERROR_MESSAGE, //
 						expr, //
 						GipslPackage.Literals.GIPS_REL_EXPR__OPERATOR //
 				);
@@ -1498,7 +1412,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		// an error
 		if (output != EvalType.BOOLEAN && output != EvalType.ERROR) {
 			error( //
-					BOOL_EXPR_EVAL_ERROR_MESSAGE, //
+					GipslValidatorUtils.BOOL_EXPR_EVAL_ERROR_MESSAGE, //
 					expr, //
 					GipslPackage.Literals.GIPS_REL_EXPR__OPERATOR //
 			);
@@ -1545,7 +1459,7 @@ public class GipslValidator extends AbstractGipslValidator {
 						double val = Double.valueOf(lit.getValue());
 						if (val < 0) {
 							error( //
-									SQRT_VALUE_SMALLER_THAN_ZERO, //
+									GipslValidatorUtils.SQRT_VALUE_SMALLER_THAN_ZERO, //
 									expr, //
 									getLiteralType(expr) //
 							);
@@ -1563,7 +1477,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		// If the output is an error and this method call was a leaf, display an error
 		if (output != null && output == EvalType.ERROR && leaf && expr != null) {
 			error( //
-					ARITH_EXPR_EVAL_ERROR_MESSAGE, //
+					GipslValidatorUtils.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
 					expr, //
 					getLiteralType(expr) //
 			);
@@ -1730,7 +1644,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			return EvalType.SET;
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	public EvalType getEvalTypeFromLambdaAttrExpr(final GipsLambdaAttributeExpression expr) {
@@ -1743,7 +1657,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			return getEvalTypeFromFeatureExpr((GipsFeatureExpr) innerExpr);
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	public EvalType getEvalTypeFromLambdaAttrExpr(final GipsLambdaSelfExpression expr) {
@@ -1769,7 +1683,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		} else if (expr.getStream() != null && exprEval != EvalType.SET) {
 			// Expr does NOT return a set and stream is set -> violation
 			error( //
-					STREAM_ON_NON_COLLECTION_TYPE_MESSAGE, //
+					GipslValidatorUtils.STREAM_ON_NON_COLLECTION_TYPE_MESSAGE, //
 					expr, //
 					GipslPackage.Literals.GIPS_CONTEXT_EXPR__STREAM //
 			);
@@ -1817,7 +1731,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			if (leftType == EvalType.ECLASS) {
 				return rightType;
 			} else {
-				throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+				throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 			}
 		} else if (expr instanceof GipsFeatureLit) {
 			final GipsFeatureLit lit = (GipsFeatureLit) expr;
@@ -1896,7 +1810,7 @@ public class GipslValidator extends AbstractGipslValidator {
 	public EvalType getEvalLeftRightSideOp(final GipsBoolExpr left, final GipsBoolExpr right,
 			final GipsAndOperator op) {
 		if (right == null) {
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+			throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		} else {
 			final EvalType leftType = getEvalTypeDelegate(left);
 			final EvalType rightType = getEvalTypeDelegate(right);
@@ -1906,7 +1820,7 @@ public class GipslValidator extends AbstractGipslValidator {
 
 	public EvalType getEvalLeftRightSideOp(final GipsBoolExpr left, final GipsBoolExpr right, final GipsOrOperator op) {
 		if (right == null) {
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+			throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		} else {
 			final EvalType leftType = getEvalTypeDelegate(left);
 			final EvalType rightType = getEvalTypeDelegate(right);
@@ -1916,7 +1830,7 @@ public class GipslValidator extends AbstractGipslValidator {
 
 	public EvalType getEvalLeftRightSideOp(final GipsBoolExpr left, final GipsBoolExpr right) {
 		if (right == null) {
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+			throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		} else {
 			final EvalType leftType = getEvalTypeDelegate(left);
 			final EvalType rightType = getEvalTypeDelegate(right);
@@ -1991,7 +1905,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			// Case: SQRT, SIN, and COS change the type to double
 			return EvalType.DOUBLE;
 		} else {
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+			throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		}
 	}
 
@@ -2039,7 +1953,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		final EvalType lambdaEval = getEvalTypeFromBoolExpr(expr.getExpr());
 		if (!isPrimitiveType(lambdaEval)) {
 			error( //
-					LAMBDA_EXPR_EVAL_NOT_PRIMITIVE_MESSAGE, //
+					GipslValidatorUtils.LAMBDA_EXPR_EVAL_NOT_PRIMITIVE_MESSAGE, //
 					expr, //
 					GipslPackage.Literals.GIPS_LAMBDA_EXPRESSION__EXPR //
 			);
@@ -2050,7 +1964,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			final GipsBooleanLiteral lit = (GipsBooleanLiteral) expr.getExpr();
 			final String warning = String.valueOf(lit.isLiteral());
 			warning( //
-					String.format(LAMBDA_EXPR_EVAL_LITERAL_MESSAGE, warning), //
+					String.format(GipslValidatorUtils.LAMBDA_EXPR_EVAL_LITERAL_MESSAGE, warning), //
 					expr, //
 					GipslPackage.Literals.GIPS_LAMBDA_EXPRESSION__EXPR //
 			);

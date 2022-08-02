@@ -5,15 +5,39 @@ import java.util.HashSet;
 import org.eclipse.xtext.validation.Check;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipsAndBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsArithmeticLiteral;
+import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsBracketBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsBracketExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsContains;
+import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsExpArithmeticExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsExpressionOperand;
 import org.emoflon.gips.gipsl.gipsl.GipsImplicationBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsLambdaAttributeExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsLambdaSelfExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingCheckValue;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
 import org.emoflon.gips.gipsl.gipsl.GipsNotBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsOrBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsPatternAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsProductArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsSelect;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamArithmetic;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamNavigation;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamSet;
+import org.emoflon.gips.gipsl.gipsl.GipsSumArithmeticExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.GlobalContext;
 
@@ -95,6 +119,210 @@ public class GipslConstraintValidator extends GipslValidator {
 				);
 			}
 		}
+	}
+
+	/**
+	 * Returns true if the given boolean expression contains an isMapped call.
+	 * 
+	 * @param expr Arithmetic expression to check.
+	 * @return True if the given arithmetic expression contains an isMapped call.
+	 */
+	public boolean containsMappingCheckValue(final GipsArithmeticExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof GipsBracketExpr) {
+			final GipsBracketExpr bracketExpr = (GipsBracketExpr) expr;
+			return containsMappingCheckValue(bracketExpr.getOperand());
+		} else if (expr instanceof GipsExpArithmeticExpr) {
+			final GipsExpArithmeticExpr expExpr = (GipsExpArithmeticExpr) expr;
+			return containsMappingCheckValue(expExpr.getLeft()) || containsMappingCheckValue(expExpr.getRight());
+		} else if (expr instanceof GipsExpressionOperand) {
+			final GipsExpressionOperand exprOp = (GipsExpressionOperand) expr;
+			if (exprOp instanceof GipsArithmeticLiteral) {
+				return false;
+			} else if (exprOp instanceof GipsAttributeExpr) {
+				if (exprOp instanceof GipsContextExpr) {
+					final GipsContextExpr conExpr = (GipsContextExpr) exprOp;
+					// Streams can be ignored
+					return conExpr.getExpr() instanceof GipsContextOperationExpression;
+				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
+					// A GipsLambdaAttributeExpression can not contain an isMapped call
+					return false;
+				} else if (exprOp instanceof GipsMappingAttributeExpr) {
+					// Streams can be ignored
+					return false;
+				} else if (exprOp instanceof GipsPatternAttributeExpr patternExpr) {
+					// Streams can be ignored
+					return false;
+				} else if (exprOp instanceof GipsTypeAttributeExpr typeExpr) {
+					// Streams can be ignored
+					return false;
+				}
+			}
+		} else if (expr instanceof GipsProductArithmeticExpr) {
+			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
+			return containsMappingCheckValue(prodExpr.getLeft()) || containsMappingCheckValue(prodExpr.getRight());
+		} else if (expr instanceof GipsSumArithmeticExpr) {
+			final GipsSumArithmeticExpr sumExpr = (GipsSumArithmeticExpr) expr;
+			return containsMappingCheckValue(sumExpr.getLeft()) || containsMappingCheckValue(sumExpr.getRight());
+		} else if (expr instanceof GipsUnaryArithmeticExpr) {
+			final GipsUnaryArithmeticExpr unExpr = (GipsUnaryArithmeticExpr) expr;
+			return containsMappingCheckValue(unExpr.getOperand());
+		}
+
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	/**
+	 * Returns true if the given boolean expression contains an isMapped call.
+	 * 
+	 * @param expr Boolean expression to check.
+	 * @return True if the given boolean expression contains an isMapped call.
+	 */
+	public boolean containsMappingCheckValue(final GipsBoolExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof GipsAndBoolExpr andExpr) {
+			return containsMappingCheckValue(andExpr.getLeft()) || containsMappingCheckValue(andExpr.getRight());
+		} else if (expr instanceof GipsBooleanLiteral) {
+			return false;
+		} else if (expr instanceof GipsBracketBoolExpr brackExpr) {
+			return containsMappingCheckValue(brackExpr.getOperand());
+		} else if (expr instanceof GipsImplicationBoolExpr implExpr) {
+			return containsMappingCheckValue(implExpr.getLeft()) || containsMappingCheckValue(implExpr.getRight());
+		} else if (expr instanceof GipsNotBoolExpr notExpr) {
+			return containsMappingCheckValue(notExpr.getOperand());
+		} else if (expr instanceof GipsOrBoolExpr orExpr) {
+			return containsMappingCheckValue(orExpr.getLeft()) || containsMappingCheckValue(orExpr.getRight());
+		} else if (expr instanceof GipsRelExpr relExpr) {
+			return containsMappingCheckValue(relExpr.getLeft()) || containsMappingCheckValue(relExpr.getRight());
+		}
+
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	/**
+	 * Returns true if the given boolean expression contains a mapping call.
+	 * 
+	 * @param expr Boolean expression to check.
+	 * @return True if the given boolean expression contains a mapping call.
+	 */
+	public boolean containsMappingsCall(final GipsBoolExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof GipsImplicationBoolExpr impl) {
+			return containsMappingsCall(impl.getLeft()) || containsMappingsCall(impl.getRight());
+		} else if (expr instanceof GipsOrBoolExpr or) {
+			return containsMappingsCall(or.getLeft()) || containsMappingsCall(or.getRight());
+		} else if (expr instanceof GipsAndBoolExpr and) {
+			return containsMappingsCall(and.getLeft()) || containsMappingsCall(and.getRight());
+		} else if (expr instanceof GipsNotBoolExpr not) {
+			return containsMappingsCall(not.getOperand());
+		} else if (expr instanceof GipsBracketBoolExpr brack) {
+			return containsMappingsCall(brack.getOperand());
+		} else if (expr instanceof GipsBooleanLiteral) {
+			return false;
+		} else if (expr instanceof GipsRelExpr) {
+			final GipsRelExpr relExpr = (GipsRelExpr) expr;
+			return containsMappingsCall(relExpr.getLeft()) || containsMappingsCall(relExpr.getRight());
+		} else {
+			throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		}
+	}
+
+	/**
+	 * Returns true if the given arithmetic expression contains a mapping call.
+	 * 
+	 * @param expr Arithmetic expression to check.
+	 * @return True if the given arithmetic expression contains a mapping call.
+	 */
+	public boolean containsMappingsCall(final GipsArithmeticExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof GipsBracketExpr) {
+			final GipsBracketExpr bracketExpr = (GipsBracketExpr) expr;
+			return containsMappingsCall(bracketExpr.getOperand());
+		} else if (expr instanceof GipsExpArithmeticExpr) {
+			final GipsExpArithmeticExpr expExpr = (GipsExpArithmeticExpr) expr;
+			return containsMappingsCall(expExpr.getLeft()) || containsMappingsCall(expExpr.getRight());
+		} else if (expr instanceof GipsExpressionOperand) {
+			final GipsExpressionOperand exprOp = (GipsExpressionOperand) expr;
+			if (exprOp instanceof GipsArithmeticLiteral) {
+				return false;
+			} else if (exprOp instanceof GipsAttributeExpr) {
+				if (exprOp instanceof GipsContextExpr) {
+					final GipsContextExpr conExpr = (GipsContextExpr) exprOp;
+					if (streamContainsMappingsCall(conExpr.getStream())) {
+						return true;
+					}
+					return (conExpr.getExpr() instanceof GipsContextOperationExpression
+							&& !(conExpr.getExpr() instanceof GipsMappingCheckValue));
+				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
+					// A GipsLambdaAttributeExpression can not contain a mappings call
+					return false;
+				} else if (exprOp instanceof GipsLambdaSelfExpression) {
+					// A GipsLambdaSelfExpression can not contain a mappings call
+					return false;
+				} else if (exprOp instanceof GipsMappingAttributeExpr) {
+					// A GipsMappingAttributeExpr always contains a mappings call
+					return true;
+				} else if (exprOp instanceof GipsPatternAttributeExpr patternExpr) {
+					return streamContainsMappingsCall(patternExpr.getExpr());
+				} else if (exprOp instanceof GipsTypeAttributeExpr typeExpr) {
+					return streamContainsMappingsCall(typeExpr.getExpr());
+				}
+			}
+		} else if (expr instanceof GipsProductArithmeticExpr) {
+			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
+			return containsMappingsCall(prodExpr.getLeft()) || containsMappingsCall(prodExpr.getRight());
+		} else if (expr instanceof GipsSumArithmeticExpr) {
+			final GipsSumArithmeticExpr sumExpr = (GipsSumArithmeticExpr) expr;
+			return containsMappingsCall(sumExpr.getLeft()) || containsMappingsCall(sumExpr.getRight());
+		} else if (expr instanceof GipsUnaryArithmeticExpr) {
+			final GipsUnaryArithmeticExpr unExpr = (GipsUnaryArithmeticExpr) expr;
+			return containsMappingsCall(unExpr.getOperand());
+		}
+
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+	}
+
+	/**
+	 * Returns true if the given stream expression contains a mapping call.
+	 * 
+	 * @param expr Stream expression to check.
+	 * @return True if the given stream expression contains a mapping call.
+	 */
+	public boolean streamContainsMappingsCall(final GipsStreamExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof GipsSelect) {
+			return false;
+		} else if (expr instanceof GipsStreamArithmetic) {
+			final GipsStreamArithmetic arithExpr = (GipsStreamArithmetic) expr;
+			return containsMappingsCall(arithExpr.getLambda().getExpr());
+		} else if (expr instanceof GipsStreamBoolExpr) {
+			return false;
+		} else if (expr instanceof GipsStreamNavigation) {
+			final GipsStreamNavigation nav = (GipsStreamNavigation) expr;
+			return streamContainsMappingsCall(nav.getLeft()) || streamContainsMappingsCall(nav.getRight());
+		} else if (expr instanceof GipsStreamSet) {
+			final GipsStreamSet set = (GipsStreamSet) expr;
+			return containsMappingsCall(set.getLambda().getExpr());
+		} else if (expr instanceof GipsContains contains) {
+			return containsMappingsCall(contains.getExpr());
+		}
+
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	/**

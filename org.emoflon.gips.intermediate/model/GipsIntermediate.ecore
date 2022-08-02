@@ -38,6 +38,7 @@
   <eClassifiers xsi:type="ecore:EEnum" name="ILPSolverType">
     <eLiterals name="GUROBI"/>
     <eLiterals name="GLPK" value="1"/>
+    <eLiterals name="CPLEX" value="2"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VariableSet" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

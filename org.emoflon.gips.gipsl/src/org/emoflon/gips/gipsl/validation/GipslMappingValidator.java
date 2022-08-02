@@ -1,5 +1,6 @@
 package org.emoflon.gips.gipsl.validation;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -12,6 +13,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
+import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 
 public class GipslMappingValidator {
 
@@ -35,8 +37,34 @@ public class GipslMappingValidator {
 
 		checkMappingNameValid(mapping);
 		checkMappingNameUnique(mapping);
-		// TODO: Add check for at maximum one mapping per rule
+		checkAtMostOneMappingPerRule(mapping);
 		checkMappingUnused(mapping);
+	}
+
+	/**
+	 * Checks that each rule has at most one mapping. (This method must be called
+	 * from within the global mapping check to allow the annotation of the found
+	 * mappings with errors.)
+	 * 
+	 * @param mapping Mapping to start checking for.
+	 */
+	public static void checkAtMostOneMappingPerRule(final GipsMapping mapping) {
+		if (mapping == null || mapping.getName() == null) {
+			return;
+		}
+
+		final EditorGTFile container = (EditorGTFile) mapping.eContainer();
+		final Set<EditorPattern> foundPatterns = new HashSet<>();
+
+		container.getMappings().forEach(m -> {
+			final boolean alreadyUsed = !foundPatterns.add(m.getPattern());
+			if (alreadyUsed) {
+				GipslValidator.err( //
+						String.format(GipslValidatorUtils.RULE_HAS_MULTIPLE_MAPPINGS, m.getPattern().getName()), //
+						GipslPackage.Literals.GIPS_MAPPING__PATTERN //
+				);
+			}
+		});
 	}
 
 	/**

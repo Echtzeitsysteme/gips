@@ -14,6 +14,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsProductArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsSumArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
+import org.emoflon.gips.gipsl.validation.GipslValidatorUtils.ContextType;
 
 public class GipslObjectiveValidator extends GipslValidator {
 
@@ -171,6 +172,11 @@ public class GipslObjectiveValidator extends GipslValidator {
 
 		final GipsArithmeticExpr expr = objective.getExpr();
 		final GipslValidatorUtils.ContextType type = getContextType(objective.getContext());
+
+		// If context is global, no "self" must be used
+		if (type == ContextType.GLOBAL) {
+			return;
+		}
 
 		// Generate a warning if the objective does not contain 'self'
 		if (!containsSelf(expr, type)) {

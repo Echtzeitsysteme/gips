@@ -40,6 +40,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.GlobalContext;
+import org.emoflon.gips.gipsl.validation.GipslValidatorUtils.ContextType;
 
 public class GipslConstraintValidator extends GipslValidator {
 
@@ -453,6 +454,9 @@ public class GipslConstraintValidator extends GipslValidator {
 		boolean rightSelf = false;
 
 		final GipslValidatorUtils.ContextType type = getContextType(constraint.getContext());
+		if (type == ContextType.GLOBAL) {
+			return;
+		}
 
 		if (expr instanceof GipsRelExpr) {
 			final GipsRelExpr relExpr = (GipsRelExpr) expr;

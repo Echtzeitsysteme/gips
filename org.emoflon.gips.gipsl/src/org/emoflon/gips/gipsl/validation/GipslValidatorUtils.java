@@ -35,6 +35,7 @@ public class GipslValidatorUtils {
 		MAPPING, //
 		PATTERN, //
 		TYPE, //
+		GLOBAL, //
 		ERROR //
 	}
 

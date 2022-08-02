@@ -29,6 +29,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsExpressionOperand;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureNavigation;
+import org.emoflon.gips.gipsl.gipsl.GipsGlobalContext;
 import org.emoflon.gips.gipsl.gipsl.GipsImplicationBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsLambdaAttributeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsLambdaExpression;
@@ -97,6 +98,7 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * @return Context type for given EObject.
 	 */
 	public ContextType getContextType(final EObject e) {
+		// Null check implicit
 		ContextType type = ContextType.ERROR;
 
 		if (e instanceof GipsPatternContext) {
@@ -105,6 +107,8 @@ public class GipslValidator extends AbstractGipslValidator {
 			type = ContextType.TYPE;
 		} else if (e instanceof GipsMappingContext) {
 			type = ContextType.MAPPING;
+		} else if (e instanceof GipsGlobalContext) {
+			type = ContextType.GLOBAL;
 		}
 
 		return type;

@@ -42,7 +42,10 @@ import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.GlobalContext;
 import org.emoflon.gips.gipsl.validation.GipslValidatorUtils.ContextType;
 
-public class GipslConstraintValidator extends GipslValidator {
+public class GipslConstraintValidator {
+
+	private GipslConstraintValidator() {
+	}
 
 	/**
 	 * Runs all checks for a given constraint.
@@ -50,7 +53,7 @@ public class GipslConstraintValidator extends GipslValidator {
 	 * @param constraint Gips constraint to check.
 	 */
 	@Check
-	public void checkConstraint(final GipsConstraint constraint) {
+	public static void checkConstraint(final GipsConstraint constraint) {
 		if (GipslValidator.DISABLE_VALIDATOR) {
 			return;
 		}
@@ -60,7 +63,7 @@ public class GipslConstraintValidator extends GipslValidator {
 		}
 
 		if (constraint.getExpr() == null) {
-			error( //
+			GipslValidator.err( //
 					String.format(GipslValidatorUtils.CONSTRAINT_EMPTY_MESSAGE), //
 					constraint, //
 					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
@@ -69,7 +72,7 @@ public class GipslConstraintValidator extends GipslValidator {
 		}
 
 		if (constraint.getExpr().getExpr() == null) {
-			error( //
+			GipslValidator.err( //
 					String.format(GipslValidatorUtils.CONSTRAINT_EMPTY_MESSAGE), //
 					constraint, //
 					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
@@ -78,7 +81,7 @@ public class GipslConstraintValidator extends GipslValidator {
 		}
 
 		// Trigger validation of boolean expression
-		getEvalTypeFromBoolExpr(constraint.getExpr().getExpr());
+		GipslValidator.getEvalTypeFromBoolExpr(constraint.getExpr().getExpr());
 
 		// Check if constraint is a literal -> warning
 		checkConstraintIsLiteral(constraint);
@@ -108,12 +111,12 @@ public class GipslConstraintValidator extends GipslValidator {
 	 * 
 	 * @param constraint Constraint to check "isMapped()" in contexts for.
 	 */
-	public void validateNoIsMappedInContextNotMapping(final GipsConstraint constraint) {
+	public static void validateNoIsMappedInContextNotMapping(final GipsConstraint constraint) {
 		if (!(constraint.getContext() instanceof GipsMappingContext)) {
 			final GipsBoolExpr expr = constraint.getExpr().getExpr();
 			final boolean containsMappingCheckValue = containsMappingCheckValue(expr);
 			if (containsMappingCheckValue) {
-				error( //
+				GipslValidator.err( //
 						GipslValidatorUtils.IS_MAPPED_CALL_IN_CONTEXT_FORBIDDEN_MESSAGE, //
 						constraint, //
 						GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
@@ -128,7 +131,7 @@ public class GipslConstraintValidator extends GipslValidator {
 	 * @param expr Arithmetic expression to check.
 	 * @return True if the given arithmetic expression contains an isMapped call.
 	 */
-	public boolean containsMappingCheckValue(final GipsArithmeticExpr expr) {
+	public static boolean containsMappingCheckValue(final GipsArithmeticExpr expr) {
 		if (expr == null) {
 			return false;
 		}
@@ -182,7 +185,7 @@ public class GipslConstraintValidator extends GipslValidator {
 	 * @param expr Boolean expression to check.
 	 * @return True if the given boolean expression contains an isMapped call.
 	 */
-	public boolean containsMappingCheckValue(final GipsBoolExpr expr) {
+	public static boolean containsMappingCheckValue(final GipsBoolExpr expr) {
 		if (expr == null) {
 			return false;
 		}
@@ -212,7 +215,7 @@ public class GipslConstraintValidator extends GipslValidator {
 	 * @param expr Boolean expression to check.
 	 * @return True if the given boolean expression contains a mapping call.
 	 */
-	public boolean containsMappingsCall(final GipsBoolExpr expr) {
+	public static boolean containsMappingsCall(final GipsBoolExpr expr) {
 		if (expr == null) {
 			return false;
 		}
@@ -243,7 +246,7 @@ public class GipslConstraintValidator extends GipslValidator {
 	 * @param expr Arithmetic expression to check.
 	 * @return True if the given arithmetic expression contains a mapping call.
 	 */
-	public boolean containsMappingsCall(final GipsArithmeticExpr expr) {
+	public static boolean containsMappingsCall(final GipsArithmeticExpr expr) {
 		if (expr == null) {
 			return false;
 		}
@@ -301,7 +304,7 @@ public class GipslConstraintValidator extends GipslValidator {
 	 * @param expr Stream expression to check.
 	 * @return True if the given stream expression contains a mapping call.
 	 */
-	public boolean streamContainsMappingsCall(final GipsStreamExpr expr) {
+	public static boolean streamContainsMappingsCall(final GipsStreamExpr expr) {
 		if (expr == null) {
 			return false;
 		}
@@ -332,13 +335,13 @@ public class GipslConstraintValidator extends GipslValidator {
 	 * 
 	 * @param constraint Constraint to check mapping in mapping access for.
 	 */
-	public void validateNoMappingAccessIfMappingContext(final GipsConstraint constraint) {
+	public static void validateNoMappingAccessIfMappingContext(final GipsConstraint constraint) {
 		if (constraint == null) {
 			return;
 		}
 
 		// If context is not a mapping, return immediately
-		if (getContextType(constraint.getContext()) != GipslValidatorUtils.ContextType.MAPPING) {
+		if (GipslValidator.getContextType(constraint.getContext()) != GipslValidatorUtils.ContextType.MAPPING) {
 			return;
 		}
 
@@ -379,7 +382,7 @@ public class GipslConstraintValidator extends GipslValidator {
 
 		// Generate an error if mappings are referenced
 		if (leftMapping || rightMapping) {
-			error( //
+			GipslValidator.err( //
 					GipslValidatorUtils.MAPPING_IN_MAPPING_FORBIDDEN_MESSAGE, //
 					constraint, //
 					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
@@ -392,7 +395,7 @@ public class GipslConstraintValidator extends GipslValidator {
 	 * 
 	 * @param constraint Constraint to check.
 	 */
-	public void checkConstraintIsLiteral(final GipsConstraint constraint) {
+	public static void checkConstraintIsLiteral(final GipsConstraint constraint) {
 		if (constraint == null) {
 			return;
 		}
@@ -400,7 +403,7 @@ public class GipslConstraintValidator extends GipslValidator {
 		if (constraint.getExpr().getExpr() instanceof GipsBooleanLiteral) {
 			final GipsBooleanLiteral lit = (GipsBooleanLiteral) constraint.getExpr().getExpr();
 			final String warning = String.valueOf(lit.isLiteral());
-			warning( //
+			GipslValidator.warn( //
 					String.format(GipslValidatorUtils.CONSTRAINT_EVAL_LITERAL_MESSAGE, warning), //
 					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
 			);
@@ -413,7 +416,7 @@ public class GipslConstraintValidator extends GipslValidator {
 	 * 
 	 * @param constraint Constraint to check uniqueness for.
 	 */
-	public void checkConstraintUnique(final GipsConstraint constraint) {
+	public static void checkConstraintUnique(final GipsConstraint constraint) {
 		if (constraint == null) {
 			return;
 		}
@@ -430,7 +433,7 @@ public class GipslConstraintValidator extends GipslValidator {
 
 		if (others.size() > 1) {
 			for (final GipsConstraint other : others) {
-				warning( //
+				GipslValidator.warn( //
 						GipslValidatorUtils.CONSTRAINT_DEFINED_MULTIPLE_TIMES_MESSAGE, //
 						other, //
 						GipslPackage.Literals.GIPS_CONSTRAINT__CONTEXT //
@@ -444,7 +447,7 @@ public class GipslConstraintValidator extends GipslValidator {
 	 * 
 	 * @param constraint Constraint to validate.
 	 */
-	public void validateConstraintHasSelf(final GipsConstraint constraint) {
+	public static void validateConstraintHasSelf(final GipsConstraint constraint) {
 		if (constraint == null || constraint.getExpr() == null) {
 			return;
 		}
@@ -453,30 +456,30 @@ public class GipslConstraintValidator extends GipslValidator {
 		boolean leftSelf = false;
 		boolean rightSelf = false;
 
-		final GipslValidatorUtils.ContextType type = getContextType(constraint.getContext());
+		final GipslValidatorUtils.ContextType type = GipslValidator.getContextType(constraint.getContext());
 		if (type == ContextType.GLOBAL) {
 			return;
 		}
 
 		if (expr instanceof GipsRelExpr) {
 			final GipsRelExpr relExpr = (GipsRelExpr) expr;
-			leftSelf = containsSelf(relExpr.getLeft(), type);
-			rightSelf = containsSelf(relExpr.getRight(), type);
+			leftSelf = GipslValidator.containsSelf(relExpr.getLeft(), type);
+			rightSelf = GipslValidator.containsSelf(relExpr.getRight(), type);
 		} else if (expr instanceof GipsBoolExpr) {
 			if (expr instanceof GipsImplicationBoolExpr impl) {
-				leftSelf = containsSelf(impl.getLeft(), type);
-				rightSelf = containsSelf(impl.getRight(), type);
+				leftSelf = GipslValidator.containsSelf(impl.getLeft(), type);
+				rightSelf = GipslValidator.containsSelf(impl.getRight(), type);
 			} else if (expr instanceof GipsOrBoolExpr or) {
-				leftSelf = containsSelf(or.getLeft(), type);
-				rightSelf = containsSelf(or.getRight(), type);
+				leftSelf = GipslValidator.containsSelf(or.getLeft(), type);
+				rightSelf = GipslValidator.containsSelf(or.getRight(), type);
 			} else if (expr instanceof GipsAndBoolExpr and) {
-				leftSelf = containsSelf(and.getLeft(), type);
-				rightSelf = containsSelf(and.getRight(), type);
+				leftSelf = GipslValidator.containsSelf(and.getLeft(), type);
+				rightSelf = GipslValidator.containsSelf(and.getRight(), type);
 			} else if (expr instanceof GipsNotBoolExpr not) {
-				leftSelf = containsSelf(not.getOperand(), type);
+				leftSelf = GipslValidator.containsSelf(not.getOperand(), type);
 				rightSelf = leftSelf;
 			} else if (expr instanceof GipsBracketBoolExpr brack) {
-				leftSelf = containsSelf(brack.getOperand(), type);
+				leftSelf = GipslValidator.containsSelf(brack.getOperand(), type);
 				rightSelf = leftSelf;
 			} else if (expr instanceof GipsBooleanLiteral) {
 				leftSelf = rightSelf = false;
@@ -484,7 +487,7 @@ public class GipslConstraintValidator extends GipslValidator {
 				throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 			}
 		} else if (expr == null) {
-			error( //
+			GipslValidator.err( //
 					String.format(GipslValidatorUtils.CONSTRAINT_EMPTY_MESSAGE), //
 					constraint, //
 					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
@@ -495,7 +498,7 @@ public class GipslConstraintValidator extends GipslValidator {
 
 		// Generate an error if both sides of the constraint does not contain 'self'
 		if (!(leftSelf || rightSelf)) {
-			error( //
+			GipslValidator.err( //
 					String.format(GipslValidatorUtils.TYPE_DOES_NOT_CONTAIN_SELF_MESSAGE, "Constraint"), //
 					constraint, //
 					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
@@ -514,7 +517,7 @@ public class GipslConstraintValidator extends GipslValidator {
 	 * 
 	 * @param constraint Constraint to check dynamic elements for.
 	 */
-	public void validateConstraintDynamic(final GipsConstraint constraint) {
+	public static void validateConstraintDynamic(final GipsConstraint constraint) {
 		if (constraint == null || constraint.getExpr() == null || constraint.getExpr().getExpr() == null) {
 			return;
 		}
@@ -526,23 +529,23 @@ public class GipslConstraintValidator extends GipslValidator {
 
 		if (expr instanceof GipsRelExpr) {
 			final GipsRelExpr relExpr = (GipsRelExpr) expr;
-			leftDynamic = validateArithExprDynamic(relExpr.getLeft());
-			rightDynamic = validateArithExprDynamic(relExpr.getRight());
+			leftDynamic = GipslValidator.validateArithExprDynamic(relExpr.getLeft());
+			rightDynamic = GipslValidator.validateArithExprDynamic(relExpr.getRight());
 		} else if (expr instanceof GipsBoolExpr) {
 			if (expr instanceof GipsImplicationBoolExpr impl) {
-				leftDynamic = validateBoolExprDynamic(impl.getLeft());
-				rightDynamic = validateBoolExprDynamic(impl.getRight());
+				leftDynamic = GipslValidator.validateBoolExprDynamic(impl.getLeft());
+				rightDynamic = GipslValidator.validateBoolExprDynamic(impl.getRight());
 			} else if (expr instanceof GipsOrBoolExpr or) {
-				leftDynamic = validateBoolExprDynamic(or.getLeft());
-				rightDynamic = validateBoolExprDynamic(or.getRight());
+				leftDynamic = GipslValidator.validateBoolExprDynamic(or.getLeft());
+				rightDynamic = GipslValidator.validateBoolExprDynamic(or.getRight());
 			} else if (expr instanceof GipsAndBoolExpr and) {
-				leftDynamic = validateBoolExprDynamic(and.getLeft());
-				rightDynamic = validateBoolExprDynamic(and.getRight());
+				leftDynamic = GipslValidator.validateBoolExprDynamic(and.getLeft());
+				rightDynamic = GipslValidator.validateBoolExprDynamic(and.getRight());
 			} else if (expr instanceof GipsNotBoolExpr not) {
-				leftDynamic = validateBoolExprDynamic(not.getOperand());
+				leftDynamic = GipslValidator.validateBoolExprDynamic(not.getOperand());
 				rightDynamic = leftDynamic;
 			} else if (expr instanceof GipsBracketBoolExpr brack) {
-				leftDynamic = validateBoolExprDynamic(brack.getOperand());
+				leftDynamic = GipslValidator.validateBoolExprDynamic(brack.getOperand());
 				rightDynamic = leftDynamic;
 			} else if (expr instanceof GipsBooleanLiteral) {
 				// Special case: Complete boolean expression is just a literal
@@ -556,7 +559,7 @@ public class GipslConstraintValidator extends GipslValidator {
 
 		// Generate a warning if both sides of the constraint are constant
 		if (!leftDynamic && !rightDynamic) {
-			warning( //
+			GipslValidator.warn( //
 					GipslValidatorUtils.CONSTRAINT_HAS_TWO_CONSTANT_SIDES_MESSAGE, //
 					constraint, //
 					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //

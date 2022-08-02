@@ -13,7 +13,10 @@ import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 
-public class GipslMappingValidator extends AbstractGipslValidator {
+public class GipslMappingValidator {
+
+	private GipslMappingValidator() {
+	}
 
 	/**
 	 * Runs checks for all Gips mappings.
@@ -21,7 +24,7 @@ public class GipslMappingValidator extends AbstractGipslValidator {
 	 * @param mapping Input Gips mapping to check.
 	 */
 	@Check
-	public void checkMapping(final GipsMapping mapping) {
+	public static void checkMapping(final GipsMapping mapping) {
 		if (GipslValidator.DISABLE_VALIDATOR) {
 			return;
 		}
@@ -32,6 +35,7 @@ public class GipslMappingValidator extends AbstractGipslValidator {
 
 		checkMappingNameValid(mapping);
 		checkMappingNameUnique(mapping);
+		// TODO: Add check for at maximum one mapping per rule
 		checkMappingUnused(mapping);
 	}
 
@@ -42,31 +46,31 @@ public class GipslMappingValidator extends AbstractGipslValidator {
 	 * 
 	 * @param mapping Gips mapping to check.
 	 */
-	public void checkMappingNameValid(final GipsMapping mapping) {
+	public static void checkMappingNameValid(final GipsMapping mapping) {
 		if (mapping == null || mapping.getName() == null) {
 			return;
 		}
 
 		if (GipslValidatorUtils.INVALID_NAMES.contains(mapping.getName())) {
-			error( //
+			GipslValidator.err( //
 					String.format(GipslValidatorUtils.MAPPING_NAME_FORBIDDEN_MESSAGE, mapping.getName()), //
 					GipslPackage.Literals.GIPS_MAPPING__NAME, //
-					NAME_EXPECT_UNIQUE //
+					GipslValidator.NAME_EXPECT_UNIQUE //
 			);
 		} else {
 			// The mapping name should be lowerCamelCase.
 			if (mapping.getName().contains("_")) {
-				warning( //
+				GipslValidator.warn( //
 						String.format(GipslValidatorUtils.MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE, mapping.getName()), //
 						GipslPackage.Literals.GIPS_MAPPING__NAME, //
 						GipslValidatorUtils.NAME_BLOCKED);
 			} else {
 				// The mapping name should start with a lower case character.
 				if (!Character.isLowerCase(mapping.getName().charAt(0))) {
-					warning( //
+					GipslValidator.warn( //
 							String.format(GipslValidatorUtils.MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE,
 									mapping.getName()), //
-							GipslPackage.Literals.GIPS_MAPPING__NAME, NAME_EXPECT_LOWER_CASE //
+							GipslPackage.Literals.GIPS_MAPPING__NAME, GipslValidator.NAME_EXPECT_LOWER_CASE //
 					);
 				}
 			}
@@ -78,7 +82,7 @@ public class GipslMappingValidator extends AbstractGipslValidator {
 	 * 
 	 * @param mapping Gips mapping to check uniqueness of the name for.
 	 */
-	public void checkMappingNameUnique(final GipsMapping mapping) {
+	public static void checkMappingNameUnique(final GipsMapping mapping) {
 		if (mapping == null || mapping.getName() == null) {
 			return;
 		}
@@ -87,11 +91,11 @@ public class GipslMappingValidator extends AbstractGipslValidator {
 		final long count = container.getMappings().stream()
 				.filter(m -> m.getName() != null && m.getName().equals(mapping.getName())).count();
 		if (count != 1) {
-			error( //
+			GipslValidator.err( //
 					String.format(GipslValidatorUtils.MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE, mapping.getName(),
-							getTimes((int) count)), //
+							GipslValidator.getTimes((int) count)), //
 					GipslPackage.Literals.GIPS_MAPPING__NAME, //
-					NAME_EXPECT_UNIQUE //
+					GipslValidator.NAME_EXPECT_UNIQUE //
 			);
 		}
 	}
@@ -102,7 +106,7 @@ public class GipslMappingValidator extends AbstractGipslValidator {
 	 * 
 	 * @param mapping Gips mapping to be checked.
 	 */
-	public void checkMappingUnused(final GipsMapping mapping) {
+	public static void checkMappingUnused(final GipsMapping mapping) {
 		final EditorGTFile container = (EditorGTFile) mapping.eContainer();
 		boolean usedAsContext = container.getConstraints().stream().filter(c -> c.getContext() != null)
 				.filter(c -> (c.getContext() instanceof GipsMappingContext))
@@ -130,7 +134,7 @@ public class GipslMappingValidator extends AbstractGipslValidator {
 				return;
 		}
 
-		warning( //
+		GipslValidator.warn( //
 				String.format(GipslValidatorUtils.MAPPING_W_O_CONSTRAINTS_MESSAGE, mapping.getName()), //
 				GipslPackage.Literals.GIPS_MAPPING__NAME);
 
@@ -159,7 +163,7 @@ public class GipslMappingValidator extends AbstractGipslValidator {
 				return;
 		}
 
-		warning( //
+		GipslValidator.warn( //
 				String.format(GipslValidatorUtils.MAPPING_W_O_CONSTRAINTS_AND_OBJECTIVE_MESSAGE, mapping.getName()), //
 				GipslPackage.Literals.GIPS_MAPPING__NAME);
 	}

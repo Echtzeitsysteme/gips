@@ -16,7 +16,10 @@ import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.validation.GipslValidatorUtils.ContextType;
 
-public class GipslObjectiveValidator extends GipslValidator {
+public class GipslObjectiveValidator {
+
+	private GipslObjectiveValidator() {
+	}
 
 	/**
 	 * Checks if a global objective is specified in a given file. This must hold if
@@ -27,7 +30,7 @@ public class GipslObjectiveValidator extends GipslValidator {
 	 * @param file File to check existence of a global objective for.
 	 */
 	@Check
-	public void checkGlobalObjectiveNotNull(final EditorGTFile file) {
+	public static void checkGlobalObjectiveNotNull(final EditorGTFile file) {
 		if (GipslValidator.DISABLE_VALIDATOR) {
 			return;
 		}
@@ -37,7 +40,7 @@ public class GipslObjectiveValidator extends GipslValidator {
 		}
 
 		if (file.getObjectives() != null && !file.getObjectives().isEmpty() && file.getGlobalObjective() == null) {
-			error( //
+			GipslValidator.err( //
 					GipslValidatorUtils.GLOBAL_OBJECTIVE_IS_NULL_MESSAGE, //
 					// TODO: Change scope of the warning:
 					GipslPackage.Literals.EDITOR_GT_FILE__GLOBAL_OBJECTIVE, //
@@ -45,7 +48,7 @@ public class GipslObjectiveValidator extends GipslValidator {
 			);
 		} else if (file.getObjectives() != null && file.getObjectives().isEmpty()
 				&& file.getGlobalObjective() != null) {
-			warning( //
+			GipslValidator.warn( //
 					GipslValidatorUtils.GLOBAL_OBJECTIVE_IS_OPTIONAL_MESSAGE, //
 					GipslPackage.Literals.EDITOR_GT_FILE__GLOBAL_OBJECTIVE //
 			);
@@ -59,7 +62,7 @@ public class GipslObjectiveValidator extends GipslValidator {
 	 * @param globObj Gips global objective to validate/check.
 	 */
 	@Check
-	public void checkGlobalObjective(final GipsGlobalObjective globObj) {
+	public static void checkGlobalObjective(final GipsGlobalObjective globObj) {
 		if (GipslValidator.DISABLE_VALIDATOR) {
 			return;
 		}
@@ -69,13 +72,13 @@ public class GipslObjectiveValidator extends GipslValidator {
 		}
 
 		// Validate expression regarding dynamic uses (like self.value())
-		validateArithExprDynamic(globObj.getExpr());
+		GipslValidator.validateArithExprDynamic(globObj.getExpr());
 
 		// Check if global objective contains any reference to a local objective
 		// If this is not the case, display a warning that the global objective is
 		// constant
 		if (!containsLocalObjectiveCall(globObj.getExpr())) {
-			warning( //
+			GipslValidator.warn( //
 					GipslValidatorUtils.GLOBAL_OBJECTIVE_DOES_NOT_CONTAIN_LOCAL_OBJECTIVE_MESSAGE, //
 					GipslPackage.Literals.GIPS_GLOBAL_OBJECTIVE__EXPR //
 			);
@@ -91,7 +94,7 @@ public class GipslObjectiveValidator extends GipslValidator {
 	 * @return True if the given arithmetic expression contains at least one call to
 	 *         a local Gips objective.
 	 */
-	public boolean containsLocalObjectiveCall(final GipsArithmeticExpr expr) {
+	public static boolean containsLocalObjectiveCall(final GipsArithmeticExpr expr) {
 		if (expr == null) {
 			return false;
 		}
@@ -125,7 +128,7 @@ public class GipslObjectiveValidator extends GipslValidator {
 	 * @param objective Gips objective to check.
 	 */
 	@Check
-	public void checkObjective(final GipsObjective objective) {
+	public static void checkObjective(final GipsObjective objective) {
 		if (GipslValidator.DISABLE_VALIDATOR) {
 			return;
 		}
@@ -145,15 +148,15 @@ public class GipslObjectiveValidator extends GipslValidator {
 
 		// Validate arithmetic expression regarding non-linear expressions that are not
 		// constant in ILP time
-		validateArithExprDynamic(objective.getExpr());
+		GipslValidator.validateArithExprDynamic(objective.getExpr());
 
 		// Check if objective contains a 'self' call -> If not, display a warning
 		checkObjectiveHasSelf(objective);
 
 		// Check expression evaluation type
-		final GipslValidatorUtils.EvalType eval = getEvalTypeFromArithExpr(objective.getExpr());
+		final GipslValidatorUtils.EvalType eval = GipslValidator.getEvalTypeFromArithExpr(objective.getExpr());
 		if (eval != GipslValidatorUtils.EvalType.INTEGER && eval != GipslValidatorUtils.EvalType.DOUBLE) {
-			error( //
+			GipslValidator.err( //
 					GipslValidatorUtils.OBJECTIVE_EVAL_NOT_NUMBER_MESSAGE, //
 					GipslPackage.Literals.GIPS_OBJECTIVE__EXPR //
 			);
@@ -165,13 +168,13 @@ public class GipslObjectiveValidator extends GipslValidator {
 	 * 
 	 * @param objective Objective to validate.
 	 */
-	public void checkObjectiveHasSelf(final GipsObjective objective) {
+	public static void checkObjectiveHasSelf(final GipsObjective objective) {
 		if (objective == null || objective.getExpr() == null || objective.getContext() == null) {
 			return;
 		}
 
 		final GipsArithmeticExpr expr = objective.getExpr();
-		final GipslValidatorUtils.ContextType type = getContextType(objective.getContext());
+		final GipslValidatorUtils.ContextType type = GipslValidator.getContextType(objective.getContext());
 
 		// If context is global, no "self" must be used
 		if (type == ContextType.GLOBAL) {
@@ -179,8 +182,8 @@ public class GipslObjectiveValidator extends GipslValidator {
 		}
 
 		// Generate a warning if the objective does not contain 'self'
-		if (!containsSelf(expr, type)) {
-			warning( //
+		if (!GipslValidator.containsSelf(expr, type)) {
+			GipslValidator.warn( //
 					String.format(GipslValidatorUtils.TYPE_DOES_NOT_CONTAIN_SELF_MESSAGE, "Objective"), //
 					objective, //
 					GipslPackage.Literals.GIPS_OBJECTIVE__EXPR //
@@ -195,30 +198,30 @@ public class GipslObjectiveValidator extends GipslValidator {
 	 * 
 	 * @param objective Gips objective to check.
 	 */
-	public void checkObjectiveNameValid(final GipsObjective objective) {
+	public static void checkObjectiveNameValid(final GipsObjective objective) {
 		if (objective == null || objective.getName() == null) {
 			return;
 		}
 
 		if (GipslValidatorUtils.INVALID_NAMES.contains(objective.getName())) {
-			error( //
+			GipslValidator.err( //
 					String.format(GipslValidatorUtils.OBJECTIVE_NAME_FORBIDDEN_MESSAGE, objective.getName()), //
 					GipslPackage.Literals.GIPS_OBJECTIVE__NAME, GipslValidatorUtils.NAME_BLOCKED);
 		} else {
 			// The objective name should be lowerCamelCase.
 			if (objective.getName().contains("_")) {
-				warning( //
+				GipslValidator.warn( //
 						String.format(GipslValidatorUtils.OBJECTIVE_NAME_CONTAINS_UNDERSCORES_MESSAGE,
 								objective.getName()), //
 						GipslPackage.Literals.GIPS_OBJECTIVE__NAME, GipslValidatorUtils.NAME_BLOCKED);
 			} else {
 				// The objective name should start with a lower case character.
 				if (!Character.isLowerCase(objective.getName().charAt(0))) {
-					warning( //
+					GipslValidator.warn( //
 							String.format(GipslValidatorUtils.OBJECTIVE_NAME_STARTS_WITH_LOWER_CASE_MESSAGE,
 									objective.getName()), //
 							GipslPackage.Literals.GIPS_OBJECTIVE__NAME, //
-							NAME_EXPECT_LOWER_CASE //
+							GipslValidator.NAME_EXPECT_LOWER_CASE //
 					);
 				}
 			}
@@ -230,7 +233,7 @@ public class GipslObjectiveValidator extends GipslValidator {
 	 * 
 	 * @param objective Gips objective to check uniqueness of the name for.
 	 */
-	public void checkObjectiveNameUnique(final GipsObjective objective) {
+	public static void checkObjectiveNameUnique(final GipsObjective objective) {
 		if (objective == null || objective.eContainer() == null) {
 			return;
 		}
@@ -239,11 +242,11 @@ public class GipslObjectiveValidator extends GipslValidator {
 		final long count = container.getObjectives().stream()
 				.filter(o -> o.getName() != null && o.getName().equals(objective.getName())).count();
 		if (count != 1) {
-			error( //
+			GipslValidator.err( //
 					String.format(GipslValidatorUtils.OBJECTIVE_NAME_MULTIPLE_DECLARATIONS_MESSAGE, objective.getName(),
-							getTimes((int) count)), //
+							GipslValidator.getTimes((int) count)), //
 					GipslPackage.Literals.GIPS_OBJECTIVE__NAME, //
-					NAME_EXPECT_UNIQUE //
+					GipslValidator.NAME_EXPECT_UNIQUE //
 			);
 		}
 	}
@@ -253,7 +256,7 @@ public class GipslObjectiveValidator extends GipslValidator {
 	 * 
 	 * @param objective Gips objective to check for uselessness.
 	 */
-	public void checkObjectiveIsNotUseless(final GipsObjective objective) {
+	public static void checkObjectiveIsNotUseless(final GipsObjective objective) {
 		if (objective == null) {
 			return;
 		}
@@ -261,7 +264,7 @@ public class GipslObjectiveValidator extends GipslValidator {
 		if (objective.getExpr() instanceof GipsArithmeticLiteral) {
 			final GipsArithmeticLiteral lit = (GipsArithmeticLiteral) objective.getExpr();
 			if (lit.getValue() != null && lit.getValue().equals("0")) {
-				warning( //
+				GipslValidator.warn( //
 						String.format(GipslValidatorUtils.OBJECTIVE_VALUE_IS_ZERO_MESSAGE, objective.getName()), //
 						GipslPackage.Literals.GIPS_OBJECTIVE__EXPR //
 				);

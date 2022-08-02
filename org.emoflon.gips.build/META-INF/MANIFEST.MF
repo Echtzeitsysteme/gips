@@ -4,7 +4,7 @@ Bundle-Name: Gips::Build
 Bundle-SymbolicName: org.emoflon.gips.build;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: org.emoflon.gips.build
-Bundle-RequiredExecutionEnvironment: JavaSE-16
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.emoflon.gips.intermediate;bundle-version="0.1.0",
  org.emoflon.gips.gipsl;bundle-version="1.0.0",
  org.eclipse.core.resources,
@@ -16,3 +16,5 @@ Require-Bundle: org.emoflon.gips.intermediate;bundle-version="0.1.0",
  org.emoflon.ibex.gt,
  org.moflon.core.plugins,
  org.emoflon.gips.core.dependencies
+Bundle-Vendor: Real-Time Systems Lab - TU Darmstadt
+Export-Package: org.emoflon.gips.build.generator.templates

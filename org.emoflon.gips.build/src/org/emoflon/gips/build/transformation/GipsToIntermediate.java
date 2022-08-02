@@ -107,6 +107,9 @@ public class GipsToIntermediate {
 		case GLPK -> {
 			config.setSolver(ILPSolverType.GLPK);
 		}
+		case CPLEX -> {
+			config.setSolver(ILPSolverType.CPLEX);
+		}
 		default -> {
 			throw new IllegalArgumentException("Unsupported solver type: " + eConfig.getSolver());
 		}

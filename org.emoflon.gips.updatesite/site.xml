@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.emoflon.gips.feature_1.0.0.qualifier.jar" id="org.emoflon.gips.feature" version="1.0.0.qualifier">
+      <category name="gips"/>
+   </feature>
+   <category-def name="gips" label="GIPS">
+      <description>
+         Graph-Based ILP Problem Specification Tool
+      </description>
+   </category-def>
+</site>

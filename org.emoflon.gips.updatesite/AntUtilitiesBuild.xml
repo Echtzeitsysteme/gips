@@ -1,0 +1,94 @@
+<project name="org.emoflon.gips.updatesite" default="clean" basedir=".">
+	<description>
+    Helper ant file for the update site of GIPS.
+    </description>
+
+	<property name="buildDirectory" value="build" />
+	<property name="updateSiteArchive" value="${buildDirectory}/updatesite.zip" />
+	<property name="updateSiteSourceProject" value="org.emoflon.gips.updatesite" />
+	<property name="gipsUpdatesiteProject" value="gips-updatesite" />
+	<property name="updateSiteLocationSnapshot" value="${gipsUpdateSiteProjectRoot}/snapshot/updatesite" />
+	<property name="updateSiteLocationStable" value="${gipsUpdateSiteProjectRoot}/stable/updatesite" />
+	<property name="updateSiteLocationBeta" value="${gipsUpdateSiteProjectRoot}/beta/updatesite" />
+
+	<target name="createArchive" description="Creates an archive that contains a ready-to-release update site for GIPS.">
+		<delete file="${updateSiteArchive}" />
+		<zip destfile="${updateSiteArchive}" update="false">
+			<fileset dir="." includes="features/*" excludes="**/*.signedjar" />
+			<fileset dir="." includes="plugins/*" excludes="**/*.signedjar" />
+			<fileset dir="." includes="artifacts.jar" />
+			<fileset dir="." includes="associateSites.xml" />
+			<fileset dir="." includes="changelog.txt" />
+			<fileset dir="." includes="content.jar" />
+			<fileset dir="." includes="ea-ecore-addin.zip" />
+			<fileset dir="." includes="index.html" />
+			<fileset dir="." includes="site.xml" />
+		</zip>
+	</target>
+
+	<target name="clean" description="Remove generated artifacts">
+		<delete dir="${buildDirectory}" />
+		<delete dir="features" />
+		<delete dir="plugins" />
+		<delete file="artifacts.jar" />
+		<delete file="content.jar" />
+		<delete file="logs.zip" />
+	</target>
+	
+	<!--
+      This task triggers Eclipse's refresh for the update-site project.
+      This only works if the ant script is run in the JRE of Eclipse.
+    -->
+	<target name="refresh" description="Refresh update-site project">
+		<eclipse.refreshLocal resource="${updateSiteSourceProject}" depth="infinite" />
+	</target>
+	
+	<target name="releaseSnapshot" depends="createArchive" description="Release snapshot update site">
+		<delete failonerror="false">
+			<fileset dir="${updateSiteLocationSnapshot}">
+				<include name="**/*" />
+			</fileset>
+		</delete>
+		<unzip src="${updateSiteArchive}" dest="${updateSiteLocationSnapshot}">
+		</unzip>
+		<eclipse.refreshLocal resource="${gipsUpdatesiteProject}" depth="infinite" />
+	</target>
+	
+	<target name="releaseBeta" depends="createArchive" description="Release beta update site">
+			<delete failonerror="false">
+				<fileset dir="${updateSiteLocationBeta}">
+					<include name="**/*" />
+				</fileset>
+			</delete>
+			<unzip src="${updateSiteArchive}" dest="${updateSiteLocationBeta}">
+			</unzip>
+			<eclipse.refreshLocal resource="${gipsUpdatesiteProject}" depth="infinite" />
+	</target>
+
+	<target name="releaseStable" depends="createArchive" description="Release stable update site">
+		<delete failonerror="false">
+			<fileset dir="${updateSiteLocationStable}">
+				<include name="**/*" />
+			</fileset>
+		</delete>
+
+		<unzip src="${updateSiteArchive}" dest="${updateSiteLocationStable}">
+		</unzip>
+		<eclipse.refreshLocal resource="${gipsUpdatesiteProject}" depth="infinite" />
+	</target>
+
+	<target name="copyFromStable" description="Copy contents of stable updatesite into this project">
+		<copy todir=".">
+		  <fileset dir="${updateSiteLocationStable}">
+		    <include name="**/*"/>
+		  	<exclude name="changelog.txt"/>
+		  	<exclude name="index.html"/>
+		  	<exclude name="site.xml"/>
+		  	<exclude name="artifacts.jar"/>
+		  	<exclude name="content.jar"/>
+		  </fileset>
+		</copy>
+		<eclipse.refreshLocal resource="${updateSiteSourceProject}" depth="infinite" />
+	</target>
+	
+</project>

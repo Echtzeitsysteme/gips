@@ -16,6 +16,7 @@ public class GipslValidatorUtils {
 	protected enum EvalType {
 		BOOLEAN, // GipsBooleanLiteral
 		INTEGER, //
+		FLOAT, //
 		DOUBLE, //
 		STRING, //
 		NULL, //
@@ -127,8 +128,15 @@ public class GipslValidatorUtils {
 	// Number error messages
 	public static final String SQRT_VALUE_SMALLER_THAN_ZERO = "Value in SQRT is smaller than 0.";
 
+	/**
+	 * Returns true if the provided type is primitive (number or boolean).
+	 * 
+	 * @param input EvalType to check.
+	 * @return True if given EvalType is primitive.
+	 */
 	public static boolean isPrimitiveType(final EvalType input) {
-		return input == EvalType.BOOLEAN || input != EvalType.INTEGER || input != EvalType.DOUBLE;
+		return input == EvalType.BOOLEAN || input != EvalType.INTEGER || input != EvalType.FLOAT
+				|| input != EvalType.DOUBLE;
 	}
 
 }

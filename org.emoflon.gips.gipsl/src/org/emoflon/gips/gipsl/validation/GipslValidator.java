@@ -709,10 +709,9 @@ public class GipslValidator extends AbstractGipslValidator {
 	}
 
 	public EvalType getEvalTypeFromStreamNoArgOp(final GipsStreamNoArgOperator op) {
-		final int val = op.getValue();
-		if (val == GipsStreamNoArgOperator.COUNT_VALUE) {
+		if (op == GipsStreamNoArgOperator.COUNT) {
 			return EvalType.INTEGER;
-		} else if (val == GipsStreamNoArgOperator.NOT_EMPTY_VALUE) {
+		} else if (op == GipsStreamNoArgOperator.NOT_EMPTY) {
 			return EvalType.BOOLEAN;
 		}
 
@@ -861,6 +860,12 @@ public class GipslValidator extends AbstractGipslValidator {
 			// No int
 		}
 		try {
+			Float.valueOf(val);
+			return EvalType.FLOAT;
+		} catch (final NumberFormatException ex) {
+			// No float
+		}
+		try {
 			Double.valueOf(val);
 			return EvalType.DOUBLE;
 		} catch (final NumberFormatException ex) {
@@ -931,8 +936,8 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 
 		// Case: Comparing numbers
-		if ((left == EvalType.INTEGER || left == EvalType.DOUBLE)
-				&& (right == EvalType.INTEGER || right == EvalType.DOUBLE)) {
+		if ((left == EvalType.INTEGER || left == EvalType.FLOAT || left == EvalType.DOUBLE)
+				&& (right == EvalType.INTEGER || right == EvalType.FLOAT || right == EvalType.DOUBLE)) {
 			return EvalType.BOOLEAN;
 		} else if ((left == EvalType.ECLASS || left == EvalType.CONTEXT)
 				&& (right == EvalType.ECLASS || right == EvalType.CONTEXT)) {
@@ -952,29 +957,22 @@ public class GipslValidator extends AbstractGipslValidator {
 	}
 
 	public EvalType combine(final EvalType left, final EvalType right, final GipsExpOperator op) {
-		if (left == EvalType.INTEGER && right == EvalType.INTEGER) {
-			return EvalType.INTEGER;
-		} else if ((left == EvalType.INTEGER || left == EvalType.DOUBLE)
-				&& (right == EvalType.INTEGER || right == EvalType.DOUBLE)) {
-			return EvalType.DOUBLE;
-		} else {
-			return EvalType.ERROR;
-		}
+		return intOrFloatOrDouble(left, right);
 	}
 
 	public EvalType combine(final EvalType left, final EvalType right, final GipsProductOperator op) {
 		// return type must be integer or double
-		return intOrDouble(left, right);
+		return intOrFloatOrDouble(left, right);
 	}
 
 	public EvalType combine(final EvalType left, final EvalType right, final GipsSumOperator op) {
 		// return type must be integer or double
-		return intOrDouble(left, right);
+		return intOrFloatOrDouble(left, right);
 	}
 
 	public EvalType combine(final EvalType operand, final GipsArithmeticUnaryOperator op) {
 		// Case: Operand is not a number
-		if (operand != EvalType.INTEGER && operand != EvalType.DOUBLE) {
+		if (operand != EvalType.INTEGER && operand != EvalType.FLOAT && operand != EvalType.DOUBLE) {
 			return EvalType.ERROR;
 		}
 
@@ -1006,16 +1004,21 @@ public class GipslValidator extends AbstractGipslValidator {
 		return left == EvalType.BOOLEAN ? EvalType.BOOLEAN : EvalType.ERROR;
 	}
 
-	public EvalType intOrDouble(final EvalType left, final EvalType right) {
+	public EvalType intOrFloatOrDouble(final EvalType left, final EvalType right) {
+		// Both are integers
 		if (left == EvalType.INTEGER && right == EvalType.INTEGER) {
 			return EvalType.INTEGER;
-		} else if ((left == EvalType.INTEGER && right == EvalType.DOUBLE) //
-				|| (left == EvalType.DOUBLE && right == EvalType.INTEGER) //
-				|| (left == EvalType.DOUBLE && right == EvalType.DOUBLE)) {
+		} // One is integer and one is float
+		else if (left == EvalType.FLOAT && right == EvalType.INTEGER
+				|| left == EvalType.INTEGER && right == EvalType.FLOAT) {
+			return EvalType.FLOAT;
+		} // One is integer or float and the other is a double
+		else if ((left == EvalType.INTEGER || left == EvalType.FLOAT || left == EvalType.DOUBLE)
+				&& (right == EvalType.INTEGER || right == EvalType.FLOAT || right == EvalType.DOUBLE)) {
 			return EvalType.DOUBLE;
+		} else {
+			return EvalType.ERROR;
 		}
-
-		return EvalType.ERROR;
 	}
 
 	/**

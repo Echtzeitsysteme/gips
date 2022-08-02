@@ -68,3 +68,4 @@ Export-Package: gurobi;version="9.5.2",
  org.logicng.util
 Automatic-Module-Name: org.emoflon.gips.core.dependencies
 Require-Bundle: org.antlr.runtime;visibility:=reexport
+Bundle-Vendor: Real-Time Systems Lab - TU Darmstadt

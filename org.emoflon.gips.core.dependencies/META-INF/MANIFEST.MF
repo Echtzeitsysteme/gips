@@ -10,6 +10,7 @@ Bundle-ClassPath: gurobi-9.5.2.jar,
  logicng-2.2.0.jar,
  cplex-22.1.jar
 Export-Package: gurobi;version="9.5.2",
+ ilog.concert;version="22.1.0",
  ilog.cplex;version="22.1.0",
  org.gnu.glpk;version="1.12.0",
  org.logicng,

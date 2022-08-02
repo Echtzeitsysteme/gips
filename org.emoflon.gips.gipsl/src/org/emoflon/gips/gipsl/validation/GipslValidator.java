@@ -952,7 +952,7 @@ public class GipslValidator extends AbstractGipslValidator {
 	}
 
 	public EvalType combine(final EvalType left, final EvalType right, final GipsExpOperator op) {
-		if (left == EvalType.INTEGER || right == EvalType.INTEGER) {
+		if (left == EvalType.INTEGER && right == EvalType.INTEGER) {
 			return EvalType.INTEGER;
 		} else if ((left == EvalType.INTEGER || left == EvalType.DOUBLE)
 				&& (right == EvalType.INTEGER || right == EvalType.DOUBLE)) {

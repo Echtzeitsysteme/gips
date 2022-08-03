@@ -37,8 +37,25 @@ public class GipslMappingValidator {
 
 		checkMappingNameValid(mapping);
 		checkMappingNameUnique(mapping);
+		checkRuleNotAbstract(mapping);
 		checkAtMostOneMappingPerRule(mapping);
 		checkMappingUnused(mapping);
+	}
+
+	/**
+	 * Checks that the given mapping does not use an abstract rule/pattern.
+	 * 
+	 * @param mapping Mapping to check abstract rule violation for.
+	 */
+	public static void checkRuleNotAbstract(final GipsMapping mapping) {
+		if (mapping == null || mapping.getPattern() == null) {
+			return;
+		}
+
+		if (mapping.getPattern().isAbstract()) {
+			GipslValidator.err(String.format(GipslValidatorUtils.RULE_IS_ABSTRACT, mapping.getName()),
+					GipslPackage.Literals.GIPS_MAPPING__PATTERN);
+		}
 	}
 
 	/**

@@ -100,23 +100,17 @@ public class GipslObjectiveValidator {
 			return false;
 		}
 
-		if (expr instanceof GipsBracketExpr) {
-			final GipsBracketExpr bracketExpr = (GipsBracketExpr) expr;
+		if (expr instanceof GipsBracketExpr bracketExpr) {
 			return containsLocalObjectiveCall(bracketExpr.getOperand());
-		} else if (expr instanceof GipsExpArithmeticExpr) {
-			final GipsExpArithmeticExpr expExpr = (GipsExpArithmeticExpr) expr;
+		} else if (expr instanceof GipsExpArithmeticExpr expExpr) {
 			return containsLocalObjectiveCall(expExpr.getLeft()) || containsLocalObjectiveCall(expExpr.getRight());
-		} else if (expr instanceof GipsExpressionOperand) {
-			final GipsExpressionOperand exprOp = (GipsExpressionOperand) expr;
+		} else if (expr instanceof GipsExpressionOperand exprOp) {
 			return exprOp instanceof GipsObjectiveExpression;
-		} else if (expr instanceof GipsProductArithmeticExpr) {
-			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
+		} else if (expr instanceof GipsProductArithmeticExpr prodExpr) {
 			return containsLocalObjectiveCall(prodExpr.getLeft()) || containsLocalObjectiveCall(prodExpr.getRight());
-		} else if (expr instanceof GipsSumArithmeticExpr) {
-			final GipsSumArithmeticExpr sumExpr = (GipsSumArithmeticExpr) expr;
+		} else if (expr instanceof GipsSumArithmeticExpr sumExpr) {
 			return containsLocalObjectiveCall(sumExpr.getLeft()) || containsLocalObjectiveCall(sumExpr.getRight());
-		} else if (expr instanceof GipsUnaryArithmeticExpr) {
-			final GipsUnaryArithmeticExpr unExpr = (GipsUnaryArithmeticExpr) expr;
+		} else if (expr instanceof GipsUnaryArithmeticExpr unExpr) {
 			return containsLocalObjectiveCall(unExpr.getOperand());
 		}
 
@@ -262,8 +256,7 @@ public class GipslObjectiveValidator {
 			return;
 		}
 
-		if (objective.getExpr() instanceof GipsArithmeticLiteral) {
-			final GipsArithmeticLiteral lit = (GipsArithmeticLiteral) objective.getExpr();
+		if (objective.getExpr() instanceof GipsArithmeticLiteral lit) {
 			if (lit.getValue() != null && lit.getValue().equals("0")) {
 				GipslValidator.warn( //
 						String.format(GipslValidatorUtils.OBJECTIVE_VALUE_IS_ZERO_MESSAGE, objective.getName()), //

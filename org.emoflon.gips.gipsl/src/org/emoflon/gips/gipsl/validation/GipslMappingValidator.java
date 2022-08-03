@@ -160,7 +160,7 @@ public class GipslMappingValidator {
 		if (usedAsContext)
 			return;
 
-		List<GipsConstraint> otherConstraints = container.getConstraints().stream()
+		final List<GipsConstraint> otherConstraints = container.getConstraints().stream()
 				.filter(c -> c.getContext() != null && c.getExpr() != null && c.getExpr().getExpr() != null)
 				.filter(c -> {
 					if (c.getContext() instanceof GipsMappingContext mapContext
@@ -173,7 +173,7 @@ public class GipslMappingValidator {
 					}
 				}).collect(Collectors.toList());
 
-		for (GipsConstraint constraint : otherConstraints) {
+		for (final GipsConstraint constraint : otherConstraints) {
 			Set<GipsMapping> mappings = GipslScopeContextUtil.extractMappings(constraint.getExpr().getExpr());
 			if (mappings.contains(mapping))
 				return;
@@ -190,7 +190,7 @@ public class GipslMappingValidator {
 		if (usedAsContext)
 			return;
 
-		List<GipsObjective> otherObjectives = container.getObjectives().stream()
+		final List<GipsObjective> otherObjectives = container.getObjectives().stream()
 				.filter(c -> c.getContext() != null && c.getExpr() != null).filter(c -> {
 					if (c.getContext() instanceof GipsMappingContext mapContext
 							&& !mapContext.getMapping().equals(mapping)) {
@@ -202,8 +202,8 @@ public class GipslMappingValidator {
 					}
 				}).collect(Collectors.toList());
 
-		for (GipsObjective objective : otherObjectives) {
-			Set<GipsMapping> mappings = GipslScopeContextUtil.extractMappings(objective.getExpr());
+		for (final GipsObjective objective : otherObjectives) {
+			final Set<GipsMapping> mappings = GipslScopeContextUtil.extractMappings(objective.getExpr());
 			if (mappings.contains(mapping))
 				return;
 		}

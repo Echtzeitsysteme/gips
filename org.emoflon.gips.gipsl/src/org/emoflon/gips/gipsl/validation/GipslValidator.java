@@ -218,14 +218,11 @@ public class GipslValidator extends AbstractGipslValidator {
 			throw new IllegalArgumentException();
 		}
 
-		if (expr instanceof GipsBracketExpr) {
-			final GipsBracketExpr bracketExpr = (GipsBracketExpr) expr;
-			return containsSelf(bracketExpr.getOperand(), type);
-		} else if (expr instanceof GipsExpArithmeticExpr) {
-			final GipsExpArithmeticExpr expExpr = (GipsExpArithmeticExpr) expr;
-			return containsSelf(expExpr.getLeft(), type) || containsSelf(expExpr.getRight(), type);
-		} else if (expr instanceof GipsExpressionOperand) {
-			final GipsExpressionOperand exprOp = (GipsExpressionOperand) expr;
+		if (expr instanceof GipsBracketExpr bracket) {
+			return containsSelf(bracket.getOperand(), type);
+		} else if (expr instanceof GipsExpArithmeticExpr exp) {
+			return containsSelf(exp.getLeft(), type) || containsSelf(exp.getRight(), type);
+		} else if (expr instanceof GipsExpressionOperand exprOp) {
 			if (exprOp instanceof GipsArithmeticLiteral) {
 				return false;
 			} else if (exprOp instanceof GipsAttributeExpr) {
@@ -257,15 +254,12 @@ public class GipslValidator extends AbstractGipslValidator {
 
 			throw new UnsupportedOperationException(
 					GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr.eClass() + ">");
-		} else if (expr instanceof GipsProductArithmeticExpr) {
-			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
-			return containsSelf(prodExpr.getLeft(), type) || containsSelf(prodExpr.getRight(), type);
-		} else if (expr instanceof GipsSumArithmeticExpr) {
-			final GipsSumArithmeticExpr sumExpr = (GipsSumArithmeticExpr) expr;
-			return containsSelf(sumExpr.getLeft(), type) || containsSelf(sumExpr.getRight(), type);
-		} else if (expr instanceof GipsUnaryArithmeticExpr) {
-			final GipsUnaryArithmeticExpr unExpr = (GipsUnaryArithmeticExpr) expr;
-			return containsSelf(unExpr.getOperand(), type);
+		} else if (expr instanceof GipsProductArithmeticExpr product) {
+			return containsSelf(product.getLeft(), type) || containsSelf(product.getRight(), type);
+		} else if (expr instanceof GipsSumArithmeticExpr sum) {
+			return containsSelf(sum.getLeft(), type) || containsSelf(sum.getRight(), type);
+		} else if (expr instanceof GipsUnaryArithmeticExpr unary) {
+			return containsSelf(unary.getOperand(), type);
 		} else if (expr instanceof GipsConstant) {
 			return false;
 		}
@@ -293,20 +287,17 @@ public class GipslValidator extends AbstractGipslValidator {
 		if (expr instanceof GipsSelect) {
 			// Stream -> no self
 			return false;
-		} else if (expr instanceof GipsStreamArithmetic) {
+		} else if (expr instanceof GipsStreamArithmetic streamArith) {
 			// sum() -> validate lambda
-			final GipsStreamArithmetic arithExpr = (GipsStreamArithmetic) expr;
-			return containsSelf(arithExpr.getLambda().getExpr(), type);
+			return containsSelf(streamArith.getLambda().getExpr(), type);
 		} else if (expr instanceof GipsStreamBoolExpr) {
 			// Boolean operator -> no self
 			return false;
-		} else if (expr instanceof GipsStreamNavigation) {
-			final GipsStreamNavigation navExpr = (GipsStreamNavigation) expr;
-			return containsSelf(navExpr.getLeft(), type) || containsSelf(navExpr.getRight(), type);
-		} else if (expr instanceof GipsStreamSet) {
+		} else if (expr instanceof GipsStreamNavigation streamNav) {
+			return containsSelf(streamNav.getLeft(), type) || containsSelf(streamNav.getRight(), type);
+		} else if (expr instanceof GipsStreamSet streamSet) {
 			// filter() -> validate lambda
-			final GipsStreamSet setExpr = (GipsStreamSet) expr;
-			return containsSelf(setExpr.getLambda().getExpr(), type);
+			return containsSelf(streamSet.getLambda().getExpr(), type);
 		} else if (expr instanceof GipsContains contains) {
 			return containsSelf(contains.getExpr(), type);
 		}
@@ -382,13 +373,11 @@ public class GipslValidator extends AbstractGipslValidator {
 			return false;
 		}
 
-		if (expr instanceof GipsBracketExpr) {
-			final GipsBracketExpr bracketExpr = (GipsBracketExpr) expr;
-			return validateArithExprDynamic(bracketExpr.getOperand());
-		} else if (expr instanceof GipsExpArithmeticExpr) {
-			final GipsExpArithmeticExpr expExpr = (GipsExpArithmeticExpr) expr;
-			final boolean dynLeft = validateArithExprDynamic(expExpr.getLeft());
-			final boolean dynRight = validateArithExprDynamic(expExpr.getRight());
+		if (expr instanceof GipsBracketExpr bracket) {
+			return validateArithExprDynamic(bracket.getOperand());
+		} else if (expr instanceof GipsExpArithmeticExpr exp) {
+			final boolean dynLeft = validateArithExprDynamic(exp.getLeft());
+			final boolean dynRight = validateArithExprDynamic(exp.getRight());
 			if (dynLeft) {
 				err( //
 						GipslValidatorUtils.EXP_EXPR_NOT_CONSTANT_MESSAGE, //
@@ -404,13 +393,11 @@ public class GipslValidator extends AbstractGipslValidator {
 				);
 			}
 			return dynLeft || dynRight;
-		} else if (expr instanceof GipsExpressionOperand) {
-			final GipsExpressionOperand exprOp = (GipsExpressionOperand) expr;
+		} else if (expr instanceof GipsExpressionOperand exprOp) {
 			if (exprOp instanceof GipsArithmeticLiteral) {
 				return false;
 			} else if (exprOp instanceof GipsAttributeExpr) {
-				if (exprOp instanceof GipsContextExpr) {
-					final GipsContextExpr conExpr = (GipsContextExpr) exprOp;
+				if (exprOp instanceof GipsContextExpr conExpr) {
 					// Currently only MAPPED and VALUE are supported -> Both are dynamic
 					return conExpr.getExpr() instanceof GipsContextOperationExpression;
 					// TODO: Use the solution below. But, in order for this to work, we need to
@@ -455,10 +442,9 @@ public class GipslValidator extends AbstractGipslValidator {
 
 			throw new UnsupportedOperationException(
 					GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr + ">");
-		} else if (expr instanceof GipsProductArithmeticExpr) {
-			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
-			final boolean dynLeft = validateArithExprDynamic(prodExpr.getLeft());
-			final boolean dynRight = validateArithExprDynamic(prodExpr.getRight());
+		} else if (expr instanceof GipsProductArithmeticExpr prod) {
+			final boolean dynLeft = validateArithExprDynamic(prod.getLeft());
+			final boolean dynRight = validateArithExprDynamic(prod.getRight());
 			if (dynLeft && dynRight) {
 				err( //
 						GipslValidatorUtils.PRODUCT_EXPR_NOT_CONSTANT_MESSAGE, //
@@ -467,11 +453,9 @@ public class GipslValidator extends AbstractGipslValidator {
 				);
 			}
 			return dynLeft || dynRight;
-		} else if (expr instanceof GipsSumArithmeticExpr) {
-			final GipsSumArithmeticExpr sumExpr = (GipsSumArithmeticExpr) expr;
+		} else if (expr instanceof GipsSumArithmeticExpr sumExpr) {
 			return validateArithExprDynamic(sumExpr.getLeft()) | validateArithExprDynamic(sumExpr.getRight());
-		} else if (expr instanceof GipsUnaryArithmeticExpr) {
-			final GipsUnaryArithmeticExpr unExpr = (GipsUnaryArithmeticExpr) expr;
+		} else if (expr instanceof GipsUnaryArithmeticExpr unExpr) {
 			final boolean isDyn = validateArithExprDynamic(unExpr.getOperand());
 			if (isDyn && unExpr.getOperator() != GipsArithmeticUnaryOperator.NEG) {
 				err( //
@@ -494,15 +478,12 @@ public class GipslValidator extends AbstractGipslValidator {
 			return false;
 		}
 
-		if (expr instanceof GipsStreamNavigation) {
-			final GipsStreamNavigation nav = (GipsStreamNavigation) expr;
+		if (expr instanceof GipsStreamNavigation nav) {
 			return validateStreamExprDynamic(nav.getLeft()) | validateStreamExprDynamic(nav.getRight());
-		} else if (expr instanceof GipsStreamSet) { // .filter(...)
-			final GipsStreamSet set = (GipsStreamSet) expr;
+		} else if (expr instanceof GipsStreamSet set) { // .filter(...)
 			// set.getOperator(); // operator is always a filter -> output is a set
 			return validateBoolExprDynamic(set.getLambda().getExpr());
-		} else if (expr instanceof GipsStreamArithmetic) { // .sum(...)
-			final GipsStreamArithmetic arith = (GipsStreamArithmetic) expr;
+		} else if (expr instanceof GipsStreamArithmetic arith) { // .sum(...)
 			// arith.getOperator(); // operator is always an integer/a double
 			return validateBoolExprDynamic(arith.getLambda().getExpr());
 		} else if (expr instanceof GipsStreamBoolExpr) { // .exists(); .notExists(); .count()
@@ -593,37 +574,32 @@ public class GipslValidator extends AbstractGipslValidator {
 		EvalType output = EvalType.ERROR;
 		boolean leaf = true;
 
-		if (expr instanceof GipsBracketExpr) {
-			final GipsBracketExpr brack = (GipsBracketExpr) expr;
+		if (expr instanceof GipsBracketExpr brack) {
 			output = getEvalTypeFromArithExpr(brack.getOperand());
 			leaf = false;
-		} else if (expr instanceof GipsExpArithmeticExpr) {
-			final GipsExpArithmeticExpr exp = (GipsExpArithmeticExpr) expr;
+		} else if (expr instanceof GipsExpArithmeticExpr exp) {
 			final EvalType leftType = getEvalTypeDelegate(exp.getLeft());
 			final EvalType rightType = getEvalTypeDelegate(exp.getRight());
 			output = combine(leftType, rightType, exp.getOperator());
-		} else if (expr instanceof GipsProductArithmeticExpr) {
-			final GipsProductArithmeticExpr prod = (GipsProductArithmeticExpr) expr;
+		} else if (expr instanceof GipsProductArithmeticExpr prod) {
 			final EvalType leftType = getEvalTypeDelegate(prod.getLeft());
 			final EvalType rightType = getEvalTypeDelegate(prod.getRight());
 			output = combine(leftType, rightType, prod.getOperator());
-		} else if (expr instanceof GipsSumArithmeticExpr) {
-			final GipsSumArithmeticExpr sum = (GipsSumArithmeticExpr) expr;
+		} else if (expr instanceof GipsSumArithmeticExpr sum) {
 			final EvalType leftType = getEvalTypeDelegate(sum.getLeft());
 			final EvalType rightType = getEvalTypeDelegate(sum.getRight());
 			output = combine(leftType, rightType, sum.getOperator());
-		} else if (expr instanceof GipsUnaryArithmeticExpr) {
-			final EvalType operand = getEvalTypeFromArithExpr(((GipsUnaryArithmeticExpr) expr).getOperand());
-			output = combine(operand, ((GipsUnaryArithmeticExpr) expr).getOperator());
+		} else if (expr instanceof GipsUnaryArithmeticExpr unary) {
+			final EvalType operand = getEvalTypeFromArithExpr(unary.getOperand());
+			output = combine(operand, unary.getOperator());
 
 			// Special case: sqrt(<0) should display an error -> Implementation for
 			// constants (basic)
 			// This could later be extended to also check more complex expressions or it
 			// could be integrated into the ILP validator
 			if (((GipsUnaryArithmeticExpr) expr).getOperator() == GipsArithmeticUnaryOperator.SQRT) {
-				final GipsArithmeticExpr inSqrt = ((GipsUnaryArithmeticExpr) expr).getOperand();
-				if (inSqrt instanceof GipsArithmeticLiteral) {
-					final GipsArithmeticLiteral lit = (GipsArithmeticLiteral) inSqrt;
+				final GipsArithmeticExpr inSqrt = unary.getOperand();
+				if (inSqrt instanceof GipsArithmeticLiteral lit) {
 					try {
 						final double val = Double.valueOf(lit.getValue());
 						if (val < 0) {
@@ -638,8 +614,8 @@ public class GipslValidator extends AbstractGipslValidator {
 					}
 				}
 			}
-		} else if (expr instanceof GipsExpressionOperand) {
-			output = getEvalTypeFromExprOp((GipsExpressionOperand) expr);
+		} else if (expr instanceof GipsExpressionOperand expressionOp) {
+			output = getEvalTypeFromExprOp(expressionOp);
 			leaf = false;
 		}
 
@@ -699,14 +675,14 @@ public class GipslValidator extends AbstractGipslValidator {
 	}
 
 	public static EvalType getEvalTypeFromExprOp(final GipsExpressionOperand op) {
-		if (op instanceof GipsArithmeticLiteral) {
-			return getEvalTypeFromArithLit((GipsArithmeticLiteral) op);
-		} else if (op instanceof GipsAttributeExpr) {
-			return getEvalTypeFromAttrExpr((GipsAttributeExpr) op);
+		if (op instanceof GipsArithmeticLiteral lit) {
+			return getEvalTypeFromArithLit(lit);
+		} else if (op instanceof GipsAttributeExpr attr) {
+			return getEvalTypeFromAttrExpr(attr);
 		} else if (op instanceof GipsObjectiveExpression) {
 			return EvalType.OBJECTIVE;
-		} else if (op instanceof GipsConstant) {
-			return getEvalTypeFromGipsConst((GipsConstant) op);
+		} else if (op instanceof GipsConstant constant) {
+			return getEvalTypeFromGipsConst(constant);
 		}
 
 		return EvalType.ERROR;
@@ -733,11 +709,9 @@ public class GipslValidator extends AbstractGipslValidator {
 			return getEvalTypeFromStreamExpr(patternExpr.getExpr());
 		} else if (expr instanceof GipsTypeAttributeExpr typeExpr) {
 			return getEvalTypeFromStreamExpr(typeExpr.getExpr());
-		} else if (expr instanceof GipsContextExpr) {
-			final GipsContextExpr conExpr = (GipsContextExpr) expr;
+		} else if (expr instanceof GipsContextExpr conExpr) {
 			return getEvalTypeFromContextExpr(conExpr);
-		} else if (expr instanceof GipsLambdaAttributeExpression) {
-			final GipsLambdaAttributeExpression lambExpr = (GipsLambdaAttributeExpression) expr;
+		} else if (expr instanceof GipsLambdaAttributeExpression lambExpr) {
 			return getEvalTypeFromLambdaAttrExpr(lambExpr);
 		} else if (expr instanceof GipsLambdaSelfExpression lSelf) {
 			return getEvalTypeFromLambdaAttrExpr(lSelf);
@@ -747,21 +721,17 @@ public class GipslValidator extends AbstractGipslValidator {
 	}
 
 	public static EvalType getEvalTypeFromStreamExpr(final GipsStreamExpr expr) {
-		if (expr instanceof GipsStreamNavigation) {
-			final GipsStreamNavigation nav = (GipsStreamNavigation) expr;
+		if (expr instanceof GipsStreamNavigation nav) {
 			return getEvalTypeFromStreamNav(nav);
-		} else if (expr instanceof GipsStreamSet) { // .filter(...)
-			final GipsStreamSet set = (GipsStreamSet) expr;
+		} else if (expr instanceof GipsStreamSet set) { // .filter(...)
 			// set.getOperator(); // operator is always a filter -> output is a set
 			validateLambdaExpr(set.getLambda());
 			return EvalType.SET;
-		} else if (expr instanceof GipsStreamArithmetic) { // .sum(...)
-			final GipsStreamArithmetic arith = (GipsStreamArithmetic) expr;
+		} else if (expr instanceof GipsStreamArithmetic arith) { // .sum(...)
 			// arith.getOperator(); // operator is always an integer/a double
 			validateLambdaExpr(arith.getLambda());
 			return EvalType.DOUBLE;
-		} else if (expr instanceof GipsStreamBoolExpr) { // .exists(); .notExists(); .count()
-			final GipsStreamBoolExpr boolExpr = (GipsStreamBoolExpr) expr;
+		} else if (expr instanceof GipsStreamBoolExpr boolExpr) { // .exists(); .notExists(); .count()
 			return getEvalTypeFromStreamNoArgOp(boolExpr.getOperator());
 		} else if (expr instanceof GipsSelect) {
 			return EvalType.STREAM;
@@ -817,12 +787,12 @@ public class GipslValidator extends AbstractGipslValidator {
 
 	public static EvalType getEvalTypeFromLambdaAttrExpr(final GipsLambdaAttributeExpression expr) {
 		final EObject innerExpr = expr.getExpr();
-		if (innerExpr instanceof GipsNodeAttributeExpr) {
-			return getEvalTypeFromNodeAttrExpr((GipsNodeAttributeExpr) innerExpr);
-		} else if (innerExpr instanceof GipsContextOperationExpression) {
-			return getEvalTypeFromContextOpExpr((GipsContextOperationExpression) innerExpr);
-		} else if (innerExpr instanceof GipsFeatureExpr) {
-			return getEvalTypeFromFeatureExpr((GipsFeatureExpr) innerExpr);
+		if (innerExpr instanceof GipsNodeAttributeExpr node) {
+			return getEvalTypeFromNodeAttrExpr(node);
+		} else if (innerExpr instanceof GipsContextOperationExpression contextOp) {
+			return getEvalTypeFromContextOpExpr(contextOp);
+		} else if (innerExpr instanceof GipsFeatureExpr featureExpr) {
+			return getEvalTypeFromFeatureExpr(featureExpr);
 		}
 
 		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
@@ -836,12 +806,12 @@ public class GipslValidator extends AbstractGipslValidator {
 		EvalType exprEval = EvalType.CONTEXT;
 		if (expr.getExpr() != null) {
 			final EObject innerExpr = expr.getExpr();
-			if (innerExpr instanceof GipsNodeAttributeExpr) {
-				exprEval = getEvalTypeFromNodeAttrExpr((GipsNodeAttributeExpr) innerExpr);
-			} else if (innerExpr instanceof GipsContextOperationExpression) {
-				exprEval = getEvalTypeFromContextOpExpr((GipsContextOperationExpression) innerExpr);
-			} else if (innerExpr instanceof GipsFeatureExpr) {
-				exprEval = getEvalTypeFromFeatureExpr((GipsFeatureExpr) innerExpr);
+			if (innerExpr instanceof GipsNodeAttributeExpr nodeAttr) {
+				exprEval = getEvalTypeFromNodeAttrExpr(nodeAttr);
+			} else if (innerExpr instanceof GipsContextOperationExpression contextOp) {
+				exprEval = getEvalTypeFromContextOpExpr(contextOp);
+			} else if (innerExpr instanceof GipsFeatureExpr featureExpr) {
+				exprEval = getEvalTypeFromFeatureExpr(featureExpr);
 			}
 		}
 
@@ -889,8 +859,7 @@ public class GipslValidator extends AbstractGipslValidator {
 	}
 
 	public static EvalType getEvalTypeFromFeatureExpr(final GipsFeatureExpr expr) {
-		if (expr instanceof GipsFeatureNavigation) {
-			final GipsFeatureNavigation nav = (GipsFeatureNavigation) expr;
+		if (expr instanceof GipsFeatureNavigation nav) {
 			final EvalType leftType = getEvalTypeFromFeatureExpr(nav.getLeft());
 			final EvalType rightType = getEvalTypeFromFeatureExpr(nav.getRight());
 
@@ -901,8 +870,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			} else {
 				throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 			}
-		} else if (expr instanceof GipsFeatureLit) {
-			final GipsFeatureLit lit = (GipsFeatureLit) expr;
+		} else if (expr instanceof GipsFeatureLit lit) {
 			final EStructuralFeature esf = lit.getFeature();
 
 			// EReference: Set or object
@@ -984,16 +952,16 @@ public class GipslValidator extends AbstractGipslValidator {
 			return null;
 		}
 
-		if (e instanceof GipsBoolExpr) {
-			return getEvalTypeFromBoolExpr((GipsBoolExpr) e);
-		} else if (e instanceof GipsArithmeticExpr) {
-			return getEvalTypeFromArithExpr((GipsArithmeticExpr) e);
-		} else if (e instanceof GipsBool) {
-			return getEvalTypeFromBoolExpr(((GipsBool) e).getExpr());
-		} else if (e instanceof GipsStreamSet) {
-			return getEvalTypeFromStreamSet((GipsStreamSet) e);
-		} else if (e instanceof GipsStreamBoolExpr) {
-			return getEvalTypeFromStreamExpr((GipsStreamBoolExpr) e);
+		if (e instanceof GipsBoolExpr bool) {
+			return getEvalTypeFromBoolExpr(bool);
+		} else if (e instanceof GipsArithmeticExpr arith) {
+			return getEvalTypeFromArithExpr(arith);
+		} else if (e instanceof GipsBool bool) {
+			return getEvalTypeFromBoolExpr(bool.getExpr());
+		} else if (e instanceof GipsStreamSet streamSet) {
+			return getEvalTypeFromStreamSet(streamSet);
+		} else if (e instanceof GipsStreamBoolExpr streamBool) {
+			return getEvalTypeFromStreamExpr(streamBool);
 		}
 
 		return EvalType.ERROR;
@@ -1171,8 +1139,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 
 		// Check if literal is constant
-		if (expr.getExpr() instanceof GipsBooleanLiteral) {
-			final GipsBooleanLiteral lit = (GipsBooleanLiteral) expr.getExpr();
+		if (expr.getExpr() instanceof GipsBooleanLiteral lit) {
 			final String warning = String.valueOf(lit.isLiteral());
 			warn( //
 					String.format(GipslValidatorUtils.LAMBDA_EXPR_EVAL_LITERAL_MESSAGE, warning), //

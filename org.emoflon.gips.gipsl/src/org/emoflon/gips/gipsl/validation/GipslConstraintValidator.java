@@ -136,19 +136,15 @@ public class GipslConstraintValidator {
 			return false;
 		}
 
-		if (expr instanceof GipsBracketExpr) {
-			final GipsBracketExpr bracketExpr = (GipsBracketExpr) expr;
+		if (expr instanceof GipsBracketExpr bracketExpr) {
 			return containsMappingCheckValue(bracketExpr.getOperand());
-		} else if (expr instanceof GipsExpArithmeticExpr) {
-			final GipsExpArithmeticExpr expExpr = (GipsExpArithmeticExpr) expr;
+		} else if (expr instanceof GipsExpArithmeticExpr expExpr) {
 			return containsMappingCheckValue(expExpr.getLeft()) || containsMappingCheckValue(expExpr.getRight());
-		} else if (expr instanceof GipsExpressionOperand) {
-			final GipsExpressionOperand exprOp = (GipsExpressionOperand) expr;
+		} else if (expr instanceof GipsExpressionOperand exprOp) {
 			if (exprOp instanceof GipsArithmeticLiteral) {
 				return false;
 			} else if (exprOp instanceof GipsAttributeExpr) {
-				if (exprOp instanceof GipsContextExpr) {
-					final GipsContextExpr conExpr = (GipsContextExpr) exprOp;
+				if (exprOp instanceof GipsContextExpr conExpr) {
 					// Streams can be ignored
 					return conExpr.getExpr() instanceof GipsContextOperationExpression;
 				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
@@ -165,14 +161,11 @@ public class GipslConstraintValidator {
 					return false;
 				}
 			}
-		} else if (expr instanceof GipsProductArithmeticExpr) {
-			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
+		} else if (expr instanceof GipsProductArithmeticExpr prodExpr) {
 			return containsMappingCheckValue(prodExpr.getLeft()) || containsMappingCheckValue(prodExpr.getRight());
-		} else if (expr instanceof GipsSumArithmeticExpr) {
-			final GipsSumArithmeticExpr sumExpr = (GipsSumArithmeticExpr) expr;
+		} else if (expr instanceof GipsSumArithmeticExpr sumExpr) {
 			return containsMappingCheckValue(sumExpr.getLeft()) || containsMappingCheckValue(sumExpr.getRight());
-		} else if (expr instanceof GipsUnaryArithmeticExpr) {
-			final GipsUnaryArithmeticExpr unExpr = (GipsUnaryArithmeticExpr) expr;
+		} else if (expr instanceof GipsUnaryArithmeticExpr unExpr) {
 			return containsMappingCheckValue(unExpr.getOperand());
 		}
 
@@ -251,19 +244,15 @@ public class GipslConstraintValidator {
 			return false;
 		}
 
-		if (expr instanceof GipsBracketExpr) {
-			final GipsBracketExpr bracketExpr = (GipsBracketExpr) expr;
+		if (expr instanceof GipsBracketExpr bracketExpr) {
 			return containsMappingsCall(bracketExpr.getOperand());
-		} else if (expr instanceof GipsExpArithmeticExpr) {
-			final GipsExpArithmeticExpr expExpr = (GipsExpArithmeticExpr) expr;
+		} else if (expr instanceof GipsExpArithmeticExpr expExpr) {
 			return containsMappingsCall(expExpr.getLeft()) || containsMappingsCall(expExpr.getRight());
-		} else if (expr instanceof GipsExpressionOperand) {
-			final GipsExpressionOperand exprOp = (GipsExpressionOperand) expr;
+		} else if (expr instanceof GipsExpressionOperand exprOp) {
 			if (exprOp instanceof GipsArithmeticLiteral) {
 				return false;
 			} else if (exprOp instanceof GipsAttributeExpr) {
-				if (exprOp instanceof GipsContextExpr) {
-					final GipsContextExpr conExpr = (GipsContextExpr) exprOp;
+				if (exprOp instanceof GipsContextExpr conExpr) {
 					if (streamContainsMappingsCall(conExpr.getStream())) {
 						return true;
 					}
@@ -284,14 +273,11 @@ public class GipslConstraintValidator {
 					return streamContainsMappingsCall(typeExpr.getExpr());
 				}
 			}
-		} else if (expr instanceof GipsProductArithmeticExpr) {
-			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
+		} else if (expr instanceof GipsProductArithmeticExpr prodExpr) {
 			return containsMappingsCall(prodExpr.getLeft()) || containsMappingsCall(prodExpr.getRight());
-		} else if (expr instanceof GipsSumArithmeticExpr) {
-			final GipsSumArithmeticExpr sumExpr = (GipsSumArithmeticExpr) expr;
+		} else if (expr instanceof GipsSumArithmeticExpr sumExpr) {
 			return containsMappingsCall(sumExpr.getLeft()) || containsMappingsCall(sumExpr.getRight());
-		} else if (expr instanceof GipsUnaryArithmeticExpr) {
-			final GipsUnaryArithmeticExpr unExpr = (GipsUnaryArithmeticExpr) expr;
+		} else if (expr instanceof GipsUnaryArithmeticExpr unExpr) {
 			return containsMappingsCall(unExpr.getOperand());
 		}
 
@@ -311,16 +297,13 @@ public class GipslConstraintValidator {
 
 		if (expr instanceof GipsSelect) {
 			return false;
-		} else if (expr instanceof GipsStreamArithmetic) {
-			final GipsStreamArithmetic arithExpr = (GipsStreamArithmetic) expr;
+		} else if (expr instanceof GipsStreamArithmetic arithExpr) {
 			return containsMappingsCall(arithExpr.getLambda().getExpr());
 		} else if (expr instanceof GipsStreamBoolExpr) {
 			return false;
-		} else if (expr instanceof GipsStreamNavigation) {
-			final GipsStreamNavigation nav = (GipsStreamNavigation) expr;
+		} else if (expr instanceof GipsStreamNavigation nav) {
 			return streamContainsMappingsCall(nav.getLeft()) || streamContainsMappingsCall(nav.getRight());
-		} else if (expr instanceof GipsStreamSet) {
-			final GipsStreamSet set = (GipsStreamSet) expr;
+		} else if (expr instanceof GipsStreamSet set) {
 			return containsMappingsCall(set.getLambda().getExpr());
 		} else if (expr instanceof GipsContains contains) {
 			return containsMappingsCall(contains.getExpr());
@@ -350,8 +333,7 @@ public class GipslConstraintValidator {
 		boolean leftMapping = false;
 		boolean rightMapping = false;
 
-		if (expr instanceof GipsRelExpr) {
-			final GipsRelExpr relExpr = (GipsRelExpr) expr;
+		if (expr instanceof GipsRelExpr relExpr) {
 			leftMapping = containsMappingsCall(relExpr.getLeft());
 			rightMapping = containsMappingsCall(relExpr.getRight());
 		} else if (expr instanceof GipsBoolExpr) {
@@ -400,8 +382,7 @@ public class GipslConstraintValidator {
 			return;
 		}
 
-		if (constraint.getExpr().getExpr() instanceof GipsBooleanLiteral) {
-			final GipsBooleanLiteral lit = (GipsBooleanLiteral) constraint.getExpr().getExpr();
+		if (constraint.getExpr().getExpr() instanceof GipsBooleanLiteral lit) {
 			final String warning = String.valueOf(lit.isLiteral());
 			GipslValidator.warn( //
 					String.format(GipslValidatorUtils.CONSTRAINT_EVAL_LITERAL_MESSAGE, warning), //
@@ -461,8 +442,7 @@ public class GipslConstraintValidator {
 			return;
 		}
 
-		if (expr instanceof GipsRelExpr) {
-			final GipsRelExpr relExpr = (GipsRelExpr) expr;
+		if (expr instanceof GipsRelExpr relExpr) {
 			leftSelf = GipslValidator.containsSelf(relExpr.getLeft(), type);
 			rightSelf = GipslValidator.containsSelf(relExpr.getRight(), type);
 		} else if (expr instanceof GipsBoolExpr) {
@@ -527,8 +507,7 @@ public class GipslConstraintValidator {
 		boolean leftDynamic = false;
 		boolean rightDynamic = false;
 
-		if (expr instanceof GipsRelExpr) {
-			final GipsRelExpr relExpr = (GipsRelExpr) expr;
+		if (expr instanceof GipsRelExpr relExpr) {
 			leftDynamic = GipslValidator.validateArithExprDynamic(relExpr.getLeft());
 			rightDynamic = GipslValidator.validateArithExprDynamic(relExpr.getRight());
 		} else if (expr instanceof GipsBoolExpr) {

@@ -15,6 +15,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsSumArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.validation.GipslValidatorUtils.ContextType;
+import org.emoflon.gips.gipsl.validation.GipslValidatorUtils.EvalType;
 
 public class GipslObjectiveValidator {
 
@@ -154,8 +155,8 @@ public class GipslObjectiveValidator {
 		checkObjectiveHasSelf(objective);
 
 		// Check expression evaluation type
-		final GipslValidatorUtils.EvalType eval = GipslValidator.getEvalTypeFromArithExpr(objective.getExpr());
-		if (eval != GipslValidatorUtils.EvalType.INTEGER && eval != GipslValidatorUtils.EvalType.DOUBLE) {
+		final EvalType eval = GipslValidator.getEvalTypeFromArithExpr(objective.getExpr());
+		if (!GipslValidatorUtils.isNumber(eval)) {
 			GipslValidator.err( //
 					GipslValidatorUtils.OBJECTIVE_EVAL_NOT_NUMBER_MESSAGE, //
 					GipslPackage.Literals.GIPS_OBJECTIVE__EXPR //

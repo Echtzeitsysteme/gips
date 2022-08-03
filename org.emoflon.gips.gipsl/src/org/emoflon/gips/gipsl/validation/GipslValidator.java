@@ -3,8 +3,9 @@
  */
 package org.emoflon.gips.gipsl.validation;
 
-import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.xtext.validation.Check;
@@ -91,7 +92,7 @@ public class GipslValidator extends AbstractGipslValidator {
 	 */
 	private static GipslValidator val;
 
-	public GipslValidator() {
+	protected GipslValidator() {
 		if (val != null) {
 			throw new UnsupportedOperationException("Only one instance of the GIPSL validator can be created!");
 		}
@@ -152,23 +153,25 @@ public class GipslValidator extends AbstractGipslValidator {
 		getInstance().error(message, source, feature);
 	}
 
-	public static void err(String message, EStructuralFeature feature, String code, String... issueData) {
+	public static void err(final String message, final EStructuralFeature feature, final String code,
+			final String... issueData) {
 		getInstance().error(message, feature, code, issueData);
 	}
 
-	public static void err(String message, EStructuralFeature feature) {
+	public static void err(final String message, final EStructuralFeature feature) {
 		getInstance().error(message, feature);
 	}
 
-	public static void warn(String message, EStructuralFeature feature, String code, String... issueData) {
+	public static void warn(final String message, final EStructuralFeature feature, final String code,
+			final String... issueData) {
 		getInstance().warning(message, feature, code, issueData);
 	}
 
-	public static void warn(String message, EStructuralFeature feature) {
+	public static void warn(final String message, final EStructuralFeature feature) {
 		getInstance().warning(message, feature);
 	}
 
-	public static void warn(String message, EObject source, EStructuralFeature feature) {
+	public static void warn(final String message, final EObject source, final EStructuralFeature feature) {
 		getInstance().warning(message, source, feature);
 	}
 
@@ -622,7 +625,7 @@ public class GipslValidator extends AbstractGipslValidator {
 				if (inSqrt instanceof GipsArithmeticLiteral) {
 					final GipsArithmeticLiteral lit = (GipsArithmeticLiteral) inSqrt;
 					try {
-						double val = Double.valueOf(lit.getValue());
+						final double val = Double.valueOf(lit.getValue());
 						if (val < 0) {
 							err( //
 									GipslValidatorUtils.SQRT_VALUE_SMALLER_THAN_ZERO, //
@@ -900,21 +903,33 @@ public class GipslValidator extends AbstractGipslValidator {
 			}
 		} else if (expr instanceof GipsFeatureLit) {
 			final GipsFeatureLit lit = (GipsFeatureLit) expr;
-			final EClassifier ecl = lit.getFeature().getEType();
+			final EStructuralFeature esf = lit.getFeature();
 
-			if (lit.getFeature().getUpperBound() == -1 || lit.getFeature().getUpperBound() > 1) {
-				// Upper bound is larger than 1 or -1 (no limit)
-				return EvalType.SET;
-			} else if (ecl == EcorePackage.Literals.EDOUBLE || ecl == EcorePackage.Literals.ELONG) {
-				return EvalType.DOUBLE;
-			} else if (ecl == EcorePackage.Literals.EINT) {
-				return EvalType.INTEGER;
-			} else if (ecl == EcorePackage.Literals.ESTRING) {
-				return EvalType.STRING;
-			} else {
-				return EvalType.ECLASS;
+			// EReference: Set or object
+			if (esf instanceof EReference) {
+				if (lit.getFeature().getUpperBound() == -1 || lit.getFeature().getUpperBound() > 1) {
+					// Upper bound is larger than 1 or -1 (no limit)
+					return EvalType.SET;
+				} else {
+					return EvalType.ECLASS;
+				}
+			} else if (esf instanceof EAttribute) {
+				// Attribute: Check which type of attribute
+				if (esf.getEType() == EcorePackage.Literals.EINT) {
+					return EvalType.INTEGER;
+				} else if (esf.getEType() == EcorePackage.Literals.ELONG) {
+					return EvalType.LONG;
+				} else if (esf.getEType() == EcorePackage.Literals.EDOUBLE) {
+					return EvalType.DOUBLE;
+				} else if (esf.getEType() == EcorePackage.Literals.EFLOAT) {
+					return EvalType.FLOAT;
+				} else if (esf.getEType() == EcorePackage.Literals.ESTRING) {
+					return EvalType.STRING;
+				} else {
+					return EvalType.ECLASS;
+				}
+				// Type cast must not be checked
 			}
-			// Type cast must not be checked
 		}
 
 		return EvalType.ERROR;
@@ -943,6 +958,12 @@ public class GipslValidator extends AbstractGipslValidator {
 			return EvalType.INTEGER;
 		} catch (final NumberFormatException ex) {
 			// No int
+		}
+		try {
+			Long.valueOf(val);
+			return EvalType.LONG;
+		} catch (final NumberFormatException ex) {
+			// No long
 		}
 		try {
 			Float.valueOf(val);
@@ -1022,8 +1043,9 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 
 		// Case: Comparing numbers
-		if ((left == EvalType.INTEGER || left == EvalType.FLOAT || left == EvalType.DOUBLE)
-				&& (right == EvalType.INTEGER || right == EvalType.FLOAT || right == EvalType.DOUBLE)) {
+		if ((left == EvalType.INTEGER || left == EvalType.LONG || left == EvalType.FLOAT || left == EvalType.DOUBLE)
+				&& (right == EvalType.INTEGER || right == EvalType.LONG || right == EvalType.FLOAT
+						|| right == EvalType.DOUBLE)) {
 			return EvalType.BOOLEAN;
 		} else if ((left == EvalType.ECLASS || left == EvalType.CONTEXT)
 				&& (right == EvalType.ECLASS || right == EvalType.CONTEXT)) {
@@ -1043,22 +1065,23 @@ public class GipslValidator extends AbstractGipslValidator {
 	}
 
 	public static EvalType combine(final EvalType left, final EvalType right, final GipsExpOperator op) {
-		return intOrFloatOrDouble(left, right);
+		return getNumberType(left, right);
 	}
 
 	public static EvalType combine(final EvalType left, final EvalType right, final GipsProductOperator op) {
-		// return type must be integer or double
-		return intOrFloatOrDouble(left, right);
+		// return type must be a number
+		return getNumberType(left, right);
 	}
 
 	public static EvalType combine(final EvalType left, final EvalType right, final GipsSumOperator op) {
-		// return type must be integer or double
-		return intOrFloatOrDouble(left, right);
+		// return type must be a number
+		return getNumberType(left, right);
 	}
 
 	public static EvalType combine(final EvalType operand, final GipsArithmeticUnaryOperator op) {
 		// Case: Operand is not a number
-		if (operand != EvalType.INTEGER && operand != EvalType.FLOAT && operand != EvalType.DOUBLE) {
+		if (operand != EvalType.INTEGER && operand != EvalType.LONG && operand != EvalType.FLOAT
+				&& operand != EvalType.DOUBLE) {
 			return EvalType.ERROR;
 		}
 
@@ -1090,21 +1113,39 @@ public class GipslValidator extends AbstractGipslValidator {
 		return left == EvalType.BOOLEAN ? EvalType.BOOLEAN : EvalType.ERROR;
 	}
 
-	public static EvalType intOrFloatOrDouble(final EvalType left, final EvalType right) {
-		// Both are integers
-		if (left == EvalType.INTEGER && right == EvalType.INTEGER) {
-			return EvalType.INTEGER;
-		} // One is integer and one is float
-		else if (left == EvalType.FLOAT && right == EvalType.INTEGER
-				|| left == EvalType.INTEGER && right == EvalType.FLOAT) {
-			return EvalType.FLOAT;
-		} // One is integer or float and the other is a double
-		else if ((left == EvalType.INTEGER || left == EvalType.FLOAT || left == EvalType.DOUBLE)
-				&& (right == EvalType.INTEGER || right == EvalType.FLOAT || right == EvalType.DOUBLE)) {
-			return EvalType.DOUBLE;
-		} else {
+	public static EvalType getNumberType(final EvalType left, final EvalType right) {
+		// Check that both inputs are numbers
+		if (!GipslValidatorUtils.isNumber(left) || !GipslValidatorUtils.isNumber(right)) {
 			return EvalType.ERROR;
 		}
+
+		// Both are integers = integer
+		if (left == EvalType.INTEGER && right == EvalType.INTEGER) {
+			return EvalType.INTEGER;
+		}
+
+		// At least one is long and the other is not a float or double = long
+		else if (left == EvalType.LONG && right != EvalType.FLOAT && right != EvalType.DOUBLE
+				|| left != EvalType.FLOAT && left != EvalType.DOUBLE && right == EvalType.LONG) {
+			return EvalType.LONG;
+		}
+
+		// One is float and the other is not a double = float
+		else if (left == EvalType.FLOAT && right != EvalType.DOUBLE
+				|| left != EvalType.DOUBLE && right == EvalType.FLOAT) {
+			return EvalType.FLOAT;
+		}
+
+		// One is double and the other is a number = double
+		else if ((left == EvalType.INTEGER || left == EvalType.LONG || left == EvalType.FLOAT
+				|| left == EvalType.DOUBLE)
+				&& (right == EvalType.INTEGER || right == EvalType.LONG || right == EvalType.FLOAT
+						|| right == EvalType.DOUBLE)) {
+			return EvalType.DOUBLE;
+		}
+
+		// Everything else must be an implementation error
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	/**

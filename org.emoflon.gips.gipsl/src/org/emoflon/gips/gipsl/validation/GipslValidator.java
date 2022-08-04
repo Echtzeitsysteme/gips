@@ -333,8 +333,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			return containsSelf(brack.getOperand(), type);
 		} else if (expr instanceof GipsBooleanLiteral) {
 			return false;
-		} else if (expr instanceof GipsRelExpr) {
-			final GipsRelExpr relExpr = (GipsRelExpr) expr;
+		} else if (expr instanceof GipsRelExpr relExpr) {
 			return containsSelf(relExpr.getLeft(), type) || containsSelf(relExpr.getRight(), type);
 		} else {
 			throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
@@ -360,8 +359,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		} else if (expr instanceof GipsBooleanLiteral) {
 			// Special case: Complete boolean expression is just a literal
 			return false;
-		} else if (expr instanceof GipsRelExpr) {
-			final GipsRelExpr relExpr = (GipsRelExpr) expr;
+		} else if (expr instanceof GipsRelExpr relExpr) {
 			return validateArithExprDynamic(relExpr.getLeft()) || validateArithExprDynamic(relExpr.getRight());
 		} else {
 			throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
@@ -597,7 +595,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			// constants (basic)
 			// This could later be extended to also check more complex expressions or it
 			// could be integrated into the ILP validator
-			if (((GipsUnaryArithmeticExpr) expr).getOperator() == GipsArithmeticUnaryOperator.SQRT) {
+			if (unary.getOperator() == GipsArithmeticUnaryOperator.SQRT) {
 				final GipsArithmeticExpr inSqrt = unary.getOperand();
 				if (inSqrt instanceof GipsArithmeticLiteral lit) {
 					try {
@@ -750,15 +748,15 @@ public class GipslValidator extends AbstractGipslValidator {
 
 		// Case: lhs is a stream set and rhs is a stream boolean expression (NOT
 		// count()) = boolean
-		if (left instanceof GipsStreamSet && right instanceof GipsStreamBoolExpr //
-				&& ((GipsStreamBoolExpr) right).getOperator().getValue() != GipsStreamNoArgOperator.COUNT_VALUE) {
+		if (left instanceof GipsStreamSet && right instanceof GipsStreamBoolExpr streamBool //
+				&& streamBool.getOperator().getValue() != GipsStreamNoArgOperator.COUNT_VALUE) {
 			return EvalType.BOOLEAN;
 		}
 
 		// Case: lhs is a stream set and rhs is a stream boolean expression (count()) =
 		// integer
-		if (left instanceof GipsStreamSet && lhs == EvalType.SET && right instanceof GipsStreamBoolExpr
-				&& ((GipsStreamBoolExpr) right).getOperator().getValue() == GipsStreamNoArgOperator.COUNT_VALUE) {
+		if (left instanceof GipsStreamSet && lhs == EvalType.SET && right instanceof GipsStreamBoolExpr streamBool
+				&& streamBool.getOperator().getValue() == GipsStreamNoArgOperator.COUNT_VALUE) {
 			return EvalType.INTEGER;
 		}
 

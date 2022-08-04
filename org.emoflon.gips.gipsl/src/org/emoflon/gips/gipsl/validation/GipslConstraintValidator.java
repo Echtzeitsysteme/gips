@@ -225,8 +225,7 @@ public class GipslConstraintValidator {
 			return containsMappingsCall(brack.getOperand());
 		} else if (expr instanceof GipsBooleanLiteral) {
 			return false;
-		} else if (expr instanceof GipsRelExpr) {
-			final GipsRelExpr relExpr = (GipsRelExpr) expr;
+		} else if (expr instanceof GipsRelExpr relExpr) {
 			return containsMappingsCall(relExpr.getLeft()) || containsMappingsCall(relExpr.getRight());
 		} else {
 			throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);

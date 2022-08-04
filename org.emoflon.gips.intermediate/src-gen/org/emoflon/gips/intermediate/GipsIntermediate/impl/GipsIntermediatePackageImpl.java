@@ -1192,7 +1192,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	public EReference getConstraint_HelperVariables() {
+	public EReference getConstraint_ReferencedBy() {
 		return (EReference) constraintEClass.getEStructuralFeatures().get(6);
 	}
 
@@ -1201,8 +1201,26 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	public EReference getConstraint_HelperConstraints() {
+	public EReference getConstraint_SymbolicVariable() {
 		return (EReference) constraintEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getConstraint_HelperVariables() {
+		return (EReference) constraintEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getConstraint_HelperConstraints() {
+		return (EReference) constraintEClass.getEStructuralFeatures().get(9);
 	}
 
 	/**
@@ -2667,6 +2685,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		createEAttribute(constraintEClass, CONSTRAINT__CONSTANT);
 		createEAttribute(constraintEClass, CONSTRAINT__NEGATED);
 		createEReference(constraintEClass, CONSTRAINT__DEPENDENCIES);
+		createEReference(constraintEClass, CONSTRAINT__REFERENCED_BY);
+		createEReference(constraintEClass, CONSTRAINT__SYMBOLIC_VARIABLE);
 		createEReference(constraintEClass, CONSTRAINT__HELPER_VARIABLES);
 		createEReference(constraintEClass, CONSTRAINT__HELPER_CONSTRAINTS);
 
@@ -3123,7 +3143,13 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConstraint_Negated(), ecorePackage.getEBoolean(), "negated", null, 0, 1, Constraint.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getConstraint_Dependencies(), this.getConstraint(), null, "dependencies", null, 0, -1,
+		initEReference(getConstraint_Dependencies(), this.getConstraint(), this.getConstraint_ReferencedBy(),
+				"dependencies", null, 0, -1, Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getConstraint_ReferencedBy(), this.getConstraint(), this.getConstraint_Dependencies(),
+				"referencedBy", null, 0, 1, Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getConstraint_SymbolicVariable(), this.getVariable(), null, "symbolicVariable", null, 0, 1,
 				Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getConstraint_HelperVariables(), this.getVariable(), null, "helperVariables", null, 0, -1,

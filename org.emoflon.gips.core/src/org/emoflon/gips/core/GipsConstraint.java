@@ -14,6 +14,7 @@ import org.emoflon.gips.core.ilp.ILPVariable;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 
 public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends Constraint, CONTEXT extends Object> {
 	final protected ENGINE engine;
@@ -62,6 +63,8 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends C
 
 	public abstract void calcAdditionalVariables();
 
+	public abstract String buildVariableName(final Variable variable);
+
 	protected abstract double buildConstantRhs(final CONTEXT context);
 
 	protected abstract double buildConstantLhs(final CONTEXT context);
@@ -97,4 +100,5 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends C
 
 		};
 	}
+
 }

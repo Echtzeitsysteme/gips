@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression;
@@ -44,6 +45,10 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
  * <em>Negated</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getDependencies
  * <em>Dependencies</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getReferencedBy
+ * <em>Referenced By</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getSymbolicVariable
+ * <em>Symbolic Variable</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getHelperVariables
  * <em>Helper Variables</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getHelperConstraints
@@ -152,6 +157,26 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * @ordered
 	 */
 	protected EList<Constraint> dependencies;
+
+	/**
+	 * The cached value of the '{@link #getReferencedBy() <em>Referenced By</em>}'
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getReferencedBy()
+	 * @generated
+	 * @ordered
+	 */
+	protected Constraint referencedBy;
+
+	/**
+	 * The cached value of the '{@link #getSymbolicVariable() <em>Symbolic
+	 * Variable</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getSymbolicVariable()
+	 * @generated
+	 * @ordered
+	 */
+	protected Variable symbolicVariable;
 
 	/**
 	 * The cached value of the '{@link #getHelperVariables() <em>Helper
@@ -339,10 +364,120 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 */
 	public EList<Constraint> getDependencies() {
 		if (dependencies == null) {
-			dependencies = new EObjectResolvingEList<Constraint>(Constraint.class, this,
-					GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES);
+			dependencies = new EObjectWithInverseResolvingEList<Constraint>(Constraint.class, this,
+					GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES,
+					GipsIntermediatePackage.CONSTRAINT__REFERENCED_BY);
 		}
 		return dependencies;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public Constraint getReferencedBy() {
+		if (referencedBy != null && referencedBy.eIsProxy()) {
+			InternalEObject oldReferencedBy = (InternalEObject) referencedBy;
+			referencedBy = (Constraint) eResolveProxy(oldReferencedBy);
+			if (referencedBy != oldReferencedBy) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+							GipsIntermediatePackage.CONSTRAINT__REFERENCED_BY, oldReferencedBy, referencedBy));
+			}
+		}
+		return referencedBy;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public Constraint basicGetReferencedBy() {
+		return referencedBy;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public NotificationChain basicSetReferencedBy(Constraint newReferencedBy, NotificationChain msgs) {
+		Constraint oldReferencedBy = referencedBy;
+		referencedBy = newReferencedBy;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					GipsIntermediatePackage.CONSTRAINT__REFERENCED_BY, oldReferencedBy, newReferencedBy);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setReferencedBy(Constraint newReferencedBy) {
+		if (newReferencedBy != referencedBy) {
+			NotificationChain msgs = null;
+			if (referencedBy != null)
+				msgs = ((InternalEObject) referencedBy).eInverseRemove(this,
+						GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES, Constraint.class, msgs);
+			if (newReferencedBy != null)
+				msgs = ((InternalEObject) newReferencedBy).eInverseAdd(this,
+						GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES, Constraint.class, msgs);
+			msgs = basicSetReferencedBy(newReferencedBy, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.CONSTRAINT__REFERENCED_BY,
+					newReferencedBy, newReferencedBy));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public Variable getSymbolicVariable() {
+		if (symbolicVariable != null && symbolicVariable.eIsProxy()) {
+			InternalEObject oldSymbolicVariable = (InternalEObject) symbolicVariable;
+			symbolicVariable = (Variable) eResolveProxy(oldSymbolicVariable);
+			if (symbolicVariable != oldSymbolicVariable) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+							GipsIntermediatePackage.CONSTRAINT__SYMBOLIC_VARIABLE, oldSymbolicVariable,
+							symbolicVariable));
+			}
+		}
+		return symbolicVariable;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public Variable basicGetSymbolicVariable() {
+		return symbolicVariable;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setSymbolicVariable(Variable newSymbolicVariable) {
+		Variable oldSymbolicVariable = symbolicVariable;
+		symbolicVariable = newSymbolicVariable;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.CONSTRAINT__SYMBOLIC_VARIABLE,
+					oldSymbolicVariable, symbolicVariable));
 	}
 
 	/**
@@ -376,11 +511,35 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+		case GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES:
+			return ((InternalEList<InternalEObject>) (InternalEList<?>) getDependencies()).basicAdd(otherEnd, msgs);
+		case GipsIntermediatePackage.CONSTRAINT__REFERENCED_BY:
+			if (referencedBy != null)
+				msgs = ((InternalEObject) referencedBy).eInverseRemove(this,
+						GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES, Constraint.class, msgs);
+			return basicSetReferencedBy((Constraint) otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 		case GipsIntermediatePackage.CONSTRAINT__EXPRESSION:
 			return basicSetExpression(null, msgs);
+		case GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES:
+			return ((InternalEList<?>) getDependencies()).basicRemove(otherEnd, msgs);
+		case GipsIntermediatePackage.CONSTRAINT__REFERENCED_BY:
+			return basicSetReferencedBy(null, msgs);
 		case GipsIntermediatePackage.CONSTRAINT__HELPER_CONSTRAINTS:
 			return ((InternalEList<?>) getHelperConstraints()).basicRemove(otherEnd, msgs);
 		}
@@ -407,6 +566,14 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 			return isNegated();
 		case GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES:
 			return getDependencies();
+		case GipsIntermediatePackage.CONSTRAINT__REFERENCED_BY:
+			if (resolve)
+				return getReferencedBy();
+			return basicGetReferencedBy();
+		case GipsIntermediatePackage.CONSTRAINT__SYMBOLIC_VARIABLE:
+			if (resolve)
+				return getSymbolicVariable();
+			return basicGetSymbolicVariable();
 		case GipsIntermediatePackage.CONSTRAINT__HELPER_VARIABLES:
 			return getHelperVariables();
 		case GipsIntermediatePackage.CONSTRAINT__HELPER_CONSTRAINTS:
@@ -442,6 +609,12 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 		case GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES:
 			getDependencies().clear();
 			getDependencies().addAll((Collection<? extends Constraint>) newValue);
+			return;
+		case GipsIntermediatePackage.CONSTRAINT__REFERENCED_BY:
+			setReferencedBy((Constraint) newValue);
+			return;
+		case GipsIntermediatePackage.CONSTRAINT__SYMBOLIC_VARIABLE:
+			setSymbolicVariable((Variable) newValue);
 			return;
 		case GipsIntermediatePackage.CONSTRAINT__HELPER_VARIABLES:
 			getHelperVariables().clear();
@@ -481,6 +654,12 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 		case GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES:
 			getDependencies().clear();
 			return;
+		case GipsIntermediatePackage.CONSTRAINT__REFERENCED_BY:
+			setReferencedBy((Constraint) null);
+			return;
+		case GipsIntermediatePackage.CONSTRAINT__SYMBOLIC_VARIABLE:
+			setSymbolicVariable((Variable) null);
+			return;
 		case GipsIntermediatePackage.CONSTRAINT__HELPER_VARIABLES:
 			getHelperVariables().clear();
 			return;
@@ -511,6 +690,10 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 			return negated != NEGATED_EDEFAULT;
 		case GipsIntermediatePackage.CONSTRAINT__DEPENDENCIES:
 			return dependencies != null && !dependencies.isEmpty();
+		case GipsIntermediatePackage.CONSTRAINT__REFERENCED_BY:
+			return referencedBy != null;
+		case GipsIntermediatePackage.CONSTRAINT__SYMBOLIC_VARIABLE:
+			return symbolicVariable != null;
 		case GipsIntermediatePackage.CONSTRAINT__HELPER_VARIABLES:
 			return helperVariables != null && !helperVariables.isEmpty();
 		case GipsIntermediatePackage.CONSTRAINT__HELPER_CONSTRAINTS:

@@ -79,7 +79,10 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="constant" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="negated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="dependencies" upperBound="-1"
-        eType="#//Constraint"/>
+        eType="#//Constraint" eOpposite="#//Constraint/referencedBy"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="referencedBy" eType="#//Constraint"
+        eOpposite="#//Constraint/dependencies"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="symbolicVariable" eType="#//Variable"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="helperVariables" upperBound="-1"
         eType="#//Variable"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="helperConstraints" upperBound="-1"

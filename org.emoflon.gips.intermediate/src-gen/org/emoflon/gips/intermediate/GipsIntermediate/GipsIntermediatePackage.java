@@ -842,13 +842,31 @@ public interface GipsIntermediatePackage extends EPackage {
 	int CONSTRAINT__DEPENDENCIES = 5;
 
 	/**
+	 * The feature id for the '<em><b>Referenced By</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int CONSTRAINT__REFERENCED_BY = 6;
+
+	/**
+	 * The feature id for the '<em><b>Symbolic Variable</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int CONSTRAINT__SYMBOLIC_VARIABLE = 7;
+
+	/**
 	 * The feature id for the '<em><b>Helper Variables</b></em>' reference list.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int CONSTRAINT__HELPER_VARIABLES = 6;
+	int CONSTRAINT__HELPER_VARIABLES = 8;
 
 	/**
 	 * The feature id for the '<em><b>Helper Constraints</b></em>' containment
@@ -857,7 +875,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONSTRAINT__HELPER_CONSTRAINTS = 7;
+	int CONSTRAINT__HELPER_CONSTRAINTS = 9;
 
 	/**
 	 * The number of structural features of the '<em>Constraint</em>' class. <!--
@@ -866,7 +884,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONSTRAINT_FEATURE_COUNT = 8;
+	int CONSTRAINT_FEATURE_COUNT = 10;
 
 	/**
 	 * The number of operations of the '<em>Constraint</em>' class. <!--
@@ -942,6 +960,24 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @ordered
 	 */
 	int GLOBAL_CONSTRAINT__DEPENDENCIES = CONSTRAINT__DEPENDENCIES;
+
+	/**
+	 * The feature id for the '<em><b>Referenced By</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_CONSTRAINT__REFERENCED_BY = CONSTRAINT__REFERENCED_BY;
+
+	/**
+	 * The feature id for the '<em><b>Symbolic Variable</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_CONSTRAINT__SYMBOLIC_VARIABLE = CONSTRAINT__SYMBOLIC_VARIABLE;
 
 	/**
 	 * The feature id for the '<em><b>Helper Variables</b></em>' reference list.
@@ -1179,13 +1215,31 @@ public interface GipsIntermediatePackage extends EPackage {
 	int PATTERN_CONSTRAINT__DEPENDENCIES = CONTEXT_FEATURE_COUNT + 5;
 
 	/**
+	 * The feature id for the '<em><b>Referenced By</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int PATTERN_CONSTRAINT__REFERENCED_BY = CONTEXT_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Symbolic Variable</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int PATTERN_CONSTRAINT__SYMBOLIC_VARIABLE = CONTEXT_FEATURE_COUNT + 7;
+
+	/**
 	 * The feature id for the '<em><b>Helper Variables</b></em>' reference list.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int PATTERN_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 6;
+	int PATTERN_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Helper Constraints</b></em>' containment
@@ -1194,7 +1248,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PATTERN_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 7;
+	int PATTERN_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Pattern</b></em>' reference. <!--
@@ -1203,7 +1257,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PATTERN_CONSTRAINT__PATTERN = CONTEXT_FEATURE_COUNT + 8;
+	int PATTERN_CONSTRAINT__PATTERN = CONTEXT_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of structural features of the '<em>Pattern Constraint</em>' class.
@@ -1212,7 +1266,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PATTERN_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 9;
+	int PATTERN_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 11;
 
 	/**
 	 * The number of operations of the '<em>Pattern Constraint</em>' class. <!--
@@ -1290,13 +1344,31 @@ public interface GipsIntermediatePackage extends EPackage {
 	int TYPE_CONSTRAINT__DEPENDENCIES = CONTEXT_FEATURE_COUNT + 5;
 
 	/**
+	 * The feature id for the '<em><b>Referenced By</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_CONSTRAINT__REFERENCED_BY = CONTEXT_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Symbolic Variable</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_CONSTRAINT__SYMBOLIC_VARIABLE = CONTEXT_FEATURE_COUNT + 7;
+
+	/**
 	 * The feature id for the '<em><b>Helper Variables</b></em>' reference list.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 6;
+	int TYPE_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Helper Constraints</b></em>' containment
@@ -1305,7 +1377,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 7;
+	int TYPE_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Model Type</b></em>' reference. <!--
@@ -1314,7 +1386,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT__MODEL_TYPE = CONTEXT_FEATURE_COUNT + 8;
+	int TYPE_CONSTRAINT__MODEL_TYPE = CONTEXT_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of structural features of the '<em>Type Constraint</em>' class.
@@ -1323,7 +1395,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 9;
+	int TYPE_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 11;
 
 	/**
 	 * The number of operations of the '<em>Type Constraint</em>' class. <!--
@@ -1401,13 +1473,31 @@ public interface GipsIntermediatePackage extends EPackage {
 	int MAPPING_CONSTRAINT__DEPENDENCIES = CONTEXT_FEATURE_COUNT + 5;
 
 	/**
+	 * The feature id for the '<em><b>Referenced By</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int MAPPING_CONSTRAINT__REFERENCED_BY = CONTEXT_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Symbolic Variable</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int MAPPING_CONSTRAINT__SYMBOLIC_VARIABLE = CONTEXT_FEATURE_COUNT + 7;
+
+	/**
 	 * The feature id for the '<em><b>Helper Variables</b></em>' reference list.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 6;
+	int MAPPING_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Helper Constraints</b></em>' containment
@@ -1416,7 +1506,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 7;
+	int MAPPING_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Mapping</b></em>' reference. <!--
@@ -1425,7 +1515,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT__MAPPING = CONTEXT_FEATURE_COUNT + 8;
+	int MAPPING_CONSTRAINT__MAPPING = CONTEXT_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of structural features of the '<em>Mapping Constraint</em>' class.
@@ -1434,7 +1524,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 9;
+	int MAPPING_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 11;
 
 	/**
 	 * The number of operations of the '<em>Mapping Constraint</em>' class. <!--
@@ -5170,6 +5260,30 @@ public interface GipsIntermediatePackage extends EPackage {
 	EReference getConstraint_Dependencies();
 
 	/**
+	 * Returns the meta object for the reference
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getReferencedBy
+	 * <em>Referenced By</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the reference '<em>Referenced By</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getReferencedBy()
+	 * @see #getConstraint()
+	 * @generated
+	 */
+	EReference getConstraint_ReferencedBy();
+
+	/**
+	 * Returns the meta object for the reference
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getSymbolicVariable
+	 * <em>Symbolic Variable</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the reference '<em>Symbolic Variable</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getSymbolicVariable()
+	 * @see #getConstraint()
+	 * @generated
+	 */
+	EReference getConstraint_SymbolicVariable();
+
+	/**
 	 * Returns the meta object for the reference list
 	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getHelperVariables
 	 * <em>Helper Variables</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -7436,6 +7550,22 @@ public interface GipsIntermediatePackage extends EPackage {
 		 * @generated
 		 */
 		EReference CONSTRAINT__DEPENDENCIES = eINSTANCE.getConstraint_Dependencies();
+
+		/**
+		 * The meta object literal for the '<em><b>Referenced By</b></em>' reference
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference CONSTRAINT__REFERENCED_BY = eINSTANCE.getConstraint_ReferencedBy();
+
+		/**
+		 * The meta object literal for the '<em><b>Symbolic Variable</b></em>' reference
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference CONSTRAINT__SYMBOLIC_VARIABLE = eINSTANCE.getConstraint_SymbolicVariable();
 
 		/**
 		 * The meta object literal for the '<em><b>Helper Variables</b></em>' reference

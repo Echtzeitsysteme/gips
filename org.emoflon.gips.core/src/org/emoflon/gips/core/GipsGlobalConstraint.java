@@ -41,54 +41,103 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 				return new ILPConstraint(terms, ((RelationalExpression) constraint.getExpression()).getOperator(),
 						constTerm);
 
-			// If the terms list is empty, no suitable mapping candidates are present in the
-			// model. Therefore, zero variables are created, which in turn, can only result
-			// in a sum of zero. Hence, we will continue to evaluate the constraint with a
-			// zero value, since this might be intended behavior.
-			boolean result = evaluateConstantConstraint(0.0d, constTerm, operator);
-			if (!result) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(constTerm);
-				sb.append(" ");
-				sb.append(operator);
-				sb.append(" 0.0");
-				sb.append(" -> ");
-				sb.append(result ? "true" : "false");
-				validationLog.addValidatorEvent(GipsValidationEventType.CONST_CONSTRAINT_VIOLATION, this.getClass(),
-						sb.toString());
-			}
-			// Remove possible additional variables
-			additionalVariables.values().forEach(variable -> engine.removeNonMappingVariable(variable));
-			additionalVariables.clear();
-
-			return null;
-		} else {
-			if (constraint.getExpression() instanceof RelationalExpression relExpr) {
-				double lhs = buildConstantLhs();
-				double rhs = buildConstantRhs();
-				boolean result = evaluateConstantConstraint(lhs, rhs, relExpr.getOperator());
+			if (constraint.getReferencedBy() != null) {
+				// If the terms list is empty, no suitable mapping candidates are present in the
+				// model. Therefore, zero variables are created, which in turn, can only result
+				// in a sum of zero. Hence, we will continue to evaluate the constraint with a
+				// zero value, since this might be intended behavior.
+				boolean result = evaluateConstantConstraint(0.0d, constTerm, operator);
 				if (!result) {
 					StringBuilder sb = new StringBuilder();
-					sb.append(lhs);
+					sb.append(constTerm);
 					sb.append(" ");
-					sb.append(relExpr.getOperator());
-					sb.append(" ");
-					sb.append(rhs);
+					sb.append(operator);
+					sb.append(" 0.0");
 					sb.append(" -> ");
 					sb.append(result ? "true" : "false");
 					validationLog.addValidatorEvent(GipsValidationEventType.CONST_CONSTRAINT_VIOLATION, this.getClass(),
 							sb.toString());
 				}
 			} else {
-				boolean result = buildConstantExpression();
-				if (!result) {
-					StringBuilder sb = new StringBuilder();
-					sb.append(" -> ");
-					sb.append(result ? "true" : "false");
-					validationLog.addValidatorEvent(GipsValidationEventType.CONST_CONSTRAINT_VIOLATION, this.getClass(),
-							sb.toString());
+				Variable symbolicVar = constraint.getSymbolicVariable();
+				ILPBinaryVariable var = (ILPBinaryVariable) engine
+						.getNonMappingVariable(buildVariableName(symbolicVar));
+
+				// If the terms list is empty, no suitable mapping candidates are present in the
+				// model. Therefore, zero variables are created, which in turn, can only result
+				// in a sum of zero. Hence, we will continue to evaluate the constraint with a
+				// zero value, since this might be intended behavior.
+				boolean result = evaluateConstantConstraint(0.0d, constTerm, operator);
+				if (result) {
+					var.setUpperBound(1);
+					var.setLowerBound(1);
+				} else {
+					var.setUpperBound(0);
+					var.setLowerBound(0);
 				}
 			}
+
+			// Remove possible additional variables
+			additionalVariables.values().forEach(variable -> engine.removeNonMappingVariable(variable));
+			additionalVariables.clear();
+
+			return null;
+		} else {
+			if (constraint.getReferencedBy() != null) {
+				if (constraint.getExpression() instanceof RelationalExpression relExpr
+						&& relExpr.getOperator() != RelationalOperator.OBJECT_EQUAL
+						&& relExpr.getOperator() != RelationalOperator.OBJECT_NOT_EQUAL) {
+					double lhs = buildConstantLhs();
+					double rhs = buildConstantRhs();
+					boolean result = evaluateConstantConstraint(lhs, rhs, relExpr.getOperator());
+					if (!result) {
+						StringBuilder sb = new StringBuilder();
+						sb.append(lhs);
+						sb.append(" ");
+						sb.append(relExpr.getOperator());
+						sb.append(" ");
+						sb.append(rhs);
+						sb.append(" -> ");
+						sb.append(result ? "true" : "false");
+						validationLog.addValidatorEvent(GipsValidationEventType.CONST_CONSTRAINT_VIOLATION,
+								this.getClass(), sb.toString());
+					}
+				} else {
+					boolean result = buildConstantExpression();
+					if (!result) {
+						StringBuilder sb = new StringBuilder();
+						sb.append(" -> ");
+						sb.append(result ? "true" : "false");
+						validationLog.addValidatorEvent(GipsValidationEventType.CONST_CONSTRAINT_VIOLATION,
+								this.getClass(), sb.toString());
+					}
+				}
+			} else {
+				Variable symbolicVar = constraint.getSymbolicVariable();
+				ILPBinaryVariable var = (ILPBinaryVariable) engine
+						.getNonMappingVariable(buildVariableName(symbolicVar));
+				boolean result = false;
+
+				if (constraint.getExpression() instanceof RelationalExpression relExpr
+						&& relExpr.getOperator() != RelationalOperator.OBJECT_EQUAL
+						&& relExpr.getOperator() != RelationalOperator.OBJECT_NOT_EQUAL) {
+					double lhs = buildConstantLhs();
+					double rhs = buildConstantRhs();
+					result = evaluateConstantConstraint(lhs, rhs, relExpr.getOperator());
+
+				} else {
+					result = buildConstantExpression();
+				}
+
+				if (result) {
+					var.setUpperBound(1);
+					var.setLowerBound(1);
+				} else {
+					var.setUpperBound(0);
+					var.setLowerBound(0);
+				}
+			}
+
 			return null;
 		}
 
@@ -99,19 +148,19 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 		for (Variable variable : constraint.getHelperVariables()) {
 			ILPVariable<?> ilpVar = switch (variable.getType()) {
 			case BINARY -> {
-				ILPBinaryVariable var = new ILPBinaryVariable("global->" + variable.getName());
+				ILPBinaryVariable var = new ILPBinaryVariable(buildVariableName(variable));
 				var.setLowerBound((int) variable.getLowerBound());
 				var.setUpperBound((int) variable.getUpperBound());
 				yield var;
 			}
 			case INTEGER -> {
-				ILPIntegerVariable var = new ILPIntegerVariable("global->" + variable.getName());
+				ILPIntegerVariable var = new ILPIntegerVariable(buildVariableName(variable));
 				var.setLowerBound((int) variable.getLowerBound());
 				var.setUpperBound((int) variable.getUpperBound());
 				yield var;
 			}
 			case REAL -> {
-				ILPRealVariable var = new ILPRealVariable("global->" + variable.getName());
+				ILPRealVariable var = new ILPRealVariable(buildVariableName(variable));
 				var.setLowerBound(variable.getLowerBound());
 				var.setUpperBound(variable.getUpperBound());
 				yield var;
@@ -124,6 +173,11 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 			additionalVariables.put(ilpVar.getName(), ilpVar);
 			engine.addNonMappingVariable(ilpVar);
 		}
+	}
+
+	@Override
+	public String buildVariableName(final Variable variable) {
+		return "global->" + variable.getName();
 	}
 
 	abstract protected List<ILPConstraint> buildAdditionalConstraints();

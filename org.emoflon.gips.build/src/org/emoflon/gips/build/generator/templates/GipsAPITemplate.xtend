@@ -24,6 +24,7 @@ class GipsAPITemplate extends GeneratorTemplate<GipsIntermediateModel> {
 		imports.add("org.emoflon.gips.core.ilp.GlpkSolver")
 		imports.add("org.emoflon.gips.core.ilp.CplexSolver")
 		imports.add("org.emoflon.gips.core.ilp.ILPSolverConfig")
+		imports.add("org.emoflon.gips.core.config.GipsGlobalConfig")
 		imports.add(data.apiData.apiPkg + "." + data.apiData.engineAppClasses.get(GipsAPIData.HIPE_ENGINE_NAME))
 		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)
 		imports.add("org.eclipse.emf.common.util.URI");
@@ -106,10 +107,31 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 	@Override
 	protected ILPSolver createSolver() {
 		ILPSolver solver = null;
-		try {
-			solver = «solverInit()»;
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (GipsGlobalConfig.overrideIlpSolver) {
+			try {
+				switch (GipsGlobalConfig.solverType) {
+				case GUROBI -> {
+					solver = new GurobiSolver(this, solverConfig);
+				}
+				case GLPK -> {
+					solver = new GlpkSolver(this, solverConfig);
+				}
+				case CPLEX -> {
+					solver = new CplexSolver(this, solverConfig);
+				}
+				default -> {
+					throw new IllegalArgumentException("Unsupported solver type");
+				}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				solver = «solverInit()»;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return solver;
 	}

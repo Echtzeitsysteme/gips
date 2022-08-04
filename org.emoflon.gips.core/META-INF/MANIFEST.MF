@@ -10,6 +10,7 @@ Require-Bundle: org.emoflon.ibex.gt;visibility:=reexport,
  org.emoflon.gips.core.dependencies;bundle-version="1.0.0";visibility:=reexport
 Export-Package: org.emoflon.gips.core,
  org.emoflon.gips.core.api,
+ org.emoflon.gips.core.config,
  org.emoflon.gips.core.gt,
  org.emoflon.gips.core.ilp
 Bundle-Vendor: Real-Time Systems Lab - TU Darmstadt

@@ -8,7 +8,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.emoflon.gips.build.transformation.GipsConstraintUtils;
+import org.emoflon.gips.core.ilp.ILPBinaryVariable;
 import org.emoflon.gips.core.ilp.ILPConstraint;
+import org.emoflon.gips.core.ilp.ILPIntegerVariable;
+import org.emoflon.gips.core.ilp.ILPRealVariable;
 import org.emoflon.gips.core.ilp.ILPTerm;
 import org.emoflon.gips.core.ilp.ILPVariable;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
@@ -63,7 +66,34 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends C
 
 	public abstract void calcAdditionalVariables();
 
-	public abstract String buildVariableName(final Variable variable);
+	public ILPVariable<?> buildVariable(final Variable variable, final CONTEXT context) {
+		return switch (variable.getType()) {
+		case BINARY -> {
+			ILPBinaryVariable var = new ILPBinaryVariable(buildVariableName(variable, context));
+			var.setLowerBound((int) variable.getLowerBound());
+			var.setUpperBound((int) variable.getUpperBound());
+			yield var;
+		}
+		case INTEGER -> {
+			ILPIntegerVariable var = new ILPIntegerVariable(buildVariableName(variable, context));
+			var.setLowerBound((int) variable.getLowerBound());
+			var.setUpperBound((int) variable.getUpperBound());
+			yield var;
+		}
+		case REAL -> {
+			ILPRealVariable var = new ILPRealVariable(buildVariableName(variable, context));
+			var.setLowerBound(variable.getLowerBound());
+			var.setUpperBound(variable.getUpperBound());
+			yield var;
+		}
+
+		default -> {
+			throw new IllegalArgumentException("Unknown ilp variable type: " + variable.getType());
+		}
+		};
+	}
+
+	public abstract String buildVariableName(final Variable variable, final CONTEXT context);
 
 	protected abstract double buildConstantRhs(final CONTEXT context);
 

@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.emoflon.gips.core.ilp.ILPBinaryVariable;
 import org.emoflon.gips.core.ilp.ILPConstraint;
-import org.emoflon.gips.core.ilp.ILPIntegerVariable;
-import org.emoflon.gips.core.ilp.ILPRealVariable;
 import org.emoflon.gips.core.ilp.ILPTerm;
 import org.emoflon.gips.core.ilp.ILPVariable;
 import org.emoflon.gips.core.validation.GipsValidationEventType;
@@ -61,7 +59,7 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 			} else {
 				Variable symbolicVar = constraint.getSymbolicVariable();
 				ILPBinaryVariable var = (ILPBinaryVariable) engine
-						.getNonMappingVariable(buildVariableName(symbolicVar));
+						.getNonMappingVariable(buildVariableName(symbolicVar, null));
 
 				// If the terms list is empty, no suitable mapping candidates are present in the
 				// model. Therefore, zero variables are created, which in turn, can only result
@@ -115,7 +113,7 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 			} else {
 				Variable symbolicVar = constraint.getSymbolicVariable();
 				ILPBinaryVariable var = (ILPBinaryVariable) engine
-						.getNonMappingVariable(buildVariableName(symbolicVar));
+						.getNonMappingVariable(buildVariableName(symbolicVar, null));
 				boolean result = false;
 
 				if (constraint.getExpression() instanceof RelationalExpression relExpr
@@ -146,37 +144,14 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 	@Override
 	public void calcAdditionalVariables() {
 		for (Variable variable : constraint.getHelperVariables()) {
-			ILPVariable<?> ilpVar = switch (variable.getType()) {
-			case BINARY -> {
-				ILPBinaryVariable var = new ILPBinaryVariable(buildVariableName(variable));
-				var.setLowerBound((int) variable.getLowerBound());
-				var.setUpperBound((int) variable.getUpperBound());
-				yield var;
-			}
-			case INTEGER -> {
-				ILPIntegerVariable var = new ILPIntegerVariable(buildVariableName(variable));
-				var.setLowerBound((int) variable.getLowerBound());
-				var.setUpperBound((int) variable.getUpperBound());
-				yield var;
-			}
-			case REAL -> {
-				ILPRealVariable var = new ILPRealVariable(buildVariableName(variable));
-				var.setLowerBound(variable.getLowerBound());
-				var.setUpperBound(variable.getUpperBound());
-				yield var;
-			}
-			default -> {
-				throw new IllegalArgumentException("Unknown ilp variable type: " + variable.getType());
-			}
-
-			};
+			ILPVariable<?> ilpVar = buildVariable(variable, null);
 			additionalVariables.put(ilpVar.getName(), ilpVar);
 			engine.addNonMappingVariable(ilpVar);
 		}
 	}
 
 	@Override
-	public String buildVariableName(final Variable variable) {
+	public String buildVariableName(final Variable variable, final GlobalConstraint context) {
 		return "global->" + variable.getName();
 	}
 

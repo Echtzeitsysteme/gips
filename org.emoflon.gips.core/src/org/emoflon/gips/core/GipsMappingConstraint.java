@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.emoflon.gips.core.ilp.ILPBinaryVariable;
 import org.emoflon.gips.core.ilp.ILPConstraint;
-import org.emoflon.gips.core.ilp.ILPIntegerVariable;
-import org.emoflon.gips.core.ilp.ILPRealVariable;
 import org.emoflon.gips.core.ilp.ILPTerm;
 import org.emoflon.gips.core.ilp.ILPVariable;
 import org.emoflon.gips.core.validation.GipsValidationEventType;
@@ -57,21 +55,40 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 		if (!terms.isEmpty())
 			return new ILPConstraint(terms, operator, constTerm);
 
-		// If the terms list is empty, no suitable mapping candidates are present in the
-		// model. Therefore, zero variables are created, which in turn, can only result
-		// in a sum of zero. Hence, we will continue to evaluate the constraint with a
-		// zero value, since this might be intended behavior.
-		boolean result = evaluateConstantConstraint(0.0d, constTerm, operator);
-		if (!result) {
-			StringBuilder sb = new StringBuilder();
-			sb.append(constTerm);
-			sb.append(" ");
-			sb.append(operator);
-			sb.append(" 0.0");
-			sb.append(" -> ");
-			sb.append(result ? "true" : "false");
-			validationLog.addValidatorEvent(GipsValidationEventType.CONST_CONSTRAINT_VIOLATION, this.getClass(),
-					sb.toString());
+		if (constraint.getReferencedBy() != null) {
+			// If the terms list is empty, no suitable mapping candidates are present in the
+			// model. Therefore, zero variables are created, which in turn, can only result
+			// in a sum of zero. Hence, we will continue to evaluate the constraint with a
+			// zero value, since this might be intended behavior.
+			boolean result = evaluateConstantConstraint(0.0d, constTerm, operator);
+			if (!result) {
+				StringBuilder sb = new StringBuilder();
+				sb.append(constTerm);
+				sb.append(" ");
+				sb.append(operator);
+				sb.append(" 0.0");
+				sb.append(" -> ");
+				sb.append(result ? "true" : "false");
+				validationLog.addValidatorEvent(GipsValidationEventType.CONST_CONSTRAINT_VIOLATION, this.getClass(),
+						sb.toString());
+			}
+		} else {
+			Variable symbolicVar = constraint.getSymbolicVariable();
+			ILPBinaryVariable var = (ILPBinaryVariable) engine
+					.getNonMappingVariable(buildVariableName(symbolicVar, null));
+
+			// If the terms list is empty, no suitable mapping candidates are present in the
+			// model. Therefore, zero variables are created, which in turn, can only result
+			// in a sum of zero. Hence, we will continue to evaluate the constraint with a
+			// zero value, since this might be intended behavior.
+			boolean result = evaluateConstantConstraint(0.0d, constTerm, operator);
+			if (result) {
+				var.setUpperBound(1);
+				var.setLowerBound(1);
+			} else {
+				var.setUpperBound(0);
+				var.setLowerBound(0);
+			}
 		}
 
 		// Remove possible additional variables
@@ -85,37 +102,16 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 	public void calcAdditionalVariables() {
 		for (Variable variable : constraint.getHelperVariables()) {
 			for (CONTEXT context : mapper.getMappings().values()) {
-				ILPVariable<?> ilpVar = switch (variable.getType()) {
-				case BINARY -> {
-					ILPBinaryVariable var = new ILPBinaryVariable(context.getName() + "->" + variable.getName());
-					var.setLowerBound((int) variable.getLowerBound());
-					var.setUpperBound((int) variable.getUpperBound());
-					yield var;
-				}
-				case INTEGER -> {
-					ILPIntegerVariable var = new ILPIntegerVariable(context.getName() + "->" + variable.getName());
-					var.setLowerBound((int) variable.getLowerBound());
-					var.setUpperBound((int) variable.getUpperBound());
-					yield var;
-				}
-				case REAL -> {
-					ILPRealVariable var = new ILPRealVariable(context.getName() + "->" + variable.getName());
-					var.setLowerBound(variable.getLowerBound());
-					var.setUpperBound(variable.getUpperBound());
-					yield var;
-				}
-
-				default -> {
-					throw new IllegalArgumentException("Unknown ilp variable type: " + variable.getType());
-				}
-
-				};
-
+				ILPVariable<?> ilpVar = buildVariable(variable, context);
 				additionalVariables.put(ilpVar.getName(), ilpVar);
 				engine.addNonMappingVariable(ilpVar);
 			}
-
 		}
+	}
+
+	@Override
+	public String buildVariableName(final Variable variable, final CONTEXT context) {
+		return context.getName() + "->" + variable.getName();
 	}
 
 }

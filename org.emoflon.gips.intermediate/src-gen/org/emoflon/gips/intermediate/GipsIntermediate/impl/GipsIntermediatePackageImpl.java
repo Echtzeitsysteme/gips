@@ -3587,6 +3587,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEEnum(ilpSolverTypeEEnum, ILPSolverType.class, "ILPSolverType");
 		addEEnumLiteral(ilpSolverTypeEEnum, ILPSolverType.GUROBI);
 		addEEnumLiteral(ilpSolverTypeEEnum, ILPSolverType.GLPK);
+		addEEnumLiteral(ilpSolverTypeEEnum, ILPSolverType.CPLEX);
 
 		initEEnum(variableTypeEEnum, VariableType.class, "VariableType");
 		addEEnumLiteral(variableTypeEEnum, VariableType.BINARY);

@@ -4,7 +4,7 @@ Bundle-Name: Gips::Core
 Bundle-SymbolicName: org.emoflon.gips.core
 Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: org.emoflon.gips.core
-Bundle-RequiredExecutionEnvironment: JavaSE-16
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.emoflon.ibex.gt;visibility:=reexport,
  org.emoflon.gips.intermediate;visibility:=reexport,
  org.emoflon.gips.core.dependencies;bundle-version="1.0.0";visibility:=reexport,
@@ -13,3 +13,4 @@ Export-Package: org.emoflon.gips.core,
  org.emoflon.gips.core.api,
  org.emoflon.gips.core.gt,
  org.emoflon.gips.core.ilp
+Bundle-Vendor: Real-Time Systems Lab - TU Darmstadt

@@ -108,8 +108,7 @@ public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName�
 	
 	override String generateConstantClassContent(RelationalExpression relExpr) {
 		if(relExpr.operator != RelationalOperator.OBJECT_EQUAL && 
-			relExpr.operator != RelationalOperator.OBJECT_NOT_EQUAL
-		) {
+			relExpr.operator != RelationalOperator.OBJECT_NOT_EQUAL) {
 			return '''
 public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName»> {
 	public «className»(final «data.gipsApiClassName» engine, final GlobalConstraint constraint) {
@@ -165,7 +164,7 @@ public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName�
 	
 	@Override
 	protected boolean buildConstantExpression() {
-		return «parseExpression(relExpr, ExpressionContext.constConstraint)»
+		return «parseExpression(relExpr, ExpressionContext.constConstraint)»;
 	}
 	
 	«generateDependencyConstraints()»

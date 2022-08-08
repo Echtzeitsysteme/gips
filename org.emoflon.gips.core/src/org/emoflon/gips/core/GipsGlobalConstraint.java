@@ -39,7 +39,7 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 				return new ILPConstraint(terms, ((RelationalExpression) constraint.getExpression()).getOperator(),
 						constTerm);
 
-			if (constraint.getReferencedBy() != null) {
+			if (constraint.getReferencedBy() == null) {
 				// If the terms list is empty, no suitable mapping candidates are present in the
 				// model. Therefore, zero variables are created, which in turn, can only result
 				// in a sum of zero. Hence, we will continue to evaluate the constraint with a
@@ -81,7 +81,7 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 
 			return null;
 		} else {
-			if (constraint.getReferencedBy() != null) {
+			if (constraint.getReferencedBy() == null) {
 				if (constraint.getExpression() instanceof RelationalExpression relExpr
 						&& relExpr.getOperator() != RelationalOperator.OBJECT_EQUAL
 						&& relExpr.getOperator() != RelationalOperator.OBJECT_NOT_EQUAL) {

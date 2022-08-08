@@ -55,7 +55,7 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 		if (!terms.isEmpty())
 			return new ILPConstraint(terms, operator, constTerm);
 
-		if (constraint.getReferencedBy() != null) {
+		if (constraint.getReferencedBy() == null) {
 			// If the terms list is empty, no suitable mapping candidates are present in the
 			// model. Therefore, zero variables are created, which in turn, can only result
 			// in a sum of zero. Hence, we will continue to evaluate the constraint with a
@@ -75,7 +75,7 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 		} else {
 			Variable symbolicVar = constraint.getSymbolicVariable();
 			ILPBinaryVariable var = (ILPBinaryVariable) engine
-					.getNonMappingVariable(buildVariableName(symbolicVar, null));
+					.getNonMappingVariable(buildVariableName(symbolicVar, context));
 
 			// If the terms list is empty, no suitable mapping candidates are present in the
 			// model. Therefore, zero variables are created, which in turn, can only result

@@ -376,7 +376,6 @@ public class GipsToIntermediate {
 		data.eConstraint2Constraint().put(subConstraint, constraint);
 		constraintCounter++;
 
-		@SuppressWarnings("rawtypes")
 		BooleanExpressionTransformer transformer = transformationFactory.createBooleanTransformer(constraint);
 		constraint.setExpression(transformer.transform(subConstraint.getExpr().getExpr()));
 

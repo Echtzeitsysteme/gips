@@ -15,10 +15,11 @@ public class TransformerFactory {
 		this.data = data;
 	}
 
-	public BooleanExpressionTransformer<? extends EObject> createBooleanTransformer(final EObject context)
-			throws Exception {
+	public BooleanExpressionTransformer createBooleanTransformer(final EObject context) throws Exception {
 		if (context instanceof StreamExpression streamExpr) {
-			return new BooleanExpressionTransformer<>(data, streamExpr, this);
+			return new BooleanInStreamTransformer(data, streamExpr, this);
+		} else if (context instanceof Constraint constraint) {
+			return new BooleanInConstraintTransformer(data, constraint, this);
 		} else {
 			throw new IllegalArgumentException(
 					"Transforming boolean expressions within the given context is undefined. Context: " + context);

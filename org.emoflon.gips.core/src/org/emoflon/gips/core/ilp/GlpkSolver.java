@@ -68,6 +68,7 @@ public class GlpkSolver extends ILPSolver {
 	public GlpkSolver(final GipsEngine engine, final ILPSolverConfig config) {
 		super(engine);
 		constraints = new HashMap<>();
+		ilpVars = new HashMap<>();
 
 		GLPK.glp_free_env();
 		model = GLPK.glp_create_prob();

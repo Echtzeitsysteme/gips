@@ -49,14 +49,16 @@ public class GlpkSolver extends ILPSolver {
 	private Map<String, Collection<ILPConstraint>> constraints;
 
 	/**
-	 * Map to collect all ILP variables (name -> integer (=index)).
+	 * Map to collect all ILP variables (name -> {integer (=index), type, lower
+	 * bound, upper bound}).
 	 */
-	private Map<String, Integer> ilpVarIndex;
+	private Map<String, varInformation> ilpVars;
 
 	/**
-	 * Map to collect all ILP variables (name -> type).
+	 * Record for the variable information: index, type, lower bound, upper bound
 	 */
-	private Map<String, VarType> ilpVarType;
+	private record varInformation(int index, VarType type, Number lb, Number up) {
+	}
 
 	/**
 	 * Global objective.
@@ -66,8 +68,7 @@ public class GlpkSolver extends ILPSolver {
 	public GlpkSolver(final GipsEngine engine, final ILPSolverConfig config) {
 		super(engine);
 		constraints = new HashMap<>();
-		ilpVarIndex = new HashMap<>();
-		ilpVarType = new HashMap<>();
+		ilpVars = new HashMap<>();
 
 		GLPK.glp_free_env();
 		model = GLPK.glp_create_prob();
@@ -148,7 +149,7 @@ public class GlpkSolver extends ILPSolver {
 				// Get corresponding ILP variable name
 				final String varName = mapper.getMapping(k).getName();
 				// Get value of the ILP variable and round it (to eliminate small deltas)
-				double result = Math.round(GLPK.glp_mip_col_val(model, ilpVarIndex.get(varName)));
+				double result = Math.round(GLPK.glp_mip_col_val(model, ilpVars.get(varName).index));
 				// Save result value in specific mapping
 				mapper.getMapping(k).setValue((int) result);
 			}
@@ -157,7 +158,7 @@ public class GlpkSolver extends ILPSolver {
 
 	@Override
 	protected void translateMapping(final GipsMapping mapping) {
-		createBinVar(mapping.getName());
+		createBinVar(mapping.getName(), mapping.getLowerBound(), mapping.getUpperBound());
 	}
 
 	@Override
@@ -206,25 +207,27 @@ public class GlpkSolver extends ILPSolver {
 	 */
 	private void setUpVars() {
 		// In case of 0 variables, simply return
-		if (ilpVarIndex.size() == 0) {
+		if (ilpVars.size() == 0) {
 			return;
 		}
 
-		GLPK.glp_add_cols(model, ilpVarIndex.size());
-		for (final String k : ilpVarIndex.keySet()) {
-			final int varCounter = ilpVarIndex.get(k);
+		GLPK.glp_add_cols(model, ilpVars.size());
+		for (final String k : ilpVars.keySet()) {
+			final int varCounter = ilpVars.get(k).index;
+			final double lb = ilpVars.get(k).lb.doubleValue();
+			final double ub = ilpVars.get(k).up.doubleValue();
 			GLPK.glp_set_col_name(model, varCounter, k);
 
 			// Type
-			if (ilpVarType.get(k) == VarType.BIN) {
+			if (ilpVars.get(k).type == VarType.BIN) {
 				GLPK.glp_set_col_kind(model, varCounter, GLPKConstants.GLP_BV); // binary
-				GLPK.glp_set_col_bnds(model, varCounter, GLPKConstants.GLP_DB, 0, 1);
-			} else if (ilpVarType.get(k) == VarType.INT) {
+				GLPK.glp_set_col_bnds(model, varCounter, GLPKConstants.GLP_DB, lb, ub);
+			} else if (ilpVars.get(k).type == VarType.INT) {
 				GLPK.glp_set_col_kind(model, varCounter, GLPKConstants.GLP_IV); // integer
-				GLPK.glp_set_col_bnds(model, varCounter, GLPKConstants.GLP_DB, Integer.MIN_VALUE, Integer.MAX_VALUE);
-			} else if (ilpVarType.get(k) == VarType.DBL) {
+				GLPK.glp_set_col_bnds(model, varCounter, GLPKConstants.GLP_DB, lb, ub);
+			} else if (ilpVars.get(k).type == VarType.DBL) {
 				GLPK.glp_set_col_kind(model, varCounter, GLPKConstants.GLP_CV); // double = continuous
-				GLPK.glp_set_col_bnds(model, varCounter, GLPKConstants.GLP_DB, Double.MIN_VALUE, Double.MAX_VALUE);
+				GLPK.glp_set_col_bnds(model, varCounter, GLPKConstants.GLP_DB, lb, ub);
 			} else {
 				throw new UnsupportedOperationException("ILP var type not known.");
 			}
@@ -263,7 +266,7 @@ public class GlpkSolver extends ILPSolver {
 
 				for (int termCounter = 0; termCounter < cnstr.lhsTerms().size(); termCounter++) {
 					GLPK.intArray_setitem(vars, termCounter + 1,
-							ilpVarIndex.get(cnstr.lhsTerms().get(termCounter).variable().getName()));
+							ilpVars.get(cnstr.lhsTerms().get(termCounter).variable().getName()).index);
 					GLPK.doubleArray_setitem(coeffs, termCounter + 1, cnstr.lhsTerms().get(termCounter).weight());
 				}
 
@@ -310,7 +313,7 @@ public class GlpkSolver extends ILPSolver {
 		for (final ILPWeightedLinearFunction lf : nestFunc.linearFunctions()) {
 			lf.linearFunction().terms().forEach(t -> {
 				// Get index of current variable
-				final int varIndex = ilpVarIndex.get(t.variable().getName());
+				final int varIndex = ilpVars.get(t.variable().getName()).index;
 
 				// Get previous aggregated weight
 				final double prevCoef = GLPK.glp_get_obj_coef(model, varIndex);
@@ -368,11 +371,11 @@ public class GlpkSolver extends ILPSolver {
 	protected void createAdditionalVars(final Collection<ILPVariable<?>> variables) {
 		for (final ILPVariable<?> variable : variables) {
 			if (variable instanceof ILPBinaryVariable binVar) {
-				createBinVar(binVar.name);
+				createBinVar(binVar.name, binVar.getLowerBound(), binVar.getUpperBound());
 			} else if (variable instanceof ILPIntegerVariable intVar) {
-				createIntVar(intVar.name);
+				createIntVar(intVar.name, intVar.getLowerBound(), intVar.getUpperBound());
 			} else if (variable instanceof ILPRealVariable realVar) {
-				createDblVar(realVar.name);
+				createDblVar(realVar.name, realVar.getLowerBound(), realVar.getUpperBound());
 			} else {
 				throw new IllegalArgumentException("Unsupported variable type: " + variable.getClass().getSimpleName());
 			}
@@ -383,30 +386,33 @@ public class GlpkSolver extends ILPSolver {
 	 * Adds a binary variable with given name to the model.
 	 * 
 	 * @param name Variable name.
+	 * @param lb   Lower bound number.
+	 * @param ub   Upper bound number.
 	 */
-	private void createBinVar(final String name) {
-		ilpVarIndex.put(name, ilpVarIndex.size() + 1);
-		ilpVarType.put(name, VarType.BIN);
+	private void createBinVar(final String name, final Number lb, final Number ub) {
+		ilpVars.put(name, new varInformation(ilpVars.size() + 1, VarType.BIN, lb, ub));
 	}
 
 	/**
 	 * Adds an integer variable with given name to the model.
 	 * 
 	 * @param name Variable name.
+	 * @param lb   Lower bound number.
+	 * @param ub   Upper bound number.
 	 */
-	private void createIntVar(final String name) {
-		ilpVarIndex.put(name, ilpVarIndex.size() + 1);
-		ilpVarType.put(name, VarType.INT);
+	private void createIntVar(final String name, final Number lb, final Number ub) {
+		ilpVars.put(name, new varInformation(ilpVars.size() + 1, VarType.INT, lb, ub));
 	}
 
 	/**
 	 * Adds a double variable with given name to the model.
 	 * 
 	 * @param name Variable name.
+	 * @param lb   Lower bound number.
+	 * @param ub   Upper bound number.
 	 */
-	private void createDblVar(final String name) {
-		ilpVarIndex.put(name, ilpVarIndex.size() + 1);
-		ilpVarType.put(name, VarType.DBL);
+	private void createDblVar(final String name, final Number lb, final Number ub) {
+		ilpVars.put(name, new varInformation(ilpVars.size() + 1, VarType.DBL, lb, ub));
 	}
 
 }

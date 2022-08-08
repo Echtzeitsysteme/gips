@@ -42,6 +42,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator
 
 class PatternConstraintTemplate extends ConstraintTemplate<PatternConstraint> {
 
@@ -107,7 +108,9 @@ public class «className» extends GipsPatternConstraint<«data.gipsApiClassName
 	}
 	
 	override String generateConstantClassContent(RelationalExpression relExpr) {
-		return '''
+		if(relExpr.operator != RelationalOperator.OBJECT_EQUAL && 
+			relExpr.operator != RelationalOperator.OBJECT_NOT_EQUAL) {
+			return '''
 public class «className» extends GipsPatternConstraint<«data.gipsApiClassName», «data.pattern2matchClassName.get(context.pattern)», «data.pattern2patternClassName.get(context.pattern)»>{
 	public «className»(final «data.gipsApiClassName» engine, final PatternConstraint constraint, final «data.pattern2patternClassName.get(context.pattern)» pattern) {
 		super(engine, constraint, pattern);
@@ -137,7 +140,41 @@ public class «className» extends GipsPatternConstraint<«data.gipsApiClassName
 	«FOR methods : builderMethodDefinitions.values»
 	«methods»
 	«ENDFOR»
+}'''		
+		} else {
+			return '''
+public class «className» extends GipsPatternConstraint<«data.gipsApiClassName», «data.pattern2matchClassName.get(context.pattern)», «data.pattern2patternClassName.get(context.pattern)»>{
+	public «className»(final «data.gipsApiClassName» engine, final PatternConstraint constraint, final «data.pattern2patternClassName.get(context.pattern)» pattern) {
+		super(engine, constraint, pattern);
+	}
+	
+	@Override
+	protected double buildConstantLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("Constraint has no arithmetic lhs.");
+	}
+	
+	@Override
+	protected double buildConstantRhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("Constraint has no arithmetic lhs.");
+	}
+	
+	@Override
+	protected List<ILPTerm> buildVariableLhs(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
+	}
+	
+	@Override
+	protected boolean buildConstantExpression(final «data.pattern2matchClassName.get(context.pattern)» context) {
+		return «parseExpression(relExpr, ExpressionContext.constConstraint)»;
+	}
+		
+	«generateDependencyConstraints()»
+	«FOR methods : builderMethodDefinitions.values»
+	«methods»
+	«ENDFOR»
 }'''
+		}
+
 	}
 	
 	override String generateConstantClassContent(BoolValueExpression boolExpr) {

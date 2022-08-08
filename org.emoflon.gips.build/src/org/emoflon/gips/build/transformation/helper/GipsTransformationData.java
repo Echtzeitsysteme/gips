@@ -75,6 +75,8 @@ public record GipsTransformationData(GipsIntermediateModel model, //
 			type = GipsIntermediateFactory.eINSTANCE.createType();
 			type.setName(eType.getName());
 			type.setType(eType);
+			type.setLowerBound(0.0);
+			type.setUpperBound(1.0);
 			eType2Type.put(eType, type);
 		}
 		return type;

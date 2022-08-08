@@ -3,6 +3,8 @@ package org.emoflon.gips.build.transformation.helper;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureNavigation;
@@ -592,5 +594,106 @@ public final class GipsTransformationUtils {
 		}
 	}
 
-	//
+	public static ExpressionReturnType extractReturnType(final ArithmeticExpression expr) {
+		if (expr instanceof BinaryArithmeticExpression bin) {
+			ExpressionReturnType lhs = extractReturnType(bin.getLhs());
+			ExpressionReturnType rhs = extractReturnType(bin.getRhs());
+			if (lhs != rhs)
+				throw new UnsupportedOperationException("Arithmetic operator types are mismatching.");
+
+			return lhs;
+		} else if (expr instanceof UnaryArithmeticExpression unary) {
+			return extractReturnType(unary.getExpression());
+		} else if (expr instanceof ArithmeticLiteral) {
+			return ExpressionReturnType.number;
+		} else if (expr instanceof VariableReference) {
+			return ExpressionReturnType.number;
+		} else {
+			ArithmeticValue value = (ArithmeticValue) expr;
+			return extractReturnType(value.getValue());
+		}
+	}
+
+	public static ExpressionReturnType extractReturnType(final ValueExpression expr) {
+		if (expr instanceof MappingSumExpression mapSum) {
+			return ExpressionReturnType.number;
+		} else if (expr instanceof TypeSumExpression typeSum) {
+			return ExpressionReturnType.number;
+		} else if (expr instanceof PatternSumExpression patternSum) {
+			return ExpressionReturnType.number;
+		} else if (expr instanceof ContextSumExpression) {
+			return ExpressionReturnType.number;
+		} else if (expr instanceof ContextTypeFeatureValue feature) {
+			return extractReturnType(feature.getFeatureExpression());
+		} else if (expr instanceof ContextTypeValue) {
+			return ExpressionReturnType.object;
+		} else if (expr instanceof ContextPatternNodeFeatureValue feature) {
+			return extractReturnType(feature.getFeatureExpression());
+		} else if (expr instanceof ContextMappingNodeFeatureValue feature) {
+			return extractReturnType(feature.getFeatureExpression());
+		} else if (expr instanceof ContextMappingNode) {
+			return ExpressionReturnType.object;
+		} else if (expr instanceof ContextMappingValue) {
+			return ExpressionReturnType.object;
+		} else if (expr instanceof ContextPatternNode) {
+			return ExpressionReturnType.object;
+		} else if (expr instanceof ContextPatternValue) {
+			return ExpressionReturnType.object;
+		} else if (expr instanceof ObjectiveFunctionValue) {
+			return ExpressionReturnType.number;
+		} else if (expr instanceof IteratorMappingValue) {
+			return ExpressionReturnType.object;
+		} else if (expr instanceof IteratorMappingVariableValue) {
+			return ExpressionReturnType.number;
+		} else if (expr instanceof IteratorMappingFeatureValue feature) {
+			return extractReturnType(feature.getFeatureExpression());
+		} else if (expr instanceof IteratorMappingNodeValue) {
+			return ExpressionReturnType.object;
+		} else if (expr instanceof IteratorMappingNodeFeatureValue feature) {
+			return extractReturnType(feature.getFeatureExpression());
+		} else if (expr instanceof IteratorTypeValue) {
+			return ExpressionReturnType.object;
+		} else if (expr instanceof IteratorTypeFeatureValue feature) {
+			return extractReturnType(feature.getFeatureExpression());
+		} else if (expr instanceof IteratorPatternValue) {
+			return ExpressionReturnType.object;
+		} else if (expr instanceof IteratorPatternFeatureValue feature) {
+			return extractReturnType(feature.getFeatureExpression());
+		} else if (expr instanceof IteratorPatternNodeValue) {
+			return ExpressionReturnType.object;
+		} else if (expr instanceof IteratorPatternNodeFeatureValue feature) {
+			return extractReturnType(feature.getFeatureExpression());
+		} else {
+			throw new IllegalArgumentException("Unknown value expression Type: " + expr);
+		}
+	}
+
+	public static ExpressionReturnType extractReturnType(final FeatureExpression expr) {
+		if (expr.getChild() == null) {
+			if (expr.getCurrent().getFeature().getEType() == EcorePackage.Literals.EBOOLEAN) {
+				return ExpressionReturnType.bool;
+			} else if (expr.getCurrent().getFeature().getEType() == EcorePackage.Literals.EDOUBLE) {
+				return ExpressionReturnType.number;
+			} else if (expr.getCurrent().getFeature().getEType() == EcorePackage.Literals.EFLOAT) {
+				return ExpressionReturnType.number;
+			} else if (expr.getCurrent().getFeature().getEType() == EcorePackage.Literals.EBYTE) {
+				return ExpressionReturnType.number;
+			} else if (expr.getCurrent().getFeature().getEType() == EcorePackage.Literals.ESHORT) {
+				return ExpressionReturnType.number;
+			} else if (expr.getCurrent().getFeature().getEType() == EcorePackage.Literals.EINT) {
+				return ExpressionReturnType.number;
+			} else if (expr.getCurrent().getFeature().getEType() == EcorePackage.Literals.ELONG) {
+				return ExpressionReturnType.number;
+			} else if (expr.getCurrent().getFeature().getEType() == EcorePackage.Literals.ESTRING) {
+				return ExpressionReturnType.object;
+			} else if (expr.getCurrent().getFeature().getEType() instanceof EClass) {
+				return ExpressionReturnType.object;
+			} else {
+				throw new IllegalArgumentException(
+						"Unsupported data type: " + expr.getCurrent().getFeature().getEType());
+			}
+		} else {
+			return extractReturnType(expr.getChild());
+		}
+	}
 }

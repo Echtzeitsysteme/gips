@@ -323,13 +323,31 @@ public interface GipsIntermediatePackage extends EPackage {
 	int VARIABLE_SET__NAME = 0;
 
 	/**
+	 * The feature id for the '<em><b>Upper Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int VARIABLE_SET__UPPER_BOUND = 1;
+
+	/**
+	 * The feature id for the '<em><b>Lower Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int VARIABLE_SET__LOWER_BOUND = 2;
+
+	/**
 	 * The number of structural features of the '<em>Variable Set</em>' class. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int VARIABLE_SET_FEATURE_COUNT = 1;
+	int VARIABLE_SET_FEATURE_COUNT = 3;
 
 	/**
 	 * The number of operations of the '<em>Variable Set</em>' class. <!--
@@ -359,6 +377,24 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @ordered
 	 */
 	int PATTERN__NAME = VARIABLE_SET__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Upper Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int PATTERN__UPPER_BOUND = VARIABLE_SET__UPPER_BOUND;
+
+	/**
+	 * The feature id for the '<em><b>Lower Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int PATTERN__LOWER_BOUND = VARIABLE_SET__LOWER_BOUND;
 
 	/**
 	 * The feature id for the '<em><b>Pattern</b></em>' reference. <!--
@@ -417,6 +453,24 @@ public interface GipsIntermediatePackage extends EPackage {
 	int TYPE__NAME = VARIABLE_SET__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Upper Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE__UPPER_BOUND = VARIABLE_SET__UPPER_BOUND;
+
+	/**
+	 * The feature id for the '<em><b>Lower Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE__LOWER_BOUND = VARIABLE_SET__LOWER_BOUND;
+
+	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
 	 * 
@@ -464,6 +518,24 @@ public interface GipsIntermediatePackage extends EPackage {
 	int MAPPING__NAME = VARIABLE_SET__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Upper Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int MAPPING__UPPER_BOUND = VARIABLE_SET__UPPER_BOUND;
+
+	/**
+	 * The feature id for the '<em><b>Lower Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int MAPPING__LOWER_BOUND = VARIABLE_SET__LOWER_BOUND;
+
+	/**
 	 * The feature id for the '<em><b>Context Pattern</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -509,6 +581,24 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @ordered
 	 */
 	int GT_MAPPING__NAME = MAPPING__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Upper Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int GT_MAPPING__UPPER_BOUND = MAPPING__UPPER_BOUND;
+
+	/**
+	 * The feature id for the '<em><b>Lower Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int GT_MAPPING__LOWER_BOUND = MAPPING__LOWER_BOUND;
 
 	/**
 	 * The feature id for the '<em><b>Context Pattern</b></em>' reference. <!--
@@ -568,6 +658,24 @@ public interface GipsIntermediatePackage extends EPackage {
 	int PATTERN_MAPPING__NAME = MAPPING__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Upper Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int PATTERN_MAPPING__UPPER_BOUND = MAPPING__UPPER_BOUND;
+
+	/**
+	 * The feature id for the '<em><b>Lower Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int PATTERN_MAPPING__LOWER_BOUND = MAPPING__LOWER_BOUND;
+
+	/**
 	 * The feature id for the '<em><b>Context Pattern</b></em>' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -622,6 +730,24 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @ordered
 	 */
 	int VARIABLE__NAME = VARIABLE_SET__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Upper Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int VARIABLE__UPPER_BOUND = VARIABLE_SET__UPPER_BOUND;
+
+	/**
+	 * The feature id for the '<em><b>Lower Bound</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int VARIABLE__LOWER_BOUND = VARIABLE_SET__LOWER_BOUND;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute. <!-- begin-user-doc
@@ -698,13 +824,40 @@ public interface GipsIntermediatePackage extends EPackage {
 	int CONSTRAINT__CONSTANT = 3;
 
 	/**
+	 * The feature id for the '<em><b>Negated</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int CONSTRAINT__NEGATED = 4;
+
+	/**
 	 * The feature id for the '<em><b>Dependencies</b></em>' reference list. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int CONSTRAINT__DEPENDENCIES = 4;
+	int CONSTRAINT__DEPENDENCIES = 5;
+
+	/**
+	 * The feature id for the '<em><b>Referenced By</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int CONSTRAINT__REFERENCED_BY = 6;
+
+	/**
+	 * The feature id for the '<em><b>Symbolic Variable</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int CONSTRAINT__SYMBOLIC_VARIABLE = 7;
 
 	/**
 	 * The feature id for the '<em><b>Helper Variables</b></em>' reference list.
@@ -713,7 +866,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONSTRAINT__HELPER_VARIABLES = 5;
+	int CONSTRAINT__HELPER_VARIABLES = 8;
 
 	/**
 	 * The feature id for the '<em><b>Helper Constraints</b></em>' containment
@@ -722,7 +875,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONSTRAINT__HELPER_CONSTRAINTS = 6;
+	int CONSTRAINT__HELPER_CONSTRAINTS = 9;
 
 	/**
 	 * The number of structural features of the '<em>Constraint</em>' class. <!--
@@ -731,7 +884,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONSTRAINT_FEATURE_COUNT = 7;
+	int CONSTRAINT_FEATURE_COUNT = 10;
 
 	/**
 	 * The number of operations of the '<em>Constraint</em>' class. <!--
@@ -791,6 +944,15 @@ public interface GipsIntermediatePackage extends EPackage {
 	int GLOBAL_CONSTRAINT__CONSTANT = CONSTRAINT__CONSTANT;
 
 	/**
+	 * The feature id for the '<em><b>Negated</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_CONSTRAINT__NEGATED = CONSTRAINT__NEGATED;
+
+	/**
 	 * The feature id for the '<em><b>Dependencies</b></em>' reference list. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -798,6 +960,24 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @ordered
 	 */
 	int GLOBAL_CONSTRAINT__DEPENDENCIES = CONSTRAINT__DEPENDENCIES;
+
+	/**
+	 * The feature id for the '<em><b>Referenced By</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_CONSTRAINT__REFERENCED_BY = CONSTRAINT__REFERENCED_BY;
+
+	/**
+	 * The feature id for the '<em><b>Symbolic Variable</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_CONSTRAINT__SYMBOLIC_VARIABLE = CONSTRAINT__SYMBOLIC_VARIABLE;
 
 	/**
 	 * The feature id for the '<em><b>Helper Variables</b></em>' reference list.
@@ -1017,13 +1197,40 @@ public interface GipsIntermediatePackage extends EPackage {
 	int PATTERN_CONSTRAINT__CONSTANT = CONTEXT_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Negated</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int PATTERN_CONSTRAINT__NEGATED = CONTEXT_FEATURE_COUNT + 4;
+
+	/**
 	 * The feature id for the '<em><b>Dependencies</b></em>' reference list. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int PATTERN_CONSTRAINT__DEPENDENCIES = CONTEXT_FEATURE_COUNT + 4;
+	int PATTERN_CONSTRAINT__DEPENDENCIES = CONTEXT_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Referenced By</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int PATTERN_CONSTRAINT__REFERENCED_BY = CONTEXT_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Symbolic Variable</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int PATTERN_CONSTRAINT__SYMBOLIC_VARIABLE = CONTEXT_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Helper Variables</b></em>' reference list.
@@ -1032,7 +1239,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PATTERN_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 5;
+	int PATTERN_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Helper Constraints</b></em>' containment
@@ -1041,7 +1248,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PATTERN_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 6;
+	int PATTERN_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Pattern</b></em>' reference. <!--
@@ -1050,7 +1257,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PATTERN_CONSTRAINT__PATTERN = CONTEXT_FEATURE_COUNT + 7;
+	int PATTERN_CONSTRAINT__PATTERN = CONTEXT_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of structural features of the '<em>Pattern Constraint</em>' class.
@@ -1059,7 +1266,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PATTERN_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 8;
+	int PATTERN_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 11;
 
 	/**
 	 * The number of operations of the '<em>Pattern Constraint</em>' class. <!--
@@ -1119,13 +1326,40 @@ public interface GipsIntermediatePackage extends EPackage {
 	int TYPE_CONSTRAINT__CONSTANT = CONTEXT_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Negated</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_CONSTRAINT__NEGATED = CONTEXT_FEATURE_COUNT + 4;
+
+	/**
 	 * The feature id for the '<em><b>Dependencies</b></em>' reference list. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT__DEPENDENCIES = CONTEXT_FEATURE_COUNT + 4;
+	int TYPE_CONSTRAINT__DEPENDENCIES = CONTEXT_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Referenced By</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_CONSTRAINT__REFERENCED_BY = CONTEXT_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Symbolic Variable</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_CONSTRAINT__SYMBOLIC_VARIABLE = CONTEXT_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Helper Variables</b></em>' reference list.
@@ -1134,7 +1368,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 5;
+	int TYPE_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Helper Constraints</b></em>' containment
@@ -1143,7 +1377,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 6;
+	int TYPE_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Model Type</b></em>' reference. <!--
@@ -1152,7 +1386,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT__MODEL_TYPE = CONTEXT_FEATURE_COUNT + 7;
+	int TYPE_CONSTRAINT__MODEL_TYPE = CONTEXT_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of structural features of the '<em>Type Constraint</em>' class.
@@ -1161,7 +1395,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 8;
+	int TYPE_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 11;
 
 	/**
 	 * The number of operations of the '<em>Type Constraint</em>' class. <!--
@@ -1221,13 +1455,40 @@ public interface GipsIntermediatePackage extends EPackage {
 	int MAPPING_CONSTRAINT__CONSTANT = CONTEXT_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Negated</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int MAPPING_CONSTRAINT__NEGATED = CONTEXT_FEATURE_COUNT + 4;
+
+	/**
 	 * The feature id for the '<em><b>Dependencies</b></em>' reference list. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT__DEPENDENCIES = CONTEXT_FEATURE_COUNT + 4;
+	int MAPPING_CONSTRAINT__DEPENDENCIES = CONTEXT_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Referenced By</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int MAPPING_CONSTRAINT__REFERENCED_BY = CONTEXT_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Symbolic Variable</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int MAPPING_CONSTRAINT__SYMBOLIC_VARIABLE = CONTEXT_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Helper Variables</b></em>' reference list.
@@ -1236,7 +1497,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 5;
+	int MAPPING_CONSTRAINT__HELPER_VARIABLES = CONTEXT_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Helper Constraints</b></em>' containment
@@ -1245,7 +1506,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 6;
+	int MAPPING_CONSTRAINT__HELPER_CONSTRAINTS = CONTEXT_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Mapping</b></em>' reference. <!--
@@ -1254,7 +1515,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT__MAPPING = CONTEXT_FEATURE_COUNT + 7;
+	int MAPPING_CONSTRAINT__MAPPING = CONTEXT_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of structural features of the '<em>Mapping Constraint</em>' class.
@@ -1263,7 +1524,7 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 8;
+	int MAPPING_CONSTRAINT_FEATURE_COUNT = CONTEXT_FEATURE_COUNT + 11;
 
 	/**
 	 * The number of operations of the '<em>Mapping Constraint</em>' class. <!--
@@ -4742,6 +5003,30 @@ public interface GipsIntermediatePackage extends EPackage {
 	EAttribute getVariableSet_Name();
 
 	/**
+	 * Returns the meta object for the attribute
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.VariableSet#getUpperBound
+	 * <em>Upper Bound</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Upper Bound</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.VariableSet#getUpperBound()
+	 * @see #getVariableSet()
+	 * @generated
+	 */
+	EAttribute getVariableSet_UpperBound();
+
+	/**
+	 * Returns the meta object for the attribute
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.VariableSet#getLowerBound
+	 * <em>Lower Bound</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Lower Bound</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.VariableSet#getLowerBound()
+	 * @see #getVariableSet()
+	 * @generated
+	 */
+	EAttribute getVariableSet_LowerBound();
+
+	/**
 	 * Returns the meta object for class
 	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Pattern
 	 * <em>Pattern</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4951,6 +5236,18 @@ public interface GipsIntermediatePackage extends EPackage {
 	EAttribute getConstraint_Constant();
 
 	/**
+	 * Returns the meta object for the attribute
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isNegated
+	 * <em>Negated</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Negated</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isNegated()
+	 * @see #getConstraint()
+	 * @generated
+	 */
+	EAttribute getConstraint_Negated();
+
+	/**
 	 * Returns the meta object for the reference list
 	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getDependencies
 	 * <em>Dependencies</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4961,6 +5258,30 @@ public interface GipsIntermediatePackage extends EPackage {
 	 * @generated
 	 */
 	EReference getConstraint_Dependencies();
+
+	/**
+	 * Returns the meta object for the reference
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getReferencedBy
+	 * <em>Referenced By</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the reference '<em>Referenced By</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getReferencedBy()
+	 * @see #getConstraint()
+	 * @generated
+	 */
+	EReference getConstraint_ReferencedBy();
+
+	/**
+	 * Returns the meta object for the reference
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getSymbolicVariable
+	 * <em>Symbolic Variable</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the reference '<em>Symbolic Variable</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getSymbolicVariable()
+	 * @see #getConstraint()
+	 * @generated
+	 */
+	EReference getConstraint_SymbolicVariable();
 
 	/**
 	 * Returns the meta object for the reference list
@@ -7033,6 +7354,22 @@ public interface GipsIntermediatePackage extends EPackage {
 		EAttribute VARIABLE_SET__NAME = eINSTANCE.getVariableSet_Name();
 
 		/**
+		 * The meta object literal for the '<em><b>Upper Bound</b></em>' attribute
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute VARIABLE_SET__UPPER_BOUND = eINSTANCE.getVariableSet_UpperBound();
+
+		/**
+		 * The meta object literal for the '<em><b>Lower Bound</b></em>' attribute
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute VARIABLE_SET__LOWER_BOUND = eINSTANCE.getVariableSet_LowerBound();
+
+		/**
 		 * The meta object literal for the
 		 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternImpl
 		 * <em>Pattern</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -7199,12 +7536,36 @@ public interface GipsIntermediatePackage extends EPackage {
 		EAttribute CONSTRAINT__CONSTANT = eINSTANCE.getConstraint_Constant();
 
 		/**
+		 * The meta object literal for the '<em><b>Negated</b></em>' attribute feature.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute CONSTRAINT__NEGATED = eINSTANCE.getConstraint_Negated();
+
+		/**
 		 * The meta object literal for the '<em><b>Dependencies</b></em>' reference list
 		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @generated
 		 */
 		EReference CONSTRAINT__DEPENDENCIES = eINSTANCE.getConstraint_Dependencies();
+
+		/**
+		 * The meta object literal for the '<em><b>Referenced By</b></em>' reference
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference CONSTRAINT__REFERENCED_BY = eINSTANCE.getConstraint_ReferencedBy();
+
+		/**
+		 * The meta object literal for the '<em><b>Symbolic Variable</b></em>' reference
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference CONSTRAINT__SYMBOLIC_VARIABLE = eINSTANCE.getConstraint_SymbolicVariable();
 
 		/**
 		 * The meta object literal for the '<em><b>Helper Variables</b></em>' reference

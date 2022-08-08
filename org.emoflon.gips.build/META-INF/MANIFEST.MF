@@ -17,4 +17,5 @@ Require-Bundle: org.emoflon.gips.intermediate;bundle-version="0.1.0",
  org.moflon.core.plugins,
  org.emoflon.gips.core.dependencies
 Bundle-Vendor: Real-Time Systems Lab - TU Darmstadt
-Export-Package: org.emoflon.gips.build.generator.templates
+Export-Package: org.emoflon.gips.build.generator.templates,
+ org.emoflon.gips.build.transformation

@@ -41,6 +41,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator
 
 class TypeConstraintTemplate extends ConstraintTemplate<TypeConstraint> {
 	
@@ -55,7 +56,7 @@ class TypeConstraintTemplate extends ConstraintTemplate<TypeConstraint> {
 		filePath = data.apiData.gipsConstraintPkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
-		imports.add("java.util.Collections");
+		imports.add("java.util.Collections")
 		imports.add("org.eclipse.emf.ecore.EClass")
 		imports.add("org.eclipse.emf.ecore.EObject")
 		imports.add("org.emoflon.gips.core.GipsEngine")
@@ -108,7 +109,9 @@ public class «className» extends GipsTypeConstraint<«data.gipsApiClassName»,
 	}
 	
 	override String generateConstantClassContent(RelationalExpression relExpr) {
-		return '''
+		if(relExpr.operator != RelationalOperator.OBJECT_EQUAL && 
+			relExpr.operator != RelationalOperator.OBJECT_NOT_EQUAL) {
+			return '''
 public class «className» extends GipsTypeConstraint<«data.gipsApiClassName», «context.modelType.type.name»> {
 	public «className»(final «data.gipsApiClassName» engine, final TypeConstraint constraint) {
 		super(engine, constraint);
@@ -138,7 +141,41 @@ public class «className» extends GipsTypeConstraint<«data.gipsApiClassName»,
 	«FOR methods : builderMethodDefinitions.values»
 	«methods»
 	«ENDFOR»
+}'''	
+		} else {
+			return '''
+public class «className» extends GipsTypeConstraint<«data.gipsApiClassName», «context.modelType.type.name»> {
+	public «className»(final «data.gipsApiClassName» engine, final TypeConstraint constraint) {
+		super(engine, constraint);
+	}
+	
+	@Override
+	protected double buildConstantLhs(final «context.modelType.type.name» context) {
+		throw new UnsupportedOperationException("Constraint has no arithmetic lhs.");
+	}
+	
+	@Override
+	protected double buildConstantRhs(final «context.modelType.type.name» context) {
+		throw new UnsupportedOperationException("Constraint has no arithmetic lhs.");
+	}
+	
+	@Override
+	protected List<ILPTerm> buildVariableLhs(final «context.modelType.type.name» context) {
+		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
+	}
+	
+	@Override
+	protected boolean buildConstantExpression(final «context.modelType.type.name» context) {
+		return «parseExpression(relExpr, ExpressionContext.constConstraint)»;
+	}
+	
+	«generateDependencyConstraints()»		
+	«FOR methods : builderMethodDefinitions.values»
+	«methods»
+	«ENDFOR»
 }'''
+		}
+
 	}
 	
 	override String generateConstantClassContent(BoolValueExpression boolExpr) {

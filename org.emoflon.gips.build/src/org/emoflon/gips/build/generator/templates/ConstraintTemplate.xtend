@@ -81,7 +81,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			if(context.expression instanceof RelationalExpression) {
 				classContent = generateConstantClassContent(context.expression as RelationalExpression)
 			} else {
-				classContent = generateConstantClassContent(context.expression);
+				classContent = generateConstantClassContent(context.expression as BoolValueExpression)
 			}
 		} else {
 			if(context.expression instanceof RelationalExpression) {
@@ -319,6 +319,12 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			}
 			case NOT_EQUAL: {
 				return '''«parseExpression(expr.lhs, contextType)» != «parseExpression(expr.rhs, contextType)»'''
+			}
+			case OBJECT_EQUAL: {
+				return '''«parseExpression(expr.lhs, contextType)».equals(«parseExpression(expr.rhs, contextType)»)'''
+			}
+			case OBJECT_NOT_EQUAL: {
+				return '''!«parseExpression(expr.lhs, contextType)».equals(«parseExpression(expr.rhs, contextType)»)'''
 			}
 		}
 	}

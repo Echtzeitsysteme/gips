@@ -76,7 +76,25 @@ public enum RelationalOperator implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	NOT_EQUAL(5, "NotEqual", "NotEqual");
+	NOT_EQUAL(5, "NotEqual", "NotEqual"),
+	/**
+	 * The '<em><b>Object Equal</b></em>' literal object. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @see #OBJECT_EQUAL_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	OBJECT_EQUAL(6, "ObjectEqual", "ObjectEqual"),
+	/**
+	 * The '<em><b>Object Not Equal</b></em>' literal object. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #OBJECT_NOT_EQUAL_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	OBJECT_NOT_EQUAL(7, "ObjectNotEqual", "ObjectNotEqual");
 
 	/**
 	 * The '<em><b>Less</b></em>' literal value. <!-- begin-user-doc --> <!--
@@ -145,13 +163,35 @@ public enum RelationalOperator implements Enumerator {
 	public static final int NOT_EQUAL_VALUE = 5;
 
 	/**
+	 * The '<em><b>Object Equal</b></em>' literal value. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @see #OBJECT_EQUAL
+	 * @model name="ObjectEqual"
+	 * @generated
+	 * @ordered
+	 */
+	public static final int OBJECT_EQUAL_VALUE = 6;
+
+	/**
+	 * The '<em><b>Object Not Equal</b></em>' literal value. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @see #OBJECT_NOT_EQUAL
+	 * @model name="ObjectNotEqual"
+	 * @generated
+	 * @ordered
+	 */
+	public static final int OBJECT_NOT_EQUAL_VALUE = 7;
+
+	/**
 	 * An array of all the '<em><b>Relational Operator</b></em>' enumerators. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
 	private static final RelationalOperator[] VALUES_ARRAY = new RelationalOperator[] { LESS, LESS_OR_EQUAL, EQUAL,
-			GREATER_OR_EQUAL, GREATER, NOT_EQUAL, };
+			GREATER_OR_EQUAL, GREATER, NOT_EQUAL, OBJECT_EQUAL, OBJECT_NOT_EQUAL, };
 
 	/**
 	 * A public read-only list of all the '<em><b>Relational Operator</b></em>'
@@ -219,6 +259,10 @@ public enum RelationalOperator implements Enumerator {
 			return GREATER;
 		case NOT_EQUAL_VALUE:
 			return NOT_EQUAL;
+		case OBJECT_EQUAL_VALUE:
+			return OBJECT_EQUAL;
+		case OBJECT_NOT_EQUAL_VALUE:
+			return OBJECT_NOT_EQUAL;
 		}
 		return null;
 	}

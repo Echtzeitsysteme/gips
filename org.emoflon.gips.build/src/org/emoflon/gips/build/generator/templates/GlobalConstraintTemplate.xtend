@@ -40,6 +40,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator
 
 class GlobalConstraintTemplate extends ConstraintTemplate<GlobalConstraint> {
 	
@@ -106,7 +107,9 @@ public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName�
 	}
 	
 	override String generateConstantClassContent(RelationalExpression relExpr) {
-		return '''
+		if(relExpr.operator != RelationalOperator.OBJECT_EQUAL && 
+			relExpr.operator != RelationalOperator.OBJECT_NOT_EQUAL) {
+			return '''
 public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName»> {
 	public «className»(final «data.gipsApiClassName» engine, final GlobalConstraint constraint) {
 		super(engine, constraint);
@@ -137,6 +140,40 @@ public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName�
 	«methods»
 	«ENDFOR»
 }'''
+		} else {
+			return '''
+public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName»> {
+	public «className»(final «data.gipsApiClassName» engine, final GlobalConstraint constraint) {
+		super(engine, constraint);
+	}
+	
+	@Override
+	protected double buildConstantLhs() {
+		throw new UnsupportedOperationException("Constraint has no arithmetic lhs.");
+	}
+	
+	@Override
+	protected double buildConstantRhs() {
+		throw new UnsupportedOperationException("Constraint has no arithmetic rhs.");
+	}
+	
+	@Override
+	protected List<ILPTerm> buildVariableLhs() {
+		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
+	}
+	
+	@Override
+	protected boolean buildConstantExpression() {
+		return «parseExpression(relExpr, ExpressionContext.constConstraint)»;
+	}
+	
+	«generateDependencyConstraints()»
+	«FOR methods : builderMethodDefinitions.values»
+	«methods»
+	«ENDFOR»
+}'''
+		}
+
 	}
 	
 	override String generateConstantClassContent(BoolValueExpression boolExpr) {

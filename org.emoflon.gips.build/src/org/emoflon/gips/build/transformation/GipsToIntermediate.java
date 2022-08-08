@@ -12,18 +12,15 @@ import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
 import org.emoflon.gips.build.transformation.transformer.ArithmeticExpressionTransformer;
-import org.emoflon.gips.build.transformation.transformer.RelationalExpressionTransformer;
+import org.emoflon.gips.build.transformation.transformer.BooleanExpressionTransformer;
 import org.emoflon.gips.build.transformation.transformer.TransformerFactory;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
-import org.emoflon.gips.gipsl.gipsl.GipsBoolExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsConfig;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsGlobalObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
-import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression;
@@ -52,7 +49,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
-import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
@@ -166,6 +162,8 @@ public class GipsToIntermediate {
 			}
 
 			mapping.setName(eMapping.getName());
+			mapping.setUpperBound(1.0);
+			mapping.setLowerBound(0.0);
 			data.model().getVariables().add(mapping);
 			data.eMapping2Mapping().put(eMapping, mapping);
 		});
@@ -196,15 +194,9 @@ public class GipsToIntermediate {
 						data.model().getConstraints().add(constraint);
 						transformed.put(subConstraint, constraint);
 						dConstraint.getDependencies().add(constraint);
+						constraint.setNegated(false);
 
-						// TODO: We'll ignore build time constant constraints for now -> This must be
-						// fixed at some point in time.
-						if (constraint.isConstant()) {
-							throw new UnsupportedOperationException(
-									"Negation for constraints that are constant at build time is currently not supported");
-						}
-
-						if (!(constraint.getExpression() instanceof RelationalExpression)) {
+						if (!constraint.isConstant() && !(constraint.getExpression() instanceof RelationalExpression)) {
 							throw new UnsupportedOperationException(
 									"Negation for constraints that are constant at build time is currently not supported");
 						}
@@ -237,19 +229,17 @@ public class GipsToIntermediate {
 						Constraint constraint = transformed.get(splitConstraint);
 						VariableTuple slackVars = constraint2Slack.get(splitConstraint);
 
-						Variable binaryVarPos = factory.createVariable();
-						data.model().getVariables().add(binaryVarPos);
+						Variable binaryVarPos = GipsConstraintUtils.createBinaryVariable(data, factory,
+								constraint.getName() + "_symVPos");
 						dConstraint.getHelperVariables().add(binaryVarPos);
-						binaryVarPos.setType(VariableType.BINARY);
-						binaryVarPos.setName(constraint.getName() + "_symVPos");
 
-						Variable binaryVarNeg = factory.createVariable();
-						data.model().getVariables().add(binaryVarNeg);
+						Variable binaryVarNeg = GipsConstraintUtils.createBinaryVariable(data, factory,
+								constraint.getName() + "_symVNeg");
 						dConstraint.getHelperVariables().add(binaryVarNeg);
-						binaryVarNeg.setType(VariableType.BINARY);
-						binaryVarNeg.setName(constraint.getName() + "_symVNeg");
+
 						VariableTuple symbolicVars = new VariableTuple(binaryVarPos, binaryVarNeg);
 						constraint2Symbolic.put(splitConstraint, symbolicVars);
+						constraint.setSymbolicVariable(symbolicVars.nonInverted());
 
 						// Force symbolic variables non-zero constraint
 						// symVPos + symVNeg == 1
@@ -325,19 +315,16 @@ public class GipsToIntermediate {
 					dConstraint.setExpression(substituteRelation);
 				}
 				case LITERAL -> {
-					transformConstraint(eSubConstraint.result().values().iterator().next());
+					Constraint constraint = transformConstraint(eSubConstraint.result().values().iterator().next());
+					constraint.setNegated(false);
 				}
 				case NEGATED_LITERAL -> {
-					Constraint dConstraint = createDependencyConstraint(eSubConstraint, constraintCounter);
-					data.model().getConstraints().add(dConstraint);
-					constraintCounter++;
-
 					Constraint constraint = transformConstraint(eSubConstraint.result().values().iterator().next());
-					// TODO: We'll ignore build time constant constraints for now -> This must be
-					// fixed at some point in time.
+					data.model().getConstraints().add(constraint);
+
 					if (constraint.isConstant()) {
-						throw new UnsupportedOperationException(
-								"Negation for constraints that are constant at build time is currently not supported");
+						constraint.setNegated(true);
+						return;
 					}
 
 					if (!(constraint.getExpression() instanceof RelationalExpression)) {
@@ -345,7 +332,9 @@ public class GipsToIntermediate {
 								"Negation for constraints that are constant at build time is currently not supported");
 					}
 
-					data.model().getConstraints().add(constraint);
+					Constraint dConstraint = createDependencyConstraint(eSubConstraint, constraintCounter);
+					data.model().getConstraints().add(dConstraint);
+					constraintCounter++;
 					dConstraint.getDependencies().add(constraint);
 
 					// Insert real-valued slack variables into non-inverted and inverted constraint
@@ -355,6 +344,7 @@ public class GipsToIntermediate {
 					// Add negation constraint
 					VariableTuple symbolicVars = GipsConstraintUtils.insertNegationConstraint(data, factory,
 							dConstraint, constraint);
+					constraint.setSymbolicVariable(symbolicVars.nonInverted());
 
 					// Link symbolic and slack variables
 					GipsConstraintUtils.insertSymbolicSlackLinkConstraint(factory, dConstraint,
@@ -379,34 +369,27 @@ public class GipsToIntermediate {
 	}
 
 	protected Constraint transformConstraint(final GipsConstraint subConstraint) throws Exception {
-		// check primitive or impossible expressions
-		GipsBoolExpr boolExpr = subConstraint.getExpr().getExpr();
-		if (boolExpr instanceof GipsBooleanLiteral lit) {
-			if (lit.isLiteral()) {
-				// Ignore this constraint, since it will always be satisfied
-				return null;
-			} else {
-				// This constraint will never be satisfied, hence this is an impossible to solve
-				// problem
-				throw new IllegalArgumentException(
-						"Optimization problem is impossible to solve: One ore more constraints return false by definition.");
-			}
-		}
-
 		Constraint constraint = createConstraint(subConstraint, constraintCounter);
-		constraintCounter++;
 		constraint.setDepending(false);
+
 		data.model().getConstraints().add(constraint);
 		data.eConstraint2Constraint().put(subConstraint, constraint);
+		constraintCounter++;
 
-		RelationalExpressionTransformer transformer = transformationFactory.createRelationalTransformer(constraint);
-		constraint.setExpression(transformer.transform((GipsRelExpr) boolExpr));
+		BooleanExpressionTransformer transformer = transformationFactory.createBooleanTransformer(constraint);
+		constraint.setExpression(transformer.transform(subConstraint.getExpr().getExpr()));
+
 		if (GipsTransformationUtils
 				.isConstantExpression(constraint.getExpression()) == ArithmeticExpressionType.constant) {
 			// Check whether this constraint is constant at ILP problem build time. If true
 			// -> return
 			constraint.setConstant(true);
 			return constraint;
+		}
+
+		if (!(constraint.getExpression() instanceof RelationalExpression)) {
+			throw new UnsupportedOperationException(
+					"Transformed non-constant sub-constraints may not contain boolean expressions or boolean literals.");
 		}
 
 		boolean isLhsConst = (GipsTransformationUtils.isConstantExpression(

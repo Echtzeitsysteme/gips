@@ -4,11 +4,11 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
+import org.emoflon.gips.gipsl.gipsl.GipsVariableOperationExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
@@ -50,7 +50,7 @@ public class AttributeInStreamTransformer extends AttributeExpressionTransformer
 	}
 
 	@Override
-	protected ValueExpression transformVariableStreamOperation(GipsContextOperationExpression eContextOp,
+	protected ValueExpression transformVariableStreamOperation(GipsVariableOperationExpression eContextOp,
 			GipsMappingAttributeExpr eMappingAttribute, GipsStreamExpr streamIteratorContainer) throws Exception {
 		throw new UnsupportedOperationException("ILP variable access ist not allowed in stream expressions.");
 	}

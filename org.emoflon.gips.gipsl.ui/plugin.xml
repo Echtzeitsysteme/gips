@@ -460,4 +460,10 @@
 			<newWizardShortcut id="org.emoflon.gips.gipsl.ui.wizard.GipslNewProjectWizard"/>
 		</perspectiveExtension>
 	</extension>
+ <extension
+       point="org.moflon.core.ui.DiagramTextProvider">
+    <diagram_text_provider
+          class="org.emoflon.gips.gipsl.ui.visualization.GipsVisualizer">
+    </diagram_text_provider>
+ </extension>
 </plugin>

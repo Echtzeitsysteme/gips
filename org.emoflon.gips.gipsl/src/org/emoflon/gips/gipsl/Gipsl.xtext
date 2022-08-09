@@ -6,8 +6,9 @@ import "http://www.emoflon.org/ibex/gt/editor/GT" as GT
 generate gipsl "http://www.emoflon.org/gips/gipsl/Gipsl"
 
 @Override 
-EditorGTFile: {EditorGTFile} 
+EditorGTFile: {EditorGTFile}
 	(imports+=EditorImport)*
+	(importedPattern+=ImportedPattern)*
 	config = GipsConfig
   	(patterns+=EditorPattern |
   	conditions+=EditorCondition |
@@ -31,6 +32,10 @@ GipsConfig : {GipsConfig}
 
 enum SolverType:
 	GUROBI='GUROBI' | GLPK='GLPK' | CPLEX='CPLEX'
+;
+
+ImportedPattern : 
+	'from' file = GipsStringLiteral 'import' pattern = [GT::EditorPattern|ID]
 ;
 
 GipsMapping :

@@ -3,10 +3,75 @@
  */
 package org.emoflon.gips.gipsl.ui.contentassist;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jface.text.contentassist.CompletionProposal;
+import org.eclipse.xtext.Assignment;
+import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.resource.XtextResourceSet;
+import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
+import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
+import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
+
 /**
  * See
  * https://www.eclipse.org/Xtext/documentation/310_eclipse_support.html#content-assist
  * on how to customize the content assistant.
  */
 public class GipslProposalProvider extends AbstractGipslProposalProvider {
+
+	@Override
+	public void completeImportedPattern_File(EObject model, Assignment assignment, ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor) {
+		super.completeImportedPattern_File(model, assignment, context, acceptor);
+
+		IWorkspace ws = ResourcesPlugin.getWorkspace();
+		for (IProject project : ws.getRoot().getProjects()) {
+			try {
+				if (!project.hasNature("org.emoflon.ibex.gt.editor.ui.nature"))
+					continue;
+			} catch (CoreException e) {
+				continue;
+			}
+
+			File projectFile = new File(project.getLocation().toPortableString());
+			List<File> gtFiles = new LinkedList<>();
+			GipslScopeContextUtil.gatherGTFiles(gtFiles, projectFile);
+			for (File gtFile : gtFiles) {
+
+				XtextResourceSet rs = new XtextResourceSet();
+				URI gtModelUri;
+				try {
+					gtModelUri = URI.createFileURI(gtFile.getCanonicalPath());
+				} catch (IOException e) {
+					continue;
+				}
+				Resource resource = rs.getResource(gtModelUri, true);
+				EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
+				org.emoflon.ibex.gt.editor.gT.EditorGTFile gtModel = (org.emoflon.ibex.gt.editor.gT.EditorGTFile) resource
+						.getContents().get(0);
+				try {
+					if (gtModel == null || gtFile.getCanonicalPath().contains("/bin/"))
+						continue;
+				} catch (IOException e) {
+					continue;
+				}
+
+				acceptor.accept(
+						new CompletionProposal("\"" + gtModelUri.toFileString() + "\"", context.getOffset(), 0, 0));
+			}
+
+		}
+
+	}
 }

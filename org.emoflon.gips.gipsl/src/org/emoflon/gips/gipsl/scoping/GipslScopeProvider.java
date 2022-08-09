@@ -7,9 +7,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.Scopes;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
@@ -34,6 +38,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsStreamSet;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeCast;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
+import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
 import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsContextExprImpl;
@@ -70,7 +75,9 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 	}
 
 	public IScope getScopeInternal(EObject context, EReference reference) throws Exception {
-		if (GipslScopeContextUtil.isGipsMapping(context, reference)) {
+		if (GipslScopeContextUtil.isPatternImportPattern(context, reference)) {
+			return scopeForImportedPatternPattern((ImportedPattern) context, reference);
+		} else if (GipslScopeContextUtil.isGipsMapping(context, reference)) {
 			return scopeForGipsMapping((GipsMapping) context, reference);
 		} else if (GipslScopeContextUtil.isGipsMappingContext(context, reference)) {
 			return scopeForGipsMappingContext((GipsMappingContext) context, reference);
@@ -113,6 +120,23 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 		else {
 			return super.getScope(context, reference);
 		}
+	}
+
+	private IScope scopeForImportedPatternPattern(ImportedPattern context, EReference reference) {
+		if (context.getFile() == null || context.getFile().isBlank())
+			return super.getScope(context, reference);
+
+		XtextResourceSet rs = new XtextResourceSet();
+		URI gtModelUri = URI.createFileURI(context.getFile().replace("\"", ""));
+
+		Resource resource = rs.getResource(gtModelUri, true);
+		EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
+		org.emoflon.ibex.gt.editor.gT.EditorGTFile gtModel = (org.emoflon.ibex.gt.editor.gT.EditorGTFile) resource
+				.getContents().get(0);
+		if (gtModel == null)
+			return super.getScope(context, reference);
+
+		return Scopes.scopeFor(gtModel.getPatterns());
 	}
 
 	private IScope scopeForGipsPatternContext(GipsPatternContext context, EReference reference) {

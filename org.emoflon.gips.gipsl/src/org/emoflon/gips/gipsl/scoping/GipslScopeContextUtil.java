@@ -1,5 +1,7 @@
 package org.emoflon.gips.gipsl.scoping;
 
+import java.io.File;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,6 +49,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeCast;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
+import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsContainsImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsContextExprImpl;
@@ -60,6 +63,14 @@ import org.emoflon.gips.gipsl.gipsl.impl.GipsStreamSetImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsTypeAttributeExprImpl;
 
 public final class GipslScopeContextUtil {
+
+	public static boolean isPatternImportUri(final EObject context, final EReference reference) {
+		return context instanceof ImportedPattern && reference == GipslPackage.Literals.IMPORTED_PATTERN__FILE;
+	}
+
+	public static boolean isPatternImportPattern(final EObject context, final EReference reference) {
+		return context instanceof ImportedPattern && reference == GipslPackage.Literals.IMPORTED_PATTERN__PATTERN;
+	}
 
 	public static boolean isGipsMapping(final EObject context, final EReference reference) {
 		return context instanceof GipsMapping;
@@ -380,6 +391,22 @@ public final class GipslScopeContextUtil {
 		}
 
 		return mappings;
+	}
+
+	public static void gatherGTFiles(Collection<File> gtFiles, File root) {
+		if (root.isDirectory() && root.exists()) {
+			for (File subFile : root.listFiles()) {
+				gatherGTFiles(gtFiles, subFile);
+			}
+			return;
+		} else if (!root.isDirectory() && root.exists()) {
+			if (root.getName().endsWith(".gt")) {
+				gtFiles.add(root);
+				return;
+			}
+		} else {
+			return;
+		}
 	}
 
 }

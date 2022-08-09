@@ -9,7 +9,6 @@ import org.emoflon.gips.build.transformation.helper.TransformationContext;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsContains;
 import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
 import org.emoflon.gips.gipsl.gipsl.GipsLambdaAttributeExpression;
@@ -27,6 +26,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsStreamBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
+import org.emoflon.gips.gipsl.gipsl.GipsVariableOperationExpression;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue;
@@ -199,7 +199,7 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 			} else {
 				throw new UnsupportedOperationException("Nested stream expressions are not yet allowed!");
 			}
-		} else if (eLambda.getExpr() instanceof GipsContextOperationExpression eContextOp) {
+		} else if (eLambda.getExpr() instanceof GipsVariableOperationExpression eContextOp) {
 			if (streamRoot instanceof GipsMappingAttributeExpr eMappingAttribute) {
 				return transformVariableStreamOperation(eContextOp, eMappingAttribute, streamIteratorContainer);
 			} else {
@@ -473,7 +473,7 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 								"Some constrains contain invalid values within arithmetic expressions, e.g., objects or streams of objects instead of arithmetic values.");
 					}
 				}
-			} else if (eContext.getExpr() instanceof GipsContextOperationExpression eContextOp) {
+			} else if (eContext.getExpr() instanceof GipsVariableOperationExpression eContextOp) {
 				throw new UnsupportedOperationException(
 						"Node and ILP variable (e.g., .value(), .isMapped()) expressions may not followed by stream expressions.");
 			} else {
@@ -566,7 +566,7 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 		return patternFeature;
 	}
 
-	protected ValueExpression transformVariableStreamOperation(final GipsContextOperationExpression eContextOp,
+	protected ValueExpression transformVariableStreamOperation(final GipsVariableOperationExpression eContextOp,
 			final GipsMappingAttributeExpr eMappingAttribute, final GipsStreamExpr streamIteratorContainer)
 			throws Exception {
 		if (eContextOp instanceof GipsMappingValue mappingValueOp) {

@@ -9,7 +9,6 @@ import org.emoflon.gips.build.transformation.helper.TransformationContext;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsContains;
 import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingCheckValue;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
@@ -22,6 +21,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsStreamBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
+import org.emoflon.gips.gipsl.gipsl.GipsVariableOperationExpression;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
@@ -63,7 +63,7 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 						EObject contextType = GipslScopeContextUtil.getContextType(eContextAttribute);
 						if (contextType instanceof GipsMappingContext mappingContext) {
 							if (eContextAttribute
-									.getExpr() instanceof GipsContextOperationExpression contextOperation) {
+									.getExpr() instanceof GipsVariableOperationExpression contextOperation) {
 								return createUnaryConstraintCondition(contextOperation);
 							} else if (eContextAttribute
 									.getExpr() instanceof GipsNodeAttributeExpr nodeAttributeExpression
@@ -158,8 +158,8 @@ public class RelationalInConstraintTransformer extends TransformationContext<Con
 		}
 	}
 
-	protected RelationalExpression createUnaryConstraintCondition(final GipsContextOperationExpression contextOperation)
-			throws Exception {
+	protected RelationalExpression createUnaryConstraintCondition(
+			final GipsVariableOperationExpression contextOperation) throws Exception {
 		if (contextOperation instanceof GipsMappingValue mappingValueOp) {
 			throw new UnsupportedOperationException(
 					"Some constrains contain invalid values within boolean expressions, e.g., arithmetic values instead of boolean values.");

@@ -30,7 +30,6 @@ import org.emoflon.gips.gipsl.gipsl.GipsConstant;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsContains;
 import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsExpArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsExpOperator;
 import org.emoflon.gips.gipsl.gipsl.GipsExpressionOperand;
@@ -73,9 +72,10 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeCast;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsVariableOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
-import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.gipsl.gipsl.GlobalContext;
+import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
 
 /**
@@ -520,7 +520,7 @@ public class GipslValidator extends AbstractGipslValidator {
 				if (exprOp instanceof GipsContextExpr) {
 					final GipsContextExpr conExpr = (GipsContextExpr) exprOp;
 					// Streams can be ignored
-					return conExpr.getExpr() instanceof GipsContextOperationExpression;
+					return conExpr.getExpr() instanceof GipsVariableOperationExpression;
 				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
 					// A GipsLambdaAttributeExpression can not contain an isMapped call
 					return false;
@@ -699,7 +699,7 @@ public class GipslValidator extends AbstractGipslValidator {
 					if (streamContainsMappingsCall(conExpr.getStream())) {
 						return true;
 					}
-					return (conExpr.getExpr() instanceof GipsContextOperationExpression
+					return (conExpr.getExpr() instanceof GipsVariableOperationExpression
 							&& !(conExpr.getExpr() instanceof GipsMappingCheckValue));
 				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
 					// A GipsLambdaAttributeExpression can not contain a mappings call
@@ -1163,7 +1163,7 @@ public class GipslValidator extends AbstractGipslValidator {
 				if (exprOp instanceof GipsContextExpr) {
 					final GipsContextExpr conExpr = (GipsContextExpr) exprOp;
 					// Currently only MAPPED and VALUE are supported -> Both are dynamic
-					return conExpr.getExpr() instanceof GipsContextOperationExpression;
+					return conExpr.getExpr() instanceof GipsVariableOperationExpression;
 					// TODO: Use the solution below. But, in order for this to work, we need to
 					// implement a multivariate return value (Enum type), which conveys more
 					// information that just "there is a mapping access of some kind".
@@ -1708,8 +1708,8 @@ public class GipslValidator extends AbstractGipslValidator {
 		final EObject innerExpr = expr.getExpr();
 		if (innerExpr instanceof GipsNodeAttributeExpr) {
 			return getEvalTypeFromNodeAttrExpr((GipsNodeAttributeExpr) innerExpr);
-		} else if (innerExpr instanceof GipsContextOperationExpression) {
-			return getEvalTypeFromContextOpExpr((GipsContextOperationExpression) innerExpr);
+		} else if (innerExpr instanceof GipsVariableOperationExpression) {
+			return getEvalTypeFromContextOpExpr((GipsVariableOperationExpression) innerExpr);
 		} else if (innerExpr instanceof GipsFeatureExpr) {
 			return getEvalTypeFromFeatureExpr((GipsFeatureExpr) innerExpr);
 		}
@@ -1727,8 +1727,8 @@ public class GipslValidator extends AbstractGipslValidator {
 			final EObject innerExpr = expr.getExpr();
 			if (innerExpr instanceof GipsNodeAttributeExpr) {
 				exprEval = getEvalTypeFromNodeAttrExpr((GipsNodeAttributeExpr) innerExpr);
-			} else if (innerExpr instanceof GipsContextOperationExpression) {
-				exprEval = getEvalTypeFromContextOpExpr((GipsContextOperationExpression) innerExpr);
+			} else if (innerExpr instanceof GipsVariableOperationExpression) {
+				exprEval = getEvalTypeFromContextOpExpr((GipsVariableOperationExpression) innerExpr);
 			} else if (innerExpr instanceof GipsFeatureExpr) {
 				exprEval = getEvalTypeFromFeatureExpr((GipsFeatureExpr) innerExpr);
 			}
@@ -1752,7 +1752,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		return exprEval;
 	}
 
-	public EvalType getEvalTypeFromContextOpExpr(final GipsContextOperationExpression expr) {
+	public EvalType getEvalTypeFromContextOpExpr(final GipsVariableOperationExpression expr) {
 		if (expr instanceof GipsMappingCheckValue) {
 			return EvalType.BOOLEAN;
 		} else if (expr instanceof GipsMappingValue) {

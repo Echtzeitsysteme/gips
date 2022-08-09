@@ -129,7 +129,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsRelExpr/right"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsAttributeExpr"/>
-    <genClasses ecoreClass="Gipsl.ecore#//GipsContextOperationExpression"/>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsVariableOperationExpression"/>
     <genClasses ecoreClass="Gipsl.ecore#//GipsTypeCast">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsTypeCast/type"/>
     </genClasses>

@@ -21,7 +21,9 @@ import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
+import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
+import org.emoflon.gips.gipsl.ui.nature.GIPSNature;
 
 /**
  * See
@@ -34,11 +36,16 @@ public class GipslProposalProvider extends AbstractGipslProposalProvider {
 	public void completeImportedPattern_File(EObject model, Assignment assignment, ContentAssistContext context,
 			ICompletionProposalAcceptor acceptor) {
 		super.completeImportedPattern_File(model, assignment, context, acceptor);
+		IProject currentProject = GipslScopeContextUtil.getCurrentProject();
 
 		IWorkspace ws = ResourcesPlugin.getWorkspace();
 		for (IProject project : ws.getRoot().getProjects()) {
+			if (project.equals(currentProject))
+				continue;
+
 			try {
-				if (!project.hasNature("org.emoflon.ibex.gt.editor.ui.nature"))
+				if (!(project.hasNature("org.emoflon.ibex.gt.editor.ui.nature")
+						|| project.hasNature(GIPSNature.NATURE_ID)))
 					continue;
 			} catch (CoreException e) {
 				continue;
@@ -46,7 +53,8 @@ public class GipslProposalProvider extends AbstractGipslProposalProvider {
 
 			File projectFile = new File(project.getLocation().toPortableString());
 			List<File> gtFiles = new LinkedList<>();
-			GipslScopeContextUtil.gatherGTFiles(gtFiles, projectFile);
+			GipslScopeContextUtil.gatherFilesWithEnding(gtFiles, projectFile, ".gt", true);
+			GipslScopeContextUtil.gatherFilesWithEnding(gtFiles, projectFile, ".gipsl", true);
 			for (File gtFile : gtFiles) {
 
 				XtextResourceSet rs = new XtextResourceSet();
@@ -58,17 +66,20 @@ public class GipslProposalProvider extends AbstractGipslProposalProvider {
 				}
 				Resource resource = rs.getResource(gtModelUri, true);
 				EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
-				org.emoflon.ibex.gt.editor.gT.EditorGTFile gtModel = (org.emoflon.ibex.gt.editor.gT.EditorGTFile) resource
-						.getContents().get(0);
-				try {
-					if (gtModel == null || gtFile.getCanonicalPath().contains("/bin/"))
-						continue;
-				} catch (IOException e) {
+				EObject gtModel = resource.getContents().get(0);
+
+				if (gtModel == null)
+					continue;
+
+				if (gtModel instanceof org.emoflon.ibex.gt.editor.gT.EditorGTFile gtEditorFile) {
+					acceptor.accept(
+							new CompletionProposal("\"" + gtModelUri.toFileString() + "\"", context.getOffset(), 0, 0));
+				} else if (gtModel instanceof EditorGTFile gipsEditorFile) {
+					acceptor.accept(
+							new CompletionProposal("\"" + gtModelUri.toFileString() + "\"", context.getOffset(), 0, 0));
+				} else {
 					continue;
 				}
-
-				acceptor.accept(
-						new CompletionProposal("\"" + gtModelUri.toFileString() + "\"", context.getOffset(), 0, 0));
 			}
 
 		}

@@ -75,8 +75,13 @@ import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsVariableOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.GlobalContext;
+import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
+import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
+import org.emoflon.ibex.gt.editor.gT.EditorPattern;
+import org.emoflon.ibex.gt.editor.gT.GTPackage;
+import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
 
 /**
  * This class contains custom validation rules.
@@ -182,6 +187,41 @@ public class GipslValidator extends AbstractGipslValidator {
 	@Override
 	protected void handleExceptionDuringValidation(final Throwable targetException) throws RuntimeException {
 		targetException.printStackTrace();
+	}
+
+	/**
+	 * Pattern names must be unique.
+	 */
+	@Override
+	public void checkPatternNameUnique(EditorPattern pattern) {
+		EditorGTFile file = GTEditorPatternUtils.getContainer(pattern, EditorGTFileImpl.class);
+		long count = file.getPatterns().stream().filter(p -> p != null && p.getName() != null)
+				.filter(p -> p.getName().equals(pattern.getName())).count();
+		count += file.getImportedPattern().stream()
+				.filter(p -> p != null && p.getPattern() != null && p.getPattern().getName() != null)
+				.filter(p -> p.getPattern().getName().equals(pattern.getName())).count();
+		if (count != 1) {
+			error(String.format(PATTERN_NAME_MULTIPLE_DECLARATIONS_MESSAGE, pattern.getName(),
+					super.getTimes((int) count)), GTPackage.Literals.EDITOR_PATTERN__NAME, NAME_EXPECT_UNIQUE);
+		}
+
+	}
+
+	/**
+	 * Pattern names must be unique.
+	 */
+	@Check
+	public void checkImportNameUnique(ImportedPattern pattern) {
+		EditorGTFile file = GTEditorPatternUtils.getContainer(pattern, EditorGTFileImpl.class);
+		long count = file.getPatterns().stream().filter(p -> p != null && p.getName() != null)
+				.filter(p -> p.getName().equals(pattern.getPattern().getName())).count();
+		count += file.getImportedPattern().stream()
+				.filter(p -> p != null && p.getPattern() != null && p.getPattern().getName() != null)
+				.filter(p -> p.getPattern().getName().equals(pattern.getPattern().getName())).count();
+		if (count != 1) {
+			error(String.format(PATTERN_NAME_MULTIPLE_DECLARATIONS_MESSAGE, pattern.getPattern().getName(),
+					super.getTimes((int) count)), GipslPackage.Literals.IMPORTED_PATTERN__PATTERN, NAME_EXPECT_UNIQUE);
+		}
 	}
 
 	/**

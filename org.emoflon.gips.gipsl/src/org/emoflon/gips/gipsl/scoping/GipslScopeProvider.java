@@ -3,6 +3,7 @@
  */
 package org.emoflon.gips.gipsl.scoping;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -126,17 +127,26 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 		if (context.getFile() == null || context.getFile().isBlank())
 			return super.getScope(context, reference);
 
+		Set<String> allPatterns = new HashSet<>();
+		EditorGTFile currentFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
+		currentFile.getPatterns().forEach(p -> allPatterns.add(p.getName()));
+
 		XtextResourceSet rs = new XtextResourceSet();
 		URI gtModelUri = URI.createFileURI(context.getFile().replace("\"", ""));
 
 		Resource resource = rs.getResource(gtModelUri, true);
 		EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
-		org.emoflon.ibex.gt.editor.gT.EditorGTFile gtModel = (org.emoflon.ibex.gt.editor.gT.EditorGTFile) resource
-				.getContents().get(0);
-		if (gtModel == null)
+		EObject gtModel = resource.getContents().get(0);
+		if (gtModel instanceof org.emoflon.ibex.gt.editor.gT.EditorGTFile gtFile) {
+			return Scopes.scopeFor(gtFile.getPatterns().stream().filter(p -> !allPatterns.contains(p.getName()))
+					.collect(Collectors.toList()));
+		} else if (gtModel instanceof EditorGTFile gipsFile) {
+			return Scopes.scopeFor(gipsFile.getPatterns().stream().filter(p -> !allPatterns.contains(p.getName()))
+					.collect(Collectors.toList()));
+		} else {
 			return super.getScope(context, reference);
+		}
 
-		return Scopes.scopeFor(gtModel.getPatterns());
 	}
 
 	private IScope scopeForGipsPatternContext(GipsPatternContext context, EReference reference) {

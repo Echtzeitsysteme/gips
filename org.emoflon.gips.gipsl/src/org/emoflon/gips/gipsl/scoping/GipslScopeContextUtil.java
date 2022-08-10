@@ -5,8 +5,15 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.emoflon.gips.gipsl.gipsl.GipsAndBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticLiteral;
@@ -393,20 +400,44 @@ public final class GipslScopeContextUtil {
 		return mappings;
 	}
 
-	public static void gatherGTFiles(Collection<File> gtFiles, File root) {
+	public static void gatherFilesWithEnding(Collection<File> gtFiles, File root, String ending, boolean ignoreBin) {
 		if (root.isDirectory() && root.exists()) {
+			if (ignoreBin && root.getName().equals("bin"))
+				return;
 			for (File subFile : root.listFiles()) {
-				gatherGTFiles(gtFiles, subFile);
+				gatherFilesWithEnding(gtFiles, subFile, ending, ignoreBin);
 			}
 			return;
 		} else if (!root.isDirectory() && root.exists()) {
-			if (root.getName().endsWith(".gt")) {
+			if (root.getName().endsWith(ending)) {
 				gtFiles.add(root);
 				return;
 			}
 		} else {
 			return;
 		}
+	}
+
+	public static IProject getCurrentProject() {
+		IProject project = null;
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		if (window != null) {
+			IWorkbenchPage activePage = window.getActivePage();
+			IEditorPart activeEditor = activePage.getActiveEditor();
+
+			if (activeEditor != null) {
+				IEditorInput input = activeEditor.getEditorInput();
+
+				project = input.getAdapter(IProject.class);
+				if (project == null) {
+					IResource resource = input.getAdapter(IResource.class);
+					if (resource != null) {
+						project = resource.getProject();
+					}
+				}
+			}
+		}
+		return project;
 	}
 
 }

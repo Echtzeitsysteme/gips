@@ -13,6 +13,7 @@ import org.eclipse.xtext.ui.wizard.template.IProjectTemplateProvider
 import org.eclipse.xtext.ui.wizard.template.ProjectTemplate
 
 import static org.eclipse.core.runtime.IStatus.*
+import org.emoflon.gips.gipsl.ui.nature.GIPSNature
 
 /**
  * Create a list with all project templates to be shown in the template new project wizard.
@@ -50,12 +51,12 @@ final class HelloWorldProject {
 		generator.generate(new PluginProjectFactory => [
 			projectName = projectInfo.projectName
 			location = projectInfo.locationPath
-			projectNatures += #[JavaCore.NATURE_ID, "org.eclipse.pde.PluginNature", XtextProjectHelper.NATURE_ID]
+			projectNatures += #[GIPSNature.NATURE_ID, JavaCore.NATURE_ID, "org.eclipse.pde.PluginNature", XtextProjectHelper.NATURE_ID]
 			builderIds += #[JavaCore.BUILDER_ID, XtextProjectHelper.BUILDER_ID]
 			folders += "src"
 			addFile('''src/«path»/Model.gipsl''', '''
 				import "http://www.eclipse.org/emf/2002/Ecore"
-				// ^import a metamodel here
+				// import a metamodel here
 				
 				config {  
 					solver := GUROBI [home:="fu", license:="bar"];

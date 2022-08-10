@@ -71,7 +71,7 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			return getScopeInternal(context, reference);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return super.getScope(context, reference);
+			return IScope.NULLSCOPE;
 		}
 	}
 
@@ -134,7 +134,13 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 		XtextResourceSet rs = new XtextResourceSet();
 		URI gtModelUri = URI.createFileURI(context.getFile().replace("\"", ""));
 
-		Resource resource = rs.getResource(gtModelUri, true);
+		Resource resource = null;
+		try {
+			resource = rs.getResource(gtModelUri, true);
+		} catch (Exception e) {
+			return IScope.NULLSCOPE;
+		}
+
 		EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
 		EObject gtModel = resource.getContents().get(0);
 		if (gtModel instanceof org.emoflon.ibex.gt.editor.gT.EditorGTFile gtFile) {
@@ -144,7 +150,7 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			return Scopes.scopeFor(gipsFile.getPatterns().stream().filter(p -> !allPatterns.contains(p.getName()))
 					.collect(Collectors.toList()));
 		} else {
-			return super.getScope(context, reference);
+			return IScope.NULLSCOPE;
 		}
 
 	}

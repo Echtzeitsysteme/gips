@@ -37,6 +37,11 @@ public class GipslProposalProvider extends AbstractGipslProposalProvider {
 			ICompletionProposalAcceptor acceptor) {
 		super.completeImportedPattern_File(model, assignment, context, acceptor);
 		IProject currentProject = GipslScopeContextUtil.getCurrentProject();
+		String[] lines = context.getCurrentNode().getText().split("\n");
+		lines = lines[0].split("\r");
+
+		String currentSelection = lines[0].replace("\"", "").replace("/", "\\").trim().replace("%20", " ");
+		String rest = context.getCurrentNode().getText().replace(lines[0], "");
 
 		IWorkspace ws = ResourcesPlugin.getWorkspace();
 		for (IProject project : ws.getRoot().getProjects()) {
@@ -64,6 +69,11 @@ public class GipslProposalProvider extends AbstractGipslProposalProvider {
 				} catch (IOException e) {
 					continue;
 				}
+
+				String fileString = gtModelUri.toFileString();
+				if (!currentSelection.isBlank() && !fileString.contains(currentSelection))
+					continue;
+
 				Resource resource = rs.getResource(gtModelUri, true);
 				EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
 				EObject gtModel = resource.getContents().get(0);
@@ -71,12 +81,22 @@ public class GipslProposalProvider extends AbstractGipslProposalProvider {
 				if (gtModel == null)
 					continue;
 
+				String replacement = "\"" + gtModelUri.toFileString() + "\"";
+				int start = (currentSelection.isBlank()) ? 0 : currentSelection.length() + 1;
+				replacement = replacement.substring(start);
+				int cursor = replacement.length();
+				replacement = replacement + rest;
+
+				int replacementLength = (currentSelection.isBlank())
+						? context.getCurrentNode().getText().length() - currentSelection.length() - 1
+						: context.getCurrentNode().getText().length() - currentSelection.length();
+
 				if (gtModel instanceof org.emoflon.ibex.gt.editor.gT.EditorGTFile gtEditorFile) {
 					acceptor.accept(
-							new CompletionProposal("\"" + gtModelUri.toFileString() + "\"", context.getOffset(), 0, 0));
+							new CompletionProposal(replacement, context.getOffset(), replacementLength, cursor));
 				} else if (gtModel instanceof EditorGTFile gipsEditorFile) {
 					acceptor.accept(
-							new CompletionProposal("\"" + gtModelUri.toFileString() + "\"", context.getOffset(), 0, 0));
+							new CompletionProposal(replacement, context.getOffset(), replacementLength, cursor));
 				} else {
 					continue;
 				}

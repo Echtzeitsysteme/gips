@@ -9,10 +9,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.validation.Check;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipsAndBoolExpr;
@@ -212,6 +215,9 @@ public class GipslValidator extends AbstractGipslValidator {
 	 */
 	@Check
 	public void checkImportNameUnique(ImportedPattern pattern) {
+		if (pattern.getPattern() == null)
+			return;
+
 		EditorGTFile file = GTEditorPatternUtils.getContainer(pattern, EditorGTFileImpl.class);
 		long count = file.getPatterns().stream().filter(p -> p != null && p.getName() != null)
 				.filter(p -> p.getName().equals(pattern.getPattern().getName())).count();
@@ -222,6 +228,31 @@ public class GipslValidator extends AbstractGipslValidator {
 			error(String.format(PATTERN_NAME_MULTIPLE_DECLARATIONS_MESSAGE, pattern.getPattern().getName(),
 					super.getTimes((int) count)), GipslPackage.Literals.IMPORTED_PATTERN__PATTERN, NAME_EXPECT_UNIQUE);
 		}
+	}
+
+	/**
+	 * URI valid
+	 */
+	@Check
+	public void checkImportUriExists(ImportedPattern pattern) {
+		if (pattern.getFile() == null || pattern.getFile().isBlank())
+			return;
+
+		XtextResourceSet rs = new XtextResourceSet();
+		URI gtModelUri = URI.createFileURI(pattern.getFile().replace("\"", ""));
+
+		Resource resource = null;
+		try {
+			resource = rs.getResource(gtModelUri, true);
+		} catch (Exception e) {
+			error("Import URI <" + gtModelUri.toFileString() + "> is not valid.",
+					GipslPackage.Literals.IMPORTED_PATTERN__FILE);
+			return;
+		}
+
+		if (resource == null)
+			error("Import URI <" + gtModelUri.toFileString() + "> is not valid.",
+					GipslPackage.Literals.IMPORTED_PATTERN__FILE);
 	}
 
 	/**

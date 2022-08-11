@@ -156,8 +156,7 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 	}
 
 	private IScope scopeForGipsPatternContext(GipsPatternContext context, EReference reference) {
-		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
-		return Scopes.scopeFor(editorFile.getPatterns());
+		return Scopes.scopeFor(GipslScopeContextUtil.getAllEditorPatterns(context));
 	}
 
 	public IScope scopeForGipsMapping(GipsMapping context, EReference reference) {
@@ -189,8 +188,7 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 	}
 
 	private IScope scopeForGipsPatternAttributeExprMapping(GipsPatternAttributeExpr context, EReference reference) {
-		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
-		return Scopes.scopeFor(editorFile.getPatterns());
+		return Scopes.scopeFor(GipslScopeContextUtil.getAllEditorPatterns(context));
 	}
 
 	public IScope scopeForGipsContextExprNode(GipsContextExpr context, EReference reference) {

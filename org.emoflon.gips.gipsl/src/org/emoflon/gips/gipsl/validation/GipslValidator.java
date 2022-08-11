@@ -786,6 +786,8 @@ public class GipslValidator extends AbstractGipslValidator {
 				} else if (exprOp instanceof GipsTypeAttributeExpr typeExpr) {
 					return streamContainsMappingsCall(typeExpr.getExpr());
 				}
+			} else if (exprOp instanceof GipsObjectiveExpression) {
+				return false;
 			}
 		} else if (expr instanceof GipsProductArithmeticExpr) {
 			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
@@ -1015,6 +1017,8 @@ public class GipslValidator extends AbstractGipslValidator {
 				throw new UnsupportedOperationException(
 						NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr.eClass() + ">");
 			} else if (expr instanceof GipsConstant) {
+				return false;
+			} else if (expr instanceof GipsObjectiveExpression) {
 				return false;
 			}
 
@@ -1863,6 +1867,8 @@ public class GipslValidator extends AbstractGipslValidator {
 			}
 		} else if (expr instanceof GipsFeatureLit) {
 			final GipsFeatureLit lit = (GipsFeatureLit) expr;
+			if (lit.getFeature() == null)
+				return EvalType.ERROR;
 			final EClassifier ecl = lit.getFeature().getEType();
 
 			if (lit.getFeature().getUpperBound() == -1 || lit.getFeature().getUpperBound() > 1) {

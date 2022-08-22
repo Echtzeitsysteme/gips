@@ -260,6 +260,9 @@ public class GlpkSolver extends ILPSolver {
 			int localCnstrCounter = 0;
 			while (cnstrIt.hasNext()) {
 				final ILPConstraint cnstr = cnstrIt.next();
+				if (cnstr == null) {
+					continue;
+				}
 				final int size = cnstr.lhsTerms().size();
 				final SWIGTYPE_p_int vars = GLPK.new_intArray(size + 1);
 				final SWIGTYPE_p_double coeffs = GLPK.new_doubleArray(size + 1);

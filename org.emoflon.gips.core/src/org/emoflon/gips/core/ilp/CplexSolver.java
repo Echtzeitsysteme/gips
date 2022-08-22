@@ -197,6 +197,9 @@ public class CplexSolver extends ILPSolver {
 				// Iterate over each "sub" constraint (if any)
 				while (cnstrIt.hasNext()) {
 					final ILPConstraint cnstr = cnstrIt.next();
+					if (cnstr == null) {
+						continue;
+					}
 					final IloLinearNumExpr linearNumExpr = cplex.linearNumExpr();
 					for (final ILPTerm act : cnstr.lhsTerms()) {
 						linearNumExpr.addTerm(act.weight(), vars.get(act.variable().getName()));

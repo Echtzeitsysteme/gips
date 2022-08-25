@@ -1025,6 +1025,11 @@ public class GipslValidator extends AbstractGipslValidator {
 				&& (right == EvalType.CONTEXT || right == EvalType.NULL)) {
 			// Case: Comparing null with Context
 			return EvalType.BOOLEAN;
+		} else if (left == EvalType.STRING && right == EvalType.STRING
+				|| left == EvalType.NULL && right == EvalType.STRING
+				|| left == EvalType.STRING && right == EvalType.NULL) {
+			// Case: Comparing strings
+			return EvalType.BOOLEAN;
 		} else {
 			return EvalType.ERROR;
 		}

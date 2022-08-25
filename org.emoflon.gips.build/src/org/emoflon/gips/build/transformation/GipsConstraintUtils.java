@@ -25,16 +25,10 @@ public final class GipsConstraintUtils {
 		// Add substitute variable to produce negation!
 		RelationalExpression originalRelation = (RelationalExpression) constraint.getExpression();
 		RelationalExpression originalRelationBackup = EcoreUtil.copy(originalRelation);
-		Variable realVarPos = factory.createVariable();
-		realVarPos.setType(VariableType.REAL);
-		realVarPos.setName(constraint.getName() + "_slackVPos");
-		data.model().getVariables().add(realVarPos);
+		Variable realVarPos = createRealVariable(data, factory, constraint.getName() + "_slackVPos");
 		dependingConstraint.getHelperVariables().add(realVarPos);
 
-		Variable realVarNeg = factory.createVariable();
-		realVarNeg.setType(VariableType.REAL);
-		realVarNeg.setName(constraint.getName() + "_slackVNeg");
-		data.model().getVariables().add(realVarNeg);
+		Variable realVarNeg = createRealVariable(data, factory, constraint.getName() + "_slackVNeg");
 		dependingConstraint.getHelperVariables().add(realVarNeg);
 
 		insertSubstituteRealVariable(factory, originalRelation, realVarPos);
@@ -258,17 +252,11 @@ public final class GipsConstraintUtils {
 
 	static protected VariableTuple insertNegationConstraint(final GipsTransformationData data,
 			final GipsIntermediateFactory factory, final Constraint dConstraint, final Constraint constraint) {
-		Variable binaryVarPos = factory.createVariable();
-		data.model().getVariables().add(binaryVarPos);
+		Variable binaryVarPos = createBinaryVariable(data, factory, constraint.getName() + "_symVPos");
 		dConstraint.getHelperVariables().add(binaryVarPos);
-		binaryVarPos.setType(VariableType.BINARY);
-		binaryVarPos.setName(constraint.getName() + "_symVPos");
 
-		Variable binaryVarNeg = factory.createVariable();
-		data.model().getVariables().add(binaryVarNeg);
+		Variable binaryVarNeg = createBinaryVariable(data, factory, constraint.getName() + "_symVNeg");
 		dConstraint.getHelperVariables().add(binaryVarNeg);
-		binaryVarNeg.setType(VariableType.BINARY);
-		binaryVarNeg.setName(constraint.getName() + "_symVNeg");
 
 		// 1 - symVPos >= 1 ==> -symVPos >= 0
 		RelationalExpression negationRelation = factory.createRelationalExpression();
@@ -351,17 +339,11 @@ public final class GipsConstraintUtils {
 
 	static protected void insertSos1Constraint(final GipsTransformationData data, final GipsIntermediateFactory factory,
 			final Constraint constraint, final Variable var1, final Variable var2) {
-		Variable var1Sos = factory.createVariable();
-		data.model().getVariables().add(var1Sos);
+		Variable var1Sos = createBinaryVariable(data, factory, var1.getName() + "_sos_1");
 		constraint.getHelperVariables().add(var1Sos);
-		var1Sos.setType(VariableType.BINARY);
-		var1Sos.setName(var1.getName() + "_sos_1");
 
-		Variable var2Sos = factory.createVariable();
-		data.model().getVariables().add(var2Sos);
+		Variable var2Sos = createBinaryVariable(data, factory, var2.getName() + "_sos_1");
 		constraint.getHelperVariables().add(var2Sos);
-		var2Sos.setType(VariableType.BINARY);
-		var2Sos.setName(var2.getName() + "_sos_1");
 
 		// var1 <= MAX_Double * var1Sos ==> var1 - MAX_Double * var1Sos <= 0
 		RelationalExpression var1Rel1 = factory.createRelationalExpression();
@@ -471,5 +453,38 @@ public final class GipsConstraintUtils {
 		sosOne.setLiteral(1.0);
 		sosRel.setRhs(sosOne);
 		constraint.getHelperConstraints().add(sosRel);
+	}
+
+	static Variable createBinaryVariable(final GipsTransformationData data, final GipsIntermediateFactory factory,
+			final String name) {
+		Variable var = factory.createVariable();
+		data.model().getVariables().add(var);
+		var.setType(VariableType.BINARY);
+		var.setName(name);
+		var.setUpperBound(1.0);
+		var.setLowerBound(0.0);
+		return var;
+	}
+
+	static Variable createIntegerVariable(final GipsTransformationData data, final GipsIntermediateFactory factory,
+			final String name) {
+		Variable var = factory.createVariable();
+		data.model().getVariables().add(var);
+		var.setType(VariableType.INTEGER);
+		var.setName(name);
+		var.setUpperBound(INF);
+		var.setLowerBound(-INF);
+		return var;
+	}
+
+	static Variable createRealVariable(final GipsTransformationData data, final GipsIntermediateFactory factory,
+			final String name) {
+		Variable var = factory.createVariable();
+		data.model().getVariables().add(var);
+		var.setType(VariableType.REAL);
+		var.setName(name);
+		var.setUpperBound(INF);
+		var.setLowerBound(-INF);
+		return var;
 	}
 }

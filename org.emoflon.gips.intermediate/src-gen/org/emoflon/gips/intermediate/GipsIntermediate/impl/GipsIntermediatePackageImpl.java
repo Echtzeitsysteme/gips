@@ -994,6 +994,24 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public EAttribute getVariableSet_UpperBound() {
+		return (EAttribute) variableSetEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getVariableSet_LowerBound() {
+		return (EAttribute) variableSetEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getPattern() {
 		return patternEClass;
 	}
@@ -1156,8 +1174,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	public EReference getConstraint_Dependencies() {
-		return (EReference) constraintEClass.getEStructuralFeatures().get(4);
+	public EAttribute getConstraint_Negated() {
+		return (EAttribute) constraintEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -1165,7 +1183,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	public EReference getConstraint_HelperVariables() {
+	public EReference getConstraint_Dependencies() {
 		return (EReference) constraintEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -1174,8 +1192,35 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	public EReference getConstraint_HelperConstraints() {
+	public EReference getConstraint_ReferencedBy() {
 		return (EReference) constraintEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getConstraint_SymbolicVariable() {
+		return (EReference) constraintEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getConstraint_HelperVariables() {
+		return (EReference) constraintEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getConstraint_HelperConstraints() {
+		return (EReference) constraintEClass.getEStructuralFeatures().get(9);
 	}
 
 	/**
@@ -2611,6 +2656,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 
 		variableSetEClass = createEClass(VARIABLE_SET);
 		createEAttribute(variableSetEClass, VARIABLE_SET__NAME);
+		createEAttribute(variableSetEClass, VARIABLE_SET__UPPER_BOUND);
+		createEAttribute(variableSetEClass, VARIABLE_SET__LOWER_BOUND);
 
 		patternEClass = createEClass(PATTERN);
 		createEReference(patternEClass, PATTERN__PATTERN);
@@ -2636,7 +2683,10 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		createEAttribute(constraintEClass, CONSTRAINT__DEPENDING);
 		createEReference(constraintEClass, CONSTRAINT__EXPRESSION);
 		createEAttribute(constraintEClass, CONSTRAINT__CONSTANT);
+		createEAttribute(constraintEClass, CONSTRAINT__NEGATED);
 		createEReference(constraintEClass, CONSTRAINT__DEPENDENCIES);
+		createEReference(constraintEClass, CONSTRAINT__REFERENCED_BY);
+		createEReference(constraintEClass, CONSTRAINT__SYMBOLIC_VARIABLE);
 		createEReference(constraintEClass, CONSTRAINT__HELPER_VARIABLES);
 		createEReference(constraintEClass, CONSTRAINT__HELPER_CONSTRAINTS);
 
@@ -3039,6 +3089,12 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 				IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getVariableSet_Name(), ecorePackage.getEString(), "name", null, 0, 1, VariableSet.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVariableSet_UpperBound(), ecorePackage.getEDouble(), "upperBound", null, 0, 1,
+				VariableSet.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVariableSet_LowerBound(), ecorePackage.getEDouble(), "lowerBound", null, 0, 1,
+				VariableSet.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
 
 		initEClass(patternEClass, Pattern.class, "Pattern", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getPattern_Pattern(), theIBeXPatternModelPackage.getIBeXContext(), null, "pattern", null, 1, 1,
@@ -3080,12 +3136,20 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConstraint_Depending(), ecorePackage.getEBoolean(), "depending", null, 0, 1, Constraint.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getConstraint_Expression(), this.getBoolValueExpression(), null, "expression", null, 1, 1,
+		initEReference(getConstraint_Expression(), this.getBoolExpression(), null, "expression", null, 1, 1,
 				Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConstraint_Constant(), ecorePackage.getEBoolean(), "constant", null, 0, 1, Constraint.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getConstraint_Dependencies(), this.getConstraint(), null, "dependencies", null, 0, -1,
+		initEAttribute(getConstraint_Negated(), ecorePackage.getEBoolean(), "negated", null, 0, 1, Constraint.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getConstraint_Dependencies(), this.getConstraint(), this.getConstraint_ReferencedBy(),
+				"dependencies", null, 0, -1, Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getConstraint_ReferencedBy(), this.getConstraint(), this.getConstraint_Dependencies(),
+				"referencedBy", null, 0, 1, Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getConstraint_SymbolicVariable(), this.getVariable(), null, "symbolicVariable", null, 0, 1,
 				Constraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getConstraint_HelperVariables(), this.getVariable(), null, "helperVariables", null, 0, -1,
@@ -3541,6 +3605,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		addEEnumLiteral(relationalOperatorEEnum, RelationalOperator.GREATER_OR_EQUAL);
 		addEEnumLiteral(relationalOperatorEEnum, RelationalOperator.GREATER);
 		addEEnumLiteral(relationalOperatorEEnum, RelationalOperator.NOT_EQUAL);
+		addEEnumLiteral(relationalOperatorEEnum, RelationalOperator.OBJECT_EQUAL);
+		addEEnumLiteral(relationalOperatorEEnum, RelationalOperator.OBJECT_NOT_EQUAL);
 
 		initEEnum(binaryArithmeticOperatorEEnum, BinaryArithmeticOperator.class, "BinaryArithmeticOperator");
 		addEEnumLiteral(binaryArithmeticOperatorEEnum, BinaryArithmeticOperator.ADD);

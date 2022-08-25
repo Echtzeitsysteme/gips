@@ -1,6 +1,8 @@
 package org.emoflon.gips.build.transformation.transformer;
 
+import org.emoflon.gips.build.transformation.helper.ExpressionReturnType;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
+import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
 import org.emoflon.gips.build.transformation.helper.TransformationContext;
 import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
@@ -43,7 +45,30 @@ public class RelationalInStreamTransformer extends TransformationContext<StreamE
 		ArithmeticExpressionTransformer transformer = transformerFactory.createArithmeticTransformer(context);
 		relExpr.setLhs(transformer.transform(eRelational.getLeft()));
 		relExpr.setRhs(transformer.transform(eRelational.getRight()));
-		return relExpr;
+
+		ExpressionReturnType lhsReturn = GipsTransformationUtils.extractReturnType(relExpr.getLhs());
+		ExpressionReturnType rhsReturn = GipsTransformationUtils.extractReturnType(relExpr.getRhs());
+
+		if (lhsReturn == ExpressionReturnType.object && rhsReturn == ExpressionReturnType.object) {
+			if (relExpr.getOperator() == RelationalOperator.EQUAL) {
+				relExpr.setOperator(RelationalOperator.OBJECT_EQUAL);
+				return relExpr;
+			} else if (relExpr.getOperator() == RelationalOperator.NOT_EQUAL) {
+				relExpr.setOperator(RelationalOperator.OBJECT_NOT_EQUAL);
+				return relExpr;
+			} else {
+				throw new UnsupportedOperationException("Unsupported comparison operation between type (" + lhsReturn
+						+ " " + relExpr.getOperator() + " " + rhsReturn + ")");
+			}
+		} else if (lhsReturn == ExpressionReturnType.number && rhsReturn == ExpressionReturnType.number) {
+			return relExpr;
+		} else if (lhsReturn == ExpressionReturnType.bool && rhsReturn == ExpressionReturnType.bool) {
+			return relExpr;
+		} else {
+			throw new IllegalArgumentException("Comparison of incompatible types (" + lhsReturn + " "
+					+ relExpr.getOperator() + " " + rhsReturn + ")");
+		}
+
 	}
 
 }

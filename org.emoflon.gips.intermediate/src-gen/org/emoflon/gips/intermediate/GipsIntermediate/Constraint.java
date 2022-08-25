@@ -22,8 +22,14 @@ import org.eclipse.emf.ecore.EObject;
  * <em>Expression</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isConstant
  * <em>Constant</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isNegated
+ * <em>Negated</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getDependencies
  * <em>Dependencies</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getReferencedBy
+ * <em>Referenced By</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getSymbolicVariable
+ * <em>Symbolic Variable</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getHelperVariables
  * <em>Helper Variables</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getHelperConstraints
@@ -86,12 +92,12 @@ public interface Constraint extends EObject {
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the value of the '<em>Expression</em>' containment reference.
-	 * @see #setExpression(BoolValueExpression)
+	 * @see #setExpression(BoolExpression)
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_Expression()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
-	BoolValueExpression getExpression();
+	BoolExpression getExpression();
 
 	/**
 	 * Sets the value of the
@@ -104,7 +110,7 @@ public interface Constraint extends EObject {
 	 * @see #getExpression()
 	 * @generated
 	 */
-	void setExpression(BoolValueExpression value);
+	void setExpression(BoolExpression value);
 
 	/**
 	 * Returns the value of the '<em><b>Constant</b></em>' attribute. <!--
@@ -130,6 +136,29 @@ public interface Constraint extends EObject {
 	void setConstant(boolean value);
 
 	/**
+	 * Returns the value of the '<em><b>Negated</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Negated</em>' attribute.
+	 * @see #setNegated(boolean)
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_Negated()
+	 * @model
+	 * @generated
+	 */
+	boolean isNegated();
+
+	/**
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#isNegated
+	 * <em>Negated</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value the new value of the '<em>Negated</em>' attribute.
+	 * @see #isNegated()
+	 * @generated
+	 */
+	void setNegated(boolean value);
+
+	/**
 	 * Returns the value of the '<em><b>Dependencies</b></em>' reference list. The
 	 * list contents are of type
 	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint}. <!--
@@ -141,6 +170,57 @@ public interface Constraint extends EObject {
 	 * @generated
 	 */
 	EList<Constraint> getDependencies();
+
+	/**
+	 * Returns the value of the '<em><b>Referenced By</b></em>' reference. It is
+	 * bidirectional and its opposite is
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getDependencies
+	 * <em>Dependencies</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Referenced By</em>' reference.
+	 * @see #setReferencedBy(Constraint)
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_ReferencedBy()
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getDependencies
+	 * @model opposite="dependencies"
+	 * @generated
+	 */
+	Constraint getReferencedBy();
+
+	/**
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getReferencedBy
+	 * <em>Referenced By</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @param value the new value of the '<em>Referenced By</em>' reference.
+	 * @see #getReferencedBy()
+	 * @generated
+	 */
+	void setReferencedBy(Constraint value);
+
+	/**
+	 * Returns the value of the '<em><b>Symbolic Variable</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Symbolic Variable</em>' reference.
+	 * @see #setSymbolicVariable(Variable)
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_SymbolicVariable()
+	 * @model
+	 * @generated
+	 */
+	Variable getSymbolicVariable();
+
+	/**
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getSymbolicVariable
+	 * <em>Symbolic Variable</em>}' reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @param value the new value of the '<em>Symbolic Variable</em>' reference.
+	 * @see #getSymbolicVariable()
+	 * @generated
+	 */
+	void setSymbolicVariable(Variable value);
 
 	/**
 	 * Returns the value of the '<em><b>Helper Variables</b></em>' reference list.

@@ -32,6 +32,8 @@
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//RelationalOperator/GreaterOrEqual"/>
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//RelationalOperator/Greater"/>
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//RelationalOperator/NotEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//RelationalOperator/ObjectEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//RelationalOperator/ObjectNotEqual"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="GipsIntermediate.ecore#//BinaryArithmeticOperator">
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//BinaryArithmeticOperator/ADD"/>
@@ -92,6 +94,8 @@
     </genClasses>
     <genClasses image="false" ecoreClass="GipsIntermediate.ecore#//VariableSet">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//VariableSet/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//VariableSet/upperBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//VariableSet/lowerBound"/>
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//Pattern">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Pattern/pattern"/>
@@ -117,7 +121,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Constraint/depending"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Constraint/expression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Constraint/constant"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Constraint/negated"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Constraint/dependencies"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Constraint/referencedBy"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Constraint/symbolicVariable"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Constraint/helperVariables"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Constraint/helperConstraints"/>
     </genClasses>

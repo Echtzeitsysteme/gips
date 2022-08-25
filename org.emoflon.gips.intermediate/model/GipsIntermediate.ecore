@@ -42,6 +42,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VariableSet" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="upperBound" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lowerBound" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Pattern" eSuperTypes="#//VariableSet">
     <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" lowerBound="1"
@@ -74,10 +76,14 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="depending" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
-        eType="#//BoolValueExpression" containment="true"/>
+        eType="#//BoolExpression" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="constant" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="negated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="dependencies" upperBound="-1"
-        eType="#//Constraint"/>
+        eType="#//Constraint" eOpposite="#//Constraint/referencedBy"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="referencedBy" eType="#//Constraint"
+        eOpposite="#//Constraint/dependencies"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="symbolicVariable" eType="#//Variable"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="helperVariables" upperBound="-1"
         eType="#//Variable"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="helperConstraints" upperBound="-1"
@@ -127,6 +133,8 @@
     <eLiterals name="GreaterOrEqual" value="3"/>
     <eLiterals name="Greater" value="4"/>
     <eLiterals name="NotEqual" value="5"/>
+    <eLiterals name="ObjectEqual" value="6"/>
+    <eLiterals name="ObjectNotEqual" value="7"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ArithmeticExpression" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" lowerBound="1"

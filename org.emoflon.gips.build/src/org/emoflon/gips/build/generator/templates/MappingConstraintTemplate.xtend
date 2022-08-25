@@ -109,71 +109,11 @@ public class «className» extends GipsMappingConstraint<«data.gipsApiClassName
 	}
 	
 	override String generateConstantClassContent(RelationalExpression relExpr) {
-		return '''
-public class «className» extends GipsMappingConstraint<«data.gipsApiClassName», «data.mapping2mappingClassName.get(context.mapping)»>{
-	public «className»(final «data.gipsApiClassName» engine, final MappingConstraint constraint) {
-		super(engine, constraint);
-	}
-	
-	@Override
-	protected double buildConstantLhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		return «generateConstTermBuilder(relExpr.lhs)»;
-	}
-	
-	@Override
-	protected double buildConstantRhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		return «generateConstTermBuilder(relExpr.rhs)»;
-	}
-	
-	@Override
-	protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
-	}
-	
-	@Override
-	protected boolean buildConstantExpression(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		throw new UnsupportedOperationException("Constraint has no constant boolean expression.");
-	}
-	
-	«generateDependencyConstraints()»
-	«FOR methods : builderMethodDefinitions.values»
-	«methods»
-	«ENDFOR»
-}'''
+		throw new UnsupportedOperationException("Mapping constraints may not be constant at build time.");
 	}
 	
 	override String generateConstantClassContent(BoolValueExpression boolExpr) {
-		return '''
-public class «className» extends GipsMappingConstraint<«data.gipsApiClassName», «data.mapping2mappingClassName.get(context.mapping)»>{
-	public «className»(final «data.gipsApiClassName» engine, final MappingConstraint constraint) {
-		super(engine, constraint);
-	}
-	
-	@Override
-	protected double buildConstantLhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		throw new UnsupportedOperationException("Constraint has no relational expression.");
-	}
-	
-	@Override
-	protected double buildConstantRhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		throw new UnsupportedOperationException("Constraint has no relational expression.");
-	}
-	
-	@Override
-	protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
-	}
-	
-	@Override
-	protected boolean buildConstantExpression(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		return «parseExpression(boolExpr, ExpressionContext.constConstraint)»
-	}
-		
-	«generateDependencyConstraints()»
-	«FOR methods : builderMethodDefinitions.values»
-	«methods»
-	«ENDFOR»
-}'''
+		throw new UnsupportedOperationException("Mapping constraints may not be constant at build time.");
 	}
 	
 	override generateDependencyConstraints() {

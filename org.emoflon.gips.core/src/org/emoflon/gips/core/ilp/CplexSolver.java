@@ -129,7 +129,7 @@ public class CplexSolver extends ILPSolver {
 
 	@Override
 	protected void translateMapping(final GipsMapping mapping) {
-		createBinVar(mapping.getName());
+		createBinVar(mapping.getName(), mapping.getLowerBound(), mapping.getUpperBound());
 	}
 
 	@Override
@@ -295,11 +295,11 @@ public class CplexSolver extends ILPSolver {
 	protected void createAdditionalVars(final Collection<ILPVariable<?>> variables) {
 		for (final ILPVariable<?> variable : variables) {
 			if (variable instanceof ILPBinaryVariable binVar) {
-				createBinVar(binVar.name);
+				createBinVar(binVar.name, variable.getLowerBound(), variable.getUpperBound());
 			} else if (variable instanceof ILPIntegerVariable intVar) {
-				createIntVar(intVar.name);
+				createIntVar(intVar.name, variable.getLowerBound(), variable.getUpperBound());
 			} else if (variable instanceof ILPRealVariable realVar) {
-				createDblVar(realVar.name);
+				createDblVar(realVar.name, variable.getLowerBound(), variable.getUpperBound());
 			} else {
 				throw new IllegalArgumentException("Unsupported variable type: " + variable.getClass().getSimpleName());
 			}
@@ -310,14 +310,19 @@ public class CplexSolver extends ILPSolver {
 	 * Adds a binary variable with given name to the model.
 	 * 
 	 * @param name Variable name.
+	 * @param lb   Lower bound number.
+	 * @param ub   Upper bound number.
 	 */
-	private void createBinVar(final String name) {
+	private void createBinVar(final String name, final Number lb, final Number ub) {
 		if (vars.containsKey(name)) {
 			throw new RuntimeException();
 		}
 
 		try {
 			final IloIntVar boolVar = cplex.boolVar(name);
+			// There is no direct way to set up bounds for binary variables in CPLEX
+			boolVar.setLB(lb.doubleValue());
+			boolVar.setUB(ub.doubleValue());
 			vars.put(name, boolVar);
 		} catch (final IloException e) {
 			throw new RuntimeException(e);
@@ -328,14 +333,16 @@ public class CplexSolver extends ILPSolver {
 	 * Adds an integer variable with given name to the model.
 	 * 
 	 * @param name Variable name.
+	 * @param lb   Lower bound number.
+	 * @param ub   Upper bound number.
 	 */
-	private void createIntVar(final String name) {
+	private void createIntVar(final String name, final Number lb, final Number ub) {
 		if (vars.containsKey(name)) {
 			throw new RuntimeException();
 		}
 
 		try {
-			final IloIntVar intVar = cplex.intVar(Integer.MIN_VALUE, Integer.MAX_VALUE);
+			final IloIntVar intVar = cplex.intVar(lb.intValue(), ub.intValue());
 			vars.put(name, intVar);
 		} catch (final IloException e) {
 			throw new RuntimeException(e);
@@ -346,14 +353,16 @@ public class CplexSolver extends ILPSolver {
 	 * Adds a double variable with given name to the model.
 	 * 
 	 * @param name Variable name.
+	 * @param lb   Lower bound number.
+	 * @param ub   Upper bound number.
 	 */
-	private void createDblVar(final String name) {
+	private void createDblVar(final String name, final Number lb, final Number ub) {
 		if (vars.containsKey(name)) {
 			throw new RuntimeException();
 		}
 
 		try {
-			final IloNumVar numVar = cplex.numVar(-Double.MAX_VALUE, Double.MAX_VALUE);
+			final IloNumVar numVar = cplex.numVar(lb.doubleValue(), ub.doubleValue());
 			vars.put(name, numVar);
 		} catch (final IloException e) {
 			throw new RuntimeException(e);

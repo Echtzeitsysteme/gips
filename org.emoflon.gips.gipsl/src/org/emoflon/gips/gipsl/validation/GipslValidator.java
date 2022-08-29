@@ -79,6 +79,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsVariableOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.GlobalContext;
 import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
+import org.emoflon.gips.gipsl.gipsl.Package;
 import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
@@ -206,6 +207,46 @@ public class GipslValidator extends AbstractGipslValidator {
 		if (count != 1) {
 			error(String.format(PATTERN_NAME_MULTIPLE_DECLARATIONS_MESSAGE, pattern.getName(),
 					super.getTimes((int) count)), GTPackage.Literals.EDITOR_PATTERN__NAME, NAME_EXPECT_UNIQUE);
+		}
+
+	}
+
+	@Check
+	public void packageValid(Package pkg) {
+		if (pkg.getName() == null || pkg.getName().isBlank()) {
+			error("Package name must not be empty!", GipslPackage.Literals.PACKAGE__NAME);
+			return;
+		}
+
+		if (pkg.getName().contains(" ")) {
+			error("Package name may not contain any white spaces.", GipslPackage.Literals.PACKAGE__NAME);
+		}
+
+		if (pkg.getName().contains("\\")) {
+			error("Package name may not contain any slashes.", GipslPackage.Literals.PACKAGE__NAME);
+		}
+
+		if (pkg.getName().contains("/")) {
+			error("Package name may not contain any slashes.", GipslPackage.Literals.PACKAGE__NAME);
+		}
+
+		StringBuilder sb = new StringBuilder();
+
+		if (pkg.getName().chars().filter(c -> Character.isUpperCase(c)).map(c -> {
+			sb.append((char) c + " ");
+			return c;
+		}).findAny().isPresent()) {
+			error("Package name may not contain any upper case letters. The following illegal characters were found: "
+					+ sb.toString(), GipslPackage.Literals.PACKAGE__NAME);
+		}
+
+		if (pkg.getName().chars().filter(c -> !(Character.isLetter(c) || Character.isDigit(c) || c == '.' || c == '"'))
+				.map(c -> {
+					sb.append((char) c + " ");
+					return c;
+				}).findAny().isPresent()) {
+			error("Package name may not contain any characters other than lower case letters, digits or dots. The following illegal characters were found: "
+					+ sb.toString(), GipslPackage.Literals.PACKAGE__NAME);
 		}
 
 	}

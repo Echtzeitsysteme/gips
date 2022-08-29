@@ -65,12 +65,20 @@
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsStreamNoArgOperator/COUNT"/>
     </genEnums>
     <genClasses ecoreClass="Gipsl.ecore#//EditorGTFile">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//EditorGTFile/package"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//EditorGTFile/importedPattern"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//EditorGTFile/config"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//EditorGTFile/mappings"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//EditorGTFile/constraints"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//EditorGTFile/objectives"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//EditorGTFile/globalObjective"/>
+    </genClasses>
+    <genClasses ecoreClass="Gipsl.ecore#//Package">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//Package/name"/>
+    </genClasses>
+    <genClasses ecoreClass="Gipsl.ecore#//ImportedPattern">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//ImportedPattern/file"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//ImportedPattern/pattern"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsConfig">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/solver"/>
@@ -86,10 +94,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/enableDebugOutput"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/enableTolernace"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/tolerance"/>
-    </genClasses>
-    <genClasses ecoreClass="Gipsl.ecore#//ImportedPattern">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//ImportedPattern/file"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//ImportedPattern/pattern"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsMapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsMapping/name"/>

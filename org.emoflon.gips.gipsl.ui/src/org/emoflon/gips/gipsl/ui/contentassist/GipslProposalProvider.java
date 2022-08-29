@@ -33,6 +33,70 @@ import org.emoflon.gips.gipsl.ui.nature.GIPSNature;
 public class GipslProposalProvider extends AbstractGipslProposalProvider {
 
 	@Override
+	public void completePackage_Name(EObject model, Assignment assignment, ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor) {
+		super.completePackage_Name(model, assignment, context, acceptor);
+
+		IProject currentProject = GipslScopeContextUtil.getCurrentProject();
+
+		String[] lines = context.getCurrentNode().getText().split("\n");
+		lines = lines[0].split("\r");
+
+		String currentSelection = lines[0].replace("\"", "").replace("/", "\\").trim().replace("%20", " ");
+		String rest = context.getCurrentNode().getText().replace(lines[0], "");
+
+		File currentFile = null;
+		String location = null;
+		StringBuilder pkgBuilder = null;
+		try {
+			String fileUri = model.eResource().getURI().toString().replace("platform:/resource/", "")
+					.replace(currentProject.getName(), "");
+			fileUri = currentProject.getLocation().toPortableString() + fileUri;
+			currentFile = new File(fileUri).getCanonicalFile();
+			location = currentFile.getCanonicalPath().replace("\\", "/");
+
+			String relativeLocation = location.replace(currentProject.getLocation().toPortableString(), "");
+			String[] segments = relativeLocation.split("/");
+			pkgBuilder = new StringBuilder();
+			int idx = -1;
+			for (String segment : segments) {
+				idx++;
+				if (segment == null || segment.isBlank() || segment.isEmpty())
+					continue;
+
+				if (segment.equals("src") || segment.equals("bin"))
+					continue;
+
+				if (idx <= segments.length - 2) {
+					pkgBuilder.append(segment);
+					pkgBuilder.append(".");
+				} else {
+					pkgBuilder.append(segment.replace(".gipsl", ""));
+				}
+
+			}
+		} catch (Exception e) {
+			return;
+		}
+
+		String pkgName = "\"" + pkgBuilder.toString() + "\"";
+
+		if (!currentSelection.isBlank() && !pkgName.contains(currentSelection))
+			return;
+
+		int start = (currentSelection.isBlank()) ? 0 : currentSelection.length() + 1;
+		pkgName = pkgName.substring(start);
+		int cursor = pkgName.length();
+		pkgName = pkgName + rest;
+
+		int replacementLength = (currentSelection.isBlank())
+				? context.getCurrentNode().getText().length() - currentSelection.length() - 1
+				: context.getCurrentNode().getText().length() - currentSelection.length();
+
+		acceptor.accept(new CompletionProposal(pkgName.toLowerCase(), context.getOffset(), replacementLength, cursor));
+	}
+
+	@Override
 	public void completeImportedPattern_File(EObject model, Assignment assignment, ContentAssistContext context,
 			ICompletionProposalAcceptor acceptor) {
 		super.completeImportedPattern_File(model, assignment, context, acceptor);

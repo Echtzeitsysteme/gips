@@ -3,18 +3,27 @@
  */
 package org.emoflon.gips.gipsl.validation;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.validation.Check;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
@@ -249,6 +258,57 @@ public class GipslValidator extends AbstractGipslValidator {
 					+ sb.toString(), GipslPackage.Literals.PACKAGE__NAME);
 		}
 
+		// Check Workspace uniqueness
+		IProject currentProject = GipslScopeContextUtil.getCurrentProject(pkg.eResource());
+		String currentFile = pkg.eResource().getURI().toString().replace("platform:/resource/", "")
+				.replace(currentProject.getName(), "");
+		currentFile = currentProject.getLocation().toPortableString() + currentFile;
+		currentFile = currentFile.replace("/", "\\");
+
+		IWorkspace ws = ResourcesPlugin.getWorkspace();
+		for (IProject project : ws.getRoot().getProjects()) {
+			try {
+				if (!project.hasNature("org.emoflon.gips.gipsl.ui.gipsNature"))
+					continue;
+			} catch (CoreException e) {
+				continue;
+			}
+
+			File projectFile = new File(project.getLocation().toPortableString());
+			List<File> gtFiles = new LinkedList<>();
+			GipslScopeContextUtil.gatherFilesWithEnding(gtFiles, projectFile, ".gipsl", true);
+
+			for (File gtFile : gtFiles) {
+
+				XtextResourceSet rs = new XtextResourceSet();
+				URI gtModelUri;
+				try {
+					gtModelUri = URI.createFileURI(gtFile.getCanonicalPath());
+				} catch (IOException e) {
+					continue;
+				}
+
+				String fileString = gtModelUri.toFileString();
+
+				if (fileString.equals(currentFile))
+					continue;
+
+				Resource resource = rs.getResource(gtModelUri, true);
+				EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
+				EObject gtModel = resource.getContents().get(0);
+
+				if (gtModel == null)
+					continue;
+
+				if (gtModel instanceof EditorGTFile gipsEditorFile) {
+					if (gipsEditorFile.getPackage().getName().equals(pkg.getName())) {
+						error("Package name must be unique within the current workspace. Package name clash with: "
+								+ gtModelUri, GipslPackage.Literals.PACKAGE__NAME);
+					}
+				}
+			}
+		}
+
 	}
 
 	/**
@@ -280,15 +340,91 @@ public class GipslValidator extends AbstractGipslValidator {
 			return;
 
 		XtextResourceSet rs = new XtextResourceSet();
-		URI gtModelUri = URI.createFileURI(pattern.getFile().replace("\"", ""));
-
 		Resource resource = null;
-		try {
-			resource = rs.getResource(gtModelUri, true);
-		} catch (Exception e) {
-			error("Import URI <" + gtModelUri.toFileString() + "> is not valid.",
-					GipslPackage.Literals.IMPORTED_PATTERN__FILE);
-			return;
+		URI gtModelUri = null;
+		String currentImport = pattern.getFile().replace("\"", "");
+		File importFile = new File(currentImport);
+
+		if (importFile.exists() && importFile.isFile() && importFile.isAbsolute()) {
+			gtModelUri = URI.createFileURI(currentImport);
+			try {
+				resource = rs.getResource(gtModelUri, true);
+			} catch (Exception e) {
+				error("Import URI <" + gtModelUri.toFileString() + "> is not valid.",
+						GipslPackage.Literals.IMPORTED_PATTERN__FILE);
+				return;
+			}
+		} else {
+			// 1. Case: package name
+			if (!currentImport.contains("/") || currentImport.contains("\\")) {
+				IProject currentProject = GipslScopeContextUtil.getCurrentProject(pattern.eResource());
+
+				String currentFile = pattern.eResource().getURI().toString().replace("platform:/resource/", "")
+						.replace(currentProject.getName(), "");
+				currentFile = currentProject.getLocation().toPortableString() + currentFile;
+				currentFile = currentFile.replace("/", "\\");
+
+				IWorkspace ws = ResourcesPlugin.getWorkspace();
+				for (IProject project : ws.getRoot().getProjects()) {
+					try {
+						if (!project.hasNature("org.emoflon.gips.gipsl.ui.gipsNature"))
+							continue;
+					} catch (CoreException e) {
+						continue;
+					}
+
+					File projectFile = new File(project.getLocation().toPortableString());
+					List<File> gtFiles = new LinkedList<>();
+					GipslScopeContextUtil.gatherFilesWithEnding(gtFiles, projectFile, ".gipsl", true);
+
+					for (File gtFile : gtFiles) {
+
+						rs = new XtextResourceSet();
+						try {
+							gtModelUri = URI.createFileURI(gtFile.getCanonicalPath());
+						} catch (IOException e) {
+							continue;
+						}
+
+						String fileString = gtModelUri.toFileString();
+
+						if (fileString.equals(currentFile))
+							continue;
+
+						resource = rs.getResource(gtModelUri, true);
+						EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
+						EObject gtModel = resource.getContents().get(0);
+
+						if (gtModel == null)
+							continue;
+
+						if (gtModel instanceof EditorGTFile gipsEditorFile) {
+							if (gipsEditorFile.getPackage().getName().equals(pattern.getFile())) {
+								break;
+							}
+						}
+
+						rs = null;
+						resource = null;
+					}
+
+					if (resource != null)
+						break;
+				}
+			} else { // 2. Case: relative path
+				IProject currentProject = GipslScopeContextUtil.getCurrentProject(pattern.eResource());
+
+				String absolutePath = Paths.get(currentProject.getLocation().toPortableString())
+						.resolve(Paths.get(currentImport)).toString();
+				gtModelUri = URI.createFileURI(absolutePath);
+				try {
+					resource = rs.getResource(gtModelUri, true);
+				} catch (Exception e) {
+					error("Import URI <" + gtModelUri.toFileString() + "> is not valid.",
+							GipslPackage.Literals.IMPORTED_PATTERN__FILE);
+					return;
+				}
+			}
 		}
 
 		if (resource == null)

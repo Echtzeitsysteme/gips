@@ -11,6 +11,8 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -18,6 +20,7 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -578,9 +581,17 @@ public final class GipslScopeContextUtil {
 		}
 	}
 
-	public static IProject getCurrentProject() {
+	public static synchronized IProject getCurrentProject(final Resource resource) {
 		IProject project = null;
-		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		IWorkbenchWindow window = null;
+
+		if (Display.getCurrent() == null && resource != null) {
+			String platformString = resource.getURI().toPlatformString(true);
+			project = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(platformString)).getProject();
+		} else {
+			window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		}
+
 		if (window != null) {
 			IWorkbenchPage activePage = window.getActivePage();
 			IEditorPart activeEditor = activePage.getActiveEditor();
@@ -590,13 +601,14 @@ public final class GipslScopeContextUtil {
 
 				project = input.getAdapter(IProject.class);
 				if (project == null) {
-					IResource resource = input.getAdapter(IResource.class);
+					IResource otherResource = input.getAdapter(IResource.class);
 					if (resource != null) {
-						project = resource.getProject();
+						project = otherResource.getProject();
 					}
 				}
 			}
 		}
+
 		return project;
 	}
 

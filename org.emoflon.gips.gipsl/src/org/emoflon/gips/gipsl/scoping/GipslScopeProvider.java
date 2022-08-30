@@ -3,11 +3,19 @@
  */
 package org.emoflon.gips.gipsl.scoping;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -127,19 +135,96 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 		if (context.getFile() == null || context.getFile().isBlank())
 			return IScope.NULLSCOPE;
 
+		XtextResourceSet rs = new XtextResourceSet();
+		Resource resource = null;
+		String currentImport = context.getFile().replace("\"", "");
+		File importFile = new File(currentImport);
+		if (importFile.exists() && importFile.isFile() && importFile.isAbsolute()) {
+			URI gtModelUri = URI.createFileURI(currentImport);
+			try {
+				resource = rs.getResource(gtModelUri, true);
+			} catch (Exception e) {
+				return IScope.NULLSCOPE;
+			}
+		} else {
+			// 1. Case: package name
+			if (!currentImport.contains("/") || currentImport.contains("\\")) {
+				IProject currentProject = GipslScopeContextUtil.getCurrentProject(context.eResource());
+				if (currentProject == null)
+					return IScope.NULLSCOPE;
+
+				String currentFile = context.eResource().getURI().toString().replace("platform:/resource/", "")
+						.replace(currentProject.getName(), "");
+				currentFile = currentProject.getLocation().toPortableString() + currentFile;
+				currentFile = currentFile.replace("/", "\\");
+
+				IWorkspace ws = ResourcesPlugin.getWorkspace();
+				for (IProject project : ws.getRoot().getProjects()) {
+					try {
+						if (!project.hasNature("org.emoflon.gips.gipsl.ui.gipsNature"))
+							continue;
+					} catch (CoreException e) {
+						continue;
+					}
+
+					File projectFile = new File(project.getLocation().toPortableString());
+					List<File> gtFiles = new LinkedList<>();
+					GipslScopeContextUtil.gatherFilesWithEnding(gtFiles, projectFile, ".gipsl", true);
+
+					for (File gtFile : gtFiles) {
+
+						rs = new XtextResourceSet();
+						URI gtModelUri;
+						try {
+							gtModelUri = URI.createFileURI(gtFile.getCanonicalPath());
+						} catch (IOException e) {
+							continue;
+						}
+
+						String fileString = gtModelUri.toFileString();
+
+						if (fileString.equals(currentFile))
+							continue;
+
+						resource = rs.getResource(gtModelUri, true);
+						EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
+						EObject gtModel = resource.getContents().get(0);
+
+						if (gtModel == null)
+							continue;
+
+						if (gtModel instanceof EditorGTFile gipsEditorFile) {
+							if (gipsEditorFile.getPackage().getName().equals(context.getFile())) {
+								break;
+							}
+						}
+
+						rs = null;
+						resource = null;
+					}
+
+					if (resource != null)
+						break;
+				}
+			} else { // 2. Case: relative path
+				IProject currentProject = GipslScopeContextUtil.getCurrentProject(context.eResource());
+				if (currentProject == null)
+					return IScope.NULLSCOPE;
+
+				String absolutePath = Paths.get(currentProject.getLocation().toPortableString())
+						.resolve(Paths.get(currentImport)).toString();
+				URI gtModelUri = URI.createFileURI(absolutePath);
+				try {
+					resource = rs.getResource(gtModelUri, true);
+				} catch (Exception e) {
+					return IScope.NULLSCOPE;
+				}
+			}
+		}
+
 		Set<String> allPatterns = new HashSet<>();
 		EditorGTFile currentFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
 		currentFile.getPatterns().forEach(p -> allPatterns.add(p.getName()));
-
-		XtextResourceSet rs = new XtextResourceSet();
-		URI gtModelUri = URI.createFileURI(context.getFile().replace("\"", ""));
-
-		Resource resource = null;
-		try {
-			resource = rs.getResource(gtModelUri, true);
-		} catch (Exception e) {
-			return IScope.NULLSCOPE;
-		}
 
 		EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
 		EObject gtModel = resource.getContents().get(0);

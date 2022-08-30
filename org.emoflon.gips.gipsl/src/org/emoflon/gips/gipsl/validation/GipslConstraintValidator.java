@@ -24,6 +24,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingCheckValue;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
 import org.emoflon.gips.gipsl.gipsl.GipsNotBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsObjectiveExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsOrBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsProductArithmeticExpr;
@@ -158,6 +159,8 @@ public class GipslConstraintValidator {
 					return false;
 				} else if (exprOp instanceof GipsTypeAttributeExpr typeExpr) {
 					// Streams can be ignored
+					return false;
+				} else if (exprOp instanceof GipsObjectiveExpression) {
 					return false;
 				}
 			}

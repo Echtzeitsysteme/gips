@@ -398,60 +398,6 @@ public class GipslValidator extends AbstractGipslValidator {
 		GipslObjectiveValidator.checkGlobalObjective(globalObjective);
 	}
 
-	/**
-	 * Returns true if the given boolean expression contains an isMapped call.
-	 * 
-	 * @param expr Arithmetic expression to check.
-	 * @return True if the given arithmetic expression contains an isMapped call.
-	 */
-	public boolean containsMappingCheckValue(final GipsArithmeticExpr expr) {
-		if (expr == null) {
-			return false;
-		}
-
-		if (expr instanceof GipsBracketExpr) {
-			final GipsBracketExpr bracketExpr = (GipsBracketExpr) expr;
-			return containsMappingCheckValue(bracketExpr.getOperand());
-		} else if (expr instanceof GipsExpArithmeticExpr) {
-			final GipsExpArithmeticExpr expExpr = (GipsExpArithmeticExpr) expr;
-			return containsMappingCheckValue(expExpr.getLeft()) || containsMappingCheckValue(expExpr.getRight());
-		} else if (expr instanceof GipsExpressionOperand) {
-			final GipsExpressionOperand exprOp = (GipsExpressionOperand) expr;
-			if (exprOp instanceof GipsArithmeticLiteral) {
-				return false;
-			} else if (exprOp instanceof GipsAttributeExpr) {
-				if (exprOp instanceof GipsContextExpr) {
-					final GipsContextExpr conExpr = (GipsContextExpr) exprOp;
-					// Streams can be ignored
-					return conExpr.getExpr() instanceof GipsVariableOperationExpression;
-				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
-					// A GipsLambdaAttributeExpression can not contain an isMapped call
-					return false;
-				} else if (exprOp instanceof GipsMappingAttributeExpr) {
-					// Streams can be ignored
-					return false;
-				} else if (exprOp instanceof GipsPatternAttributeExpr patternExpr) {
-					// Streams can be ignored
-					return false;
-				} else if (exprOp instanceof GipsTypeAttributeExpr typeExpr) {
-					// Streams can be ignored
-					return false;
-				}
-			}
-		} else if (expr instanceof GipsProductArithmeticExpr) {
-			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
-			return containsMappingCheckValue(prodExpr.getLeft()) || containsMappingCheckValue(prodExpr.getRight());
-		} else if (expr instanceof GipsSumArithmeticExpr) {
-			final GipsSumArithmeticExpr sumExpr = (GipsSumArithmeticExpr) expr;
-			return containsMappingCheckValue(sumExpr.getLeft()) || containsMappingCheckValue(sumExpr.getRight());
-		} else if (expr instanceof GipsUnaryArithmeticExpr) {
-			final GipsUnaryArithmeticExpr unExpr = (GipsUnaryArithmeticExpr) expr;
-			return containsMappingCheckValue(unExpr.getOperand());
-		}
-
-		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
-	}
-
 	@Check
 	public void checkGlobalObjectiveNotNull(final EditorGTFile file) {
 		GipslObjectiveValidator.checkGlobalObjectiveNotNull(file);
@@ -472,66 +418,6 @@ public class GipslValidator extends AbstractGipslValidator {
 
 	public static void err(final String message, final EStructuralFeature feature) {
 		getInstance().error(message, feature);
-	}
-
-	/**
-	 * Returns true if the given arithmetic expression contains a mapping call.
-	 * 
-	 * @param expr Arithmetic expression to check.
-	 * @return True if the given arithmetic expression contains a mapping call.
-	 */
-	public boolean containsMappingsCall(final GipsArithmeticExpr expr) {
-		if (expr == null) {
-			return false;
-		}
-
-		if (expr instanceof GipsBracketExpr) {
-			final GipsBracketExpr bracketExpr = (GipsBracketExpr) expr;
-			return containsMappingsCall(bracketExpr.getOperand());
-		} else if (expr instanceof GipsExpArithmeticExpr) {
-			final GipsExpArithmeticExpr expExpr = (GipsExpArithmeticExpr) expr;
-			return containsMappingsCall(expExpr.getLeft()) || containsMappingsCall(expExpr.getRight());
-		} else if (expr instanceof GipsExpressionOperand) {
-			final GipsExpressionOperand exprOp = (GipsExpressionOperand) expr;
-			if (exprOp instanceof GipsArithmeticLiteral) {
-				return false;
-			} else if (exprOp instanceof GipsAttributeExpr) {
-				if (exprOp instanceof GipsContextExpr) {
-					final GipsContextExpr conExpr = (GipsContextExpr) exprOp;
-					if (streamContainsMappingsCall(conExpr.getStream())) {
-						return true;
-					}
-					return (conExpr.getExpr() instanceof GipsVariableOperationExpression
-							&& !(conExpr.getExpr() instanceof GipsMappingCheckValue));
-				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
-					// A GipsLambdaAttributeExpression can not contain a mappings call
-					return false;
-				} else if (exprOp instanceof GipsLambdaSelfExpression) {
-					// A GipsLambdaSelfExpression can not contain a mappings call
-					return false;
-				} else if (exprOp instanceof GipsMappingAttributeExpr) {
-					// A GipsMappingAttributeExpr always contains a mappings call
-					return true;
-				} else if (exprOp instanceof GipsPatternAttributeExpr patternExpr) {
-					return streamContainsMappingsCall(patternExpr.getExpr());
-				} else if (exprOp instanceof GipsTypeAttributeExpr typeExpr) {
-					return streamContainsMappingsCall(typeExpr.getExpr());
-				}
-			} else if (exprOp instanceof GipsObjectiveExpression) {
-				return false;
-			}
-		} else if (expr instanceof GipsProductArithmeticExpr) {
-			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
-			return containsMappingsCall(prodExpr.getLeft()) || containsMappingsCall(prodExpr.getRight());
-		} else if (expr instanceof GipsSumArithmeticExpr) {
-			final GipsSumArithmeticExpr sumExpr = (GipsSumArithmeticExpr) expr;
-			return containsMappingsCall(sumExpr.getLeft()) || containsMappingsCall(sumExpr.getRight());
-		} else if (expr instanceof GipsUnaryArithmeticExpr) {
-			final GipsUnaryArithmeticExpr unExpr = (GipsUnaryArithmeticExpr) expr;
-			return containsMappingsCall(unExpr.getOperand());
-		}
-
-		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	public static void warn(final String message, final EStructuralFeature feature, final String code,
@@ -615,6 +501,8 @@ public class GipslValidator extends AbstractGipslValidator {
 				} else if (exprOp instanceof GipsTypeAttributeExpr typeExpr) {
 					return containsSelf(typeExpr.getExpr(), type);
 				} else if (expr instanceof GipsConstant) {
+					return false;
+				} else if (expr instanceof GipsObjectiveExpression) {
 					return false;
 				}
 

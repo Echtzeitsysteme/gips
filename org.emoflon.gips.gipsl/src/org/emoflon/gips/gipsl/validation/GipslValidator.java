@@ -294,7 +294,7 @@ public class GipslValidator extends AbstractGipslValidator {
 					continue;
 
 				Resource resource = rs.getResource(gtModelUri, true);
-				EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
+//				EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
 				EObject gtModel = resource.getContents().get(0);
 
 				if (gtModel == null)

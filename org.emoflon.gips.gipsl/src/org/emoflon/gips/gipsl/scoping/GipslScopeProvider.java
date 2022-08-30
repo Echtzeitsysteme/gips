@@ -162,7 +162,7 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 	}
 
 	private IScope scopeForImportedPatternPattern(ImportedPattern context, EReference reference) {
-		if (context.getFile() == null || context.getFile().isBlank())
+		if (context == null || context.getFile() == null || context.getFile().isBlank())
 			return IScope.NULLSCOPE;
 
 		Resource resource = null;

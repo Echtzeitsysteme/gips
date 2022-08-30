@@ -55,6 +55,7 @@ final class HelloWorldProject {
 			builderIds += #[JavaCore.BUILDER_ID, XtextProjectHelper.BUILDER_ID]
 			folders += "src"
 			addFile('''src/«path»/Model.gipsl''', '''
+				package "«path»"
 				import "http://www.eclipse.org/emf/2002/Ecore"
 				// import a metamodel here
 				

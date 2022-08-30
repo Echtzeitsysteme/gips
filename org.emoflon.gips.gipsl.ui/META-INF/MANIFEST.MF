@@ -23,13 +23,17 @@ Require-Bundle: org.emoflon.gips.gipsl,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.pde.core,
- org.eclipse.ui.forms
+ org.eclipse.ui.forms,
+ org.emoflon.core.dependencies;bundle-version="1.0.0",
+ org.moflon.core.utilities;bundle-version="3.0.0",
+ org.moflon.core.ui;bundle-version="1.3.0"
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.emoflon.gips.gipsl.ui,
  org.emoflon.gips.gipsl.ui.contentassist,
  org.emoflon.gips.gipsl.ui.internal,
  org.emoflon.gips.gipsl.ui.labeling,
+ org.emoflon.gips.gipsl.ui.nature,
  org.emoflon.gips.gipsl.ui.outline,
  org.emoflon.gips.gipsl.ui.quickfix,
  org.emoflon.gips.gipsl.ui.wizard

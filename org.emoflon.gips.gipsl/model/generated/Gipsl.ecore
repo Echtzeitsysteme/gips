@@ -2,6 +2,10 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="gipsl" nsURI="http://www.emoflon.org/gips/gipsl/Gipsl" nsPrefix="gipsl">
   <eClassifiers xsi:type="ecore:EClass" name="EditorGTFile" eSuperTypes="platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorGTFile">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="package" eType="#//Package"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="importedPattern" upperBound="-1"
+        eType="#//ImportedPattern" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="config" eType="#//GipsConfig"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappings" upperBound="-1"
@@ -12,6 +16,13 @@
         eType="#//GipsObjective" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="globalObjective" eType="#//GipsGlobalObjective"
         containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Package">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ImportedPattern">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="file" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorPattern"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsConfig">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="solver" eType="#//SolverType"/>
@@ -103,7 +114,7 @@
     <eLiterals name="SMALLER" value="5" literal="&lt;"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsAttributeExpr" eSuperTypes="#//GipsExpressionOperand"/>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsContextOperationExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsVariableOperationExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="GipsTypeCast">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
   </eClassifiers>
@@ -223,8 +234,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="stream" eType="#//GipsStreamExpr"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsMappingValue" eSuperTypes="#//GipsContextOperationExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsMappingCheckValue" eSuperTypes="#//GipsContextOperationExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="GipsMappingValue" eSuperTypes="#//GipsVariableOperationExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsMappingCheckValue" eSuperTypes="#//GipsVariableOperationExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="count" eType="#//GipsAttributeExpr"
         containment="true"/>
   </eClassifiers>

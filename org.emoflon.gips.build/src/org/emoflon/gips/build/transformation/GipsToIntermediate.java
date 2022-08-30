@@ -2,8 +2,10 @@ package org.emoflon.gips.build.transformation;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
@@ -56,6 +58,7 @@ import org.emoflon.ibex.gt.transformations.EditorToIBeXPatternTransformation;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern;
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
 import org.logicng.formulas.Formula;
@@ -75,9 +78,7 @@ public class GipsToIntermediate {
 
 	public GipsIntermediateModel transform() throws Exception {
 		// transform GT to IBeXPatterns
-		EditorToIBeXPatternTransformation ibexTransformer = new EditorToIBeXPatternTransformation();
-		data.model().setIbexModel(ibexTransformer.transform(data.gipsSlangFile()));
-		mapGT2IBeXElements();
+		preprocessGipslFile();
 
 		// transform Gips components
 		transformConfig();
@@ -91,6 +92,28 @@ public class GipsToIntermediate {
 		data.model().getVariables().addAll(data.ePattern2Pattern().values());
 
 		return data.model();
+	}
+
+	protected void preprocessGipslFile() {
+		EditorToIBeXPatternTransformation ibexTransformer = new EditorToIBeXPatternTransformation();
+		data.model().setIbexModel(ibexTransformer.transform(data.gipsSlangFile()));
+
+		Set<org.emoflon.ibex.gt.editor.gT.EditorGTFile> foreignFiles = new HashSet<>();
+		data.gipsSlangFile().getImportedPattern().forEach(
+				p -> foreignFiles.add((org.emoflon.ibex.gt.editor.gT.EditorGTFile) p.getPattern().eContainer()));
+		for (org.emoflon.ibex.gt.editor.gT.EditorGTFile foreignFile : foreignFiles) {
+			ibexTransformer = new EditorToIBeXPatternTransformation();
+			IBeXModel foreignModel = ibexTransformer.transform(foreignFile);
+			IBeXModel model = data.model().getIbexModel();
+			// TODO: For now lets just import everything -> this might lead to naming
+			// collisions and must be performed more selectively in the future.
+			model.getNodeSet().getNodes().addAll(foreignModel.getNodeSet().getNodes());
+			model.getEdgeSet().getEdges().addAll(foreignModel.getEdgeSet().getEdges());
+			model.getPatternSet().getContextPatterns().addAll(foreignModel.getPatternSet().getContextPatterns());
+			model.getRuleSet().getRules().addAll(foreignModel.getRuleSet().getRules());
+		}
+
+		mapGT2IBeXElements();
 	}
 
 	protected void transformConfig() {
@@ -591,9 +614,15 @@ public class GipsToIntermediate {
 	}
 
 	protected void mapGT2IBeXElements() {
-		for (EditorPattern ePattern : data.gipsSlangFile().getPatterns().stream()
+		Set<EditorPattern> allEditorPatterns = new HashSet<>();
+		allEditorPatterns.addAll(data.gipsSlangFile().getPatterns().stream()
 				.filter(pattern -> GTEditorPatternUtils.containsCreatedOrDeletedElements(pattern))
-				.collect(Collectors.toList())) {
+				.collect(Collectors.toList()));
+		allEditorPatterns.addAll(data.gipsSlangFile().getImportedPattern().stream().map(ip -> ip.getPattern())
+				.filter(pattern -> GTEditorPatternUtils.containsCreatedOrDeletedElements(pattern))
+				.collect(Collectors.toList()));
+
+		for (EditorPattern ePattern : allEditorPatterns) {
 			for (IBeXRule rule : data.model().getIbexModel().getRuleSet().getRules()) {
 				if (rule.getName().equals(ePattern.getName())) {
 					data.ePattern2Rule().put(ePattern, rule);
@@ -608,7 +637,12 @@ public class GipsToIntermediate {
 			}
 		}
 
-		for (EditorPattern ePattern : data.gipsSlangFile().getPatterns()) {
+		allEditorPatterns = new HashSet<>();
+		allEditorPatterns.addAll(data.gipsSlangFile().getPatterns());
+		allEditorPatterns.addAll(data.gipsSlangFile().getImportedPattern().stream().map(ip -> ip.getPattern())
+				.collect(Collectors.toList()));
+
+		for (EditorPattern ePattern : allEditorPatterns) {
 			for (IBeXContext pattern : data.model().getIbexModel().getPatternSet().getContextPatterns()) {
 				if (pattern.getName().equals(ePattern.getName())) {
 					data.ePattern2Context().put(ePattern, pattern);

@@ -3,11 +3,30 @@
  */
 package org.emoflon.gips.gipsl.validation;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.validation.Check;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipsAndBoolExpr;
@@ -25,7 +44,6 @@ import org.emoflon.gips.gipsl.gipsl.GipsConstant;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsContains;
 import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsExpArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsExpOperator;
 import org.emoflon.gips.gipsl.gipsl.GipsExpressionOperand;
@@ -69,10 +87,19 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeCast;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsVariableOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
+import org.emoflon.gips.gipsl.gipsl.GlobalContext;
+import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
+import org.emoflon.gips.gipsl.gipsl.Package;
+import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
+import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.gipsl.validation.GipslValidatorUtils.ContextType;
 import org.emoflon.gips.gipsl.validation.GipslValidatorUtils.EvalType;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
+import org.emoflon.ibex.gt.editor.gT.EditorPattern;
+import org.emoflon.ibex.gt.editor.gT.GTPackage;
+import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
 
 /**
  * This class contains custom validation rules.
@@ -116,6 +143,243 @@ public class GipslValidator extends AbstractGipslValidator {
 		targetException.printStackTrace();
 	}
 
+	/**
+	 * Pattern names must be unique.
+	 */
+	@Override
+	public void checkPatternNameUnique(EditorPattern pattern) {
+		EditorGTFile file = GTEditorPatternUtils.getContainer(pattern, EditorGTFileImpl.class);
+		long count = file.getPatterns().stream().filter(p -> p != null && p.getName() != null)
+				.filter(p -> p.getName().equals(pattern.getName())).count();
+		count += file.getImportedPattern().stream()
+				.filter(p -> p != null && p.getPattern() != null && p.getPattern().getName() != null)
+				.filter(p -> p.getPattern().getName().equals(pattern.getName())).count();
+		if (count != 1) {
+			error(String.format(PATTERN_NAME_MULTIPLE_DECLARATIONS_MESSAGE, pattern.getName(),
+					super.getTimes((int) count)), GTPackage.Literals.EDITOR_PATTERN__NAME, NAME_EXPECT_UNIQUE);
+		}
+
+	}
+
+	@Check
+	public void packageValid(Package pkg) {
+		if (pkg.getName() == null || pkg.getName().isBlank()) {
+			error("Package name must not be empty!", GipslPackage.Literals.PACKAGE__NAME);
+			return;
+		}
+
+		if (pkg.getName().contains(" ")) {
+			error("Package name may not contain any white spaces.", GipslPackage.Literals.PACKAGE__NAME);
+		}
+
+		if (pkg.getName().contains("\\")) {
+			error("Package name may not contain any slashes.", GipslPackage.Literals.PACKAGE__NAME);
+		}
+
+		if (pkg.getName().contains("/")) {
+			error("Package name may not contain any slashes.", GipslPackage.Literals.PACKAGE__NAME);
+		}
+
+		StringBuilder sb = new StringBuilder();
+
+		if (pkg.getName().chars().filter(c -> Character.isUpperCase(c)).map(c -> {
+			sb.append((char) c + " ");
+			return c;
+		}).findAny().isPresent()) {
+			error("Package name may not contain any upper case letters. The following illegal characters were found: "
+					+ sb.toString(), GipslPackage.Literals.PACKAGE__NAME);
+		}
+
+		if (pkg.getName().chars().filter(c -> !(Character.isLetter(c) || Character.isDigit(c) || c == '.' || c == '"'))
+				.map(c -> {
+					sb.append((char) c + " ");
+					return c;
+				}).findAny().isPresent()) {
+			error("Package name may not contain any characters other than lower case letters, digits or dots. The following illegal characters were found: "
+					+ sb.toString(), GipslPackage.Literals.PACKAGE__NAME);
+		}
+
+		// Check Workspace uniqueness
+		IProject currentProject = GipslScopeContextUtil.getCurrentProject(pkg.eResource());
+		String currentFile = pkg.eResource().getURI().toString().replace("platform:/resource/", "")
+				.replace(currentProject.getName(), "");
+		currentFile = currentProject.getLocation().toPortableString() + currentFile;
+		currentFile = currentFile.replace("/", "\\");
+
+		IWorkspace ws = ResourcesPlugin.getWorkspace();
+		for (IProject project : ws.getRoot().getProjects()) {
+			try {
+				if (!project.hasNature("org.emoflon.gips.gipsl.ui.gipsNature"))
+					continue;
+			} catch (CoreException e) {
+				continue;
+			}
+
+			File projectFile = new File(project.getLocation().toPortableString());
+			List<File> gtFiles = new LinkedList<>();
+			GipslScopeContextUtil.gatherFilesWithEnding(gtFiles, projectFile, ".gipsl", true);
+
+			for (File gtFile : gtFiles) {
+
+				XtextResourceSet rs = new XtextResourceSet();
+				URI gtModelUri;
+				try {
+					gtModelUri = URI.createFileURI(gtFile.getCanonicalPath());
+				} catch (IOException e) {
+					continue;
+				}
+
+				String fileString = gtModelUri.toFileString();
+
+				if (fileString.equals(currentFile))
+					continue;
+
+				Resource resource = rs.getResource(gtModelUri, true);
+				EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
+				EObject gtModel = resource.getContents().get(0);
+
+				if (gtModel == null)
+					continue;
+
+				if (gtModel instanceof EditorGTFile gipsEditorFile) {
+					if (gipsEditorFile.getPackage().getName().equals(pkg.getName())) {
+						error("Package name must be unique within the current workspace. Package name clash with: "
+								+ gtModelUri, GipslPackage.Literals.PACKAGE__NAME);
+					}
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * Pattern names must be unique.
+	 */
+	@Check
+	public void checkImportNameUnique(ImportedPattern pattern) {
+		if (pattern.getPattern() == null)
+			return;
+
+		EditorGTFile file = GTEditorPatternUtils.getContainer(pattern, EditorGTFileImpl.class);
+		long count = file.getPatterns().stream().filter(p -> p != null && p.getName() != null)
+				.filter(p -> p.getName().equals(pattern.getPattern().getName())).count();
+		count += file.getImportedPattern().stream()
+				.filter(p -> p != null && p.getPattern() != null && p.getPattern().getName() != null)
+				.filter(p -> p.getPattern().getName().equals(pattern.getPattern().getName())).count();
+		if (count != 1) {
+			error(String.format(PATTERN_NAME_MULTIPLE_DECLARATIONS_MESSAGE, pattern.getPattern().getName(),
+					super.getTimes((int) count)), GipslPackage.Literals.IMPORTED_PATTERN__PATTERN, NAME_EXPECT_UNIQUE);
+		}
+	}
+
+	/**
+	 * URI valid
+	 */
+	@Check
+	public void checkImportUriExists(ImportedPattern pattern) {
+		if (pattern.getFile() == null || pattern.getFile().isBlank())
+			return;
+
+		XtextResourceSet rs = new XtextResourceSet();
+		Resource resource = null;
+		URI gtModelUri = null;
+		String currentImport = pattern.getFile().replace("\"", "");
+		File importFile = new File(currentImport);
+
+		if (importFile.exists() && importFile.isFile() && importFile.isAbsolute()) {
+			gtModelUri = URI.createFileURI(currentImport);
+			try {
+				resource = rs.getResource(gtModelUri, true);
+			} catch (Exception e) {
+				error("Import URI <" + gtModelUri.toFileString() + "> is not valid.",
+						GipslPackage.Literals.IMPORTED_PATTERN__FILE);
+				return;
+			}
+		} else {
+			// 1. Case: package name
+			if (!(currentImport.contains("/") || currentImport.contains("\\"))) {
+				IProject currentProject = GipslScopeContextUtil.getCurrentProject(pattern.eResource());
+
+				String currentFile = pattern.eResource().getURI().toString().replace("platform:/resource/", "")
+						.replace(currentProject.getName(), "");
+				currentFile = currentProject.getLocation().toPortableString() + currentFile;
+				currentFile = currentFile.replace("/", "\\");
+
+				IWorkspace ws = ResourcesPlugin.getWorkspace();
+				for (IProject project : ws.getRoot().getProjects()) {
+					try {
+						if (!project.hasNature("org.emoflon.gips.gipsl.ui.gipsNature"))
+							continue;
+					} catch (CoreException e) {
+						continue;
+					}
+
+					File projectFile = new File(project.getLocation().toPortableString());
+					List<File> gtFiles = new LinkedList<>();
+					GipslScopeContextUtil.gatherFilesWithEnding(gtFiles, projectFile, ".gipsl", true);
+
+					for (File gtFile : gtFiles) {
+
+						rs = new XtextResourceSet();
+						try {
+							gtModelUri = URI.createFileURI(gtFile.getCanonicalPath());
+						} catch (IOException e) {
+							continue;
+						}
+
+						String fileString = gtModelUri.toFileString();
+
+						if (fileString.equals(currentFile))
+							continue;
+
+						resource = rs.getResource(gtModelUri, true);
+						EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
+						EObject gtModel = resource.getContents().get(0);
+
+						if (gtModel == null)
+							continue;
+
+						if (gtModel instanceof EditorGTFile gipsEditorFile) {
+							if (gipsEditorFile.getPackage().getName().equals(pattern.getFile())) {
+								break;
+							}
+						}
+
+						rs = null;
+						resource = null;
+					}
+
+					if (resource != null)
+						break;
+				}
+			} else { // 2. Case: relative path
+				IProject currentProject = GipslScopeContextUtil.getCurrentProject(pattern.eResource());
+
+				String absolutePath = null;
+				try {
+					absolutePath = Paths.get(currentProject.getLocation().toPortableString())
+							.resolve(Paths.get(currentImport)).toFile().getCanonicalPath();
+				} catch (IOException e1) {
+					error("Relative import URI <" + currentImport + "> is not resolvable.",
+							GipslPackage.Literals.IMPORTED_PATTERN__FILE);
+					return;
+				}
+
+				gtModelUri = URI.createFileURI(absolutePath);
+				try {
+					resource = rs.getResource(gtModelUri, true);
+				} catch (Exception e) {
+					error("Import URI <" + gtModelUri.toFileString() + "> is not valid.",
+							GipslPackage.Literals.IMPORTED_PATTERN__FILE);
+					return;
+				}
+			}
+		}
+
+		if (resource == null)
+			error("Import URI <" + gtModelUri.toFileString() + "> is not valid.",
+					GipslPackage.Literals.IMPORTED_PATTERN__FILE);
+	}
 	/*
 	 * Entry points for all checks
 	 */
@@ -138,7 +402,61 @@ public class GipslValidator extends AbstractGipslValidator {
 	@Check
 	public void checkGlobalObjective(final GipsGlobalObjective globalObjective) {
 		GipslObjectiveValidator.checkGlobalObjective(globalObjective);
+	/**
+	 * Returns true if the given boolean expression contains an isMapped call.
+	 * 
+	 * @param expr Arithmetic expression to check.
+	 * @return True if the given arithmetic expression contains an isMapped call.
+	 */
+	public boolean containsMappingCheckValue(final GipsArithmeticExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof GipsBracketExpr) {
+			final GipsBracketExpr bracketExpr = (GipsBracketExpr) expr;
+			return containsMappingCheckValue(bracketExpr.getOperand());
+		} else if (expr instanceof GipsExpArithmeticExpr) {
+			final GipsExpArithmeticExpr expExpr = (GipsExpArithmeticExpr) expr;
+			return containsMappingCheckValue(expExpr.getLeft()) || containsMappingCheckValue(expExpr.getRight());
+		} else if (expr instanceof GipsExpressionOperand) {
+			final GipsExpressionOperand exprOp = (GipsExpressionOperand) expr;
+			if (exprOp instanceof GipsArithmeticLiteral) {
+				return false;
+			} else if (exprOp instanceof GipsAttributeExpr) {
+				if (exprOp instanceof GipsContextExpr) {
+					final GipsContextExpr conExpr = (GipsContextExpr) exprOp;
+					// Streams can be ignored
+					return conExpr.getExpr() instanceof GipsVariableOperationExpression;
+				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
+					// A GipsLambdaAttributeExpression can not contain an isMapped call
+					return false;
+				} else if (exprOp instanceof GipsMappingAttributeExpr) {
+					// Streams can be ignored
+					return false;
+				} else if (exprOp instanceof GipsPatternAttributeExpr patternExpr) {
+					// Streams can be ignored
+					return false;
+				} else if (exprOp instanceof GipsTypeAttributeExpr typeExpr) {
+					// Streams can be ignored
+					return false;
+				}
+			}
+		} else if (expr instanceof GipsProductArithmeticExpr) {
+			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
+			return containsMappingCheckValue(prodExpr.getLeft()) || containsMappingCheckValue(prodExpr.getRight());
+		} else if (expr instanceof GipsSumArithmeticExpr) {
+			final GipsSumArithmeticExpr sumExpr = (GipsSumArithmeticExpr) expr;
+			return containsMappingCheckValue(sumExpr.getLeft()) || containsMappingCheckValue(sumExpr.getRight());
+		} else if (expr instanceof GipsUnaryArithmeticExpr) {
+			final GipsUnaryArithmeticExpr unExpr = (GipsUnaryArithmeticExpr) expr;
+			return containsMappingCheckValue(unExpr.getOperand());
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
+
+    
 
 	@Check
 	public void checkGlobalObjectiveNotNull(final EditorGTFile file) {
@@ -160,6 +478,64 @@ public class GipslValidator extends AbstractGipslValidator {
 
 	public static void err(final String message, final EStructuralFeature feature) {
 		getInstance().error(message, feature);
+	/**
+	 * Returns true if the given arithmetic expression contains a mapping call.
+	 * 
+	 * @param expr Arithmetic expression to check.
+	 * @return True if the given arithmetic expression contains a mapping call.
+	 */
+	public boolean containsMappingsCall(final GipsArithmeticExpr expr) {
+		if (expr == null) {
+			return false;
+		}
+
+		if (expr instanceof GipsBracketExpr) {
+			final GipsBracketExpr bracketExpr = (GipsBracketExpr) expr;
+			return containsMappingsCall(bracketExpr.getOperand());
+		} else if (expr instanceof GipsExpArithmeticExpr) {
+			final GipsExpArithmeticExpr expExpr = (GipsExpArithmeticExpr) expr;
+			return containsMappingsCall(expExpr.getLeft()) || containsMappingsCall(expExpr.getRight());
+		} else if (expr instanceof GipsExpressionOperand) {
+			final GipsExpressionOperand exprOp = (GipsExpressionOperand) expr;
+			if (exprOp instanceof GipsArithmeticLiteral) {
+				return false;
+			} else if (exprOp instanceof GipsAttributeExpr) {
+				if (exprOp instanceof GipsContextExpr) {
+					final GipsContextExpr conExpr = (GipsContextExpr) exprOp;
+					if (streamContainsMappingsCall(conExpr.getStream())) {
+						return true;
+					}
+					return (conExpr.getExpr() instanceof GipsVariableOperationExpression
+							&& !(conExpr.getExpr() instanceof GipsMappingCheckValue));
+				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
+					// A GipsLambdaAttributeExpression can not contain a mappings call
+					return false;
+				} else if (exprOp instanceof GipsLambdaSelfExpression) {
+					// A GipsLambdaSelfExpression can not contain a mappings call
+					return false;
+				} else if (exprOp instanceof GipsMappingAttributeExpr) {
+					// A GipsMappingAttributeExpr always contains a mappings call
+					return true;
+				} else if (exprOp instanceof GipsPatternAttributeExpr patternExpr) {
+					return streamContainsMappingsCall(patternExpr.getExpr());
+				} else if (exprOp instanceof GipsTypeAttributeExpr typeExpr) {
+					return streamContainsMappingsCall(typeExpr.getExpr());
+				}
+			} else if (exprOp instanceof GipsObjectiveExpression) {
+				return false;
+			}
+		} else if (expr instanceof GipsProductArithmeticExpr) {
+			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
+			return containsMappingsCall(prodExpr.getLeft()) || containsMappingsCall(prodExpr.getRight());
+		} else if (expr instanceof GipsSumArithmeticExpr) {
+			final GipsSumArithmeticExpr sumExpr = (GipsSumArithmeticExpr) expr;
+			return containsMappingsCall(sumExpr.getLeft()) || containsMappingsCall(sumExpr.getRight());
+		} else if (expr instanceof GipsUnaryArithmeticExpr) {
+			final GipsUnaryArithmeticExpr unExpr = (GipsUnaryArithmeticExpr) expr;
+			return containsMappingsCall(unExpr.getOperand());
+		}
+
+		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	public static void warn(final String message, final EStructuralFeature feature, final String code,
@@ -249,6 +625,8 @@ public class GipslValidator extends AbstractGipslValidator {
 				throw new UnsupportedOperationException(
 						GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr.eClass() + ">");
 			} else if (expr instanceof GipsConstant) {
+				return false;
+			} else if (expr instanceof GipsObjectiveExpression) {
 				return false;
 			}
 
@@ -397,7 +775,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			} else if (exprOp instanceof GipsAttributeExpr) {
 				if (exprOp instanceof GipsContextExpr conExpr) {
 					// Currently only MAPPED and VALUE are supported -> Both are dynamic
-					return conExpr.getExpr() instanceof GipsContextOperationExpression;
+					return conExpr.getExpr() instanceof GipsVariableOperationExpression;
 					// TODO: Use the solution below. But, in order for this to work, we need to
 					// implement a multivariate return value (Enum type), which conveys more
 					// information that just "there is a mapping access of some kind".
@@ -787,8 +1165,8 @@ public class GipslValidator extends AbstractGipslValidator {
 		final EObject innerExpr = expr.getExpr();
 		if (innerExpr instanceof GipsNodeAttributeExpr node) {
 			return getEvalTypeFromNodeAttrExpr(node);
-		} else if (innerExpr instanceof GipsContextOperationExpression contextOp) {
-			return getEvalTypeFromContextOpExpr(contextOp);
+		} else if (innerExpr instanceof GipsVariableOperationExpression varop) {
+			return getEvalTypeFromContextOpExpr(varop);
 		} else if (innerExpr instanceof GipsFeatureExpr featureExpr) {
 			return getEvalTypeFromFeatureExpr(featureExpr);
 		}
@@ -806,8 +1184,8 @@ public class GipslValidator extends AbstractGipslValidator {
 			final EObject innerExpr = expr.getExpr();
 			if (innerExpr instanceof GipsNodeAttributeExpr nodeAttr) {
 				exprEval = getEvalTypeFromNodeAttrExpr(nodeAttr);
-			} else if (innerExpr instanceof GipsContextOperationExpression contextOp) {
-				exprEval = getEvalTypeFromContextOpExpr(contextOp);
+			} else if (innerExpr instanceof GipsVariableOperationExpression varop) {
+				exprEval = getEvalTypeFromContextOpExpr(varop);
 			} else if (innerExpr instanceof GipsFeatureExpr featureExpr) {
 				exprEval = getEvalTypeFromFeatureExpr(featureExpr);
 			}
@@ -831,7 +1209,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		return exprEval;
 	}
 
-	public static EvalType getEvalTypeFromContextOpExpr(final GipsContextOperationExpression expr) {
+	public static EvalType getEvalTypeFromContextOpExpr(final GipsVariableOperationExpression expr) {
 		if (expr instanceof GipsMappingCheckValue) {
 			return EvalType.BOOLEAN;
 		} else if (expr instanceof GipsMappingValue) {
@@ -868,8 +1246,12 @@ public class GipslValidator extends AbstractGipslValidator {
 			} else {
 				throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 			}
-		} else if (expr instanceof GipsFeatureLit lit) {
-			final EStructuralFeature esf = lit.getFeature();
+		} else if (expr instanceof GipsFeatureLit) {
+		} else if (expr instanceof GipsFeatureLit) {
+			final GipsFeatureLit lit = (GipsFeatureLit) expr;
+			if (lit.getFeature() == null)
+				return EvalType.ERROR;
+			final EClassifier ecl = lit.getFeature().getEType();
 
 			// EReference: Set or object
 			if (esf instanceof EReference) {

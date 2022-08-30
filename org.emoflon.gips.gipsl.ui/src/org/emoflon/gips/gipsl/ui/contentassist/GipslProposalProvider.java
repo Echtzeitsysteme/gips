@@ -3,10 +3,196 @@
  */
 package org.emoflon.gips.gipsl.ui.contentassist;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jface.text.contentassist.CompletionProposal;
+import org.eclipse.xtext.Assignment;
+import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.resource.XtextResourceSet;
+import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
+import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
+import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
+import org.emoflon.gips.gipsl.ui.nature.GIPSNature;
+
 /**
  * See
  * https://www.eclipse.org/Xtext/documentation/310_eclipse_support.html#content-assist
  * on how to customize the content assistant.
  */
 public class GipslProposalProvider extends AbstractGipslProposalProvider {
+
+	@Override
+	public void completePackage_Name(EObject model, Assignment assignment, ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor) {
+		super.completePackage_Name(model, assignment, context, acceptor);
+
+		IProject currentProject = GipslScopeContextUtil.getCurrentProject(model.eResource());
+
+		String[] lines = context.getCurrentNode().getText().split("\n");
+		lines = lines[0].split("\r");
+
+		String currentSelection = lines[0].replace("\"", "").replace("/", "\\").trim().replace("%20", " ");
+		String rest = context.getCurrentNode().getText().replace(lines[0], "");
+
+		File currentFile = null;
+		String location = null;
+		StringBuilder pkgBuilder = null;
+		try {
+			String fileUri = model.eResource().getURI().toString().replace("platform:/resource/", "")
+					.replace(currentProject.getName(), "");
+			fileUri = currentProject.getLocation().toPortableString() + fileUri;
+			currentFile = new File(fileUri).getCanonicalFile();
+			location = currentFile.getCanonicalPath().replace("\\", "/");
+
+			String relativeLocation = location.replace(currentProject.getLocation().toPortableString(), "");
+			String[] segments = relativeLocation.split("/");
+			pkgBuilder = new StringBuilder();
+			int idx = -1;
+			for (String segment : segments) {
+				idx++;
+				if (segment == null || segment.isBlank() || segment.isEmpty())
+					continue;
+
+				if (segment.equals("src") || segment.equals("bin"))
+					continue;
+
+				if (idx <= segments.length - 2) {
+					pkgBuilder.append(segment);
+					pkgBuilder.append(".");
+				} else {
+					pkgBuilder.append(segment.replace(".gipsl", ""));
+				}
+
+			}
+		} catch (Exception e) {
+			return;
+		}
+
+		String pkgName = "\"" + pkgBuilder.toString() + "\"";
+
+		if (!currentSelection.isBlank() && !pkgName.contains(currentSelection))
+			return;
+
+		int start = (currentSelection.isBlank()) ? 0 : currentSelection.length() + 1;
+		pkgName = pkgName.substring(start);
+		int cursor = pkgName.length();
+		pkgName = pkgName + rest;
+
+		int replacementLength = (currentSelection.isBlank())
+				? context.getCurrentNode().getText().length() - currentSelection.length() - 1
+				: context.getCurrentNode().getText().length() - currentSelection.length();
+
+		acceptor.accept(new CompletionProposal(pkgName.toLowerCase(), context.getOffset(), replacementLength, cursor));
+	}
+
+	@Override
+	public void completeImportedPattern_File(EObject model, Assignment assignment, ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor) {
+		super.completeImportedPattern_File(model, assignment, context, acceptor);
+		IProject currentProject = GipslScopeContextUtil.getCurrentProject(model.eResource());
+		String currentFile = model.eResource().getURI().toString().replace("platform:/resource/", "")
+				.replace(currentProject.getName(), "");
+		currentFile = currentProject.getLocation().toPortableString() + currentFile;
+		currentFile = currentFile.replace("/", "\\");
+
+		String[] lines = context.getCurrentNode().getText().split("\n");
+		lines = lines[0].split("\r");
+
+		String currentSelection = lines[0].replace("\"", "").replace("/", "\\").trim().replace("%20", " ");
+		String rest = context.getCurrentNode().getText().replace(lines[0], "");
+
+		Map<String, EObject> path2model = new HashMap<>();
+		IWorkspace ws = ResourcesPlugin.getWorkspace();
+		for (IProject project : ws.getRoot().getProjects()) {
+
+			try {
+				if (!(project.hasNature("org.emoflon.ibex.gt.editor.ui.nature")
+						|| project.hasNature(GIPSNature.NATURE_ID)))
+					continue;
+			} catch (CoreException e) {
+				continue;
+			}
+
+			File projectFile = new File(project.getLocation().toPortableString());
+			List<File> gtFiles = new LinkedList<>();
+			GipslScopeContextUtil.gatherFilesWithEnding(gtFiles, projectFile, ".gt", true);
+			GipslScopeContextUtil.gatherFilesWithEnding(gtFiles, projectFile, ".gipsl", true);
+
+			for (File gtFile : gtFiles) {
+
+				XtextResourceSet rs = new XtextResourceSet();
+				URI gtModelUri;
+				try {
+					gtModelUri = URI.createFileURI(gtFile.getCanonicalPath());
+				} catch (IOException e) {
+					continue;
+				}
+
+				String fileString = gtModelUri.toFileString();
+				if (fileString.equals(currentFile))
+					continue;
+
+				if (!currentSelection.isBlank() && !fileString.contains(currentSelection))
+					continue;
+
+				Resource resource = rs.getResource(gtModelUri, true);
+				EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
+				EObject gtModel = resource.getContents().get(0);
+
+				if (gtModel == null)
+					continue;
+
+				// Put absolute path
+				path2model.put(gtModelUri.toFileString(), gtModel);
+
+				// Put project relative path
+				String relativePath = Paths.get(currentProject.getLocation().toPortableString())
+						.relativize(Paths.get(gtModelUri.toFileString())).toString();
+				path2model.put(relativePath, gtModel);
+
+				// Put package as an alternative to path
+				if (gtModel instanceof EditorGTFile gipsEditorFile) {
+					path2model.put(gipsEditorFile.getPackage().getName().replace("\"", ""), gtModel);
+				}
+
+			}
+		}
+
+		for (String path : path2model.keySet()) {
+			EObject gtModel = path2model.get(path);
+
+			String replacement = "\"" + path + "\"";
+			int start = (currentSelection.isBlank()) ? 0 : currentSelection.length() + 1;
+			replacement = replacement.substring(start);
+			int cursor = replacement.length();
+			replacement = replacement + rest;
+
+			int replacementLength = (currentSelection.isBlank())
+					? context.getCurrentNode().getText().length() - currentSelection.length() - 1
+					: context.getCurrentNode().getText().length() - currentSelection.length();
+
+			if (gtModel instanceof org.emoflon.ibex.gt.editor.gT.EditorGTFile gtEditorFile) {
+				acceptor.accept(new CompletionProposal(replacement, context.getOffset(), replacementLength, cursor));
+			} else if (gtModel instanceof EditorGTFile gipsEditorFile) {
+				acceptor.accept(new CompletionProposal(replacement, context.getOffset(), replacementLength, cursor));
+			} else {
+				continue;
+			}
+		}
+
+	}
 }

@@ -2,15 +2,18 @@ package org.emoflon.gips.build.transformation.transformer;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingValue;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
+import org.emoflon.gips.gipsl.gipsl.GipsVariableOperationExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
 import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
@@ -50,9 +53,18 @@ public class AttributeInSumTransformer extends AttributeExpressionTransformer<Su
 	}
 
 	@Override
-	protected ValueExpression transformVariableStreamOperation(GipsContextOperationExpression eContextOp,
+	protected ValueExpression transformVariableStreamOperation(GipsVariableOperationExpression eContextOp,
 			GipsMappingAttributeExpr eMappingAttribute, GipsStreamExpr streamIteratorContainer) throws Exception {
-		throw new UnsupportedOperationException("ILP variable access ist not allowed in stream expressions.");
+		if (eContextOp instanceof GipsMappingValue mpValue) {
+			IteratorMappingVariableValue mappingValue = factory.createIteratorMappingVariableValue();
+			mappingValue.setMappingContext(data.eMapping2Mapping().get(eMappingAttribute.getMapping()));
+			mappingValue.setStream(data.eStream2SetOp().get(streamIteratorContainer));
+			mappingValue.setReturnType(EcorePackage.Literals.EINT);
+			return mappingValue;
+		} else {
+			throw new UnsupportedOperationException(
+					"Nested ILP variable constraint expressions are not allowed in stream expressions.");
+		}
 	}
 
 }

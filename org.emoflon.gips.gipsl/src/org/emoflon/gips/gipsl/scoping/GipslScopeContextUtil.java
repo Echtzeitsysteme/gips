@@ -1,10 +1,34 @@
 package org.emoflon.gips.gipsl.scoping;
 
+import java.io.File;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.resource.XtextResourceSet;
+import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipsAndBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticLiteral;
@@ -47,6 +71,8 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeCast;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
+import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
+import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsContainsImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsContextExprImpl;
@@ -58,8 +84,19 @@ import org.emoflon.gips.gipsl.gipsl.impl.GipsStreamArithmeticImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsStreamNavigationImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsStreamSetImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsTypeAttributeExprImpl;
+import org.emoflon.ibex.gt.editor.gT.EditorPattern;
+import org.emoflon.ibex.gt.editor.utils.GTEditorModelUtils;
+import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
 
 public final class GipslScopeContextUtil {
+
+	public static boolean isPatternImportUri(final EObject context, final EReference reference) {
+		return context instanceof ImportedPattern && reference == GipslPackage.Literals.IMPORTED_PATTERN__FILE;
+	}
+
+	public static boolean isPatternImportPattern(final EObject context, final EReference reference) {
+		return context instanceof ImportedPattern && reference == GipslPackage.Literals.IMPORTED_PATTERN__PATTERN;
+	}
 
 	public static boolean isGipsMapping(final EObject context, final EReference reference) {
 		return context instanceof GipsMapping;
@@ -156,6 +193,150 @@ public final class GipslScopeContextUtil {
 		} while (current != null && !(classes.contains(current.getClass())));
 
 		return current;
+	}
+
+	public static Collection<EClass> getClasses(final EObject context) {
+		EditorGTFile gtFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
+		final Set<EClass> classes = new HashSet<>();
+		// Local imports
+		gtFile.getImports().forEach(i -> {
+			GTEditorModelUtils.loadEcoreModel(i.getName())
+					.ifPresent(m -> classes.addAll(GTEditorModelUtils.getElements(m, EClass.class)));
+		});
+		// Transitive imports
+		Map<String, ImportedPattern> representativePatterns = new HashMap<>();
+		gtFile.getImportedPattern().forEach(ip -> {
+			if (!representativePatterns.containsKey(ip.getFile()))
+				representativePatterns.put(ip.getFile(), ip);
+		});
+		representativePatterns.values().forEach(ip -> {
+
+			XtextResourceSet rs = new XtextResourceSet();
+			URI gtModelUri = URI.createFileURI(ip.getFile().replace("\"", ""));
+
+			Resource resource = null;
+			try {
+				resource = rs.getResource(gtModelUri, true);
+			} catch (Exception e) {
+				return;
+			}
+
+			EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
+			EObject gtModel = resource.getContents().get(0);
+			if (gtModel instanceof org.emoflon.ibex.gt.editor.gT.EditorGTFile otherGtFile) {
+				otherGtFile.getImports().forEach(i -> {
+					GTEditorModelUtils.loadEcoreModel(i.getName())
+							.ifPresent(m -> classes.addAll(GTEditorModelUtils.getElements(m, EClass.class)));
+				});
+			} else if (gtModel instanceof EditorGTFile otherGipsFile) {
+				otherGipsFile.getImports().forEach(i -> {
+					GTEditorModelUtils.loadEcoreModel(i.getName())
+							.ifPresent(m -> classes.addAll(GTEditorModelUtils.getElements(m, EClass.class)));
+				});
+			} else {
+				return;
+			}
+
+		});
+		return classes;
+	}
+
+	public static Collection<EDataType> getDatatypes(final EObject context) {
+		EditorGTFile gtFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
+		final Set<EDataType> types = new HashSet<>();
+		// Local imports
+		gtFile.getImports().forEach(i -> {
+			GTEditorModelUtils.loadEcoreModel(i.getName())
+					.ifPresent(m -> types.addAll(GTEditorModelUtils.getElements(m, EDataType.class)));
+		});
+		// Transitive imports
+		Map<String, ImportedPattern> representativePatterns = new HashMap<>();
+		gtFile.getImportedPattern().forEach(ip -> {
+			if (!representativePatterns.containsKey(ip.getFile()))
+				representativePatterns.put(ip.getFile(), ip);
+		});
+		representativePatterns.values().forEach(ip -> {
+
+			XtextResourceSet rs = new XtextResourceSet();
+			URI gtModelUri = URI.createFileURI(ip.getFile().replace("\"", ""));
+
+			Resource resource = null;
+			try {
+				resource = rs.getResource(gtModelUri, true);
+			} catch (Exception e) {
+				return;
+			}
+
+			EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
+			EObject gtModel = resource.getContents().get(0);
+			if (gtModel instanceof org.emoflon.ibex.gt.editor.gT.EditorGTFile otherGtFile) {
+				otherGtFile.getImports().forEach(i -> {
+					GTEditorModelUtils.loadEcoreModel(i.getName())
+							.ifPresent(m -> types.addAll(GTEditorModelUtils.getElements(m, EDataType.class)));
+				});
+			} else if (gtModel instanceof EditorGTFile otherGipsFile) {
+				otherGipsFile.getImports().forEach(i -> {
+					GTEditorModelUtils.loadEcoreModel(i.getName())
+							.ifPresent(m -> types.addAll(GTEditorModelUtils.getElements(m, EDataType.class)));
+				});
+			} else {
+				return;
+			}
+		});
+		return types;
+	}
+
+	public static Collection<EEnum> getEnums(final EObject context) {
+		EditorGTFile gtFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
+		final Set<EEnum> types = new HashSet<>();
+		gtFile.getImports().forEach(i -> {
+			GTEditorModelUtils.loadEcoreModel(i.getName())
+					.ifPresent(m -> types.addAll(GTEditorModelUtils.getElements(m, EEnum.class)));
+		});
+		// Transitive imports
+		Map<String, ImportedPattern> representativePatterns = new HashMap<>();
+		gtFile.getImportedPattern().forEach(ip -> {
+			if (!representativePatterns.containsKey(ip.getFile()))
+				representativePatterns.put(ip.getFile(), ip);
+		});
+		representativePatterns.values().forEach(ip -> {
+
+			XtextResourceSet rs = new XtextResourceSet();
+			URI gtModelUri = URI.createFileURI(ip.getFile().replace("\"", ""));
+
+			Resource resource = null;
+			try {
+				resource = rs.getResource(gtModelUri, true);
+			} catch (Exception e) {
+				return;
+			}
+
+			EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
+			EObject gtModel = resource.getContents().get(0);
+			if (gtModel instanceof org.emoflon.ibex.gt.editor.gT.EditorGTFile otherGtFile) {
+				otherGtFile.getImports().forEach(i -> {
+					GTEditorModelUtils.loadEcoreModel(i.getName())
+							.ifPresent(m -> types.addAll(GTEditorModelUtils.getElements(m, EEnum.class)));
+				});
+			} else if (gtModel instanceof EditorGTFile otherGipsFile) {
+				otherGipsFile.getImports().forEach(i -> {
+					GTEditorModelUtils.loadEcoreModel(i.getName())
+							.ifPresent(m -> types.addAll(GTEditorModelUtils.getElements(m, EEnum.class)));
+				});
+			} else {
+				return;
+			}
+		});
+		return types;
+	}
+
+	public static List<EditorPattern> getAllEditorPatterns(final EObject context) {
+		EditorGTFile gtFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
+		List<EditorPattern> patterns = new LinkedList<>();
+		patterns.addAll(gtFile.getPatterns());
+		gtFile.getImportedPattern().forEach(p -> patterns.add(p.getPattern()));
+
+		return patterns;
 	}
 
 	public static EObject getContextType(final GipsContextExpr expr) {
@@ -380,6 +561,55 @@ public final class GipslScopeContextUtil {
 		}
 
 		return mappings;
+	}
+
+	public static void gatherFilesWithEnding(Collection<File> gtFiles, File root, String ending, boolean ignoreBin) {
+		if (root.isDirectory() && root.exists()) {
+			if (ignoreBin && root.getName().equals("bin"))
+				return;
+			for (File subFile : root.listFiles()) {
+				gatherFilesWithEnding(gtFiles, subFile, ending, ignoreBin);
+			}
+			return;
+		} else if (!root.isDirectory() && root.exists()) {
+			if (root.getName().endsWith(ending)) {
+				gtFiles.add(root);
+				return;
+			}
+		} else {
+			return;
+		}
+	}
+
+	public static synchronized IProject getCurrentProject(final Resource resource) {
+		IProject project = null;
+		IWorkbenchWindow window = null;
+
+		if (Display.getCurrent() == null && resource != null) {
+			String platformString = resource.getURI().toPlatformString(true);
+			project = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(platformString)).getProject();
+		} else {
+			window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		}
+
+		if (window != null) {
+			IWorkbenchPage activePage = window.getActivePage();
+			IEditorPart activeEditor = activePage.getActiveEditor();
+
+			if (activeEditor != null) {
+				IEditorInput input = activeEditor.getEditorInput();
+
+				project = input.getAdapter(IProject.class);
+				if (project == null) {
+					IResource otherResource = input.getAdapter(IResource.class);
+					if (resource != null) {
+						project = otherResource.getProject();
+					}
+				}
+			}
+		}
+
+		return project;
 	}
 
 }

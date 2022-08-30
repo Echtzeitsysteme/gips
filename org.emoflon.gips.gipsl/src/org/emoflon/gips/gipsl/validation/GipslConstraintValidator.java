@@ -15,7 +15,6 @@ import org.emoflon.gips.gipsl.gipsl.GipsBracketExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsContains;
 import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsContextOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsExpArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsExpressionOperand;
 import org.emoflon.gips.gipsl.gipsl.GipsImplicationBoolExpr;
@@ -38,6 +37,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsStreamSet;
 import org.emoflon.gips.gipsl.gipsl.GipsSumArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsVariableOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.GlobalContext;
 import org.emoflon.gips.gipsl.validation.GipslValidatorUtils.ContextType;
@@ -146,7 +146,7 @@ public class GipslConstraintValidator {
 			} else if (exprOp instanceof GipsAttributeExpr) {
 				if (exprOp instanceof GipsContextExpr conExpr) {
 					// Streams can be ignored
-					return conExpr.getExpr() instanceof GipsContextOperationExpression;
+					return conExpr.getExpr() instanceof GipsVariableOperationExpression;
 				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
 					// A GipsLambdaAttributeExpression can not contain an isMapped call
 					return false;
@@ -255,7 +255,7 @@ public class GipslConstraintValidator {
 					if (streamContainsMappingsCall(conExpr.getStream())) {
 						return true;
 					}
-					return (conExpr.getExpr() instanceof GipsContextOperationExpression
+					return (conExpr.getExpr() instanceof GipsVariableOperationExpression
 							&& !(conExpr.getExpr() instanceof GipsMappingCheckValue));
 				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
 					// A GipsLambdaAttributeExpression can not contain a mappings call

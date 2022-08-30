@@ -6,19 +6,14 @@ package org.emoflon.gips.gipsl.validation;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -89,7 +84,6 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsVariableOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
-import org.emoflon.gips.gipsl.gipsl.GlobalContext;
 import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
 import org.emoflon.gips.gipsl.gipsl.Package;
 import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
@@ -402,6 +396,8 @@ public class GipslValidator extends AbstractGipslValidator {
 	@Check
 	public void checkGlobalObjective(final GipsGlobalObjective globalObjective) {
 		GipslObjectiveValidator.checkGlobalObjective(globalObjective);
+	}
+
 	/**
 	 * Returns true if the given boolean expression contains an isMapped call.
 	 * 
@@ -453,10 +449,8 @@ public class GipslValidator extends AbstractGipslValidator {
 			return containsMappingCheckValue(unExpr.getOperand());
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
-
-    
 
 	@Check
 	public void checkGlobalObjectiveNotNull(final EditorGTFile file) {
@@ -478,6 +472,8 @@ public class GipslValidator extends AbstractGipslValidator {
 
 	public static void err(final String message, final EStructuralFeature feature) {
 		getInstance().error(message, feature);
+	}
+
 	/**
 	 * Returns true if the given arithmetic expression contains a mapping call.
 	 * 
@@ -535,7 +531,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			return containsMappingsCall(unExpr.getOperand());
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	public static void warn(final String message, final EStructuralFeature feature, final String code,
@@ -1246,12 +1242,11 @@ public class GipslValidator extends AbstractGipslValidator {
 			} else {
 				throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 			}
-		} else if (expr instanceof GipsFeatureLit) {
-		} else if (expr instanceof GipsFeatureLit) {
-			final GipsFeatureLit lit = (GipsFeatureLit) expr;
-			if (lit.getFeature() == null)
+		} else if (expr instanceof GipsFeatureLit lit) {
+			if (lit.getFeature() == null) {
 				return EvalType.ERROR;
-			final EClassifier ecl = lit.getFeature().getEType();
+			}
+			final EStructuralFeature esf = lit.getFeature();
 
 			// EReference: Set or object
 			if (esf instanceof EReference) {

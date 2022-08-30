@@ -40,7 +40,7 @@ public class GipslProposalProvider extends AbstractGipslProposalProvider {
 			ICompletionProposalAcceptor acceptor) {
 		super.completePackage_Name(model, assignment, context, acceptor);
 
-		IProject currentProject = GipslScopeContextUtil.getCurrentProject(null);
+		IProject currentProject = GipslScopeContextUtil.getCurrentProject(model.eResource());
 
 		String[] lines = context.getCurrentNode().getText().split("\n");
 		lines = lines[0].split("\r");
@@ -103,7 +103,7 @@ public class GipslProposalProvider extends AbstractGipslProposalProvider {
 	public void completeImportedPattern_File(EObject model, Assignment assignment, ContentAssistContext context,
 			ICompletionProposalAcceptor acceptor) {
 		super.completeImportedPattern_File(model, assignment, context, acceptor);
-		IProject currentProject = GipslScopeContextUtil.getCurrentProject(null);
+		IProject currentProject = GipslScopeContextUtil.getCurrentProject(model.eResource());
 		String currentFile = model.eResource().getURI().toString().replace("platform:/resource/", "")
 				.replace(currentProject.getName(), "");
 		currentFile = currentProject.getLocation().toPortableString() + currentFile;

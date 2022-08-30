@@ -356,7 +356,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			}
 		} else {
 			// 1. Case: package name
-			if (!currentImport.contains("/") || currentImport.contains("\\")) {
+			if (!(currentImport.contains("/") || currentImport.contains("\\"))) {
 				IProject currentProject = GipslScopeContextUtil.getCurrentProject(pattern.eResource());
 
 				String currentFile = pattern.eResource().getURI().toString().replace("platform:/resource/", "")
@@ -414,8 +414,16 @@ public class GipslValidator extends AbstractGipslValidator {
 			} else { // 2. Case: relative path
 				IProject currentProject = GipslScopeContextUtil.getCurrentProject(pattern.eResource());
 
-				String absolutePath = Paths.get(currentProject.getLocation().toPortableString())
-						.resolve(Paths.get(currentImport)).toString();
+				String absolutePath = null;
+				try {
+					absolutePath = Paths.get(currentProject.getLocation().toPortableString())
+							.resolve(Paths.get(currentImport)).toFile().getCanonicalPath();
+				} catch (IOException e1) {
+					error("Relative import URI <" + currentImport + "> is not resolvable.",
+							GipslPackage.Literals.IMPORTED_PATTERN__FILE);
+					return;
+				}
+
 				gtModelUri = URI.createFileURI(absolutePath);
 				try {
 					resource = rs.getResource(gtModelUri, true);

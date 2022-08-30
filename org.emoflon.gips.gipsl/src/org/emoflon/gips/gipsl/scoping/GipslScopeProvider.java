@@ -6,9 +6,11 @@ package org.emoflon.gips.gipsl.scoping;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -73,6 +75,8 @@ import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
  */
 public class GipslScopeProvider extends AbstractGipslScopeProvider {
 
+	protected Map<Resource, Map<URI, Resource>> resourceCache = new HashMap<>();
+
 	@Override
 	public IScope getScope(EObject context, EReference reference) {
 		try {
@@ -131,27 +135,48 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 		}
 	}
 
+	protected Resource loadResource(final Resource requester, final URI gtModelUri) {
+		Map<URI, Resource> cache = resourceCache.get(requester);
+		if (cache == null) {
+			cache = new HashMap<>();
+			resourceCache.put(requester, cache);
+		}
+
+		Resource other = cache.get(gtModelUri);
+		if (other == null) {
+			XtextResourceSet rs = new XtextResourceSet();
+			try {
+				other = rs.getResource(gtModelUri, true);
+			} catch (Exception e) {
+				return other;
+			}
+			cache.put(gtModelUri, other);
+
+			if (other == null)
+				return other;
+
+			EcoreUtil2.resolveLazyCrossReferences(other, () -> false);
+		}
+
+		return other;
+	}
+
 	private IScope scopeForImportedPatternPattern(ImportedPattern context, EReference reference) {
 		if (context.getFile() == null || context.getFile().isBlank())
 			return IScope.NULLSCOPE;
 
-		XtextResourceSet rs = new XtextResourceSet();
 		Resource resource = null;
 		String currentImport = context.getFile().replace("\"", "");
 		File importFile = new File(currentImport);
 		if (importFile.exists() && importFile.isFile() && importFile.isAbsolute()) {
 			URI gtModelUri = URI.createFileURI(currentImport);
-			try {
-				resource = rs.getResource(gtModelUri, true);
-			} catch (Exception e) {
+			resource = loadResource(context.eResource(), gtModelUri);
+			if (resource == null)
 				return IScope.NULLSCOPE;
-			}
 		} else {
 			// 1. Case: package name
-			if (!currentImport.contains("/") || currentImport.contains("\\")) {
+			if (!(currentImport.contains("/") || currentImport.contains("\\"))) {
 				IProject currentProject = GipslScopeContextUtil.getCurrentProject(context.eResource());
-				if (currentProject == null)
-					return IScope.NULLSCOPE;
 
 				String currentFile = context.eResource().getURI().toString().replace("platform:/resource/", "")
 						.replace(currentProject.getName(), "");
@@ -172,8 +197,6 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 					GipslScopeContextUtil.gatherFilesWithEnding(gtFiles, projectFile, ".gipsl", true);
 
 					for (File gtFile : gtFiles) {
-
-						rs = new XtextResourceSet();
 						URI gtModelUri;
 						try {
 							gtModelUri = URI.createFileURI(gtFile.getCanonicalPath());
@@ -186,8 +209,10 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 						if (fileString.equals(currentFile))
 							continue;
 
-						resource = rs.getResource(gtModelUri, true);
-						EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
+						resource = loadResource(context.eResource(), gtModelUri);
+						if (resource == null)
+							continue;
+
 						EObject gtModel = resource.getContents().get(0);
 
 						if (gtModel == null)
@@ -198,8 +223,6 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 								break;
 							}
 						}
-
-						rs = null;
 						resource = null;
 					}
 
@@ -211,14 +234,17 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 				if (currentProject == null)
 					return IScope.NULLSCOPE;
 
-				String absolutePath = Paths.get(currentProject.getLocation().toPortableString())
-						.resolve(Paths.get(currentImport)).toString();
-				URI gtModelUri = URI.createFileURI(absolutePath);
+				String absolutePath = null;
 				try {
-					resource = rs.getResource(gtModelUri, true);
-				} catch (Exception e) {
+					absolutePath = Paths.get(currentProject.getLocation().toPortableString())
+							.resolve(Paths.get(currentImport)).toFile().getCanonicalPath();
+				} catch (IOException e) {
 					return IScope.NULLSCOPE;
 				}
+				URI gtModelUri = URI.createFileURI(absolutePath);
+				resource = loadResource(context.eResource(), gtModelUri);
+				if (resource == null)
+					return IScope.NULLSCOPE;
 			}
 		}
 

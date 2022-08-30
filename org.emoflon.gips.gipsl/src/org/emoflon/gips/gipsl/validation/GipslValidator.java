@@ -6,20 +6,17 @@ package org.emoflon.gips.gipsl.validation;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -48,6 +45,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsExpressionOperand;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureNavigation;
+import org.emoflon.gips.gipsl.gipsl.GipsGlobalContext;
 import org.emoflon.gips.gipsl.gipsl.GipsGlobalObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsImplicationBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsLambdaAttributeExpression;
@@ -86,11 +84,12 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsVariableOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
-import org.emoflon.gips.gipsl.gipsl.GlobalContext;
 import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
 import org.emoflon.gips.gipsl.gipsl.Package;
 import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
+import org.emoflon.gips.gipsl.validation.GipslValidatorUtils.ContextType;
+import org.emoflon.gips.gipsl.validation.GipslValidatorUtils.EvalType;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 import org.emoflon.ibex.gt.editor.gT.GTPackage;
@@ -105,92 +104,28 @@ import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
 public class GipslValidator extends AbstractGipslValidator {
 
 	/**
-	 * The list of invalid mapping/objective names. Will be filled in the static
-	 * block.
+	 * Global switch to turn off the whole validation.
 	 */
-	public static final Set<String> INVALID_NAMES = new HashSet<String>();
+	static final boolean DISABLE_VALIDATOR = false;
 
-	static {
-		final String[] invalidNames = new String[] { "clone", "equals", "finalize", "getClass", "hashCode", "notify",
-				"notifyAll", "toString", "wait", "abstract", "assert", "boolean", "break", "byte", "case", "catch",
-				"char", "class", "const", "continue", "default", "do", "double", "EAttribute", "EBoolean", "EDataType",
-				"EClass", "EClassifier", "EDouble", "EFloat", "EInt", "else", "enum", "EPackage", "EReference",
-				"EString", "extends", "final", "finally", "float", "for", "goto", "if", "implements", "import",
-				"instanceof", "int", "interface", "long", "native", "new", "package", "private", "protected", "public",
-				"return", "short", "static", "strictfp", "super", "switch", "synchronized", "this", "throw", "throws",
-				"transient", "try", "void", "volatile", "while",
+	/**
+	 * Instance of this class
+	 */
+	private static GipslValidator val;
 
-				// New values
-				"mapping", "objective", "global objective", "global", "min", "max", "constraint" };
-		INVALID_NAMES.addAll(Arrays.asList(invalidNames));
+	protected GipslValidator() {
+		if (val != null) {
+			throw new UnsupportedOperationException("Only one instance of the GIPSL validator can be created!");
+		}
+		val = this;
 	}
 
-	static final String CODE_PREFIX = "org.emoflon.gips.gipsl.";
-
-	// General errors for named elements.
-	public static final String NAME_BLOCKED = CODE_PREFIX + "name.blocked";
-	public static final String NAME_EXPECT_CAMEL_CASE = CODE_PREFIX + "name.expectCamelCase";
-	public static final String NAME_EXPECT_LOWER_CASE = CODE_PREFIX + "name.expectLowerCase";
-	public static final String NAME_EXPECT_UNIQUE = CODE_PREFIX + "name.expectUnique";
-
-	public static final String GLOBAL_OBJECTIVE_DOES_NOT_EXIST = CODE_PREFIX + "objective.global.doesNotExist";
-
-	public static final String GLOBAL_OBJECTIVE_IS_NULL_MESSAGE = "You need to specify a global objective.";
-	public static final String GLOBAL_OBJECTIVE_IS_OPTIONAL_MESSAGE = "The global objective is optional if no local objective is defined.";
-	public static final String GLOBAL_OBJECTIVE_DOES_NOT_CONTAIN_LOCAL_OBJECTIVE_MESSAGE = "Global objective does not contain any reference to a local objective.";
-
-	public static final String MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Mapping '%s' must not be declared '%s'.";
-	public static final String MAPPING_NAME_FORBIDDEN_MESSAGE = "Mappings cannot be be named '%s'. Use a different name.";
-	public static final String MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Mapping name '%s' contains underscores. Use camelCase instead.";
-	public static final String MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Mapping '%s' should start with a lower case character.";
-	public static final String MAPPING_W_O_CONSTRAINTS_MESSAGE = "Mapping '%s' is not subject to any constraints.";
-	public static final String MAPPING_W_O_CONSTRAINTS_AND_OBJECTIVE_MESSAGE = "Mapping '%s' is not subject to any constraints and not part of any objective function.";
-
-	public static final String OBJECTIVE_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Objective '%s' must not be declared '%s'";
-	public static final String OBJECTIVE_NAME_FORBIDDEN_MESSAGE = "Objectives cannot be be named '%s'. Use a different name.";
-	public static final String OBJECTIVE_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Objective name '%s' contains underscores. Use camelCase instead.";
-	public static final String OBJECTIVE_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Objective '%s' should start with a lower case character.";
-
-	// Other errors for types
-	public static final String OBJECTIVE_VALUE_IS_ZERO_MESSAGE = "Objective '%s' can be removed because its value is 0.";
-
-	public static final String CONSTRAINT_EMPTY_MESSAGE = "Constraint is empty.";
-	public static final String CONSTRAINT_EVAL_NOT_BOOLEAN_MESSAGE = "Constraint does not evaluate to a boolean";
-	public static final String CONSTRAINT_EVAL_LITERAL_MESSAGE = "Constraint is always '%s'.";
-
-	public static final String OBJECTIVE_EVAL_NOT_NUMBER_MESSAGE = "Objective does not evaluate to an integer or double.";
-	public static final String OBJECTIVE_CONTEXT_CLASS_MESSAGE = "Objectives can not have a class as context.";
-
-	public static final String LITERAL_NOT_PARSABLE_MESSAGE = "Literal is not parsable.";
-
-	public static final String LAMBDA_EXPR_EVAL_NOT_PRIMITIVE_MESSAGE = "Lambda expression does not evaluate to a primitve type.";
-	public static final String LAMBDA_EXPR_EVAL_LITERAL_MESSAGE = "Lambda expression is always '%s'.";
-	public static final String LAMBDA_EXPR_EVAL_TYPE_ERROR = "Type error in lambda expression.";
-
-	public static final String CONSTRAINT_DEFINED_MULTIPLE_TIMES_MESSAGE = "Constraint defined multiple times.";
-	public static final String CONSTRAINT_HAS_NO_CONSTANT_SIDE_MESSAGE = "Constraint has no constant side.";
-	public static final String CONSTRAINT_HAS_TWO_CONSTANT_SIDES_MESSAGE = "Constraint has only constant sides. Use GT to express this condition.";
-
-	public static final String STREAM_ON_NON_COLLECTION_TYPE_MESSAGE = "Stream used on non collection type.";
-
-	public static final String EXP_EXPR_NOT_CONSTANT_MESSAGE = "Exponential expression must be constant due to ILP.";
-	public static final String PRODUCT_EXPR_NOT_CONSTANT_MESSAGE = "Product expressions can only have one dynamic sub expression due to ILP.";
-	public static final String UNARY_ARITH_EXPR_NOT_CONSTANT_MESSAGE = "Unary arithmetic expression with operator '%s' must be constant due to ILP.";
-
-	public static final String BOOL_EXPR_EVAL_ERROR_MESSAGE = "Boolean expression does not evaluate to boolean.";
-	public static final String ARITH_EXPR_EVAL_ERROR_MESSAGE = "Arithmetic expression does not evaluate to a primitive type.";
-
-	public static final String TYPE_DOES_NOT_CONTAIN_SELF_MESSAGE = "'%s' does not contain any self reference.";
-
-	public static final String MAPPING_IN_MAPPING_FORBIDDEN_MESSAGE = "Mapping access within mapping context is forbidden.";
-	public static final String IS_MAPPED_CALL_IN_CONTEXT_FORBIDDEN_MESSAGE = "\"isMapped()\" call in non mapping context is not possible.";
-
-	// Exception error messages
-	public static final String NOT_IMPLEMENTED_EXCEPTION_MESSAGE = "Not yet implemented";
-	public static final String CONSTRAINT_CONTEXT_UNKNOWN_EXCEPTION_MESSAGE = "Context is neither a GipsType nor a GipsMapping.";
-
-	// Number error messages
-	public static final String SQRT_VALUE_SMALLER_THAN_ZERO = "Value in SQRT is smaller than 0.";
+	public static GipslValidator getInstance() {
+		if (val == null) {
+			new GipslValidator();
+		}
+		return val;
+	}
 
 	/**
 	 * This prevents all exceptions being "swallowed" by the default validator
@@ -439,698 +374,68 @@ public class GipslValidator extends AbstractGipslValidator {
 			error("Import URI <" + gtModelUri.toFileString() + "> is not valid.",
 					GipslPackage.Literals.IMPORTED_PATTERN__FILE);
 	}
-
-	/**
-	 * Checks if a global objective is specified in a given file. This must hold if
-	 * there is any local objective defined. Furthermore, it displays a warning if
-	 * the user specified a global objective but there is no local objective in the
-	 * given file.
-	 * 
-	 * @param file File to check existence of a global objective for.
+	/*
+	 * Entry points for all checks
 	 */
-	@Check
-	public void checkGlobalObjectiveNotNull(final EditorGTFile file) {
-		if (file == null) {
-			return;
-		}
 
-		if (file.getObjectives() != null && !file.getObjectives().isEmpty() && file.getGlobalObjective() == null) {
-			error( //
-					GLOBAL_OBJECTIVE_IS_NULL_MESSAGE, //
-					// TODO: Change scope of the warning:
-					GipslPackage.Literals.EDITOR_GT_FILE__GLOBAL_OBJECTIVE, //
-					GLOBAL_OBJECTIVE_DOES_NOT_EXIST //
-			);
-		} else if (file.getObjectives() != null && file.getObjectives().isEmpty()
-				&& file.getGlobalObjective() != null) {
-			warning( //
-					GLOBAL_OBJECTIVE_IS_OPTIONAL_MESSAGE, //
-					GipslPackage.Literals.EDITOR_GT_FILE__GLOBAL_OBJECTIVE //
-			);
-		}
-	}
-
-	/**
-	 * Checks the global objective regarding the use of dynamic sub types like
-	 * 'self.value()' in non-linear mathematical expressions.
-	 * 
-	 * @param globObj Gips global objective to validate/check.
-	 */
-	@Check
-	public void checkGlobalObjective(final GipsGlobalObjective globObj) {
-		if (globObj == null) {
-			return;
-		}
-
-		// Validate expression regarding dynamic uses (like self.value())
-		validateArithExprDynamic(globObj.getExpr());
-
-		// Check if global objective contains any reference to a local objective
-		// If this is not the case, display a warning that the global objective is
-		// constant
-		if (!containsLocalObjectiveCall(globObj.getExpr())) {
-			warning( //
-					GLOBAL_OBJECTIVE_DOES_NOT_CONTAIN_LOCAL_OBJECTIVE_MESSAGE, //
-					GipslPackage.Literals.GIPS_GLOBAL_OBJECTIVE__EXPR //
-			);
-		}
-	}
-
-	/**
-	 * Returns true if the given arithmetic expression contains at least one call to
-	 * a local Gips objective.
-	 * 
-	 * @param expr Gips arithmetic expression to check local objective call
-	 *             existence for.
-	 * @return True if the given arithmetic expression contains at least one call to
-	 *         a local Gips objective.
-	 */
-	public boolean containsLocalObjectiveCall(final GipsArithmeticExpr expr) {
-		if (expr == null) {
-			return false;
-		}
-
-		if (expr instanceof GipsBracketExpr) {
-			final GipsBracketExpr bracketExpr = (GipsBracketExpr) expr;
-			return containsLocalObjectiveCall(bracketExpr.getOperand());
-		} else if (expr instanceof GipsExpArithmeticExpr) {
-			final GipsExpArithmeticExpr expExpr = (GipsExpArithmeticExpr) expr;
-			return containsLocalObjectiveCall(expExpr.getLeft()) || containsLocalObjectiveCall(expExpr.getRight());
-		} else if (expr instanceof GipsExpressionOperand) {
-			final GipsExpressionOperand exprOp = (GipsExpressionOperand) expr;
-			return exprOp instanceof GipsObjectiveExpression;
-		} else if (expr instanceof GipsProductArithmeticExpr) {
-			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
-			return containsLocalObjectiveCall(prodExpr.getLeft()) || containsLocalObjectiveCall(prodExpr.getRight());
-		} else if (expr instanceof GipsSumArithmeticExpr) {
-			final GipsSumArithmeticExpr sumExpr = (GipsSumArithmeticExpr) expr;
-			return containsLocalObjectiveCall(sumExpr.getLeft()) || containsLocalObjectiveCall(sumExpr.getRight());
-		} else if (expr instanceof GipsUnaryArithmeticExpr) {
-			final GipsUnaryArithmeticExpr unExpr = (GipsUnaryArithmeticExpr) expr;
-			return containsLocalObjectiveCall(unExpr.getOperand());
-		}
-
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
-	}
-
-	/**
-	 * Runs checks for all Gips mappings.
-	 * 
-	 * @param mapping Input Gips mapping to check.
-	 */
 	@Check
 	public void checkMapping(final GipsMapping mapping) {
-		if (mapping == null) {
-			return;
-		}
-
-		checkMappingNameValid(mapping);
-		checkMappingNameUnique(mapping);
-		checkMappingUnused(mapping);
+		GipslMappingValidator.checkMapping(mapping);
 	}
 
-	/**
-	 * Checks for validity of a mapping name. The name must not be on the list of
-	 * invalid names, the name should be in lowerCamelCase, and the name should
-	 * start with a lower case character.
-	 * 
-	 * @param mapping Gips mapping to check.
-	 */
-	public void checkMappingNameValid(final GipsMapping mapping) {
-		if (mapping == null || mapping.getName() == null) {
-			return;
-		}
-
-		if (INVALID_NAMES.contains(mapping.getName())) {
-			error( //
-					String.format(MAPPING_NAME_FORBIDDEN_MESSAGE, mapping.getName()), //
-					GipslPackage.Literals.GIPS_MAPPING__NAME, //
-					NAME_EXPECT_UNIQUE //
-			);
-		} else {
-			// The mapping name should be lowerCamelCase.
-			if (mapping.getName().contains("_")) {
-				warning( //
-						String.format(MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE, mapping.getName()), //
-						GipslPackage.Literals.GIPS_MAPPING__NAME, //
-						NAME_BLOCKED //
-				);
-			} else {
-				// The mapping name should start with a lower case character.
-				if (!Character.isLowerCase(mapping.getName().charAt(0))) {
-					warning( //
-							String.format(MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE, mapping.getName()), //
-							GipslPackage.Literals.GIPS_MAPPING__NAME, NAME_EXPECT_LOWER_CASE //
-					);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Checks the uniqueness of the name of a given Gips mapping.
-	 * 
-	 * @param mapping Gips mapping to check uniqueness of the name for.
-	 */
-	public void checkMappingNameUnique(final GipsMapping mapping) {
-		if (mapping == null || mapping.getName() == null) {
-			return;
-		}
-
-		final EditorGTFile container = (EditorGTFile) mapping.eContainer();
-		final long count = container.getMappings().stream()
-				.filter(m -> m.getName() != null && m.getName().equals(mapping.getName())).count();
-		if (count != 1) {
-			error( //
-					String.format(MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE, mapping.getName(), getTimes((int) count)), //
-					GipslPackage.Literals.GIPS_MAPPING__NAME, //
-					NAME_EXPECT_UNIQUE //
-			);
-		}
-	}
-
-	/**
-	 * Checks if a mapping is either unconstrained or not used in an objective and
-	 * throws a warning accordingly.
-	 * 
-	 * @param mapping Gips mapping to be checked.
-	 */
-	public void checkMappingUnused(final GipsMapping mapping) {
-		final EditorGTFile container = (EditorGTFile) mapping.eContainer();
-		boolean usedAsContext = container.getConstraints().stream().filter(c -> c.getContext() != null)
-				.filter(c -> (c.getContext() instanceof GipsMappingContext))
-				.map(c -> (GipsMappingContext) c.getContext()).filter(mc -> mc.getMapping().equals(mapping)).findAny()
-				.isPresent();
-		if (usedAsContext)
-			return;
-
-		List<GipsConstraint> otherConstraints = container.getConstraints().stream()
-				.filter(c -> c.getContext() != null && c.getExpr() != null && c.getExpr().getExpr() != null)
-				.filter(c -> {
-					if (c.getContext() instanceof GipsMappingContext mapContext
-							&& !mapContext.getMapping().equals(mapping)) {
-						return true;
-					} else if (!(c.getContext() instanceof GipsMappingContext)) {
-						return true;
-					} else {
-						return false;
-					}
-				}).collect(Collectors.toList());
-
-		for (GipsConstraint constraint : otherConstraints) {
-			Set<GipsMapping> mappings = GipslScopeContextUtil.extractMappings(constraint.getExpr().getExpr());
-			if (mappings.contains(mapping))
-				return;
-		}
-
-		warning( //
-				String.format(MAPPING_W_O_CONSTRAINTS_MESSAGE, mapping.getName()), //
-				GipslPackage.Literals.GIPS_MAPPING__NAME);
-
-		usedAsContext = container.getObjectives().stream().filter(c -> c.getContext() != null)
-				.filter(c -> (c.getContext() instanceof GipsMappingContext))
-				.map(c -> (GipsMappingContext) c.getContext()).filter(mc -> mc.getMapping().equals(mapping)).findAny()
-				.isPresent();
-		if (usedAsContext)
-			return;
-
-		List<GipsObjective> otherObjectives = container.getObjectives().stream()
-				.filter(c -> c.getContext() != null && c.getExpr() != null).filter(c -> {
-					if (c.getContext() instanceof GipsMappingContext mapContext
-							&& !mapContext.getMapping().equals(mapping)) {
-						return true;
-					} else if (!(c.getContext() instanceof GipsMappingContext)) {
-						return true;
-					} else {
-						return false;
-					}
-				}).collect(Collectors.toList());
-
-		for (GipsObjective objective : otherObjectives) {
-			Set<GipsMapping> mappings = GipslScopeContextUtil.extractMappings(objective.getExpr());
-			if (mappings.contains(mapping))
-				return;
-		}
-
-		warning( //
-				String.format(MAPPING_W_O_CONSTRAINTS_AND_OBJECTIVE_MESSAGE, mapping.getName()), //
-				GipslPackage.Literals.GIPS_MAPPING__NAME);
-	}
-
-	/**
-	 * Runs all checks for a given constraint.
-	 * 
-	 * @param constraint Gips constraint to check.
-	 */
 	@Check
 	public void checkConstraint(final GipsConstraint constraint) {
-		if (constraint == null) {
-			return;
-		}
-
-		if (constraint.getExpr() == null) {
-			error( //
-					String.format(CONSTRAINT_EMPTY_MESSAGE), //
-					constraint, //
-					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
-			);
-			return;
-		}
-
-		if (constraint.getExpr().getExpr() == null) {
-			error( //
-					String.format(CONSTRAINT_EMPTY_MESSAGE), //
-					constraint, //
-					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
-			);
-			return;
-		}
-
-		// Trigger validation of boolean expression
-		getEvalTypeFromBoolExpr(constraint.getExpr().getExpr());
-
-		// Check if constraint is a literal -> warning
-		checkConstraintIsLiteral(constraint);
-
-		// Check if constraint is unique
-		checkConstraintUnique(constraint);
-
-		// Check if constraint contains at least one 'self' call (only if context is not
-		// global)
-		if (!(constraint.getContext() instanceof GlobalContext)) {
-			validateConstraintHasSelf(constraint);
-		}
-
-		// Validate expression -> Non-linear operations must be constant in ILP time
-		validateConstraintDynamic(constraint);
-
-		// Validate that no mapping gets accessed if context is mapping
-		validateNoMappingAccessIfMappingContext(constraint);
-
-		// Validation: No "self.isMapped()" in context != mapping
-		validateNoIsMappedInContextNotMapping(constraint);
+		GipslConstraintValidator.checkConstraint(constraint);
 	}
 
-	/**
-	 * This method validates that "isMapped()" is only usable if the context is a
-	 * mapping.
-	 * 
-	 * @param constraint Constraint to check "isMapped()" in contexts for.
+	@Check
+	public void checkObjective(final GipsObjective objective) {
+		GipslObjectiveValidator.checkObjective(objective);
+	}
+
+	@Check
+	public void checkGlobalObjective(final GipsGlobalObjective globalObjective) {
+		GipslObjectiveValidator.checkGlobalObjective(globalObjective);
+	}
+
+	@Check
+	public void checkGlobalObjectiveNotNull(final EditorGTFile file) {
+		GipslObjectiveValidator.checkGlobalObjectiveNotNull(file);
+	}
+
+	/*
+	 * Static methods to generate errors/warnings
 	 */
-	public void validateNoIsMappedInContextNotMapping(final GipsConstraint constraint) {
-		if (!(constraint.getContext() instanceof GipsMappingContext)) {
-			final GipsBoolExpr expr = constraint.getExpr().getExpr();
-			final boolean containsMappingCheckValue = containsMappingCheckValue(expr);
-			if (containsMappingCheckValue) {
-				error( //
-						IS_MAPPED_CALL_IN_CONTEXT_FORBIDDEN_MESSAGE, //
-						constraint, //
-						GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
-				);
-			}
-		}
+
+	public static void err(final String message, final EObject source, final EStructuralFeature feature) {
+		getInstance().error(message, source, feature);
 	}
 
-	/**
-	 * Returns true if the given boolean expression contains an isMapped call.
-	 * 
-	 * @param expr Arithmetic expression to check.
-	 * @return True if the given arithmetic expression contains an isMapped call.
+	public static void err(final String message, final EStructuralFeature feature, final String code,
+			final String... issueData) {
+		getInstance().error(message, feature, code, issueData);
+	}
+
+	public static void err(final String message, final EStructuralFeature feature) {
+		getInstance().error(message, feature);
+	}
+
+	public static void warn(final String message, final EStructuralFeature feature, final String code,
+			final String... issueData) {
+		getInstance().warning(message, feature, code, issueData);
+	}
+
+	public static void warn(final String message, final EStructuralFeature feature) {
+		getInstance().warning(message, feature);
+	}
+
+	public static void warn(final String message, final EObject source, final EStructuralFeature feature) {
+		getInstance().warning(message, source, feature);
+	}
+
+	/*
+	 * Utility methods start here:
 	 */
-	public boolean containsMappingCheckValue(final GipsArithmeticExpr expr) {
-		if (expr == null) {
-			return false;
-		}
-
-		if (expr instanceof GipsBracketExpr) {
-			final GipsBracketExpr bracketExpr = (GipsBracketExpr) expr;
-			return containsMappingCheckValue(bracketExpr.getOperand());
-		} else if (expr instanceof GipsExpArithmeticExpr) {
-			final GipsExpArithmeticExpr expExpr = (GipsExpArithmeticExpr) expr;
-			return containsMappingCheckValue(expExpr.getLeft()) || containsMappingCheckValue(expExpr.getRight());
-		} else if (expr instanceof GipsExpressionOperand) {
-			final GipsExpressionOperand exprOp = (GipsExpressionOperand) expr;
-			if (exprOp instanceof GipsArithmeticLiteral) {
-				return false;
-			} else if (exprOp instanceof GipsAttributeExpr) {
-				if (exprOp instanceof GipsContextExpr) {
-					final GipsContextExpr conExpr = (GipsContextExpr) exprOp;
-					// Streams can be ignored
-					return conExpr.getExpr() instanceof GipsVariableOperationExpression;
-				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
-					// A GipsLambdaAttributeExpression can not contain an isMapped call
-					return false;
-				} else if (exprOp instanceof GipsMappingAttributeExpr) {
-					// Streams can be ignored
-					return false;
-				} else if (exprOp instanceof GipsPatternAttributeExpr patternExpr) {
-					// Streams can be ignored
-					return false;
-				} else if (exprOp instanceof GipsTypeAttributeExpr typeExpr) {
-					// Streams can be ignored
-					return false;
-				}
-			}
-		} else if (expr instanceof GipsProductArithmeticExpr) {
-			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
-			return containsMappingCheckValue(prodExpr.getLeft()) || containsMappingCheckValue(prodExpr.getRight());
-		} else if (expr instanceof GipsSumArithmeticExpr) {
-			final GipsSumArithmeticExpr sumExpr = (GipsSumArithmeticExpr) expr;
-			return containsMappingCheckValue(sumExpr.getLeft()) || containsMappingCheckValue(sumExpr.getRight());
-		} else if (expr instanceof GipsUnaryArithmeticExpr) {
-			final GipsUnaryArithmeticExpr unExpr = (GipsUnaryArithmeticExpr) expr;
-			return containsMappingCheckValue(unExpr.getOperand());
-		}
-
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
-	}
-
-	/**
-	 * Returns true if the given boolean expression contains an isMapped call.
-	 * 
-	 * @param expr Boolean expression to check.
-	 * @return True if the given boolean expression contains an isMapped call.
-	 */
-	public boolean containsMappingCheckValue(final GipsBoolExpr expr) {
-		if (expr == null) {
-			return false;
-		}
-
-		if (expr instanceof GipsAndBoolExpr andExpr) {
-			return containsMappingCheckValue(andExpr.getLeft()) || containsMappingCheckValue(andExpr.getRight());
-		} else if (expr instanceof GipsBooleanLiteral) {
-			return false;
-		} else if (expr instanceof GipsBracketBoolExpr brackExpr) {
-			return containsMappingCheckValue(brackExpr.getOperand());
-		} else if (expr instanceof GipsImplicationBoolExpr implExpr) {
-			return containsMappingCheckValue(implExpr.getLeft()) || containsMappingCheckValue(implExpr.getRight());
-		} else if (expr instanceof GipsNotBoolExpr notExpr) {
-			return containsMappingCheckValue(notExpr.getOperand());
-		} else if (expr instanceof GipsOrBoolExpr orExpr) {
-			return containsMappingCheckValue(orExpr.getLeft()) || containsMappingCheckValue(orExpr.getRight());
-		} else if (expr instanceof GipsRelExpr relExpr) {
-			return containsMappingCheckValue(relExpr.getLeft()) || containsMappingCheckValue(relExpr.getRight());
-		}
-
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
-	}
-
-	/**
-	 * This method ensures that no mappings will be accessed from within the mapping
-	 * context. This does not include 'self'.
-	 * 
-	 * @param constraint Constraint to check mapping in mapping access for.
-	 */
-	public void validateNoMappingAccessIfMappingContext(final GipsConstraint constraint) {
-		if (constraint == null) {
-			return;
-		}
-
-		// If context is not a mapping, return immediately
-		if (getContextType(constraint.getContext()) != ContextType.MAPPING) {
-			return;
-		}
-
-		final GipsBoolExpr expr = constraint.getExpr().getExpr();
-
-		boolean leftMapping = false;
-		boolean rightMapping = false;
-
-		if (expr instanceof GipsRelExpr) {
-			final GipsRelExpr relExpr = (GipsRelExpr) expr;
-			leftMapping = containsMappingsCall(relExpr.getLeft());
-			rightMapping = containsMappingsCall(relExpr.getRight());
-		} else if (expr instanceof GipsBoolExpr) {
-			// Special case: Complete boolean expression is just a literal
-			if (expr instanceof GipsBooleanLiteral) {
-				return;
-			} else if (expr instanceof GipsImplicationBoolExpr impl) {
-				leftMapping = containsMappingsCall(impl.getLeft());
-				rightMapping = containsMappingsCall(impl.getRight());
-			} else if (expr instanceof GipsOrBoolExpr or) {
-				leftMapping = containsMappingsCall(or.getLeft());
-				rightMapping = containsMappingsCall(or.getRight());
-			} else if (expr instanceof GipsAndBoolExpr and) {
-				leftMapping = containsMappingsCall(and.getLeft());
-				rightMapping = containsMappingsCall(and.getRight());
-			} else if (expr instanceof GipsNotBoolExpr not) {
-				leftMapping = containsMappingsCall(not.getOperand());
-				rightMapping = leftMapping;
-			} else if (expr instanceof GipsBracketBoolExpr brack) {
-				leftMapping = containsMappingsCall(brack.getOperand());
-				rightMapping = leftMapping;
-			} else {
-				throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
-			}
-		} else {
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
-		}
-
-		// Generate an error if mappings are referenced
-		if (leftMapping || rightMapping) {
-			error( //
-					MAPPING_IN_MAPPING_FORBIDDEN_MESSAGE, //
-					constraint, //
-					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
-			);
-		}
-	}
-
-	/**
-	 * Returns true if the given boolean expression contains a mapping call.
-	 * 
-	 * @param expr Boolean expression to check.
-	 * @return True if the given boolean expression contains a mapping call.
-	 */
-	public boolean containsMappingsCall(final GipsBoolExpr expr) {
-		if (expr == null) {
-			return false;
-		}
-
-		if (expr instanceof GipsImplicationBoolExpr impl) {
-			return containsMappingsCall(impl.getLeft()) || containsMappingsCall(impl.getRight());
-		} else if (expr instanceof GipsOrBoolExpr or) {
-			return containsMappingsCall(or.getLeft()) || containsMappingsCall(or.getRight());
-		} else if (expr instanceof GipsAndBoolExpr and) {
-			return containsMappingsCall(and.getLeft()) || containsMappingsCall(and.getRight());
-		} else if (expr instanceof GipsNotBoolExpr not) {
-			return containsMappingsCall(not.getOperand());
-		} else if (expr instanceof GipsBracketBoolExpr brack) {
-			return containsMappingsCall(brack.getOperand());
-		} else if (expr instanceof GipsBooleanLiteral) {
-			return false;
-		} else if (expr instanceof GipsRelExpr) {
-			final GipsRelExpr relExpr = (GipsRelExpr) expr;
-			return containsMappingsCall(relExpr.getLeft()) || containsMappingsCall(relExpr.getRight());
-		} else {
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
-		}
-
-	}
-
-	/**
-	 * Returns true if the given arithmetic expression contains a mapping call.
-	 * 
-	 * @param expr Arithmetic expression to check.
-	 * @return True if the given arithmetic expression contains a mapping call.
-	 */
-	public boolean containsMappingsCall(final GipsArithmeticExpr expr) {
-		if (expr == null) {
-			return false;
-		}
-
-		if (expr instanceof GipsBracketExpr) {
-			final GipsBracketExpr bracketExpr = (GipsBracketExpr) expr;
-			return containsMappingsCall(bracketExpr.getOperand());
-		} else if (expr instanceof GipsExpArithmeticExpr) {
-			final GipsExpArithmeticExpr expExpr = (GipsExpArithmeticExpr) expr;
-			return containsMappingsCall(expExpr.getLeft()) || containsMappingsCall(expExpr.getRight());
-		} else if (expr instanceof GipsExpressionOperand) {
-			final GipsExpressionOperand exprOp = (GipsExpressionOperand) expr;
-			if (exprOp instanceof GipsArithmeticLiteral) {
-				return false;
-			} else if (exprOp instanceof GipsAttributeExpr) {
-				if (exprOp instanceof GipsContextExpr) {
-					final GipsContextExpr conExpr = (GipsContextExpr) exprOp;
-					if (streamContainsMappingsCall(conExpr.getStream())) {
-						return true;
-					}
-					return (conExpr.getExpr() instanceof GipsVariableOperationExpression
-							&& !(conExpr.getExpr() instanceof GipsMappingCheckValue));
-				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
-					// A GipsLambdaAttributeExpression can not contain a mappings call
-					return false;
-				} else if (exprOp instanceof GipsLambdaSelfExpression) {
-					// A GipsLambdaSelfExpression can not contain a mappings call
-					return false;
-				} else if (exprOp instanceof GipsMappingAttributeExpr) {
-					// A GipsMappingAttributeExpr always contains a mappings call
-					return true;
-				} else if (exprOp instanceof GipsPatternAttributeExpr patternExpr) {
-					return streamContainsMappingsCall(patternExpr.getExpr());
-				} else if (exprOp instanceof GipsTypeAttributeExpr typeExpr) {
-					return streamContainsMappingsCall(typeExpr.getExpr());
-				}
-			} else if (exprOp instanceof GipsObjectiveExpression) {
-				return false;
-			}
-		} else if (expr instanceof GipsProductArithmeticExpr) {
-			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
-			return containsMappingsCall(prodExpr.getLeft()) || containsMappingsCall(prodExpr.getRight());
-		} else if (expr instanceof GipsSumArithmeticExpr) {
-			final GipsSumArithmeticExpr sumExpr = (GipsSumArithmeticExpr) expr;
-			return containsMappingsCall(sumExpr.getLeft()) || containsMappingsCall(sumExpr.getRight());
-		} else if (expr instanceof GipsUnaryArithmeticExpr) {
-			final GipsUnaryArithmeticExpr unExpr = (GipsUnaryArithmeticExpr) expr;
-			return containsMappingsCall(unExpr.getOperand());
-		}
-
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
-	}
-
-	/**
-	 * Returns true if the given stream expression contains a mapping call.
-	 * 
-	 * @param expr Stream expression to check.
-	 * @return True if the given stream expression contains a mapping call.
-	 */
-	public boolean streamContainsMappingsCall(final GipsStreamExpr expr) {
-		if (expr == null) {
-			return false;
-		}
-
-		if (expr instanceof GipsSelect) {
-			return false;
-		} else if (expr instanceof GipsStreamArithmetic) {
-			final GipsStreamArithmetic arithExpr = (GipsStreamArithmetic) expr;
-			return containsMappingsCall(arithExpr.getLambda().getExpr());
-		} else if (expr instanceof GipsStreamBoolExpr) {
-			return false;
-		} else if (expr instanceof GipsStreamNavigation) {
-			final GipsStreamNavigation nav = (GipsStreamNavigation) expr;
-			return streamContainsMappingsCall(nav.getLeft()) || streamContainsMappingsCall(nav.getRight());
-		} else if (expr instanceof GipsStreamSet) {
-			final GipsStreamSet set = (GipsStreamSet) expr;
-			return containsMappingsCall(set.getLambda().getExpr());
-		} else if (expr instanceof GipsContains contains) {
-			return containsMappingsCall(contains.getExpr());
-		}
-
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
-	}
-
-	/**
-	 * Checks if the constraint is a literal and, therefore, display a warning.
-	 * 
-	 * @param constraint Constraint to check.
-	 */
-	public void checkConstraintIsLiteral(final GipsConstraint constraint) {
-		if (constraint == null) {
-			return;
-		}
-
-		if (constraint.getExpr().getExpr() instanceof GipsBooleanLiteral) {
-			final GipsBooleanLiteral lit = (GipsBooleanLiteral) constraint.getExpr().getExpr();
-			final String warning = String.valueOf(lit.isLiteral());
-			warning( //
-					String.format(CONSTRAINT_EVAL_LITERAL_MESSAGE, warning), //
-					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
-			);
-		}
-	}
-
-	/**
-	 * Checks if a given constraint is unique, i.e., if there is another constraint
-	 * that has the exact same expression.
-	 * 
-	 * @param constraint Constraint to check uniqueness for.
-	 */
-	public void checkConstraintUnique(final GipsConstraint constraint) {
-		if (constraint == null) {
-			return;
-		}
-
-		final EditorGTFile file = (EditorGTFile) constraint.eContainer();
-		final HashSet<GipsConstraint> others = new HashSet<>();
-		for (final GipsConstraint other : file.getConstraints()) {
-			if (constraint.equals(other)) {
-				// TODO: ^equals() is defined as '==' in this case -.-
-				// Therefore, this does not work, yet.
-				others.add(other);
-			}
-		}
-
-		if (others.size() > 1) {
-			for (final GipsConstraint other : others) {
-				warning( //
-						CONSTRAINT_DEFINED_MULTIPLE_TIMES_MESSAGE, //
-						other, //
-						GipslPackage.Literals.GIPS_CONSTRAINT__CONTEXT //
-				);
-			}
-		}
-	}
-
-	/**
-	 * Validates that a constraint has at least one 'self' reference.
-	 * 
-	 * @param constraint Constraint to validate.
-	 */
-	public void validateConstraintHasSelf(final GipsConstraint constraint) {
-		if (constraint == null || constraint.getExpr() == null) {
-			return;
-		}
-
-		final GipsBoolExpr expr = constraint.getExpr().getExpr();
-		boolean leftSelf = false;
-		boolean rightSelf = false;
-
-		final ContextType type = getContextType(constraint.getContext());
-
-		if (expr instanceof GipsRelExpr) {
-			final GipsRelExpr relExpr = (GipsRelExpr) expr;
-			leftSelf = containsSelf(relExpr.getLeft(), type);
-			rightSelf = containsSelf(relExpr.getRight(), type);
-		} else if (expr instanceof GipsBoolExpr) {
-			if (expr instanceof GipsImplicationBoolExpr impl) {
-				leftSelf = containsSelf(impl.getLeft(), type);
-				rightSelf = containsSelf(impl.getRight(), type);
-			} else if (expr instanceof GipsOrBoolExpr or) {
-				leftSelf = containsSelf(or.getLeft(), type);
-				rightSelf = containsSelf(or.getRight(), type);
-			} else if (expr instanceof GipsAndBoolExpr and) {
-				leftSelf = containsSelf(and.getLeft(), type);
-				rightSelf = containsSelf(and.getRight(), type);
-			} else if (expr instanceof GipsNotBoolExpr not) {
-				leftSelf = containsSelf(not.getOperand(), type);
-				rightSelf = leftSelf;
-			} else if (expr instanceof GipsBracketBoolExpr brack) {
-				leftSelf = containsSelf(brack.getOperand(), type);
-				rightSelf = leftSelf;
-			} else if (expr instanceof GipsBooleanLiteral) {
-				leftSelf = rightSelf = false;
-			} else {
-				throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
-			}
-		} else if (expr == null) {
-			error( //
-					String.format(CONSTRAINT_EMPTY_MESSAGE), //
-					constraint, //
-					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
-			);
-		} else {
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
-		}
-
-		// Generate an error if both sides of the constraint does not contain 'self'
-		if (!(leftSelf || rightSelf)) {
-			error( //
-					String.format(TYPE_DOES_NOT_CONTAIN_SELF_MESSAGE, "Constraint"), //
-					constraint, //
-					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
-			);
-		}
-	}
 
 	/**
 	 * Returns the context type of a given EObject.
@@ -1138,7 +443,8 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * @param e EObject to determine context type for.
 	 * @return Context type for given EObject.
 	 */
-	public ContextType getContextType(final EObject e) {
+	public static ContextType getContextType(final EObject e) {
+		// Null check implicit
 		ContextType type = ContextType.ERROR;
 
 		if (e instanceof GipsPatternContext) {
@@ -1147,6 +453,8 @@ public class GipslValidator extends AbstractGipslValidator {
 			type = ContextType.TYPE;
 		} else if (e instanceof GipsMappingContext) {
 			type = ContextType.MAPPING;
+		} else if (e instanceof GipsGlobalContext) {
+			type = ContextType.GLOBAL;
 		}
 
 		return type;
@@ -1159,7 +467,7 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * @param type Context type.
 	 * @return True if given arithmetic expression contains a self reference.
 	 */
-	public boolean containsSelf(final GipsArithmeticExpr expr, final ContextType type) {
+	public static boolean containsSelf(final GipsArithmeticExpr expr, final ContextType type) {
 		if (expr == null) {
 			return false;
 		}
@@ -1168,14 +476,11 @@ public class GipslValidator extends AbstractGipslValidator {
 			throw new IllegalArgumentException();
 		}
 
-		if (expr instanceof GipsBracketExpr) {
-			final GipsBracketExpr bracketExpr = (GipsBracketExpr) expr;
-			return containsSelf(bracketExpr.getOperand(), type);
-		} else if (expr instanceof GipsExpArithmeticExpr) {
-			final GipsExpArithmeticExpr expExpr = (GipsExpArithmeticExpr) expr;
-			return containsSelf(expExpr.getLeft(), type) || containsSelf(expExpr.getRight(), type);
-		} else if (expr instanceof GipsExpressionOperand) {
-			final GipsExpressionOperand exprOp = (GipsExpressionOperand) expr;
+		if (expr instanceof GipsBracketExpr bracket) {
+			return containsSelf(bracket.getOperand(), type);
+		} else if (expr instanceof GipsExpArithmeticExpr exp) {
+			return containsSelf(exp.getLeft(), type) || containsSelf(exp.getRight(), type);
+		} else if (expr instanceof GipsExpressionOperand exprOp) {
 			if (exprOp instanceof GipsArithmeticLiteral) {
 				return false;
 			} else if (exprOp instanceof GipsAttributeExpr) {
@@ -1197,31 +502,32 @@ public class GipslValidator extends AbstractGipslValidator {
 					return containsSelf(typeExpr.getExpr(), type);
 				} else if (expr instanceof GipsConstant) {
 					return false;
+				} else if (expr instanceof GipsObjectiveExpression) {
+					return false;
 				}
 
 				throw new UnsupportedOperationException(
-						NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr.eClass() + ">");
+						GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr.eClass() + ">");
 			} else if (expr instanceof GipsConstant) {
 				return false;
 			} else if (expr instanceof GipsObjectiveExpression) {
 				return false;
 			}
 
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr.eClass() + ">");
-		} else if (expr instanceof GipsProductArithmeticExpr) {
-			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
-			return containsSelf(prodExpr.getLeft(), type) || containsSelf(prodExpr.getRight(), type);
-		} else if (expr instanceof GipsSumArithmeticExpr) {
-			final GipsSumArithmeticExpr sumExpr = (GipsSumArithmeticExpr) expr;
-			return containsSelf(sumExpr.getLeft(), type) || containsSelf(sumExpr.getRight(), type);
-		} else if (expr instanceof GipsUnaryArithmeticExpr) {
-			final GipsUnaryArithmeticExpr unExpr = (GipsUnaryArithmeticExpr) expr;
-			return containsSelf(unExpr.getOperand(), type);
+			throw new UnsupportedOperationException(
+					GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr.eClass() + ">");
+		} else if (expr instanceof GipsProductArithmeticExpr product) {
+			return containsSelf(product.getLeft(), type) || containsSelf(product.getRight(), type);
+		} else if (expr instanceof GipsSumArithmeticExpr sum) {
+			return containsSelf(sum.getLeft(), type) || containsSelf(sum.getRight(), type);
+		} else if (expr instanceof GipsUnaryArithmeticExpr unary) {
+			return containsSelf(unary.getOperand(), type);
 		} else if (expr instanceof GipsConstant) {
 			return false;
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr.eClass() + ">");
+		throw new UnsupportedOperationException(
+				GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr.eClass() + ">");
 	}
 
 	/**
@@ -1231,7 +537,7 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * @param type Context type.
 	 * @return True if given stream expression contains a self reference.
 	 */
-	public boolean containsSelf(final GipsStreamExpr expr, final ContextType type) {
+	public static boolean containsSelf(final GipsStreamExpr expr, final ContextType type) {
 		if (expr == null) {
 			return false;
 		}
@@ -1243,25 +549,22 @@ public class GipslValidator extends AbstractGipslValidator {
 		if (expr instanceof GipsSelect) {
 			// Stream -> no self
 			return false;
-		} else if (expr instanceof GipsStreamArithmetic) {
+		} else if (expr instanceof GipsStreamArithmetic streamArith) {
 			// sum() -> validate lambda
-			final GipsStreamArithmetic arithExpr = (GipsStreamArithmetic) expr;
-			return containsSelf(arithExpr.getLambda().getExpr(), type);
+			return containsSelf(streamArith.getLambda().getExpr(), type);
 		} else if (expr instanceof GipsStreamBoolExpr) {
 			// Boolean operator -> no self
 			return false;
-		} else if (expr instanceof GipsStreamNavigation) {
-			final GipsStreamNavigation navExpr = (GipsStreamNavigation) expr;
-			return containsSelf(navExpr.getLeft(), type) || containsSelf(navExpr.getRight(), type);
-		} else if (expr instanceof GipsStreamSet) {
+		} else if (expr instanceof GipsStreamNavigation streamNav) {
+			return containsSelf(streamNav.getLeft(), type) || containsSelf(streamNav.getRight(), type);
+		} else if (expr instanceof GipsStreamSet streamSet) {
 			// filter() -> validate lambda
-			final GipsStreamSet setExpr = (GipsStreamSet) expr;
-			return containsSelf(setExpr.getLambda().getExpr(), type);
+			return containsSelf(streamSet.getLambda().getExpr(), type);
 		} else if (expr instanceof GipsContains contains) {
 			return containsSelf(contains.getExpr(), type);
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	/**
@@ -1271,7 +574,7 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * @param type Context type.
 	 * @return True if given boolean expression contains a self reference.
 	 */
-	public boolean containsSelf(final GipsBoolExpr expr, final ContextType type) {
+	public static boolean containsSelf(final GipsBoolExpr expr, final ContextType type) {
 		if (expr == null) {
 			return false;
 		}
@@ -1292,77 +595,15 @@ public class GipslValidator extends AbstractGipslValidator {
 			return containsSelf(brack.getOperand(), type);
 		} else if (expr instanceof GipsBooleanLiteral) {
 			return false;
-		} else if (expr instanceof GipsRelExpr) {
-			final GipsRelExpr relExpr = (GipsRelExpr) expr;
+		} else if (expr instanceof GipsRelExpr relExpr) {
 			return containsSelf(relExpr.getLeft(), type) || containsSelf(relExpr.getRight(), type);
 		} else {
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+			throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		}
 
 	}
 
-	// TODO: Das andere was ich gemerkt habe ist auch, dass du keine mapping.value()
-	// ausdrücke in den Arithmetischen Ausdrück innerhalb von sum() haben darfst,
-	// wenn du bereits in der Filterfunktion auf mappings zugreifst.
-	/**
-	 * Validates constraints regarding their dynamic parts. Currently, the following
-	 * rule set is implemented: Forbidden input for non-linear mathematical
-	 * functions (abs, sin, cos, sqrt, pow): self.isMapped() (only for context =
-	 * mapping? -> currently no ...), mappings.xy->count/sum + exists/notExists
-	 * 
-	 * @param constraint Constraint to check dynamic elements for.
-	 */
-	public void validateConstraintDynamic(final GipsConstraint constraint) {
-		if (constraint == null || constraint.getExpr() == null || constraint.getExpr().getExpr() == null) {
-			return;
-		}
-
-		final GipsBoolExpr expr = constraint.getExpr().getExpr();
-
-		boolean leftDynamic = false;
-		boolean rightDynamic = false;
-
-		if (expr instanceof GipsRelExpr) {
-			final GipsRelExpr relExpr = (GipsRelExpr) expr;
-			leftDynamic = validateArithExprDynamic(relExpr.getLeft());
-			rightDynamic = validateArithExprDynamic(relExpr.getRight());
-		} else if (expr instanceof GipsBoolExpr) {
-			if (expr instanceof GipsImplicationBoolExpr impl) {
-				leftDynamic = validateBoolExprDynamic(impl.getLeft());
-				rightDynamic = validateBoolExprDynamic(impl.getRight());
-			} else if (expr instanceof GipsOrBoolExpr or) {
-				leftDynamic = validateBoolExprDynamic(or.getLeft());
-				rightDynamic = validateBoolExprDynamic(or.getRight());
-			} else if (expr instanceof GipsAndBoolExpr and) {
-				leftDynamic = validateBoolExprDynamic(and.getLeft());
-				rightDynamic = validateBoolExprDynamic(and.getRight());
-			} else if (expr instanceof GipsNotBoolExpr not) {
-				leftDynamic = validateBoolExprDynamic(not.getOperand());
-				rightDynamic = leftDynamic;
-			} else if (expr instanceof GipsBracketBoolExpr brack) {
-				leftDynamic = validateBoolExprDynamic(brack.getOperand());
-				rightDynamic = leftDynamic;
-			} else if (expr instanceof GipsBooleanLiteral) {
-				// Special case: Complete boolean expression is just a literal
-				return;
-			} else {
-				throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
-			}
-		} else {
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
-		}
-
-		// Generate a warning if both sides of the constraint are constant
-		if (!leftDynamic && !rightDynamic) {
-			warning( //
-					CONSTRAINT_HAS_TWO_CONSTANT_SIDES_MESSAGE, //
-					constraint, //
-					GipslPackage.Literals.GIPS_CONSTRAINT__EXPR //
-			);
-		}
-	}
-
-	public boolean validateBoolExprDynamic(final GipsBoolExpr expr) {
+	public static boolean validateBoolExprDynamic(final GipsBoolExpr expr) {
 		if (expr == null) {
 			return false;
 		}
@@ -1380,48 +621,43 @@ public class GipslValidator extends AbstractGipslValidator {
 		} else if (expr instanceof GipsBooleanLiteral) {
 			// Special case: Complete boolean expression is just a literal
 			return false;
-		} else if (expr instanceof GipsRelExpr) {
-			final GipsRelExpr relExpr = (GipsRelExpr) expr;
+		} else if (expr instanceof GipsRelExpr relExpr) {
 			return validateArithExprDynamic(relExpr.getLeft()) || validateArithExprDynamic(relExpr.getRight());
 		} else {
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+			throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		}
 	}
 
-	public boolean validateArithExprDynamic(final GipsArithmeticExpr expr) {
+	public static boolean validateArithExprDynamic(final GipsArithmeticExpr expr) {
 		if (expr == null) {
 			return false;
 		}
 
-		if (expr instanceof GipsBracketExpr) {
-			final GipsBracketExpr bracketExpr = (GipsBracketExpr) expr;
-			return validateArithExprDynamic(bracketExpr.getOperand());
-		} else if (expr instanceof GipsExpArithmeticExpr) {
-			final GipsExpArithmeticExpr expExpr = (GipsExpArithmeticExpr) expr;
-			final boolean dynLeft = validateArithExprDynamic(expExpr.getLeft());
-			final boolean dynRight = validateArithExprDynamic(expExpr.getRight());
+		if (expr instanceof GipsBracketExpr bracket) {
+			return validateArithExprDynamic(bracket.getOperand());
+		} else if (expr instanceof GipsExpArithmeticExpr exp) {
+			final boolean dynLeft = validateArithExprDynamic(exp.getLeft());
+			final boolean dynRight = validateArithExprDynamic(exp.getRight());
 			if (dynLeft) {
-				error( //
-						EXP_EXPR_NOT_CONSTANT_MESSAGE, //
+				err( //
+						GipslValidatorUtils.EXP_EXPR_NOT_CONSTANT_MESSAGE, //
 						expr, //
 						GipslPackage.Literals.GIPS_EXP_ARITHMETIC_EXPR__LEFT //
 				);
 			}
 			if (dynRight) {
-				error( //
-						EXP_EXPR_NOT_CONSTANT_MESSAGE, //
+				err( //
+						GipslValidatorUtils.EXP_EXPR_NOT_CONSTANT_MESSAGE, //
 						expr, //
 						GipslPackage.Literals.GIPS_EXP_ARITHMETIC_EXPR__RIGHT //
 				);
 			}
 			return dynLeft || dynRight;
-		} else if (expr instanceof GipsExpressionOperand) {
-			final GipsExpressionOperand exprOp = (GipsExpressionOperand) expr;
+		} else if (expr instanceof GipsExpressionOperand exprOp) {
 			if (exprOp instanceof GipsArithmeticLiteral) {
 				return false;
 			} else if (exprOp instanceof GipsAttributeExpr) {
-				if (exprOp instanceof GipsContextExpr) {
-					final GipsContextExpr conExpr = (GipsContextExpr) exprOp;
+				if (exprOp instanceof GipsContextExpr conExpr) {
 					// Currently only MAPPED and VALUE are supported -> Both are dynamic
 					return conExpr.getExpr() instanceof GipsVariableOperationExpression;
 					// TODO: Use the solution below. But, in order for this to work, we need to
@@ -1464,28 +700,26 @@ public class GipslValidator extends AbstractGipslValidator {
 				return false;
 			}
 
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr + ">");
-		} else if (expr instanceof GipsProductArithmeticExpr) {
-			final GipsProductArithmeticExpr prodExpr = (GipsProductArithmeticExpr) expr;
-			final boolean dynLeft = validateArithExprDynamic(prodExpr.getLeft());
-			final boolean dynRight = validateArithExprDynamic(prodExpr.getRight());
+			throw new UnsupportedOperationException(
+					GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr + ">");
+		} else if (expr instanceof GipsProductArithmeticExpr prod) {
+			final boolean dynLeft = validateArithExprDynamic(prod.getLeft());
+			final boolean dynRight = validateArithExprDynamic(prod.getRight());
 			if (dynLeft && dynRight) {
-				error( //
-						PRODUCT_EXPR_NOT_CONSTANT_MESSAGE, //
+				err( //
+						GipslValidatorUtils.PRODUCT_EXPR_NOT_CONSTANT_MESSAGE, //
 						expr, //
 						GipslPackage.Literals.GIPS_PRODUCT_ARITHMETIC_EXPR__RIGHT //
 				);
 			}
 			return dynLeft || dynRight;
-		} else if (expr instanceof GipsSumArithmeticExpr) {
-			final GipsSumArithmeticExpr sumExpr = (GipsSumArithmeticExpr) expr;
+		} else if (expr instanceof GipsSumArithmeticExpr sumExpr) {
 			return validateArithExprDynamic(sumExpr.getLeft()) | validateArithExprDynamic(sumExpr.getRight());
-		} else if (expr instanceof GipsUnaryArithmeticExpr) {
-			final GipsUnaryArithmeticExpr unExpr = (GipsUnaryArithmeticExpr) expr;
+		} else if (expr instanceof GipsUnaryArithmeticExpr unExpr) {
 			final boolean isDyn = validateArithExprDynamic(unExpr.getOperand());
 			if (isDyn && unExpr.getOperator() != GipsArithmeticUnaryOperator.NEG) {
-				error( //
-						String.format(UNARY_ARITH_EXPR_NOT_CONSTANT_MESSAGE, unExpr.getOperator()), //
+				err( //
+						String.format(GipslValidatorUtils.UNARY_ARITH_EXPR_NOT_CONSTANT_MESSAGE, unExpr.getOperator()), //
 						expr, //
 						GipslPackage.Literals.GIPS_UNARY_ARITHMETIC_EXPR__OPERAND //
 				);
@@ -1495,23 +729,21 @@ public class GipslValidator extends AbstractGipslValidator {
 			return false;
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr + ">");
+		throw new UnsupportedOperationException(
+				GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE + ": <" + expr + ">");
 	}
 
-	public boolean validateStreamExprDynamic(final GipsStreamExpr expr) {
+	public static boolean validateStreamExprDynamic(final GipsStreamExpr expr) {
 		if (expr == null) {
 			return false;
 		}
 
-		if (expr instanceof GipsStreamNavigation) {
-			final GipsStreamNavigation nav = (GipsStreamNavigation) expr;
+		if (expr instanceof GipsStreamNavigation nav) {
 			return validateStreamExprDynamic(nav.getLeft()) | validateStreamExprDynamic(nav.getRight());
-		} else if (expr instanceof GipsStreamSet) { // .filter(...)
-			final GipsStreamSet set = (GipsStreamSet) expr;
+		} else if (expr instanceof GipsStreamSet set) { // .filter(...)
 			// set.getOperator(); // operator is always a filter -> output is a set
 			return validateBoolExprDynamic(set.getLambda().getExpr());
-		} else if (expr instanceof GipsStreamArithmetic) { // .sum(...)
-			final GipsStreamArithmetic arith = (GipsStreamArithmetic) expr;
+		} else if (expr instanceof GipsStreamArithmetic arith) { // .sum(...)
 			// arith.getOperator(); // operator is always an integer/a double
 			return validateBoolExprDynamic(arith.getLambda().getExpr());
 		} else if (expr instanceof GipsStreamBoolExpr) { // .exists(); .notExists(); .count()
@@ -1522,155 +754,16 @@ public class GipslValidator extends AbstractGipslValidator {
 			return false;
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
-	}
-
-	/**
-	 * Runs all checks for a given objective.
-	 * 
-	 * @param objective Gips objective to check.
-	 */
-	@Check
-	public void checkObjective(final GipsObjective objective) {
-		if (objective == null) {
-			return;
-		}
-
-		// Check for bad names
-		checkObjectiveNameValid(objective);
-
-		// Check uniqueness of name
-		checkObjectiveNameUnique(objective);
-
-		// Check if value is 0
-		checkObjectiveIsNotUseless(objective);
-
-		// Validate arithmetic expression regarding non-linear expressions that are not
-		// constant in ILP time
-		validateArithExprDynamic(objective.getExpr());
-
-		// Check if objective contains a 'self' call -> If not, display a warning
-		checkObjectiveHasSelf(objective);
-
-		// Check expression evaluation type
-		final EvalType eval = getEvalTypeFromArithExpr(objective.getExpr());
-		if (eval != EvalType.INTEGER && eval != EvalType.DOUBLE) {
-			error( //
-					OBJECTIVE_EVAL_NOT_NUMBER_MESSAGE, //
-					GipslPackage.Literals.GIPS_OBJECTIVE__EXPR //
-			);
-		}
-	}
-
-	/**
-	 * Checks that an objective has at least one 'self' reference.
-	 * 
-	 * @param objective Objective to validate.
-	 */
-	public void checkObjectiveHasSelf(final GipsObjective objective) {
-		if (objective == null || objective.getExpr() == null || objective.getContext() == null) {
-			return;
-		}
-
-		final GipsArithmeticExpr expr = objective.getExpr();
-		final ContextType type = getContextType(objective.getContext());
-
-		// Generate a warning if the objective does not contain 'self'
-		if (!containsSelf(expr, type)) {
-			warning( //
-					String.format(TYPE_DOES_NOT_CONTAIN_SELF_MESSAGE, "Objective"), //
-					objective, //
-					GipslPackage.Literals.GIPS_OBJECTIVE__EXPR //
-			);
-		}
-	}
-
-	/**
-	 * Checks for validity of an objective name. The name must not be on the list of
-	 * invalid names, the name should be in lowerCamelCase, and the name should
-	 * start with a lower case character.
-	 * 
-	 * @param objective Gips objective to check.
-	 */
-	public void checkObjectiveNameValid(final GipsObjective objective) {
-		if (objective == null || objective.getName() == null) {
-			return;
-		}
-
-		if (INVALID_NAMES.contains(objective.getName())) {
-			error( //
-					String.format(OBJECTIVE_NAME_FORBIDDEN_MESSAGE, objective.getName()), //
-					GipslPackage.Literals.GIPS_OBJECTIVE__NAME, //
-					NAME_BLOCKED //
-			);
-		} else {
-			// The objective name should be lowerCamelCase.
-			if (objective.getName().contains("_")) {
-				warning( //
-						String.format(OBJECTIVE_NAME_CONTAINS_UNDERSCORES_MESSAGE, objective.getName()), //
-						GipslPackage.Literals.GIPS_OBJECTIVE__NAME, //
-						NAME_BLOCKED //
-				);
-			} else {
-				// The objective name should start with a lower case character.
-				if (!Character.isLowerCase(objective.getName().charAt(0))) {
-					warning( //
-							String.format(OBJECTIVE_NAME_STARTS_WITH_LOWER_CASE_MESSAGE, objective.getName()), //
-							GipslPackage.Literals.GIPS_OBJECTIVE__NAME, //
-							NAME_EXPECT_LOWER_CASE //
-					);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Checks the uniqueness of the name of a given Gips objective.
-	 * 
-	 * @param objective Gips objective to check uniqueness of the name for.
-	 */
-	public void checkObjectiveNameUnique(final GipsObjective objective) {
-		if (objective == null || objective.eContainer() == null) {
-			return;
-		}
-
-		final EditorGTFile container = (EditorGTFile) objective.eContainer();
-		final long count = container.getObjectives().stream()
-				.filter(o -> o.getName() != null && o.getName().equals(objective.getName())).count();
-		if (count != 1) {
-			error( //
-					String.format(OBJECTIVE_NAME_MULTIPLE_DECLARATIONS_MESSAGE, objective.getName(),
-							getTimes((int) count)), //
-					GipslPackage.Literals.GIPS_OBJECTIVE__NAME, //
-					NAME_EXPECT_UNIQUE //
-			);
-		}
-	}
-
-	/**
-	 * Checks a given Gips objective for uselessness, i.e, if the objective is '0'.
-	 * 
-	 * @param objective Gips objective to check for uselessness.
-	 */
-	public void checkObjectiveIsNotUseless(final GipsObjective objective) {
-		if (objective == null) {
-			return;
-		}
-
-		if (objective.getExpr() instanceof GipsArithmeticLiteral) {
-			final GipsArithmeticLiteral lit = (GipsArithmeticLiteral) objective.getExpr();
-			if (lit.getValue() != null && lit.getValue().equals("0")) {
-				warning( //
-						String.format(OBJECTIVE_VALUE_IS_ZERO_MESSAGE, objective.getName()), //
-						GipslPackage.Literals.GIPS_OBJECTIVE__EXPR //
-				);
-			}
-		}
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	// TODO: Is this even necessary?
 	@Check
 	public void checkArithmeticLiteralParsable(final GipsArithmeticLiteral literal) {
+		if (DISABLE_VALIDATOR) {
+			return;
+		}
+
 		if (literal == null) {
 			return;
 		}
@@ -1679,13 +772,13 @@ public class GipslValidator extends AbstractGipslValidator {
 			Double.valueOf(literal.getValue());
 		} catch (final NumberFormatException ex) {
 			error( //
-					LITERAL_NOT_PARSABLE_MESSAGE, //
+					GipslValidatorUtils.LITERAL_NOT_PARSABLE_MESSAGE, //
 					GipslPackage.Literals.GIPS_ARITHMETIC_LITERAL__VALUE //
 			);
 		}
 	}
 
-	public EvalType getEvalTypeFromBoolExpr(final GipsBoolExpr expr) {
+	public static EvalType getEvalTypeFromBoolExpr(final GipsBoolExpr expr) {
 		EvalType output = EvalType.ERROR;
 
 		// Determine output type of this expression
@@ -1716,8 +809,8 @@ public class GipslValidator extends AbstractGipslValidator {
 			// Special case: If sub types did not return an error but the combination
 			// produced an error, we have to generate an error
 			if (output == EvalType.ERROR && leftType != EvalType.ERROR && rightType != EvalType.ERROR) {
-				error( //
-						BOOL_EXPR_EVAL_ERROR_MESSAGE, //
+				err( //
+						GipslValidatorUtils.BOOL_EXPR_EVAL_ERROR_MESSAGE, //
 						expr, //
 						GipslPackage.Literals.GIPS_REL_EXPR__OPERATOR //
 				);
@@ -1728,8 +821,8 @@ public class GipslValidator extends AbstractGipslValidator {
 		// If the output is not a boolean, display an error but only if the output isn't
 		// an error
 		if (output != EvalType.BOOLEAN && output != EvalType.ERROR) {
-			error( //
-					BOOL_EXPR_EVAL_ERROR_MESSAGE, //
+			err( //
+					GipslValidatorUtils.BOOL_EXPR_EVAL_ERROR_MESSAGE, //
 					expr, //
 					GipslPackage.Literals.GIPS_REL_EXPR__OPERATOR //
 			);
@@ -1737,46 +830,41 @@ public class GipslValidator extends AbstractGipslValidator {
 		return output;
 	}
 
-	public EvalType getEvalTypeFromArithExpr(final GipsArithmeticExpr expr) {
+	public static EvalType getEvalTypeFromArithExpr(final GipsArithmeticExpr expr) {
 		EvalType output = EvalType.ERROR;
 		boolean leaf = true;
 
-		if (expr instanceof GipsBracketExpr) {
-			final GipsBracketExpr brack = (GipsBracketExpr) expr;
+		if (expr instanceof GipsBracketExpr brack) {
 			output = getEvalTypeFromArithExpr(brack.getOperand());
 			leaf = false;
-		} else if (expr instanceof GipsExpArithmeticExpr) {
-			final GipsExpArithmeticExpr exp = (GipsExpArithmeticExpr) expr;
+		} else if (expr instanceof GipsExpArithmeticExpr exp) {
 			final EvalType leftType = getEvalTypeDelegate(exp.getLeft());
 			final EvalType rightType = getEvalTypeDelegate(exp.getRight());
 			output = combine(leftType, rightType, exp.getOperator());
-		} else if (expr instanceof GipsProductArithmeticExpr) {
-			final GipsProductArithmeticExpr prod = (GipsProductArithmeticExpr) expr;
+		} else if (expr instanceof GipsProductArithmeticExpr prod) {
 			final EvalType leftType = getEvalTypeDelegate(prod.getLeft());
 			final EvalType rightType = getEvalTypeDelegate(prod.getRight());
 			output = combine(leftType, rightType, prod.getOperator());
-		} else if (expr instanceof GipsSumArithmeticExpr) {
-			final GipsSumArithmeticExpr sum = (GipsSumArithmeticExpr) expr;
+		} else if (expr instanceof GipsSumArithmeticExpr sum) {
 			final EvalType leftType = getEvalTypeDelegate(sum.getLeft());
 			final EvalType rightType = getEvalTypeDelegate(sum.getRight());
 			output = combine(leftType, rightType, sum.getOperator());
-		} else if (expr instanceof GipsUnaryArithmeticExpr) {
-			final EvalType operand = getEvalTypeFromArithExpr(((GipsUnaryArithmeticExpr) expr).getOperand());
-			output = combine(operand, ((GipsUnaryArithmeticExpr) expr).getOperator());
+		} else if (expr instanceof GipsUnaryArithmeticExpr unary) {
+			final EvalType operand = getEvalTypeFromArithExpr(unary.getOperand());
+			output = combine(operand, unary.getOperator());
 
 			// Special case: sqrt(<0) should display an error -> Implementation for
 			// constants (basic)
 			// This could later be extended to also check more complex expressions or it
 			// could be integrated into the ILP validator
-			if (((GipsUnaryArithmeticExpr) expr).getOperator() == GipsArithmeticUnaryOperator.SQRT) {
-				final GipsArithmeticExpr inSqrt = ((GipsUnaryArithmeticExpr) expr).getOperand();
-				if (inSqrt instanceof GipsArithmeticLiteral) {
-					final GipsArithmeticLiteral lit = (GipsArithmeticLiteral) inSqrt;
+			if (unary.getOperator() == GipsArithmeticUnaryOperator.SQRT) {
+				final GipsArithmeticExpr inSqrt = unary.getOperand();
+				if (inSqrt instanceof GipsArithmeticLiteral lit) {
 					try {
-						double val = Double.valueOf(lit.getValue());
+						final double val = Double.valueOf(lit.getValue());
 						if (val < 0) {
-							error( //
-									SQRT_VALUE_SMALLER_THAN_ZERO, //
+							err( //
+									GipslValidatorUtils.SQRT_VALUE_SMALLER_THAN_ZERO, //
 									expr, //
 									getLiteralType(expr) //
 							);
@@ -1786,15 +874,15 @@ public class GipslValidator extends AbstractGipslValidator {
 					}
 				}
 			}
-		} else if (expr instanceof GipsExpressionOperand) {
-			output = getEvalTypeFromExprOp((GipsExpressionOperand) expr);
+		} else if (expr instanceof GipsExpressionOperand expressionOp) {
+			output = getEvalTypeFromExprOp(expressionOp);
 			leaf = false;
 		}
 
 		// If the output is an error and this method call was a leaf, display an error
 		if (output != null && output == EvalType.ERROR && leaf && expr != null) {
-			error( //
-					ARITH_EXPR_EVAL_ERROR_MESSAGE, //
+			err( //
+					GipslValidatorUtils.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
 					expr, //
 					getLiteralType(expr) //
 			);
@@ -1808,7 +896,7 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * @param expr EObject which is an expression from Gips.
 	 * @return Literal from GipslPackage.Literals.
 	 */
-	public EStructuralFeature getLiteralType(final EObject expr) {
+	public static EStructuralFeature getLiteralType(final EObject expr) {
 		EStructuralFeature type = null;
 
 		if (expr instanceof GipsBracketExpr) {
@@ -1846,21 +934,21 @@ public class GipslValidator extends AbstractGipslValidator {
 		return type;
 	}
 
-	public EvalType getEvalTypeFromExprOp(final GipsExpressionOperand op) {
-		if (op instanceof GipsArithmeticLiteral) {
-			return getEvalTypeFromArithLit((GipsArithmeticLiteral) op);
-		} else if (op instanceof GipsAttributeExpr) {
-			return getEvalTypeFromAttrExpr((GipsAttributeExpr) op);
+	public static EvalType getEvalTypeFromExprOp(final GipsExpressionOperand op) {
+		if (op instanceof GipsArithmeticLiteral lit) {
+			return getEvalTypeFromArithLit(lit);
+		} else if (op instanceof GipsAttributeExpr attr) {
+			return getEvalTypeFromAttrExpr(attr);
 		} else if (op instanceof GipsObjectiveExpression) {
 			return EvalType.OBJECTIVE;
-		} else if (op instanceof GipsConstant) {
-			return getEvalTypeFromGipsConst((GipsConstant) op);
+		} else if (op instanceof GipsConstant constant) {
+			return getEvalTypeFromGipsConst(constant);
 		}
 
 		return EvalType.ERROR;
 	}
 
-	public EvalType getEvalTypeFromGipsConst(final GipsConstant con) {
+	public static EvalType getEvalTypeFromGipsConst(final GipsConstant con) {
 		switch (con.getValue()) {
 		case E, PI -> {
 			return EvalType.DOUBLE;
@@ -1874,18 +962,16 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 	}
 
-	public EvalType getEvalTypeFromAttrExpr(final GipsAttributeExpr expr) {
+	public static EvalType getEvalTypeFromAttrExpr(final GipsAttributeExpr expr) {
 		if (expr instanceof GipsMappingAttributeExpr mapExpr) {
 			return getEvalTypeFromStreamExpr(mapExpr.getExpr());
 		} else if (expr instanceof GipsPatternAttributeExpr patternExpr) {
 			return getEvalTypeFromStreamExpr(patternExpr.getExpr());
 		} else if (expr instanceof GipsTypeAttributeExpr typeExpr) {
 			return getEvalTypeFromStreamExpr(typeExpr.getExpr());
-		} else if (expr instanceof GipsContextExpr) {
-			final GipsContextExpr conExpr = (GipsContextExpr) expr;
+		} else if (expr instanceof GipsContextExpr conExpr) {
 			return getEvalTypeFromContextExpr(conExpr);
-		} else if (expr instanceof GipsLambdaAttributeExpression) {
-			final GipsLambdaAttributeExpression lambExpr = (GipsLambdaAttributeExpression) expr;
+		} else if (expr instanceof GipsLambdaAttributeExpression lambExpr) {
 			return getEvalTypeFromLambdaAttrExpr(lambExpr);
 		} else if (expr instanceof GipsLambdaSelfExpression lSelf) {
 			return getEvalTypeFromLambdaAttrExpr(lSelf);
@@ -1894,22 +980,18 @@ public class GipslValidator extends AbstractGipslValidator {
 		return EvalType.ERROR;
 	}
 
-	public EvalType getEvalTypeFromStreamExpr(final GipsStreamExpr expr) {
-		if (expr instanceof GipsStreamNavigation) {
-			final GipsStreamNavigation nav = (GipsStreamNavigation) expr;
+	public static EvalType getEvalTypeFromStreamExpr(final GipsStreamExpr expr) {
+		if (expr instanceof GipsStreamNavigation nav) {
 			return getEvalTypeFromStreamNav(nav);
-		} else if (expr instanceof GipsStreamSet) { // .filter(...)
-			final GipsStreamSet set = (GipsStreamSet) expr;
+		} else if (expr instanceof GipsStreamSet set) { // .filter(...)
 			// set.getOperator(); // operator is always a filter -> output is a set
 			validateLambdaExpr(set.getLambda());
 			return EvalType.SET;
-		} else if (expr instanceof GipsStreamArithmetic) { // .sum(...)
-			final GipsStreamArithmetic arith = (GipsStreamArithmetic) expr;
+		} else if (expr instanceof GipsStreamArithmetic arith) { // .sum(...)
 			// arith.getOperator(); // operator is always an integer/a double
 			validateLambdaExpr(arith.getLambda());
 			return EvalType.DOUBLE;
-		} else if (expr instanceof GipsStreamBoolExpr) { // .exists(); .notExists(); .count()
-			final GipsStreamBoolExpr boolExpr = (GipsStreamBoolExpr) expr;
+		} else if (expr instanceof GipsStreamBoolExpr boolExpr) { // .exists(); .notExists(); .count()
 			return getEvalTypeFromStreamNoArgOp(boolExpr.getOperator());
 		} else if (expr instanceof GipsSelect) {
 			return EvalType.STREAM;
@@ -1920,7 +1002,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		return EvalType.ERROR;
 	}
 
-	public EvalType getEvalTypeFromStreamNav(final GipsStreamNavigation nav) {
+	public static EvalType getEvalTypeFromStreamNav(final GipsStreamNavigation nav) {
 		final GipsStreamExpr left = nav.getLeft();
 		final GipsStreamExpr right = nav.getRight();
 
@@ -1928,15 +1010,15 @@ public class GipslValidator extends AbstractGipslValidator {
 
 		// Case: lhs is a stream set and rhs is a stream boolean expression (NOT
 		// count()) = boolean
-		if (left instanceof GipsStreamSet && right instanceof GipsStreamBoolExpr //
-				&& ((GipsStreamBoolExpr) right).getOperator().getValue() != GipsStreamNoArgOperator.COUNT_VALUE) {
+		if (left instanceof GipsStreamSet && right instanceof GipsStreamBoolExpr streamBool //
+				&& streamBool.getOperator().getValue() != GipsStreamNoArgOperator.COUNT_VALUE) {
 			return EvalType.BOOLEAN;
 		}
 
 		// Case: lhs is a stream set and rhs is a stream boolean expression (count()) =
 		// integer
-		if (left instanceof GipsStreamSet && lhs == EvalType.SET && right instanceof GipsStreamBoolExpr
-				&& ((GipsStreamBoolExpr) right).getOperator().getValue() == GipsStreamNoArgOperator.COUNT_VALUE) {
+		if (left instanceof GipsStreamSet && lhs == EvalType.SET && right instanceof GipsStreamBoolExpr streamBool
+				&& streamBool.getOperator().getValue() == GipsStreamNoArgOperator.COUNT_VALUE) {
 			return EvalType.INTEGER;
 		}
 
@@ -1944,53 +1026,52 @@ public class GipslValidator extends AbstractGipslValidator {
 		return getEvalTypeFromStreamExpr(right);
 	}
 
-	public EvalType getEvalTypeFromStreamNoArgOp(final GipsStreamNoArgOperator op) {
-		final int val = op.getValue();
-		if (val == GipsStreamNoArgOperator.COUNT_VALUE) {
+	public static EvalType getEvalTypeFromStreamNoArgOp(final GipsStreamNoArgOperator op) {
+		if (op == GipsStreamNoArgOperator.COUNT) {
 			return EvalType.INTEGER;
-		} else if (val == GipsStreamNoArgOperator.NOT_EMPTY_VALUE) {
+		} else if (op == GipsStreamNoArgOperator.NOT_EMPTY) {
 			return EvalType.BOOLEAN;
 		}
 
 		return EvalType.ERROR;
 	}
 
-	public EvalType getEvalTypeFromStreamSet(final GipsStreamSet set) {
+	public static EvalType getEvalTypeFromStreamSet(final GipsStreamSet set) {
 		validateLambdaExpr(set.getLambda());
 		if (set.getOperator().getValue() == GipsStreamSetOperator.FILTER_VALUE) {
 			return EvalType.SET;
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
-	public EvalType getEvalTypeFromLambdaAttrExpr(final GipsLambdaAttributeExpression expr) {
+	public static EvalType getEvalTypeFromLambdaAttrExpr(final GipsLambdaAttributeExpression expr) {
 		final EObject innerExpr = expr.getExpr();
-		if (innerExpr instanceof GipsNodeAttributeExpr) {
-			return getEvalTypeFromNodeAttrExpr((GipsNodeAttributeExpr) innerExpr);
-		} else if (innerExpr instanceof GipsVariableOperationExpression) {
-			return getEvalTypeFromContextOpExpr((GipsVariableOperationExpression) innerExpr);
-		} else if (innerExpr instanceof GipsFeatureExpr) {
-			return getEvalTypeFromFeatureExpr((GipsFeatureExpr) innerExpr);
+		if (innerExpr instanceof GipsNodeAttributeExpr node) {
+			return getEvalTypeFromNodeAttrExpr(node);
+		} else if (innerExpr instanceof GipsVariableOperationExpression varop) {
+			return getEvalTypeFromContextOpExpr(varop);
+		} else if (innerExpr instanceof GipsFeatureExpr featureExpr) {
+			return getEvalTypeFromFeatureExpr(featureExpr);
 		}
 
-		throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
-	public EvalType getEvalTypeFromLambdaAttrExpr(final GipsLambdaSelfExpression expr) {
+	public static EvalType getEvalTypeFromLambdaAttrExpr(final GipsLambdaSelfExpression expr) {
 		return EvalType.ECLASS;
 	}
 
-	public EvalType getEvalTypeFromContextExpr(final GipsContextExpr expr) {
+	public static EvalType getEvalTypeFromContextExpr(final GipsContextExpr expr) {
 		EvalType exprEval = EvalType.CONTEXT;
 		if (expr.getExpr() != null) {
 			final EObject innerExpr = expr.getExpr();
-			if (innerExpr instanceof GipsNodeAttributeExpr) {
-				exprEval = getEvalTypeFromNodeAttrExpr((GipsNodeAttributeExpr) innerExpr);
-			} else if (innerExpr instanceof GipsVariableOperationExpression) {
-				exprEval = getEvalTypeFromContextOpExpr((GipsVariableOperationExpression) innerExpr);
-			} else if (innerExpr instanceof GipsFeatureExpr) {
-				exprEval = getEvalTypeFromFeatureExpr((GipsFeatureExpr) innerExpr);
+			if (innerExpr instanceof GipsNodeAttributeExpr nodeAttr) {
+				exprEval = getEvalTypeFromNodeAttrExpr(nodeAttr);
+			} else if (innerExpr instanceof GipsVariableOperationExpression varop) {
+				exprEval = getEvalTypeFromContextOpExpr(varop);
+			} else if (innerExpr instanceof GipsFeatureExpr featureExpr) {
+				exprEval = getEvalTypeFromFeatureExpr(featureExpr);
 			}
 		}
 
@@ -1999,8 +1080,8 @@ public class GipslValidator extends AbstractGipslValidator {
 			return getEvalTypeFromStreamExpr(expr.getStream());
 		} else if (expr.getStream() != null && exprEval != EvalType.SET) {
 			// Expr does NOT return a set and stream is set -> violation
-			error( //
-					STREAM_ON_NON_COLLECTION_TYPE_MESSAGE, //
+			err( //
+					GipslValidatorUtils.STREAM_ON_NON_COLLECTION_TYPE_MESSAGE, //
 					expr, //
 					GipslPackage.Literals.GIPS_CONTEXT_EXPR__STREAM //
 			);
@@ -2012,7 +1093,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		return exprEval;
 	}
 
-	public EvalType getEvalTypeFromContextOpExpr(final GipsVariableOperationExpression expr) {
+	public static EvalType getEvalTypeFromContextOpExpr(final GipsVariableOperationExpression expr) {
 		if (expr instanceof GipsMappingCheckValue) {
 			return EvalType.BOOLEAN;
 		} else if (expr instanceof GipsMappingValue) {
@@ -2022,7 +1103,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		return EvalType.ERROR;
 	}
 
-	public EvalType getEvalTypeFromNodeAttrExpr(final GipsNodeAttributeExpr expr) {
+	public static EvalType getEvalTypeFromNodeAttrExpr(final GipsNodeAttributeExpr expr) {
 		// Type cast must not be checked
 		// If expr is not set, evaluate node itself
 		if (expr.getExpr() == null) {
@@ -2032,14 +1113,13 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 	}
 
-	public EvalType getEvalTypeFromEditorNode(final EditorNode node) {
+	public static EvalType getEvalTypeFromEditorNode(final EditorNode node) {
 		// TODO: Always an EClass?
 		return EvalType.ECLASS;
 	}
 
-	public EvalType getEvalTypeFromFeatureExpr(final GipsFeatureExpr expr) {
-		if (expr instanceof GipsFeatureNavigation) {
-			final GipsFeatureNavigation nav = (GipsFeatureNavigation) expr;
+	public static EvalType getEvalTypeFromFeatureExpr(final GipsFeatureExpr expr) {
+		if (expr instanceof GipsFeatureNavigation nav) {
 			final EvalType leftType = getEvalTypeFromFeatureExpr(nav.getLeft());
 			final EvalType rightType = getEvalTypeFromFeatureExpr(nav.getRight());
 
@@ -2048,27 +1128,39 @@ public class GipslValidator extends AbstractGipslValidator {
 			if (leftType == EvalType.ECLASS) {
 				return rightType;
 			} else {
-				throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+				throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 			}
-		} else if (expr instanceof GipsFeatureLit) {
-			final GipsFeatureLit lit = (GipsFeatureLit) expr;
-			if (lit.getFeature() == null)
+		} else if (expr instanceof GipsFeatureLit lit) {
+			if (lit.getFeature() == null) {
 				return EvalType.ERROR;
-			final EClassifier ecl = lit.getFeature().getEType();
-
-			if (lit.getFeature().getUpperBound() == -1 || lit.getFeature().getUpperBound() > 1) {
-				// Upper bound is larger than 1 or -1 (no limit)
-				return EvalType.SET;
-			} else if (ecl == EcorePackage.Literals.EDOUBLE || ecl == EcorePackage.Literals.ELONG) {
-				return EvalType.DOUBLE;
-			} else if (ecl == EcorePackage.Literals.EINT) {
-				return EvalType.INTEGER;
-			} else if (ecl == EcorePackage.Literals.ESTRING) {
-				return EvalType.STRING;
-			} else {
-				return EvalType.ECLASS;
 			}
-			// Type cast must not be checked
+			final EStructuralFeature esf = lit.getFeature();
+
+			// EReference: Set or object
+			if (esf instanceof EReference) {
+				if (lit.getFeature().getUpperBound() == -1 || lit.getFeature().getUpperBound() > 1) {
+					// Upper bound is larger than 1 or -1 (no limit)
+					return EvalType.SET;
+				} else {
+					return EvalType.ECLASS;
+				}
+			} else if (esf instanceof EAttribute) {
+				// Attribute: Check which type of attribute
+				if (esf.getEType() == EcorePackage.Literals.EINT) {
+					return EvalType.INTEGER;
+				} else if (esf.getEType() == EcorePackage.Literals.ELONG) {
+					return EvalType.LONG;
+				} else if (esf.getEType() == EcorePackage.Literals.EDOUBLE) {
+					return EvalType.DOUBLE;
+				} else if (esf.getEType() == EcorePackage.Literals.EFLOAT) {
+					return EvalType.FLOAT;
+				} else if (esf.getEType() == EcorePackage.Literals.ESTRING) {
+					return EvalType.STRING;
+				} else {
+					return EvalType.ECLASS;
+				}
+				// Type cast must not be checked
+			}
 		}
 
 		return EvalType.ERROR;
@@ -2081,11 +1173,11 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * @param cast GipsTypeCast to check.
 	 * @return leafType EClass or null if cast not set.
 	 */
-	public EvalType getEvalTypeFromTypeCast(final GipsTypeCast cast) {
+	public static EvalType getEvalTypeFromTypeCast(final GipsTypeCast cast) {
 		return (cast != null && cast.getType() != null) ? EvalType.ECLASS : null;
 	}
 
-	public EvalType getEvalTypeFromArithLit(final GipsArithmeticLiteral lit) {
+	public static EvalType getEvalTypeFromArithLit(final GipsArithmeticLiteral lit) {
 		// if (lit instanceof GipsDoubleLiteral) {
 		//
 		// }
@@ -2099,6 +1191,18 @@ public class GipslValidator extends AbstractGipslValidator {
 			// No int
 		}
 		try {
+			Long.valueOf(val);
+			return EvalType.LONG;
+		} catch (final NumberFormatException ex) {
+			// No long
+		}
+		try {
+			Float.valueOf(val);
+			return EvalType.FLOAT;
+		} catch (final NumberFormatException ex) {
+			// No float
+		}
+		try {
 			Double.valueOf(val);
 			return EvalType.DOUBLE;
 		} catch (final NumberFormatException ex) {
@@ -2106,30 +1210,30 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 	}
 
-	public EvalType getEvalTypeDelegate(final EObject e) {
+	public static EvalType getEvalTypeDelegate(final EObject e) {
 		if (e == null) {
 			return null;
 		}
 
-		if (e instanceof GipsBoolExpr) {
-			return getEvalTypeFromBoolExpr((GipsBoolExpr) e);
-		} else if (e instanceof GipsArithmeticExpr) {
-			return getEvalTypeFromArithExpr((GipsArithmeticExpr) e);
-		} else if (e instanceof GipsBool) {
-			return getEvalTypeFromBoolExpr(((GipsBool) e).getExpr());
-		} else if (e instanceof GipsStreamSet) {
-			return getEvalTypeFromStreamSet((GipsStreamSet) e);
-		} else if (e instanceof GipsStreamBoolExpr) {
-			return getEvalTypeFromStreamExpr((GipsStreamBoolExpr) e);
+		if (e instanceof GipsBoolExpr bool) {
+			return getEvalTypeFromBoolExpr(bool);
+		} else if (e instanceof GipsArithmeticExpr arith) {
+			return getEvalTypeFromArithExpr(arith);
+		} else if (e instanceof GipsBool bool) {
+			return getEvalTypeFromBoolExpr(bool.getExpr());
+		} else if (e instanceof GipsStreamSet streamSet) {
+			return getEvalTypeFromStreamSet(streamSet);
+		} else if (e instanceof GipsStreamBoolExpr streamBool) {
+			return getEvalTypeFromStreamExpr(streamBool);
 		}
 
 		return EvalType.ERROR;
 	}
 
-	public EvalType getEvalLeftRightSideOp(final GipsBoolExpr left, final GipsBoolExpr right,
+	public static EvalType getEvalLeftRightSideOp(final GipsBoolExpr left, final GipsBoolExpr right,
 			final GipsAndOperator op) {
 		if (right == null) {
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+			throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		} else {
 			final EvalType leftType = getEvalTypeDelegate(left);
 			final EvalType rightType = getEvalTypeDelegate(right);
@@ -2137,9 +1241,10 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 	}
 
-	public EvalType getEvalLeftRightSideOp(final GipsBoolExpr left, final GipsBoolExpr right, final GipsOrOperator op) {
+	public static EvalType getEvalLeftRightSideOp(final GipsBoolExpr left, final GipsBoolExpr right,
+			final GipsOrOperator op) {
 		if (right == null) {
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+			throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		} else {
 			final EvalType leftType = getEvalTypeDelegate(left);
 			final EvalType rightType = getEvalTypeDelegate(right);
@@ -2147,9 +1252,9 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 	}
 
-	public EvalType getEvalLeftRightSideOp(final GipsBoolExpr left, final GipsBoolExpr right) {
+	public static EvalType getEvalLeftRightSideOp(final GipsBoolExpr left, final GipsBoolExpr right) {
 		if (right == null) {
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+			throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		} else {
 			final EvalType leftType = getEvalTypeDelegate(left);
 			final EvalType rightType = getEvalTypeDelegate(right);
@@ -2157,20 +1262,21 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 	}
 
-	public EvalType getEvalLEftRightSideOp(final GipsBoolExpr operand) {
+	public static EvalType getEvalLEftRightSideOp(final GipsBoolExpr operand) {
 		final EvalType opType = getEvalTypeDelegate(operand);
 		return combine(opType);
 	}
 
-	public EvalType combine(final EvalType left, final EvalType right, final GipsRelOperator op) {
+	public static EvalType combine(final EvalType left, final EvalType right, final GipsRelOperator op) {
 		// Case: right side is null and operator did not change from default
 		if (left != null && right == null && op == GipsRelOperator.GREATER) {
 			return left;
 		}
 
 		// Case: Comparing numbers
-		if ((left == EvalType.INTEGER || left == EvalType.DOUBLE)
-				&& (right == EvalType.INTEGER || right == EvalType.DOUBLE)) {
+		if ((left == EvalType.INTEGER || left == EvalType.LONG || left == EvalType.FLOAT || left == EvalType.DOUBLE)
+				&& (right == EvalType.INTEGER || right == EvalType.LONG || right == EvalType.FLOAT
+						|| right == EvalType.DOUBLE)) {
 			return EvalType.BOOLEAN;
 		} else if ((left == EvalType.ECLASS || left == EvalType.CONTEXT)
 				&& (right == EvalType.ECLASS || right == EvalType.CONTEXT)) {
@@ -2184,35 +1290,34 @@ public class GipslValidator extends AbstractGipslValidator {
 				&& (right == EvalType.CONTEXT || right == EvalType.NULL)) {
 			// Case: Comparing null with Context
 			return EvalType.BOOLEAN;
+		} else if (left == EvalType.STRING && right == EvalType.STRING
+				|| left == EvalType.NULL && right == EvalType.STRING
+				|| left == EvalType.STRING && right == EvalType.NULL) {
+			// Case: Comparing strings
+			return EvalType.BOOLEAN;
 		} else {
 			return EvalType.ERROR;
 		}
 	}
 
-	public EvalType combine(final EvalType left, final EvalType right, final GipsExpOperator op) {
-		if (left == EvalType.INTEGER || right == EvalType.INTEGER) {
-			return EvalType.INTEGER;
-		} else if ((left == EvalType.INTEGER || left == EvalType.DOUBLE)
-				&& (right == EvalType.INTEGER || right == EvalType.DOUBLE)) {
-			return EvalType.DOUBLE;
-		} else {
-			return EvalType.ERROR;
-		}
+	public static EvalType combine(final EvalType left, final EvalType right, final GipsExpOperator op) {
+		return getNumberType(left, right);
 	}
 
-	public EvalType combine(final EvalType left, final EvalType right, final GipsProductOperator op) {
-		// return type must be integer or double
-		return intOrDouble(left, right);
+	public static EvalType combine(final EvalType left, final EvalType right, final GipsProductOperator op) {
+		// return type must be a number
+		return getNumberType(left, right);
 	}
 
-	public EvalType combine(final EvalType left, final EvalType right, final GipsSumOperator op) {
-		// return type must be integer or double
-		return intOrDouble(left, right);
+	public static EvalType combine(final EvalType left, final EvalType right, final GipsSumOperator op) {
+		// return type must be a number
+		return getNumberType(left, right);
 	}
 
-	public EvalType combine(final EvalType operand, final GipsArithmeticUnaryOperator op) {
+	public static EvalType combine(final EvalType operand, final GipsArithmeticUnaryOperator op) {
 		// Case: Operand is not a number
-		if (operand != EvalType.INTEGER && operand != EvalType.DOUBLE) {
+		if (operand != EvalType.INTEGER && operand != EvalType.LONG && operand != EvalType.FLOAT
+				&& operand != EvalType.DOUBLE) {
 			return EvalType.ERROR;
 		}
 
@@ -2224,36 +1329,59 @@ public class GipslValidator extends AbstractGipslValidator {
 			// Case: SQRT, SIN, and COS change the type to double
 			return EvalType.DOUBLE;
 		} else {
-			throw new UnsupportedOperationException(NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
+			throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 		}
 	}
 
-	public EvalType combine(final EvalType left, final EvalType right, final GipsAndOperator op) {
+	public static EvalType combine(final EvalType left, final EvalType right, final GipsAndOperator op) {
 		return combine(left, right);
 	}
 
-	public EvalType combine(final EvalType left, final EvalType right, final GipsOrOperator op) {
+	public static EvalType combine(final EvalType left, final EvalType right, final GipsOrOperator op) {
 		return combine(left, right);
 	}
 
-	public EvalType combine(final EvalType left, final EvalType right) {
+	public static EvalType combine(final EvalType left, final EvalType right) {
 		return (left == EvalType.BOOLEAN && right == EvalType.BOOLEAN) ? EvalType.BOOLEAN : EvalType.ERROR;
 	}
 
-	public EvalType combine(final EvalType left) {
+	public static EvalType combine(final EvalType left) {
 		return left == EvalType.BOOLEAN ? EvalType.BOOLEAN : EvalType.ERROR;
 	}
 
-	public EvalType intOrDouble(final EvalType left, final EvalType right) {
+	public static EvalType getNumberType(final EvalType left, final EvalType right) {
+		// Check that both inputs are numbers
+		if (!GipslValidatorUtils.isNumber(left) || !GipslValidatorUtils.isNumber(right)) {
+			return EvalType.ERROR;
+		}
+
+		// Both are integers = integer
 		if (left == EvalType.INTEGER && right == EvalType.INTEGER) {
 			return EvalType.INTEGER;
-		} else if ((left == EvalType.INTEGER && right == EvalType.DOUBLE) //
-				|| (left == EvalType.DOUBLE && right == EvalType.INTEGER) //
-				|| (left == EvalType.DOUBLE && right == EvalType.DOUBLE)) {
+		}
+
+		// At least one is long and the other is not a float or double = long
+		else if (left == EvalType.LONG && right != EvalType.FLOAT && right != EvalType.DOUBLE
+				|| left != EvalType.FLOAT && left != EvalType.DOUBLE && right == EvalType.LONG) {
+			return EvalType.LONG;
+		}
+
+		// One is float and the other is not a double = float
+		else if (left == EvalType.FLOAT && right != EvalType.DOUBLE
+				|| left != EvalType.DOUBLE && right == EvalType.FLOAT) {
+			return EvalType.FLOAT;
+		}
+
+		// One is double and the other is a number = double
+		else if ((left == EvalType.INTEGER || left == EvalType.LONG || left == EvalType.FLOAT
+				|| left == EvalType.DOUBLE)
+				&& (right == EvalType.INTEGER || right == EvalType.LONG || right == EvalType.FLOAT
+						|| right == EvalType.DOUBLE)) {
 			return EvalType.DOUBLE;
 		}
 
-		return EvalType.ERROR;
+		// Everything else must be an implementation error
+		throw new UnsupportedOperationException(GipslValidatorUtils.NOT_IMPLEMENTED_EXCEPTION_MESSAGE);
 	}
 
 	/**
@@ -2263,64 +1391,30 @@ public class GipslValidator extends AbstractGipslValidator {
 	 * 
 	 * @param expr Lambda expression to check.
 	 */
-	public void validateLambdaExpr(final GipsLambdaExpression expr) {
+	public static void validateLambdaExpr(final GipsLambdaExpression expr) {
 		if (expr == null || expr.getExpr() == null) {
 			return;
 		}
 
 		// Check return type
 		final EvalType lambdaEval = getEvalTypeFromBoolExpr(expr.getExpr());
-		if (!isPrimitiveType(lambdaEval)) {
-			error( //
-					LAMBDA_EXPR_EVAL_NOT_PRIMITIVE_MESSAGE, //
+		if (!GipslValidatorUtils.isPrimitiveType(lambdaEval)) {
+			err( //
+					GipslValidatorUtils.LAMBDA_EXPR_EVAL_NOT_PRIMITIVE_MESSAGE, //
 					expr, //
 					GipslPackage.Literals.GIPS_LAMBDA_EXPRESSION__EXPR //
 			);
 		}
 
 		// Check if literal is constant
-		if (expr.getExpr() instanceof GipsBooleanLiteral) {
-			final GipsBooleanLiteral lit = (GipsBooleanLiteral) expr.getExpr();
+		if (expr.getExpr() instanceof GipsBooleanLiteral lit) {
 			final String warning = String.valueOf(lit.isLiteral());
-			warning( //
-					String.format(LAMBDA_EXPR_EVAL_LITERAL_MESSAGE, warning), //
+			warn( //
+					String.format(GipslValidatorUtils.LAMBDA_EXPR_EVAL_LITERAL_MESSAGE, warning), //
 					expr, //
 					GipslPackage.Literals.GIPS_LAMBDA_EXPRESSION__EXPR //
 			);
 		}
-	}
-
-	public boolean isPrimitiveType(final EvalType input) {
-		return input == EvalType.BOOLEAN || input != EvalType.INTEGER || input != EvalType.DOUBLE;
-	}
-
-	/**
-	 * Enumeration for the type of the leaf. This represents the output type of an
-	 * evaluation.
-	 */
-	protected enum EvalType {
-		BOOLEAN, // GipsBooleanLiteral
-		INTEGER, //
-		DOUBLE, //
-		STRING, //
-		NULL, //
-		SET, // Sets like output of a filter
-		OBJECTIVE, // GipsObjective
-		MAPPING, // GipsMapping
-		STREAM, // GipsStream
-		ECLASS, // EClass for casts
-		CONTEXT, // Context, e.g.: 'match::xy'
-		ERROR // If leaf type can not be evaluated, e.g.: '1 + true'
-	}
-
-	/**
-	 * Enumeration for the context (self) type.
-	 */
-	protected enum ContextType {
-		MAPPING, //
-		PATTERN, //
-		TYPE, //
-		ERROR //
 	}
 
 }

@@ -466,4 +466,17 @@
           class="org.emoflon.gips.gipsl.ui.visualization.GipsVisualizer">
     </diagram_text_provider>
  </extension>
+ <extension
+       id="gipsNature"
+       name="GIPS Nature"
+       point="org.eclipse.core.resources.natures">
+    <runtime>
+       <run
+             class="org.emoflon.gips.gipsl.ui.nature.GIPSNature">
+       </run>
+    </runtime>
+    <builder
+          id="org.emoflon.gips.gipsl.generator">
+    </builder>
+ </extension>
 </plugin>

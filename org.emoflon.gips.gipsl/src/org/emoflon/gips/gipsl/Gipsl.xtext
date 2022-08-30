@@ -6,8 +6,10 @@ import "http://www.emoflon.org/ibex/gt/editor/GT" as GT
 generate gipsl "http://www.emoflon.org/gips/gipsl/Gipsl"
 
 @Override 
-EditorGTFile: {EditorGTFile} 
+EditorGTFile: {EditorGTFile}
+	package = Package
 	(imports+=EditorImport)*
+	(importedPattern+=ImportedPattern)*
 	config = GipsConfig
   	(patterns+=EditorPattern |
   	conditions+=EditorCondition |
@@ -15,6 +17,14 @@ EditorGTFile: {EditorGTFile}
   	constraints += GipsConstraint |
   	objectives += GipsObjective)*
   	(globalObjective = GipsGlobalObjective)?	
+;
+
+Package: 
+	'package' name=GipsStringLiteral
+;
+
+ImportedPattern : 
+	'from' file = GipsStringLiteral 'import' pattern = [GT::EditorPattern|ID]
 ;
 
 GipsConfig : {GipsConfig}

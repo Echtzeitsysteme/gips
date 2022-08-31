@@ -224,10 +224,14 @@ public class GipsToIntermediate {
 									"Negation for constraints that are constant at build time is currently not supported");
 						}
 
-						// Insert real-valued slack variables into non-inverted and inverted constraint
-						VariableTuple slackVars = GipsConstraintUtils.insertSlackVariables(data, factory, dConstraint,
-								constraint);
-						constraint2Slack.put(subConstraint, slackVars);
+						// Insert real-valued slack variables into non-inverted and inverted
+						// non-build-time-constant constraint
+						if (!constraint.isConstant()) {
+							VariableTuple slackVars = GipsConstraintUtils.insertSlackVariables(data, factory,
+									dConstraint, constraint);
+							constraint2Slack.put(subConstraint, slackVars);
+						}
+
 					}
 
 					// Create substitute relational constraint representing a logic disjunction of
@@ -269,17 +273,21 @@ public class GipsToIntermediate {
 						GipsConstraintUtils.insertSymbolicVariableNonZeroConstraint(factory, dConstraint,
 								symbolicVars.nonInverted(), symbolicVars.inverted());
 
-						// Link symbolic and slack variables
-						GipsConstraintUtils.insertSymbolicSlackLinkConstraint(factory, dConstraint,
-								symbolicVars.nonInverted(), slackVars.nonInverted());
-						GipsConstraintUtils.insertSymbolicSlackLinkConstraint(factory, dConstraint,
-								symbolicVars.inverted(), slackVars.inverted());
+						// Insert slack variable constraints only for non-build-time-constant
+						// constraints
+						if (slackVars != null) {
+							// Link symbolic and slack variables
+							GipsConstraintUtils.insertSymbolicSlackLinkConstraint(factory, dConstraint,
+									symbolicVars.nonInverted(), slackVars.nonInverted());
+							GipsConstraintUtils.insertSymbolicSlackLinkConstraint(factory, dConstraint,
+									symbolicVars.inverted(), slackVars.inverted());
 
-						// Sos1 constraint
-						GipsConstraintUtils.insertSos1Constraint(data, factory, dConstraint, symbolicVars.nonInverted(),
-								slackVars.nonInverted());
-						GipsConstraintUtils.insertSos1Constraint(data, factory, dConstraint, symbolicVars.inverted(),
-								slackVars.inverted());
+							// Sos1 constraint
+							GipsConstraintUtils.insertSos1Constraint(data, factory, dConstraint,
+									symbolicVars.nonInverted(), slackVars.nonInverted());
+							GipsConstraintUtils.insertSos1Constraint(data, factory, dConstraint,
+									symbolicVars.inverted(), slackVars.inverted());
+						}
 
 						VariableReference varRef = factory.createVariableReference();
 						varRef.setVariable(symbolicVars.nonInverted());

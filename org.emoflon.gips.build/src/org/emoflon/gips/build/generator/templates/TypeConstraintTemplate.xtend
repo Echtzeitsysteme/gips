@@ -202,7 +202,7 @@ public class «className» extends GipsTypeConstraint<«data.gipsApiClassName»,
 	
 	@Override
 	protected boolean buildConstantExpression(final «context.modelType.type.name» context) {
-		return «parseExpression(boolExpr, ExpressionContext.constConstraint)»
+		return «parseExpression(boolExpr, ExpressionContext.constConstraint)»;
 	}
 	
 	«generateDependencyConstraints()»		

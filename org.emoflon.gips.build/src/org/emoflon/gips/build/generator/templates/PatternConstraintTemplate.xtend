@@ -201,7 +201,7 @@ public class «className» extends GipsPatternConstraint<«data.gipsApiClassName
 	
 	@Override
 	protected boolean buildConstantExpression(final «data.pattern2matchClassName.get(context.pattern)» context) {
-		return «parseExpression(boolExpr, ExpressionContext.constConstraint)»
+		return «parseExpression(boolExpr, ExpressionContext.constConstraint)»;
 	}
 	
 	«generateDependencyConstraints()»	

@@ -220,17 +220,43 @@ public class GlpkSolver extends ILPSolver {
 
 			// Type
 			if (ilpVars.get(k).type == VarType.BIN) {
-				GLPK.glp_set_col_kind(model, varCounter, GLPKConstants.GLP_BV); // binary
-				GLPK.glp_set_col_bnds(model, varCounter, GLPKConstants.GLP_DB, lb, ub);
+				// BV = binary variable
+				setUpGlpkVar(varCounter, GLPKConstants.GLP_BV, lb, ub);
 			} else if (ilpVars.get(k).type == VarType.INT) {
-				GLPK.glp_set_col_kind(model, varCounter, GLPKConstants.GLP_IV); // integer
-				GLPK.glp_set_col_bnds(model, varCounter, GLPKConstants.GLP_DB, lb, ub);
+				// IV = integer variable
+				setUpGlpkVar(varCounter, GLPKConstants.GLP_IV, lb, ub);
 			} else if (ilpVars.get(k).type == VarType.DBL) {
-				GLPK.glp_set_col_kind(model, varCounter, GLPKConstants.GLP_CV); // double = continuous
-				GLPK.glp_set_col_bnds(model, varCounter, GLPKConstants.GLP_DB, lb, ub);
+				// CV = continuous variable
+				setUpGlpkVar(varCounter, GLPKConstants.GLP_CV, lb, ub);
 			} else {
 				throw new UnsupportedOperationException("ILP var type not known.");
 			}
+		}
+	}
+
+	/**
+	 * Sets up a GLPK variable with given parameters
+	 * 
+	 * @param j    j-th column.
+	 * @param type Type of the variable (double, integer, binary).
+	 * @param lb   Lower bound.
+	 * @param ub   Upper bound.
+	 */
+	private void setUpGlpkVar(final int j, final int type, final double lb, final double ub) {
+		if (ub < lb) {
+			throw new IllegalArgumentException("Lower bound must be lower or equal to the upper bound.");
+		}
+
+		if (j < 0) {
+			throw new IllegalArgumentException("j-th column " + j + " is not >=0.");
+		}
+
+		GLPK.glp_set_col_kind(model, j, type);
+		// If lb == ub -> type must be GLP_FX
+		if (lb == ub) {
+			GLPK.glp_set_col_bnds(model, j, GLPKConstants.GLP_FX, lb, ub);
+		} else {
+			GLPK.glp_set_col_bnds(model, j, GLPKConstants.GLP_DB, lb, ub);
 		}
 	}
 

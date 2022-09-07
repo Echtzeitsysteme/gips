@@ -63,7 +63,7 @@ final class HelloWorldProject {
 				// import a metamodel here
 				
 				config {  
-					solver := "«solver»" [home:="fu", license:="bar"];
+					solver := «solver» [home:="fu", license:="bar"];
 					launchConfig := true [main := "TODO"];
 					timeLimit := true [value := 42.0];
 					randomSeed := true [value := 73];

@@ -442,6 +442,24 @@ public class GipslValidator extends AbstractGipslValidator {
 	}
 
 	@Check
+	public void checkConfigExists(final EditorGTFile file) {
+		// TODO: The config object is never 'null' and comparing it with a newly created
+		// one (given by the GipsFactoryImpl.eINSTANCE) does not make sense because the
+		// `equals(...)` method does not get overridden - thus, it just uses the `==`
+		// operator which always returns 'false' in this case.
+		if (file.getConfig() == null) {
+			error("GIPSL configuration part is missing.", GipslPackage.Literals.EDITOR_GT_FILE__CONFIG);
+		}
+	}
+
+	@Check
+	public void checkPackageExists(final EditorGTFile file) {
+		if (file.getPackage() == null) {
+			error("GIPSL package declaration is missing.", GipslPackage.Literals.EDITOR_GT_FILE__PACKAGE);
+		}
+	}
+
+	@Check
 	public void checkMapping(final GipsMapping mapping) {
 		GipslMappingValidator.checkMapping(mapping);
 	}

@@ -79,7 +79,9 @@ public class GlpkSolver extends ILPSolver {
 		if (config.enablePresolve()) {
 			iocp.setPresolve(GLPK.GLP_ON);
 		}
-		iocp.setTm_lim((int) config.timeLimit() * 1000); // seconds to milliseconds
+		if (config.timeLimitEnabled()) {
+			iocp.setTm_lim((int) config.timeLimit() * 1000); // seconds to milliseconds
+		}
 		if (config.enableTolerance()) {
 			iocp.setTol_obj(config.tolerance());
 		}

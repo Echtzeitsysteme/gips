@@ -35,6 +35,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsBracketBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsBracketExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsConfig;
 import org.emoflon.gips.gipsl.gipsl.GipsConstant;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsContains;
@@ -86,6 +87,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsVariableOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
 import org.emoflon.gips.gipsl.gipsl.Package;
+import org.emoflon.gips.gipsl.gipsl.SolverType;
 import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.gipsl.validation.GipslValidatorUtils.ContextType;
@@ -374,9 +376,70 @@ public class GipslValidator extends AbstractGipslValidator {
 			error("Import URI <" + gtModelUri.toFileString() + "> is not valid.",
 					GipslPackage.Literals.IMPORTED_PATTERN__FILE);
 	}
+
 	/*
 	 * Entry points for all checks
 	 */
+
+	@Check
+	public void validateConfig(final GipsConfig config) {
+		if (GipslValidator.DISABLE_VALIDATOR) {
+			return;
+		}
+
+		if (config == null) {
+			return;
+		}
+
+		// Check all contents for presence
+		if (config.getSolver() == null) {
+			error("You have to specify an ILP solver.", GipslPackage.Literals.GIPS_CONFIG__SOLVER);
+		}
+		// ^this might be obsolete
+
+		// If solver is Gurobi and main is set, a home path and a license path must be
+		// specified
+		if (config.getSolver() == SolverType.GUROBI && config.isEnableLaunchConfig()
+				&& (config.getHome() == null || config.getLicense() == null)) {
+			error("You have to specify a home folder and a license file to generate a launch config for Gurobi.",
+					GipslPackage.Literals.GIPS_CONFIG__SOLVER);
+		}
+
+		// ILP solver's home folder must not be empty (if set)
+		if (config.getHome() != null && (config.getHome().isBlank() || config.getHome().equals("\"\""))) {
+			error("Home folder path must not be blank if set.", GipslPackage.Literals.GIPS_CONFIG__HOME);
+		}
+
+		// ILP solver's license path must not be empty (if set)
+		if (config.getLicense() != null && (config.getLicense().isBlank() || config.getLicense().equals("\"\""))) {
+			error("License file path must not be blank if set.", GipslPackage.Literals.GIPS_CONFIG__LICENSE);
+		}
+
+		// Main path must not be empty (if enabled)
+		if (config.isEnableLaunchConfig() && config.getMainLoc() != null
+				&& (config.getMainLoc().isBlank() || config.getMainLoc().equals("\"\""))) {
+			error("Launch config path must not be blank if enabled.", GipslPackage.Literals.GIPS_CONFIG__MAIN_LOC);
+		}
+
+		// Time limit
+		if (config.getTimeLimit() < 0) {
+			error("Time limit must be >= 0.0", GipslPackage.Literals.GIPS_CONFIG__TIME_LIMIT);
+		}
+
+		// Random seed
+		if (config.getRndSeed() < 0) {
+			error("Random seed must be >= 0.", GipslPackage.Literals.GIPS_CONFIG__RND_SEED);
+		} else if (config.getRndSeed() > Integer.MAX_VALUE) {
+			error("Random seed must be <= Integer.MAX_VALUE.", GipslPackage.Literals.GIPS_CONFIG__RND_SEED);
+		}
+
+		// Tolerance
+		if (config.isEnableTolernace() && config.getTolerance() < 1e-9) {
+			error("Tolerance value must be >= 1e-9", GipslPackage.Literals.GIPS_CONFIG__TOLERANCE);
+		} else if (config.isEnableTolernace() && config.getTolerance() > 1e-2) {
+			error("Tolerance value must be <= 1e-2", GipslPackage.Literals.GIPS_CONFIG__TOLERANCE);
+		}
+	}
 
 	@Check
 	public void checkMapping(final GipsMapping mapping) {

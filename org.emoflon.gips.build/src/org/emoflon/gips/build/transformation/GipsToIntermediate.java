@@ -165,8 +165,8 @@ public class GipsToIntermediate {
 			config.setIlpTimeLimit(eConfig.getTimeLimit());
 		}
 
-		config.setEnableCustomTolerance(eConfig.isEnableTolernace());
-		if (eConfig.isEnableTolernace()) {
+		config.setEnableCustomTolerance(eConfig.isEnableTolerance());
+		if (eConfig.isEnableTolerance()) {
 			config.setTolerance(eConfig.getTolerance());
 		}
 		data.model().setConfig(config);

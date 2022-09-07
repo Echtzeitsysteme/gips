@@ -35,7 +35,7 @@ GipsConfig : {GipsConfig}
 	('randomSeed' ':=' enableSeed = GipsBoolean '[' 'value' ':=' rndSeed=GipsInteger ']' ';')?
 	('presolve' ':=' enablePresolve = GipsBoolean ';')?
 	('debugOutput' ':=' enableDebugOutput = GipsBoolean ';')?
-	('tolerance' ':=' enableTolernace = GipsBoolean '[' 'value' ':=' tolerance=GipsDouble ']' ';')?
+	('tolerance' ':=' enableTolerance = GipsBoolean '[' 'value' ':=' tolerance=GipsDouble ']' ';')?
 	'}'
 ;
 

@@ -434,9 +434,9 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 
 		// Tolerance
-		if (config.isEnableTolernace() && config.getTolerance() < 1e-9) {
+		if (config.isEnableTolerance() && config.getTolerance() < 1e-9) {
 			error("Tolerance value must be >= 1e-9", GipslPackage.Literals.GIPS_CONFIG__TOLERANCE);
-		} else if (config.isEnableTolernace() && config.getTolerance() > 1e-2) {
+		} else if (config.isEnableTolerance() && config.getTolerance() > 1e-2) {
 			error("Tolerance value must be <= 1e-2", GipslPackage.Literals.GIPS_CONFIG__TOLERANCE);
 		}
 	}

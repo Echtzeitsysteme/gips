@@ -439,6 +439,14 @@ public class GipslValidator extends AbstractGipslValidator {
 		} else if (config.isEnableTolerance() && config.getTolerance() > 1e-2) {
 			error("Tolerance value must be <= 1e-2", GipslPackage.Literals.GIPS_CONFIG__TOLERANCE);
 		}
+
+		// Special case: If solver is GLPK and pre-solving is disabled, generate a
+		// warning
+		if (config.getSolver() == SolverType.GLPK && !config.isEnablePresolve()) {
+			warn("GLPK needs enabled pre-solving for some problems. "
+					+ "It is highly reccommend to enable pre-solving if using the GLPK solver in GIPS.",
+					GipslPackage.Literals.GIPS_CONFIG__ENABLE_PRESOLVE);
+		}
 	}
 
 	@Check

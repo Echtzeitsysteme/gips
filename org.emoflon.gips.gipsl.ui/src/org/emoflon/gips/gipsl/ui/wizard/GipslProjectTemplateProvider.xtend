@@ -69,6 +69,7 @@ final class HelloWorldProject {
 					randomSeed := true [value := 73];
 					presolve := true;
 					debugOutput := true;
+					tolerance := true [value := 0.00001 ];
 				}
 				
 				// specify an example rule

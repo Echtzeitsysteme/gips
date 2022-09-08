@@ -65,6 +65,7 @@ public class GurobiSolver extends ILPSolver {
 	public ILPSolverOutput solve() {
 		ILPSolverStatus status = null;
 		double objVal = -1;
+		int solCount = -1;
 
 		try {
 			// Solving starts here
@@ -72,6 +73,7 @@ public class GurobiSolver extends ILPSolver {
 			// TODO: Set optimality tolerance here
 			model.optimize();
 			final int grbStatus = model.get(GRB.IntAttr.Status);
+			solCount = model.get(GRB.IntAttr.SolCount);
 			switch (grbStatus) {
 			case GRB.UNBOUNDED -> {
 				status = ILPSolverStatus.UNBOUNDED;
@@ -98,7 +100,7 @@ public class GurobiSolver extends ILPSolver {
 			throw new RuntimeException(e);
 		}
 
-		return new ILPSolverOutput(status, objVal, engine.getValidationLog());
+		return new ILPSolverOutput(status, objVal, engine.getValidationLog(), solCount);
 	}
 
 	@Override

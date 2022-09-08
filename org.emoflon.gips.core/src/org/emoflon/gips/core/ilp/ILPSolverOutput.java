@@ -2,8 +2,8 @@ package org.emoflon.gips.core.ilp;
 
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 
-public record ILPSolverOutput(ILPSolverStatus status, double objectiveValue,
-		GipsConstraintValidationLog validationLog) {
+public record ILPSolverOutput(ILPSolverStatus status, double objectiveValue, GipsConstraintValidationLog validationLog,
+		int solutionCount) {
 
 	@Override
 	public String toString() {

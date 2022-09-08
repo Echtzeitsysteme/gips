@@ -123,20 +123,27 @@ public class GlpkSolver extends ILPSolver {
 
 		// Determine status
 		ILPSolverStatus status = null;
+		int solCounter = -1;
+		// TODO: Not quite sure about the following values of 'solCounter'
 		if (solved && (optimal || mipIntOptimal)) {
 			status = ILPSolverStatus.OPTIMAL;
+			solCounter = 1;
 		} else if (unbounded) {
 			status = ILPSolverStatus.UNBOUNDED;
+			solCounter = 0;
 		} else if (timeout) {
 			status = ILPSolverStatus.TIME_OUT;
+			solCounter = solved ? 1 : 0;
 		} else if (infeasible || noFeasibleSol || noPrimalFeasSol || noDualFeasSol || modelStatus == 1) {
 			status = ILPSolverStatus.INFEASIBLE;
+			solCounter = 0;
 		} else if (invalid) {
 			status = ILPSolverStatus.INF_OR_UNBD;
+			solCounter = 0;
 		} else {
 			throw new RuntimeException("GLPK: Solver status could not be determined.");
 		}
-		return new ILPSolverOutput(status, GLPK.glp_mip_obj_val(model), engine.getValidationLog());
+		return new ILPSolverOutput(status, GLPK.glp_mip_obj_val(model), engine.getValidationLog(), solCounter);
 	}
 
 	@Override

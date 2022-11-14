@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="gipsl" nsURI="http://www.emoflon.org/gips/gipsl/Gipsl" nsPrefix="gipsl">
-  <eClassifiers xsi:type="ecore:EClass" name="EditorGTFile" eSuperTypes="platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorGTFile">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="package" eType="#//Package"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="importedPattern" upperBound="-1"
-        eType="#//ImportedPattern" containment="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EditorFile" eSuperTypes="platform:/resource/org.emoflon.ibex.gt.gtl/model/generated/GTL.ecore#//EditorFile">
     <eStructuralFeatures xsi:type="ecore:EReference" name="config" eType="#//GipsConfig"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappings" upperBound="-1"
@@ -16,13 +12,6 @@
         eType="#//GipsObjective" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="globalObjective" eType="#//GipsGlobalObjective"
         containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Package">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ImportedPattern">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="file" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorPattern"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsConfig">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="solver" eType="#//SolverType"/>
@@ -46,7 +35,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorPattern"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.gtl/model/generated/GTL.ecore#//SlimRule"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsConstraint">
     <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
@@ -69,7 +58,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsPatternContext">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorPattern"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.gtl/model/generated/GTL.ecore#//SlimRule"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsObjectiveExpression" eSuperTypes="#//GipsExpressionOperand">
     <eStructuralFeatures xsi:type="ecore:EReference" name="objective" eType="#//GipsObjective"/>
@@ -119,7 +108,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsNodeAttributeExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorNode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.gtl/model/generated/GTL.ecore#//SlimRuleNode"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="typeCast" eType="#//GipsTypeCast"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//GipsFeatureExpr"
@@ -214,7 +203,7 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsPatternAttributeExpr" eSuperTypes="#//GipsAttributeExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorPattern"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.gtl/model/generated/GTL.ecore#//SlimRule"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//GipsStreamExpr"
         containment="true"/>
   </eClassifiers>

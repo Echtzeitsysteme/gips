@@ -1,30 +1,21 @@
-grammar org.emoflon.gips.gipsl.Gipsl with org.emoflon.ibex.gt.editor.GT
+grammar org.emoflon.gips.gipsl.Gipsl with org.emoflon.ibex.gt.gtl.GTL
 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
-import "http://www.emoflon.org/ibex/gt/editor/GT" as GT
+import "http://www.emoflon.org/ibex/gt/gtl/GTL" as GTL
 
 generate gipsl "http://www.emoflon.org/gips/gipsl/Gipsl"
 
 @Override 
-EditorGTFile: {EditorGTFile}
-	package = Package
-	(imports+=EditorImport)*
-	(importedPattern+=ImportedPattern)*
+EditorFile: {EditorFile}
+	package = PackageDeclaration
+	(imports+=Import)*
+	(importedPatterns += PatternImport)*
 	config = GipsConfig
-  	(patterns+=EditorPattern |
-  	conditions+=EditorCondition |
+	(rules += SlimRule |
   	mappings += GipsMapping |
   	constraints += GipsConstraint |
   	objectives += GipsObjective)*
   	(globalObjective = GipsGlobalObjective)?	
-;
-
-Package: 
-	'package' name=GipsStringLiteral
-;
-
-ImportedPattern : 
-	'from' file = GipsStringLiteral 'import' pattern = [GT::EditorPattern|ID]
 ;
 
 GipsConfig : {GipsConfig}
@@ -44,7 +35,7 @@ enum SolverType:
 ;
 
 GipsMapping :
-	'mapping' name=ID 'with' pattern=[GT::EditorPattern|ID] ';'
+	'mapping' name=ID 'with' pattern=[GTL::SlimRule|ID] ';'
 ;
 
 GipsConstraint : 
@@ -72,7 +63,7 @@ GipsTypeContext:
 ;
 
 GipsPatternContext:
-	'pattern' '::' pattern = [GT::EditorPattern|ID]
+	'pattern' '::' pattern = [GTL::SlimRule|ID]
 ;
 
 GipsObjectiveExpression:
@@ -156,7 +147,7 @@ GipsTypeAttributeExpr returns GipsAttributeExpr: {GipsTypeAttributeExpr}
 ;
 
 GipsPatternAttributeExpr returns GipsAttributeExpr: {GipsPatternAttributeExpr}
-	'patterns' '.' pattern=[GT::EditorPattern|ID] '->' expr = GipsStreamExpr
+	'patterns' '.' pattern=[GTL::SlimRule|ID] '->' expr = GipsStreamExpr
 ;
 
 //TODO: Allow optional nested lambda expressions
@@ -182,7 +173,7 @@ GipsTypeCast:
 ;
 
 GipsNodeAttributeExpr: {GipsNodeAttributeExpr}
-	'nodes().' node=[GT::EditorNode|ID] ('.' typeCast=GipsTypeCast)? ('.' expr = GipsFeatureExpr)?
+	'nodes().' node=[GTL::SlimRuleNode|ID] ('.' typeCast=GipsTypeCast)? ('.' expr = GipsFeatureExpr)?
 ;
 
 GipsFeatureExpr:
@@ -311,11 +302,6 @@ GipsInteger returns ecore::EInt:
 	(('-')? INT)
 ;
 
-@Override
-terminal INT returns ecore::EInt:
-	'0'..'9' ('0'..'9')*
-;
-
 GipsBoolean returns ecore::EBoolean:
 	TRUE | FALSE
 ;
@@ -328,11 +314,19 @@ terminal FALSE returns ecore::EBoolean:
 	'false'
 ;
 
-GipsStringLiteral:
+GipsStringLiteral returns ecore::EString:
 	STRING
 ;
 
-@Override
-terminal STRING returns ecore::EString:
-	'"' ( '""' | !('"') )* '"'
-;
+terminal ID: '^'?('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
+terminal INT returns ecore::EInt: ('0'..'9')+;
+terminal STRING:
+			'"' ( '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */ | !('\\'|'"') )* '"' |
+			"'" ( '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */ | !('\\'|"'") )* "'"
+		;
+terminal ML_COMMENT : '/*' -> '*/';
+terminal SL_COMMENT : '//' !('\n'|'\r')* ('\r'? '\n')?;
+
+terminal WS         : (' '|'\t'|'\r'|'\n')+;
+
+terminal ANY_OTHER: .;

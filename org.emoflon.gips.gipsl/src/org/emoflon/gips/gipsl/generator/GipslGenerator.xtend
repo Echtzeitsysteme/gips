@@ -9,7 +9,6 @@ import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.emoflon.gips.gipsl.gipsl.EditorGTFile
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.core.resources.IWorkspace
@@ -24,6 +23,8 @@ import org.eclipse.core.runtime.Platform
 import org.eclipse.core.runtime.IConfigurationElement
 import org.eclipse.core.runtime.CoreException
 import java.io.FileNotFoundException
+import org.emoflon.ibex.gt.gtl.gTL.EditorFile
+import org.eclipse.emf.ecore.EObject
 
 /**
  * Generates code from your model files on save.
@@ -37,10 +38,10 @@ class GipslGenerator extends AbstractGenerator {
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl())
 		val rs = new ResourceSetImpl;
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl())
-		val model = resource.contents.get(0) as EditorGTFile;
+		val model = resource.contents.get(0) as EditorFile;
 		val output = rs.createResource(URI.createURI(resource.URI.trimFileExtension+".xmi"))
 		// add model and resolve
-		output.contents.add(model)
+		output.contents.add(model as EObject)
 		EcoreUtil.resolveAll(output)
 		
 ////		 configure save options

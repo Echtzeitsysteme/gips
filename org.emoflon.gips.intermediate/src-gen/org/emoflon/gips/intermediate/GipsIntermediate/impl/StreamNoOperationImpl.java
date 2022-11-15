@@ -10,15 +10,16 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamNoOperation;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Stream
- * No Operation</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Stream No Operation</b></em>'.
+ * <!-- end-user-doc -->
  *
  * @generated
  */
 public class StreamNoOperationImpl extends MinimalEObjectImpl.Container implements StreamNoOperation {
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected StreamNoOperationImpl() {
@@ -26,8 +27,8 @@ public class StreamNoOperationImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -35,4 +36,4 @@ public class StreamNoOperationImpl extends MinimalEObjectImpl.Container implemen
 		return GipsIntermediatePackage.Literals.STREAM_NO_OPERATION;
 	}
 
-} // StreamNoOperationImpl
+} //StreamNoOperationImpl

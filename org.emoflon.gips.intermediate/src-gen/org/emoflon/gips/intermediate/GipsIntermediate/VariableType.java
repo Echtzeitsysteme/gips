@@ -9,19 +9,19 @@ import java.util.List;
 import org.eclipse.emf.common.util.Enumerator;
 
 /**
- * <!-- begin-user-doc --> A representation of the literals of the enumeration
- * '<em><b>Variable Type</b></em>', and utility methods for working with them.
+ * <!-- begin-user-doc -->
+ * A representation of the literals of the enumeration '<em><b>Variable Type</b></em>',
+ * and utility methods for working with them.
  * <!-- end-user-doc -->
- * 
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getVariableType()
  * @model
  * @generated
  */
 public enum VariableType implements Enumerator {
 	/**
-	 * The '<em><b>BINARY</b></em>' literal object. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
+	 * The '<em><b>BINARY</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #BINARY_VALUE
 	 * @generated
 	 * @ordered
@@ -29,9 +29,9 @@ public enum VariableType implements Enumerator {
 	BINARY(0, "BINARY", "BINARY"),
 
 	/**
-	 * The '<em><b>INTEGER</b></em>' literal object. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
+	 * The '<em><b>INTEGER</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #INTEGER_VALUE
 	 * @generated
 	 * @ordered
@@ -39,9 +39,9 @@ public enum VariableType implements Enumerator {
 	INTEGER(1, "INTEGER", "INTEGER"),
 
 	/**
-	 * The '<em><b>REAL</b></em>' literal object. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
+	 * The '<em><b>REAL</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #REAL_VALUE
 	 * @generated
 	 * @ordered
@@ -49,9 +49,9 @@ public enum VariableType implements Enumerator {
 	REAL(2, "REAL", "REAL");
 
 	/**
-	 * The '<em><b>BINARY</b></em>' literal value. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
+	 * The '<em><b>BINARY</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #BINARY
 	 * @model
 	 * @generated
@@ -60,9 +60,9 @@ public enum VariableType implements Enumerator {
 	public static final int BINARY_VALUE = 0;
 
 	/**
-	 * The '<em><b>INTEGER</b></em>' literal value. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
+	 * The '<em><b>INTEGER</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #INTEGER
 	 * @model
 	 * @generated
@@ -71,9 +71,9 @@ public enum VariableType implements Enumerator {
 	public static final int INTEGER_VALUE = 1;
 
 	/**
-	 * The '<em><b>REAL</b></em>' literal value. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
+	 * The '<em><b>REAL</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #REAL
 	 * @model
 	 * @generated
@@ -82,25 +82,25 @@ public enum VariableType implements Enumerator {
 	public static final int REAL_VALUE = 2;
 
 	/**
-	 * An array of all the '<em><b>Variable Type</b></em>' enumerators. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * An array of all the '<em><b>Variable Type</b></em>' enumerators.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private static final VariableType[] VALUES_ARRAY = new VariableType[] { BINARY, INTEGER, REAL, };
 
 	/**
-	 * A public read-only list of all the '<em><b>Variable Type</b></em>'
-	 * enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * A public read-only list of all the '<em><b>Variable Type</b></em>' enumerators.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public static final List<VariableType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
-	 * Returns the '<em><b>Variable Type</b></em>' literal with the specified
-	 * literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the '<em><b>Variable Type</b></em>' literal with the specified literal value.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param literal the literal.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
@@ -117,8 +117,8 @@ public enum VariableType implements Enumerator {
 
 	/**
 	 * Returns the '<em><b>Variable Type</b></em>' literal with the specified name.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param name the name.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
@@ -134,9 +134,9 @@ public enum VariableType implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>Variable Type</b></em>' literal with the specified
-	 * integer value. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the '<em><b>Variable Type</b></em>' literal with the specified integer value.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the integer value.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
@@ -154,30 +154,30 @@ public enum VariableType implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private final int value;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private final String name;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private final String literal;
 
 	/**
-	 * Only this class can construct instances. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
+	 * Only this class can construct instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private VariableType(int value, String name, String literal) {
@@ -187,8 +187,8 @@ public enum VariableType implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public int getValue() {
@@ -196,8 +196,8 @@ public enum VariableType implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String getName() {
@@ -205,8 +205,8 @@ public enum VariableType implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String getLiteral() {
@@ -214,9 +214,9 @@ public enum VariableType implements Enumerator {
 	}
 
 	/**
-	 * Returns the literal value of the enumerator, which is its string
-	 * representation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the literal value of the enumerator, which is its string representation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -224,4 +224,4 @@ public enum VariableType implements Enumerator {
 		return literal;
 	}
 
-} // VariableType
+} //VariableType

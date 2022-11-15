@@ -2,18 +2,18 @@
  */
 package org.emoflon.gips.intermediate.GipsIntermediate;
 
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern;
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTPattern;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object
- * '<em><b>Mapping</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * A representation of the model object '<em><b>Mapping</b></em>'.
+ * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Mapping#getContextPattern
- * <em>Context Pattern</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.Mapping#getContextPattern <em>Context Pattern</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getMapping()
@@ -22,27 +22,25 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern;
  */
 public interface Mapping extends VariableSet {
 	/**
-	 * Returns the value of the '<em><b>Context Pattern</b></em>' reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the value of the '<em><b>Context Pattern</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Context Pattern</em>' reference.
-	 * @see #setContextPattern(IBeXContextPattern)
+	 * @see #setContextPattern(GTPattern)
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getMapping_ContextPattern()
 	 * @model required="true"
 	 * @generated
 	 */
-	IBeXContextPattern getContextPattern();
+	GTPattern getContextPattern();
 
 	/**
-	 * Sets the value of the
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Mapping#getContextPattern
-	 * <em>Context Pattern</em>}' reference. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
+	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.Mapping#getContextPattern <em>Context Pattern</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Context Pattern</em>' reference.
 	 * @see #getContextPattern()
 	 * @generated
 	 */
-	void setContextPattern(IBeXContextPattern value);
+	void setContextPattern(GTPattern value);
 
 } // Mapping

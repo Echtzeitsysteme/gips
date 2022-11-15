@@ -8,15 +8,16 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Global
- * Constraint</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Global Constraint</b></em>'.
+ * <!-- end-user-doc -->
  *
  * @generated
  */
 public class GlobalConstraintImpl extends ConstraintImpl implements GlobalConstraint {
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected GlobalConstraintImpl() {
@@ -24,8 +25,8 @@ public class GlobalConstraintImpl extends ConstraintImpl implements GlobalConstr
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -33,4 +34,4 @@ public class GlobalConstraintImpl extends ConstraintImpl implements GlobalConstr
 		return GipsIntermediatePackage.Literals.GLOBAL_CONSTRAINT;
 	}
 
-} // GlobalConstraintImpl
+} //GlobalConstraintImpl

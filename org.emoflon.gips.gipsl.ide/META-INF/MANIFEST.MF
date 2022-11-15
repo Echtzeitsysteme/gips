@@ -10,7 +10,8 @@ Require-Bundle: org.emoflon.gips.gipsl,
  org.eclipse.xtext.ide,
  org.eclipse.xtext.xbase.ide,
  org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
- org.emoflon.ibex.gt.editor
+ org.emoflon.ibex.gt.gtl;bundle-version="1.0.0",
+ org.emoflon.ibex.common.slimgt;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.emoflon.gips.gipsl.ide.contentassist.antlr.internal,
  org.emoflon.gips.gipsl.ide.contentassist.antlr

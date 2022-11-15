@@ -13,23 +13,23 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object
- * '<em><b>Variable</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Variable</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.VariableImpl#getType
- * <em>Type</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.VariableImpl#getType <em>Type</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class VariableImpl extends VariableSetImpl implements Variable {
 	/**
-	 * The default value of the '{@link #getType() <em>Type</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getType()
 	 * @generated
 	 * @ordered
@@ -37,9 +37,9 @@ public class VariableImpl extends VariableSetImpl implements Variable {
 	protected static final VariableType TYPE_EDEFAULT = VariableType.BINARY;
 
 	/**
-	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getType()
 	 * @generated
 	 * @ordered
@@ -47,8 +47,8 @@ public class VariableImpl extends VariableSetImpl implements Variable {
 	protected VariableType type = TYPE_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected VariableImpl() {
@@ -56,8 +56,8 @@ public class VariableImpl extends VariableSetImpl implements Variable {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -66,8 +66,8 @@ public class VariableImpl extends VariableSetImpl implements Variable {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public VariableType getType() {
@@ -75,8 +75,8 @@ public class VariableImpl extends VariableSetImpl implements Variable {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setType(VariableType newType) {
@@ -88,8 +88,8 @@ public class VariableImpl extends VariableSetImpl implements Variable {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -102,8 +102,8 @@ public class VariableImpl extends VariableSetImpl implements Variable {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -117,8 +117,8 @@ public class VariableImpl extends VariableSetImpl implements Variable {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -132,8 +132,8 @@ public class VariableImpl extends VariableSetImpl implements Variable {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -146,8 +146,8 @@ public class VariableImpl extends VariableSetImpl implements Variable {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -162,4 +162,4 @@ public class VariableImpl extends VariableSetImpl implements Variable {
 		return result.toString();
 	}
 
-} // VariableImpl
+} //VariableImpl

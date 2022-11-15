@@ -16,23 +16,23 @@ import org.emoflon.gips.intermediate.GipsIntermediate.StreamContainsOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Stream
- * Contains Operation</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Stream Contains Operation</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamContainsOperationImpl#getExpr
- * <em>Expr</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.StreamContainsOperationImpl#getExpr <em>Expr</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class StreamContainsOperationImpl extends MinimalEObjectImpl.Container implements StreamContainsOperation {
 	/**
-	 * The cached value of the '{@link #getExpr() <em>Expr</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getExpr() <em>Expr</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getExpr()
 	 * @generated
 	 * @ordered
@@ -40,8 +40,8 @@ public class StreamContainsOperationImpl extends MinimalEObjectImpl.Container im
 	protected ValueExpression expr;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected StreamContainsOperationImpl() {
@@ -49,8 +49,8 @@ public class StreamContainsOperationImpl extends MinimalEObjectImpl.Container im
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -59,8 +59,8 @@ public class StreamContainsOperationImpl extends MinimalEObjectImpl.Container im
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ValueExpression getExpr() {
@@ -68,8 +68,8 @@ public class StreamContainsOperationImpl extends MinimalEObjectImpl.Container im
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetExpr(ValueExpression newExpr, NotificationChain msgs) {
@@ -87,8 +87,8 @@ public class StreamContainsOperationImpl extends MinimalEObjectImpl.Container im
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setExpr(ValueExpression newExpr) {
@@ -109,8 +109,8 @@ public class StreamContainsOperationImpl extends MinimalEObjectImpl.Container im
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -123,8 +123,8 @@ public class StreamContainsOperationImpl extends MinimalEObjectImpl.Container im
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -137,8 +137,8 @@ public class StreamContainsOperationImpl extends MinimalEObjectImpl.Container im
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -152,8 +152,8 @@ public class StreamContainsOperationImpl extends MinimalEObjectImpl.Container im
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -167,8 +167,8 @@ public class StreamContainsOperationImpl extends MinimalEObjectImpl.Container im
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -180,4 +180,4 @@ public class StreamContainsOperationImpl extends MinimalEObjectImpl.Container im
 		return super.eIsSet(featureID);
 	}
 
-} // StreamContainsOperationImpl
+} //StreamContainsOperationImpl

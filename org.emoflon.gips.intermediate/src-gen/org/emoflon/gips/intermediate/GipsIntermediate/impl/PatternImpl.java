@@ -12,19 +12,18 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
 
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTPattern;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object
- * '<em><b>Pattern</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Pattern</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternImpl#getPattern
- * <em>Pattern</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternImpl#isIsRule
- * <em>Is Rule</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternImpl#getPattern <em>Pattern</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternImpl#isIsRule <em>Is Rule</em>}</li>
  * </ul>
  *
  * @generated
@@ -32,18 +31,18 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
 public class PatternImpl extends VariableSetImpl implements Pattern {
 	/**
 	 * The cached value of the '{@link #getPattern() <em>Pattern</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getPattern()
 	 * @generated
 	 * @ordered
 	 */
-	protected IBeXContext pattern;
+	protected GTPattern pattern;
 
 	/**
 	 * The default value of the '{@link #isIsRule() <em>Is Rule</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isIsRule()
 	 * @generated
 	 * @ordered
@@ -52,8 +51,8 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 
 	/**
 	 * The cached value of the '{@link #isIsRule() <em>Is Rule</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isIsRule()
 	 * @generated
 	 * @ordered
@@ -61,8 +60,8 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	protected boolean isRule = IS_RULE_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected PatternImpl() {
@@ -70,8 +69,8 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -80,14 +79,14 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public IBeXContext getPattern() {
+	public GTPattern getPattern() {
 		if (pattern != null && pattern.eIsProxy()) {
 			InternalEObject oldPattern = (InternalEObject) pattern;
-			pattern = (IBeXContext) eResolveProxy(oldPattern);
+			pattern = (GTPattern) eResolveProxy(oldPattern);
 			if (pattern != oldPattern) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, GipsIntermediatePackage.PATTERN__PATTERN,
@@ -98,21 +97,21 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public IBeXContext basicGetPattern() {
+	public GTPattern basicGetPattern() {
 		return pattern;
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setPattern(IBeXContext newPattern) {
-		IBeXContext oldPattern = pattern;
+	public void setPattern(GTPattern newPattern) {
+		GTPattern oldPattern = pattern;
 		pattern = newPattern;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.PATTERN__PATTERN, oldPattern,
@@ -120,8 +119,8 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean isIsRule() {
@@ -129,8 +128,8 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setIsRule(boolean newIsRule) {
@@ -142,8 +141,8 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -160,15 +159,15 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 		case GipsIntermediatePackage.PATTERN__PATTERN:
-			setPattern((IBeXContext) newValue);
+			setPattern((GTPattern) newValue);
 			return;
 		case GipsIntermediatePackage.PATTERN__IS_RULE:
 			setIsRule((Boolean) newValue);
@@ -178,15 +177,15 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 		case GipsIntermediatePackage.PATTERN__PATTERN:
-			setPattern((IBeXContext) null);
+			setPattern((GTPattern) null);
 			return;
 		case GipsIntermediatePackage.PATTERN__IS_RULE:
 			setIsRule(IS_RULE_EDEFAULT);
@@ -196,8 +195,8 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -212,8 +211,8 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -228,4 +227,4 @@ public class PatternImpl extends VariableSetImpl implements Pattern {
 		return result.toString();
 	}
 
-} // PatternImpl
+} //PatternImpl

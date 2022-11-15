@@ -27,41 +27,32 @@ import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object
- * '<em><b>Constraint</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Constraint</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getName
- * <em>Name</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#isDepending
- * <em>Depending</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getExpression
- * <em>Expression</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#isConstant
- * <em>Constant</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#isNegated
- * <em>Negated</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getDependencies
- * <em>Dependencies</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getReferencedBy
- * <em>Referenced By</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getSymbolicVariable
- * <em>Symbolic Variable</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getHelperVariables
- * <em>Helper Variables</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getHelperConstraints
- * <em>Helper Constraints</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#isDepending <em>Depending</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getExpression <em>Expression</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#isConstant <em>Constant</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#isNegated <em>Negated</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getDependencies <em>Dependencies</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getReferencedBy <em>Referenced By</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getSymbolicVariable <em>Symbolic Variable</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getHelperVariables <em>Helper Variables</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ConstraintImpl#getHelperConstraints <em>Helper Constraints</em>}</li>
  * </ul>
  *
  * @generated
  */
 public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implements Constraint {
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -69,9 +60,9 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	protected static final String NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -79,9 +70,9 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isDepending() <em>Depending</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #isDepending() <em>Depending</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isDepending()
 	 * @generated
 	 * @ordered
@@ -89,9 +80,9 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	protected static final boolean DEPENDING_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isDepending() <em>Depending</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #isDepending() <em>Depending</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isDepending()
 	 * @generated
 	 * @ordered
@@ -99,9 +90,9 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	protected boolean depending = DEPENDING_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getExpression() <em>Expression</em>}'
-	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getExpression()
 	 * @generated
 	 * @ordered
@@ -110,8 +101,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 
 	/**
 	 * The default value of the '{@link #isConstant() <em>Constant</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isConstant()
 	 * @generated
 	 * @ordered
@@ -120,8 +111,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 
 	/**
 	 * The cached value of the '{@link #isConstant() <em>Constant</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isConstant()
 	 * @generated
 	 * @ordered
@@ -130,8 +121,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 
 	/**
 	 * The default value of the '{@link #isNegated() <em>Negated</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isNegated()
 	 * @generated
 	 * @ordered
@@ -140,8 +131,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 
 	/**
 	 * The cached value of the '{@link #isNegated() <em>Negated</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isNegated()
 	 * @generated
 	 * @ordered
@@ -149,9 +140,9 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	protected boolean negated = NEGATED_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getDependencies() <em>Dependencies</em>}'
-	 * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getDependencies() <em>Dependencies</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getDependencies()
 	 * @generated
 	 * @ordered
@@ -159,9 +150,9 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	protected EList<Constraint> dependencies;
 
 	/**
-	 * The cached value of the '{@link #getReferencedBy() <em>Referenced By</em>}'
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getReferencedBy() <em>Referenced By</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getReferencedBy()
 	 * @generated
 	 * @ordered
@@ -169,9 +160,9 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	protected Constraint referencedBy;
 
 	/**
-	 * The cached value of the '{@link #getSymbolicVariable() <em>Symbolic
-	 * Variable</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getSymbolicVariable() <em>Symbolic Variable</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getSymbolicVariable()
 	 * @generated
 	 * @ordered
@@ -179,10 +170,9 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	protected Variable symbolicVariable;
 
 	/**
-	 * The cached value of the '{@link #getHelperVariables() <em>Helper
-	 * Variables</em>}' reference list. <!-- begin-user-doc --> <!-- end-user-doc
-	 * -->
-	 * 
+	 * The cached value of the '{@link #getHelperVariables() <em>Helper Variables</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getHelperVariables()
 	 * @generated
 	 * @ordered
@@ -190,10 +180,9 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	protected EList<Variable> helperVariables;
 
 	/**
-	 * The cached value of the '{@link #getHelperConstraints() <em>Helper
-	 * Constraints</em>}' containment reference list. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getHelperConstraints() <em>Helper Constraints</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getHelperConstraints()
 	 * @generated
 	 * @ordered
@@ -201,8 +190,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	protected EList<RelationalExpression> helperConstraints;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected ConstraintImpl() {
@@ -210,8 +199,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -220,8 +209,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String getName() {
@@ -229,8 +218,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setName(String newName) {
@@ -242,8 +231,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean isDepending() {
@@ -251,8 +240,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setDepending(boolean newDepending) {
@@ -264,8 +253,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public BoolExpression getExpression() {
@@ -273,8 +262,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetExpression(BoolExpression newExpression, NotificationChain msgs) {
@@ -292,8 +281,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setExpression(BoolExpression newExpression) {
@@ -314,8 +303,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean isConstant() {
@@ -323,8 +312,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setConstant(boolean newConstant) {
@@ -336,8 +325,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean isNegated() {
@@ -345,8 +334,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setNegated(boolean newNegated) {
@@ -358,8 +347,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EList<Constraint> getDependencies() {
@@ -372,8 +361,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Constraint getReferencedBy() {
@@ -390,8 +379,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Constraint basicGetReferencedBy() {
@@ -399,8 +388,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetReferencedBy(Constraint newReferencedBy, NotificationChain msgs) {
@@ -418,8 +407,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setReferencedBy(Constraint newReferencedBy) {
@@ -440,8 +429,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Variable getSymbolicVariable() {
@@ -459,8 +448,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Variable basicGetSymbolicVariable() {
@@ -468,8 +457,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setSymbolicVariable(Variable newSymbolicVariable) {
@@ -481,8 +470,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EList<Variable> getHelperVariables() {
@@ -494,8 +483,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EList<RelationalExpression> getHelperConstraints() {
@@ -507,8 +496,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -527,8 +516,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -547,8 +536,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -583,8 +572,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -629,8 +618,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -671,8 +660,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -703,8 +692,8 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -725,4 +714,4 @@ public abstract class ConstraintImpl extends MinimalEObjectImpl.Container implem
 		return result.toString();
 	}
 
-} // ConstraintImpl
+} //ConstraintImpl

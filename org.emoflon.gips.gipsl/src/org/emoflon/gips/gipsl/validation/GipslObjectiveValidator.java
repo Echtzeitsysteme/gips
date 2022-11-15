@@ -1,7 +1,7 @@
 package org.emoflon.gips.gipsl.validation;
 
 import org.eclipse.xtext.validation.Check;
-import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.EditorFile;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsBracketExpr;
@@ -31,7 +31,7 @@ public class GipslObjectiveValidator {
 	 * @param file File to check existence of a global objective for.
 	 */
 	@Check
-	public static void checkGlobalObjectiveNotNull(final EditorGTFile file) {
+	public static void checkGlobalObjectiveNotNull(final EditorFile file) {
 		if (GipslValidator.DISABLE_VALIDATOR) {
 			return;
 		}
@@ -44,14 +44,14 @@ public class GipslObjectiveValidator {
 			GipslValidator.err( //
 					GipslValidatorUtils.GLOBAL_OBJECTIVE_IS_NULL_MESSAGE, //
 					// TODO: Change scope of the warning:
-					GipslPackage.Literals.EDITOR_GT_FILE__GLOBAL_OBJECTIVE, //
+					GipslPackage.Literals.EDITOR_FILE__GLOBAL_OBJECTIVE, //
 					GipslValidatorUtils.GLOBAL_OBJECTIVE_DOES_NOT_EXIST //
 			);
 		} else if (file.getObjectives() != null && file.getObjectives().isEmpty()
 				&& file.getGlobalObjective() != null) {
 			GipslValidator.warn( //
 					GipslValidatorUtils.GLOBAL_OBJECTIVE_IS_OPTIONAL_MESSAGE, //
-					GipslPackage.Literals.EDITOR_GT_FILE__GLOBAL_OBJECTIVE //
+					GipslPackage.Literals.EDITOR_FILE__GLOBAL_OBJECTIVE //
 			);
 		}
 	}
@@ -216,7 +216,7 @@ public class GipslObjectiveValidator {
 							String.format(GipslValidatorUtils.OBJECTIVE_NAME_STARTS_WITH_LOWER_CASE_MESSAGE,
 									objective.getName()), //
 							GipslPackage.Literals.GIPS_OBJECTIVE__NAME, //
-							GipslValidator.NAME_EXPECT_LOWER_CASE //
+							GipslValidatorUtils.NAME_EXPECT_LOWER_CASE //
 					);
 				}
 			}
@@ -233,15 +233,15 @@ public class GipslObjectiveValidator {
 			return;
 		}
 
-		final EditorGTFile container = (EditorGTFile) objective.eContainer();
+		final EditorFile container = (EditorFile) objective.eContainer();
 		final long count = container.getObjectives().stream()
 				.filter(o -> o.getName() != null && o.getName().equals(objective.getName())).count();
 		if (count != 1) {
 			GipslValidator.err( //
 					String.format(GipslValidatorUtils.OBJECTIVE_NAME_MULTIPLE_DECLARATIONS_MESSAGE, objective.getName(),
-							GipslValidator.getTimes((int) count)), //
+							count), //
 					GipslPackage.Literals.GIPS_OBJECTIVE__NAME, //
-					GipslValidator.NAME_EXPECT_UNIQUE //
+					GipslValidatorUtils.NAME_EXPECT_UNIQUE //
 			);
 		}
 	}

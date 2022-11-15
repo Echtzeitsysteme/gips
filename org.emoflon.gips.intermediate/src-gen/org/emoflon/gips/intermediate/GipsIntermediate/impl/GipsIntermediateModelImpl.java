@@ -26,38 +26,32 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
 
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTModel;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object
- * '<em><b>Model</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Model</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getName
- * <em>Name</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getVariables
- * <em>Variables</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getConstraints
- * <em>Constraints</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getObjectives
- * <em>Objectives</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getGlobalObjective
- * <em>Global Objective</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getIbexModel
- * <em>Ibex Model</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getConfig
- * <em>Config</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getVariables <em>Variables</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getConstraints <em>Constraints</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getObjectives <em>Objectives</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getGlobalObjective <em>Global Objective</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getIbexModel <em>Ibex Model</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.GipsIntermediateModelImpl#getConfig <em>Config</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container implements GipsIntermediateModel {
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -65,9 +59,9 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	protected static final String NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -75,9 +69,9 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getVariables() <em>Variables</em>}'
-	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getVariables() <em>Variables</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getVariables()
 	 * @generated
 	 * @ordered
@@ -85,9 +79,9 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	protected EList<VariableSet> variables;
 
 	/**
-	 * The cached value of the '{@link #getConstraints() <em>Constraints</em>}'
-	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getConstraints() <em>Constraints</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getConstraints()
 	 * @generated
 	 * @ordered
@@ -95,9 +89,9 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	protected EList<Constraint> constraints;
 
 	/**
-	 * The cached value of the '{@link #getObjectives() <em>Objectives</em>}'
-	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getObjectives() <em>Objectives</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getObjectives()
 	 * @generated
 	 * @ordered
@@ -105,10 +99,9 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	protected EList<Objective> objectives;
 
 	/**
-	 * The cached value of the '{@link #getGlobalObjective() <em>Global
-	 * Objective</em>}' containment reference. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getGlobalObjective() <em>Global Objective</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getGlobalObjective()
 	 * @generated
 	 * @ordered
@@ -116,19 +109,19 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	protected GlobalObjective globalObjective;
 
 	/**
-	 * The cached value of the '{@link #getIbexModel() <em>Ibex Model</em>}'
-	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getIbexModel() <em>Ibex Model</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getIbexModel()
 	 * @generated
 	 * @ordered
 	 */
-	protected IBeXModel ibexModel;
+	protected GTModel ibexModel;
 
 	/**
-	 * The cached value of the '{@link #getConfig() <em>Config</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getConfig() <em>Config</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getConfig()
 	 * @generated
 	 * @ordered
@@ -136,8 +129,8 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	protected ILPConfig config;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected GipsIntermediateModelImpl() {
@@ -145,8 +138,8 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -155,8 +148,8 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String getName() {
@@ -164,8 +157,8 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setName(String newName) {
@@ -177,8 +170,8 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EList<VariableSet> getVariables() {
@@ -190,8 +183,8 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EList<Constraint> getConstraints() {
@@ -203,8 +196,8 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EList<Objective> getObjectives() {
@@ -216,8 +209,8 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public GlobalObjective getGlobalObjective() {
@@ -225,8 +218,8 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetGlobalObjective(GlobalObjective newGlobalObjective, NotificationChain msgs) {
@@ -245,8 +238,8 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setGlobalObjective(GlobalObjective newGlobalObjective) {
@@ -270,21 +263,21 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public IBeXModel getIbexModel() {
+	public GTModel getIbexModel() {
 		return ibexModel;
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetIbexModel(IBeXModel newIbexModel, NotificationChain msgs) {
-		IBeXModel oldIbexModel = ibexModel;
+	public NotificationChain basicSetIbexModel(GTModel newIbexModel, NotificationChain msgs) {
+		GTModel oldIbexModel = ibexModel;
 		ibexModel = newIbexModel;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
@@ -298,11 +291,11 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setIbexModel(IBeXModel newIbexModel) {
+	public void setIbexModel(GTModel newIbexModel) {
 		if (newIbexModel != ibexModel) {
 			NotificationChain msgs = null;
 			if (ibexModel != null)
@@ -322,8 +315,8 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ILPConfig getConfig() {
@@ -331,8 +324,8 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetConfig(ILPConfig newConfig, NotificationChain msgs) {
@@ -350,8 +343,8 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setConfig(ILPConfig newConfig) {
@@ -372,8 +365,8 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -396,8 +389,8 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -422,8 +415,8 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -449,7 +442,7 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 			setGlobalObjective((GlobalObjective) newValue);
 			return;
 		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__IBEX_MODEL:
-			setIbexModel((IBeXModel) newValue);
+			setIbexModel((GTModel) newValue);
 			return;
 		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__CONFIG:
 			setConfig((ILPConfig) newValue);
@@ -459,8 +452,8 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -482,7 +475,7 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 			setGlobalObjective((GlobalObjective) null);
 			return;
 		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__IBEX_MODEL:
-			setIbexModel((IBeXModel) null);
+			setIbexModel((GTModel) null);
 			return;
 		case GipsIntermediatePackage.GIPS_INTERMEDIATE_MODEL__CONFIG:
 			setConfig((ILPConfig) null);
@@ -492,8 +485,8 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -518,8 +511,8 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -534,4 +527,4 @@ public class GipsIntermediateModelImpl extends MinimalEObjectImpl.Container impl
 		return result.toString();
 	}
 
-} // GipsIntermediateModelImpl
+} //GipsIntermediateModelImpl

@@ -14,23 +14,23 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Context
- * Type Value</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Context Type Value</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextTypeValueImpl#getTypeContext
- * <em>Type Context</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextTypeValueImpl#getTypeContext <em>Type Context</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ContextTypeValueImpl extends ValueExpressionImpl implements ContextTypeValue {
 	/**
-	 * The cached value of the '{@link #getTypeContext() <em>Type Context</em>}'
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getTypeContext() <em>Type Context</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getTypeContext()
 	 * @generated
 	 * @ordered
@@ -38,8 +38,8 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	protected Type typeContext;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected ContextTypeValueImpl() {
@@ -47,8 +47,8 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -57,8 +57,8 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Type getTypeContext() {
@@ -75,8 +75,8 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Type basicGetTypeContext() {
@@ -84,8 +84,8 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setTypeContext(Type newTypeContext) {
@@ -97,8 +97,8 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -113,8 +113,8 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -128,8 +128,8 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -143,8 +143,8 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -156,4 +156,4 @@ public class ContextTypeValueImpl extends ValueExpressionImpl implements Context
 		return super.eIsSet(featureID);
 	}
 
-} // ContextTypeValueImpl
+} //ContextTypeValueImpl

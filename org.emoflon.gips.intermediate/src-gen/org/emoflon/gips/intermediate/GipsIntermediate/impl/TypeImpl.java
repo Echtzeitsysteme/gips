@@ -13,23 +13,23 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object
- * '<em><b>Type</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Type</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeImpl#getType
- * <em>Type</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeImpl#getType <em>Type</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class TypeImpl extends VariableSetImpl implements Type {
 	/**
-	 * The cached value of the '{@link #getType() <em>Type</em>}' reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getType() <em>Type</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getType()
 	 * @generated
 	 * @ordered
@@ -37,8 +37,8 @@ public class TypeImpl extends VariableSetImpl implements Type {
 	protected EClass type;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected TypeImpl() {
@@ -46,8 +46,8 @@ public class TypeImpl extends VariableSetImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -56,8 +56,8 @@ public class TypeImpl extends VariableSetImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getType() {
@@ -74,8 +74,8 @@ public class TypeImpl extends VariableSetImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass basicGetType() {
@@ -83,8 +83,8 @@ public class TypeImpl extends VariableSetImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setType(EClass newType) {
@@ -95,8 +95,8 @@ public class TypeImpl extends VariableSetImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -111,8 +111,8 @@ public class TypeImpl extends VariableSetImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -126,8 +126,8 @@ public class TypeImpl extends VariableSetImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -141,8 +141,8 @@ public class TypeImpl extends VariableSetImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -154,4 +154,4 @@ public class TypeImpl extends VariableSetImpl implements Type {
 		return super.eIsSet(featureID);
 	}
 
-} // TypeImpl
+} //TypeImpl

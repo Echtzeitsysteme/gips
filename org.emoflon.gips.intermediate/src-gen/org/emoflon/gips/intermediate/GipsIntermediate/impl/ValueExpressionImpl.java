@@ -15,23 +15,23 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Value
- * Expression</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Value Expression</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ValueExpressionImpl#getReturnType
- * <em>Return Type</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ValueExpressionImpl#getReturnType <em>Return Type</em>}</li>
  * </ul>
  *
  * @generated
  */
 public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container implements ValueExpression {
 	/**
-	 * The cached value of the '{@link #getReturnType() <em>Return Type</em>}'
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getReturnType() <em>Return Type</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getReturnType()
 	 * @generated
 	 * @ordered
@@ -39,8 +39,8 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	protected EClassifier returnType;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected ValueExpressionImpl() {
@@ -48,8 +48,8 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -58,8 +58,8 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClassifier getReturnType() {
@@ -76,8 +76,8 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClassifier basicGetReturnType() {
@@ -85,8 +85,8 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setReturnType(EClassifier newReturnType) {
@@ -98,8 +98,8 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -114,8 +114,8 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -129,8 +129,8 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -144,8 +144,8 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -157,4 +157,4 @@ public abstract class ValueExpressionImpl extends MinimalEObjectImpl.Container i
 		return super.eIsSet(featureID);
 	}
 
-} // ValueExpressionImpl
+} //ValueExpressionImpl

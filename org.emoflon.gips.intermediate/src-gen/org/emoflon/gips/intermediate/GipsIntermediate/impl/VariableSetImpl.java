@@ -13,27 +13,25 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object
- * '<em><b>Variable Set</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Variable Set</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.VariableSetImpl#getName
- * <em>Name</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.VariableSetImpl#getUpperBound
- * <em>Upper Bound</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.VariableSetImpl#getLowerBound
- * <em>Lower Bound</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.VariableSetImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.VariableSetImpl#getUpperBound <em>Upper Bound</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.VariableSetImpl#getLowerBound <em>Lower Bound</em>}</li>
  * </ul>
  *
  * @generated
  */
 public abstract class VariableSetImpl extends MinimalEObjectImpl.Container implements VariableSet {
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -41,9 +39,9 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	protected static final String NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -51,9 +49,9 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getUpperBound() <em>Upper Bound</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #getUpperBound() <em>Upper Bound</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getUpperBound()
 	 * @generated
 	 * @ordered
@@ -61,9 +59,9 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	protected static final double UPPER_BOUND_EDEFAULT = 0.0;
 
 	/**
-	 * The cached value of the '{@link #getUpperBound() <em>Upper Bound</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getUpperBound() <em>Upper Bound</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getUpperBound()
 	 * @generated
 	 * @ordered
@@ -71,9 +69,9 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	protected double upperBound = UPPER_BOUND_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getLowerBound() <em>Lower Bound</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #getLowerBound() <em>Lower Bound</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getLowerBound()
 	 * @generated
 	 * @ordered
@@ -81,9 +79,9 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	protected static final double LOWER_BOUND_EDEFAULT = 0.0;
 
 	/**
-	 * The cached value of the '{@link #getLowerBound() <em>Lower Bound</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getLowerBound() <em>Lower Bound</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getLowerBound()
 	 * @generated
 	 * @ordered
@@ -91,8 +89,8 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	protected double lowerBound = LOWER_BOUND_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected VariableSetImpl() {
@@ -100,8 +98,8 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -110,8 +108,8 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String getName() {
@@ -119,8 +117,8 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setName(String newName) {
@@ -132,8 +130,8 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public double getUpperBound() {
@@ -141,8 +139,8 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setUpperBound(double newUpperBound) {
@@ -154,8 +152,8 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public double getLowerBound() {
@@ -163,8 +161,8 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setLowerBound(double newLowerBound) {
@@ -176,8 +174,8 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -194,8 +192,8 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -215,8 +213,8 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -236,8 +234,8 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -254,8 +252,8 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -274,4 +272,4 @@ public abstract class VariableSetImpl extends MinimalEObjectImpl.Container imple
 		return result.toString();
 	}
 
-} // VariableSetImpl
+} //VariableSetImpl

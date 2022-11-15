@@ -12,35 +12,35 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern;
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTPattern;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object
- * '<em><b>Mapping</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Mapping</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingImpl#getContextPattern
- * <em>Context Pattern</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingImpl#getContextPattern <em>Context Pattern</em>}</li>
  * </ul>
  *
  * @generated
  */
 public abstract class MappingImpl extends VariableSetImpl implements Mapping {
 	/**
-	 * The cached value of the '{@link #getContextPattern() <em>Context
-	 * Pattern</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getContextPattern() <em>Context Pattern</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getContextPattern()
 	 * @generated
 	 * @ordered
 	 */
-	protected IBeXContextPattern contextPattern;
+	protected GTPattern contextPattern;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected MappingImpl() {
@@ -48,8 +48,8 @@ public abstract class MappingImpl extends VariableSetImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -58,14 +58,14 @@ public abstract class MappingImpl extends VariableSetImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public IBeXContextPattern getContextPattern() {
+	public GTPattern getContextPattern() {
 		if (contextPattern != null && contextPattern.eIsProxy()) {
 			InternalEObject oldContextPattern = (InternalEObject) contextPattern;
-			contextPattern = (IBeXContextPattern) eResolveProxy(oldContextPattern);
+			contextPattern = (GTPattern) eResolveProxy(oldContextPattern);
 			if (contextPattern != oldContextPattern) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
@@ -76,21 +76,21 @@ public abstract class MappingImpl extends VariableSetImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public IBeXContextPattern basicGetContextPattern() {
+	public GTPattern basicGetContextPattern() {
 		return contextPattern;
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setContextPattern(IBeXContextPattern newContextPattern) {
-		IBeXContextPattern oldContextPattern = contextPattern;
+	public void setContextPattern(GTPattern newContextPattern) {
+		GTPattern oldContextPattern = contextPattern;
 		contextPattern = newContextPattern;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.MAPPING__CONTEXT_PATTERN,
@@ -98,8 +98,8 @@ public abstract class MappingImpl extends VariableSetImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -114,38 +114,38 @@ public abstract class MappingImpl extends VariableSetImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 		case GipsIntermediatePackage.MAPPING__CONTEXT_PATTERN:
-			setContextPattern((IBeXContextPattern) newValue);
+			setContextPattern((GTPattern) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 		case GipsIntermediatePackage.MAPPING__CONTEXT_PATTERN:
-			setContextPattern((IBeXContextPattern) null);
+			setContextPattern((GTPattern) null);
 			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -157,4 +157,4 @@ public abstract class MappingImpl extends VariableSetImpl implements Mapping {
 		return super.eIsSet(featureID);
 	}
 
-} // MappingImpl
+} //MappingImpl

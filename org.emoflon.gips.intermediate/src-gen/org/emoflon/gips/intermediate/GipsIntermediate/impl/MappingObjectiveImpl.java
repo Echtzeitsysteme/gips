@@ -18,29 +18,26 @@ import org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Mapping
- * Objective</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Mapping Objective</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingObjectiveImpl#getName
- * <em>Name</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingObjectiveImpl#isElementwise
- * <em>Elementwise</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingObjectiveImpl#getExpression
- * <em>Expression</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingObjectiveImpl#getMapping
- * <em>Mapping</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingObjectiveImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingObjectiveImpl#isElementwise <em>Elementwise</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingObjectiveImpl#getExpression <em>Expression</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.MappingObjectiveImpl#getMapping <em>Mapping</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implements MappingObjective {
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -48,9 +45,9 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	protected static final String NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -58,9 +55,9 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isElementwise() <em>Elementwise</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #isElementwise() <em>Elementwise</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isElementwise()
 	 * @generated
 	 * @ordered
@@ -68,9 +65,9 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	protected static final boolean ELEMENTWISE_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isElementwise() <em>Elementwise</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #isElementwise() <em>Elementwise</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isElementwise()
 	 * @generated
 	 * @ordered
@@ -78,9 +75,9 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	protected boolean elementwise = ELEMENTWISE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getExpression() <em>Expression</em>}'
-	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getExpression()
 	 * @generated
 	 * @ordered
@@ -89,8 +86,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 
 	/**
 	 * The cached value of the '{@link #getMapping() <em>Mapping</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getMapping()
 	 * @generated
 	 * @ordered
@@ -98,8 +95,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	protected Mapping mapping;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected MappingObjectiveImpl() {
@@ -107,8 +104,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -117,8 +114,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String getName() {
@@ -126,8 +123,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setName(String newName) {
@@ -139,8 +136,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean isElementwise() {
@@ -148,8 +145,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setElementwise(boolean newElementwise) {
@@ -161,8 +158,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ArithmeticExpression getExpression() {
@@ -170,8 +167,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetExpression(ArithmeticExpression newExpression, NotificationChain msgs) {
@@ -189,8 +186,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setExpression(ArithmeticExpression newExpression) {
@@ -211,8 +208,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Mapping getMapping() {
@@ -229,8 +226,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Mapping basicGetMapping() {
@@ -238,8 +235,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setMapping(Mapping newMapping) {
@@ -251,8 +248,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -265,8 +262,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -287,8 +284,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -311,8 +308,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -335,8 +332,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -355,8 +352,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -377,8 +374,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -399,8 +396,8 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -417,4 +414,4 @@ public class MappingObjectiveImpl extends MinimalEObjectImpl.Container implement
 		return result.toString();
 	}
 
-} // MappingObjectiveImpl
+} //MappingObjectiveImpl

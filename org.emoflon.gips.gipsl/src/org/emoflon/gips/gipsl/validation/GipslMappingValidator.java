@@ -6,14 +6,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.xtext.validation.Check;
-import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.EditorFile;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
-import org.emoflon.ibex.gt.editor.gT.EditorPattern;
+import org.emoflon.ibex.gt.gtl.gTL.SlimRule;
 
 public class GipslMappingValidator {
 
@@ -70,8 +70,8 @@ public class GipslMappingValidator {
 			return;
 		}
 
-		final EditorGTFile container = (EditorGTFile) mapping.eContainer();
-		final Set<EditorPattern> foundPatterns = new HashSet<>();
+		final EditorFile container = (EditorFile) mapping.eContainer();
+		final Set<SlimRule> foundPatterns = new HashSet<>();
 
 		container.getMappings().forEach(m -> {
 			final boolean alreadyUsed = !foundPatterns.add(m.getPattern());
@@ -100,7 +100,7 @@ public class GipslMappingValidator {
 			GipslValidator.err( //
 					String.format(GipslValidatorUtils.MAPPING_NAME_FORBIDDEN_MESSAGE, mapping.getName()), //
 					GipslPackage.Literals.GIPS_MAPPING__NAME, //
-					GipslValidator.NAME_EXPECT_UNIQUE //
+					GipslValidatorUtils.NAME_EXPECT_UNIQUE //
 			);
 		} else {
 			// The mapping name should be lowerCamelCase.
@@ -115,7 +115,7 @@ public class GipslMappingValidator {
 					GipslValidator.warn( //
 							String.format(GipslValidatorUtils.MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE,
 									mapping.getName()), //
-							GipslPackage.Literals.GIPS_MAPPING__NAME, GipslValidator.NAME_EXPECT_LOWER_CASE //
+							GipslPackage.Literals.GIPS_MAPPING__NAME, GipslValidatorUtils.NAME_EXPECT_LOWER_CASE //
 					);
 				}
 			}
@@ -132,15 +132,15 @@ public class GipslMappingValidator {
 			return;
 		}
 
-		final EditorGTFile container = (EditorGTFile) mapping.eContainer();
+		final EditorFile container = (EditorFile) mapping.eContainer();
 		final long count = container.getMappings().stream()
 				.filter(m -> m.getName() != null && m.getName().equals(mapping.getName())).count();
 		if (count != 1) {
 			GipslValidator.err( //
 					String.format(GipslValidatorUtils.MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE, mapping.getName(),
-							GipslValidator.getTimes((int) count)), //
+							count), //
 					GipslPackage.Literals.GIPS_MAPPING__NAME, //
-					GipslValidator.NAME_EXPECT_UNIQUE //
+					GipslValidatorUtils.NAME_EXPECT_UNIQUE //
 			);
 		}
 	}
@@ -152,7 +152,7 @@ public class GipslMappingValidator {
 	 * @param mapping Gips mapping to be checked.
 	 */
 	public static void checkMappingUnused(final GipsMapping mapping) {
-		final EditorGTFile container = (EditorGTFile) mapping.eContainer();
+		final EditorFile container = (EditorFile) mapping.eContainer();
 		boolean usedAsContext = container.getConstraints().stream().filter(c -> c.getContext() != null)
 				.filter(c -> (c.getContext() instanceof GipsMappingContext))
 				.map(c -> (GipsMappingContext) c.getContext()).filter(mc -> mc.getMapping().equals(mapping)).findAny()

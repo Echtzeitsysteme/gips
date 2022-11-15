@@ -15,21 +15,19 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
 
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
+import org.emoflon.ibex.common.coremodel.IBeXCoreModel.IBeXNode;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object
- * '<em><b>Iterator Mapping Node Value</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Iterator Mapping Node Value</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingNodeValueImpl#getStream
- * <em>Stream</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingNodeValueImpl#getMappingContext
- * <em>Mapping Context</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingNodeValueImpl#getNode
- * <em>Node</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingNodeValueImpl#getStream <em>Stream</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingNodeValueImpl#getMappingContext <em>Mapping Context</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingNodeValueImpl#getNode <em>Node</em>}</li>
  * </ul>
  *
  * @generated
@@ -37,8 +35,8 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements IteratorMappingNodeValue {
 	/**
 	 * The cached value of the '{@link #getStream() <em>Stream</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getStream()
 	 * @generated
 	 * @ordered
@@ -46,9 +44,9 @@ public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements
 	protected SetOperation stream;
 
 	/**
-	 * The cached value of the '{@link #getMappingContext() <em>Mapping
-	 * Context</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getMappingContext() <em>Mapping Context</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getMappingContext()
 	 * @generated
 	 * @ordered
@@ -56,9 +54,9 @@ public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements
 	protected Mapping mappingContext;
 
 	/**
-	 * The cached value of the '{@link #getNode() <em>Node</em>}' reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getNode() <em>Node</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getNode()
 	 * @generated
 	 * @ordered
@@ -66,8 +64,8 @@ public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements
 	protected IBeXNode node;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected IteratorMappingNodeValueImpl() {
@@ -75,8 +73,8 @@ public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -85,8 +83,8 @@ public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public SetOperation getStream() {
@@ -103,8 +101,8 @@ public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public SetOperation basicGetStream() {
@@ -112,8 +110,8 @@ public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setStream(SetOperation newStream) {
@@ -125,8 +123,8 @@ public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Mapping getMappingContext() {
@@ -144,8 +142,8 @@ public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Mapping basicGetMappingContext() {
@@ -153,8 +151,8 @@ public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setMappingContext(Mapping newMappingContext) {
@@ -167,8 +165,8 @@ public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public IBeXNode getNode() {
@@ -185,8 +183,8 @@ public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public IBeXNode basicGetNode() {
@@ -194,8 +192,8 @@ public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setNode(IBeXNode newNode) {
@@ -207,8 +205,8 @@ public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -231,8 +229,8 @@ public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -252,8 +250,8 @@ public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -273,8 +271,8 @@ public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -291,8 +289,8 @@ public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -309,8 +307,8 @@ public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -326,4 +324,4 @@ public class IteratorMappingNodeValueImpl extends ValueExpressionImpl implements
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
-} // IteratorMappingNodeValueImpl
+} //IteratorMappingNodeValueImpl

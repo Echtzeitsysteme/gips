@@ -12,17 +12,17 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternMapping;
 
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTPattern;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Pattern
- * Mapping</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Pattern Mapping</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternMappingImpl#getPattern
- * <em>Pattern</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternMappingImpl#getPattern <em>Pattern</em>}</li>
  * </ul>
  *
  * @generated
@@ -30,17 +30,17 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
 public class PatternMappingImpl extends MappingImpl implements PatternMapping {
 	/**
 	 * The cached value of the '{@link #getPattern() <em>Pattern</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getPattern()
 	 * @generated
 	 * @ordered
 	 */
-	protected IBeXContext pattern;
+	protected GTPattern pattern;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected PatternMappingImpl() {
@@ -48,8 +48,8 @@ public class PatternMappingImpl extends MappingImpl implements PatternMapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -58,14 +58,14 @@ public class PatternMappingImpl extends MappingImpl implements PatternMapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public IBeXContext getPattern() {
+	public GTPattern getPattern() {
 		if (pattern != null && pattern.eIsProxy()) {
 			InternalEObject oldPattern = (InternalEObject) pattern;
-			pattern = (IBeXContext) eResolveProxy(oldPattern);
+			pattern = (GTPattern) eResolveProxy(oldPattern);
 			if (pattern != oldPattern) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
@@ -76,21 +76,21 @@ public class PatternMappingImpl extends MappingImpl implements PatternMapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public IBeXContext basicGetPattern() {
+	public GTPattern basicGetPattern() {
 		return pattern;
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setPattern(IBeXContext newPattern) {
-		IBeXContext oldPattern = pattern;
+	public void setPattern(GTPattern newPattern) {
+		GTPattern oldPattern = pattern;
 		pattern = newPattern;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.PATTERN_MAPPING__PATTERN,
@@ -98,8 +98,8 @@ public class PatternMappingImpl extends MappingImpl implements PatternMapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -114,38 +114,38 @@ public class PatternMappingImpl extends MappingImpl implements PatternMapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 		case GipsIntermediatePackage.PATTERN_MAPPING__PATTERN:
-			setPattern((IBeXContext) newValue);
+			setPattern((GTPattern) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 		case GipsIntermediatePackage.PATTERN_MAPPING__PATTERN:
-			setPattern((IBeXContext) null);
+			setPattern((GTPattern) null);
 			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -157,4 +157,4 @@ public class PatternMappingImpl extends MappingImpl implements PatternMapping {
 		return super.eIsSet(featureID);
 	}
 
-} // PatternMappingImpl
+} //PatternMappingImpl

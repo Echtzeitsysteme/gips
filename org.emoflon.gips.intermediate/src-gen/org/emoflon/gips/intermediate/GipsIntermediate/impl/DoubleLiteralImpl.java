@@ -12,14 +12,14 @@ import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Double
- * Literal</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Double Literal</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.DoubleLiteralImpl#getLiteral
- * <em>Literal</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.DoubleLiteralImpl#getLiteral <em>Literal</em>}</li>
  * </ul>
  *
  * @generated
@@ -27,8 +27,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLiteral {
 	/**
 	 * The default value of the '{@link #getLiteral() <em>Literal</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getLiteral()
 	 * @generated
 	 * @ordered
@@ -37,8 +37,8 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 
 	/**
 	 * The cached value of the '{@link #getLiteral() <em>Literal</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getLiteral()
 	 * @generated
 	 * @ordered
@@ -46,8 +46,8 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 	protected double literal = LITERAL_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected DoubleLiteralImpl() {
@@ -55,8 +55,8 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -65,8 +65,8 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public double getLiteral() {
@@ -74,8 +74,8 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setLiteral(double newLiteral) {
@@ -87,8 +87,8 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -101,8 +101,8 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -116,8 +116,8 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -131,8 +131,8 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -145,8 +145,8 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -161,4 +161,4 @@ public class DoubleLiteralImpl extends ArithmeticLiteralImpl implements DoubleLi
 		return result.toString();
 	}
 
-} // DoubleLiteralImpl
+} //DoubleLiteralImpl

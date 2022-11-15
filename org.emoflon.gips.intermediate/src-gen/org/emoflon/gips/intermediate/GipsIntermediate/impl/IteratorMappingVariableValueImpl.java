@@ -16,16 +16,15 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object
- * '<em><b>Iterator Mapping Variable Value</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Iterator Mapping Variable Value</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingVariableValueImpl#getStream
- * <em>Stream</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingVariableValueImpl#getMappingContext
- * <em>Mapping Context</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingVariableValueImpl#getStream <em>Stream</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorMappingVariableValueImpl#getMappingContext <em>Mapping Context</em>}</li>
  * </ul>
  *
  * @generated
@@ -33,8 +32,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
 public class IteratorMappingVariableValueImpl extends ValueExpressionImpl implements IteratorMappingVariableValue {
 	/**
 	 * The cached value of the '{@link #getStream() <em>Stream</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getStream()
 	 * @generated
 	 * @ordered
@@ -42,9 +41,9 @@ public class IteratorMappingVariableValueImpl extends ValueExpressionImpl implem
 	protected SetOperation stream;
 
 	/**
-	 * The cached value of the '{@link #getMappingContext() <em>Mapping
-	 * Context</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getMappingContext() <em>Mapping Context</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getMappingContext()
 	 * @generated
 	 * @ordered
@@ -52,8 +51,8 @@ public class IteratorMappingVariableValueImpl extends ValueExpressionImpl implem
 	protected Mapping mappingContext;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected IteratorMappingVariableValueImpl() {
@@ -61,8 +60,8 @@ public class IteratorMappingVariableValueImpl extends ValueExpressionImpl implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -71,8 +70,8 @@ public class IteratorMappingVariableValueImpl extends ValueExpressionImpl implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public SetOperation getStream() {
@@ -89,8 +88,8 @@ public class IteratorMappingVariableValueImpl extends ValueExpressionImpl implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public SetOperation basicGetStream() {
@@ -98,8 +97,8 @@ public class IteratorMappingVariableValueImpl extends ValueExpressionImpl implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setStream(SetOperation newStream) {
@@ -111,8 +110,8 @@ public class IteratorMappingVariableValueImpl extends ValueExpressionImpl implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Mapping getMappingContext() {
@@ -130,8 +129,8 @@ public class IteratorMappingVariableValueImpl extends ValueExpressionImpl implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Mapping basicGetMappingContext() {
@@ -139,8 +138,8 @@ public class IteratorMappingVariableValueImpl extends ValueExpressionImpl implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setMappingContext(Mapping newMappingContext) {
@@ -153,8 +152,8 @@ public class IteratorMappingVariableValueImpl extends ValueExpressionImpl implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -173,8 +172,8 @@ public class IteratorMappingVariableValueImpl extends ValueExpressionImpl implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -191,8 +190,8 @@ public class IteratorMappingVariableValueImpl extends ValueExpressionImpl implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -209,8 +208,8 @@ public class IteratorMappingVariableValueImpl extends ValueExpressionImpl implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -225,8 +224,8 @@ public class IteratorMappingVariableValueImpl extends ValueExpressionImpl implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -243,8 +242,8 @@ public class IteratorMappingVariableValueImpl extends ValueExpressionImpl implem
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -260,4 +259,4 @@ public class IteratorMappingVariableValueImpl extends ValueExpressionImpl implem
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
-} // IteratorMappingVariableValueImpl
+} //IteratorMappingVariableValueImpl

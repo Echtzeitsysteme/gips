@@ -15,14 +15,14 @@ import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Context
- * Pattern Node Feature Value</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Context Pattern Node Feature Value</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternNodeFeatureValueImpl#getFeatureExpression
- * <em>Feature Expression</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextPatternNodeFeatureValueImpl#getFeatureExpression <em>Feature Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -30,10 +30,9 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 		implements ContextPatternNodeFeatureValue {
 	/**
-	 * The cached value of the '{@link #getFeatureExpression() <em>Feature
-	 * Expression</em>}' containment reference. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getFeatureExpression() <em>Feature Expression</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getFeatureExpression()
 	 * @generated
 	 * @ordered
@@ -41,8 +40,8 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 	protected FeatureExpression featureExpression;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected ContextPatternNodeFeatureValueImpl() {
@@ -50,8 +49,8 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -60,8 +59,8 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public FeatureExpression getFeatureExpression() {
@@ -69,8 +68,8 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetFeatureExpression(FeatureExpression newFeatureExpression, NotificationChain msgs) {
@@ -89,8 +88,8 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setFeatureExpression(FeatureExpression newFeatureExpression) {
@@ -116,8 +115,8 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -130,8 +129,8 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -144,8 +143,8 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -159,8 +158,8 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -174,8 +173,8 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -187,4 +186,4 @@ public class ContextPatternNodeFeatureValueImpl extends ContextPatternNodeImpl
 		return super.eIsSet(featureID);
 	}
 
-} // ContextPatternNodeFeatureValueImpl
+} //ContextPatternNodeFeatureValueImpl

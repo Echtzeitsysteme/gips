@@ -15,24 +15,23 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object
- * '<em><b>Iterator Type Feature Value</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Iterator Type Feature Value</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorTypeFeatureValueImpl#getFeatureExpression
- * <em>Feature Expression</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorTypeFeatureValueImpl#getFeatureExpression <em>Feature Expression</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class IteratorTypeFeatureValueImpl extends IteratorTypeValueImpl implements IteratorTypeFeatureValue {
 	/**
-	 * The cached value of the '{@link #getFeatureExpression() <em>Feature
-	 * Expression</em>}' containment reference. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getFeatureExpression() <em>Feature Expression</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getFeatureExpression()
 	 * @generated
 	 * @ordered
@@ -40,8 +39,8 @@ public class IteratorTypeFeatureValueImpl extends IteratorTypeValueImpl implemen
 	protected FeatureExpression featureExpression;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected IteratorTypeFeatureValueImpl() {
@@ -49,8 +48,8 @@ public class IteratorTypeFeatureValueImpl extends IteratorTypeValueImpl implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -59,8 +58,8 @@ public class IteratorTypeFeatureValueImpl extends IteratorTypeValueImpl implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public FeatureExpression getFeatureExpression() {
@@ -68,8 +67,8 @@ public class IteratorTypeFeatureValueImpl extends IteratorTypeValueImpl implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetFeatureExpression(FeatureExpression newFeatureExpression, NotificationChain msgs) {
@@ -88,8 +87,8 @@ public class IteratorTypeFeatureValueImpl extends IteratorTypeValueImpl implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setFeatureExpression(FeatureExpression newFeatureExpression) {
@@ -111,8 +110,8 @@ public class IteratorTypeFeatureValueImpl extends IteratorTypeValueImpl implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -125,8 +124,8 @@ public class IteratorTypeFeatureValueImpl extends IteratorTypeValueImpl implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -139,8 +138,8 @@ public class IteratorTypeFeatureValueImpl extends IteratorTypeValueImpl implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -154,8 +153,8 @@ public class IteratorTypeFeatureValueImpl extends IteratorTypeValueImpl implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -169,8 +168,8 @@ public class IteratorTypeFeatureValueImpl extends IteratorTypeValueImpl implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -182,4 +181,4 @@ public class IteratorTypeFeatureValueImpl extends IteratorTypeValueImpl implemen
 		return super.eIsSet(featureID);
 	}
 
-} // IteratorTypeFeatureValueImpl
+} //IteratorTypeFeatureValueImpl

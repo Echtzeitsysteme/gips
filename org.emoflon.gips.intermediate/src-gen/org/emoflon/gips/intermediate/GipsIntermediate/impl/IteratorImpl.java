@@ -15,14 +15,14 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Iterator;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object
- * '<em><b>Iterator</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Iterator</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorImpl#getStream
- * <em>Stream</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.IteratorImpl#getStream <em>Stream</em>}</li>
  * </ul>
  *
  * @generated
@@ -30,8 +30,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
 public abstract class IteratorImpl extends MinimalEObjectImpl.Container implements Iterator {
 	/**
 	 * The cached value of the '{@link #getStream() <em>Stream</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getStream()
 	 * @generated
 	 * @ordered
@@ -39,8 +39,8 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 	protected SetOperation stream;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected IteratorImpl() {
@@ -48,8 +48,8 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -58,8 +58,8 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public SetOperation getStream() {
@@ -76,8 +76,8 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public SetOperation basicGetStream() {
@@ -85,8 +85,8 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setStream(SetOperation newStream) {
@@ -98,8 +98,8 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -114,8 +114,8 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -129,8 +129,8 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -144,8 +144,8 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -157,4 +157,4 @@ public abstract class IteratorImpl extends MinimalEObjectImpl.Container implemen
 		return super.eIsSet(featureID);
 	}
 
-} // IteratorImpl
+} //IteratorImpl

@@ -97,613 +97,615 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
 
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPatternModelPackage;
+import org.emoflon.ibex.common.coremodel.IBeXCoreModel.IBeXCoreModelPackage;
+
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.IBeXGTModelPackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!--
- * end-user-doc -->
- * 
+ * <!-- begin-user-doc -->
+ * An implementation of the model <b>Package</b>.
+ * <!-- end-user-doc -->
  * @generated
  */
 public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsIntermediatePackage {
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass gipsIntermediateModelEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass ilpConfigEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass variableSetEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass patternEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass typeEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass mappingEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass gtMappingEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass patternMappingEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass variableEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass constraintEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass globalConstraintEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass objectiveEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass globalObjectiveEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass contextEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass patternConstraintEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass typeConstraintEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass mappingConstraintEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass patternObjectiveEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass typeObjectiveEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass mappingObjectiveEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass arithmeticExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass binaryArithmeticExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass unaryArithmeticExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass setOperationEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass arithmeticValueExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass arithmeticValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass arithmeticLiteralEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass variableReferenceEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass arithmeticNullLiteralEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass integerLiteralEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass doubleLiteralEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass boolExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass boolBinaryExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass boolUnaryExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass boolValueExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass boolValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass boolStreamExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass relationalExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass boolLiteralEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass valueExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass sumExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass contextSumExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass mappingSumExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass patternSumExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass typeSumExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass contextTypeValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass contextPatternValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass contextPatternNodeEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass contextMappingValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass contextMappingNodeEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass objectiveFunctionValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass featureExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass featureLiteralEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass contextTypeFeatureValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass contextPatternNodeFeatureValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass contextMappingNodeFeatureValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass iteratorEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass iteratorPatternValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass iteratorPatternFeatureValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass iteratorPatternNodeValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass iteratorPatternNodeFeatureValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass iteratorMappingValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass iteratorMappingVariableValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass iteratorMappingFeatureValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass iteratorMappingNodeValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass iteratorMappingNodeFeatureValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass iteratorTypeValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass iteratorTypeFeatureValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass streamExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass streamOperationEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass streamNoOperationEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass streamFilterOperationEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass streamSelectOperationEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass streamContainsOperationEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EEnum ilpSolverTypeEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EEnum variableTypeEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EEnum objectiveTargetEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EEnum relationalOperatorEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EEnum binaryArithmeticOperatorEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EEnum unaryArithmeticOperatorEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EEnum streamArithmeticOperatorEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EEnum binaryBoolOperatorEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EEnum unaryBoolOperatorEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EEnum streamBoolOperatorEEnum = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
-	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the
-	 * package package URI value.
-	 * <p>
-	 * Note: the correct way to create the package is via the static factory method
-	 * {@link #init init()}, which also performs initialization of the package, or
-	 * returns the registered package, if one already exists. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
-	 * 
+	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
+	 * package URI value.
+	 * <p>Note: the correct way to create the package is via the static
+	 * factory method {@link #init init()}, which also performs
+	 * initialization of the package, or returns the registered package,
+	 * if one already exists.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see org.eclipse.emf.ecore.EPackage.Registry
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#eNS_URI
 	 * @see #init()
@@ -714,22 +716,19 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private static boolean isInited = false;
 
 	/**
-	 * Creates, registers, and initializes the <b>Package</b> for this model, and
-	 * for any others upon which it depends.
+	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
 	 *
-	 * <p>
-	 * This method is used to initialize {@link GipsIntermediatePackage#eINSTANCE}
-	 * when that field is accessed. Clients should not invoke it directly. Instead,
-	 * they should simply access that field to obtain the package. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <p>This method is used to initialize {@link GipsIntermediatePackage#eINSTANCE} when that field is accessed.
+	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
@@ -748,7 +747,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		isInited = true;
 
 		// Initialize simple dependencies
-		IBeXPatternModelPackage.eINSTANCE.eClass();
+		IBeXGTModelPackage.eINSTANCE.eClass();
+		IBeXCoreModelPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theGipsIntermediatePackage.createPackageContents();
@@ -765,8 +765,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getGipsIntermediateModel() {
@@ -774,8 +774,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getGipsIntermediateModel_Name() {
@@ -783,8 +783,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getGipsIntermediateModel_Variables() {
@@ -792,8 +792,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getGipsIntermediateModel_Constraints() {
@@ -801,8 +801,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getGipsIntermediateModel_Objectives() {
@@ -810,8 +810,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getGipsIntermediateModel_GlobalObjective() {
@@ -819,8 +819,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getGipsIntermediateModel_IbexModel() {
@@ -828,8 +828,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getGipsIntermediateModel_Config() {
@@ -837,8 +837,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getILPConfig() {
@@ -846,8 +846,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getILPConfig_Solver() {
@@ -855,8 +855,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getILPConfig_SolverHomeDir() {
@@ -864,8 +864,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getILPConfig_SolverLicenseFile() {
@@ -873,8 +873,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getILPConfig_BuildLaunchConfig() {
@@ -882,8 +882,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getILPConfig_MainFile() {
@@ -891,8 +891,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getILPConfig_EnableTimeLimit() {
@@ -900,8 +900,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getILPConfig_IlpTimeLimit() {
@@ -909,8 +909,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getILPConfig_EnableRndSeed() {
@@ -918,8 +918,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getILPConfig_IlpRndSeed() {
@@ -927,8 +927,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getILPConfig_Presolve() {
@@ -936,8 +936,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getILPConfig_EnablePresolve() {
@@ -945,8 +945,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getILPConfig_EnableDebugOutput() {
@@ -954,8 +954,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getILPConfig_EnableCustomTolerance() {
@@ -963,8 +963,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getILPConfig_Tolerance() {
@@ -972,8 +972,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getVariableSet() {
@@ -981,8 +981,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getVariableSet_Name() {
@@ -990,8 +990,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getVariableSet_UpperBound() {
@@ -999,8 +999,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getVariableSet_LowerBound() {
@@ -1008,8 +1008,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getPattern() {
@@ -1017,8 +1017,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getPattern_Pattern() {
@@ -1026,8 +1026,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getPattern_IsRule() {
@@ -1035,8 +1035,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getType() {
@@ -1044,8 +1044,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getType_Type() {
@@ -1053,8 +1053,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getMapping() {
@@ -1062,8 +1062,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getMapping_ContextPattern() {
@@ -1071,8 +1071,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getGTMapping() {
@@ -1080,8 +1080,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getGTMapping_Rule() {
@@ -1089,8 +1089,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getPatternMapping() {
@@ -1098,8 +1098,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getPatternMapping_Pattern() {
@@ -1107,8 +1107,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getVariable() {
@@ -1116,8 +1116,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getVariable_Type() {
@@ -1125,8 +1125,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getConstraint() {
@@ -1134,8 +1134,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getConstraint_Name() {
@@ -1143,8 +1143,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getConstraint_Depending() {
@@ -1152,8 +1152,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getConstraint_Expression() {
@@ -1161,8 +1161,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getConstraint_Constant() {
@@ -1170,8 +1170,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getConstraint_Negated() {
@@ -1179,8 +1179,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getConstraint_Dependencies() {
@@ -1188,8 +1188,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getConstraint_ReferencedBy() {
@@ -1197,8 +1197,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getConstraint_SymbolicVariable() {
@@ -1206,8 +1206,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getConstraint_HelperVariables() {
@@ -1215,8 +1215,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getConstraint_HelperConstraints() {
@@ -1224,8 +1224,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getGlobalConstraint() {
@@ -1233,8 +1233,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getObjective() {
@@ -1242,8 +1242,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getObjective_Name() {
@@ -1251,8 +1251,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getObjective_Elementwise() {
@@ -1260,8 +1260,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getObjective_Expression() {
@@ -1269,8 +1269,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getGlobalObjective() {
@@ -1278,8 +1278,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getGlobalObjective_Expression() {
@@ -1287,8 +1287,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getGlobalObjective_Target() {
@@ -1296,8 +1296,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getContext() {
@@ -1305,8 +1305,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getPatternConstraint() {
@@ -1314,8 +1314,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getPatternConstraint_Pattern() {
@@ -1323,8 +1323,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getTypeConstraint() {
@@ -1332,8 +1332,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getTypeConstraint_ModelType() {
@@ -1341,8 +1341,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getMappingConstraint() {
@@ -1350,8 +1350,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getMappingConstraint_Mapping() {
@@ -1359,8 +1359,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getPatternObjective() {
@@ -1368,8 +1368,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getPatternObjective_Pattern() {
@@ -1377,8 +1377,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getTypeObjective() {
@@ -1386,8 +1386,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getTypeObjective_ModelType() {
@@ -1395,8 +1395,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getMappingObjective() {
@@ -1404,8 +1404,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getMappingObjective_Mapping() {
@@ -1413,8 +1413,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getArithmeticExpression() {
@@ -1422,8 +1422,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getArithmeticExpression_ReturnType() {
@@ -1431,8 +1431,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getBinaryArithmeticExpression() {
@@ -1440,8 +1440,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getBinaryArithmeticExpression_Lhs() {
@@ -1449,8 +1449,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getBinaryArithmeticExpression_Rhs() {
@@ -1458,8 +1458,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getBinaryArithmeticExpression_Operator() {
@@ -1467,8 +1467,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getUnaryArithmeticExpression() {
@@ -1476,8 +1476,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getUnaryArithmeticExpression_Expression() {
@@ -1485,8 +1485,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getUnaryArithmeticExpression_Operator() {
@@ -1494,8 +1494,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getSetOperation() {
@@ -1503,8 +1503,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getSetOperation_OperandName() {
@@ -1512,8 +1512,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getArithmeticValueExpression() {
@@ -1521,8 +1521,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getArithmeticValue() {
@@ -1530,8 +1530,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getArithmeticValue_Value() {
@@ -1539,8 +1539,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getArithmeticLiteral() {
@@ -1548,8 +1548,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getVariableReference() {
@@ -1557,8 +1557,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getVariableReference_Variable() {
@@ -1566,8 +1566,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getArithmeticNullLiteral() {
@@ -1575,8 +1575,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getIntegerLiteral() {
@@ -1584,8 +1584,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getIntegerLiteral_Literal() {
@@ -1593,8 +1593,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getDoubleLiteral() {
@@ -1602,8 +1602,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getDoubleLiteral_Literal() {
@@ -1611,8 +1611,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getBoolExpression() {
@@ -1620,8 +1620,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getBoolBinaryExpression() {
@@ -1629,8 +1629,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getBoolBinaryExpression_Lhs() {
@@ -1638,8 +1638,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getBoolBinaryExpression_Rhs() {
@@ -1647,8 +1647,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getBoolBinaryExpression_Operator() {
@@ -1656,8 +1656,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getBoolUnaryExpression() {
@@ -1665,8 +1665,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getBoolUnaryExpression_Expression() {
@@ -1674,8 +1674,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getBoolUnaryExpression_Operator() {
@@ -1683,8 +1683,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getBoolValueExpression() {
@@ -1692,8 +1692,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getBoolValue() {
@@ -1701,8 +1701,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getBoolValue_Value() {
@@ -1710,8 +1710,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getBoolStreamExpression() {
@@ -1719,8 +1719,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getBoolStreamExpression_Stream() {
@@ -1728,8 +1728,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getBoolStreamExpression_Operator() {
@@ -1737,8 +1737,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getRelationalExpression() {
@@ -1746,8 +1746,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getRelationalExpression_Operator() {
@@ -1755,8 +1755,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getRelationalExpression_Lhs() {
@@ -1764,8 +1764,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getRelationalExpression_Rhs() {
@@ -1773,8 +1773,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getBoolLiteral() {
@@ -1782,8 +1782,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getBoolLiteral_Literal() {
@@ -1791,8 +1791,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getValueExpression() {
@@ -1800,8 +1800,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getValueExpression_ReturnType() {
@@ -1809,8 +1809,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getSumExpression() {
@@ -1818,8 +1818,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getSumExpression_Expression() {
@@ -1827,8 +1827,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getSumExpression_Filter() {
@@ -1836,8 +1836,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getContextSumExpression() {
@@ -1845,8 +1845,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getContextSumExpression_Context() {
@@ -1854,8 +1854,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getContextSumExpression_Node() {
@@ -1863,8 +1863,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getContextSumExpression_Feature() {
@@ -1872,8 +1872,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getMappingSumExpression() {
@@ -1881,8 +1881,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getMappingSumExpression_Mapping() {
@@ -1890,8 +1890,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getPatternSumExpression() {
@@ -1899,8 +1899,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getPatternSumExpression_Pattern() {
@@ -1908,8 +1908,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getTypeSumExpression() {
@@ -1917,8 +1917,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getTypeSumExpression_Type() {
@@ -1926,8 +1926,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getContextTypeValue() {
@@ -1935,8 +1935,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getContextTypeValue_TypeContext() {
@@ -1944,8 +1944,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getContextPatternValue() {
@@ -1953,8 +1953,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getContextPatternValue_PatternContext() {
@@ -1962,8 +1962,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getContextPatternNode() {
@@ -1971,8 +1971,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getContextPatternNode_PatternContext() {
@@ -1980,8 +1980,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getContextPatternNode_Node() {
@@ -1989,8 +1989,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getContextMappingValue() {
@@ -1998,8 +1998,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getContextMappingValue_MappingContext() {
@@ -2007,8 +2007,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getContextMappingNode() {
@@ -2016,8 +2016,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getContextMappingNode_MappingContext() {
@@ -2025,8 +2025,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getContextMappingNode_Node() {
@@ -2034,8 +2034,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getObjectiveFunctionValue() {
@@ -2043,8 +2043,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getObjectiveFunctionValue_Objective() {
@@ -2052,8 +2052,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getFeatureExpression() {
@@ -2061,8 +2061,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getFeatureExpression_Current() {
@@ -2070,8 +2070,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getFeatureExpression_Child() {
@@ -2079,8 +2079,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getFeatureLiteral() {
@@ -2088,8 +2088,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getFeatureLiteral_Feature() {
@@ -2097,8 +2097,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getContextTypeFeatureValue() {
@@ -2106,8 +2106,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getContextTypeFeatureValue_FeatureExpression() {
@@ -2115,8 +2115,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getContextPatternNodeFeatureValue() {
@@ -2124,8 +2124,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getContextPatternNodeFeatureValue_FeatureExpression() {
@@ -2133,8 +2133,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getContextMappingNodeFeatureValue() {
@@ -2142,8 +2142,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getContextMappingNodeFeatureValue_FeatureExpression() {
@@ -2151,8 +2151,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getIterator() {
@@ -2160,8 +2160,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getIterator_Stream() {
@@ -2169,8 +2169,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getIteratorPatternValue() {
@@ -2178,8 +2178,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getIteratorPatternValue_PatternContext() {
@@ -2187,8 +2187,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getIteratorPatternFeatureValue() {
@@ -2196,8 +2196,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getIteratorPatternFeatureValue_PatternContext() {
@@ -2205,8 +2205,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getIteratorPatternFeatureValue_FeatureExpression() {
@@ -2214,8 +2214,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getIteratorPatternNodeValue() {
@@ -2223,8 +2223,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getIteratorPatternNodeValue_PatternContext() {
@@ -2232,8 +2232,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getIteratorPatternNodeValue_Node() {
@@ -2241,8 +2241,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getIteratorPatternNodeFeatureValue() {
@@ -2250,8 +2250,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getIteratorPatternNodeFeatureValue_FeatureExpression() {
@@ -2259,8 +2259,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getIteratorMappingValue() {
@@ -2268,8 +2268,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getIteratorMappingValue_MappingContext() {
@@ -2277,8 +2277,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getIteratorMappingVariableValue() {
@@ -2286,8 +2286,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getIteratorMappingVariableValue_MappingContext() {
@@ -2295,8 +2295,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getIteratorMappingFeatureValue() {
@@ -2304,8 +2304,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getIteratorMappingFeatureValue_MappingContext() {
@@ -2313,8 +2313,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getIteratorMappingFeatureValue_FeatureExpression() {
@@ -2322,8 +2322,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getIteratorMappingNodeValue() {
@@ -2331,8 +2331,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getIteratorMappingNodeValue_MappingContext() {
@@ -2340,8 +2340,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getIteratorMappingNodeValue_Node() {
@@ -2349,8 +2349,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getIteratorMappingNodeFeatureValue() {
@@ -2358,8 +2358,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getIteratorMappingNodeFeatureValue_FeatureExpression() {
@@ -2367,8 +2367,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getIteratorTypeValue() {
@@ -2376,8 +2376,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getIteratorTypeValue_TypeContext() {
@@ -2385,8 +2385,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getIteratorTypeFeatureValue() {
@@ -2394,8 +2394,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getIteratorTypeFeatureValue_FeatureExpression() {
@@ -2403,8 +2403,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getStreamExpression() {
@@ -2412,8 +2412,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getStreamExpression_ReturnType() {
@@ -2421,8 +2421,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getStreamExpression_Current() {
@@ -2430,8 +2430,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getStreamExpression_Child() {
@@ -2439,8 +2439,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getStreamOperation() {
@@ -2448,8 +2448,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getStreamNoOperation() {
@@ -2457,8 +2457,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getStreamFilterOperation() {
@@ -2466,8 +2466,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getStreamFilterOperation_Predicate() {
@@ -2475,8 +2475,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getStreamSelectOperation() {
@@ -2484,8 +2484,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getStreamSelectOperation_Type() {
@@ -2493,8 +2493,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getStreamContainsOperation() {
@@ -2502,8 +2502,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getStreamContainsOperation_Expr() {
@@ -2511,8 +2511,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EEnum getILPSolverType() {
@@ -2520,8 +2520,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EEnum getVariableType() {
@@ -2529,8 +2529,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EEnum getObjectiveTarget() {
@@ -2538,8 +2538,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EEnum getRelationalOperator() {
@@ -2547,8 +2547,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EEnum getBinaryArithmeticOperator() {
@@ -2556,8 +2556,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EEnum getUnaryArithmeticOperator() {
@@ -2565,8 +2565,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EEnum getStreamArithmeticOperator() {
@@ -2574,8 +2574,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EEnum getBinaryBoolOperator() {
@@ -2583,8 +2583,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EEnum getUnaryBoolOperator() {
@@ -2592,8 +2592,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EEnum getStreamBoolOperator() {
@@ -2601,8 +2601,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public GipsIntermediateFactory getGipsIntermediateFactory() {
@@ -2610,17 +2610,17 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private boolean isCreated = false;
 
 	/**
-	 * Creates the meta-model objects for the package. This method is guarded to
-	 * have no affect on any invocation but its first. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
+	 * Creates the meta-model objects for the package.  This method is
+	 * guarded to have no affect on any invocation but its first.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void createPackageContents() {
@@ -2913,17 +2913,17 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private boolean isInitialized = false;
 
 	/**
-	 * Complete the initialization of the package and its meta-model. This method is
-	 * guarded to have no affect on any invocation but its first. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Complete the initialization of the package and its meta-model.  This
+	 * method is guarded to have no affect on any invocation but its first.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void initializePackageContents() {
@@ -2937,8 +2937,10 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		IBeXPatternModelPackage theIBeXPatternModelPackage = (IBeXPatternModelPackage) EPackage.Registry.INSTANCE
-				.getEPackage(IBeXPatternModelPackage.eNS_URI);
+		IBeXGTModelPackage theIBeXGTModelPackage = (IBeXGTModelPackage) EPackage.Registry.INSTANCE
+				.getEPackage(IBeXGTModelPackage.eNS_URI);
+		IBeXCoreModelPackage theIBeXCoreModelPackage = (IBeXCoreModelPackage) EPackage.Registry.INSTANCE
+				.getEPackage(IBeXCoreModelPackage.eNS_URI);
 
 		// Create type parameters
 
@@ -3038,9 +3040,9 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEReference(getGipsIntermediateModel_GlobalObjective(), this.getGlobalObjective(), null, "globalObjective",
 				null, 0, 1, GipsIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getGipsIntermediateModel_IbexModel(), theIBeXPatternModelPackage.getIBeXModel(), null,
-				"ibexModel", null, 1, 1, GipsIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-				IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGipsIntermediateModel_IbexModel(), theIBeXGTModelPackage.getGTModel(), null, "ibexModel",
+				null, 1, 1, GipsIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getGipsIntermediateModel_Config(), this.getILPConfig(), null, "config", null, 1, 1,
 				GipsIntermediateModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3097,7 +3099,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 				!IS_DERIVED, IS_ORDERED);
 
 		initEClass(patternEClass, Pattern.class, "Pattern", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getPattern_Pattern(), theIBeXPatternModelPackage.getIBeXContext(), null, "pattern", null, 1, 1,
+		initEReference(getPattern_Pattern(), theIBeXGTModelPackage.getGTPattern(), null, "pattern", null, 1, 1,
 				Pattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPattern_IsRule(), ecorePackage.getEBoolean(), "isRule", null, 0, 1, Pattern.class,
@@ -3109,21 +3111,21 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 				IS_ORDERED);
 
 		initEClass(mappingEClass, Mapping.class, "Mapping", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getMapping_ContextPattern(), theIBeXPatternModelPackage.getIBeXContextPattern(), null,
-				"contextPattern", null, 1, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
-				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getMapping_ContextPattern(), theIBeXGTModelPackage.getGTPattern(), null, "contextPattern", null,
+				1, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(gtMappingEClass, GTMapping.class, "GTMapping", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getGTMapping_Rule(), theIBeXPatternModelPackage.getIBeXRule(), null, "rule", null, 1, 1,
+		initEReference(getGTMapping_Rule(), theIBeXGTModelPackage.getGTRule(), null, "rule", null, 1, 1,
 				GTMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(patternMappingEClass, PatternMapping.class, "PatternMapping", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getPatternMapping_Pattern(), theIBeXPatternModelPackage.getIBeXContext(), null, "pattern", null,
-				1, 1, PatternMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
-				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPatternMapping_Pattern(), theIBeXGTModelPackage.getGTPattern(), null, "pattern", null, 1, 1,
+				PatternMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(variableEClass, Variable.class, "Variable", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
@@ -3364,8 +3366,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEReference(getContextSumExpression_Context(), this.getVariableSet(), null, "context", null, 0, 1,
 				ContextSumExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getContextSumExpression_Node(), theIBeXPatternModelPackage.getIBeXNode(), null, "node", null, 0,
-				1, ContextSumExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+		initEReference(getContextSumExpression_Node(), theIBeXCoreModelPackage.getIBeXNode(), null, "node", null, 0, 1,
+				ContextSumExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getContextSumExpression_Feature(), this.getFeatureExpression(), null, "feature", null, 0, 1,
 				ContextSumExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
@@ -3406,7 +3408,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEReference(getContextPatternNode_PatternContext(), this.getPattern(), null, "patternContext", null, 0, 1,
 				ContextPatternNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getContextPatternNode_Node(), theIBeXPatternModelPackage.getIBeXNode(), null, "node", null, 0, 1,
+		initEReference(getContextPatternNode_Node(), theIBeXCoreModelPackage.getIBeXNode(), null, "node", null, 0, 1,
 				ContextPatternNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -3421,7 +3423,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEReference(getContextMappingNode_MappingContext(), this.getMapping(), null, "mappingContext", null, 0, 1,
 				ContextMappingNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getContextMappingNode_Node(), theIBeXPatternModelPackage.getIBeXNode(), null, "node", null, 0, 1,
+		initEReference(getContextMappingNode_Node(), theIBeXCoreModelPackage.getIBeXNode(), null, "node", null, 0, 1,
 				ContextMappingNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -3489,8 +3491,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEReference(getIteratorPatternNodeValue_PatternContext(), this.getPattern(), null, "patternContext", null, 0,
 				1, IteratorPatternNodeValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getIteratorPatternNodeValue_Node(), theIBeXPatternModelPackage.getIBeXNode(), null, "node", null,
-				0, 1, IteratorPatternNodeValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+		initEReference(getIteratorPatternNodeValue_Node(), theIBeXCoreModelPackage.getIBeXNode(), null, "node", null, 0,
+				1, IteratorPatternNodeValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(iteratorPatternNodeFeatureValueEClass, IteratorPatternNodeFeatureValue.class,
@@ -3525,8 +3527,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEReference(getIteratorMappingNodeValue_MappingContext(), this.getMapping(), null, "mappingContext", null, 0,
 				1, IteratorMappingNodeValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getIteratorMappingNodeValue_Node(), theIBeXPatternModelPackage.getIBeXNode(), null, "node", null,
-				0, 1, IteratorMappingNodeValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+		initEReference(getIteratorMappingNodeValue_Node(), theIBeXCoreModelPackage.getIBeXNode(), null, "node", null, 0,
+				1, IteratorMappingNodeValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(iteratorMappingNodeFeatureValueEClass, IteratorMappingNodeFeatureValue.class,
@@ -3644,4 +3646,4 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		createResource(eNS_URI);
 	}
 
-} // GipsIntermediatePackageImpl
+} //GipsIntermediatePackageImpl

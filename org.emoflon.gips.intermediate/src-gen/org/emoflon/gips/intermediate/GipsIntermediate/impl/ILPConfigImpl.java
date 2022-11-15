@@ -14,40 +14,27 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
 import org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>ILP
- * Config</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>ILP Config</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getSolver
- * <em>Solver</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getSolverHomeDir
- * <em>Solver Home Dir</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getSolverLicenseFile
- * <em>Solver License File</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isBuildLaunchConfig
- * <em>Build Launch Config</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getMainFile
- * <em>Main File</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isEnableTimeLimit
- * <em>Enable Time Limit</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getIlpTimeLimit
- * <em>Ilp Time Limit</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isEnableRndSeed
- * <em>Enable Rnd Seed</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getIlpRndSeed
- * <em>Ilp Rnd Seed</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isPresolve
- * <em>Presolve</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isEnablePresolve
- * <em>Enable Presolve</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isEnableDebugOutput
- * <em>Enable Debug Output</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isEnableCustomTolerance
- * <em>Enable Custom Tolerance</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getTolerance
- * <em>Tolerance</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getSolver <em>Solver</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getSolverHomeDir <em>Solver Home Dir</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getSolverLicenseFile <em>Solver License File</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isBuildLaunchConfig <em>Build Launch Config</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getMainFile <em>Main File</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isEnableTimeLimit <em>Enable Time Limit</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getIlpTimeLimit <em>Ilp Time Limit</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isEnableRndSeed <em>Enable Rnd Seed</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getIlpRndSeed <em>Ilp Rnd Seed</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isPresolve <em>Presolve</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isEnablePresolve <em>Enable Presolve</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isEnableDebugOutput <em>Enable Debug Output</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isEnableCustomTolerance <em>Enable Custom Tolerance</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getTolerance <em>Tolerance</em>}</li>
  * </ul>
  *
  * @generated
@@ -55,8 +42,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType;
 public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPConfig {
 	/**
 	 * The default value of the '{@link #getSolver() <em>Solver</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getSolver()
 	 * @generated
 	 * @ordered
@@ -65,8 +52,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 
 	/**
 	 * The cached value of the '{@link #getSolver() <em>Solver</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getSolver()
 	 * @generated
 	 * @ordered
@@ -74,9 +61,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected ILPSolverType solver = SOLVER_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getSolverHomeDir() <em>Solver Home
-	 * Dir</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #getSolverHomeDir() <em>Solver Home Dir</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getSolverHomeDir()
 	 * @generated
 	 * @ordered
@@ -84,9 +71,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected static final String SOLVER_HOME_DIR_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getSolverHomeDir() <em>Solver Home
-	 * Dir</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getSolverHomeDir() <em>Solver Home Dir</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getSolverHomeDir()
 	 * @generated
 	 * @ordered
@@ -94,9 +81,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected String solverHomeDir = SOLVER_HOME_DIR_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getSolverLicenseFile() <em>Solver License
-	 * File</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #getSolverLicenseFile() <em>Solver License File</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getSolverLicenseFile()
 	 * @generated
 	 * @ordered
@@ -104,9 +91,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected static final String SOLVER_LICENSE_FILE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getSolverLicenseFile() <em>Solver License
-	 * File</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getSolverLicenseFile() <em>Solver License File</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getSolverLicenseFile()
 	 * @generated
 	 * @ordered
@@ -114,9 +101,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected String solverLicenseFile = SOLVER_LICENSE_FILE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isBuildLaunchConfig() <em>Build Launch
-	 * Config</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #isBuildLaunchConfig() <em>Build Launch Config</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isBuildLaunchConfig()
 	 * @generated
 	 * @ordered
@@ -124,9 +111,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected static final boolean BUILD_LAUNCH_CONFIG_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isBuildLaunchConfig() <em>Build Launch
-	 * Config</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #isBuildLaunchConfig() <em>Build Launch Config</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isBuildLaunchConfig()
 	 * @generated
 	 * @ordered
@@ -134,9 +121,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected boolean buildLaunchConfig = BUILD_LAUNCH_CONFIG_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMainFile() <em>Main File</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #getMainFile() <em>Main File</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getMainFile()
 	 * @generated
 	 * @ordered
@@ -144,9 +131,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected static final String MAIN_FILE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getMainFile() <em>Main File</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getMainFile() <em>Main File</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getMainFile()
 	 * @generated
 	 * @ordered
@@ -154,9 +141,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected String mainFile = MAIN_FILE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isEnableTimeLimit() <em>Enable Time
-	 * Limit</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #isEnableTimeLimit() <em>Enable Time Limit</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isEnableTimeLimit()
 	 * @generated
 	 * @ordered
@@ -164,9 +151,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected static final boolean ENABLE_TIME_LIMIT_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isEnableTimeLimit() <em>Enable Time
-	 * Limit</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #isEnableTimeLimit() <em>Enable Time Limit</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isEnableTimeLimit()
 	 * @generated
 	 * @ordered
@@ -174,9 +161,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected boolean enableTimeLimit = ENABLE_TIME_LIMIT_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getIlpTimeLimit() <em>Ilp Time Limit</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #getIlpTimeLimit() <em>Ilp Time Limit</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getIlpTimeLimit()
 	 * @generated
 	 * @ordered
@@ -184,9 +171,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected static final double ILP_TIME_LIMIT_EDEFAULT = 0.0;
 
 	/**
-	 * The cached value of the '{@link #getIlpTimeLimit() <em>Ilp Time Limit</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getIlpTimeLimit() <em>Ilp Time Limit</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getIlpTimeLimit()
 	 * @generated
 	 * @ordered
@@ -194,9 +181,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected double ilpTimeLimit = ILP_TIME_LIMIT_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isEnableRndSeed() <em>Enable Rnd
-	 * Seed</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #isEnableRndSeed() <em>Enable Rnd Seed</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isEnableRndSeed()
 	 * @generated
 	 * @ordered
@@ -204,9 +191,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected static final boolean ENABLE_RND_SEED_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isEnableRndSeed() <em>Enable Rnd Seed</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #isEnableRndSeed() <em>Enable Rnd Seed</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isEnableRndSeed()
 	 * @generated
 	 * @ordered
@@ -214,9 +201,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected boolean enableRndSeed = ENABLE_RND_SEED_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getIlpRndSeed() <em>Ilp Rnd Seed</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #getIlpRndSeed() <em>Ilp Rnd Seed</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getIlpRndSeed()
 	 * @generated
 	 * @ordered
@@ -224,9 +211,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected static final int ILP_RND_SEED_EDEFAULT = 0;
 
 	/**
-	 * The cached value of the '{@link #getIlpRndSeed() <em>Ilp Rnd Seed</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getIlpRndSeed() <em>Ilp Rnd Seed</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getIlpRndSeed()
 	 * @generated
 	 * @ordered
@@ -235,8 +222,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 
 	/**
 	 * The default value of the '{@link #isPresolve() <em>Presolve</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isPresolve()
 	 * @generated
 	 * @ordered
@@ -245,8 +232,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 
 	/**
 	 * The cached value of the '{@link #isPresolve() <em>Presolve</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isPresolve()
 	 * @generated
 	 * @ordered
@@ -254,9 +241,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected boolean presolve = PRESOLVE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isEnablePresolve() <em>Enable
-	 * Presolve</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #isEnablePresolve() <em>Enable Presolve</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isEnablePresolve()
 	 * @generated
 	 * @ordered
@@ -264,9 +251,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected static final boolean ENABLE_PRESOLVE_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isEnablePresolve() <em>Enable
-	 * Presolve</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #isEnablePresolve() <em>Enable Presolve</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isEnablePresolve()
 	 * @generated
 	 * @ordered
@@ -274,9 +261,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected boolean enablePresolve = ENABLE_PRESOLVE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isEnableDebugOutput() <em>Enable Debug
-	 * Output</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #isEnableDebugOutput() <em>Enable Debug Output</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isEnableDebugOutput()
 	 * @generated
 	 * @ordered
@@ -284,9 +271,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected static final boolean ENABLE_DEBUG_OUTPUT_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isEnableDebugOutput() <em>Enable Debug
-	 * Output</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #isEnableDebugOutput() <em>Enable Debug Output</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isEnableDebugOutput()
 	 * @generated
 	 * @ordered
@@ -294,9 +281,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected boolean enableDebugOutput = ENABLE_DEBUG_OUTPUT_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isEnableCustomTolerance() <em>Enable Custom
-	 * Tolerance</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #isEnableCustomTolerance() <em>Enable Custom Tolerance</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isEnableCustomTolerance()
 	 * @generated
 	 * @ordered
@@ -304,9 +291,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected static final boolean ENABLE_CUSTOM_TOLERANCE_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isEnableCustomTolerance() <em>Enable Custom
-	 * Tolerance</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #isEnableCustomTolerance() <em>Enable Custom Tolerance</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isEnableCustomTolerance()
 	 * @generated
 	 * @ordered
@@ -314,9 +301,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected boolean enableCustomTolerance = ENABLE_CUSTOM_TOLERANCE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getTolerance() <em>Tolerance</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #getTolerance() <em>Tolerance</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getTolerance()
 	 * @generated
 	 * @ordered
@@ -324,9 +311,9 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected static final double TOLERANCE_EDEFAULT = 0.0;
 
 	/**
-	 * The cached value of the '{@link #getTolerance() <em>Tolerance</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getTolerance() <em>Tolerance</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getTolerance()
 	 * @generated
 	 * @ordered
@@ -334,8 +321,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	protected double tolerance = TOLERANCE_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected ILPConfigImpl() {
@@ -343,8 +330,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -353,8 +340,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ILPSolverType getSolver() {
@@ -362,8 +349,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setSolver(ILPSolverType newSolver) {
@@ -375,8 +362,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String getSolverHomeDir() {
@@ -384,8 +371,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setSolverHomeDir(String newSolverHomeDir) {
@@ -397,8 +384,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String getSolverLicenseFile() {
@@ -406,8 +393,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setSolverLicenseFile(String newSolverLicenseFile) {
@@ -419,8 +406,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean isBuildLaunchConfig() {
@@ -428,8 +415,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setBuildLaunchConfig(boolean newBuildLaunchConfig) {
@@ -441,8 +428,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String getMainFile() {
@@ -450,8 +437,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setMainFile(String newMainFile) {
@@ -463,8 +450,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean isEnableTimeLimit() {
@@ -472,8 +459,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setEnableTimeLimit(boolean newEnableTimeLimit) {
@@ -485,8 +472,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public double getIlpTimeLimit() {
@@ -494,8 +481,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setIlpTimeLimit(double newIlpTimeLimit) {
@@ -507,8 +494,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean isEnableRndSeed() {
@@ -516,8 +503,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setEnableRndSeed(boolean newEnableRndSeed) {
@@ -529,8 +516,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public int getIlpRndSeed() {
@@ -538,8 +525,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setIlpRndSeed(int newIlpRndSeed) {
@@ -551,8 +538,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean isPresolve() {
@@ -560,8 +547,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setPresolve(boolean newPresolve) {
@@ -573,8 +560,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean isEnablePresolve() {
@@ -582,8 +569,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setEnablePresolve(boolean newEnablePresolve) {
@@ -595,8 +582,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean isEnableDebugOutput() {
@@ -604,8 +591,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setEnableDebugOutput(boolean newEnableDebugOutput) {
@@ -617,8 +604,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean isEnableCustomTolerance() {
@@ -626,8 +613,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setEnableCustomTolerance(boolean newEnableCustomTolerance) {
@@ -640,8 +627,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public double getTolerance() {
@@ -649,8 +636,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setTolerance(double newTolerance) {
@@ -662,8 +649,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -702,8 +689,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -756,8 +743,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -810,8 +797,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -852,8 +839,8 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -894,4 +881,4 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 		return result.toString();
 	}
 
-} // ILPConfigImpl
+} //ILPConfigImpl

@@ -16,25 +16,24 @@ import org.emoflon.gips.intermediate.GipsIntermediate.StreamBoolOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Bool
- * Stream Expression</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Bool Stream Expression</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolStreamExpressionImpl#getStream
- * <em>Stream</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolStreamExpressionImpl#getOperator
- * <em>Operator</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolStreamExpressionImpl#getStream <em>Stream</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.BoolStreamExpressionImpl#getOperator <em>Operator</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements BoolStreamExpression {
 	/**
-	 * The cached value of the '{@link #getStream() <em>Stream</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getStream() <em>Stream</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getStream()
 	 * @generated
 	 * @ordered
@@ -42,9 +41,9 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	protected StreamExpression stream;
 
 	/**
-	 * The default value of the '{@link #getOperator() <em>Operator</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #getOperator() <em>Operator</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getOperator()
 	 * @generated
 	 * @ordered
@@ -53,8 +52,8 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 
 	/**
 	 * The cached value of the '{@link #getOperator() <em>Operator</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getOperator()
 	 * @generated
 	 * @ordered
@@ -62,8 +61,8 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	protected StreamBoolOperator operator = OPERATOR_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected BoolStreamExpressionImpl() {
@@ -71,8 +70,8 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -81,8 +80,8 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public StreamExpression getStream() {
@@ -90,8 +89,8 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetStream(StreamExpression newStream, NotificationChain msgs) {
@@ -109,8 +108,8 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setStream(StreamExpression newStream) {
@@ -131,8 +130,8 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public StreamBoolOperator getOperator() {
@@ -140,8 +139,8 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setOperator(StreamBoolOperator newOperator) {
@@ -153,8 +152,8 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -167,8 +166,8 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -183,8 +182,8 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -201,8 +200,8 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -219,8 +218,8 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -235,8 +234,8 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -251,4 +250,4 @@ public class BoolStreamExpressionImpl extends BoolValueExpressionImpl implements
 		return result.toString();
 	}
 
-} // BoolStreamExpressionImpl
+} //BoolStreamExpressionImpl

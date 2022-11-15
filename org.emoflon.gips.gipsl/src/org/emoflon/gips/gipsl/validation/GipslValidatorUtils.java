@@ -76,7 +76,7 @@ public class GipslValidatorUtils {
 	public static final String GLOBAL_OBJECTIVE_IS_OPTIONAL_MESSAGE = "The global objective is optional if no local objective is defined.";
 	public static final String GLOBAL_OBJECTIVE_DOES_NOT_CONTAIN_LOCAL_OBJECTIVE_MESSAGE = "Global objective does not contain any reference to a local objective.";
 
-	public static final String MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Mapping '%s' must not be declared '%s'.";
+	public static final String MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Mapping '%s' must not be declared '%s'-times.";
 	public static final String MAPPING_NAME_FORBIDDEN_MESSAGE = "Mappings cannot be be named '%s'. Use a different name.";
 	public static final String MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Mapping name '%s' contains underscores. Use camelCase instead.";
 	public static final String MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Mapping '%s' should start with a lower case character.";
@@ -85,7 +85,7 @@ public class GipslValidatorUtils {
 	public static final String RULE_HAS_MULTIPLE_MAPPINGS = "Multiple mappings on rule: <'%s'>";
 	public static final String RULE_IS_ABSTRACT = "Mapping '%s' uses an abstract rule which is not possible.";
 
-	public static final String OBJECTIVE_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Objective '%s' must not be declared '%s'";
+	public static final String OBJECTIVE_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Objective '%s' must not be declared '%s'-times";
 	public static final String OBJECTIVE_NAME_FORBIDDEN_MESSAGE = "Objectives cannot be be named '%s'. Use a different name.";
 	public static final String OBJECTIVE_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Objective name '%s' contains underscores. Use camelCase instead.";
 	public static final String OBJECTIVE_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Objective '%s' should start with a lower case character.";

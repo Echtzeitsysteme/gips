@@ -14,14 +14,14 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object
- * '<em><b>Variable Reference</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Variable Reference</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.VariableReferenceImpl#getVariable
- * <em>Variable</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.VariableReferenceImpl#getVariable <em>Variable</em>}</li>
  * </ul>
  *
  * @generated
@@ -29,8 +29,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 public class VariableReferenceImpl extends ArithmeticValueExpressionImpl implements VariableReference {
 	/**
 	 * The cached value of the '{@link #getVariable() <em>Variable</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getVariable()
 	 * @generated
 	 * @ordered
@@ -38,8 +38,8 @@ public class VariableReferenceImpl extends ArithmeticValueExpressionImpl impleme
 	protected Variable variable;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected VariableReferenceImpl() {
@@ -47,8 +47,8 @@ public class VariableReferenceImpl extends ArithmeticValueExpressionImpl impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -57,8 +57,8 @@ public class VariableReferenceImpl extends ArithmeticValueExpressionImpl impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Variable getVariable() {
@@ -75,8 +75,8 @@ public class VariableReferenceImpl extends ArithmeticValueExpressionImpl impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Variable basicGetVariable() {
@@ -84,8 +84,8 @@ public class VariableReferenceImpl extends ArithmeticValueExpressionImpl impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setVariable(Variable newVariable) {
@@ -97,8 +97,8 @@ public class VariableReferenceImpl extends ArithmeticValueExpressionImpl impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -113,8 +113,8 @@ public class VariableReferenceImpl extends ArithmeticValueExpressionImpl impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -128,8 +128,8 @@ public class VariableReferenceImpl extends ArithmeticValueExpressionImpl impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -143,8 +143,8 @@ public class VariableReferenceImpl extends ArithmeticValueExpressionImpl impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -156,4 +156,4 @@ public class VariableReferenceImpl extends ArithmeticValueExpressionImpl impleme
 		return super.eIsSet(featureID);
 	}
 
-} // VariableReferenceImpl
+} //VariableReferenceImpl

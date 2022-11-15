@@ -14,14 +14,14 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Pattern
- * Sum Expression</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Pattern Sum Expression</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternSumExpressionImpl#getPattern
- * <em>Pattern</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.PatternSumExpressionImpl#getPattern <em>Pattern</em>}</li>
  * </ul>
  *
  * @generated
@@ -29,8 +29,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression;
 public class PatternSumExpressionImpl extends SumExpressionImpl implements PatternSumExpression {
 	/**
 	 * The cached value of the '{@link #getPattern() <em>Pattern</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getPattern()
 	 * @generated
 	 * @ordered
@@ -38,8 +38,8 @@ public class PatternSumExpressionImpl extends SumExpressionImpl implements Patte
 	protected Pattern pattern;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected PatternSumExpressionImpl() {
@@ -47,8 +47,8 @@ public class PatternSumExpressionImpl extends SumExpressionImpl implements Patte
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -57,8 +57,8 @@ public class PatternSumExpressionImpl extends SumExpressionImpl implements Patte
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Pattern getPattern() {
@@ -75,8 +75,8 @@ public class PatternSumExpressionImpl extends SumExpressionImpl implements Patte
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Pattern basicGetPattern() {
@@ -84,8 +84,8 @@ public class PatternSumExpressionImpl extends SumExpressionImpl implements Patte
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setPattern(Pattern newPattern) {
@@ -97,8 +97,8 @@ public class PatternSumExpressionImpl extends SumExpressionImpl implements Patte
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -113,8 +113,8 @@ public class PatternSumExpressionImpl extends SumExpressionImpl implements Patte
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -128,8 +128,8 @@ public class PatternSumExpressionImpl extends SumExpressionImpl implements Patte
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -143,8 +143,8 @@ public class PatternSumExpressionImpl extends SumExpressionImpl implements Patte
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -156,4 +156,4 @@ public class PatternSumExpressionImpl extends SumExpressionImpl implements Patte
 		return super.eIsSet(featureID);
 	}
 
-} // PatternSumExpressionImpl
+} //PatternSumExpressionImpl

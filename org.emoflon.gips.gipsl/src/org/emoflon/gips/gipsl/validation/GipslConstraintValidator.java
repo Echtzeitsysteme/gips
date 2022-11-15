@@ -3,7 +3,7 @@ package org.emoflon.gips.gipsl.validation;
 import java.util.HashSet;
 
 import org.eclipse.xtext.validation.Check;
-import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.EditorFile;
 import org.emoflon.gips.gipsl.gipsl.GipsAndBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticLiteral;
@@ -404,7 +404,7 @@ public class GipslConstraintValidator {
 			return;
 		}
 
-		final EditorGTFile file = (EditorGTFile) constraint.eContainer();
+		final EditorFile file = (EditorFile) constraint.eContainer();
 		final HashSet<GipsConstraint> others = new HashSet<>();
 		for (final GipsConstraint other : file.getConstraints()) {
 			if (constraint.equals(other)) {

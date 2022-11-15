@@ -6,11 +6,11 @@ Bundle-Vendor: Real-Time Systems Lab - TU Darmstadt
 Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: org.emoflon.gips.gipsl; singleton:=true
 Bundle-ActivationPolicy: lazy
-Require-Bundle: org.eclipse.swt,
+Require-Bundle: org.eclipse.emf.ecore,
+ org.eclipse.swt,
  org.eclipse.xtext,
  org.eclipse.xtext.xbase,
  org.eclipse.equinox.common;bundle-version="3.5.0",
- org.eclipse.emf.ecore,
  org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
  org.eclipse.xtext.util,
  org.eclipse.emf.common,
@@ -23,15 +23,16 @@ Require-Bundle: org.eclipse.swt,
  org.emoflon.ibex.common.slimgt;bundle-version="1.0.0",
  org.moflon.core.utilities
 Bundle-RequiredExecutionEnvironment: JavaSE-17
-Export-Package: org.emoflon.gips.gipsl.parser.antlr,
+Export-Package: org.emoflon.gips.gipsl,
+ org.emoflon.gips.gipsl.generator,
+ org.emoflon.gips.gipsl.gipsl,
+ org.emoflon.gips.gipsl.gipsl.impl,
+ org.emoflon.gips.gipsl.gipsl.util,
+ org.emoflon.gips.gipsl.parser.antlr,
+ org.emoflon.gips.gipsl.parser.antlr.internal,
+ org.emoflon.gips.gipsl.scoping,
  org.emoflon.gips.gipsl.serializer,
  org.emoflon.gips.gipsl.services,
- org.emoflon.gips.gipsl,
- org.emoflon.gips.gipsl.validation,
- org.emoflon.gips.gipsl.gipsl.util,
- org.emoflon.gips.gipsl.scoping,
- org.emoflon.gips.gipsl.generator,
- org.emoflon.gips.gipsl.gipsl.impl,
- org.emoflon.gips.gipsl.gipsl,
- org.emoflon.gips.gipsl.parser.antlr.internal
+ org.emoflon.gips.gipsl.util,
+ org.emoflon.gips.gipsl.validation
 Import-Package: org.apache.log4j

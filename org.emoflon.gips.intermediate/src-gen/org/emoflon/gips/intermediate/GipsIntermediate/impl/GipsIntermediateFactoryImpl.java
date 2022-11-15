@@ -14,16 +14,16 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.emoflon.gips.intermediate.GipsIntermediate.*;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!--
- * end-user-doc -->
- * 
+ * <!-- begin-user-doc -->
+ * An implementation of the model <b>Factory</b>.
+ * <!-- end-user-doc -->
  * @generated
  */
 public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsIntermediateFactory {
 	/**
-	 * Creates the default factory implementation. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
+	 * Creates the default factory implementation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public static GipsIntermediateFactory init() {
@@ -40,9 +40,9 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc
-	 * -->
-	 * 
+	 * Creates an instance of the factory.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public GipsIntermediateFactoryImpl() {
@@ -50,8 +50,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -183,8 +183,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -216,8 +216,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -249,8 +249,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public GipsIntermediateModel createGipsIntermediateModel() {
@@ -259,8 +259,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ILPConfig createILPConfig() {
@@ -269,8 +269,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Pattern createPattern() {
@@ -279,8 +279,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Type createType() {
@@ -289,8 +289,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public GTMapping createGTMapping() {
@@ -299,8 +299,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public PatternMapping createPatternMapping() {
@@ -309,8 +309,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Variable createVariable() {
@@ -319,8 +319,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public GlobalConstraint createGlobalConstraint() {
@@ -329,8 +329,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Objective createObjective() {
@@ -339,8 +339,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public GlobalObjective createGlobalObjective() {
@@ -349,8 +349,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public PatternConstraint createPatternConstraint() {
@@ -359,8 +359,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public TypeConstraint createTypeConstraint() {
@@ -369,8 +369,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public MappingConstraint createMappingConstraint() {
@@ -379,8 +379,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public PatternObjective createPatternObjective() {
@@ -389,8 +389,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public TypeObjective createTypeObjective() {
@@ -399,8 +399,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public MappingObjective createMappingObjective() {
@@ -409,8 +409,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public BinaryArithmeticExpression createBinaryArithmeticExpression() {
@@ -419,8 +419,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public UnaryArithmeticExpression createUnaryArithmeticExpression() {
@@ -429,8 +429,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ArithmeticValue createArithmeticValue() {
@@ -439,8 +439,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public VariableReference createVariableReference() {
@@ -449,8 +449,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ArithmeticNullLiteral createArithmeticNullLiteral() {
@@ -459,8 +459,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public IntegerLiteral createIntegerLiteral() {
@@ -469,8 +469,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public DoubleLiteral createDoubleLiteral() {
@@ -479,8 +479,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public BoolBinaryExpression createBoolBinaryExpression() {
@@ -489,8 +489,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public BoolUnaryExpression createBoolUnaryExpression() {
@@ -499,8 +499,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public BoolValue createBoolValue() {
@@ -509,8 +509,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public BoolStreamExpression createBoolStreamExpression() {
@@ -519,8 +519,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public RelationalExpression createRelationalExpression() {
@@ -529,8 +529,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public BoolLiteral createBoolLiteral() {
@@ -539,8 +539,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ContextSumExpression createContextSumExpression() {
@@ -549,8 +549,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public MappingSumExpression createMappingSumExpression() {
@@ -559,8 +559,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public PatternSumExpression createPatternSumExpression() {
@@ -569,8 +569,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public TypeSumExpression createTypeSumExpression() {
@@ -579,8 +579,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ContextTypeValue createContextTypeValue() {
@@ -589,8 +589,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ContextPatternValue createContextPatternValue() {
@@ -599,8 +599,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ContextPatternNode createContextPatternNode() {
@@ -609,8 +609,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ContextMappingValue createContextMappingValue() {
@@ -619,8 +619,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ContextMappingNode createContextMappingNode() {
@@ -629,8 +629,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ObjectiveFunctionValue createObjectiveFunctionValue() {
@@ -639,8 +639,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public FeatureExpression createFeatureExpression() {
@@ -649,8 +649,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public FeatureLiteral createFeatureLiteral() {
@@ -659,8 +659,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ContextTypeFeatureValue createContextTypeFeatureValue() {
@@ -669,8 +669,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ContextPatternNodeFeatureValue createContextPatternNodeFeatureValue() {
@@ -679,8 +679,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ContextMappingNodeFeatureValue createContextMappingNodeFeatureValue() {
@@ -689,8 +689,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public IteratorPatternValue createIteratorPatternValue() {
@@ -699,8 +699,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public IteratorPatternFeatureValue createIteratorPatternFeatureValue() {
@@ -709,8 +709,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public IteratorPatternNodeValue createIteratorPatternNodeValue() {
@@ -719,8 +719,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public IteratorPatternNodeFeatureValue createIteratorPatternNodeFeatureValue() {
@@ -729,8 +729,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public IteratorMappingValue createIteratorMappingValue() {
@@ -739,8 +739,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public IteratorMappingVariableValue createIteratorMappingVariableValue() {
@@ -749,8 +749,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public IteratorMappingFeatureValue createIteratorMappingFeatureValue() {
@@ -759,8 +759,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public IteratorMappingNodeValue createIteratorMappingNodeValue() {
@@ -769,8 +769,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public IteratorMappingNodeFeatureValue createIteratorMappingNodeFeatureValue() {
@@ -779,8 +779,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public IteratorTypeValue createIteratorTypeValue() {
@@ -789,8 +789,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public IteratorTypeFeatureValue createIteratorTypeFeatureValue() {
@@ -799,8 +799,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public StreamExpression createStreamExpression() {
@@ -809,8 +809,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public StreamNoOperation createStreamNoOperation() {
@@ -819,8 +819,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public StreamFilterOperation createStreamFilterOperation() {
@@ -829,8 +829,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public StreamSelectOperation createStreamSelectOperation() {
@@ -839,8 +839,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public StreamContainsOperation createStreamContainsOperation() {
@@ -849,8 +849,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ILPSolverType createILPSolverTypeFromString(EDataType eDataType, String initialValue) {
@@ -862,8 +862,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String convertILPSolverTypeToString(EDataType eDataType, Object instanceValue) {
@@ -871,8 +871,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public VariableType createVariableTypeFromString(EDataType eDataType, String initialValue) {
@@ -884,8 +884,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String convertVariableTypeToString(EDataType eDataType, Object instanceValue) {
@@ -893,8 +893,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ObjectiveTarget createObjectiveTargetFromString(EDataType eDataType, String initialValue) {
@@ -906,8 +906,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String convertObjectiveTargetToString(EDataType eDataType, Object instanceValue) {
@@ -915,8 +915,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public RelationalOperator createRelationalOperatorFromString(EDataType eDataType, String initialValue) {
@@ -928,8 +928,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String convertRelationalOperatorToString(EDataType eDataType, Object instanceValue) {
@@ -937,8 +937,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public BinaryArithmeticOperator createBinaryArithmeticOperatorFromString(EDataType eDataType, String initialValue) {
@@ -950,8 +950,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String convertBinaryArithmeticOperatorToString(EDataType eDataType, Object instanceValue) {
@@ -959,8 +959,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public UnaryArithmeticOperator createUnaryArithmeticOperatorFromString(EDataType eDataType, String initialValue) {
@@ -972,8 +972,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String convertUnaryArithmeticOperatorToString(EDataType eDataType, Object instanceValue) {
@@ -981,8 +981,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public StreamArithmeticOperator createStreamArithmeticOperatorFromString(EDataType eDataType, String initialValue) {
@@ -994,8 +994,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String convertStreamArithmeticOperatorToString(EDataType eDataType, Object instanceValue) {
@@ -1003,8 +1003,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public BinaryBoolOperator createBinaryBoolOperatorFromString(EDataType eDataType, String initialValue) {
@@ -1016,8 +1016,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String convertBinaryBoolOperatorToString(EDataType eDataType, Object instanceValue) {
@@ -1025,8 +1025,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public UnaryBoolOperator createUnaryBoolOperatorFromString(EDataType eDataType, String initialValue) {
@@ -1038,8 +1038,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String convertUnaryBoolOperatorToString(EDataType eDataType, Object instanceValue) {
@@ -1047,8 +1047,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public StreamBoolOperator createStreamBoolOperatorFromString(EDataType eDataType, String initialValue) {
@@ -1060,8 +1060,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String convertStreamBoolOperatorToString(EDataType eDataType, Object instanceValue) {
@@ -1069,8 +1069,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public GipsIntermediatePackage getGipsIntermediatePackage() {
@@ -1078,8 +1078,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @deprecated
 	 * @generated
 	 */
@@ -1088,4 +1088,4 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 		return GipsIntermediatePackage.eINSTANCE;
 	}
 
-} // GipsIntermediateFactoryImpl
+} //GipsIntermediateFactoryImpl

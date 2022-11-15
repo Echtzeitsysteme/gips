@@ -2,20 +2,19 @@
  */
 package org.emoflon.gips.intermediate.GipsIntermediate;
 
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
+import org.emoflon.ibex.common.coremodel.IBeXCoreModel.IBeXNode;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Context
- * Pattern Node</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * A representation of the model object '<em><b>Context Pattern Node</b></em>'.
+ * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode#getPatternContext
- * <em>Pattern Context</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode#getNode
- * <em>Node</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode#getPatternContext <em>Pattern Context</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode#getNode <em>Node</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getContextPatternNode()
@@ -24,9 +23,9 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
  */
 public interface ContextPatternNode extends ValueExpression {
 	/**
-	 * Returns the value of the '<em><b>Pattern Context</b></em>' reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the value of the '<em><b>Pattern Context</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Pattern Context</em>' reference.
 	 * @see #setPatternContext(Pattern)
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getContextPatternNode_PatternContext()
@@ -36,11 +35,9 @@ public interface ContextPatternNode extends ValueExpression {
 	Pattern getPatternContext();
 
 	/**
-	 * Sets the value of the
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode#getPatternContext
-	 * <em>Pattern Context</em>}' reference. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
+	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode#getPatternContext <em>Pattern Context</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Pattern Context</em>' reference.
 	 * @see #getPatternContext()
 	 * @generated
@@ -48,9 +45,9 @@ public interface ContextPatternNode extends ValueExpression {
 	void setPatternContext(Pattern value);
 
 	/**
-	 * Returns the value of the '<em><b>Node</b></em>' reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the value of the '<em><b>Node</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Node</em>' reference.
 	 * @see #setNode(IBeXNode)
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getContextPatternNode_Node()
@@ -60,10 +57,9 @@ public interface ContextPatternNode extends ValueExpression {
 	IBeXNode getNode();
 
 	/**
-	 * Sets the value of the
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode#getNode
-	 * <em>Node</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode#getNode <em>Node</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Node</em>' reference.
 	 * @see #getNode()
 	 * @generated

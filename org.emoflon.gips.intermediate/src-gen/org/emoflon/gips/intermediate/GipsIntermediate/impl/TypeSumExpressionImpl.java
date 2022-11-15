@@ -14,23 +14,23 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Type
- * Sum Expression</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Type Sum Expression</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeSumExpressionImpl#getType
- * <em>Type</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeSumExpressionImpl#getType <em>Type</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumExpression {
 	/**
-	 * The cached value of the '{@link #getType() <em>Type</em>}' reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getType() <em>Type</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getType()
 	 * @generated
 	 * @ordered
@@ -38,8 +38,8 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	protected Type type;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected TypeSumExpressionImpl() {
@@ -47,8 +47,8 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -57,8 +57,8 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Type getType() {
@@ -75,8 +75,8 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Type basicGetType() {
@@ -84,8 +84,8 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setType(Type newType) {
@@ -97,8 +97,8 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -113,8 +113,8 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -128,8 +128,8 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -143,8 +143,8 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -156,4 +156,4 @@ public class TypeSumExpressionImpl extends SumExpressionImpl implements TypeSumE
 		return super.eIsSet(featureID);
 	}
 
-} // TypeSumExpressionImpl
+} //TypeSumExpressionImpl

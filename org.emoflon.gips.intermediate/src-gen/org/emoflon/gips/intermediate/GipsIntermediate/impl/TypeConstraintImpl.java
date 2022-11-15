@@ -29,43 +29,33 @@ import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Type
- * Constraint</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Type Constraint</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getName
- * <em>Name</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#isDepending
- * <em>Depending</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getExpression
- * <em>Expression</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#isConstant
- * <em>Constant</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#isNegated
- * <em>Negated</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getDependencies
- * <em>Dependencies</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getReferencedBy
- * <em>Referenced By</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getSymbolicVariable
- * <em>Symbolic Variable</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getHelperVariables
- * <em>Helper Variables</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getHelperConstraints
- * <em>Helper Constraints</em>}</li>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getModelType
- * <em>Model Type</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#isDepending <em>Depending</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getExpression <em>Expression</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#isConstant <em>Constant</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#isNegated <em>Negated</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getDependencies <em>Dependencies</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getReferencedBy <em>Referenced By</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getSymbolicVariable <em>Symbolic Variable</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getHelperVariables <em>Helper Variables</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getHelperConstraints <em>Helper Constraints</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.TypeConstraintImpl#getModelType <em>Model Type</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements TypeConstraint {
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -73,9 +63,9 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	protected static final String NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -83,9 +73,9 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isDepending() <em>Depending</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The default value of the '{@link #isDepending() <em>Depending</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isDepending()
 	 * @generated
 	 * @ordered
@@ -93,9 +83,9 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	protected static final boolean DEPENDING_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isDepending() <em>Depending</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #isDepending() <em>Depending</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isDepending()
 	 * @generated
 	 * @ordered
@@ -103,9 +93,9 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	protected boolean depending = DEPENDING_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getExpression() <em>Expression</em>}'
-	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getExpression()
 	 * @generated
 	 * @ordered
@@ -114,8 +104,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 
 	/**
 	 * The default value of the '{@link #isConstant() <em>Constant</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isConstant()
 	 * @generated
 	 * @ordered
@@ -124,8 +114,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 
 	/**
 	 * The cached value of the '{@link #isConstant() <em>Constant</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isConstant()
 	 * @generated
 	 * @ordered
@@ -134,8 +124,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 
 	/**
 	 * The default value of the '{@link #isNegated() <em>Negated</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isNegated()
 	 * @generated
 	 * @ordered
@@ -144,8 +134,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 
 	/**
 	 * The cached value of the '{@link #isNegated() <em>Negated</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isNegated()
 	 * @generated
 	 * @ordered
@@ -153,9 +143,9 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	protected boolean negated = NEGATED_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getDependencies() <em>Dependencies</em>}'
-	 * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getDependencies() <em>Dependencies</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getDependencies()
 	 * @generated
 	 * @ordered
@@ -163,9 +153,9 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	protected EList<Constraint> dependencies;
 
 	/**
-	 * The cached value of the '{@link #getReferencedBy() <em>Referenced By</em>}'
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getReferencedBy() <em>Referenced By</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getReferencedBy()
 	 * @generated
 	 * @ordered
@@ -173,9 +163,9 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	protected Constraint referencedBy;
 
 	/**
-	 * The cached value of the '{@link #getSymbolicVariable() <em>Symbolic
-	 * Variable</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getSymbolicVariable() <em>Symbolic Variable</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getSymbolicVariable()
 	 * @generated
 	 * @ordered
@@ -183,10 +173,9 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	protected Variable symbolicVariable;
 
 	/**
-	 * The cached value of the '{@link #getHelperVariables() <em>Helper
-	 * Variables</em>}' reference list. <!-- begin-user-doc --> <!-- end-user-doc
-	 * -->
-	 * 
+	 * The cached value of the '{@link #getHelperVariables() <em>Helper Variables</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getHelperVariables()
 	 * @generated
 	 * @ordered
@@ -194,10 +183,9 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	protected EList<Variable> helperVariables;
 
 	/**
-	 * The cached value of the '{@link #getHelperConstraints() <em>Helper
-	 * Constraints</em>}' containment reference list. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getHelperConstraints() <em>Helper Constraints</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getHelperConstraints()
 	 * @generated
 	 * @ordered
@@ -205,9 +193,9 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	protected EList<RelationalExpression> helperConstraints;
 
 	/**
-	 * The cached value of the '{@link #getModelType() <em>Model Type</em>}'
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getModelType() <em>Model Type</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getModelType()
 	 * @generated
 	 * @ordered
@@ -215,8 +203,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	protected Type modelType;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected TypeConstraintImpl() {
@@ -224,8 +212,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -234,8 +222,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String getName() {
@@ -243,8 +231,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setName(String newName) {
@@ -256,8 +244,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean isDepending() {
@@ -265,8 +253,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setDepending(boolean newDepending) {
@@ -278,8 +266,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public BoolExpression getExpression() {
@@ -287,8 +275,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetExpression(BoolExpression newExpression, NotificationChain msgs) {
@@ -306,8 +294,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setExpression(BoolExpression newExpression) {
@@ -328,8 +316,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean isConstant() {
@@ -337,8 +325,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setConstant(boolean newConstant) {
@@ -350,8 +338,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean isNegated() {
@@ -359,8 +347,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setNegated(boolean newNegated) {
@@ -372,8 +360,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EList<Constraint> getDependencies() {
@@ -386,8 +374,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Constraint getReferencedBy() {
@@ -404,8 +392,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Constraint basicGetReferencedBy() {
@@ -413,8 +401,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetReferencedBy(Constraint newReferencedBy, NotificationChain msgs) {
@@ -432,8 +420,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setReferencedBy(Constraint newReferencedBy) {
@@ -454,8 +442,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Variable getSymbolicVariable() {
@@ -473,8 +461,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Variable basicGetSymbolicVariable() {
@@ -482,8 +470,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setSymbolicVariable(Variable newSymbolicVariable) {
@@ -495,8 +483,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EList<Variable> getHelperVariables() {
@@ -508,8 +496,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EList<RelationalExpression> getHelperConstraints() {
@@ -521,8 +509,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Type getModelType() {
@@ -539,8 +527,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Type basicGetModelType() {
@@ -548,8 +536,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setModelType(Type newModelType) {
@@ -561,8 +549,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -581,8 +569,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -601,8 +589,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -641,8 +629,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -690,8 +678,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -735,8 +723,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -769,8 +757,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -805,8 +793,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -841,8 +829,8 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -863,4 +851,4 @@ public class TypeConstraintImpl extends MinimalEObjectImpl.Container implements 
 		return result.toString();
 	}
 
-} // TypeConstraintImpl
+} //TypeConstraintImpl

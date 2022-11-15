@@ -13,7 +13,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="globalObjective" eType="#//GlobalObjective"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ibexModel" lowerBound="1"
-        eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXModel"
+        eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTModel"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="config" lowerBound="1"
         eType="#//ILPConfig" containment="true"/>
@@ -47,7 +47,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Pattern" eSuperTypes="#//VariableSet">
     <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" lowerBound="1"
-        eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXContext"/>
+        eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTPattern"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isRule" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Type" eSuperTypes="#//VariableSet">
@@ -55,14 +55,14 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Mapping" abstract="true" eSuperTypes="#//VariableSet">
     <eStructuralFeatures xsi:type="ecore:EReference" name="contextPattern" lowerBound="1"
-        eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXContextPattern"/>
+        eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTPattern"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GTMapping" eSuperTypes="#//Mapping">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="rule" lowerBound="1" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXRule"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rule" lowerBound="1" eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTRule"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PatternMapping" eSuperTypes="#//Mapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" lowerBound="1"
-        eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXContext"/>
+        eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTPattern"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Variable" eSuperTypes="#//VariableSet">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//VariableType"/>
@@ -251,7 +251,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContextSumExpression" eSuperTypes="#//SumExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="#//VariableSet"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXNode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.common.coremodel/model/IBeXCoreModel.ecore#//IBeXNode"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="#//FeatureExpression"
         containment="true"/>
   </eClassifiers>
@@ -273,14 +273,14 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContextPatternNode" eSuperTypes="#//ValueExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="patternContext" eType="#//Pattern"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXNode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.common.coremodel/model/IBeXCoreModel.ecore#//IBeXNode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContextMappingValue" eSuperTypes="#//ValueExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//Mapping"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContextMappingNode" eSuperTypes="#//ValueExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//Mapping"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXNode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.common.coremodel/model/IBeXCoreModel.ecore#//IBeXNode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ObjectiveFunctionValue" eSuperTypes="#//ValueExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="objective" lowerBound="1"
@@ -320,7 +320,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IteratorPatternNodeValue" eSuperTypes="#//ValueExpression #//Iterator">
     <eStructuralFeatures xsi:type="ecore:EReference" name="patternContext" eType="#//Pattern"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXNode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.common.coremodel/model/IBeXCoreModel.ecore#//IBeXNode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IteratorPatternNodeFeatureValue" eSuperTypes="#//IteratorPatternNodeValue">
     <eStructuralFeatures xsi:type="ecore:EReference" name="featureExpression" eType="#//FeatureExpression"
@@ -339,7 +339,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IteratorMappingNodeValue" eSuperTypes="#//ValueExpression #//Iterator">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//Mapping"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXNode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.common.coremodel/model/IBeXCoreModel.ecore#//IBeXNode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IteratorMappingNodeFeatureValue" eSuperTypes="#//IteratorMappingNodeValue">
     <eStructuralFeatures xsi:type="ecore:EReference" name="featureExpression" eType="#//FeatureExpression"

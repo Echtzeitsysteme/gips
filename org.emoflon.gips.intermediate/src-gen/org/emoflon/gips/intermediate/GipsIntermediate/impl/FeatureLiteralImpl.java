@@ -15,14 +15,14 @@ import org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Feature
- * Literal</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Feature Literal</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.FeatureLiteralImpl#getFeature
- * <em>Feature</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.FeatureLiteralImpl#getFeature <em>Feature</em>}</li>
  * </ul>
  *
  * @generated
@@ -30,8 +30,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 public class FeatureLiteralImpl extends MinimalEObjectImpl.Container implements FeatureLiteral {
 	/**
 	 * The cached value of the '{@link #getFeature() <em>Feature</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getFeature()
 	 * @generated
 	 * @ordered
@@ -39,8 +39,8 @@ public class FeatureLiteralImpl extends MinimalEObjectImpl.Container implements 
 	protected EStructuralFeature feature;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected FeatureLiteralImpl() {
@@ -48,8 +48,8 @@ public class FeatureLiteralImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -58,8 +58,8 @@ public class FeatureLiteralImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EStructuralFeature getFeature() {
@@ -76,8 +76,8 @@ public class FeatureLiteralImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EStructuralFeature basicGetFeature() {
@@ -85,8 +85,8 @@ public class FeatureLiteralImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setFeature(EStructuralFeature newFeature) {
@@ -98,8 +98,8 @@ public class FeatureLiteralImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -114,8 +114,8 @@ public class FeatureLiteralImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -129,8 +129,8 @@ public class FeatureLiteralImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -144,8 +144,8 @@ public class FeatureLiteralImpl extends MinimalEObjectImpl.Container implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -157,4 +157,4 @@ public class FeatureLiteralImpl extends MinimalEObjectImpl.Container implements 
 		return super.eIsSet(featureID);
 	}
 
-} // FeatureLiteralImpl
+} //FeatureLiteralImpl

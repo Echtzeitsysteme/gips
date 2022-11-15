@@ -3,15 +3,15 @@
 package org.emoflon.gips.intermediate.GipsIntermediate;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Stream
- * Filter Operation</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * A representation of the model object '<em><b>Stream Filter Operation</b></em>'.
+ * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation#getPredicate
- * <em>Predicate</em>}</li>
+ *   <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation#getPredicate <em>Predicate</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getStreamFilterOperation()
@@ -21,8 +21,8 @@ package org.emoflon.gips.intermediate.GipsIntermediate;
 public interface StreamFilterOperation extends StreamOperation {
 	/**
 	 * Returns the value of the '<em><b>Predicate</b></em>' containment reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Predicate</em>' containment reference.
 	 * @see #setPredicate(BoolExpression)
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getStreamFilterOperation_Predicate()
@@ -32,11 +32,9 @@ public interface StreamFilterOperation extends StreamOperation {
 	BoolExpression getPredicate();
 
 	/**
-	 * Sets the value of the
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation#getPredicate
-	 * <em>Predicate</em>}' containment reference. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
+	 * Sets the value of the '{@link org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation#getPredicate <em>Predicate</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Predicate</em>' containment reference.
 	 * @see #getPredicate()
 	 * @generated

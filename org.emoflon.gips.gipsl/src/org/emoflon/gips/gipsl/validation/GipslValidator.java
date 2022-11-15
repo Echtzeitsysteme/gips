@@ -3,27 +3,13 @@
  */
 package org.emoflon.gips.gipsl.validation;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.validation.Check;
-import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.EditorFile;
 import org.emoflon.gips.gipsl.gipsl.GipsAndBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsAndOperator;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpr;
@@ -85,17 +71,10 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsVariableOperationExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
-import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
-import org.emoflon.gips.gipsl.gipsl.Package;
 import org.emoflon.gips.gipsl.gipsl.SolverType;
-import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
-import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.gipsl.validation.GipslValidatorUtils.ContextType;
 import org.emoflon.gips.gipsl.validation.GipslValidatorUtils.EvalType;
-import org.emoflon.ibex.gt.editor.gT.EditorNode;
-import org.emoflon.ibex.gt.editor.gT.EditorPattern;
-import org.emoflon.ibex.gt.editor.gT.GTPackage;
-import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
+import org.emoflon.ibex.gt.gtl.gTL.SlimRuleNode;
 
 /**
  * This class contains custom validation rules.
@@ -127,254 +106,6 @@ public class GipslValidator extends AbstractGipslValidator {
 			new GipslValidator();
 		}
 		return val;
-	}
-
-	/**
-	 * This prevents all exceptions being "swallowed" by the default validator
-	 * implementation. TODO: Remove this or make it a little nice for future stable
-	 * release candidates.
-	 */
-	@Override
-	protected void handleExceptionDuringValidation(final Throwable targetException) throws RuntimeException {
-		targetException.printStackTrace();
-	}
-
-	/**
-	 * Pattern names must be unique.
-	 */
-	@Override
-	public void checkPatternNameUnique(EditorPattern pattern) {
-		EditorGTFile file = GTEditorPatternUtils.getContainer(pattern, EditorGTFileImpl.class);
-		long count = file.getPatterns().stream().filter(p -> p != null && p.getName() != null)
-				.filter(p -> p.getName().equals(pattern.getName())).count();
-		count += file.getImportedPattern().stream()
-				.filter(p -> p != null && p.getPattern() != null && p.getPattern().getName() != null)
-				.filter(p -> p.getPattern().getName().equals(pattern.getName())).count();
-		if (count != 1) {
-			error(String.format(PATTERN_NAME_MULTIPLE_DECLARATIONS_MESSAGE, pattern.getName(),
-					super.getTimes((int) count)), GTPackage.Literals.EDITOR_PATTERN__NAME, NAME_EXPECT_UNIQUE);
-		}
-
-	}
-
-	@Check
-	public void packageValid(Package pkg) {
-		if (pkg.getName() == null || pkg.getName().isBlank()) {
-			error("Package name must not be empty!", GipslPackage.Literals.PACKAGE__NAME);
-			return;
-		}
-
-		if (pkg.getName().contains(" ")) {
-			error("Package name may not contain any white spaces.", GipslPackage.Literals.PACKAGE__NAME);
-		}
-
-		if (pkg.getName().contains("\\")) {
-			error("Package name may not contain any slashes.", GipslPackage.Literals.PACKAGE__NAME);
-		}
-
-		if (pkg.getName().contains("/")) {
-			error("Package name may not contain any slashes.", GipslPackage.Literals.PACKAGE__NAME);
-		}
-
-		StringBuilder sb = new StringBuilder();
-
-		if (pkg.getName().chars().filter(c -> Character.isUpperCase(c)).map(c -> {
-			sb.append((char) c + " ");
-			return c;
-		}).findAny().isPresent()) {
-			error("Package name may not contain any upper case letters. The following illegal characters were found: "
-					+ sb.toString(), GipslPackage.Literals.PACKAGE__NAME);
-		}
-
-		if (pkg.getName().chars().filter(c -> !(Character.isLetter(c) || Character.isDigit(c) || c == '.' || c == '"'))
-				.map(c -> {
-					sb.append((char) c + " ");
-					return c;
-				}).findAny().isPresent()) {
-			error("Package name may not contain any characters other than lower case letters, digits or dots. The following illegal characters were found: "
-					+ sb.toString(), GipslPackage.Literals.PACKAGE__NAME);
-		}
-
-		// Check Workspace uniqueness
-		IProject currentProject = GipslScopeContextUtil.getCurrentProject(pkg.eResource());
-		String currentFile = pkg.eResource().getURI().toString().replace("platform:/resource/", "")
-				.replace(currentProject.getName(), "");
-		currentFile = currentProject.getLocation().toPortableString() + currentFile;
-		currentFile = currentFile.replace("/", "\\");
-
-		IWorkspace ws = ResourcesPlugin.getWorkspace();
-		for (IProject project : ws.getRoot().getProjects()) {
-			try {
-				if (!project.hasNature("org.emoflon.gips.gipsl.ui.gipsNature"))
-					continue;
-			} catch (CoreException e) {
-				continue;
-			}
-
-			File projectFile = new File(project.getLocation().toPortableString());
-			List<File> gtFiles = new LinkedList<>();
-			GipslScopeContextUtil.gatherFilesWithEnding(gtFiles, projectFile, ".gipsl", true);
-
-			for (File gtFile : gtFiles) {
-
-				XtextResourceSet rs = new XtextResourceSet();
-				URI gtModelUri;
-				try {
-					gtModelUri = URI.createFileURI(gtFile.getCanonicalPath());
-				} catch (IOException e) {
-					continue;
-				}
-
-				String fileString = gtModelUri.toFileString();
-
-				if (fileString.equals(currentFile))
-					continue;
-
-				Resource resource = rs.getResource(gtModelUri, true);
-//				EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
-				EObject gtModel = resource.getContents().get(0);
-
-				if (gtModel == null)
-					continue;
-
-				if (gtModel instanceof EditorGTFile gipsEditorFile) {
-					if (gipsEditorFile.getPackage().getName().equals(pkg.getName())) {
-						error("Package name must be unique within the current workspace. Package name clash with: "
-								+ gtModelUri, GipslPackage.Literals.PACKAGE__NAME);
-					}
-				}
-			}
-		}
-
-	}
-
-	/**
-	 * Pattern names must be unique.
-	 */
-	@Check
-	public void checkImportNameUnique(ImportedPattern pattern) {
-		if (pattern.getPattern() == null)
-			return;
-
-		EditorGTFile file = GTEditorPatternUtils.getContainer(pattern, EditorGTFileImpl.class);
-		long count = file.getPatterns().stream().filter(p -> p != null && p.getName() != null)
-				.filter(p -> p.getName().equals(pattern.getPattern().getName())).count();
-		count += file.getImportedPattern().stream()
-				.filter(p -> p != null && p.getPattern() != null && p.getPattern().getName() != null)
-				.filter(p -> p.getPattern().getName().equals(pattern.getPattern().getName())).count();
-		if (count != 1) {
-			error(String.format(PATTERN_NAME_MULTIPLE_DECLARATIONS_MESSAGE, pattern.getPattern().getName(),
-					super.getTimes((int) count)), GipslPackage.Literals.IMPORTED_PATTERN__PATTERN, NAME_EXPECT_UNIQUE);
-		}
-	}
-
-	/**
-	 * URI valid
-	 */
-	@Check
-	public void checkImportUriExists(ImportedPattern pattern) {
-		if (pattern.getFile() == null || pattern.getFile().isBlank())
-			return;
-
-		XtextResourceSet rs = new XtextResourceSet();
-		Resource resource = null;
-		URI gtModelUri = null;
-		String currentImport = pattern.getFile().replace("\"", "");
-		File importFile = new File(currentImport);
-
-		if (importFile.exists() && importFile.isFile() && importFile.isAbsolute()) {
-			gtModelUri = URI.createFileURI(currentImport);
-			try {
-				resource = rs.getResource(gtModelUri, true);
-			} catch (Exception e) {
-				error("Import URI <" + gtModelUri.toFileString() + "> is not valid.",
-						GipslPackage.Literals.IMPORTED_PATTERN__FILE);
-				return;
-			}
-		} else {
-			// 1. Case: package name
-			if (!(currentImport.contains("/") || currentImport.contains("\\"))) {
-				IProject currentProject = GipslScopeContextUtil.getCurrentProject(pattern.eResource());
-
-				String currentFile = pattern.eResource().getURI().toString().replace("platform:/resource/", "")
-						.replace(currentProject.getName(), "");
-				currentFile = currentProject.getLocation().toPortableString() + currentFile;
-				currentFile = currentFile.replace("/", "\\");
-
-				IWorkspace ws = ResourcesPlugin.getWorkspace();
-				for (IProject project : ws.getRoot().getProjects()) {
-					try {
-						if (!project.hasNature("org.emoflon.gips.gipsl.ui.gipsNature"))
-							continue;
-					} catch (CoreException e) {
-						continue;
-					}
-
-					File projectFile = new File(project.getLocation().toPortableString());
-					List<File> gtFiles = new LinkedList<>();
-					GipslScopeContextUtil.gatherFilesWithEnding(gtFiles, projectFile, ".gipsl", true);
-
-					for (File gtFile : gtFiles) {
-
-						rs = new XtextResourceSet();
-						try {
-							gtModelUri = URI.createFileURI(gtFile.getCanonicalPath());
-						} catch (IOException e) {
-							continue;
-						}
-
-						String fileString = gtModelUri.toFileString();
-
-						if (fileString.equals(currentFile))
-							continue;
-
-						resource = rs.getResource(gtModelUri, true);
-						EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
-						EObject gtModel = resource.getContents().get(0);
-
-						if (gtModel == null)
-							continue;
-
-						if (gtModel instanceof EditorGTFile gipsEditorFile) {
-							if (gipsEditorFile.getPackage().getName().equals(pattern.getFile())) {
-								break;
-							}
-						}
-
-						rs = null;
-						resource = null;
-					}
-
-					if (resource != null)
-						break;
-				}
-			} else { // 2. Case: relative path
-				IProject currentProject = GipslScopeContextUtil.getCurrentProject(pattern.eResource());
-
-				String absolutePath = null;
-				try {
-					absolutePath = Paths.get(currentProject.getLocation().toPortableString())
-							.resolve(Paths.get(currentImport)).toFile().getCanonicalPath();
-				} catch (IOException e1) {
-					error("Relative import URI <" + currentImport + "> is not resolvable.",
-							GipslPackage.Literals.IMPORTED_PATTERN__FILE);
-					return;
-				}
-
-				gtModelUri = URI.createFileURI(absolutePath);
-				try {
-					resource = rs.getResource(gtModelUri, true);
-				} catch (Exception e) {
-					error("Import URI <" + gtModelUri.toFileString() + "> is not valid.",
-							GipslPackage.Literals.IMPORTED_PATTERN__FILE);
-					return;
-				}
-			}
-		}
-
-		if (resource == null)
-			error("Import URI <" + gtModelUri.toFileString() + "> is not valid.",
-					GipslPackage.Literals.IMPORTED_PATTERN__FILE);
 	}
 
 	/*
@@ -450,20 +181,13 @@ public class GipslValidator extends AbstractGipslValidator {
 	}
 
 	@Check
-	public void checkConfigExists(final EditorGTFile file) {
+	public void checkConfigExists(final EditorFile file) {
 		// TODO: The config object is never 'null' and comparing it with a newly created
 		// one (given by the GipsFactoryImpl.eINSTANCE) does not make sense because the
 		// `equals(...)` method does not get overridden - thus, it just uses the `==`
 		// operator which always returns 'false' in this case.
 		if (file.getConfig() == null) {
-			error("GIPSL configuration part is missing.", GipslPackage.Literals.EDITOR_GT_FILE__CONFIG);
-		}
-	}
-
-	@Check
-	public void checkPackageExists(final EditorGTFile file) {
-		if (file.getPackage() == null) {
-			error("GIPSL package declaration is missing.", GipslPackage.Literals.EDITOR_GT_FILE__PACKAGE);
+			error("GIPSL configuration part is missing.", GipslPackage.Literals.EDITOR_FILE__CONFIG);
 		}
 	}
 
@@ -488,7 +212,7 @@ public class GipslValidator extends AbstractGipslValidator {
 	}
 
 	@Check
-	public void checkGlobalObjectiveNotNull(final EditorGTFile file) {
+	public void checkGlobalObjectiveNotNull(final EditorFile file) {
 		GipslObjectiveValidator.checkGlobalObjectiveNotNull(file);
 	}
 
@@ -1202,7 +926,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 	}
 
-	public static EvalType getEvalTypeFromEditorNode(final EditorNode node) {
+	public static EvalType getEvalTypeFromEditorNode(final SlimRuleNode node) {
 		// TODO: Always an EClass?
 		return EvalType.ECLASS;
 	}

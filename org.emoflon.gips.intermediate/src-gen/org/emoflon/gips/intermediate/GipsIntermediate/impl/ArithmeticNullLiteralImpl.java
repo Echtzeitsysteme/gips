@@ -8,15 +8,16 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticNullLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object
- * '<em><b>Arithmetic Null Literal</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Arithmetic Null Literal</b></em>'.
+ * <!-- end-user-doc -->
  *
  * @generated
  */
 public class ArithmeticNullLiteralImpl extends ArithmeticLiteralImpl implements ArithmeticNullLiteral {
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected ArithmeticNullLiteralImpl() {
@@ -24,8 +25,8 @@ public class ArithmeticNullLiteralImpl extends ArithmeticLiteralImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -33,4 +34,4 @@ public class ArithmeticNullLiteralImpl extends ArithmeticLiteralImpl implements 
 		return GipsIntermediatePackage.Literals.ARITHMETIC_NULL_LITERAL;
 	}
 
-} // ArithmeticNullLiteralImpl
+} //ArithmeticNullLiteralImpl

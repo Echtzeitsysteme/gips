@@ -8,7 +8,7 @@
 * Install [AdoptOpenJDK 17 (HotSpot JVM)](https://adoptopenjdk.net/releases.html?variant=openjdk17&jvmVariant=hotspot) or newer.
 * Install eMoflon::IBeX as described [here](https://github.com/eMoflon/emoflon-ibex#how-to-develop).
 * Install at least one of the supported ILP solvers:
-    * Install [Gurobi](https://www.gurobi.com/) in version `9.5.2` and activate a license for your computer.
+    * Install [Gurobi](https://www.gurobi.com/) in version `10.0.0` and activate a license for your computer.
         * Currently, Gurobi is the default ILP solver used in GIPS because of the great performance.
     * Install [GLPK](https://www.gnu.org/software/glpk/) in the newest version (`4.6.5`) and add it to your path.
         * GLPK is an open-source ILP solver that can be used without a charge.
@@ -47,7 +47,7 @@ By using this settings, you should be unable to commit unformatted code.
 * Install [AdoptOpenJDK 17 (HotSpot JVM)](https://adoptopenjdk.net/releases.html?variant=openjdk17&jvmVariant=hotspot) or newer.
 * Install eMoflon::IBeX as described [here](https://github.com/eMoflon/emoflon-ibex#how-to-develop).
 * Install at least one of the supported ILP solvers:
-    * Install [Gurobi](https://www.gurobi.com/) in version `9.5.1` and activate a license for your computer.
+    * Install [Gurobi](https://www.gurobi.com/) in version `10.0.0` and activate a license for your computer.
         * Currently, Gurobi is the default ILP solver used in GIPS because of the great performance.
     * Install [GLPK](https://www.gnu.org/software/glpk/) in the newest version (`4.6.5`) and add it to your path.
         * GLPK is an open-source ILP solver that can be used without a charge.
@@ -58,6 +58,7 @@ By using this settings, you should be unable to commit unformatted code.
 ## Usage (running simulations)
 
 Please refer to the [GIPS examples reposiory](https://github.com/Echtzeitsysteme/gips-examples).
+
 
 ## Tests
 

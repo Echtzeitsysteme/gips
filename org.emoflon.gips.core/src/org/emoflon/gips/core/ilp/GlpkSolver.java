@@ -289,14 +289,29 @@ public class GlpkSolver extends ILPSolver {
 				if (cnstr == null) {
 					continue;
 				}
-				final int size = cnstr.lhsTerms().size();
+
+				// For GLPK, we have to cumulate all weights for identical variables
+				final Map<ILPVariable<?>, Double> cumulatedWeights = new HashMap<>();
+
+				for (int i = 0; i < cnstr.lhsTerms().size(); i++) {
+					final ILPVariable<?> var = cnstr.lhsTerms().get(i).variable();
+					if (cumulatedWeights.containsKey(var)) {
+						final double newWeight = cumulatedWeights.remove(var) + cnstr.lhsTerms().get(i).weight();
+						cumulatedWeights.put(var, newWeight);
+					} else {
+						cumulatedWeights.put(var, cnstr.lhsTerms().get(i).weight());
+					}
+				}
+
+				final int size = cumulatedWeights.size();
 				final SWIGTYPE_p_int vars = GLPK.new_intArray(size + 1);
 				final SWIGTYPE_p_double coeffs = GLPK.new_doubleArray(size + 1);
 
-				for (int termCounter = 0; termCounter < cnstr.lhsTerms().size(); termCounter++) {
-					GLPK.intArray_setitem(vars, termCounter + 1,
-							ilpVars.get(cnstr.lhsTerms().get(termCounter).variable().getName()).index);
-					GLPK.doubleArray_setitem(coeffs, termCounter + 1, cnstr.lhsTerms().get(termCounter).weight());
+				int varIt = 1;
+				for (final ILPVariable<?> v : cumulatedWeights.keySet()) {
+					GLPK.intArray_setitem(vars, varIt, ilpVars.get(v.getName()).index);
+					GLPK.doubleArray_setitem(coeffs, varIt, cumulatedWeights.get(v));
+					varIt++;
 				}
 
 				GLPK.glp_set_row_name(model, globalCnstrCounter, name + "_" + localCnstrCounter);

@@ -47,24 +47,35 @@ public class GurobiSolver extends ILPSolver {
 
 		// TODO: Gurobi log output redirect from stdout to ILPSolverOutput
 		env = new GRBEnv("Gurobi_ILP.log");
-		env.set(DoubleParam.TimeLimit, config.timeLimit());
-		env.set(IntParam.Seed, config.randomSeed());
 		env.set(IntParam.Presolve, config.enablePresolve() ? 1 : 0);
+		if (config.rndSeedEnabled()) {
+			env.set(IntParam.Seed, config.randomSeed());
+		}
 		if (!config.enableOutput()) {
 			env.set(IntParam.OutputFlag, 0);
 		}
 		if (config.enableTolerance()) {
 			env.set(DoubleParam.OptimalityTol, config.tolerance());
 		}
+		if (config.timeLimitEnabled()) {
+			env.set(DoubleParam.TimeLimit, config.timeLimit());
+		}
 		model = new GRBModel(env);
-		model.set(DoubleParam.TimeLimit, config.timeLimit());
-		model.set(IntParam.Seed, config.randomSeed());
+		// Double all settings to model (is this even necessary?)
+		model.set(IntParam.Presolve, config.enablePresolve() ? 1 : 0);
+		if (config.timeLimitEnabled()) {
+			model.set(DoubleParam.TimeLimit, config.timeLimit());
+		}
+		if (config.rndSeedEnabled()) {
+			model.set(IntParam.Seed, config.randomSeed());
+		}
 	}
 
 	@Override
 	public ILPSolverOutput solve() {
 		ILPSolverStatus status = null;
 		double objVal = -1;
+		int solCount = -1;
 
 		try {
 			// Solving starts here
@@ -72,6 +83,7 @@ public class GurobiSolver extends ILPSolver {
 			// TODO: Set optimality tolerance here
 			model.optimize();
 			final int grbStatus = model.get(GRB.IntAttr.Status);
+			solCount = model.get(GRB.IntAttr.SolCount);
 			switch (grbStatus) {
 			case GRB.UNBOUNDED -> {
 				status = ILPSolverStatus.UNBOUNDED;
@@ -98,7 +110,7 @@ public class GurobiSolver extends ILPSolver {
 			throw new RuntimeException(e);
 		}
 
-		return new ILPSolverOutput(status, objVal, engine.getValidationLog());
+		return new ILPSolverOutput(status, objVal, engine.getValidationLog(), solCount);
 	}
 
 	@Override

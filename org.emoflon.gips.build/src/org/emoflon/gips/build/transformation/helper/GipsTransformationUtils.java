@@ -647,10 +647,10 @@ public final class GipsTransformationUtils {
 			return ExpressionReturnType.number;
 		} else if (expr instanceof IteratorMappingFeatureValue feature) {
 			return extractReturnType(feature.getFeatureExpression());
-		} else if (expr instanceof IteratorMappingNodeValue) {
-			return ExpressionReturnType.object;
 		} else if (expr instanceof IteratorMappingNodeFeatureValue feature) {
 			return extractReturnType(feature.getFeatureExpression());
+		} else if (expr instanceof IteratorMappingNodeValue) {
+			return ExpressionReturnType.object;
 		} else if (expr instanceof IteratorTypeValue) {
 			return ExpressionReturnType.object;
 		} else if (expr instanceof IteratorTypeFeatureValue feature) {

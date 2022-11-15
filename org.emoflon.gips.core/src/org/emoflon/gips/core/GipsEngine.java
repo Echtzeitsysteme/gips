@@ -33,8 +33,8 @@ public abstract class GipsEngine {
 			update();
 
 		nonMappingVariables.clear();
-		constraints.values().parallelStream().forEach(constraint -> constraint.calcAdditionalVariables());
-		constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints());
+		constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());
+		constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
 		if (globalObjective != null)
 			globalObjective.buildObjectiveFunction();
 
@@ -43,11 +43,11 @@ public abstract class GipsEngine {
 
 	public ILPSolverOutput solveILPProblem() {
 		if (validationLog.isNotValid()) {
-			ILPSolverOutput output = new ILPSolverOutput(ILPSolverStatus.INFEASIBLE, Double.NaN, validationLog);
+			ILPSolverOutput output = new ILPSolverOutput(ILPSolverStatus.INFEASIBLE, Double.NaN, validationLog, 0);
 			return output;
 		}
 		ILPSolverOutput output = ilpSolver.solve();
-		if (output.status() != ILPSolverStatus.INFEASIBLE)
+		if (output.status() != ILPSolverStatus.INFEASIBLE && output.solutionCount() > 0)
 			ilpSolver.updateValuesFromSolution();
 
 		return output;

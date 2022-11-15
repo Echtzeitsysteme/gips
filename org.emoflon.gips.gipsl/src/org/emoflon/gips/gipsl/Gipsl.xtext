@@ -306,27 +306,6 @@ GipsBoolean returns ecore::EBoolean:
 	TRUE | FALSE
 ;
 
-terminal TRUE returns ecore::EBoolean:
-	'true'
-;
-
-terminal FALSE returns ecore::EBoolean:
-	'false'
-;
-
 GipsStringLiteral returns ecore::EString:
 	STRING
 ;
-
-terminal ID: '^'?('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
-terminal INT returns ecore::EInt: ('0'..'9')+;
-terminal STRING:
-			'"' ( '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */ | !('\\'|'"') )* '"' |
-			"'" ( '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */ | !('\\'|"'") )* "'"
-		;
-terminal ML_COMMENT : '/*' -> '*/';
-terminal SL_COMMENT : '//' !('\n'|'\r')* ('\r'? '\n')?;
-
-terminal WS         : (' '|'\t'|'\r'|'\n')+;
-
-terminal ANY_OTHER: .;

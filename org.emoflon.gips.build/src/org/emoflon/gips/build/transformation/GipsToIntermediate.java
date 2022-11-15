@@ -133,8 +133,21 @@ public class GipsToIntermediate {
 			throw new IllegalArgumentException("Unsupported solver type: " + eConfig.getSolver());
 		}
 		}
-		config.setSolverHomeDir(eConfig.getHome().replace("\"", ""));
-		config.setSolverLicenseFile(eConfig.getLicense().replace("\"", ""));
+
+		// If no home folder is provided, use 'null' instead
+		if (eConfig.getHome() != null) {
+			config.setSolverHomeDir(eConfig.getHome().replace("\"", ""));
+		} else {
+			config.setSolverHomeDir(null);
+		}
+
+		// If no license folder is provided, use 'null' instead
+		if (eConfig.getLicense() != null) {
+			config.setSolverLicenseFile(eConfig.getLicense().replace("\"", ""));
+		} else {
+			config.setSolverLicenseFile(null);
+		}
+
 		config.setBuildLaunchConfig(eConfig.isEnableLaunchConfig());
 		if (eConfig.isEnableLaunchConfig())
 			config.setMainFile(eConfig.getMainLoc().replace("\"", ""));
@@ -152,8 +165,8 @@ public class GipsToIntermediate {
 			config.setIlpTimeLimit(eConfig.getTimeLimit());
 		}
 
-		config.setEnableCustomTolerance(eConfig.isEnableTolernace());
-		if (eConfig.isEnableTolernace()) {
+		config.setEnableCustomTolerance(eConfig.isEnableTolerance());
+		if (eConfig.isEnableTolerance()) {
 			config.setTolerance(eConfig.getTolerance());
 		}
 		data.model().setConfig(config);

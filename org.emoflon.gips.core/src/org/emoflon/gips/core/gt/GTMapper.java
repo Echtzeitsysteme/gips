@@ -4,17 +4,19 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsMapper;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
-import org.emoflon.ibex.gt.api.GraphTransformationMatch;
-import org.emoflon.ibex.gt.api.GraphTransformationRule;
+import org.emoflon.ibex.gt.engine.IBeXGTCoMatch;
+import org.emoflon.ibex.gt.engine.IBeXGTCoPattern;
+import org.emoflon.ibex.gt.engine.IBeXGTMatch;
+import org.emoflon.ibex.gt.engine.IBeXGTPattern;
+import org.emoflon.ibex.gt.engine.IBeXGTRule;
 
-public abstract class GTMapper<GTM extends GTMapping<M, R>, M extends GraphTransformationMatch<M, R>, R extends GraphTransformationRule<M, R>>
+public abstract class GTMapper<GTM extends GTMapping<M, P>, M extends IBeXGTMatch<M, P>, P extends IBeXGTPattern<P, M>, R extends IBeXGTRule<R, P, M, CP, CM>, CP extends IBeXGTCoPattern<CP, CM, R, P, M>, CM extends IBeXGTCoMatch<CM, CP, R, P, M>>
 		extends GipsMapper<GTM> {
 
 	final protected R rule;
@@ -31,12 +33,14 @@ public abstract class GTMapper<GTM extends GTMapping<M, R>, M extends GraphTrans
 		return rule;
 	}
 
-	public Collection<Optional<M>> applyNonZeroMappings() {
-		return getNonZeroVariableMappings().stream().map(m -> rule.apply(m.match)).collect(Collectors.toSet());
+	public Collection<CM> applyNonZeroMappings() {
+		return getNonZeroVariableMappings().stream().map(m -> rule.apply(m.match)).filter(m -> m != null)
+				.collect(Collectors.toSet());
 	}
 
-	public Collection<Optional<M>> applyMappings(Function<Integer, Boolean> predicate) {
-		return getMappings(predicate).stream().map(m -> rule.apply(m.match)).collect(Collectors.toSet());
+	public Collection<CM> applyMappings(Function<Integer, Boolean> predicate) {
+		return getMappings(predicate).stream().map(m -> rule.apply(m.match)).filter(m -> m != null)
+				.collect(Collectors.toSet());
 	}
 
 	protected abstract GTM convertMatch(final String ilpVariable, final M match);

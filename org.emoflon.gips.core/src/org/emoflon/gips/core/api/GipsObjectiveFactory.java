@@ -3,9 +3,9 @@ package org.emoflon.gips.core.api;
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
-import org.emoflon.ibex.gt.api.GraphTransformationAPI;
+import org.emoflon.ibex.gt.api.IBeXGtAPI;
 
-public abstract class GipsObjectiveFactory<ENGINE extends GipsEngine, EMOFLON_API extends GraphTransformationAPI> {
+public abstract class GipsObjectiveFactory<ENGINE extends GipsEngine, EMOFLON_API extends IBeXGtAPI<?, ?, ?>> {
 	protected final ENGINE engine;
 	protected final EMOFLON_API eMoflonApi;
 

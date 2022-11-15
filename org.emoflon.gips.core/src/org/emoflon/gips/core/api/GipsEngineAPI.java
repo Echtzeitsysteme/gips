@@ -19,32 +19,26 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
-import org.emoflon.ibex.gt.api.GraphTransformationAPI;
-import org.emoflon.ibex.gt.api.GraphTransformationApp;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPatternModelPackage;
+import org.emoflon.ibex.common.coremodel.IBeXCoreModel.IBeXCoreModelPackage;
+import org.emoflon.ibex.gt.api.IBeXGtAPI;
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.IBeXGTModelPackage;
 
-public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<EMOFLON_API>, EMOFLON_API extends GraphTransformationAPI>
-		extends GipsEngine {
+public abstract class GipsEngineAPI<EMOFLON_API extends IBeXGtAPI<?, ?, ?>> extends GipsEngine {
 
-	final protected EMOFLON_APP eMoflonApp;
 	protected EMOFLON_API eMoflonAPI;
 	protected GipsIntermediateModel gipsModel;
 	final protected Map<String, Mapping> name2Mapping = new HashMap<>();
 	protected ILPSolverConfig solverConfig;
 	protected GipsMapperFactory<EMOFLON_API> mapperFactory;
-	protected GipsConstraintFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> constraintFactory;
-	protected GipsObjectiveFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> objectiveFactory;
+	protected GipsConstraintFactory<? extends GipsEngineAPI<EMOFLON_API>, EMOFLON_API> constraintFactory;
+	protected GipsObjectiveFactory<? extends GipsEngineAPI<EMOFLON_API>, EMOFLON_API> objectiveFactory;
 
-	protected GipsEngineAPI(final EMOFLON_APP eMoflonApp) {
-		this.eMoflonApp = eMoflonApp;
+	protected GipsEngineAPI(final EMOFLON_API eMoflonAPI) {
+		this.eMoflonAPI = eMoflonAPI;
 	}
 
 	public void setSolverConfig(final ILPSolverConfig solverConfig) {
 		this.solverConfig = solverConfig;
-	}
-
-	public EMOFLON_APP getEMoflonApp() {
-		return eMoflonApp;
 	}
 
 	public EMOFLON_API getEMoflonAPI() {
@@ -58,7 +52,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 
 	@Override
 	public void saveResult() throws IOException {
-		eMoflonApp.getModel().getResources().get(0).save(null);
+		eMoflonAPI.getModel().getResources().get(0).save(null);
 	}
 
 	@Override
@@ -66,13 +60,13 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		// Create new model for saving
 		ResourceSet rs = new ResourceSetImpl();
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap()
-				.putAll(eMoflonApp.getModel().getResourceFactoryRegistry().getExtensionToFactoryMap());
+				.putAll(eMoflonAPI.getModel().getResourceFactoryRegistry().getExtensionToFactoryMap());
 		Resource r = rs.createResource(URI.createFileURI(path));
 		// Fetch model contents from eMoflon
-		r.getContents().addAll(eMoflonApp.getModel().getResources().get(0).getContents());
+		r.getContents().addAll(eMoflonAPI.getModel().getResources().get(0).getContents());
 		r.save(null);
 		// Hand model back to owner
-		eMoflonApp.getModel().getResources().get(0).getContents().addAll(r.getContents());
+		eMoflonAPI.getModel().getResources().get(0).getContents().addAll(r.getContents());
 	}
 
 	@Override
@@ -91,9 +85,13 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	}
 
 	protected void initInternal(final URI gipsModelURI, final URI modelUri) {
-		eMoflonApp.registerMetaModels();
-		eMoflonApp.loadModel(modelUri);
-		eMoflonAPI = eMoflonApp.initAPI();
+		try {
+			eMoflonAPI.addModel(modelUri);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		eMoflonAPI.initializeEngine();
 		loadIntermediateModel(gipsModelURI);
 		initTypeIndexer();
 		validationLog = new GipsConstraintValidationLog();
@@ -119,7 +117,8 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 				new XMIResourceFactoryImpl());
 
 		rs.getPackageRegistry().put(GipsIntermediatePackage.eNS_URI, GipsIntermediatePackage.eINSTANCE);
-		rs.getPackageRegistry().put(IBeXPatternModelPackage.eNS_URI, IBeXPatternModelPackage.eINSTANCE);
+		rs.getPackageRegistry().put(IBeXGTModelPackage.eNS_URI, IBeXGTModelPackage.eINSTANCE);
+		rs.getPackageRegistry().put(IBeXCoreModelPackage.eNS_URI, IBeXCoreModelPackage.eINSTANCE);
 
 		Resource model = null;
 		try {

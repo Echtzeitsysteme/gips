@@ -19,18 +19,18 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
-import org.emoflon.ibex.gt.api.GraphTransformationAPI;
+import org.emoflon.ibex.gt.api.IBeXGtAPI;
 
 public class TypeIndexer {
 
-	final protected GraphTransformationAPI eMoflonAPI;
+	final protected IBeXGtAPI<?, ?, ?> eMoflonAPI;
 	final protected GipsIntermediateModel gipsModel;
 	protected TypeListener listener;
 	final protected Map<EClass, Set<EObject>> index = Collections.synchronizedMap(new HashMap<>());
 	final protected Map<String, EClass> typeByName = Collections.synchronizedMap(new HashMap<>());
 	protected boolean cascadingNotifications = false;
 
-	public TypeIndexer(final GraphTransformationAPI eMoflonAPI, final GipsIntermediateModel gipsModel) {
+	public TypeIndexer(final IBeXGtAPI<?, ?, ?> eMoflonAPI, final GipsIntermediateModel gipsModel) {
 		this.eMoflonAPI = eMoflonAPI;
 		this.gipsModel = gipsModel;
 		initIndex();

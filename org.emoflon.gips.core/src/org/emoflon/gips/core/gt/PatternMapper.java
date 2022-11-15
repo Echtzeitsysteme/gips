@@ -7,10 +7,10 @@ import java.util.Map;
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsMapper;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
-import org.emoflon.ibex.gt.api.GraphTransformationMatch;
-import org.emoflon.ibex.gt.api.GraphTransformationPattern;
+import org.emoflon.ibex.gt.engine.IBeXGTMatch;
+import org.emoflon.ibex.gt.engine.IBeXGTPattern;
 
-public abstract class PatternMapper<PM extends GTMapping<M, P>, M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
+public abstract class PatternMapper<PM extends GTMapping<M, P>, M extends IBeXGTMatch<M, P>, P extends IBeXGTPattern<P, M>>
 		extends GipsMapper<PM> {
 
 	final protected P pattern;

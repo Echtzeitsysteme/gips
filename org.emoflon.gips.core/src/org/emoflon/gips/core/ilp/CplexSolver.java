@@ -79,8 +79,10 @@ public class CplexSolver extends ILPSolver {
 
 			// Get the objective result
 			double objVal = 0;
+			int solCounter = -1;
 			if (solve) {
 				objVal = cplex.getObjValue();
+				solCounter = cplex.getSolnPoolNsolns();
 			}
 
 			// Determine status
@@ -99,7 +101,7 @@ public class CplexSolver extends ILPSolver {
 				throw new RuntimeException("Unknown solver status.");
 			}
 
-			return new ILPSolverOutput(status, objVal, engine.getValidationLog());
+			return new ILPSolverOutput(status, objVal, engine.getValidationLog(), solCounter);
 		} catch (final IloException ex) {
 			throw new RuntimeException(ex);
 		}

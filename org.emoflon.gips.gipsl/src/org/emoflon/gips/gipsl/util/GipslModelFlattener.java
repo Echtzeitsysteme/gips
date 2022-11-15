@@ -1,4 +1,4 @@
-package org.emoflon.gips.build.transformation;
+package org.emoflon.gips.gipsl.util;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -7,7 +7,6 @@ import org.emoflon.gips.gipsl.gipsl.EditorFile;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipslFactory;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
-import org.emoflon.gips.gipsl.util.GipslResourceManager;
 import org.emoflon.ibex.gt.gtl.util.GTLModelFlattener;
 
 public class GipslModelFlattener extends GTLModelFlattener {

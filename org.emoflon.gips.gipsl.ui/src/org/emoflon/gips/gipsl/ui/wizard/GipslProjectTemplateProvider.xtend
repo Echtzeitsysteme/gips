@@ -32,19 +32,22 @@ final class HelloWorldProject {
 	val advanced = check("Advanced:", false)
 	val advancedGroup = group("Properties")
 	val path = text("Package:", "gipsl", "The package path to place the files in", advancedGroup)
+	val solver = text("ILP Solver:", "GLPK", "The ILP solver to use", advancedGroup)
 
 	override protected updateVariables() {
 		path.enabled = advanced.value
 		if (!advanced.value) {
 			path.value = "gipsl"
+			solver.value = "GLPK"
 		}
 	}
 
 	override protected validate() {
-		if (path.value.matches('[a-z][a-z0-9_]*(/[a-z][a-z0-9_]*)*'))
-			null
-		else
-			new Status(ERROR, "Wizard", "'" + path + "' is not a valid package name")
+		if (!path.value.matches('[a-z][a-z0-9_]*(/[a-z][a-z0-9_]*)*'))
+			new Status(ERROR, "Wizard", "'" + path + "' is not a valid package name.")
+
+		if (!(solver.value == "GLPK" || solver.value == "GUROBI" || solver.value == "CPLEX"))
+			new Status(ERROR, "Wizard", "'" + solver + "' is not a valid solver name. User 'GLPK', 'GUROBI', or 'CPLEX' instead.")
 	}
 
 	override generateProjects(IProjectGenerator generator) {
@@ -60,12 +63,13 @@ final class HelloWorldProject {
 				// import a metamodel here
 				
 				config {  
-					solver := GUROBI [home:="fu", license:="bar"];
+					solver := «solver» [home:="fu", license:="bar"];
 					launchConfig := true [main := "TODO"];
 					timeLimit := true [value := 42.0];
 					randomSeed := true [value := 73];
 					presolve := true;
 					debugOutput := true;
+					tolerance := true [value := 0.00001 ];
 				}
 				
 				// specify an example rule

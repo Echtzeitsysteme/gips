@@ -76,10 +76,10 @@ public class GlpkSolver extends ILPSolver {
 		// GLPK initialization
 		iocp = new glp_iocp();
 		GLPK.glp_init_iocp(iocp);
-		if (config.enablePresolve()) {
-			iocp.setPresolve(GLPK.GLP_ON);
+		iocp.setPresolve(config.enablePresolve() ? GLPK.GLP_ON : GLPK.GLP_OFF);
+		if (config.timeLimitEnabled()) {
+			iocp.setTm_lim((int) config.timeLimit() * 1000); // seconds to milliseconds
 		}
-		iocp.setTm_lim((int) config.timeLimit() * 1000); // seconds to milliseconds
 		if (config.enableTolerance()) {
 			iocp.setTol_obj(config.tolerance());
 		}

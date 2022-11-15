@@ -2,11 +2,8 @@ package org.emoflon.gips.build.transformation;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -16,7 +13,7 @@ import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
 import org.emoflon.gips.build.transformation.transformer.ArithmeticExpressionTransformer;
 import org.emoflon.gips.build.transformation.transformer.BooleanExpressionTransformer;
 import org.emoflon.gips.build.transformation.transformer.TransformerFactory;
-import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.EditorFile;
 import org.emoflon.gips.gipsl.gipsl.GipsConfig;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsGlobalObjective;
@@ -51,16 +48,11 @@ import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
-import org.emoflon.ibex.gt.editor.gT.EditorNode;
-import org.emoflon.ibex.gt.editor.gT.EditorPattern;
-import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
-import org.emoflon.ibex.gt.transformations.EditorToIBeXPatternTransformation;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
+import org.emoflon.ibex.gt.gtl.gTL.GTLRuleType;
+import org.emoflon.ibex.gt.gtl.gTL.SlimRule;
+import org.emoflon.ibex.gt.gtl.gTL.SlimRuleNode;
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTPattern;
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTRule;
 import org.logicng.formulas.Formula;
 import org.logicng.formulas.Literal;
 
@@ -71,8 +63,8 @@ public class GipsToIntermediate {
 	final protected TransformerFactory transformationFactory;
 	protected int constraintCounter = 0;
 
-	public GipsToIntermediate(final EditorGTFile gipsSlangFile) {
-		data = new GipsTransformationData(factory.createGipsIntermediateModel(), gipsSlangFile);
+	public GipsToIntermediate(final EditorFile flattenedFile) {
+		data = new GipsTransformationData(factory.createGipsIntermediateModel(), flattenedFile);
 		this.transformationFactory = new TransformerFactory(data);
 	}
 
@@ -95,24 +87,6 @@ public class GipsToIntermediate {
 	}
 
 	protected void preprocessGipslFile() {
-		EditorToIBeXPatternTransformation ibexTransformer = new EditorToIBeXPatternTransformation();
-		data.model().setIbexModel(ibexTransformer.transform(data.gipsSlangFile()));
-
-		Set<org.emoflon.ibex.gt.editor.gT.EditorGTFile> foreignFiles = new HashSet<>();
-		data.gipsSlangFile().getImportedPattern().forEach(
-				p -> foreignFiles.add((org.emoflon.ibex.gt.editor.gT.EditorGTFile) p.getPattern().eContainer()));
-		for (org.emoflon.ibex.gt.editor.gT.EditorGTFile foreignFile : foreignFiles) {
-			ibexTransformer = new EditorToIBeXPatternTransformation();
-			IBeXModel foreignModel = ibexTransformer.transform(foreignFile);
-			IBeXModel model = data.model().getIbexModel();
-			// TODO: For now lets just import everything -> this might lead to naming
-			// collisions and must be performed more selectively in the future.
-			model.getNodeSet().getNodes().addAll(foreignModel.getNodeSet().getNodes());
-			model.getEdgeSet().getEdges().addAll(foreignModel.getEdgeSet().getEdges());
-			model.getPatternSet().getContextPatterns().addAll(foreignModel.getPatternSet().getContextPatterns());
-			model.getRuleSet().getRules().addAll(foreignModel.getRuleSet().getRules());
-		}
-
 		mapGT2IBeXElements();
 	}
 
@@ -175,25 +149,17 @@ public class GipsToIntermediate {
 	protected void transformMappings() {
 		data.gipsSlangFile().getMappings().forEach(eMapping -> {
 			Mapping mapping = null;
-			if (GTEditorPatternUtils.containsCreatedOrDeletedElements(eMapping.getPattern())) {
+			if (eMapping.getPattern().getType() == GTLRuleType.RULE) {
 				GTMapping gtMapping = factory.createGTMapping();
 				gtMapping.setRule(data.ePattern2Rule().get(eMapping.getPattern()));
-				if (gtMapping.getRule().getLhs() instanceof IBeXContextAlternatives alt) {
-					gtMapping.setContextPattern(alt.getContext());
-				} else {
-					gtMapping.setContextPattern((IBeXContextPattern) gtMapping.getRule().getLhs());
-				}
+				gtMapping.setContextPattern((GTPattern) gtMapping.getRule().getPrecondition());
 				mapping = gtMapping;
 			} else {
 				PatternMapping pmMapping = factory.createPatternMapping();
 				mapping = pmMapping;
 
-				IBeXContext context = data.ePattern2Context().get(eMapping.getPattern());
-				if (context instanceof IBeXContextAlternatives alt) {
-					pmMapping.setContextPattern(alt.getContext());
-				} else {
-					pmMapping.setContextPattern((IBeXContextPattern) context);
-				}
+				GTPattern context = data.ePattern2Context().get(eMapping.getPattern());
+				pmMapping.setContextPattern(context);
 				pmMapping.setPattern(context);
 			}
 
@@ -635,56 +601,28 @@ public class GipsToIntermediate {
 	}
 
 	protected void mapGT2IBeXElements() {
-		Set<EditorPattern> allEditorPatterns = new HashSet<>();
-		allEditorPatterns.addAll(data.gipsSlangFile().getPatterns().stream()
-				.filter(pattern -> GTEditorPatternUtils.containsCreatedOrDeletedElements(pattern))
-				.collect(Collectors.toList()));
-		allEditorPatterns.addAll(data.gipsSlangFile().getImportedPattern().stream().map(ip -> ip.getPattern())
-				.filter(pattern -> GTEditorPatternUtils.containsCreatedOrDeletedElements(pattern))
-				.collect(Collectors.toList()));
+		Map<String, SlimRule> name2slimRule = new HashMap<>();
+		Map<SlimRule, Map<String, SlimRuleNode>> name2slimRuleNode = new HashMap<>();
+		data.gipsSlangFile().getRules().forEach(r -> {
+			name2slimRule.put(r.getName(), r);
+			Map<String, SlimRuleNode> name2node = new HashMap<>();
+			name2slimRuleNode.put(r, name2node);
+			r.getContextNodes().forEach(c -> name2node.put(c.getContext().getName(), (SlimRuleNode) c.getContext()));
+			r.getCreatedNodes().forEach(c -> name2node.put(c.getCreation().getName(), (SlimRuleNode) c.getCreation()));
+			r.getDeletedNodes().forEach(c -> name2node.put(c.getDeletion().getName(), c.getDeletion()));
+		});
 
-		for (EditorPattern ePattern : allEditorPatterns) {
-			for (IBeXRule rule : data.model().getIbexModel().getRuleSet().getRules()) {
-				if (rule.getName().equals(ePattern.getName())) {
-					data.ePattern2Rule().put(ePattern, rule);
-					for (EditorNode eNode : ePattern.getNodes()) {
-						for (IBeXNode node : toContextPattern(rule.getLhs()).getSignatureNodes()) {
-							if (eNode.getName().equals(node.getName())) {
-								data.eNode2Node().put(eNode, node);
-							}
-						}
-					}
-				}
-			}
+		for (GTRule rule : data.model().getIbexModel().getRuleSet().getRules()) {
+			data.ePattern2Rule().put(name2slimRule.get(rule.getName()), rule);
+			Map<String, SlimRuleNode> name2node = name2slimRuleNode.get(name2slimRule.get(rule.getName()));
+			rule.getPrecondition().getSignatureNodes()
+					.forEach(n -> data.eNode2Node().put(name2node.get(n.getName()), n));
 		}
 
-		allEditorPatterns = new HashSet<>();
-		allEditorPatterns.addAll(data.gipsSlangFile().getPatterns());
-		allEditorPatterns.addAll(data.gipsSlangFile().getImportedPattern().stream().map(ip -> ip.getPattern())
-				.collect(Collectors.toList()));
-
-		for (EditorPattern ePattern : allEditorPatterns) {
-			for (IBeXContext pattern : data.model().getIbexModel().getPatternSet().getContextPatterns()) {
-				if (pattern.getName().equals(ePattern.getName())) {
-					data.ePattern2Context().put(ePattern, pattern);
-
-					for (EditorNode eNode : ePattern.getNodes()) {
-						for (IBeXNode node : toContextPattern(pattern).getSignatureNodes()) {
-							if (eNode.getName().equals(node.getName())) {
-								data.eNode2Node().putIfAbsent(eNode, node);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	public static IBeXContextPattern toContextPattern(final IBeXContext context) {
-		if (context instanceof IBeXContextAlternatives alt) {
-			return alt.getContext();
-		} else {
-			return (IBeXContextPattern) context;
-		}
+		data.model().getIbexModel().getPatternSet().getPatterns().stream().map(p -> (GTPattern) p).forEach(p -> {
+			data.ePattern2Context().put(name2slimRule.get(p.getName()), p);
+			Map<String, SlimRuleNode> name2node = name2slimRuleNode.get(name2slimRule.get(p.getName()));
+			p.getSignatureNodes().forEach(n -> data.eNode2Node().put(name2node.get(n.getName()), n));
+		});
 	}
 }

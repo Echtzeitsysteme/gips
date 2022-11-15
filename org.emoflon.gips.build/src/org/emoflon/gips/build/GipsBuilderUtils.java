@@ -3,12 +3,9 @@ package org.emoflon.gips.build;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.jar.Manifest;
 
@@ -31,16 +28,10 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.emoflon.gips.build.generator.GipsImportManager;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
-import org.emoflon.ibex.gt.codegen.EClassifiersManager;
-import org.emoflon.ibex.gt.codegen.GTEngineBuilderExtension;
-import org.emoflon.ibex.gt.codegen.GTEngineExtension;
-import org.emoflon.ibex.gt.codegen.JavaFileGenerator;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPattern;
+import org.emoflon.ibex.common.coremodel.IBeXCoreModel.IBeXModel;
 import org.gervarro.eclipse.workspace.util.AntPatternCondition;
 import org.moflon.core.build.CleanVisitor;
 import org.moflon.core.plugins.manifest.ManifestFileUpdater;
-import org.moflon.core.utilities.ExtensionsUtil;
 import org.moflon.core.utilities.WorkspaceHelper;
 
 public final class GipsBuilderUtils {
@@ -125,7 +116,7 @@ public final class GipsBuilderUtils {
 		List<String> dependencies = new ArrayList<>();
 //		TODO: Add dependencies on Gips runtime libraries!
 		dependencies.addAll(Arrays.asList("org.emoflon.ibex.common", "org.emoflon.ibex.gt", "org.emoflon.gips.core"));
-		collectEngineExtensions().forEach(engine -> dependencies.addAll(engine.getDependencies()));
+//		collectEngineExtensions().forEach(engine -> dependencies.addAll(engine.getDependencies()));
 		boolean changedBasics = ManifestFileUpdater.setBasicProperties(manifest, project.getName());
 		boolean updatedDependencies = ManifestFileUpdater.updateDependencies(manifest, dependencies);
 		return changedBasics || updatedDependencies;
@@ -173,7 +164,7 @@ public final class GipsBuilderUtils {
 				.getFolder(GEN_FOLDER + "/" + project.getName().replace(".", "/") + "/" + API_FOLDER);
 		GipsAPIData apiData = new GipsAPIData(apiPackage);
 		ensureFolderExists(apiPackage);
-		generateEMoflonAPI(project, apiData, ibexModel, packageRegistry);
+//		generateEMoflonAPI(project, apiData, ibexModel, packageRegistry);
 		return apiData;
 	}
 
@@ -237,60 +228,60 @@ public final class GipsBuilderUtils {
 		return folder;
 	}
 
-	/**
-	 * Generates the API for the given parameters
-	 *
-	 * @param project         in/for which the API should be generated
-	 * @param apiPackage      the API package folder
-	 * @param ibexModel       the model, which the API needs to include
-	 * @param packageRegistry including the ePackages for API generation
-	 * @throws CoreException if API generation fails due to missing folders/ invalid
-	 *                       generation paths
-	 */
-	public static void generateEMoflonAPI(final IProject project, final GipsAPIData apiData, final IBeXModel ibexModel,
-			final Registry packageRegistry) throws CoreException {
-		JavaFileGenerator generator = new JavaFileGenerator(getClassNamePrefix(project), project.getName(),
-				createEClassifierManager(packageRegistry));
-		// ensure generation folders exist
-		IFolder matchesPackage = ensureFolderExists(apiData.apiPackageFolder.getFolder("matches"));
-		IFolder rulesPackage = ensureFolderExists(apiData.apiPackageFolder.getFolder("rules"));
-		IFolder probabilitiesPackage = ensureFolderExists(apiData.apiPackageFolder.getFolder("probabilities"));
-		// Store in API-Data
-		apiData.setMatchesPkg(matchesPackage);
-		apiData.setRulesPkg(rulesPackage);
-		apiData.setProbabilitiesPkg(probabilitiesPackage);
-
-		// generate code for rules
-		Set<IBeXPattern> ruleContextPatterns = new HashSet<>();
-		ibexModel.getRuleSet().getRules().forEach(ibexRule -> {
-			generator.generateMatchClass(matchesPackage, ibexRule);
-			generator.generateRuleClass(rulesPackage, ibexRule);
-			generator.generateProbabilityClass(probabilitiesPackage, ibexRule);
-			ruleContextPatterns.add(ibexRule.getLhs());
-		});
-
-		// generate code for patterns
-		ibexModel.getPatternSet().getContextPatterns().stream()
-				.filter(pattern -> !ruleContextPatterns.contains(pattern))
-				.filter(pattern -> !pattern.getName().contains("CONDITION")).forEach(pattern -> {
-					generator.generateMatchClass(matchesPackage, pattern);
-					generator.generatePatternClass(rulesPackage, pattern);
-				});
-
-		// generate the Java IBEX APP and API for the model
-		generator.generateAPIClass(apiData.apiPackageFolder, ibexModel, String.format("%s/%s/%s/api/ibex-patterns.xmi",
-				project.getName(), "src-gen", project.getName().replace(".", "/")));
-		generator.generateAppClass(apiData.apiPackageFolder);
-		collectEngineExtensions().forEach(e -> generator.generateAppClassForEngine(apiData.apiPackageFolder, e));
-
-		apiData.apiClassNamePrefix = getClassNamePrefix(project);
-		apiData.apiClass = getClassNamePrefix(project) + "API";
-		apiData.appClass = getClassNamePrefix(project) + "App";
-		collectEngineExtensions().forEach(engineExt -> {
-			apiData.engineAppClasses.put(engineExt.getEngineName(),
-					getClassNamePrefix(project) + engineExt.getEngineName() + "App");
-		});
-	}
+//	/**
+//	 * Generates the API for the given parameters
+//	 *
+//	 * @param project         in/for which the API should be generated
+//	 * @param apiPackage      the API package folder
+//	 * @param ibexModel       the model, which the API needs to include
+//	 * @param packageRegistry including the ePackages for API generation
+//	 * @throws CoreException if API generation fails due to missing folders/ invalid
+//	 *                       generation paths
+//	 */
+//	public static void generateEMoflonAPI(final IProject project, final GipsAPIData apiData, final IBeXModel ibexModel,
+//			final Registry packageRegistry) throws CoreException {
+//		JavaFileGenerator generator = new JavaFileGenerator(getClassNamePrefix(project), project.getName(),
+//				createEClassifierManager(packageRegistry));
+//		// ensure generation folders exist
+//		IFolder matchesPackage = ensureFolderExists(apiData.apiPackageFolder.getFolder("matches"));
+//		IFolder rulesPackage = ensureFolderExists(apiData.apiPackageFolder.getFolder("rules"));
+//		IFolder probabilitiesPackage = ensureFolderExists(apiData.apiPackageFolder.getFolder("probabilities"));
+//		// Store in API-Data
+//		apiData.setMatchesPkg(matchesPackage);
+//		apiData.setRulesPkg(rulesPackage);
+//		apiData.setProbabilitiesPkg(probabilitiesPackage);
+//
+//		// generate code for rules
+//		Set<IBeXPattern> ruleContextPatterns = new HashSet<>();
+//		ibexModel.getRuleSet().getRules().forEach(ibexRule -> {
+//			generator.generateMatchClass(matchesPackage, ibexRule);
+//			generator.generateRuleClass(rulesPackage, ibexRule);
+//			generator.generateProbabilityClass(probabilitiesPackage, ibexRule);
+//			ruleContextPatterns.add(ibexRule.getLhs());
+//		});
+//
+//		// generate code for patterns
+//		ibexModel.getPatternSet().getContextPatterns().stream()
+//				.filter(pattern -> !ruleContextPatterns.contains(pattern))
+//				.filter(pattern -> !pattern.getName().contains("CONDITION")).forEach(pattern -> {
+//					generator.generateMatchClass(matchesPackage, pattern);
+//					generator.generatePatternClass(rulesPackage, pattern);
+//				});
+//
+//		// generate the Java IBEX APP and API for the model
+//		generator.generateAPIClass(apiData.apiPackageFolder, ibexModel, String.format("%s/%s/%s/api/ibex-patterns.xmi",
+//				project.getName(), "src-gen", project.getName().replace(".", "/")));
+//		generator.generateAppClass(apiData.apiPackageFolder);
+//		collectEngineExtensions().forEach(e -> generator.generateAppClassForEngine(apiData.apiPackageFolder, e));
+//
+//		apiData.apiClassNamePrefix = getClassNamePrefix(project);
+//		apiData.apiClass = getClassNamePrefix(project) + "API";
+//		apiData.appClass = getClassNamePrefix(project) + "App";
+//		collectEngineExtensions().forEach(engineExt -> {
+//			apiData.engineAppClasses.put(engineExt.getEngineName(),
+//					getClassNamePrefix(project) + engineExt.getEngineName() + "App");
+//		});
+//	}
 
 	/**
 	 * Gets the class name prefix for a given project
@@ -320,38 +311,38 @@ public final class GipsBuilderUtils {
 		return eClassifiersManager;
 	}
 
-	/**
-	 * Creates a classifier manager for the packages in the package registry
-	 *
-	 * @param packageRegistry the package registry, which includes the EPackages,
-	 *                        that should be present in the EClassifier manager
-	 * @return an EClassifier manager for the EPackages in the package registry
-	 */
-	public static EClassifiersManager createEClassifierManager(final Registry packageRegistry) {
-		EClassifiersManager eClassifiersManager = new EClassifiersManager(new HashMap<>());
-		packageRegistry.values().stream().filter(x -> (x instanceof EPackage)).forEach(obj -> {
-			EPackage epackage = (EPackage) obj;
-			eClassifiersManager.loadMetaModelClasses(epackage.eResource());
-		});
-		return eClassifiersManager;
-	}
+//	/**
+//	 * Creates a classifier manager for the packages in the package registry
+//	 *
+//	 * @param packageRegistry the package registry, which includes the EPackages,
+//	 *                        that should be present in the EClassifier manager
+//	 * @return an EClassifier manager for the EPackages in the package registry
+//	 */
+//	public static EClassifiersManager createEClassifierManager(final Registry packageRegistry) {
+//		EClassifiersManager eClassifiersManager = new EClassifiersManager(new HashMap<>());
+//		packageRegistry.values().stream().filter(x -> (x instanceof EPackage)).forEach(obj -> {
+//			EPackage epackage = (EPackage) obj;
+//			eClassifiersManager.loadMetaModelClasses(epackage.eResource());
+//		});
+//		return eClassifiersManager;
+//	}
 
-	/**
-	 * Collects all engine extensions with the GTEngineExtension builder extension
-	 * ID
-	 *
-	 * @return all engine extension with the GTEngine extension ID
-	 */
-	public static Collection<GTEngineExtension> collectEngineExtensions() {
-		return ExtensionsUtil.collectExtensions(GTEngineExtension.BUILDER_EXTENSON_ID, "class",
-				GTEngineExtension.class);
-	}
-
-	/**
-	 * @return all engine builder extensions with the GTEngineBuilder extension ID
-	 */
-	public static Collection<GTEngineBuilderExtension> collectEngineBuilderExtensions() {
-		return ExtensionsUtil.collectExtensions(GTEngineBuilderExtension.BUILDER_EXTENSON_ID, "class",
-				GTEngineBuilderExtension.class);
-	}
+//	/**
+//	 * Collects all engine extensions with the GTEngineExtension builder extension
+//	 * ID
+//	 *
+//	 * @return all engine extension with the GTEngine extension ID
+//	 */
+//	public static Collection<GTEngineExtension> collectEngineExtensions() {
+//		return ExtensionsUtil.collectExtensions(GTEngineExtension.BUILDER_EXTENSON_ID, "class",
+//				GTEngineExtension.class);
+//	}
+//
+//	/**
+//	 * @return all engine builder extensions with the GTEngineBuilder extension ID
+//	 */
+//	public static Collection<GTEngineBuilderExtension> collectEngineBuilderExtensions() {
+//		return ExtensionsUtil.collectExtensions(GTEngineBuilderExtension.BUILDER_EXTENSON_ID, "class",
+//				GTEngineBuilderExtension.class);
+//	}
 }

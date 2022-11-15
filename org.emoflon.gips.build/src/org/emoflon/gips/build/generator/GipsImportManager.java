@@ -14,8 +14,8 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXParameter;
+import org.emoflon.ibex.common.coremodel.IBeXCoreModel.IBeXNode;
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTParameter;
 import org.moflon.core.utilities.EcoreUtils;
 
 public class GipsImportManager {
@@ -175,7 +175,7 @@ public class GipsImportManager {
 	 * @param parameters the parameters
 	 * @return the types for Java import statements
 	 */
-	public Set<String> getImportsForDataTypes(final List<IBeXParameter> parameters) {
+	public Set<String> getImportsForDataTypes(final List<GTParameter> parameters) {
 		return getImportsForTypes(parameters.stream().map(p -> p.getType()).collect(Collectors.toSet()));
 	}
 

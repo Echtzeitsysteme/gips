@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EClass;
-import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.EditorFile;
 import org.emoflon.gips.gipsl.gipsl.GipsBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
@@ -20,28 +20,28 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
-import org.emoflon.ibex.gt.editor.gT.EditorNode;
-import org.emoflon.ibex.gt.editor.gT.EditorPattern;
-import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
+import org.emoflon.ibex.common.coremodel.IBeXCoreModel.IBeXNode;
+import org.emoflon.ibex.gt.gtl.gTL.GTLRuleType;
+import org.emoflon.ibex.gt.gtl.gTL.SlimRule;
+import org.emoflon.ibex.gt.gtl.gTL.SlimRuleNode;
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTPattern;
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTRule;
 
 public record GipsTransformationData(GipsIntermediateModel model, //
-		EditorGTFile gipsSlangFile, //
+		EditorFile gipsSlangFile, //
 		Map<String, GipsBoolExpr> symbol2Expr, //
 		Map<GipsBoolExpr, String> expr2Symbol, //
-		Map<EditorPattern, IBeXRule> ePattern2Rule, //
-		Map<EditorPattern, IBeXContext> ePattern2Context, //
-		Map<EditorPattern, Pattern> ePattern2Pattern, //
-		Map<EditorNode, IBeXNode> eNode2Node, //
+		Map<SlimRule, GTRule> ePattern2Rule, //
+		Map<SlimRule, GTPattern> ePattern2Context, //
+		Map<SlimRule, Pattern> ePattern2Pattern, //
+		Map<SlimRuleNode, IBeXNode> eNode2Node, //
 		Map<GipsMapping, Mapping> eMapping2Mapping, //
 		Map<GipsConstraint, Constraint> eConstraint2Constraint, //
 		Map<GipsStreamExpr, SetOperation> eStream2SetOp, //
 		Map<EClass, Type> eType2Type, //
 		Map<GipsObjective, Objective> eObjective2Objective) {
 
-	public GipsTransformationData(final GipsIntermediateModel model, final EditorGTFile gipsSlangFile) {
+	public GipsTransformationData(final GipsIntermediateModel model, final EditorFile gipsSlangFile) {
 		this(model, gipsSlangFile, new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(),
 				new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
 	}
@@ -82,13 +82,13 @@ public record GipsTransformationData(GipsIntermediateModel model, //
 		return type;
 	}
 
-	public Pattern getPattern(final EditorPattern pattern) {
+	public Pattern getPattern(final SlimRule pattern) {
 		Pattern p = ePattern2Pattern.get(pattern);
 		if (p == null) {
 			p = GipsIntermediateFactory.eINSTANCE.createPattern();
 			p.setName(pattern.getName());
 			p.setPattern(ePattern2Context.get(pattern));
-			p.setIsRule(GTEditorPatternUtils.containsCreatedOrDeletedElements(pattern));
+			p.setIsRule(pattern.getType() == GTLRuleType.RULE);
 			ePattern2Pattern.put(pattern, p);
 		}
 		return p;

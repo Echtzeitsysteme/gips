@@ -50,7 +50,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
-import org.emoflon.ibex.gt.editor.gT.EditorPattern;
+import org.emoflon.ibex.gt.gtl.gTL.SlimRule;
 
 public abstract class AttributeExpressionTransformer<T extends EObject> extends TransformationContext<T> {
 	protected AttributeExpressionTransformer(GipsTransformationData data, T context, TransformerFactory factory) {
@@ -514,7 +514,7 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 		return mappingFeature;
 	}
 
-	protected ValueExpression transformIteratorPatternValue(EditorPattern eMatchContext,
+	protected ValueExpression transformIteratorPatternValue(SlimRule eMatchContext,
 			final GipsStreamExpr streamIteratorContainer) throws Exception {
 		IteratorPatternValue patternValue = factory.createIteratorPatternValue();
 		patternValue.setPatternContext(data.ePattern2Pattern().get(eMatchContext));
@@ -533,7 +533,7 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 	}
 
 	protected ValueExpression transformIteratorPatternNodeValue(final GipsNodeAttributeExpr eNodeAttribute,
-			final EditorPattern pattern, final GipsStreamExpr streamIteratorContainer) throws Exception {
+			final SlimRule pattern, final GipsStreamExpr streamIteratorContainer) throws Exception {
 		IteratorPatternNodeValue patternNode = factory.createIteratorPatternNodeValue();
 		patternNode.setNode(data.eNode2Node().get(eNodeAttribute.getNode()));
 		patternNode.setReturnType(patternNode.getNode().getType());
@@ -555,8 +555,8 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 	}
 
 	protected ValueExpression transformIteratorPatternNodeFeatureValue(final GipsNodeAttributeExpr eNodeAttribute,
-			final EditorPattern pattern, final GipsFeatureExpr featureExpr,
-			final GipsStreamExpr streamIteratorContainer) throws Exception {
+			final SlimRule pattern, final GipsFeatureExpr featureExpr, final GipsStreamExpr streamIteratorContainer)
+			throws Exception {
 		IteratorPatternNodeFeatureValue patternFeature = factory.createIteratorPatternNodeFeatureValue();
 		patternFeature.setNode(data.eNode2Node().get(eNodeAttribute.getNode()));
 		patternFeature.setPatternContext(data.ePattern2Pattern().get(pattern));

@@ -2,13 +2,12 @@ package org.emoflon.gips.build.generator.templates
 
 import org.emoflon.gips.build.generator.GeneratorTemplate
 import org.emoflon.gips.build.generator.TemplateData
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives
 import org.emoflon.gips.intermediate.GipsIntermediate.GTMapping
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTPattern
 
 class GTMappingTemplate extends GeneratorTemplate<GTMapping> {
 	
-	IBeXContextPattern pattern;
+	GTPattern pattern;
 	
 	new(TemplateData data, GTMapping context) {
 		super(data, context)
@@ -23,7 +22,7 @@ class GTMappingTemplate extends GeneratorTemplate<GTMapping> {
 		imports.add(data.apiData.rulesPkg+"."+data.mapping2ruleClassName.get(context))
 		imports.add(data.apiData.matchesPkg+"."+data.mapping2matchClassName.get(context))
 		
-		pattern = (context.rule.lhs instanceof IBeXContextPattern) ? context.rule.lhs as IBeXContextPattern : (context.rule.lhs as IBeXContextAlternatives).context
+		pattern = context.contextPattern
 		imports.addAll(data.classToPackage.getImportsForNodeTypes(pattern.signatureNodes))
 	}
 	

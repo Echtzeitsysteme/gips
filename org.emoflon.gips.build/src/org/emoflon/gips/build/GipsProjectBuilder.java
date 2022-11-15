@@ -1,7 +1,6 @@
 package org.emoflon.gips.build;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -13,9 +12,9 @@ import org.emoflon.gips.build.generator.GipsCodeGenerator;
 import org.emoflon.gips.build.generator.GipsImportManager;
 import org.emoflon.gips.build.transformation.GipsToIntermediate;
 import org.emoflon.gips.gipsl.generator.GipsBuilderExtension;
-import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.EditorFile;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTModel;
 import org.moflon.core.utilities.LogUtils;
 
 public class GipsProjectBuilder implements GipsBuilderExtension {
@@ -38,7 +37,7 @@ public class GipsProjectBuilder implements GipsBuilderExtension {
 
 		LogUtils.info(logger, "GipsProjectBuilder: transforming Gipsl models...");
 		// create intermediate Gips model and ibex patterns
-		EditorGTFile gipsSlangFile = (EditorGTFile) resource.getContents().get(0);
+		EditorFile gipsSlangFile = (EditorFile) resource.getContents().get(0);
 		// use transformer to create intermediate gips model out of the gipsSlang file
 		GipsToIntermediate transformer = new GipsToIntermediate(gipsSlangFile);
 		GipsIntermediateModel model = null;
@@ -50,7 +49,7 @@ public class GipsProjectBuilder implements GipsBuilderExtension {
 			return;
 		}
 		model.setName(resource.getURI().trimFileExtension().lastSegment());
-		IBeXModel ibexModel = model.getIbexModel();
+		GTModel ibexModel = model.getIbexModel();
 
 		LogUtils.info(logger, "GipsProjectBuilder: building eMoflon-API...");
 		GipsAPIData gipsApiData = null;
@@ -75,11 +74,11 @@ public class GipsProjectBuilder implements GipsBuilderExtension {
 				gipsApiData.apiPackageFolder.getProjectRelativePath() + "/gips/gips-model.xmi", true);
 
 		// build HiPE engine code
-		if (ibexModel != null && !ibexModel.getPatternSet().getContextPatterns().isEmpty()) {
-			IFolder packagePath = project.getFolder(project.getName().replace(".", "/"));
-			GipsBuilderUtils.collectEngineBuilderExtensions()
-					.forEach(ext -> ext.run(project, packagePath.getProjectRelativePath(), ibexModel));
-		}
+//		if (ibexModel != null && !ibexModel.getPatternSet().getContextPatterns().isEmpty()) {
+//			IFolder packagePath = project.getFolder(project.getName().replace(".", "/"));
+//			GipsBuilderUtils.collectEngineBuilderExtensions()
+//					.forEach(ext -> ext.run(project, packagePath.getProjectRelativePath(), ibexModel));
+//		}
 		// build Gips API
 		LogUtils.info(logger, "GipsProjectBuilder: building Gips-API...");
 		// set output folders

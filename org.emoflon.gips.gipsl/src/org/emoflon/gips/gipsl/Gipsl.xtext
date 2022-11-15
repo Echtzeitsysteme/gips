@@ -20,13 +20,13 @@ EditorFile: {EditorFile}
 
 GipsConfig : {GipsConfig}
 	'config' '{'
-	'solver' ':=' solver=SolverType '[' 'home' ':=' home=GipsStringLiteral ',' 'license' ':=' license=GipsStringLiteral ']' ';'
+	'solver' ':=' solver=SolverType '[' ('home' ':=' home=GipsStringLiteral ',' 'license' ':=' license=GipsStringLiteral)? ']' ';'
 	('launchConfig' ':=' enableLaunchConfig = GipsBoolean '[' 'main' ':=' mainLoc=GipsStringLiteral ']' ';')?
 	('timeLimit' ':=' enableLimit = GipsBoolean '[' 'value' ':=' timeLimit=GipsDouble ']' ';')?
 	('randomSeed' ':=' enableSeed = GipsBoolean '[' 'value' ':=' rndSeed=GipsInteger ']' ';')?
 	('presolve' ':=' enablePresolve = GipsBoolean ';')?
 	('debugOutput' ':=' enableDebugOutput = GipsBoolean ';')?
-	('tolerance' ':=' enableTolernace = GipsBoolean '[' 'value' ':=' tolerance=GipsDouble ']' ';')?
+	('tolerance' ':=' enableTolerance = GipsBoolean '[' 'value' ':=' tolerance=GipsDouble ']' ';')?
 	'}'
 ;
 

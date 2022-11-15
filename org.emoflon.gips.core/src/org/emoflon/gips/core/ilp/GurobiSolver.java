@@ -47,18 +47,28 @@ public class GurobiSolver extends ILPSolver {
 
 		// TODO: Gurobi log output redirect from stdout to ILPSolverOutput
 		env = new GRBEnv("Gurobi_ILP.log");
-		env.set(DoubleParam.TimeLimit, config.timeLimit());
-		env.set(IntParam.Seed, config.randomSeed());
 		env.set(IntParam.Presolve, config.enablePresolve() ? 1 : 0);
+		if (config.rndSeedEnabled()) {
+			env.set(IntParam.Seed, config.randomSeed());
+		}
 		if (!config.enableOutput()) {
 			env.set(IntParam.OutputFlag, 0);
 		}
 		if (config.enableTolerance()) {
 			env.set(DoubleParam.OptimalityTol, config.tolerance());
 		}
+		if (config.timeLimitEnabled()) {
+			env.set(DoubleParam.TimeLimit, config.timeLimit());
+		}
 		model = new GRBModel(env);
-		model.set(DoubleParam.TimeLimit, config.timeLimit());
-		model.set(IntParam.Seed, config.randomSeed());
+		// Double all settings to model (is this even necessary?)
+		model.set(IntParam.Presolve, config.enablePresolve() ? 1 : 0);
+		if (config.timeLimitEnabled()) {
+			model.set(DoubleParam.TimeLimit, config.timeLimit());
+		}
+		if (config.rndSeedEnabled()) {
+			model.set(IntParam.Seed, config.randomSeed());
+		}
 	}
 
 	@Override

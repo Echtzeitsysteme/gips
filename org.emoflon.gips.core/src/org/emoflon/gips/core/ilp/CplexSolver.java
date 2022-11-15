@@ -55,17 +55,17 @@ public class CplexSolver extends ILPSolver {
 				// TODO: Check if unit (e.g., milliseconds) is correct
 				cplex.setParam(IloCplex.Param.TimeLimit, config.timeLimit());
 			}
-			cplex.setParam(IloCplex.Param.RandomSeed, config.randomSeed());
+			if (config.rndSeedEnabled()) {
+				cplex.setParam(IloCplex.Param.RandomSeed, config.randomSeed());
+			}
 			cplex.setParam(IloCplex.Param.Preprocessing.Presolve, config.enablePresolve());
 			// TODO: Tolerance
 			if (!config.enableOutput()) {
 				cplex.setOut(null);
 			}
-
 		} catch (final IloException e) {
 			throw new RuntimeException(e);
 		}
-
 	}
 
 	@Override

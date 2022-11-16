@@ -1,7 +1,6 @@
 package org.emoflon.gips.build.generator.templates
 
 import org.emoflon.gips.build.generator.GeneratorTemplate
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression
@@ -62,6 +61,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue
+import org.emoflon.gips.build.generator.GipsApiData
 
 abstract class ConstraintTemplate <CONTEXT extends Constraint> extends GeneratorTemplate<CONTEXT> {
 
@@ -71,7 +71,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 	public val builderMethodDefinitions = new HashMap<EObject,String>
 	public val builderMethodCalls2 = new LinkedList<String>
 
-	new(TemplateData data, CONTEXT context) {
+	new(GipsApiData data, CONTEXT context) {
 		super(data, context)
 	}
 	
@@ -356,7 +356,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			}
 		} else if (expr.current instanceof StreamSelectOperation) {
 			val selectOp = expr.current as StreamSelectOperation
-			imports.add(data.classToPackage.getImportsForType(selectOp.type))
+			helper.addImportForType(selectOp.type)
 			if(expr.child === null) {
 				return '''filter(«getIteratorVariableName(expr)» -> «getIteratorVariableName(expr)» instanceof «selectOp.type.name»)
 				.map(«getIteratorVariableName(expr)» -> («selectOp.type.name») «getIteratorVariableName(expr)»)'''
@@ -388,7 +388,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			}
 		} else if (expr.current instanceof StreamSelectOperation) {
 			val selectOp = expr.current as StreamSelectOperation
-			imports.add(data.classToPackage.getImportsForType(selectOp.type))
+			helper.addImportForType(selectOp.type)
 			if(expr.child === null) {
 				return '''filter(«getIteratorVariableName(expr)» -> «getIteratorVariableName(expr)» instanceof «selectOp.type.name»)
 				.map(«getIteratorVariableName(expr)» -> («selectOp.type.name») «getIteratorVariableName(expr)»)'''
@@ -431,14 +431,14 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		if(constExpr instanceof MappingSumExpression) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.")
 		} else if(constExpr instanceof TypeSumExpression) {
-			imports.add(data.classToPackage.getImportsForType(constExpr.type.type))
+			helper.addImportForType(constExpr.type.type)
 			return '''indexer.getObjectsOfType("«constExpr.type.type.name»").parallelStream()
 			.map(type -> («constExpr.type.type.name») type)
 			«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
 			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
 		} else if(constExpr instanceof PatternSumExpression) {
-			imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(constExpr.pattern))
+			imports.add(data.matchPackage + "." + data.pattern2matchClassName.get(constExpr.pattern))
 			return '''engine.getEMoflonAPI().«constExpr.pattern.name»().findMatches(false).parallelStream()
 			«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
 			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
@@ -558,14 +558,14 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		if(varExpr instanceof MappingSumExpression) {
 			throw new UnsupportedOperationException("Mapping stream expressions may not be part of multiplications, fractions, exponentials, roots etc.");
 		} else if(varExpr instanceof TypeSumExpression) {
-			imports.add(data.classToPackage.getImportsForType(varExpr.type.type))
+			helper.addImportForType(varExpr.type.type)
 			return '''indexer.getObjectsOfType("«varExpr.type.type.name»").parallelStream()
 			.map(type -> («varExpr.type.type.name») type)
 			«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
 			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
 		} else if(varExpr instanceof PatternSumExpression) {
-			imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(varExpr.pattern))
+			imports.add(data.matchPackage+"."+data.pattern2matchClassName.get(varExpr.pattern))
 			return '''engine.getEMoflonAPI().«varExpr.pattern.name»().findMatches(false).parallelStream()
 			«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
 			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)

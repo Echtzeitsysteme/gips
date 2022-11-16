@@ -51,6 +51,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 import org.emoflon.ibex.gt.gtl.gTL.GTLRuleType;
 import org.emoflon.ibex.gt.gtl.gTL.SlimRule;
 import org.emoflon.ibex.gt.gtl.gTL.SlimRuleNode;
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTModel;
 import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTPattern;
 import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTRule;
 import org.logicng.formulas.Formula;
@@ -63,8 +64,10 @@ public class GipsToIntermediate {
 	final protected TransformerFactory transformationFactory;
 	protected int constraintCounter = 0;
 
-	public GipsToIntermediate(final EditorFile flattenedFile) {
+	public GipsToIntermediate(final EditorFile flattenedFile, final GTModel ibexModel) {
 		data = new GipsTransformationData(factory.createGipsIntermediateModel(), flattenedFile);
+		data.model().setName(ibexModel.getName());
+		data.model().setIbexModel(ibexModel);
 		this.transformationFactory = new TransformerFactory(data);
 	}
 

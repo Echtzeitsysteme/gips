@@ -2,9 +2,9 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.emoflon.gips.gipsl.GipsBuilderExtension">
+         point="org.emoflon.ibex.common.slimgt.SlimGTBuilderExtension">
       <builder_extension
-            class="org.emoflon.gips.build.GipsProjectBuilder">
+            builder="org.emoflon.gips.build.GipsProjectBuilder">
       </builder_extension>
    </extension>
 

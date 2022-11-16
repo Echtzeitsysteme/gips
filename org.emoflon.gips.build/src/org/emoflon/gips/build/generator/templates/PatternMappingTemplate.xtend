@@ -1,29 +1,29 @@
 package org.emoflon.gips.build.generator.templates
 
 import org.emoflon.gips.build.generator.GeneratorTemplate
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternMapping
 import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTPattern
+import org.emoflon.gips.build.generator.GipsApiData
 
 class PatternMappingTemplate extends GeneratorTemplate<PatternMapping> {
 	
 	GTPattern pattern;
 	
-	new(TemplateData data, PatternMapping context) {
+	new(GipsApiData data, PatternMapping context) {
 		super(data, context)
 	}
 	
 	override init() {
-		packageName = data.apiData.gipsMappingPkg
+		packageName = data.gipsMappingPkg
 		className = data.mapping2mappingClassName.get(context)
 		fqn = packageName + "." + className
-		filePath = data.apiData.gipsMappingPkgPath + "/" + className + ".java"
+		filePath = data.gipsMappingPkgPath + "/" + className + ".java"
 		imports.add("org.emoflon.gips.core.gt.GTMapping")
-		imports.add(data.apiData.rulesPkg+"."+data.mapping2patternClassName.get(context))
-		imports.add(data.apiData.matchesPkg+"."+data.mapping2matchClassName.get(context))
+		imports.add(data.rulePackage+"."+data.mapping2patternClassName.get(context))
+		imports.add(data.matchPackage+"."+data.mapping2matchClassName.get(context))
 		
 		pattern = context.contextPattern
-		imports.addAll(data.classToPackage.getImportsForNodeTypes(pattern.signatureNodes))
+		pattern.signatureNodes.forEach[n | helper.addImportForType(n.type)]
 	}
 	
 	override generate() {

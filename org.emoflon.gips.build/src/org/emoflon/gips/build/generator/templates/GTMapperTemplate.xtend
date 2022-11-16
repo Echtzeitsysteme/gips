@@ -1,26 +1,26 @@
 package org.emoflon.gips.build.generator.templates
 
 import org.emoflon.gips.build.generator.GeneratorTemplate
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.GTMapping
+import org.emoflon.gips.build.generator.GipsApiData
 
 class GTMapperTemplate extends GeneratorTemplate<GTMapping> {
 	
-	new(TemplateData data, GTMapping context) {
+	new(GipsApiData data, GTMapping context) {
 		super(data, context)
 	}
 	
 	override init() {
-		packageName = data.apiData.gipsMapperPkg
+		packageName = data.gipsMapperPkg
 		className = data.mapping2mapperClassName.get(context)
 		fqn = packageName + "." + className
-		filePath = data.apiData.gipsMapperPkgPath + "/" + className + ".java"
-		imports.add(data.apiData.apiPkg+"."+data.apiData.apiClass)
+		filePath = data.gipsMapperPkgPath + "/" + className + ".java"
+		imports.add(data.apiPackage+"."+data.apiAbstractClassName)
 		imports.add("org.emoflon.gips.core.GipsEngine")
 		imports.add("org.emoflon.gips.core.gt.GTMapper")
-		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(context))
-		imports.add(data.apiData.rulesPkg+"."+data.mapping2ruleClassName.get(context))
-		imports.add(data.apiData.matchesPkg+"."+data.mapping2matchClassName.get(context))
+		imports.add(data.gipsMappingPkg+"."+data.mapping2mappingClassName.get(context))
+		imports.add(data.rulePackage+"."+data.mapping2ruleClassName.get(context))
+		imports.add(data.matchPackage+"."+data.mapping2matchClassName.get(context))
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.Mapping")
 	}
 	

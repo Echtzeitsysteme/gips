@@ -5,7 +5,6 @@ import java.util.HashSet
 import java.util.LinkedList
 import org.eclipse.emf.ecore.EObject
 import org.emoflon.gips.build.generator.GeneratorTemplate
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
@@ -21,6 +20,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue
 import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation
 import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
+import org.emoflon.gips.build.generator.GipsApiData
 
 class GlobalObjectiveTemplate extends GeneratorTemplate<GlobalObjective> {
 
@@ -31,15 +31,15 @@ class GlobalObjectiveTemplate extends GeneratorTemplate<GlobalObjective> {
 	protected val builderMethodDefinitions = new HashMap<EObject,String>
 	protected val builderMethodCalls = new LinkedList<String>
 
-	new(TemplateData data, GlobalObjective context) {
+	new(GipsApiData data, GlobalObjective context) {
 		super(data, context)
 	}
 	
 	override init() {
-		packageName = data.apiData.gipsObjectivePkg
+		packageName = data.gipsObjectivePkg
 		className = data.globalObjectiveClassName
 		fqn = packageName + "." + className;
-		filePath = data.apiData.gipsObjectivePkgPath + "/" + className + ".java"
+		filePath = data.gipsObjectivePkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
 		imports.add("org.emoflon.gips.core.GipsEngine")
@@ -90,7 +90,7 @@ import «imp»;
 	}
 	
 	def String generateAttributes() {
-			referencedObjectives.forEach[o | imports.add(data.apiData.gipsObjectivePkg+"."+data.objective2objectiveClassName.get(o))]
+			referencedObjectives.forEach[o | imports.add(data.gipsObjectivePkg+"."+data.objective2objectiveClassName.get(o))]
 		return '''«FOR obj : referencedObjectives»
 	protected «data.objective2objectiveClassName.get(obj)» «obj.name.toFirstLower»;
 «ENDFOR»'''

@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.gipsl.gipsl.EditorFile;
@@ -99,12 +98,11 @@ public class GipslModelFlattener extends GTLModelFlattener {
 //		return files;
 //	}
 
-	public GipslModelFlattener(final GipslResourceManager gtlManager, final Collection<EditorFile> files)
-			throws Exception {
-		super(gtlManager,
-				files.stream().map(file -> (org.emoflon.ibex.gt.gtl.gTL.EditorFile) file).collect(Collectors.toList()));
+	public GipslModelFlattener(final GipslResourceManager gtlManager,
+			final Collection<org.emoflon.ibex.gt.gtl.gTL.EditorFile> files) throws Exception {
+		super(gtlManager, files);
 
-		files.stream().filter(file -> (file instanceof EditorFile)).map(file -> file)
+		files.stream().filter(file -> (file instanceof EditorFile)).map(file -> (EditorFile) file)
 				.forEach(file -> flattenGipslModel(file));
 
 		name2mapping.forEach((name, mapping) -> {

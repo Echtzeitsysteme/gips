@@ -1,6 +1,5 @@
 package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode
@@ -41,18 +40,19 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
+import org.emoflon.gips.build.generator.GipsApiData
 
 class MappingConstraintTemplate extends ConstraintTemplate<MappingConstraint> {
 
-	new(TemplateData data, MappingConstraint context) {
+	new(GipsApiData data, MappingConstraint context) {
 		super(data, context)
 	}
 
 	override init() {
-		packageName = data.apiData.gipsConstraintPkg
+		packageName = data.gipsConstraintPkg
 		className = data.constraint2constraintClassName.get(context)
 		fqn = packageName + "." + className;
-		filePath = data.apiData.gipsConstraintPkgPath + "/" + className + ".java"
+		filePath = data.gipsConstraintPkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
 		imports.add("java.util.Collections");
@@ -65,8 +65,8 @@ class MappingConstraintTemplate extends ConstraintTemplate<MappingConstraint> {
 			imports.add("org.emoflon.gips.core.ilp.ILPRealVariable");
 		}
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint")
-		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
-		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(context.mapping))
+		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
+		imports.add(data.gipsMappingPkg+"."+data.mapping2mappingClassName.get(context.mapping))
 	}
 	
 	override String generatePackageDeclaration() {
@@ -283,7 +283,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 	override String generateBuilder(MappingSumExpression expr, LinkedList<String> methodCalls) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
-		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
+		imports.add(data.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
 		imports.add("java.util.stream.Collectors")
 		val method = '''
 	protected void «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
@@ -306,7 +306,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
-		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.context))
+		imports.add(data.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.context))
 		val method = '''
 	protected void «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		double constant = context.get«expr.node.name.toFirstUpper»().«parseFeatureExpression(expr.feature)».parallelStream()
@@ -330,7 +330,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		imports.add("java.util.stream.Collectors")
-		imports.add(data.classToPackage.getImportsForType(expr.type.type))
+		helper.addImportForType(expr.type.type)
 		var method = "";
 		
 		if(context.isConstant && context.expression instanceof RelationalExpression) {
@@ -371,7 +371,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		imports.add("java.util.stream.Collectors")
-		imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(expr.pattern))
+		imports.add(data.matchPackage+"."+data.pattern2matchClassName.get(expr.pattern))
 		var method = "";
 		
 		if(context.isConstant && context.expression instanceof RelationalExpression) {

@@ -1,22 +1,21 @@
 package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.build.generator.GeneratorTemplate
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
-import org.emoflon.gips.build.GipsAPIData
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping
+import org.emoflon.gips.build.generator.GipsApiData
 
 class GipsAPITemplate extends GeneratorTemplate<GipsIntermediateModel> {
 	
-	new(TemplateData data, GipsIntermediateModel context) {
+	new(GipsApiData data, GipsIntermediateModel context) {
 		super(data, context)
 	}
 	
 	override init() {
-		packageName = data.apiData.gipsApiPkg;
+		packageName = data.gipsApiPkg;
 		className = data.gipsApiClassName;
 		fqn = packageName + "." + className;
-		filePath = data.apiData.gipsApiPkgPath + "/" + className + ".java"
+		filePath = data.gipsApiPkgPath + "/" + className + ".java"
 		imports.add("org.emoflon.gips.core.api.GipsEngineAPI")
 		imports.add("org.emoflon.gips.core.GipsGlobalObjective")
 		imports.add("org.emoflon.gips.core.ilp.ILPSolver")
@@ -24,16 +23,15 @@ class GipsAPITemplate extends GeneratorTemplate<GipsIntermediateModel> {
 		imports.add("org.emoflon.gips.core.ilp.GlpkSolver")
 		imports.add("org.emoflon.gips.core.ilp.CplexSolver")
 		imports.add("org.emoflon.gips.core.ilp.ILPSolverConfig")
-		imports.add(data.apiData.apiPkg + "." + data.apiData.engineAppClasses.get(GipsAPIData.HIPE_ENGINE_NAME))
-		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)
+		imports.add(data.apiPackage + "." + data.apiAbstractClassName)
 		imports.add("org.eclipse.emf.common.util.URI");
-		if(data.model.globalObjective !== null) {
-			imports.add(data.apiData.gipsObjectivePkg+"."+data.globalObjectiveClassName)
+		if(data.gipsModel.globalObjective !== null) {
+			imports.add(data.gipsObjectivePkg+"."+data.globalObjectiveClassName)
 		}
-		data.model.variables
+		data.gipsModel.variables
 			.filter[v | v instanceof Mapping]
 			.map[m | data.mapping2mapperClassName.get(m)]
-			.forEach[m | imports.add(data.apiData.gipsMapperPkg+"."+m)]
+			.forEach[m | imports.add(data.gipsMapperPkg+"."+m)]
 	}
 	
 	override generate() {
@@ -43,15 +41,15 @@ class GipsAPITemplate extends GeneratorTemplate<GipsIntermediateModel> {
 import «imp»;
 «ENDFOR»
 		
-public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasses.get(GipsAPIData.HIPE_ENGINE_NAME)», «data.apiData.apiClass»>{
-	final public static URI INTERMEDIATE_MODEL_URI = URI.createFileURI("«data.apiData.project.location.toPortableString»«data.apiData.intermediateModelURI.toPlatformString(false)»");
+public class «className» extends GipsEngineAPI <«data.apiAbstractClassName»>{
+	final public static URI INTERMEDIATE_MODEL_URI = URI.createFileURI("«data.model.metaData.projectPath»/«data.gipsModelPath»");
 	
-	«FOR mapping : data.model.variables.filter[v | v instanceof Mapping]»
+	«FOR mapping : data.gipsModel.variables.filter[v | v instanceof Mapping]»
 	protected «data.mapping2mapperClassName.get(mapping)» «mapping.name.toFirstLower»;
 	«ENDFOR»
 	
 	public «className»() {
-		super(new «data.apiData.engineAppClasses.get(GipsAPIData.HIPE_ENGINE_NAME)»());
+		super(new «data.apiAbstractClassName»());
 	}
 	
 	@Override
@@ -64,7 +62,7 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 		super.initInternal(gipsModelURI, modelUri);
 	}
 	
-	«FOR mapping : data.model.variables.filter[v | v instanceof Mapping]»
+	«FOR mapping : data.gipsModel.variables.filter[v | v instanceof Mapping]»
 	public «data.mapping2mapperClassName.get(mapping)» get«mapping.name.toFirstUpper»() {
 		return «mapping.name.toFirstLower»;
 	}
@@ -72,7 +70,7 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 	
 	@Override
 	protected void createMappers() {
-		«FOR mapping : data.model.variables.filter[v | v instanceof Mapping]»
+		«FOR mapping : data.gipsModel.variables.filter[v | v instanceof Mapping]»
 		«mapping.name.toFirstLower» = («data.mapping2mapperClassName.get(mapping)») mapperFactory.createMapper(name2Mapping.get("«mapping.name»"));
 		addMapper(«mapping.name.toFirstLower»);
 		«ENDFOR»
@@ -95,7 +93,7 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 	
 	@Override
 	protected GipsGlobalObjective createGlobalObjective() {
-		«IF data.model.globalObjective === null»
+		«IF data.gipsModel.globalObjective === null»
 		// No global objective was defined!
 		return null;
 		«ELSE»
@@ -117,7 +115,7 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 	}
 	
 	def String solverInit() {
-		switch(data.model.config.solver) {
+		switch(data.gipsModel.config.solver) {
 			case GUROBI: {
 				return '''new GurobiSolver(this, solverConfig)'''
 			}

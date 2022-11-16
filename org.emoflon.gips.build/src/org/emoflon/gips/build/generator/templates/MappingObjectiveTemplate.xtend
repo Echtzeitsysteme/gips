@@ -1,6 +1,5 @@
 package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression
@@ -15,18 +14,19 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
+import org.emoflon.gips.build.generator.GipsApiData
 
 class MappingObjectiveTemplate extends ObjectiveTemplate<MappingObjective> {
 
-	new(TemplateData data, MappingObjective context) {
+	new(GipsApiData data, MappingObjective context) {
 		super(data, context)
 	}
 
 	override init() {
-		packageName = data.apiData.gipsObjectivePkg
+		packageName = data.gipsObjectivePkg
 		className = data.objective2objectiveClassName.get(context)
 		fqn = packageName + "." + className;
-		filePath = data.apiData.gipsObjectivePkgPath + "/" + className + ".java"
+		filePath = data.gipsObjectivePkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
 		imports.add("org.emoflon.gips.core.GipsEngine")
@@ -34,8 +34,8 @@ class MappingObjectiveTemplate extends ObjectiveTemplate<MappingObjective> {
 		imports.add("org.emoflon.gips.core.ilp.ILPTerm")
 		imports.add("org.emoflon.gips.core.ilp.ILPConstant")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective")
-		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
-		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(context.mapping))
+		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
+		imports.add(data.gipsMappingPkg+"."+data.mapping2mappingClassName.get(context.mapping))
 	}
 	
 	override String generatePackageDeclaration() {
@@ -143,7 +143,7 @@ protected void buildTerms(final «data.mapping2mappingClassName.get(context.mapp
 	override String generateBuilder(MappingSumExpression expr) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
-		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
+		imports.add(data.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
 		imports.add("java.util.stream.Collectors")
 		val method = '''
 	protected void «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
@@ -166,7 +166,7 @@ protected void buildTerms(final «data.mapping2mappingClassName.get(context.mapp
 		
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
-		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.context))
+		imports.add(data.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.context))
 		val method = '''
 	protected void «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		double constant = context.get«expr.node.name.toFirstUpper»().«parseFeatureExpression(expr.feature)».parallelStream()
@@ -213,7 +213,7 @@ protected void buildTerms(final «data.mapping2mappingClassName.get(context.mapp
 	override generateForeignBuilder(TypeSumExpression expr) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
-		imports.add(data.classToPackage.getImportsForType(expr.type.type))
+		helper.addImportForType(expr.type.type)
 		val method = '''
 	protected void «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		double constant = indexer.getObjectsOfType("«expr.type.type.name»").parallelStream()
@@ -233,7 +233,7 @@ protected void buildTerms(final «data.mapping2mappingClassName.get(context.mapp
 	override generateForeignBuilder(PatternSumExpression expr) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
-		imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(expr.pattern))
+		imports.add(data.matchPackage+"."+data.pattern2matchClassName.get(expr.pattern))
 		val method = '''
 	protected void «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		double constant = engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()

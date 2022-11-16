@@ -3,7 +3,6 @@ package org.emoflon.gips.build.generator;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.emoflon.gips.build.GipsAPIData;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.GTMapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
@@ -11,17 +10,29 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternMapping;
+import org.emoflon.ibex.gt.build.template.IBeXGTApiData;
 
-public class TemplateData {
-	final public GipsIntermediateModel model;
-	final public GipsAPIData apiData;
-	final public GipsImportManager classToPackage;
+public class GipsApiData extends IBeXGTApiData {
 
-	public String gipsApiClassName;
-	public String mapperFactoryClassName;
-	public String constraintFactoryClassName;
-	public String objectiveFactoryClassName;
-	public String globalObjectiveClassName;
+	final public GipsIntermediateModel gipsModel;
+
+	final public String gipsApiClassName;
+	final public String mapperFactoryClassName;
+	final public String constraintFactoryClassName;
+	final public String objectiveFactoryClassName;
+	final public String globalObjectiveClassName;
+
+	final public String gipsApiPkg;
+	final public String gipsApiPkgPath;
+	final public String gipsModelPath;
+	final public String gipsMappingPkg;
+	final public String gipsMappingPkgPath;
+	final public String gipsMapperPkg;
+	final public String gipsMapperPkgPath;
+	final public String gipsConstraintPkg;
+	final public String gipsConstraintPkgPath;
+	final public String gipsObjectivePkg;
+	final public String gipsObjectivePkgPath;
 
 	final public Map<Mapping, String> mapping2mappingClassName = new HashMap<>();
 	final public Map<Mapping, String> mapping2mapperClassName = new HashMap<>();
@@ -34,20 +45,39 @@ public class TemplateData {
 	final public Map<Constraint, String> constraint2constraintClassName = new HashMap<>();
 	final public Map<Objective, String> objective2objectiveClassName = new HashMap<>();
 
-	public TemplateData(final GipsIntermediateModel model, final GipsAPIData apiData,
-			final GipsImportManager classToPackage) {
-		this.model = model;
-		this.apiData = apiData;
-		this.classToPackage = classToPackage;
-		init();
+	public GipsApiData(final GipsIntermediateModel gipsModel) {
+		super(gipsModel.getIbexModel());
+		this.gipsModel = gipsModel;
+
+		gipsApiClassName = apiPrefix + "GipsAPI";
+		mapperFactoryClassName = apiPrefix + "GipsMapperFactory";
+		constraintFactoryClassName = apiPrefix + "GipsConstraintFactory";
+		objectiveFactoryClassName = apiPrefix + "GipsObjectiveFactory";
+		if (gipsModel.getGlobalObjective() != null)
+			globalObjectiveClassName = apiPrefix + "GipsGlobalObjective";
+		else
+			globalObjectiveClassName = null;
+
+		gipsApiPkg = model.getMetaData().getPackage() + ".gips";
+		gipsApiPkgPath = model.getMetaData().getPackagePath().replace("src", "src-gen") + "/gips";
+		gipsModelPath = gipsApiPkgPath + "/gips_model.xmi";
+
+		gipsMappingPkg = gipsApiPkg + ".mapping";
+		gipsMapperPkg = gipsApiPkg + ".mapper";
+		gipsConstraintPkg = gipsApiPkg + ".constraint";
+		gipsObjectivePkg = gipsApiPkg + ".objective";
+
+		gipsMappingPkgPath = gipsApiPkgPath + "/mapping";
+		gipsMapperPkgPath = gipsApiPkgPath + "/mapper";
+		gipsConstraintPkgPath = gipsApiPkgPath + "/constraint";
+		gipsObjectivePkgPath = gipsApiPkgPath + "/objective";
+
+		init2();
 	}
 
-	private void init() {
-		gipsApiClassName = apiData.apiClassNamePrefix + "GipsAPI";
-		mapperFactoryClassName = apiData.apiClassNamePrefix + "GipsMapperFactory";
-		constraintFactoryClassName = apiData.apiClassNamePrefix + "GipsConstraintFactory";
-		objectiveFactoryClassName = apiData.apiClassNamePrefix + "GipsObjectiveFactory";
-		model.getVariables().stream().filter(var -> var instanceof Mapping).map(var -> (Mapping) var)
+	protected void init2() {
+
+		gipsModel.getVariables().stream().filter(var -> var instanceof Mapping).map(var -> (Mapping) var)
 				.forEach(mapping -> {
 					mapping2mapperClassName.put(mapping, firstToUpper(mapping.getName()) + "Mapper");
 					mapping2mappingClassName.put(mapping, firstToUpper(mapping.getName()) + "Mapping");
@@ -62,7 +92,7 @@ public class TemplateData {
 					}
 
 				});
-		model.getVariables().stream().filter(var -> var instanceof Pattern).map(var -> (Pattern) var)
+		gipsModel.getVariables().stream().filter(var -> var instanceof Pattern).map(var -> (Pattern) var)
 				.forEach(pattern -> {
 					if (pattern.isIsRule()) {
 						pattern2patternClassName.put(pattern, firstToUpper(pattern.getPattern().getName()) + "Rule");
@@ -71,17 +101,11 @@ public class TemplateData {
 					}
 					pattern2matchClassName.put(pattern, firstToUpper(pattern.getPattern().getName()) + "Match");
 				});
-		model.getConstraints().stream().forEach(
+		gipsModel.getConstraints().stream().forEach(
 				constraint -> constraint2constraintClassName.put(constraint, firstToUpper(constraint.getName())));
-		model.getObjectives().stream()
+		gipsModel.getObjectives().stream()
 				.forEach(objective -> objective2objectiveClassName.put(objective, firstToUpper(objective.getName())));
-		if (model.getGlobalObjective() == null)
-			return;
 
-		globalObjectiveClassName = apiData.apiClassNamePrefix + "GipsGlobalObjective";
 	}
 
-	public static String firstToUpper(final String str) {
-		return str.substring(0, 1).toUpperCase() + str.substring(1, str.length());
-	}
 }

@@ -1,6 +1,5 @@
 package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression
@@ -12,18 +11,19 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
+import org.emoflon.gips.build.generator.GipsApiData
 
 class TypeObjectiveTemplate extends ObjectiveTemplate<TypeObjective> {
 	
-	new(TemplateData data, TypeObjective context) {
+	new(GipsApiData data, TypeObjective context) {
 		super(data, context)
 	}
 	
 		override init() {
-		packageName = data.apiData.gipsObjectivePkg
+		packageName = data.gipsObjectivePkg
 		className = data.objective2objectiveClassName.get(context)
 		fqn = packageName + "." + className;
-		filePath = data.apiData.gipsObjectivePkgPath + "/" + className + ".java"
+		filePath = data.gipsObjectivePkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
 		imports.add("org.eclipse.emf.ecore.EClass")
@@ -34,8 +34,8 @@ class TypeObjectiveTemplate extends ObjectiveTemplate<TypeObjective> {
 		imports.add("org.emoflon.gips.core.ilp.ILPTerm")
 		imports.add("org.emoflon.gips.core.ilp.ILPConstant")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective")
-		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
-		imports.add(data.classToPackage.getImportsForType(context.modelType.type))
+		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
+		helper.addImportForType(context.modelType.type)
 	}
 	
 	override String generatePackageDeclaration() {
@@ -128,7 +128,7 @@ protected void buildTerms(final «context.modelType.type.name» context) {
 	override generateForeignBuilder(MappingSumExpression expr) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
-		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
+		imports.add(data.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
 		imports.add("java.util.stream.Collectors")
 		val method = '''
 	protected void «methodName»(final «context.modelType.type.name» context) {
@@ -146,7 +146,7 @@ protected void buildTerms(final «context.modelType.type.name» context) {
 	override generateForeignBuilder(TypeSumExpression expr) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
-		imports.add(data.classToPackage.getImportsForType(expr.type.type))
+		helper.addImportForType(expr.type.type)
 		val method = '''
 	protected void «methodName»(final «context.modelType.type.name» context) {
 		double constant = indexer.getObjectsOfType("«expr.type.type.name»").parallelStream()
@@ -166,7 +166,7 @@ protected void buildTerms(final «context.modelType.type.name» context) {
 	override generateForeignBuilder(PatternSumExpression expr) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
-		imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(expr.pattern))
+		imports.add(data.matchPackage+"."+data.pattern2matchClassName.get(expr.pattern))
 		val method = '''
 	protected void «methodName»(final «context.modelType.type.name» context) {
 		double constant = engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()

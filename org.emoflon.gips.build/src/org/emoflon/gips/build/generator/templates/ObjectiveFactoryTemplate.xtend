@@ -1,22 +1,22 @@
 package org.emoflon.gips.build.generator.templates
 
 import org.emoflon.gips.build.generator.GeneratorTemplate
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective
+import org.emoflon.gips.build.generator.GipsApiData
 
 class ObjectiveFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 	
-	new(TemplateData data, GipsIntermediateModel context) {
+	new(GipsApiData data, GipsIntermediateModel context) {
 		super(data, context)
 	}
 
 	override init() {
-		packageName = data.apiData.gipsApiPkg
+		packageName = data.gipsApiPkg
 		className = data.objectiveFactoryClassName
 		fqn = packageName + "." + className;
-		filePath = data.apiData.gipsApiPkgPath + "/" + className + ".java"
-		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)
+		filePath = data.gipsApiPkgPath + "/" + className + ".java"
+		imports.add(data.apiPackage + "." + data.apiAbstractClassName)
 		imports.add("org.emoflon.gips.core.api.GipsObjectiveFactory")
 		imports.add("org.emoflon.gips.core.GipsEngine")
 		imports.add("org.emoflon.gips.core.GipsObjective")
@@ -26,8 +26,8 @@ class ObjectiveFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> 
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective")
-		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
-		data.objective2objectiveClassName.values.forEach[o | imports.add(data.apiData.gipsObjectivePkg+"."+o)]
+		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
+		data.objective2objectiveClassName.values.forEach[o | imports.add(data.gipsObjectivePkg+"."+o)]
 	}
 	
 	override generate() {
@@ -37,8 +37,8 @@ class ObjectiveFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> 
 import «imp»;
 «ENDFOR»
 
-public class «className» extends GipsObjectiveFactory<«data.gipsApiClassName», «data.apiData.apiClass»> {
-	public «className»(final «data.gipsApiClassName» engine, final «data.apiData.apiClass» eMoflonApi) {
+public class «className» extends GipsObjectiveFactory<«data.gipsApiClassName», «data.apiAbstractClassName»> {
+	public «className»(final «data.gipsApiClassName» engine, final «data.apiAbstractClassName» eMoflonApi) {
 		super(engine, eMoflonApi);
 	}
 	

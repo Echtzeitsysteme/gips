@@ -1,6 +1,5 @@
 package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
@@ -41,18 +40,19 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator
+import org.emoflon.gips.build.generator.GipsApiData
 
 class GlobalConstraintTemplate extends ConstraintTemplate<GlobalConstraint> {
 	
-	new(TemplateData data, GlobalConstraint context) {
+	new(GipsApiData data, GlobalConstraint context) {
 		super(data, context)
 	}
 	
 		override init() {
-		packageName = data.apiData.gipsConstraintPkg
+		packageName = data.gipsConstraintPkg
 		className = data.constraint2constraintClassName.get(context)
 		fqn = packageName + "." + className;
-		filePath = data.apiData.gipsConstraintPkgPath + "/" + className + ".java"
+		filePath = data.gipsConstraintPkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
 		imports.add("java.util.Collections");
@@ -64,7 +64,7 @@ class GlobalConstraintTemplate extends ConstraintTemplate<GlobalConstraint> {
 		imports.add("org.emoflon.gips.core.ilp.ILPTerm")
 		imports.add("org.emoflon.gips.core.ilp.ILPConstraint")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint")
-		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
+		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
 	}
 	
 	override String generatePackageDeclaration() {
@@ -368,7 +368,7 @@ protected List<ILPTerm> buildVariableLhs() {
 	override generateForeignBuilder(MappingSumExpression expr, LinkedList<String> methodCalls) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
-		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
+		imports.add(data.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
 		imports.add("java.util.stream.Collectors")
 		val method = '''
 	protected void «methodName»(final List<ILPTerm> terms) {
@@ -387,7 +387,7 @@ protected List<ILPTerm> buildVariableLhs() {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		imports.add("java.util.stream.Collectors")
-		imports.add(data.classToPackage.getPackage(expr.type.type.EPackage))
+		imports.add(data.model.metaData.name2package.get(expr.type.type.EPackage.name).fullyQualifiedName)
 		var method = "";
 		
 		if(context.isConstant && context.expression instanceof RelationalExpression) {
@@ -428,7 +428,7 @@ protected List<ILPTerm> buildVariableLhs() {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		imports.add("java.util.stream.Collectors")
-		imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(expr.pattern))
+		imports.add(data.matchPackage + "." + data.pattern2matchClassName.get(expr.pattern))
 		var method = "";
 		
 		if(context.isConstant && context.expression instanceof RelationalExpression) {

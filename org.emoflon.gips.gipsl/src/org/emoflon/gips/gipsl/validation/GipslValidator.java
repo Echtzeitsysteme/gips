@@ -226,6 +226,7 @@ public class GipslValidator extends AbstractGipslValidator {
 				}
 
 				String fileString = gtModelUri.toFileString();
+				fileString = fileString.replace("/", "\\");
 
 				if (fileString.equals(currentFile))
 					continue;

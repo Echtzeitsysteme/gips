@@ -10,7 +10,7 @@ EditorFile: {EditorFile}
 	package = PackageDeclaration
 	(imports+=Import)*
 	(importedPatterns += PatternImport)*
-	config = GipsConfig
+	(config = GipsConfig)?
 	(rules += SlimRule |
   	mappings += GipsMapping |
   	constraints += GipsConstraint |

@@ -20,8 +20,10 @@ import org.emoflon.gips.gipsl.gipsl.GipsBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsBracketBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsBracketExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsConfig;
 import org.emoflon.gips.gipsl.gipsl.GipsConstant;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsContains;
 import org.emoflon.gips.gipsl.gipsl.GipsContextExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsExpArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsExpressionOperand;
@@ -29,8 +31,10 @@ import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureNavigation;
 import org.emoflon.gips.gipsl.gipsl.GipsGlobalContext;
+import org.emoflon.gips.gipsl.gipsl.GipsGlobalObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsImplicationBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsLambdaAttributeExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsLambdaExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsLambdaSelfExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
@@ -46,7 +50,12 @@ import org.emoflon.gips.gipsl.gipsl.GipsPatternAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
 import org.emoflon.gips.gipsl.gipsl.GipsProductArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsSelect;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamArithmetic;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamBoolExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamNavigation;
+import org.emoflon.gips.gipsl.gipsl.GipsStreamSet;
 import org.emoflon.gips.gipsl.gipsl.GipsSumArithmeticExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeCast;
@@ -64,6 +73,7 @@ public class GipslModelFlattener extends GTLModelFlattener {
 	final protected GipslFactory gipslFactory = GipslPackage.eINSTANCE.getGipslFactory();
 
 	protected Map<String, GipsMapping> name2mapping = Collections.synchronizedMap(new LinkedHashMap<>());
+	protected Map<String, GipsObjective> name2objective = Collections.synchronizedMap(new LinkedHashMap<>());
 	protected Map<String, List<Consumer<GipsMapping>>> pendingMappingJobs = Collections
 			.synchronizedMap(new LinkedHashMap<>());
 	protected Map<String, List<Consumer<GipsObjective>>> pendingObjectiveJobs = Collections
@@ -96,6 +106,16 @@ public class GipslModelFlattener extends GTLModelFlattener {
 
 		files.stream().filter(file -> (file instanceof EditorFile)).map(file -> file)
 				.forEach(file -> flattenGipslModel(file));
+
+		name2mapping.forEach((name, mapping) -> {
+			if (pendingMappingJobs.containsKey(name))
+				pendingMappingJobs.get(name).forEach(consumer -> consumer.accept(mapping));
+		});
+
+		name2objective.forEach((name, objective) -> {
+			if (pendingObjectiveJobs.containsKey(name))
+				pendingObjectiveJobs.get(name).forEach(consumer -> consumer.accept(objective));
+		});
 	}
 
 	@Override
@@ -111,19 +131,61 @@ public class GipslModelFlattener extends GTLModelFlattener {
 
 	protected void flattenGipslModel(final EditorFile file) {
 		EditorFile flattenedFile = getFlattenedModel();
+		// Flatten config, if defined
+		if (file.getConfig() != null) {
+			flattenedFile.setConfig(flatten(file.getConfig()));
+		}
 		// Flatten mappings
 		for (GipsMapping mapping : file.getMappings()) {
 			GipsMapping flattenedMapping = flatten(mapping);
 			flattenedFile.getMappings().add(flattenedMapping);
 		}
+		// Flatten constraints
+		for (GipsConstraint constraint : file.getConstraints()) {
+			GipsConstraint flattenedConstraint = flatten(constraint);
+			flattenedFile.getConstraints().add(flattenedConstraint);
+		}
+		// Flatten Objectives
+		for (GipsObjective objective : file.getObjectives()) {
+			GipsObjective flattenedObjective = flatten(objective);
+			flattenedFile.getObjectives().add(flattenedObjective);
+		}
+		// Flatten global objective, if defined
+		if (file.getGlobalObjective() != null) {
+			flattenedFile.setGlobalObjective(flatten(file.getGlobalObjective()));
+		}
+	}
 
+	protected GipsConfig flatten(final GipsConfig config) {
+		GipsConfig fc = gipslFactory.createGipsConfig();
+		fc.setSolver(config.getSolver());
+		fc.setHome(config.getHome());
+		fc.setLicense(config.getLicense());
+
+		fc.setEnableLaunchConfig(config.isEnableLaunchConfig());
+		fc.setMainLoc(config.getMainLoc());
+
+		fc.setEnableLimit(config.isEnableLimit());
+		fc.setTimeLimit(config.getTimeLimit());
+
+		fc.setEnableSeed(config.isEnableSeed());
+		fc.setRndSeed(config.getRndSeed());
+
+		fc.setEnablePresolve(config.isEnablePresolve());
+
+		fc.setEnableDebugOutput(config.isEnableDebugOutput());
+
+		fc.setEnableTolerance(config.isEnableTolerance());
+		fc.setTolerance(config.getTolerance());
+		return fc;
 	}
 
 	protected GipsMapping flatten(final GipsMapping mapping) {
 		GipsMapping flattenedMapping = gipslFactory.createGipsMapping();
 		flattenedMapping.setName(mapping.getName());
-		flattenedMapping.setPattern(name2rule.get(mapping.getPattern().getName()));
 		name2mapping.put(mapping.getName(), flattenedMapping);
+
+		flattenedMapping.setPattern(name2rule.get(mapping.getPattern().getName()));
 		return flattenedMapping;
 	}
 
@@ -131,8 +193,28 @@ public class GipslModelFlattener extends GTLModelFlattener {
 		GipsConstraint flattenedConstraint = gipslFactory.createGipsConstraint();
 		EObject context = flattenContext(flattenedConstraint.getContext());
 		flattenedConstraint.setContext(context);
-
+		flattenedConstraint.setExpr(flatten(constraint.getExpr()));
 		return flattenedConstraint;
+	}
+
+	protected GipsObjective flatten(final GipsObjective objective) {
+		GipsObjective flattenedObjective = gipslFactory.createGipsObjective();
+		flattenedObjective.setName(objective.getName());
+		name2objective.put(flattenedObjective.getName(), flattenedObjective);
+
+		EObject context = flattenContext(flattenedObjective.getContext());
+		flattenedObjective.setContext(context);
+		flattenedObjective.setExpr(flatten(objective.getExpr()));
+		return flattenedObjective;
+	}
+
+	protected GipsGlobalObjective flatten(final GipsGlobalObjective go) {
+		GipsGlobalObjective flattenedGO = gipslFactory.createGipsGlobalObjective();
+		flattenedGO.setObjectiveGoal(go.getObjectiveGoal());
+		if (go.getExpr() != null) {
+			flattenedGO.setExpr(flatten(go.getExpr()));
+		}
+		return flattenedGO;
 	}
 
 	protected GipsBool flatten(final GipsBool expr) {
@@ -286,14 +368,26 @@ public class GipslModelFlattener extends GTLModelFlattener {
 			GipsStreamExpr flattenedStream = flatten(cont.getStream());
 			flattenedCont.setStream(flattenedStream);
 			return flattenedCont;
-		} else if (expr instanceof GipsLambdaAttributeExpression mAtr) {
-			// TODO:
-		} else if (expr instanceof GipsLambdaSelfExpression mAtr) {
-			// TODO:
+		} else if (expr instanceof GipsLambdaAttributeExpression lAtr) {
+			GipsLambdaAttributeExpression flattenedLAtr = gipslFactory.createGipsLambdaAttributeExpression();
+			flattenedLAtr.setVar(flatten(lAtr.getVar()));
+			if (lAtr.getExpr() instanceof GipsNodeAttributeExpr nae) {
+				flattenedLAtr.setExpr(flatten(nae));
+			} else if (lAtr.getExpr() instanceof GipsVariableOperationExpression voe) {
+				flattenedLAtr.setExpr(flatten(voe));
+			} else if (lAtr.getExpr() instanceof GipsFeatureExpr fe) {
+				flattenedLAtr.setExpr(flatten(fe));
+			} else {
+				throw new UnsupportedOperationException("Unknown expression type: " + lAtr.getExpr());
+			}
+			return flattenedLAtr;
+		} else if (expr instanceof GipsLambdaSelfExpression lSelf) {
+			GipsLambdaSelfExpression flattenedLSelf = gipslFactory.createGipsLambdaSelfExpression();
+			flattenedLSelf.setVar(flatten(lSelf.getVar()));
+			return flattenedLSelf;
 		} else {
 			throw new UnsupportedOperationException("Unknown attribute expression type: " + expr);
 		}
-		return null;
 	}
 
 	protected GipsNodeAttributeExpr flatten(final GipsNodeAttributeExpr expr) {
@@ -338,19 +432,60 @@ public class GipslModelFlattener extends GTLModelFlattener {
 
 	protected GipsFeatureNavigation flatten(final GipsFeatureNavigation expr) {
 		GipsFeatureNavigation flattenedExpr = gipslFactory.createGipsFeatureNavigation();
-		// TODO:
+		flattenedExpr.setLeft(flatten(expr.getLeft()));
+		flattenedExpr.setRight(flatten(expr.getRight()));
 		return flattenedExpr;
 	}
 
 	protected GipsFeatureLit flatten(final GipsFeatureLit expr) {
 		GipsFeatureLit flattenedExpr = gipslFactory.createGipsFeatureLit();
-		// TODO:
+		if (expr.getTypeCast() != null && expr.getTypeCast().getType() != null) {
+			GipsTypeCast typeCast = gipslFactory.createGipsTypeCast();
+			typeCast.setType(expr.getTypeCast().getType());
+			flattenedExpr.setTypeCast(typeCast);
+		}
+		flattenedExpr.setFeature(expr.getFeature());
+		return flattenedExpr;
+	}
+
+	protected GipsLambdaExpression flatten(final GipsLambdaExpression expr) {
+		GipsLambdaExpression flattenedExpr = gipslFactory.createGipsLambdaExpression();
+		flattenedExpr.setName(expr.getName());
+		flattenedExpr.setExpr(flatten(expr.getExpr()));
 		return flattenedExpr;
 	}
 
 	protected GipsStreamExpr flatten(final GipsStreamExpr expr) {
-		// TODO:
-		return null;
+		if (expr instanceof GipsStreamNavigation nav) {
+			GipsStreamNavigation flattenedExpr = gipslFactory.createGipsStreamNavigation();
+			flattenedExpr.setLeft(flatten(nav.getLeft()));
+			flattenedExpr.setRight(flatten(nav.getRight()));
+			return flattenedExpr;
+		} else if (expr instanceof GipsSelect select) {
+			GipsSelect flattenedExpr = gipslFactory.createGipsSelect();
+			flattenedExpr.setType(select.getType());
+			return flattenedExpr;
+		} else if (expr instanceof GipsStreamSet set) {
+			GipsStreamSet flattenedExpr = gipslFactory.createGipsStreamSet();
+			flattenedExpr.setOperator(set.getOperator());
+			flattenedExpr.setLambda(flatten(set.getLambda()));
+			return flattenedExpr;
+		} else if (expr instanceof GipsStreamArithmetic arithmetic) {
+			GipsStreamArithmetic flattenedExpr = gipslFactory.createGipsStreamArithmetic();
+			flattenedExpr.setOperator(arithmetic.getOperator());
+			flattenedExpr.setLambda(flatten(arithmetic.getLambda()));
+			return flattenedExpr;
+		} else if (expr instanceof GipsContains contains) {
+			GipsContains flattenedExpr = gipslFactory.createGipsContains();
+			flattenedExpr.setExpr(flatten(contains.getExpr()));
+			return flattenedExpr;
+		} else if (expr instanceof GipsStreamBoolExpr bool) {
+			GipsStreamBoolExpr flattenedExpr = gipslFactory.createGipsStreamBoolExpr();
+			flattenedExpr.setOperator(bool.getOperator());
+			return flattenedExpr;
+		} else {
+			throw new UnsupportedOperationException("Unknown stream expression type: " + expr);
+		}
 	}
 
 	protected EObject flattenContext(final EObject context) {

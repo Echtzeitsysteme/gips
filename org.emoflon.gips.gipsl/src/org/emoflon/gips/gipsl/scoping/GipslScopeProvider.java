@@ -100,9 +100,7 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			return scopeForGipsTypeCast((GipsTypeCast) context, reference);
 		}
 
-		else {
-			return super.getScope(context, reference);
-		}
+		return super.getScopeInternal(context, reference);
 	}
 
 	private IScope scopeForGipsPatternContext(GipsPatternContext context, EReference reference) {

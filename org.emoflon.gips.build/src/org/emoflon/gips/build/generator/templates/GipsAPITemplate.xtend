@@ -1,37 +1,23 @@
 package org.emoflon.gips.build.generator.templates
 
 import org.emoflon.gips.build.generator.GeneratorTemplate
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
-import org.emoflon.gips.intermediate.GipsIntermediate.Mapping
 import org.emoflon.gips.build.generator.GipsApiData
+import org.emoflon.ibex.common.engine.IBeXPMEngineInformation
 
-class GipsAPITemplate extends GeneratorTemplate<GipsIntermediateModel> {
+class GipsAPITemplate extends GeneratorTemplate<IBeXPMEngineInformation> {
 	
-	new(GipsApiData data, GipsIntermediateModel context) {
+	new(GipsApiData data, IBeXPMEngineInformation context) {
 		super(data, context)
 	}
 	
 	override init() {
 		packageName = data.gipsApiPkg;
-		className = data.gipsApiClassName;
+		className = data.gipsApiClassNames.get(context)
 		fqn = packageName + "." + className;
 		filePath = data.gipsApiPkgPath + "/" + className + ".java"
 		imports.add("org.emoflon.gips.core.api.GipsEngineAPI")
-		imports.add("org.emoflon.gips.core.GipsGlobalObjective")
-		imports.add("org.emoflon.gips.core.ilp.ILPSolver")
-		imports.add("org.emoflon.gips.core.ilp.GurobiSolver")
-		imports.add("org.emoflon.gips.core.ilp.GlpkSolver")
-		imports.add("org.emoflon.gips.core.ilp.CplexSolver")
-		imports.add("org.emoflon.gips.core.ilp.ILPSolverConfig")
 		imports.add(data.apiPackage + "." + data.apiAbstractClassName)
-		imports.add("org.eclipse.emf.common.util.URI");
-		if(data.gipsModel.globalObjective !== null) {
-			imports.add(data.gipsObjectivePkg+"."+data.globalObjectiveClassName)
-		}
-		data.gipsModel.variables
-			.filter[v | v instanceof Mapping]
-			.map[m | data.mapping2mapperClassName.get(m)]
-			.forEach[m | imports.add(data.gipsMapperPkg+"."+m)]
+		imports.add(data.apiPackage + "." + data.apiClassNames.get(context))
 	}
 	
 	override generate() {
@@ -41,91 +27,13 @@ class GipsAPITemplate extends GeneratorTemplate<GipsIntermediateModel> {
 import «imp»;
 «ENDFOR»
 		
-public class «className» extends GipsEngineAPI <«data.apiAbstractClassName»>{
-	final public static URI INTERMEDIATE_MODEL_URI = URI.createFileURI("«data.model.metaData.projectPath»/«data.gipsModelPath»");
+public class «data.gipsApiClassNames.get(context)» extends «data.gipsApiClassName» <«data.apiClassNames.get(context)»>{
 	
-	«FOR mapping : data.gipsModel.variables.filter[v | v instanceof Mapping]»
-	protected «data.mapping2mapperClassName.get(mapping)» «mapping.name.toFirstLower»;
-	«ENDFOR»
-	
-	public «className»() {
-		super(new «data.apiAbstractClassName»());
+	public «data.gipsApiClassNames.get(context)»() {
+		super(new «data.apiClassNames.get(context)»());
 	}
 	
-	@Override
-	public void init(final URI modelUri) {
-		super.initInternal(INTERMEDIATE_MODEL_URI, modelUri);
-	}
-	
-	@Override
-	public void init(final URI gipsModelURI, final URI modelUri) {
-		super.initInternal(gipsModelURI, modelUri);
-	}
-	
-	«FOR mapping : data.gipsModel.variables.filter[v | v instanceof Mapping]»
-	public «data.mapping2mapperClassName.get(mapping)» get«mapping.name.toFirstUpper»() {
-		return «mapping.name.toFirstLower»;
-	}
-	«ENDFOR»
-	
-	@Override
-	protected void createMappers() {
-		«FOR mapping : data.gipsModel.variables.filter[v | v instanceof Mapping]»
-		«mapping.name.toFirstLower» = («data.mapping2mapperClassName.get(mapping)») mapperFactory.createMapper(name2Mapping.get("«mapping.name»"));
-		addMapper(«mapping.name.toFirstLower»);
-		«ENDFOR»
-	}
-	
-	@Override
-	protected void initMapperFactory() {
-		mapperFactory = new «data.mapperFactoryClassName»(this, eMoflonAPI);
-	}
-	
-	@Override	
-	protected void initConstraintFactory() {
-		constraintFactory = new «data.constraintFactoryClassName»(this, eMoflonAPI);
-	}
-	
-	@Override	
-	protected void initObjectiveFactory() {
-		objectiveFactory = new «data.objectiveFactoryClassName»(this, eMoflonAPI);
-	}
-	
-	@Override
-	protected GipsGlobalObjective createGlobalObjective() {
-		«IF data.gipsModel.globalObjective === null»
-		// No global objective was defined!
-		return null;
-		«ELSE»
-		return new «data.globalObjectiveClassName»(this, gipsModel.getGlobalObjective());
-		«ENDIF»
-	}
-	
-	@Override
-	protected ILPSolver createSolver() {
-		ILPSolver solver = null;
-		try {
-			solver = «solverInit()»;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return solver;
-	}
 }'''
-	}
-	
-	def String solverInit() {
-		switch(data.gipsModel.config.solver) {
-			case GUROBI: {
-				return '''new GurobiSolver(this, solverConfig)'''
-			}
-			case GLPK: {
-				return '''new GlpkSolver(this, solverConfig)'''
-			}
-			case CPLEX: {
-				return '''new CplexSolver(this, solverConfig)'''
-			}
-		}
 	}
 	
 }

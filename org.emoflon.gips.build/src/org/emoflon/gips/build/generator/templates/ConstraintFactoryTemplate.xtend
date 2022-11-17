@@ -40,13 +40,13 @@ class ConstraintFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel>
 import «imp»;
 «ENDFOR»
 
-public class «className» extends GipsConstraintFactory<«data.gipsApiClassName», «data.apiAbstractClassName»> {
-	public «className»(final «data.gipsApiClassName» engine, final «data.apiAbstractClassName» eMoflonApi) {
+public class «className» extends GipsConstraintFactory<«data.gipsApiClassName»<?>, «data.apiAbstractClassName»<?>> {
+	public «className»(final «data.gipsApiClassName»<?> engine, final «data.apiAbstractClassName»<?> eMoflonApi) {
 		super(engine, eMoflonApi);
 	}
 	
 	@Override
-	public GipsConstraint<«data.gipsApiClassName», ? extends Constraint, ? extends Object> createConstraint(final Constraint constraint) {
+	public GipsConstraint<«data.gipsApiClassName»<?>, ? extends Constraint, ? extends Object> createConstraint(final Constraint constraint) {
 		«IF context.constraints.isNullOrEmpty»
 		throw new IllegalArgumentException("Unknown constraint type: "+constraint);
 		«ELSE»

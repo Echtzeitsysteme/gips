@@ -463,7 +463,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			if(constExpr.context instanceof Mapping) {
 				throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 			} else if(constExpr.context instanceof Pattern) {
-				return '''context.get«constExpr.node.name.toFirstUpper»().«parseFeatureExpression(constExpr.feature)».stream()
+				return '''context.«constExpr.node.name.toFirstLower»().«parseFeatureExpression(constExpr.feature)».stream()
 			«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
 			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
@@ -480,9 +480,9 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		} else if(constExpr instanceof ContextTypeValue) {
 			return '''context'''
 		} else if(constExpr instanceof ContextPatternNodeFeatureValue) {
-			return '''context.get«constExpr.node.name.toFirstUpper»().«parseFeatureExpression(constExpr.featureExpression)»'''
+			return '''context.«constExpr.node.name.toFirstLower»().«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else if(constExpr instanceof ContextPatternNode) {
-			return '''context.get«constExpr.node.name.toFirstUpper»()'''
+			return '''context.«constExpr.node.name.toFirstLower»()'''
 		} else if(constExpr instanceof ContextPatternValue) {
 			return '''context'''
 		} else if(constExpr instanceof ObjectiveFunctionValue) {
@@ -508,9 +508,9 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		}  else if(constExpr instanceof IteratorPatternFeatureValue) {
 			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else if(constExpr instanceof IteratorPatternNodeFeatureValue) {
-			return '''«getIteratorVariableName(constExpr.stream)».get«constExpr.node.name.toFirstUpper»().«parseFeatureExpression(constExpr.featureExpression)»'''
+			return '''«getIteratorVariableName(constExpr.stream)».«constExpr.node.name.toFirstLower»().«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else if(constExpr instanceof IteratorPatternNodeValue) {
-			return '''«getIteratorVariableName(constExpr.stream)».get«constExpr.node.name.toFirstUpper»()'''
+			return '''«getIteratorVariableName(constExpr.stream)».«constExpr.node.name.toFirstLower»()'''
 		} else if(constExpr instanceof IteratorTypeFeatureValue){
 			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else {
@@ -529,9 +529,9 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		} else if(constExpr instanceof ContextTypeValue) {
 			return '''context'''
 		} else if(constExpr instanceof ContextPatternNodeFeatureValue) {
-			return '''context.get«constExpr.node.name.toFirstUpper»().«parseFeatureExpression(constExpr.featureExpression)»'''
+			return '''context.«constExpr.node.name.toFirstLower»().«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else if(constExpr instanceof ContextPatternNode) {
-			return '''context.get«constExpr.node.name.toFirstUpper»()'''
+			return '''context.«constExpr.node.name.toFirstLower»()'''
 		} else if(constExpr instanceof ContextPatternValue) {
 			return '''context'''
 		} else if(constExpr instanceof ObjectiveFunctionValue) {
@@ -557,9 +557,9 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		}  else if(constExpr instanceof IteratorPatternFeatureValue) {
 			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else if(constExpr instanceof IteratorPatternNodeFeatureValue) {
-			return '''«getIteratorVariableName(constExpr.stream)».get«constExpr.node.name.toFirstUpper»().«parseFeatureExpression(constExpr.featureExpression)»'''
+			return '''«getIteratorVariableName(constExpr.stream)».«constExpr.node.name.toFirstLower»().«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else if(constExpr instanceof IteratorPatternNodeValue) {
-			return '''«getIteratorVariableName(constExpr.stream)».get«constExpr.node.name.toFirstUpper»()'''
+			return '''«getIteratorVariableName(constExpr.stream)».«constExpr.node.name.toFirstLower»()'''
 		} else if(constExpr instanceof IteratorTypeFeatureValue){
 			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else {
@@ -588,7 +588,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			if(varExpr.context instanceof Mapping) {
 				throw new UnsupportedOperationException("Mapping stream expressions may not be part of multiplications, fractions, exponentials, roots etc.");
 			} else if(varExpr.context instanceof Pattern) {
-				return '''context.get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.feature)».stream()
+				return '''context.«varExpr.node.name.toFirstLower»().«parseFeatureExpression(varExpr.feature)».stream()
 			«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
 			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
@@ -605,9 +605,9 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		} else if(varExpr instanceof ContextTypeValue) {
 			return '''context'''
 		} else if(varExpr instanceof ContextPatternNodeFeatureValue) {
-			return '''context.get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.featureExpression)»'''
+			return '''context.«varExpr.node.name.toFirstLower»().«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else if(varExpr instanceof ContextPatternNode) {
-			return '''context.get«varExpr.node.name.toFirstUpper»()'''
+			return '''context.«varExpr.node.name.toFirstLower»()'''
 		} else if(varExpr instanceof ContextPatternValue) {
 			return '''context'''
 		} else if(varExpr instanceof ObjectiveFunctionValue) {
@@ -616,9 +616,9 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			//This should have been taken care of already. -> Constant 1 doesn't hurt... 
 			return '''1.0'''
 		} else if(varExpr instanceof ContextMappingNodeFeatureValue) {
-			return '''context.get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.featureExpression)»'''
+			return '''context.«varExpr.node.name.toFirstLower»().«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else if(varExpr instanceof ContextMappingNode) {
-			return '''context.get«varExpr.node.name.toFirstUpper»()'''
+			return '''context.«varExpr.node.name.toFirstLower»()'''
 		} else if(varExpr instanceof IteratorMappingValue) {
 			return '''«getIteratorVariableName(varExpr.stream)»'''
 		} else if(varExpr instanceof IteratorMappingVariableValue) {
@@ -627,17 +627,17 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		} else if(varExpr instanceof IteratorMappingFeatureValue) {
 			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else if(varExpr instanceof IteratorMappingNodeFeatureValue) {
-			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.featureExpression)»'''
+			return '''«getIteratorVariableName(varExpr.stream)».«varExpr.node.name.toFirstLower»().«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else if(varExpr instanceof IteratorMappingNodeValue) {
-			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»()'''
+			return '''«getIteratorVariableName(varExpr.stream)».«varExpr.node.name.toFirstLower»()'''
 		} else if(varExpr instanceof IteratorPatternValue) {
 			return '''«getIteratorVariableName(varExpr.stream)»'''
 		}  else if(varExpr instanceof IteratorPatternFeatureValue) {
 			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else if(varExpr instanceof IteratorPatternNodeFeatureValue) {
-			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.featureExpression)»'''
+			return '''«getIteratorVariableName(varExpr.stream)».«varExpr.node.name.toFirstLower»().«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else if(varExpr instanceof IteratorPatternNodeValue) {
-			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»()'''
+			return '''«getIteratorVariableName(varExpr.stream)».«varExpr.node.name.toFirstLower»()'''
 		} else if(varExpr instanceof IteratorTypeFeatureValue){
 			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else {
@@ -656,9 +656,9 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		} else if(varExpr instanceof ContextTypeValue) {
 			return '''context'''
 		} else if(varExpr instanceof ContextPatternNodeFeatureValue) {
-			return '''context.get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.featureExpression)»'''
+			return '''context.«varExpr.node.name.toFirstLower»().«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else if(varExpr instanceof ContextPatternNode) {
-			return '''context.get«varExpr.node.name.toFirstUpper»()'''
+			return '''context.«varExpr.node.name.toFirstLower»()'''
 		} else if(varExpr instanceof ContextPatternValue) {
 			return '''context'''
 		} else if(varExpr instanceof ObjectiveFunctionValue) {
@@ -667,9 +667,9 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			//This should have been taken care of already. -> Constant 1 doesn't hurt... 
 			return '''1.0'''
 		} else if(varExpr instanceof ContextMappingNodeFeatureValue) {
-			return '''context.get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.featureExpression)»'''
+			return '''context.«varExpr.node.name.toFirstLower»().«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else if(varExpr instanceof ContextMappingNode) {
-			return '''context.get«varExpr.node.name.toFirstUpper»()'''
+			return '''context.«varExpr.node.name.toFirstLower»()'''
 		} else if(varExpr instanceof IteratorMappingValue) {
 			return '''«getIteratorVariableName(varExpr.stream)»'''
 		} else if(varExpr instanceof IteratorMappingVariableValue) {
@@ -678,17 +678,17 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 		} else if(varExpr instanceof IteratorMappingFeatureValue) {
 			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else if(varExpr instanceof IteratorMappingNodeFeatureValue) {
-			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.featureExpression)»'''
+			return '''«getIteratorVariableName(varExpr.stream)».«varExpr.node.name.toFirstLower»().«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else if(varExpr instanceof IteratorMappingNodeValue) {
-			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»()'''
+			return '''«getIteratorVariableName(varExpr.stream)».«varExpr.node.name.toFirstLower»()'''
 		} else if(varExpr instanceof IteratorPatternValue) {
 			return '''«getIteratorVariableName(varExpr.stream)»'''
 		} else if(varExpr instanceof IteratorPatternFeatureValue) {
 			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else if(varExpr instanceof IteratorPatternNodeFeatureValue) {
-			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.featureExpression)»'''
+			return '''«getIteratorVariableName(varExpr.stream)».«varExpr.node.name.toFirstLower»().«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else if(varExpr instanceof IteratorPatternNodeValue) {
-			return '''«getIteratorVariableName(varExpr.stream)».get«varExpr.node.name.toFirstUpper»()'''
+			return '''«getIteratorVariableName(varExpr.stream)».«varExpr.node.name.toFirstLower»()'''
 		} else if(varExpr instanceof IteratorTypeFeatureValue){
 			return '''«getIteratorVariableName(varExpr.stream)».«parseFeatureExpression(varExpr.featureExpression)»'''
 		} else {

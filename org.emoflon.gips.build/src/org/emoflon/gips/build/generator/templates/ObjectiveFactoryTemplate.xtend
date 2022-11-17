@@ -37,13 +37,13 @@ class ObjectiveFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> 
 import «imp»;
 «ENDFOR»
 
-public class «className» extends GipsObjectiveFactory<«data.gipsApiClassName», «data.apiAbstractClassName»> {
-	public «className»(final «data.gipsApiClassName» engine, final «data.apiAbstractClassName» eMoflonApi) {
+public class «className» extends GipsObjectiveFactory<«data.gipsApiClassName»<?>, «data.apiAbstractClassName»<?>> {
+	public «className»(final «data.gipsApiClassName»<?> engine, final «data.apiAbstractClassName»<?> eMoflonApi) {
 		super(engine, eMoflonApi);
 	}
 	
 	@Override
-	public GipsObjective<«data.gipsApiClassName», ? extends Objective, ? extends Object> createObjective(final Objective objective) {
+	public GipsObjective<«data.gipsApiClassName»<?>, ? extends Objective, ? extends Object> createObjective(final Objective objective) {
 		«IF context.objectives.isNullOrEmpty»
 		throw new IllegalArgumentException("Unknown objective type: "+objective);
 		«ELSE»

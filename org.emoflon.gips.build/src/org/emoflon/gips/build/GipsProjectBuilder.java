@@ -62,7 +62,7 @@ public class GipsProjectBuilder extends IBeXGtPackageBuilder {
 	protected List<String> createDependencies() {
 		List<String> deps = new LinkedList<>();
 		deps.addAll(super.createDependencies());
-		deps.add("org.emoflon.gips.core");
+		deps.addAll(List.of("org.emoflon.gips.core", "org.eclipse.emf.ecore"));
 		return deps;
 	}
 

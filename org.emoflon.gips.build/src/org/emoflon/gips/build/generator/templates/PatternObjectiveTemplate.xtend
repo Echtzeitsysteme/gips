@@ -48,8 +48,8 @@ import «imp»;
 	
 	override String generateClassContent() {
 		return '''
-public class «className» extends GipsPatternObjective<«data.gipsApiClassName», «data.pattern2matchClassName.get(context.pattern)», «data.pattern2patternClassName.get(context.pattern)»>{
-	public «className»(final «data.gipsApiClassName» engine, final PatternObjective objective, final «data.pattern2patternClassName.get(context.pattern)» pattern) {
+public class «className» extends GipsPatternObjective<«data.gipsApiClassName»<?>, «data.pattern2matchClassName.get(context.pattern)», «data.pattern2patternClassName.get(context.pattern)»>{
+	public «className»(final «data.gipsApiClassName»<?> engine, final PatternObjective objective, final «data.pattern2patternClassName.get(context.pattern)» pattern) {
 		super(engine, objective, pattern);
 	}
 	

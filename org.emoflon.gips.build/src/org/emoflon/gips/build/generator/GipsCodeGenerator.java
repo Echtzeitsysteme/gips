@@ -15,6 +15,7 @@ import org.emoflon.gips.build.generator.templates.ConstraintFactoryTemplate;
 import org.emoflon.gips.build.generator.templates.GTMapperTemplate;
 import org.emoflon.gips.build.generator.templates.GTMappingTemplate;
 import org.emoflon.gips.build.generator.templates.GipsAPITemplate;
+import org.emoflon.gips.build.generator.templates.GipsAbstractAPITemplate;
 import org.emoflon.gips.build.generator.templates.GlobalConstraintTemplate;
 import org.emoflon.gips.build.generator.templates.GlobalObjectiveTemplate;
 import org.emoflon.gips.build.generator.templates.LaunchFileTemplate;
@@ -53,7 +54,10 @@ public class GipsCodeGenerator {
 	}
 
 	public void generate() {
-		templates.add(new GipsAPITemplate(data, data.gipsModel));
+		templates.add(new GipsAbstractAPITemplate(data, data.gipsModel));
+		data.gipsApiClassNames.keySet().forEach(engine -> {
+			templates.add(new GipsAPITemplate(data, engine));
+		});
 		templates.add(new MapperFactoryTemplate(data, data.gipsModel));
 		templates.add(new ConstraintFactoryTemplate(data, data.gipsModel));
 		templates.add(new ObjectiveFactoryTemplate(data, data.gipsModel));

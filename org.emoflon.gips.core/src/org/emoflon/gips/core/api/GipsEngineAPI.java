@@ -29,9 +29,9 @@ public abstract class GipsEngineAPI<EMOFLON_API extends IBeXGtAPI<?, ?, ?>> exte
 	protected GipsIntermediateModel gipsModel;
 	final protected Map<String, Mapping> name2Mapping = new HashMap<>();
 	protected ILPSolverConfig solverConfig;
-	protected GipsMapperFactory<EMOFLON_API> mapperFactory;
-	protected GipsConstraintFactory<? extends GipsEngineAPI<EMOFLON_API>, EMOFLON_API> constraintFactory;
-	protected GipsObjectiveFactory<? extends GipsEngineAPI<EMOFLON_API>, EMOFLON_API> objectiveFactory;
+	protected GipsMapperFactory<?> mapperFactory;
+	protected GipsConstraintFactory<?, ?> constraintFactory;
+	protected GipsObjectiveFactory<?, ?> objectiveFactory;
 
 	protected GipsEngineAPI(final EMOFLON_API eMoflonAPI) {
 		this.eMoflonAPI = eMoflonAPI;

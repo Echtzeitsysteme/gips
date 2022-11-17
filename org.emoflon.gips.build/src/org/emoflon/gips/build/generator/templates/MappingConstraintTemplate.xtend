@@ -81,8 +81,8 @@ import «imp»;
 	
 	override String generateVariableClassContent(RelationalExpression relExpr) {
 		return '''
-public class «className» extends GipsMappingConstraint<«data.gipsApiClassName», «data.mapping2mappingClassName.get(context.mapping)»>{
-	public «className»(final «data.gipsApiClassName» engine, final MappingConstraint constraint) {
+public class «className» extends GipsMappingConstraint<«data.gipsApiClassName»<?>, «data.mapping2mappingClassName.get(context.mapping)»>{
+	public «className»(final «data.gipsApiClassName»<?> engine, final MappingConstraint constraint) {
 		super(engine, constraint);
 	}
 	«IF GipsTransformationUtils.isConstantExpression( relExpr.lhs) == ArithmeticExpressionType.constant»

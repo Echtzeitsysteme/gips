@@ -229,7 +229,7 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			if (parent instanceof GipsSelect select) {
 				return Scopes.scopeFor(((EClass) select.getType()).getEAllStructuralFeatures());
 			} else if (parent instanceof GipsMappingAttributeExpr mapping) {
-				if (mapping.getMapping() != null && mapping.getMapping().getPattern() != null)
+				if (mapping.getMapping() == null || mapping.getMapping().getPattern() == null)
 					return IScope.NULLSCOPE;
 
 				SlimRule contextRule = mapping.getMapping().getPattern();

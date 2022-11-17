@@ -78,26 +78,6 @@ public class GipslModelFlattener extends GTLModelFlattener {
 	protected Map<String, List<Consumer<GipsObjective>>> pendingObjectiveJobs = Collections
 			.synchronizedMap(new LinkedHashMap<>());
 
-//	public GipslModelFlattener(final EditorFile file, boolean loadCompletePackage) throws Exception {
-//		this(new GipslResourceManager(), file, loadCompletePackage);
-//	}
-//
-//	public GipslModelFlattener(final GipslResourceManager gtlManager, final EditorFile file,
-//			boolean loadCompletePackage) throws Exception {
-//		super(gtlManager, (loadCompletePackage) ? loadAllFilesInPkg(gtlManager, file) : List.of(file));
-//	}
-//
-//	public GipslModelFlattener(final Collection<EditorFile> files) throws Exception {
-//		this(new GipslResourceManager(), files);
-//	}
-//	
-//	public static Collection<org.emoflon.ibex.gt.gtl.gTL.EditorFile> loadAllFilesInPkg(
-//			final GipslResourceManager gtlManager, final EditorFile file) {
-//		Collection<org.emoflon.ibex.gt.gtl.gTL.EditorFile> files = gtlManager.loadAllOtherEditorFilesInPackage(file);
-//		files.add(file);
-//		return files;
-//	}
-
 	public GipslModelFlattener(final GipslResourceManager gtlManager,
 			final Collection<org.emoflon.ibex.gt.gtl.gTL.EditorFile> files) throws Exception {
 		super(gtlManager, files);
@@ -118,7 +98,7 @@ public class GipslModelFlattener extends GTLModelFlattener {
 
 	@Override
 	protected EditorFile createNewEditorFile() {
-		EditorFile file = gipslFactory.createEditorFile();
+		EditorFile file = GipslPackage.eINSTANCE.getGipslFactory().createEditorFile();
 		return file;
 	}
 
@@ -189,7 +169,7 @@ public class GipslModelFlattener extends GTLModelFlattener {
 
 	protected GipsConstraint flatten(final GipsConstraint constraint) {
 		GipsConstraint flattenedConstraint = gipslFactory.createGipsConstraint();
-		EObject context = flattenContext(flattenedConstraint.getContext());
+		EObject context = flattenContext(constraint.getContext());
 		flattenedConstraint.setContext(context);
 		flattenedConstraint.setExpr(flatten(constraint.getExpr()));
 		return flattenedConstraint;
@@ -200,7 +180,7 @@ public class GipslModelFlattener extends GTLModelFlattener {
 		flattenedObjective.setName(objective.getName());
 		name2objective.put(flattenedObjective.getName(), flattenedObjective);
 
-		EObject context = flattenContext(flattenedObjective.getContext());
+		EObject context = flattenContext(objective.getContext());
 		flattenedObjective.setContext(context);
 		flattenedObjective.setExpr(flatten(objective.getExpr()));
 		return flattenedObjective;
@@ -400,7 +380,7 @@ public class GipslModelFlattener extends GTLModelFlattener {
 		if (expr.getExpr() == null)
 			return flattenedExpr;
 
-		expr.setExpr(flatten(expr.getExpr()));
+		flattenedExpr.setExpr(flatten(expr.getExpr()));
 		return flattenedExpr;
 	}
 

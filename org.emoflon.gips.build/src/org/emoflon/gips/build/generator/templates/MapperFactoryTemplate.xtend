@@ -39,8 +39,8 @@ class MapperFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 import «imp»;
 «ENDFOR»
 
-public class «className» extends GipsMapperFactory<«data.apiAbstractClassName»> {
-	public «className»(final GipsEngine engine, final «data.apiAbstractClassName» eMoflonApi) {
+public class «className» extends GipsMapperFactory<«data.apiAbstractClassName»<?>> {
+	public «className»(final GipsEngine engine, final «data.apiAbstractClassName»<?> eMoflonApi) {
 		super(engine, eMoflonApi);
 	}
 	

@@ -50,8 +50,8 @@ import «imp»;
 	
 	override String generateClassContent() {
 		return '''
-public class «className» extends GipsTypeObjective<«data.gipsApiClassName», «context.modelType.type.name»> {
-	public «className»(final «data.gipsApiClassName» engine, final TypeObjective objective) {
+public class «className» extends GipsTypeObjective<«data.gipsApiClassName»<?>, «context.modelType.type.name»> {
+	public «className»(final «data.gipsApiClassName»<?> engine, final TypeObjective objective) {
 		super(engine, objective);
 	}
 	

@@ -46,7 +46,7 @@ class GipslGenerator extends AbstractGenerator {
 		
 		logger.info('''Building project «iProject.name» ...''')
 		val files = new LinkedList
-		SlimGTWorkspaceUtil.gatherFilesWithEnding(files, new File(iProject.location.toPortableString), ".gtl", true)
+		SlimGTWorkspaceUtil.gatherFilesWithEnding(files, new File(iProject.location.toPortableString), ".gipsl", true)
 		
 		val manager = new GipslResourceManager();
 		val pkg2Files = new HashMap<String, Collection<EditorFile>>
@@ -75,7 +75,7 @@ class GipslGenerator extends AbstractGenerator {
 		
 		logger.info('''Building project «iProject.name» -> calling gips builder extensions ...''')
 		ExtensionsUtil
-			.collectExtensions(SlimGTBuilderExtension.BUILDER_EXTENSON_ID, "class", typeof(SlimGTBuilderExtension))
+			.collectExtensions(SlimGTBuilderExtension.BUILDER_EXTENSON_ID, "builder", typeof(SlimGTBuilderExtension))
 			.filter[builder | builder.hasProperNature(iProject)]
 			.forEach[builder | pkg2flattened.values.forEach[ef | builder.build(iProject, ef)]];
 	}

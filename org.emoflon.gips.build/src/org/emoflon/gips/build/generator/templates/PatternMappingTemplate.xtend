@@ -39,8 +39,8 @@ public class «className» extends GTMapping<«data.mapping2matchClassName.get(c
 	}
 
 	«FOR node : pattern.signatureNodes»
-	public «node.type.name» get«node.name.toFirstUpper»() {
-		return match.get«node.name.toFirstUpper»();
+	public «node.type.name» «node.name.toFirstLower»() {
+		return match.«node.name.toFirstLower»();
 	}
 	«ENDFOR»
 }'''

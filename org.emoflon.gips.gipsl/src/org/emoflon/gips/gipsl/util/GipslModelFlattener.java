@@ -78,6 +78,11 @@ public class GipslModelFlattener extends GTLModelFlattener {
 	protected Map<String, List<Consumer<GipsObjective>>> pendingObjectiveJobs = Collections
 			.synchronizedMap(new LinkedHashMap<>());
 
+	// This map prevents infinite loops (or stack overflows) since the var-variable
+	// of a lambda expression might reference itself.
+	protected Map<GipsLambdaExpression, GipsLambdaExpression> LE2flattenedLE = Collections
+			.synchronizedMap(new LinkedHashMap<>());
+
 	public GipslModelFlattener(final GipslResourceManager gtlManager,
 			final Collection<org.emoflon.ibex.gt.gtl.gTL.EditorFile> files) throws Exception {
 		super(gtlManager, files);
@@ -427,8 +432,12 @@ public class GipslModelFlattener extends GTLModelFlattener {
 	}
 
 	protected GipsLambdaExpression flatten(final GipsLambdaExpression expr) {
+		if (LE2flattenedLE.containsKey(expr)) {
+			return LE2flattenedLE.get(expr);
+		}
 		GipsLambdaExpression flattenedExpr = gipslFactory.createGipsLambdaExpression();
 		flattenedExpr.setName(expr.getName());
+		LE2flattenedLE.put(expr, flattenedExpr);
 		flattenedExpr.setExpr(flatten(expr.getExpr()));
 		return flattenedExpr;
 	}

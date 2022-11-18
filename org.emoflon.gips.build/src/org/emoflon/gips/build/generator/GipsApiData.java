@@ -42,8 +42,6 @@ public class GipsApiData extends IBeXGTApiData {
 	final public Map<GTMapping, String> mapping2coMatchClassName = new HashMap<>();
 	final public Map<PatternMapping, String> mapping2patternClassName = new HashMap<>();
 	final public Map<Mapping, String> mapping2matchClassName = new HashMap<>();
-//	final public Map<Pattern, String> pattern2matchClassName = new HashMap<>();
-//	final public Map<Pattern, String> pattern2patternClassName = new HashMap<>();
 
 	final public Map<Constraint, String> constraint2constraintClassName = new HashMap<>();
 	final public Map<Objective, String> objective2objectiveClassName = new HashMap<>();

@@ -242,7 +242,7 @@ public class GipslModelFlattener extends GTLModelFlattener {
 			flattenedRel.setLeft(flatten(rel.getLeft()));
 			if (rel.getRight() != null) {
 				flattenedRel.setOperator(rel.getOperator());
-				flattenedRel.setRight(rel.getRight());
+				flattenedRel.setRight(flatten(rel.getRight()));
 			}
 			return flattenedRel;
 		} else {

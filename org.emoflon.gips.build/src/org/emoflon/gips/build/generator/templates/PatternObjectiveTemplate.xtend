@@ -32,8 +32,11 @@ class PatternObjectiveTemplate extends ObjectiveTemplate<PatternObjective> {
 		imports.add("org.emoflon.gips.core.ilp.ILPConstant")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective")
 		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
-		imports.add(data.matchPackage+"."+data.pattern2matchClassName.get(context.pattern))
-		imports.add(data.rulePackage+"."+data.pattern2patternClassName.get(context.pattern))
+		imports.add(data.matchPackage+"."+data.pattern2matchClassName.get(context.pattern.pattern))
+		if(data.pattern2rule.containsKey(context.pattern.pattern))
+			imports.add(data.rulePackage+"."+data.pattern2patternClassName.get(context.pattern.pattern))
+		else
+			imports.add(data.patternPackage+"."+data.pattern2patternClassName.get(context.pattern.pattern))
 	}
 	
 	override String generatePackageDeclaration() {
@@ -48,8 +51,8 @@ import «imp»;
 	
 	override String generateClassContent() {
 		return '''
-public class «className» extends GipsPatternObjective<«data.gipsApiClassName»<?>, «data.pattern2matchClassName.get(context.pattern)», «data.pattern2patternClassName.get(context.pattern)»>{
-	public «className»(final «data.gipsApiClassName»<?> engine, final PatternObjective objective, final «data.pattern2patternClassName.get(context.pattern)» pattern) {
+public class «className» extends GipsPatternObjective<«data.gipsApiClassName»<?>, «data.pattern2matchClassName.get(context.pattern.pattern)», «data.pattern2patternClassName.get(context.pattern.pattern)»>{
+	public «className»(final «data.gipsApiClassName»<?> engine, final PatternObjective objective, final «data.pattern2patternClassName.get(context.pattern.pattern)» pattern) {
 		super(engine, objective, pattern);
 	}
 	
@@ -65,7 +68,7 @@ public class «className» extends GipsPatternObjective<«data.gipsApiClassName�
 		generateTermBuilder(expr)
 		return '''
 @Override
-protected void buildTerms(final «data.pattern2matchClassName.get(context.pattern)» context) {
+protected void buildTerms(final «data.pattern2matchClassName.get(context.pattern.pattern)» context) {
 	«FOR instruction : builderMethodCalls»
 	«instruction»
 	«ENDFOR»
@@ -103,7 +106,7 @@ protected void buildTerms(final «data.pattern2matchClassName.get(context.patter
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		val method = '''
-	protected double «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
+	protected double «methodName»(final «data.pattern2matchClassName.get(context.pattern.pattern)» context) {
 		return «parseExpression(expr, ExpressionContext.varConstraint)»;
 	}
 		'''
@@ -115,7 +118,7 @@ protected void buildTerms(final «data.pattern2matchClassName.get(context.patter
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		val method = '''
-	protected double «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
+	protected double «methodName»(final «data.pattern2matchClassName.get(context.pattern.pattern)» context) {
 		return «parseExpression(expr, ExpressionContext.varConstraint)»;
 	}
 		'''
@@ -133,7 +136,7 @@ protected void buildTerms(final «data.pattern2matchClassName.get(context.patter
 		imports.add(data.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
 		imports.add("java.util.stream.Collectors")
 		val method = '''
-	protected void «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
+	protected void «methodName»(final «data.pattern2matchClassName.get(context.pattern.pattern)» context) {
 		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper("«expr.mapping.name»").getMappings().values().parallelStream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
@@ -150,7 +153,7 @@ protected void buildTerms(final «data.pattern2matchClassName.get(context.patter
 		builderMethods.put(expr, methodName)
 		helper.addImportForType(expr.type.type)
 		val method = '''
-	protected void «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
+	protected void «methodName»(final «data.pattern2matchClassName.get(context.pattern.pattern)» context) {
 		double constant = indexer.getObjectsOfType("«expr.type.type.name»").parallelStream()
 					.map(type -> («expr.type.type.name») type)
 					«getFilterExpr(expr.filter, ExpressionContext.constStream)»
@@ -170,7 +173,7 @@ protected void buildTerms(final «data.pattern2matchClassName.get(context.patter
 		builderMethods.put(expr, methodName)
 		imports.add(data.matchPackage+"."+data.pattern2matchClassName.get(expr.pattern))
 		val method = '''
-	protected void «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
+	protected void «methodName»(final «data.pattern2matchClassName.get(context.pattern.pattern)» context) {
 		double constant = engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()
 					«getFilterExpr(expr.filter, ExpressionContext.constStream)»
 					.map(«getIteratorVariableName(expr)» -> «parseExpression(expr.expression, ExpressionContext.constConstraint)»)

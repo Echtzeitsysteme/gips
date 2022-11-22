@@ -54,8 +54,10 @@ public class GurobiSolver extends ILPSolver {
 		if (!config.enableOutput()) {
 			env.set(IntParam.OutputFlag, 0);
 		}
+		// TODO: Check specific tolerances later on
 		if (config.enableTolerance()) {
 			env.set(DoubleParam.OptimalityTol, config.tolerance());
+			env.set(DoubleParam.IntFeasTol, config.tolerance());
 		}
 		if (config.timeLimitEnabled()) {
 			env.set(DoubleParam.TimeLimit, config.timeLimit());

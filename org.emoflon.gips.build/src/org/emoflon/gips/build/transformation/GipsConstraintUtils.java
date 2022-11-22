@@ -17,7 +17,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
 
 public final class GipsConstraintUtils {
-	final public static double EPSILON = 0.00001d;
+	final public static double EPSILON = 0.0001d;
 	final public static double INF = 10_000;
 
 	static protected VariableTuple insertSlackVariables(final GipsTransformationData data,

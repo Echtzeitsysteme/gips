@@ -18,6 +18,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingCheckValue;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingValue;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingVariableReference;
 import org.emoflon.gips.gipsl.gipsl.GipsNodeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
@@ -50,6 +51,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReferenceValue;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 
 public abstract class AttributeExpressionTransformer<T extends EObject> extends TransformationContext<T> {
@@ -272,6 +275,15 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 			if (contextType instanceof GipsMappingContext eMappingContext
 					&& eContext.getExpr() instanceof GipsNodeAttributeExpr eNodeExpr && eNodeExpr.getExpr() != null) {
 				return transformIteratorMappingValue(eMappingContext.getMapping(), streamIteratorContainer);
+			} else if (contextType instanceof GipsMappingContext eMappingContext
+					&& eContext.getExpr() instanceof GipsMappingVariableReference mappingVarRef) {
+				VariableReferenceValue value = factory.createVariableReferenceValue();
+				VariableReference ref = factory.createVariableReference();
+				ref.setVariable(data.eVariable2Variable().get(mappingVarRef.getVar()));
+				ref.setReturnType(mappingVarRef.getVar().getType());
+				value.setVar(ref);
+				value.setReturnType(ref.getReturnType());
+				return value;
 			} else if (contextType instanceof GipsPatternContext ePatternContext
 					&& eContext.getExpr() instanceof GipsNodeAttributeExpr eNodeExpr && eNodeExpr.getExpr() != null) {
 				return transformIteratorPatternValue(ePatternContext.getPattern(), streamIteratorContainer);
@@ -349,6 +361,14 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 			} else if (eContext.getExpr() instanceof GipsMappingValue mappingValOp) {
 				ContextMappingValue value = factory.createContextMappingValue();
 				value.setMappingContext(data.eMapping2Mapping().get(mc.getMapping()));
+				return value;
+			} else if (eContext.getExpr() instanceof GipsMappingVariableReference mappingVarRef) {
+				VariableReferenceValue value = factory.createVariableReferenceValue();
+				VariableReference ref = factory.createVariableReference();
+				ref.setVariable(data.eVariable2Variable().get(mappingVarRef.getVar()));
+				ref.setReturnType(mappingVarRef.getVar().getType());
+				value.setVar(ref);
+				value.setReturnType(ref.getReturnType());
 				return value;
 			} else {
 				throw new UnsupportedOperationException(
@@ -570,7 +590,6 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 			final GipsMappingAttributeExpr eMappingAttribute, final GipsStreamExpr streamIteratorContainer)
 			throws Exception {
 		if (eContextOp instanceof GipsMappingValue mappingValueOp) {
-			// TODO:
 			// On a serious note: Accessing ILP variable values should not be allowed in
 			// filter stream expressions since it is impractical.
 			IteratorMappingVariableValue mappingValue = factory.createIteratorMappingVariableValue();

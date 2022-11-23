@@ -85,6 +85,15 @@ public interface GipsIntermediateFactory extends EFactory {
 	Variable createVariable();
 
 	/**
+	 * Returns a new object of class '<em>GT Parameter Variable</em>'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>GT Parameter Variable</em>'.
+	 * @generated
+	 */
+	GTParameterVariable createGTParameterVariable();
+
+	/**
 	 * Returns a new object of class '<em>Global Constraint</em>'. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -515,6 +524,15 @@ public interface GipsIntermediateFactory extends EFactory {
 	 * @generated
 	 */
 	IteratorTypeFeatureValue createIteratorTypeFeatureValue();
+
+	/**
+	 * Returns a new object of class '<em>Variable Reference Value</em>'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Variable Reference Value</em>'.
+	 * @generated
+	 */
+	VariableReferenceValue createVariableReferenceValue();
 
 	/**
 	 * Returns a new object of class '<em>Stream Expression</em>'. <!--

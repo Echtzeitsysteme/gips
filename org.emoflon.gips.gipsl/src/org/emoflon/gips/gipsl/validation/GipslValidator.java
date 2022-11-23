@@ -1147,7 +1147,8 @@ public class GipslValidator extends AbstractGipslValidator {
 		} else if (innerExpr instanceof GipsMappingVariableReference mapVarRef && mapVarRef.getVar() != null && mapVarRef.getVar().getType() != null) {
 			if (mapVarRef.getVar().getType() == EcorePackage.Literals.EINT || 
 					mapVarRef.getVar().getType() == EcorePackage.Literals.ESHORT || 
-					mapVarRef.getVar().getType() == EcorePackage.Literals.EBYTE) {
+					mapVarRef.getVar().getType() == EcorePackage.Literals.EBYTE ||
+					mapVarRef.getVar().getType() == EcorePackage.Literals.EBOOLEAN) {
 				return EvalType.INTEGER;
 			} else if (mapVarRef.getVar().getType() == EcorePackage.Literals.ELONG) {
 				return EvalType.LONG;
@@ -1178,7 +1179,10 @@ public class GipslValidator extends AbstractGipslValidator {
 			} else if (innerExpr instanceof GipsFeatureExpr featureExpr) {
 				exprEval = getEvalTypeFromFeatureExpr(featureExpr);
 			} else if (innerExpr instanceof GipsMappingVariableReference mapVarRef && mapVarRef.getVar() != null && mapVarRef.getVar().getType() != null) {
-				if (mapVarRef.getVar().getType() == EcorePackage.Literals.EINT) {
+				if (mapVarRef.getVar().getType() == EcorePackage.Literals.EINT || 
+						mapVarRef.getVar().getType() == EcorePackage.Literals.ESHORT || 
+						mapVarRef.getVar().getType() == EcorePackage.Literals.EBYTE ||
+						mapVarRef.getVar().getType() == EcorePackage.Literals.EBOOLEAN) {
 					return EvalType.INTEGER;
 				} else if (mapVarRef.getVar().getType() == EcorePackage.Literals.ELONG) {
 					return EvalType.LONG;

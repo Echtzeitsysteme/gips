@@ -71,6 +71,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createPatternMapping();
 		case GipsIntermediatePackage.VARIABLE:
 			return createVariable();
+		case GipsIntermediatePackage.GT_PARAMETER_VARIABLE:
+			return createGTParameterVariable();
 		case GipsIntermediatePackage.GLOBAL_CONSTRAINT:
 			return createGlobalConstraint();
 		case GipsIntermediatePackage.OBJECTIVE:
@@ -167,6 +169,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createIteratorTypeValue();
 		case GipsIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE:
 			return createIteratorTypeFeatureValue();
+		case GipsIntermediatePackage.VARIABLE_REFERENCE_VALUE:
+			return createVariableReferenceValue();
 		case GipsIntermediatePackage.STREAM_EXPRESSION:
 			return createStreamExpression();
 		case GipsIntermediatePackage.STREAM_NO_OPERATION:
@@ -316,6 +320,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	public Variable createVariable() {
 		VariableImpl variable = new VariableImpl();
 		return variable;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public GTParameterVariable createGTParameterVariable() {
+		GTParameterVariableImpl gtParameterVariable = new GTParameterVariableImpl();
+		return gtParameterVariable;
 	}
 
 	/**
@@ -796,6 +810,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	public IteratorTypeFeatureValue createIteratorTypeFeatureValue() {
 		IteratorTypeFeatureValueImpl iteratorTypeFeatureValue = new IteratorTypeFeatureValueImpl();
 		return iteratorTypeFeatureValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public VariableReferenceValue createVariableReferenceValue() {
+		VariableReferenceValueImpl variableReferenceValue = new VariableReferenceValueImpl();
+		return variableReferenceValue;
 	}
 
 	/**

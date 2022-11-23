@@ -112,6 +112,11 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseGTParameterVariable(GTParameterVariable object) {
+			return createGTParameterVariableAdapter();
+		}
+
+		@Override
 		public Adapter caseConstraint(Constraint object) {
 			return createConstraintAdapter();
 		}
@@ -407,6 +412,11 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseVariableReferenceValue(VariableReferenceValue object) {
+			return createVariableReferenceValueAdapter();
+		}
+
+		@Override
 		public Adapter caseStreamExpression(StreamExpression object) {
 			return createStreamExpressionAdapter();
 		}
@@ -588,6 +598,22 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createVariableAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GTParameterVariable
+	 * <em>GT Parameter Variable</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GTParameterVariable
+	 * @generated
+	 */
+	public Adapter createGTParameterVariableAdapter() {
 		return null;
 	}
 
@@ -1523,6 +1549,22 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createIteratorTypeFeatureValueAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.VariableReferenceValue
+	 * <em>Variable Reference Value</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.VariableReferenceValue
+	 * @generated
+	 */
+	public Adapter createVariableReferenceValueAdapter() {
 		return null;
 	}
 

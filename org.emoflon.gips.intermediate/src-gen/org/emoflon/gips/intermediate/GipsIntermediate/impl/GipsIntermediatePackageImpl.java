@@ -40,6 +40,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.GTMapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.GTParameterVariable;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
@@ -94,6 +95,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.UnaryBoolOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReferenceValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
 
@@ -168,6 +170,13 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * @generated
 	 */
 	private EClass variableEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass gtParameterVariableEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -581,6 +590,13 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * @generated
 	 */
 	private EClass iteratorTypeFeatureValueEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass variableReferenceValueEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1075,6 +1091,24 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public EReference getMapping_FreeVariables() {
+		return (EReference) mappingEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getMapping_BoundVariables() {
+		return (EReference) mappingEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getGTMapping() {
 		return gtMappingEClass;
 	}
@@ -1122,6 +1156,33 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 */
 	public EAttribute getVariable_Type() {
 		return (EAttribute) variableEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EClass getGTParameterVariable() {
+		return gtParameterVariableEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getGTParameterVariable_Parameter() {
+		return (EReference) gtParameterVariableEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getGTParameterVariable_Rule() {
+		return (EReference) gtParameterVariableEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -2407,6 +2468,24 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public EClass getVariableReferenceValue() {
+		return variableReferenceValueEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getVariableReferenceValue_Var() {
+		return (EReference) variableReferenceValueEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getStreamExpression() {
 		return streamExpressionEClass;
 	}
@@ -2668,6 +2747,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 
 		mappingEClass = createEClass(MAPPING);
 		createEReference(mappingEClass, MAPPING__CONTEXT_PATTERN);
+		createEReference(mappingEClass, MAPPING__FREE_VARIABLES);
+		createEReference(mappingEClass, MAPPING__BOUND_VARIABLES);
 
 		gtMappingEClass = createEClass(GT_MAPPING);
 		createEReference(gtMappingEClass, GT_MAPPING__RULE);
@@ -2677,6 +2758,10 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 
 		variableEClass = createEClass(VARIABLE);
 		createEAttribute(variableEClass, VARIABLE__TYPE);
+
+		gtParameterVariableEClass = createEClass(GT_PARAMETER_VARIABLE);
+		createEReference(gtParameterVariableEClass, GT_PARAMETER_VARIABLE__PARAMETER);
+		createEReference(gtParameterVariableEClass, GT_PARAMETER_VARIABLE__RULE);
 
 		constraintEClass = createEClass(CONSTRAINT);
 		createEAttribute(constraintEClass, CONSTRAINT__NAME);
@@ -2881,6 +2966,9 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		iteratorTypeFeatureValueEClass = createEClass(ITERATOR_TYPE_FEATURE_VALUE);
 		createEReference(iteratorTypeFeatureValueEClass, ITERATOR_TYPE_FEATURE_VALUE__FEATURE_EXPRESSION);
 
+		variableReferenceValueEClass = createEClass(VARIABLE_REFERENCE_VALUE);
+		createEReference(variableReferenceValueEClass, VARIABLE_REFERENCE_VALUE__VAR);
+
 		streamExpressionEClass = createEClass(STREAM_EXPRESSION);
 		createEReference(streamExpressionEClass, STREAM_EXPRESSION__RETURN_TYPE);
 		createEReference(streamExpressionEClass, STREAM_EXPRESSION__CURRENT);
@@ -2951,6 +3039,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		gtMappingEClass.getESuperTypes().add(this.getMapping());
 		patternMappingEClass.getESuperTypes().add(this.getMapping());
 		variableEClass.getESuperTypes().add(this.getVariableSet());
+		gtParameterVariableEClass.getESuperTypes().add(this.getVariable());
 		globalConstraintEClass.getESuperTypes().add(this.getConstraint());
 		patternConstraintEClass.getESuperTypes().add(this.getContext());
 		patternConstraintEClass.getESuperTypes().add(this.getConstraint());
@@ -3014,6 +3103,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		iteratorTypeValueEClass.getESuperTypes().add(this.getValueExpression());
 		iteratorTypeValueEClass.getESuperTypes().add(this.getIterator());
 		iteratorTypeFeatureValueEClass.getESuperTypes().add(this.getIteratorTypeValue());
+		variableReferenceValueEClass.getESuperTypes().add(this.getValueExpression());
 		streamExpressionEClass.getESuperTypes().add(this.getSetOperation());
 		streamNoOperationEClass.getESuperTypes().add(this.getStreamOperation());
 		streamFilterOperationEClass.getESuperTypes().add(this.getStreamOperation());
@@ -3112,6 +3202,12 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEReference(getMapping_ContextPattern(), theIBeXPatternModelPackage.getIBeXContextPattern(), null,
 				"contextPattern", null, 1, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getMapping_FreeVariables(), this.getVariable(), null, "freeVariables", null, 0, -1,
+				Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getMapping_BoundVariables(), this.getGTParameterVariable(), null, "boundVariables", null, 0, -1,
+				Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(gtMappingEClass, GTMapping.class, "GTMapping", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
@@ -3129,6 +3225,15 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 				IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getVariable_Type(), this.getVariableType(), "type", null, 0, 1, Variable.class, !IS_TRANSIENT,
 				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(gtParameterVariableEClass, GTParameterVariable.class, "GTParameterVariable", !IS_ABSTRACT,
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGTParameterVariable_Parameter(), theIBeXPatternModelPackage.getIBeXParameter(), null,
+				"parameter", null, 1, 1, GTParameterVariable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGTParameterVariable_Rule(), theIBeXPatternModelPackage.getIBeXRule(), null, "rule", null, 1,
+				1, GTParameterVariable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(constraintEClass, Constraint.class, "Constraint", IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
@@ -3546,6 +3651,12 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEReference(getIteratorTypeFeatureValue_FeatureExpression(), this.getFeatureExpression(), null,
 				"featureExpression", null, 0, 1, IteratorTypeFeatureValue.class, !IS_TRANSIENT, !IS_VOLATILE,
 				IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(variableReferenceValueEClass, VariableReferenceValue.class, "VariableReferenceValue", !IS_ABSTRACT,
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getVariableReferenceValue_Var(), this.getVariableReference(), null, "var", null, 1, 1,
+				VariableReferenceValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(streamExpressionEClass, StreamExpression.class, "StreamExpression", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);

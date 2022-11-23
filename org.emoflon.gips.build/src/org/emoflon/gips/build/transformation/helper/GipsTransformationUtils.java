@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
@@ -58,8 +59,21 @@ import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
 
 public final class GipsTransformationUtils {
+	
+	public static VariableType typeToVariableType(EClassifier type) {
+		if(type == EcorePackage.Literals.EINT || type == EcorePackage.Literals.ESHORT || type == EcorePackage.Literals.ELONG || type == EcorePackage.Literals.EBYTE) {
+			return VariableType.INTEGER;
+		} else if(type == EcorePackage.Literals.EFLOAT || type == EcorePackage.Literals.EDOUBLE) {
+			return VariableType.REAL;
+		} else if(type == EcorePackage.Literals.EBOOLEAN) {
+			return VariableType.BINARY;
+		} else {
+			throw new UnsupportedOperationException("Unsupported ilp variable type: " + type);
+		}
+	}
 
 	public static GipsStreamExpr getTerminalStreamExpression(final GipsStreamExpr expr) {
 		if (expr instanceof GipsStreamNavigation nav) {

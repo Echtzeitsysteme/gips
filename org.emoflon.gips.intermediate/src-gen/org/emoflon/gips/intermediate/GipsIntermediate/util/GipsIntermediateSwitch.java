@@ -143,6 +143,17 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case GipsIntermediatePackage.GT_PARAMETER_VARIABLE: {
+			GTParameterVariable gtParameterVariable = (GTParameterVariable) theEObject;
+			T result = caseGTParameterVariable(gtParameterVariable);
+			if (result == null)
+				result = caseVariable(gtParameterVariable);
+			if (result == null)
+				result = caseVariableSet(gtParameterVariable);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case GipsIntermediatePackage.CONSTRAINT: {
 			Constraint constraint = (Constraint) theEObject;
 			T result = caseConstraint(constraint);
@@ -742,6 +753,15 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case GipsIntermediatePackage.VARIABLE_REFERENCE_VALUE: {
+			VariableReferenceValue variableReferenceValue = (VariableReferenceValue) theEObject;
+			T result = caseVariableReferenceValue(variableReferenceValue);
+			if (result == null)
+				result = caseValueExpression(variableReferenceValue);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case GipsIntermediatePackage.STREAM_EXPRESSION: {
 			StreamExpression streamExpression = (StreamExpression) theEObject;
 			T result = caseStreamExpression(streamExpression);
@@ -932,6 +952,22 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseVariable(Variable object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>GT
+	 * Parameter Variable</em>'. <!-- begin-user-doc --> This implementation returns
+	 * null; returning a non-null result will terminate the switch. <!--
+	 * end-user-doc -->
+	 * 
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>GT
+	 *         Parameter Variable</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGTParameterVariable(GTParameterVariable object) {
 		return null;
 	}
 
@@ -1851,6 +1887,22 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseIteratorTypeFeatureValue(IteratorTypeFeatureValue object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Variable
+	 * Reference Value</em>'. <!-- begin-user-doc --> This implementation returns
+	 * null; returning a non-null result will terminate the switch. <!--
+	 * end-user-doc -->
+	 * 
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Variable
+	 *         Reference Value</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseVariableReferenceValue(VariableReferenceValue object) {
 		return null;
 	}
 

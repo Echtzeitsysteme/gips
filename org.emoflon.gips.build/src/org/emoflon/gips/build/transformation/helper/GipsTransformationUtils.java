@@ -58,6 +58,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReferenceValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
 
@@ -285,6 +286,8 @@ public final class GipsTransformationUtils {
 			return ArithmeticExpressionType.constant;
 		} else if (expr instanceof IteratorTypeValue || expr instanceof IteratorTypeFeatureValue) {
 			return ArithmeticExpressionType.constant;
+		} else if (expr instanceof VariableReferenceValue) {
+			return ArithmeticExpressionType.variableValue;
 		} else {
 			throw new IllegalArgumentException("Unknown value expression Type: " + expr);
 		}
@@ -425,6 +428,8 @@ public final class GipsTransformationUtils {
 		} else if (expr instanceof IteratorPatternValue || expr instanceof IteratorPatternFeatureValue
 				|| expr instanceof IteratorPatternNodeValue || expr instanceof IteratorPatternNodeFeatureValue) {
 			return false;
+		} else if (expr instanceof VariableReferenceValue varRefValue) {
+			return false;
 		} else {
 			throw new IllegalArgumentException("Unknown value expression Type: " + expr);
 		}
@@ -482,6 +487,8 @@ public final class GipsTransformationUtils {
 			variables.add(val.getMappingContext());
 		} else if (expr instanceof IteratorMappingNodeFeatureValue val) {
 			variables.add(val.getMappingContext());
+		} else if (expr instanceof VariableReferenceValue varRefValue) {
+			variables.add(varRefValue.getVar().getVariable());
 		}
 		return variables;
 	}
@@ -677,6 +684,8 @@ public final class GipsTransformationUtils {
 			return ExpressionReturnType.object;
 		} else if (expr instanceof IteratorPatternNodeFeatureValue feature) {
 			return extractReturnType(feature.getFeatureExpression());
+		} else if (expr instanceof VariableReferenceValue) {
+			return ExpressionReturnType.number;
 		} else {
 			throw new IllegalArgumentException("Unknown value expression Type: " + expr);
 		}

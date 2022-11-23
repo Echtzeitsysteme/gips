@@ -2,6 +2,7 @@ package org.emoflon.gips.gipsl.validation;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -10,6 +11,7 @@ import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
@@ -40,6 +42,18 @@ public class GipslMappingValidator {
 		checkRuleNotAbstract(mapping);
 		checkAtMostOneMappingPerRule(mapping);
 		checkMappingUnused(mapping);
+	}
+	
+	@Check
+	public static void checkMappingVariable(final GipsMappingVariable mappingVariable) {
+		if (GipslValidator.DISABLE_VALIDATOR) {
+			return;
+		}
+
+		if (mappingVariable == null) {
+			return;
+		}
+		checkMappingVariableNameUnique(mappingVariable);
 	}
 
 	/**
@@ -212,5 +226,27 @@ public class GipslMappingValidator {
 				String.format(GipslValidatorUtils.MAPPING_W_O_CONSTRAINTS_AND_OBJECTIVE_MESSAGE, mapping.getName()), //
 				GipslPackage.Literals.GIPS_MAPPING__NAME);
 	}
+	
+	public static void checkMappingVariableNameUnique(final GipsMappingVariable mappingVariable) {
+		if(mappingVariable.getName() == null)
+			return;
+		
+		final GipsMapping mapping = (GipsMapping)mappingVariable.eContainer();	
+		if(mapping == null || mapping.getVariables() == null || mapping.getVariables().isEmpty())
+			return;
+		
 
+		Optional<GipsMappingVariable> other = mapping.getVariables().stream()
+				.filter(var -> !var.equals(mappingVariable))
+				.filter(var -> var.getName() != null)
+				.filter(var -> var.getName().equals(mappingVariable.getName())).findAny();
+		
+		if(other.isPresent()) {
+			GipslValidator.err( //
+					String.format(GipslValidatorUtils.MAPPING_VARIABLE_NAME_MULTIPLE_DECLARATIONS_MESSAGE, mappingVariable.getName() ), //
+					GipslPackage.Literals.GIPS_MAPPING_VARIABLE__NAME, //
+					GipslValidator.NAME_EXPECT_UNIQUE //
+			);
+		}
+	}
 }

@@ -313,8 +313,39 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 	}
 	
 	public IScope scopeForGipsMappingVariableReference(GipsMappingVariableReference context, EReference reference) {
-		// TODO Auto-generated method stub
-		return null;
+		Set<Class<?>> classes = Set.of(GipsContextExprImpl.class, GipsMappingAttributeExprImpl.class);
+		EObject parent = (EObject) GipslScopeContextUtil.getContainer(context, classes);
+		if (parent == null) {
+			return IScope.NULLSCOPE;
+		}
+		if(parent instanceof GipsContextExpr contextExpr) {
+			EObject contextType = null;
+			GipsConstraint constraintContext = GTEditorPatternUtils.getContainer(context, GipsConstraintImpl.class);
+			if (constraintContext != null) {
+				contextType = constraintContext.getContext();
+			} else {
+				GipsObjective objectiveContext = GTEditorPatternUtils.getContainer(context, GipsObjectiveImpl.class);
+				if (objectiveContext != null) {
+					contextType = objectiveContext.getContext();
+				} else {
+					return IScope.NULLSCOPE;
+				}
+			}
+			if (contextType instanceof GipsMappingContext mappingContext && mappingContext.getMapping() != null && mappingContext.getMapping().getVariables() != null && !mappingContext.getMapping().getVariables().isEmpty()) {
+				return Scopes.scopeFor(mappingContext.getMapping().getVariables());
+			} else {
+				return IScope.NULLSCOPE;
+			}
+			
+		} else if(parent instanceof GipsMappingAttributeExpr mappingExpr) {
+			if(mappingExpr.getMapping() != null && mappingExpr.getMapping().getVariables() != null && !mappingExpr.getMapping().getVariables().isEmpty()) {
+				return Scopes.scopeFor(mappingExpr.getMapping().getVariables());
+			} else {
+				return IScope.NULLSCOPE;
+			}
+		} else {
+			return IScope.NULLSCOPE;
+		}
 	}
 
 	public IScope scopeForGipsMappingContext(GipsMappingContext context, EReference reference) {

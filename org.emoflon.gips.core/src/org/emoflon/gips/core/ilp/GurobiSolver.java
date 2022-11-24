@@ -127,6 +127,13 @@ public class GurobiSolver extends ILPSolver {
 					double result = Math.round(getVar(varName).get(DoubleAttr.X));
 					// Save result value in specific mapping
 					mapper.getMapping(k).setValue((int) result);
+					GipsMapping mapping = mapper.getMapping(k);
+					if(mapping.hasVariables()) {
+						for(String mappingVarName : mapping.getVariableNames()) {
+							double mappingVarResult = Math.round(getVar(mappingVarName).get(DoubleAttr.X));
+							mapping.setVariableValue(mappingVarName, mappingVarResult);
+						}
+					}
 				} catch (final GRBException e) {
 					throw new RuntimeException(e);
 				}

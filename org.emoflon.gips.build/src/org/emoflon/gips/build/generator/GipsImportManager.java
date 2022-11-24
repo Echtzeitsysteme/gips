@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXParameter;
 import org.moflon.core.utilities.EcoreUtils;
@@ -199,6 +200,34 @@ public class GipsImportManager {
 
 	public String getPackage(final EPackage pkg) {
 		return packageNameToPath.get(pkg.getName());
+	}
+	
+	public static String variableToJavaDataType(final Variable var) {
+		switch(var.getType()) {
+		case BINARY:
+			return "boolean";
+		case INTEGER:
+			return "int";
+		case REAL:
+			return "double";
+		default:
+			throw new UnsupportedOperationException("Unsupported ilp variable data type : " + var.getType());
+		
+		}
+	}
+	
+	public static String variableToJavaDefaultValue(final Variable var) {
+		switch(var.getType()) {
+		case BINARY:
+			return "false";
+		case INTEGER:
+			return "0";
+		case REAL:
+			return "0.0";
+		default:
+			throw new UnsupportedOperationException("Unsupported ilp variable data type : " + var.getType());
+		
+		}
 	}
 
 }

@@ -31,4 +31,6 @@ public abstract class GipsMapping extends ILPBinaryVariable {
 	public abstract Collection<String> getVariableNames();
 	
 	public abstract Map<String, ILPVariable<?>> getVariables();
+	
+	public abstract void setVariableValue(final String valName, final double value);
 }

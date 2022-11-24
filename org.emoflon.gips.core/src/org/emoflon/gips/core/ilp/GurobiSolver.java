@@ -146,6 +146,9 @@ public class GurobiSolver extends ILPSolver {
 	protected void translateMapping(final GipsMapping mapping) {
 		// Add a binary variable with corresponding name for the mapping
 		createOrGetBinVar(mapping);
+		if(mapping.hasVariables()) {
+			createOrGetAdditionalVars(mapping.getVariables().values());
+		}
 	}
 
 	@Override

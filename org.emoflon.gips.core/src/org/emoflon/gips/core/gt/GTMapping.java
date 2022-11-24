@@ -1,8 +1,11 @@
 package org.emoflon.gips.core.gt;
 
+import java.util.Collection;
+import java.util.Map;
 import java.util.Objects;
 
 import org.emoflon.gips.core.GipsMapping;
+import org.emoflon.gips.core.ilp.ILPVariable;
 import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 import org.emoflon.ibex.gt.api.GraphTransformationPattern;
 
@@ -37,4 +40,16 @@ public abstract class GTMapping<M extends GraphTransformationMatch<M, P>, P exte
 	public M getMatch() {
 		return match;
 	}
+	
+	public abstract boolean hasFreeVariables();
+	
+	public abstract boolean hasBoundVariables();
+	
+	public abstract Collection<String> getFreeVariableNames();
+	
+	public abstract Map<String, ILPVariable<?>> getFreeVariables();
+	
+	public abstract Collection<String> getBoundVariableNames();
+	
+	public abstract Map<String, ILPVariable<?>> getBoundVariables();
 }

@@ -1,6 +1,10 @@
 package org.emoflon.gips.core;
 
+import java.util.Collection;
+import java.util.Map;
+
 import org.emoflon.gips.core.ilp.ILPBinaryVariable;
+import org.emoflon.gips.core.ilp.ILPVariable;
 
 public abstract class GipsMapping extends ILPBinaryVariable {
 
@@ -21,4 +25,10 @@ public abstract class GipsMapping extends ILPBinaryVariable {
 			return false;
 		}
 	}
+	
+	public abstract boolean hasVariables();
+	
+	public abstract Collection<String> getVariableNames();
+	
+	public abstract Map<String, ILPVariable<?>> getVariables();
 }

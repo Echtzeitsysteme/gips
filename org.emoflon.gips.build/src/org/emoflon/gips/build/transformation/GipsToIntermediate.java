@@ -169,6 +169,12 @@ public class GipsToIntermediate {
 		if (eConfig.isEnableTolerance()) {
 			config.setTolerance(eConfig.getTolerance());
 		}
+
+		config.setEnableLpOutput(eConfig.isEnableLpOutput());
+		if (eConfig.isEnableLpOutput()) {
+			config.setLpPath(eConfig.getPath().replace("\"", ""));
+		}
+
 		data.model().setConfig(config);
 	}
 

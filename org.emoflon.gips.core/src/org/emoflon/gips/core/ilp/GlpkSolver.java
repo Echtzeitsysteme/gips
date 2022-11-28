@@ -80,8 +80,11 @@ public class GlpkSolver extends ILPSolver {
 		if (config.timeLimitEnabled()) {
 			iocp.setTm_lim((int) config.timeLimit() * 1000); // seconds to milliseconds
 		}
+		// TODO: Check specific tolerances later on
 		if (config.enableTolerance()) {
 			iocp.setTol_obj(config.tolerance());
+			iocp.setTol_int(config.tolerance());
+			iocp.setMip_gap(config.tolerance());
 		}
 		// Random seed not supported by the GLPK Java interface
 		// TODO: Set output flag
@@ -94,8 +97,6 @@ public class GlpkSolver extends ILPSolver {
 		setUpVars();
 		setUpCnstrs();
 		setUpObj();
-
-//		GLPK.glp_write_lp(model, null, "glpk.lp");
 
 		// Solving
 		final int ret = GLPK.glp_intopt(model, iocp);

@@ -23,6 +23,7 @@ import ilog.concert.IloLinearNumExpr;
 import ilog.concert.IloNumVar;
 import ilog.concert.IloObjective;
 import ilog.cplex.IloCplex;
+import ilog.cplex.IloCplex.Status;
 
 public class CplexSolver extends ILPSolver {
 
@@ -59,7 +60,12 @@ public class CplexSolver extends ILPSolver {
 				cplex.setParam(IloCplex.Param.RandomSeed, config.randomSeed());
 			}
 			cplex.setParam(IloCplex.Param.Preprocessing.Presolve, config.enablePresolve());
-			// TODO: Tolerance
+			// TODO: Check specific tolerances later on
+			if (config.enableTolerance()) {
+				cplex.setParam(IloCplex.Param.MIP.Tolerances.Integrality, config.tolerance());
+				cplex.setParam(IloCplex.Param.MIP.Tolerances.AbsMIPGap, config.tolerance());
+			}
+
 			if (!config.enableOutput()) {
 				cplex.setOut(null);
 			}
@@ -87,16 +93,19 @@ public class CplexSolver extends ILPSolver {
 
 			// Determine status
 			ILPSolverStatus status = null;
-			if (cplex.getStatus() == IloCplex.Status.Unbounded) {
+			final Status cplexStatus = cplex.getStatus();
+			if (cplexStatus == IloCplex.Status.Unbounded) {
 				status = ILPSolverStatus.UNBOUNDED;
-			} else if (cplex.getStatus() == IloCplex.Status.InfeasibleOrUnbounded) {
+			} else if (cplexStatus == IloCplex.Status.InfeasibleOrUnbounded) {
 				status = ILPSolverStatus.INF_OR_UNBD;
-			} else if (cplex.getStatus() == IloCplex.Status.Infeasible) {
+			} else if (cplexStatus == IloCplex.Status.Infeasible) {
 				status = ILPSolverStatus.INFEASIBLE;
-			} else if (cplex.getStatus() == IloCplex.Status.Optimal) {
+			} else if (cplexStatus == IloCplex.Status.Optimal) {
 				status = ILPSolverStatus.OPTIMAL;
-			} else if (cplex.getStatus() == IloCplex.Status.Unknown) {
+			} else if (cplexStatus == IloCplex.Status.Unknown) {
 				status = ILPSolverStatus.TIME_OUT;
+			} else if (cplexStatus == IloCplex.Status.Feasible) {
+				status = ILPSolverStatus.FEASIBLE;
 			} else {
 				throw new RuntimeException("Unknown solver status.");
 			}

@@ -24,6 +24,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.BoolValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingVariablesReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue;
@@ -38,6 +39,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeature
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariablesReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue;
@@ -58,9 +60,9 @@ import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
-import org.emoflon.gips.intermediate.GipsIntermediate.VariableReferenceValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
+import org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextMappingVariablesReferenceImpl;
 
 public final class GipsTransformationUtils {
 	
@@ -276,7 +278,7 @@ public final class GipsTransformationUtils {
 			return ArithmeticExpressionType.variableVector;
 		} else if (expr instanceof IteratorMappingValue) {
 			return ArithmeticExpressionType.variableScalar;
-		} else if (expr instanceof IteratorMappingVariableValue) {
+		} else if (expr instanceof IteratorMappingVariableValue || expr instanceof IteratorMappingVariablesReference) {
 			return ArithmeticExpressionType.variableValue;
 		} else if (expr instanceof IteratorMappingFeatureValue || expr instanceof IteratorMappingNodeValue
 				|| expr instanceof IteratorMappingNodeFeatureValue) {
@@ -286,7 +288,7 @@ public final class GipsTransformationUtils {
 			return ArithmeticExpressionType.constant;
 		} else if (expr instanceof IteratorTypeValue || expr instanceof IteratorTypeFeatureValue) {
 			return ArithmeticExpressionType.constant;
-		} else if (expr instanceof VariableReferenceValue) {
+		} else if (expr instanceof ContextMappingVariablesReference) {
 			return ArithmeticExpressionType.variableValue;
 		} else {
 			throw new IllegalArgumentException("Unknown value expression Type: " + expr);
@@ -421,14 +423,14 @@ public final class GipsTransformationUtils {
 			return false;
 		} else if (expr instanceof IteratorMappingValue || expr instanceof IteratorMappingVariableValue
 				|| expr instanceof IteratorMappingFeatureValue || expr instanceof IteratorMappingNodeValue
-				|| expr instanceof IteratorMappingNodeFeatureValue) {
+				|| expr instanceof IteratorMappingNodeFeatureValue || expr instanceof IteratorMappingVariablesReference) {
 			return false;
 		} else if (expr instanceof IteratorTypeValue || expr instanceof IteratorTypeFeatureValue) {
 			return false;
 		} else if (expr instanceof IteratorPatternValue || expr instanceof IteratorPatternFeatureValue
 				|| expr instanceof IteratorPatternNodeValue || expr instanceof IteratorPatternNodeFeatureValue) {
 			return false;
-		} else if (expr instanceof VariableReferenceValue varRefValue) {
+		} else if (expr instanceof ContextMappingVariablesReference varRefValue) {
 			return false;
 		} else {
 			throw new IllegalArgumentException("Unknown value expression Type: " + expr);
@@ -487,7 +489,9 @@ public final class GipsTransformationUtils {
 			variables.add(val.getMappingContext());
 		} else if (expr instanceof IteratorMappingNodeFeatureValue val) {
 			variables.add(val.getMappingContext());
-		} else if (expr instanceof VariableReferenceValue varRefValue) {
+		} else if (expr instanceof ContextMappingVariablesReference varRefValue) {
+			variables.add(varRefValue.getVar().getVariable());
+		} else if (expr instanceof IteratorMappingVariablesReference varRefValue) {
 			variables.add(varRefValue.getVar().getVariable());
 		}
 		return variables;
@@ -666,6 +670,8 @@ public final class GipsTransformationUtils {
 			return ExpressionReturnType.object;
 		} else if (expr instanceof IteratorMappingVariableValue) {
 			return ExpressionReturnType.number;
+		} else if (expr instanceof IteratorMappingVariablesReference) {
+			return ExpressionReturnType.number;
 		} else if (expr instanceof IteratorMappingFeatureValue feature) {
 			return extractReturnType(feature.getFeatureExpression());
 		} else if (expr instanceof IteratorMappingNodeFeatureValue feature) {
@@ -684,7 +690,7 @@ public final class GipsTransformationUtils {
 			return ExpressionReturnType.object;
 		} else if (expr instanceof IteratorPatternNodeFeatureValue feature) {
 			return extractReturnType(feature.getFeatureExpression());
-		} else if (expr instanceof VariableReferenceValue) {
+		} else if (expr instanceof ContextMappingVariablesReference) {
 			return ExpressionReturnType.number;
 		} else {
 			throw new IllegalArgumentException("Unknown value expression Type: " + expr);

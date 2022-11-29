@@ -32,6 +32,7 @@ import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingVariablesReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue;
@@ -41,6 +42,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeature
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariablesReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue;
@@ -52,7 +54,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
-import org.emoflon.gips.intermediate.GipsIntermediate.VariableReferenceValue;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 
 public abstract class AttributeExpressionTransformer<T extends EObject> extends TransformationContext<T> {
@@ -277,12 +278,14 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 				return transformIteratorMappingValue(eMappingContext.getMapping(), streamIteratorContainer);
 			} else if (contextType instanceof GipsMappingContext eMappingContext
 					&& eContext.getExpr() instanceof GipsMappingVariableReference mappingVarRef) {
-				VariableReferenceValue value = factory.createVariableReferenceValue();
+				IteratorMappingVariablesReference value = factory.createIteratorMappingVariablesReference();
 				VariableReference ref = factory.createVariableReference();
 				ref.setVariable(data.eVariable2Variable().get(mappingVarRef.getVar()));
 				ref.setReturnType(mappingVarRef.getVar().getType());
 				value.setVar(ref);
 				value.setReturnType(ref.getReturnType());
+				value.setMappingContext(data.eMapping2Mapping().get(eMappingContext.getMapping()));
+				value.setStream(data.eStream2SetOp().get(streamIteratorContainer));
 				return value;
 			} else if (contextType instanceof GipsPatternContext ePatternContext
 					&& eContext.getExpr() instanceof GipsNodeAttributeExpr eNodeExpr && eNodeExpr.getExpr() != null) {
@@ -363,12 +366,13 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 				value.setMappingContext(data.eMapping2Mapping().get(mc.getMapping()));
 				return value;
 			} else if (eContext.getExpr() instanceof GipsMappingVariableReference mappingVarRef) {
-				VariableReferenceValue value = factory.createVariableReferenceValue();
+				ContextMappingVariablesReference value = factory.createContextMappingVariablesReference();
 				VariableReference ref = factory.createVariableReference();
 				ref.setVariable(data.eVariable2Variable().get(mappingVarRef.getVar()));
 				ref.setReturnType(mappingVarRef.getVar().getType());
 				value.setVar(ref);
 				value.setReturnType(ref.getReturnType());
+				value.setMappingContext(data.eMapping2Mapping().get(mc.getMapping()));
 				return value;
 			} else {
 				throw new UnsupportedOperationException(

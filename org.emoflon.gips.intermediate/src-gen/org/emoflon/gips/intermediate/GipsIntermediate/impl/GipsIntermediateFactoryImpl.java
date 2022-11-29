@@ -135,6 +135,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createContextMappingValue();
 		case GipsIntermediatePackage.CONTEXT_MAPPING_NODE:
 			return createContextMappingNode();
+		case GipsIntermediatePackage.CONTEXT_MAPPING_VARIABLES_REFERENCE:
+			return createContextMappingVariablesReference();
 		case GipsIntermediatePackage.OBJECTIVE_FUNCTION_VALUE:
 			return createObjectiveFunctionValue();
 		case GipsIntermediatePackage.FEATURE_EXPRESSION:
@@ -159,6 +161,8 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createIteratorMappingValue();
 		case GipsIntermediatePackage.ITERATOR_MAPPING_VARIABLE_VALUE:
 			return createIteratorMappingVariableValue();
+		case GipsIntermediatePackage.ITERATOR_MAPPING_VARIABLES_REFERENCE:
+			return createIteratorMappingVariablesReference();
 		case GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE:
 			return createIteratorMappingFeatureValue();
 		case GipsIntermediatePackage.ITERATOR_MAPPING_NODE_VALUE:
@@ -169,8 +173,6 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createIteratorTypeValue();
 		case GipsIntermediatePackage.ITERATOR_TYPE_FEATURE_VALUE:
 			return createIteratorTypeFeatureValue();
-		case GipsIntermediatePackage.VARIABLE_REFERENCE_VALUE:
-			return createVariableReferenceValue();
 		case GipsIntermediatePackage.STREAM_EXPRESSION:
 			return createStreamExpression();
 		case GipsIntermediatePackage.STREAM_NO_OPERATION:
@@ -647,6 +649,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public ContextMappingVariablesReference createContextMappingVariablesReference() {
+		ContextMappingVariablesReferenceImpl contextMappingVariablesReference = new ContextMappingVariablesReferenceImpl();
+		return contextMappingVariablesReference;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public ObjectiveFunctionValue createObjectiveFunctionValue() {
 		ObjectiveFunctionValueImpl objectiveFunctionValue = new ObjectiveFunctionValueImpl();
 		return objectiveFunctionValue;
@@ -767,6 +779,16 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public IteratorMappingVariablesReference createIteratorMappingVariablesReference() {
+		IteratorMappingVariablesReferenceImpl iteratorMappingVariablesReference = new IteratorMappingVariablesReferenceImpl();
+		return iteratorMappingVariablesReference;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public IteratorMappingFeatureValue createIteratorMappingFeatureValue() {
 		IteratorMappingFeatureValueImpl iteratorMappingFeatureValue = new IteratorMappingFeatureValueImpl();
 		return iteratorMappingFeatureValue;
@@ -810,16 +832,6 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	public IteratorTypeFeatureValue createIteratorTypeFeatureValue() {
 		IteratorTypeFeatureValueImpl iteratorTypeFeatureValue = new IteratorTypeFeatureValueImpl();
 		return iteratorTypeFeatureValue;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public VariableReferenceValue createVariableReferenceValue() {
-		VariableReferenceValueImpl variableReferenceValue = new VariableReferenceValueImpl();
-		return variableReferenceValue;
 	}
 
 	/**

@@ -41,6 +41,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingVariablesReference
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariablesReference
 
 class MappingConstraintTemplate extends ConstraintTemplate<MappingConstraint> {
 
@@ -212,6 +214,10 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 			val builderMethodName = generateBuilder(expr)
 			val instruction = '''«builderMethodName»(context);'''
 			methodCalls.add(instruction)
+		} else if(expr instanceof ContextMappingVariablesReference) {
+			val builderMethodName = generateBuilder(expr)
+			val instruction = '''«builderMethodName»(context);'''
+			methodCalls.add(instruction)
 		} else if(expr instanceof ContextPatternNodeFeatureValue) {
 			throw new UnsupportedOperationException("Pattern context access is not possible within a mapping context.")
 		}  else if(expr instanceof ContextPatternNode) {
@@ -229,6 +235,8 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		} else if(expr instanceof IteratorMappingNodeFeatureValue) {
 			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
 		} else if(expr instanceof IteratorMappingNodeValue) {
+			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
+		} else if(expr instanceof IteratorMappingVariablesReference) {
 			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
 		} else if(expr instanceof IteratorPatternValue || expr instanceof IteratorPatternFeatureValue 
 				|| expr instanceof IteratorPatternNodeValue || expr instanceof IteratorPatternNodeFeatureValue) {
@@ -426,6 +434,18 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		val method = '''
 	protected ILPTerm «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		return new ILPTerm(context, (double)context.get«expr.node.name.toFirstUpper»().«parseFeatureExpression(expr.featureExpression)»);
+	}
+		'''
+		builderMethodDefinitions.put(expr, method)
+		return methodName;
+	}
+	
+	def String generateBuilder(ContextMappingVariablesReference expr) {
+		val methodName = '''builder_«builderMethods.size»'''
+		builderMethods.put(expr, methodName)
+		val method = '''
+	protected ILPTerm «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		return new ILPTerm(context.get«expr.^var.additionalVariableName.toFirstUpper»(), 1.0);
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)

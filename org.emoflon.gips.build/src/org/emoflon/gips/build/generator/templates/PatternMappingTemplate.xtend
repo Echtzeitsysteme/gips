@@ -48,7 +48,7 @@ public class «className» extends GTMapping<«data.mapping2matchClassName.get(c
 		super(ilpVariable, match);
 		«IF !context.freeVariables.isNullOrEmpty»
 		«FOR v : context.freeVariables»
-		«v.name.toFirstLower» = new «GipsImportManager.variableToJavaDataType(v, imports)»(name + "_«v.name»");
+		«v.name.toFirstLower» = new «GipsImportManager.variableToJavaDataType(v, imports)»(name + "->«v.name»");
 		«ENDFOR»
 		«ENDIF»
 	}

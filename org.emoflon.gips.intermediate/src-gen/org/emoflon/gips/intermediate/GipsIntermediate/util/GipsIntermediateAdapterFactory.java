@@ -322,6 +322,11 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseContextMappingVariablesReference(ContextMappingVariablesReference object) {
+			return createContextMappingVariablesReferenceAdapter();
+		}
+
+		@Override
 		public Adapter caseObjectiveFunctionValue(ObjectiveFunctionValue object) {
 			return createObjectiveFunctionValueAdapter();
 		}
@@ -387,6 +392,11 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseIteratorMappingVariablesReference(IteratorMappingVariablesReference object) {
+			return createIteratorMappingVariablesReferenceAdapter();
+		}
+
+		@Override
 		public Adapter caseIteratorMappingFeatureValue(IteratorMappingFeatureValue object) {
 			return createIteratorMappingFeatureValueAdapter();
 		}
@@ -409,11 +419,6 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseIteratorTypeFeatureValue(IteratorTypeFeatureValue object) {
 			return createIteratorTypeFeatureValueAdapter();
-		}
-
-		@Override
-		public Adapter caseVariableReferenceValue(VariableReferenceValue object) {
-			return createVariableReferenceValueAdapter();
 		}
 
 		@Override
@@ -1267,6 +1272,22 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingVariablesReference
+	 * <em>Context Mapping Variables Reference</em>}'. <!-- begin-user-doc --> This
+	 * default implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingVariablesReference
+	 * @generated
+	 */
+	public Adapter createContextMappingVariablesReferenceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class
 	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue
 	 * <em>Objective Function Value</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
@@ -1474,6 +1495,22 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariablesReference
+	 * <em>Iterator Mapping Variables Reference</em>}'. <!-- begin-user-doc --> This
+	 * default implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariablesReference
+	 * @generated
+	 */
+	public Adapter createIteratorMappingVariablesReferenceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class
 	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue
 	 * <em>Iterator Mapping Feature Value</em>}'. <!-- begin-user-doc --> This
 	 * default implementation returns null so that we can easily ignore cases; it's
@@ -1549,22 +1586,6 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createIteratorTypeFeatureValueAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.VariableReferenceValue
-	 * <em>Variable Reference Value</em>}'. <!-- begin-user-doc --> This default
-	 * implementation returns null so that we can easily ignore cases; it's useful
-	 * to ignore a case when inheritance will catch all the cases anyway. <!--
-	 * end-user-doc -->
-	 * 
-	 * @return the new adapter.
-	 * @see org.emoflon.gips.intermediate.GipsIntermediate.VariableReferenceValue
-	 * @generated
-	 */
-	public Adapter createVariableReferenceValueAdapter() {
 		return null;
 	}
 

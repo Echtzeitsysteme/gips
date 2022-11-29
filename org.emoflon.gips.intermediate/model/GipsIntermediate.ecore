@@ -291,6 +291,11 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//Mapping"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXNode"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContextMappingVariablesReference" eSuperTypes="#//ValueExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="var" lowerBound="1" eType="#//VariableReference"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//Mapping"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ObjectiveFunctionValue" eSuperTypes="#//ValueExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="objective" lowerBound="1"
         eType="#//Objective"/>
@@ -341,6 +346,11 @@
   <eClassifiers xsi:type="ecore:EClass" name="IteratorMappingVariableValue" eSuperTypes="#//ValueExpression #//Iterator">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//Mapping"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IteratorMappingVariablesReference" eSuperTypes="#//ValueExpression #//Iterator">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//Mapping"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="var" lowerBound="1" eType="#//VariableReference"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IteratorMappingFeatureValue" eSuperTypes="#//ValueExpression #//Iterator">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappingContext" eType="#//Mapping"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="featureExpression" eType="#//FeatureExpression"
@@ -359,10 +369,6 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IteratorTypeFeatureValue" eSuperTypes="#//IteratorTypeValue">
     <eStructuralFeatures xsi:type="ecore:EReference" name="featureExpression" eType="#//FeatureExpression"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="VariableReferenceValue" eSuperTypes="#//ValueExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="var" lowerBound="1" eType="#//VariableReference"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="StreamExpression" eSuperTypes="#//SetOperation">

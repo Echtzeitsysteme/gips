@@ -563,6 +563,15 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case GipsIntermediatePackage.CONTEXT_MAPPING_VARIABLES_REFERENCE: {
+			ContextMappingVariablesReference contextMappingVariablesReference = (ContextMappingVariablesReference) theEObject;
+			T result = caseContextMappingVariablesReference(contextMappingVariablesReference);
+			if (result == null)
+				result = caseValueExpression(contextMappingVariablesReference);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case GipsIntermediatePackage.OBJECTIVE_FUNCTION_VALUE: {
 			ObjectiveFunctionValue objectiveFunctionValue = (ObjectiveFunctionValue) theEObject;
 			T result = caseObjectiveFunctionValue(objectiveFunctionValue);
@@ -694,6 +703,17 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case GipsIntermediatePackage.ITERATOR_MAPPING_VARIABLES_REFERENCE: {
+			IteratorMappingVariablesReference iteratorMappingVariablesReference = (IteratorMappingVariablesReference) theEObject;
+			T result = caseIteratorMappingVariablesReference(iteratorMappingVariablesReference);
+			if (result == null)
+				result = caseValueExpression(iteratorMappingVariablesReference);
+			if (result == null)
+				result = caseIterator(iteratorMappingVariablesReference);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case GipsIntermediatePackage.ITERATOR_MAPPING_FEATURE_VALUE: {
 			IteratorMappingFeatureValue iteratorMappingFeatureValue = (IteratorMappingFeatureValue) theEObject;
 			T result = caseIteratorMappingFeatureValue(iteratorMappingFeatureValue);
@@ -749,15 +769,6 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 				result = caseValueExpression(iteratorTypeFeatureValue);
 			if (result == null)
 				result = caseIterator(iteratorTypeFeatureValue);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case GipsIntermediatePackage.VARIABLE_REFERENCE_VALUE: {
-			VariableReferenceValue variableReferenceValue = (VariableReferenceValue) theEObject;
-			T result = caseVariableReferenceValue(variableReferenceValue);
-			if (result == null)
-				result = caseValueExpression(variableReferenceValue);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -1606,6 +1617,22 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Context
+	 * Mapping Variables Reference</em>'. <!-- begin-user-doc --> This
+	 * implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Context
+	 *         Mapping Variables Reference</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseContextMappingVariablesReference(ContextMappingVariablesReference object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of
 	 * '<em>Objective Function Value</em>'. <!-- begin-user-doc --> This
 	 * implementation returns null; returning a non-null result will terminate the
@@ -1813,6 +1840,22 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 
 	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Iterator
+	 * Mapping Variables Reference</em>'. <!-- begin-user-doc --> This
+	 * implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Iterator
+	 *         Mapping Variables Reference</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIteratorMappingVariablesReference(IteratorMappingVariablesReference object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Iterator
 	 * Mapping Feature Value</em>'. <!-- begin-user-doc --> This implementation
 	 * returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
@@ -1887,22 +1930,6 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseIteratorTypeFeatureValue(IteratorTypeFeatureValue object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Variable
-	 * Reference Value</em>'. <!-- begin-user-doc --> This implementation returns
-	 * null; returning a non-null result will terminate the switch. <!--
-	 * end-user-doc -->
-	 * 
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Variable
-	 *         Reference Value</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseVariableReferenceValue(VariableReferenceValue object) {
 		return null;
 	}
 

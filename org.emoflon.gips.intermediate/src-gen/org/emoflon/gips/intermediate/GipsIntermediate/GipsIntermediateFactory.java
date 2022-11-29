@@ -373,6 +373,15 @@ public interface GipsIntermediateFactory extends EFactory {
 	ContextMappingNode createContextMappingNode();
 
 	/**
+	 * Returns a new object of class '<em>Context Mapping Variables Reference</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Context Mapping Variables Reference</em>'.
+	 * @generated
+	 */
+	ContextMappingVariablesReference createContextMappingVariablesReference();
+
+	/**
 	 * Returns a new object of class '<em>Objective Function Value</em>'. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -481,6 +490,16 @@ public interface GipsIntermediateFactory extends EFactory {
 	IteratorMappingVariableValue createIteratorMappingVariableValue();
 
 	/**
+	 * Returns a new object of class '<em>Iterator Mapping Variables
+	 * Reference</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Iterator Mapping Variables
+	 *         Reference</em>'.
+	 * @generated
+	 */
+	IteratorMappingVariablesReference createIteratorMappingVariablesReference();
+
+	/**
 	 * Returns a new object of class '<em>Iterator Mapping Feature Value</em>'. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -524,15 +543,6 @@ public interface GipsIntermediateFactory extends EFactory {
 	 * @generated
 	 */
 	IteratorTypeFeatureValue createIteratorTypeFeatureValue();
-
-	/**
-	 * Returns a new object of class '<em>Variable Reference Value</em>'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @return a new object of class '<em>Variable Reference Value</em>'.
-	 * @generated
-	 */
-	VariableReferenceValue createVariableReferenceValue();
 
 	/**
 	 * Returns a new object of class '<em>Stream Expression</em>'. <!--

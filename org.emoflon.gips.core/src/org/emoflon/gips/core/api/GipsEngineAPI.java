@@ -43,6 +43,10 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		this.solverConfig = solverConfig;
 	}
 
+	public ILPSolverConfig getSolverConfig() {
+		return solverConfig;
+	}
+
 	public EMOFLON_APP getEMoflonApp() {
 		return eMoflonApp;
 	}

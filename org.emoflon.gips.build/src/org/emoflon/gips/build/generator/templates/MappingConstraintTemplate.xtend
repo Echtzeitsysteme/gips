@@ -293,13 +293,25 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		builderMethods.put(expr, methodName)
 		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
 		imports.add("java.util.stream.Collectors")
+		val vars = GipsTransformationUtils.extractVariable(expr.expression)
+		var containsOnlyMappingVariable = false
+		var variableRef = null as VariableSet
+		if(vars.contains(expr.mapping) && (vars.size == 1 || vars.size == 0)) {
+			containsOnlyMappingVariable = true;
+		} else if(!vars.contains(expr.mapping) && vars.size == 1) {
+			containsOnlyMappingVariable = false;
+			variableRef = vars.iterator.next
+		} else {
+			throw new UnsupportedOperationException("Mapping sum expression may not contain more than one variable reference.")
+		}
 		val method = '''
 	protected void «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper("«expr.mapping.name»").getMappings().values().parallelStream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-			ILPTerm term = new ILPTerm<Integer, Double>(context, (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»);
-			terms.add(term);
+			«IF containsOnlyMappingVariable»terms.add(new ILPTerm(context, (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+			«ELSE»terms.add(new ILPTerm(context.get«variableRef.name.toUpperCase»(), (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+			«ENDIF»
 		}
 	}
 		'''
@@ -445,7 +457,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		builderMethods.put(expr, methodName)
 		val method = '''
 	protected ILPTerm «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		return new ILPTerm(context.get«expr.^var.additionalVariableName.toFirstUpper»(), 1.0);
+		return new ILPTerm(context.get«expr.^var.variable.name.toFirstUpper»(), 1.0);
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)

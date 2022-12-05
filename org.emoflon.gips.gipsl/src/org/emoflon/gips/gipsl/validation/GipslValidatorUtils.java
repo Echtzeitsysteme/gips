@@ -55,7 +55,7 @@ public class GipslValidatorUtils {
 				"EString", "extends", "final", "finally", "float", "for", "goto", "if", "implements", "import",
 				"instanceof", "int", "interface", "long", "native", "new", "package", "private", "protected", "public",
 				"return", "short", "static", "strictfp", "super", "switch", "synchronized", "this", "throw", "throws",
-				"transient", "try", "void", "volatile", "while",
+				"transient", "try", "var", "void", "volatile", "while",
 
 				// New values
 				"mapping", "objective", "global objective", "global", "min", "max", "constraint" };

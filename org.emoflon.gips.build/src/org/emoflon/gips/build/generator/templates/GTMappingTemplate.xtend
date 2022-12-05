@@ -21,6 +21,7 @@ class GTMappingTemplate extends GeneratorTemplate<GTMapping> {
 		fqn = packageName + "." + className
 		filePath = data.apiData.gipsMappingPkgPath + "/" + className + ".java"
 		imports.add("org.emoflon.gips.core.gt.GTMapping")
+		imports.add("org.emoflon.gips.core.ilp.ILPVariable")
 		imports.add(data.apiData.rulesPkg+"."+data.mapping2ruleClassName.get(context))
 		imports.add(data.apiData.matchesPkg+"."+data.mapping2matchClassName.get(context))
 		

@@ -214,6 +214,19 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 				throw new UnsupportedOperationException(
 						"ILP variable value access operations are not defined on model objects.");
 			}
+		} else if (eLambda.getExpr() instanceof GipsMappingVariableReference eContextRef) {
+			if (streamRoot instanceof GipsMappingAttributeExpr eMappingAttribute) {
+				final IteratorMappingVariablesReference varRef = factory.createIteratorMappingVariablesReference();
+				varRef.setMappingContext(data.eMapping2Mapping().get(eMappingAttribute.getMapping()));
+				final VariableReference ref = factory.createVariableReference();
+				ref.setVariable(data.eVariable2Variable().get(eContextRef.getVar()));
+				ref.setReturnType(eContextRef.getVar().getType());
+				varRef.setVar(ref);
+				return varRef;
+			} else {
+				throw new UnsupportedOperationException(
+						"ILP variable value access operations are not defined on model objects.");
+			}
 		} else {
 			// Case: Access the object represented by the iterator or its (nested)
 			// attributes.

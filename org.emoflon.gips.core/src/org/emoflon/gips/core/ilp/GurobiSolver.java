@@ -147,9 +147,9 @@ public class GurobiSolver extends ILPSolver {
 					double result = Math.round(getVar(varName).get(DoubleAttr.X));
 					// Save result value in specific mapping
 					mapping.setValue((int) result);
-					if(mapping.hasAdditionalVariables()) {
-						for(Entry<String, ILPVariable<?>> var : mapping.getAdditionalVariables().entrySet()) {
-							double mappingVarResult = Math.round(getVar(var.getValue().getName()).get(DoubleAttr.X));
+					if (mapping.hasAdditionalVariables()) {
+						for (Entry<String, ILPVariable<?>> var : mapping.getAdditionalVariables().entrySet()) {
+							double mappingVarResult = getVar(var.getValue().getName()).get(DoubleAttr.X);
 							mapping.setAdditionalVariableValue(var.getKey(), mappingVarResult);
 						}
 					}
@@ -172,7 +172,7 @@ public class GurobiSolver extends ILPSolver {
 	protected void translateMapping(final GipsMapping mapping) {
 		// Add a binary variable with corresponding name for the mapping
 		createOrGetBinVar(mapping);
-		if(mapping.hasAdditionalVariables()) {
+		if (mapping.hasAdditionalVariables()) {
 			createOrGetAdditionalVars(mapping.getAdditionalVariables().values());
 		}
 	}

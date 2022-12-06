@@ -433,7 +433,7 @@ public final class GipsTransformationUtils {
 				|| expr instanceof IteratorPatternNodeValue || expr instanceof IteratorPatternNodeFeatureValue) {
 			return false;
 		} else if (expr instanceof ContextMappingVariablesReference varRefValue) {
-			return false;
+			return true;
 		} else {
 			throw new IllegalArgumentException("Unknown value expression Type: " + expr);
 		}

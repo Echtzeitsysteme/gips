@@ -95,6 +95,8 @@ protected void buildTerms(final «data.mapping2mappingClassName.get(context.mapp
 			return generateForeignBuilder(expr)
 		} else if (expr instanceof PatternSumExpression) {
 			return generateForeignBuilder(expr)
+		} else if(expr instanceof ContextMappingVariablesReference) {
+				return generateBuilder(expr)
 		} else {
 			throw new UnsupportedOperationException("Unknown sum expression type.")
 		}
@@ -107,8 +109,6 @@ protected void buildTerms(final «data.mapping2mappingClassName.get(context.mapp
 			if(expr instanceof ContextMappingNodeFeatureValue) {
 				return generateBuilder(expr)
 			} else if(expr instanceof ContextMappingValue) {
-				return generateBuilder(expr)
-			} else if(expr instanceof ContextMappingVariablesReference) {
 				return generateBuilder(expr)
 			} else {
 				return parseExpression(expr, ExpressionContext.varConstraint)
@@ -230,8 +230,8 @@ protected void buildTerms(final «data.mapping2mappingClassName.get(context.mapp
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		val method = '''
-	protected ILPTerm «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		return new ILPTerm(context.get«expr.^var.variable.name.toFirstUpper»(), 1.0);
+	protected void «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		terms.add(new ILPTerm(context.get«expr.^var.variable.name.toFirstUpper»(), 1.0));
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)

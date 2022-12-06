@@ -6,6 +6,7 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives
 import org.emoflon.gips.intermediate.GipsIntermediate.GTMapping
 import org.emoflon.gips.build.generator.GipsImportManager
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableType
 
 class GTMappingTemplate extends GeneratorTemplate<GTMapping> {
 	
@@ -190,7 +191,7 @@ public class «className» extends GTMapping<«data.mapping2matchClassName.get(c
 			«IF !context.freeVariables.isNullOrEmpty»
 			«FOR v : context.freeVariables»
 			case "«v.name»" : {
-				«v.name.toFirstLower».setValue((«GipsImportManager.variableToSimpleJavaDataType(v, imports)») value);
+				«v.name.toFirstLower».setValue(«IF v.type != VariableType.REAL»Math.round((«GipsImportManager.variableToSimpleJavaDataType(v, imports)») value))«ELSE»(«GipsImportManager.variableToSimpleJavaDataType(v, imports)») value)«ENDIF»;
 				break;
 			}
 			«ENDFOR»

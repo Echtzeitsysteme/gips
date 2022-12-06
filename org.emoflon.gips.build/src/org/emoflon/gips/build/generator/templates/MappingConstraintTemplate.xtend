@@ -206,17 +206,17 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 			throw new UnsupportedOperationException("Type context access is not possible within a mapping context.")
 		} else if(expr instanceof ContextMappingNodeFeatureValue) {
 			val builderMethodName = generateBuilder(expr)
-			val instruction = '''«builderMethodName»(context);'''
+			val instruction = '''«builderMethodName»(terms, context);'''
 			methodCalls.add(instruction)
 		} else if(expr instanceof ContextMappingNode) {
 			throw new UnsupportedOperationException("Ilp term may not contain complex objects.")
 		} else if(expr instanceof ContextMappingValue) {
 			val builderMethodName = generateBuilder(expr)
-			val instruction = '''«builderMethodName»(context);'''
+			val instruction = '''«builderMethodName»(terms, context);'''
 			methodCalls.add(instruction)
 		} else if(expr instanceof ContextMappingVariablesReference) {
 			val builderMethodName = generateBuilder(expr)
-			val instruction = '''«builderMethodName»(context);'''
+			val instruction = '''«builderMethodName»(terms, context);'''
 			methodCalls.add(instruction)
 		} else if(expr instanceof ContextPatternNodeFeatureValue) {
 			throw new UnsupportedOperationException("Pattern context access is not possible within a mapping context.")
@@ -432,8 +432,8 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		val method = '''
-	protected ILPTerm «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		return new ILPTerm(context, 1.0);
+	protected void «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		terms.add(new ILPTerm(context, 1.0));
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)
@@ -444,8 +444,8 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		val method = '''
-	protected ILPTerm «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		return new ILPTerm(context, (double)context.get«expr.node.name.toFirstUpper»().«parseFeatureExpression(expr.featureExpression)»);
+	protected void «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		terms.add(new ILPTerm(context, (double)context.get«expr.node.name.toFirstUpper»().«parseFeatureExpression(expr.featureExpression)»));
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)
@@ -456,8 +456,8 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		val method = '''
-	protected ILPTerm «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		return new ILPTerm(context.get«expr.^var.variable.name.toFirstUpper»(), 1.0);
+	protected void «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		terms.add(new ILPTerm(context.get«expr.^var.variable.name.toFirstUpper»(), 1.0));
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)

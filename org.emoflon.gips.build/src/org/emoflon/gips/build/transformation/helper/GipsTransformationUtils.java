@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureNavigation;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsStreamNavigation;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
@@ -62,16 +63,16 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
-import org.emoflon.gips.intermediate.GipsIntermediate.impl.ContextMappingVariablesReferenceImpl;
 
 public final class GipsTransformationUtils {
-	
+
 	public static VariableType typeToVariableType(EClassifier type) {
-		if(type == EcorePackage.Literals.EINT || type == EcorePackage.Literals.ESHORT || type == EcorePackage.Literals.ELONG || type == EcorePackage.Literals.EBYTE) {
+		if (type == EcorePackage.Literals.EINT || type == EcorePackage.Literals.ESHORT
+				|| type == EcorePackage.Literals.ELONG || type == EcorePackage.Literals.EBYTE) {
 			return VariableType.INTEGER;
-		} else if(type == EcorePackage.Literals.EFLOAT || type == EcorePackage.Literals.EDOUBLE) {
+		} else if (type == EcorePackage.Literals.EFLOAT || type == EcorePackage.Literals.EDOUBLE) {
 			return VariableType.REAL;
-		} else if(type == EcorePackage.Literals.EBOOLEAN) {
+		} else if (type == EcorePackage.Literals.EBOOLEAN) {
 			return VariableType.BINARY;
 		} else {
 			throw new UnsupportedOperationException("Unsupported ilp variable type: " + type);
@@ -423,7 +424,8 @@ public final class GipsTransformationUtils {
 			return false;
 		} else if (expr instanceof IteratorMappingValue || expr instanceof IteratorMappingVariableValue
 				|| expr instanceof IteratorMappingFeatureValue || expr instanceof IteratorMappingNodeValue
-				|| expr instanceof IteratorMappingNodeFeatureValue || expr instanceof IteratorMappingVariablesReference) {
+				|| expr instanceof IteratorMappingNodeFeatureValue
+				|| expr instanceof IteratorMappingVariablesReference) {
 			return false;
 		} else if (expr instanceof IteratorTypeValue || expr instanceof IteratorTypeFeatureValue) {
 			return false;
@@ -724,5 +726,53 @@ public final class GipsTransformationUtils {
 		} else {
 			return extractReturnType(expr.getChild());
 		}
+	}
+
+	public static double getUpperBound(final GipsMappingVariable gipsVar, final VariableType type) {
+		if (type == VariableType.BINARY) {
+			if (gipsVar.isBound()) {
+				// TODO
+			} else {
+				return 1;
+			}
+		} else if (type == VariableType.INTEGER) {
+			if (gipsVar.isBound()) {
+				// TODO
+			} else {
+				return Integer.MAX_VALUE;
+			}
+		} else if (type == VariableType.REAL) {
+			if (gipsVar.isBound()) {
+				// TODO
+			} else {
+				return Double.MAX_VALUE;
+			}
+		}
+
+		throw new UnsupportedOperationException();
+	}
+
+	public static double getLowerBound(final GipsMappingVariable gipsVar, final VariableType type) {
+		if (type == VariableType.BINARY) {
+			if (gipsVar.isBound()) {
+				// TODO
+			} else {
+				return 0;
+			}
+		} else if (type == VariableType.INTEGER) {
+			if (gipsVar.isBound()) {
+				// TODO
+			} else {
+				return Integer.MIN_VALUE;
+			}
+		} else if (type == VariableType.REAL) {
+			if (gipsVar.isBound()) {
+				// TODO
+			} else {
+				return -Double.MAX_VALUE;
+			}
+		}
+
+		throw new UnsupportedOperationException();
 	}
 }

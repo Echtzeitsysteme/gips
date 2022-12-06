@@ -54,7 +54,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
-import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
@@ -224,11 +223,8 @@ public class GipsToIntermediate {
 				var.setParameter(rule.getParameters().stream()
 						.filter(param -> param.getName().equals(gipsVar.getName())).findFirst().get());
 				var.setName(gipsVar.getName());
-				// TODO: Real and integer bounds!
-				if (var.getType() == VariableType.BINARY) {
-					var.setLowerBound(0);
-					var.setUpperBound(1);
-				}
+				var.setLowerBound(GipsTransformationUtils.getLowerBound(gipsVar, var.getType()));
+				var.setUpperBound(GipsTransformationUtils.getUpperBound(gipsVar, var.getType()));
 				gtMapping.getBoundVariables().add(var);
 				data.model().getVariables().add(var);
 				data.eVariable2Variable().put(gipsVar, var);
@@ -236,11 +232,8 @@ public class GipsToIntermediate {
 				Variable var = factory.createVariable();
 				var.setType(GipsTransformationUtils.typeToVariableType(gipsVar.getType()));
 				var.setName(gipsVar.getName());
-				// TODO: Real and integer bounds!
-				if (var.getType() == VariableType.BINARY) {
-					var.setLowerBound(0);
-					var.setUpperBound(1);
-				}
+				var.setLowerBound(GipsTransformationUtils.getLowerBound(gipsVar, var.getType()));
+				var.setUpperBound(GipsTransformationUtils.getUpperBound(gipsVar, var.getType()));
 				gtMapping.getFreeVariables().add(var);
 				data.model().getVariables().add(var);
 				data.eVariable2Variable().put(gipsVar, var);
@@ -257,11 +250,8 @@ public class GipsToIntermediate {
 			Variable var = factory.createVariable();
 			var.setType(GipsTransformationUtils.typeToVariableType(gipsVar.getType()));
 			var.setName(gipsVar.getName());
-			// TODO: Real and integer bounds!
-			if (var.getType() == VariableType.BINARY) {
-				var.setLowerBound(0);
-				var.setUpperBound(1);
-			}
+			var.setLowerBound(GipsTransformationUtils.getLowerBound(gipsVar, var.getType()));
+			var.setUpperBound(GipsTransformationUtils.getUpperBound(gipsVar, var.getType()));
 			gtMapping.getFreeVariables().add(var);
 			data.model().getVariables().add(var);
 			data.eVariable2Variable().put(gipsVar, var);

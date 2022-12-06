@@ -32,9 +32,10 @@ public abstract class ILPSolver {
 
 	protected abstract void translateMapping(final GipsMapping mapping);
 
+	@SuppressWarnings("unchecked")
 	protected void translateConstraint(final GipsConstraint<?, ?, ?> constraint) {
 		if (constraint instanceof GipsMappingConstraint<?, ?> mapping) {
-			translateConstraint(mapping);
+			translateConstraint((GipsMappingConstraint<?, ? extends EObject>) mapping);
 		} else if (constraint instanceof GipsPatternConstraint<?, ?, ?> pattern) {
 			translateConstraint(pattern);
 		} else if (constraint instanceof GipsTypeConstraint<?, ?> type) {

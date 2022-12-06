@@ -94,6 +94,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/enableDebugOutput"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/enableTolerance"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/tolerance"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/enableLpOutput"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/path"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsMapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsMapping/name"/>

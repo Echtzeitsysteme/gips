@@ -43,6 +43,11 @@ public class GurobiSolver extends ILPSolver {
 	 */
 	private final HashMap<String, GRBVar> grbVars = new HashMap<>();
 
+	/**
+	 * LP file output path.
+	 */
+	private String lpPath = null;
+
 	public GurobiSolver(final GipsEngine engine, final ILPSolverConfig config) throws Exception {
 		super(engine);
 
@@ -72,6 +77,9 @@ public class GurobiSolver extends ILPSolver {
 		if (config.rndSeedEnabled()) {
 			model.set(IntParam.Seed, config.randomSeed());
 		}
+		if (config.lpOutput()) {
+			this.lpPath = config.lpPath();
+		}
 	}
 
 	@Override
@@ -79,6 +87,14 @@ public class GurobiSolver extends ILPSolver {
 		ILPSolverStatus status = null;
 		double objVal = -1;
 		int solCount = -1;
+
+		if (this.lpPath != null) {
+			try {
+				model.write(lpPath);
+			} catch (final GRBException e) {
+				e.printStackTrace();
+			}
+		}
 
 		try {
 			// Solving starts here

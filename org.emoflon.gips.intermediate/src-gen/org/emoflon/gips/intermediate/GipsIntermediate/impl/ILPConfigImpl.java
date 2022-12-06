@@ -48,6 +48,10 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType;
  * <em>Enable Custom Tolerance</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getTolerance
  * <em>Tolerance</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#isEnableLpOutput
+ * <em>Enable Lp Output</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.impl.ILPConfigImpl#getLpPath
+ * <em>Lp Path</em>}</li>
  * </ul>
  *
  * @generated
@@ -332,6 +336,46 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	 * @ordered
 	 */
 	protected double tolerance = TOLERANCE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isEnableLpOutput() <em>Enable Lp
+	 * Output</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isEnableLpOutput()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean ENABLE_LP_OUTPUT_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isEnableLpOutput() <em>Enable Lp
+	 * Output</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isEnableLpOutput()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean enableLpOutput = ENABLE_LP_OUTPUT_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getLpPath() <em>Lp Path</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getLpPath()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String LP_PATH_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getLpPath() <em>Lp Path</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getLpPath()
+	 * @generated
+	 * @ordered
+	 */
+	protected String lpPath = LP_PATH_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -666,6 +710,50 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 	 * 
 	 * @generated
 	 */
+	public boolean isEnableLpOutput() {
+		return enableLpOutput;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setEnableLpOutput(boolean newEnableLpOutput) {
+		boolean oldEnableLpOutput = enableLpOutput;
+		enableLpOutput = newEnableLpOutput;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.ILP_CONFIG__ENABLE_LP_OUTPUT,
+					oldEnableLpOutput, enableLpOutput));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public String getLpPath() {
+		return lpPath;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setLpPath(String newLpPath) {
+		String oldLpPath = lpPath;
+		lpPath = newLpPath;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, GipsIntermediatePackage.ILP_CONFIG__LP_PATH,
+					oldLpPath, lpPath));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -697,6 +785,10 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 			return isEnableCustomTolerance();
 		case GipsIntermediatePackage.ILP_CONFIG__TOLERANCE:
 			return getTolerance();
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_LP_OUTPUT:
+			return isEnableLpOutput();
+		case GipsIntermediatePackage.ILP_CONFIG__LP_PATH:
+			return getLpPath();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -750,6 +842,12 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 			return;
 		case GipsIntermediatePackage.ILP_CONFIG__TOLERANCE:
 			setTolerance((Double) newValue);
+			return;
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_LP_OUTPUT:
+			setEnableLpOutput((Boolean) newValue);
+			return;
+		case GipsIntermediatePackage.ILP_CONFIG__LP_PATH:
+			setLpPath((String) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -805,6 +903,12 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 		case GipsIntermediatePackage.ILP_CONFIG__TOLERANCE:
 			setTolerance(TOLERANCE_EDEFAULT);
 			return;
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_LP_OUTPUT:
+			setEnableLpOutput(ENABLE_LP_OUTPUT_EDEFAULT);
+			return;
+		case GipsIntermediatePackage.ILP_CONFIG__LP_PATH:
+			setLpPath(LP_PATH_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -847,6 +951,10 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 			return enableCustomTolerance != ENABLE_CUSTOM_TOLERANCE_EDEFAULT;
 		case GipsIntermediatePackage.ILP_CONFIG__TOLERANCE:
 			return tolerance != TOLERANCE_EDEFAULT;
+		case GipsIntermediatePackage.ILP_CONFIG__ENABLE_LP_OUTPUT:
+			return enableLpOutput != ENABLE_LP_OUTPUT_EDEFAULT;
+		case GipsIntermediatePackage.ILP_CONFIG__LP_PATH:
+			return LP_PATH_EDEFAULT == null ? lpPath != null : !LP_PATH_EDEFAULT.equals(lpPath);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -890,6 +998,10 @@ public class ILPConfigImpl extends MinimalEObjectImpl.Container implements ILPCo
 		result.append(enableCustomTolerance);
 		result.append(", tolerance: ");
 		result.append(tolerance);
+		result.append(", enableLpOutput: ");
+		result.append(enableLpOutput);
+		result.append(", lpPath: ");
+		result.append(lpPath);
 		result.append(')');
 		return result.toString();
 	}

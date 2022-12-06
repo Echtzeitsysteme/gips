@@ -285,13 +285,31 @@ public interface GipsIntermediatePackage extends EPackage {
 	int ILP_CONFIG__TOLERANCE = 13;
 
 	/**
+	 * The feature id for the '<em><b>Enable Lp Output</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ILP_CONFIG__ENABLE_LP_OUTPUT = 14;
+
+	/**
+	 * The feature id for the '<em><b>Lp Path</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ILP_CONFIG__LP_PATH = 15;
+
+	/**
 	 * The number of structural features of the '<em>ILP Config</em>' class. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ILP_CONFIG_FEATURE_COUNT = 14;
+	int ILP_CONFIG_FEATURE_COUNT = 16;
 
 	/**
 	 * The number of operations of the '<em>ILP Config</em>' class. <!--
@@ -5241,6 +5259,30 @@ public interface GipsIntermediatePackage extends EPackage {
 	EAttribute getILPConfig_Tolerance();
 
 	/**
+	 * Returns the meta object for the attribute
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableLpOutput
+	 * <em>Enable Lp Output</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Enable Lp Output</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableLpOutput()
+	 * @see #getILPConfig()
+	 * @generated
+	 */
+	EAttribute getILPConfig_EnableLpOutput();
+
+	/**
+	 * Returns the meta object for the attribute
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getLpPath
+	 * <em>Lp Path</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Lp Path</em>'.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getLpPath()
+	 * @see #getILPConfig()
+	 * @generated
+	 */
+	EAttribute getILPConfig_LpPath();
+
+	/**
 	 * Returns the meta object for class
 	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.VariableSet
 	 * <em>Variable Set</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -7728,6 +7770,22 @@ public interface GipsIntermediatePackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ILP_CONFIG__TOLERANCE = eINSTANCE.getILPConfig_Tolerance();
+
+		/**
+		 * The meta object literal for the '<em><b>Enable Lp Output</b></em>' attribute
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute ILP_CONFIG__ENABLE_LP_OUTPUT = eINSTANCE.getILPConfig_EnableLpOutput();
+
+		/**
+		 * The meta object literal for the '<em><b>Lp Path</b></em>' attribute feature.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute ILP_CONFIG__LP_PATH = eINSTANCE.getILPConfig_LpPath();
 
 		/**
 		 * The meta object literal for the

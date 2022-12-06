@@ -1000,6 +1000,24 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public EAttribute getILPConfig_EnableLpOutput() {
+		return (EAttribute) ilpConfigEClass.getEStructuralFeatures().get(14);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getILPConfig_LpPath() {
+		return (EAttribute) ilpConfigEClass.getEStructuralFeatures().get(15);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getVariableSet() {
 		return variableSetEClass;
 	}
@@ -2776,6 +2794,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		createEAttribute(ilpConfigEClass, ILP_CONFIG__ENABLE_DEBUG_OUTPUT);
 		createEAttribute(ilpConfigEClass, ILP_CONFIG__ENABLE_CUSTOM_TOLERANCE);
 		createEAttribute(ilpConfigEClass, ILP_CONFIG__TOLERANCE);
+		createEAttribute(ilpConfigEClass, ILP_CONFIG__ENABLE_LP_OUTPUT);
+		createEAttribute(ilpConfigEClass, ILP_CONFIG__LP_PATH);
 
 		variableSetEClass = createEClass(VARIABLE_SET);
 		createEAttribute(variableSetEClass, VARIABLE_SET__NAME);
@@ -3225,6 +3245,11 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 				0, 1, ILPConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
 				!IS_DERIVED, IS_ORDERED);
 		initEAttribute(getILPConfig_Tolerance(), ecorePackage.getEDouble(), "tolerance", null, 0, 1, ILPConfig.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getILPConfig_EnableLpOutput(), ecorePackage.getEBoolean(), "enableLpOutput", null, 0, 1,
+				ILPConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
+		initEAttribute(getILPConfig_LpPath(), ecorePackage.getEString(), "lpPath", null, 0, 1, ILPConfig.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(variableSetEClass, VariableSet.class, "VariableSet", IS_ABSTRACT, !IS_INTERFACE,

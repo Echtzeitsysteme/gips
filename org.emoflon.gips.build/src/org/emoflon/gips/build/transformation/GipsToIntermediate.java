@@ -227,7 +227,7 @@ public class GipsToIntermediate {
 				IBeXRule rule = data.ePattern2Rule().get(mapping.getPattern());
 				var.setRule(rule);
 				var.setParameter(rule.getParameters().stream()
-						.filter(param -> param.getName().equals(gipsVar.getName())).findFirst().get());
+						.filter(param -> param.getName().equals(gipsVar.getParameter().getName())).findFirst().get());
 				var.setName(gipsVar.getName());
 				var.setLowerBound(GipsTransformationUtils.getLowerBound(gipsVar, var.getType()));
 				var.setUpperBound(GipsTransformationUtils.getUpperBound(gipsVar, var.getType()));

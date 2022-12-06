@@ -133,7 +133,7 @@ public class «className» extends GTMapping<«data.mapping2matchClassName.get(c
 	«ENDIF»
 	«IF !context.boundVariables.isNullOrEmpty»
 	«FOR v : context.boundVariables»
-	public void set«v.name.toFirstUpper»(final «GipsImportManager.variableToJavaDataType(v, imports)» «v.name.toFirstLower») {
+	public void setValueOf«v.name.toFirstUpper»(final «GipsImportManager.variableToSimpleJavaDataType(v, imports)» «v.name.toFirstLower») {
 		this.«v.name.toFirstLower».setValue(«v.name.toFirstLower»);
 	}
 	
@@ -214,11 +214,11 @@ public class «className» extends GTMapping<«data.mapping2matchClassName.get(c
 	}
 	
 	def String getAllVariableNames(String separator) {
-		return '''«IF !context.freeVariables.isNullOrEmpty»«FOR v : context.freeVariables SEPARATOR separator»"«v.name»"«ENDFOR»«ENDIF»«IF !context.boundVariables.isNullOrEmpty»«FOR v : context.boundVariables SEPARATOR separator»"«v.name»"«ENDFOR»«ENDIF»'''
+		return '''«IF !context.freeVariables.isNullOrEmpty»«FOR v : context.freeVariables SEPARATOR separator»"«v.name»"«ENDFOR»«ENDIF»«IF !context.freeVariables.nullOrEmpty»«separator»«ENDIF»«IF !context.boundVariables.isNullOrEmpty»«FOR v : context.boundVariables SEPARATOR separator»"«v.name»"«ENDFOR»«ENDIF»'''
 	}
 	
 	def String getAllVariableEntries(String separator) {
-		return '''«IF !context.freeVariables.isNullOrEmpty»«FOR v : context.freeVariables SEPARATOR separator»"«v.name»", «v.name.toFirstLower»«ENDFOR»«ENDIF»«IF !context.boundVariables.isNullOrEmpty»«FOR v : context.boundVariables SEPARATOR separator»"«v.name»", «v.name.toFirstLower»«ENDFOR»«ENDIF»'''
+		return '''«IF !context.freeVariables.isNullOrEmpty»«FOR v : context.freeVariables SEPARATOR separator»"«v.name»", «v.name.toFirstLower»«ENDFOR»«ENDIF»«IF !context.freeVariables.nullOrEmpty»«separator»«ENDIF»«IF !context.boundVariables.isNullOrEmpty»«FOR v : context.boundVariables SEPARATOR separator»"«v.name»", «v.name.toFirstLower»«ENDFOR»«ENDIF»'''
 	}
 	
 	def String getFreeVariableNames(String separator) {

@@ -730,23 +730,11 @@ public final class GipsTransformationUtils {
 
 	public static double getUpperBound(final GipsMappingVariable gipsVar, final VariableType type) {
 		if (type == VariableType.BINARY) {
-			if (gipsVar.isBound()) {
-				// TODO
-			} else {
-				return 1;
-			}
+			return 1;
 		} else if (type == VariableType.INTEGER) {
-			if (gipsVar.isBound()) {
-				// TODO
-			} else {
-				return Integer.MAX_VALUE;
-			}
+			return Integer.MAX_VALUE;
 		} else if (type == VariableType.REAL) {
-			if (gipsVar.isBound()) {
-				// TODO
-			} else {
-				return Double.MAX_VALUE;
-			}
+			return Double.MAX_VALUE;
 		}
 
 		throw new UnsupportedOperationException();
@@ -754,23 +742,11 @@ public final class GipsTransformationUtils {
 
 	public static double getLowerBound(final GipsMappingVariable gipsVar, final VariableType type) {
 		if (type == VariableType.BINARY) {
-			if (gipsVar.isBound()) {
-				// TODO
-			} else {
-				return 0;
-			}
+			return 0;
 		} else if (type == VariableType.INTEGER) {
-			if (gipsVar.isBound()) {
-				// TODO
-			} else {
-				return Integer.MIN_VALUE;
-			}
+			return Integer.MIN_VALUE;
 		} else if (type == VariableType.REAL) {
-			if (gipsVar.isBound()) {
-				// TODO
-			} else {
-				return -Double.MAX_VALUE;
-			}
+			return -Double.MAX_VALUE;
 		}
 
 		throw new UnsupportedOperationException();

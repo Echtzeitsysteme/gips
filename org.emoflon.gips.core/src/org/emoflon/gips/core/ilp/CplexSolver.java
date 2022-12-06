@@ -47,6 +47,11 @@ public class CplexSolver extends ILPSolver {
 	 */
 	private GipsGlobalObjective objective;
 
+	/**
+	 * LP file output path.
+	 */
+	private String lpPath = null;
+
 	public CplexSolver(final GipsEngine engine, final ILPSolverConfig config) {
 		super(engine);
 
@@ -69,6 +74,10 @@ public class CplexSolver extends ILPSolver {
 			if (!config.enableOutput()) {
 				cplex.setOut(null);
 			}
+
+			if (config.lpOutput()) {
+				this.lpPath = config.lpPath();
+			}
 		} catch (final IloException e) {
 			throw new RuntimeException(e);
 		}
@@ -78,6 +87,13 @@ public class CplexSolver extends ILPSolver {
 	public ILPSolverOutput solve() {
 		setUpCnstrs();
 		setUpObj();
+
+		// Write LP file if configured
+		try {
+			cplex.exportModel(lpPath);
+		} catch (final IloException e) {
+			e.printStackTrace();
+		}
 
 		try {
 			// Solving

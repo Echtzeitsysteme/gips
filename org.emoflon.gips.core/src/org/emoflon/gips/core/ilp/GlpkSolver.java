@@ -65,6 +65,11 @@ public class GlpkSolver extends ILPSolver {
 	 */
 	private GipsGlobalObjective objective;
 
+	/**
+	 * LP file output path.
+	 */
+	private String lpPath = null;
+
 	public GlpkSolver(final GipsEngine engine, final ILPSolverConfig config) {
 		super(engine);
 		constraints = new HashMap<>();
@@ -89,6 +94,10 @@ public class GlpkSolver extends ILPSolver {
 		// Random seed not supported by the GLPK Java interface
 		// TODO: Set output flag
 
+		if (config.lpOutput()) {
+			this.lpPath = config.lpPath();
+		}
+
 		GLPK.glp_set_prob_name(model, "GIPS problem");
 	}
 
@@ -97,6 +106,11 @@ public class GlpkSolver extends ILPSolver {
 		setUpVars();
 		setUpCnstrs();
 		setUpObj();
+
+		// Save LP file if configured
+		if (this.lpPath != null) {
+			GLPK.glp_write_lp(model, null, this.lpPath);
+		}
 
 		// Solving
 		final int ret = GLPK.glp_intopt(model, iocp);

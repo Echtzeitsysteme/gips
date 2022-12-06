@@ -40,6 +40,10 @@ import org.eclipse.emf.ecore.EObject;
  * <em>Enable Custom Tolerance</em>}</li>
  * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getTolerance
  * <em>Tolerance</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableLpOutput
+ * <em>Enable Lp Output</em>}</li>
+ * <li>{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getLpPath
+ * <em>Lp Path</em>}</li>
  * </ul>
  *
  * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig()
@@ -383,5 +387,52 @@ public interface ILPConfig extends EObject {
 	 * @generated
 	 */
 	void setTolerance(double value);
+
+	/**
+	 * Returns the value of the '<em><b>Enable Lp Output</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Enable Lp Output</em>' attribute.
+	 * @see #setEnableLpOutput(boolean)
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig_EnableLpOutput()
+	 * @model
+	 * @generated
+	 */
+	boolean isEnableLpOutput();
+
+	/**
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#isEnableLpOutput
+	 * <em>Enable Lp Output</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @param value the new value of the '<em>Enable Lp Output</em>' attribute.
+	 * @see #isEnableLpOutput()
+	 * @generated
+	 */
+	void setEnableLpOutput(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Lp Path</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Lp Path</em>' attribute.
+	 * @see #setLpPath(String)
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getILPConfig_LpPath()
+	 * @model
+	 * @generated
+	 */
+	String getLpPath();
+
+	/**
+	 * Sets the value of the
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig#getLpPath
+	 * <em>Lp Path</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value the new value of the '<em>Lp Path</em>' attribute.
+	 * @see #getLpPath()
+	 * @generated
+	 */
+	void setLpPath(String value);
 
 } // ILPConfig

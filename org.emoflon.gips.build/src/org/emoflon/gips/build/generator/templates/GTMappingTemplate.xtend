@@ -22,6 +22,9 @@ class GTMappingTemplate extends GeneratorTemplate<GTMapping> {
 		filePath = data.apiData.gipsMappingPkgPath + "/" + className + ".java"
 		imports.add("org.emoflon.gips.core.gt.GTMapping")
 		imports.add("org.emoflon.gips.core.ilp.ILPVariable")
+		imports.add("org.emoflon.gips.core.ilp.ILPIntegerVariable")
+		imports.add("org.emoflon.gips.core.ilp.ILPRealVariable")
+		imports.add("org.emoflon.gips.core.ilp.ILPBinaryVariable")
 		imports.add(data.apiData.rulesPkg+"."+data.mapping2ruleClassName.get(context))
 		imports.add(data.apiData.matchesPkg+"."+data.mapping2matchClassName.get(context))
 		
@@ -200,7 +203,7 @@ public class «className» extends GTMapping<«data.mapping2matchClassName.get(c
 			}
 			«ENDFOR»
 			«ENDIF»
-			case default: throw new IllegalArgumentException("This mapping <" + name + "> does not have a variable with the symbolic name <" + valname + ">.");
+			default: throw new IllegalArgumentException("This mapping <" + name + "> does not have a variable with the symbolic name <" + valName + ">.");
 		}
 		«ELSE»
 		throw new UnsupportedOperationException("This mapping <" + name + "> does not have any additonal variables.");

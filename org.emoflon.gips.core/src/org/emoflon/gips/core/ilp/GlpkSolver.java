@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
@@ -169,11 +170,20 @@ public class GlpkSolver extends ILPSolver {
 			// Iterate over all mappings of each mapper
 			for (final String k : mapper.getMappings().keySet()) {
 				// Get corresponding ILP variable name
-				final String varName = mapper.getMapping(k).getName();
+				final GipsMapping mapping = mapper.getMapping(k);
+				final String varName = mapping.getName();
 				// Get value of the ILP variable and round it (to eliminate small deltas)
 				double result = Math.round(GLPK.glp_mip_col_val(model, ilpVars.get(varName).index));
 				// Save result value in specific mapping
-				mapper.getMapping(k).setValue((int) result);
+				mapping.setValue((int) result);
+				
+				// Save all values of additional variables if any
+				if (mapping.hasAdditionalVariables()) {
+					for (Entry<String, ILPVariable<?>> var : mapping.getAdditionalVariables().entrySet()) {
+						double mappingVarResult = GLPK.glp_mip_col_val(model, ilpVars.get(var.getValue().getName()).index);
+						mapping.setAdditionalVariableValue(var.getKey(), mappingVarResult);
+					}
+				}
 			}
 		}
 	}
@@ -181,6 +191,9 @@ public class GlpkSolver extends ILPSolver {
 	@Override
 	protected void translateMapping(final GipsMapping mapping) {
 		createBinVar(mapping.getName(), mapping.getLowerBound(), mapping.getUpperBound());
+		if (mapping.hasAdditionalVariables()) {
+			createAdditionalVars(mapping.getAdditionalVariables().values());
+		}
 	}
 
 	@Override

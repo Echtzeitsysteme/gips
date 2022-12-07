@@ -59,7 +59,7 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 			} else {
 				Variable symbolicVar = constraint.getSymbolicVariable();
 				ILPBinaryVariable var = (ILPBinaryVariable) engine
-						.getNonMappingVariable(buildVariableName(symbolicVar, null));
+						.getNonMappingVariable(constraint, buildVariableName(symbolicVar, null));
 
 				// If the terms list is empty, no suitable mapping candidates are present in the
 				// model. Therefore, zero variables are created, which in turn, can only result
@@ -76,7 +76,7 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 			}
 
 			// Remove possible additional variables
-			additionalVariables.values().forEach(variable -> engine.removeNonMappingVariable(variable));
+			additionalVariables.values().stream().flatMap(variables -> variables.values().stream()).forEach(variable -> engine.removeNonMappingVariable(variable));
 			additionalVariables.clear();
 
 			return null;
@@ -113,7 +113,7 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 			} else {
 				Variable symbolicVar = constraint.getSymbolicVariable();
 				ILPBinaryVariable var = (ILPBinaryVariable) engine
-						.getNonMappingVariable(buildVariableName(symbolicVar, null));
+						.getNonMappingVariable(constraint, buildVariableName(symbolicVar, null));
 				boolean result = false;
 
 				if (constraint.getExpression() instanceof RelationalExpression relExpr
@@ -145,14 +145,14 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 	public void calcAdditionalVariables() {
 		for (Variable variable : constraint.getHelperVariables()) {
 			ILPVariable<?> ilpVar = buildVariable(variable, null);
-			additionalVariables.put(ilpVar.getName(), ilpVar);
-			engine.addNonMappingVariable(ilpVar);
+			addAdditionalVariable(constraint, variable, ilpVar);
+			engine.addNonMappingVariable(constraint, variable, ilpVar);
 		}
 	}
-
+	
 	@Override
 	public String buildVariableName(final Variable variable, final GlobalConstraint context) {
-		return "global->" + variable.getName();
+		return "global->" + variable.getName() + "#" +variableIdx++;
 	}
 
 	abstract protected List<ILPConstraint> buildAdditionalConstraints();

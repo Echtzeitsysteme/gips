@@ -76,7 +76,7 @@ public abstract class GipsPatternConstraint<ENGINE extends GipsEngine, M extends
 			} else {
 				Variable symbolicVar = constraint.getSymbolicVariable();
 				ILPBinaryVariable var = (ILPBinaryVariable) engine
-						.getNonMappingVariable(buildVariableName(symbolicVar, context));
+						.getNonMappingVariable(context, buildVariableName(symbolicVar, context));
 
 				// If the terms list is empty, no suitable mapping candidates are present in the
 				// model. Therefore, zero variables are created, which in turn, can only result
@@ -93,7 +93,7 @@ public abstract class GipsPatternConstraint<ENGINE extends GipsEngine, M extends
 			}
 
 			// Remove possible additional variables
-			additionalVariables.values().forEach(variable -> engine.removeNonMappingVariable(variable));
+			additionalVariables.values().stream().flatMap(variables -> variables.values().stream()).forEach(variable -> engine.removeNonMappingVariable(variable));
 			additionalVariables.clear();
 
 			return null;
@@ -130,7 +130,7 @@ public abstract class GipsPatternConstraint<ENGINE extends GipsEngine, M extends
 			} else {
 				Variable symbolicVar = constraint.getSymbolicVariable();
 				ILPBinaryVariable var = (ILPBinaryVariable) engine
-						.getNonMappingVariable(buildVariableName(symbolicVar, context));
+						.getNonMappingVariable(context, buildVariableName(symbolicVar, context));
 				boolean result = false;
 
 				if (constraint.getExpression() instanceof RelationalExpression relExpr
@@ -162,15 +162,15 @@ public abstract class GipsPatternConstraint<ENGINE extends GipsEngine, M extends
 		for (Variable variable : constraint.getHelperVariables()) {
 			for (M context : pattern.findMatches(false)) {
 				ILPVariable<?> ilpVar = buildVariable(variable, context);
-				additionalVariables.put(ilpVar.getName(), ilpVar);
-				engine.addNonMappingVariable(ilpVar);
+				addAdditionalVariable(context, variable, ilpVar);
+				engine.addNonMappingVariable(context, variable, ilpVar);
 			}
 		}
 	}
-
+	
 	@Override
 	public String buildVariableName(final Variable variable, final M context) {
-		return context + "->" + variable.getName();
+		return context.getPattern().getPatternName() + "->" + variable.getName() + "#" + variableIdx++;
 	}
 
 }

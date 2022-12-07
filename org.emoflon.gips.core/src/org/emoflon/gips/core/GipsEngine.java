@@ -10,11 +10,12 @@ import org.emoflon.gips.core.ilp.ILPSolverOutput;
 import org.emoflon.gips.core.ilp.ILPSolverStatus;
 import org.emoflon.gips.core.ilp.ILPVariable;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
+import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 
 public abstract class GipsEngine {
 
 	final protected Map<String, GipsMapper<?>> mappers = new HashMap<>();
-	final protected Map<String, ILPVariable<?>> nonMappingVariables = Collections.synchronizedMap(new HashMap<>());
+	final protected Map<Object, Map<String, ILPVariable<?>>> nonMappingVariables = Collections.synchronizedMap(new HashMap<>());
 	protected TypeIndexer indexer;
 	protected GipsConstraintValidationLog validationLog;
 	final protected Map<String, GipsConstraint<?, ?, ?>> constraints = new HashMap<>();
@@ -88,19 +89,23 @@ public abstract class GipsEngine {
 
 	protected abstract void initTypeIndexer();
 
-	public synchronized ILPVariable<?> getNonMappingVariable(final String name) {
-		ILPVariable<?> ilpVar = nonMappingVariables.get(name);
-		if (ilpVar != null)
-			return ilpVar;
-
-		throw new RuntimeException("Variable <" + name + "> is not present in the non-mapping variable index.");
+	public synchronized ILPVariable<?> getNonMappingVariable(final Object context, final String variableTypeName) {
+		Map<String, ILPVariable<?>> variables = nonMappingVariables.get(context);
+		if (variables == null)
+			throw new RuntimeException("Variable <" + variableTypeName + "> is not present in the non-mapping variable index.");
+		
+		return variables.get(variableTypeName);
+		
 	}
+	
+	public synchronized void addNonMappingVariable(final Object context, final Variable variableType, ILPVariable<?> variable) {
+		Map<String, ILPVariable<?>> variables = nonMappingVariables.get(context);
+		if(variables == null) {
+			variables = Collections.synchronizedMap(new HashMap<>());
+			nonMappingVariables.put(context, variables);
+		}
+		variables.put(variableType.getName(), variable);
 
-	public synchronized void addNonMappingVariable(final ILPVariable<?> ilpVar) {
-		ILPVariable<?> oldValue = nonMappingVariables.put(ilpVar.getName(), ilpVar);
-		if (oldValue != null)
-			throw new RuntimeException(
-					"Variable <" + ilpVar.getName() + "> already present in non-mapping variable index.");
 	}
 
 	public synchronized void removeNonMappingVariable(final ILPVariable<?> ilpVar) {

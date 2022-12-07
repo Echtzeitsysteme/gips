@@ -245,7 +245,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		if(variable instanceof Mapping && variable == context.mapping) {
 			return '''context'''
 		} else if(variable instanceof Variable) {
-			return '''engine.getNonMappingVariable(context.getName() + "->«variable.name»")'''
+			return '''engine.getNonMappingVariable(context, "«variable.name»")'''
 		} else {
 			throw new UnsupportedOperationException("Foreign mapping context access is not possible within another mapping context.")
 		}
@@ -253,7 +253,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 	}
 		
 	override getAdditionalVariableName(VariableReference varRef) {
-		return '''context.getName() + "->«varRef.variable.name»"'''
+		return '''engine.getNonMappingVariable(context, "«varRef.variable.name»").getName()'''
 	}
 	
 	override String generateBuilder(BinaryArithmeticExpression expr, LinkedList<String> methodCalls) {

@@ -329,7 +329,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.pattern2matchClassName.get
 	
 	override String getVariable(VariableSet variable) {
 		if(variable instanceof Variable) {
-			return '''engine.getNonMappingVariable(context + "->«variable.name»")'''
+			return '''engine.getNonMappingVariable(context, "«variable.name»")'''
 		} else {
 			throw new UnsupportedOperationException("Mapping context access is not possible within a pattern context.")
 		}
@@ -337,7 +337,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.pattern2matchClassName.get
 	}
 	
 	override getAdditionalVariableName(VariableReference varRef) {
-		return '''context + "->«varRef.variable.name»"'''
+		return '''engine.getNonMappingVariable(context, "«varRef.variable.name»").getName()'''
 	}
 		
 	override generateBuilder(ContextSumExpression expr, LinkedList<String> methodCalls) {

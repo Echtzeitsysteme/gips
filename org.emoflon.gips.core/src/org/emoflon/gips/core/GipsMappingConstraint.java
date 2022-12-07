@@ -75,7 +75,7 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 		} else {
 			Variable symbolicVar = constraint.getSymbolicVariable();
 			ILPBinaryVariable var = (ILPBinaryVariable) engine
-					.getNonMappingVariable(buildVariableName(symbolicVar, context));
+					.getNonMappingVariable(context, buildVariableName(symbolicVar, context));
 
 			// If the terms list is empty, no suitable mapping candidates are present in the
 			// model. Therefore, zero variables are created, which in turn, can only result
@@ -92,7 +92,7 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 		}
 
 		// Remove possible additional variables
-		additionalVariables.values().forEach(variable -> engine.removeNonMappingVariable(variable));
+		additionalVariables.values().stream().flatMap(variables -> variables.values().stream()).forEach(variable -> engine.removeNonMappingVariable(variable));
 		additionalVariables.clear();
 
 		return null;
@@ -103,15 +103,15 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 		for (Variable variable : constraint.getHelperVariables()) {
 			for (CONTEXT context : mapper.getMappings().values()) {
 				ILPVariable<?> ilpVar = buildVariable(variable, context);
-				additionalVariables.put(ilpVar.getName(), ilpVar);
-				engine.addNonMappingVariable(ilpVar);
+				addAdditionalVariable(context, variable, ilpVar);
+				engine.addNonMappingVariable(context, variable, ilpVar);
 			}
 		}
 	}
-
+	
 	@Override
 	public String buildVariableName(final Variable variable, final CONTEXT context) {
-		return context.getName() + "->" + variable.getName();
+		return context.getName() + "->" + variable.getName() + "#" +variableIdx++;
 	}
 
 }

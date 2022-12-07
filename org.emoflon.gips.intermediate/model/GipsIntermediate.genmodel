@@ -91,6 +91,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//ILPConfig/enableDebugOutput"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//ILPConfig/enableCustomTolerance"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//ILPConfig/tolerance"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//ILPConfig/enableLpOutput"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//ILPConfig/lpPath"/>
     </genClasses>
     <genClasses image="false" ecoreClass="GipsIntermediate.ecore#//VariableSet">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//VariableSet/name"/>

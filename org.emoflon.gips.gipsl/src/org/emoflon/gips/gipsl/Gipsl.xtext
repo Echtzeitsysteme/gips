@@ -36,6 +36,7 @@ GipsConfig : {GipsConfig}
 	('presolve' ':=' enablePresolve = GipsBoolean ';')?
 	('debugOutput' ':=' enableDebugOutput = GipsBoolean ';')?
 	('tolerance' ':=' enableTolerance = GipsBoolean '[' 'value' ':=' tolerance=GipsDouble ']' ';')?
+	('lpOutput' ':=' enableLpOutput = GipsBoolean '[' 'path' ':=' path=GipsStringLiteral ']' ';')?
 	'}'
 ;
 

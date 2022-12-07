@@ -128,7 +128,7 @@ public abstract class GipsEngine {
 		this.globalObjective = globalObjective;
 	}
 
-	protected void setILPSolver(final ILPSolver solver) {
+	public void setILPSolver(final ILPSolver solver) {
 		this.ilpSolver = solver;
 	}
 }

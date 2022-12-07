@@ -83,6 +83,7 @@ public abstract class GipsEngine {
 	}
 
 	public void terminate() {
+		ilpSolver.terminate();
 		indexer.terminate();
 		mappers.forEach((name, mapper) -> mapper.terminate());
 	}

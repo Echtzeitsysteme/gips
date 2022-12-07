@@ -70,7 +70,13 @@ public class GurobiSolver extends ILPSolver {
 		}
 		if (config.rndSeedEnabled()) {
 			model.set(IntParam.Seed, config.randomSeed());
-		}
+		}	
+		
+	}
+	
+	@Override
+	public void terminate() {
+		model.terminate();
 	}
 
 	@Override

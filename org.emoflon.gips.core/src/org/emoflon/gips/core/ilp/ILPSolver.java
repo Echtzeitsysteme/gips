@@ -53,4 +53,6 @@ public abstract class ILPSolver {
 	protected abstract void translateConstraint(final GipsGlobalConstraint<?> constraint);
 
 	protected abstract void translateObjective(final GipsGlobalObjective objective);
+	
+	public abstract void terminate();
 }

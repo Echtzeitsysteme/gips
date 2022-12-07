@@ -100,6 +100,11 @@ public class GlpkSolver extends ILPSolver {
 
 		GLPK.glp_set_prob_name(model, "GIPS problem");
 	}
+	
+	@Override
+	public void terminate() {
+		//TODO: shut down solver, if necessary.
+	}
 
 	@Override
 	public ILPSolverOutput solve() {

@@ -82,6 +82,11 @@ public class GurobiSolver extends ILPSolver {
 	}
 
 	@Override
+	public void terminate() {
+		model.terminate();
+	}
+
+	@Override
 	public ILPSolverOutput solve() {
 		ILPSolverStatus status = null;
 		double objVal = -1;

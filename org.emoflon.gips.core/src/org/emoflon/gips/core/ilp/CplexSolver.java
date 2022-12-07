@@ -82,6 +82,11 @@ public class CplexSolver extends ILPSolver {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	@Override
+	public void terminate() {
+		//TODO: shut down solver, if necessary.
+	}
 
 	@Override
 	public ILPSolverOutput solve() {

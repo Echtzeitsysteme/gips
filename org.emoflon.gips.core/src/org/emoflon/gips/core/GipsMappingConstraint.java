@@ -75,7 +75,7 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 		} else {
 			Variable symbolicVar = constraint.getSymbolicVariable();
 			ILPBinaryVariable var = (ILPBinaryVariable) engine
-					.getNonMappingVariable(context, buildVariableName(symbolicVar, context));
+					.getNonMappingVariable(context, symbolicVar.getName());
 
 			// If the terms list is empty, no suitable mapping candidates are present in the
 			// model. Therefore, zero variables are created, which in turn, can only result

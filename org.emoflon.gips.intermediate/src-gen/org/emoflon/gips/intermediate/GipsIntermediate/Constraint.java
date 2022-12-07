@@ -161,12 +161,15 @@ public interface Constraint extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Dependencies</b></em>' reference list. The
 	 * list contents are of type
-	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint}. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * {@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint}. It is
+	 * bidirectional and its opposite is
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getReferencedBy
+	 * <em>Referenced By</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the value of the '<em>Dependencies</em>' reference list.
 	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage#getConstraint_Dependencies()
-	 * @model
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.Constraint#getReferencedBy
+	 * @model opposite="referencedBy"
 	 * @generated
 	 */
 	EList<Constraint> getDependencies();

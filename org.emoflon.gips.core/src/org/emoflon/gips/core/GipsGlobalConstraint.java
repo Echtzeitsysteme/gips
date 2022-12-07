@@ -59,7 +59,7 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 			} else {
 				Variable symbolicVar = constraint.getSymbolicVariable();
 				ILPBinaryVariable var = (ILPBinaryVariable) engine
-						.getNonMappingVariable(constraint, buildVariableName(symbolicVar, null));
+						.getNonMappingVariable(constraint, symbolicVar.getName());
 
 				// If the terms list is empty, no suitable mapping candidates are present in the
 				// model. Therefore, zero variables are created, which in turn, can only result
@@ -113,7 +113,7 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 			} else {
 				Variable symbolicVar = constraint.getSymbolicVariable();
 				ILPBinaryVariable var = (ILPBinaryVariable) engine
-						.getNonMappingVariable(constraint, buildVariableName(symbolicVar, null));
+						.getNonMappingVariable(constraint, symbolicVar.getName());
 				boolean result = false;
 
 				if (constraint.getExpression() instanceof RelationalExpression relExpr

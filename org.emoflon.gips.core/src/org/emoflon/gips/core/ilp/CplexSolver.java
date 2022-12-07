@@ -89,10 +89,12 @@ public class CplexSolver extends ILPSolver {
 		setUpObj();
 
 		// Write LP file if configured
-		try {
-			cplex.exportModel(lpPath);
-		} catch (final IloException e) {
-			e.printStackTrace();
+		if (this.lpPath != null) {
+			try {
+				cplex.exportModel(lpPath);
+			} catch (final IloException e) {
+				e.printStackTrace();
+			}
 		}
 
 		try {

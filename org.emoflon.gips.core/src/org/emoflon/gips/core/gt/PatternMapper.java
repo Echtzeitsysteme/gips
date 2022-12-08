@@ -3,6 +3,7 @@ package org.emoflon.gips.core.gt;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsMapper;
@@ -16,6 +17,9 @@ public abstract class PatternMapper<PM extends GTMapping<M, P>, M extends GraphT
 	final protected P pattern;
 	final protected Map<M, PM> match2Mappings = Collections.synchronizedMap(new HashMap<>());
 	private int mappingCounter = 0;
+	
+	final protected Consumer<M> appearConsumer = this::addMapping;
+	final protected Consumer<M> disappearConsumer = this::removeMapping;
 
 	public PatternMapper(final GipsEngine engine, final Mapping mapping, final P pattern) {
 		super(engine, mapping);
@@ -48,14 +52,14 @@ public abstract class PatternMapper<PM extends GTMapping<M, P>, M extends GraphT
 	}
 
 	protected void init() {
-		pattern.subscribeAppearing(this::addMapping);
-		pattern.subscribeDisappearing(this::removeMapping);
+		pattern.subscribeAppearing(appearConsumer);
+		pattern.subscribeDisappearing(disappearConsumer);
 	}
 
 	@Override
 	protected void terminate() {
-		pattern.unsubscribeAppearing(this::addMapping);
-		pattern.unsubscribeDisappearing(this::removeMapping);
+		pattern.unsubscribeAppearing(appearConsumer);
+		pattern.unsubscribeDisappearing(disappearConsumer);
 	}
 
 }

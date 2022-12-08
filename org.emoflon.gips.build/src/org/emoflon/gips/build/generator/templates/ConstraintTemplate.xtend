@@ -146,7 +146,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		} else if(expr instanceof ArithmeticValue) {
 			generateBuilder(expr.value, methodCalls)
 		} else if(expr instanceof VariableReference) {
-			val instruction = '''terms.add(new ILPTerm(engine.getNonMappingVariable(«getAdditionalVariableName(expr)»), 1.0));'''
+			val instruction = '''terms.add(new ILPTerm(engine.getNonMappingVariable(context, "«expr.variable.name»"), 1.0));'''
 			methodCalls.add(instruction)
 		} else {
 			throw new IllegalAccessException("Ilp term may not be constant")
@@ -226,7 +226,6 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			}
 		} else if(expr instanceof VariableReference) {
 			//This should have been taken care of already. -> Constant 1 doesn't hurt... 
-//			return '''engine.getNonMappingVariable(«getAdditionalVariableName(expr)»)'''
 			return '''1.0'''
 		}  else {
 			val value = expr as ArithmeticValue

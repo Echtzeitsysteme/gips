@@ -333,14 +333,14 @@ protected List<ILPTerm> buildVariableLhs(final «context.modelType.type.name» c
 	
 	override getVariable(VariableSet variable) {
 		if(variable instanceof Variable) {
-			return '''engine.getNonMappingVariable(context + "->«variable.name»")'''
+			return '''engine.getNonMappingVariable(context, "«variable.name»")'''
 		} else {
 			throw new UnsupportedOperationException("Mapping context access is not possible within a type context.")
 		}
 	}
 	
 	override getAdditionalVariableName(VariableReference varRef) {
-		return '''context + "->«varRef.variable.name»"'''
+		return '''engine.getNonMappingVariable(context, "«varRef.variable.name»").getName()'''
 	}
 	
 	override generateBuilder(ContextSumExpression expr, LinkedList<String> methodCalls) {

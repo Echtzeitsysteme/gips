@@ -103,6 +103,12 @@ public class GlpkSolver extends ILPSolver {
 	}
 
 	@Override
+	public void terminate() {
+		model.delete();
+		iocp.delete();
+	}
+
+	@Override
 	public ILPSolverOutput solve() {
 		setUpVars();
 		setUpCnstrs();

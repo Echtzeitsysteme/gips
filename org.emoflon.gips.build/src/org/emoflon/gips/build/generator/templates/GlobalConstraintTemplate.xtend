@@ -329,7 +329,7 @@ protected List<ILPTerm> buildVariableLhs() {
 	
 	override getVariable(VariableSet variable) {
 		if(variable instanceof Variable) {
-			return '''engine.getNonMappingVariable("global->«variable.name»")'''
+			return '''engine.getNonMappingVariable(constraint, "«variable.name»")'''
 		} else {
 			throw new UnsupportedOperationException("Mapping context access is not possible within the global context.")
 		}
@@ -337,7 +337,7 @@ protected List<ILPTerm> buildVariableLhs() {
 	}
 	
 	override getAdditionalVariableName(VariableReference varRef) {
-		return '''"global->«varRef.variable.name»"'''
+		return '''engine.getNonMappingVariable(constraint, "«varRef.variable.name»").getName()'''
 	}
 	
 	override generateBuilder(ContextSumExpression expr, LinkedList<String> methodCalls) {

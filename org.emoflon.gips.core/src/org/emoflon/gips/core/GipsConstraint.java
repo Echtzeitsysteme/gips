@@ -29,7 +29,9 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends C
 	final protected Map<CONTEXT, ILPConstraint> ilpConstraints = Collections.synchronizedMap(new HashMap<>());
 	final protected Map<CONTEXT, List<ILPConstraint>> additionalIlpConstraints = Collections
 			.synchronizedMap(new HashMap<>());
-	final protected Map<String, ILPVariable<?>> additionalVariables = Collections.synchronizedMap(new HashMap<>());
+	final protected Map<CONTEXT, Map<String, ILPVariable<?>>> additionalVariables = Collections.synchronizedMap(new HashMap<>());
+	protected long variableIdx = 0;
+	
 	final public static double EPSILON = GipsConstraintUtils.EPSILON;
 
 	public GipsConstraint(final ENGINE engine, final CONSTR constraint) {
@@ -48,7 +50,7 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends C
 	}
 
 	public Collection<ILPVariable<?>> getAdditionalVariables() {
-		return additionalVariables.values();
+		return additionalVariables.values().stream().flatMap(vars -> vars.values().stream()).collect(Collectors.toSet());
 	}
 
 	public Collection<ILPConstraint> getConstraints() {
@@ -65,6 +67,29 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends C
 	protected abstract List<ILPConstraint> buildAdditionalConstraints(final CONTEXT context);
 
 	public abstract void calcAdditionalVariables();
+	
+	public ILPVariable <?> addAdditionalVariable(final CONTEXT context, final Variable variableType, ILPVariable<?> variable) {
+		Map<String, ILPVariable<?>> variables = additionalVariables.get(context);
+		if(variables == null) {
+			variables = Collections.synchronizedMap(new HashMap<>());
+			additionalVariables.put(context, variables);
+		}
+		ILPVariable <?> var = variables.put(variableType.getName(), variable);
+		
+		if(var == null) {
+			return variable;
+		} else {
+			return null;
+		}
+	}
+	
+	public ILPVariable <?> getAdditionalVariable(final CONTEXT context, final String variableTypeName) {
+		Map<String, ILPVariable<?>> variables = additionalVariables.get(context);
+		if(variables == null)
+			return null;
+		
+		return variables.get(variableTypeName);
+	}
 
 	public ILPVariable<?> buildVariable(final Variable variable, final CONTEXT context) {
 		return switch (variable.getType()) {

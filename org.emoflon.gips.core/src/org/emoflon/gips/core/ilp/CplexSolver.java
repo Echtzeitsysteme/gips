@@ -85,6 +85,16 @@ public class CplexSolver extends ILPSolver {
 	}
 
 	@Override
+	public void terminate() {
+		try {
+			cplex.endModel();
+		} catch (final IloException e) {
+			e.printStackTrace();
+		}
+		cplex.end();
+	}
+
+	@Override
 	public ILPSolverOutput solve() {
 		setUpCnstrs();
 		setUpObj();

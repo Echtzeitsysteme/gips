@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,9 @@ public abstract class GTMapper<GTM extends GTMapping<M, R>, M extends GraphTrans
 	final protected Map<M, GTM> match2Mappings = Collections.synchronizedMap(new HashMap<>());
 	private int mappingCounter = 0;
 
+	final protected Consumer<M> appearConsumer = this::addMapping;
+	final protected Consumer<M> disappearConsumer = this::removeMapping;
+	
 	public GTMapper(final GipsEngine engine, final Mapping mapping, final R rule) {
 		super(engine, mapping);
 		this.rule = rule;
@@ -60,13 +64,13 @@ public abstract class GTMapper<GTM extends GTMapping<M, R>, M extends GraphTrans
 	}
 
 	protected void init() {
-		rule.subscribeAppearing(this::addMapping);
-		rule.subscribeDisappearing(this::removeMapping);
+		rule.subscribeAppearing(appearConsumer);
+		rule.subscribeDisappearing(disappearConsumer);
 	}
 
 	@Override
 	protected void terminate() {
-		rule.unsubscribeAppearing(this::addMapping);
-		rule.unsubscribeDisappearing(this::removeMapping);
+		rule.unsubscribeAppearing(appearConsumer);
+		rule.unsubscribeDisappearing(disappearConsumer);
 	}
 }

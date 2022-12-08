@@ -77,6 +77,7 @@ public enum RelationalOperator implements Enumerator {
 	 * @ordered
 	 */
 	NOT_EQUAL(5, "NotEqual", "NotEqual"),
+
 	/**
 	 * The '<em><b>Object Equal</b></em>' literal object. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -86,6 +87,7 @@ public enum RelationalOperator implements Enumerator {
 	 * @ordered
 	 */
 	OBJECT_EQUAL(6, "ObjectEqual", "ObjectEqual"),
+
 	/**
 	 * The '<em><b>Object Not Equal</b></em>' literal object. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->

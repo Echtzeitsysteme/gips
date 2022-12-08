@@ -37,6 +37,7 @@ public enum ILPSolverType implements Enumerator {
 	 * @ordered
 	 */
 	GLPK(1, "GLPK", "GLPK"),
+
 	/**
 	 * The '<em><b>CPLEX</b></em>' literal object. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->

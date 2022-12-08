@@ -82,10 +82,15 @@ public class CplexSolver extends ILPSolver {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	@Override
 	public void terminate() {
-		//TODO: shut down solver, if necessary.
+		try {
+			cplex.endModel();
+		} catch (final IloException e) {
+			e.printStackTrace();
+		}
+		cplex.end();
 	}
 
 	@Override

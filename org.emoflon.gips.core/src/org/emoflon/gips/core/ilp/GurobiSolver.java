@@ -84,6 +84,13 @@ public class GurobiSolver extends ILPSolver {
 	@Override
 	public void terminate() {
 		model.terminate();
+		model.dispose();
+		try {
+			env.dispose();
+		} catch (final GRBException e) {
+			e.printStackTrace();
+		}
+		env.release();
 	}
 
 	@Override

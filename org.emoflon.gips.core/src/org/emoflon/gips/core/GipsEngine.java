@@ -37,8 +37,7 @@ public abstract class GipsEngine {
 		mappers.values().stream()
 			.flatMap(mapper -> mapper.getMappings().values().stream())
 			.filter(m -> m.hasAdditionalVariables())
-			.flatMap(m -> m.getAdditionalVariables().values().stream())
-			.forEach(var -> nonMappingVariables.put(var.getName(), var));
+			.forEach(m -> nonMappingVariables.put(m, m.getAdditionalVariables()));
 		
 		constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());
 		constraints.values().stream().forEach(constraint -> constraint.buildConstraints());

@@ -66,6 +66,30 @@ public abstract class GTMapper<GTM extends GTMapping<M, R>, M extends GraphTrans
 		}).map(m -> rule.apply(m.match)).collect(Collectors.toSet());
 	}
 
+	public Collection<Optional<M>> applyNonZeroMappings(final boolean doUpdate) {
+		return getNonZeroVariableMappings().stream().map(m -> {
+			if (m.hasBoundVariables()) {
+				final Map<String, Object> parameters = rule.getParameters();
+				m.getBoundVariables().forEach((name, var) -> {
+					parameters.put(internalVarToParamName.get(name), var.getValue());
+				});
+			}
+			return m;
+		}).map(m -> rule.apply(m.match, doUpdate)).collect(Collectors.toSet());
+	}
+
+	public Collection<Optional<M>> applyMappings(final Function<Integer, Boolean> predicate, final boolean doUpdate) {
+		return getMappings(predicate).stream().map(m -> {
+			if (m.hasBoundVariables()) {
+				final Map<String, Object> parameters = rule.getParameters();
+				m.getBoundVariables().forEach((name, var) -> {
+					parameters.put(internalVarToParamName.get(name), var.getValue());
+				});
+			}
+			return m;
+		}).map(m -> rule.apply(m.match, doUpdate)).collect(Collectors.toSet());
+	}
+
 	protected abstract GTM convertMatch(final String ilpVariable, final M match);
 
 	protected void addMapping(final M match) {

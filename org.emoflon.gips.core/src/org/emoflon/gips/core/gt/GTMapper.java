@@ -21,6 +21,7 @@ public abstract class GTMapper<GTM extends GTMapping<M, R>, M extends GraphTrans
 	final protected R rule;
 	final protected Map<M, GTM> match2Mappings = Collections.synchronizedMap(new HashMap<>());
 	private int mappingCounter = 0;
+	private Map<String, String> internalVarToParamName = new HashMap<>();
 
 	final protected Consumer<M> appearConsumer = this::addMapping;
 	final protected Consumer<M> disappearConsumer = this::removeMapping;
@@ -29,6 +30,12 @@ public abstract class GTMapper<GTM extends GTMapping<M, R>, M extends GraphTrans
 		super(engine, mapping);
 		this.rule = rule;
 		this.init();
+		final org.emoflon.gips.intermediate.GipsIntermediate.GTMapping typedMapping = ((org.emoflon.gips.intermediate.GipsIntermediate.GTMapping) mapping);
+
+		if (typedMapping.getBoundVariables() != null && !typedMapping.getBoundVariables().isEmpty()) {
+			typedMapping.getBoundVariables()
+					.forEach(v -> internalVarToParamName.put(v.getName(), v.getParameter().getName()));
+		}
 	}
 
 	public R getGTRule() {
@@ -36,11 +43,27 @@ public abstract class GTMapper<GTM extends GTMapping<M, R>, M extends GraphTrans
 	}
 
 	public Collection<Optional<M>> applyNonZeroMappings() {
-		return getNonZeroVariableMappings().stream().map(m -> rule.apply(m.match)).collect(Collectors.toSet());
+		return getNonZeroVariableMappings().stream().map(m -> {
+			if (m.hasBoundVariables()) {
+				Map<String, Object> parameters = rule.getParameters();
+				m.getBoundVariables().forEach((name, var) -> {
+					parameters.put(internalVarToParamName.get(name), var.getValue());
+				});
+			}
+			return m;
+		}).map(m -> rule.apply(m.match)).collect(Collectors.toSet());
 	}
 
 	public Collection<Optional<M>> applyMappings(Function<Integer, Boolean> predicate) {
-		return getMappings(predicate).stream().map(m -> rule.apply(m.match)).collect(Collectors.toSet());
+		return getMappings(predicate).stream().map(m -> {
+			if (m.hasBoundVariables()) {
+				Map<String, Object> parameters = rule.getParameters();
+				m.getBoundVariables().forEach((name, var) -> {
+					parameters.put(internalVarToParamName.get(name), var.getValue());
+				});
+			}
+			return m;
+		}).map(m -> rule.apply(m.match)).collect(Collectors.toSet());
 	}
 
 	protected abstract GTM convertMatch(final String ilpVariable, final M match);

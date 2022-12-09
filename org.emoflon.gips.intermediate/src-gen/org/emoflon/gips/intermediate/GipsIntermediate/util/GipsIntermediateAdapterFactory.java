@@ -112,6 +112,11 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseGTParameterVariable(GTParameterVariable object) {
+			return createGTParameterVariableAdapter();
+		}
+
+		@Override
 		public Adapter caseConstraint(Constraint object) {
 			return createConstraintAdapter();
 		}
@@ -317,6 +322,11 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseContextMappingVariablesReference(ContextMappingVariablesReference object) {
+			return createContextMappingVariablesReferenceAdapter();
+		}
+
+		@Override
 		public Adapter caseObjectiveFunctionValue(ObjectiveFunctionValue object) {
 			return createObjectiveFunctionValueAdapter();
 		}
@@ -379,6 +389,11 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseIteratorMappingVariableValue(IteratorMappingVariableValue object) {
 			return createIteratorMappingVariableValueAdapter();
+		}
+
+		@Override
+		public Adapter caseIteratorMappingVariablesReference(IteratorMappingVariablesReference object) {
+			return createIteratorMappingVariablesReferenceAdapter();
 		}
 
 		@Override
@@ -588,6 +603,22 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createVariableAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.GTParameterVariable
+	 * <em>GT Parameter Variable</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's useful
+	 * to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.GTParameterVariable
+	 * @generated
+	 */
+	public Adapter createGTParameterVariableAdapter() {
 		return null;
 	}
 
@@ -1241,6 +1272,22 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingVariablesReference
+	 * <em>Context Mapping Variables Reference</em>}'. <!-- begin-user-doc --> This
+	 * default implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingVariablesReference
+	 * @generated
+	 */
+	public Adapter createContextMappingVariablesReferenceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class
 	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue
 	 * <em>Objective Function Value</em>}'. <!-- begin-user-doc --> This default
 	 * implementation returns null so that we can easily ignore cases; it's useful
@@ -1443,6 +1490,22 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createIteratorMappingVariableValueAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class
+	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariablesReference
+	 * <em>Iterator Mapping Variables Reference</em>}'. <!-- begin-user-doc --> This
+	 * default implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariablesReference
+	 * @generated
+	 */
+	public Adapter createIteratorMappingVariablesReferenceAdapter() {
 		return null;
 	}
 

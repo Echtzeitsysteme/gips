@@ -42,6 +42,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingVariablesReference
 
 class TypeConstraintTemplate extends ConstraintTemplate<TypeConstraint> {
 	
@@ -299,6 +300,8 @@ protected List<ILPTerm> buildVariableLhs(final «context.modelType.type.name» c
 			throw new UnsupportedOperationException("Mapping context access is not possible within a type context.")
 		} else if(expr instanceof ContextMappingValue) {
 			throw new UnsupportedOperationException("Mapping context access is not possible within a type context.")
+		} else if(expr instanceof ContextMappingVariablesReference) {
+			throw new UnsupportedOperationException("Mapping context access is not possible within a pattern context.")
 		} else if(expr instanceof ContextPatternNodeFeatureValue) {
 			throw new UnsupportedOperationException("Ilp term may not be constant.")
 		} else if(expr instanceof ContextPatternNode) {
@@ -403,12 +406,25 @@ protected List<ILPTerm> buildVariableLhs(final «context.modelType.type.name» c
 		builderMethods.put(expr, methodName)
 		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
 		imports.add("java.util.stream.Collectors")
+		val vars = GipsTransformationUtils.extractVariable(expr.expression)
+		var containsOnlyMappingVariable = false
+		var variableRef = null as VariableSet
+		if(vars.contains(expr.mapping) && (vars.size == 1 || vars.size == 0)) {
+			containsOnlyMappingVariable = true;
+		} else if(!vars.contains(expr.mapping) && vars.size == 1) {
+			containsOnlyMappingVariable = false;
+			variableRef = vars.iterator.next
+		} else {
+			throw new UnsupportedOperationException("Mapping sum expression may not contain more than one variable reference.")
+		}
 		val method = '''
 	protected void «methodName»(final List<ILPTerm> terms, final «context.modelType.type.name» context) {
 		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper("«expr.mapping.name»").getMappings().values().parallelStream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-			terms.add(new ILPTerm(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+			«IF containsOnlyMappingVariable»terms.add(new ILPTerm(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+			«ELSE»terms.add(new ILPTerm(«getIteratorVariableName(expr)».get«variableRef.name.toUpperCase»(), (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+			«ENDIF»
 		}
 	}
 		'''

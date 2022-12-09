@@ -12,6 +12,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
+import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils
 
 class PatternObjectiveTemplate extends ObjectiveTemplate<PatternObjective> {
 
@@ -132,12 +133,25 @@ protected void buildTerms(final «data.pattern2matchClassName.get(context.patter
 		builderMethods.put(expr, methodName)
 		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
 		imports.add("java.util.stream.Collectors")
+		val vars = GipsTransformationUtils.extractVariable(expr.expression)
+		var containsOnlyMappingVariable = false
+		var variableRef = null as VariableSet
+		if(vars.contains(expr.mapping) && (vars.size == 1 || vars.size == 0)) {
+			containsOnlyMappingVariable = true;
+		} else if(!vars.contains(expr.mapping) && vars.size == 1) {
+			containsOnlyMappingVariable = false;
+			variableRef = vars.iterator.next
+		} else {
+			throw new UnsupportedOperationException("Mapping sum expression may not contain more than one variable reference.")
+		}
 		val method = '''
 	protected void «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
 		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper("«expr.mapping.name»").getMappings().values().parallelStream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-			terms.add(new ILPTerm(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+			«IF containsOnlyMappingVariable»terms.add(new ILPTerm(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+			«ELSE»terms.add(new ILPTerm(«getIteratorVariableName(expr)».get«variableRef.name.toUpperCase»(), (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+			«ENDIF»
 		}
 	}
 		'''

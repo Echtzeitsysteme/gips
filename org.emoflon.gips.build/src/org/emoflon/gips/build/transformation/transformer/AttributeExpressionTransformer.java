@@ -18,6 +18,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingCheckValue;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingValue;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingVariableReference;
 import org.emoflon.gips.gipsl.gipsl.GipsNodeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
@@ -31,6 +32,7 @@ import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingVariablesReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue;
@@ -40,6 +42,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeature
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariablesReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue;
@@ -50,6 +53,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
 import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 
 public abstract class AttributeExpressionTransformer<T extends EObject> extends TransformationContext<T> {
@@ -210,6 +214,19 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 				throw new UnsupportedOperationException(
 						"ILP variable value access operations are not defined on model objects.");
 			}
+		} else if (eLambda.getExpr() instanceof GipsMappingVariableReference eContextRef) {
+			if (streamRoot instanceof GipsMappingAttributeExpr eMappingAttribute) {
+				final IteratorMappingVariablesReference varRef = factory.createIteratorMappingVariablesReference();
+				varRef.setMappingContext(data.eMapping2Mapping().get(eMappingAttribute.getMapping()));
+				final VariableReference ref = factory.createVariableReference();
+				ref.setVariable(data.eVariable2Variable().get(eContextRef.getVar()));
+				ref.setReturnType(eContextRef.getVar().getType());
+				varRef.setVar(ref);
+				return varRef;
+			} else {
+				throw new UnsupportedOperationException(
+						"ILP variable value access operations are not defined on model objects.");
+			}
 		} else {
 			// Case: Access the object represented by the iterator or its (nested)
 			// attributes.
@@ -272,6 +289,17 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 			if (contextType instanceof GipsMappingContext eMappingContext
 					&& eContext.getExpr() instanceof GipsNodeAttributeExpr eNodeExpr && eNodeExpr.getExpr() != null) {
 				return transformIteratorMappingValue(eMappingContext.getMapping(), streamIteratorContainer);
+			} else if (contextType instanceof GipsMappingContext eMappingContext
+					&& eContext.getExpr() instanceof GipsMappingVariableReference mappingVarRef) {
+				IteratorMappingVariablesReference value = factory.createIteratorMappingVariablesReference();
+				VariableReference ref = factory.createVariableReference();
+				ref.setVariable(data.eVariable2Variable().get(mappingVarRef.getVar()));
+				ref.setReturnType(mappingVarRef.getVar().getType());
+				value.setVar(ref);
+				value.setReturnType(ref.getReturnType());
+				value.setMappingContext(data.eMapping2Mapping().get(eMappingContext.getMapping()));
+				value.setStream(data.eStream2SetOp().get(streamIteratorContainer));
+				return value;
 			} else if (contextType instanceof GipsPatternContext ePatternContext
 					&& eContext.getExpr() instanceof GipsNodeAttributeExpr eNodeExpr && eNodeExpr.getExpr() != null) {
 				return transformIteratorPatternValue(ePatternContext.getPattern(), streamIteratorContainer);
@@ -348,6 +376,15 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 						"Operation isMapped() is not allowed within nested (stream) expressions.");
 			} else if (eContext.getExpr() instanceof GipsMappingValue mappingValOp) {
 				ContextMappingValue value = factory.createContextMappingValue();
+				value.setMappingContext(data.eMapping2Mapping().get(mc.getMapping()));
+				return value;
+			} else if (eContext.getExpr() instanceof GipsMappingVariableReference mappingVarRef) {
+				ContextMappingVariablesReference value = factory.createContextMappingVariablesReference();
+				VariableReference ref = factory.createVariableReference();
+				ref.setVariable(data.eVariable2Variable().get(mappingVarRef.getVar()));
+				ref.setReturnType(mappingVarRef.getVar().getType());
+				value.setVar(ref);
+				value.setReturnType(ref.getReturnType());
 				value.setMappingContext(data.eMapping2Mapping().get(mc.getMapping()));
 				return value;
 			} else {
@@ -570,7 +607,6 @@ public abstract class AttributeExpressionTransformer<T extends EObject> extends 
 			final GipsMappingAttributeExpr eMappingAttribute, final GipsStreamExpr streamIteratorContainer)
 			throws Exception {
 		if (eContextOp instanceof GipsMappingValue mappingValueOp) {
-			// TODO:
 			// On a serious note: Accessing ILP variable values should not be allowed in
 			// filter stream expressions since it is impractical.
 			IteratorMappingVariableValue mappingValue = factory.createIteratorMappingVariableValue();

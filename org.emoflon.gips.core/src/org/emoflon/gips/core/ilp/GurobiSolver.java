@@ -3,6 +3,7 @@ package org.emoflon.gips.core.ilp;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsEngine;
@@ -151,12 +152,19 @@ public class GurobiSolver extends ILPSolver {
 			// Iterate over all mappings of each mapper
 			for (final String k : mapper.getMappings().keySet()) {
 				// Get corresponding ILP variable name
-				final String varName = mapper.getMapping(k).getName();
+				GipsMapping mapping = mapper.getMapping(k);
+				final String varName = mapping.getName();
 				try {
 					// Get value of the ILP variable and round it (to eliminate small deltas)
 					double result = Math.round(getVar(varName).get(DoubleAttr.X));
 					// Save result value in specific mapping
-					mapper.getMapping(k).setValue((int) result);
+					mapping.setValue((int) result);
+					if (mapping.hasAdditionalVariables()) {
+						for (Entry<String, ILPVariable<?>> var : mapping.getAdditionalVariables().entrySet()) {
+							double mappingVarResult = getVar(var.getValue().getName()).get(DoubleAttr.X);
+							mapping.setAdditionalVariableValue(var.getKey(), mappingVarResult);
+						}
+					}
 				} catch (final GRBException e) {
 					throw new RuntimeException(e);
 				}
@@ -176,6 +184,9 @@ public class GurobiSolver extends ILPSolver {
 	protected void translateMapping(final GipsMapping mapping) {
 		// Add a binary variable with corresponding name for the mapping
 		createOrGetBinVar(mapping);
+		if (mapping.hasAdditionalVariables()) {
+			createOrGetAdditionalVars(mapping.getAdditionalVariables().values());
+		}
 	}
 
 	@Override

@@ -45,7 +45,13 @@ enum SolverType:
 ;
 
 GipsMapping :
-	'mapping' name=ID 'with' pattern=[GT::EditorPattern|ID] ';'
+	'mapping' name=ID 'with' pattern=[GT::EditorPattern|ID] ('{'
+		(variables += GipsMappingVariable)+
+	'}')?';'
+;
+
+GipsMappingVariable :
+	'var' name=ID ':' type=[ecore::EDataType] (bound ?= 'bind' parameter=[GT::EditorParameter])?
 ;
 
 GipsConstraint : 
@@ -162,7 +168,7 @@ GipsPatternAttributeExpr returns GipsAttributeExpr: {GipsPatternAttributeExpr}
 
 //TODO: Allow optional nested lambda expressions
 GipsLambdaAttributeExpression returns GipsAttributeExpr: {GipsLambdaAttributeExpression}
-	var=[GipsLambdaExpression|ID] '.' (expr = GipsNodeAttributeExpr | expr = GipsVariableOperationExpression | expr = GipsFeatureExpr) // ('->' stream = GipsStreamExpr)?
+	var=[GipsLambdaExpression|ID] '.' (expr = GipsNodeAttributeExpr | expr = GipsVariableOperationExpression | expr = GipsFeatureExpr | expr = GipsMappingVariableReference) // ('->' stream = GipsStreamExpr)?
 ;
 
 GipsLambdaSelfExpression returns GipsAttributeExpr: {GipsLambdaSelfExpression}
@@ -170,12 +176,16 @@ GipsLambdaSelfExpression returns GipsAttributeExpr: {GipsLambdaSelfExpression}
 ;
 
 GipsContextExpr returns GipsAttributeExpr: {GipsContextExpr}
-	'self' ('.' typeCast=GipsTypeCast)? ('.' (expr = GipsNodeAttributeExpr | expr = GipsVariableOperationExpression | expr = GipsFeatureExpr) ('->' stream = GipsStreamExpr)?)?
+	'self' ('.' typeCast=GipsTypeCast)? ('.' (expr = GipsNodeAttributeExpr | expr = GipsVariableOperationExpression | expr = GipsFeatureExpr | expr = GipsMappingVariableReference) ('->' stream = GipsStreamExpr)?)?
 ;
 
 GipsVariableOperationExpression returns GipsVariableOperationExpression: 
 	{GipsMappingValue} 'value()' |
 	{GipsMappingCheckValue} 'isMapped' '(' (count=GipsContextExpr)? ')'
+;
+
+GipsMappingVariableReference:
+	'variables().' var=[GipsMappingVariable|ID]
 ;
 
 GipsTypeCast:

@@ -20,8 +20,10 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.resource.XtextResourceSet;
@@ -38,6 +40,8 @@ import org.emoflon.gips.gipsl.gipsl.GipsLambdaSelfExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingVariableReference;
 import org.emoflon.gips.gipsl.gipsl.GipsNodeAttributeExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternAttributeExpr;
@@ -54,6 +58,7 @@ import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsContextExprImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsMappingAttributeExprImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsMappingImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsNodeAttributeExprImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsPatternAttributeExprImpl;
@@ -63,6 +68,7 @@ import org.emoflon.gips.gipsl.gipsl.impl.GipsStreamNavigationImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsStreamSetImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsTypeAttributeExprImpl;
 import org.emoflon.ibex.gt.editor.gT.EditorOperator;
+import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 import org.emoflon.ibex.gt.editor.utils.GTEditorModelUtils;
 import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
 
@@ -76,6 +82,9 @@ import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
 public class GipslScopeProvider extends AbstractGipslScopeProvider {
 
 	protected Map<Resource, Map<URI, Resource>> resourceCache = new HashMap<>();
+	protected Set<EDataType> variableDataTypes =  Set.of(EcorePackage.Literals.EDOUBLE, EcorePackage.Literals.EFLOAT, 
+			EcorePackage.Literals.EINT, EcorePackage.Literals.ELONG, EcorePackage.Literals.ESHORT, EcorePackage.Literals.EBYTE, 
+			EcorePackage.Literals.EBOOLEAN);
 
 	@Override
 	public IScope getScope(EObject context, EReference reference) {
@@ -92,6 +101,12 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			return scopeForImportedPatternPattern((ImportedPattern) context, reference);
 		} else if (GipslScopeContextUtil.isGipsMapping(context, reference)) {
 			return scopeForGipsMapping((GipsMapping) context, reference);
+		} else if (GipslScopeContextUtil.isGipsMappingVariableType(context, reference)) {
+			return scopeForGipsMappingVariableType((GipsMappingVariable) context, reference);
+		} else if (GipslScopeContextUtil.isGipsMappingVariableParameter(context, reference)) {
+			return scopeForGipsMappingVariableParameter((GipsMappingVariable) context, reference);
+		} else if (GipslScopeContextUtil.isGipsMappingVariableReference(context, reference)) {
+			return scopeForGipsMappingVariableReference((GipsMappingVariableReference) context, reference);
 		} else if (GipslScopeContextUtil.isGipsMappingContext(context, reference)) {
 			return scopeForGipsMappingContext((GipsMappingContext) context, reference);
 		} else if (GipslScopeContextUtil.isGipsTypeContext(context, reference)) {
@@ -272,6 +287,65 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 
 	public IScope scopeForGipsMapping(GipsMapping context, EReference reference) {
 		return Scopes.scopeFor(GipslScopeContextUtil.getAllEditorPatterns(context));
+	}
+	
+	public IScope scopeForGipsMappingVariableType(GipsMappingVariable context, EReference reference) {
+		return Scopes.scopeFor(variableDataTypes);
+	}
+	
+	public IScope scopeForGipsMappingVariableParameter(GipsMappingVariable context, EReference reference) {
+		if(context.getType() == null)
+			return IScope.NULLSCOPE;
+		
+		GipsMapping mapping = GTEditorPatternUtils.getContainer(context, GipsMappingImpl.class);
+		if(mapping == null)
+			return IScope.NULLSCOPE;
+		
+		EditorPattern pattern = mapping.getPattern();
+		if(pattern == null)
+			return IScope.NULLSCOPE;
+		
+		if(pattern.getParameters() == null || pattern.getParameters().isEmpty())
+			return IScope.NULLSCOPE;
+		
+		// TODO: Exclude parameters that are not exclusively used in attribute assignments (i.e. parameters used in conditions for pattern matching)
+		return Scopes.scopeFor(pattern.getParameters().stream().filter(param -> variableDataTypes.contains(param.getType())).collect(Collectors.toList()));
+	}
+	
+	public IScope scopeForGipsMappingVariableReference(GipsMappingVariableReference context, EReference reference) {
+		Set<Class<?>> classes = Set.of(GipsContextExprImpl.class, GipsMappingAttributeExprImpl.class);
+		EObject parent = (EObject) GipslScopeContextUtil.getContainer(context, classes);
+		if (parent == null) {
+			return IScope.NULLSCOPE;
+		}
+		if(parent instanceof GipsContextExpr contextExpr) {
+			EObject contextType = null;
+			GipsConstraint constraintContext = GTEditorPatternUtils.getContainer(context, GipsConstraintImpl.class);
+			if (constraintContext != null) {
+				contextType = constraintContext.getContext();
+			} else {
+				GipsObjective objectiveContext = GTEditorPatternUtils.getContainer(context, GipsObjectiveImpl.class);
+				if (objectiveContext != null) {
+					contextType = objectiveContext.getContext();
+				} else {
+					return IScope.NULLSCOPE;
+				}
+			}
+			if (contextType instanceof GipsMappingContext mappingContext && mappingContext.getMapping() != null && mappingContext.getMapping().getVariables() != null && !mappingContext.getMapping().getVariables().isEmpty()) {
+				return Scopes.scopeFor(mappingContext.getMapping().getVariables());
+			} else {
+				return IScope.NULLSCOPE;
+			}
+			
+		} else if(parent instanceof GipsMappingAttributeExpr mappingExpr) {
+			if(mappingExpr.getMapping() != null && mappingExpr.getMapping().getVariables() != null && !mappingExpr.getMapping().getVariables().isEmpty()) {
+				return Scopes.scopeFor(mappingExpr.getMapping().getVariables());
+			} else {
+				return IScope.NULLSCOPE;
+			}
+		} else {
+			return IScope.NULLSCOPE;
+		}
 	}
 
 	public IScope scopeForGipsMappingContext(GipsMappingContext context, EReference reference) {

@@ -20,7 +20,9 @@ import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipsConfig;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsGlobalObjective;
+import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
@@ -30,6 +32,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.GTMapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.GTParameterVariable;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint;
@@ -190,6 +193,7 @@ public class GipsToIntermediate {
 					gtMapping.setContextPattern((IBeXContextPattern) gtMapping.getRule().getLhs());
 				}
 				mapping = gtMapping;
+				transformMappingVariables(eMapping, gtMapping);
 			} else {
 				PatternMapping pmMapping = factory.createPatternMapping();
 				mapping = pmMapping;
@@ -201,6 +205,7 @@ public class GipsToIntermediate {
 					pmMapping.setContextPattern((IBeXContextPattern) context);
 				}
 				pmMapping.setPattern(context);
+				transformMappingVariables(eMapping, pmMapping);
 			}
 
 			mapping.setName(eMapping.getName());
@@ -209,6 +214,54 @@ public class GipsToIntermediate {
 			data.model().getVariables().add(mapping);
 			data.eMapping2Mapping().put(eMapping, mapping);
 		});
+	}
+
+	protected void transformMappingVariables(GipsMapping mapping, GTMapping gtMapping) {
+		if (mapping.getVariables() == null || mapping.getVariables().isEmpty())
+			return;
+
+		for (GipsMappingVariable gipsVar : mapping.getVariables()) {
+			if (gipsVar.isBound()) {
+				GTParameterVariable var = factory.createGTParameterVariable();
+				var.setType(GipsTransformationUtils.typeToVariableType(gipsVar.getType()));
+				IBeXRule rule = data.ePattern2Rule().get(mapping.getPattern());
+				var.setRule(rule);
+				var.setParameter(rule.getParameters().stream()
+						.filter(param -> param.getName().equals(gipsVar.getParameter().getName())).findFirst().get());
+				var.setName(gipsVar.getName());
+				var.setLowerBound(GipsTransformationUtils.getLowerBound(gipsVar, var.getType()));
+				var.setUpperBound(GipsTransformationUtils.getUpperBound(gipsVar, var.getType()));
+				gtMapping.getBoundVariables().add(var);
+				data.model().getVariables().add(var);
+				data.eVariable2Variable().put(gipsVar, var);
+			} else {
+				Variable var = factory.createVariable();
+				var.setType(GipsTransformationUtils.typeToVariableType(gipsVar.getType()));
+				var.setName(gipsVar.getName());
+				var.setLowerBound(GipsTransformationUtils.getLowerBound(gipsVar, var.getType()));
+				var.setUpperBound(GipsTransformationUtils.getUpperBound(gipsVar, var.getType()));
+				gtMapping.getFreeVariables().add(var);
+				data.model().getVariables().add(var);
+				data.eVariable2Variable().put(gipsVar, var);
+			}
+
+		}
+	}
+
+	protected void transformMappingVariables(GipsMapping mapping, PatternMapping gtMapping) {
+		if (mapping.getVariables() == null || mapping.getVariables().isEmpty())
+			return;
+
+		for (GipsMappingVariable gipsVar : mapping.getVariables()) {
+			Variable var = factory.createVariable();
+			var.setType(GipsTransformationUtils.typeToVariableType(gipsVar.getType()));
+			var.setName(gipsVar.getName());
+			var.setLowerBound(GipsTransformationUtils.getLowerBound(gipsVar, var.getType()));
+			var.setUpperBound(GipsTransformationUtils.getUpperBound(gipsVar, var.getType()));
+			gtMapping.getFreeVariables().add(var);
+			data.model().getVariables().add(var);
+			data.eVariable2Variable().put(gipsVar, var);
+		}
 	}
 
 	protected void transformConstraints() throws Exception {

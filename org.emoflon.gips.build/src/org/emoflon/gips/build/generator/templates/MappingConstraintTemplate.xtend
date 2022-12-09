@@ -41,6 +41,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingVariablesReference
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariablesReference
 
 class MappingConstraintTemplate extends ConstraintTemplate<MappingConstraint> {
 
@@ -204,13 +206,17 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 			throw new UnsupportedOperationException("Type context access is not possible within a mapping context.")
 		} else if(expr instanceof ContextMappingNodeFeatureValue) {
 			val builderMethodName = generateBuilder(expr)
-			val instruction = '''«builderMethodName»(context);'''
+			val instruction = '''«builderMethodName»(terms, context);'''
 			methodCalls.add(instruction)
 		} else if(expr instanceof ContextMappingNode) {
 			throw new UnsupportedOperationException("Ilp term may not contain complex objects.")
 		} else if(expr instanceof ContextMappingValue) {
 			val builderMethodName = generateBuilder(expr)
-			val instruction = '''«builderMethodName»(context);'''
+			val instruction = '''«builderMethodName»(terms, context);'''
+			methodCalls.add(instruction)
+		} else if(expr instanceof ContextMappingVariablesReference) {
+			val builderMethodName = generateBuilder(expr)
+			val instruction = '''«builderMethodName»(terms, context);'''
 			methodCalls.add(instruction)
 		} else if(expr instanceof ContextPatternNodeFeatureValue) {
 			throw new UnsupportedOperationException("Pattern context access is not possible within a mapping context.")
@@ -229,6 +235,8 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		} else if(expr instanceof IteratorMappingNodeFeatureValue) {
 			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
 		} else if(expr instanceof IteratorMappingNodeValue) {
+			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
+		} else if(expr instanceof IteratorMappingVariablesReference) {
 			throw new UnsupportedOperationException("Iterators may not be used outside of lambda expressions")
 		} else if(expr instanceof IteratorPatternValue || expr instanceof IteratorPatternFeatureValue 
 				|| expr instanceof IteratorPatternNodeValue || expr instanceof IteratorPatternNodeFeatureValue) {
@@ -285,13 +293,25 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		builderMethods.put(expr, methodName)
 		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
 		imports.add("java.util.stream.Collectors")
+		val vars = GipsTransformationUtils.extractVariable(expr.expression)
+		var containsOnlyMappingVariable = false
+		var variableRef = null as VariableSet
+		if(vars.contains(expr.mapping) && (vars.size == 1 || vars.size == 0)) {
+			containsOnlyMappingVariable = true;
+		} else if(!vars.contains(expr.mapping) && vars.size == 1) {
+			containsOnlyMappingVariable = false;
+			variableRef = vars.iterator.next
+		} else {
+			throw new UnsupportedOperationException("Mapping sum expression may not contain more than one variable reference.")
+		}
 		val method = '''
 	protected void «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper("«expr.mapping.name»").getMappings().values().parallelStream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-			ILPTerm term = new ILPTerm<Integer, Double>(context, (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»);
-			terms.add(term);
+			«IF containsOnlyMappingVariable»terms.add(new ILPTerm(context, (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+			«ELSE»terms.add(new ILPTerm(context.get«variableRef.name.toUpperCase»(), (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+			«ENDIF»
 		}
 	}
 		'''
@@ -412,8 +432,8 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		val method = '''
-	protected ILPTerm «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		return new ILPTerm(context, 1.0);
+	protected void «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		terms.add(new ILPTerm(context, 1.0));
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)
@@ -424,8 +444,20 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		val method = '''
-	protected ILPTerm «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		return new ILPTerm(context, (double)context.get«expr.node.name.toFirstUpper»().«parseFeatureExpression(expr.featureExpression)»);
+	protected void «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		terms.add(new ILPTerm(context, (double)context.get«expr.node.name.toFirstUpper»().«parseFeatureExpression(expr.featureExpression)»));
+	}
+		'''
+		builderMethodDefinitions.put(expr, method)
+		return methodName;
+	}
+	
+	def String generateBuilder(ContextMappingVariablesReference expr) {
+		val methodName = '''builder_«builderMethods.size»'''
+		builderMethods.put(expr, methodName)
+		val method = '''
+	protected void «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		terms.add(new ILPTerm(context.get«expr.^var.variable.name.toFirstUpper»(), 1.0));
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)

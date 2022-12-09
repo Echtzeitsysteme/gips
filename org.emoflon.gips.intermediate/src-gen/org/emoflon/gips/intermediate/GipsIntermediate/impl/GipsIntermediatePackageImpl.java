@@ -30,6 +30,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Context;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingVariablesReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue;
@@ -40,6 +41,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.GTMapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.GTParameterVariable;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
@@ -54,6 +56,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeature
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariablesReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue;
@@ -168,6 +171,13 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * @generated
 	 */
 	private EClass variableEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass gtParameterVariableEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -461,6 +471,13 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	private EClass contextMappingVariablesReferenceEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	private EClass objectiveFunctionValueEClass = null;
 
 	/**
@@ -546,6 +563,13 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * @generated
 	 */
 	private EClass iteratorMappingVariableValueEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass iteratorMappingVariablesReferenceEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1093,6 +1117,24 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public EReference getMapping_FreeVariables() {
+		return (EReference) mappingEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getMapping_BoundVariables() {
+		return (EReference) mappingEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getGTMapping() {
 		return gtMappingEClass;
 	}
@@ -1140,6 +1182,33 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 */
 	public EAttribute getVariable_Type() {
 		return (EAttribute) variableEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EClass getGTParameterVariable() {
+		return gtParameterVariableEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getGTParameterVariable_Parameter() {
+		return (EReference) gtParameterVariableEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getGTParameterVariable_Rule() {
+		return (EReference) gtParameterVariableEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -2056,6 +2125,33 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
+	public EClass getContextMappingVariablesReference() {
+		return contextMappingVariablesReferenceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getContextMappingVariablesReference_Var() {
+		return (EReference) contextMappingVariablesReferenceEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getContextMappingVariablesReference_MappingContext() {
+		return (EReference) contextMappingVariablesReferenceEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getObjectiveFunctionValue() {
 		return objectiveFunctionValueEClass;
 	}
@@ -2310,6 +2406,33 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 */
 	public EReference getIteratorMappingVariableValue_MappingContext() {
 		return (EReference) iteratorMappingVariableValueEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EClass getIteratorMappingVariablesReference() {
+		return iteratorMappingVariablesReferenceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getIteratorMappingVariablesReference_MappingContext() {
+		return (EReference) iteratorMappingVariablesReferenceEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getIteratorMappingVariablesReference_Var() {
+		return (EReference) iteratorMappingVariablesReferenceEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -2688,6 +2811,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 
 		mappingEClass = createEClass(MAPPING);
 		createEReference(mappingEClass, MAPPING__CONTEXT_PATTERN);
+		createEReference(mappingEClass, MAPPING__FREE_VARIABLES);
+		createEReference(mappingEClass, MAPPING__BOUND_VARIABLES);
 
 		gtMappingEClass = createEClass(GT_MAPPING);
 		createEReference(gtMappingEClass, GT_MAPPING__RULE);
@@ -2697,6 +2822,10 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 
 		variableEClass = createEClass(VARIABLE);
 		createEAttribute(variableEClass, VARIABLE__TYPE);
+
+		gtParameterVariableEClass = createEClass(GT_PARAMETER_VARIABLE);
+		createEReference(gtParameterVariableEClass, GT_PARAMETER_VARIABLE__PARAMETER);
+		createEReference(gtParameterVariableEClass, GT_PARAMETER_VARIABLE__RULE);
 
 		constraintEClass = createEClass(CONSTRAINT);
 		createEAttribute(constraintEClass, CONSTRAINT__NAME);
@@ -2840,6 +2969,10 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		createEReference(contextMappingNodeEClass, CONTEXT_MAPPING_NODE__MAPPING_CONTEXT);
 		createEReference(contextMappingNodeEClass, CONTEXT_MAPPING_NODE__NODE);
 
+		contextMappingVariablesReferenceEClass = createEClass(CONTEXT_MAPPING_VARIABLES_REFERENCE);
+		createEReference(contextMappingVariablesReferenceEClass, CONTEXT_MAPPING_VARIABLES_REFERENCE__VAR);
+		createEReference(contextMappingVariablesReferenceEClass, CONTEXT_MAPPING_VARIABLES_REFERENCE__MAPPING_CONTEXT);
+
 		objectiveFunctionValueEClass = createEClass(OBJECTIVE_FUNCTION_VALUE);
 		createEReference(objectiveFunctionValueEClass, OBJECTIVE_FUNCTION_VALUE__OBJECTIVE);
 
@@ -2882,6 +3015,11 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 
 		iteratorMappingVariableValueEClass = createEClass(ITERATOR_MAPPING_VARIABLE_VALUE);
 		createEReference(iteratorMappingVariableValueEClass, ITERATOR_MAPPING_VARIABLE_VALUE__MAPPING_CONTEXT);
+
+		iteratorMappingVariablesReferenceEClass = createEClass(ITERATOR_MAPPING_VARIABLES_REFERENCE);
+		createEReference(iteratorMappingVariablesReferenceEClass,
+				ITERATOR_MAPPING_VARIABLES_REFERENCE__MAPPING_CONTEXT);
+		createEReference(iteratorMappingVariablesReferenceEClass, ITERATOR_MAPPING_VARIABLES_REFERENCE__VAR);
 
 		iteratorMappingFeatureValueEClass = createEClass(ITERATOR_MAPPING_FEATURE_VALUE);
 		createEReference(iteratorMappingFeatureValueEClass, ITERATOR_MAPPING_FEATURE_VALUE__MAPPING_CONTEXT);
@@ -2971,6 +3109,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		gtMappingEClass.getESuperTypes().add(this.getMapping());
 		patternMappingEClass.getESuperTypes().add(this.getMapping());
 		variableEClass.getESuperTypes().add(this.getVariableSet());
+		gtParameterVariableEClass.getESuperTypes().add(this.getVariable());
 		globalConstraintEClass.getESuperTypes().add(this.getConstraint());
 		patternConstraintEClass.getESuperTypes().add(this.getContext());
 		patternConstraintEClass.getESuperTypes().add(this.getConstraint());
@@ -3011,6 +3150,7 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		contextPatternNodeEClass.getESuperTypes().add(this.getValueExpression());
 		contextMappingValueEClass.getESuperTypes().add(this.getValueExpression());
 		contextMappingNodeEClass.getESuperTypes().add(this.getValueExpression());
+		contextMappingVariablesReferenceEClass.getESuperTypes().add(this.getValueExpression());
 		objectiveFunctionValueEClass.getESuperTypes().add(this.getValueExpression());
 		contextTypeFeatureValueEClass.getESuperTypes().add(this.getContextTypeValue());
 		contextPatternNodeFeatureValueEClass.getESuperTypes().add(this.getContextPatternNode());
@@ -3026,6 +3166,8 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		iteratorMappingValueEClass.getESuperTypes().add(this.getIterator());
 		iteratorMappingVariableValueEClass.getESuperTypes().add(this.getValueExpression());
 		iteratorMappingVariableValueEClass.getESuperTypes().add(this.getIterator());
+		iteratorMappingVariablesReferenceEClass.getESuperTypes().add(this.getValueExpression());
+		iteratorMappingVariablesReferenceEClass.getESuperTypes().add(this.getIterator());
 		iteratorMappingFeatureValueEClass.getESuperTypes().add(this.getValueExpression());
 		iteratorMappingFeatureValueEClass.getESuperTypes().add(this.getIterator());
 		iteratorMappingNodeValueEClass.getESuperTypes().add(this.getValueExpression());
@@ -3137,6 +3279,12 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEReference(getMapping_ContextPattern(), theIBeXPatternModelPackage.getIBeXContextPattern(), null,
 				"contextPattern", null, 1, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getMapping_FreeVariables(), this.getVariable(), null, "freeVariables", null, 0, -1,
+				Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getMapping_BoundVariables(), this.getGTParameterVariable(), null, "boundVariables", null, 0, -1,
+				Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(gtMappingEClass, GTMapping.class, "GTMapping", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
@@ -3154,6 +3302,15 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 				IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getVariable_Type(), this.getVariableType(), "type", null, 0, 1, Variable.class, !IS_TRANSIENT,
 				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(gtParameterVariableEClass, GTParameterVariable.class, "GTParameterVariable", !IS_ABSTRACT,
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGTParameterVariable_Parameter(), theIBeXPatternModelPackage.getIBeXParameter(), null,
+				"parameter", null, 1, 1, GTParameterVariable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGTParameterVariable_Rule(), theIBeXPatternModelPackage.getIBeXRule(), null, "rule", null, 1,
+				1, GTParameterVariable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(constraintEClass, Constraint.class, "Constraint", IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
@@ -3450,6 +3607,15 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 				ContextMappingNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(contextMappingVariablesReferenceEClass, ContextMappingVariablesReference.class,
+				"ContextMappingVariablesReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getContextMappingVariablesReference_Var(), this.getVariableReference(), null, "var", null, 1, 1,
+				ContextMappingVariablesReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getContextMappingVariablesReference_MappingContext(), this.getMapping(), null, "mappingContext",
+				null, 0, 1, ContextMappingVariablesReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(objectiveFunctionValueEClass, ObjectiveFunctionValue.class, "ObjectiveFunctionValue", !IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getObjectiveFunctionValue_Objective(), this.getObjective(), null, "objective", null, 1, 1,
@@ -3535,6 +3701,15 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		initEReference(getIteratorMappingVariableValue_MappingContext(), this.getMapping(), null, "mappingContext",
 				null, 0, 1, IteratorMappingVariableValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
 				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(iteratorMappingVariablesReferenceEClass, IteratorMappingVariablesReference.class,
+				"IteratorMappingVariablesReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getIteratorMappingVariablesReference_MappingContext(), this.getMapping(), null, "mappingContext",
+				null, 0, 1, IteratorMappingVariablesReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getIteratorMappingVariablesReference_Var(), this.getVariableReference(), null, "var", null, 1, 1,
+				IteratorMappingVariablesReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(iteratorMappingFeatureValueEClass, IteratorMappingFeatureValue.class, "IteratorMappingFeatureValue",
 				!IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

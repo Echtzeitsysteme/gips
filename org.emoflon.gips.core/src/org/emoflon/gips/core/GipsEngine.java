@@ -34,6 +34,11 @@ public abstract class GipsEngine {
 			update();
 
 		nonMappingVariables.clear();
+		mappers.values().stream()
+			.flatMap(mapper -> mapper.getMappings().values().stream())
+			.filter(m -> m.hasAdditionalVariables())
+			.forEach(m -> nonMappingVariables.put(m, m.getAdditionalVariables()));
+		
 		constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());
 		constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
 		if (globalObjective != null)

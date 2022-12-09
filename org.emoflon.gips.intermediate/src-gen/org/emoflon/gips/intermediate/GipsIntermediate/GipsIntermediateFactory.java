@@ -85,6 +85,15 @@ public interface GipsIntermediateFactory extends EFactory {
 	Variable createVariable();
 
 	/**
+	 * Returns a new object of class '<em>GT Parameter Variable</em>'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>GT Parameter Variable</em>'.
+	 * @generated
+	 */
+	GTParameterVariable createGTParameterVariable();
+
+	/**
 	 * Returns a new object of class '<em>Global Constraint</em>'. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -364,6 +373,15 @@ public interface GipsIntermediateFactory extends EFactory {
 	ContextMappingNode createContextMappingNode();
 
 	/**
+	 * Returns a new object of class '<em>Context Mapping Variables Reference</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Context Mapping Variables Reference</em>'.
+	 * @generated
+	 */
+	ContextMappingVariablesReference createContextMappingVariablesReference();
+
+	/**
 	 * Returns a new object of class '<em>Objective Function Value</em>'. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -470,6 +488,16 @@ public interface GipsIntermediateFactory extends EFactory {
 	 * @generated
 	 */
 	IteratorMappingVariableValue createIteratorMappingVariableValue();
+
+	/**
+	 * Returns a new object of class '<em>Iterator Mapping Variables
+	 * Reference</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Iterator Mapping Variables
+	 *         Reference</em>'.
+	 * @generated
+	 */
+	IteratorMappingVariablesReference createIteratorMappingVariablesReference();
 
 	/**
 	 * Returns a new object of class '<em>Iterator Mapping Feature Value</em>'. <!--

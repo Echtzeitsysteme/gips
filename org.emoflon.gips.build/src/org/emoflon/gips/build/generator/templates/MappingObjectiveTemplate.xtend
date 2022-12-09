@@ -15,6 +15,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingVariablesReference
+import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils
 
 class MappingObjectiveTemplate extends ObjectiveTemplate<MappingObjective> {
 
@@ -93,6 +95,8 @@ protected void buildTerms(final «data.mapping2mappingClassName.get(context.mapp
 			return generateForeignBuilder(expr)
 		} else if (expr instanceof PatternSumExpression) {
 			return generateForeignBuilder(expr)
+		} else if(expr instanceof ContextMappingVariablesReference) {
+				return generateBuilder(expr)
 		} else {
 			throw new UnsupportedOperationException("Unknown sum expression type.")
 		}
@@ -145,13 +149,25 @@ protected void buildTerms(final «data.mapping2mappingClassName.get(context.mapp
 		builderMethods.put(expr, methodName)
 		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.mapping))
 		imports.add("java.util.stream.Collectors")
+		val vars = GipsTransformationUtils.extractVariable(expr.expression)
+		var containsOnlyMappingVariable = false
+		var variableRef = null as VariableSet
+		if(vars.contains(expr.mapping) && (vars.size == 1 || vars.size == 0)) {
+			containsOnlyMappingVariable = true;
+		} else if(!vars.contains(expr.mapping) && vars.size == 1) {
+			containsOnlyMappingVariable = false;
+			variableRef = vars.iterator.next
+		} else {
+			throw new UnsupportedOperationException("Mapping sum expression may not contain more than one variable reference.")
+		}
 		val method = '''
 	protected void «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper("«expr.mapping.name»").getMappings().values().parallelStream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
-			ILPTerm term = new ILPTerm(context, (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»);
-			terms.add(term);
+			«IF containsOnlyMappingVariable»terms.add(new ILPTerm(context, (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+			«ELSE»terms.add(new ILPTerm(context.get«variableRef.name.toUpperCase»(), (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+			«ENDIF»
 		}
 	}
 		'''
@@ -208,6 +224,18 @@ protected void buildTerms(final «data.mapping2mappingClassName.get(context.mapp
 		'''
 		builderMethodDefinitions.put(expr, method)
 		return '''«methodName»''';
+	}
+	
+	def String generateBuilder(ContextMappingVariablesReference expr) {
+		val methodName = '''builder_«builderMethods.size»'''
+		builderMethods.put(expr, methodName)
+		val method = '''
+	protected void «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
+		terms.add(new ILPTerm(context.get«expr.^var.variable.name.toFirstUpper»(), 1.0));
+	}
+		'''
+		builderMethodDefinitions.put(expr, method)
+		return methodName;
 	}
 	
 	override generateForeignBuilder(TypeSumExpression expr) {

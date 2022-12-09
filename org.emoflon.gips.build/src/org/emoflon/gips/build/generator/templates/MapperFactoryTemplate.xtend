@@ -7,6 +7,14 @@ import java.util.List
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping
 import org.emoflon.gips.intermediate.GipsIntermediate.GTMapping
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternMapping
+import org.emoflon.gips.build.generator.GipsImportManager
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXParameter
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXConstant
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext
+import java.util.Collection
+import java.util.LinkedList
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern
 
 class MapperFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 	
@@ -52,12 +60,12 @@ public class «className» extends GipsMapperFactory<«data.apiData.apiClass»> 
 		switch(mapping.getName()) {
 			«FOR mapping : mappings.filter[m | m instanceof GTMapping].map[m | m as GTMapping]»
 			case "«mapping.name»" -> {
-				return new «data.mapping2mapperClassName.get(mapping)»(engine, mapping, eMoflonApi.«mapping.rule.name.toFirstLower»());
+				return new «data.mapping2mapperClassName.get(mapping)»(engine, mapping, eMoflonApi.«mapping.rule.name.toFirstLower»(«FOR param:mapping.rule.parameters SEPARATOR ", "»«GipsImportManager.parameterToJavaDefaultValue(param)»«ENDFOR»));
 			}
 			«ENDFOR»
 			«FOR mapping : mappings.filter[m | m instanceof PatternMapping].map[m | m as PatternMapping]»
 			case "«mapping.name»" -> {
-				return new «data.mapping2mapperClassName.get(mapping)»(engine, mapping, eMoflonApi.«mapping.pattern.name.toFirstLower»());
+				return new «data.mapping2mapperClassName.get(mapping)»(engine, mapping, eMoflonApi.«mapping.pattern.name.toFirstLower»(«FOR param:contextToParameter(mapping.pattern) SEPARATOR ", "»«GipsImportManager.parameterToJavaDefaultValue(param)»«ENDFOR»));
 			}
 			«ENDFOR»
 			default -> {
@@ -70,5 +78,19 @@ public class «className» extends GipsMapperFactory<«data.apiData.apiClass»> 
 }'''
 	}
 
+	def Collection<IBeXParameter> contextToParameter(IBeXContext context) {
+		val params = new LinkedList<IBeXParameter>
+		if (context instanceof IBeXContextAlternatives) {
+			if (context.context.parameters !== null) {
+				params.addAll(context.context.parameters)
+			}
+		} else {
+			val c = context as IBeXContextPattern
+			if (c.parameters !== null) {
+				params.addAll(c.parameters)
+			}
+		}
+		return params
+	}
 	
 }

@@ -87,6 +87,21 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	public abstract void init(final URI modelUri);
 
 	public abstract void init(final URI gipsModelURI, final URI modelUri);
+	
+	/**
+	 * Initializes the API with a given resource set as model.
+	 * 
+	 * @param model Resource set to set as model.
+	 */
+	public abstract void init(final ResourceSet model);
+	
+	/**
+	 * Returns the resource set from the eMoflon API.
+	 * @return Resource set from the eMoflon API.
+	 */
+	public ResourceSet getResourceSet() {
+		return this.eMoflonAPI.getModel();
+	}
 
 	protected void setSolverConfig(final ILPConfig config) {
 		solverConfig = new ILPSolverConfig(config.isEnableTimeLimit(), config.getIlpTimeLimit(), //
@@ -100,6 +115,33 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	protected void initInternal(final URI gipsModelURI, final URI modelUri) {
 		eMoflonApp.registerMetaModels();
 		eMoflonApp.loadModel(modelUri);
+		eMoflonAPI = eMoflonApp.initAPI();
+		loadIntermediateModel(gipsModelURI);
+		initTypeIndexer();
+		validationLog = new GipsConstraintValidationLog();
+		setSolverConfig(gipsModel.getConfig());
+		initMapperFactory();
+		createMappers();
+		initConstraintFactory();
+		createConstraints();
+		initObjectiveFactory();
+		createObjectives();
+
+		if (gipsModel.getGlobalObjective() != null)
+			setGlobalObjective(createGlobalObjective());
+
+		setILPSolver(createSolver());
+	}
+	
+	/**
+	 * Internal initialization that uses an already existing resource set as a model.
+	 * 
+	 * @param gipsModelURI URL to the GIPS model.
+	 * @param model Resource set that contains the already existing model instance.
+	 */
+	protected void initInternal(final URI gipsModelURI, final ResourceSet model) {
+		eMoflonApp.registerMetaModels();
+		eMoflonApp.setModel(model);
 		eMoflonAPI = eMoflonApp.initAPI();
 		loadIntermediateModel(gipsModelURI);
 		initTypeIndexer();

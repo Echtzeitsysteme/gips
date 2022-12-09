@@ -74,8 +74,8 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 				}
 			} else {
 				Variable symbolicVar = constraint.getSymbolicVariable();
-				ILPBinaryVariable var = (ILPBinaryVariable) engine
-						.getNonMappingVariable(context, symbolicVar.getName());
+				ILPBinaryVariable var = (ILPBinaryVariable) engine.getNonMappingVariable(context,
+						symbolicVar.getName());
 
 				// If the terms list is empty, no suitable mapping candidates are present in the
 				// model. Therefore, zero variables are created, which in turn, can only result
@@ -92,7 +92,8 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 			}
 
 			// Remove possible additional variables
-			additionalVariables.values().stream().flatMap(variables -> variables.values().stream()).forEach(variable -> engine.removeNonMappingVariable(variable));
+			additionalVariables.values().stream().flatMap(variables -> variables.values().stream())
+					.forEach(variable -> engine.removeNonMappingVariable(variable));
 			additionalVariables.clear();
 
 			return null;
@@ -128,8 +129,8 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 				}
 			} else {
 				Variable symbolicVar = constraint.getSymbolicVariable();
-				ILPBinaryVariable var = (ILPBinaryVariable) engine
-						.getNonMappingVariable(context, symbolicVar.getName());
+				ILPBinaryVariable var = (ILPBinaryVariable) engine.getNonMappingVariable(context,
+						symbolicVar.getName());
 				boolean result = false;
 
 				if (constraint.getExpression() instanceof RelationalExpression relExpr
@@ -168,7 +169,7 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 			}
 		}
 	}
-	
+
 	@Override
 	public String buildVariableName(final Variable variable, final CONTEXT context) {
 		return context + "->" + variable.getName() + "#" + variableIdx++;

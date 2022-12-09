@@ -164,7 +164,7 @@ public class CplexSolver extends ILPSolver {
 				}
 				// Save result value in specific mapping
 				mapping.setValue((int) result);
-				
+
 				// Save all values of additional variables if any
 				if (mapping.hasAdditionalVariables()) {
 					for (Entry<String, ILPVariable<?>> var : mapping.getAdditionalVariables().entrySet()) {

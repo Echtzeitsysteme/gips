@@ -40,16 +40,16 @@ public abstract class GTMapping<M extends GraphTransformationMatch<M, P>, P exte
 	public M getMatch() {
 		return match;
 	}
-	
+
 	public abstract boolean hasFreeVariables();
-	
+
 	public abstract boolean hasBoundVariables();
-	
+
 	public abstract Collection<String> getFreeVariableNames();
-	
+
 	public abstract Map<String, ILPVariable<?>> getFreeVariables();
-	
+
 	public abstract Collection<String> getBoundVariableNames();
-	
+
 	public abstract Map<String, ILPVariable<?>> getBoundVariables();
 }

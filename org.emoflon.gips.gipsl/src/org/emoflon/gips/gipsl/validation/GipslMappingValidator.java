@@ -43,7 +43,7 @@ public class GipslMappingValidator {
 		checkAtMostOneMappingPerRule(mapping);
 		checkMappingUnused(mapping);
 	}
-	
+
 	@Check
 	public static void checkMappingVariable(final GipsMappingVariable mappingVariable) {
 		if (GipslValidator.DISABLE_VALIDATOR) {
@@ -226,24 +226,23 @@ public class GipslMappingValidator {
 				String.format(GipslValidatorUtils.MAPPING_W_O_CONSTRAINTS_AND_OBJECTIVE_MESSAGE, mapping.getName()), //
 				GipslPackage.Literals.GIPS_MAPPING__NAME);
 	}
-	
+
 	public static void checkMappingVariableNameUnique(final GipsMappingVariable mappingVariable) {
-		if(mappingVariable.getName() == null)
+		if (mappingVariable.getName() == null)
 			return;
-		
-		final GipsMapping mapping = (GipsMapping)mappingVariable.eContainer();	
-		if(mapping == null || mapping.getVariables() == null || mapping.getVariables().isEmpty())
+
+		final GipsMapping mapping = (GipsMapping) mappingVariable.eContainer();
+		if (mapping == null || mapping.getVariables() == null || mapping.getVariables().isEmpty())
 			return;
-		
 
 		Optional<GipsMappingVariable> other = mapping.getVariables().stream()
-				.filter(var -> !var.equals(mappingVariable))
-				.filter(var -> var.getName() != null)
+				.filter(var -> !var.equals(mappingVariable)).filter(var -> var.getName() != null)
 				.filter(var -> var.getName().equals(mappingVariable.getName())).findAny();
-		
-		if(other.isPresent()) {
+
+		if (other.isPresent()) {
 			GipslValidator.err( //
-					String.format(GipslValidatorUtils.MAPPING_VARIABLE_NAME_MULTIPLE_DECLARATIONS_MESSAGE, mappingVariable.getName() ), //
+					String.format(GipslValidatorUtils.MAPPING_VARIABLE_NAME_MULTIPLE_DECLARATIONS_MESSAGE,
+							mappingVariable.getName()), //
 					GipslPackage.Literals.GIPS_MAPPING_VARIABLE__NAME, //
 					GipslValidator.NAME_EXPECT_UNIQUE //
 			);

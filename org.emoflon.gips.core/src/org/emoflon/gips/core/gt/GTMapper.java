@@ -25,7 +25,7 @@ public abstract class GTMapper<GTM extends GTMapping<M, R>, M extends GraphTrans
 
 	final protected Consumer<M> appearConsumer = this::addMapping;
 	final protected Consumer<M> disappearConsumer = this::removeMapping;
-	
+
 	public GTMapper(final GipsEngine engine, final Mapping mapping, final R rule) {
 		super(engine, mapping);
 		this.rule = rule;

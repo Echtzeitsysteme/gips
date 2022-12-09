@@ -25,12 +25,12 @@ public abstract class GipsMapping extends ILPBinaryVariable {
 			return false;
 		}
 	}
-	
+
 	public abstract boolean hasAdditionalVariables();
-	
+
 	public abstract Collection<String> getAdditionalVariableNames();
-	
+
 	public abstract Map<String, ILPVariable<?>> getAdditionalVariables();
-	
+
 	public abstract void setAdditionalVariableValue(final String valName, final double value);
 }

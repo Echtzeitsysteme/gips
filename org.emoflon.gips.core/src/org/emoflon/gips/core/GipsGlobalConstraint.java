@@ -58,8 +58,8 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 				}
 			} else {
 				Variable symbolicVar = constraint.getSymbolicVariable();
-				ILPBinaryVariable var = (ILPBinaryVariable) engine
-						.getNonMappingVariable(constraint, symbolicVar.getName());
+				ILPBinaryVariable var = (ILPBinaryVariable) engine.getNonMappingVariable(constraint,
+						symbolicVar.getName());
 
 				// If the terms list is empty, no suitable mapping candidates are present in the
 				// model. Therefore, zero variables are created, which in turn, can only result
@@ -76,7 +76,8 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 			}
 
 			// Remove possible additional variables
-			additionalVariables.values().stream().flatMap(variables -> variables.values().stream()).forEach(variable -> engine.removeNonMappingVariable(variable));
+			additionalVariables.values().stream().flatMap(variables -> variables.values().stream())
+					.forEach(variable -> engine.removeNonMappingVariable(variable));
 			additionalVariables.clear();
 
 			return null;
@@ -112,8 +113,8 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 				}
 			} else {
 				Variable symbolicVar = constraint.getSymbolicVariable();
-				ILPBinaryVariable var = (ILPBinaryVariable) engine
-						.getNonMappingVariable(constraint, symbolicVar.getName());
+				ILPBinaryVariable var = (ILPBinaryVariable) engine.getNonMappingVariable(constraint,
+						symbolicVar.getName());
 				boolean result = false;
 
 				if (constraint.getExpression() instanceof RelationalExpression relExpr
@@ -149,10 +150,10 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine>
 			engine.addNonMappingVariable(constraint, variable, ilpVar);
 		}
 	}
-	
+
 	@Override
 	public String buildVariableName(final Variable variable, final GlobalConstraint context) {
-		return "global->" + variable.getName() + "#" +variableIdx++;
+		return "global->" + variable.getName() + "#" + variableIdx++;
 	}
 
 	abstract protected List<ILPConstraint> buildAdditionalConstraints();

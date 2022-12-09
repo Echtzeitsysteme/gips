@@ -182,11 +182,12 @@ public class GlpkSolver extends ILPSolver {
 				double result = Math.round(GLPK.glp_mip_col_val(model, ilpVars.get(varName).index));
 				// Save result value in specific mapping
 				mapping.setValue((int) result);
-				
+
 				// Save all values of additional variables if any
 				if (mapping.hasAdditionalVariables()) {
 					for (Entry<String, ILPVariable<?>> var : mapping.getAdditionalVariables().entrySet()) {
-						double mappingVarResult = GLPK.glp_mip_col_val(model, ilpVars.get(var.getValue().getName()).index);
+						double mappingVarResult = GLPK.glp_mip_col_val(model,
+								ilpVars.get(var.getValue().getName()).index);
 						mapping.setAdditionalVariableValue(var.getKey(), mappingVarResult);
 					}
 				}

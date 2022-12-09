@@ -750,7 +750,8 @@ public class GipslValidator extends AbstractGipslValidator {
 			} else if (exprOp instanceof GipsAttributeExpr) {
 				if (exprOp instanceof GipsContextExpr conExpr) {
 					// Currently only MAPPED and VALUE are supported -> Both are dynamic
-					return conExpr.getExpr() instanceof GipsVariableOperationExpression || conExpr.getExpr() instanceof GipsMappingVariableReference;
+					return conExpr.getExpr() instanceof GipsVariableOperationExpression
+							|| conExpr.getExpr() instanceof GipsMappingVariableReference;
 					// TODO: Use the solution below. But, in order for this to work, we need to
 					// implement a multivariate return value (Enum type), which conveys more
 					// information that just "there is a mapping access of some kind".
@@ -1144,11 +1145,12 @@ public class GipslValidator extends AbstractGipslValidator {
 			return getEvalTypeFromContextOpExpr(varop);
 		} else if (innerExpr instanceof GipsFeatureExpr featureExpr) {
 			return getEvalTypeFromFeatureExpr(featureExpr);
-		} else if (innerExpr instanceof GipsMappingVariableReference mapVarRef && mapVarRef.getVar() != null && mapVarRef.getVar().getType() != null) {
-			if (mapVarRef.getVar().getType() == EcorePackage.Literals.EINT || 
-					mapVarRef.getVar().getType() == EcorePackage.Literals.ESHORT || 
-					mapVarRef.getVar().getType() == EcorePackage.Literals.EBYTE ||
-					mapVarRef.getVar().getType() == EcorePackage.Literals.EBOOLEAN) {
+		} else if (innerExpr instanceof GipsMappingVariableReference mapVarRef && mapVarRef.getVar() != null
+				&& mapVarRef.getVar().getType() != null) {
+			if (mapVarRef.getVar().getType() == EcorePackage.Literals.EINT
+					|| mapVarRef.getVar().getType() == EcorePackage.Literals.ESHORT
+					|| mapVarRef.getVar().getType() == EcorePackage.Literals.EBYTE
+					|| mapVarRef.getVar().getType() == EcorePackage.Literals.EBOOLEAN) {
 				return EvalType.INTEGER;
 			} else if (mapVarRef.getVar().getType() == EcorePackage.Literals.ELONG) {
 				return EvalType.LONG;
@@ -1178,11 +1180,12 @@ public class GipslValidator extends AbstractGipslValidator {
 				exprEval = getEvalTypeFromContextOpExpr(varop);
 			} else if (innerExpr instanceof GipsFeatureExpr featureExpr) {
 				exprEval = getEvalTypeFromFeatureExpr(featureExpr);
-			} else if (innerExpr instanceof GipsMappingVariableReference mapVarRef && mapVarRef.getVar() != null && mapVarRef.getVar().getType() != null) {
-				if (mapVarRef.getVar().getType() == EcorePackage.Literals.EINT || 
-						mapVarRef.getVar().getType() == EcorePackage.Literals.ESHORT || 
-						mapVarRef.getVar().getType() == EcorePackage.Literals.EBYTE ||
-						mapVarRef.getVar().getType() == EcorePackage.Literals.EBOOLEAN) {
+			} else if (innerExpr instanceof GipsMappingVariableReference mapVarRef && mapVarRef.getVar() != null
+					&& mapVarRef.getVar().getType() != null) {
+				if (mapVarRef.getVar().getType() == EcorePackage.Literals.EINT
+						|| mapVarRef.getVar().getType() == EcorePackage.Literals.ESHORT
+						|| mapVarRef.getVar().getType() == EcorePackage.Literals.EBYTE
+						|| mapVarRef.getVar().getType() == EcorePackage.Literals.EBOOLEAN) {
 					return EvalType.INTEGER;
 				} else if (mapVarRef.getVar().getType() == EcorePackage.Literals.ELONG) {
 					return EvalType.LONG;

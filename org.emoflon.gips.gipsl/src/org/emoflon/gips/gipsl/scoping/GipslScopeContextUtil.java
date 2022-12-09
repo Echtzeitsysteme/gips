@@ -103,17 +103,19 @@ public final class GipslScopeContextUtil {
 	public static boolean isGipsMapping(final EObject context, final EReference reference) {
 		return context instanceof GipsMapping;
 	}
-	
+
 	public static boolean isGipsMappingVariableType(final EObject context, final EReference reference) {
 		return context instanceof GipsMappingVariable && reference == GipslPackage.Literals.GIPS_MAPPING_VARIABLE__TYPE;
 	}
-	
+
 	public static boolean isGipsMappingVariableParameter(final EObject context, final EReference reference) {
-		return context instanceof GipsMappingVariable && reference == GipslPackage.Literals.GIPS_MAPPING_VARIABLE__PARAMETER;
+		return context instanceof GipsMappingVariable
+				&& reference == GipslPackage.Literals.GIPS_MAPPING_VARIABLE__PARAMETER;
 	}
-	
+
 	public static boolean isGipsMappingVariableReference(final EObject context, final EReference reference) {
-		return context instanceof GipsMappingVariableReference && reference == GipslPackage.Literals.GIPS_MAPPING_VARIABLE_REFERENCE__VAR;
+		return context instanceof GipsMappingVariableReference
+				&& reference == GipslPackage.Literals.GIPS_MAPPING_VARIABLE_REFERENCE__VAR;
 	}
 
 	public static boolean isGipsPatternContext(EObject context, EReference reference) {

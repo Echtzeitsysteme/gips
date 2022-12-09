@@ -17,7 +17,7 @@ public abstract class PatternMapper<PM extends GTMapping<M, P>, M extends GraphT
 	final protected P pattern;
 	final protected Map<M, PM> match2Mappings = Collections.synchronizedMap(new HashMap<>());
 	private int mappingCounter = 0;
-	
+
 	final protected Consumer<M> appearConsumer = this::addMapping;
 	final protected Consumer<M> disappearConsumer = this::removeMapping;
 

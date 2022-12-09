@@ -41,12 +41,12 @@ public record GipsTransformationData(GipsIntermediateModel model, //
 		Map<GipsConstraint, Constraint> eConstraint2Constraint, //
 		Map<GipsStreamExpr, SetOperation> eStream2SetOp, //
 		Map<EClass, Type> eType2Type, //
-		Map<GipsObjective, Objective> eObjective2Objective,
-		Map<GipsMappingVariable, Variable> eVariable2Variable) {
+		Map<GipsObjective, Objective> eObjective2Objective, Map<GipsMappingVariable, Variable> eVariable2Variable) {
 
 	public GipsTransformationData(final GipsIntermediateModel model, final EditorGTFile gipsSlangFile) {
 		this(model, gipsSlangFile, new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(),
-				new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+				new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(),
+				new HashMap<>());
 	}
 
 	public String addSymbol(final GipsBoolExpr expr) {

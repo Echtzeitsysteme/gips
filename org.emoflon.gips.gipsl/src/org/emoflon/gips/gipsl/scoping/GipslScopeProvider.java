@@ -82,9 +82,9 @@ import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
 public class GipslScopeProvider extends AbstractGipslScopeProvider {
 
 	protected Map<Resource, Map<URI, Resource>> resourceCache = new HashMap<>();
-	protected Set<EDataType> variableDataTypes =  Set.of(EcorePackage.Literals.EDOUBLE, EcorePackage.Literals.EFLOAT, 
-			EcorePackage.Literals.EINT, EcorePackage.Literals.ELONG, EcorePackage.Literals.ESHORT, EcorePackage.Literals.EBYTE, 
-			EcorePackage.Literals.EBOOLEAN);
+	protected Set<EDataType> variableDataTypes = Set.of(EcorePackage.Literals.EDOUBLE, EcorePackage.Literals.EFLOAT,
+			EcorePackage.Literals.EINT, EcorePackage.Literals.ELONG, EcorePackage.Literals.ESHORT,
+			EcorePackage.Literals.EBYTE, EcorePackage.Literals.EBOOLEAN);
 
 	@Override
 	public IScope getScope(EObject context, EReference reference) {
@@ -288,37 +288,39 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 	public IScope scopeForGipsMapping(GipsMapping context, EReference reference) {
 		return Scopes.scopeFor(GipslScopeContextUtil.getAllEditorPatterns(context));
 	}
-	
+
 	public IScope scopeForGipsMappingVariableType(GipsMappingVariable context, EReference reference) {
 		return Scopes.scopeFor(variableDataTypes);
 	}
-	
+
 	public IScope scopeForGipsMappingVariableParameter(GipsMappingVariable context, EReference reference) {
-		if(context.getType() == null)
+		if (context.getType() == null)
 			return IScope.NULLSCOPE;
-		
+
 		GipsMapping mapping = GTEditorPatternUtils.getContainer(context, GipsMappingImpl.class);
-		if(mapping == null)
+		if (mapping == null)
 			return IScope.NULLSCOPE;
-		
+
 		EditorPattern pattern = mapping.getPattern();
-		if(pattern == null)
+		if (pattern == null)
 			return IScope.NULLSCOPE;
-		
-		if(pattern.getParameters() == null || pattern.getParameters().isEmpty())
+
+		if (pattern.getParameters() == null || pattern.getParameters().isEmpty())
 			return IScope.NULLSCOPE;
-		
-		// TODO: Exclude parameters that are not exclusively used in attribute assignments (i.e. parameters used in conditions for pattern matching)
-		return Scopes.scopeFor(pattern.getParameters().stream().filter(param -> variableDataTypes.contains(param.getType())).collect(Collectors.toList()));
+
+		// TODO: Exclude parameters that are not exclusively used in attribute
+		// assignments (i.e. parameters used in conditions for pattern matching)
+		return Scopes.scopeFor(pattern.getParameters().stream()
+				.filter(param -> variableDataTypes.contains(param.getType())).collect(Collectors.toList()));
 	}
-	
+
 	public IScope scopeForGipsMappingVariableReference(GipsMappingVariableReference context, EReference reference) {
 		Set<Class<?>> classes = Set.of(GipsContextExprImpl.class, GipsMappingAttributeExprImpl.class);
 		EObject parent = (EObject) GipslScopeContextUtil.getContainer(context, classes);
 		if (parent == null) {
 			return IScope.NULLSCOPE;
 		}
-		if(parent instanceof GipsContextExpr contextExpr) {
+		if (parent instanceof GipsContextExpr contextExpr) {
 			EObject contextType = null;
 			GipsConstraint constraintContext = GTEditorPatternUtils.getContainer(context, GipsConstraintImpl.class);
 			if (constraintContext != null) {
@@ -331,14 +333,17 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 					return IScope.NULLSCOPE;
 				}
 			}
-			if (contextType instanceof GipsMappingContext mappingContext && mappingContext.getMapping() != null && mappingContext.getMapping().getVariables() != null && !mappingContext.getMapping().getVariables().isEmpty()) {
+			if (contextType instanceof GipsMappingContext mappingContext && mappingContext.getMapping() != null
+					&& mappingContext.getMapping().getVariables() != null
+					&& !mappingContext.getMapping().getVariables().isEmpty()) {
 				return Scopes.scopeFor(mappingContext.getMapping().getVariables());
 			} else {
 				return IScope.NULLSCOPE;
 			}
-			
-		} else if(parent instanceof GipsMappingAttributeExpr mappingExpr) {
-			if(mappingExpr.getMapping() != null && mappingExpr.getMapping().getVariables() != null && !mappingExpr.getMapping().getVariables().isEmpty()) {
+
+		} else if (parent instanceof GipsMappingAttributeExpr mappingExpr) {
+			if (mappingExpr.getMapping() != null && mappingExpr.getMapping().getVariables() != null
+					&& !mappingExpr.getMapping().getVariables().isEmpty()) {
 				return Scopes.scopeFor(mappingExpr.getMapping().getVariables());
 			} else {
 				return IScope.NULLSCOPE;

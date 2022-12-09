@@ -15,7 +15,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 public abstract class GipsEngine {
 
 	final protected Map<String, GipsMapper<?>> mappers = new HashMap<>();
-	final protected Map<Object, Map<String, ILPVariable<?>>> nonMappingVariables = Collections.synchronizedMap(new HashMap<>());
+	final protected Map<Object, Map<String, ILPVariable<?>>> nonMappingVariables = Collections
+			.synchronizedMap(new HashMap<>());
 	protected TypeIndexer indexer;
 	protected GipsConstraintValidationLog validationLog;
 	final protected Map<String, GipsConstraint<?, ?, ?>> constraints = new HashMap<>();
@@ -34,11 +35,10 @@ public abstract class GipsEngine {
 			update();
 
 		nonMappingVariables.clear();
-		mappers.values().stream()
-			.flatMap(mapper -> mapper.getMappings().values().stream())
-			.filter(m -> m.hasAdditionalVariables())
-			.forEach(m -> nonMappingVariables.put(m, m.getAdditionalVariables()));
-		
+		mappers.values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
+				.filter(m -> m.hasAdditionalVariables())
+				.forEach(m -> nonMappingVariables.put(m, m.getAdditionalVariables()));
+
 		constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());
 		constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
 		if (globalObjective != null)
@@ -98,15 +98,17 @@ public abstract class GipsEngine {
 	public synchronized ILPVariable<?> getNonMappingVariable(final Object context, final String variableTypeName) {
 		Map<String, ILPVariable<?>> variables = nonMappingVariables.get(context);
 		if (variables == null)
-			throw new RuntimeException("Variable <" + variableTypeName + "> is not present in the non-mapping variable index.");
-		
+			throw new RuntimeException(
+					"Variable <" + variableTypeName + "> is not present in the non-mapping variable index.");
+
 		return variables.get(variableTypeName);
-		
+
 	}
-	
-	public synchronized void addNonMappingVariable(final Object context, final Variable variableType, ILPVariable<?> variable) {
+
+	public synchronized void addNonMappingVariable(final Object context, final Variable variableType,
+			ILPVariable<?> variable) {
 		Map<String, ILPVariable<?>> variables = nonMappingVariables.get(context);
-		if(variables == null) {
+		if (variables == null) {
 			variables = Collections.synchronizedMap(new HashMap<>());
 			nonMappingVariables.put(context, variables);
 		}

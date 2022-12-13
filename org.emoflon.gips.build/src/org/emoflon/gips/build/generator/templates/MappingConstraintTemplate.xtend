@@ -310,7 +310,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			«IF containsOnlyMappingVariable»terms.add(new ILPTerm(context, (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
-			«ELSE»terms.add(new ILPTerm(context.get«variableRef.name.toUpperCase»(), (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+			«ELSE»terms.add(new ILPTerm(context.get«variableRef.name.toFirstUpper»(), (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 			«ENDIF»
 		}
 	}

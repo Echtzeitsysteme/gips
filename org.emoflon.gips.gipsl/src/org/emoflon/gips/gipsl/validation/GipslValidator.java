@@ -109,7 +109,7 @@ public class GipslValidator extends AbstractGipslValidator {
 	/**
 	 * Global switch to turn off the whole validation.
 	 */
-	static final boolean DISABLE_VALIDATOR = false;
+	static final boolean DISABLE_VALIDATOR = true;
 
 	/**
 	 * Instance of this class

@@ -150,7 +150,7 @@ protected void buildTerms(final «data.pattern2matchClassName.get(context.patter
 			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			«IF containsOnlyMappingVariable»terms.add(new ILPTerm(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
-			«ELSE»terms.add(new ILPTerm(«getIteratorVariableName(expr)».get«variableRef.name.toUpperCase»(), (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+			«ELSE»terms.add(new ILPTerm(«getIteratorVariableName(expr)».get«variableRef.name.toFirstUpper»(), (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 			«ENDIF»
 		}
 	}

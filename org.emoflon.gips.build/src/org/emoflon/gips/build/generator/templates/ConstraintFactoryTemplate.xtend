@@ -4,6 +4,10 @@ import org.emoflon.gips.build.generator.GeneratorTemplate
 import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint
+import org.emoflon.gips.build.generator.GipsImportManager
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives
 
 class ConstraintFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 	
@@ -54,7 +58,7 @@ public class «className» extends GipsConstraintFactory<«data.gipsApiClassName
 			«FOR constraint : context.constraints»
 			case "«constraint.name»" -> {
 			«IF constraint instanceof PatternConstraint»
-				return new «data.constraint2constraintClassName.get(constraint)»(engine, («constraint.eClass.name»)constraint, eMoflonApi.«constraint.pattern.name.toFirstLower»());
+				return new «data.constraint2constraintClassName.get(constraint)»(engine, («constraint.eClass.name»)constraint, eMoflonApi.«constraint.pattern.name.toFirstLower»(«FOR param: getPattern(constraint.pattern.pattern).parameters SEPARATOR ", "»«GipsImportManager.parameterToJavaDefaultValue(param)»«ENDFOR»));
 			«ELSE»
 				return new «data.constraint2constraintClassName.get(constraint)»(engine, («constraint.eClass.name»)constraint);
 			«ENDIF»
@@ -70,5 +74,12 @@ public class «className» extends GipsConstraintFactory<«data.gipsApiClassName
 }'''
 	}
 
+	def IBeXContextPattern getPattern(IBeXContext pattern) {
+		if(pattern instanceof IBeXContextAlternatives) {
+			return pattern.context
+		} else {
+			return pattern as IBeXContextPattern
+		}
+	} 
 	
 }

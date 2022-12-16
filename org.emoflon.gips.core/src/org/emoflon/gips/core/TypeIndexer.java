@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +28,9 @@ public class TypeIndexer {
 	final protected GraphTransformationAPI eMoflonAPI;
 	final protected GipsIntermediateModel gipsModel;
 	protected TypeListener listener;
-	final protected Map<EClass, Set<EObject>> index = Collections.synchronizedMap(new HashMap<>());
-	final protected Map<String, EClass> typeByName = Collections.synchronizedMap(new HashMap<>());
+	final protected Map<EClass, Set<EClass>> class2subclass = Collections.synchronizedMap(new LinkedHashMap<>());
+	final protected Map<EClass, Set<EObject>> index = Collections.synchronizedMap(new LinkedHashMap<>());
+	final protected Map<String, EClass> typeByName = Collections.synchronizedMap(new LinkedHashMap<>());
 	protected boolean cascadingNotifications = false;
 
 	public TypeIndexer(final GraphTransformationAPI eMoflonAPI, final GipsIntermediateModel gipsModel) {
@@ -42,11 +45,19 @@ public class TypeIndexer {
 	}
 
 	public Set<EObject> getObjectsOfType(final EClass type) {
-		return index.get(type);
+		Set<EObject> query = Collections.synchronizedSet(new LinkedHashSet<>());
+		query.addAll(index.get(type));
+		if(!class2subclass.containsKey(type))
+			return query;
+		
+		for(EClass cls : class2subclass.get(type)) {
+			query.addAll(index.get(cls));
+		}
+		return query;
 	}
 
 	public Set<EObject> getObjectsOfType(final String type) {
-		return index.get(typeByName.get(type));
+		return getObjectsOfType(typeByName.get(type));
 	}
 
 	protected EObject putObject(final EClass type, final EObject object) {
@@ -136,9 +147,21 @@ public class TypeIndexer {
 
 	private void initIndex() {
 		gipsModel.getVariables().stream().filter(var -> var instanceof Type).map(var -> (Type) var).forEach(type -> {
-			index.put(type.getType(), Collections.synchronizedSet(new HashSet<>()));
+			index.put(type.getType(), Collections.synchronizedSet(new LinkedHashSet<>()));
 			typeByName.put(type.getName(), type.getType());
+			Set<EClass> subclasses = type.getType().getEPackage().getEClassifiers().parallelStream()
+					.filter(cls -> (cls instanceof EClass))
+					.map(cls -> (EClass)cls)
+					.filter(cls -> !cls.equals(type.getType()))
+					.filter(cls -> cls.getEAllSuperTypes().contains(type.getType()))
+					.collect(Collectors.toSet());
+			class2subclass.put(type.getType(), subclasses);
+			subclasses.forEach(cls -> {
+				index.put(cls, Collections.synchronizedSet(new LinkedHashSet<>()));
+				typeByName.put(cls.getName(), cls);
+			});
 		});
+		
 
 		eMoflonAPI.getModel().getResources().parallelStream().filter(r -> !r.getURI().toString().contains("trash.xmi"))
 				.forEach(r -> {

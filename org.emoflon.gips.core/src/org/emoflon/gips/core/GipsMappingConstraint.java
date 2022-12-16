@@ -25,7 +25,8 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 
 	@Override
 	public void buildConstraints() {
-		mapper.getMappings().values().parallelStream().forEach(context -> {
+		// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT language
+		mapper.getMappings().values().stream().forEach(context -> {
 			final ILPConstraint candidate = buildConstraint(context);
 			if (candidate != null) {
 				ilpConstraints.put(context, candidate);
@@ -33,7 +34,8 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 		});
 
 		if (constraint.isDepending()) {
-			mapper.getMappings().values().parallelStream().forEach(context -> {
+			// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT language
+			mapper.getMappings().values().stream().forEach(context -> {
 				final List<ILPConstraint> constraints = buildAdditionalConstraints(context);
 				additionalIlpConstraints.put(context, constraints);
 			});

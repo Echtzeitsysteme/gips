@@ -239,9 +239,9 @@ public class SumExpressionTransformer<T extends EObject> extends TransformationC
 		// Create filter expression
 		StreamExpressionTransformer transformer = transformerFactory.createStreamTransformer(typeSum);
 		typeSum.setFilter(transformer.transform(streamExpr));
-		// Check for valid ilp semantics
-		ArithmeticExpressionType filterExpressionType = GipsTransformationUtils
-				.isConstantExpression(typeSum.getExpression());
+//		// Check for valid ilp semantics
+//		ArithmeticExpressionType filterExpressionType = GipsTransformationUtils
+//				.isConstantExpression(typeSum.getExpression());
 
 		ArithmeticExpressionTransformer arithmeticTransformer = transformerFactory.createArithmeticTransformer(typeSum);
 		if (streamArithmetic.getLambda().getExpr() instanceof GipsRelExpr relExpr && relExpr.getRight() == null) {

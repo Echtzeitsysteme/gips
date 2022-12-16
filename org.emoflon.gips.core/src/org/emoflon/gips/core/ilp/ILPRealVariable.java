@@ -6,8 +6,9 @@ public class ILPRealVariable implements ILPVariable<Double> {
 
 	final protected String name;
 	protected double value;
-	protected double upperBound = GipsConstraintUtils.INF;
-	protected double lowerBound = -GipsConstraintUtils.INF;
+	// Increased real variable bound to allow larger ILP models
+	protected double upperBound = GipsConstraintUtils.INF*100;
+	protected double lowerBound = -GipsConstraintUtils.INF*100;
 
 	public ILPRealVariable(final String name) {
 		this.name = name;

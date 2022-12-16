@@ -661,7 +661,7 @@ public final class GipsTransformationUtils {
 		} else if (expr instanceof ContextMappingNode) {
 			return ExpressionReturnType.object;
 		} else if (expr instanceof ContextMappingValue) {
-			return ExpressionReturnType.object;
+			return ExpressionReturnType.number;
 		} else if (expr instanceof ContextPatternNode) {
 			return ExpressionReturnType.object;
 		} else if (expr instanceof ContextPatternValue) {

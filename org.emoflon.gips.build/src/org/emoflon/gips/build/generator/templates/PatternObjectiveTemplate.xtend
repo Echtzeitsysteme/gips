@@ -136,11 +136,12 @@ protected void buildTerms(final «data.pattern2matchClassName.get(context.patter
 		val vars = GipsTransformationUtils.extractVariable(expr.expression)
 		var containsOnlyMappingVariable = false
 		var variableRef = null as VariableSet
+		// TODO: Temporary dirty bug fix
 		if(vars.contains(expr.mapping) && (vars.size == 1 || vars.size == 0)) {
 			containsOnlyMappingVariable = true;
-		} else if(!vars.contains(expr.mapping) && vars.size == 1) {
+		} else if(!vars.contains(expr.mapping) && vars.size == 1 || vars.contains(expr.mapping) && vars.size == 2 ) {
 			containsOnlyMappingVariable = false;
-			variableRef = vars.iterator.next
+			variableRef = vars.filter[v | !v.equals(expr.mapping)].findFirst[true]
 		} else {
 			throw new UnsupportedOperationException("Mapping sum expression may not contain more than one variable reference.")
 		}
@@ -150,7 +151,7 @@ protected void buildTerms(final «data.pattern2matchClassName.get(context.patter
 			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			«IF containsOnlyMappingVariable»terms.add(new ILPTerm(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
-			«ELSE»terms.add(new ILPTerm(«getIteratorVariableName(expr)».get«variableRef.name.toUpperCase»(), (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
+			«ELSE»terms.add(new ILPTerm(«getIteratorVariableName(expr)».get«variableRef.name.toFirstUpper»(), (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 			«ENDIF»
 		}
 	}

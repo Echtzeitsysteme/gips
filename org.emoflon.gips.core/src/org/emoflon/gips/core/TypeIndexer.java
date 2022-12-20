@@ -147,8 +147,7 @@ public class TypeIndexer {
 	}
 
 	private void initIndex() {
-		gipsModel.getVariables().stream().filter(var -> var instanceof Type).map(var -> (Type) var).forEach(type -> {
-			if(!index.containsKey(type.getType())) {
+		gipsModel.getVariables().stream().filter(var -> var instanceof Type).map(var -> (Type) var).filter(type -> !index.containsKey(type.getType())).forEach(type -> {
 				index.put(type.getType(), Collections.synchronizedSet(new LinkedHashSet<>()));
 				typeByName.put(type.getName(), type.getType());
 				
@@ -173,7 +172,22 @@ public class TypeIndexer {
 					index.put(cls, Collections.synchronizedSet(new LinkedHashSet<>()));
 					typeByName.put(cls.getName(), cls);
 				});
-			}
+				
+				// Add all sub-classes of super-classes
+				superclasses.stream().filter(cls -> !class2subclass.containsKey(cls)).forEach(cls -> {
+					Set<EClass> supersubclasses = cls.getEPackage().getEClassifiers().parallelStream()
+					.filter(cls2 -> (cls2 instanceof EClass))
+					.map(cls2 -> (EClass)cls2)
+					.filter(cls2 -> !cls2.equals(type.getType()))
+					.filter(cls2 -> cls2.getEAllSuperTypes().contains(type.getType()))
+					.collect(Collectors.toSet());
+					
+					class2subclass.put(cls, supersubclasses);
+					supersubclasses.stream().filter(cls2 -> !index.containsKey(cls2)).forEach(cls2 -> {
+						index.put(cls2, Collections.synchronizedSet(new LinkedHashSet<>()));
+						typeByName.put(cls2.getName(), cls2);
+					});
+				});
 		});
 		
 

@@ -85,6 +85,9 @@ public class GlpkSolver extends ILPSolver {
 	}
 	
 	private void init() {
+		constraints.clear();
+		ilpVars.clear();
+		
 		GLPK.glp_free_env();
 		model = GLPK.glp_create_prob();
 

@@ -178,8 +178,8 @@ public class TypeIndexer {
 					Set<EClass> supersubclasses = cls.getEPackage().getEClassifiers().parallelStream()
 					.filter(cls2 -> (cls2 instanceof EClass))
 					.map(cls2 -> (EClass)cls2)
-					.filter(cls2 -> !cls2.equals(type.getType()))
-					.filter(cls2 -> cls2.getEAllSuperTypes().contains(type.getType()))
+					.filter(cls2 -> !cls2.equals(cls))
+					.filter(cls2 -> cls2.getEAllSuperTypes().contains(cls))
 					.collect(Collectors.toSet());
 					
 					class2subclass.putIfAbsent(cls, supersubclasses);

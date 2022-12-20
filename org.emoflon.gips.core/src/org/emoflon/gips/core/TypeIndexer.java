@@ -29,6 +29,7 @@ public class TypeIndexer {
 	final protected GipsIntermediateModel gipsModel;
 	protected TypeListener listener;
 	final protected Map<EClass, Set<EClass>> class2subclass = Collections.synchronizedMap(new LinkedHashMap<>());
+	final protected Map<EClass, Set<EClass>> class2superclass = Collections.synchronizedMap(new LinkedHashMap<>());
 	final protected Map<EClass, Set<EObject>> index = Collections.synchronizedMap(new LinkedHashMap<>());
 	final protected Map<String, EClass> typeByName = Collections.synchronizedMap(new LinkedHashMap<>());
 	protected boolean cascadingNotifications = false;
@@ -147,19 +148,32 @@ public class TypeIndexer {
 
 	private void initIndex() {
 		gipsModel.getVariables().stream().filter(var -> var instanceof Type).map(var -> (Type) var).forEach(type -> {
-			index.put(type.getType(), Collections.synchronizedSet(new LinkedHashSet<>()));
-			typeByName.put(type.getName(), type.getType());
-			Set<EClass> subclasses = type.getType().getEPackage().getEClassifiers().parallelStream()
-					.filter(cls -> (cls instanceof EClass))
-					.map(cls -> (EClass)cls)
-					.filter(cls -> !cls.equals(type.getType()))
-					.filter(cls -> cls.getEAllSuperTypes().contains(type.getType()))
-					.collect(Collectors.toSet());
-			class2subclass.put(type.getType(), subclasses);
-			subclasses.forEach(cls -> {
-				index.put(cls, Collections.synchronizedSet(new LinkedHashSet<>()));
-				typeByName.put(cls.getName(), cls);
-			});
+			if(!index.containsKey(type.getType())) {
+				index.put(type.getType(), Collections.synchronizedSet(new LinkedHashSet<>()));
+				typeByName.put(type.getName(), type.getType());
+				
+				// Add sub-classes
+				Set<EClass> subclasses = type.getType().getEPackage().getEClassifiers().parallelStream()
+						.filter(cls -> (cls instanceof EClass))
+						.map(cls -> (EClass)cls)
+						.filter(cls -> !cls.equals(type.getType()))
+						.filter(cls -> cls.getEAllSuperTypes().contains(type.getType()))
+						.collect(Collectors.toSet());
+				class2subclass.put(type.getType(), subclasses);
+				subclasses.forEach(cls -> {
+					index.put(cls, Collections.synchronizedSet(new LinkedHashSet<>()));
+					typeByName.put(cls.getName(), cls);
+				});
+				
+				// Add super-classes
+				Set<EClass> superclasses = Collections.synchronizedSet(new LinkedHashSet<>());
+				superclasses.addAll(type.getType().getEAllSuperTypes());
+				class2superclass.put(type.getType(), subclasses);
+				superclasses.forEach(cls -> {
+					index.put(cls, Collections.synchronizedSet(new LinkedHashSet<>()));
+					typeByName.put(cls.getName(), cls);
+				});
+			}
 		});
 		
 

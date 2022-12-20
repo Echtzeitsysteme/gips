@@ -158,8 +158,8 @@ public class TypeIndexer {
 						.filter(cls -> !cls.equals(type.getType()))
 						.filter(cls -> cls.getEAllSuperTypes().contains(type.getType()))
 						.collect(Collectors.toSet());
-				class2subclass.put(type.getType(), subclasses);
-				subclasses.forEach(cls -> {
+				class2subclass.putIfAbsent(type.getType(), subclasses);
+				subclasses.stream().filter(cls -> !index.containsKey(cls)).forEach(cls -> {
 					index.put(cls, Collections.synchronizedSet(new LinkedHashSet<>()));
 					typeByName.put(cls.getName(), cls);
 				});
@@ -167,8 +167,8 @@ public class TypeIndexer {
 				// Add super-classes
 				Set<EClass> superclasses = Collections.synchronizedSet(new LinkedHashSet<>());
 				superclasses.addAll(type.getType().getEAllSuperTypes());
-				class2superclass.put(type.getType(), subclasses);
-				superclasses.forEach(cls -> {
+				class2superclass.putIfAbsent(type.getType(), subclasses);
+				superclasses.stream().filter(cls -> !index.containsKey(cls)).forEach(cls -> {
 					index.put(cls, Collections.synchronizedSet(new LinkedHashSet<>()));
 					typeByName.put(cls.getName(), cls);
 				});
@@ -182,7 +182,7 @@ public class TypeIndexer {
 					.filter(cls2 -> cls2.getEAllSuperTypes().contains(type.getType()))
 					.collect(Collectors.toSet());
 					
-					class2subclass.put(cls, supersubclasses);
+					class2subclass.putIfAbsent(cls, supersubclasses);
 					supersubclasses.stream().filter(cls2 -> !index.containsKey(cls2)).forEach(cls2 -> {
 						index.put(cls2, Collections.synchronizedSet(new LinkedHashSet<>()));
 						typeByName.put(cls2.getName(), cls2);

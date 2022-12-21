@@ -105,7 +105,7 @@ GipsBoolExpr:
 ;
 
 GipsImplicationBoolExpr returns GipsBoolExpr:
-	GipsOrBoolExpr({GipsImplicationBoolExpr.left = current} '=>' right=GipsOrBoolExpr)*
+	GipsOrBoolExpr({GipsImplicationBoolExpr.left = current} operator=GipsImplOperator right=GipsOrBoolExpr)*
 ;
 
 GipsOrBoolExpr returns GipsBoolExpr:
@@ -122,6 +122,11 @@ GipsNotBoolExpr returns GipsBoolExpr: {GipsNotBoolExpr}
 
 GipsBracketBoolExpr returns GipsBoolExpr: {GipsBracketBoolExpr}
 	'[' operand=GipsBoolExpr ']'  | GipsBooleanLiteral | GipsRelExpr
+;
+
+enum GipsImplOperator:
+  IMPLICATION='=>' |
+  EQUIVALENCE='<=>'
 ;
 
 enum GipsOrOperator:

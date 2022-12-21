@@ -15,6 +15,10 @@
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsObjectiveGoal/MIN"/>
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsObjectiveGoal/MAX"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//GipsImplOperator">
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsImplOperator/IMPLICATION"/>
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsImplOperator/EQUIVALENCE"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//GipsOrOperator">
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsOrOperator/OR"/>
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsOrOperator/XOR"/>
@@ -176,6 +180,7 @@
     <genClasses ecoreClass="Gipsl.ecore#//GlobalContext"/>
     <genClasses ecoreClass="Gipsl.ecore#//GipsImplicationBoolExpr">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsImplicationBoolExpr/left"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsImplicationBoolExpr/operator"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsImplicationBoolExpr/right"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsOrBoolExpr">

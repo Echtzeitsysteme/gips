@@ -70,12 +70,24 @@ public class GlpkSolver extends ILPSolver {
 	 * LP file output path.
 	 */
 	private String lpPath = null;
+	
+	/**
+	 * ILP solver configuration.
+	 */
+	final private ILPSolverConfig config;
 
 	public GlpkSolver(final GipsEngine engine, final ILPSolverConfig config) {
 		super(engine);
 		constraints = new HashMap<>();
 		ilpVars = new HashMap<>();
-
+		this.config = config;
+		init();
+	}
+	
+	private void init() {
+		constraints.clear();
+		ilpVars.clear();
+		
 		GLPK.glp_free_env();
 		model = GLPK.glp_create_prob();
 
@@ -193,6 +205,9 @@ public class GlpkSolver extends ILPSolver {
 				}
 			}
 		}
+		
+		// Clear all old data of CPLEX and re-initialize for a possible next run
+		init();
 	}
 
 	@Override

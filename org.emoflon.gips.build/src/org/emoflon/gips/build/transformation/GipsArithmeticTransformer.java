@@ -84,16 +84,16 @@ public class GipsArithmeticTransformer {
 	}
 
 	public ArithmeticExpression transform() throws ParserException {
-		String exprAsIs = parseToString(root).toString();
-		System.out.println("Input expression as is: " + exprAsIs);
+//		String exprAsIs = parseToString(root).toString();
+//		System.out.println("Input expression as is: " + exprAsIs);
 		String exprAsBool = parseToBoolString(root).toString();
-		System.out.println("Expression as Bool: " + exprAsBool);
+//		System.out.println("Expression as Bool: " + exprAsBool);
 
 		FormulaFactory fFactory = new FormulaFactory();
 		PropositionalParser parser = new PropositionalParser(fFactory);
 		Formula formula = parser.parse(exprAsBool);
 		formula = formula.transform(new DNFFactorization());
-		System.out.println("Result of dnf: " + formula.toString());
+//		System.out.println("Result of dnf: " + formula.toString());
 
 		ArithmeticExpression unparsed = unparseBoolFormula(formula, null, null);
 		String result = parseToString(unparsed).toString();
@@ -255,13 +255,13 @@ public class GipsArithmeticTransformer {
 		} else if (expr instanceof ArithmeticValue valExpr) {
 			// CASE: SUM-Expressions
 			if (valExpr.getValue() instanceof SumExpression sum) {
-				sb.append("SUM_(" + parseToString(sum.getExpression()) + ")");
+				sb.append("SUM_[" + parseToString(sum.getExpression()) + "]");
 			} else {
 				sb.append("VAL_" + valExpr.getValue().eClass().getName() + "(" + valExpr.getValue().hashCode() + ")");
 			}
 		} else {
 			// CASE: Literals
-			sb.append("LIT_" + expr);
+			sb.append("LIT");
 		}
 
 		return sb;
@@ -281,23 +281,24 @@ public class GipsArithmeticTransformer {
 			} else {
 				if (root instanceof BinaryArithmeticExpression binary
 						&& binary.getOperator() == BinaryArithmeticOperator.MULTIPLY) {
-					BinaryArithmeticExpression localRoot = factory.createBinaryArithmeticExpression();
-					localRoot.setOperator(BinaryArithmeticOperator.DIVIDE);
-
-					DoubleLiteral dl = factory.createDoubleLiteral();
-					dl.setLiteral(1.0);
-					localRoot.setLhs(dl);
+//					BinaryArithmeticExpression localRoot = factory.createBinaryArithmeticExpression();
+//					localRoot.setOperator(BinaryArithmeticOperator.DIVIDE);
+//
+//					DoubleLiteral dl = factory.createDoubleLiteral();
+//					dl.setLiteral(1.0);
+//					localRoot.setLhs(dl);
 
 					ArithmeticExpression expr = cloneExpression(
 							expr2symbol.inverse().get(literal.name().replace("~", "")), null);
-					if (expr instanceof ArithmeticValue val && val.getValue() instanceof SumExpression sum) {
-						subExpression = expr;
-						localRoot.setRhs(sum.getExpression());
-						sum.setExpression(localRoot);
-					} else {
-						localRoot.setRhs(expr);
-						subExpression = localRoot;
-					}
+//					if (expr instanceof ArithmeticValue val && val.getValue() instanceof SumExpression sum) {
+//						subExpression = expr;
+//						localRoot.setRhs(sum.getExpression());
+//						sum.setExpression(localRoot);
+//					} else {
+//						localRoot.setRhs(expr);
+//						subExpression = localRoot;
+//					}
+					subExpression = expr;
 				} else if (root instanceof BinaryArithmeticExpression binary
 						&& binary.getOperator() == BinaryArithmeticOperator.ADD) {
 					BinaryArithmeticExpression localRoot = factory.createBinaryArithmeticExpression();

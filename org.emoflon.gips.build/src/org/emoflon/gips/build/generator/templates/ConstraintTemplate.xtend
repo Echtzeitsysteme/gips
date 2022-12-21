@@ -128,16 +128,21 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 				throw new UnsupportedOperationException("Code generator does not support subtraction expressions.");
 			} else {
 				val variable = GipsTransformationUtils.extractVariable(expr);
-				if(variable.size != 1)
+				if(variable.size > 1)
 					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 				
 				val builderMethodName = generateBuilder(expr, methodCalls)
-				val instruction = '''terms.add(new ILPTerm(«getVariable(variable.iterator.next)», «builderMethodName»(context)));'''
-				methodCalls.add(instruction)
+				if(variable.isEmpty) {
+					val instruction = '''terms.add(new ILPTerm(context, «builderMethodName»(context)));'''
+					methodCalls.add(instruction)
+				} else {
+					val instruction = '''terms.add(new ILPTerm(«getVariable(variable.iterator.next)», «builderMethodName»(context)));'''
+					methodCalls.add(instruction)
+				}
 			}
 		} else if(expr instanceof UnaryArithmeticExpression) {
 				val variable = GipsTransformationUtils.extractVariable(expr);
-				if(variable.size != 1)
+				if(variable.size > 1)
 					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 				
 				val builderMethodName = generateBuilder(expr, methodCalls)

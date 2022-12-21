@@ -31,7 +31,7 @@ public class GurobiSolver extends ILPSolver {
 	/**
 	 * Gurobi environment (for configuration etc.).
 	 */
-	private final GRBEnv env;
+	private GRBEnv env;
 
 	/**
 	 * Gurobi model.
@@ -48,9 +48,18 @@ public class GurobiSolver extends ILPSolver {
 	 */
 	private String lpPath = null;
 
+	/**
+	 * ILP solver configuration.
+	 */
+	final private ILPSolverConfig config;
+
 	public GurobiSolver(final GipsEngine engine, final ILPSolverConfig config) throws Exception {
 		super(engine);
+		this.config = config;
+		init();
+	}
 
+	private void init() throws Exception {
 		// TODO: Gurobi log output redirect from stdout to ILPSolverOutput
 		env = new GRBEnv("Gurobi_ILP.log");
 		env.set(IntParam.Presolve, config.enablePresolve() ? 1 : 0);
@@ -80,6 +89,10 @@ public class GurobiSolver extends ILPSolver {
 		if (config.lpOutput()) {
 			this.lpPath = config.lpPath();
 		}
+
+		// Reset local lookup data structure for the Gurobi variables in case this is
+		// not the first initialization.
+		grbVars.clear();
 	}
 
 	@Override
@@ -91,6 +104,7 @@ public class GurobiSolver extends ILPSolver {
 		} catch (final GRBException e) {
 			e.printStackTrace();
 		}
+		// TODO: This can create an error: "free(): double free detected in tcache 2"
 		env.release();
 	}
 
@@ -176,6 +190,13 @@ public class GurobiSolver extends ILPSolver {
 		try {
 			env.dispose();
 		} catch (final GRBException e) {
+			throw new RuntimeException(e);
+		}
+
+		// Clear all old data of Gurobi and re-initialize for a possible next run
+		try {
+			init();
+		} catch (final Exception e) {
 			throw new RuntimeException(e);
 		}
 	}

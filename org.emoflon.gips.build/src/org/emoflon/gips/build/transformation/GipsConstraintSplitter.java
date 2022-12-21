@@ -57,7 +57,16 @@ public class GipsConstraintSplitter {
 			sb.append(data.addSymbol(expr));
 		} else if (expr instanceof GipsImplicationBoolExpr implication) {
 			parseToString(sb, implication.getLeft());
-			sb.append(" => ");
+			switch (implication.getOperator()) {
+			case EQUIVALENCE -> {
+				sb.append(" <=> ");
+			}
+			case IMPLICATION -> {
+				sb.append(" => ");
+			}
+			default ->
+				throw new UnsupportedOperationException("Unknown boolean operator type: " + implication.getOperator());
+			}
 			parseToString(sb, implication.getRight());
 		} else if (expr instanceof GipsOrBoolExpr orExpression) {
 			switch (orExpression.getOperator()) {

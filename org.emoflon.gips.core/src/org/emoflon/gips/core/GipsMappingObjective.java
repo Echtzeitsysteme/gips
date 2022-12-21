@@ -21,7 +21,8 @@ public abstract class GipsMappingObjective<ENGINE extends GipsEngine, CONTEXT ex
 	public void buildObjectiveFunction() {
 		terms = Collections.synchronizedList(new LinkedList<>());
 		constantTerms = Collections.synchronizedList(new LinkedList<>());
-		// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT language
+		// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT
+		// language
 		mapper.getMappings().values().stream().forEach(context -> buildTerms(context));
 		ilpObjective = new ILPLinearFunction(terms, constantTerms);
 	}

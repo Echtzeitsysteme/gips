@@ -98,6 +98,10 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsBoolExpr"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="GipsImplOperator">
+    <eLiterals name="IMPLICATION" literal="=>"/>
+    <eLiterals name="EQUIVALENCE" value="1" literal="&lt;=>"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="GipsOrOperator">
     <eLiterals name="OR" literal="|"/>
     <eLiterals name="XOR" value="1" literal="^"/>
@@ -191,6 +195,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="GipsImplicationBoolExpr" eSuperTypes="#//GipsBoolExpr">
     <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//GipsBoolExpr"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//GipsImplOperator"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//GipsBoolExpr"
         containment="true"/>
   </eClassifiers>

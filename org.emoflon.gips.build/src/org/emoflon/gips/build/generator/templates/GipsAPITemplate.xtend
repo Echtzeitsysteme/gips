@@ -24,6 +24,7 @@ class GipsAPITemplate extends GeneratorTemplate<GipsIntermediateModel> {
 		imports.add("org.emoflon.gips.core.ilp.GlpkSolver")
 		imports.add("org.emoflon.gips.core.ilp.CplexSolver")
 		imports.add("org.emoflon.gips.core.ilp.ILPSolverConfig")
+		imports.add("org.eclipse.emf.ecore.resource.ResourceSet")
 		imports.add(data.apiData.apiPkg + "." + data.apiData.engineAppClasses.get(GipsAPIData.HIPE_ENGINE_NAME))
 		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)
 		imports.add("org.eclipse.emf.common.util.URI");
@@ -62,6 +63,11 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 	@Override
 	public void init(final URI gipsModelURI, final URI modelUri) {
 		super.initInternal(gipsModelURI, modelUri);
+	}
+	
+	@Override
+	public void init(final ResourceSet model) {
+		super.initInternal(INTERMEDIATE_MODEL_URI, model);
 	}
 	
 	«FOR mapping : data.model.variables.filter[v | v instanceof Mapping]»

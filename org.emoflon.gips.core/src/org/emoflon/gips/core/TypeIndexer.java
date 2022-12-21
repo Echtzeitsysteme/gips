@@ -29,6 +29,7 @@ public class TypeIndexer {
 	final protected GipsIntermediateModel gipsModel;
 	protected TypeListener listener;
 	final protected Map<EClass, Set<EClass>> class2subclass = Collections.synchronizedMap(new LinkedHashMap<>());
+	final protected Map<EClass, Set<EClass>> class2superclass = Collections.synchronizedMap(new LinkedHashMap<>());
 	final protected Map<EClass, Set<EObject>> index = Collections.synchronizedMap(new LinkedHashMap<>());
 	final protected Map<String, EClass> typeByName = Collections.synchronizedMap(new LinkedHashMap<>());
 	protected boolean cascadingNotifications = false;
@@ -47,10 +48,10 @@ public class TypeIndexer {
 	public Set<EObject> getObjectsOfType(final EClass type) {
 		Set<EObject> query = Collections.synchronizedSet(new LinkedHashSet<>());
 		query.addAll(index.get(type));
-		if(!class2subclass.containsKey(type))
+		if (!class2subclass.containsKey(type))
 			return query;
-		
-		for(EClass cls : class2subclass.get(type)) {
+
+		for (EClass cls : class2subclass.get(type)) {
 			query.addAll(index.get(cls));
 		}
 		return query;
@@ -146,22 +147,46 @@ public class TypeIndexer {
 	}
 
 	private void initIndex() {
-		gipsModel.getVariables().stream().filter(var -> var instanceof Type).map(var -> (Type) var).forEach(type -> {
-			index.put(type.getType(), Collections.synchronizedSet(new LinkedHashSet<>()));
-			typeByName.put(type.getName(), type.getType());
-			Set<EClass> subclasses = type.getType().getEPackage().getEClassifiers().parallelStream()
-					.filter(cls -> (cls instanceof EClass))
-					.map(cls -> (EClass)cls)
-					.filter(cls -> !cls.equals(type.getType()))
-					.filter(cls -> cls.getEAllSuperTypes().contains(type.getType()))
-					.collect(Collectors.toSet());
-			class2subclass.put(type.getType(), subclasses);
-			subclasses.forEach(cls -> {
-				index.put(cls, Collections.synchronizedSet(new LinkedHashSet<>()));
-				typeByName.put(cls.getName(), cls);
-			});
-		});
-		
+		gipsModel.getVariables().stream().filter(var -> var instanceof Type).map(var -> (Type) var)
+				.filter(type -> !index.containsKey(type.getType())).forEach(type -> {
+					index.put(type.getType(), Collections.synchronizedSet(new LinkedHashSet<>()));
+					typeByName.put(type.getName(), type.getType());
+
+					// Add sub-classes
+					Set<EClass> subclasses = type.getType().getEPackage().getEClassifiers().parallelStream()
+							.filter(cls -> (cls instanceof EClass)).map(cls -> (EClass) cls)
+							.filter(cls -> !cls.equals(type.getType()))
+							.filter(cls -> cls.getEAllSuperTypes().contains(type.getType()))
+							.collect(Collectors.toSet());
+					class2subclass.putIfAbsent(type.getType(), subclasses);
+					subclasses.stream().filter(cls -> !index.containsKey(cls)).forEach(cls -> {
+						index.put(cls, Collections.synchronizedSet(new LinkedHashSet<>()));
+						typeByName.put(cls.getName(), cls);
+					});
+
+					// Add super-classes
+					Set<EClass> superclasses = Collections.synchronizedSet(new LinkedHashSet<>());
+					superclasses.addAll(type.getType().getEAllSuperTypes());
+					class2superclass.putIfAbsent(type.getType(), subclasses);
+					superclasses.stream().filter(cls -> !index.containsKey(cls)).forEach(cls -> {
+						index.put(cls, Collections.synchronizedSet(new LinkedHashSet<>()));
+						typeByName.put(cls.getName(), cls);
+					});
+
+					// Add all sub-classes of super-classes
+					superclasses.stream().filter(cls -> !class2subclass.containsKey(cls)).forEach(cls -> {
+						Set<EClass> supersubclasses = cls.getEPackage().getEClassifiers().parallelStream()
+								.filter(cls2 -> (cls2 instanceof EClass)).map(cls2 -> (EClass) cls2)
+								.filter(cls2 -> !cls2.equals(cls))
+								.filter(cls2 -> cls2.getEAllSuperTypes().contains(cls)).collect(Collectors.toSet());
+
+						class2subclass.putIfAbsent(cls, supersubclasses);
+						supersubclasses.stream().filter(cls2 -> !index.containsKey(cls2)).forEach(cls2 -> {
+							index.put(cls2, Collections.synchronizedSet(new LinkedHashSet<>()));
+							typeByName.put(cls2.getName(), cls2);
+						});
+					});
+				});
 
 		eMoflonAPI.getModel().getResources().parallelStream().filter(r -> !r.getURI().toString().contains("trash.xmi"))
 				.forEach(r -> {

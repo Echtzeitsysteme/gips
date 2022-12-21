@@ -53,9 +53,18 @@ public class CplexSolver extends ILPSolver {
 	 */
 	private String lpPath = null;
 
+	/**
+	 * ILP solver configuration.
+	 */
+	final private ILPSolverConfig config;
+
 	public CplexSolver(final GipsEngine engine, final ILPSolverConfig config) {
 		super(engine);
+		this.config = config;
+		init();
+	}
 
+	private void init() {
 		try {
 			cplex = new IloCplex();
 			if (config.timeLimitEnabled()) {
@@ -82,11 +91,18 @@ public class CplexSolver extends ILPSolver {
 		} catch (final IloException e) {
 			throw new RuntimeException(e);
 		}
+
+		// Reset local lookup data structure for the CPLEX constraints and variables in
+		// case this is not the first initialization.
+		constraints.clear();
+		vars.clear();
 	}
 
 	@Override
 	public void terminate() {
 		try {
+			cplex.setDefaults();
+			cplex.clearModel();
 			cplex.endModel();
 		} catch (final IloException e) {
 			e.printStackTrace();
@@ -178,6 +194,10 @@ public class CplexSolver extends ILPSolver {
 				}
 			}
 		}
+
+		// Clear all old data of CPLEX and re-initialize for a possible next run
+//		terminate();
+		init();
 	}
 
 	@Override

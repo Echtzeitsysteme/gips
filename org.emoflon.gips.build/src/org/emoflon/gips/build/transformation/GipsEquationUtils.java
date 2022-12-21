@@ -16,7 +16,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator;
 
 public final class GipsEquationUtils {
 
-	static public ArithmeticExpression rewriteToSumOfProducts(final GipsIntermediateFactory factory,
+	static private ArithmeticExpression rewriteToSumOfProducts(final GipsIntermediateFactory factory,
 			final ArithmeticExpression expr, final ArithmeticExpression factor,
 			final BinaryArithmeticOperator operator) {
 		if (expr instanceof BinaryArithmeticExpression binaryExpr) {
@@ -417,4 +417,5 @@ public final class GipsEquationUtils {
 			return lit;
 		}
 	}
+
 }

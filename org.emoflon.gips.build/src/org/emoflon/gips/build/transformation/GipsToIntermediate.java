@@ -524,15 +524,19 @@ public class GipsToIntermediate {
 		// Rewrite the non-constant expression, which will be translated into ILP-Terms,
 		// into a sum of products.
 		if (isLhsConst) {
-			ArithmeticExpression rhs = GipsEquationUtils.rewriteToSumOfProducts(factory,
-					((RelationalExpression) constraint.getExpression()).getRhs(), null, null);
+//			ArithmeticExpression rhs = GipsEquationUtils.rewriteToSumOfProducts(factory,
+//					((RelationalExpression) constraint.getExpression()).getRhs(), null, null);
+			ArithmeticExpression rhs = (new GipsArithmeticTransformer(factory,
+					((RelationalExpression) constraint.getExpression()).getRhs())).transform();
 			((RelationalExpression) constraint.getExpression())
 					.setRhs(((RelationalExpression) constraint.getExpression()).getLhs());
 			((RelationalExpression) constraint.getExpression()).setLhs(rhs);
 			GipsTransformationUtils.flipOperator((RelationalExpression) constraint.getExpression());
 		} else {
-			((RelationalExpression) constraint.getExpression()).setLhs(GipsEquationUtils.rewriteToSumOfProducts(factory,
-					((RelationalExpression) constraint.getExpression()).getLhs(), null, null));
+//			((RelationalExpression) constraint.getExpression()).setLhs(GipsEquationUtils.rewriteToSumOfProducts(factory,
+//					((RelationalExpression) constraint.getExpression()).getLhs(), null, null));
+			((RelationalExpression) constraint.getExpression()).setLhs((new GipsArithmeticTransformer(factory,
+					((RelationalExpression) constraint.getExpression()).getLhs())).transform());
 		}
 		// Move constant terms from the sum of products to the constant side of the
 		// relational constraint.
@@ -576,8 +580,9 @@ public class GipsToIntermediate {
 			objective.setExpression(transformer.transform(eObjective.getExpr()));
 			// Rewrite the expression, which will be translated into ILP-Terms, into a sum
 			// of products.
-			objective.setExpression(
-					GipsEquationUtils.rewriteToSumOfProducts(factory, objective.getExpression(), null, null));
+//			objective.setExpression(
+//					GipsEquationUtils.rewriteToSumOfProducts(factory, objective.getExpression(), null, null));
+			objective.setExpression(new GipsArithmeticTransformer(factory, objective.getExpression()).transform());
 			// Remove subtractions, e.g.: a - b becomes a + -b
 			objective.setExpression(GipsEquationUtils.rewriteRemoveSubtractions(factory, objective.getExpression()));
 			// Final check: Was the context used?
@@ -614,8 +619,9 @@ public class GipsToIntermediate {
 		globalObj.setExpression(transformer.transform(eGlobalObj.getExpr()));
 		// Rewrite the expression, which will be translated into ILP-Terms, into a sum
 		// of products.
-		globalObj.setExpression(
-				GipsEquationUtils.rewriteToSumOfProducts(factory, globalObj.getExpression(), null, null));
+//		globalObj.setExpression(
+//				GipsEquationUtils.rewriteToSumOfProducts(factory, globalObj.getExpression(), null, null));
+		globalObj.setExpression(new GipsArithmeticTransformer(factory, globalObj.getExpression()).transform());
 		// Remove subtractions, e.g.: a - b becomes a + -b
 		globalObj.setExpression(GipsEquationUtils.rewriteRemoveSubtractions(factory, globalObj.getExpression()));
 	}

@@ -223,11 +223,6 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" lowerBound="1" eType="#//ValueExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BoolStreamExpression" eSuperTypes="#//BoolValueExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="stream" lowerBound="1"
-        eType="#//StreamExpression" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//StreamBoolOperator"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RelationalExpression" eSuperTypes="#//BoolValueExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//RelationalOperator"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="lhs" lowerBound="1" eType="#//ArithmeticExpression"

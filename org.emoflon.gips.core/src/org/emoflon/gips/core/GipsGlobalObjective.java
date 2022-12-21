@@ -35,7 +35,8 @@ public abstract class GipsGlobalObjective {
 	}
 
 	protected void buildLocalObjectives() {
-		// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT language
+		// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT
+		// language
 		engine.getObjectives().values().stream().forEach(obj -> obj.buildObjectiveFunction());
 	}
 

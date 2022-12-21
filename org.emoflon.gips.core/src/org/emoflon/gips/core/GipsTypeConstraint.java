@@ -27,7 +27,8 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 	@SuppressWarnings("unchecked")
 	@Override
 	public void buildConstraints() {
-		// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT language
+		// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT
+		// language
 		indexer.getObjectsOfType(type).stream().forEach(context -> {
 			final ILPConstraint candidate = buildConstraint((CONTEXT) context);
 			if (candidate != null) {
@@ -36,7 +37,8 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 		});
 
 		if (constraint.isDepending()) {
-			// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT language
+			// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT
+			// language
 			indexer.getObjectsOfType(type).stream().forEach(context -> {
 				final List<ILPConstraint> constraints = buildAdditionalConstraints((CONTEXT) context);
 				additionalIlpConstraints.put((CONTEXT) context, constraints);

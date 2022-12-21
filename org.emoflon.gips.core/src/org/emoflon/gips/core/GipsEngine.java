@@ -36,14 +36,13 @@ public abstract class GipsEngine {
 
 		nonMappingVariables.clear();
 		mappers.values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
-				.filter(m -> m.hasAdditionalVariables())
-				.forEach(m -> {
+				.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
 					Map<String, ILPVariable<?>> variables = nonMappingVariables.get(m);
-					if(variables == null) {
+					if (variables == null) {
 						variables = Collections.synchronizedMap(new HashMap<>());
 						nonMappingVariables.put(m, variables);
 					}
-					variables.putAll( m.getAdditionalVariables());
+					variables.putAll(m.getAdditionalVariables());
 				});
 
 		constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());

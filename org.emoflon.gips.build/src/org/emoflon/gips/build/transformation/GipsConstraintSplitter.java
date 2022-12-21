@@ -57,7 +57,7 @@ public class GipsConstraintSplitter {
 			sb.append(data.addSymbol(expr));
 		} else if (expr instanceof GipsImplicationBoolExpr implication) {
 			parseToString(sb, implication.getLeft());
-			switch(implication.getOperator()) {
+			switch (implication.getOperator()) {
 			case EQUIVALENCE -> {
 				sb.append(" <=> ");
 			}

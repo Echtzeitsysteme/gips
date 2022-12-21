@@ -23,7 +23,8 @@ public abstract class GipsTypeObjective<ENGINE extends GipsEngine, CONTEXT exten
 	public void buildObjectiveFunction() {
 		terms = Collections.synchronizedList(new LinkedList<>());
 		constantTerms = Collections.synchronizedList(new LinkedList<>());
-		// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT language
+		// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT
+		// language
 		indexer.getObjectsOfType(type).stream().forEach(context -> buildTerms((CONTEXT) context));
 		ilpObjective = new ILPLinearFunction(terms, constantTerms);
 	}

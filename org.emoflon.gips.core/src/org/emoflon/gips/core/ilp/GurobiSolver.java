@@ -192,7 +192,7 @@ public class GurobiSolver extends ILPSolver {
 		} catch (final GRBException e) {
 			throw new RuntimeException(e);
 		}
-		
+
 		// Clear all old data of Gurobi and re-initialize for a possible next run
 		try {
 			init();

@@ -205,9 +205,7 @@ public class GlpkSolver extends ILPSolver {
 				}
 			}
 		}
-
-		// Clear all old data of CPLEX and re-initialize for a possible next run
-		init();
+		// Solver reset will be handled by the GipsEngine afterward
 	}
 
 	@Override
@@ -514,6 +512,11 @@ public class GlpkSolver extends ILPSolver {
 	 */
 	private void createDblVar(final String name, final Number lb, final Number ub) {
 		ilpVars.put(name, new varInformation(ilpVars.size() + 1, VarType.DBL, lb, ub));
+	}
+
+	@Override
+	public void reset() {
+		init();
 	}
 
 }

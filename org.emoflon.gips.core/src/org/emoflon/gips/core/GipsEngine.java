@@ -34,6 +34,12 @@ public abstract class GipsEngine {
 		if (doUpdate)
 			update();
 
+		// Constraints are re-build a few lines below
+		constraints.values().stream().forEach(constraint -> constraint.clear());
+		
+		// Objectives will be build by the global objective call below
+//		objectives.values().stream().forEach(objective -> objective.clear());
+		
 		nonMappingVariables.clear();
 		mappers.values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
 				.filter(m -> m.hasAdditionalVariables()).forEach(m -> {

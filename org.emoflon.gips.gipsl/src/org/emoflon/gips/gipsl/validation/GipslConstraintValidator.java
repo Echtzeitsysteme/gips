@@ -258,8 +258,9 @@ public class GipslConstraintValidator {
 					if (streamContainsMappingsCall(conExpr.getStream())) {
 						return true;
 					}
-					return (conExpr.getExpr() instanceof GipsVariableOperationExpression
-							&& !(conExpr.getExpr() instanceof GipsMappingCheckValue));
+					// Access of type 'self.value()' in context 'mapping' is allowed because the
+					// transformation takes this into account
+					return false;
 				} else if (exprOp instanceof GipsLambdaAttributeExpression) {
 					// A GipsLambdaAttributeExpression can not contain a mappings call
 					return false;

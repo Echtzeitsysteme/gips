@@ -184,21 +184,7 @@ public class GurobiSolver extends ILPSolver {
 				}
 			}
 		}
-
-		// TODO: Dispose model and environment after solution update?
-		model.dispose();
-		try {
-			env.dispose();
-		} catch (final GRBException e) {
-			throw new RuntimeException(e);
-		}
-
-		// Clear all old data of Gurobi and re-initialize for a possible next run
-		try {
-			init();
-		} catch (final Exception e) {
-			throw new RuntimeException(e);
-		}
+		// Solver reset will be handled by the GipsEngine afterward
 	}
 
 	@Override
@@ -563,6 +549,15 @@ public class GurobiSolver extends ILPSolver {
 			} catch (final GRBException e) {
 				throw new RuntimeException(e);
 			}
+		}
+	}
+
+	@Override
+	public void reset() {
+		try {
+			init();
+		} catch (final Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 

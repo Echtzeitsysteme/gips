@@ -22,6 +22,18 @@ public abstract class GipsObjective<ENGINE extends GipsEngine, OBJECTIVE extends
 		this.name = objective.getName();
 		indexer = engine.getIndexer();
 	}
+	
+	/**
+	 * Clears all Lists within this objective builder.
+	 */
+	public void clear() {
+		if (terms != null) {
+			terms.clear();
+		}
+		if (constantTerms != null) {
+			constantTerms.clear();
+		}
+	}
 
 	public abstract void buildObjectiveFunction();
 

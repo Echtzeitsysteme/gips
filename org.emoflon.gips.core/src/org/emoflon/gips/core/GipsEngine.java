@@ -34,6 +34,14 @@ public abstract class GipsEngine {
 		if (doUpdate)
 			update();
 
+		// Constraints are re-build a few lines below
+		constraints.values().stream().forEach(constraint -> constraint.clear());
+
+		// Objectives will be build by the global objective call below
+//		objectives.values().stream().forEach(objective -> objective.clear());
+		// TODO: It seems to me that this is not necessary for objectives. All tests
+		// (and also the dedicated tests for checking this!) are happy with it.
+
 		nonMappingVariables.clear();
 		mappers.values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
 				.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
@@ -56,12 +64,14 @@ public abstract class GipsEngine {
 	public ILPSolverOutput solveILPProblem() {
 		if (validationLog.isNotValid()) {
 			ILPSolverOutput output = new ILPSolverOutput(ILPSolverStatus.INFEASIBLE, Double.NaN, validationLog, 0);
+			ilpSolver.reset();
 			return output;
 		}
 		ILPSolverOutput output = ilpSolver.solve();
 		if (output.status() != ILPSolverStatus.INFEASIBLE && output.solutionCount() > 0)
 			ilpSolver.updateValuesFromSolution();
 
+		ilpSolver.reset();
 		return output;
 	}
 

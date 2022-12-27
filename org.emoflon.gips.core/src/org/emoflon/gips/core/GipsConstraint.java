@@ -43,6 +43,15 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends C
 		this.name = constraint.getName();
 		isConstant = constraint.isConstant();
 	}
+	
+	/**
+	 * Clears all maps within the constraint builder.
+	 */
+	public void clear() {
+		this.ilpConstraints.clear();
+		this.additionalIlpConstraints.clear();
+		this.additionalVariables.clear();
+	}
 
 	public abstract void buildConstraints();
 

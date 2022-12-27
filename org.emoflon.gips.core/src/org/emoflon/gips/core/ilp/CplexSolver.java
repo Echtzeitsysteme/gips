@@ -100,6 +100,8 @@ public class CplexSolver extends ILPSolver {
 
 	@Override
 	public void terminate() {
+		this.constraints.clear();
+		this.vars.clear();
 		try {
 			cplex.setDefaults();
 			cplex.clearModel();
@@ -194,10 +196,7 @@ public class CplexSolver extends ILPSolver {
 				}
 			}
 		}
-
-		// Clear all old data of CPLEX and re-initialize for a possible next run
-//		terminate();
-		init();
+		// Solver reset will be handled by the GipsEngine afterward
 	}
 
 	@Override
@@ -446,6 +445,11 @@ public class CplexSolver extends ILPSolver {
 		} catch (final IloException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	@Override
+	public void reset() {
+		init();
 	}
 
 }

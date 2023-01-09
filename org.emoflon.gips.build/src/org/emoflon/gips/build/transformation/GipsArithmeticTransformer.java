@@ -58,6 +58,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 import org.logicng.formulas.Formula;
@@ -84,304 +85,221 @@ public class GipsArithmeticTransformer {
 	}
 
 	public ArithmeticExpression transform() throws ParserException {
-//		String exprAsIs = parseToString(root).toString();
-//		System.out.println("Input expression as is: " + exprAsIs);
-		String exprAsBool = parseToBoolString(root).toString();
-//		System.out.println("Expression as Bool: " + exprAsBool);
-
-		FormulaFactory fFactory = new FormulaFactory();
-		PropositionalParser parser = new PropositionalParser(fFactory);
-		Formula formula = parser.parse(exprAsBool);
-		formula = formula.transform(new DNFFactorization());
-//		System.out.println("Result of dnf: " + formula.toString());
-
-		ArithmeticExpression unparsed = unparseBoolFormula(formula, null, null);
-		String result = parseToString(unparsed).toString();
-		System.out.println("Result of unparsing: " + result);
-		return unparsed;
+		
+		return null;
 	}
-
-	@SuppressWarnings("unchecked")
-	protected StringBuilder parseToBoolString(final ArithmeticExpression expr) throws ParserException {
-		StringBuilder sb = new StringBuilder();
-		if (expr instanceof BinaryArithmeticExpression binaryExpr) {
+	
+	protected ArithmeticExpression removeSubtractions(final ArithmeticExpression expression) {
+		ArithmeticExpression modified = null;
+		if (expression instanceof BinaryArithmeticExpression binaryExpr) {
+			BinaryArithmeticExpression mbe = factory.createBinaryArithmeticExpression();
+			modified = mbe;
+			mbe.setOperator(binaryExpr.getOperator());
 			switch (binaryExpr.getOperator()) {
 			case ADD -> {
-				sb.append(parseToBoolString(binaryExpr.getLhs()));
-				sb.append(" | ");
-				sb.append(parseToBoolString(binaryExpr.getRhs()));
+				mbe.setLhs(removeSubtractions(binaryExpr.getLhs()));
+				mbe.setRhs(removeSubtractions(binaryExpr.getRhs()));
 			}
 			case DIVIDE -> {
-				sb.append(parseToBoolString(binaryExpr.getLhs()));
-				sb.append(" & ~(");
-				sb.append(parseToBoolString(binaryExpr.getRhs()) + ")");
+				mbe.setLhs(removeSubtractions(binaryExpr.getLhs()));
+				mbe.setRhs(removeSubtractions(binaryExpr.getRhs()));
 			}
 			case LOG -> {
-				// Log-expressions will not be transformed
-				sb.append(addSymbol(expr));
+				mbe.setLhs(removeSubtractions(binaryExpr.getLhs()));
+				mbe.setRhs(removeSubtractions(binaryExpr.getRhs()));
 			}
 			case MULTIPLY -> {
-				sb.append(parseToBoolString(binaryExpr.getLhs()));
-				sb.append(" & ");
-				sb.append(parseToBoolString(binaryExpr.getRhs()));
+				mbe.setLhs(removeSubtractions(binaryExpr.getLhs()));
+				mbe.setRhs(removeSubtractions(binaryExpr.getRhs()));
 			}
 			case POW -> {
-				// Exp-expressions will not be transformed
-				sb.append(addSymbol(expr));
+				mbe.setLhs(removeSubtractions(binaryExpr.getLhs()));
+				mbe.setRhs(removeSubtractions(binaryExpr.getRhs()));
 			}
 			case SUBTRACT -> {
-				sb.append(parseToBoolString(binaryExpr.getLhs()));
-				sb.append(" | ~(");
-				sb.append(parseToBoolString(binaryExpr.getRhs()) + ")");
+				mbe.setLhs(removeSubtractions(binaryExpr.getLhs()));
+				mbe.setOperator(BinaryArithmeticOperator.ADD);
+				
+				BinaryArithmeticExpression negation = factory.createBinaryArithmeticExpression();
+				negation.setOperator(BinaryArithmeticOperator.MULTIPLY);
+				DoubleLiteral negOne = factory.createDoubleLiteral();
+				negOne.setLiteral(-1.0);
+				negation.setLhs(negOne);
+				negation.setRhs(removeSubtractions(binaryExpr.getRhs()));
+				mbe.setRhs(negation);
 			}
 			default -> {
 				throw new UnsupportedOperationException("Unknown arithmetic operator: " + binaryExpr.getOperator());
 			}
 			}
-		} else if (expr instanceof UnaryArithmeticExpression unaryExpr) {
+		} else if (expression instanceof UnaryArithmeticExpression unaryExpr) {
+			UnaryArithmeticExpression mue = factory.createUnaryArithmeticExpression();
+			mue.setOperator(unaryExpr.getOperator());
 			switch (unaryExpr.getOperator()) {
 			case ABSOLUTE -> {
-				// Abs-expressions will not be transformed
-				sb.append(addSymbol(expr));
+				mue.setExpression(removeSubtractions(unaryExpr.getExpression()));
 			}
 			case BRACKET -> {
-				sb.append("(" + parseToBoolString(unaryExpr.getExpression()) + ")");
+				mue.setExpression(removeSubtractions(unaryExpr.getExpression()));
+				
 			}
 			case COSINE -> {
-				// cos-expressions will not be transformed
-				sb.append(addSymbol(expr));
+				mue.setExpression(removeSubtractions(unaryExpr.getExpression()));
 			}
 			case NEGATE -> {
-				sb.append("~(" + parseToBoolString(unaryExpr.getExpression()) + ")");
+				mue.setOperator(UnaryArithmeticOperator.BRACKET);
+				mue.setExpression(removeSubtractions(unaryExpr.getExpression()));
+				
+				BinaryArithmeticExpression negation = factory.createBinaryArithmeticExpression();
+				negation.setOperator(BinaryArithmeticOperator.MULTIPLY);
+				DoubleLiteral negOne = factory.createDoubleLiteral();
+				negOne.setLiteral(-1.0);
+				negation.setLhs(negOne);
+				negation.setRhs(mue);
+				
+				modified = negation;
 			}
 			case SINE -> {
-				// sin-expressions will not be transformed
-				sb.append(addSymbol(expr));
+				mue.setExpression(removeSubtractions(unaryExpr.getExpression()));
 			}
 			case SQRT -> {
-				// sqrt-expressions will not be transformed
-				sb.append(addSymbol(expr));
+				mue.setExpression(removeSubtractions(unaryExpr.getExpression()));
 			}
 			default -> {
 				throw new UnsupportedOperationException("Unknown arithmetic operator: " + unaryExpr.getOperator());
 			}
 			}
 
-		} else if (expr instanceof ArithmeticValue valExpr) {
+		} else if (expression instanceof ArithmeticValue valExpr) {
 			// CASE: SUM-Expressions
 			if (valExpr.getValue() instanceof SumExpression sum) {
-				if (transformedSums.contains(sum)) {
-					sb.append(addSymbol(valExpr));
-				} else {
-					ArithmeticExpression splitSum = splitSumExpr(sum);
-					sb.append(parseToBoolString(splitSum));
-				}
+				SumExpression mse = (SumExpression) cloneExpression(sum, null);
+				mse.setExpression(removeSubtractions(mse.getExpression()));
+				ArithmeticValue val = factory.createArithmeticValue();
+				val.setValue(mse);
+				modified = val;
 			} else {
-				sb.append(addSymbol(expr));
+				ArithmeticValue val = factory.createArithmeticValue();
+				val.setValue(cloneExpression(valExpr.getValue(), null));
+				modified = val;
 			}
 		} else {
 			// CASE: Literals
-			sb.append(addSymbol(expr));
+			modified = cloneExpression(expression, null);
 		}
-
-		return sb;
+		
+		return modified;
 	}
-
-	protected StringBuilder parseToString(final ArithmeticExpression expr) throws ParserException {
-		StringBuilder sb = new StringBuilder();
-		if (expr instanceof BinaryArithmeticExpression binaryExpr) {
+	
+	protected ArithmeticExpression expandArithmeticExpressions(final ArithmeticExpression expression) {
+		ArithmeticExpression modified = null;
+		if (expression instanceof BinaryArithmeticExpression binaryExpr) {
+			BinaryArithmeticExpression mbe = factory.createBinaryArithmeticExpression();
+			modified = mbe;
+			mbe.setOperator(binaryExpr.getOperator());
 			switch (binaryExpr.getOperator()) {
 			case ADD -> {
-				sb.append(parseToString(binaryExpr.getLhs()));
-				sb.append(" + ");
-				sb.append(parseToString(binaryExpr.getRhs()));
+				mbe.setLhs(expandArithmeticExpressions(binaryExpr.getLhs()));
+				mbe.setRhs(expandArithmeticExpressions(binaryExpr.getRhs()));
 			}
 			case DIVIDE -> {
-				sb.append(parseToString(binaryExpr.getLhs()));
-				sb.append(" / (");
-				sb.append(parseToString(binaryExpr.getRhs()) + ")");
+				// If both sub-expressions are constant -> do nothing
+				mbe.setLhs(cloneExpression(binaryExpr.getLhs(), null));
+				mbe.setRhs(cloneExpression(binaryExpr.getRhs(), null));
+				// If the divisor contains a variable -> error
+				throw new UnsupportedOperationException("Variable may not be part of a divisor.");
+				// If the divident contains a varibale 
+				// -> transform to multiplication and expand
 			}
 			case LOG -> {
-				// Log-expressions will not be transformed
-				sb.append(expr);
+				// If both sub-expressions are constant -> do nothing
+				mbe.setLhs(cloneExpression(binaryExpr.getLhs(), null));
+				mbe.setRhs(cloneExpression(binaryExpr.getRhs(), null));
+				// If any of the sub-expression contain variables -> error
+				throw new UnsupportedOperationException("Variable may not be part of a log-expression.");
 			}
 			case MULTIPLY -> {
-				sb.append(parseToString(binaryExpr.getLhs()));
-				sb.append(" * ");
-				sb.append(parseToString(binaryExpr.getRhs()));
+				// If both sub-expressions are constant -> do nothing
+				mbe.setLhs(cloneExpression(binaryExpr.getLhs(), null));
+				mbe.setRhs(cloneExpression(binaryExpr.getRhs(), null));
+				// If both factors of the product contain a variable each -> error
+				throw new UnsupportedOperationException("Variables may not be multiplied!");
+				// If only one factor of the product contains variables 
+				// -> expand
 			}
 			case POW -> {
-				// Exp-expressions will not be transformed
-				sb.append(expr);
-			}
-			case SUBTRACT -> {
-				sb.append(parseToString(binaryExpr.getLhs()));
-				sb.append(" - (");
-				sb.append(parseToString(binaryExpr.getRhs()) + ")");
+				// If both sub-expressions are constant -> do nothing
+				mbe.setLhs(cloneExpression(binaryExpr.getLhs(), null));
+				mbe.setRhs(cloneExpression(binaryExpr.getRhs(), null));
+				// If any of the sub-expression contain variables -> error
+				throw new UnsupportedOperationException("Variable may not be part of an exponential expression.");
 			}
 			default -> {
 				throw new UnsupportedOperationException("Unknown arithmetic operator: " + binaryExpr.getOperator());
 			}
 			}
-		} else if (expr instanceof UnaryArithmeticExpression unaryExpr) {
+		} else if (expression instanceof UnaryArithmeticExpression unaryExpr) {
+			UnaryArithmeticExpression mue = factory.createUnaryArithmeticExpression();
+			mue.setOperator(unaryExpr.getOperator());
+			modified = mue;
 			switch (unaryExpr.getOperator()) {
 			case ABSOLUTE -> {
-				// Abs-expressions will not be transformed
-				sb.append("ABS_" + expr);
+				// If sub-expression is constant -> do nothing
+				mue.setExpression(cloneExpression(unaryExpr.getExpression(), null));
+				// If the sub-expression contains a variable -> error
+				throw new UnsupportedOperationException("Variable may not be part of an abs-expression.");
 			}
 			case BRACKET -> {
-				sb.append("(" + parseToString(unaryExpr.getExpression()) + ")");
+				// These should have been resolved (remove subtractions + expand muliplications)
+				// -> Ignore
+				modified = expandArithmeticExpressions(unaryExpr.getExpression());	
 			}
 			case COSINE -> {
-				// cos-expressions will not be transformed
-				sb.append("COS_" + expr);
+				// If sub-expression is constant -> do nothing
+				mue.setExpression(cloneExpression(unaryExpr.getExpression(), null));
+				// If the sub-expression contains a variable -> error
+				throw new UnsupportedOperationException("Variable may not be part of an cos-expression.");
 			}
 			case NEGATE -> {
-				sb.append("~(" + parseToString(unaryExpr.getExpression()) + ")");
+				// This should not be present anymore
+				throw new UnsupportedOperationException("Error: Negations have not been resolved prior to expanding arithmetic expressions.");
 			}
 			case SINE -> {
-				// sin-expressions will not be transformed
-				sb.append("SIN_" + expr);
+				// If sub-expression is constant -> do nothing
+				mue.setExpression(cloneExpression(unaryExpr.getExpression(), null));
+				// If the sub-expression contains a variable -> error
+				throw new UnsupportedOperationException("Variable may not be part of an sin-expression.");
 			}
 			case SQRT -> {
-				// sqrt-expressions will not be transformed
-				sb.append("SQRT_" + expr);
+				// If sub-expression is constant -> do nothing
+				mue.setExpression(cloneExpression(unaryExpr.getExpression(), null));
+				// If the sub-expression contains a variable -> error
+				throw new UnsupportedOperationException("Variable may not be part of an sqrt-expression.");
 			}
 			default -> {
 				throw new UnsupportedOperationException("Unknown arithmetic operator: " + unaryExpr.getOperator());
 			}
 			}
 
-		} else if (expr instanceof ArithmeticValue valExpr) {
+		} else if (expression instanceof ArithmeticValue valExpr) {
 			// CASE: SUM-Expressions
 			if (valExpr.getValue() instanceof SumExpression sum) {
-				sb.append("SUM_[" + parseToString(sum.getExpression()) + "]");
+				SumExpression mse = (SumExpression) cloneExpression(sum, null);
+				mse.setExpression(removeSubtractions(mse.getExpression()));
+				ArithmeticValue val = factory.createArithmeticValue();
+				val.setValue(mse);
+				modified = val;
 			} else {
-				sb.append("VAL_" + valExpr.getValue().eClass().getName() + "(" + valExpr.getValue().hashCode() + ")");
+				ArithmeticValue val = factory.createArithmeticValue();
+				val.setValue(cloneExpression(valExpr.getValue(), null));
+				modified = val;
 			}
 		} else {
 			// CASE: Literals
-			sb.append("LIT");
+			modified = cloneExpression(expression, null);
 		}
-
-		return sb;
-	}
-
-	protected ArithmeticExpression unparseBoolFormula(final Formula formula, final ArithmeticExpression root,
-			final EReference containment) {
-		ArithmeticExpression subExpression = null;
-		if (formula instanceof Literal literal && literal.phase()) {
-			ArithmeticExpression expr = cloneExpression(expr2symbol.inverse().get(literal.name()), null);
-			subExpression = expr;
-		} else if (formula instanceof Literal literal && !literal.phase()) {
-			if (root == null) {
-				ArithmeticExpression expr = cloneExpression(expr2symbol.inverse().get(literal.name().replace("~", "")),
-						null);
-				subExpression = expr;
-			} else {
-				if (root instanceof BinaryArithmeticExpression binary
-						&& binary.getOperator() == BinaryArithmeticOperator.MULTIPLY) {
-//					BinaryArithmeticExpression localRoot = factory.createBinaryArithmeticExpression();
-//					localRoot.setOperator(BinaryArithmeticOperator.DIVIDE);
-//
-//					DoubleLiteral dl = factory.createDoubleLiteral();
-//					dl.setLiteral(1.0);
-//					localRoot.setLhs(dl);
-
-					ArithmeticExpression expr = cloneExpression(
-							expr2symbol.inverse().get(literal.name().replace("~", "")), null);
-//					if (expr instanceof ArithmeticValue val && val.getValue() instanceof SumExpression sum) {
-//						subExpression = expr;
-//						localRoot.setRhs(sum.getExpression());
-//						sum.setExpression(localRoot);
-//					} else {
-//						localRoot.setRhs(expr);
-//						subExpression = localRoot;
-//					}
-					subExpression = expr;
-				} else if (root instanceof BinaryArithmeticExpression binary
-						&& binary.getOperator() == BinaryArithmeticOperator.ADD) {
-					BinaryArithmeticExpression localRoot = factory.createBinaryArithmeticExpression();
-					localRoot.setOperator(BinaryArithmeticOperator.MULTIPLY);
-
-					DoubleLiteral dl = factory.createDoubleLiteral();
-					dl.setLiteral(-1.0);
-					localRoot.setLhs(dl);
-
-					ArithmeticExpression expr = cloneExpression(
-							expr2symbol.inverse().get(literal.name().replace("~", "")), null);
-					if (expr instanceof ArithmeticValue val && val.getValue() instanceof SumExpression sum) {
-						subExpression = expr;
-						localRoot.setRhs(sum.getExpression());
-						sum.setExpression(localRoot);
-					} else {
-						localRoot.setRhs(expr);
-						subExpression = localRoot;
-					}
-				} else {
-					ArithmeticExpression expr = cloneExpression(
-							expr2symbol.inverse().get(literal.name().replace("~", "")), null);
-					subExpression = expr;
-				}
-			}
-		} else if (formula instanceof NAryOperator nAry) {
-			switch (nAry.type()) {
-			case AND -> {
-				LinkedList<Formula> formulas = new LinkedList<>(nAry.stream().collect(Collectors.toList()));
-				Formula current = formulas.poll();
-				BinaryArithmeticExpression localRoot = factory.createBinaryArithmeticExpression();
-				localRoot.setOperator(BinaryArithmeticOperator.MULTIPLY);
-				BinaryArithmeticExpression currentMult = localRoot;
-				while (!formulas.isEmpty()) {
-					currentMult.setLhs(unparseBoolFormula(current, currentMult,
-							GipsIntermediatePackage.Literals.BINARY_ARITHMETIC_EXPRESSION__LHS));
-					Formula next = formulas.poll();
-					if (formulas.isEmpty()) {
-						currentMult.setRhs(unparseBoolFormula(next, currentMult,
-								GipsIntermediatePackage.Literals.BINARY_ARITHMETIC_EXPRESSION__RHS));
-					} else {
-						BinaryArithmeticExpression nextMult = factory.createBinaryArithmeticExpression();
-						nextMult.setOperator(BinaryArithmeticOperator.MULTIPLY);
-						currentMult.setRhs(nextMult);
-						current = next;
-						currentMult = nextMult;
-					}
-				}
-				subExpression = localRoot;
-			}
-			case OR -> {
-				LinkedList<Formula> formulas = new LinkedList<>(nAry.stream().collect(Collectors.toList()));
-				Formula current = formulas.poll();
-				BinaryArithmeticExpression localRoot = factory.createBinaryArithmeticExpression();
-				localRoot.setOperator(BinaryArithmeticOperator.ADD);
-				BinaryArithmeticExpression currentMult = localRoot;
-				while (!formulas.isEmpty()) {
-					currentMult.setLhs(unparseBoolFormula(current, currentMult,
-							GipsIntermediatePackage.Literals.BINARY_ARITHMETIC_EXPRESSION__LHS));
-					Formula next = formulas.poll();
-					if (formulas.isEmpty()) {
-						currentMult.setRhs(unparseBoolFormula(next, currentMult,
-								GipsIntermediatePackage.Literals.BINARY_ARITHMETIC_EXPRESSION__RHS));
-					} else {
-						BinaryArithmeticExpression nextMult = factory.createBinaryArithmeticExpression();
-						nextMult.setOperator(BinaryArithmeticOperator.ADD);
-						currentMult.setRhs(nextMult);
-						current = next;
-						currentMult = nextMult;
-					}
-				}
-				subExpression = localRoot;
-			}
-			default -> {
-				throw new UnsupportedOperationException("Unknown nAry-boolean operation type: " + nAry.type());
-			}
-
-			}
-		} else {
-			throw new UnsupportedOperationException("Unknown boolean operation type: " + formula);
-		}
-
-		return subExpression;
+		
+		return modified;
 	}
 
 	protected ArithmeticExpression splitSumExpr(final SumExpression sumExpr) throws ParserException {
@@ -807,5 +725,86 @@ public class GipsArithmeticTransformer {
 		expr2symbol.put(expr, symbol.toString());
 
 		return symbol.toString();
+	}
+	
+
+	public static StringBuilder parseToString(final ArithmeticExpression expr) throws ParserException {
+		StringBuilder sb = new StringBuilder();
+		if (expr instanceof BinaryArithmeticExpression binaryExpr) {
+			switch (binaryExpr.getOperator()) {
+			case ADD -> {
+				sb.append(parseToString(binaryExpr.getLhs()));
+				sb.append(" + ");
+				sb.append(parseToString(binaryExpr.getRhs()));
+			}
+			case DIVIDE -> {
+				sb.append(parseToString(binaryExpr.getLhs()));
+				sb.append(" / (");
+				sb.append(parseToString(binaryExpr.getRhs()) + ")");
+			}
+			case LOG -> {
+				// Log-expressions will not be transformed
+				sb.append(expr);
+			}
+			case MULTIPLY -> {
+				sb.append(parseToString(binaryExpr.getLhs()));
+				sb.append(" * ");
+				sb.append(parseToString(binaryExpr.getRhs()));
+			}
+			case POW -> {
+				// Exp-expressions will not be transformed
+				sb.append(expr);
+			}
+			case SUBTRACT -> {
+				sb.append(parseToString(binaryExpr.getLhs()));
+				sb.append(" - (");
+				sb.append(parseToString(binaryExpr.getRhs()) + ")");
+			}
+			default -> {
+				throw new UnsupportedOperationException("Unknown arithmetic operator: " + binaryExpr.getOperator());
+			}
+			}
+		} else if (expr instanceof UnaryArithmeticExpression unaryExpr) {
+			switch (unaryExpr.getOperator()) {
+			case ABSOLUTE -> {
+				// Abs-expressions will not be transformed
+				sb.append("ABS_" + expr);
+			}
+			case BRACKET -> {
+				sb.append("(" + parseToString(unaryExpr.getExpression()) + ")");
+			}
+			case COSINE -> {
+				// cos-expressions will not be transformed
+				sb.append("COS_" + expr);
+			}
+			case NEGATE -> {
+				sb.append("~(" + parseToString(unaryExpr.getExpression()) + ")");
+			}
+			case SINE -> {
+				// sin-expressions will not be transformed
+				sb.append("SIN_" + expr);
+			}
+			case SQRT -> {
+				// sqrt-expressions will not be transformed
+				sb.append("SQRT_" + expr);
+			}
+			default -> {
+				throw new UnsupportedOperationException("Unknown arithmetic operator: " + unaryExpr.getOperator());
+			}
+			}
+
+		} else if (expr instanceof ArithmeticValue valExpr) {
+			// CASE: SUM-Expressions
+			if (valExpr.getValue() instanceof SumExpression sum) {
+				sb.append("SUM_[" + parseToString(sum.getExpression()) + "]");
+			} else {
+				sb.append("VAL_" + valExpr.getValue().eClass().getName() + "(" + valExpr.getValue().hashCode() + ")");
+			}
+		} else {
+			// CASE: Literals
+			sb.append("LIT");
+		}
+
+		return sb;
 	}
 }

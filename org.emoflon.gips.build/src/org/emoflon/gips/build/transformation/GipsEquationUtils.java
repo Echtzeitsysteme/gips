@@ -61,9 +61,6 @@ public final class GipsEquationUtils {
 				case constant -> {
 					yield true;
 				}
-				case variableScalar -> {
-					yield true;
-				}
 				case variableValue -> {
 					yield false;
 				}
@@ -73,9 +70,6 @@ public final class GipsEquationUtils {
 				};
 				boolean isRhsConst = switch (GipsTransformationUtils.isConstantExpression(binaryExpr.getRhs())) {
 				case constant -> {
-					yield true;
-				}
-				case variableScalar -> {
 					yield true;
 				}
 				case variableValue -> {
@@ -213,8 +207,7 @@ public final class GipsEquationUtils {
 			} else {
 				ArithmeticExpressionType expressionType = GipsTransformationUtils
 						.isConstantExpression(valExpr.getValue());
-				if (expressionType == ArithmeticExpressionType.constant
-						|| expressionType == ArithmeticExpressionType.variableScalar) {
+				if (expressionType == ArithmeticExpressionType.constant) {
 					BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
 					rewrite.setOperator(operator);
 					rewrite.setLhs(valExpr);

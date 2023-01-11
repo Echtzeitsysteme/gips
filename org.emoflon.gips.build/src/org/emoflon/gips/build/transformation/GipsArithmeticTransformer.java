@@ -2,6 +2,8 @@ package org.emoflon.gips.build.transformation;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType;
@@ -77,8 +79,9 @@ public class GipsArithmeticTransformer {
 	}
 
 	public ArithmeticExpression transform() throws ParserException {
-
-		return null;
+		ArithmeticExpression modified = removeSubtractions(root);
+		modified = expandArithmeticExpressions(modified);
+		return modified;
 	}
 
 	protected ArithmeticExpression removeSubtractions(final ArithmeticExpression expression) {
@@ -236,7 +239,7 @@ public class GipsArithmeticTransformer {
 					// If both sub-expressions are constant -> do nothing
 					mbe.setLhs(cloneExpression(binaryExpr.getLhs(), null));
 					mbe.setRhs(cloneExpression(binaryExpr.getRhs(), null));
-				} else if (lhsConstant && !rhsConstant) {
+				} else if (lhsConstant && !rhsConstant || !lhsConstant && rhsConstant) {
 					// If only one factor of the product contains variables
 					if (isExpanded(binaryExpr, true)) {
 						// Do nothing if already expanded
@@ -244,12 +247,12 @@ public class GipsArithmeticTransformer {
 						mbe.setRhs(cloneExpression(binaryExpr.getRhs(), null));
 					} else {
 						// -> expand
-						// TODO:
+						ArithmeticExpression current = binaryExpr;
+						while (!isExpanded(current, false)) {
+							current = expandProducts(current, new LinkedHashSet<>());
+						}
+						modified = current;
 					}
-				} else if (!lhsConstant && rhsConstant) {
-					// If only one factor of the product contains variables
-					// -> expand
-					// TODO:
 				} else {
 					// If both factors of the product contain a variable each -> error
 					throw new UnsupportedOperationException("Variables may not be multiplied!");
@@ -356,11 +359,29 @@ public class GipsArithmeticTransformer {
 		}
 
 		if (expression instanceof BinaryArithmeticExpression binaryExpr) {
+			boolean lhsExpanded = isExpanded(binaryExpr.getLhs(), false);
+			boolean rhsExpanded = isExpanded(binaryExpr.getRhs(), false);
+
 			int lDepth = depth(binaryExpr.getLhs(), 0);
 			int rDepth = depth(binaryExpr.getRhs(), 0);
+
 			switch (binaryExpr.getOperator()) {
 			case ADD -> {
+				BinaryArithmeticExpression expanded = factory.createBinaryArithmeticExpression();
+				expanded.setOperator(BinaryArithmeticOperator.ADD);
 
+				if (lhsExpanded) {
+					expanded.setLhs(foldAndMultiplyFactors(factors, cloneExpression(binaryExpr.getLhs(), null)));
+				} else {
+					expanded.setLhs(expandProducts(binaryExpr.getLhs(), factors));
+				}
+
+				if (rhsExpanded) {
+					expanded.setRhs(foldAndMultiplyFactors(factors, cloneExpression(binaryExpr.getRhs(), null)));
+				} else {
+					expanded.setRhs(expandProducts(binaryExpr.getRhs(), factors));
+				}
+				return expanded;
 			}
 			case MULTIPLY -> {
 				Set<ArithmeticExpression> currentFactors = new HashSet<>();
@@ -374,20 +395,53 @@ public class GipsArithmeticTransformer {
 				}
 			}
 			default -> {
-
+				return foldAndMultiplyFactors(factors, cloneExpression(binaryExpr, null));
 			}
 			}
 		} else if (expression instanceof UnaryArithmeticExpression unaryExpr) {
 			throw new UnsupportedOperationException("Unary expressions can not be expanded.");
 		} else if (expression instanceof ArithmeticValue valExpr) {
 			if (valExpr.getValue() instanceof SumExpression sum) {
-
+				SumExpression mse = (SumExpression) cloneExpression(sum, null);
+				mse.setExpression(foldAndMultiplyFactors(factors, mse.getExpression()));
+				ArithmeticValue val = factory.createArithmeticValue();
+				val.setValue(mse);
+				return val;
 			} else {
-
+				return foldAndMultiplyFactors(factors, cloneExpression(valExpr, null));
 			}
 		} else {
-
+			return foldAndMultiplyFactors(factors, cloneExpression(expression, null));
 		}
+	}
+
+	protected ArithmeticExpression foldAndMultiplyFactors(Collection<ArithmeticExpression> factors,
+			ArithmeticExpression expression) {
+		if (factors.isEmpty())
+			return expression;
+
+		BinaryArithmeticExpression root = factory.createBinaryArithmeticExpression();
+		root.setOperator(BinaryArithmeticOperator.MULTIPLY);
+		root.setRhs(expression);
+
+		BinaryArithmeticExpression current = root;
+		Iterator<ArithmeticExpression> factorItr = factors.iterator();
+
+		while (factorItr.hasNext()) {
+			BinaryArithmeticExpression next = factory.createBinaryArithmeticExpression();
+			next.setOperator(BinaryArithmeticOperator.MULTIPLY);
+
+			ArithmeticExpression factor = factorItr.next();
+			if (factorItr.hasNext()) {
+				current.setLhs(next);
+				next.setRhs(cloneExpression(factor, null));
+				current = next;
+			} else {
+				current.setLhs(cloneExpression(factor, null));
+			}
+		}
+
+		return root;
 	}
 
 	protected boolean isExpanded(final ArithmeticExpression expression, final boolean traversedProduct) {

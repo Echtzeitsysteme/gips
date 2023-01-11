@@ -63,14 +63,10 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 import org.logicng.io.parsers.ParserException;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-
 public class GipsArithmeticTransformer {
 	final protected GipsIntermediateFactory factory;
 	final protected ArithmeticExpression root;
 
-	final BiMap<ArithmeticExpression, String> expr2symbol = HashBiMap.create();
 	final Set<SumExpression> transformedSums = new HashSet<>();
 
 	public GipsArithmeticTransformer(final GipsIntermediateFactory factory, final ArithmeticExpression root) {
@@ -79,12 +75,13 @@ public class GipsArithmeticTransformer {
 	}
 
 	public ArithmeticExpression transform() throws ParserException {
-		ArithmeticExpression modified = removeSubtractions(root);
-		modified = expandArithmeticExpressions(modified);
+		ArithmeticExpression modified = removeSubtractions(root, null);
+		modified = expandArithmeticExpressions(modified, null);
 		return modified;
 	}
 
-	protected ArithmeticExpression removeSubtractions(final ArithmeticExpression expression) {
+	protected ArithmeticExpression removeSubtractions(final ArithmeticExpression expression,
+			final SumExpression rootSum) {
 		ArithmeticExpression modified = null;
 		if (expression instanceof BinaryArithmeticExpression binaryExpr) {
 			BinaryArithmeticExpression mbe = factory.createBinaryArithmeticExpression();
@@ -92,27 +89,27 @@ public class GipsArithmeticTransformer {
 			mbe.setOperator(binaryExpr.getOperator());
 			switch (binaryExpr.getOperator()) {
 			case ADD -> {
-				mbe.setLhs(removeSubtractions(binaryExpr.getLhs()));
-				mbe.setRhs(removeSubtractions(binaryExpr.getRhs()));
+				mbe.setLhs(removeSubtractions(binaryExpr.getLhs(), rootSum));
+				mbe.setRhs(removeSubtractions(binaryExpr.getRhs(), rootSum));
 			}
 			case DIVIDE -> {
-				mbe.setLhs(removeSubtractions(binaryExpr.getLhs()));
-				mbe.setRhs(removeSubtractions(binaryExpr.getRhs()));
+				mbe.setLhs(removeSubtractions(binaryExpr.getLhs(), rootSum));
+				mbe.setRhs(removeSubtractions(binaryExpr.getRhs(), rootSum));
 			}
 			case LOG -> {
-				mbe.setLhs(removeSubtractions(binaryExpr.getLhs()));
-				mbe.setRhs(removeSubtractions(binaryExpr.getRhs()));
+				mbe.setLhs(removeSubtractions(binaryExpr.getLhs(), rootSum));
+				mbe.setRhs(removeSubtractions(binaryExpr.getRhs(), rootSum));
 			}
 			case MULTIPLY -> {
-				mbe.setLhs(removeSubtractions(binaryExpr.getLhs()));
-				mbe.setRhs(removeSubtractions(binaryExpr.getRhs()));
+				mbe.setLhs(removeSubtractions(binaryExpr.getLhs(), rootSum));
+				mbe.setRhs(removeSubtractions(binaryExpr.getRhs(), rootSum));
 			}
 			case POW -> {
-				mbe.setLhs(removeSubtractions(binaryExpr.getLhs()));
-				mbe.setRhs(removeSubtractions(binaryExpr.getRhs()));
+				mbe.setLhs(removeSubtractions(binaryExpr.getLhs(), rootSum));
+				mbe.setRhs(removeSubtractions(binaryExpr.getRhs(), rootSum));
 			}
 			case SUBTRACT -> {
-				mbe.setLhs(removeSubtractions(binaryExpr.getLhs()));
+				mbe.setLhs(removeSubtractions(binaryExpr.getLhs(), rootSum));
 				mbe.setOperator(BinaryArithmeticOperator.ADD);
 
 				BinaryArithmeticExpression negation = factory.createBinaryArithmeticExpression();
@@ -120,7 +117,7 @@ public class GipsArithmeticTransformer {
 				DoubleLiteral negOne = factory.createDoubleLiteral();
 				negOne.setLiteral(-1.0);
 				negation.setLhs(negOne);
-				negation.setRhs(removeSubtractions(binaryExpr.getRhs()));
+				negation.setRhs(removeSubtractions(binaryExpr.getRhs(), rootSum));
 				mbe.setRhs(negation);
 			}
 			default -> {
@@ -133,15 +130,15 @@ public class GipsArithmeticTransformer {
 			modified = mue;
 			switch (unaryExpr.getOperator()) {
 			case ABSOLUTE -> {
-				mue.setExpression(removeSubtractions(unaryExpr.getExpression()));
+				mue.setExpression(removeSubtractions(unaryExpr.getExpression(), rootSum));
 			}
 			case BRACKET -> {
 				// Brackets can be removed, since the arithmetic expression tree has already
 				// been parsed correctly.
-				modified = removeSubtractions(unaryExpr.getExpression());
+				modified = removeSubtractions(unaryExpr.getExpression(), rootSum);
 			}
 			case COSINE -> {
-				mue.setExpression(removeSubtractions(unaryExpr.getExpression()));
+				mue.setExpression(removeSubtractions(unaryExpr.getExpression(), rootSum));
 			}
 			case NEGATE -> {
 				BinaryArithmeticExpression negation = factory.createBinaryArithmeticExpression();
@@ -149,14 +146,14 @@ public class GipsArithmeticTransformer {
 				DoubleLiteral negOne = factory.createDoubleLiteral();
 				negOne.setLiteral(-1.0);
 				negation.setLhs(negOne);
-				negation.setRhs(removeSubtractions(unaryExpr.getExpression()));
+				negation.setRhs(removeSubtractions(unaryExpr.getExpression(), rootSum));
 				modified = negation;
 			}
 			case SINE -> {
-				mue.setExpression(removeSubtractions(unaryExpr.getExpression()));
+				mue.setExpression(removeSubtractions(unaryExpr.getExpression(), rootSum));
 			}
 			case SQRT -> {
-				mue.setExpression(removeSubtractions(unaryExpr.getExpression()));
+				mue.setExpression(removeSubtractions(unaryExpr.getExpression(), rootSum));
 			}
 			default -> {
 				throw new UnsupportedOperationException("Unknown arithmetic operator: " + unaryExpr.getOperator());
@@ -166,25 +163,28 @@ public class GipsArithmeticTransformer {
 		} else if (expression instanceof ArithmeticValue valExpr) {
 			// CASE: SUM-Expressions
 			if (valExpr.getValue() instanceof SumExpression sum) {
+				// TODO: This might be a critical point in the future, if nested sums are
+				// implemented.
 				SumExpression mse = (SumExpression) cloneExpression(sum, null);
-				mse.setExpression(removeSubtractions(mse.getExpression()));
+				mse.setExpression(removeSubtractions(mse.getExpression(), mse));
 				ArithmeticValue val = factory.createArithmeticValue();
 				val.setValue(mse);
 				modified = val;
 			} else {
 				ArithmeticValue val = factory.createArithmeticValue();
-				val.setValue(cloneExpression(valExpr.getValue(), null));
+				val.setValue(cloneExpression(valExpr.getValue(), rootSum));
 				modified = val;
 			}
 		} else {
 			// CASE: Literals
-			modified = cloneExpression(expression, null);
+			modified = cloneExpression(expression, rootSum);
 		}
 
 		return modified;
 	}
 
-	protected ArithmeticExpression expandArithmeticExpressions(final ArithmeticExpression expression) {
+	protected ArithmeticExpression expandArithmeticExpressions(final ArithmeticExpression expression,
+			final SumExpression rootSum) {
 		ArithmeticExpression modified = null;
 		if (expression instanceof BinaryArithmeticExpression binaryExpr) {
 			BinaryArithmeticExpression mbe = factory.createBinaryArithmeticExpression();
@@ -198,8 +198,8 @@ public class GipsArithmeticTransformer {
 
 			switch (binaryExpr.getOperator()) {
 			case ADD -> {
-				mbe.setLhs(expandArithmeticExpressions(binaryExpr.getLhs()));
-				mbe.setRhs(expandArithmeticExpressions(binaryExpr.getRhs()));
+				mbe.setLhs(expandArithmeticExpressions(binaryExpr.getLhs(), rootSum));
+				mbe.setRhs(expandArithmeticExpressions(binaryExpr.getRhs(), rootSum));
 			}
 			case DIVIDE -> {
 				if (lhsConstant && rhsConstant) {
@@ -218,7 +218,7 @@ public class GipsArithmeticTransformer {
 					mbe.setLhs(cloneExpression(binaryExpr.getLhs(), null));
 					mbe.setRhs(inverse);
 					mbe.setOperator(BinaryArithmeticOperator.MULTIPLY);
-					modified = expandArithmeticExpressions(mbe);
+					modified = expandArithmeticExpressions(mbe, rootSum);
 				} else {
 					// If the divisor contains a variable -> error
 					throw new UnsupportedOperationException("Variable may not be part of a divisor.");
@@ -227,8 +227,8 @@ public class GipsArithmeticTransformer {
 			case LOG -> {
 				if (lhsConstant && rhsConstant) {
 					// If both sub-expressions are constant -> do nothing
-					mbe.setLhs(cloneExpression(binaryExpr.getLhs(), null));
-					mbe.setRhs(cloneExpression(binaryExpr.getRhs(), null));
+					mbe.setLhs(cloneExpression(binaryExpr.getLhs(), rootSum));
+					mbe.setRhs(cloneExpression(binaryExpr.getRhs(), rootSum));
 				} else {
 					// If any of the sub-expression contain variables -> error
 					throw new UnsupportedOperationException("Variable may not be part of a log-expression.");
@@ -237,19 +237,19 @@ public class GipsArithmeticTransformer {
 			case MULTIPLY -> {
 				if (lhsConstant && rhsConstant) {
 					// If both sub-expressions are constant -> do nothing
-					mbe.setLhs(cloneExpression(binaryExpr.getLhs(), null));
-					mbe.setRhs(cloneExpression(binaryExpr.getRhs(), null));
+					mbe.setLhs(cloneExpression(binaryExpr.getLhs(), rootSum));
+					mbe.setRhs(cloneExpression(binaryExpr.getRhs(), rootSum));
 				} else if (lhsConstant && !rhsConstant || !lhsConstant && rhsConstant) {
 					// If only one factor of the product contains variables
 					if (isExpanded(binaryExpr, true)) {
 						// Do nothing if already expanded
-						mbe.setLhs(cloneExpression(binaryExpr.getLhs(), null));
-						mbe.setRhs(cloneExpression(binaryExpr.getRhs(), null));
+						mbe.setLhs(cloneExpression(binaryExpr.getLhs(), rootSum));
+						mbe.setRhs(cloneExpression(binaryExpr.getRhs(), rootSum));
 					} else {
 						// -> expand
 						ArithmeticExpression current = binaryExpr;
 						while (!isExpanded(current, false)) {
-							current = expandProducts(current, new LinkedHashSet<>());
+							current = expandProducts(current, new LinkedHashSet<>(), rootSum);
 						}
 						modified = current;
 					}
@@ -261,8 +261,8 @@ public class GipsArithmeticTransformer {
 			case POW -> {
 				if (lhsConstant && rhsConstant) {
 					// If both sub-expressions are constant -> do nothing
-					mbe.setLhs(cloneExpression(binaryExpr.getLhs(), null));
-					mbe.setRhs(cloneExpression(binaryExpr.getRhs(), null));
+					mbe.setLhs(cloneExpression(binaryExpr.getLhs(), rootSum));
+					mbe.setRhs(cloneExpression(binaryExpr.getRhs(), rootSum));
 				} else {
 					// If any of the sub-expression contain variables -> error
 					throw new UnsupportedOperationException("Variable may not be part of an exponential expression.");
@@ -284,7 +284,7 @@ public class GipsArithmeticTransformer {
 			case ABSOLUTE -> {
 				if (constant) {
 					// If sub-expression is constant -> do nothing
-					mue.setExpression(cloneExpression(unaryExpr.getExpression(), null));
+					mue.setExpression(cloneExpression(unaryExpr.getExpression(), rootSum));
 				} else {
 					// If the sub-expression contains a variable -> error
 					throw new UnsupportedOperationException("Variable may not be part of an abs-expression.");
@@ -299,7 +299,7 @@ public class GipsArithmeticTransformer {
 			case COSINE -> {
 				if (constant) {
 					// If sub-expression is constant -> do nothing
-					mue.setExpression(cloneExpression(unaryExpr.getExpression(), null));
+					mue.setExpression(cloneExpression(unaryExpr.getExpression(), rootSum));
 				} else {
 					// If the sub-expression contains a variable -> error
 					throw new UnsupportedOperationException("Variable may not be part of an cos-expression.");
@@ -314,7 +314,7 @@ public class GipsArithmeticTransformer {
 			case SINE -> {
 				if (constant) {
 					// If sub-expression is constant -> do nothing
-					mue.setExpression(cloneExpression(unaryExpr.getExpression(), null));
+					mue.setExpression(cloneExpression(unaryExpr.getExpression(), rootSum));
 				} else {
 					// If the sub-expression contains a variable -> error
 					throw new UnsupportedOperationException("Variable may not be part of an sin-expression.");
@@ -323,7 +323,7 @@ public class GipsArithmeticTransformer {
 			case SQRT -> {
 				if (constant) {
 					// If sub-expression is constant -> do nothing
-					mue.setExpression(cloneExpression(unaryExpr.getExpression(), null));
+					mue.setExpression(cloneExpression(unaryExpr.getExpression(), rootSum));
 				} else {
 					// If the sub-expression contains a variable -> error
 					throw new UnsupportedOperationException("Variable may not be part of an sqrt-expression.");
@@ -337,23 +337,25 @@ public class GipsArithmeticTransformer {
 		} else if (expression instanceof ArithmeticValue valExpr) {
 			// CASE: SUM-Expressions
 			if (valExpr.getValue() instanceof SumExpression sum) {
+				// TODO: This might be a critical point in the future, if nested sums are
+				// implemented.
 				SumExpression mse = (SumExpression) cloneExpression(sum, null);
-				mse.setExpression(expandArithmeticExpressions(mse.getExpression()));
-				modified = wrapTermsIntoNewSum(sum.getExpression(), sum);
+				mse.setExpression(expandArithmeticExpressions(mse.getExpression(), mse));
+				modified = wrapTermsIntoNewSum(mse.getExpression(), mse);
 			} else {
 				ArithmeticValue val = factory.createArithmeticValue();
-				val.setValue(cloneExpression(valExpr.getValue(), null));
+				val.setValue(cloneExpression(valExpr.getValue(), rootSum));
 				modified = val;
 			}
 		} else {
 			// CASE: Literals
-			modified = cloneExpression(expression, null);
+			modified = cloneExpression(expression, rootSum);
 		}
 		return modified;
 	}
 
 	protected ArithmeticExpression expandProducts(final ArithmeticExpression expression,
-			Collection<ArithmeticExpression> factors) {
+			Collection<ArithmeticExpression> factors, final SumExpression rootSum) {
 		if (isExpanded(expression, false)) {
 			return expression;
 		}
@@ -371,15 +373,17 @@ public class GipsArithmeticTransformer {
 				expanded.setOperator(BinaryArithmeticOperator.ADD);
 
 				if (lhsExpanded) {
-					expanded.setLhs(foldAndMultiplyFactors(factors, cloneExpression(binaryExpr.getLhs(), null)));
+					expanded.setLhs(
+							foldAndMultiplyFactors(factors, cloneExpression(binaryExpr.getLhs(), rootSum), rootSum));
 				} else {
-					expanded.setLhs(expandProducts(binaryExpr.getLhs(), factors));
+					expanded.setLhs(expandProducts(binaryExpr.getLhs(), factors, rootSum));
 				}
 
 				if (rhsExpanded) {
-					expanded.setRhs(foldAndMultiplyFactors(factors, cloneExpression(binaryExpr.getRhs(), null)));
+					expanded.setRhs(
+							foldAndMultiplyFactors(factors, cloneExpression(binaryExpr.getRhs(), rootSum), rootSum));
 				} else {
-					expanded.setRhs(expandProducts(binaryExpr.getRhs(), factors));
+					expanded.setRhs(expandProducts(binaryExpr.getRhs(), factors, rootSum));
 				}
 				return expanded;
 			}
@@ -388,35 +392,35 @@ public class GipsArithmeticTransformer {
 				currentFactors.addAll(factors);
 				if (lDepth >= rDepth) {
 					currentFactors.add(binaryExpr.getRhs());
-					return expandProducts(binaryExpr.getLhs(), currentFactors);
+					return expandProducts(binaryExpr.getLhs(), currentFactors, rootSum);
 				} else {
 					currentFactors.add(binaryExpr.getLhs());
-					return expandProducts(binaryExpr.getRhs(), currentFactors);
+					return expandProducts(binaryExpr.getRhs(), currentFactors, rootSum);
 				}
 			}
 			default -> {
-				return foldAndMultiplyFactors(factors, cloneExpression(binaryExpr, null));
+				return foldAndMultiplyFactors(factors, cloneExpression(binaryExpr, rootSum), rootSum);
 			}
 			}
 		} else if (expression instanceof UnaryArithmeticExpression unaryExpr) {
-			throw new UnsupportedOperationException("Unary expressions can not be expanded.");
+			return foldAndMultiplyFactors(factors, cloneExpression(unaryExpr, rootSum), rootSum);
 		} else if (expression instanceof ArithmeticValue valExpr) {
 			if (valExpr.getValue() instanceof SumExpression sum) {
 				SumExpression mse = (SumExpression) cloneExpression(sum, null);
-				mse.setExpression(foldAndMultiplyFactors(factors, mse.getExpression()));
+				mse.setExpression(foldAndMultiplyFactors(factors, mse.getExpression(), mse));
 				ArithmeticValue val = factory.createArithmeticValue();
 				val.setValue(mse);
 				return val;
 			} else {
-				return foldAndMultiplyFactors(factors, cloneExpression(valExpr, null));
+				return foldAndMultiplyFactors(factors, cloneExpression(valExpr, rootSum), rootSum);
 			}
 		} else {
-			return foldAndMultiplyFactors(factors, cloneExpression(expression, null));
+			return foldAndMultiplyFactors(factors, cloneExpression(expression, rootSum), rootSum);
 		}
 	}
 
 	protected ArithmeticExpression foldAndMultiplyFactors(Collection<ArithmeticExpression> factors,
-			ArithmeticExpression expression) {
+			ArithmeticExpression expression, final SumExpression rootSum) {
 		if (factors.isEmpty())
 			return expression;
 
@@ -434,10 +438,10 @@ public class GipsArithmeticTransformer {
 			ArithmeticExpression factor = factorItr.next();
 			if (factorItr.hasNext()) {
 				current.setLhs(next);
-				next.setRhs(cloneExpression(factor, null));
+				next.setRhs(cloneExpression(factor, rootSum));
 				current = next;
 			} else {
-				current.setLhs(cloneExpression(factor, null));
+				current.setLhs(cloneExpression(factor, rootSum));
 			}
 		}
 
@@ -836,79 +840,6 @@ public class GipsArithmeticTransformer {
 			throw new UnsupportedOperationException("Unknown arithmetic expression type: " + expr);
 		}
 		return clone;
-	}
-
-	protected String addSymbol(final ArithmeticExpression expr) {
-		if (expr2symbol.containsKey(expr))
-			return expr2symbol.get(expr);
-
-		int count = expr2symbol.size();
-		StringBuilder symbol = new StringBuilder(count + "_");
-
-		if (expr instanceof BinaryArithmeticExpression binaryExpr) {
-			switch (binaryExpr.getOperator()) {
-			case ADD -> {
-				symbol.append("ADD");
-			}
-			case DIVIDE -> {
-				symbol.append("DIVIDE");
-			}
-			case LOG -> {
-				symbol.append("LOG");
-			}
-			case MULTIPLY -> {
-				symbol.append("MULTIPLY");
-			}
-			case POW -> {
-				symbol.append("POW");
-			}
-			case SUBTRACT -> {
-				symbol.append("SUBTRACT");
-			}
-			default -> {
-				throw new UnsupportedOperationException("Unknown arithmetic operator: " + binaryExpr.getOperator());
-			}
-			}
-		} else if (expr instanceof UnaryArithmeticExpression unaryExpr) {
-			switch (unaryExpr.getOperator()) {
-			case ABSOLUTE -> {
-				symbol.append("ABS");
-			}
-			case BRACKET -> {
-				symbol.append("BRACKET");
-			}
-			case COSINE -> {
-				symbol.append("COS");
-			}
-			case NEGATE -> {
-				symbol.append("NEGATE");
-			}
-			case SINE -> {
-				symbol.append("SIN");
-			}
-			case SQRT -> {
-				symbol.append("SQRT");
-			}
-			default -> {
-				throw new UnsupportedOperationException("Unknown arithmetic operator: " + unaryExpr.getOperator());
-			}
-			}
-
-		} else if (expr instanceof ArithmeticValue valExpr) {
-			// CASE: SUM-Expressions
-			if (valExpr.getValue() instanceof SumExpression sum) {
-				symbol.append("SUM");
-			} else {
-				symbol.append("VAL");
-			}
-		} else {
-			// CASE: Literals
-			symbol.append("LIT");
-		}
-
-		expr2symbol.put(expr, symbol.toString());
-
-		return symbol.toString();
 	}
 
 	public static StringBuilder parseToString(final ArithmeticExpression expr) throws ParserException {

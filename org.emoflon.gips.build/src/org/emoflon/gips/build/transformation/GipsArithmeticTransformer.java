@@ -212,20 +212,16 @@ public class GipsArithmeticTransformer {
 				mbe.setRhs(expandArithmeticExpressions(binaryExpr.getRhs(), rootSum));
 			}
 			case DIVIDE -> {
-				if (lhsConstant && rhsConstant) {
-					// If both sub-expressions are constant -> do nothing
-					mbe.setLhs(cloneExpression(binaryExpr.getLhs(), null));
-					mbe.setRhs(cloneExpression(binaryExpr.getRhs(), null));
-				} else if (!lhsConstant && rhsConstant) {
+				if (lhsConstant && rhsConstant || !lhsConstant && rhsConstant) {
 					// If the divident contains a varibale
 					// -> transform to multiplication and expand
 					BinaryArithmeticExpression inverse = factory.createBinaryArithmeticExpression();
-					inverse.setOperator(BinaryArithmeticOperator.DIVIDE);
+					inverse.setOperator(BinaryArithmeticOperator.POW);
 					DoubleLiteral one = factory.createDoubleLiteral();
-					one.setLiteral(1.0);
-					inverse.setLhs(one);
-					inverse.setRhs(cloneExpression(binaryExpr.getRhs(), null));
-					mbe.setLhs(cloneExpression(binaryExpr.getLhs(), null));
+					one.setLiteral(-1.0);
+					inverse.setLhs(cloneExpression(binaryExpr.getRhs(), rootSum));
+					inverse.setRhs(one);
+					mbe.setLhs(cloneExpression(binaryExpr.getLhs(), rootSum));
 					mbe.setRhs(inverse);
 					mbe.setOperator(BinaryArithmeticOperator.MULTIPLY);
 					modified = expandArithmeticExpressions(mbe, rootSum);
@@ -245,11 +241,7 @@ public class GipsArithmeticTransformer {
 				}
 			}
 			case MULTIPLY -> {
-				if (lhsConstant && rhsConstant) {
-					// If both sub-expressions are constant -> do nothing
-					mbe.setLhs(cloneExpression(binaryExpr.getLhs(), rootSum));
-					mbe.setRhs(cloneExpression(binaryExpr.getRhs(), rootSum));
-				} else if (lhsConstant && !rhsConstant || !lhsConstant && rhsConstant) {
+				if (lhsConstant && rhsConstant || lhsConstant && !rhsConstant || !lhsConstant && rhsConstant) {
 					// If only one factor of the product contains variables
 					if (isExpanded(binaryExpr, false)) {
 						// Do nothing if already expanded

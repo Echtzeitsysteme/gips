@@ -75,8 +75,15 @@ public class GipsArithmeticTransformer {
 	}
 
 	public ArithmeticExpression transform() throws ParserException {
+		System.out.println("****\nInput expression:\n");
+		System.out.println(parseToString(root));
 		ArithmeticExpression modified = removeSubtractions(root, null);
+		System.out.println("\n\t\t\nWithout subtractions and negations:\n");
+		System.out.println(parseToString(modified));
 		modified = expandArithmeticExpressions(modified, null);
+		System.out.println("\n\t\t\nExpanded:\n");
+		System.out.println(parseToString(modified));
+		System.out.println("\n****\n");
 		return modified;
 	}
 
@@ -241,7 +248,7 @@ public class GipsArithmeticTransformer {
 					mbe.setRhs(cloneExpression(binaryExpr.getRhs(), rootSum));
 				} else if (lhsConstant && !rhsConstant || !lhsConstant && rhsConstant) {
 					// If only one factor of the product contains variables
-					if (isExpanded(binaryExpr, true)) {
+					if (isExpanded(binaryExpr, false)) {
 						// Do nothing if already expanded
 						mbe.setLhs(cloneExpression(binaryExpr.getLhs(), rootSum));
 						mbe.setRhs(cloneExpression(binaryExpr.getRhs(), rootSum));
@@ -356,10 +363,6 @@ public class GipsArithmeticTransformer {
 
 	protected ArithmeticExpression expandProducts(final ArithmeticExpression expression,
 			Collection<ArithmeticExpression> factors, final SumExpression rootSum) {
-		if (isExpanded(expression, false)) {
-			return expression;
-		}
-
 		if (expression instanceof BinaryArithmeticExpression binaryExpr) {
 			boolean lhsExpanded = isExpanded(binaryExpr.getLhs(), false);
 			boolean rhsExpanded = isExpanded(binaryExpr.getRhs(), false);
@@ -916,7 +919,14 @@ public class GipsArithmeticTransformer {
 			}
 		} else {
 			// CASE: Literals
-			sb.append("LIT");
+			if (expr instanceof DoubleLiteral d) {
+				sb.append(d.getLiteral());
+			} else if (expr instanceof IntegerLiteral i) {
+				sb.append(i.getLiteral());
+			} else {
+				sb.append("LIT");
+			}
+
 		}
 
 		return sb;

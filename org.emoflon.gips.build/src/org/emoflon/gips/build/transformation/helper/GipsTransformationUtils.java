@@ -254,7 +254,7 @@ public final class GipsTransformationUtils {
 			// removed in the meantime, to prevent further confusion.
 			// This special case is resolved through the get variable method, but might
 			// produce unforeseen problems.
-			return ArithmeticExpressionType.constant;
+			return ArithmeticExpressionType.variableDependant;
 		} else if (expr instanceof ContextMappingNode) {
 			// TODO: This is a critical case, where a node of a mapping is accessed that is
 			// associated with a mapping variable.
@@ -262,7 +262,7 @@ public final class GipsTransformationUtils {
 			// removed in the meantime, to prevent further confusion.
 			// This special case is resolved through the get variable method, but might
 			// produce unforeseen problems.
-			return ArithmeticExpressionType.constant;
+			return ArithmeticExpressionType.variableDependant;
 		} else if (expr instanceof ContextMappingValue) {
 			return ArithmeticExpressionType.variableValue;
 		} else if (expr instanceof ContextPatternNode) {
@@ -278,7 +278,7 @@ public final class GipsTransformationUtils {
 			// removed in the meantime, to prevent further confusion.
 			// This special case is resolved through the get variable method, but might
 			// produce unforeseen problems.
-			return ArithmeticExpressionType.constant;
+			return ArithmeticExpressionType.variableDependant;
 		} else if (expr instanceof IteratorMappingVariableValue || expr instanceof IteratorMappingVariablesReference) {
 			return ArithmeticExpressionType.variableValue;
 		} else if (expr instanceof IteratorMappingFeatureValue || expr instanceof IteratorMappingNodeValue
@@ -289,7 +289,7 @@ public final class GipsTransformationUtils {
 			// removed in the meantime, to prevent further confusion.
 			// This special case is resolved through the get variable method, but might
 			// produce unforeseen problems.
-			return ArithmeticExpressionType.constant;
+			return ArithmeticExpressionType.variableDependant;
 		} else if (expr instanceof IteratorPatternValue || expr instanceof IteratorPatternFeatureValue
 				|| expr instanceof IteratorPatternNodeValue || expr instanceof IteratorPatternNodeFeatureValue) {
 			return ArithmeticExpressionType.constant;

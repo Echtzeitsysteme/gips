@@ -198,10 +198,13 @@ public class GipsArithmeticTransformer {
 			modified = mbe;
 			mbe.setOperator(binaryExpr.getOperator());
 
-			boolean lhsConstant = GipsTransformationUtils
-					.isConstantExpression(binaryExpr.getLhs()) == ArithmeticExpressionType.constant ? true : false;
-			boolean rhsConstant = GipsTransformationUtils
-					.isConstantExpression(binaryExpr.getRhs()) == ArithmeticExpressionType.constant ? true : false;
+			ArithmeticExpressionType lhsType = GipsTransformationUtils.isConstantExpression(binaryExpr.getLhs());
+			ArithmeticExpressionType rhsType = GipsTransformationUtils.isConstantExpression(binaryExpr.getRhs());
+
+			boolean lhsConstant = (lhsType == ArithmeticExpressionType.constant
+					|| lhsType == ArithmeticExpressionType.variableDependant) ? true : false;
+			boolean rhsConstant = (rhsType == ArithmeticExpressionType.constant
+					|| rhsType == ArithmeticExpressionType.variableDependant) ? true : false;
 
 			switch (binaryExpr.getOperator()) {
 			case ADD -> {

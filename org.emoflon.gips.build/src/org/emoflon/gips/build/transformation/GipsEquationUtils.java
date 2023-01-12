@@ -61,6 +61,9 @@ public final class GipsEquationUtils {
 				case constant -> {
 					yield true;
 				}
+				case variableDependant -> {
+					yield true;
+				}
 				case variableValue -> {
 					yield false;
 				}
@@ -70,6 +73,9 @@ public final class GipsEquationUtils {
 				};
 				boolean isRhsConst = switch (GipsTransformationUtils.isConstantExpression(binaryExpr.getRhs())) {
 				case constant -> {
+					yield true;
+				}
+				case variableDependant -> {
 					yield true;
 				}
 				case variableValue -> {

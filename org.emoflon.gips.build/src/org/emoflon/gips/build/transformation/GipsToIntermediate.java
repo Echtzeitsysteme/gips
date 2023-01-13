@@ -26,7 +26,6 @@ import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
@@ -495,62 +494,8 @@ public class GipsToIntermediate {
 					"Transformed non-constant sub-constraints may not contain boolean expressions or boolean literals.");
 		}
 
-		boolean isLhsConst = (GipsTransformationUtils.isConstantExpression(
-				((RelationalExpression) constraint.getExpression()).getLhs()) == ArithmeticExpressionType.constant)
-						? true
-						: false;
-		boolean isRhsConst = (GipsTransformationUtils.isConstantExpression(
-				((RelationalExpression) constraint.getExpression()).getRhs()) == ArithmeticExpressionType.constant)
-						? true
-						: false;
-		if (!isLhsConst && !isRhsConst) {
-			// Fix this malformed constraint by subtracting the rhs from the lhs.
-			// E.g.: c: x < y is transformed to c: x - y < 0
-			BinaryArithmeticExpression rewrite = factory.createBinaryArithmeticExpression();
-			rewrite.setOperator(BinaryArithmeticOperator.SUBTRACT);
-			rewrite.setLhs(((RelationalExpression) constraint.getExpression()).getLhs());
-			rewrite.setRhs(((RelationalExpression) constraint.getExpression()).getRhs());
-			DoubleLiteral lit = factory.createDoubleLiteral();
-			lit.setLiteral(0);
-			((RelationalExpression) constraint.getExpression()).setLhs(rewrite);
-			((RelationalExpression) constraint.getExpression()).setRhs(lit);
-		}
-
-		isLhsConst = (GipsTransformationUtils.isConstantExpression(
-				((RelationalExpression) constraint.getExpression()).getLhs()) == ArithmeticExpressionType.constant)
-						? true
-						: false;
-
-		// Rewrite the non-constant expression, which will be translated into ILP-Terms,
-		// into a sum of products.
-		if (isLhsConst) {
-//			ArithmeticExpression rhs = GipsEquationUtils.rewriteToSumOfProducts(factory,
-//					((RelationalExpression) constraint.getExpression()).getRhs(), null, null);
-			ArithmeticExpression rhs = (new GipsArithmeticTransformer(factory,
-					((RelationalExpression) constraint.getExpression()).getRhs())).transform();
-			((RelationalExpression) constraint.getExpression())
-					.setRhs(((RelationalExpression) constraint.getExpression()).getLhs());
-			((RelationalExpression) constraint.getExpression()).setLhs(rhs);
-			GipsTransformationUtils.flipOperator((RelationalExpression) constraint.getExpression());
-		} else {
-//			((RelationalExpression) constraint.getExpression()).setLhs(GipsEquationUtils.rewriteToSumOfProducts(factory,
-//					((RelationalExpression) constraint.getExpression()).getLhs(), null, null));
-			((RelationalExpression) constraint.getExpression()).setLhs((new GipsArithmeticTransformer(factory,
-					((RelationalExpression) constraint.getExpression()).getLhs())).transform());
-		}
-		// Move constant terms from the sum of products to the constant side of the
-		// relational constraint.
-		constraint.setExpression(
-				GipsEquationUtils.rewriteMoveConstantTerms(factory, (RelationalExpression) constraint.getExpression()));
-
-		// Remove subtractions, e.g.: a - b becomes a + -b
-		if (isLhsConst) {
-			((RelationalExpression) constraint.getExpression()).setRhs(GipsEquationUtils
-					.rewriteRemoveSubtractions(factory, ((RelationalExpression) constraint.getExpression()).getRhs()));
-		} else {
-			((RelationalExpression) constraint.getExpression()).setLhs(GipsEquationUtils
-					.rewriteRemoveSubtractions(factory, ((RelationalExpression) constraint.getExpression()).getLhs()));
-		}
+		GipsArithmeticTransformer arithmeticTransformer = new GipsArithmeticTransformer(factory);
+		constraint.setExpression(arithmeticTransformer.normalize((RelationalExpression) constraint.getExpression()));
 
 		// Final check: Was the context used?
 		if (!GipsTransformationUtils
@@ -580,15 +525,8 @@ public class GipsToIntermediate {
 			objective.setExpression(transformer.transform(eObjective.getExpr()));
 			// Rewrite the expression, which will be translated into ILP-Terms, into a sum
 			// of products.
-//			objective.setExpression(
-//					GipsEquationUtils.rewriteToSumOfProducts(factory, objective.getExpression(), null, null));
-			objective.setExpression(new GipsArithmeticTransformer(factory, objective.getExpression()).transform());
-			// Remove subtractions, e.g.: a - b becomes a + -b
-			objective.setExpression(GipsEquationUtils.rewriteRemoveSubtractions(factory, objective.getExpression()));
-			// Final check: Was the context used?
-//			if (!GipsTransformationUtils.containsContextExpression(objective.getExpression())) {
-//				throw new IllegalArgumentException("Context must be used at least once per objective.");
-//			}
+			objective.setExpression(
+					new GipsArithmeticTransformer(factory).normalizeAndExpand(objective.getExpression()));
 		}
 	}
 
@@ -619,11 +557,7 @@ public class GipsToIntermediate {
 		globalObj.setExpression(transformer.transform(eGlobalObj.getExpr()));
 		// Rewrite the expression, which will be translated into ILP-Terms, into a sum
 		// of products.
-//		globalObj.setExpression(
-//				GipsEquationUtils.rewriteToSumOfProducts(factory, globalObj.getExpression(), null, null));
-		globalObj.setExpression(new GipsArithmeticTransformer(factory, globalObj.getExpression()).transform());
-		// Remove subtractions, e.g.: a - b becomes a + -b
-		globalObj.setExpression(GipsEquationUtils.rewriteRemoveSubtractions(factory, globalObj.getExpression()));
+		globalObj.setExpression(new GipsArithmeticTransformer(factory).normalizeAndExpand(globalObj.getExpression()));
 	}
 
 	protected Constraint createConstraint(final GipsConstraint eConstraint, int counter) {

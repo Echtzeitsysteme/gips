@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType;
@@ -59,31 +60,215 @@ import org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.SumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 import org.logicng.io.parsers.ParserException;
 
 public class GipsArithmeticTransformer {
 	final protected GipsIntermediateFactory factory;
-	final protected ArithmeticExpression root;
 
-	final Set<SumExpression> transformedSums = new HashSet<>();
-
-	public GipsArithmeticTransformer(final GipsIntermediateFactory factory, final ArithmeticExpression root) {
+	public GipsArithmeticTransformer(final GipsIntermediateFactory factory) {
 		this.factory = factory;
-		this.root = root;
 	}
 
-	public ArithmeticExpression transform() throws ParserException {
-		System.out.println("****\nInput expression:\n");
-		System.out.println(parseToString(root));
-		ArithmeticExpression modified = removeSubtractions(root, null);
-		System.out.println("\n\t\t\nWithout subtractions and negations:\n");
-		System.out.println(parseToString(modified));
+	// Transforms a relational expression into a form that is accepted by ilp
+	// solvers.
+	// (1) Intended normalized ILP-form: lhs := <varExpr> op := <operator> rhs :=
+	// <constExpr>
+	// (2) If lhs and rhs of the expression are constant, nothing has to be done,
+	// since it will not be used as input for an ilp solver anyways.
+	//
+	public RelationalExpression normalize(final RelationalExpression expression) throws ParserException {
+		boolean isLhsConst = (GipsTransformationUtils
+				.isConstantExpression(expression.getLhs()) == ArithmeticExpressionType.constant) ? true : false;
+		boolean isRhsConst = (GipsTransformationUtils
+				.isConstantExpression(expression.getRhs()) == ArithmeticExpressionType.constant) ? true : false;
+
+		RelationalExpression modified = factory.createRelationalExpression();
+		modified.setOperator(expression.getOperator());
+		if (isLhsConst && isRhsConst) {
+			// Both sides constant -> nothing to do!
+			return expression;
+		} else if (!isLhsConst && isRhsConst) {
+			// Rhs is already constant -> (1) normalize and expand lhs, (2) move const terms
+			// of lhs to rhs
+			modified.setRhs(cloneExpression(expression.getRhs(), null));
+			modified.setLhs(normalizeAndExpand(expression.getLhs()));
+		} else if (isLhsConst && !isRhsConst) {
+			// Rhs is not constant and Lhs is constant -> (1) Flip lhs with rhs, (2) flip
+			// relational operator, (3) normalize and expand lhs, (4) move const terms of
+			// lhs to rhs
+			GipsTransformationUtils.flipOperator(modified);
+			modified.setRhs(cloneExpression(expression.getLhs(), null));
+			modified.setLhs(normalizeAndExpand(expression.getRhs()));
+		} else {
+			// Rhs and Lhs are both not constant -> (1) Move rhs to lhs, (2) set rhs to 0,
+			// (3) normalize and expand lhs, (4) move const terms of
+			// lhs to rhs
+			BinaryArithmeticExpression move = factory.createBinaryArithmeticExpression();
+			move.setOperator(BinaryArithmeticOperator.SUBTRACT);
+			move.setLhs(cloneExpression(expression.getLhs(), null));
+			move.setRhs(cloneExpression(expression.getRhs(), null));
+			DoubleLiteral zero = factory.createDoubleLiteral();
+			zero.setLiteral(0.0);
+			modified.setLhs(normalizeAndExpand(move));
+			modified.setRhs(zero);
+		}
+
+		// -> Move const terms over to rhs!
+		modified = moveConstTerms(modified);
+
+		return modified;
+	}
+
+	public RelationalExpression moveConstTerms(final RelationalExpression expression) {
+		RelationalExpression modified = factory.createRelationalExpression();
+		modified.setOperator(expression.getOperator());
+
+		HashSet<ArithmeticExpression> constTerms = new LinkedHashSet<>();
+		HashSet<ArithmeticExpression> varTerms = new LinkedHashSet<>();
+
+		splitIntoConstAndVarTerms(expression.getLhs(), constTerms, varTerms);
+		if (constTerms.isEmpty()) {
+			// No constant terms in var expression -> do nothing
+			return expression;
+		} else {
+			ArithmeticExpression lhs = foldAndAddTerms(varTerms);
+			modified.setLhs(lhs);
+
+			ArithmeticExpression constTerm = foldAndAddTerms(constTerms);
+
+			BinaryArithmeticExpression subtraction = factory.createBinaryArithmeticExpression();
+			subtraction.setOperator(BinaryArithmeticOperator.SUBTRACT);
+			subtraction.setLhs(cloneExpression(expression.getRhs(), null));
+			UnaryArithmeticExpression bracket = factory.createUnaryArithmeticExpression();
+			bracket.setOperator(UnaryArithmeticOperator.BRACKET);
+			bracket.setExpression(constTerm);
+			subtraction.setRhs(bracket);
+
+			modified.setRhs(subtraction);
+		}
+
+		return modified;
+	}
+
+	public void splitIntoConstAndVarTerms(final ArithmeticExpression expression,
+			final Collection<ArithmeticExpression> constTerms, final Collection<ArithmeticExpression> varTerms) {
+		if (expression instanceof BinaryArithmeticExpression binaryExpr) {
+			switch (binaryExpr.getOperator()) {
+			case ADD -> {
+				splitIntoConstAndVarTerms(binaryExpr.getLhs(), constTerms, varTerms);
+				splitIntoConstAndVarTerms(binaryExpr.getRhs(), constTerms, varTerms);
+			}
+			case LOG -> {
+				// Log is always constant
+				constTerms.add(expression);
+			}
+			case MULTIPLY -> {
+				boolean isConst = (GipsTransformationUtils
+						.isConstantExpression(expression) == ArithmeticExpressionType.constant) ? true : false;
+				if (isConst) {
+					constTerms.add(expression);
+				} else {
+					varTerms.add(expression);
+				}
+			}
+			case POW -> {
+				// Pow is always constant
+				constTerms.add(expression);
+			}
+			default -> {
+				throw new UnsupportedOperationException(
+						"Unknown or unsupported arithmetic operator in normalized term: " + binaryExpr.getOperator());
+			}
+			}
+		} else if (expression instanceof UnaryArithmeticExpression unaryExpr) {
+			switch (unaryExpr.getOperator()) {
+			case ABSOLUTE -> {
+				// Abs is always constant
+				constTerms.add(expression);
+			}
+			case COSINE -> {
+				// Cos is always constant
+				constTerms.add(expression);
+			}
+			case SINE -> {
+				// Sin is always constant
+				constTerms.add(expression);
+			}
+			case SQRT -> {
+				// Sqrt is always constant
+				constTerms.add(expression);
+			}
+			default -> {
+				throw new UnsupportedOperationException(
+						"Unknown or unsupported arithmetic operator in normalized term: " + unaryExpr.getOperator());
+			}
+			}
+
+		} else if (expression instanceof ArithmeticValue valExpr) {
+			// CASE: SUM-Expressions
+			if (valExpr.getValue() instanceof SumExpression sum) {
+				boolean isConst = (GipsTransformationUtils
+						.isConstantExpression(expression) == ArithmeticExpressionType.constant) ? true : false;
+				if (isConst) {
+					constTerms.add(expression);
+				} else {
+					varTerms.add(expression);
+				}
+			} else {
+				boolean isConst = (GipsTransformationUtils
+						.isConstantExpression(expression) == ArithmeticExpressionType.constant) ? true : false;
+				if (isConst) {
+					constTerms.add(expression);
+				} else {
+					varTerms.add(expression);
+				}
+			}
+		} else {
+			// Literals are always constant
+			constTerms.add(expression);
+		}
+	}
+
+	protected ArithmeticExpression foldAndAddTerms(Collection<ArithmeticExpression> t) {
+		LinkedList<ArithmeticExpression> terms = new LinkedList<>(t);
+		if (terms.size() == 1) {
+			return cloneExpression(terms.poll(), null);
+		}
+
+		BinaryArithmeticExpression root = factory.createBinaryArithmeticExpression();
+		root.setOperator(BinaryArithmeticOperator.ADD);
+		BinaryArithmeticExpression current = root;
+
+		while (!terms.isEmpty()) {
+			ArithmeticExpression lhs = terms.poll();
+			current.setLhs(cloneExpression(lhs, null));
+			if (terms.size() > 1) {
+				BinaryArithmeticExpression next = factory.createBinaryArithmeticExpression();
+				next.setOperator(BinaryArithmeticOperator.ADD);
+				current.setRhs(next);
+				current = next;
+			} else {
+				ArithmeticExpression rhs = terms.poll();
+				current.setRhs(cloneExpression(rhs, null));
+			}
+		}
+
+		return root;
+	}
+
+	public ArithmeticExpression normalizeAndExpand(final ArithmeticExpression expression) throws ParserException {
+//		System.out.println("****\nInput expression:\n");
+//		System.out.println(parseToString(expression));
+		ArithmeticExpression modified = removeSubtractions(expression, null);
+//		System.out.println("\n\t\t\nWithout subtractions and negations:\n");
+//		System.out.println(parseToString(modified));
 		modified = expandArithmeticExpressions(modified, null);
-		System.out.println("\n\t\t\nExpanded:\n");
-		System.out.println(parseToString(modified));
-		System.out.println("\n****\n");
+//		System.out.println("\n\t\t\nExpanded:\n");
+//		System.out.println(parseToString(modified));
+//		System.out.println("\n****\n");
 		return modified;
 	}
 
@@ -386,7 +571,7 @@ public class GipsArithmeticTransformer {
 				return expanded;
 			}
 			case MULTIPLY -> {
-				Set<ArithmeticExpression> currentFactors = new HashSet<>();
+				Set<ArithmeticExpression> currentFactors = new LinkedHashSet<>();
 				currentFactors.addAll(factors);
 				if (lDepth >= rDepth) {
 					currentFactors.add(binaryExpr.getRhs());
@@ -510,7 +695,6 @@ public class GipsArithmeticTransformer {
 				break;
 			default:
 				SumExpression cs = (SumExpression) cloneExpression(sumTemplate, null);
-				transformedSums.add(cs);
 				cs.setExpression(cloneExpression(binary, cs));
 				ArithmeticValue val = factory.createArithmeticValue();
 				val.setValue(cs);
@@ -518,28 +702,24 @@ public class GipsArithmeticTransformer {
 			}
 		} else if (transformed instanceof UnaryArithmeticExpression unary) {
 			SumExpression cs = (SumExpression) cloneExpression(sumTemplate, null);
-			transformedSums.add(cs);
 			cs.setExpression(cloneExpression(unary, cs));
 			ArithmeticValue val = factory.createArithmeticValue();
 			val.setValue(cs);
 			clone = val;
 		} else if (transformed instanceof ArithmeticLiteral literal) {
 			SumExpression cs = (SumExpression) cloneExpression(sumTemplate, null);
-			transformedSums.add(cs);
 			cs.setExpression(cloneExpression(literal, cs));
 			ArithmeticValue val = factory.createArithmeticValue();
 			val.setValue(cs);
 			clone = val;
 		} else if (transformed instanceof VariableReference ref) {
 			SumExpression cs = (SumExpression) cloneExpression(sumTemplate, null);
-			transformedSums.add(cs);
 			cs.setExpression(cloneExpression(ref, cs));
 			ArithmeticValue val = factory.createArithmeticValue();
 			val.setValue(cs);
 			clone = val;
 		} else if (transformed instanceof ArithmeticValue val) {
 			SumExpression cs = (SumExpression) cloneExpression(sumTemplate, null);
-			transformedSums.add(cs);
 			cs.setExpression(cloneExpression(val, cs));
 			ArithmeticValue cv = factory.createArithmeticValue();
 			cv.setValue(cs);
@@ -653,7 +833,9 @@ public class GipsArithmeticTransformer {
 			clone = cc;
 			cc.setOperandName(contextSum.getOperandName());
 			cc.setContext(contextSum.getContext());
+			cc.setNode(contextSum.getNode());
 			cc.setFilter(cloneExpression(contextSum.getFilter(), cc));
+			cc.setFeature(cloneExpression(contextSum.getFeature(), cc));
 			cc.setExpression(cloneExpression(contextSum.getExpression(), cc));
 		} else if (value instanceof ContextTypeFeatureValue feat) {
 			ContextTypeFeatureValue cf = factory.createContextTypeFeatureValue();

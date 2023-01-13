@@ -111,8 +111,6 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 			return createBoolUnaryExpression();
 		case GipsIntermediatePackage.BOOL_VALUE:
 			return createBoolValue();
-		case GipsIntermediatePackage.BOOL_STREAM_EXPRESSION:
-			return createBoolStreamExpression();
 		case GipsIntermediatePackage.RELATIONAL_EXPRESSION:
 			return createRelationalExpression();
 		case GipsIntermediatePackage.BOOL_LITERAL:
@@ -522,16 +520,6 @@ public class GipsIntermediateFactoryImpl extends EFactoryImpl implements GipsInt
 	public BoolValue createBoolValue() {
 		BoolValueImpl boolValue = new BoolValueImpl();
 		return boolValue;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public BoolStreamExpression createBoolStreamExpression() {
-		BoolStreamExpressionImpl boolStreamExpression = new BoolStreamExpressionImpl();
-		return boolStreamExpression;
 	}
 
 	/**

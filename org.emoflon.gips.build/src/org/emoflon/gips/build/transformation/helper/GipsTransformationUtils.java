@@ -138,9 +138,6 @@ public final class GipsTransformationUtils {
 			} else if (lhsType == ArithmeticExpressionType.variableValue
 					|| rhsType == ArithmeticExpressionType.variableValue) {
 				return ArithmeticExpressionType.variableValue;
-			} else if (lhsType == ArithmeticExpressionType.variableScalar
-					|| rhsType == ArithmeticExpressionType.variableScalar) {
-				return ArithmeticExpressionType.variableScalar;
 			} else {
 				return ArithmeticExpressionType.constant;
 			}
@@ -170,9 +167,6 @@ public final class GipsTransformationUtils {
 			} else if (lhsType == ArithmeticExpressionType.variableValue
 					|| rhsType == ArithmeticExpressionType.variableValue) {
 				return ArithmeticExpressionType.variableValue;
-			} else if (lhsType == ArithmeticExpressionType.variableScalar
-					|| rhsType == ArithmeticExpressionType.variableScalar) {
-				return ArithmeticExpressionType.variableScalar;
 			} else {
 				return ArithmeticExpressionType.constant;
 			}
@@ -189,9 +183,6 @@ public final class GipsTransformationUtils {
 			} else if (lhsType == ArithmeticExpressionType.variableValue
 					|| rhsType == ArithmeticExpressionType.variableValue) {
 				return ArithmeticExpressionType.variableValue;
-			} else if (lhsType == ArithmeticExpressionType.variableScalar
-					|| rhsType == ArithmeticExpressionType.variableScalar) {
-				return ArithmeticExpressionType.variableScalar;
 			} else {
 				return ArithmeticExpressionType.constant;
 			}
@@ -219,9 +210,6 @@ public final class GipsTransformationUtils {
 			} else if (exprType == ArithmeticExpressionType.variableValue
 					|| filterType == ArithmeticExpressionType.variableValue) {
 				return ArithmeticExpressionType.variableValue;
-			} else if (exprType == ArithmeticExpressionType.variableScalar
-					|| filterType == ArithmeticExpressionType.variableScalar) {
-				return ArithmeticExpressionType.variableScalar;
 			} else {
 				return ArithmeticExpressionType.constant;
 			}
@@ -234,9 +222,6 @@ public final class GipsTransformationUtils {
 			} else if (exprType == ArithmeticExpressionType.variableValue
 					|| filterType == ArithmeticExpressionType.variableValue) {
 				return ArithmeticExpressionType.variableValue;
-			} else if (exprType == ArithmeticExpressionType.variableScalar
-					|| filterType == ArithmeticExpressionType.variableScalar) {
-				return ArithmeticExpressionType.variableScalar;
 			} else {
 				return ArithmeticExpressionType.constant;
 			}
@@ -252,9 +237,6 @@ public final class GipsTransformationUtils {
 				} else if (exprType == ArithmeticExpressionType.variableValue
 						|| filterType == ArithmeticExpressionType.variableValue) {
 					return ArithmeticExpressionType.variableValue;
-				} else if (exprType == ArithmeticExpressionType.variableScalar
-						|| filterType == ArithmeticExpressionType.variableScalar) {
-					return ArithmeticExpressionType.variableScalar;
 				} else {
 					return ArithmeticExpressionType.constant;
 				}
@@ -266,9 +248,21 @@ public final class GipsTransformationUtils {
 		} else if (expr instanceof ContextPatternNodeFeatureValue) {
 			return ArithmeticExpressionType.constant;
 		} else if (expr instanceof ContextMappingNodeFeatureValue) {
-			return ArithmeticExpressionType.variableScalar;
+			// TODO: This is a critical case, where a feature of a mapping is accessed that
+			// is associated with a mapping variable.
+			// This used to be associated with a special arithmetic expression type that was
+			// removed in the meantime, to prevent further confusion.
+			// This special case is resolved through the get variable method, but might
+			// produce unforeseen problems.
+			return ArithmeticExpressionType.variableDependant;
 		} else if (expr instanceof ContextMappingNode) {
-			return ArithmeticExpressionType.variableScalar;
+			// TODO: This is a critical case, where a node of a mapping is accessed that is
+			// associated with a mapping variable.
+			// This used to be associated with a special arithmetic expression type that was
+			// removed in the meantime, to prevent further confusion.
+			// This special case is resolved through the get variable method, but might
+			// produce unforeseen problems.
+			return ArithmeticExpressionType.variableDependant;
 		} else if (expr instanceof ContextMappingValue) {
 			return ArithmeticExpressionType.variableValue;
 		} else if (expr instanceof ContextPatternNode) {
@@ -278,12 +272,24 @@ public final class GipsTransformationUtils {
 		} else if (expr instanceof ObjectiveFunctionValue) {
 			return ArithmeticExpressionType.variableVector;
 		} else if (expr instanceof IteratorMappingValue) {
-			return ArithmeticExpressionType.variableScalar;
+			// TODO: This is a critical case, where a match of a mapping is accessed that is
+			// associated with a mapping variable.
+			// This used to be associated with a special arithmetic expression type that was
+			// removed in the meantime, to prevent further confusion.
+			// This special case is resolved through the get variable method, but might
+			// produce unforeseen problems.
+			return ArithmeticExpressionType.variableDependant;
 		} else if (expr instanceof IteratorMappingVariableValue || expr instanceof IteratorMappingVariablesReference) {
 			return ArithmeticExpressionType.variableValue;
 		} else if (expr instanceof IteratorMappingFeatureValue || expr instanceof IteratorMappingNodeValue
 				|| expr instanceof IteratorMappingNodeFeatureValue) {
-			return ArithmeticExpressionType.variableScalar;
+			// TODO: This is a critical case, where a feature or node of a mapping is
+			// accessed that is associated with a mapping variable.
+			// This used to be associated with a special arithmetic expression type that was
+			// removed in the meantime, to prevent further confusion.
+			// This special case is resolved through the get variable method, but might
+			// produce unforeseen problems.
+			return ArithmeticExpressionType.variableDependant;
 		} else if (expr instanceof IteratorPatternValue || expr instanceof IteratorPatternFeatureValue
 				|| expr instanceof IteratorPatternNodeValue || expr instanceof IteratorPatternNodeFeatureValue) {
 			return ArithmeticExpressionType.constant;
@@ -318,9 +324,6 @@ public final class GipsTransformationUtils {
 			} else if (currentExpr == ArithmeticExpressionType.variableValue
 					|| childExpr == ArithmeticExpressionType.variableValue) {
 				return ArithmeticExpressionType.variableValue;
-			} else if (currentExpr == ArithmeticExpressionType.variableScalar
-					|| childExpr == ArithmeticExpressionType.variableScalar) {
-				return ArithmeticExpressionType.variableScalar;
 			} else {
 				return ArithmeticExpressionType.constant;
 			}

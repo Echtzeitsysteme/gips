@@ -415,17 +415,6 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case GipsIntermediatePackage.BOOL_STREAM_EXPRESSION: {
-			BoolStreamExpression boolStreamExpression = (BoolStreamExpression) theEObject;
-			T result = caseBoolStreamExpression(boolStreamExpression);
-			if (result == null)
-				result = caseBoolValueExpression(boolStreamExpression);
-			if (result == null)
-				result = caseBoolExpression(boolStreamExpression);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
 		case GipsIntermediatePackage.RELATIONAL_EXPRESSION: {
 			RelationalExpression relationalExpression = (RelationalExpression) theEObject;
 			T result = caseRelationalExpression(relationalExpression);
@@ -1396,22 +1385,6 @@ public class GipsIntermediateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseBoolValue(BoolValue object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Bool
-	 * Stream Expression</em>'. <!-- begin-user-doc --> This implementation returns
-	 * null; returning a non-null result will terminate the switch. <!--
-	 * end-user-doc -->
-	 * 
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Bool
-	 *         Stream Expression</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseBoolStreamExpression(BoolStreamExpression object) {
 		return null;
 	}
 

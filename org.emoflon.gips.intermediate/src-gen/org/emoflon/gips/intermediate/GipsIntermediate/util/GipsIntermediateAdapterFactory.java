@@ -252,11 +252,6 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
-		public Adapter caseBoolStreamExpression(BoolStreamExpression object) {
-			return createBoolStreamExpressionAdapter();
-		}
-
-		@Override
 		public Adapter caseRelationalExpression(RelationalExpression object) {
 			return createRelationalExpressionAdapter();
 		}
@@ -1045,22 +1040,6 @@ public class GipsIntermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createBoolValueAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class
-	 * '{@link org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression
-	 * <em>Bool Stream Expression</em>}'. <!-- begin-user-doc --> This default
-	 * implementation returns null so that we can easily ignore cases; it's useful
-	 * to ignore a case when inheritance will catch all the cases anyway. <!--
-	 * end-user-doc -->
-	 * 
-	 * @return the new adapter.
-	 * @see org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression
-	 * @generated
-	 */
-	public Adapter createBoolStreamExpressionAdapter() {
 		return null;
 	}
 

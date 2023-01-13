@@ -265,15 +265,6 @@ public interface GipsIntermediateFactory extends EFactory {
 	BoolValue createBoolValue();
 
 	/**
-	 * Returns a new object of class '<em>Bool Stream Expression</em>'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @return a new object of class '<em>Bool Stream Expression</em>'.
-	 * @generated
-	 */
-	BoolStreamExpression createBoolStreamExpression();
-
-	/**
 	 * Returns a new object of class '<em>Relational Expression</em>'. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 

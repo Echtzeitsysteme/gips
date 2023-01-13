@@ -21,7 +21,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.BinaryBoolOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolValueExpression;
@@ -367,13 +366,6 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * @generated
 	 */
 	private EClass boolValueEClass = null;
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	private EClass boolStreamExpressionEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1801,33 +1793,6 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 	 * 
 	 * @generated
 	 */
-	public EClass getBoolStreamExpression() {
-		return boolStreamExpressionEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EReference getBoolStreamExpression_Stream() {
-		return (EReference) boolStreamExpressionEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EAttribute getBoolStreamExpression_Operator() {
-		return (EAttribute) boolStreamExpressionEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
 	public EClass getRelationalExpression() {
 		return relationalExpressionEClass;
 	}
@@ -2919,10 +2884,6 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		boolValueEClass = createEClass(BOOL_VALUE);
 		createEReference(boolValueEClass, BOOL_VALUE__VALUE);
 
-		boolStreamExpressionEClass = createEClass(BOOL_STREAM_EXPRESSION);
-		createEReference(boolStreamExpressionEClass, BOOL_STREAM_EXPRESSION__STREAM);
-		createEAttribute(boolStreamExpressionEClass, BOOL_STREAM_EXPRESSION__OPERATOR);
-
 		relationalExpressionEClass = createEClass(RELATIONAL_EXPRESSION);
 		createEAttribute(relationalExpressionEClass, RELATIONAL_EXPRESSION__OPERATOR);
 		createEReference(relationalExpressionEClass, RELATIONAL_EXPRESSION__LHS);
@@ -3136,7 +3097,6 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 		boolUnaryExpressionEClass.getESuperTypes().add(this.getBoolExpression());
 		boolValueExpressionEClass.getESuperTypes().add(this.getBoolExpression());
 		boolValueEClass.getESuperTypes().add(this.getBoolValueExpression());
-		boolStreamExpressionEClass.getESuperTypes().add(this.getBoolValueExpression());
 		relationalExpressionEClass.getESuperTypes().add(this.getBoolValueExpression());
 		boolLiteralEClass.getESuperTypes().add(this.getBoolValueExpression());
 		sumExpressionEClass.getESuperTypes().add(this.getValueExpression());
@@ -3498,15 +3458,6 @@ public class GipsIntermediatePackageImpl extends EPackageImpl implements GipsInt
 				IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getBoolValue_Value(), this.getValueExpression(), null, "value", null, 1, 1, BoolValue.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
-				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(boolStreamExpressionEClass, BoolStreamExpression.class, "BoolStreamExpression", !IS_ABSTRACT,
-				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getBoolStreamExpression_Stream(), this.getStreamExpression(), null, "stream", null, 1, 1,
-				BoolStreamExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getBoolStreamExpression_Operator(), this.getStreamBoolOperator(), "operator", null, 0, 1,
-				BoolStreamExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(relationalExpressionEClass, RelationalExpression.class, "RelationalExpression", !IS_ABSTRACT,

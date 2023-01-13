@@ -209,10 +209,6 @@
     <genClasses ecoreClass="GipsIntermediate.ecore#//BoolValue">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//BoolValue/value"/>
     </genClasses>
-    <genClasses ecoreClass="GipsIntermediate.ecore#//BoolStreamExpression">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//BoolStreamExpression/stream"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//BoolStreamExpression/operator"/>
-    </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//RelationalExpression">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//RelationalExpression/operator"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//RelationalExpression/lhs"/>

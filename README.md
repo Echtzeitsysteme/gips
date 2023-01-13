@@ -15,7 +15,7 @@
     * Install [CPLEX](https://www.ibm.com/analytics/cplex-optimizer) in version `22.1.0` and activate a license for your computer (if neccessary).
         * CPLEX is a commercial alternative to the other ILP solvers implemented in GIPS.
 * Clone this Git repository to your local machine and import it into Eclipse: *File -> Import -> General -> Existing Projects into Workspace*. Import all projects.
-    * As an alternative, you can use this [PSF file](https://raw.githubusercontent.com/Echtzeitsysteme/gips/master/devProjectSet.psf).
+    * As an alternative, you can use this [PSF file](https://raw.githubusercontent.com/Echtzeitsysteme/gips/master/devProjectSet.psf) for the import.
 * Inside the Eclipse development workspace ...
     * ... Run `GenerateGipsl.mwe2` from `org.emoflon.gips.gipsl/src/org.emoflon.gips.gipsl` with right click _Run As_ -> _MWE2 workflow_.
     * ... build all projects (*Project -> Clean... -> Clean all projects*) to trigger code generation.
@@ -51,6 +51,8 @@ By using this settings, you should be unable to commit unformatted code.
         * Currently, Gurobi is the default ILP solver used in GIPS because of the great performance.
     * Install [GLPK](https://www.gnu.org/software/glpk/) in the newest version (`4.6.5`) and add it to your path.
         * GLPK is an open-source ILP solver that can be used without a charge.
+    * Install [CPLEX](https://www.ibm.com/analytics/cplex-optimizer) in version `22.1.0` and activate a license for your computer (if neccessary).
+        * CPLEX is a commercial alternative to the other ILP solvers implemented in GIPS.
 * Install GIPS from the public Eclipse update site: https://echtzeitsysteme.github.io/gips-updatesite/snapshot/updatesite/
 * Launch a runtime workspace (while using a runtime Eclipse) as stated in the eMoflon::IBeX installation steps to start using GIPS.
 
@@ -67,4 +69,4 @@ Please refer to the [GIPS tests repository](https://github.com/Echtzeitsysteme/g
 
 ## License
 
-This project is licensed under the GNU General Public License v3.0 - see the [LICENSE.md](LICENSE.md) file for more details.
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for more details.

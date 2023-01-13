@@ -590,10 +590,8 @@ public class GipsArithmeticTransformer {
 		} else if (expression instanceof ArithmeticValue valExpr) {
 			if (valExpr.getValue() instanceof SumExpression sum) {
 				SumExpression mse = (SumExpression) cloneExpression(sum, null);
-				mse.setExpression(foldAndMultiplyFactors(factors, mse.getExpression(), mse));
-				ArithmeticValue val = factory.createArithmeticValue();
-				val.setValue(mse);
-				return val;
+				mse.setExpression(expandProducts(mse.getExpression(), factors, mse));
+				return wrapTermsIntoNewSum(mse.getExpression(), mse);
 			} else {
 				return foldAndMultiplyFactors(factors, cloneExpression(valExpr, rootSum), rootSum);
 			}

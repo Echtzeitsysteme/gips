@@ -260,15 +260,15 @@ public class GipsArithmeticTransformer {
 	}
 
 	public ArithmeticExpression normalizeAndExpand(final ArithmeticExpression expression) throws ParserException {
-		System.out.println("****\nInput expression:\n");
-		System.out.println(parseToString(expression));
+		// System.out.println("****\nInput expression:\n");
+		// System.out.println(parseToString(expression));
 		ArithmeticExpression modified = removeSubtractions(expression, null);
-		System.out.println("\n\t\t\nWithout subtractions and negations:\n");
-		System.out.println(parseToString(modified));
+		// System.out.println("\n\t\t\nWithout subtractions and negations:\n");
+		// System.out.println(parseToString(modified));
 		modified = expandArithmeticExpressions(modified, null);
-		System.out.println("\n\t\t\nExpanded:\n");
-		System.out.println(parseToString(modified));
-		System.out.println("\n****\n");
+		// System.out.println("\n\t\t\nExpanded:\n");
+		// System.out.println(parseToString(modified));
+		// System.out.println("\n****\n");
 		return modified;
 	}
 

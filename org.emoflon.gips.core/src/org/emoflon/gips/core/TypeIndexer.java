@@ -225,7 +225,10 @@ public class TypeIndexer {
 		Queue<EObject> frontier = new LinkedList<>();
 		current.eClass().getEAllContainments().forEach(ref -> {
 			if (ref.getUpperBound() == 1) {
-				frontier.add((EObject) current.eGet(ref));
+				// Check if EObject to add is null
+				if (current.eGet(ref) != null) {
+					frontier.add((EObject) current.eGet(ref));
+				}
 			} else {
 				frontier.addAll((Collection<? extends EObject>) current.eGet(ref));
 			}

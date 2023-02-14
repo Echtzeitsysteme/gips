@@ -12,7 +12,7 @@
         * Currently, Gurobi is the default ILP solver used in GIPS because of the great performance.
     * Install [GLPK](https://www.gnu.org/software/glpk/) in the newest version (`4.6.5`) and add it to your path.
         * GLPK is an open-source ILP solver that can be used without a charge.
-    * Install [CPLEX](https://www.ibm.com/analytics/cplex-optimizer) in version `22.1.0` and activate a license for your computer (if neccessary).
+    * Install [CPLEX](https://www.ibm.com/analytics/cplex-optimizer) in version `22.1.1` and activate a license for your computer (if neccessary).
         * CPLEX is a commercial alternative to the other ILP solvers implemented in GIPS.
 * Clone this Git repository to your local machine and import it into Eclipse: *File -> Import -> General -> Existing Projects into Workspace*. Import all projects.
     * As an alternative, you can use this [PSF file](https://raw.githubusercontent.com/Echtzeitsysteme/gips/master/devProjectSet.psf) for the import.
@@ -51,7 +51,7 @@ By using this settings, you should be unable to commit unformatted code.
         * Currently, Gurobi is the default ILP solver used in GIPS because of the great performance.
     * Install [GLPK](https://www.gnu.org/software/glpk/) in the newest version (`4.6.5`) and add it to your path.
         * GLPK is an open-source ILP solver that can be used without a charge.
-    * Install [CPLEX](https://www.ibm.com/analytics/cplex-optimizer) in version `22.1.0` and activate a license for your computer (if neccessary).
+    * Install [CPLEX](https://www.ibm.com/analytics/cplex-optimizer) in version `22.1.1` and activate a license for your computer (if neccessary).
         * CPLEX is a commercial alternative to the other ILP solvers implemented in GIPS.
 * Install GIPS from the public Eclipse update site: https://echtzeitsysteme.github.io/gips-updatesite/snapshot/updatesite/
 * Launch a runtime workspace (while using a runtime Eclipse) as stated in the eMoflon::IBeX installation steps to start using GIPS.

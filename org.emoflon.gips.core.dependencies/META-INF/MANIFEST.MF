@@ -8,10 +8,10 @@ Bundle-ClassPath: gurobi-10.0.0.jar,
  glpk-java-1.12.0.jar,
  glpk-java-1.12.0-javadoc.jar,
  logicng-2.4.1.jar,
- cplex-22.1.jar
+ cplex-22.1.1.jar
 Export-Package: gurobi;version="10.0.0",
- ilog.concert;version="22.1.0",
- ilog.cplex;version="22.1.0",
+ ilog.concert;version="22.1.1",
+ ilog.cplex;version="22.1.1",
  org.gnu.glpk;version="1.12.0",
  org.logicng,
  org.logicng.backbones,

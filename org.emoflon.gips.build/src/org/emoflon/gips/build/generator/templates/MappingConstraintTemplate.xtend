@@ -307,7 +307,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		}
 		val method = '''
 	protected void «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper("«expr.mapping.name»").getMappings().values().parallelStream()
+		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper("«expr.mapping.name»").getMappings().values().stream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			«IF containsOnlyMappingVariable»terms.add(new ILPTerm(context, (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
@@ -330,7 +330,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expr.context))
 		val method = '''
 	protected void «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		double constant = context.get«expr.node.name.toFirstUpper»().«parseFeatureExpression(expr.feature)».parallelStream()
+		double constant = context.get«expr.node.name.toFirstUpper»().«parseFeatureExpression(expr.feature)».stream()
 					«getFilterExpr(expr.filter, ExpressionContext.varStream)»
 					.map(«getIteratorVariableName(expr)» -> «parseExpression(expr.expression, ExpressionContext.constConstraint)»)
 					.reduce(0.0, (sum, value) -> sum + value);
@@ -357,7 +357,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		if(context.isConstant && context.expression instanceof RelationalExpression) {
 			method = '''
 	protected double «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		return indexer.getObjectsOfType("«expr.type.type.name»").parallelStream()
+		return indexer.getObjectsOfType("«expr.type.type.name»").stream()
 			.map(type -> («expr.type.type.name») type)
 			«getFilterExpr(expr.filter, ExpressionContext.constStream)»
 			.map(type -> (double)«parseExpression(expr.expression, ExpressionContext.constConstraint)»)
@@ -367,7 +367,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 		} else if(!context.isConstant && context.expression instanceof RelationalExpression) {
 			method = '''
 	protected void «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.type.name»").parallelStream()
+		for(«expr.type.type.name» «getIteratorVariableName(expr)» : indexer.getObjectsOfType("«expr.type.type.name»").stream()
 			.map(type -> («expr.type.type.name») type)
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			terms.add(new ILPTerm(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
@@ -399,7 +399,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 			
 			method = '''
 	protected double «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		return engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()
+		return engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).stream()
 			«getFilterExpr(expr.filter, ExpressionContext.constStream)»
 			.map(type -> (double)«parseExpression(expr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value);
@@ -409,7 +409,7 @@ protected List<ILPTerm> buildVariableLhs(final «data.mapping2mappingClassName.g
 			
 			method = '''
 	protected void «methodName»(final List<ILPTerm> terms, final «data.mapping2mappingClassName.get(context.mapping)» context) {
-		for(«data.pattern2matchClassName.get(expr.pattern)» «getIteratorVariableName(expr)» : engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()
+		for(«data.pattern2matchClassName.get(expr.pattern)» «getIteratorVariableName(expr)» : engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).stream()
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			terms.add(new ILPTerm(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}

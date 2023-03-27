@@ -49,7 +49,7 @@ public class GipsCodeGenerator {
 		templates.add(new MapperFactoryTemplate(data, data.model));
 		templates.add(new ConstraintFactoryTemplate(data, data.model));
 		templates.add(new ObjectiveFactoryTemplate(data, data.model));
-		data.model.getVariables().parallelStream().filter(mapping -> mapping instanceof Mapping)
+		data.model.getVariables().stream().filter(mapping -> mapping instanceof Mapping)
 				.map(mapping -> (Mapping) mapping).forEach(mapping -> {
 					if (mapping instanceof GTMapping gtMapping) {
 						templates.add(new GTMappingTemplate(data, gtMapping));
@@ -61,7 +61,7 @@ public class GipsCodeGenerator {
 					}
 
 				});
-		data.model.getConstraints().parallelStream().forEach(constraint -> {
+		data.model.getConstraints().stream().forEach(constraint -> {
 			if (constraint instanceof MappingConstraint mappingConstraint) {
 				templates.add(new MappingConstraintTemplate(data, mappingConstraint));
 			} else if (constraint instanceof PatternConstraint patternConstraint) {
@@ -73,7 +73,7 @@ public class GipsCodeGenerator {
 				templates.add(new GlobalConstraintTemplate(data, globalConstraint));
 			}
 		});
-		data.model.getObjectives().parallelStream().forEach(objective -> {
+		data.model.getObjectives().stream().forEach(objective -> {
 			if (objective instanceof MappingObjective mappingObjective) {
 				templates.add(new MappingObjectiveTemplate(data, mappingObjective));
 			} else if (objective instanceof PatternObjective patternObjective) {
@@ -86,7 +86,7 @@ public class GipsCodeGenerator {
 		if (data.model.getGlobalObjective() != null) {
 			templates.add(new GlobalObjectiveTemplate(data, data.model.getGlobalObjective()));
 		}
-		templates.parallelStream().forEach(template -> {
+		templates.stream().forEach(template -> {
 			try {
 				template.init();
 				template.generate();

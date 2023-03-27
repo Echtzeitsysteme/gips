@@ -147,7 +147,7 @@ protected void buildTerms(final «data.pattern2matchClassName.get(context.patter
 		}
 		val method = '''
 	protected void «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
-		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper("«expr.mapping.name»").getMappings().values().parallelStream()
+		for(«data.mapping2mappingClassName.get(expr.mapping)» «getIteratorVariableName(expr)» : engine.getMapper("«expr.mapping.name»").getMappings().values().stream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expr.mapping)») mapping)
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			«IF containsOnlyMappingVariable»terms.add(new ILPTerm(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
@@ -166,7 +166,7 @@ protected void buildTerms(final «data.pattern2matchClassName.get(context.patter
 		imports.add(data.classToPackage.getImportsForType(expr.type.type))
 		val method = '''
 	protected void «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
-		double constant = indexer.getObjectsOfType("«expr.type.type.name»").parallelStream()
+		double constant = indexer.getObjectsOfType("«expr.type.type.name»").stream()
 					.map(type -> («expr.type.type.name») type)
 					«getFilterExpr(expr.filter, ExpressionContext.constStream)»
 					.map(«getIteratorVariableName(expr)» -> «parseExpression(expr.expression, ExpressionContext.constConstraint)»)
@@ -186,7 +186,7 @@ protected void buildTerms(final «data.pattern2matchClassName.get(context.patter
 		imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(expr.pattern))
 		val method = '''
 	protected void «methodName»(final «data.pattern2matchClassName.get(context.pattern)» context) {
-		double constant = engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()
+		double constant = engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).stream()
 					«getFilterExpr(expr.filter, ExpressionContext.constStream)»
 					.map(«getIteratorVariableName(expr)» -> «parseExpression(expr.expression, ExpressionContext.constConstraint)»)
 					.reduce(0.0, (sum, value) -> sum + value);

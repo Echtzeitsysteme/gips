@@ -438,14 +438,14 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.")
 		} else if(constExpr instanceof TypeSumExpression) {
 			imports.add(data.classToPackage.getImportsForType(constExpr.type.type))
-			return '''indexer.getObjectsOfType("«constExpr.type.type.name»").parallelStream()
+			return '''indexer.getObjectsOfType("«constExpr.type.type.name»").stream()
 			.map(type -> («constExpr.type.type.name») type)
 			«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
 			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
 		} else if(constExpr instanceof PatternSumExpression) {
 			imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(constExpr.pattern))
-			return '''engine.getEMoflonAPI().«constExpr.pattern.name»().findMatches(false).parallelStream()
+			return '''engine.getEMoflonAPI().«constExpr.pattern.name»().findMatches(false).stream()
 			«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
 			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
@@ -453,7 +453,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			if(constExpr.context instanceof Mapping) {
 				throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 			} else if(constExpr.context instanceof Pattern) {
-				return '''context.get«constExpr.node.name.toFirstUpper»().«parseFeatureExpression(constExpr.feature)».parallelStream()
+				return '''context.get«constExpr.node.name.toFirstUpper»().«parseFeatureExpression(constExpr.feature)».stream()
 			«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
 			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
@@ -573,14 +573,14 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			throw new UnsupportedOperationException("Mapping stream expressions may not be part of multiplications, fractions, exponentials, roots etc.");
 		} else if(varExpr instanceof TypeSumExpression) {
 			imports.add(data.classToPackage.getImportsForType(varExpr.type.type))
-			return '''indexer.getObjectsOfType("«varExpr.type.type.name»").parallelStream()
+			return '''indexer.getObjectsOfType("«varExpr.type.type.name»").stream()
 			.map(type -> («varExpr.type.type.name») type)
 			«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
 			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
 		} else if(varExpr instanceof PatternSumExpression) {
 			imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(varExpr.pattern))
-			return '''engine.getEMoflonAPI().«varExpr.pattern.name»().findMatches(false).parallelStream()
+			return '''engine.getEMoflonAPI().«varExpr.pattern.name»().findMatches(false).stream()
 			«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
 			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
@@ -588,7 +588,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			if(varExpr.context instanceof Mapping) {
 				throw new UnsupportedOperationException("Mapping stream expressions may not be part of multiplications, fractions, exponentials, roots etc.");
 			} else if(varExpr.context instanceof Pattern) {
-				return '''context.get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.feature)».parallelStream()
+				return '''context.get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.feature)».stream()
 			«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
 			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''

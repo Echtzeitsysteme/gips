@@ -107,7 +107,7 @@ public class TypeIndexer {
 	protected void resolveAddMany(Notification notification) {
 		@SuppressWarnings("unchecked")
 		List<EObject> addedNodes = (List<EObject>) notification.getNewValue();
-		addedNodes.parallelStream().forEach(node -> {
+		addedNodes.stream().forEach(node -> {
 			if (index.keySet().contains(node.eClass()))
 				node = putObject(node.eClass(), node);
 
@@ -153,7 +153,7 @@ public class TypeIndexer {
 					typeByName.put(type.getName(), type.getType());
 
 					// Add sub-classes
-					Set<EClass> subclasses = type.getType().getEPackage().getEClassifiers().parallelStream()
+					Set<EClass> subclasses = type.getType().getEPackage().getEClassifiers().stream()
 							.filter(cls -> (cls instanceof EClass)).map(cls -> (EClass) cls)
 							.filter(cls -> !cls.equals(type.getType()))
 							.filter(cls -> cls.getEAllSuperTypes().contains(type.getType()))
@@ -175,7 +175,7 @@ public class TypeIndexer {
 
 					// Add all sub-classes of super-classes
 					superclasses.stream().filter(cls -> !class2subclass.containsKey(cls)).forEach(cls -> {
-						Set<EClass> supersubclasses = cls.getEPackage().getEClassifiers().parallelStream()
+						Set<EClass> supersubclasses = cls.getEPackage().getEClassifiers().stream()
 								.filter(cls2 -> (cls2 instanceof EClass)).map(cls2 -> (EClass) cls2)
 								.filter(cls2 -> !cls2.equals(cls))
 								.filter(cls2 -> cls2.getEAllSuperTypes().contains(cls)).collect(Collectors.toSet());
@@ -188,7 +188,7 @@ public class TypeIndexer {
 					});
 				});
 
-		eMoflonAPI.getModel().getResources().parallelStream().filter(r -> !r.getURI().toString().contains("trash.xmi"))
+		eMoflonAPI.getModel().getResources().stream().filter(r -> !r.getURI().toString().contains("trash.xmi"))
 				.forEach(r -> {
 					r.getContents().forEach(node -> {
 						if (index.keySet().contains(node.eClass()))
@@ -211,11 +211,11 @@ public class TypeIndexer {
 		Queue<EObject> frontier = getFrontier(rootObj);
 
 		while (!frontier.isEmpty()) {
-			frontier = frontier.parallelStream().flatMap(child -> {
+			frontier = frontier.stream().flatMap(child -> {
 				if (index.keySet().contains(child.eClass())) {
 					putObject(child.eClass(), child);
 				}
-				return getFrontier(child).parallelStream();
+				return getFrontier(child).stream();
 			}).collect(Collectors.toCollection(LinkedList::new));
 		}
 	}

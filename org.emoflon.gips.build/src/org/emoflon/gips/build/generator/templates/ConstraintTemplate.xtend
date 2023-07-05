@@ -482,9 +482,9 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		} else if(constExpr instanceof ContextMappingVariablesReference) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof ContextMappingNodeFeatureValue) {
-			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
+			return '''context.get«constExpr.node.name.toFirstUpper»().«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else if(constExpr instanceof ContextMappingNode) {
-			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
+			return '''context.get«constExpr.node.name.toFirstUpper»()'''
 		} else if(constExpr instanceof IteratorMappingValue) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingVariableValue) {
@@ -492,11 +492,11 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 		} else if(constExpr instanceof IteratorMappingVariablesReference) {
 			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
 		} else if(constExpr instanceof IteratorMappingFeatureValue) {
-			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
+			return '''«getIteratorVariableName(constExpr.stream)».«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else if(constExpr instanceof IteratorMappingNodeFeatureValue) {
-			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
+			return '''«getIteratorVariableName(constExpr.stream)».get«constExpr.node.name.toFirstUpper»().«parseFeatureExpression(constExpr.featureExpression)»'''
 		} else if(constExpr instanceof IteratorMappingNodeValue) {
-			throw new UnsupportedOperationException("Mapping access not allowed in constant expressions.");
+			return '''«getIteratorVariableName(constExpr.stream)».get«constExpr.node.name.toFirstUpper»()'''
 		} else if(constExpr instanceof IteratorPatternValue) {
 			return '''«getIteratorVariableName(constExpr.stream)»'''
 		}  else if(constExpr instanceof IteratorPatternFeatureValue) {

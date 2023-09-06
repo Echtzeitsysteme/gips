@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="gurobi-10.0.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="gurobi-javadoc-10.0.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="cplex-22.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="gurobi-10.0.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="gurobi-javadoc-10.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="logicng-2.4.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="glpk-java-1.12.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="glpk-java-1.12.0-javadoc.jar"/>

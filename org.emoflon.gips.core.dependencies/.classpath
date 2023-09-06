@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="gurobi-10.0.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="gurobi-javadoc-10.0.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="cplex-22.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="logicng-2.4.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="glpk-java-1.12.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="glpk-java-1.12.0-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cplex-22.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/glpk-java-1.12.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/glpk-java-1.12.0-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/gurobi-10.0.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/gurobi-javadoc-10.0.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/logicng-2.4.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="bin"/>

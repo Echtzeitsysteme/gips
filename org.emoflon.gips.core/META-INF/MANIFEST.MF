@@ -8,7 +8,9 @@ Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.emoflon.ibex.gt;visibility:=reexport,
  org.emoflon.gips.intermediate;visibility:=reexport,
  org.emoflon.gips.core.dependencies;bundle-version="1.0.0";visibility:=reexport,
- org.emoflon.gips.build
+ org.emoflon.gips.build,
+ org.emoflon.ilp,
+ org.emoflon.ilp.dependencies
 Export-Package: org.emoflon.gips.core,
  org.emoflon.gips.core.api,
  org.emoflon.gips.core.gt,

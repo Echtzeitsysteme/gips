@@ -19,7 +19,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode;
@@ -147,8 +146,6 @@ public final class GipsTransformationUtils {
 			return ArithmeticExpressionType.constant;
 		} else if (expr instanceof RelationalExpression relExpr) {
 			return isConstantExpression(relExpr);
-		} else if (expr instanceof BoolStreamExpression streamExpr) {
-			return isConstantExpression(streamExpr.getStream());
 		} else {
 			BoolValue value = (BoolValue) expr;
 			return isConstantExpression(value.getValue());
@@ -358,8 +355,6 @@ public final class GipsTransformationUtils {
 			return false;
 		} else if (expr instanceof RelationalExpression relExpr) {
 			return containsContextExpression(relExpr);
-		} else if (expr instanceof BoolStreamExpression streamExpr) {
-			return containsContextExpression(streamExpr.getStream());
 		} else {
 			BoolValue value = (BoolValue) expr;
 			return containsContextExpression(value.getValue());
@@ -531,8 +526,6 @@ public final class GipsTransformationUtils {
 			return new HashSet<>();
 		} else if (expr instanceof RelationalExpression relExpr) {
 			return extractVariable(relExpr);
-		} else if (expr instanceof BoolStreamExpression streamExpr) {
-			return extractVariable(streamExpr.getStream());
 		} else {
 			BoolValue value = (BoolValue) expr;
 			return extractVariable(value.getValue());
@@ -605,8 +598,6 @@ public final class GipsTransformationUtils {
 			return new HashSet<>();
 		} else if (expr instanceof RelationalExpression relExpr) {
 			return extractObjective(relExpr);
-		} else if (expr instanceof BoolStreamExpression streamExpr) {
-			return extractObjective(streamExpr.getStream());
 		} else {
 			BoolValue value = (BoolValue) expr;
 			return extractObjective(value.getValue());

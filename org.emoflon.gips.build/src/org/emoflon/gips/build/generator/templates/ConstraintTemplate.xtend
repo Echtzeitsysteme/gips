@@ -30,7 +30,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolValue
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation
@@ -278,15 +277,6 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends Generator
 			return '''«(expr.literal)?"true":"false"»''';
 		} else if(expr instanceof RelationalExpression) {
 			return parseRelationalExpression(expr, contextType)
-		} else if(expr instanceof BoolStreamExpression) {
-			switch(expr.operator) {
-				case EXISTS: {
-					return '''«parseExpression(expr.stream, contextType)».isPresent()'''
-				}
-				case NOTEXISTS: {
-					return '''!«parseExpression(expr.stream, contextType)».isPresent()'''
-				}
-			}
 		} else {
 			val value = expr as BoolValue;
 			switch(contextType) {

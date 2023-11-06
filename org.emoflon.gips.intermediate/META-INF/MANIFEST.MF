@@ -13,5 +13,9 @@ Export-Package: org.emoflon.gips.intermediate.GipsIntermediate,
  org.emoflon.gips.intermediate.GipsIntermediate.util
 Require-Bundle: org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.core.runtime,
- org.emoflon.ibex.patternmodel;bundle-version="0.1.0";visibility:=reexport
+ org.emoflon.ibex.patternmodel;bundle-version="0.1.0";visibility:=reexport,
+ org.apache.log4j,
+ org.eclipse.xtext,
+ org.apache.commons.logging,
+ org.eclipse.emf.mwe2.launch
 Bundle-ActivationPolicy: lazy

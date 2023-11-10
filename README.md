@@ -17,7 +17,7 @@
 * Clone this Git repository to your local machine and import it into Eclipse: *File -> Import -> General -> Existing Projects into Workspace*. Import all projects.
     * As an alternative, you can use this [PSF file](https://raw.githubusercontent.com/Echtzeitsysteme/gips/master/devProjectSet.psf) for the import.
 * Inside the Eclipse development workspace ...
-    * ... Run `Build all GIPS MWE2 files.launch` from `org.emoflon.gips.core/launch` with right click _Run As_ -> _Build all GIPS MWE2 files_.
+    * ... Run `Run all GIPS MWE2 files.launch` from `org.emoflon.gips.core/launch` with right click _Run As_ -> _Build all GIPS MWE2 files_.
     * ... build all projects (*Project -> Clean... -> Clean all projects*) to trigger code generation.
 * Launch a runtime workspace (while using a runtime Eclipse) as stated in the eMoflon::IBeX installation steps to start using GIPS.
 

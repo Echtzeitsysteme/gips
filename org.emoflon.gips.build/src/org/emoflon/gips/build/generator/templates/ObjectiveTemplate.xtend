@@ -173,7 +173,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 	}
 	
 	def void generateBuilder(ValueExpression expr) {
-		if(expr instanceof MappingSumExpression || expr instanceof TypeSumExpression || expr instanceof ContextSumExpression || expr instanceof ContextMappingVariablesReference) {
+		if(expr instanceof MappingSumExpression || expr instanceof TypeSumExpression || expr instanceof ContextSumExpression || expr instanceof PatternSumExpression || expr instanceof ContextMappingVariablesReference) {
 			val builderMethodName = generateIteratingBuilder(expr);
 			builderMethodCalls.add('''«builderMethodName»(context);''')
 		} else {

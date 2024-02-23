@@ -16,15 +16,15 @@ import org.emoflon.gips.core.GipsTypeConstraint;
 import org.emoflon.gips.core.gt.GipsPatternConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 
-import gurobi.GRB;
-import gurobi.GRB.DoubleAttr;
-import gurobi.GRB.DoubleParam;
-import gurobi.GRB.IntParam;
-import gurobi.GRBEnv;
-import gurobi.GRBException;
-import gurobi.GRBLinExpr;
-import gurobi.GRBModel;
-import gurobi.GRBVar;
+import com.gurobi.gurobi.GRB;
+import com.gurobi.gurobi.GRB.DoubleAttr;
+import com.gurobi.gurobi.GRB.DoubleParam;
+import com.gurobi.gurobi.GRB.IntParam;
+import com.gurobi.gurobi.GRBEnv;
+import com.gurobi.gurobi.GRBException;
+import com.gurobi.gurobi.GRBLinExpr;
+import com.gurobi.gurobi.GRBModel;
+import com.gurobi.gurobi.GRBVar;
 
 public class GurobiSolver extends ILPSolver {
 

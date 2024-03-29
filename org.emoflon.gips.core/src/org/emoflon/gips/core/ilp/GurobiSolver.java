@@ -104,8 +104,6 @@ public class GurobiSolver extends ILPSolver {
 		} catch (final GRBException e) {
 			e.printStackTrace();
 		}
-		// TODO: This can create an error: "free(): double free detected in tcache 2"
-		env.release();
 	}
 
 	@Override

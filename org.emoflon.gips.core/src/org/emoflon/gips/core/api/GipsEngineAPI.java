@@ -104,6 +104,18 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		return this.eMoflonAPI.getModel();
 	}
 
+	/**
+	 * Terminates the GipsEngine (super class) and the eMoflon::IBeX engine
+	 * (including the pattern matcher).
+	 */
+	public void terminate() {
+		// Terminate the GipsEngine
+		super.terminate();
+
+		// Terminate the eMoflon::IBeX engine (including HiPE)
+		this.getEMoflonAPI().terminate();
+	}
+
 	protected void setSolverConfig(final ILPConfig config) {
 		solverConfig = new ILPSolverConfig(config.isEnableTimeLimit(), config.getIlpTimeLimit(), //
 				config.isEnableRndSeed(), config.getIlpRndSeed(), //

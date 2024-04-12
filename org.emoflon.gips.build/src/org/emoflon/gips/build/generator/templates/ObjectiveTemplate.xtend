@@ -30,7 +30,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolStreamExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.BoolValue
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation
 import org.emoflon.gips.intermediate.GipsIntermediate.StreamSelectOperation
@@ -174,7 +173,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 	}
 	
 	def void generateBuilder(ValueExpression expr) {
-		if(expr instanceof MappingSumExpression || expr instanceof TypeSumExpression || expr instanceof ContextSumExpression || expr instanceof ContextMappingVariablesReference) {
+		if(expr instanceof MappingSumExpression || expr instanceof TypeSumExpression || expr instanceof ContextSumExpression || expr instanceof PatternSumExpression || expr instanceof ContextMappingVariablesReference) {
 			val builderMethodName = generateIteratingBuilder(expr);
 			builderMethodCalls.add('''«builderMethodName»(context);''')
 		} else {
@@ -320,15 +319,6 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			return '''«(expr.literal)?"true":"false"»''';
 		} else if(expr instanceof RelationalExpression) {
 			return parseRelationalExpression(expr, contextType)
-		} else if(expr instanceof BoolStreamExpression) {
-			switch(expr.operator) {
-				case EXISTS: {
-					return '''«parseExpression(expr.stream, contextType)».isPresent()'''
-				}
-				case NOTEXISTS: {
-					return '''!«parseExpression(expr.stream, contextType)».isPresent()'''
-				}
-			}
 		} else {
 			val value = expr as BoolValue;
 			switch(contextType) {

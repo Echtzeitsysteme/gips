@@ -199,7 +199,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		// Check Workspace uniqueness
 		IProject currentProject = GipslScopeContextUtil.getCurrentProject(pkg.eResource());
 		String currentFile = pkg.eResource().getURI().toString().replace("platform:/resource/", "")
-				.replace(currentProject.getName(), "");
+				.replaceFirst(currentProject.getName(), "");
 		currentFile = currentProject.getLocation().toPortableString() + currentFile;
 		currentFile = currentFile.replace("/", "\\");
 

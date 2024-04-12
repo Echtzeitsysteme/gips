@@ -903,21 +903,16 @@ public class GipsArithmeticTransformer {
 			cv.setMappingContext(ref.getMappingContext());
 			cv.setStream(rootSum);
 			cv.setVar(cloneExpression(ref.getVar(), rootSum));
-		} else if (value instanceof IteratorTypeValue val) {
-			IteratorTypeValue cv = factory.createIteratorTypeValue();
-			clone = cv;
-			cv.setTypeContext(val.getTypeContext());
-			cv.setStream(rootSum);
 		} else if (value instanceof IteratorTypeFeatureValue val) {
 			IteratorTypeFeatureValue cv = factory.createIteratorTypeFeatureValue();
 			clone = cv;
 			cv.setTypeContext(val.getTypeContext());
 			cv.setStream(rootSum);
 			cv.setFeatureExpression(cloneExpression(val.getFeatureExpression(), rootSum));
-		} else if (value instanceof IteratorPatternValue val) {
-			IteratorPatternValue cv = factory.createIteratorPatternValue();
+		} else if (value instanceof IteratorTypeValue val) {
+			IteratorTypeValue cv = factory.createIteratorTypeValue();
 			clone = cv;
-			cv.setPatternContext(val.getPatternContext());
+			cv.setTypeContext(val.getTypeContext());
 			cv.setStream(rootSum);
 		} else if (value instanceof IteratorPatternFeatureValue val) {
 			IteratorPatternFeatureValue cv = factory.createIteratorPatternFeatureValue();
@@ -925,6 +920,11 @@ public class GipsArithmeticTransformer {
 			cv.setPatternContext(val.getPatternContext());
 			cv.setStream(rootSum);
 			cv.setFeatureExpression(cloneExpression(val.getFeatureExpression(), rootSum));
+		} else if (value instanceof IteratorPatternValue val) {
+			IteratorPatternValue cv = factory.createIteratorPatternValue();
+			clone = cv;
+			cv.setPatternContext(val.getPatternContext());
+			cv.setStream(rootSum);
 		} else if (value instanceof IteratorPatternNodeFeatureValue val) {
 			IteratorPatternNodeFeatureValue cv = factory.createIteratorPatternNodeFeatureValue();
 			clone = cv;

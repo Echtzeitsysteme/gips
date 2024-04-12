@@ -56,7 +56,7 @@ public abstract class ILPSolver {
 	protected abstract void translateObjective(final GipsGlobalObjective objective);
 
 	public abstract void terminate();
-	
+
 	public abstract void reset();
-	
+
 }

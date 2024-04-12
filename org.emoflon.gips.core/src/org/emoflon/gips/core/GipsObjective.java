@@ -22,7 +22,7 @@ public abstract class GipsObjective<ENGINE extends GipsEngine, OBJECTIVE extends
 		this.name = objective.getName();
 		indexer = engine.getIndexer();
 	}
-	
+
 	/**
 	 * Clears all Lists within this objective builder.
 	 */

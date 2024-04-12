@@ -275,7 +275,9 @@ public class GipsToIntermediate {
 
 			for (GipsAnnotatedConstraint eSubConstraint : eConstraints) {
 				switch (eSubConstraint.type()) {
-				case CONJUCTION_OF_LITERALS -> {
+				// TODO: Fix -> Transform disjunction of rel-expressions according to new method
+				// (#3), based on (#1 and #2).
+				case DISJUNCTION_OF_LITERALS -> {
 					Constraint dConstraint = createDependencyConstraint(eSubConstraint, constraintCounter);
 					data.model().getConstraints().add(dConstraint);
 					constraintCounter++;
@@ -416,10 +418,13 @@ public class GipsToIntermediate {
 					substituteRelation.setLhs(substituteSum);
 					dConstraint.setExpression(substituteRelation);
 				}
+				// TODO: Fix -> Transform relational operators according to new method (#1)
 				case LITERAL -> {
 					Constraint constraint = transformConstraint(eSubConstraint.result().values().iterator().next());
 					constraint.setNegated(false);
 				}
+				// TODO: Fix -> Transform negation according to new method (#2) that ist based
+				// on (#1)
 				case NEGATED_LITERAL -> {
 					Constraint constraint = transformConstraint(eSubConstraint.result().values().iterator().next());
 					data.model().getConstraints().add(constraint);
@@ -470,6 +475,7 @@ public class GipsToIntermediate {
 		}
 	}
 
+	// TODO: Fix -> Transform relational operators according to new method (#1)
 	protected Constraint transformConstraint(final GipsConstraint subConstraint) throws Exception {
 		Constraint constraint = createConstraint(subConstraint, constraintCounter);
 		constraint.setDepending(false);

@@ -190,7 +190,7 @@ public class GipsConstraintSplitter {
 				}
 
 				constraints.add(new GipsAnnotatedConstraint(this.constraint, nAry,
-						AnnotatedConstraintType.CONJUCTION_OF_LITERALS, result));
+						AnnotatedConstraintType.DISJUNCTION_OF_LITERALS, result));
 			}
 			default -> {
 				throw new UnsupportedOperationException("Unknown nAry-boolean operation type: " + nAry.type());

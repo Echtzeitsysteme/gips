@@ -1,5 +1,8 @@
 package org.emoflon.gips.build.transformation;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
@@ -10,8 +13,12 @@ import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
+import org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
@@ -19,6 +26,181 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
 public final class GipsConstraintUtils {
 	final public static double EPSILON = 0.0001d;
 	final public static double INF = 10_000;
+
+	/*
+	 * This function takes a constraint and normalizes the contained generic
+	 * relational expression modeling a linear equality, such that only relational
+	 * operators are used, which are supported by ILP solvers (>=, <=, ==).
+	 * 
+	 * This function assumes that the expression in constraint is a relation
+	 * expression, where the lhs is a variable arithmetic expression and the lhs is
+	 * a constant expression. E.g.: f(x) <= c
+	 * 
+	 * This function might return a set of substitute constraints that have to be
+	 * satisfied instead of modifying expression. The expression and the
+	 * corresponding constraint must be discarded if the return value is not an
+	 * empty collection.
+	 */
+	static protected Collection<Constraint> normalizeOperator(final GipsTransformationData data,
+			final GipsIntermediateFactory factory, final Constraint constraint, boolean negated) {
+		RelationalExpression expression = (RelationalExpression) constraint.getExpression();
+		Collection<Constraint> constraints = new LinkedList<>();
+		switch (expression.getOperator()) {
+		case EQUAL:
+			if (negated) {
+				expression.setOperator(RelationalOperator.NOT_EQUAL);
+				return normalizeOperator(data, factory, constraint, false);
+			}
+			return constraints;
+		case GREATER:
+			if (negated) {
+				expression.setOperator(RelationalOperator.LESS_OR_EQUAL);
+			} else {
+				// Transform according to: f(x) > c <=> f(x) >= c + eps,
+				// with eps > 0 and eps << 1.
+				expression.setOperator(RelationalOperator.GREATER_OR_EQUAL);
+				BinaryArithmeticExpression sum = factory.createBinaryArithmeticExpression();
+				sum.setOperator(BinaryArithmeticOperator.ADD);
+				sum.setLhs(expression.getRhs());
+				sum.setRhs(createEpsilon(factory, true));
+				expression.setRhs(sum);
+			}
+			return constraints;
+		case GREATER_OR_EQUAL:
+			if (negated) {
+				expression.setOperator(RelationalOperator.LESS);
+				return normalizeOperator(data, factory, constraint, false);
+			}
+			return constraints;
+		case LESS:
+			if (negated) {
+				expression.setOperator(RelationalOperator.GREATER_OR_EQUAL);
+			} else {
+				// Transform according to: f(x) < c <=> f(x) <= c - eps,
+				// with eps > 0 and eps << 1.
+				expression.setOperator(RelationalOperator.LESS_OR_EQUAL);
+				BinaryArithmeticExpression sum = factory.createBinaryArithmeticExpression();
+				sum.setOperator(BinaryArithmeticOperator.SUBTRACT);
+				sum.setLhs(expression.getRhs());
+				sum.setRhs(createEpsilon(factory, true));
+				expression.setRhs(sum);
+			}
+			return constraints;
+		case LESS_OR_EQUAL:
+			if (negated) {
+				expression.setOperator(RelationalOperator.GREATER);
+				return normalizeOperator(data, factory, constraint, false);
+			}
+			return constraints;
+		case NOT_EQUAL:
+			if (negated) {
+				expression.setOperator(RelationalOperator.EQUAL);
+			} else { // TODO: @Max, here's the new version for the not-equal transformation.
+				// Transform according to:
+				// f(x) != c <=> (I) & (II) & (III) & (IV) & (V),
+				// with eps << 1, M >> 0, eps, M in R^+\{0} and s',s'' in {0, 1}.
+				//
+				// (I) : f(x) - M*s' >= c + eps - M
+				// (II) : f(x) - Ms' <= c
+				// (III): f(x) + Ms'' >= c
+				// (IV) : f(x) + Ms'' <= M + c - eps
+				// (V) : s' + s'' == 1
+
+				// Creating s' and s''
+				Variable s1 = createBinaryVariable(data, factory, constraint.getName() + "_NEQslack1");
+				Variable s2 = createBinaryVariable(data, factory, constraint.getName() + "_NEQslack2");
+				// (I)
+				Constraint c1 = createSubstituteConstraint(factory, data, constraint, 0);
+				// (I) - LHS
+				BinaryArithmeticExpression lhs = factory.createBinaryArithmeticExpression();
+				lhs.setOperator(BinaryArithmeticOperator.ADD);
+				lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null));
+				BinaryArithmeticExpression term = factory.createBinaryArithmeticExpression();
+				term.setOperator(BinaryArithmeticOperator.MULTIPLY);
+				term.setLhs(createInf(factory, true));
+				term.setRhs(createVariableReference(factory, s1));
+				lhs.setRhs(term);
+				// (I) - RHS
+				BinaryArithmeticExpression rhs = factory.createBinaryArithmeticExpression();
+				rhs.setOperator(BinaryArithmeticOperator.ADD);
+				rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null));
+				BinaryArithmeticExpression rhs_rhs = factory.createBinaryArithmeticExpression();
+				rhs_rhs.setOperator(BinaryArithmeticOperator.SUBTRACT);
+				rhs_rhs.setLhs(createEpsilon(factory, false));
+				rhs_rhs.setRhs(createInf(factory, false));
+				rhs.setRhs(rhs_rhs);
+				// (I) - Combine
+				RelationalExpression relation = factory.createRelationalExpression();
+				relation.setOperator(RelationalOperator.GREATER_OR_EQUAL);
+				relation.setLhs(lhs);
+				relation.setRhs(rhs);
+				c1.setExpression(relation);
+				c1.setDepending(false);
+				c1.setNegated(false);
+				c1.setConstant(false);
+				constraints.add(c1);
+				// (II)
+				Constraint c2 = createSubstituteConstraint(factory, data, constraint, 0);
+
+				// (III)
+				Constraint c3 = createSubstituteConstraint(factory, data, constraint, 0);
+
+				// (IV)
+				Constraint c4 = createSubstituteConstraint(factory, data, constraint, 0);
+
+				// (V)
+				Constraint c5 = createSubstituteConstraint(factory, data, constraint, 0);
+			}
+			return constraints;
+		default:
+			throw new UnsupportedOperationException(
+					"Linear equalities may not contain non-numeric values aka. complex objects.");
+		}
+	}
+
+	static protected DoubleLiteral createEpsilon(GipsIntermediateFactory factory, boolean positive) {
+		DoubleLiteral eps = factory.createDoubleLiteral();
+		if (positive) {
+			eps.setLiteral(EPSILON);
+		} else {
+			eps.setLiteral(-EPSILON);
+		}
+		return eps;
+	}
+
+	static protected DoubleLiteral createInf(GipsIntermediateFactory factory, boolean positive) {
+		DoubleLiteral eps = factory.createDoubleLiteral();
+		if (positive) {
+			eps.setLiteral(INF);
+		} else {
+			eps.setLiteral(-INF);
+		}
+		return eps;
+	}
+
+	static protected Constraint createSubstituteConstraint(GipsIntermediateFactory factory,
+			final GipsTransformationData data, final Constraint constraint, int index) {
+		if (constraint instanceof MappingConstraint mConstraint) {
+			MappingConstraint substitute = factory.createMappingConstraint();
+			substitute.setName(mConstraint.getName() + "_NEQ" + index);
+			substitute.setMapping(mConstraint.getMapping());
+			return substitute;
+		} else if (constraint instanceof PatternConstraint pConstraint) {
+			PatternConstraint substitute = factory.createPatternConstraint();
+			substitute.setName(pConstraint.getName() + "_NEQ" + index);
+			substitute.setPattern(pConstraint.getPattern());
+			return substitute;
+		} else if (constraint instanceof TypeConstraint tConstraint) {
+			TypeConstraint substitute = factory.createTypeConstraint();
+			substitute.setName(tConstraint.getName() + "_NEQ" + index);
+			substitute.setModelType(tConstraint.getModelType());
+			return substitute;
+		} else {
+			GlobalConstraint substitute = factory.createGlobalConstraint();
+			substitute.setName(constraint.getName() + "_NEQ" + index);
+			return substitute;
+		}
+	}
 
 	static protected VariableTuple insertSlackVariables(final GipsTransformationData data,
 			final GipsIntermediateFactory factory, final Constraint dependingConstraint, final Constraint constraint) {
@@ -486,5 +668,11 @@ public final class GipsConstraintUtils {
 		var.setUpperBound(INF);
 		var.setLowerBound(-INF);
 		return var;
+	}
+
+	static VariableReference createVariableReference(final GipsIntermediateFactory factory, Variable variable) {
+		VariableReference ref = factory.createVariableReference();
+		ref.setVariable(variable);
+		return ref;
 	}
 }

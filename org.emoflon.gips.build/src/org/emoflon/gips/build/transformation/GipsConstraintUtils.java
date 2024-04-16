@@ -37,23 +37,23 @@ public final class GipsConstraintUtils {
 	 * a constant expression. E.g.: f(x) <= c
 	 * 
 	 * This function might return a set of substitute constraints that have to be
-	 * satisfied instead of modifying expression. The expression and the
+	 * satisfied instead of modifying the expression itself. The expression and the
 	 * corresponding constraint must be discarded if the return value is not an
 	 * empty collection.
 	 */
 	static protected Collection<Constraint> normalizeOperator(final GipsTransformationData data,
-			final GipsIntermediateFactory factory, final Constraint constraint, boolean negated) {
+			final GipsIntermediateFactory factory, final Constraint constraint, boolean isNegated) {
 		RelationalExpression expression = (RelationalExpression) constraint.getExpression();
 		Collection<Constraint> constraints = new LinkedList<>();
 		switch (expression.getOperator()) {
 		case EQUAL:
-			if (negated) {
+			if (isNegated) {
 				expression.setOperator(RelationalOperator.NOT_EQUAL);
 				return normalizeOperator(data, factory, constraint, false);
 			}
 			return constraints;
 		case GREATER:
-			if (negated) {
+			if (isNegated) {
 				expression.setOperator(RelationalOperator.LESS_OR_EQUAL);
 			} else {
 				// Transform according to: f(x) > c <=> f(x) >= c + eps,
@@ -67,13 +67,13 @@ public final class GipsConstraintUtils {
 			}
 			return constraints;
 		case GREATER_OR_EQUAL:
-			if (negated) {
+			if (isNegated) {
 				expression.setOperator(RelationalOperator.LESS);
 				return normalizeOperator(data, factory, constraint, false);
 			}
 			return constraints;
 		case LESS:
-			if (negated) {
+			if (isNegated) {
 				expression.setOperator(RelationalOperator.GREATER_OR_EQUAL);
 			} else {
 				// Transform according to: f(x) < c <=> f(x) <= c - eps,
@@ -87,13 +87,13 @@ public final class GipsConstraintUtils {
 			}
 			return constraints;
 		case LESS_OR_EQUAL:
-			if (negated) {
+			if (isNegated) {
 				expression.setOperator(RelationalOperator.GREATER);
 				return normalizeOperator(data, factory, constraint, false);
 			}
 			return constraints;
 		case NOT_EQUAL:
-			if (negated) {
+			if (isNegated) {
 				expression.setOperator(RelationalOperator.EQUAL);
 			} else { // TODO: @Max, here's the new version for the not-equal transformation.
 				// Transform according to:
@@ -241,6 +241,97 @@ public final class GipsConstraintUtils {
 				c5.setConstant(false);
 				constraints.add(c5);
 			}
+			return constraints;
+		default:
+			throw new UnsupportedOperationException(
+					"Linear equalities may not contain non-numeric values aka. complex objects.");
+		}
+	}
+
+	/*
+	 * This function takes a constraint, inserts a symbolic variable that reflects
+	 * the outcome of the constraint and normalizes the contained generic relational
+	 * expression modeling a linear equality, such that only relational operators
+	 * are used, which are supported by ILP solvers (>=, <=, ==).
+	 * 
+	 * This function assumes that the expression in constraint is a relation
+	 * expression, where the lhs is a variable arithmetic expression and the lhs is
+	 * a constant expression. E.g.: f(x) <= c
+	 * 
+	 * This function might return a set of substitute constraints that have to be
+	 * satisfied instead of modifying the expression itself. The expression and the
+	 * corresponding constraint must be discarded if the return value is not an
+	 * empty collection.
+	 */
+	static protected Collection<Constraint> normalizeOperator(final GipsTransformationData data,
+			final GipsIntermediateFactory factory, final Constraint constraint, Variable symbolicVariable) {
+		RelationalExpression expression = (RelationalExpression) constraint.getExpression();
+		Collection<Constraint> constraints = new LinkedList<>();
+		switch (expression.getOperator()) {
+		case EQUAL:
+			// Transform according to:
+			// f(x) == c <=> s == 1, with s in {0, 1} and equalities (I) through (IV).
+			// As usual eps << 1, M >> 0, eps, M in R^+\{0}.
+			//
+			// (I) : f(x) + Ms >= c + eps
+			// (II) : f(x) + Ms <= M + c
+			// (III): f(x) - Ms >= c - M
+			// (IV) : f(x) - Ms <= c - eps
+
+			// TODO:
+			return constraints;
+		case GREATER:
+			// Transform according to:
+			// f(x) > c <=> s == 1, with s in {0, 1} and equalities (I) and (II).
+			// As usual eps << 1, M >> 0, eps, M in R^+\{0}.
+			//
+			// (I) : f(x) - Ms >= c + eps - M
+			// (II) : f(x) - Ms <= c
+
+			// TODO:
+			return constraints;
+		case GREATER_OR_EQUAL:
+			// Transform according to:
+			// f(x) >= c <=> s == 1, with s in {0, 1} and equalities (I) and (II).
+			// As usual eps << 1, M >> 0, eps, M in R^+\{0}.
+			//
+			// (I) : f(x) - Ms >= c - M
+			// (II) : f(x) - Ms <= c - eps
+
+			// TODO:
+			return constraints;
+		case LESS:
+			// Transform according to:
+			// f(x) < c <=> s == 1, with s in {0, 1} and equalities (I) and (II).
+			// As usual eps << 1, M >> 0, eps, M in R^+\{0}.
+			//
+			// (I) : f(x) + Ms >= c
+			// (II) : f(x) + Ms <= M + c - eps
+
+			// TODO:
+			return constraints;
+		case LESS_OR_EQUAL:
+			// Transform according to:
+			// f(x) <= c <=> s == 1, with s in {0, 1} and equalities (I) and (II).
+			// As usual eps << 1, M >> 0, eps, M in R^+\{0}.
+			//
+			// (I) : f(x) + Ms >= c + eps
+			// (II) : f(x) + Ms <= M + c
+
+			// TODO:
+			return constraints;
+		case NOT_EQUAL:
+			// Transform according to:
+			// f(x) != c <=> s == 1, with s in {0, 1} and equalities (I) through (V).
+			// As usual eps << 1, M >> 0, eps, M in R^+\{0} and s', s'' in {0, 1}.
+			//
+			// (I) : f(x) - Ms' >= c + eps - M
+			// (II) : f(x) - Ms' <= c
+			// (III): f(x) + Ms'' >= c
+			// (IV) : f(x) + Ms'' <= c - eps
+			// (V) : s - s' - s''== 0
+
+			// TODO:
 			return constraints;
 		default:
 			throw new UnsupportedOperationException(

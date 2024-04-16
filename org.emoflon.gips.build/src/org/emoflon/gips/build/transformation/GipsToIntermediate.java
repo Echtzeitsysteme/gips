@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -420,8 +421,7 @@ public class GipsToIntermediate {
 				}
 				// TODO: Fix -> Transform relational operators according to new method (#1)
 				case LITERAL -> {
-					Constraint constraint = transformConstraint(eSubConstraint.result().values().iterator().next());
-					constraint.setNegated(false);
+					transformConstraint(eSubConstraint.result().values().iterator().next());
 				}
 				// TODO: Fix -> Transform negation according to new method (#2) that ist based
 				// on (#1)
@@ -479,9 +479,10 @@ public class GipsToIntermediate {
 	protected Constraint transformConstraint(final GipsConstraint subConstraint) throws Exception {
 		Constraint constraint = createConstraint(subConstraint, constraintCounter);
 		constraint.setDepending(false);
+		constraint.setNegated(false);
 
 		data.model().getConstraints().add(constraint);
-		data.eConstraint2Constraint().put(subConstraint, constraint);
+		data.eConstraint2Constraints().put(subConstraint, List.of(constraint));
 		constraintCounter++;
 
 		BooleanExpressionTransformer transformer = transformationFactory.createBooleanTransformer(constraint);
@@ -512,7 +513,19 @@ public class GipsToIntermediate {
 			throw new IllegalArgumentException("Context must be used at least once per non-global constraint.");
 		}
 
-		return constraint;
+		// Normalize the relational expression operator such that it conforms to most
+		// ILP solver's requirements (i.e., no !=, > and < operators allowed).
+		Collection<Constraint> substitutes = GipsConstraintUtils.normalizeOperator(data, factory, constraint, false);
+		if (substitutes.isEmpty()) {
+			return constraint;
+		}
+
+		data.model().getConstraints().remove(constraint);
+		data.model().getConstraints().addAll(substitutes);
+		data.eConstraint2Constraints().get(subConstraint).clear();
+		data.eConstraint2Constraints().get(subConstraint).addAll(substitutes);
+
+		return null;
 	}
 
 	protected void transformObjectives() throws Exception {

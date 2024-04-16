@@ -100,7 +100,7 @@ public final class GipsConstraintUtils {
 				// f(x) != c <=> (I) & (II) & (III) & (IV) & (V),
 				// with eps << 1, M >> 0, eps, M in R^+\{0} and s',s'' in {0, 1}.
 				//
-				// (I) : f(x) - M*s' >= c + eps - M
+				// (I) : f(x) - Ms' >= c + eps - M
 				// (II) : f(x) - Ms' <= c
 				// (III): f(x) + Ms'' >= c
 				// (IV) : f(x) + Ms'' <= M + c - eps
@@ -109,29 +109,30 @@ public final class GipsConstraintUtils {
 				// Creating s' and s''
 				Variable s1 = createBinaryVariable(data, factory, constraint.getName() + "_NEQslack1");
 				Variable s2 = createBinaryVariable(data, factory, constraint.getName() + "_NEQslack2");
-				// (I)
+
+				// (I) f(x) - Ms' >= c + eps - M
 				Constraint c1 = createSubstituteConstraint(factory, data, constraint, 0);
-				// (I) - LHS
-				BinaryArithmeticExpression lhs = factory.createBinaryArithmeticExpression();
+				// (I) - LHS: f(x) - Ms'
+				BinaryArithmeticExpression lhs = factory.createBinaryArithmeticExpression(); // f(x) + (-Ms')
 				lhs.setOperator(BinaryArithmeticOperator.ADD);
-				lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null));
-				BinaryArithmeticExpression term = factory.createBinaryArithmeticExpression();
+				lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+				BinaryArithmeticExpression term = factory.createBinaryArithmeticExpression(); // -Ms'
 				term.setOperator(BinaryArithmeticOperator.MULTIPLY);
-				term.setLhs(createInf(factory, true));
-				term.setRhs(createVariableReference(factory, s1));
+				term.setLhs(createInf(factory, false)); // -M
+				term.setRhs(createVariableReference(factory, s1)); // s'
 				lhs.setRhs(term);
-				// (I) - RHS
-				BinaryArithmeticExpression rhs = factory.createBinaryArithmeticExpression();
+				// (I) - RHS: c + eps - M
+				BinaryArithmeticExpression rhs = factory.createBinaryArithmeticExpression(); // c + eps - M
 				rhs.setOperator(BinaryArithmeticOperator.ADD);
-				rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null));
-				BinaryArithmeticExpression rhs_rhs = factory.createBinaryArithmeticExpression();
+				rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null)); // c
+				BinaryArithmeticExpression rhs_rhs = factory.createBinaryArithmeticExpression(); // eps - M
 				rhs_rhs.setOperator(BinaryArithmeticOperator.SUBTRACT);
-				rhs_rhs.setLhs(createEpsilon(factory, false));
-				rhs_rhs.setRhs(createInf(factory, false));
+				rhs_rhs.setLhs(createEpsilon(factory, true)); // eps
+				rhs_rhs.setRhs(createInf(factory, true)); // M
 				rhs.setRhs(rhs_rhs);
-				// (I) - Combine
+				// (I) - Combine: f(x) - Ms' >= c + eps - M
 				RelationalExpression relation = factory.createRelationalExpression();
-				relation.setOperator(RelationalOperator.GREATER_OR_EQUAL);
+				relation.setOperator(RelationalOperator.GREATER_OR_EQUAL); // >=
 				relation.setLhs(lhs);
 				relation.setRhs(rhs);
 				c1.setExpression(relation);
@@ -139,17 +140,106 @@ public final class GipsConstraintUtils {
 				c1.setNegated(false);
 				c1.setConstant(false);
 				constraints.add(c1);
-				// (II)
+
+				// (II) f(x) - Ms' <= c
 				Constraint c2 = createSubstituteConstraint(factory, data, constraint, 0);
+				// (II) - LHS: f(x) - Ms'
+				lhs = factory.createBinaryArithmeticExpression(); // f(x) + (-Ms')
+				lhs.setOperator(BinaryArithmeticOperator.ADD);
+				lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+				term = factory.createBinaryArithmeticExpression(); // -Ms'
+				term.setOperator(BinaryArithmeticOperator.MULTIPLY);
+				term.setLhs(createInf(factory, false)); // -M
+				term.setRhs(createVariableReference(factory, s1)); // s'
+				lhs.setRhs(term);
+				// (II) - RHS: c
+				ArithmeticExpression shortRHS = GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(),
+						null); // c
+				// (II) - Combine: f(x) - Ms' <= c
+				relation = factory.createRelationalExpression();
+				relation.setOperator(RelationalOperator.LESS_OR_EQUAL); // <=
+				relation.setLhs(lhs);
+				relation.setRhs(shortRHS);
+				c2.setExpression(relation);
+				c2.setDepending(false);
+				c2.setNegated(false);
+				c2.setConstant(false);
+				constraints.add(c2);
 
-				// (III)
+				// (III) f(x) + Ms'' >= c
 				Constraint c3 = createSubstituteConstraint(factory, data, constraint, 0);
+				// (III) - LHS: f(x) + Ms''
+				lhs = factory.createBinaryArithmeticExpression();
+				lhs.setOperator(BinaryArithmeticOperator.ADD);
+				lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+				term = factory.createBinaryArithmeticExpression(); // Ms''
+				term.setOperator(BinaryArithmeticOperator.MULTIPLY);
+				term.setLhs(createInf(factory, true)); // M
+				term.setRhs(createVariableReference(factory, s2)); // s''
+				lhs.setRhs(term);
+				// (III) - RHS: c
+				shortRHS = GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null); // c
+				// (III) - Combine: f(x) + Ms'' >= c
+				relation = factory.createRelationalExpression();
+				relation.setOperator(RelationalOperator.GREATER_OR_EQUAL);
+				relation.setLhs(lhs);
+				relation.setRhs(shortRHS);
+				c3.setExpression(relation);
+				c3.setDepending(false);
+				c3.setNegated(false);
+				c3.setConstant(false);
+				constraints.add(c3);
 
-				// (IV)
+				// (IV) f(x) + Ms'' <= M + c - eps
 				Constraint c4 = createSubstituteConstraint(factory, data, constraint, 0);
+				// (IV) - LHS: f(x) + Ms''
+				lhs = factory.createBinaryArithmeticExpression();
+				lhs.setOperator(BinaryArithmeticOperator.ADD);
+				lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+				term = factory.createBinaryArithmeticExpression(); // Ms''
+				term.setOperator(BinaryArithmeticOperator.MULTIPLY);
+				term.setLhs(createInf(factory, true)); // M
+				term.setRhs(createVariableReference(factory, s2)); // s''
+				lhs.setRhs(term);
+				// (IV) - RHS: M + c - eps
+				rhs = factory.createBinaryArithmeticExpression(); // M + c - eps
+				rhs.setOperator(BinaryArithmeticOperator.ADD);
+				rhs.setLhs(createInf(factory, true)); // M
+				rhs_rhs = factory.createBinaryArithmeticExpression(); // c - eps
+				rhs_rhs.setOperator(BinaryArithmeticOperator.SUBTRACT);
+				rhs_rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null)); // c
+				rhs_rhs.setRhs(createEpsilon(factory, true)); // eps
+				rhs.setRhs(rhs_rhs);
+				// (IV) - Combine: f(x) + Ms'' <= M + c - eps
+				relation = factory.createRelationalExpression();
+				relation.setOperator(RelationalOperator.LESS_OR_EQUAL);
+				relation.setLhs(lhs);
+				relation.setRhs(rhs);
+				c4.setExpression(relation);
+				c4.setDepending(false);
+				c4.setNegated(false);
+				c4.setConstant(false);
+				constraints.add(c4);
 
-				// (V)
+				// (V) s' + s'' == 1
 				Constraint c5 = createSubstituteConstraint(factory, data, constraint, 0);
+				// (V) - LHS: s' + s''
+				lhs = factory.createBinaryArithmeticExpression();
+				lhs.setOperator(BinaryArithmeticOperator.ADD);
+				lhs.setLhs(createVariableReference(factory, s1));
+				lhs.setRhs(createVariableReference(factory, s2));
+				// (V) - RHS: 1
+				shortRHS = createConstant(factory, 1.0);
+				// (IV) - Combine: s' + s'' == 1
+				relation = factory.createRelationalExpression();
+				relation.setOperator(RelationalOperator.EQUAL);
+				relation.setLhs(lhs);
+				relation.setRhs(shortRHS);
+				c5.setExpression(relation);
+				c5.setDepending(false);
+				c5.setNegated(false);
+				c5.setConstant(false);
+				constraints.add(c5);
 			}
 			return constraints;
 		default:
@@ -169,13 +259,19 @@ public final class GipsConstraintUtils {
 	}
 
 	static protected DoubleLiteral createInf(GipsIntermediateFactory factory, boolean positive) {
-		DoubleLiteral eps = factory.createDoubleLiteral();
+		DoubleLiteral inf = factory.createDoubleLiteral();
 		if (positive) {
-			eps.setLiteral(INF);
+			inf.setLiteral(INF);
 		} else {
-			eps.setLiteral(-INF);
+			inf.setLiteral(-INF);
 		}
-		return eps;
+		return inf;
+	}
+
+	static protected DoubleLiteral createConstant(GipsIntermediateFactory factory, double value) {
+		DoubleLiteral constant = factory.createDoubleLiteral();
+		constant.setLiteral(value);
+		return constant;
 	}
 
 	static protected Constraint createSubstituteConstraint(GipsIntermediateFactory factory,

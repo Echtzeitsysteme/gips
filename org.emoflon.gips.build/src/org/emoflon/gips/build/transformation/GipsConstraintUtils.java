@@ -108,7 +108,7 @@ public final class GipsConstraintUtils {
 				Variable s2 = createBinaryVariable(data, factory, constraint.getName() + "_NEQslack2");
 
 				// (I) f(x) - Ms' >= c + eps - M
-				Constraint c1 = createSubstituteConstraint(factory, data, constraint, 0);
+				Constraint c1 = createSubstituteConstraint(factory, data, constraint, "_NEQ", 0);
 				// (I) - LHS: f(x) - Ms'
 				BinaryArithmeticExpression lhs = factory.createBinaryArithmeticExpression(); // f(x) + (-Ms')
 				lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -139,7 +139,7 @@ public final class GipsConstraintUtils {
 				constraints.add(c1);
 
 				// (II) f(x) - Ms' <= c
-				Constraint c2 = createSubstituteConstraint(factory, data, constraint, 1);
+				Constraint c2 = createSubstituteConstraint(factory, data, constraint, "_NEQ", 1);
 				// (II) - LHS: f(x) - Ms'
 				lhs = factory.createBinaryArithmeticExpression(); // f(x) + (-Ms')
 				lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -164,7 +164,7 @@ public final class GipsConstraintUtils {
 				constraints.add(c2);
 
 				// (III) f(x) + Ms'' >= c
-				Constraint c3 = createSubstituteConstraint(factory, data, constraint, 2);
+				Constraint c3 = createSubstituteConstraint(factory, data, constraint, "_NEQ", 2);
 				// (III) - LHS: f(x) + Ms''
 				lhs = factory.createBinaryArithmeticExpression();
 				lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -188,7 +188,7 @@ public final class GipsConstraintUtils {
 				constraints.add(c3);
 
 				// (IV) f(x) + Ms'' <= M + c - eps
-				Constraint c4 = createSubstituteConstraint(factory, data, constraint, 3);
+				Constraint c4 = createSubstituteConstraint(factory, data, constraint, "_NEQ", 3);
 				// (IV) - LHS: f(x) + Ms''
 				lhs = factory.createBinaryArithmeticExpression();
 				lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -219,7 +219,7 @@ public final class GipsConstraintUtils {
 				constraints.add(c4);
 
 				// (V) s' + s'' == 1
-				Constraint c5 = createSubstituteConstraint(factory, data, constraint, 4);
+				Constraint c5 = createSubstituteConstraint(factory, data, constraint, "_NEQ", 4);
 				// (V) - LHS: s' + s''
 				lhs = factory.createBinaryArithmeticExpression();
 				lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -276,7 +276,7 @@ public final class GipsConstraintUtils {
 			// (IV) : f(x) - Ms <= c - eps
 
 			// (I) f(x) + Ms >= c + eps
-			Constraint c1 = createSubstituteConstraint(factory, data, constraint, 0);
+			Constraint c1 = createSubstituteConstraint(factory, data, constraint, "_EQ", 0);
 			// (I) - LHS: f(x) + Ms
 			BinaryArithmeticExpression lhs = factory.createBinaryArithmeticExpression(); // f(x) + Ms
 			lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -303,7 +303,7 @@ public final class GipsConstraintUtils {
 			constraints.add(c1);
 
 			// (II) f(x) + Ms <= M + c
-			Constraint c2 = createSubstituteConstraint(factory, data, constraint, 1);
+			Constraint c2 = createSubstituteConstraint(factory, data, constraint, "_EQ", 1);
 			// (II) - LHS: f(x) + Ms
 			lhs = factory.createBinaryArithmeticExpression(); // f(x) + Ms
 			lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -330,7 +330,7 @@ public final class GipsConstraintUtils {
 			constraints.add(c2);
 
 			// (III) f(x) - Ms >= c - M
-			Constraint c3 = createSubstituteConstraint(factory, data, constraint, 2);
+			Constraint c3 = createSubstituteConstraint(factory, data, constraint, "_EQ", 2);
 			// (III) - LHS: f(x) - Ms
 			lhs = factory.createBinaryArithmeticExpression();
 			lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -357,7 +357,7 @@ public final class GipsConstraintUtils {
 			constraints.add(c3);
 
 			// (IV) f(x) - Ms <= c - eps
-			Constraint c4 = createSubstituteConstraint(factory, data, constraint, 3);
+			Constraint c4 = createSubstituteConstraint(factory, data, constraint, "_EQ", 3);
 			// (IV) - LHS: f(x) - Ms
 			lhs = factory.createBinaryArithmeticExpression();
 			lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -394,7 +394,7 @@ public final class GipsConstraintUtils {
 			// (II) : f(x) - Ms <= c
 
 			// (I) f(x) - Ms >= c + eps - M
-			Constraint c1 = createSubstituteConstraint(factory, data, constraint, 0);
+			Constraint c1 = createSubstituteConstraint(factory, data, constraint, "_GE", 0);
 			// (I) - LHS: f(x) - Ms
 			BinaryArithmeticExpression lhs = factory.createBinaryArithmeticExpression(); // f(x) + (-M)s
 			lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -425,7 +425,7 @@ public final class GipsConstraintUtils {
 			constraints.add(c1);
 
 			// (II) f(x) - Ms <= c
-			Constraint c2 = createSubstituteConstraint(factory, data, constraint, 1);
+			Constraint c2 = createSubstituteConstraint(factory, data, constraint, "_GE", 1);
 			// (II) - LHS: f(x) - Ms
 			lhs = factory.createBinaryArithmeticExpression(); // f(x) + (-M)s
 			lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -460,7 +460,7 @@ public final class GipsConstraintUtils {
 			// (II) : f(x) - Ms <= c - eps
 
 			// (I) f(x) - Ms >= c - M
-			Constraint c1 = createSubstituteConstraint(factory, data, constraint, 0);
+			Constraint c1 = createSubstituteConstraint(factory, data, constraint, "_GEQ", 0);
 			// (I) - LHS: f(x) - Ms
 			BinaryArithmeticExpression lhs = factory.createBinaryArithmeticExpression(); // f(x) + (-M)s
 			lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -487,7 +487,7 @@ public final class GipsConstraintUtils {
 			constraints.add(c1);
 
 			// (II) f(x) - Ms <= c - eps
-			Constraint c2 = createSubstituteConstraint(factory, data, constraint, 1);
+			Constraint c2 = createSubstituteConstraint(factory, data, constraint, "_GEQ", 1);
 			// (II) - LHS: f(x) - Ms
 			lhs = factory.createBinaryArithmeticExpression(); // f(x) + (-M)s
 			lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -524,7 +524,7 @@ public final class GipsConstraintUtils {
 			// (II) : f(x) + Ms <= M + c - eps
 
 			// (I) f(x) + Ms >= c
-			Constraint c1 = createSubstituteConstraint(factory, data, constraint, 0);
+			Constraint c1 = createSubstituteConstraint(factory, data, constraint, "_LE", 0);
 			// (I) - LHS: f(x) + Ms
 			BinaryArithmeticExpression lhs = factory.createBinaryArithmeticExpression(); // f(x) + Ms
 			lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -549,7 +549,7 @@ public final class GipsConstraintUtils {
 			constraints.add(c1);
 
 			// (II) f(x) + Ms <= M + c - eps
-			Constraint c2 = createSubstituteConstraint(factory, data, constraint, 1);
+			Constraint c2 = createSubstituteConstraint(factory, data, constraint, "_LE", 1);
 			// (II) - LHS: f(x) + Ms
 			lhs = factory.createBinaryArithmeticExpression(); // f(x) + Ms
 			lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -590,7 +590,7 @@ public final class GipsConstraintUtils {
 			// (II) : f(x) + Ms <= M + c
 
 			// (I) f(x) + Ms >= c + eps
-			Constraint c1 = createSubstituteConstraint(factory, data, constraint, 0);
+			Constraint c1 = createSubstituteConstraint(factory, data, constraint, "_LEQ", 0);
 			// (I) - LHS: f(x) + Ms
 			BinaryArithmeticExpression lhs = factory.createBinaryArithmeticExpression(); // f(x) + Ms
 			lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -617,7 +617,7 @@ public final class GipsConstraintUtils {
 			constraints.add(c1);
 
 			// (II) f(x) + Ms <= M + c
-			Constraint c2 = createSubstituteConstraint(factory, data, constraint, 1);
+			Constraint c2 = createSubstituteConstraint(factory, data, constraint, "_LEQ", 1);
 			// (II) - LHS: f(x) + Ms
 			lhs = factory.createBinaryArithmeticExpression(); // f(x) + Ms
 			lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -661,7 +661,7 @@ public final class GipsConstraintUtils {
 			Variable s2 = createBinaryVariable(data, factory, constraint.getName() + "_NEQslack2");
 
 			// (I) f(x) - Ms' >= c + eps - M
-			Constraint c1 = createSubstituteConstraint(factory, data, constraint, 0);
+			Constraint c1 = createSubstituteConstraint(factory, data, constraint, "_NEQ", 0);
 			// (I) - LHS: f(x) - Ms'
 			BinaryArithmeticExpression lhs = factory.createBinaryArithmeticExpression(); // f(x) + (-Ms')
 			lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -692,7 +692,7 @@ public final class GipsConstraintUtils {
 			constraints.add(c1);
 
 			// (II) f(x) - Ms' <= c
-			Constraint c2 = createSubstituteConstraint(factory, data, constraint, 1);
+			Constraint c2 = createSubstituteConstraint(factory, data, constraint, "_NEQ", 1);
 			// (II) - LHS: f(x) - Ms'
 			lhs = factory.createBinaryArithmeticExpression(); // f(x) + (-Ms')
 			lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -717,7 +717,7 @@ public final class GipsConstraintUtils {
 			constraints.add(c2);
 
 			// (III) f(x) + Ms'' >= c
-			Constraint c3 = createSubstituteConstraint(factory, data, constraint, 2);
+			Constraint c3 = createSubstituteConstraint(factory, data, constraint, "_NEQ", 2);
 			// (III) - LHS: f(x) + Ms''
 			lhs = factory.createBinaryArithmeticExpression();
 			lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -741,7 +741,7 @@ public final class GipsConstraintUtils {
 			constraints.add(c3);
 
 			// (IV) f(x) + Ms'' <= M + c - eps
-			Constraint c4 = createSubstituteConstraint(factory, data, constraint, 3);
+			Constraint c4 = createSubstituteConstraint(factory, data, constraint, "_NEQ", 3);
 			// (IV) - LHS: f(x) + Ms''
 			lhs = factory.createBinaryArithmeticExpression();
 			lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -772,7 +772,7 @@ public final class GipsConstraintUtils {
 			constraints.add(c4);
 
 			// (V) s - s' - s'' == 0
-			Constraint c5 = createSubstituteConstraint(factory, data, constraint, 4);
+			Constraint c5 = createSubstituteConstraint(factory, data, constraint, "_NEQ", 4);
 			// (V) - LHS: s - s' - s'' = s + (-1*s') + (-1*s'')
 			lhs = factory.createBinaryArithmeticExpression();
 			lhs.setOperator(BinaryArithmeticOperator.ADD);
@@ -837,25 +837,25 @@ public final class GipsConstraintUtils {
 	}
 
 	static protected Constraint createSubstituteConstraint(GipsIntermediateFactory factory,
-			final GipsTransformationData data, final Constraint constraint, int index) {
+			final GipsTransformationData data, final Constraint constraint, String prefix, int index) {
 		if (constraint instanceof MappingConstraint mConstraint) {
 			MappingConstraint substitute = factory.createMappingConstraint();
-			substitute.setName(mConstraint.getName() + "_NEQ" + index);
+			substitute.setName(mConstraint.getName() + prefix + index);
 			substitute.setMapping(mConstraint.getMapping());
 			return substitute;
 		} else if (constraint instanceof PatternConstraint pConstraint) {
 			PatternConstraint substitute = factory.createPatternConstraint();
-			substitute.setName(pConstraint.getName() + "_NEQ" + index);
+			substitute.setName(pConstraint.getName() + prefix + index);
 			substitute.setPattern(pConstraint.getPattern());
 			return substitute;
 		} else if (constraint instanceof TypeConstraint tConstraint) {
 			TypeConstraint substitute = factory.createTypeConstraint();
-			substitute.setName(tConstraint.getName() + "_NEQ" + index);
+			substitute.setName(tConstraint.getName() + prefix + index);
 			substitute.setModelType(tConstraint.getModelType());
 			return substitute;
 		} else {
 			GlobalConstraint substitute = factory.createGlobalConstraint();
-			substitute.setName(constraint.getName() + "_NEQ" + index);
+			substitute.setName(constraint.getName() + prefix + index);
 			return substitute;
 		}
 	}

@@ -286,9 +286,11 @@ public class GipsToIntermediate {
 					for (GipsConstraint subConstraint : eSubConstraint.result().values()) {
 						Variable symbolicVariable = GipsConstraintUtils.createBinaryVariable(data, factory,
 								disjunction.getName() + "_symbolic" + constraint2Symbolic.size());
+						disjunction.getHelperVariables().add(symbolicVariable);
 						constraint2Symbolic.put(subConstraint, symbolicVariable);
 						Collection<Constraint> constraints = transformConstraint(subConstraint, false,
 								symbolicVariable);
+						constraints.forEach(c -> c.setSymbolicVariable(symbolicVariable));
 						transformed.put(subConstraint, constraints);
 						disjunction.getDependencies().addAll(constraints);
 					}
@@ -393,7 +395,7 @@ public class GipsToIntermediate {
 		constraint.setNegated(false);
 
 		data.model().getConstraints().add(constraint);
-		data.eConstraint2Constraints().put(subConstraint, List.of(constraint));
+		data.eConstraint2Constraints().put(subConstraint, new LinkedList<>(List.of(constraint)));
 		constraintCounter++;
 
 		BooleanExpressionTransformer transformer = transformationFactory.createBooleanTransformer(constraint);
@@ -405,7 +407,7 @@ public class GipsToIntermediate {
 			// -> return
 			constraint.setConstant(true);
 			constraint.setNegated(isNegated);
-			return List.of(constraint);
+			return new LinkedList<>(List.of(constraint));
 		}
 
 		if (!(constraint.getExpression() instanceof RelationalExpression)) {
@@ -435,7 +437,7 @@ public class GipsToIntermediate {
 		}
 
 		if (substitutes.isEmpty()) {
-			return List.of(constraint);
+			return new LinkedList<>(List.of(constraint));
 		}
 
 		data.model().getConstraints().remove(constraint);

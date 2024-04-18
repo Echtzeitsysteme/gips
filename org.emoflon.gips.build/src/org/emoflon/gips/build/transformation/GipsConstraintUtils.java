@@ -22,7 +22,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
 
 public final class GipsConstraintUtils {
 	final public static double EPSILON = 0.0001d;
-	final public static double INF = 10_000;
+	final public static double INF = 10000;
 
 	/*
 	 * This function takes a constraint and normalizes the contained generic
@@ -877,8 +877,8 @@ public final class GipsConstraintUtils {
 		data.model().getVariables().add(var);
 		var.setType(VariableType.INTEGER);
 		var.setName(name);
-		var.setUpperBound(INF);
-		var.setLowerBound(-INF);
+		var.setUpperBound(INF - EPSILON);
+		var.setLowerBound(-INF + EPSILON);
 		return var;
 	}
 
@@ -888,8 +888,8 @@ public final class GipsConstraintUtils {
 		data.model().getVariables().add(var);
 		var.setType(VariableType.REAL);
 		var.setName(name);
-		var.setUpperBound(INF);
-		var.setLowerBound(-INF);
+		var.setUpperBound(INF - EPSILON);
+		var.setLowerBound(-INF + EPSILON);
 		return var;
 	}
 

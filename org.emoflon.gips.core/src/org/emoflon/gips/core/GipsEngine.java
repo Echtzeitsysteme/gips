@@ -34,6 +34,9 @@ public abstract class GipsEngine {
 		if (doUpdate)
 			update();
 
+		// Reset validation log
+		validationLog = new GipsConstraintValidationLog();
+
 		// Constraints are re-build a few lines below
 		constraints.values().stream().forEach(constraint -> constraint.clear());
 

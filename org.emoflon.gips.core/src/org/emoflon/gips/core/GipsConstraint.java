@@ -21,7 +21,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 
 public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends Constraint, CONTEXT extends Object> {
 	final protected ENGINE engine;
-	final protected GipsConstraintValidationLog validationLog;
+	protected GipsConstraintValidationLog validationLog;
 	final protected TypeIndexer indexer;
 	final protected CONSTR constraint;
 	final protected String name;
@@ -51,6 +51,7 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends C
 		this.ilpConstraints.clear();
 		this.additionalIlpConstraints.clear();
 		this.additionalVariables.clear();
+		this.validationLog = engine.getValidationLog();
 	}
 
 	public abstract void buildConstraints();

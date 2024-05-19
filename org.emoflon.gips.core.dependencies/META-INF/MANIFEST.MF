@@ -7,9 +7,9 @@ Bundle-ClassPath: lib/cplex-22.1.1.jar,
  lib/glpk-java-1.12.0.jar,
  lib/glpk-java-1.12.0-javadoc.jar,
  lib/logicng-2.4.1.jar,
- lib/gurobi-11.0.1.jar,
- lib/gurobi-javadoc-11.0.1.jar
-Export-Package: com.gurobi.gurobi;version="11.0.1",
+ lib/gurobi-11.0.2.jar,
+ lib/gurobi-javadoc-11.0.2.jar
+Export-Package: com.gurobi.gurobi;version="11.0.2",
  ilog.concert;version="22.1.1",
  ilog.cplex;version="22.1.1",
  org.gnu.glpk;version="1.12.0",

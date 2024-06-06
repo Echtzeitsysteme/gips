@@ -8,10 +8,15 @@
 * Install [AdoptOpenJDK 17 (HotSpot JVM)](https://adoptopenjdk.net/releases.html?variant=openjdk17&jvmVariant=hotspot) or newer.
 * Install eMoflon::IBeX as described [here](https://github.com/eMoflon/emoflon-ibex#how-to-develop).
 * Install at least one of the supported ILP solvers:
-    * Install [Gurobi](https://www.gurobi.com/) in version `11.0.1` and activate a license for your computer.
+    * Install [Gurobi](https://www.gurobi.com/) in version `11.0.2` and activate a license for your computer.
         * Currently, Gurobi is the default ILP solver used in GIPS because of the great performance.
     * Install [GLPK](https://www.gnu.org/software/glpk/) in the newest version (`4.6.5`) and add it to your path.
         * GLPK is an open-source ILP solver that can be used without a charge.
+        * For Windows-based systems, follow these steps to install GLPK:
+            * Download [winglpk](https://sourceforge.net/projects/winglpk/files/winglpk/GLPK-4.65/).
+            * Extract the archive, e.g., to `C:\Program Files\GLPK\glpk-4.65`.
+            * Add `C:\Program Files\GLPK\glpk-4.65\w64` to the system-wide environment variable `path`.
+            * Restart your Eclipse IDE.
     * Install [CPLEX](https://www.ibm.com/analytics/cplex-optimizer) in version `22.1.1` and activate a license for your computer (if neccessary).
         * CPLEX is a commercial alternative to the other ILP solvers implemented in GIPS.
 * Clone this Git repository to your local machine and import it into Eclipse: *File -> Import -> General -> Existing Projects into Workspace*. Import all projects.
@@ -47,7 +52,7 @@ By using this settings, you should be unable to commit unformatted code.
 * Install [AdoptOpenJDK 17 (HotSpot JVM)](https://adoptopenjdk.net/releases.html?variant=openjdk17&jvmVariant=hotspot) or newer.
 * Install eMoflon::IBeX as described [here](https://github.com/eMoflon/emoflon-ibex#how-to-develop).
 * Install at least one of the supported ILP solvers:
-    * Install [Gurobi](https://www.gurobi.com/) in version `11.0.1` and activate a license for your computer.
+    * Install [Gurobi](https://www.gurobi.com/) in version `11.0.2` and activate a license for your computer.
         * Currently, Gurobi is the default ILP solver used in GIPS because of the great performance.
     * Install [GLPK](https://www.gnu.org/software/glpk/) in the newest version (`4.6.5`) and add it to your path.
         * GLPK is an open-source ILP solver that can be used without a charge.
@@ -55,6 +60,24 @@ By using this settings, you should be unable to commit unformatted code.
         * CPLEX is a commercial alternative to the other ILP solvers implemented in GIPS.
 * Install GIPS from the public Eclipse update site: https://echtzeitsysteme.github.io/gips-updatesite/snapshot/updatesite/
 * Launch a runtime workspace (while using a runtime Eclipse) as stated in the eMoflon::IBeX installation steps to start using GIPS.
+
+
+## Environment variables
+
+When using GIPS within the Eclipse IDE, the following environment variables may be necessary for your runtime configuration:
+```
+# Linux/macOS
+GRB_LICENSE_FILE=/home/mkratz/gurobi.lic
+GUROBI_HOME=/opt/gurobi1102/linux64/
+LD_LIBRARY_PATH=/opt/gurobi1102/linux64/lib/
+PATH=/opt/gurobi1102/linux64/bin/:/opt/ibm/ILOG/CPLEX_Studio2211/cplex/bin/x86-64_linux/:$PATH
+
+# Windows
+GRB_LICENSE_FILE=C:\Users\mkratz\gurobi.lic
+GUROBI_HOME=C:\gurobi1102\win64
+LD_LIBRARY_PATH=C:\gurobi1102\win64\lib
+PATH=C:\gurobi1102\win64\bin;C:\Program Files\IBM\ILOG\CPLEX_Studio2211\cplex\bin\x64_win64\
+```
 
 
 ## Usage (running simulations)

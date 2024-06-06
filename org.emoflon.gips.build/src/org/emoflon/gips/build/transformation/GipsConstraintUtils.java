@@ -136,6 +136,7 @@ public final class GipsConstraintUtils {
 				c1.setDepending(false);
 				c1.setNegated(false);
 				c1.setConstant(false);
+				c1.getHelperVariables().add(s1);
 				constraints.add(c1);
 
 				// (II) f(x) - Ms' <= c
@@ -161,6 +162,7 @@ public final class GipsConstraintUtils {
 				c2.setDepending(false);
 				c2.setNegated(false);
 				c2.setConstant(false);
+				c2.getHelperVariables().add(s1);
 				constraints.add(c2);
 
 				// (III) f(x) + Ms'' >= c
@@ -185,6 +187,7 @@ public final class GipsConstraintUtils {
 				c3.setDepending(false);
 				c3.setNegated(false);
 				c3.setConstant(false);
+				c3.getHelperVariables().add(s2);
 				constraints.add(c3);
 
 				// (IV) f(x) + Ms'' <= M + c - eps
@@ -216,6 +219,7 @@ public final class GipsConstraintUtils {
 				c4.setDepending(false);
 				c4.setNegated(false);
 				c4.setConstant(false);
+				c4.getHelperVariables().add(s2);
 				constraints.add(c4);
 
 				// (V) s' + s'' == 1
@@ -236,6 +240,8 @@ public final class GipsConstraintUtils {
 				c5.setDepending(false);
 				c5.setNegated(false);
 				c5.setConstant(false);
+				c5.getHelperVariables().add(s1);
+				c5.getHelperVariables().add(s2);
 				constraints.add(c5);
 			}
 			return constraints;
@@ -300,6 +306,7 @@ public final class GipsConstraintUtils {
 			c1.setDepending(false);
 			c1.setNegated(false);
 			c1.setConstant(false);
+			c1.getHelperVariables().add(symbolicVariable);
 			constraints.add(c1);
 
 			// (II) f(x) + Ms <= M + c
@@ -327,6 +334,7 @@ public final class GipsConstraintUtils {
 			c2.setDepending(false);
 			c2.setNegated(false);
 			c2.setConstant(false);
+			c2.getHelperVariables().add(symbolicVariable);
 			constraints.add(c2);
 
 			// (III) f(x) - Ms >= c - M
@@ -354,6 +362,7 @@ public final class GipsConstraintUtils {
 			c3.setDepending(false);
 			c3.setNegated(false);
 			c3.setConstant(false);
+			c3.getHelperVariables().add(symbolicVariable);
 			constraints.add(c3);
 
 			// (IV) f(x) - Ms <= c - eps
@@ -381,6 +390,7 @@ public final class GipsConstraintUtils {
 			c4.setDepending(false);
 			c4.setNegated(false);
 			c4.setConstant(false);
+			c4.getHelperVariables().add(symbolicVariable);
 			constraints.add(c4);
 
 			return constraints;
@@ -422,6 +432,7 @@ public final class GipsConstraintUtils {
 			c1.setDepending(false);
 			c1.setNegated(false);
 			c1.setConstant(false);
+			c1.getHelperVariables().add(symbolicVariable);
 			constraints.add(c1);
 
 			// (II) f(x) - Ms <= c
@@ -447,6 +458,7 @@ public final class GipsConstraintUtils {
 			c2.setDepending(false);
 			c2.setNegated(false);
 			c2.setConstant(false);
+			c2.getHelperVariables().add(symbolicVariable);
 			constraints.add(c2);
 
 			return constraints;
@@ -484,6 +496,7 @@ public final class GipsConstraintUtils {
 			c1.setDepending(false);
 			c1.setNegated(false);
 			c1.setConstant(false);
+			c1.getHelperVariables().add(symbolicVariable);
 			constraints.add(c1);
 
 			// (II) f(x) - Ms <= c - eps
@@ -511,6 +524,7 @@ public final class GipsConstraintUtils {
 			c2.setDepending(false);
 			c2.setNegated(false);
 			c2.setConstant(false);
+			c2.getHelperVariables().add(symbolicVariable);
 			constraints.add(c2);
 
 			return constraints;
@@ -546,6 +560,7 @@ public final class GipsConstraintUtils {
 			c1.setDepending(false);
 			c1.setNegated(false);
 			c1.setConstant(false);
+			c1.getHelperVariables().add(symbolicVariable);
 			constraints.add(c1);
 
 			// (II) f(x) + Ms <= M + c - eps
@@ -577,6 +592,7 @@ public final class GipsConstraintUtils {
 			c2.setDepending(false);
 			c2.setNegated(false);
 			c2.setConstant(false);
+			c2.getHelperVariables().add(symbolicVariable);
 			constraints.add(c2);
 
 			return constraints;
@@ -614,6 +630,7 @@ public final class GipsConstraintUtils {
 			c1.setDepending(false);
 			c1.setNegated(false);
 			c1.setConstant(false);
+			c1.getHelperVariables().add(symbolicVariable);
 			constraints.add(c1);
 
 			// (II) f(x) + Ms <= M + c
@@ -641,6 +658,7 @@ public final class GipsConstraintUtils {
 			c2.setDepending(false);
 			c2.setNegated(false);
 			c2.setConstant(false);
+			c2.getHelperVariables().add(symbolicVariable);
 			constraints.add(c2);
 
 			return constraints;
@@ -689,6 +707,7 @@ public final class GipsConstraintUtils {
 			c1.setDepending(false);
 			c1.setNegated(false);
 			c1.setConstant(false);
+			c1.getHelperVariables().add(s1);
 			constraints.add(c1);
 
 			// (II) f(x) - Ms' <= c
@@ -714,6 +733,7 @@ public final class GipsConstraintUtils {
 			c2.setDepending(false);
 			c2.setNegated(false);
 			c2.setConstant(false);
+			c2.getHelperVariables().add(s1);
 			constraints.add(c2);
 
 			// (III) f(x) + Ms'' >= c
@@ -738,6 +758,7 @@ public final class GipsConstraintUtils {
 			c3.setDepending(false);
 			c3.setNegated(false);
 			c3.setConstant(false);
+			c3.getHelperVariables().add(s2);
 			constraints.add(c3);
 
 			// (IV) f(x) + Ms'' <= M + c - eps
@@ -769,6 +790,7 @@ public final class GipsConstraintUtils {
 			c4.setDepending(false);
 			c4.setNegated(false);
 			c4.setConstant(false);
+			c4.getHelperVariables().add(s1);
 			constraints.add(c4);
 
 			// (V) s - s' - s'' == 0
@@ -801,6 +823,8 @@ public final class GipsConstraintUtils {
 			c5.setDepending(false);
 			c5.setNegated(false);
 			c5.setConstant(false);
+			c5.getHelperVariables().add(s1);
+			c5.getHelperVariables().add(s2);
 			constraints.add(c5);
 			return constraints;
 		}

@@ -5,7 +5,7 @@
 
 ## Installation (development)
 
-* Install [AdoptOpenJDK 17 (HotSpot JVM)](https://adoptopenjdk.net/releases.html?variant=openjdk17&jvmVariant=hotspot) or newer.
+* Install [AdoptOpenJDK 21 (HotSpot JVM)](https://adoptopenjdk.net/releases.html?variant=openjdk21&jvmVariant=hotspot) or newer.
 * Install eMoflon::IBeX as described [here](https://github.com/eMoflon/emoflon-ibex#how-to-develop).
 * Install at least one of the supported ILP solvers:
     * Install [Gurobi](https://www.gurobi.com/) in version `11.0.2` and activate a license for your computer.
@@ -49,7 +49,7 @@ By using this settings, you should be unable to commit unformatted code.
 
 ## Installation (user)
 
-* Install [AdoptOpenJDK 17 (HotSpot JVM)](https://adoptopenjdk.net/releases.html?variant=openjdk17&jvmVariant=hotspot) or newer.
+* Install [AdoptOpenJDK 21 (HotSpot JVM)](https://adoptopenjdk.net/releases.html?variant=openjdk21&jvmVariant=hotspot) or newer.
 * Install eMoflon::IBeX as described [here](https://github.com/eMoflon/emoflon-ibex#how-to-develop).
 * Install at least one of the supported ILP solvers:
     * Install [Gurobi](https://www.gurobi.com/) in version `11.0.2` and activate a license for your computer.

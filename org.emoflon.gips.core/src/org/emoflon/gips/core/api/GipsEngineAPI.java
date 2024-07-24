@@ -135,25 +135,19 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 				config.isEnableLpOutput(), config.getLpPath());
 	}
 
+	/**
+	 * Initializes the GIPS engine API with a given GIPS intermediate model URI and
+	 * a model URI.
+	 * 
+	 * @param gipsModelURI GIPS intermediate model URI to load.
+	 * @param modelUri     Model URI to load.
+	 */
 	protected void initInternal(final URI gipsModelURI, final URI modelUri) {
 		eMoflonApp.registerMetaModels();
 		eMoflonApp.loadModel(modelUri);
 		eMoflonAPI = eMoflonApp.initAPI();
-		loadIntermediateModel(gipsModelURI);
-		initTypeIndexer();
-		validationLog = new GipsConstraintValidationLog();
-		setSolverConfig(gipsModel.getConfig());
-		initMapperFactory();
-		createMappers();
-		initConstraintFactory();
-		createConstraints();
-		initObjectiveFactory();
-		createObjectives();
 
-		if (gipsModel.getGlobalObjective() != null)
-			setGlobalObjective(createGlobalObjective());
-
-		setILPSolver(createSolver());
+		initInternalCommon(gipsModelURI);
 	}
 
 	/**
@@ -169,21 +163,8 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		eMoflonApp.registerMetaModels();
 		eMoflonApp.loadModel(modelUri);
 		eMoflonAPI = eMoflonApp.initAPI(ibexPatternPath);
-		loadIntermediateModel(gipsModelURI);
-		initTypeIndexer();
-		validationLog = new GipsConstraintValidationLog();
-		setSolverConfig(gipsModel.getConfig());
-		initMapperFactory();
-		createMappers();
-		initConstraintFactory();
-		createConstraints();
-		initObjectiveFactory();
-		createObjectives();
 
-		if (gipsModel.getGlobalObjective() != null)
-			setGlobalObjective(createGlobalObjective());
-
-		setILPSolver(createSolver());
+		initInternalCommon(gipsModelURI);
 	}
 
 	/**
@@ -198,21 +179,8 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		eMoflonApp.registerMetaModels();
 		eMoflonApp.setModel(model);
 		eMoflonAPI = eMoflonApp.initAPI();
-		loadIntermediateModel(gipsModelURI);
-		initTypeIndexer();
-		validationLog = new GipsConstraintValidationLog();
-		setSolverConfig(gipsModel.getConfig());
-		initMapperFactory();
-		createMappers();
-		initConstraintFactory();
-		createConstraints();
-		initObjectiveFactory();
-		createObjectives();
 
-		if (gipsModel.getGlobalObjective() != null)
-			setGlobalObjective(createGlobalObjective());
-
-		setILPSolver(createSolver());
+		initInternalCommon(gipsModelURI);
 	}
 
 	/**
@@ -229,6 +197,18 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		eMoflonApp.registerMetaModels();
 		eMoflonApp.setModel(model);
 		eMoflonAPI = eMoflonApp.initAPI(ibexPatternPath);
+
+		initInternalCommon(gipsModelURI);
+	}
+
+	/**
+	 * Initializes the internal GIPS components (e.g., intermediate model, type
+	 * indexer, etc.). This method is common for all internal initialization
+	 * methods.
+	 * 
+	 * @param gipsModelURI URI to the GIPS (intermediate) model.
+	 */
+	private void initInternalCommon(final URI gipsModelURI) {
 		loadIntermediateModel(gipsModelURI);
 		initTypeIndexer();
 		validationLog = new GipsConstraintValidationLog();

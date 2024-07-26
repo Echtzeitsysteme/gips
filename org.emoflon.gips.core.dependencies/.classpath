@@ -4,8 +4,8 @@
 	<classpathentry exported="true" kind="lib" path="lib/logicng-parser-j8-2.5.0-javadoc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/logicng-2.5.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/logicng-2.5.0-javadoc.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/gurobi-11.0.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/gurobi-javadoc-11.0.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/gurobi-11.0.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/gurobi-javadoc-11.0.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry exported="true" kind="lib" path="lib/cplex-22.1.1.jar"/>

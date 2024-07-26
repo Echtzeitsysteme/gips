@@ -12,7 +12,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.emoflon.gips.updatesite"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.ant.ui.AntClasspathProvider"/>
 <mapAttribute key="org.eclipse.ui.externaltools.ATTR_ANT_PROPERTIES">
-<mapEntry key="gipsUpdateSiteProjectRoot" value="${workspace_loc:/gips-updatesite}"/>
+<mapEntry key="gipsUpdateSiteProjectRoot" value="../../gips-updatesite"/>
 </mapAttribute>
 <stringAttribute key="org.eclipse.ui.externaltools.ATTR_ANT_TARGETS" value="releaseSnapshot,"/>
 <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="${workspace_loc:/org.emoflon.gips.updatesite/AntUtilitiesBuild.xml}"/>

@@ -52,7 +52,7 @@ By using this settings, you should be unable to commit unformatted code.
 * Install [AdoptOpenJDK 21 (HotSpot JVM)](https://adoptopenjdk.net/releases.html?variant=openjdk21&jvmVariant=hotspot) or newer.
 * Install eMoflon::IBeX as described [here](https://github.com/eMoflon/emoflon-ibex#how-to-develop).
 * Install at least one of the supported ILP solvers:
-    * Install [Gurobi](https://www.gurobi.com/) in version `11.0.2` and activate a license for your computer.
+    * Install [Gurobi](https://www.gurobi.com/) in version `11.0.3` and activate a license for your computer.
         * Currently, Gurobi is the default ILP solver used in GIPS because of the great performance.
     * Install [GLPK](https://www.gnu.org/software/glpk/) in the newest version (`4.6.5`) and add it to your path.
         * GLPK is an open-source ILP solver that can be used without a charge.
@@ -68,15 +68,15 @@ When using GIPS within the Eclipse IDE, the following environment variables may 
 ```
 # Linux/macOS
 GRB_LICENSE_FILE=/home/mkratz/gurobi.lic
-GUROBI_HOME=/opt/gurobi1102/linux64/
-LD_LIBRARY_PATH=/opt/gurobi1102/linux64/lib/
-PATH=/opt/gurobi1102/linux64/bin/:/opt/ibm/ILOG/CPLEX_Studio2211/cplex/bin/x86-64_linux/:$PATH
+GUROBI_HOME=/opt/gurobi1103/linux64/
+LD_LIBRARY_PATH=/opt/gurobi1103/linux64/lib/
+PATH=/opt/gurobi1103/linux64/bin/:/opt/ibm/ILOG/CPLEX_Studio2211/cplex/bin/x86-64_linux/:$PATH
 
 # Windows
 GRB_LICENSE_FILE=C:\Users\mkratz\gurobi.lic
-GUROBI_HOME=C:\gurobi1102\win64
-LD_LIBRARY_PATH=C:\gurobi1102\win64\lib
-PATH=C:\gurobi1102\win64\bin;C:\Program Files\IBM\ILOG\CPLEX_Studio2211\cplex\bin\x64_win64\
+GUROBI_HOME=C:\gurobi1103\win64
+LD_LIBRARY_PATH=C:\gurobi1103\win64\lib
+PATH=C:\gurobi1103\win64\bin;C:\Program Files\IBM\ILOG\CPLEX_Studio2211\cplex\bin\x64_win64\
 ```
 
 

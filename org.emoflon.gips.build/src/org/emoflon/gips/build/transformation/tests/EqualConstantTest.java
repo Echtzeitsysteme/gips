@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-public class EqualTest {
+public class EqualConstantTest {
 
 	@Test
 	public void test_0_0() {

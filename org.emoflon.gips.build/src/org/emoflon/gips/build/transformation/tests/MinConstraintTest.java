@@ -85,7 +85,7 @@ public class MinConstraintTest {
 			expr = new GRBLinExpr();
 			expr.addTerm(1.0, x2);
 			expr.addTerm(-1.0, x1);
-			expr.addTerm(M, s2b);
+			expr.addTerm(-M, s2b);
 			model.addConstr(expr, GRB.GREATER_EQUAL, -M, "cd3");
 
 			expr = new GRBLinExpr();
@@ -113,7 +113,7 @@ public class MinConstraintTest {
 			// Add constraint (e)
 			expr = new GRBLinExpr();
 			expr.addTerm(1.0, x1);
-			expr.addTerm(-M, s3);
+			expr.addTerm(M, s3);
 			model.addConstr(expr, GRB.GREATER_EQUAL, c, "e");
 
 			// Add constraint (f)

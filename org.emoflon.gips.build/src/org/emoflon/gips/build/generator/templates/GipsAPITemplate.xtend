@@ -65,6 +65,20 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 		super.initInternal(gipsModelURI, modelUri);
 	}
 	
+	/**
+	 * Initializes the GIPS API with a given GIPS intermediate model URI, a model URI,
+	 * and the IBeX pattern path to avoid using hard-coded paths in IBeX
+	 * internally.
+	 * 
+	 * @param gipsModelURI    GIPS intermediate model URI to load.
+	 * @param modelUri        Model URI to load.
+	 * @param ibexPatternPath IBeX pattern path to load.
+	 */
+	@Override
+	public void init(final URI gipsModelURI, final URI modelUri, final URI ibexPatternPath) {
+		super.initInternal(gipsModelURI, modelUri, ibexPatternPath);
+	}
+	
 	@Override
 	public void init(final ResourceSet model) {
 		super.initInternal(INTERMEDIATE_MODEL_URI, model);

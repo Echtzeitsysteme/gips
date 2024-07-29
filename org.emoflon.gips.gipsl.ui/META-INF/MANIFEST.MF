@@ -28,7 +28,7 @@ Require-Bundle: org.emoflon.gips.gipsl,
  org.moflon.core.utilities;bundle-version="3.0.0",
  org.moflon.core.ui;bundle-version="1.3.0"
 Import-Package: org.apache.log4j
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Export-Package: org.emoflon.gips.gipsl.ui,
  org.emoflon.gips.gipsl.ui.contentassist,
  org.emoflon.gips.gipsl.ui.internal,

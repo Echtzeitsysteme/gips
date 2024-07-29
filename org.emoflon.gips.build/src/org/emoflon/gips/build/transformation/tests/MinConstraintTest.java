@@ -11,6 +11,9 @@ import com.gurobi.gurobi.GRBLinExpr;
 import com.gurobi.gurobi.GRBModel;
 import com.gurobi.gurobi.GRBVar;
 
+/**
+ * Tests x2 = min(x1, c).
+ */
 public class MinConstraintTest {
 
 	/**

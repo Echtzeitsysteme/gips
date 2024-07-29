@@ -17,12 +17,12 @@ public class GipsIlpTransformations {
 	/**
 	 * Big M: a large constant as upper and lower bounds.
 	 */
-	private final static double M = 10_000;
+	final static double M = 10_000;
 
 	/**
 	 * Epsilon: a small constant to differentiate values.
 	 */
-	private final static double eps = 0.001;
+	final static double eps = 0.001;
 
 	/**
 	 * The Gurobi solver environment.

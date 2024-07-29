@@ -12,7 +12,7 @@ import com.gurobi.gurobi.GRBModel;
 import com.gurobi.gurobi.GRBVar;
 
 /**
- * Tests x1 && x2 <=> s1
+ * Tests x1 && x2 <=> s1.
  */
 public class AndTest {
 
@@ -24,7 +24,7 @@ public class AndTest {
 	 * @param x2Val Fixed (constant) value for the variable x2.
 	 * @return Value of the ILP variable s1 after solving.
 	 */
-	public double calcEquivalenceWithIlp(final double x1Val, final double x2Val) {
+	public double calcAndWithIlp(final double x1Val, final double x2Val) {
 		double s1Val = -1;
 		try {
 			// Create empty environment, set options, and start
@@ -83,22 +83,22 @@ public class AndTest {
 
 	@Test
 	public void test_0_0() {
-		assertEquals(0, calcEquivalenceWithIlp(0, 0));
+		assertEquals(0, calcAndWithIlp(0, 0));
 	}
 
 	@Test
 	public void test_1_1() {
-		assertEquals(1, calcEquivalenceWithIlp(1, 1));
+		assertEquals(1, calcAndWithIlp(1, 1));
 	}
 
 	@Test
 	public void test_0_1() {
-		assertEquals(0, calcEquivalenceWithIlp(0, 1));
+		assertEquals(0, calcAndWithIlp(0, 1));
 	}
 
 	@Test
 	public void test_1_0() {
-		assertEquals(0, calcEquivalenceWithIlp(1, 0));
+		assertEquals(0, calcAndWithIlp(1, 0));
 	}
 
 }

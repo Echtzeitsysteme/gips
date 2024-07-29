@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * Tests (x1 > c) <=> s1.
+ */
 public class GreaterTest {
 
 	@Test

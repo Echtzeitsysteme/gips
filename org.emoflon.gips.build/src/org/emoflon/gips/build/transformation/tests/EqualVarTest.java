@@ -12,19 +12,19 @@ import com.gurobi.gurobi.GRBModel;
 import com.gurobi.gurobi.GRBVar;
 
 /**
- * Tests (x2 = x1) <=> s1
+ * Tests (x2 = x1) <=> s1.
  */
 public class EqualVarTest {
 
 	/**
 	 * Big M: a large constant as upper and lower bounds.
 	 */
-	private final static double M = 10_000;
+	private final static double M = GipsIlpTransformations.M;
 
 	/**
 	 * Epsilon: a small constant to differentiate values.
 	 */
-	private final static double eps = 0.001;
+	private final static double eps = GipsIlpTransformations.eps;
 
 	/**
 	 * Creates a constraint in the form (x2 = x1) <=> s1 and returns the value for
@@ -73,19 +73,19 @@ public class EqualVarTest {
 			expr.addTerm(-1.0, x1);
 			expr.addTerm(-M, s1a);
 			model.addConstr(expr, GRB.LESS_EQUAL, -eps, "c2");
-			
+
 			expr = new GRBLinExpr();
 			expr.addTerm(1.0, x2);
 			expr.addTerm(-1.0, x1);
 			expr.addTerm(M, s1b);
 			model.addConstr(expr, GRB.GREATER_EQUAL, eps, "c3");
-			
+
 			expr = new GRBLinExpr();
 			expr.addTerm(1.0, x2);
 			expr.addTerm(-1.0, x1);
 			expr.addTerm(M, s1b);
 			model.addConstr(expr, GRB.LESS_EQUAL, M, "c4");
-			
+
 			expr = new GRBLinExpr();
 			expr.addTerm(-1.0, s1a);
 			expr.addTerm(1.0, s1);
@@ -95,13 +95,13 @@ public class EqualVarTest {
 			expr.addTerm(-1.0, s1b);
 			expr.addTerm(1.0, s1);
 			model.addConstr(expr, GRB.LESS_EQUAL, 0, "c6");
-			
+
 			expr = new GRBLinExpr();
 			expr.addTerm(1.0, s1a);
 			expr.addTerm(1.0, s1b);
 			expr.addTerm(-1.0, s1);
 			model.addConstr(expr, GRB.LESS_EQUAL, 1, "c7");
-			
+
 			// Optimize model
 			model.optimize();
 

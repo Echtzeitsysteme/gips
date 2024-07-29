@@ -221,4 +221,14 @@ public class MinConstraintTest {
 		assertEquals(127, calcMinWithIlp(130, 127));
 	}
 
+	@Test
+	public void test_data() {
+		final double[][] data = TestCaseGenerator.generateTestData();
+		for (int i = 0; i < data.length; i++) {
+			double a = data[i][0];
+			double b = data[i][1];
+			assertEquals(Math.min(a, b), calcMinWithIlp(a, b));
+		}
+	}
+
 }

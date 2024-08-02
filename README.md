@@ -69,13 +69,13 @@ When using GIPS within the Eclipse IDE, the following environment variables may 
 # Linux/macOS
 GRB_LICENSE_FILE=/home/mkratz/gurobi.lic
 GUROBI_HOME=/opt/gurobi1103/linux64/
-LD_LIBRARY_PATH=/opt/gurobi1103/linux64/lib/
+LD_LIBRARY_PATH=/opt/gurobi1103/linux64/lib/:/opt/ibm/ILOG/CPLEX_Studio2211/cplex/bin/x86-64_linux/
 PATH=/opt/gurobi1103/linux64/bin/:/opt/ibm/ILOG/CPLEX_Studio2211/cplex/bin/x86-64_linux/:$PATH
 
 # Windows
 GRB_LICENSE_FILE=C:\Users\mkratz\gurobi.lic
 GUROBI_HOME=C:\gurobi1103\win64
-LD_LIBRARY_PATH=C:\gurobi1103\win64\lib
+LD_LIBRARY_PATH=C:\gurobi1103\win64\lib;C:\Program Files\IBM\ILOG\CPLEX_Studio2211\cplex\bin\x64_win64\
 PATH=C:\gurobi1103\win64\bin;C:\Program Files\IBM\ILOG\CPLEX_Studio2211\cplex\bin\x64_win64\
 ```
 

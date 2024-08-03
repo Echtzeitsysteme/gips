@@ -1,5 +1,6 @@
 package org.emoflon.gips.build.transformation.helper;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +39,7 @@ public record GipsTransformationData(GipsIntermediateModel model, //
 		Map<EditorPattern, Pattern> ePattern2Pattern, //
 		Map<EditorNode, IBeXNode> eNode2Node, //
 		Map<GipsMapping, Mapping> eMapping2Mapping, //
-		Map<GipsConstraint, Constraint> eConstraint2Constraint, //
+		Map<GipsConstraint, Collection<Constraint>> eConstraint2Constraints, //
 		Map<GipsStreamExpr, SetOperation> eStream2SetOp, //
 		Map<EClass, Type> eType2Type, //
 		Map<GipsObjective, Objective> eObjective2Objective, Map<GipsMappingVariable, Variable> eVariable2Variable) {

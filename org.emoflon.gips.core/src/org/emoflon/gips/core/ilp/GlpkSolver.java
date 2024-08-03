@@ -489,6 +489,15 @@ public class GlpkSolver extends ILPSolver {
 	 * @param ub   Upper bound number.
 	 */
 	private void createBinVar(final String name, final Number lb, final Number ub) {
+		if (ilpVars.containsKey(name)) {
+			// TODO: This method should return if a variable with the same name already
+			// exists
+			// TODO: Therefore, this method should have another name, e.g.,
+			// create..VarIfNotExists, etc.
+//			throw new RuntimeException();
+			return;
+		}
+
 		ilpVars.put(name, new varInformation(ilpVars.size() + 1, VarType.BIN, lb, ub));
 	}
 
@@ -500,6 +509,15 @@ public class GlpkSolver extends ILPSolver {
 	 * @param ub   Upper bound number.
 	 */
 	private void createIntVar(final String name, final Number lb, final Number ub) {
+		if (ilpVars.containsKey(name)) {
+			// TODO: This method should return if a variable with the same name already
+			// exists
+			// TODO: Therefore, this method should have another name, e.g.,
+			// create..VarIfNotExists, etc.
+//			throw new RuntimeException();
+			return;
+		}
+
 		ilpVars.put(name, new varInformation(ilpVars.size() + 1, VarType.INT, lb, ub));
 	}
 
@@ -511,6 +529,15 @@ public class GlpkSolver extends ILPSolver {
 	 * @param ub   Upper bound number.
 	 */
 	private void createDblVar(final String name, final Number lb, final Number ub) {
+		if (ilpVars.containsKey(name)) {
+			// TODO: This method should return if a variable with the same name already
+			// exists
+			// TODO: Therefore, this method should have another name, e.g.,
+			// create..VarIfNotExists, etc.
+//			throw new RuntimeException();
+			return;
+		}
+
 		ilpVars.put(name, new varInformation(ilpVars.size() + 1, VarType.DBL, lb, ub));
 	}
 

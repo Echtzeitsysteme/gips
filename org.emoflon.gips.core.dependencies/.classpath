@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/lpsolve55j.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/logicng-parser-j8-2.5.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/logicng-parser-j8-2.5.1-javadoc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/logicng-2.5.1.jar"/>

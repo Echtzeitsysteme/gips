@@ -11,10 +11,12 @@ Bundle-ClassPath: lib/cplex-22.1.1.jar,
  lib/gurobi-11.0.3.jar,
  lib/gurobi-javadoc-11.0.3.jar,
  lib/logicng-parser-j8-2.5.1.jar,
- lib/logicng-parser-j8-2.5.1-javadoc.jar
+ lib/logicng-parser-j8-2.5.1-javadoc.jar,
+ lib/lpsolve55j.jar
 Export-Package: com.gurobi.gurobi;version="11.0.3",
  ilog.concert;version="22.1.1",
  ilog.cplex;version="22.1.1",
+ lpsolve,
  org.gnu.glpk;version="1.12.0",
  org.logicng;version="2.5.1",
  org.logicng.backbones;version="2.5.1",

@@ -15,6 +15,7 @@
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//ILPSolverType/GUROBI"/>
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//ILPSolverType/GLPK"/>
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//ILPSolverType/CPLEX"/>
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//ILPSolverType/LPSOLVE"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="GipsIntermediate.ecore#//VariableType">
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//VariableType/BINARY"/>

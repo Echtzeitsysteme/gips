@@ -45,6 +45,7 @@
     <eLiterals name="GUROBI" literal="GUROBI"/>
     <eLiterals name="GLPK" value="1" literal="GLPK"/>
     <eLiterals name="CPLEX" value="2" literal="CPLEX"/>
+    <eLiterals name="LPSOLVE" value="3" literal="LPSOLVE"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

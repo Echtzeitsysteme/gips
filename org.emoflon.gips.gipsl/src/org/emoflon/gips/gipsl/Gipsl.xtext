@@ -41,7 +41,7 @@ GipsConfig : {GipsConfig}
 ;
 
 enum SolverType:
-	GUROBI='GUROBI' | GLPK='GLPK' | CPLEX='CPLEX'
+	GUROBI='GUROBI' | GLPK='GLPK' | CPLEX='CPLEX' | LPSOLVE='LPSOLVE'
 ;
 
 GipsMapping :

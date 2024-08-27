@@ -345,6 +345,7 @@ public class GlpkSolver extends ILPSolver {
 					continue;
 				}
 
+				// TODO: Typo "cumulate" -> "accumulate"
 				// For GLPK, we have to cumulate all weights for identical variables
 				final Map<ILPVariable<?>, Double> cumulatedWeights = new HashMap<>();
 
@@ -374,6 +375,7 @@ public class GlpkSolver extends ILPSolver {
 				GLPK.glp_set_row_bnds(model, globalCnstrCounter, convertOperator(cnstr.operator()),
 						cnstr.rhsConstantTerm(), cnstr.rhsConstantTerm());
 
+				// TODO: Shouldn't this global increment be outside of the while loop???
 				globalCnstrCounter++;
 				localCnstrCounter++;
 			}

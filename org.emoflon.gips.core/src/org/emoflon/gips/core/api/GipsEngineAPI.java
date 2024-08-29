@@ -132,7 +132,9 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 				config.isEnablePresolve(), //
 				config.isEnableDebugOutput(), //
 				config.isEnableCustomTolerance(), config.getTolerance(), //
-				config.isEnableLpOutput(), config.getLpPath());
+				config.isEnableLpOutput(), config.getLpPath(), //
+				config.isThreadCountEnabled(), config.getThreadCount() //
+		);
 	}
 
 	/**

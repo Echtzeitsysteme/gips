@@ -17,6 +17,7 @@ import org.emoflon.gips.core.GipsMapping;
 import org.emoflon.gips.core.GipsMappingConstraint;
 import org.emoflon.gips.core.GipsTypeConstraint;
 import org.emoflon.gips.core.gt.GipsPatternConstraint;
+import org.emoflon.gips.core.util.SystemUtil;
 
 import ilog.concert.IloException;
 import ilog.concert.IloIntVar;
@@ -87,6 +88,15 @@ public class CplexSolver extends ILPSolver {
 
 			if (config.lpOutput()) {
 				this.lpPath = config.lpPath();
+			}
+
+			// Set number of threads to use
+			// If configuration option is disabled, use the maximum number of threads the
+			// system provides
+			if (config.threadCount()) {
+				cplex.setParam(IloCplex.Param.Threads, config.threads());
+			} else {
+				cplex.setParam(IloCplex.Param.Threads, SystemUtil.getSystemThreads());
 			}
 		} catch (final IloException e) {
 			throw new RuntimeException(e);

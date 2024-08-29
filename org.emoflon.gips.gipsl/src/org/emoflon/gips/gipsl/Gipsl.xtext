@@ -37,6 +37,7 @@ GipsConfig : {GipsConfig}
 	('debugOutput' ':=' enableDebugOutput = GipsBoolean ';')?
 	('tolerance' ':=' enableTolerance = GipsBoolean '[' 'value' ':=' tolerance=GipsDouble ']' ';')?
 	('lpOutput' ':=' enableLpOutput = GipsBoolean '[' 'path' ':=' path=GipsStringLiteral ']' ';')?
+	('threadCount' ':=' enableThreadCount = GipsBoolean '[' 'value' ':=' threads=GipsInteger ']' ';')?
 	'}'
 ;
 

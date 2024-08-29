@@ -14,6 +14,7 @@ import org.emoflon.gips.core.GipsMapping;
 import org.emoflon.gips.core.GipsMappingConstraint;
 import org.emoflon.gips.core.GipsTypeConstraint;
 import org.emoflon.gips.core.gt.GipsPatternConstraint;
+import org.emoflon.gips.core.util.SystemUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 
 import com.gurobi.gurobi.GRB;
@@ -88,6 +89,14 @@ public class GurobiSolver extends ILPSolver {
 		}
 		if (config.lpOutput()) {
 			this.lpPath = config.lpPath();
+		}
+		// Set number of threads to use
+		// If configuration option is disabled, use the maximum number of threads the
+		// system provides
+		if (config.threadCount()) {
+			model.set(IntParam.Threads, config.threads());
+		} else {
+			model.set(IntParam.Threads, SystemUtil.getSystemThreads());
 		}
 
 		// Reset local lookup data structure for the Gurobi variables in case this is

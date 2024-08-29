@@ -177,6 +177,11 @@ public class GipsToIntermediate {
 			config.setLpPath(eConfig.getPath().replace("\"", ""));
 		}
 
+		config.setThreadCountEnabled(eConfig.isEnableThreadCount());
+		if (eConfig.isEnableThreadCount()) {
+			config.setThreadCount(eConfig.getThreads());
+		}
+
 		data.model().setConfig(config);
 	}
 

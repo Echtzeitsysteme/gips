@@ -35,7 +35,7 @@ public class LpSolveSolver extends ILPSolver {
 	/**
 	 * Record for the variable information: index, type, lower bound, upper bound
 	 */
-	private record VarInformation(int index, VarType type, Number lb, Number up) {
+	private record VarInformation(int index, VarType type, Number lb, Number ub) {
 	}
 
 	/**
@@ -56,15 +56,21 @@ public class LpSolveSolver extends ILPSolver {
 	private GipsGlobalObjective objective;
 
 	/**
+	 * ILP solver configuration.
+	 */
+	final private ILPSolverConfig config;
+
+	/**
 	 * TODO.
 	 * 
 	 * @param engine
 	 */
-	public LpSolveSolver(final GipsEngine engine) {
+	public LpSolveSolver(final GipsEngine engine, final ILPSolverConfig config) {
 		super(engine);
 		constraints = new HashMap<>();
 		ilpVars = new HashMap<>();
 		init();
+		this.config = config;
 	}
 
 	@Override
@@ -72,6 +78,14 @@ public class LpSolveSolver extends ILPSolver {
 		setUpVars();
 		setUpCnstrs();
 		setUpObj();
+
+		if (config.lpOutput()) {
+			try {
+				lp.writeLp(config.lpPath());
+			} catch (final LpSolveException e) {
+				e.printStackTrace();
+			}
+		}
 
 		// TODO: Return values
 		int ret = -1;
@@ -121,14 +135,9 @@ public class LpSolveSolver extends ILPSolver {
 		}
 		}
 
-		// Constants
-//		double constSum = 0;
-//		for (ILPConstant c : nestFunc.constants()) {
-//			constSum += c.weight();
-//		}
-		// TODO: Constants are currently missing
+		// Constants will be handled separately
 
-		final double[] coeffs = new double[ilpVars.size() + 1];
+		final double[] coeffs = new double[ilpVars.size() + 1 + 1];
 
 		// Variable terms
 		for (final ILPWeightedLinearFunction lf : nestFunc.linearFunctions()) {
@@ -137,8 +146,11 @@ public class LpSolveSolver extends ILPSolver {
 				coeffs[varIndex] = coeffs[varIndex] + (t.weight() * lf.weight());
 			}
 
-			// TODO: Constants should be added here, to
+			// Constants will be handled separately
 		}
+		
+		final int varIndex = ilpVars.get("Constant").index;
+		coeffs[varIndex] = 1;
 
 		try {
 			lp.setObjFn(coeffs);
@@ -146,6 +158,25 @@ public class LpSolveSolver extends ILPSolver {
 			e.printStackTrace();
 			throw new InternalError();
 		}
+	}
+
+	private double getObjConst() {
+		final ILPNestedLinearFunction nestFunc = objective.getObjectiveFunction();
+
+		// Constants
+		double constSum = 0;
+		for (ILPConstant c : nestFunc.constants()) {
+			constSum += c.weight();
+		}
+
+		// Nested constants
+		for (final ILPWeightedLinearFunction lf : nestFunc.linearFunctions()) {
+			for (var ct : lf.linearFunction().constantTerms()) {
+				constSum += ct.weight();
+			}
+		}
+
+		return constSum;
 	}
 
 	private void setUpCnstrs() {
@@ -174,10 +205,10 @@ public class LpSolveSolver extends ILPSolver {
 				}
 
 				final int size = accumulatedWeights.size();
-				final int[] vars = new int[size + 1];
-				final double[] coeffs = new double[size + 1];
+				final int[] vars = new int[size];
+				final double[] coeffs = new double[size];
 
-				int varIt = 1;
+				int varIt = 0;
 				for (final ILPVariable<?> v : accumulatedWeights.keySet()) {
 					vars[varIt] = ilpVars.get(v.getName()).index;
 					coeffs[varIt] = accumulatedWeights.get(v);
@@ -189,7 +220,8 @@ public class LpSolveSolver extends ILPSolver {
 
 					// unsigned char add_constraintex(lprec *lp, int count, REAL *row, int *colno,
 					// int constr_type, REAL rh);
-					lp.addConstraintex(0, coeffs, vars, convertOperator(cnstr.operator()), cnstr.rhsConstantTerm());
+					lp.addConstraintex(globalCnstrCounter, coeffs, vars, convertOperator(cnstr.operator()),
+							cnstr.rhsConstantTerm());
 					// TODO: Not to sure about that^
 				} catch (final LpSolveException e) {
 					e.printStackTrace();
@@ -222,15 +254,20 @@ public class LpSolveSolver extends ILPSolver {
 	}
 
 	private void setUpVars() {
-		// In case of 0 variables, simply return
-		if (ilpVars.size() == 0) {
-			return;
-		}
+		// Add a generic double variable to be used as a constant for the objective
+		final double constSum = getObjConst();
+		ilpVars.put("Constant", new VarInformation(ilpVars.size() + 1, VarType.DBL, constSum, constSum));
+//		constraints.put("Constant_obj", null);
 
 		try {
 			lp = LpSolve.makeLp(0, ilpVars.size());
 			if (lp.getLp() == 0) {
 				throw new InternalError();
+			}
+
+			// In case of 0 variables, simply return
+			if (ilpVars.size() == 0) {
+				return;
 			}
 
 			int colCntr = 1; // must start at 1
@@ -243,6 +280,9 @@ public class LpSolveSolver extends ILPSolver {
 				} else if (varInfo.type == VarType.INT) {
 					lp.setInt(colCntr, true);
 				}
+				
+				// Set bounds
+				lp.setBounds(colCntr, varInfo.lb.doubleValue(), varInfo.ub.doubleValue());
 
 				colCntr++;
 			}
@@ -272,14 +312,14 @@ public class LpSolveSolver extends ILPSolver {
 				final GipsMapping mapping = mapper.getMapping(k);
 				final String varName = mapping.getName();
 				// Get value of the ILP variable and round it (to eliminate small deltas)
-				double result = Math.round(vals[ilpVars.get(varName).index]);
+				double result = Math.round(vals[ilpVars.get(varName).index - 1]);
 				// Save result value in specific mapping
 				mapping.setValue((int) result);
 
 				// Save all values of additional variables if any
 				if (mapping.hasAdditionalVariables()) {
 					for (Entry<String, ILPVariable<?>> var : mapping.getAdditionalVariables().entrySet()) {
-						double mappingVarResult = vals[ilpVars.get(var.getValue().getName()).index];
+						double mappingVarResult = vals[ilpVars.get(var.getValue().getName()).index - 1];
 						mapping.setAdditionalVariableValue(var.getKey(), mappingVarResult);
 					}
 				}
@@ -394,6 +434,8 @@ public class LpSolveSolver extends ILPSolver {
 		constraints.clear();
 		ilpVars.clear();
 		lp = null;
+
+		// TODO: Implement solver config specific operations
 	}
 
 }

@@ -148,7 +148,7 @@ public class LpSolveSolver extends ILPSolver {
 
 			// Constants will be handled separately
 		}
-		
+
 		final int varIndex = ilpVars.get("Constant").index;
 		coeffs[varIndex] = 1;
 
@@ -161,6 +161,11 @@ public class LpSolveSolver extends ILPSolver {
 	}
 
 	private double getObjConst() {
+		// If there is no objective, the constant equals to zero
+		if (objective == null) {
+			return 0;
+		}
+
 		final ILPNestedLinearFunction nestFunc = objective.getObjectiveFunction();
 
 		// Constants
@@ -216,13 +221,14 @@ public class LpSolveSolver extends ILPSolver {
 				}
 
 				try {
-					lp.setRowName(globalCnstrCounter, name + "_" + localCnstrCounter);
-
 					// unsigned char add_constraintex(lprec *lp, int count, REAL *row, int *colno,
 					// int constr_type, REAL rh);
 					lp.addConstraintex(globalCnstrCounter, coeffs, vars, convertOperator(cnstr.operator()),
 							cnstr.rhsConstantTerm());
 					// TODO: Not to sure about that^
+					
+					// Set row name for the newly created constraint
+					lp.setRowName(globalCnstrCounter, name + "_" + localCnstrCounter);
 				} catch (final LpSolveException e) {
 					e.printStackTrace();
 					throw new InternalError();
@@ -256,8 +262,7 @@ public class LpSolveSolver extends ILPSolver {
 	private void setUpVars() {
 		// Add a generic double variable to be used as a constant for the objective
 		final double constSum = getObjConst();
-		ilpVars.put("Constant", new VarInformation(ilpVars.size() + 1, VarType.DBL, constSum, constSum));
-//		constraints.put("Constant_obj", null);
+		createDblVar("Constant", constSum, constSum);
 
 		try {
 			lp = LpSolve.makeLp(0, ilpVars.size());
@@ -270,8 +275,9 @@ public class LpSolveSolver extends ILPSolver {
 				return;
 			}
 
-			int colCntr = 1; // must start at 1
+			// Else, set information for each variable
 			for (final String name : ilpVars.keySet()) {
+				int colCntr = ilpVars.get(name).index;
 				lp.setColName(colCntr, name);
 
 				final VarInformation varInfo = ilpVars.get(name);
@@ -280,11 +286,9 @@ public class LpSolveSolver extends ILPSolver {
 				} else if (varInfo.type == VarType.INT) {
 					lp.setInt(colCntr, true);
 				}
-				
+
 				// Set bounds
 				lp.setBounds(colCntr, varInfo.lb.doubleValue(), varInfo.ub.doubleValue());
-
-				colCntr++;
 			}
 
 		} catch (final LpSolveException e) {

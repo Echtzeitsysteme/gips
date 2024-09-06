@@ -24,6 +24,9 @@ import lpsolve.LpSolveException;
 
 public class LpSolveSolver extends ILPSolver {
 
+	/**
+	 * TODO
+	 */
 	LpSolve lp;
 
 	/**
@@ -85,6 +88,16 @@ public class LpSolveSolver extends ILPSolver {
 			} catch (final LpSolveException e) {
 				e.printStackTrace();
 			}
+		}
+
+		// TODO: Implement solver config specific operations
+		if (config.enableTolerance()) {
+			lp.setEpsb(config.tolerance());
+			lp.setEpsd(config.tolerance());
+			lp.setEpsel(config.tolerance());
+//			lp.setEpsperturb(config.tolerance());
+//			lp.setEpspivot(config.tolerance());
+//			lp.setEpslevel(0);
 		}
 
 		// TODO: Return values
@@ -436,8 +449,6 @@ public class LpSolveSolver extends ILPSolver {
 		constraints.clear();
 		ilpVars.clear();
 		lp = null;
-
-		// TODO: Implement solver config specific operations
 	}
 
 }

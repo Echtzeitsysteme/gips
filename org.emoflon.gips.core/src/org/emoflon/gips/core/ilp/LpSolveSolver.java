@@ -177,7 +177,7 @@ public class LpSolveSolver extends ILPSolver {
 		// Nested constants
 		for (final ILPWeightedLinearFunction lf : nestFunc.linearFunctions()) {
 			for (var ct : lf.linearFunction().constantTerms()) {
-				constSum += ct.weight();
+				constSum += ct.weight() * lf.weight();
 			}
 		}
 

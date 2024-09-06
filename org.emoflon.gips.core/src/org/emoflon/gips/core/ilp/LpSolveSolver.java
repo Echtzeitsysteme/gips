@@ -185,7 +185,6 @@ public class LpSolveSolver extends ILPSolver {
 	}
 
 	private void setUpCnstrs() {
-		int globalCnstrCounter = 0;
 		for (final String name : constraints.keySet()) {
 			final Iterator<ILPConstraint> cnstrIt = constraints.get(name).iterator();
 
@@ -226,9 +225,9 @@ public class LpSolveSolver extends ILPSolver {
 					lp.addConstraintex(coeffs.length, coeffs, vars, convertOperator(cnstr.operator()),
 							cnstr.rhsConstantTerm());
 					// TODO: Not to sure about that^
-					
+
 					// Set row name for the newly created constraint
-					lp.setRowName(globalCnstrCounter, name + "_" + localCnstrCounter);
+					lp.setRowName(lp.getNrows(), name + "_" + localCnstrCounter);
 				} catch (final LpSolveException e) {
 					e.printStackTrace();
 					throw new InternalError();
@@ -236,7 +235,6 @@ public class LpSolveSolver extends ILPSolver {
 
 				localCnstrCounter++;
 			}
-			globalCnstrCounter++;
 		}
 	}
 

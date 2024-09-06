@@ -223,7 +223,7 @@ public class LpSolveSolver extends ILPSolver {
 				try {
 					// unsigned char add_constraintex(lprec *lp, int count, REAL *row, int *colno,
 					// int constr_type, REAL rh);
-					lp.addConstraintex(globalCnstrCounter, coeffs, vars, convertOperator(cnstr.operator()),
+					lp.addConstraintex(coeffs.length, coeffs, vars, convertOperator(cnstr.operator()),
 							cnstr.rhsConstantTerm());
 					// TODO: Not to sure about that^
 					

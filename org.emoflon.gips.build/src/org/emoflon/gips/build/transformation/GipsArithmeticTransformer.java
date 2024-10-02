@@ -641,6 +641,8 @@ public class GipsArithmeticTransformer {
 				}
 			case MULTIPLY:
 				return isExpanded(binaryExpr.getLhs(), true) && isExpanded(binaryExpr.getRhs(), true);
+			case POW:
+				return isExpanded(binaryExpr.getLhs(), false) && isExpanded(binaryExpr.getRhs(), false);
 			default:
 				return isExpanded(binaryExpr.getLhs(), traversedProduct)
 						&& isExpanded(binaryExpr.getRhs(), traversedProduct);

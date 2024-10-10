@@ -641,6 +641,10 @@ public class GipsArithmeticTransformer {
 				}
 			case MULTIPLY:
 				return isExpanded(binaryExpr.getLhs(), true) && isExpanded(binaryExpr.getRhs(), true);
+			// POW, DIVIDE, LOG can never be expanded
+			case POW, DIVIDE, LOG:
+				return traversedProduct;
+			// SIN, COS, etc. will be handled by the next `else if`
 			default:
 				return isExpanded(binaryExpr.getLhs(), traversedProduct)
 						&& isExpanded(binaryExpr.getRhs(), traversedProduct);

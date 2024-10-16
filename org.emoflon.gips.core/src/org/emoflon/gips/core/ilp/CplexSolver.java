@@ -403,7 +403,12 @@ public class CplexSolver extends ILPSolver {
 	 */
 	private void createBinVar(final String name, final Number lb, final Number ub) {
 		if (vars.containsKey(name)) {
-			throw new RuntimeException();
+			// TODO: This method should return if a variable with the same name already
+			// exists
+			// TODO: Therefore, this method should have another name, e.g.,
+			// create..VarIfNotExists, etc.
+//			throw new RuntimeException();
+			return;
 		}
 
 		try {
@@ -426,7 +431,12 @@ public class CplexSolver extends ILPSolver {
 	 */
 	private void createIntVar(final String name, final Number lb, final Number ub) {
 		if (vars.containsKey(name)) {
-			throw new RuntimeException();
+			// TODO: This method should return if a variable with the same name already
+			// exists
+			// TODO: Therefore, this method should have another name, e.g.,
+			// create..VarIfNotExists, etc.
+//			throw new RuntimeException();
+			return;
 		}
 
 		try {
@@ -446,7 +456,12 @@ public class CplexSolver extends ILPSolver {
 	 */
 	private void createDblVar(final String name, final Number lb, final Number ub) {
 		if (vars.containsKey(name)) {
-			throw new RuntimeException();
+			// TODO: This method should return if a variable with the same name already
+			// exists
+			// TODO: Therefore, this method should have another name, e.g.,
+			// create..VarIfNotExists, etc.
+//			throw new RuntimeException();
+			return;
 		}
 
 		try {

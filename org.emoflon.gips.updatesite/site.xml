@@ -5,7 +5,7 @@
    </feature>
    <category-def name="gips" label="GIPS">
       <description>
-         Graph-Based ILP Problem Specification Tool
+         Graph-Based (M)ILP Problem Specification Tool
       </description>
    </category-def>
 </site>

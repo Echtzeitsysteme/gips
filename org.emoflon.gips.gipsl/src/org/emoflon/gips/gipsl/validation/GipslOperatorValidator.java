@@ -111,23 +111,32 @@ public class GipslOperatorValidator {
 	private static void generateSolverWarning(final SolverType solverType, final GipsBoolExpr expr) {
 		if (expr instanceof GipsImplicationBoolExpr implExpr) {
 			GipslValidator.warn( //
-					"The solver " + solverType.getName() + " might not work correctly with the "
-							+ implExpr.getOperator() + " operator.", //
+					generateWarningString(solverType, implExpr.getOperator().getName()), //
 					GipslPackage.Literals.GIPS_IMPLICATION_BOOL_EXPR__OPERATOR //
 			);
 		} else if (expr instanceof GipsOrBoolExpr orExpr) {
 			GipslValidator.warn( //
-					"The solver " + solverType.getName() + " might not work correctly with the "
-							+ orExpr.getOperator().getName() + " operator.", //
+					generateWarningString(solverType, orExpr.getOperator().getName()), //
 					GipslPackage.Literals.GIPS_OR_BOOL_EXPR__OPERATOR //
 			);
 		} else if (expr instanceof GipsRelExpr relExpr) {
 			GipslValidator.warn( //
-					"The solver " + solverType.getName() + " might not work correctly with the "
-							+ relExpr.getOperator().getLiteral() + " operator.", //
+					generateWarningString(solverType, relExpr.getOperator().getName()), //
 					GipslPackage.Literals.GIPS_REL_EXPR__OPERATOR //
 			);
 		}
+	}
+
+	/**
+	 * Generates a warning String for the given SolverType and operator name.
+	 * 
+	 * @param solverType   SolverType to include in the warning String.
+	 * @param operatorName Operator name to include in the warning String.
+	 * @return Warning String for the given SolverType and operator name.
+	 */
+	private static String generateWarningString(final SolverType solverType, final String operatorName) {
+		return "The solver " + solverType.getName() + " might lack the necessary precistion to support the operator "
+				+ operatorName + " correctly. Use with caution.";
 	}
 
 	/**

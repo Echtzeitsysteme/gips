@@ -1,8 +1,13 @@
 package org.emoflon.gips.core.api;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -12,8 +17,11 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsGlobalObjective;
 import org.emoflon.gips.core.TypeIndexer;
+import org.emoflon.gips.core.gt.GTMapper;
 import org.emoflon.gips.core.ilp.ILPSolver;
 import org.emoflon.gips.core.ilp.ILPSolverConfig;
+import org.emoflon.gips.core.util.MatchUtil;
+import org.emoflon.gips.core.util.MatchUtil.IMatchConverter;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
@@ -22,6 +30,11 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.ibex.gt.api.GraphTransformationAPI;
 import org.emoflon.ibex.gt.api.GraphTransformationApp;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPatternModelPackage;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 
 public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<EMOFLON_API>, EMOFLON_API extends GraphTransformationAPI>
 		extends GipsEngine {
@@ -272,5 +285,71 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	protected abstract GipsGlobalObjective createGlobalObjective();
 
 	protected abstract ILPSolver createSolver();
+
+	//
+	// Utilities related to exporting all matches with their corresponding solution
+	// value (i.e., if they were chosen by the (M)ILP solver)
+	//
+
+	/**
+	 * Returns all matches of a given mapper's pattern.
+	 * 
+	 * @param mapper Mapper to return all matches for.
+	 * @return All matches of the given mapper's pattern.
+	 */
+	@SuppressWarnings("rawtypes")
+	public Set<GraphTransformationMatch> getMatchesOf(final GTMapper<?, ?, ?> mapper) {
+		final Set<GraphTransformationMatch> matches = new HashSet<>();
+		mapper.getMappings().values().forEach(m -> {
+			matches.add(m.getMatch());
+		});
+
+		return matches;
+	}
+
+	/**
+	 * Returns all matches with a Boolean specifying their selection of a given
+	 * mapper's pattern.
+	 * 
+	 * @param mapper Mapper to return all matches for.
+	 * @return All matches with a Boolean specifying their selection of a given
+	 *         mapper's pattern.
+	 */
+	@SuppressWarnings("rawtypes")
+	public Map<GraphTransformationMatch, Boolean> getMatchesWithSolutionOf(final GTMapper<?, ?, ?> mapper) {
+		final Map<GraphTransformationMatch, Boolean> matches = new HashMap<>();
+		mapper.getMappings().values().forEach(m -> {
+			matches.put(m.getMatch(), m.getValue() >= 1);
+		});
+		return matches;
+	}
+
+	/**
+	 * Persists all matches of a given mapper as JSON to a given path. The given
+	 * match converter will be used to transform the matches into the property
+	 * representation for the JSON format.
+	 * 
+	 * @param mapper    Mapper to extract matches and their selection value (0 or 1)
+	 *                  from.
+	 * @param path      File path to write the JSON output to.
+	 * @param converter Match converter that is used to convert the match into the
+	 *                  property representation for JSON.
+	 */
+	public void persistMatchesSolution(final GTMapper<?, ?, ?> mapper, final String path,
+			final IMatchConverter converter) {
+		if (path == null || path.isBlank()) {
+			throw new IllegalArgumentException("Given path was null or blank.");
+		}
+
+		final String json = MatchUtil.matchesSolutionToJson(mapper, converter, this);
+		try {
+			final FileWriter writer = new FileWriter(path);
+			writer.write(json);
+			writer.flush();
+			writer.close();
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 }

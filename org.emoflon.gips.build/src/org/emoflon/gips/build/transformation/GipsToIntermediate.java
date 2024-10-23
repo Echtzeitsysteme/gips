@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -283,34 +284,23 @@ public class GipsToIntermediate {
 
 			for (GipsAnnotatedConstraint eSubConstraint : eConstraints) {
 				switch (eSubConstraint.type()) {
-				case CONJUCTION_OF_LITERALS -> {
-					Constraint dConstraint = createDependencyConstraint(eSubConstraint, constraintCounter);
-					data.model().getConstraints().add(dConstraint);
+				case DISJUNCTION_OF_LITERALS -> {
+					Constraint disjunction = createDisjunctConstraint(eSubConstraint, constraintCounter);
+					data.model().getConstraints().add(disjunction);
 					constraintCounter++;
 
-					Map<GipsConstraint, Constraint> transformed = new HashMap<>();
-					Map<GipsConstraint, VariableTuple> constraint2Slack = new HashMap<>();
-					Map<GipsConstraint, VariableTuple> constraint2Symbolic = new HashMap<>();
+					Map<GipsConstraint, Collection<Constraint>> transformed = new HashMap<>();
+					Map<GipsConstraint, Variable> constraint2Symbolic = new HashMap<>();
 					for (GipsConstraint subConstraint : eSubConstraint.result().values()) {
-						Constraint constraint = transformConstraint(subConstraint);
-						data.model().getConstraints().add(constraint);
-						transformed.put(subConstraint, constraint);
-						dConstraint.getDependencies().add(constraint);
-						constraint.setNegated(false);
-
-						if (!constraint.isConstant() && !(constraint.getExpression() instanceof RelationalExpression)) {
-							throw new UnsupportedOperationException(
-									"Negation for constraints that are constant at build time is currently not supported");
-						}
-
-						// Insert real-valued slack variables into non-inverted and inverted
-						// non-build-time-constant constraint
-						if (!constraint.isConstant()) {
-							VariableTuple slackVars = GipsConstraintUtils.insertSlackVariables(data, factory,
-									dConstraint, constraint);
-							constraint2Slack.put(subConstraint, slackVars);
-						}
-
+						Variable symbolicVariable = GipsConstraintUtils.createBinaryVariable(data, factory,
+								disjunction.getName() + "_symbolic" + constraint2Symbolic.size());
+						disjunction.getHelperVariables().add(symbolicVariable);
+						constraint2Symbolic.put(subConstraint, symbolicVariable);
+						Collection<Constraint> constraints = transformConstraint(subConstraint, false,
+								symbolicVariable);
+						constraints.forEach(c -> c.setSymbolicVariable(symbolicVariable));
+						transformed.put(subConstraint, constraints);
+						disjunction.getDependencies().addAll(constraints);
 					}
 
 					// Create substitute relational constraint representing a logic disjunction of
@@ -332,44 +322,10 @@ public class GipsToIntermediate {
 						// variables
 						Formula subformula = subformulas.poll();
 						GipsConstraint splitConstraint = eSubConstraint.result().get(subformula);
-						Constraint constraint = transformed.get(splitConstraint);
-						VariableTuple slackVars = constraint2Slack.get(splitConstraint);
-
-						Variable binaryVarPos = GipsConstraintUtils.createBinaryVariable(data, factory,
-								constraint.getName() + "_symVPos");
-						dConstraint.getHelperVariables().add(binaryVarPos);
-
-						Variable binaryVarNeg = GipsConstraintUtils.createBinaryVariable(data, factory,
-								constraint.getName() + "_symVNeg");
-						dConstraint.getHelperVariables().add(binaryVarNeg);
-
-						VariableTuple symbolicVars = new VariableTuple(binaryVarPos, binaryVarNeg);
-						constraint2Symbolic.put(splitConstraint, symbolicVars);
-						constraint.setSymbolicVariable(symbolicVars.nonInverted());
-
-						// Force symbolic variables non-zero constraint
-						// symVPos + symVNeg == 1
-						GipsConstraintUtils.insertSymbolicVariableNonZeroConstraint(factory, dConstraint,
-								symbolicVars.nonInverted(), symbolicVars.inverted());
-
-						// Insert slack variable constraints only for non-build-time-constant
-						// constraints
-						if (slackVars != null) {
-							// Link symbolic and slack variables
-							GipsConstraintUtils.insertSymbolicSlackLinkConstraint(factory, dConstraint,
-									symbolicVars.nonInverted(), slackVars.nonInverted());
-							GipsConstraintUtils.insertSymbolicSlackLinkConstraint(factory, dConstraint,
-									symbolicVars.inverted(), slackVars.inverted());
-
-							// Sos1 constraint
-							GipsConstraintUtils.insertSos1Constraint(data, factory, dConstraint,
-									symbolicVars.nonInverted(), slackVars.nonInverted());
-							GipsConstraintUtils.insertSos1Constraint(data, factory, dConstraint,
-									symbolicVars.inverted(), slackVars.inverted());
-						}
+						Variable symbolicVariable = constraint2Symbolic.get(splitConstraint);
 
 						VariableReference varRef = factory.createVariableReference();
-						varRef.setVariable(symbolicVars.nonInverted());
+						varRef.setVariable(symbolicVariable);
 						if (subformula instanceof Literal lit && lit.phase()) {
 							if (currentSum.getLhs() == null && !subformulas.isEmpty()) {
 								currentSum.setLhs(varRef);
@@ -422,51 +378,13 @@ public class GipsToIntermediate {
 					}
 
 					substituteRelation.setLhs(substituteSum);
-					dConstraint.setExpression(substituteRelation);
+					disjunction.setExpression(substituteRelation);
 				}
 				case LITERAL -> {
-					Constraint constraint = transformConstraint(eSubConstraint.result().values().iterator().next());
-					constraint.setNegated(false);
+					transformConstraint(eSubConstraint.result().values().iterator().next(), false, null);
 				}
 				case NEGATED_LITERAL -> {
-					Constraint constraint = transformConstraint(eSubConstraint.result().values().iterator().next());
-					data.model().getConstraints().add(constraint);
-
-					if (constraint.isConstant()) {
-						constraint.setNegated(true);
-						return;
-					}
-
-					if (!(constraint.getExpression() instanceof RelationalExpression)) {
-						throw new UnsupportedOperationException(
-								"Negation for constraints that are constant at build time is currently not supported");
-					}
-
-					Constraint dConstraint = createDependencyConstraint(eSubConstraint, constraintCounter);
-					data.model().getConstraints().add(dConstraint);
-					constraintCounter++;
-					dConstraint.getDependencies().add(constraint);
-
-					// Insert real-valued slack variables into non-inverted and inverted constraint
-					VariableTuple slackVars = GipsConstraintUtils.insertSlackVariables(data, factory, dConstraint,
-							constraint);
-
-					// Add negation constraint
-					VariableTuple symbolicVars = GipsConstraintUtils.insertNegationConstraint(data, factory,
-							dConstraint, constraint);
-					constraint.setSymbolicVariable(symbolicVars.nonInverted());
-
-					// Link symbolic and slack variables
-					GipsConstraintUtils.insertSymbolicSlackLinkConstraint(factory, dConstraint,
-							symbolicVars.nonInverted(), slackVars.nonInverted());
-					GipsConstraintUtils.insertSymbolicSlackLinkConstraint(factory, dConstraint, symbolicVars.inverted(),
-							slackVars.inverted());
-
-					// Sos1 constraint
-					GipsConstraintUtils.insertSos1Constraint(data, factory, dConstraint, symbolicVars.nonInverted(),
-							slackVars.nonInverted());
-					GipsConstraintUtils.insertSos1Constraint(data, factory, dConstraint, symbolicVars.inverted(),
-							slackVars.inverted());
+					transformConstraint(eSubConstraint.result().values().iterator().next(), true, null);
 				}
 				default -> {
 					throw new IllegalArgumentException("Unknown constraint annotation type.");
@@ -478,12 +396,14 @@ public class GipsToIntermediate {
 		}
 	}
 
-	protected Constraint transformConstraint(final GipsConstraint subConstraint) throws Exception {
+	protected Collection<Constraint> transformConstraint(final GipsConstraint subConstraint, boolean isNegated,
+			Variable symbolicVariable) throws Exception {
 		Constraint constraint = createConstraint(subConstraint, constraintCounter);
 		constraint.setDepending(false);
+		constraint.setNegated(false);
 
 		data.model().getConstraints().add(constraint);
-		data.eConstraint2Constraint().put(subConstraint, constraint);
+		data.eConstraint2Constraints().put(subConstraint, new LinkedList<>(List.of(constraint)));
 		constraintCounter++;
 
 		BooleanExpressionTransformer transformer = transformationFactory.createBooleanTransformer(constraint);
@@ -494,7 +414,8 @@ public class GipsToIntermediate {
 			// Check whether this constraint is constant at ILP problem build time. If true
 			// -> return
 			constraint.setConstant(true);
-			return constraint;
+			constraint.setNegated(isNegated);
+			return new LinkedList<>(List.of(constraint));
 		}
 
 		if (!(constraint.getExpression() instanceof RelationalExpression)) {
@@ -514,7 +435,25 @@ public class GipsToIntermediate {
 			throw new IllegalArgumentException("Context must be used at least once per non-global constraint.");
 		}
 
-		return constraint;
+		// Normalize the relational expression operator such that it conforms to most
+		// ILP solver's requirements (i.e., no !=, > and < operators allowed).
+		Collection<Constraint> substitutes = new LinkedList<>();
+		if (symbolicVariable == null) {
+			substitutes = GipsConstraintUtils.normalizeOperator(data, factory, constraint, isNegated);
+		} else {
+			substitutes = GipsConstraintUtils.normalizeOperator(data, factory, constraint, symbolicVariable);
+		}
+
+		if (substitutes.isEmpty()) {
+			return new LinkedList<>(List.of(constraint));
+		}
+
+		data.model().getConstraints().remove(constraint);
+		data.model().getConstraints().addAll(substitutes);
+		data.eConstraint2Constraints().get(subConstraint).clear();
+		data.eConstraint2Constraints().get(subConstraint).addAll(substitutes);
+
+		return substitutes;
 	}
 
 	protected void transformObjectives() throws Exception {
@@ -592,29 +531,29 @@ public class GipsToIntermediate {
 		}
 	}
 
-	protected Constraint createDependencyConstraint(final GipsAnnotatedConstraint eConstraint, int counter) {
+	protected Constraint createDisjunctConstraint(final GipsAnnotatedConstraint eConstraint, int counter) {
 		if (eConstraint.input().getContext() instanceof GipsMappingContext mapping) {
 			MappingConstraint constraint = factory.createMappingConstraint();
-			constraint.setName("DependingMappingConstraint" + counter + "On" + mapping.getMapping().getName());
+			constraint.setName("DisjunctMappingConstraint" + counter + "On" + mapping.getMapping().getName());
 			constraint.setMapping(data.eMapping2Mapping().get(mapping.getMapping()));
 			constraint.setDepending(true);
 			return constraint;
 		} else if (eConstraint.input().getContext() instanceof GipsPatternContext pattern) {
 			PatternConstraint constraint = factory.createPatternConstraint();
-			constraint.setName("DependingPatternConstraint" + counter + "On" + pattern.getPattern().getName());
+			constraint.setName("DisjunctPatternConstraint" + counter + "On" + pattern.getPattern().getName());
 			constraint.setPattern(data.getPattern(pattern.getPattern()));
 			constraint.setDepending(true);
 			return constraint;
 		} else if (eConstraint.input().getContext() instanceof GipsTypeContext type) {
 			TypeConstraint constraint = factory.createTypeConstraint();
-			constraint.setName("DependingTypeConstraint" + counter + "On" + type.getType().getName());
+			constraint.setName("DisjunctTypeConstraint" + counter + "On" + type.getType().getName());
 			Type varType = data.getType((EClass) type.getType());
 			constraint.setDepending(true);
 			constraint.setModelType(varType);
 			return constraint;
 		} else {
 			GlobalConstraint constraint = factory.createGlobalConstraint();
-			constraint.setName("DependingGlobalConstraint" + counter);
+			constraint.setName("DisjunctGlobalConstraint" + counter);
 			constraint.setDepending(true);
 			return constraint;
 		}

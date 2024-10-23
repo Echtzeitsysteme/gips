@@ -147,7 +147,7 @@ public class GipslOperatorValidator {
 	 * @return True if a warning should be displayed for the given SolverType.
 	 */
 	private static boolean warningForSolver(final SolverType solverType) {
-		if (solverType == SolverType.GLPK) {
+		if (solverType == SolverType.GLPK || solverType == SolverType.LPSOLVE) {
 			return true;
 		}
 		return false;

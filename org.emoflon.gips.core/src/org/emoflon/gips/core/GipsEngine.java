@@ -60,10 +60,10 @@ public abstract class GipsEngine {
 
 				if (globalObjective != null)
 					globalObjective.buildObjectiveFunction();
+			});
 
-				observer.observe("BUILD_SOLVER", () -> {
-					ilpSolver.buildILPProblem();
-				});
+			observer.observe("BUILD_SOLVER", () -> {
+				ilpSolver.buildILPProblem();
 			});
 		});
 	}

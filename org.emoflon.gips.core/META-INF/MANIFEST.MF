@@ -7,7 +7,7 @@ Automatic-Module-Name: org.emoflon.gips.core
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: org.emoflon.ibex.gt;visibility:=reexport,
  org.emoflon.gips.intermediate;visibility:=reexport,
- org.emoflon.gips.core.dependencies;bundle-version="1.0.0";visibility:=reexport,
+ org.emoflon.gips.core.dependencies;visibility:=reexport,
  org.emoflon.gips.build
 Export-Package: org.emoflon.gips.core,
  org.emoflon.gips.core.api,

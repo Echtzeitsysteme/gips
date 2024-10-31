@@ -255,7 +255,7 @@ public class GipsImportManager {
 		} else if (par.getType() == EcorePackage.Literals.EFLOAT || par.getType() == EcorePackage.Literals.EDOUBLE) {
 			return "0.0";
 		} else if (par.getType() == EcorePackage.Literals.ESTRING || par.getType() == EcorePackage.Literals.ECHAR) {
-			return "";
+			return "\"\"";
 		} else if (par.getType() == EcorePackage.Literals.EBOOLEAN) {
 			return "false";
 		} else {

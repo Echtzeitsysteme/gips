@@ -63,12 +63,12 @@ public class GurobiSolver extends ILPSolver {
 	private void init() throws Exception {
 		// TODO: Gurobi log output redirect from stdout to ILPSolverOutput
 		env = new GRBEnv("Gurobi_ILP.log");
+		if (!config.enableOutput()) {
+			env.set(IntParam.OutputFlag, 0);
+		}
 		env.set(IntParam.Presolve, config.enablePresolve() ? 1 : 0);
 		if (config.rndSeedEnabled()) {
 			env.set(IntParam.Seed, config.randomSeed());
-		}
-		if (!config.enableOutput()) {
-			env.set(IntParam.OutputFlag, 0);
 		}
 		// TODO: Check specific tolerances later on
 		if (config.enableTolerance()) {

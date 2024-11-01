@@ -1,5 +1,7 @@
 package org.emoflon.gips.core.ilp;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -61,14 +63,21 @@ public class GurobiSolver extends ILPSolver {
 	}
 
 	private void init() throws Exception {
+		final var out = System.out;
+		final var err = System.err;
+		System.setOut(new PrintStream(OutputStream.nullOutputStream()));
+		System.setErr(new PrintStream(OutputStream.nullOutputStream()));
 		// TODO: Gurobi log output redirect from stdout to ILPSolverOutput
 		env = new GRBEnv("Gurobi_ILP.log");
+		if (!config.enableOutput()) {
+			env.set(IntParam.OutputFlag, 0);
+			env.set(IntParam.LogToConsole, 0);
+		}
+		System.setOut(out);
+		System.setErr(err);
 		env.set(IntParam.Presolve, config.enablePresolve() ? 1 : 0);
 		if (config.rndSeedEnabled()) {
 			env.set(IntParam.Seed, config.randomSeed());
-		}
-		if (!config.enableOutput()) {
-			env.set(IntParam.OutputFlag, 0);
 		}
 		// TODO: Check specific tolerances later on
 		if (config.enableTolerance()) {

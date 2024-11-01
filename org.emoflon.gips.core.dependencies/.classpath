@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/slf4j-nop-2.0.16.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/slf4j-nop-2.0.16-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/slf4j-nop-2.0.16-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jna-5.15.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jna-5.15.0-javadoc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jna-5.15.0-sources.jar"/>

@@ -1,5 +1,7 @@
 package org.emoflon.gips.core.ilp;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -61,14 +63,50 @@ public class GurobiSolver extends ILPSolver {
 	}
 
 	private void init() throws Exception {
+		// Disable console output during the startup phase.
+		PrintStream out = System.out;
+		PrintStream err = System.err;
+		System.setErr(new PrintStream(new OutputStream() {
+			@Override
+			public void write(int b) {
+				return;
+			}
+
+			@Override
+			public void write(byte[] b) {
+				return;
+			}
+
+			@Override
+			public void write(byte[] b, int off, int len) {
+				return;
+			}
+		}));
+		System.setOut(new PrintStream(new OutputStream() {
+			@Override
+			public void write(int b) {
+				return;
+			}
+
+			@Override
+			public void write(byte[] b) {
+				return;
+			}
+
+			@Override
+			public void write(byte[] b, int off, int len) {
+				return;
+			}
+		}));
+
 		// TODO: Gurobi log output redirect from stdout to ILPSolverOutput
 		env = new GRBEnv("Gurobi_ILP.log");
+		if (!config.enableOutput()) {
+			env.set(IntParam.OutputFlag, 0);
+		}
 		env.set(IntParam.Presolve, config.enablePresolve() ? 1 : 0);
 		if (config.rndSeedEnabled()) {
 			env.set(IntParam.Seed, config.randomSeed());
-		}
-		if (!config.enableOutput()) {
-			env.set(IntParam.OutputFlag, 0);
 		}
 		// TODO: Check specific tolerances later on
 		if (config.enableTolerance()) {
@@ -102,6 +140,14 @@ public class GurobiSolver extends ILPSolver {
 		// Reset local lookup data structure for the Gurobi variables in case this is
 		// not the first initialization.
 		grbVars.clear();
+
+		// Re-enable console output.
+		System.setOut(out);
+		System.setErr(err);
+
+		if (!config.enableOutput()) {
+			env.set(IntParam.OutputFlag, 0);
+		}
 	}
 
 	@Override
@@ -162,7 +208,12 @@ public class GurobiSolver extends ILPSolver {
 			throw new RuntimeException(e);
 		}
 
-		return new ILPSolverOutput(status, objVal, engine.getValidationLog(), solCount);
+		return new ILPSolverOutput(status, objVal, engine.getValidationLog(), solCount, new ProblemStatistics( //
+				engine.getMappers().values().stream() //
+						.map(m -> m.getMappings().size()) //
+						.reduce(0, (sum, val) -> sum + val), //
+				model.getVars().length, //
+				model.getConstrs().length)); //
 	}
 
 	@Override

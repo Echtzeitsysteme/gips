@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 public class Observer {
 
 	private static Observer instance;
-	protected Map<String, Map<String, Measurement>> measurements = Collections.synchronizedMap(new LinkedHashMap<>());
+	protected Map<String, Map<String, IMeasurement>> measurements = Collections.synchronizedMap(new LinkedHashMap<>());
 	private String currentSeries;
 
 	public static synchronized Observer getInstance() {
@@ -26,7 +26,7 @@ public class Observer {
 		return currentSeries;
 	}
 
-	public Map<String, Measurement> getMeasurements(String series) {
+	public Map<String, IMeasurement> getMeasurements(String series) {
 		return measurements.get(series);
 	}
 
@@ -39,7 +39,7 @@ public class Observer {
 	}
 
 	public <T> T observe(final String series, final String entry, Supplier<T> function) {
-		Measurement m = new Measurement();
+		SingleMeasurement m = new SingleMeasurement();
 		m.start();
 		T result = function.get();
 		m.stop();
@@ -48,19 +48,24 @@ public class Observer {
 	}
 
 	public void observe(final String series, final String entry, Runnable function) {
-		Measurement m = new Measurement();
+		SingleMeasurement m = new SingleMeasurement();
 		m.start();
 		function.run();
 		m.stop();
 		addMeasurement(series, entry, m);
 	}
 
-	protected void addMeasurement(final String series, final String entry, Measurement m) {
-		Map<String, Measurement> mSeries = measurements.get(series);
+	protected void addMeasurement(final String series, final String entry, IMeasurement m) {
+		Map<String, IMeasurement> mSeries = measurements.get(series);
 		if (mSeries == null) {
 			mSeries = Collections.synchronizedMap(new LinkedHashMap<>());
 			measurements.put(series, mSeries);
 		}
-		mSeries.put(entry, m);
+		IMeasurement old = mSeries.get(entry);
+		if (old == null) {
+			mSeries.put(entry, m);
+		} else {
+			mSeries.put(entry, old.merge(m));
+		}
 	}
 }

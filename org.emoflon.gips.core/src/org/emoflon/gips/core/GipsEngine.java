@@ -106,7 +106,8 @@ public abstract class GipsEngine {
 		Observer observer = Observer.getInstance();
 		ILPSolverOutput out = observer.observe("SOLVE_PROBLEM", () -> {
 			if (validationLog.isNotValid()) {
-				ILPSolverOutput output = new ILPSolverOutput(ILPSolverStatus.INFEASIBLE, Double.NaN, validationLog, 0);
+				ILPSolverOutput output = new ILPSolverOutput(ILPSolverStatus.INFEASIBLE, Double.NaN, validationLog, 0,
+						null);
 				ilpSolver.reset();
 				return output;
 			}
@@ -122,7 +123,8 @@ public abstract class GipsEngine {
 
 	public ILPSolverOutput solveILPProblem() {
 		if (validationLog.isNotValid()) {
-			ILPSolverOutput output = new ILPSolverOutput(ILPSolverStatus.INFEASIBLE, Double.NaN, validationLog, 0);
+			ILPSolverOutput output = new ILPSolverOutput(ILPSolverStatus.INFEASIBLE, Double.NaN, validationLog, 0,
+					null);
 			ilpSolver.reset();
 			return output;
 		}

@@ -579,28 +579,24 @@ public class GipsArithmeticTransformer {
 				Set<ArithmeticExpression> currentFactors = new LinkedHashSet<>();
 				currentFactors.addAll(factors);
 
-				// Second priority: iff both terms are constant, use the one with the smaller
-				// depth as factor
-				if (lhsConst && rhsConst) {
-					if (lDepth >= rDepth) {
-						currentFactors.add(binaryExpr.getRhs());
-						return expandProducts(binaryExpr.getLhs(), currentFactors, rootSum);
-					} else {
-						currentFactors.add(binaryExpr.getLhs());
-						return expandProducts(binaryExpr.getRhs(), currentFactors, rootSum);
-					}
-				}
-
-				// First priority: never use non-constant expressions as factors
-				if (lhsConst) {
+				// First priority: never use a non-constant expression as a factor for a
+				// constant one
+				if (lhsConst && !rhsConst) {
 					currentFactors.add(binaryExpr.getLhs());
 					return expandProducts(binaryExpr.getRhs(), currentFactors, rootSum);
-				} else if (rhsConst) {
+				} else if (!lhsConst && rhsConst) {
+					currentFactors.add(binaryExpr.getRhs());
+					return expandProducts(binaryExpr.getLhs(), currentFactors, rootSum);
+				}
+
+				// Second priority: if both terms are (non-)constant, use the one with the
+				// smaller depth as factor
+				if (lDepth >= rDepth) {
 					currentFactors.add(binaryExpr.getRhs());
 					return expandProducts(binaryExpr.getLhs(), currentFactors, rootSum);
 				} else {
-					// Both sides of the expression can not be non-constant
-					throw new UnsupportedOperationException("Both sides of the given expression were non-constant.");
+					currentFactors.add(binaryExpr.getLhs());
+					return expandProducts(binaryExpr.getRhs(), currentFactors, rootSum);
 				}
 			}
 			default -> {

@@ -571,8 +571,26 @@ public class GipsArithmeticTransformer {
 				return expanded;
 			}
 			case MULTIPLY -> {
+				final boolean lhsConst = (GipsTransformationUtils
+						.isConstantExpression(binaryExpr.getLhs()) == ArithmeticExpressionType.constant);
+				final boolean rhsConst = (GipsTransformationUtils
+						.isConstantExpression(binaryExpr.getRhs()) == ArithmeticExpressionType.constant);
+
 				Set<ArithmeticExpression> currentFactors = new LinkedHashSet<>();
 				currentFactors.addAll(factors);
+
+				// First priority: never use a non-constant expression as a factor for a
+				// constant one
+				if (lhsConst && !rhsConst) {
+					currentFactors.add(binaryExpr.getLhs());
+					return expandProducts(binaryExpr.getRhs(), currentFactors, rootSum);
+				} else if (!lhsConst && rhsConst) {
+					currentFactors.add(binaryExpr.getRhs());
+					return expandProducts(binaryExpr.getLhs(), currentFactors, rootSum);
+				}
+
+				// Second priority: if both terms are (non-)constant, use the one with the
+				// smaller depth as factor
 				if (lDepth >= rDepth) {
 					currentFactors.add(binaryExpr.getRhs());
 					return expandProducts(binaryExpr.getLhs(), currentFactors, rootSum);

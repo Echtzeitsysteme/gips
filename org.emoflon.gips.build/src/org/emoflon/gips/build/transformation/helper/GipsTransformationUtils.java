@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
 import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
@@ -712,6 +713,8 @@ public final class GipsTransformationUtils {
 			} else if (expr.getCurrent().getFeature().getEType() == EcorePackage.Literals.ESTRING) {
 				return ExpressionReturnType.object;
 			} else if (expr.getCurrent().getFeature().getEType() instanceof EClass) {
+				return ExpressionReturnType.object;
+			} else if (expr.getCurrent().getFeature().getEType() instanceof EEnum) {
 				return ExpressionReturnType.object;
 			} else {
 				throw new IllegalArgumentException(

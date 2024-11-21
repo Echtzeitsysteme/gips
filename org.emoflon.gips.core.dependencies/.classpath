@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/gurobi-12.0.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/gurobi-javadoc-12.0.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/slf4j-nop-2.0.16.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/slf4j-nop-2.0.16-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/slf4j-nop-2.0.16-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jna-5.15.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jna-5.15.0-javadoc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jna-5.15.0-sources.jar"/>
@@ -16,8 +21,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/logicng-parser-j8-2.6.0-javadoc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/logicng-2.6.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/logicng-2.6.0-javadoc.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/gurobi-11.0.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/gurobi-javadoc-11.0.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry exported="true" kind="lib" path="lib/cplex-22.1.1.jar"/>

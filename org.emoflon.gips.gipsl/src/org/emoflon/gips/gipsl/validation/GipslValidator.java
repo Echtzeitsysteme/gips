@@ -494,6 +494,40 @@ public class GipslValidator extends AbstractGipslValidator {
 		GipslObjectiveValidator.checkGlobalObjectiveNotNull(file);
 	}
 
+	/**
+	 * For all implication-based expressions, we have to check if the configured
+	 * solver can properly solve the generated problem.
+	 * 
+	 * @param expr Implication boolean expression to check the solver type for.
+	 */
+	@Check
+	public void checkImplExprSolverSupport(final GipsImplicationBoolExpr expr) {
+		GipslOperatorValidator.checkImpl(expr);
+	}
+
+	/**
+	 * For all or-based expressions, we have to check if the configured solver can
+	 * properly solve the generated problem.
+	 * 
+	 * @param expr Or boolean expression to check the solver type for.
+	 */
+	@Check
+	public void checkOrExprSolverSupport(final GipsOrBoolExpr expr) {
+		GipslOperatorValidator.checkOr(expr);
+	}
+
+	/**
+	 * For some operators of the relational expressions, we have to check if the
+	 * configured solver can properly solve the generated problem. The affected
+	 * operators are: `!=`, `<`, `>`
+	 * 
+	 * @param expr Relational boolean expression to check the solver type for.
+	 */
+	@Check
+	public void checkRelExprSolverSupport(final GipsRelExpr expr) {
+		GipslOperatorValidator.checkRel(expr);
+	}
+
 	/*
 	 * Static methods to generate errors/warnings
 	 */

@@ -1,5 +1,7 @@
 package org.emoflon.gips.core.ilp;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,6 +16,7 @@ import org.emoflon.gips.core.GipsMapping;
 import org.emoflon.gips.core.GipsMappingConstraint;
 import org.emoflon.gips.core.GipsTypeConstraint;
 import org.emoflon.gips.core.gt.GipsPatternConstraint;
+import org.emoflon.gips.core.util.SystemUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 
 import com.gurobi.gurobi.GRB;
@@ -60,14 +63,21 @@ public class GurobiSolver extends ILPSolver {
 	}
 
 	private void init() throws Exception {
+		final var out = System.out;
+		final var err = System.err;
+		System.setOut(new PrintStream(OutputStream.nullOutputStream()));
+		System.setErr(new PrintStream(OutputStream.nullOutputStream()));
 		// TODO: Gurobi log output redirect from stdout to ILPSolverOutput
 		env = new GRBEnv("Gurobi_ILP.log");
+		if (!config.enableOutput()) {
+			env.set(IntParam.OutputFlag, 0);
+			env.set(IntParam.LogToConsole, 0);
+		}
+		System.setOut(out);
+		System.setErr(err);
 		env.set(IntParam.Presolve, config.enablePresolve() ? 1 : 0);
 		if (config.rndSeedEnabled()) {
 			env.set(IntParam.Seed, config.randomSeed());
-		}
-		if (!config.enableOutput()) {
-			env.set(IntParam.OutputFlag, 0);
 		}
 		// TODO: Check specific tolerances later on
 		if (config.enableTolerance()) {
@@ -88,6 +98,14 @@ public class GurobiSolver extends ILPSolver {
 		}
 		if (config.lpOutput()) {
 			this.lpPath = config.lpPath();
+		}
+		// Set number of threads to use
+		// If configuration option is disabled, use the maximum number of threads the
+		// system provides
+		if (config.threadCount()) {
+			model.set(IntParam.Threads, config.threads());
+		} else {
+			model.set(IntParam.Threads, SystemUtil.getSystemThreads());
 		}
 
 		// Reset local lookup data structure for the Gurobi variables in case this is

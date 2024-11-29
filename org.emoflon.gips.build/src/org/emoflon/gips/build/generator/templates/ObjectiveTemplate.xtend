@@ -457,13 +457,13 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			return '''indexer.getObjectsOfType("«constExpr.type.type.name»").parallelStream()
 			.map(type -> («constExpr.type.type.name») type)
 			«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
-			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
+			.map(«getIteratorVariableName(constExpr)» -> 1.0 * «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
 		} else if(constExpr instanceof PatternSumExpression) {
 			imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(constExpr.pattern))
 			return '''engine.getEMoflonAPI().«constExpr.pattern.name»().findMatches(false).parallelStream()
 			«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
-			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
+			.map(«getIteratorVariableName(constExpr)» -> 1.0 * «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
 		} else if(constExpr instanceof ContextSumExpression) {
 			if(constExpr.context instanceof Mapping) {
@@ -471,12 +471,12 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			} else if(constExpr.context instanceof Pattern) {
 				return '''context.get«constExpr.node.name.toFirstUpper»().«parseFeatureExpression(constExpr.feature)».stream()
 			«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
-			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
+			.map(«getIteratorVariableName(constExpr)» -> 1.0 * «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
 			} else if(constExpr.context instanceof Type) {
 				return '''context.«parseFeatureExpression(constExpr.feature)».stream()
 			«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
-			.map(«getIteratorVariableName(constExpr)» -> «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
+			.map(«getIteratorVariableName(constExpr)» -> 1.0 * «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
 			} else {
 				throw new UnsupportedOperationException("Unknown context type.");
@@ -590,13 +590,13 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			return '''indexer.getObjectsOfType("«varExpr.type.type.name»").parallelStream()
 			.map(type -> («varExpr.type.type.name») type)
 			«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
-			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
+			.map(«getIteratorVariableName(varExpr)» -> 1.0 * «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
 		} else if(varExpr instanceof PatternSumExpression) {
 			imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(varExpr.pattern))
 			return '''engine.getEMoflonAPI().«varExpr.pattern.name»().findMatches(false).parallelStream()
 			«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
-			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
+			.map(«getIteratorVariableName(varExpr)» -> 1.0 * «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
 		} else if(varExpr instanceof ContextSumExpression) {
 			if(varExpr.context instanceof Mapping) {
@@ -604,12 +604,12 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			} else if(varExpr.context instanceof Pattern) {
 				return '''context.get«varExpr.node.name.toFirstUpper»().«parseFeatureExpression(varExpr.feature)».stream()
 			«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
-			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
+			.map(«getIteratorVariableName(varExpr)» -> 1.0 * «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
 			} else if(varExpr.context instanceof Type) {
 				return '''context.«parseFeatureExpression(varExpr.feature)».stream()
 			«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
-			.map(«getIteratorVariableName(varExpr)» -> «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
+			.map(«getIteratorVariableName(varExpr)» -> 1.0 * «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
 			} else {
 				throw new UnsupportedOperationException("Unknown context type.");

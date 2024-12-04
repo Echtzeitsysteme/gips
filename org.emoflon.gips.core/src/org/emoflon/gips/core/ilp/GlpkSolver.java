@@ -177,7 +177,15 @@ public class GlpkSolver extends ILPSolver {
 		} else {
 			throw new RuntimeException("GLPK: Solver status could not be determined.");
 		}
-		return new ILPSolverOutput(status, GLPK.glp_mip_obj_val(model), engine.getValidationLog(), solCounter);
+		return new ILPSolverOutput(status, GLPK.glp_mip_obj_val(model), engine.getValidationLog(), solCounter,
+				new ProblemStatistics( //
+						engine.getMappers().values().stream() //
+								.map(m -> m.getMappings().size()) //
+								.reduce(0, (sum, val) -> sum + val), //
+						ilpVars.size(), //
+						constraints.values().stream() //
+								.map(cons -> cons.size()) //
+								.reduce(0, (sum, val) -> sum + val))); //
 	}
 
 	@Override

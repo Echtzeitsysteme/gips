@@ -111,6 +111,14 @@ public class GurobiSolver extends ILPSolver {
 		// Reset local lookup data structure for the Gurobi variables in case this is
 		// not the first initialization.
 		grbVars.clear();
+
+		// Re-enable console output.
+		System.setOut(out);
+		System.setErr(err);
+
+		if (!config.enableOutput()) {
+			env.set(IntParam.OutputFlag, 0);
+		}
 	}
 
 	@Override
@@ -171,7 +179,12 @@ public class GurobiSolver extends ILPSolver {
 			throw new RuntimeException(e);
 		}
 
-		return new ILPSolverOutput(status, objVal, engine.getValidationLog(), solCount);
+		return new ILPSolverOutput(status, objVal, engine.getValidationLog(), solCount, new ProblemStatistics( //
+				engine.getMappers().values().stream() //
+						.map(m -> m.getMappings().size()) //
+						.reduce(0, (sum, val) -> sum + val), //
+				model.getVars().length, //
+				model.getConstrs().length)); //
 	}
 
 	@Override

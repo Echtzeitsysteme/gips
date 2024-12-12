@@ -110,7 +110,11 @@ public class «className» extends GTMapping<«data.mapping2matchClassName.get(c
 	«IF !context.freeVariables.isNullOrEmpty»
 	«FOR v : context.freeVariables»
 	public «GipsImportManager.variableToSimpleJavaDataType(v, imports)» getValueOf«v.name.toFirstUpper»() {
+		«IF GipsImportManager.variableToSimpleJavaDataType(v, imports) == "boolean"»
+		return «v.name.toFirstLower».getValue() != 0;
+		«ELSE»
 		return «v.name.toFirstLower».getValue();
+		«ENDIF»
 	}
 	
 	«ENDFOR»
@@ -118,7 +122,11 @@ public class «className» extends GTMapping<«data.mapping2matchClassName.get(c
 	«IF !context.boundVariables.isNullOrEmpty»
 	«FOR v : context.boundVariables»
 	public «GipsImportManager.variableToSimpleJavaDataType(v, imports)» getValueOf«v.name.toFirstUpper»() {
+		«IF GipsImportManager.variableToSimpleJavaDataType(v, imports) == "boolean"»
+		return «v.name.toFirstLower».getValue() != 0;
+		«ELSE»
 		return «v.name.toFirstLower».getValue();
+		«ENDIF»
 	}
 	
 	«ENDFOR»
@@ -126,7 +134,11 @@ public class «className» extends GTMapping<«data.mapping2matchClassName.get(c
 	«IF !context.freeVariables.isNullOrEmpty»
 	«FOR v : context.freeVariables»
 	public void setValueOf«v.name.toFirstUpper»(final «GipsImportManager.variableToSimpleJavaDataType(v, imports)» «v.name.toFirstLower») {
+		«IF GipsImportManager.variableToSimpleJavaDataType(v, imports) == "boolean"»
+		this.«v.name.toFirstLower».setValue(«v.name.toFirstLower» ? 1 : 0);
+		«ELSE»
 		this.«v.name.toFirstLower».setValue(«v.name.toFirstLower»);
+		«ENDIF»
 	}
 	
 	«ENDFOR»
@@ -134,7 +146,11 @@ public class «className» extends GTMapping<«data.mapping2matchClassName.get(c
 	«IF !context.boundVariables.isNullOrEmpty»
 	«FOR v : context.boundVariables»
 	public void setValueOf«v.name.toFirstUpper»(final «GipsImportManager.variableToSimpleJavaDataType(v, imports)» «v.name.toFirstLower») {
+		«IF GipsImportManager.variableToSimpleJavaDataType(v, imports) == "boolean"»
+		this.«v.name.toFirstLower».setValue(«v.name.toFirstLower» ? 1 : 0);
+		«ELSE»
 		this.«v.name.toFirstLower».setValue(«v.name.toFirstLower»);
+		«ENDIF»
 	}
 	
 	«ENDFOR»
@@ -191,7 +207,7 @@ public class «className» extends GTMapping<«data.mapping2matchClassName.get(c
 			«IF !context.freeVariables.isNullOrEmpty»
 			«FOR v : context.freeVariables»
 			case "«v.name»" : {
-				«v.name.toFirstLower».setValue(«IF v.type != VariableType.REAL»Math.round((«GipsImportManager.variableToSimpleJavaDataType(v, imports)») value))«ELSE»(«GipsImportManager.variableToSimpleJavaDataType(v, imports)») value)«ENDIF»;
+				«v.name.toFirstLower».setValue(«IF v.type == VariableType.BINARY»(int) value)«ELSEIF v.type == VariableType.INTEGER»Math.round((«GipsImportManager.variableToSimpleJavaDataType(v, imports)») value))«ELSE»(«GipsImportManager.variableToSimpleJavaDataType(v, imports)») value)«ENDIF»;
 				break;
 			}
 			«ENDFOR»
@@ -199,7 +215,7 @@ public class «className» extends GTMapping<«data.mapping2matchClassName.get(c
 			«IF !context.boundVariables.isNullOrEmpty»
 			«FOR v : context.boundVariables»
 			case "«v.name»" : {
-				«v.name.toFirstLower».setValue((«GipsImportManager.variableToSimpleJavaDataType(v, imports)») value);
+				«v.name.toFirstLower».setValue(«IF v.type == VariableType.BINARY»(int) value)«ELSEIF v.type == VariableType.INTEGER»Math.round((«GipsImportManager.variableToSimpleJavaDataType(v, imports)») value))«ELSE»(«GipsImportManager.variableToSimpleJavaDataType(v, imports)») value)«ENDIF»;
 				break;
 			}
 			«ENDFOR»

@@ -19,10 +19,11 @@
             * Restart your Eclipse IDE.
     * Install [CPLEX](https://www.ibm.com/analytics/cplex-optimizer) in version `22.1.1` and activate a license for your computer (if neccessary).
         * CPLEX is a commercial alternative to the other (M)ILP solvers implemented in GIPS.
-* Clone this Git repository to your local machine and import it into Eclipse: *File -> Import -> General -> Existing Projects into Workspace*. Import all projects.
+* Clone this Git repository to your local machine and import it into your Eclipse development workspace: *File -> Import -> General -> Existing Projects into Workspace*. Import all projects. You can use your eMoflon::IBeX development workspace for this, i.e., there is no need to start a runtime workspace for the GIPS development projects.
     * As an alternative, you can use this [PSF file](https://raw.githubusercontent.com/Echtzeitsysteme/gips/master/devProjectSet.psf) for the import.
 * Inside the Eclipse development workspace ...
     * ... Run `Run all GIPS MWE2 files.launch` from `org.emoflon.gips.core/launch` with right click _Run As_ -> _Build all GIPS MWE2 files_.
+        * In case any error warning pops up, simply click `Proceed`.
     * ... build all projects (*Project -> Clean... -> Clean all projects*) to trigger code generation.
 * Launch a runtime workspace (while using a runtime Eclipse) as stated in the eMoflon::IBeX installation steps to start using GIPS.
 

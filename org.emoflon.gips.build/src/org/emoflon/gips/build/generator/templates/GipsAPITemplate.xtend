@@ -55,11 +55,23 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 		super(new «data.apiData.engineAppClasses.get(GipsAPIData.HIPE_ENGINE_NAME)»());
 	}
 	
+	/**
+	 * Initializes the GIPS engine API with the given model URI.
+	 * 
+	 * @param modelUri Model URI to load.
+	 */
 	@Override
 	public void init(final URI modelUri) {
 		super.initInternal(INTERMEDIATE_MODEL_URI, modelUri);
 	}
 	
+	/**
+	 * Initializes the GIPS engine API with the given GIPS intermediate model URI
+	 * and the model URI.
+	 * 
+	 * @param gipsModelURI GIPS intermediate model URI to load.
+	 * @param modelUri     Model URI to load.
+	 */
 	@Override
 	public void init(final URI gipsModelURI, final URI modelUri) {
 		super.initInternal(gipsModelURI, modelUri);
@@ -79,9 +91,40 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 		super.initInternal(gipsModelURI, modelUri, ibexPatternPath);
 	}
 	
+	/**
+	 * Initializes the API with a given resource set as model.
+	 * 
+	 * @param model Resource set as model.
+	 */
 	@Override
 	public void init(final ResourceSet model) {
 		super.initInternal(INTERMEDIATE_MODEL_URI, model);
+	}
+	
+	/**
+	 * Initializes the GIPS engine API with the given GIPS intermediate model URI
+	 * and a resource set as model.
+	 * 
+	 * @param gipsModelUri GIPS intermediate model URI to load.
+	 * @param model        Resource set as model.
+	 */
+	@Override
+	public void init(final URI gipsModelUri, final ResourceSet model) {
+		super.initInternal(gipsModelUri, model);
+	}
+	
+	/**
+     * Initializes the GIPS engine API with the given GIPS intermediate model URI, a
+	 * resource set as model, and the IBeX pattern path to avoid using hard-coded
+	 * paths in IBeX.
+	 * 
+	 * @param gipsModelUri    GIPS intermediate model URI to load.
+	 * @param model           Resource set as model.
+	 * @param ibexPatternPath IBeX pattern path to load.
+	 */
+	@Override
+	public void init(final URI gipsModelUri, final ResourceSet model, final URI ibexPatternPath) {
+		super.initInternal(gipsModelUri, model, ibexPatternPath);
 	}
 	
 	«FOR mapping : data.model.variables.filter[v | v instanceof Mapping]»

@@ -37,8 +37,8 @@ Before contributing, please set-up your Eclipse code-style settings as follows:
 * _Window_ -> _Preferences_ -> _Java_ 
     * -> _Code Style_ -> _Clean Up_ -> _Active profile:_ -> "Eclipse [built-in]" (default)
     * -> _Code Style_ -> _Formatter_ -> _Active profile:_ -> "Eclipse [built-in]" (default)
-    * -> _Code Style_ -> _Organize Imports: -> "java, javax, org, com" (default)
-    * -> _Editor_ -> _Save Actions:
+    * -> _Code Style_ -> _Organize Imports:_ -> "java, javax, org, com" (default)
+    * -> _Editor_ -> _Save Actions:_
         * Check "Perform the selected actions on save"
         * Check "Format source code"
         * Check "Format all lines"

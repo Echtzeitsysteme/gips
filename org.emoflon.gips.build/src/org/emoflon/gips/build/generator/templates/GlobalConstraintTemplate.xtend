@@ -413,7 +413,7 @@ protected List<ILPTerm> buildVariableLhs() {
 		return indexer.getObjectsOfType(«expr.type.type.EPackage.name».eINSTANCE.get«expr.type.type.name»()).parallelStream()
 			.map(type -> («expr.type.type.name») type)
 			«getFilterExpr(expr.filter, ExpressionContext.constStream)»
-			.map(type -> (double)«parseExpression(expr.expression, ExpressionContext.constConstraint)»)
+			.map(type -> 1.0 * «parseExpression(expr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value);
 	}
 		'''
@@ -454,7 +454,7 @@ protected List<ILPTerm> buildVariableLhs() {
 	protected double «methodName»(final List<ILPTerm> terms) {
 		return engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()
 			«getFilterExpr(expr.filter, ExpressionContext.constStream)»
-			.map(type -> (double)«parseExpression(expr.expression, ExpressionContext.constConstraint)»)
+			.map(type -> 1.0 * «parseExpression(expr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value);
 	}
 		'''

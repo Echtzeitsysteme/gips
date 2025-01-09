@@ -32,13 +32,13 @@ final class HelloWorldProject {
 	val advanced = check("Advanced:", false)
 	val advancedGroup = group("Properties")
 	val path = text("Package:", "gipsl", "The package path to place the files in", advancedGroup)
-	val solver = text("ILP Solver:", "GLPK", "The ILP solver to use", advancedGroup)
+	val solver = text("ILP Solver:", "GUROBI", "The ILP solver to use", advancedGroup)
 
 	override protected updateVariables() {
 		path.enabled = advanced.value
 		if (!advanced.value) {
 			path.value = "gipsl"
-			solver.value = "GLPK"
+			solver.value = "GUROBI"
 		}
 	}
 

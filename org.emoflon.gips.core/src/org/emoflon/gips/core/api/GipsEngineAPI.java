@@ -84,8 +84,20 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		indexer = new TypeIndexer(eMoflonAPI, gipsModel);
 	}
 
+	/**
+	 * Initializes the GIPS engine API with the given model URI.
+	 * 
+	 * @param modelUri Model URI to load.
+	 */
 	public abstract void init(final URI modelUri);
 
+	/**
+	 * Initializes the GIPS engine API with the given GIPS intermediate model URI
+	 * and the model URI.
+	 * 
+	 * @param gipsModelURI GIPS intermediate model URI to load.
+	 * @param modelUri     Model URI to load.
+	 */
 	public abstract void init(final URI gipsModelURI, final URI modelUri);
 
 	/**
@@ -101,9 +113,29 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	/**
 	 * Initializes the API with a given resource set as model.
 	 * 
-	 * @param model Resource set to set as model.
+	 * @param model Resource set as model.
 	 */
 	public abstract void init(final ResourceSet model);
+
+	/**
+	 * Initializes the GIPS engine API with the given GIPS intermediate model URI
+	 * and a resource set as model.
+	 * 
+	 * @param gipsModelUri GIPS intermediate model URI to load.
+	 * @param model        Resource set as model.
+	 */
+	public abstract void init(final URI gipsModelUri, final ResourceSet model);
+
+	/**
+	 * Initializes the GIPS engine API with the given GIPS intermediate model URI, a
+	 * resource set as model, and the IBeX pattern path to avoid using hard-coded
+	 * paths in IBeX.
+	 * 
+	 * @param gipsModelUri    GIPS intermediate model URI to load.
+	 * @param model           Resource set as model.
+	 * @param ibexPatternPath IBeX pattern path to load.
+	 */
+	public abstract void init(final URI gipsModelUri, final ResourceSet model, final URI ibexPatternPath);
 
 	/**
 	 * Returns the resource set from the eMoflon API.

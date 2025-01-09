@@ -63,46 +63,33 @@ public class GurobiSolver extends ILPSolver {
 	}
 
 	private void init() throws Exception {
-		// Disable console output during the startup phase.
-		PrintStream out = System.out;
-		PrintStream err = System.err;
-		System.setErr(new PrintStream(new OutputStream() {
-			@Override
-			public void write(int b) {
-				return;
-			}
-
-			@Override
-			public void write(byte[] b) {
-				return;
-			}
-
-			@Override
-			public void write(byte[] b, int off, int len) {
-				return;
-			}
-		}));
-		System.setOut(new PrintStream(new OutputStream() {
-			@Override
-			public void write(int b) {
-				return;
-			}
-
-			@Override
-			public void write(byte[] b) {
-				return;
-			}
-
-			@Override
-			public void write(byte[] b, int off, int len) {
-				return;
-			}
-		}));
-
+		final var out = System.out;
+		final var err = System.err;
+		System.setOut(new PrintStream(OutputStream.nullOutputStream()));
+		System.setErr(new PrintStream(OutputStream.nullOutputStream()));
+		// Keep Gurobi init exception or error to throw it later
+		Exception gurobiInitException = null;
+		Error gurobiInitError = null;
 		// TODO: Gurobi log output redirect from stdout to ILPSolverOutput
-		env = new GRBEnv("Gurobi_ILP.log");
+		try {
+			env = new GRBEnv("Gurobi_ILP.log");
+		} catch (final Exception e) {
+			gurobiInitException = e;
+		} catch (final Error e) {
+			gurobiInitError = e;
+		}
 		if (!config.enableOutput()) {
 			env.set(IntParam.OutputFlag, 0);
+			env.set(IntParam.LogToConsole, 0);
+		}
+		System.setOut(out);
+		System.setErr(err);
+		// If an exception/error occurred during Gurobi initialization, throw it now
+		if (gurobiInitException != null) {
+			throw gurobiInitException;
+		}
+		if (gurobiInitError != null) {
+			throw gurobiInitError;
 		}
 		env.set(IntParam.Presolve, config.enablePresolve() ? 1 : 0);
 		if (config.rndSeedEnabled()) {
@@ -140,14 +127,6 @@ public class GurobiSolver extends ILPSolver {
 		// Reset local lookup data structure for the Gurobi variables in case this is
 		// not the first initialization.
 		grbVars.clear();
-
-		// Re-enable console output.
-		System.setOut(out);
-		System.setErr(err);
-
-		if (!config.enableOutput()) {
-			env.set(IntParam.OutputFlag, 0);
-		}
 	}
 
 	@Override

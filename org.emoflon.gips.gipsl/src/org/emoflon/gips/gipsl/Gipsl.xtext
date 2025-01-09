@@ -5,8 +5,6 @@ import "http://www.emoflon.org/ibex/gt/editor/GT" as GT
 
 generate gipsl "http://www.emoflon.org/gips/gipsl/Gipsl"
 
-// TODO: Do not use abbreviations within names
-
 @Override 
 EditorGTFile: {EditorGTFile}
 	package = Package
@@ -17,8 +15,8 @@ EditorGTFile: {EditorGTFile}
   	conditions+=EditorCondition |
   	mappings += GipsMapping |
   	constraints += GipsConstraint |
-  	objectives += GipsObjective)*
-  	(globalObjective = GipsGlobalObjective)?	
+  	functions += GipsLinearFunction)*
+  	(globalObjective = GipsObjective)?	
 ;
 
 Package: 
@@ -48,7 +46,7 @@ enum SolverType:
 ;
 
 GipsMapping :
-	'mapping' name=ID 'with' pattern=[GT::EditorPattern|ID] ('{'
+	'mapping' name=ID 'to' pattern=[GT::EditorPattern|ID] ('{'
 		(variables += GipsMappingVariable)+
 	'}')?';'
 ;
@@ -57,106 +55,69 @@ GipsMappingVariable :
 	'var' name=ID ':' type=[ecore::EDataType] (bound ?= 'bind' parameter=[GT::EditorParameter])?
 ;
 
-// TODO: Change '->' to 'with'
-// TODO: Remove global as context. Global constraints should be defined implicitly by omitting the context.
 // TODO: Remove implicit multiplication of mapping variable if one is missing. Remove validator checking for this case.
 GipsConstraint : 
-	'constraint' '->' context=(GipsGlobalContext | GipsMappingContext | GipsTypeContext | GipsPatternContext) '{'
-		expr = GipsBool
+	'constraint' (isLocal?='with' context=[ecore::EObject|ID])? '{'
+		expression = GipsBooleanExpression
 	'}'
-;
+;	
 
-// TODO: Change '->' to 'with'
 // TODO: Remove implicit multiplication of mapping variable if one is missing. Remove validator checking for this case.
-GipsObjective : 
-	'objective' name=ID '->' context=(GipsMappingContext | GipsTypeContext | GipsPatternContext) '{'
-		expr = GipsArithmeticExpr
+GipsLinearFunction : 
+	'function' name=ID 'with' context=[ecore::EObject|ID] '{'
+		expression = GipsArithmeticExpression
 	'}'
 ;
 
-// TODO: Remove me!
-GipsGlobalContext: {GlobalContext}
-	'global'
+GipsLinearFunctionReference:
+	function=[GipsLinearFunction|ID]
 ;
 
-GipsMappingContext:
-	'mapping' '::' mapping = [GipsMapping|ID]
+GipsObjective :
+	'objective' ':' goal = OptimizationGoal '{'
+		expression = GipsArithmeticExpression
+	'}'
 ;
 
-// TODO: Change to 'type'
-GipsTypeContext:
-	'class' '::' type = [ecore::EClassifier]
-;
-
-GipsPatternContext:
-	'pattern' '::' pattern = [GT::EditorPattern|ID]
-;
-
-GipsObjectiveExpression:
-	objective=[GipsObjective|ID]
-;
-
-// TODO: Change 'objectiveGoal' to 'goal' and 'GipsOjectiveGoal' to 'OptimizationGoal' 
-GipsGlobalObjective :
-	'global' 'objective' ':' objectiveGoal = GipsObjectiveGoal ('{'
-		expr = GipsArithmeticExpr
-	'}')?
-;
-
-// TODO: Change 'GipsOjectiveGoal' to 'OptimizationGoal' 
-enum GipsObjectiveGoal:
+enum OptimizationGoal:
 	MIN = 'min' | MAX = 'max'
 ;
 
-// TODO: Delete
-GipsBool:
-	expr=GipsBoolExpr
+GipsBooleanExpression:
+	GipsBooleanImplication
 ;
 
-// TODO: Rename to GipsBooleanExpression
-GipsBoolExpr:
-	GipsImplicationBoolExpr
+GipsBooleanImplication returns GipsBooleanExpression:
+	GipsBooleanDisjunction({GipsBooleanImplication.left = current} operator=ImplicationOperator right=GipsBooleanDisjunction)*
 ;
 
-// TODO: Rename to GipsBooleanImplication
-// TODO: Rename GipsImplicationBoolExpr.left to GipsBooleanImplication.left
-GipsImplicationBoolExpr returns GipsBoolExpr:
-	GipsOrBoolExpr({GipsImplicationBoolExpr.left = current} operator=GipsImplOperator right=GipsOrBoolExpr)*
+GipsBooleanDisjunction returns GipsBooleanExpression:
+	GipsBooleanConjunction({GipsBooleanDisjunction.left = current} operator=DisjunctionOperator right=GipsBooleanConjunction)*
 ;
 
-// TODO: Rename to GipsBooleanDisjunction
-// TODO: Rename GipsOrBoolExpr.left to GipsBooleanDisjunction.left
-GipsOrBoolExpr returns GipsBoolExpr:
-	GipsAndBoolExpr({GipsOrBoolExpr.left = current} operator=GipsOrOperator right=GipsAndBoolExpr)*
+GipsBooleanConjunction returns GipsBooleanExpression:
+	GipsBooleanNegation({GipsBooleanConjunction.left = current} operator=ConjunctionOperator right=GipsBooleanNegation)*
 ;
 
-// TODO: Rename to GipsBooleanConjunction
-// TODO: Rename GipsBooleanDisjunction.left to GipsBooleanConjunction.left
-GipsAndBoolExpr returns GipsBoolExpr:
-	GipsNotBoolExpr({GipsAndBoolExpr.left = current} operator=GipsAndOperator right=GipsNotBoolExpr)*
+GipsBooleanNegation returns GipsBooleanExpression: {GipsBooleanNegation}
+	'!' operand=GipsBooleanBracket | GipsBooleanBracket
 ;
 
-// TODO: Rename to GipsBooleanNegation
-GipsNotBoolExpr returns GipsBoolExpr: {GipsNotBoolExpr}
-	'!' operand=GipsBracketBoolExpr | GipsBracketBoolExpr
+GipsBooleanBracket returns GipsBooleanExpression: {GipsBooleanBracket}
+	'[' operand=GipsBooleanExpression ']'  | GipsBooleanLiteral | GipsRelationalExpression
 ;
 
-// TODO: Rename to GipsBooleanBracket
-GipsBracketBoolExpr returns GipsBoolExpr: {GipsBracketBoolExpr}
-	'[' operand=GipsBoolExpr ']'  | GipsBooleanLiteral | GipsRelExpr
-;
-
-enum GipsImplOperator:
+enum ImplicationOperator:
   IMPLICATION='=>' |
   EQUIVALENCE='<=>'
 ;
 
-enum GipsOrOperator:
+enum DisjunctionOperator:
   OR='|' |
   XOR='^'
 ;
 
-enum GipsAndOperator:
+enum ConjunctionOperator:
   AND='&'
 ;
 
@@ -164,11 +125,11 @@ GipsBooleanLiteral:
 	literal = GipsBoolean
 ;
 
-GipsRelExpr:
-	left=GipsArithmeticExpr (operator=GipsRelOperator right=GipsArithmeticExpr)?
+GipsRelationalExpression:
+	left=GipsArithmeticExpression (operator=RelationalOperator right=GipsArithmeticExpression)?
 ;
 
-enum GipsRelOperator:
+enum RelationalOperator:
   GREATER='>' |
   GREATER_OR_EQUAL='>=' |
   EQUAL='==' |
@@ -177,135 +138,105 @@ enum GipsRelOperator:
   SMALLER='<'
 ;
 
-//TODO: Change to ValueExpression
-GipsAttributeExpr:
-	// value = (					// Add
-	GipsMappingAttributeExpr | 		// Keep, rename
-	GipsTypeAttributeExpr | 		// Keep, rename
-	GipsPatternAttributeExpr | 		// Keep, rename
-	GipsContextExpr | 				// Keep, rename
-	GipsLambdaAttributeExpression | // Keep, rename
-	GipsLambdaSelfExpression		// Delete
-	//) 							// Add
-	// (setExperession = SetExpression)? // Add
+GipsValueExpression:
+	value = (
+		GipsMappingExpression 			| 	
+		GipsTypeExpression 				|
+		GipsPatternExpression 			|
+		GipsLocalContextExpression 		|
+		GipsSetElementExpression
+	) (setExperession = GipsSetExpression)?
 ;
 
-//TODO: Change to GipsMappingExpression
-//TODO: Remove '-> expr'
-GipsMappingAttributeExpr returns GipsAttributeExpr: {GipsMappingAttributeExpr}
-	'mappings' '.' mapping=[GipsMapping|ID] '->' expr = GipsStreamExpr
+GipsMappingExpression: {GipsMappingExpression}
+	'mappings' '.' mapping=[GipsMapping|ID]
 ;
 
-//TODO: Change to GipsTypeExpression and 'classes' to 'types'.
-//TODO: Remove '-> expr'
-GipsTypeAttributeExpr returns GipsAttributeExpr: {GipsTypeAttributeExpr}
-	'classes' '.' type=[ecore::EClass] '->' expr = GipsStreamExpr
+GipsTypeExpression: {GipsTypeExpression}
+	'types' '.' type=[ecore::EClass]
 ;
 
-//TODO: Change to GipsPatternExpression
-//TODO: Remove '-> expr'
-GipsPatternAttributeExpr returns GipsAttributeExpr: {GipsPatternAttributeExpr}
-	'patterns' '.' pattern=[GT::EditorPattern|ID] '->' expr = GipsStreamExpr
+GipsPatternExpression: {GipsPatternExpression}
+	'patterns' '.' pattern=[GT::EditorPattern|ID]
 ;
 
-//TODO: Change to GipsSetElementExpression
-//TODO: Remove var and prepend 'element'
-//TODO: Make dot-Operation optional
 //TODO: Nested streams are now possible but should be forbidden in the validator.
-GipsLambdaAttributeExpression returns GipsAttributeExpr: {GipsLambdaAttributeExpression}
-	var=[GipsLambdaExpression|ID] '.' 				// See comment above
-	(expr = GipsNodeAttributeExpr | 				// Rename: GipsNodeExpression
-		expr = GipsVariableOperationExpression | 	// Rename: GipsVariableExpression
-		expr = GipsFeatureExpr | 					// Rename: GipsAttributeExpression
-		expr = GipsMappingVariableReference			// Delete
-	) // ('->' stream = GipsStreamExpr)?			// Delete -> No nested streams for now!
+GipsSetElementExpression: {GipsSetElementExpression}
+	'element'
+	( 	 expression = GipsNodeExpression 				|
+		 expression = GipsVariableReferenceExpression 	|
+		 expression = GipsAttributeExpression 
+	)?
 ;
 
-//TODO: Can be removed, if Xtext doesn't complain.
-GipsLambdaSelfExpression returns GipsAttributeExpr: {GipsLambdaSelfExpression}
-	var=[GipsLambdaExpression|ID] '()'
+GipsLocalContextExpression: {GipsLocalContextExpression}
+	'context' 
+	 (   expression = GipsNodeExpression 				| 
+	 	 expression = GipsVariableReferenceExpression 	| 
+	 	 expression = GipsAttributeExpression
+	 )?
 ;
 
-//TODO: Change to GipsLocalContextExpression and rename 'self' to 'context'
-//TODO: Remove '-> expr'
-GipsContextExpr returns GipsAttributeExpr: {GipsContextExpr}
-	'self' ('.' typeCast=GipsTypeCast)? ('.' (expr = GipsNodeAttributeExpr | expr = GipsVariableOperationExpression | expr = GipsFeatureExpr | expr = GipsMappingVariableReference) ('->' stream = GipsStreamExpr)?)?
+GipsVariableReferenceExpression returns GipsVariableReferenceExpression: 
+	'.' (isMappingValue ?= 'value') |
+	(isGenericValue ?= 'variables') '.' variable = [GipsMappingVariable|ID]
 ;
 
-// TODO: Change to GipsVariableExpression and remove isMapped
-// TODO: Remove () from 'value()'
-GipsVariableOperationExpression returns GipsVariableOperationExpression: 
-	// '.'
-	{GipsMappingValue} 'value()' |
-	// 'variables' '.' variable = [GipsMappingVariable|ID]
-	{GipsMappingCheckValue} 'isMapped' '(' (count=GipsContextExpr)? ')' // Remove
-;
-
-// TODO: Remove
-GipsMappingVariableReference:
-	'variables().' var=[GipsMappingVariable|ID]
-;
-
+// TODO: Currently unused -> re-implement later!
 GipsTypeCast:
 	'toType(' type=[ecore::EClass] ')'
 ;
 
-// TODO: Change to GipsNodeExpression
-// TODO: Remove () from 'nodes()'
-GipsNodeAttributeExpr: {GipsNodeAttributeExpr}
-	'nodes().' node=[GT::EditorNode|ID] ('.' typeCast=GipsTypeCast)? 
-	('.' expr = GipsFeatureExpr)?	// Remove
-	// ('.' attributeExpression = GipsAttributeExpression)
+GipsNodeExpression: {GipsNodeExpression}
+	'.' 'nodes' '.' node=[GT::EditorNode|ID]
+	(attributeExpression = GipsAttributeExpression)?
 ;
 
-// TODO: Change to GipsAttributeExpression
-GipsFeatureExpr:
-	GipsFeatureNavigation
+GipsAttributeExpression: {GipsAttributeExpression}
+	'.'
+	(
+		attribute = GipsAttributeLiteral right = GipsAttributeExpression |
+		attribute = GipsAttributeLiteral
+	)
 ;
 
-// TODO: Change to GipsAttributeNavigation
-GipsFeatureNavigation returns GipsFeatureExpr:
-	GipsFeatureLit ({GipsFeatureNavigation.left=current} '.' right=GipsFeatureNavigation)?
+GipsAttributeLiteral:
+	literal = [ecore::EStructuralFeature]
 ;
 
-// TODO: Change to GipsAttributeLiteral
-GipsFeatureLit returns GipsFeatureExpr: {GipsFeatureLit}
-	feature = [ecore::EStructuralFeature] ('.' typeCast=GipsTypeCast)?
+GipsArithmeticExpression:
+	GipsArithmeticSum
 ;
 
-GipsArithmeticExpr:
-	GipsSumArithmeticExpr
+GipsArithmeticSum returns GipsArithmeticExpression:
+	GipsArithmeticProduct({GipsArithmeticSum.left = current} operator=GipsSumOperator right=GipsArithmeticProduct)*
 ;
 
-GipsSumArithmeticExpr returns GipsArithmeticExpr:
-	GipsProductArithmeticExpr({GipsSumArithmeticExpr.left = current} operator=GipsSumOperator right=GipsProductArithmeticExpr)*
+GipsArithmeticProduct returns GipsArithmeticExpression:
+	GipsArithmeticExponential({GipsArithmeticProduct.left = current} operator=GipsProductOperator right=GipsArithmeticExponential)*
 ;
 
-GipsProductArithmeticExpr returns GipsArithmeticExpr:
-	GipsExpArithmeticExpr({GipsProductArithmeticExpr.left = current} operator=GipsProductOperator right=GipsExpArithmeticExpr)*
+GipsArithmeticExponential returns GipsArithmeticExpression:
+	GipsArithmeticUnary({GipsArithmeticExponential.left = current} operator=GipsExponentialOperator right=GipsArithmeticUnary)*
 ;
 
-GipsExpArithmeticExpr returns GipsArithmeticExpr:
-	GipsUnaryArithmeticExpr({GipsExpArithmeticExpr.left = current} operator=GipsExpOperator right=GipsUnaryArithmeticExpr)*
+GipsArithmeticUnary returns GipsArithmeticExpression: {GipsArithmeticUnary}
+	operator=GipsUnaryOperator '(' operand=GipsArithmeticBracket ')' | GipsArithmeticBracket
 ;
 
-GipsUnaryArithmeticExpr returns GipsArithmeticExpr: {GipsUnaryArithmeticExpr}
-	operator=GipsArithmeticUnaryOperator '(' operand=GipsBracketExpr ')' | GipsBracketExpr
+GipsArithmeticBracket returns GipsArithmeticExpression: {GipsArithmeticBracket}
+	'(' operand=GipsArithmeticExpression ')' | GipsArithmeticOperand
 ;
 
-GipsBracketExpr returns GipsArithmeticExpr: {GipsBracketExpr}
-	'(' operand=GipsArithmeticExpr ')' | GipsExpressionOperand
-;
-
-GipsExpressionOperand:
-	GipsAttributeExpr | GipsObjectiveExpression | GipsArithmeticLiteral | GipsConstant
+GipsArithmeticOperand:
+	GipsValueExpression | GipsLinearFunctionReference | GipsArithmeticLiteral | GipsArithmeticConstant
 ;
 
 GipsArithmeticLiteral:
 	value = (GipsDoubleLiteral | GipsIntegerLiteral)
 ;
 
-GipsConstant:
+GipsArithmeticConstant:
 	value = GipsConstantLiteral
 ;
 
@@ -320,7 +251,7 @@ enum GipsProductOperator:
  	DIV='/'
 ;
 
-enum GipsExpOperator:
+enum GipsExponentialOperator:
  	POW='pow'	|
  	LOG='log'
 ;
@@ -330,7 +261,7 @@ enum GipsSumOperator:
 	MINUS='-' 	
 ;
 
-enum GipsArithmeticUnaryOperator:
+enum GipsUnaryOperator:
 	NEG='-'		|
 	ABS='abs'	|
 	SQRT='sqrt' |
@@ -338,62 +269,94 @@ enum GipsArithmeticUnaryOperator:
 	cos='cos'
 ;
 
-// TODO: Change to GipsSetExpression
-GipsStreamExpr:
-	// '->'
-	// ( operation = GipsFilterOperation
-	//	rhs = GipsSetExpression |
-	// operation = GipsSumOperation)
-	GipsStreamNavigation		// Remove
+GipsSetExpression: {GipsSetExpression}
+	'->'
+	(
+		operation = GipsSetOperation right = GipsSetExpression |
+		operation = GipsReduceOperation
+	)
 ;
 
-// TODO: Add
-/*	GipsFilterOperation:
- * 	'filter' '(' expression=GipsBooleanExpression ')'
- *  ;
- * 
- */
+// Operates on a set of 0-N values and produces a set of 0-M values.
+GipsSetOperation:
+	GipsFilterOperation | GipsSelectOperation | GipsAlgorithmOperation | GipsConcatenationOperation | GipsTransformOperation
+;
+
+GipsFilterOperation:
+ 	'filter' '(' expression = GipsBooleanExpression ')'
+;
+
+GipsSelectOperation:
+	GipsTypeSelect
+;
+
+GipsTypeSelect:
+	'selectType' '(' type = [ecore::EClassifier] ')'
+;
+
+GipsAlgorithmOperation:
+	operator = AlgorithmOperators '()'
+;
+
+enum AlgorithmOperators :
+	SORT_ASCENDING = 'ascending' 	|
+	SORT_DESCENDING = 'descending'	|
+	UNIQUE = 'unique' |
+	FLAT = 'flat'
+;
+
+GipsConcatenationOperation:
+	operator = ConcatenationOperators '(' value = GipsArithmeticOperand ')'
+;
+
+enum ConcatenationOperators :
+	PREPEND = 'prepend' 	|
+	APPEND = 'append'
+;
+
+GipsTransformOperation:
+	'transform' '(' expression=GipsBooleanExpression ')'
+;
+
+// Reduces a set of 0-N values to exactly one value or null.
+GipsReduceOperation :
+	GipsSumOperation | GipsSimpleSelect | GipsQueryOperation
+;
  
- // TODO: Add
- /*	GipsSumOperation:
-  * 'sum' '(' expression = GipsArithmeticExpression ')'
-  * ;
-  * 
-  */
-
-// TODO: Remove
-GipsStreamNavigation returns GipsStreamExpr:
-	GipsStreamLit({GipsStreamNavigation.left=current}'->' right=GipsStreamNavigation)?
+GipsSumOperation:
+  	'sum' '(' expression = GipsArithmeticExpression ')'
 ;
 
-// TODO: Remove
-GipsStreamLit returns GipsStreamExpr:
-	{GipsSelect} 'typesOf' '(' type=[ecore::EClassifier] ')' |
-	{GipsStreamSet} operator=GipsStreamSetOperator lambda = GipsLambdaExpression |
-	{GipsStreamArithmetic} operator=GipsStreamArithmeticOperator lambda = GipsLambdaExpression |
-	{GipsContains} 'contains' '(' expr = GipsContextExpr ')' |
-	{GipsStreamBoolExpr} operator=GipsStreamNoArgOperator
+GipsSimpleSelect:
+	operator = SelectOperators '()'
 ;
 
-// TODO: Remove
-GipsLambdaExpression:
-	'(' name=ID '|' expr=GipsBoolExpr ')'
+enum SelectOperators :
+	FIRST = 'first' |
+	LAST = 'last'	|
+	ANY = 'any'
 ;
 
-// TODO: Remove
-enum GipsStreamSetOperator:
-	FILTER='filter'
+GipsQueryOperation:
+	GipsTypeQuery | GipsElementQuery | GipsSimpleQuery
 ;
 
-// TODO: Remove
-enum GipsStreamArithmeticOperator:
-	SUM = 'sum'
+GipsTypeQuery:
+	'containsType' '(' type = [ecore::EClassifier] ')'
 ;
 
-// TODO: Remove
-enum GipsStreamNoArgOperator:
-	NOT_EMPTY = 'notEmpty()' |
-	COUNT = 'count()'
+GipsElementQuery:
+	'containsElement' '(' element = GipsArithmeticOperand ')'
+;
+
+GipsSimpleQuery:
+	operator = QueryOperators '()'
+;
+
+enum QueryOperators :
+	EMPTY = 'empty' |
+	NOT_EMPTY = 'notEmpty' |
+	COUNT = 'count'
 ;
 
 GipsDoubleLiteral:

@@ -12,9 +12,9 @@
         eType="#//GipsMapping" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="constraints" upperBound="-1"
         eType="#//GipsConstraint" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="objectives" upperBound="-1"
-        eType="#//GipsObjective" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="globalObjective" eType="#//GipsGlobalObjective"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="functions" upperBound="-1"
+        eType="#//GipsLinearFunction" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="globalObjective" eType="#//GipsObjective"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Package">
@@ -61,67 +61,52 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameter" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorParameter"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsConstraint">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isLocal" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//GipsBooleanExpression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//GipsBool"
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsLinearFunction">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//GipsArithmeticExpression"
         containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsLinearFunctionReference" eSuperTypes="#//GipsArithmeticOperand">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="function" eType="#//GipsLinearFunction"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsObjective">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//GipsArithmeticExpr"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="goal" eType="#//OptimizationGoal"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//GipsArithmeticExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsGlobalContext"/>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsMappingContext">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" eType="#//GipsMapping"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsTypeContext">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsPatternContext">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorPattern"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsObjectiveExpression" eSuperTypes="#//GipsExpressionOperand">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="objective" eType="#//GipsObjective"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsGlobalObjective">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="objectiveGoal" eType="#//GipsObjectiveGoal"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//GipsArithmeticExpr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="GipsObjectiveGoal">
+  <eClassifiers xsi:type="ecore:EEnum" name="OptimizationGoal">
     <eLiterals name="MIN" literal="min"/>
     <eLiterals name="MAX" value="1" literal="max"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsBool">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//GipsBoolExpr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsBoolExpr"/>
-  <eClassifiers xsi:type="ecore:EEnum" name="GipsImplOperator">
+  <eClassifiers xsi:type="ecore:EClass" name="GipsBooleanExpression"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="ImplicationOperator">
     <eLiterals name="IMPLICATION" literal="=>"/>
     <eLiterals name="EQUIVALENCE" value="1" literal="&lt;=>"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="GipsOrOperator">
+  <eClassifiers xsi:type="ecore:EEnum" name="DisjunctionOperator">
     <eLiterals name="OR" literal="|"/>
     <eLiterals name="XOR" value="1" literal="^"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="GipsAndOperator">
+  <eClassifiers xsi:type="ecore:EEnum" name="ConjunctionOperator">
     <eLiterals name="AND" literal="&amp;"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsBooleanLiteral" eSuperTypes="#//GipsBoolExpr">
+  <eClassifiers xsi:type="ecore:EClass" name="GipsBooleanLiteral" eSuperTypes="#//GipsBooleanExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="literal" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsRelExpr" eSuperTypes="#//GipsBoolExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//GipsArithmeticExpr"
+  <eClassifiers xsi:type="ecore:EClass" name="GipsRelationalExpression" eSuperTypes="#//GipsBooleanExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//GipsArithmeticExpression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//GipsRelOperator"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//GipsArithmeticExpr"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//RelationalOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//GipsArithmeticExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="GipsRelOperator">
+  <eClassifiers xsi:type="ecore:EEnum" name="RelationalOperator">
     <eLiterals name="GREATER" literal=">"/>
     <eLiterals name="GREATER_OR_EQUAL" value="1" literal=">="/>
     <eLiterals name="EQUAL" value="2" literal="=="/>
@@ -129,28 +114,57 @@
     <eLiterals name="SMALLER_OR_EQUAL" value="4" literal="&lt;="/>
     <eLiterals name="SMALLER" value="5" literal="&lt;"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsAttributeExpr" eSuperTypes="#//GipsExpressionOperand"/>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsVariableOperationExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsMappingVariableReference">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//GipsMappingVariable"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsValueExpression" eSuperTypes="#//GipsArithmeticOperand">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="setExperession" eType="#//GipsSetExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsMappingExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" eType="#//GipsMapping"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsTypeExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsPatternExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorPattern"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsSetElementExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsLocalContextExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsVariableReferenceExpression">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isMappingValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isGenericValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variable" eType="#//GipsMappingVariable"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsTypeCast">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsNodeAttributeExpr">
+  <eClassifiers xsi:type="ecore:EClass" name="GipsNodeExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorNode"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="typeCast" eType="#//GipsTypeCast"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//GipsFeatureExpr"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attributeExpression" eType="#//GipsAttributeExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsFeatureExpr"/>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsArithmeticExpr"/>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsExpressionOperand" eSuperTypes="#//GipsArithmeticExpr"/>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsArithmeticLiteral" eSuperTypes="#//GipsExpressionOperand">
+  <eClassifiers xsi:type="ecore:EClass" name="GipsAttributeExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attribute" eType="#//GipsAttributeLiteral"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//GipsAttributeExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsAttributeLiteral">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="literal" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsArithmeticExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsArithmeticOperand" eSuperTypes="#//GipsArithmeticExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsArithmeticLiteral" eSuperTypes="#//GipsArithmeticOperand">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsConstant" eSuperTypes="#//GipsExpressionOperand">
+  <eClassifiers xsi:type="ecore:EClass" name="GipsArithmeticConstant" eSuperTypes="#//GipsArithmeticOperand">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="#//GipsConstantLiteral"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="GipsConstantLiteral">
@@ -162,7 +176,7 @@
     <eLiterals name="MULT" literal="*"/>
     <eLiterals name="DIV" value="1" literal="/"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="GipsExpOperator">
+  <eClassifiers xsi:type="ecore:EEnum" name="GipsExponentialOperator">
     <eLiterals name="POW" literal="pow"/>
     <eLiterals name="LOG" value="1" literal="log"/>
   </eClassifiers>
@@ -170,160 +184,136 @@
     <eLiterals name="PLUS" literal="+"/>
     <eLiterals name="MINUS" value="1" literal="-"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="GipsArithmeticUnaryOperator">
+  <eClassifiers xsi:type="ecore:EEnum" name="GipsUnaryOperator">
     <eLiterals name="NEG" literal="-"/>
     <eLiterals name="ABS" value="1" literal="abs"/>
     <eLiterals name="SQRT" value="2" literal="sqrt"/>
     <eLiterals name="sin" value="3" literal="sin"/>
     <eLiterals name="cos" value="4" literal="cos"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsStreamExpr"/>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsLambdaExpression">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//GipsBoolExpr"
+  <eClassifiers xsi:type="ecore:EClass" name="GipsSetExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operation" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//GipsSetExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="GipsStreamSetOperator">
-    <eLiterals name="FILTER" literal="filter"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="GipsStreamArithmeticOperator">
-    <eLiterals name="SUM" literal="sum"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="GipsStreamNoArgOperator">
-    <eLiterals name="NOT_EMPTY" literal="notEmpty()"/>
-    <eLiterals name="COUNT" value="1" literal="count()"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GlobalContext" eSuperTypes="#//GipsGlobalContext"/>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsImplicationBoolExpr" eSuperTypes="#//GipsBoolExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//GipsBoolExpr"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//GipsImplOperator"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//GipsBoolExpr"
+  <eClassifiers xsi:type="ecore:EClass" name="GipsSetOperation"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsFilterOperation" eSuperTypes="#//GipsSetOperation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//GipsBooleanExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsOrBoolExpr" eSuperTypes="#//GipsBoolExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//GipsBoolExpr"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//GipsOrOperator"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//GipsBoolExpr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsAndBoolExpr" eSuperTypes="#//GipsBoolExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//GipsBoolExpr"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//GipsAndOperator"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//GipsBoolExpr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsNotBoolExpr" eSuperTypes="#//GipsBoolExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operand" eType="#//GipsBoolExpr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsBracketBoolExpr" eSuperTypes="#//GipsBoolExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operand" eType="#//GipsBoolExpr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsMappingAttributeExpr" eSuperTypes="#//GipsAttributeExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" eType="#//GipsMapping"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//GipsStreamExpr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsTypeAttributeExpr" eSuperTypes="#//GipsAttributeExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//GipsStreamExpr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsPatternAttributeExpr" eSuperTypes="#//GipsAttributeExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorPattern"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//GipsStreamExpr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsLambdaAttributeExpression" eSuperTypes="#//GipsAttributeExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//GipsLambdaExpression"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsLambdaSelfExpression" eSuperTypes="#//GipsAttributeExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//GipsLambdaExpression"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsContextExpr" eSuperTypes="#//GipsAttributeExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="typeCast" eType="#//GipsTypeCast"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="stream" eType="#//GipsStreamExpr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsMappingValue" eSuperTypes="#//GipsVariableOperationExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsMappingCheckValue" eSuperTypes="#//GipsVariableOperationExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="count" eType="#//GipsAttributeExpr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsFeatureNavigation" eSuperTypes="#//GipsFeatureExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//GipsFeatureExpr"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//GipsFeatureExpr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsFeatureLit" eSuperTypes="#//GipsFeatureExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="typeCast" eType="#//GipsTypeCast"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsSumArithmeticExpr" eSuperTypes="#//GipsArithmeticExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//GipsArithmeticExpr"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//GipsSumOperator"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//GipsArithmeticExpr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsProductArithmeticExpr" eSuperTypes="#//GipsArithmeticExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//GipsArithmeticExpr"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//GipsProductOperator"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//GipsArithmeticExpr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsExpArithmeticExpr" eSuperTypes="#//GipsArithmeticExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//GipsArithmeticExpr"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//GipsExpOperator"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//GipsArithmeticExpr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsUnaryArithmeticExpr" eSuperTypes="#//GipsArithmeticExpr">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//GipsArithmeticUnaryOperator"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operand" eType="#//GipsArithmeticExpr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsBracketExpr" eSuperTypes="#//GipsArithmeticExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operand" eType="#//GipsArithmeticExpr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsStreamNavigation" eSuperTypes="#//GipsStreamExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//GipsStreamExpr"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//GipsStreamExpr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsSelect" eSuperTypes="#//GipsStreamExpr">
+  <eClassifiers xsi:type="ecore:EClass" name="GipsSelectOperation" eSuperTypes="#//GipsSetOperation"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsTypeSelect" eSuperTypes="#//GipsSelectOperation">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsStreamSet" eSuperTypes="#//GipsStreamExpr">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//GipsStreamSetOperator"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="lambda" eType="#//GipsLambdaExpression"
+  <eClassifiers xsi:type="ecore:EClass" name="GipsAlgorithmOperation" eSuperTypes="#//GipsSetOperation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//AlgorithmOperators"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="AlgorithmOperators">
+    <eLiterals name="SORT_ASCENDING" literal="ascending"/>
+    <eLiterals name="SORT_DESCENDING" value="1" literal="descending"/>
+    <eLiterals name="UNIQUE" value="2" literal="unique"/>
+    <eLiterals name="FLAT" value="3" literal="flat"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsConcatenationOperation" eSuperTypes="#//GipsSetOperation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//ConcatenationOperators"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//GipsArithmeticOperand"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsStreamArithmetic" eSuperTypes="#//GipsStreamExpr">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//GipsStreamArithmeticOperator"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="lambda" eType="#//GipsLambdaExpression"
+  <eClassifiers xsi:type="ecore:EEnum" name="ConcatenationOperators">
+    <eLiterals name="PREPEND" literal="prepend"/>
+    <eLiterals name="APPEND" value="1" literal="append"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsTransformOperation" eSuperTypes="#//GipsSetOperation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//GipsBooleanExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsContains" eSuperTypes="#//GipsStreamExpr">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//GipsAttributeExpr"
+  <eClassifiers xsi:type="ecore:EClass" name="GipsReduceOperation"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsSumOperation" eSuperTypes="#//GipsReduceOperation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//GipsArithmeticExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsStreamBoolExpr" eSuperTypes="#//GipsStreamExpr">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//GipsStreamNoArgOperator"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsSimpleSelect" eSuperTypes="#//GipsReduceOperation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//SelectOperators"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="SelectOperators">
+    <eLiterals name="FIRST" literal="first"/>
+    <eLiterals name="LAST" value="1" literal="last"/>
+    <eLiterals name="ANY" value="2" literal="any"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsQueryOperation" eSuperTypes="#//GipsReduceOperation"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsTypeQuery" eSuperTypes="#//GipsQueryOperation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsElementQuery" eSuperTypes="#//GipsQueryOperation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//GipsArithmeticOperand"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsSimpleQuery" eSuperTypes="#//GipsQueryOperation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//QueryOperators"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="QueryOperators">
+    <eLiterals name="EMPTY" literal="empty"/>
+    <eLiterals name="NOT_EMPTY" value="1" literal="notEmpty"/>
+    <eLiterals name="COUNT" value="2" literal="count"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsBooleanImplication" eSuperTypes="#//GipsBooleanExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//GipsBooleanExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//ImplicationOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//GipsBooleanExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsBooleanDisjunction" eSuperTypes="#//GipsBooleanExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//GipsBooleanExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//DisjunctionOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//GipsBooleanExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsBooleanConjunction" eSuperTypes="#//GipsBooleanExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//GipsBooleanExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//ConjunctionOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//GipsBooleanExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsBooleanNegation" eSuperTypes="#//GipsBooleanExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operand" eType="#//GipsBooleanExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsBooleanBracket" eSuperTypes="#//GipsBooleanExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operand" eType="#//GipsBooleanExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsArithmeticSum" eSuperTypes="#//GipsArithmeticExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//GipsArithmeticExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//GipsSumOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//GipsArithmeticExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsArithmeticProduct" eSuperTypes="#//GipsArithmeticExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//GipsArithmeticExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//GipsProductOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//GipsArithmeticExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsArithmeticExponential" eSuperTypes="#//GipsArithmeticExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//GipsArithmeticExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//GipsExponentialOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//GipsArithmeticExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsArithmeticUnary" eSuperTypes="#//GipsArithmeticExpression">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//GipsUnaryOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operand" eType="#//GipsArithmeticExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsArithmeticBracket" eSuperTypes="#//GipsArithmeticExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operand" eType="#//GipsArithmeticExpression"
+        containment="true"/>
   </eClassifiers>
 </ecore:EPackage>

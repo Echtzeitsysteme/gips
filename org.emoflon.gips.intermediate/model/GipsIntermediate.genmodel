@@ -4,7 +4,7 @@
     modelDirectory="/org.emoflon.gips.intermediate/src-gen" creationIcons="false"
     editDirectory="/org.emoflon.gips.intermediate.edit/src-gen" editorDirectory="/org.emoflon.gips.intermediate.editor/src-gen"
     modelPluginID="org.emoflon.gips.intermediate" modelName="GipsIntermediate" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-    codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="17.0"
+    codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="21.0"
     copyrightFields="false" usedGenPackages="../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.genmodel#//IBeXPatternModel"
     operationReflection="true" importOrganizing="true">
   <foreignModel>GipsIntermediate.ecore</foreignModel>
@@ -93,6 +93,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//ILPConfig/tolerance"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//ILPConfig/enableLpOutput"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//ILPConfig/lpPath"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//ILPConfig/threadCountEnabled"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//ILPConfig/threadCount"/>
     </genClasses>
     <genClasses image="false" ecoreClass="GipsIntermediate.ecore#//VariableSet">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//VariableSet/name"/>

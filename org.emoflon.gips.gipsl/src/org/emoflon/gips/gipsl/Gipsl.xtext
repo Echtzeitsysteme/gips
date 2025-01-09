@@ -31,7 +31,7 @@ ImportedPattern :
 
 GipsConfig : {GipsConfig}
 	'config' '{'
-	'solver' ':=' solver=SolverType '[' ('home' ':=' home=GipsStringLiteral ',' 'license' ':=' license=GipsStringLiteral)? ']' ';'
+	'solver' ':=' solver=SolverType ('[' ('home' ':=' home=GipsStringLiteral ',' 'license' ':=' license=GipsStringLiteral)? ']')? ';'
 	('launchConfig' ':=' enableLaunchConfig = GipsBoolean '[' 'main' ':=' mainLoc=GipsStringLiteral ']' ';')?
 	('timeLimit' ':=' enableLimit = GipsBoolean '[' 'value' ':=' timeLimit=GipsDouble ']' ';')?
 	('randomSeed' ':=' enableSeed = GipsBoolean '[' 'value' ':=' rndSeed=GipsInteger ']' ';')?
@@ -39,6 +39,7 @@ GipsConfig : {GipsConfig}
 	('debugOutput' ':=' enableDebugOutput = GipsBoolean ';')?
 	('tolerance' ':=' enableTolerance = GipsBoolean '[' 'value' ':=' tolerance=GipsDouble ']' ';')?
 	('lpOutput' ':=' enableLpOutput = GipsBoolean '[' 'path' ':=' path=GipsStringLiteral ']' ';')?
+	('threadCount' ':=' enableThreadCount = GipsBoolean '[' 'value' ':=' threads=GipsInteger ']' ';')?
 	'}'
 ;
 

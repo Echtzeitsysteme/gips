@@ -11,5 +11,5 @@ public record GipsAnnotatedConstraint(GipsConstraint input, Formula formula, Ann
 }
 
 enum AnnotatedConstraintType {
-	LITERAL, NEGATED_LITERAL, CONJUCTION_OF_LITERALS
+	LITERAL, NEGATED_LITERAL, DISJUNCTION_OF_LITERALS
 }

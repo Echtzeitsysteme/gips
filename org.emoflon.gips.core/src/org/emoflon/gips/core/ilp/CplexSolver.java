@@ -17,6 +17,7 @@ import org.emoflon.gips.core.GipsMapping;
 import org.emoflon.gips.core.GipsMappingConstraint;
 import org.emoflon.gips.core.GipsTypeConstraint;
 import org.emoflon.gips.core.gt.GipsPatternConstraint;
+import org.emoflon.gips.core.util.SystemUtil;
 
 import ilog.concert.IloException;
 import ilog.concert.IloIntVar;
@@ -88,6 +89,15 @@ public class CplexSolver extends ILPSolver {
 			if (config.lpOutput()) {
 				this.lpPath = config.lpPath();
 			}
+
+			// Set number of threads to use
+			// If configuration option is disabled, use the maximum number of threads the
+			// system provides
+			if (config.threadCount()) {
+				cplex.setParam(IloCplex.Param.Threads, config.threads());
+			} else {
+				cplex.setParam(IloCplex.Param.Threads, SystemUtil.getSystemThreads());
+			}
 		} catch (final IloException e) {
 			throw new RuntimeException(e);
 		}
@@ -157,7 +167,14 @@ public class CplexSolver extends ILPSolver {
 				throw new RuntimeException("Unknown solver status.");
 			}
 
-			return new ILPSolverOutput(status, objVal, engine.getValidationLog(), solCounter);
+			return new ILPSolverOutput(status, objVal, engine.getValidationLog(), solCounter, new ProblemStatistics( //
+					engine.getMappers().values().stream() //
+							.map(m -> m.getMappings().size()) //
+							.reduce(0, (sum, val) -> sum + val), //
+					vars.size(), //
+					constraints.values().stream() //
+							.map(cons -> cons.size()) //
+							.reduce(0, (sum, val) -> sum + val)));
 		} catch (final IloException ex) {
 			throw new RuntimeException(ex);
 		}
@@ -393,7 +410,12 @@ public class CplexSolver extends ILPSolver {
 	 */
 	private void createBinVar(final String name, final Number lb, final Number ub) {
 		if (vars.containsKey(name)) {
-			throw new RuntimeException();
+			// TODO: This method should return if a variable with the same name already
+			// exists
+			// TODO: Therefore, this method should have another name, e.g.,
+			// create..VarIfNotExists, etc.
+//			throw new RuntimeException();
+			return;
 		}
 
 		try {
@@ -416,7 +438,12 @@ public class CplexSolver extends ILPSolver {
 	 */
 	private void createIntVar(final String name, final Number lb, final Number ub) {
 		if (vars.containsKey(name)) {
-			throw new RuntimeException();
+			// TODO: This method should return if a variable with the same name already
+			// exists
+			// TODO: Therefore, this method should have another name, e.g.,
+			// create..VarIfNotExists, etc.
+//			throw new RuntimeException();
+			return;
 		}
 
 		try {
@@ -436,7 +463,12 @@ public class CplexSolver extends ILPSolver {
 	 */
 	private void createDblVar(final String name, final Number lb, final Number ub) {
 		if (vars.containsKey(name)) {
-			throw new RuntimeException();
+			// TODO: This method should return if a variable with the same name already
+			// exists
+			// TODO: Therefore, this method should have another name, e.g.,
+			// create..VarIfNotExists, etc.
+//			throw new RuntimeException();
+			return;
 		}
 
 		try {

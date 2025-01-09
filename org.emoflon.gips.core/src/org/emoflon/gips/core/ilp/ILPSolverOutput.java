@@ -3,7 +3,7 @@ package org.emoflon.gips.core.ilp;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 
 public record ILPSolverOutput(ILPSolverStatus status, double objectiveValue, GipsConstraintValidationLog validationLog,
-		int solutionCount) {
+		int solutionCount, ProblemStatistics stats) {
 
 	@Override
 	public String toString() {

@@ -187,7 +187,12 @@ public class GurobiSolver extends ILPSolver {
 			throw new RuntimeException(e);
 		}
 
-		return new ILPSolverOutput(status, objVal, engine.getValidationLog(), solCount);
+		return new ILPSolverOutput(status, objVal, engine.getValidationLog(), solCount, new ProblemStatistics( //
+				engine.getMappers().values().stream() //
+						.map(m -> m.getMappings().size()) //
+						.reduce(0, (sum, val) -> sum + val), //
+				model.getVars().length, //
+				model.getConstrs().length)); //
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import org.emoflon.gips.core.ilp.ILPSolver;
 import org.emoflon.gips.core.ilp.ILPSolverOutput;
 import org.emoflon.gips.core.ilp.ILPSolverStatus;
 import org.emoflon.gips.core.ilp.ILPVariable;
+import org.emoflon.gips.core.util.Observer;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 
@@ -29,6 +30,43 @@ public abstract class GipsEngine {
 	public abstract void saveResult() throws IOException;
 
 	public abstract void saveResult(final String path) throws IOException;
+
+	public void buildILPProblemTimed(boolean doUpdate) {
+		Observer observer = Observer.getInstance();
+		observer.observe("BUILD", () -> {
+			if (doUpdate)
+				observer.observe("PM", () -> update());
+
+			observer.observe("BUILD_GIPS", () -> {
+				// Reset validation log
+				validationLog = new GipsConstraintValidationLog();
+
+				// Constraints are re-build a few lines below
+				constraints.values().stream().forEach(constraint -> constraint.clear());
+
+				nonMappingVariables.clear();
+				mappers.values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
+						.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
+							Map<String, ILPVariable<?>> variables = nonMappingVariables.get(m);
+							if (variables == null) {
+								variables = Collections.synchronizedMap(new HashMap<>());
+								nonMappingVariables.put(m, variables);
+							}
+							variables.putAll(m.getAdditionalVariables());
+						});
+
+				constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());
+				constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
+
+				if (globalObjective != null)
+					globalObjective.buildObjectiveFunction();
+			});
+
+			observer.observe("BUILD_SOLVER", () -> {
+				ilpSolver.buildILPProblem();
+			});
+		});
+	}
 
 	public void buildILPProblem(boolean doUpdate) {
 		if (doUpdate)
@@ -64,9 +102,29 @@ public abstract class GipsEngine {
 		ilpSolver.buildILPProblem();
 	}
 
+	public ILPSolverOutput solveILPProblemTimed() {
+		Observer observer = Observer.getInstance();
+		ILPSolverOutput out = observer.observe("SOLVE_PROBLEM", () -> {
+			if (validationLog.isNotValid()) {
+				ILPSolverOutput output = new ILPSolverOutput(ILPSolverStatus.INFEASIBLE, Double.NaN, validationLog, 0,
+						null);
+				ilpSolver.reset();
+				return output;
+			}
+			ILPSolverOutput output = ilpSolver.solve();
+			if (output.status() != ILPSolverStatus.INFEASIBLE && output.solutionCount() > 0)
+				ilpSolver.updateValuesFromSolution();
+
+			ilpSolver.reset();
+			return output;
+		});
+		return out;
+	}
+
 	public ILPSolverOutput solveILPProblem() {
 		if (validationLog.isNotValid()) {
-			ILPSolverOutput output = new ILPSolverOutput(ILPSolverStatus.INFEASIBLE, Double.NaN, validationLog, 0);
+			ILPSolverOutput output = new ILPSolverOutput(ILPSolverStatus.INFEASIBLE, Double.NaN, validationLog, 0,
+					null);
 			ilpSolver.reset();
 			return output;
 		}

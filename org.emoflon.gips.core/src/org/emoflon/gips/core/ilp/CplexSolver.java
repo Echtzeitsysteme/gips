@@ -167,7 +167,14 @@ public class CplexSolver extends ILPSolver {
 				throw new RuntimeException("Unknown solver status.");
 			}
 
-			return new ILPSolverOutput(status, objVal, engine.getValidationLog(), solCounter);
+			return new ILPSolverOutput(status, objVal, engine.getValidationLog(), solCounter, new ProblemStatistics( //
+					engine.getMappers().values().stream() //
+							.map(m -> m.getMappings().size()) //
+							.reduce(0, (sum, val) -> sum + val), //
+					vars.size(), //
+					constraints.values().stream() //
+							.map(cons -> cons.size()) //
+							.reduce(0, (sum, val) -> sum + val)));
 		} catch (final IloException ex) {
 			throw new RuntimeException(ex);
 		}

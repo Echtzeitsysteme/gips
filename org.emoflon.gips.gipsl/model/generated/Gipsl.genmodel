@@ -59,10 +59,7 @@
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsUnaryOperator/cos"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//AlgorithmOperators">
-      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//AlgorithmOperators/SORT_ASCENDING"/>
-      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//AlgorithmOperators/SORT_DESCENDING"/>
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//AlgorithmOperators/UNIQUE"/>
-      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//AlgorithmOperators/FLAT"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//ConcatenationOperators">
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//ConcatenationOperators/PREPEND"/>
@@ -145,11 +142,6 @@
     <genClasses ecoreClass="Gipsl.ecore#//GipsBooleanLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsBooleanLiteral/literal"/>
     </genClasses>
-    <genClasses ecoreClass="Gipsl.ecore#//GipsRelationalExpression">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsRelationalExpression/left"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsRelationalExpression/operator"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsRelationalExpression/right"/>
-    </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsValueExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsValueExpression/value"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsValueExpression/setExperession"/>
@@ -163,19 +155,19 @@
     <genClasses ecoreClass="Gipsl.ecore#//GipsPatternExpression">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsPatternExpression/pattern"/>
     </genClasses>
-    <genClasses ecoreClass="Gipsl.ecore#//GipsSetElementExpression">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsSetElementExpression/expression"/>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsRuleExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsRuleExpression/rule"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsLocalContextExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsLocalContextExpression/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsSetElementExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsSetElementExpression/expression"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsVariableReferenceExpression">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsVariableReferenceExpression/isMappingValue"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsVariableReferenceExpression/isGenericValue"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsVariableReferenceExpression/variable"/>
-    </genClasses>
-    <genClasses ecoreClass="Gipsl.ecore#//GipsTypeCast">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsTypeCast/type"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsNodeExpression">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsNodeExpression/node"/>
@@ -208,8 +200,17 @@
     <genClasses ecoreClass="Gipsl.ecore#//GipsTypeSelect">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsTypeSelect/type"/>
     </genClasses>
-    <genClasses ecoreClass="Gipsl.ecore#//GipsAlgorithmOperation">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsAlgorithmOperation/operator"/>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsAlgorithmOperation"/>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsSortOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsSortOperation/predicate"/>
+    </genClasses>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsSortPredicate">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsSortPredicate/e1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsSortPredicate/relation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsSortPredicate/e2"/>
+    </genClasses>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsSimpleAlgorithm">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsSimpleAlgorithm/operator"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsConcatenationOperation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConcatenationOperation/operator"/>
@@ -255,6 +256,11 @@
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsBooleanBracket">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsBooleanBracket/operand"/>
+    </genClasses>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsRelationalExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsRelationalExpression/left"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsRelationalExpression/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsRelationalExpression/right"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsArithmeticSum">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsArithmeticSum/left"/>

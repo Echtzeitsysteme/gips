@@ -33,6 +33,7 @@ import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
+import org.emoflon.gips.gipsl.gipsl.GipsLinearFunctionReference;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
@@ -89,6 +90,11 @@ public final class GipslScopeContextUtil {
 	public static boolean isGipsLinearFunctionContext(final EObject context, final EReference reference) {
 		return context instanceof GipsLinearFunction
 				&& reference == GipslPackage.Literals.GIPS_LINEAR_FUNCTION__CONTEXT;
+	}
+
+	public static boolean isGipsLinearFunctionReference(final EObject context, final EReference reference) {
+		return context instanceof GipsLinearFunctionReference
+				&& reference == GipslPackage.Literals.GIPS_LINEAR_FUNCTION_REFERENCE__FUNCTION;
 	}
 
 	public static boolean isGipsMappingExpression(final EObject context, final EReference reference) {
@@ -385,149 +391,4 @@ public final class GipslScopeContextUtil {
 
 		return project;
 	}
-
-//	public static Set<GipsMapping> extractMappings(final GipsBoolExpr expr) {
-//		Set<GipsMapping> mappings = new HashSet<>();
-//
-//		if (expr == null)
-//			return mappings;
-//
-//		if (expr instanceof GipsImplicationBoolExpr implication) {
-//			mappings.addAll(extractMappings(implication.getLeft()));
-//			mappings.addAll(extractMappings(implication.getRight()));
-//		} else if (expr instanceof GipsOrBoolExpr or) {
-//			mappings.addAll(extractMappings(or.getLeft()));
-//			mappings.addAll(extractMappings(or.getRight()));
-//		} else if (expr instanceof GipsAndBoolExpr and) {
-//			mappings.addAll(extractMappings(and.getLeft()));
-//			mappings.addAll(extractMappings(and.getRight()));
-//		} else if (expr instanceof GipsNotBoolExpr not) {
-//			mappings.addAll(extractMappings(not.getOperand()));
-//		} else if (expr instanceof GipsBracketBoolExpr bracket) {
-//			mappings.addAll(extractMappings(bracket.getOperand()));
-//		} else if (expr instanceof GipsBooleanLiteral) {
-//			return mappings;
-//		} else if (expr instanceof GipsRelExpr relExpr) {
-//			mappings.addAll(extractMappings(relExpr));
-//		} else {
-//			throw new UnsupportedOperationException("Unknown boolean expression type: " + expr);
-//		}
-//
-//		return mappings;
-//
-//	}
-
-//	public static Set<GipsMapping> extractMappings(final GipsRelExpr expr) {
-//		Set<GipsMapping> mappings = new HashSet<>();
-//
-//		if (expr == null)
-//			return mappings;
-//
-//		if (expr.getRight() == null) {
-//			mappings.addAll(extractMappings(expr.getLeft()));
-//		} else {
-//			mappings.addAll(extractMappings(expr.getLeft()));
-//			mappings.addAll(extractMappings(expr.getRight()));
-//		}
-//
-//		return mappings;
-//	}
-
-//	public static Set<GipsMapping> extractMappings(final GipsArithmeticExpr expr) {
-//		Set<GipsMapping> mappings = new HashSet<>();
-//
-//		if (expr == null)
-//			return mappings;
-//
-//		if (expr instanceof GipsSumArithmeticExpr sum) {
-//			mappings.addAll(extractMappings(sum.getLeft()));
-//			mappings.addAll(extractMappings(sum.getRight()));
-//		} else if (expr instanceof GipsProductArithmeticExpr product) {
-//			mappings.addAll(extractMappings(product.getLeft()));
-//			mappings.addAll(extractMappings(product.getRight()));
-//		} else if (expr instanceof GipsExpArithmeticExpr exp) {
-//			mappings.addAll(extractMappings(exp.getLeft()));
-//			mappings.addAll(extractMappings(exp.getRight()));
-//		} else if (expr instanceof GipsUnaryArithmeticExpr un) {
-//			mappings.addAll(extractMappings(un.getOperand()));
-//		} else if (expr instanceof GipsBracketExpr bracket) {
-//			mappings.addAll(extractMappings(bracket.getOperand()));
-//		} else if (expr instanceof GipsAttributeExpr atr) {
-//			mappings.addAll(extractMappings(atr));
-//		} else if (expr instanceof GipsObjectiveExpression) {
-//			return mappings;
-//		} else if (expr instanceof GipsArithmeticLiteral) {
-//			return mappings;
-//		} else if (expr instanceof GipsConstant) {
-//			return mappings;
-//		} else {
-//			throw new UnsupportedOperationException("Unknown arithmetic expression type: " + expr);
-//		}
-//
-//		return mappings;
-//	}
-
-//	public static Set<GipsMapping> extractMappings(final GipsAttributeExpr expr) {
-//		Set<GipsMapping> mappings = new HashSet<>();
-//
-//		if (expr == null)
-//			return mappings;
-//
-//		if (expr instanceof GipsMappingAttributeExpr mappingAtr) {
-//			mappings.add(mappingAtr.getMapping());
-//			mappings.addAll(extractMappings(mappingAtr.getExpr()));
-//		} else if (expr instanceof GipsTypeAttributeExpr typeAtr) {
-//			mappings.addAll(extractMappings(typeAtr.getExpr()));
-//		} else if (expr instanceof GipsPatternAttributeExpr patternAtr) {
-//			mappings.addAll(extractMappings(patternAtr.getExpr()));
-//		} else if (expr instanceof GipsContextExpr context) {
-//			EObject contextType = getContextType(context);
-//			if (contextType instanceof GipsMappingContext mappingContext) {
-//				mappings.add(mappingContext.getMapping());
-//			}
-//
-//			if (context.getStream() != null) {
-//				mappings.addAll(extractMappings(context.getStream()));
-//			}
-//		} else if (expr instanceof GipsLambdaAttributeExpression lambdaAtr) {
-//			return mappings;
-//		} else if (expr instanceof GipsLambdaSelfExpression lambdaSelf) {
-//			return mappings;
-//		} else {
-//			throw new UnsupportedOperationException("Unknown attribute expression type: " + expr);
-//		}
-//
-//		return mappings;
-//	}
-
-//	public static Set<GipsMapping> extractMappings(final GipsStreamExpr expr) {
-//		Set<GipsMapping> mappings = new HashSet<>();
-//
-//		if (expr == null)
-//			return mappings;
-//
-//		if (expr instanceof GipsSelect select) {
-//			return mappings;
-//		} else if (expr instanceof GipsStreamSet set) {
-//			mappings.addAll(extractMappings(set.getLambda().getExpr()));
-//		} else if (expr instanceof GipsStreamArithmetic arithmetic) {
-//			mappings.addAll(extractMappings(arithmetic.getLambda().getExpr()));
-//		} else if (expr instanceof GipsContains contains) {
-//			mappings.addAll(extractMappings(contains.getExpr()));
-//		} else if (expr instanceof GipsStreamBoolExpr bool) {
-//			return mappings;
-//		} else if (expr instanceof GipsStreamNavigation navigation) {
-//			if (navigation.getRight() == null) {
-//				mappings.addAll(extractMappings(navigation.getLeft()));
-//			} else {
-//				mappings.addAll(extractMappings(navigation.getLeft()));
-//				mappings.addAll(extractMappings(navigation.getRight()));
-//			}
-//		} else {
-//			throw new UnsupportedOperationException("Unknown stream expression type: " + expr);
-//		}
-//
-//		return mappings;
-//	}
-
 }

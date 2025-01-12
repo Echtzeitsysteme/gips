@@ -70,7 +70,7 @@ GipsLinearFunction :
 ;
 
 GipsLinearFunctionReference:
-	function=[GipsLinearFunction|ID]
+	'functions' '.' function=[GipsLinearFunction|ID]
 ;
 
 GipsObjective :

@@ -33,6 +33,7 @@ import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
+import org.emoflon.gips.gipsl.gipsl.GipsLinearFunctionReference;
 import org.emoflon.gips.gipsl.gipsl.GipsLocalContextExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingExpression;
@@ -100,6 +101,8 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			return scopeForGipsConstraintContext((GipsConstraint) context, reference);
 		} else if (GipslScopeContextUtil.isGipsLinearFunctionContext(context, reference)) {
 			return scopeForGipsLinearFunctionContext((GipsLinearFunction) context, reference);
+		} else if (GipslScopeContextUtil.isGipsLinearFunctionReference(context, reference)) {
+			return scopeForGipsLinearFunctionReference((GipsLinearFunctionReference) context, reference);
 		} else if (GipslScopeContextUtil.isGipsMappingExpression(context, reference)) {
 			return scopeForGipsMappingExpression((GipsMappingExpression) context, reference);
 		} else if (GipslScopeContextUtil.isGipsTypeExpression(context, reference)) {
@@ -357,6 +360,11 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 		allContext.addAll(GipslScopeContextUtil.getClasses(context));
 		allContext.addAll(GipslScopeContextUtil.getAllEditorPatterns(context));
 		return Scopes.scopeFor(allContext);
+	}
+
+	public IScope scopeForGipsLinearFunctionReference(GipsLinearFunctionReference context, EReference reference) {
+		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
+		return Scopes.scopeFor(editorFile.getFunctions());
 	}
 
 	public IScope scopeForGipsMappingExpression(GipsMappingExpression context, EReference reference) {

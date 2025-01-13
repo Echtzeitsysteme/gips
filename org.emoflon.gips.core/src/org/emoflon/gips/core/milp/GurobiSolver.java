@@ -1,4 +1,4 @@
-package org.emoflon.gips.core.ilp;
+package org.emoflon.gips.core.milp;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -10,12 +10,18 @@ import java.util.Map.Entry;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsGlobalConstraint;
-import org.emoflon.gips.core.GipsGlobalObjective;
+import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.GipsMapper;
 import org.emoflon.gips.core.GipsMapping;
 import org.emoflon.gips.core.GipsMappingConstraint;
 import org.emoflon.gips.core.GipsTypeConstraint;
 import org.emoflon.gips.core.gt.GipsPatternConstraint;
+import org.emoflon.gips.core.milp.model.BinaryVariable;
+import org.emoflon.gips.core.milp.model.Constraint;
+import org.emoflon.gips.core.milp.model.IntegerVariable;
+import org.emoflon.gips.core.milp.model.NestedLinearFunction;
+import org.emoflon.gips.core.milp.model.RealVariable;
+import org.emoflon.gips.core.milp.model.Variable;
 import org.emoflon.gips.core.util.SystemUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 
@@ -29,7 +35,7 @@ import com.gurobi.gurobi.GRBLinExpr;
 import com.gurobi.gurobi.GRBModel;
 import com.gurobi.gurobi.GRBVar;
 
-public class GurobiSolver extends ILPSolver {
+public class GurobiSolver extends Solver {
 
 	/**
 	 * Gurobi environment (for configuration etc.).
@@ -54,9 +60,9 @@ public class GurobiSolver extends ILPSolver {
 	/**
 	 * ILP solver configuration.
 	 */
-	final private ILPSolverConfig config;
+	final private SolverConfig config;
 
-	public GurobiSolver(final GipsEngine engine, final ILPSolverConfig config) throws Exception {
+	public GurobiSolver(final GipsEngine engine, final SolverConfig config) throws Exception {
 		super(engine);
 		this.config = config;
 		init();
@@ -141,8 +147,8 @@ public class GurobiSolver extends ILPSolver {
 	}
 
 	@Override
-	public ILPSolverOutput solve() {
-		ILPSolverStatus status = null;
+	public SolverOutput solve() {
+		SolverStatus status = null;
 		double objVal = -1;
 		int solCount = -1;
 
@@ -163,23 +169,23 @@ public class GurobiSolver extends ILPSolver {
 			solCount = model.get(GRB.IntAttr.SolCount);
 			switch (grbStatus) {
 			case GRB.UNBOUNDED -> {
-				status = ILPSolverStatus.UNBOUNDED;
+				status = SolverStatus.UNBOUNDED;
 				objVal = model.get(GRB.DoubleAttr.ObjVal);
 			}
 			case GRB.INF_OR_UNBD -> {
-				status = ILPSolverStatus.INF_OR_UNBD;
+				status = SolverStatus.INF_OR_UNBD;
 				objVal = 0;
 			}
 			case GRB.INFEASIBLE -> {
-				status = ILPSolverStatus.INFEASIBLE;
+				status = SolverStatus.INFEASIBLE;
 				objVal = 0;
 			}
 			case GRB.OPTIMAL -> {
-				status = ILPSolverStatus.OPTIMAL;
+				status = SolverStatus.OPTIMAL;
 				objVal = model.get(GRB.DoubleAttr.ObjVal);
 			}
 			case GRB.TIME_LIMIT -> {
-				status = ILPSolverStatus.TIME_OUT;
+				status = SolverStatus.TIME_OUT;
 				objVal = model.get(GRB.DoubleAttr.ObjVal);
 			}
 			}
@@ -187,7 +193,7 @@ public class GurobiSolver extends ILPSolver {
 			throw new RuntimeException(e);
 		}
 
-		return new ILPSolverOutput(status, objVal, engine.getValidationLog(), solCount, new ProblemStatistics( //
+		return new SolverOutput(status, objVal, engine.getValidationLog(), solCount, new ProblemStatistics( //
 				engine.getMappers().values().stream() //
 						.map(m -> m.getMappings().size()) //
 						.reduce(0, (sum, val) -> sum + val), //
@@ -211,7 +217,7 @@ public class GurobiSolver extends ILPSolver {
 					// Save result value in specific mapping
 					mapping.setValue((int) result);
 					if (mapping.hasAdditionalVariables()) {
-						for (Entry<String, ILPVariable<?>> var : mapping.getAdditionalVariables().entrySet()) {
+						for (Entry<String, Variable<?>> var : mapping.getAdditionalVariables().entrySet()) {
 							double mappingVarResult = getVar(var.getValue().getName()).get(DoubleAttr.X);
 							mapping.setAdditionalVariableValue(var.getKey(), mappingVarResult);
 						}
@@ -261,13 +267,13 @@ public class GurobiSolver extends ILPSolver {
 		addIlpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
 	}
 
-	protected void createOrGetAdditionalVars(final Collection<ILPVariable<?>> variables) {
-		for (ILPVariable<?> variable : variables) {
-			if (variable instanceof ILPBinaryVariable binVar) {
+	protected void createOrGetAdditionalVars(final Collection<Variable<?>> variables) {
+		for (Variable<?> variable : variables) {
+			if (variable instanceof BinaryVariable binVar) {
 				createOrGetBinVar(binVar);
-			} else if (variable instanceof ILPIntegerVariable intVar) {
+			} else if (variable instanceof IntegerVariable intVar) {
 				createOrGetIntegerVar(intVar);
-			} else if (variable instanceof ILPRealVariable realVar) {
+			} else if (variable instanceof RealVariable realVar) {
 				createOrGetRealVar(realVar);
 			} else {
 				throw new IllegalArgumentException("Unsupported variable type: " + variable.getClass().getSimpleName());
@@ -276,9 +282,9 @@ public class GurobiSolver extends ILPSolver {
 	}
 
 	@Override
-	protected void translateObjective(final GipsGlobalObjective objective) {
+	protected void translateObjective(final GipsObjective objective) {
 		final GRBLinExpr obj = new GRBLinExpr();
-		final ILPNestedLinearFunction nestFunc = objective.getObjectiveFunction();
+		final NestedLinearFunction nestFunc = objective.getObjectiveFunction();
 
 		// Add all constants
 		nestFunc.constants().forEach(c -> {
@@ -291,12 +297,12 @@ public class GurobiSolver extends ILPSolver {
 			// Linear function contains terms
 			lf.linearFunction().terms().forEach(t -> {
 				final GRBLinExpr term = new GRBLinExpr();
-				if (t.variable() instanceof ILPBinaryVariable binary) {
+				if (t.variable() instanceof BinaryVariable binary) {
 					term.addTerm(t.weight(), createOrGetBinVar(binary));
-				} else if (t.variable() instanceof ILPIntegerVariable integer) {
+				} else if (t.variable() instanceof IntegerVariable integer) {
 					term.addTerm(t.weight(), createOrGetIntegerVar(integer));
 				} else {
-					ILPRealVariable real = (ILPRealVariable) t.variable();
+					RealVariable real = (RealVariable) t.variable();
 					term.addTerm(t.weight(), createOrGetRealVar(real));
 				}
 
@@ -348,12 +354,12 @@ public class GurobiSolver extends ILPSolver {
 	 * @param constraints Collection of integer ILP constraints to add.
 	 * @param name        Name of the overall constraint to add.
 	 */
-	private int addIlpIntegerConstraintsToGrb(final Collection<ILPConstraint> constraints, final String name,
+	private int addIlpIntegerConstraintsToGrb(final Collection<Constraint> constraints, final String name,
 			int counter) {
 		// Have to use an iterator to be able to increment the counter
-		final Iterator<ILPConstraint> cnstrsIt = constraints.iterator();
+		final Iterator<Constraint> cnstrsIt = constraints.iterator();
 		while (cnstrsIt.hasNext()) {
-			final ILPConstraint curr = cnstrsIt.next();
+			final Constraint curr = cnstrsIt.next();
 
 			if (curr == null) {
 				continue;
@@ -380,12 +386,12 @@ public class GurobiSolver extends ILPSolver {
 
 			// Add each term to the GRB linear expression
 			curr.lhsTerms().forEach(t -> {
-				if (t.variable() instanceof ILPBinaryVariable binary) {
+				if (t.variable() instanceof BinaryVariable binary) {
 					grbLinExpr.addTerm(t.weight(), createOrGetBinVar(binary));
-				} else if (t.variable() instanceof ILPIntegerVariable integer) {
+				} else if (t.variable() instanceof IntegerVariable integer) {
 					grbLinExpr.addTerm(t.weight(), createOrGetIntegerVar(integer));
 				} else {
-					ILPRealVariable real = (ILPRealVariable) t.variable();
+					RealVariable real = (RealVariable) t.variable();
 					grbLinExpr.addTerm(t.weight(), createOrGetRealVar(real));
 				}
 			});
@@ -409,11 +415,11 @@ public class GurobiSolver extends ILPSolver {
 	 * @param constraints Collection of integer ILP constraints to add.
 	 * @param name        Name of the overall constraint to add.
 	 */
-	private int addIlpConstraintsToGrb(final Collection<ILPConstraint> constraints, final String name, int counter) {
+	private int addIlpConstraintsToGrb(final Collection<Constraint> constraints, final String name, int counter) {
 		// Have to use an iterator to be able to increment the counter
-		final Iterator<ILPConstraint> cnstrsIt = constraints.iterator();
+		final Iterator<Constraint> cnstrsIt = constraints.iterator();
 		while (cnstrsIt.hasNext()) {
-			final ILPConstraint curr = cnstrsIt.next();
+			final Constraint curr = cnstrsIt.next();
 
 			if (curr == null) {
 				continue;
@@ -440,12 +446,12 @@ public class GurobiSolver extends ILPSolver {
 
 			// Add each term to the GRB linear expression
 			curr.lhsTerms().forEach(t -> {
-				if (t.variable() instanceof ILPBinaryVariable binary) {
+				if (t.variable() instanceof BinaryVariable binary) {
 					grbLinExpr.addTerm(t.weight(), createOrGetBinVar(binary));
-				} else if (t.variable() instanceof ILPIntegerVariable integer) {
+				} else if (t.variable() instanceof IntegerVariable integer) {
 					grbLinExpr.addTerm(t.weight(), createOrGetIntegerVar(integer));
 				} else {
-					ILPRealVariable real = (ILPRealVariable) t.variable();
+					RealVariable real = (RealVariable) t.variable();
 					grbLinExpr.addTerm(t.weight(), createOrGetRealVar(real));
 				}
 
@@ -530,7 +536,7 @@ public class GurobiSolver extends ILPSolver {
 	 * @param name Name to create new binary Gurobi variable for.
 	 * @return New binary Gurobi variable.
 	 */
-	private GRBVar createOrGetBinVar(final ILPBinaryVariable variable) {
+	private GRBVar createOrGetBinVar(final BinaryVariable variable) {
 		if (getVar(variable.getName()) != null) {
 			return getVar(variable.getName());
 		} else {
@@ -552,7 +558,7 @@ public class GurobiSolver extends ILPSolver {
 	 * @param name Name to create new integer Gurobi variable for.
 	 * @return New binary Gurobi variable.
 	 */
-	private GRBVar createOrGetIntegerVar(final ILPIntegerVariable variable) {
+	private GRBVar createOrGetIntegerVar(final IntegerVariable variable) {
 		if (getVar(variable.getName()) != null) {
 			return getVar(variable.getName());
 		} else {
@@ -574,7 +580,7 @@ public class GurobiSolver extends ILPSolver {
 	 * @param name Name to create new real Gurobi variable for.
 	 * @return New binary Gurobi variable.
 	 */
-	private GRBVar createOrGetRealVar(final ILPRealVariable variable) {
+	private GRBVar createOrGetRealVar(final RealVariable variable) {
 		if (getVar(variable.getName()) != null) {
 			return getVar(variable.getName());
 		} else {

@@ -1,8 +1,8 @@
-package org.emoflon.gips.core.ilp;
+package org.emoflon.gips.core.milp.model;
 
 import java.util.List;
 
-import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget;
+import org.emoflon.gips.intermediate.GipsIntermediate.Goal;
 
 /**
  *
@@ -29,7 +29,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget;
  *                      * term.constant ) + Sum_{cterm in func.constants} (
  *                      cterm.constant ) )
  */
-public record ILPNestedLinearFunction(List<ILPWeightedLinearFunction> linearFunctions, List<ILPConstant> constants,
-		ObjectiveTarget goal) {
+public record NestedLinearFunction(List<WeightedLinearFunction> linearFunctions, List<Constant> constants,
+		Goal goal) {
 
 }

@@ -55,14 +55,12 @@ GipsMappingVariable :
 	'var' name=ID ':' type=[ecore::EDataType] (bound ?= 'bind' parameter=[GT::EditorParameter])?
 ;
 
-// TODO: Remove implicit multiplication of mapping variable if one is missing. Remove validator checking for this case.
 GipsConstraint : 
 	'constraint' (isLocal?='with' context=[ecore::EObject|ID])? '{'
 		expression = GipsBooleanExpression
 	'}'
 ;	
 
-// TODO: Remove implicit multiplication of mapping variable if one is missing. Remove validator checking for this case.
 GipsLinearFunction : 
 	'function' name=ID 'with' context=[ecore::EObject|ID] '{'
 		expression = GipsArithmeticExpression
@@ -320,20 +318,20 @@ GipsSortPredicate:
 ;
 
 GipsSimpleAlgorithm:
-	operator = AlgorithmOperators '()'
+	operator = AlgorithmOperator '()'
 ;
 
-enum AlgorithmOperators :
+enum AlgorithmOperator :
 	UNIQUE = 'unique' // |
 	// FLAT = 'flat'
 ;
 
 // Currently we only allow the concatenation of sets containing the same types of values.
 GipsConcatenationOperation:
-	operator = ConcatenationOperators '(' value = GipsArithmeticOperand ')'
+	operator = ConcatenationOperator '(' value = GipsArithmeticOperand ')'
 ;
 
-enum ConcatenationOperators :
+enum ConcatenationOperator :
 	PREPEND = 'prepend' 	|
 	APPEND = 'append'
 ;
@@ -352,10 +350,10 @@ GipsSumOperation:
 ;
 
 GipsSimpleSelect:
-	operator = SelectOperators '()'
+	operator = SelectOperator '()'
 ;
 
-enum SelectOperators :
+enum SelectOperator :
 	FIRST = 'first' |
 	LAST = 'last'	|
 	ANY = 'any'
@@ -370,14 +368,14 @@ GipsTypeQuery:
 ;
 
 GipsElementQuery:
-	'containsElement' '(' element = GipsArithmeticOperand ')'
+	'containsElement' '(' element = GipsValueExpression ')'
 ;
 
 GipsSimpleQuery:
-	operator = QueryOperators '()'
+	operator = QueryOperator '()'
 ;
 
-enum QueryOperators :
+enum QueryOperator :
 	EMPTY = 'empty' |
 	NOT_EMPTY = 'notEmpty' |
 	COUNT = 'count'

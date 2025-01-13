@@ -1,16 +1,16 @@
-package org.emoflon.gips.core.ilp;
+package org.emoflon.gips.core.milp.model;
 
 import org.emoflon.gips.build.transformation.GipsConstraintUtils;
 
-public class ILPRealVariable implements ILPVariable<Double> {
+public class RealVariable implements Variable<Double> {
 
-	final protected String name;
+	final public String name;
 	protected double value;
 	// Increased real variable bound to allow larger ILP models
 	protected double upperBound = GipsConstraintUtils.INF * 100;
 	protected double lowerBound = -GipsConstraintUtils.INF * 100;
 
-	public ILPRealVariable(final String name) {
+	public RealVariable(final String name) {
 		this.name = name;
 		value = 0.0d;
 	}

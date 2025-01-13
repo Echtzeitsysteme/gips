@@ -1,19 +1,19 @@
-package org.emoflon.gips.core.ilp;
+package org.emoflon.gips.core.milp;
 
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsConstraint;
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsGlobalConstraint;
-import org.emoflon.gips.core.GipsGlobalObjective;
+import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.GipsMapping;
 import org.emoflon.gips.core.GipsMappingConstraint;
 import org.emoflon.gips.core.GipsTypeConstraint;
 import org.emoflon.gips.core.gt.GipsPatternConstraint;
 
-public abstract class ILPSolver {
+public abstract class Solver {
 	final protected GipsEngine engine;
 
-	public ILPSolver(final GipsEngine engine) {
+	public Solver(final GipsEngine engine) {
 		this.engine = engine;
 	}
 
@@ -21,12 +21,12 @@ public abstract class ILPSolver {
 		engine.getMappers().values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
 				.forEach(mapping -> translateMapping(mapping));
 		engine.getConstraints().values().forEach(constraint -> translateConstraint(constraint));
-		GipsGlobalObjective go = engine.getGlobalObjective();
+		GipsObjective go = engine.getGlobalObjective();
 		if (go != null)
 			translateObjective(go);
 	}
 
-	public abstract ILPSolverOutput solve();
+	public abstract SolverOutput solve();
 
 	public abstract void updateValuesFromSolution();
 
@@ -53,7 +53,7 @@ public abstract class ILPSolver {
 
 	protected abstract void translateConstraint(final GipsGlobalConstraint<?> constraint);
 
-	protected abstract void translateObjective(final GipsGlobalObjective objective);
+	protected abstract void translateObjective(final GipsObjective objective);
 
 	public abstract void terminate();
 

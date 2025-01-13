@@ -3,10 +3,10 @@ package org.emoflon.gips.core;
 import java.util.Collection;
 import java.util.Map;
 
-import org.emoflon.gips.core.ilp.ILPBinaryVariable;
-import org.emoflon.gips.core.ilp.ILPVariable;
+import org.emoflon.gips.core.milp.model.BinaryVariable;
+import org.emoflon.gips.core.milp.model.Variable;
 
-public abstract class GipsMapping extends ILPBinaryVariable {
+public abstract class GipsMapping extends BinaryVariable {
 
 	protected GipsMapping(final String ilpVariable) {
 		super(ilpVariable);
@@ -30,7 +30,7 @@ public abstract class GipsMapping extends ILPBinaryVariable {
 
 	public abstract Collection<String> getAdditionalVariableNames();
 
-	public abstract Map<String, ILPVariable<?>> getAdditionalVariables();
+	public abstract Map<String, Variable<?>> getAdditionalVariables();
 
 	public abstract void setAdditionalVariableValue(final String valName, final double value);
 }

@@ -1,4 +1,4 @@
-package org.emoflon.gips.core.ilp;
+package org.emoflon.gips.core.milp;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,12 +11,20 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsGlobalConstraint;
-import org.emoflon.gips.core.GipsGlobalObjective;
+import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.GipsMapper;
 import org.emoflon.gips.core.GipsMapping;
 import org.emoflon.gips.core.GipsMappingConstraint;
 import org.emoflon.gips.core.GipsTypeConstraint;
 import org.emoflon.gips.core.gt.GipsPatternConstraint;
+import org.emoflon.gips.core.milp.model.BinaryVariable;
+import org.emoflon.gips.core.milp.model.Constant;
+import org.emoflon.gips.core.milp.model.Constraint;
+import org.emoflon.gips.core.milp.model.IntegerVariable;
+import org.emoflon.gips.core.milp.model.NestedLinearFunction;
+import org.emoflon.gips.core.milp.model.RealVariable;
+import org.emoflon.gips.core.milp.model.Variable;
+import org.emoflon.gips.core.milp.model.WeightedLinearFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 import org.gnu.glpk.GLPK;
 import org.gnu.glpk.GLPKConstants;
@@ -25,7 +33,7 @@ import org.gnu.glpk.SWIGTYPE_p_int;
 import org.gnu.glpk.glp_iocp;
 import org.gnu.glpk.glp_prob;
 
-public class GlpkSolver extends ILPSolver {
+public class GlpkSolver extends Solver {
 
 	/**
 	 * Variable type (binary, integer, double).
@@ -47,7 +55,7 @@ public class GlpkSolver extends ILPSolver {
 	/**
 	 * Map to collect all ILP constraints (name -> collection of constraints).
 	 */
-	private Map<String, Collection<ILPConstraint>> constraints;
+	private Map<String, Collection<Constraint>> constraints;
 
 	/**
 	 * Map to collect all ILP variables (name -> {integer (=index), type, lower
@@ -64,7 +72,7 @@ public class GlpkSolver extends ILPSolver {
 	/**
 	 * Global objective.
 	 */
-	private GipsGlobalObjective objective;
+	private GipsObjective objective;
 
 	/**
 	 * LP file output path.
@@ -74,9 +82,9 @@ public class GlpkSolver extends ILPSolver {
 	/**
 	 * ILP solver configuration.
 	 */
-	final private ILPSolverConfig config;
+	final private SolverConfig config;
 
-	public GlpkSolver(final GipsEngine engine, final ILPSolverConfig config) {
+	public GlpkSolver(final GipsEngine engine, final SolverConfig config) {
 		super(engine);
 		constraints = new HashMap<>();
 		ilpVars = new HashMap<>();
@@ -121,7 +129,7 @@ public class GlpkSolver extends ILPSolver {
 	}
 
 	@Override
-	public ILPSolverOutput solve() {
+	public SolverOutput solve() {
 		setUpVars();
 		setUpCnstrs();
 		setUpObj();
@@ -156,28 +164,28 @@ public class GlpkSolver extends ILPSolver {
 		final boolean mipIntOptimal = mipModelStatus == GLPK.GLP_OPT;
 
 		// Determine status
-		ILPSolverStatus status = null;
+		SolverStatus status = null;
 		int solCounter = -1;
 		// TODO: Not quite sure about the following values of 'solCounter'
 		if (solved && (optimal || mipIntOptimal)) {
-			status = ILPSolverStatus.OPTIMAL;
+			status = SolverStatus.OPTIMAL;
 			solCounter = 1;
 		} else if (unbounded) {
-			status = ILPSolverStatus.UNBOUNDED;
+			status = SolverStatus.UNBOUNDED;
 			solCounter = 0;
 		} else if (timeout) {
-			status = ILPSolverStatus.TIME_OUT;
+			status = SolverStatus.TIME_OUT;
 			solCounter = solved ? 1 : 0;
 		} else if (infeasible || noFeasibleSol || noPrimalFeasSol || noDualFeasSol || modelStatus == 1) {
-			status = ILPSolverStatus.INFEASIBLE;
+			status = SolverStatus.INFEASIBLE;
 			solCounter = 0;
 		} else if (invalid) {
-			status = ILPSolverStatus.INF_OR_UNBD;
+			status = SolverStatus.INF_OR_UNBD;
 			solCounter = 0;
 		} else {
 			throw new RuntimeException("GLPK: Solver status could not be determined.");
 		}
-		return new ILPSolverOutput(status, GLPK.glp_mip_obj_val(model), engine.getValidationLog(), solCounter,
+		return new SolverOutput(status, GLPK.glp_mip_obj_val(model), engine.getValidationLog(), solCounter,
 				new ProblemStatistics( //
 						engine.getMappers().values().stream() //
 								.map(m -> m.getMappings().size()) //
@@ -205,7 +213,7 @@ public class GlpkSolver extends ILPSolver {
 
 				// Save all values of additional variables if any
 				if (mapping.hasAdditionalVariables()) {
-					for (Entry<String, ILPVariable<?>> var : mapping.getAdditionalVariables().entrySet()) {
+					for (Entry<String, Variable<?>> var : mapping.getAdditionalVariables().entrySet()) {
 						double mappingVarResult = GLPK.glp_mip_col_val(model,
 								ilpVars.get(var.getValue().getName()).index);
 						mapping.setAdditionalVariableValue(var.getKey(), mappingVarResult);
@@ -227,7 +235,7 @@ public class GlpkSolver extends ILPSolver {
 	@Override
 	protected void translateConstraint(final GipsMappingConstraint<?, ? extends EObject> constraint) {
 		createAdditionalVars(constraint.getAdditionalVariables());
-		final Set<ILPConstraint> collectedCnstr = new HashSet<>();
+		final Set<Constraint> collectedCnstr = new HashSet<>();
 		collectedCnstr.addAll(constraint.getConstraints());
 		collectedCnstr.addAll(constraint.getAdditionalConstraints());
 		constraints.put(constraint.getName(), collectedCnstr);
@@ -236,7 +244,7 @@ public class GlpkSolver extends ILPSolver {
 	@Override
 	protected void translateConstraint(final GipsPatternConstraint<?, ?, ?> constraint) {
 		createAdditionalVars(constraint.getAdditionalVariables());
-		final Set<ILPConstraint> collectedCnstr = new HashSet<>();
+		final Set<Constraint> collectedCnstr = new HashSet<>();
 		collectedCnstr.addAll(constraint.getConstraints());
 		collectedCnstr.addAll(constraint.getAdditionalConstraints());
 		constraints.put(constraint.getName(), collectedCnstr);
@@ -245,7 +253,7 @@ public class GlpkSolver extends ILPSolver {
 	@Override
 	protected void translateConstraint(final GipsTypeConstraint<?, ? extends EObject> constraint) {
 		createAdditionalVars(constraint.getAdditionalVariables());
-		final Set<ILPConstraint> collectedCnstr = new HashSet<>();
+		final Set<Constraint> collectedCnstr = new HashSet<>();
 		collectedCnstr.addAll(constraint.getConstraints());
 		collectedCnstr.addAll(constraint.getAdditionalConstraints());
 		constraints.put(constraint.getName(), collectedCnstr);
@@ -254,14 +262,14 @@ public class GlpkSolver extends ILPSolver {
 	@Override
 	protected void translateConstraint(GipsGlobalConstraint<?> constraint) {
 		createAdditionalVars(constraint.getAdditionalVariables());
-		final Set<ILPConstraint> collectedCnstr = new HashSet<>();
+		final Set<Constraint> collectedCnstr = new HashSet<>();
 		collectedCnstr.addAll(constraint.getConstraints());
 		collectedCnstr.addAll(constraint.getAdditionalConstraints());
 		constraints.put(constraint.getName(), collectedCnstr);
 	}
 
 	@Override
-	protected void translateObjective(final GipsGlobalObjective objective) {
+	protected void translateObjective(final GipsObjective objective) {
 		this.objective = objective;
 	}
 
@@ -329,7 +337,7 @@ public class GlpkSolver extends ILPSolver {
 	private void setUpCnstrs() {
 		// Determine total number of constraints
 		int numRows = 0;
-		for (final Collection<ILPConstraint> col : constraints.values()) {
+		for (final Collection<Constraint> col : constraints.values()) {
 			numRows += col.size();
 		}
 
@@ -343,21 +351,21 @@ public class GlpkSolver extends ILPSolver {
 		// Iterate over all constraint name
 		int globalCnstrCounter = 1;
 		for (final String name : constraints.keySet()) {
-			final Iterator<ILPConstraint> cnstrIt = constraints.get(name).iterator();
+			final Iterator<Constraint> cnstrIt = constraints.get(name).iterator();
 
 			// Iterate over each "sub" constraint (if any)
 			int localCnstrCounter = 0;
 			while (cnstrIt.hasNext()) {
-				final ILPConstraint cnstr = cnstrIt.next();
+				final Constraint cnstr = cnstrIt.next();
 				if (cnstr == null) {
 					continue;
 				}
 
 				// For GLPK, we have to cumulate all weights for identical variables
-				final Map<ILPVariable<?>, Double> cumulatedWeights = new HashMap<>();
+				final Map<Variable<?>, Double> cumulatedWeights = new HashMap<>();
 
 				for (int i = 0; i < cnstr.lhsTerms().size(); i++) {
-					final ILPVariable<?> var = cnstr.lhsTerms().get(i).variable();
+					final Variable<?> var = cnstr.lhsTerms().get(i).variable();
 					if (cumulatedWeights.containsKey(var)) {
 						final double newWeight = cumulatedWeights.remove(var) + cnstr.lhsTerms().get(i).weight();
 						cumulatedWeights.put(var, newWeight);
@@ -371,7 +379,7 @@ public class GlpkSolver extends ILPSolver {
 				final SWIGTYPE_p_double coeffs = GLPK.new_doubleArray(size + 1);
 
 				int varIt = 1;
-				for (final ILPVariable<?> v : cumulatedWeights.keySet()) {
+				for (final Variable<?> v : cumulatedWeights.keySet()) {
 					GLPK.intArray_setitem(vars, varIt, ilpVars.get(v.getName()).index);
 					GLPK.doubleArray_setitem(coeffs, varIt, cumulatedWeights.get(v));
 					varIt++;
@@ -396,7 +404,7 @@ public class GlpkSolver extends ILPSolver {
 			return;
 		}
 
-		final ILPNestedLinearFunction nestFunc = objective.getObjectiveFunction();
+		final NestedLinearFunction nestFunc = objective.getObjectiveFunction();
 
 		// Set goal
 		int goal = 0;
@@ -412,12 +420,12 @@ public class GlpkSolver extends ILPSolver {
 
 		// Constants
 		double constSum = 0;
-		for (ILPConstant c : nestFunc.constants()) {
+		for (Constant c : nestFunc.constants()) {
 			constSum += c.weight();
 		}
 
 		// Terms
-		for (final ILPWeightedLinearFunction lf : nestFunc.linearFunctions()) {
+		for (final WeightedLinearFunction lf : nestFunc.linearFunctions()) {
 			lf.linearFunction().terms().forEach(t -> {
 				// Get index of current variable
 				final int varIndex = ilpVars.get(t.variable().getName()).index;
@@ -429,7 +437,7 @@ public class GlpkSolver extends ILPSolver {
 				GLPK.glp_set_obj_coef(model, varIndex, prevCoef + (t.weight() * lf.weight()));
 			});
 
-			for (final ILPConstant c : lf.linearFunction().constantTerms()) {
+			for (final Constant c : lf.linearFunction().constantTerms()) {
 				constSum += (c.weight() * lf.weight());
 			}
 		}
@@ -475,13 +483,13 @@ public class GlpkSolver extends ILPSolver {
 	 * @param variables Collection of variables to create additional GLPK variables
 	 *                  for.
 	 */
-	protected void createAdditionalVars(final Collection<ILPVariable<?>> variables) {
-		for (final ILPVariable<?> variable : variables) {
-			if (variable instanceof ILPBinaryVariable binVar) {
+	protected void createAdditionalVars(final Collection<Variable<?>> variables) {
+		for (final Variable<?> variable : variables) {
+			if (variable instanceof BinaryVariable binVar) {
 				createBinVar(binVar.name, binVar.getLowerBound(), binVar.getUpperBound());
-			} else if (variable instanceof ILPIntegerVariable intVar) {
+			} else if (variable instanceof IntegerVariable intVar) {
 				createIntVar(intVar.name, intVar.getLowerBound(), intVar.getUpperBound());
-			} else if (variable instanceof ILPRealVariable realVar) {
+			} else if (variable instanceof RealVariable realVar) {
 				createDblVar(realVar.name, realVar.getLowerBound(), realVar.getUpperBound());
 			} else {
 				throw new IllegalArgumentException("Unsupported variable type: " + variable.getClass().getSimpleName());

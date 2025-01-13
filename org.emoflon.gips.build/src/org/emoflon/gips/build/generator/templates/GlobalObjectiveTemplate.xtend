@@ -90,9 +90,9 @@ import «imp»;
 	}
 	
 	def String generateAttributes() {
-			referencedObjectives.forEach[o | imports.add(data.apiData.gipsObjectivePkg+"."+data.objective2objectiveClassName.get(o))]
+			referencedObjectives.forEach[o | imports.add(data.apiData.gipsObjectivePkg+"."+data.function2functionClassName.get(o))]
 		return '''«FOR obj : referencedObjectives»
-	protected «data.objective2objectiveClassName.get(obj)» «obj.name.toFirstLower»;
+	protected «data.function2functionClassName.get(obj)» «obj.name.toFirstLower»;
 «ENDFOR»'''
 	}
 	
@@ -100,7 +100,7 @@ import «imp»;
 		return '''@Override
 protected void initLocalObjectives() {
 	«FOR obj : referencedObjectives»
-	«obj.name.toFirstLower» = («data.objective2objectiveClassName.get(obj)») engine.getObjectives().get("«obj.name»");
+	«obj.name.toFirstLower» = («data.function2functionClassName.get(obj)») engine.getObjectives().get("«obj.name»");
 	«ENDFOR»
 }'''
 	}

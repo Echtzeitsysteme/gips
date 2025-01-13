@@ -1,4 +1,4 @@
-package org.emoflon.gips.core.ilp;
+package org.emoflon.gips.core.milp.model;
 
 import java.util.List;
 
@@ -22,6 +22,6 @@ import java.util.List;
  *                      in terms} ( term.variable * term.constant ) + Sum_{cterm
  *                      in constantTerms} ( cterm.constant )
  */
-public record ILPLinearFunction(List<ILPTerm> terms, List<ILPConstant> constantTerms) {
+public record LinearFunction(List<Term> terms, List<Constant> constantTerms) {
 
 }

@@ -1,4 +1,4 @@
-package org.emoflon.gips.core.ilp;
+package org.emoflon.gips.core.milp;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,12 +11,21 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsGlobalConstraint;
-import org.emoflon.gips.core.GipsGlobalObjective;
+import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.GipsMapper;
 import org.emoflon.gips.core.GipsMapping;
 import org.emoflon.gips.core.GipsMappingConstraint;
 import org.emoflon.gips.core.GipsTypeConstraint;
 import org.emoflon.gips.core.gt.GipsPatternConstraint;
+import org.emoflon.gips.core.milp.model.BinaryVariable;
+import org.emoflon.gips.core.milp.model.Constant;
+import org.emoflon.gips.core.milp.model.Constraint;
+import org.emoflon.gips.core.milp.model.IntegerVariable;
+import org.emoflon.gips.core.milp.model.NestedLinearFunction;
+import org.emoflon.gips.core.milp.model.RealVariable;
+import org.emoflon.gips.core.milp.model.Term;
+import org.emoflon.gips.core.milp.model.Variable;
+import org.emoflon.gips.core.milp.model.WeightedLinearFunction;
 import org.emoflon.gips.core.util.SystemUtil;
 
 import ilog.concert.IloException;
@@ -27,7 +36,7 @@ import ilog.concert.IloObjective;
 import ilog.cplex.IloCplex;
 import ilog.cplex.IloCplex.Status;
 
-public class CplexSolver extends ILPSolver {
+public class CplexSolver extends Solver {
 
 	/**
 	 * CPLEX model.
@@ -37,7 +46,7 @@ public class CplexSolver extends ILPSolver {
 	/**
 	 * Map to collect all ILP constraints (name -> collection of constraints).
 	 */
-	private Map<String, Collection<ILPConstraint>> constraints = new HashMap<>();
+	private Map<String, Collection<Constraint>> constraints = new HashMap<>();
 
 	/**
 	 * Map to collect all ILP variables (name -> CPLEX numeric vars).
@@ -47,7 +56,7 @@ public class CplexSolver extends ILPSolver {
 	/**
 	 * Global objective.
 	 */
-	private GipsGlobalObjective objective;
+	private GipsObjective objective;
 
 	/**
 	 * LP file output path.
@@ -57,9 +66,9 @@ public class CplexSolver extends ILPSolver {
 	/**
 	 * ILP solver configuration.
 	 */
-	final private ILPSolverConfig config;
+	final private SolverConfig config;
 
-	public CplexSolver(final GipsEngine engine, final ILPSolverConfig config) {
+	public CplexSolver(final GipsEngine engine, final SolverConfig config) {
 		super(engine);
 		this.config = config;
 		init();
@@ -123,7 +132,7 @@ public class CplexSolver extends ILPSolver {
 	}
 
 	@Override
-	public ILPSolverOutput solve() {
+	public SolverOutput solve() {
 		setUpCnstrs();
 		setUpObj();
 
@@ -149,25 +158,25 @@ public class CplexSolver extends ILPSolver {
 			}
 
 			// Determine status
-			ILPSolverStatus status = null;
+			SolverStatus status = null;
 			final Status cplexStatus = cplex.getStatus();
 			if (cplexStatus == IloCplex.Status.Unbounded) {
-				status = ILPSolverStatus.UNBOUNDED;
+				status = SolverStatus.UNBOUNDED;
 			} else if (cplexStatus == IloCplex.Status.InfeasibleOrUnbounded) {
-				status = ILPSolverStatus.INF_OR_UNBD;
+				status = SolverStatus.INF_OR_UNBD;
 			} else if (cplexStatus == IloCplex.Status.Infeasible) {
-				status = ILPSolverStatus.INFEASIBLE;
+				status = SolverStatus.INFEASIBLE;
 			} else if (cplexStatus == IloCplex.Status.Optimal) {
-				status = ILPSolverStatus.OPTIMAL;
+				status = SolverStatus.OPTIMAL;
 			} else if (cplexStatus == IloCplex.Status.Unknown) {
-				status = ILPSolverStatus.TIME_OUT;
+				status = SolverStatus.TIME_OUT;
 			} else if (cplexStatus == IloCplex.Status.Feasible) {
-				status = ILPSolverStatus.FEASIBLE;
+				status = SolverStatus.FEASIBLE;
 			} else {
 				throw new RuntimeException("Unknown solver status.");
 			}
 
-			return new ILPSolverOutput(status, objVal, engine.getValidationLog(), solCounter, new ProblemStatistics( //
+			return new SolverOutput(status, objVal, engine.getValidationLog(), solCounter, new ProblemStatistics( //
 					engine.getMappers().values().stream() //
 							.map(m -> m.getMappings().size()) //
 							.reduce(0, (sum, val) -> sum + val), //
@@ -202,7 +211,7 @@ public class CplexSolver extends ILPSolver {
 
 				// Save all values of additional variables if any
 				if (mapping.hasAdditionalVariables()) {
-					for (Entry<String, ILPVariable<?>> var : mapping.getAdditionalVariables().entrySet()) {
+					for (Entry<String, Variable<?>> var : mapping.getAdditionalVariables().entrySet()) {
 						try {
 							double mappingVarResult = cplex.getValue(vars.get(var.getValue().getName()));
 							mapping.setAdditionalVariableValue(var.getKey(), mappingVarResult);
@@ -227,7 +236,7 @@ public class CplexSolver extends ILPSolver {
 	@Override
 	protected void translateConstraint(final GipsMappingConstraint<?, ? extends EObject> constraint) {
 		createAdditionalVars(constraint.getAdditionalVariables());
-		final Set<ILPConstraint> collectedCnstr = new HashSet<>();
+		final Set<Constraint> collectedCnstr = new HashSet<>();
 		collectedCnstr.addAll(constraint.getConstraints());
 		collectedCnstr.addAll(constraint.getAdditionalConstraints());
 		constraints.put(constraint.getName(), collectedCnstr);
@@ -236,7 +245,7 @@ public class CplexSolver extends ILPSolver {
 	@Override
 	protected void translateConstraint(final GipsPatternConstraint<?, ?, ?> constraint) {
 		createAdditionalVars(constraint.getAdditionalVariables());
-		final Set<ILPConstraint> collectedCnstr = new HashSet<>();
+		final Set<Constraint> collectedCnstr = new HashSet<>();
 		collectedCnstr.addAll(constraint.getConstraints());
 		collectedCnstr.addAll(constraint.getAdditionalConstraints());
 		constraints.put(constraint.getName(), collectedCnstr);
@@ -245,7 +254,7 @@ public class CplexSolver extends ILPSolver {
 	@Override
 	protected void translateConstraint(final GipsTypeConstraint<?, ? extends EObject> constraint) {
 		createAdditionalVars(constraint.getAdditionalVariables());
-		final Set<ILPConstraint> collectedCnstr = new HashSet<>();
+		final Set<Constraint> collectedCnstr = new HashSet<>();
 		collectedCnstr.addAll(constraint.getConstraints());
 		collectedCnstr.addAll(constraint.getAdditionalConstraints());
 		constraints.put(constraint.getName(), collectedCnstr);
@@ -254,14 +263,14 @@ public class CplexSolver extends ILPSolver {
 	@Override
 	protected void translateConstraint(GipsGlobalConstraint<?> constraint) {
 		createAdditionalVars(constraint.getAdditionalVariables());
-		final Set<ILPConstraint> collectedCnstr = new HashSet<>();
+		final Set<Constraint> collectedCnstr = new HashSet<>();
 		collectedCnstr.addAll(constraint.getConstraints());
 		collectedCnstr.addAll(constraint.getAdditionalConstraints());
 		constraints.put(constraint.getName(), collectedCnstr);
 	}
 
 	@Override
-	protected void translateObjective(final GipsGlobalObjective objective) {
+	protected void translateObjective(final GipsObjective objective) {
 		this.objective = objective;
 	}
 
@@ -271,7 +280,7 @@ public class CplexSolver extends ILPSolver {
 	private void setUpCnstrs() {
 		// Determine total number of constraints
 		int numRows = 0;
-		for (final Collection<ILPConstraint> col : constraints.values()) {
+		for (final Collection<Constraint> col : constraints.values()) {
 			numRows += col.size();
 		}
 
@@ -284,16 +293,16 @@ public class CplexSolver extends ILPSolver {
 
 			// Iterate over all constraint names
 			for (final String name : constraints.keySet()) {
-				final Iterator<ILPConstraint> cnstrIt = constraints.get(name).iterator();
+				final Iterator<Constraint> cnstrIt = constraints.get(name).iterator();
 
 				// Iterate over each "sub" constraint (if any)
 				while (cnstrIt.hasNext()) {
-					final ILPConstraint cnstr = cnstrIt.next();
+					final Constraint cnstr = cnstrIt.next();
 					if (cnstr == null) {
 						continue;
 					}
 					final IloLinearNumExpr linearNumExpr = cplex.linearNumExpr();
-					for (final ILPTerm act : cnstr.lhsTerms()) {
+					for (final Term act : cnstr.lhsTerms()) {
 						linearNumExpr.addTerm(act.weight(), vars.get(act.variable().getName()));
 					}
 					switch (cnstr.operator()) {
@@ -326,7 +335,7 @@ public class CplexSolver extends ILPSolver {
 			return;
 		}
 
-		final ILPNestedLinearFunction nestFunc = objective.getObjectiveFunction();
+		final NestedLinearFunction nestFunc = objective.getObjectiveFunction();
 
 		try {
 
@@ -343,7 +352,7 @@ public class CplexSolver extends ILPSolver {
 
 			// Constants
 			double constSum = 0;
-			for (ILPConstant c : nestFunc.constants()) {
+			for (Constant c : nestFunc.constants()) {
 				constSum += c.weight();
 			}
 
@@ -351,7 +360,7 @@ public class CplexSolver extends ILPSolver {
 
 			// Terms
 			// Sum up all coefficients of all variables
-			for (final ILPWeightedLinearFunction lf : nestFunc.linearFunctions()) {
+			for (final WeightedLinearFunction lf : nestFunc.linearFunctions()) {
 				lf.linearFunction().terms().forEach(t -> {
 					final String name = t.variable().getName();
 					if (!objCoeffs.containsKey(name)) {
@@ -363,7 +372,7 @@ public class CplexSolver extends ILPSolver {
 
 				});
 
-				for (final ILPConstant c : lf.linearFunction().constantTerms()) {
+				for (final Constant c : lf.linearFunction().constantTerms()) {
 					constSum += (c.weight() * lf.weight());
 				}
 			}
@@ -387,13 +396,13 @@ public class CplexSolver extends ILPSolver {
 	 * @param variables Collection of variables to create additional CPLEX variables
 	 *                  for.
 	 */
-	protected void createAdditionalVars(final Collection<ILPVariable<?>> variables) {
-		for (final ILPVariable<?> variable : variables) {
-			if (variable instanceof ILPBinaryVariable binVar) {
+	protected void createAdditionalVars(final Collection<Variable<?>> variables) {
+		for (final Variable<?> variable : variables) {
+			if (variable instanceof BinaryVariable binVar) {
 				createBinVar(binVar.name, variable.getLowerBound(), variable.getUpperBound());
-			} else if (variable instanceof ILPIntegerVariable intVar) {
+			} else if (variable instanceof IntegerVariable intVar) {
 				createIntVar(intVar.name, variable.getLowerBound(), variable.getUpperBound());
-			} else if (variable instanceof ILPRealVariable realVar) {
+			} else if (variable instanceof RealVariable realVar) {
 				createDblVar(realVar.name, variable.getLowerBound(), variable.getUpperBound());
 			} else {
 				throw new IllegalArgumentException("Unsupported variable type: " + variable.getClass().getSimpleName());

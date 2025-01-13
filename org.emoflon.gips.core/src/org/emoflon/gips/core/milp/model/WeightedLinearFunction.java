@@ -1,4 +1,4 @@
-package org.emoflon.gips.core.ilp;
+package org.emoflon.gips.core.milp.model;
 
 /**
  *
@@ -20,6 +20,6 @@ package org.emoflon.gips.core.ilp;
  *               term.constant ) + Sum_{cterm in linearFunction.constants} (
  *               cterm.constant ) )
  */
-public record ILPWeightedLinearFunction(ILPLinearFunction linearFunction, double weight) {
+public record WeightedLinearFunction(LinearFunction linearFunction, double weight) {
 
 }

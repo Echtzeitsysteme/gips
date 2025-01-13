@@ -460,7 +460,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			.map(«getIteratorVariableName(constExpr)» -> 1.0 * «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
 		} else if(constExpr instanceof PatternSumExpression) {
-			imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(constExpr.pattern))
+			imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(constExpr.pattern))
 			return '''engine.getEMoflonAPI().«constExpr.pattern.name»().findMatches(false).parallelStream()
 			«getFilterExpr(constExpr.filter, ExpressionContext.constConstraint)»
 			.map(«getIteratorVariableName(constExpr)» -> 1.0 * «parseExpression(constExpr.expression, ExpressionContext.constConstraint)»)
@@ -593,7 +593,7 @@ abstract class ObjectiveTemplate <OBJECTIVE extends Objective> extends Generator
 			.map(«getIteratorVariableName(varExpr)» -> 1.0 * «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)
 			.reduce(0.0, (sum, value) -> sum + value)'''
 		} else if(varExpr instanceof PatternSumExpression) {
-			imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(varExpr.pattern))
+			imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(varExpr.pattern))
 			return '''engine.getEMoflonAPI().«varExpr.pattern.name»().findMatches(false).parallelStream()
 			«getFilterExpr(varExpr.filter, ExpressionContext.varConstraint)»
 			.map(«getIteratorVariableName(varExpr)» -> 1.0 * «parseExpression(varExpr.expression, ExpressionContext.varConstraint)»)

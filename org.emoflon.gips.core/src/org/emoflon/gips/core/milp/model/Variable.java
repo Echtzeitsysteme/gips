@@ -1,6 +1,6 @@
-package org.emoflon.gips.core.ilp;
+package org.emoflon.gips.core.milp.model;
 
-public interface ILPVariable<T extends Number> {
+public interface Variable<T extends Number> {
 
 	public String getName();
 

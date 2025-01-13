@@ -1,17 +1,15 @@
-package org.emoflon.gips.core.ilp;
+package org.emoflon.gips.core.milp.model;
 
-import org.emoflon.gips.build.transformation.GipsConstraintUtils;
+public class BinaryVariable implements Variable<Integer> {
 
-public class ILPIntegerVariable implements ILPVariable<Integer> {
+	final public String name;
+	protected boolean value;
+	protected int upperBound = 1;
+	protected int lowerBound = 0;
 
-	final protected String name;
-	protected int value;
-	protected int upperBound = (int) GipsConstraintUtils.INF;
-	protected int lowerBound = -(int) GipsConstraintUtils.INF;
-
-	public ILPIntegerVariable(final String name) {
+	public BinaryVariable(final String name) {
 		this.name = name;
-		value = 0;
+		value = false;
 	}
 
 	@Override
@@ -21,12 +19,12 @@ public class ILPIntegerVariable implements ILPVariable<Integer> {
 
 	@Override
 	public Integer getValue() {
-		return value;
+		return (value) ? 1 : 0;
 	}
 
 	@Override
 	public void setValue(Integer value) {
-		this.value = value;
+		this.value = (value != 0) ? true : false;
 	}
 
 	@Override
@@ -48,4 +46,5 @@ public class ILPIntegerVariable implements ILPVariable<Integer> {
 	public void setLowerBound(Integer bound) {
 		lowerBound = bound;
 	}
+
 }

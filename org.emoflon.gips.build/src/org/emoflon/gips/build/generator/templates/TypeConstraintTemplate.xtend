@@ -478,7 +478,7 @@ protected List<ILPTerm> buildVariableLhs(final «context.modelType.type.name» c
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		imports.add("java.util.stream.Collectors")
-		imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(expr.pattern))
+		imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(expr.pattern))
 		var method = "";
 		
 		if(context.isConstant && context.expression instanceof RelationalExpression) {
@@ -495,7 +495,7 @@ protected List<ILPTerm> buildVariableLhs(final «context.modelType.type.name» c
 			
 			method = '''
 	protected void «methodName»(final List<ILPTerm> terms, final «context.modelType.type.name» context) {
-		for(«data.pattern2matchClassName.get(expr.pattern)» «getIteratorVariableName(expr)» : engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()
+		for(«data.ibex2matchClassName.get(expr.pattern)» «getIteratorVariableName(expr)» : engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()
 			«getFilterExpr(expr.filter, ExpressionContext.varStream)».collect(Collectors.toList())) {
 			terms.add(new ILPTerm(«getIteratorVariableName(expr)», (double)«parseExpression(expr.expression, ExpressionContext.varConstraint)»));
 		}

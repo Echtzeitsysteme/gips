@@ -212,17 +212,17 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsSimpleAlgorithm" eSuperTypes="#//GipsAlgorithmOperation">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//AlgorithmOperators"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//AlgorithmOperator"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="AlgorithmOperators">
+  <eClassifiers xsi:type="ecore:EEnum" name="AlgorithmOperator">
     <eLiterals name="UNIQUE" literal="unique"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsConcatenationOperation" eSuperTypes="#//GipsSetOperation">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//ConcatenationOperators"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//ConcatenationOperator"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//GipsArithmeticOperand"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="ConcatenationOperators">
+  <eClassifiers xsi:type="ecore:EEnum" name="ConcatenationOperator">
     <eLiterals name="PREPEND" literal="prepend"/>
     <eLiterals name="APPEND" value="1" literal="append"/>
   </eClassifiers>
@@ -236,9 +236,9 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsSimpleSelect" eSuperTypes="#//GipsReduceOperation">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//SelectOperators"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//SelectOperator"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="SelectOperators">
+  <eClassifiers xsi:type="ecore:EEnum" name="SelectOperator">
     <eLiterals name="FIRST" literal="first"/>
     <eLiterals name="LAST" value="1" literal="last"/>
     <eLiterals name="ANY" value="2" literal="any"/>
@@ -248,13 +248,13 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsElementQuery" eSuperTypes="#//GipsQueryOperation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//GipsArithmeticOperand"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//GipsValueExpression"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsSimpleQuery" eSuperTypes="#//GipsQueryOperation">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//QueryOperators"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//QueryOperator"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="QueryOperators">
+  <eClassifiers xsi:type="ecore:EEnum" name="QueryOperator">
     <eLiterals name="EMPTY" literal="empty"/>
     <eLiterals name="NOT_EMPTY" value="1" literal="notEmpty"/>
     <eLiterals name="COUNT" value="2" literal="count"/>

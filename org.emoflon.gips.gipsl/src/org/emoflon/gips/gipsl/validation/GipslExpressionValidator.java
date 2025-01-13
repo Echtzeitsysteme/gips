@@ -55,7 +55,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsUnaryOperator;
 import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
-import org.emoflon.gips.gipsl.gipsl.QueryOperators;
+import org.emoflon.gips.gipsl.gipsl.QueryOperator;
 import org.emoflon.gips.gipsl.gipsl.RelationalOperator;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsSetExpressionImpl;
@@ -843,7 +843,7 @@ public final class GipslExpressionValidator {
 				} else {
 					return ExpressionType.Unknown;
 				}
-			} else if (reduce instanceof GipsSimpleQuery simple && simple.getOperator() == QueryOperators.COUNT) {
+			} else if (reduce instanceof GipsSimpleQuery simple && simple.getOperator() == QueryOperator.COUNT) {
 				return ExpressionType.Number;
 			} else {
 				return ExpressionType.Boolean;

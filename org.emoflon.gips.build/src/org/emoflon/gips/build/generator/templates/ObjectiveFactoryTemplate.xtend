@@ -27,7 +27,7 @@ class ObjectiveFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> 
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective")
 		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
-		data.objective2objectiveClassName.values.forEach[o | imports.add(data.apiData.gipsObjectivePkg+"."+o)]
+		data.function2functionClassName.values.forEach[o | imports.add(data.apiData.gipsObjectivePkg+"."+o)]
 	}
 	
 	override generate() {
@@ -51,9 +51,9 @@ public class «className» extends GipsObjectiveFactory<«data.gipsApiClassName�
 			«FOR objective : context.objectives»
 			case "«objective.name»" -> {
 				«IF objective instanceof PatternObjective»
-				return new «data.objective2objectiveClassName.get(objective)»(engine, («objective.eClass.name»)objective, eMoflonApi.«objective.pattern.name.toFirstLower»());
+				return new «data.function2functionClassName.get(objective)»(engine, («objective.eClass.name»)objective, eMoflonApi.«objective.pattern.name.toFirstLower»());
 				«ELSE»
-				return new «data.objective2objectiveClassName.get(objective)»(engine, («objective.eClass.name»)objective);
+				return new «data.function2functionClassName.get(objective)»(engine, («objective.eClass.name»)objective);
 				«ENDIF»
 			}
 			«ENDFOR»

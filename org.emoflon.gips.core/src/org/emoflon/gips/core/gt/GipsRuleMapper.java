@@ -12,10 +12,11 @@ import java.util.stream.Collectors;
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsMapper;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.RuleMapping;
 import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 import org.emoflon.ibex.gt.api.GraphTransformationRule;
 
-public abstract class GTMapper<GTM extends GTMapping<M, R>, M extends GraphTransformationMatch<M, R>, R extends GraphTransformationRule<M, R>>
+public abstract class GipsRuleMapper<GTM extends GipsRuleMapping<M, R>, M extends GraphTransformationMatch<M, R>, R extends GraphTransformationRule<M, R>>
 		extends GipsMapper<GTM> {
 
 	final protected R rule;
@@ -26,11 +27,11 @@ public abstract class GTMapper<GTM extends GTMapping<M, R>, M extends GraphTrans
 	final protected Consumer<M> appearConsumer = this::addMapping;
 	final protected Consumer<M> disappearConsumer = this::removeMapping;
 
-	public GTMapper(final GipsEngine engine, final Mapping mapping, final R rule) {
+	public GipsRuleMapper(final GipsEngine engine, final Mapping mapping, final R rule) {
 		super(engine, mapping);
 		this.rule = rule;
 		this.init();
-		final org.emoflon.gips.intermediate.GipsIntermediate.GTMapping typedMapping = ((org.emoflon.gips.intermediate.GipsIntermediate.GTMapping) mapping);
+		final RuleMapping typedMapping = ((RuleMapping) mapping);
 
 		if (typedMapping.getBoundVariables() != null && !typedMapping.getBoundVariables().isEmpty()) {
 			typedMapping.getBoundVariables()

@@ -22,17 +22,16 @@ import org.emoflon.gips.build.generator.templates.PatternMappingTemplate;
 import org.emoflon.gips.build.generator.templates.PatternObjectiveTemplate;
 import org.emoflon.gips.build.generator.templates.TypeConstraintTemplate;
 import org.emoflon.gips.build.generator.templates.TypeObjectiveTemplate;
-import org.emoflon.gips.intermediate.GipsIntermediate.GTMapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
-import org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternMapping;
-import org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.RuleMapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeFunction;
 
 public class GipsCodeGenerator {
 
@@ -51,7 +50,7 @@ public class GipsCodeGenerator {
 		templates.add(new ObjectiveFactoryTemplate(data, data.model));
 		data.model.getVariables().parallelStream().filter(mapping -> mapping instanceof Mapping)
 				.map(mapping -> (Mapping) mapping).forEach(mapping -> {
-					if (mapping instanceof GTMapping gtMapping) {
+					if (mapping instanceof RuleMapping gtMapping) {
 						templates.add(new GTMappingTemplate(data, gtMapping));
 						templates.add(new GTMapperTemplate(data, gtMapping));
 					} else {
@@ -69,22 +68,21 @@ public class GipsCodeGenerator {
 			} else if (constraint instanceof TypeConstraint typeConstraint) {
 				templates.add(new TypeConstraintTemplate(data, typeConstraint));
 			} else {
-				GlobalConstraint globalConstraint = (GlobalConstraint) constraint;
-				templates.add(new GlobalConstraintTemplate(data, globalConstraint));
+				templates.add(new GlobalConstraintTemplate(data, constraint));
 			}
 		});
-		data.model.getObjectives().parallelStream().forEach(objective -> {
-			if (objective instanceof MappingObjective mappingObjective) {
-				templates.add(new MappingObjectiveTemplate(data, mappingObjective));
-			} else if (objective instanceof PatternObjective patternObjective) {
-				templates.add(new PatternObjectiveTemplate(data, patternObjective));
+		data.model.getFunctions().parallelStream().forEach(fn -> {
+			if (fn instanceof MappingFunction mappingFn) {
+				templates.add(new MappingObjectiveTemplate(data, mappingFn));
+			} else if (fn instanceof PatternFunction patternFn) {
+				templates.add(new PatternObjectiveTemplate(data, patternFn));
 			} else {
-				TypeObjective typeObjective = (TypeObjective) objective;
-				templates.add(new TypeObjectiveTemplate(data, typeObjective));
+				TypeFunction typeFn = (TypeFunction) fn;
+				templates.add(new TypeObjectiveTemplate(data, typeFn));
 			}
 		});
-		if (data.model.getGlobalObjective() != null) {
-			templates.add(new GlobalObjectiveTemplate(data, data.model.getGlobalObjective()));
+		if (data.model.getObjective() != null) {
+			templates.add(new GlobalObjectiveTemplate(data, data.model.getObjective()));
 		}
 		templates.parallelStream().forEach(template -> {
 			try {

@@ -5,16 +5,16 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.emoflon.gips.core.GipsMapping;
-import org.emoflon.gips.core.ilp.ILPVariable;
+import org.emoflon.gips.core.milp.model.Variable;
 import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 import org.emoflon.ibex.gt.api.GraphTransformationPattern;
 
-public abstract class GTMapping<M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
+public abstract class GipsRuleMapping<M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
 		extends GipsMapping {
 
 	final protected M match;
 
-	protected GTMapping(final String ilpVariable, final M match) {
+	protected GipsRuleMapping(final String ilpVariable, final M match) {
 		super(ilpVariable);
 		this.match = match;
 	}
@@ -26,7 +26,7 @@ public abstract class GTMapping<M extends GraphTransformationMatch<M, P>, P exte
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof GTMapping<?, ?> other) {
+		if (obj instanceof GipsRuleMapping<?, ?> other) {
 			if (name.equals(other.name) && match.equals(other.match)) {
 				return true;
 			} else {
@@ -47,9 +47,9 @@ public abstract class GTMapping<M extends GraphTransformationMatch<M, P>, P exte
 
 	public abstract Collection<String> getFreeVariableNames();
 
-	public abstract Map<String, ILPVariable<?>> getFreeVariables();
+	public abstract Map<String, Variable<?>> getFreeVariables();
 
 	public abstract Collection<String> getBoundVariableNames();
 
-	public abstract Map<String, ILPVariable<?>> getBoundVariables();
+	public abstract Map<String, Variable<?>> getBoundVariables();
 }

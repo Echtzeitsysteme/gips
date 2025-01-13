@@ -26,7 +26,7 @@ class MappingObjectiveTemplate extends ObjectiveTemplate<MappingObjective> {
 
 	override init() {
 		packageName = data.apiData.gipsObjectivePkg
-		className = data.objective2objectiveClassName.get(context)
+		className = data.function2functionClassName.get(context)
 		fqn = packageName + "." + className;
 		filePath = data.apiData.gipsObjectivePkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
@@ -262,7 +262,7 @@ protected void buildTerms(final «data.mapping2mappingClassName.get(context.mapp
 	override generateForeignBuilder(PatternSumExpression expr) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
-		imports.add(data.apiData.matchesPkg+"."+data.pattern2matchClassName.get(expr.pattern))
+		imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(expr.pattern))
 		val method = '''
 	protected void «methodName»(final «data.mapping2mappingClassName.get(context.mapping)» context) {
 		double constant = engine.getEMoflonAPI().«expr.pattern.name»().findMatches(false).parallelStream()

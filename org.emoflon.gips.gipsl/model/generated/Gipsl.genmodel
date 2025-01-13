@@ -58,22 +58,22 @@
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsUnaryOperator/sin"/>
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsUnaryOperator/cos"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//AlgorithmOperators">
-      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//AlgorithmOperators/UNIQUE"/>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//AlgorithmOperator">
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//AlgorithmOperator/UNIQUE"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//ConcatenationOperators">
-      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//ConcatenationOperators/PREPEND"/>
-      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//ConcatenationOperators/APPEND"/>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//ConcatenationOperator">
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//ConcatenationOperator/PREPEND"/>
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//ConcatenationOperator/APPEND"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//SelectOperators">
-      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//SelectOperators/FIRST"/>
-      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//SelectOperators/LAST"/>
-      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//SelectOperators/ANY"/>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//SelectOperator">
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//SelectOperator/FIRST"/>
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//SelectOperator/LAST"/>
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//SelectOperator/ANY"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//QueryOperators">
-      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//QueryOperators/EMPTY"/>
-      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//QueryOperators/NOT_EMPTY"/>
-      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//QueryOperators/COUNT"/>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//QueryOperator">
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//QueryOperator/EMPTY"/>
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//QueryOperator/NOT_EMPTY"/>
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//QueryOperator/COUNT"/>
     </genEnums>
     <genClasses ecoreClass="Gipsl.ecore#//EditorGTFile">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//EditorGTFile/package"/>

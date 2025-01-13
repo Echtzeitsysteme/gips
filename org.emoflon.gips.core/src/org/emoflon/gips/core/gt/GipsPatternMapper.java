@@ -11,7 +11,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 import org.emoflon.ibex.gt.api.GraphTransformationPattern;
 
-public abstract class PatternMapper<PM extends GTMapping<M, P>, M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
+public abstract class GipsPatternMapper<PM extends GipsRuleMapping<M, P>, M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
 		extends GipsMapper<PM> {
 
 	final protected P pattern;
@@ -21,7 +21,7 @@ public abstract class PatternMapper<PM extends GTMapping<M, P>, M extends GraphT
 	final protected Consumer<M> appearConsumer = this::addMapping;
 	final protected Consumer<M> disappearConsumer = this::removeMapping;
 
-	public PatternMapper(final GipsEngine engine, final Mapping mapping, final P pattern) {
+	public GipsPatternMapper(final GipsEngine engine, final Mapping mapping, final P pattern) {
 		super(engine, mapping);
 		this.pattern = pattern;
 		this.init();

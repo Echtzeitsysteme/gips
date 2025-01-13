@@ -10,10 +10,10 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.emoflon.gips.core.GipsEngine;
-import org.emoflon.gips.core.GipsGlobalObjective;
+import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.TypeIndexer;
-import org.emoflon.gips.core.ilp.ILPSolver;
-import org.emoflon.gips.core.ilp.ILPSolverConfig;
+import org.emoflon.gips.core.milp.Solver;
+import org.emoflon.gips.core.milp.SolverConfig;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
@@ -30,20 +30,20 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	protected EMOFLON_API eMoflonAPI;
 	protected GipsIntermediateModel gipsModel;
 	final protected Map<String, Mapping> name2Mapping = new HashMap<>();
-	protected ILPSolverConfig solverConfig;
+	protected SolverConfig solverConfig;
 	protected GipsMapperFactory<EMOFLON_API> mapperFactory;
 	protected GipsConstraintFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> constraintFactory;
-	protected GipsObjectiveFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> objectiveFactory;
+	protected GipsLinearFunctionFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> objectiveFactory;
 
 	protected GipsEngineAPI(final EMOFLON_APP eMoflonApp) {
 		this.eMoflonApp = eMoflonApp;
 	}
 
-	public void setSolverConfig(final ILPSolverConfig solverConfig) {
+	public void setSolverConfig(final SolverConfig solverConfig) {
 		this.solverConfig = solverConfig;
 	}
 
-	public ILPSolverConfig getSolverConfig() {
+	public SolverConfig getSolverConfig() {
 		return solverConfig;
 	}
 
@@ -159,7 +159,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	}
 
 	protected void setSolverConfig(final ILPConfig config) {
-		solverConfig = new ILPSolverConfig(config.isEnableTimeLimit(), config.getIlpTimeLimit(), //
+		solverConfig = new SolverConfig(config.isEnableTimeLimit(), config.getIlpTimeLimit(), //
 				config.isEnableRndSeed(), config.getIlpRndSeed(), //
 				config.isEnablePresolve(), //
 				config.isEnableDebugOutput(), //
@@ -254,7 +254,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		initObjectiveFactory();
 		createObjectives();
 
-		if (gipsModel.getGlobalObjective() != null)
+		if (gipsModel.getObjective() != null)
 			setGlobalObjective(createGlobalObjective());
 
 		setILPSolver(createSolver());
@@ -291,8 +291,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	}
 
 	protected void createObjectives() {
-		gipsModel.getObjectives().stream()
-				.forEach(objective -> addObjective(objectiveFactory.createObjective(objective)));
+		gipsModel.getFunctions().stream().forEach(fn -> addObjective(objectiveFactory.createLinearFunction(fn)));
 	}
 
 	protected abstract void initMapperFactory();
@@ -301,8 +300,8 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 
 	protected abstract void initObjectiveFactory();
 
-	protected abstract GipsGlobalObjective createGlobalObjective();
+	protected abstract GipsObjective createGlobalObjective();
 
-	protected abstract ILPSolver createSolver();
+	protected abstract Solver createSolver();
 
 }

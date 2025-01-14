@@ -16,6 +16,8 @@ Require-Bundle: org.emoflon.gips.intermediate;bundle-version="0.1.0",
  org.emoflon.ibex.gt,
  org.moflon.core.plugins,
  org.emoflon.gips.core.dependencies,
+ org.emoflon.gips.debugger.trace,
+ org.emoflon.gips.debugger,
  org.junit,
  junit-jupiter-api
 Bundle-Vendor: Real-Time Systems Lab - TU Darmstadt

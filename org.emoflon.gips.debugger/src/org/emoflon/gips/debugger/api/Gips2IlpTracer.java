@@ -5,13 +5,16 @@ import java.nio.file.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.debugger.trace.EcoreWriter;
-import org.emoflon.gips.debugger.trace.TransformGraph2Ecore;
 import org.emoflon.gips.debugger.trace.TraceGraph;
 import org.emoflon.gips.debugger.trace.TraceMap;
 import org.emoflon.gips.debugger.trace.TraceModelLink;
+import org.emoflon.gips.debugger.trace.TransformGraph2Ecore;
 import org.emoflon.gips.debugger.trace.resolver.ResolveEcore2Id;
 import org.emoflon.gips.debugger.trace.resolver.ResolveIdentity2Id;
 
+//TODO: move this to org.emoflon.gips.core
+//TODO: export trace dependency
+//TODO: debugger shouldn't be needed as a dependency to run gips
 public class Gips2IlpTracer {
 
 	private final TraceMap<EObject, String> gips2intern = new TraceMap<>();

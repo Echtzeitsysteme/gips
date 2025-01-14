@@ -20,7 +20,7 @@ public class ArithmeticInGlobalObjectiveTransformer extends ArithmeticExpression
 		ArithmeticValue val = factory.createArithmeticValue();
 		ObjectiveFunctionValue objVal = factory.createObjectiveFunctionValue();
 		val.setValue(objVal);
-		objVal.setObjective(data.eObjective2Objective().get(objExpr.getObjective()));
+		objVal.setObjective(data.eFunction2Function().get(objExpr.getObjective()));
 		return val;
 	}
 

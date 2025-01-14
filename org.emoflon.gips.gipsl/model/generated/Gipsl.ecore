@@ -14,7 +14,7 @@
         eType="#//GipsConstraint" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="functions" upperBound="-1"
         eType="#//GipsLinearFunction" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="globalObjective" eType="#//GipsObjective"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="objective" eType="#//GipsObjective"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Package">

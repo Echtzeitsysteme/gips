@@ -16,7 +16,7 @@ EditorGTFile: {EditorGTFile}
   	mappings += GipsMapping |
   	constraints += GipsConstraint |
   	functions += GipsLinearFunction)*
-  	(globalObjective = GipsObjective)?	
+  	(objective = GipsObjective)?	
 ;
 
 Package: 

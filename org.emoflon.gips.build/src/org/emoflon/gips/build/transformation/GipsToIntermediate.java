@@ -20,38 +20,35 @@ import org.emoflon.gips.build.transformation.transformer.TransformerFactory;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipsConfig;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
-import org.emoflon.gips.gipsl.gipsl.GipsGlobalObjective;
+import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
-import org.emoflon.gips.gipsl.gipsl.GipsMappingContext;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
-import org.emoflon.gips.gipsl.gipsl.GipsPatternContext;
-import org.emoflon.gips.gipsl.gipsl.GipsTypeContext;
-import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.GTMapping;
-import org.emoflon.gips.intermediate.GipsIntermediate.GTParameterVariable;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
-import org.emoflon.gips.intermediate.GipsIntermediate.GlobalConstraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.GlobalObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.Goal;
 import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
 import org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType;
+import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.MappingObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
-import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveTarget;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternMapping;
-import org.emoflon.gips.intermediate.GipsIntermediate.PatternObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
-import org.emoflon.gips.intermediate.GipsIntermediate.Type;
+import org.emoflon.gips.intermediate.GipsIntermediate.RuleConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.RuleFunction;
+import org.emoflon.gips.intermediate.GipsIntermediate.RuleMapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.RuleParameterVariable;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.TypeObjective;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
@@ -62,7 +59,9 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNamedElement;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPattern;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
 import org.logicng.formulas.Formula;
 import org.logicng.formulas.Literal;
@@ -74,8 +73,8 @@ public class GipsToIntermediate {
 	final protected TransformerFactory transformationFactory;
 	protected int constraintCounter = 0;
 
-	public GipsToIntermediate(final EditorGTFile gipsSlangFile) {
-		data = new GipsTransformationData(factory.createGipsIntermediateModel(), gipsSlangFile);
+	public GipsToIntermediate(final EditorGTFile gipslFile) {
+		data = new GipsTransformationData(factory.createGipsIntermediateModel(), gipslFile);
 		this.transformationFactory = new TransformerFactory(data);
 	}
 
@@ -87,22 +86,25 @@ public class GipsToIntermediate {
 		transformConfig();
 		transformMappings();
 		transformConstraints();
-		transformObjectives();
+		transformLinearFunctions();
 		transformGlobalObjective();
 
 		// add all required data types
-		data.model().getVariables().addAll(data.eType2Type().values());
-		data.model().getVariables().addAll(data.ePattern2Pattern().values());
+		data.model().getRequiredPatterns().addAll(data.ePattern2ibex().values().stream()
+				.filter(p -> p instanceof IBeXPattern).map(p -> (IBeXPattern) p).collect(Collectors.toList()));
+		data.model().getRequiredRules().addAll(data.ePattern2ibex().values().stream().filter(p -> p instanceof IBeXRule)
+				.map(p -> (IBeXRule) p).collect(Collectors.toList()));
+		data.model().getRequiredTypes().addAll(data.requiredTypes());
 
 		return data.model();
 	}
 
 	protected void preprocessGipslFile() {
 		EditorToIBeXPatternTransformation ibexTransformer = new EditorToIBeXPatternTransformation();
-		data.model().setIbexModel(ibexTransformer.transform(data.gipsSlangFile()));
+		data.model().setIbexModel(ibexTransformer.transform(data.gipslFile()));
 
 		Set<org.emoflon.ibex.gt.editor.gT.EditorGTFile> foreignFiles = new HashSet<>();
-		data.gipsSlangFile().getImportedPattern().forEach(
+		data.gipslFile().getImportedPattern().forEach(
 				p -> foreignFiles.add((org.emoflon.ibex.gt.editor.gT.EditorGTFile) p.getPattern().eContainer()));
 		for (org.emoflon.ibex.gt.editor.gT.EditorGTFile foreignFile : foreignFiles) {
 			ibexTransformer = new EditorToIBeXPatternTransformation();
@@ -120,7 +122,7 @@ public class GipsToIntermediate {
 	}
 
 	protected void transformConfig() {
-		GipsConfig eConfig = data.gipsSlangFile().getConfig();
+		GipsConfig eConfig = data.gipslFile().getConfig();
 		ILPConfig config = factory.createILPConfig();
 		switch (eConfig.getSolver()) {
 		case GUROBI -> {
@@ -187,56 +189,57 @@ public class GipsToIntermediate {
 	}
 
 	protected void transformMappings() {
-		data.gipsSlangFile().getMappings().forEach(eMapping -> {
+		data.gipslFile().getMappings().forEach(eMapping -> {
 			Mapping mapping = null;
 			if (GTEditorPatternUtils.containsCreatedOrDeletedElements(eMapping.getPattern())) {
-				GTMapping gtMapping = factory.createGTMapping();
-				gtMapping.setRule(data.ePattern2Rule().get(eMapping.getPattern()));
-				if (gtMapping.getRule().getLhs() instanceof IBeXContextAlternatives alt) {
-					gtMapping.setContextPattern(alt.getContext());
+				RuleMapping ruleMapping = factory.createRuleMapping();
+				ruleMapping.setRule(data.getRule(eMapping.getPattern()));
+				if (ruleMapping.getRule().getLhs() instanceof IBeXContextAlternatives alt) {
+					ruleMapping.setContextPattern(alt.getContext());
 				} else {
-					gtMapping.setContextPattern((IBeXContextPattern) gtMapping.getRule().getLhs());
+					ruleMapping.setContextPattern((IBeXContextPattern) ruleMapping.getRule().getLhs());
 				}
-				mapping = gtMapping;
-				transformMappingVariables(eMapping, gtMapping);
+				mapping = ruleMapping;
+				transformMappingVariables(eMapping, ruleMapping);
 			} else {
 				PatternMapping pmMapping = factory.createPatternMapping();
 				mapping = pmMapping;
 
-				IBeXContext context = data.ePattern2Context().get(eMapping.getPattern());
-				if (context instanceof IBeXContextAlternatives alt) {
+				IBeXPattern pattern = (IBeXPattern) data.ePattern2ibex().get(eMapping.getPattern());
+				if (pattern instanceof IBeXContextAlternatives alt) {
 					pmMapping.setContextPattern(alt.getContext());
 				} else {
-					pmMapping.setContextPattern((IBeXContextPattern) context);
+					pmMapping.setContextPattern((IBeXContextPattern) pattern);
 				}
-				pmMapping.setPattern(context);
+				pmMapping.setPattern(pattern);
 				transformMappingVariables(eMapping, pmMapping);
 			}
 
 			mapping.setName(eMapping.getName());
-			mapping.setUpperBound(1.0);
-			mapping.setLowerBound(0.0);
-			data.model().getVariables().add(mapping);
+			Variable mappingVariable = GipsConstraintUtils.createBinaryVariable(data, factory, eMapping.getName());
+			mapping.setMappingVariable(mappingVariable);
+
+			data.model().getMappings().add(mapping);
 			data.eMapping2Mapping().put(eMapping, mapping);
 		});
 	}
 
-	protected void transformMappingVariables(GipsMapping mapping, GTMapping gtMapping) {
+	protected void transformMappingVariables(GipsMapping mapping, RuleMapping ruleMapping) {
 		if (mapping.getVariables() == null || mapping.getVariables().isEmpty())
 			return;
 
 		for (GipsMappingVariable gipsVar : mapping.getVariables()) {
 			if (gipsVar.isBound()) {
-				GTParameterVariable var = factory.createGTParameterVariable();
+				RuleParameterVariable var = factory.createRuleParameterVariable();
 				var.setType(GipsTransformationUtils.typeToVariableType(gipsVar.getType()));
-				IBeXRule rule = data.ePattern2Rule().get(mapping.getPattern());
+				IBeXRule rule = data.getRule(mapping.getPattern());
 				var.setRule(rule);
 				var.setParameter(rule.getParameters().stream()
 						.filter(param -> param.getName().equals(gipsVar.getParameter().getName())).findFirst().get());
 				var.setName(gipsVar.getName());
 				var.setLowerBound(GipsTransformationUtils.getLowerBound(gipsVar, var.getType()));
 				var.setUpperBound(GipsTransformationUtils.getUpperBound(gipsVar, var.getType()));
-				gtMapping.getBoundVariables().add(var);
+				ruleMapping.getBoundVariables().add(var);
 				data.model().getVariables().add(var);
 				data.eVariable2Variable().put(gipsVar, var);
 			} else {
@@ -245,11 +248,10 @@ public class GipsToIntermediate {
 				var.setName(gipsVar.getName());
 				var.setLowerBound(GipsTransformationUtils.getLowerBound(gipsVar, var.getType()));
 				var.setUpperBound(GipsTransformationUtils.getUpperBound(gipsVar, var.getType()));
-				gtMapping.getFreeVariables().add(var);
+				ruleMapping.getFreeVariables().add(var);
 				data.model().getVariables().add(var);
 				data.eVariable2Variable().put(gipsVar, var);
 			}
-
 		}
 	}
 
@@ -271,8 +273,8 @@ public class GipsToIntermediate {
 
 	protected void transformConstraints() throws Exception {
 
-		for (GipsConstraint eConstraint : data.gipsSlangFile().getConstraints()) {
-			if (eConstraint.getExpr() == null || eConstraint.getExpr().getExpr() == null) {
+		for (GipsConstraint eConstraint : data.gipslFile().getConstraints()) {
+			if (eConstraint.getExpression() == null) {
 				continue;
 			}
 
@@ -309,10 +311,10 @@ public class GipsToIntermediate {
 					d1.setLiteral(1.0);
 					substituteRelation.setRhs(d1);
 
-					BinaryArithmeticExpression substituteSum = factory.createBinaryArithmeticExpression();
-					substituteSum.setOperator(BinaryArithmeticOperator.ADD);
+					ArithmeticBinaryExpression substituteSum = factory.createArithmeticBinaryExpression();
+					substituteSum.setOperator(ArithmeticBinaryOperator.ADD);
 
-					BinaryArithmeticExpression currentSum = substituteSum;
+					ArithmeticBinaryExpression currentSum = substituteSum;
 					LinkedList<Formula> subformulas = new LinkedList<>(eSubConstraint.formula().stream().toList());
 					while (!subformulas.isEmpty()) {
 						// Retrieve corresponding orginal and transformed constraint as well as slack
@@ -327,8 +329,8 @@ public class GipsToIntermediate {
 							if (currentSum.getLhs() == null && !subformulas.isEmpty()) {
 								currentSum.setLhs(varRef);
 							} else if (currentSum.getLhs() != null && !subformulas.isEmpty()) {
-								BinaryArithmeticExpression subSum = factory.createBinaryArithmeticExpression();
-								subSum.setOperator(BinaryArithmeticOperator.ADD);
+								ArithmeticBinaryExpression subSum = factory.createArithmeticBinaryExpression();
+								subSum.setOperator(ArithmeticBinaryOperator.ADD);
 								currentSum.setRhs(subSum);
 								currentSum = subSum;
 								subSum.setLhs(varRef);
@@ -339,16 +341,16 @@ public class GipsToIntermediate {
 										"Disjunction of boolean literals must have more than one literal.");
 							}
 						} else if (subformula instanceof Literal lit && !lit.phase()) {
-							BinaryArithmeticExpression negSum = factory.createBinaryArithmeticExpression();
-							negSum.setOperator(BinaryArithmeticOperator.ADD);
+							ArithmeticBinaryExpression negSum = factory.createArithmeticBinaryExpression();
+							negSum.setOperator(ArithmeticBinaryOperator.ADD);
 							DoubleLiteral d2 = factory.createDoubleLiteral();
 							d2.setLiteral(-1.0);
 							negSum.setRhs(d2);
 							negSum.setLhs(substituteRelation.getRhs());
 							substituteRelation.setRhs(negSum);
 
-							BinaryArithmeticExpression negation = factory.createBinaryArithmeticExpression();
-							negation.setOperator(BinaryArithmeticOperator.MULTIPLY);
+							ArithmeticBinaryExpression negation = factory.createArithmeticBinaryExpression();
+							negation.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 							DoubleLiteral d3 = factory.createDoubleLiteral();
 							d3.setLiteral(-1.0);
 							negation.setLhs(d3);
@@ -357,8 +359,8 @@ public class GipsToIntermediate {
 							if (currentSum.getLhs() == null && !subformulas.isEmpty()) {
 								currentSum.setLhs(negation);
 							} else if (currentSum.getLhs() != null && !subformulas.isEmpty()) {
-								BinaryArithmeticExpression subSum = factory.createBinaryArithmeticExpression();
-								subSum.setOperator(BinaryArithmeticOperator.ADD);
+								ArithmeticBinaryExpression subSum = factory.createArithmeticBinaryExpression();
+								subSum.setOperator(ArithmeticBinaryOperator.ADD);
 								currentSum.setRhs(subSum);
 								currentSum = subSum;
 								subSum.setLhs(negation);
@@ -404,7 +406,7 @@ public class GipsToIntermediate {
 		constraintCounter++;
 
 		BooleanExpressionTransformer transformer = transformationFactory.createBooleanTransformer(constraint);
-		constraint.setExpression(transformer.transform(subConstraint.getExpr().getExpr()));
+		constraint.setExpression(transformer.transform(subConstraint.getExpression()));
 
 		if (GipsTransformationUtils
 				.isConstantExpression(constraint.getExpression()) == ArithmeticExpressionType.constant) {
@@ -422,15 +424,6 @@ public class GipsToIntermediate {
 
 		GipsArithmeticTransformer arithmeticTransformer = new GipsArithmeticTransformer(factory);
 		constraint.setExpression(arithmeticTransformer.normalize((RelationalExpression) constraint.getExpression()));
-
-		// Final check: Was the context used?
-		if (!GipsTransformationUtils
-				.containsContextExpression(((RelationalExpression) constraint.getExpression()).getRhs())
-				&& !GipsTransformationUtils
-						.containsContextExpression(((RelationalExpression) constraint.getExpression()).getLhs())
-				&& !(constraint instanceof GlobalConstraint)) {
-			throw new IllegalArgumentException("Context must be used at least once per non-global constraint.");
-		}
 
 		// Normalize the relational expression operator such that it conforms to most
 		// ILP solver's requirements (i.e., no !=, > and < operators allowed).
@@ -453,143 +446,206 @@ public class GipsToIntermediate {
 		return substitutes;
 	}
 
-	protected void transformObjectives() throws Exception {
-		for (GipsObjective eObjective : data.gipsSlangFile().getObjectives()) {
-			if (eObjective.getExpr() == null) {
+	protected void transformLinearFunctions() throws Exception {
+		for (GipsLinearFunction eLinearFunction : data.gipslFile().getFunctions()) {
+			if (eLinearFunction.getExpression() == null) {
 				continue;
 			}
 
-			Objective objective = createObjective(eObjective);
-			objective.setElementwise(true);
-			data.model().getObjectives().add(objective);
-			data.eObjective2Objective().put(eObjective, objective);
+			LinearFunction linearFunction = createLinearFunction(eLinearFunction);
+			data.model().getFunctions().add(linearFunction);
+			data.eFunction2Function().put(eLinearFunction, linearFunction);
 
 			ArithmeticExpressionTransformer<? extends EObject> transformer = transformationFactory
-					.createArithmeticTransformer(objective);
-			objective.setExpression(transformer.transform(eObjective.getExpr()));
+					.createArithmeticTransformer(linearFunction);
+			linearFunction.setExpression(transformer.transform(eLinearFunction.getExpression()));
 			// Rewrite the expression, which will be translated into ILP-Terms, into a sum
 			// of products.
-			objective.setExpression(
-					new GipsArithmeticTransformer(factory).normalizeAndExpand(objective.getExpression()));
+			linearFunction.setExpression(
+					new GipsArithmeticTransformer(factory).normalizeAndExpand(linearFunction.getExpression()));
 		}
 	}
 
 	protected void transformGlobalObjective() throws Exception {
-		GipsGlobalObjective eGlobalObj = data.gipsSlangFile().getGlobalObjective();
-		if (eGlobalObj == null) {
+		GipsObjective eObjective = data.gipslFile().getObjective();
+		if (eObjective == null) {
 			return;
 		}
 
-		GlobalObjective globalObj = factory.createGlobalObjective();
-		data.model().setGlobalObjective(globalObj);
+		Objective objective = factory.createObjective();
+		data.model().setObjective(objective);
 
-		switch (eGlobalObj.getObjectiveGoal()) {
+		switch (eObjective.getGoal()) {
 		case MAX -> {
-			globalObj.setTarget(ObjectiveTarget.MAX);
+			objective.setGoal(Goal.MAX);
 		}
 		case MIN -> {
-			globalObj.setTarget(ObjectiveTarget.MIN);
+			objective.setGoal(Goal.MIN);
 		}
 		default -> {
-			throw new IllegalArgumentException(
-					"Unknown global objective function goal: " + eGlobalObj.getObjectiveGoal());
+			throw new IllegalArgumentException("Unknown global objective function goal: " + eObjective.getGoal());
 		}
 		}
 
 		ArithmeticExpressionTransformer<? extends EObject> transformer = transformationFactory
-				.createArithmeticTransformer(globalObj);
-		globalObj.setExpression(transformer.transform(eGlobalObj.getExpr()));
+				.createArithmeticTransformer(objective);
+		objective.setExpression(transformer.transform(eObjective.getExpression()));
 		// Rewrite the expression, which will be translated into ILP-Terms, into a sum
 		// of products.
-		globalObj.setExpression(new GipsArithmeticTransformer(factory).normalizeAndExpand(globalObj.getExpression()));
+		objective.setExpression(new GipsArithmeticTransformer(factory).normalizeAndExpand(objective.getExpression()));
 	}
 
 	protected Constraint createConstraint(final GipsConstraint eConstraint, int counter) {
-		if (eConstraint.getContext() instanceof GipsMappingContext mapping) {
+		if (eConstraint.getContext() instanceof GipsMapping mapping) {
 			MappingConstraint constraint = factory.createMappingConstraint();
-			constraint.setName("MappingConstraint" + counter + "On" + mapping.getMapping().getName());
-			constraint.setMapping(data.eMapping2Mapping().get(mapping.getMapping()));
+			constraint.setName("MappingConstraint" + counter + "On" + mapping.getName());
+			constraint.setMapping(data.eMapping2Mapping().get(mapping));
 			return constraint;
-		} else if (eConstraint.getContext() instanceof GipsPatternContext pattern) {
-			PatternConstraint constraint = factory.createPatternConstraint();
-			constraint.setName("PatternConstraint" + counter + "On" + pattern.getPattern().getName());
-			constraint.setPattern(data.getPattern(pattern.getPattern()));
-			return constraint;
-		} else if (eConstraint.getContext() instanceof GipsTypeContext type) {
+		} else if (eConstraint.getContext() instanceof EditorPattern ePattern) {
+			IBeXNamedElement ibexElt = data.ePattern2ibex().get(ePattern);
+			if (ibexElt instanceof IBeXRule rule) {
+				RuleConstraint constraint = factory.createRuleConstraint();
+				constraint.setName("RuleConstraint" + counter + "On" + rule.getName());
+				constraint.setRule(rule);
+				if (rule.getLhs() instanceof IBeXContextAlternatives alt) {
+					constraint.setContextPattern(alt.getContext());
+				} else {
+					constraint.setContextPattern((IBeXContextPattern) rule.getLhs());
+				}
+				constraint.setGlobal(false);
+				return constraint;
+			} else if (ibexElt instanceof IBeXPattern pattern) {
+				PatternConstraint constraint = factory.createPatternConstraint();
+				constraint.setName("PatternConstraint" + counter + "On" + pattern.getName());
+				constraint.setPattern(pattern);
+				if (pattern instanceof IBeXContextAlternatives alt) {
+					constraint.setContextPattern(alt.getContext());
+				} else {
+					constraint.setContextPattern((IBeXContextPattern) pattern);
+				}
+				constraint.setGlobal(false);
+				return constraint;
+			} else {
+				return null;
+			}
+		} else if (eConstraint.getContext() instanceof EClass type) {
 			TypeConstraint constraint = factory.createTypeConstraint();
-			constraint.setName("TypeConstraint" + counter + "On" + type.getType().getName());
-			Type varType = data.getType((EClass) type.getType());
-			constraint.setModelType(varType);
+			constraint.setName("TypeConstraint" + counter + "On" + type.getName());
+			constraint.setType(type);
+			constraint.setGlobal(false);
 			return constraint;
 		} else {
-			GlobalConstraint constraint = factory.createGlobalConstraint();
-			constraint.setName("GlobalConstraint" + counter);
+			Constraint constraint = factory.createConstraint();
+			constraint.setName("Constraint" + counter);
+			constraint.setGlobal(true);
 			return constraint;
 		}
 	}
 
 	protected Constraint createDisjunctConstraint(final GipsAnnotatedConstraint eConstraint, int counter) {
-		if (eConstraint.input().getContext() instanceof GipsMappingContext mapping) {
+		if (eConstraint.input().getContext() instanceof GipsMapping mapping) {
 			MappingConstraint constraint = factory.createMappingConstraint();
-			constraint.setName("DisjunctMappingConstraint" + counter + "On" + mapping.getMapping().getName());
-			constraint.setMapping(data.eMapping2Mapping().get(mapping.getMapping()));
+			constraint.setName("DisjunctMappingConstraint" + counter + "On" + mapping.getName());
+			constraint.setMapping(data.eMapping2Mapping().get(mapping));
 			constraint.setDepending(true);
+			constraint.setGlobal(false);
 			return constraint;
-		} else if (eConstraint.input().getContext() instanceof GipsPatternContext pattern) {
-			PatternConstraint constraint = factory.createPatternConstraint();
-			constraint.setName("DisjunctPatternConstraint" + counter + "On" + pattern.getPattern().getName());
-			constraint.setPattern(data.getPattern(pattern.getPattern()));
-			constraint.setDepending(true);
-			return constraint;
-		} else if (eConstraint.input().getContext() instanceof GipsTypeContext type) {
+		} else if (eConstraint.input().getContext() instanceof EditorPattern ePattern) {
+			IBeXNamedElement ibexElt = data.ePattern2ibex().get(ePattern);
+			if (ibexElt instanceof IBeXRule rule) {
+				RuleConstraint constraint = factory.createRuleConstraint();
+				constraint.setName("DisjunctRuleConstraint" + counter + "On" + rule.getName());
+				constraint.setRule(rule);
+				if (rule.getLhs() instanceof IBeXContextAlternatives alt) {
+					constraint.setContextPattern(alt.getContext());
+				} else {
+					constraint.setContextPattern((IBeXContextPattern) rule.getLhs());
+				}
+				constraint.setDepending(true);
+				constraint.setGlobal(false);
+				return constraint;
+			} else if (ibexElt instanceof IBeXPattern pattern) {
+				PatternConstraint constraint = factory.createPatternConstraint();
+				constraint.setName("DisjunctPatternConstraint" + counter + "On" + pattern.getName());
+				constraint.setPattern(pattern);
+				if (pattern instanceof IBeXContextAlternatives alt) {
+					constraint.setContextPattern(alt.getContext());
+				} else {
+					constraint.setContextPattern((IBeXContextPattern) pattern);
+				}
+				constraint.setDepending(true);
+				constraint.setGlobal(false);
+				return constraint;
+			} else {
+				return null;
+			}
+		} else if (eConstraint.input().getContext() instanceof EClass type) {
 			TypeConstraint constraint = factory.createTypeConstraint();
-			constraint.setName("DisjunctTypeConstraint" + counter + "On" + type.getType().getName());
-			Type varType = data.getType((EClass) type.getType());
+			constraint.setName("DisjunctTypeConstraint" + counter + "On" + type.getName());
 			constraint.setDepending(true);
-			constraint.setModelType(varType);
+			constraint.setType(type);
+			constraint.setGlobal(false);
 			return constraint;
 		} else {
-			GlobalConstraint constraint = factory.createGlobalConstraint();
-			constraint.setName("DisjunctGlobalConstraint" + counter);
+			Constraint constraint = factory.createConstraint();
+			constraint.setName("DisjunctConstraint" + counter);
 			constraint.setDepending(true);
+			constraint.setGlobal(true);
 			return constraint;
 		}
 	}
 
-	protected Objective createObjective(final GipsObjective eObjective) {
-		if (eObjective.getContext() instanceof GipsMappingContext mapping) {
-			MappingObjective objective = factory.createMappingObjective();
-			objective.setName(eObjective.getName());
-			objective.setMapping(data.eMapping2Mapping().get(mapping.getMapping()));
-			return objective;
-		} else if (eObjective.getContext() instanceof GipsPatternContext pattern) {
-			PatternObjective constraint = factory.createPatternObjective();
-			constraint.setName(eObjective.getName());
-			constraint.setPattern(data.getPattern(pattern.getPattern()));
-			return constraint;
+	protected LinearFunction createLinearFunction(final GipsLinearFunction eLinearFunction) {
+		if (eLinearFunction.getContext() instanceof GipsMapping mapping) {
+			MappingFunction function = factory.createMappingFunction();
+			function.setName(eLinearFunction.getName());
+			function.setMapping(data.eMapping2Mapping().get(mapping));
+			return function;
+		} else if (eLinearFunction.getContext() instanceof EditorPattern ePattern) {
+			IBeXNamedElement ibexElt = data.ePattern2ibex().get(ePattern);
+			if (ibexElt instanceof IBeXRule rule) {
+				RuleFunction function = factory.createRuleFunction();
+				function.setRule(rule);
+				if (rule.getLhs() instanceof IBeXContextAlternatives alt) {
+					function.setContextPattern(alt.getContext());
+				} else {
+					function.setContextPattern((IBeXContextPattern) rule.getLhs());
+				}
+				return function;
+			} else if (ibexElt instanceof IBeXPattern pattern) {
+				PatternFunction function = factory.createPatternFunction();
+				function.setPattern(pattern);
+				if (pattern instanceof IBeXContextAlternatives alt) {
+					function.setContextPattern(alt.getContext());
+				} else {
+					function.setContextPattern((IBeXContextPattern) pattern);
+				}
+				return function;
+			} else {
+				return null;
+			}
 		} else {
-			GipsTypeContext type = (GipsTypeContext) eObjective.getContext();
-			TypeObjective objective = factory.createTypeObjective();
-			objective.setName(eObjective.getName());
-			Type varType = data.getType((EClass) type.getType());
-			objective.setModelType(varType);
-			return objective;
+			TypeFunction function = factory.createTypeFunction();
+			function.setName(eLinearFunction.getName());
+			function.setType((EClass) eLinearFunction.getContext());
+			return function;
 		}
 	}
 
 	protected void mapGT2IBeXElements() {
 		Set<EditorPattern> allEditorPatterns = new HashSet<>();
-		allEditorPatterns.addAll(data.gipsSlangFile().getPatterns().stream()
+		allEditorPatterns.addAll(data.gipslFile().getPatterns().stream()
 				.filter(pattern -> GTEditorPatternUtils.containsCreatedOrDeletedElements(pattern))
 				.collect(Collectors.toList()));
-		allEditorPatterns.addAll(data.gipsSlangFile().getImportedPattern().stream().map(ip -> ip.getPattern())
+		allEditorPatterns.addAll(data.gipslFile().getImportedPattern().stream().map(ip -> ip.getPattern())
 				.filter(pattern -> GTEditorPatternUtils.containsCreatedOrDeletedElements(pattern))
 				.collect(Collectors.toList()));
 
+		// Add all rules
 		for (EditorPattern ePattern : allEditorPatterns) {
 			for (IBeXRule rule : data.model().getIbexModel().getRuleSet().getRules()) {
 				if (rule.getName().equals(ePattern.getName())) {
-					data.ePattern2Rule().put(ePattern, rule);
+					data.ePattern2ibex().put(ePattern, rule);
 					for (EditorNode eNode : ePattern.getNodes()) {
 						for (IBeXNode node : toContextPattern(rule.getLhs()).getSignatureNodes()) {
 							if (eNode.getName().equals(node.getName())) {
@@ -602,14 +658,15 @@ public class GipsToIntermediate {
 		}
 
 		allEditorPatterns = new HashSet<>();
-		allEditorPatterns.addAll(data.gipsSlangFile().getPatterns());
-		allEditorPatterns.addAll(data.gipsSlangFile().getImportedPattern().stream().map(ip -> ip.getPattern())
-				.collect(Collectors.toList()));
+		allEditorPatterns.addAll(data.gipslFile().getPatterns());
+		allEditorPatterns.addAll(data.gipslFile().getImportedPattern().stream() //
+				.map(ip -> ip.getPattern()).collect(Collectors.toList()));
 
+		// Add all patterns
 		for (EditorPattern ePattern : allEditorPatterns) {
 			for (IBeXContext pattern : data.model().getIbexModel().getPatternSet().getContextPatterns()) {
 				if (pattern.getName().equals(ePattern.getName())) {
-					data.ePattern2Context().put(ePattern, pattern);
+					data.ePattern2ibex().put(ePattern, pattern);
 
 					for (EditorNode eNode : ePattern.getNodes()) {
 						for (IBeXNode node : toContextPattern(pattern).getSignatureNodes()) {

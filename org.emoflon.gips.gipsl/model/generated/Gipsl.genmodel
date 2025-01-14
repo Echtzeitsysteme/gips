@@ -82,7 +82,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//EditorGTFile/mappings"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//EditorGTFile/constraints"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//EditorGTFile/functions"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//EditorGTFile/globalObjective"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//EditorGTFile/objective"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//Package">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//Package/name"/>

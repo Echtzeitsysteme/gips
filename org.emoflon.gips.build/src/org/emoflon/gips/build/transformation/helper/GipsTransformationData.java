@@ -2,66 +2,61 @@ package org.emoflon.gips.build.transformation.helper;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EClass;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
-import org.emoflon.gips.gipsl.gipsl.GipsBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsBooleanExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
-import org.emoflon.gips.gipsl.gipsl.GipsObjective;
-import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
+import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
-import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
-import org.emoflon.gips.intermediate.GipsIntermediate.Pattern;
-import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
-import org.emoflon.gips.intermediate.GipsIntermediate.Type;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
-import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNamedElement;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPattern;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
 
 public record GipsTransformationData(GipsIntermediateModel model, //
-		EditorGTFile gipsSlangFile, //
-		Map<String, GipsBoolExpr> symbol2Expr, //
-		Map<GipsBoolExpr, String> expr2Symbol, //
-		Map<EditorPattern, IBeXRule> ePattern2Rule, //
-		Map<EditorPattern, IBeXContext> ePattern2Context, //
-		Map<EditorPattern, Pattern> ePattern2Pattern, //
+		EditorGTFile gipslFile, //
+		Map<String, GipsBooleanExpression> symbol2Expr, //
+		Map<GipsBooleanExpression, String> expr2Symbol, //
+		Map<EditorPattern, IBeXNamedElement> ePattern2ibex, //
 		Map<EditorNode, IBeXNode> eNode2Node, //
 		Map<GipsMapping, Mapping> eMapping2Mapping, //
 		Map<GipsConstraint, Collection<Constraint>> eConstraint2Constraints, //
-		Map<GipsStreamExpr, SetOperation> eStream2SetOp, //
-		Map<EClass, Type> eType2Type, //
-		Map<GipsObjective, Objective> eObjective2Objective, Map<GipsMappingVariable, Variable> eVariable2Variable) {
+		Map<GipsLinearFunction, LinearFunction> eFunction2Function, //
+		Map<GipsMappingVariable, Variable> eVariable2Variable, //
+		Set<EClass> requiredTypes) {
 
 	public GipsTransformationData(final GipsIntermediateModel model, final EditorGTFile gipsSlangFile) {
 		this(model, gipsSlangFile, new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(),
-				new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(),
-				new HashMap<>());
+				new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashSet<>());
 	}
 
-	public String addSymbol(final GipsBoolExpr expr) {
+	public String addSymbol(final GipsBooleanExpression expr) {
 		if (expr2Symbol.containsKey(expr))
 			return expr2Symbol.get(expr);
 
 		int count = symbol2Expr.size();
 		String symbol = count + "_";
 
-		if (expr instanceof GipsBooleanLiteral lit) {
+		if (expr instanceof GipsBooleanLiteral) {
 			symbol += "LIT";
-		} else if (expr instanceof GipsRelExpr rel && rel.getRight() != null) {
+		} else if (expr instanceof GipsRelationalExpression) {
 			symbol += "REL_EXPR";
-		} else if (expr instanceof GipsRelExpr rel && rel.getRight() == null) {
+		} else if (expr instanceof GipsValueExpression) {
 			symbol += "EXPR";
 		} else {
 			throw new UnsupportedOperationException("Only boolean terminal expressions can be translated into symbols");
@@ -73,28 +68,19 @@ public record GipsTransformationData(GipsIntermediateModel model, //
 		return symbol;
 	}
 
-	public Type getType(final EClass eType) {
-		Type type = eType2Type.get(eType);
-		if (type == null) {
-			type = GipsIntermediateFactory.eINSTANCE.createType();
-			type.setName(eType.getName());
-			type.setType(eType);
-			type.setLowerBound(0.0);
-			type.setUpperBound(1.0);
-			eType2Type.put(eType, type);
+	public IBeXPattern getPattern(final EditorPattern pattern) {
+		if (ePattern2ibex.containsKey(pattern)) {
+			return (IBeXPattern) ePattern2ibex.get(pattern);
+		} else {
+			return null;
 		}
-		return type;
 	}
 
-	public Pattern getPattern(final EditorPattern pattern) {
-		Pattern p = ePattern2Pattern.get(pattern);
-		if (p == null) {
-			p = GipsIntermediateFactory.eINSTANCE.createPattern();
-			p.setName(pattern.getName());
-			p.setPattern(ePattern2Context.get(pattern));
-			p.setIsRule(GTEditorPatternUtils.containsCreatedOrDeletedElements(pattern));
-			ePattern2Pattern.put(pattern, p);
+	public IBeXRule getRule(final EditorPattern rule) {
+		if (ePattern2ibex.containsKey(rule)) {
+			return (IBeXRule) ePattern2ibex.get(rule);
+		} else {
+			return null;
 		}
-		return p;
 	}
 }

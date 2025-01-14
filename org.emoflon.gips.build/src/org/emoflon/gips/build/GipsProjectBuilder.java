@@ -12,6 +12,11 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.emoflon.gips.build.generator.GipsCodeGenerator;
 import org.emoflon.gips.build.generator.GipsImportManager;
 import org.emoflon.gips.build.transformation.GipsToIntermediate;
+import org.emoflon.gips.debugger.api.ITraceContext;
+import org.emoflon.gips.debugger.api.ITraceManager;
+import org.emoflon.gips.debugger.trace.TraceMap;
+import org.emoflon.gips.debugger.trace.TraceModelLink;
+import org.emoflon.gips.debugger.trace.resolver.ResolveEcore2Id;
 import org.emoflon.gips.gipsl.generator.GipsBuilderExtension;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
@@ -73,6 +78,10 @@ public class GipsProjectBuilder implements GipsBuilderExtension {
 		GipsBuilderUtils.saveResource(model, gipsApiData.apiPackageFolder.getLocation() + "/gips/gips-model.xmi");
 		gipsApiData.intermediateModelURI = URI.createPlatformResourceURI(
 				gipsApiData.apiPackageFolder.getProjectRelativePath() + "/gips/gips-model.xmi", true);
+		// FIXME; createPlatformResourceURI requires a path of the form
+		// "/project-name/path", but getProjectRelativePath() does not include
+		// "project-name"
+		// TODO: See if this can be easily fixed.
 
 		// build HiPE engine code
 		if (ibexModel != null && !ibexModel.getPatternSet().getContextPatterns().isEmpty()) {
@@ -101,6 +110,8 @@ public class GipsProjectBuilder implements GipsBuilderExtension {
 		gipsGen.generate();
 		LogUtils.info(logger, "GipsProjectBuilder: Done!");
 
+		updateTrace(project, gipsApiData, gipsSlangFile, transformer);
+
 		try {
 			project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		} catch (CoreException e) {
@@ -109,4 +120,39 @@ public class GipsProjectBuilder implements GipsBuilderExtension {
 		}
 	}
 
+	// TODO Move this go GipsBuilderUtils
+	private void updateTrace(final IProject project, final GipsAPIData gipsApiData, final EditorGTFile gipsSlangFile,
+			final GipsToIntermediate transformer) {
+
+		ITraceContext traceContext = ITraceManager.getInstance().getContext(project.getName());
+
+		// TODO: this part needs to go
+		// Maybe some app-2-app com
+		try {
+			var runtimeTrace = project.getLocation().append("traces").append("gips2ilp-trace.xmi");
+			traceContext.loadAndUpdateTraceModel(URI.createFileURI(runtimeTrace.toString()));
+		} catch (Exception e) {
+			LogUtils.error(logger, e.toString());
+		}
+
+		try {
+			var gipsl2gipsMppings = TraceMap.normalize(transformer.getTrace(), ResolveEcore2Id.INSTANCE,
+					ResolveEcore2Id.INSTANCE);
+
+			// file name as model id
+			var gipslModelId = gipsSlangFile.eResource().getURI().trimFileExtension().lastSegment();
+			var gipsModelId = gipsApiData.intermediateModelURI.trimFileExtension().lastSegment();
+			traceContext.updateTraceModel(new TraceModelLink(gipslModelId, gipsModelId, gipsl2gipsMppings));
+
+			// for fun
+//			var traceGraph = new TraceGraph();
+//			traceGraph.addOrReplaceTraceLink(new TraceModelLink(gipslModelId, gipsModelId, gipsl2gipsMppings));
+//			var traceModel = HelperGraph2Ecore.buildModelFromGraph(traceGraph);
+//			GipsBuilderUtils.saveResource(traceModel,
+//					project.getLocation().append("traces").append("gipsl2gips-trace.xmi").toOSString());
+
+		} catch (Exception e) {
+			LogUtils.error(logger, e.toString());
+		}
+	}
 }

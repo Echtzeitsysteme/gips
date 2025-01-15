@@ -1,5 +1,6 @@
 package org.emoflon.gips.core.ilp;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,6 +19,8 @@ import org.emoflon.gips.core.GipsMappingConstraint;
 import org.emoflon.gips.core.GipsTypeConstraint;
 import org.emoflon.gips.core.gt.GipsPatternConstraint;
 import org.emoflon.gips.core.util.SystemUtil;
+
+import com.gurobi.gurobi.GRB;
 
 import ilog.concert.IloException;
 import ilog.concert.IloIntVar;
@@ -62,7 +65,108 @@ public class CplexSolver extends ILPSolver {
 	public CplexSolver(final GipsEngine engine, final ILPSolverConfig config) {
 		super(engine);
 		this.config = config;
+		checkEnvJarCompatibility();
 		init();
+	}
+
+	/**
+	 * Checks all two necessary system environment variables to match the used CPLEX
+	 * version. Expected is that the configured ENVs contain the exact same version
+	 * number as the Java class(es) provided by the CPLEX JAR.
+	 */
+	private void checkEnvJarCompatibility() {
+		checkCplexVersionInEnv("LD_LIBRARY_PATH");
+		checkCplexVersionInEnv("PATH");
+	}
+
+	/**
+	 * Checks if the system environment variable with the name 'envName' contains
+	 * the exact version number of the used CPLEX JAR file.
+	 * 
+	 * @param envName System environment variable to check the CPLEX version in.
+	 */
+	private void checkCplexVersionInEnv(String envName) {
+		if (envName == null || envName.isBlank()) {
+			throw new IllegalArgumentException("Given ENV name was null or empty.");
+		}
+
+		// Get system ENV
+		final String envValue = System.getenv(envName);
+
+		if (envValue == null || envValue.isBlank()) {
+			throw new IllegalStateException("The ENV '" + envName + "' was null or empty.");
+		}
+
+		// Get version string(s) from folder path
+		String[] folderSegments = null;
+		if (envValue.contains("/")) {
+			folderSegments = envValue.split("/");
+		} else if (envValue.contains("\\")) {
+			folderSegments = envValue.split("\\");
+		}
+
+		if (folderSegments == null) {
+			throw new InternalError();
+		}
+
+		String cplexSubFolder = "";
+		for (int i = 0; i < folderSegments.length; i++) {
+			if (folderSegments[i] != null && folderSegments[i].contains("CPLEX_Studio")) {
+				cplexSubFolder = folderSegments[i];
+				break;
+			}
+		}
+
+		final String versionString = cplexSubFolder.substring( //
+				cplexSubFolder.lastIndexOf("o") + 1, cplexSubFolder.length());
+
+		// Sanity check
+		if (versionString.length() != 4) {
+			throw new InternalError();
+		}
+
+		// split version string up into its parts
+		final String envVersion = versionString.substring(0, 4);
+
+		String cplexVersion = "";
+
+		try {
+			// E.g.: 22010100L
+			final Field versionField = IloCplex.class.getDeclaredField("serialVersionUID");
+			versionField.setAccessible(true);
+			cplexVersion = String.valueOf(versionField.getLong(null));
+		} catch (final NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		// Sanity check
+		if (versionString.length() != 4) {
+			throw new InternalError();
+		}
+		if (cplexVersion.length() != 8) {
+			throw new InternalError();
+		}
+
+		// Got a string like 22010100, so we have to split it up
+		final String major = cplexVersion.substring(0, 2);
+		final String minor = cplexVersion.substring(2, 4);
+		final String technical = cplexVersion.substring(4, 6);
+		// The remaining string (`00` in this case) does not matter
+
+		// Assemble the CPLEX version string as we expect it
+		// Please notice: this may break if the minor or technical version will be
+		// larger than `9`
+		final String assembledCplexVersion = major + minor.substring(1) + technical.substring(1);
+
+		// Actual check of the version(s)
+		if (!assembledCplexVersion.equals(envVersion)) {
+			throw new UnsupportedOperationException(
+					"You configured the wrong CPLEX version in your '" + envName + "' ENV. Expected: '" //
+							+ assembledCplexVersion //
+							+ "', configured: '" //
+							+ envVersion //
+							+ "'.");
+		}
 	}
 
 	private void init() {

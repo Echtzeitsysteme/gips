@@ -59,7 +59,81 @@ public class GurobiSolver extends ILPSolver {
 	public GurobiSolver(final GipsEngine engine, final ILPSolverConfig config) throws Exception {
 		super(engine);
 		this.config = config;
+		checkEnvJarCompatibility();
 		init();
+	}
+
+	/**
+	 * Checks all three necessary system environment variables to match the used
+	 * GUROBI version. Expected is that the configured ENVs contain the exact same
+	 * version number as the Java class(es) provided by the GUROBI JAR.
+	 */
+	private void checkEnvJarCompatibility() {
+		checkGurobiVersionInEnv("GUROBI_HOME");
+		checkGurobiVersionInEnv("LD_LIBRARY_PATH");
+		checkGurobiVersionInEnv("PATH");
+	}
+
+	/**
+	 * Checks if the system environment variable with the name 'envName' contains
+	 * the exact version number of the used GUROBI JAR file.
+	 * 
+	 * @param envName System environment variable to check the GUROBI version in.
+	 */
+	private void checkGurobiVersionInEnv(final String envName) {
+		if (envName == null || envName.isBlank()) {
+			throw new IllegalArgumentException("Given ENV name was null or empty.");
+		}
+
+		// Get system ENV
+		final String envValue = System.getenv(envName);
+
+		if (envValue == null || envValue.isBlank()) {
+			throw new IllegalStateException("The ENV '" + envName + "' was null or empty.");
+		}
+
+		// Get version string(s) from folder path
+		String[] folderSegments = null;
+		if (envValue.contains("/")) {
+			folderSegments = envValue.split("/");
+		} else if (envValue.contains("\\")) {
+			folderSegments = envValue.split("\\");
+		}
+
+		if (folderSegments == null) {
+			throw new InternalError();
+		}
+
+		String gurobiSubFolder = "";
+		for (int i = 0; i < folderSegments.length; i++) {
+			if (folderSegments[i] != null && folderSegments[i].contains("gurobi")) {
+				gurobiSubFolder = folderSegments[i];
+				break;
+			}
+		}
+
+		final String versionString = gurobiSubFolder.substring( //
+				gurobiSubFolder.lastIndexOf("i") + 1, gurobiSubFolder.length());
+
+		// Sanity check
+		if (versionString.length() != 4) {
+			throw new InternalError();
+		}
+
+		// split version string up into its parts
+		final int major = Integer.valueOf(versionString.substring(0, 2));
+		final int minor = Integer.valueOf(versionString.substring(2, 3));
+		final int technical = Integer.valueOf(versionString.substring(3, 4));
+
+		// Actual check of the version(s)
+		if (major != GRB.VERSION_MAJOR || minor != GRB.VERSION_MINOR || technical != GRB.VERSION_TECHNICAL) {
+			throw new UnsupportedOperationException(
+					"You configured the wrong GUROBI version in your '" + envName + "' ENV. Expected: '" //
+							+ GRB.VERSION_MAJOR + GRB.VERSION_MINOR + GRB.VERSION_TECHNICAL //
+							+ "', configured: '" //
+							+ major + minor + technical //
+							+ "'.");
+		}
 	}
 
 	private void init() throws Exception {

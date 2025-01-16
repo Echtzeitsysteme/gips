@@ -162,7 +162,15 @@ public final class PathFinder {
 				}
 
 				alreadySeen.add(nextModelId);
-				currentPath.add(new TracePathLink(nextModelId, currentModelId, direction));
+				switch (direction) {
+				case Forward:
+					currentPath.add(new TracePathLink(currentModelId, nextModelId, direction));
+					break;
+				case Backward:
+					currentPath.add(new TracePathLink(nextModelId, currentModelId, direction));
+					break;
+				}
+
 				if (nextModelId.equals(dstModelId)) {
 					allPaths.add(new ArrayList<>(currentPath));
 				} else {

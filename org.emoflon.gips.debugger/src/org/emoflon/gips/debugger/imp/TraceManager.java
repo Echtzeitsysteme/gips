@@ -18,7 +18,7 @@ import org.emoflon.gips.debugger.api.ITraceManager;
 import org.emoflon.gips.debugger.api.IEditorTracker;
 import org.emoflon.gips.debugger.api.ITraceSelectionListener;
 import org.emoflon.gips.debugger.api.ITraceUpdateListener;
-import org.emoflon.gips.debugger.api.TraceModelNotFound;
+import org.emoflon.gips.debugger.api.TraceModelNotFoundException;
 import org.emoflon.gips.debugger.imp.connector.EditorTraceConnectionFactory;
 import org.emoflon.gips.debugger.imp.connector.GenericXmiEditorTraceConnectionFactory;
 import org.emoflon.gips.debugger.imp.connector.GipslEditorTraceConnectionFactory;
@@ -138,7 +138,7 @@ public final class TraceManager implements ITraceManager {
 
 	@Override
 	public void selectElementsByTraceModel(String contextId, String modelId, Collection<String> selection)
-			throws TraceModelNotFound {
+			throws TraceModelNotFoundException {
 		var context = getOrCreateContext(contextId, false);
 		if (context != null) {
 			context.selectElementsByTrace(modelId, selection);

@@ -12,7 +12,7 @@ import org.emoflon.gips.debugger.api.IModelLink;
 import org.emoflon.gips.debugger.api.ITraceContext;
 import org.emoflon.gips.debugger.api.ITraceSelectionListener;
 import org.emoflon.gips.debugger.api.ITraceUpdateListener;
-import org.emoflon.gips.debugger.api.TraceModelNotFound;
+import org.emoflon.gips.debugger.api.TraceModelNotFoundException;
 import org.emoflon.gips.debugger.trace.EcoreReader;
 import org.emoflon.gips.debugger.trace.ModelReference;
 import org.emoflon.gips.debugger.trace.PathFinder.SearchDirection;
@@ -57,9 +57,12 @@ final class ProjectTraceContext implements ITraceContext {
 	}
 
 	@Override
-	public void selectElementsByTrace(String modelId, Collection<String> elementIds) throws TraceModelNotFound {
+	public void selectElementsByTrace(String modelId, Collection<String> elementIds) throws TraceModelNotFoundException {
+		Objects.requireNonNull(modelId, "modelId");
+		Objects.requireNonNull(elementIds, "elementIds");
+
 		if (!graph.hasModelReference(modelId)) {
-			throw new TraceModelNotFound(modelId);
+			throw new TraceModelNotFoundException(modelId);
 		}
 
 		if (service.isVisualisationActive()) {

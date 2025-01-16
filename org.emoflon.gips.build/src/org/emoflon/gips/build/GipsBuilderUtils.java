@@ -29,6 +29,12 @@ import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.emoflon.gips.build.generator.GipsImportManager;
+import org.emoflon.gips.build.transformation.GipsToIntermediate;
+import org.emoflon.gips.debugger.api.ITraceContext;
+import org.emoflon.gips.debugger.api.ITraceManager;
+import org.emoflon.gips.debugger.trace.TraceMap;
+import org.emoflon.gips.debugger.trace.TraceModelLink;
+import org.emoflon.gips.debugger.trace.resolver.ResolveEcore2Id;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.ibex.gt.codegen.EClassifiersManager;
@@ -290,6 +296,57 @@ public final class GipsBuilderUtils {
 			apiData.engineAppClasses.put(engineExt.getEngineName(),
 					getClassNamePrefix(project) + engineExt.getEngineName() + "App");
 		});
+	}
+
+	/**
+	 * Updates the project specific model transformation trace
+	 * 
+	 * @param project              used to determine the project to be update
+	 * @param gipslModelURI        used to generate an id for the gipsl model
+	 * @param intermediateModelURI used to generate an id the intermediate model
+	 * @param transformer          Provides the gipsl-intermediate trace
+	 */
+	public static void updateTrace(final IProject project, final URI gipslModelURI, final URI intermediateModelURI,
+			final GipsToIntermediate transformer) {
+
+		// each project has it's own trace.
+		ITraceContext traceContext = ITraceManager.getInstance().getContext(project.getName());
+
+		// TODO: this part needs to go
+		// Maybe some app-2-app com
+		try {
+			var runtimeTrace = project.getLocation().append("traces").append("gips2ilp-trace.xmi");
+			traceContext.loadAndUpdateTraceModel(URI.createFileURI(runtimeTrace.toString()));
+		} catch (Exception e) {
+//			LogUtils.error(logger, e.toString());
+			e.printStackTrace();
+		}
+
+		try {
+			// file name as model id
+			String gipslModelId = gipslModelURI.trimFileExtension().lastSegment();
+			String intermediateModelId = intermediateModelURI.trimFileExtension().lastSegment();
+			if (gipslModelId.equalsIgnoreCase(intermediateModelId))
+				throw new IllegalArgumentException(
+						"GIPSL and Intermediate model id should not be equal: '" + gipslModelId + "'");
+
+			TraceMap<String, String> gipsl2intermediateMppings = TraceMap.normalize(transformer.getTrace(),
+					ResolveEcore2Id.INSTANCE, ResolveEcore2Id.INSTANCE);
+
+			traceContext
+					.updateTraceModel(new TraceModelLink(gipslModelId, intermediateModelId, gipsl2intermediateMppings));
+
+			// xmi trace file
+//			var traceGraph = new TraceGraph();
+//			traceGraph.addOrReplaceTraceLink(new TraceModelLink(gipslModelId, gipsModelId, gipsl2gipsMppings));
+//			var traceModel = HelperGraph2Ecore.buildModelFromGraph(traceGraph);
+//			GipsBuilderUtils.saveResource(traceModel,
+//					project.getLocation().append("traces").append("gipsl2gips-trace.xmi").toOSString());
+
+		} catch (Exception e) {
+//			LogUtils.error(logger, e.toString());
+			e.printStackTrace();
+		}
 	}
 
 	/**

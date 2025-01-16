@@ -19,7 +19,7 @@ import org.emoflon.gips.debugger.Activator;
 import org.emoflon.gips.debugger.api.ITraceContext;
 import org.emoflon.gips.debugger.api.ITraceManager;
 import org.emoflon.gips.debugger.api.ITraceSelectionListener;
-import org.emoflon.gips.debugger.api.TraceModelNotFound;
+import org.emoflon.gips.debugger.api.TraceModelNotFoundException;
 import org.emoflon.gips.debugger.listener.PartSelectionFilterListener;
 
 /**
@@ -165,7 +165,7 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 
 		try {
 			context.selectElementsByTrace(getModelId(), elementIds);
-		} catch (TraceModelNotFound e) {
+		} catch (TraceModelNotFoundException e) {
 			// TODO: maybe there is some way to recover
 //			if (showNoTraceModelError) {
 //				showNoTraceModelError = false;
@@ -201,6 +201,10 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 		}
 	}
 
+	/**
+	 * This method is called automatically on object instantiation and when the
+	 * editor input changes.
+	 */
 	protected abstract void computeContextAndModelId();
 
 	/**
@@ -220,6 +224,14 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 	 */
 	protected abstract String getModelId();
 
+	/**
+	 * Converts a selection of elements into a set of ids based on the model
+	 * presented by the editor. Each id should uniquely identify one of the selected
+	 * elements.
+	 * 
+	 * @param selection A selection within the editor
+	 * @return A set of ids. The collection can be empty but not null
+	 */
 	protected abstract Collection<String> transformSelectionToElementIds(ISelection selection);
 
 	protected abstract void computeEditorHighligt(ITraceContext context, String remoteModelId,

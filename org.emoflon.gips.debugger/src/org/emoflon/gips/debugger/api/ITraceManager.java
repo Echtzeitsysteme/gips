@@ -26,7 +26,7 @@ public interface ITraceManager {
 	void removeListener(String contextId, ITraceUpdateListener listener);
 
 	void selectElementsByTraceModel(String contextId, String modelId, Collection<String> selection)
-			throws TraceModelNotFound;
+			throws TraceModelNotFoundException;
 
 	/**
 	 * Allows to add or remove an editor from this manager

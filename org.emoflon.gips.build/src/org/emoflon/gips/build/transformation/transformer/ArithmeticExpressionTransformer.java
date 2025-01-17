@@ -1,192 +1,199 @@
 package org.emoflon.gips.build.transformation.transformer;
 
-import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.TransformationContext;
-import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsArithmeticBracket;
+import org.emoflon.gips.gipsl.gipsl.GipsArithmeticConstant;
+import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExponential;
+import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticLiteral;
-import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsBracketExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsConstant;
-import org.emoflon.gips.gipsl.gipsl.GipsExpArithmeticExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsObjectiveExpression;
-import org.emoflon.gips.gipsl.gipsl.GipsProductArithmeticExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsSumArithmeticExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsUnaryArithmeticExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsArithmeticProduct;
+import org.emoflon.gips.gipsl.gipsl.GipsArithmeticSum;
+import org.emoflon.gips.gipsl.gipsl.GipsArithmeticUnary;
+import org.emoflon.gips.gipsl.gipsl.GipsLinearFunctionReference;
+import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticNullLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.Constant;
+import org.emoflon.gips.intermediate.GipsIntermediate.ConstantLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.Context;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticOperator;
 
-public class ArithmeticExpressionTransformer<T extends EObject> extends TransformationContext<T> {
-	protected ArithmeticExpressionTransformer(GipsTransformationData data, T context, TransformerFactory factory) {
-		super(data, context, factory);
+public class ArithmeticExpressionTransformer extends TransformationContext {
+	protected ArithmeticExpressionTransformer(GipsTransformationData data, Context localContext,
+			TransformerFactory factory) {
+		super(data, localContext, factory);
 	}
 
-	public ArithmeticExpression transform(final GipsArithmeticExpr eArithmetic) throws Exception {
-		if (eArithmetic instanceof GipsSumArithmeticExpr sumExpr) {
-			return transform(sumExpr);
-		} else if (eArithmetic instanceof GipsProductArithmeticExpr prodExpr) {
-			return transform(prodExpr);
-		} else if (eArithmetic instanceof GipsExpArithmeticExpr expExpr) {
-			return transform(expExpr);
-		} else if (eArithmetic instanceof GipsUnaryArithmeticExpr unaryExpr) {
-			return transform(unaryExpr);
-		} else if (eArithmetic instanceof GipsBracketExpr bracketExpr) {
-			return transform(bracketExpr);
-		} else if (eArithmetic instanceof GipsArithmeticLiteral lit) {
-			return transform(lit);
-		} else if (eArithmetic instanceof GipsConstant constant) {
+	protected ArithmeticExpressionTransformer(GipsTransformationData data, Context localContext, Context setContext,
+			TransformerFactory factory) {
+		super(data, localContext, setContext, factory);
+	}
+
+	public ArithmeticExpression transform(final GipsArithmeticExpression eExpression) throws Exception {
+		if (eExpression instanceof GipsArithmeticSum sum) {
+			return transform(sum);
+		} else if (eExpression instanceof GipsArithmeticProduct product) {
+			return transform(product);
+		} else if (eExpression instanceof GipsArithmeticExponential exponential) {
+			return transform(exponential);
+		} else if (eExpression instanceof GipsArithmeticUnary unary) {
+			return transform(unary);
+		} else if (eExpression instanceof GipsArithmeticBracket bracket) {
+			return transform(bracket);
+		} else if (eExpression instanceof GipsArithmeticLiteral literal) {
+			return transform(literal);
+		} else if (eExpression instanceof GipsArithmeticConstant constant) {
 			return transform(constant);
-		} else if (eArithmetic instanceof GipsObjectiveExpression objExpr) {
-			return transform(objExpr);
+		} else if (eExpression instanceof GipsLinearFunctionReference function) {
+			return transform(function);
 		} else {
-			return transform((GipsAttributeExpr) eArithmetic);
+			return transform((GipsValueExpression) eExpression);
 		}
 	}
 
-	public ArithmeticExpression transform(final GipsSumArithmeticExpr sumExpr) throws Exception {
-		BinaryArithmeticExpression binExpr = factory.createBinaryArithmeticExpression();
-		switch (sumExpr.getOperator()) {
+	public ArithmeticExpression transform(final GipsArithmeticSum sum) throws Exception {
+		ArithmeticBinaryExpression binExpr = factory.createArithmeticBinaryExpression();
+		switch (sum.getOperator()) {
 		case MINUS -> {
-			binExpr.setOperator(BinaryArithmeticOperator.SUBTRACT);
+			binExpr.setOperator(ArithmeticBinaryOperator.SUBTRACT);
 		}
 		case PLUS -> {
-			binExpr.setOperator(BinaryArithmeticOperator.ADD);
+			binExpr.setOperator(ArithmeticBinaryOperator.ADD);
 		}
 		default -> {
-			throw new UnsupportedOperationException("Unknown arithmetic operator: " + sumExpr.getOperator());
+			throw new UnsupportedOperationException("Unknown arithmetic operator: " + sum.getOperator());
 		}
 		}
-		binExpr.setLhs(transform(sumExpr.getLeft()));
-		binExpr.setRhs(transform(sumExpr.getRight()));
+		binExpr.setLhs(transform(sum.getLeft()));
+		binExpr.setRhs(transform(sum.getRight()));
 		return binExpr;
 	}
 
-	public ArithmeticExpression transform(final GipsProductArithmeticExpr prodExpr) throws Exception {
-		BinaryArithmeticExpression binExpr = factory.createBinaryArithmeticExpression();
-		switch (prodExpr.getOperator()) {
+	public ArithmeticExpression transform(final GipsArithmeticProduct product) throws Exception {
+		ArithmeticBinaryExpression binExpr = factory.createArithmeticBinaryExpression();
+		switch (product.getOperator()) {
 		case MULT -> {
-			binExpr.setOperator(BinaryArithmeticOperator.MULTIPLY);
+			binExpr.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 		}
 		case DIV -> {
-			binExpr.setOperator(BinaryArithmeticOperator.DIVIDE);
+			binExpr.setOperator(ArithmeticBinaryOperator.DIVIDE);
 		}
 		default -> {
-			throw new UnsupportedOperationException("Unknown arithmetic operator: " + prodExpr.getOperator());
+			throw new UnsupportedOperationException("Unknown arithmetic operator: " + product.getOperator());
 		}
 		}
-		binExpr.setLhs(transform(prodExpr.getLeft()));
-		binExpr.setRhs(transform(prodExpr.getRight()));
+		binExpr.setLhs(transform(product.getLeft()));
+		binExpr.setRhs(transform(product.getRight()));
 		return binExpr;
 	}
 
-	public ArithmeticExpression transform(final GipsExpArithmeticExpr expExpr) throws Exception {
-		BinaryArithmeticExpression binExpr = factory.createBinaryArithmeticExpression();
-		switch (expExpr.getOperator()) {
+	public ArithmeticExpression transform(final GipsArithmeticExponential exponential) throws Exception {
+		ArithmeticBinaryExpression binExpr = factory.createArithmeticBinaryExpression();
+		switch (exponential.getOperator()) {
 		case POW -> {
-			binExpr.setOperator(BinaryArithmeticOperator.POW);
+			binExpr.setOperator(ArithmeticBinaryOperator.POW);
 		}
 		case LOG -> {
-			binExpr.setOperator(BinaryArithmeticOperator.LOG);
+			binExpr.setOperator(ArithmeticBinaryOperator.LOG);
 		}
 		default -> {
-			throw new UnsupportedOperationException("Unknown arithmetic operator: " + expExpr.getOperator());
+			throw new UnsupportedOperationException("Unknown arithmetic operator: " + exponential.getOperator());
 		}
 		}
-		binExpr.setLhs(transform(expExpr.getLeft()));
-		binExpr.setRhs(transform(expExpr.getRight()));
+		binExpr.setLhs(transform(exponential.getLeft()));
+		binExpr.setRhs(transform(exponential.getRight()));
 		return binExpr;
 	}
 
-	public ArithmeticExpression transform(final GipsUnaryArithmeticExpr unaryExpr) throws Exception {
-		UnaryArithmeticExpression unExpr = factory.createUnaryArithmeticExpression();
+	public ArithmeticExpression transform(final GipsArithmeticUnary unaryExpr) throws Exception {
+		ArithmeticUnaryExpression unExpr = factory.createArithmeticUnaryExpression();
 		switch (unaryExpr.getOperator()) {
 		case ABS -> {
-			unExpr.setOperator(UnaryArithmeticOperator.ABSOLUTE);
+			unExpr.setOperator(ArithmeticUnaryOperator.ABSOLUTE);
 		}
 		case COS -> {
-			unExpr.setOperator(UnaryArithmeticOperator.COSINE);
+			unExpr.setOperator(ArithmeticUnaryOperator.COSINE);
 		}
 		case NEG -> {
-			unExpr.setOperator(UnaryArithmeticOperator.NEGATE);
+			unExpr.setOperator(ArithmeticUnaryOperator.NEGATE);
 		}
 		case SIN -> {
-			unExpr.setOperator(UnaryArithmeticOperator.SINE);
+			unExpr.setOperator(ArithmeticUnaryOperator.SINE);
 		}
 		case SQRT -> {
-			unExpr.setOperator(UnaryArithmeticOperator.SQRT);
+			unExpr.setOperator(ArithmeticUnaryOperator.SQRT);
 		}
 		default -> {
 			throw new UnsupportedOperationException("Unknown arithmetic operator: " + unaryExpr.getOperator());
 		}
 		}
-		unExpr.setExpression(transform(unaryExpr.getOperand()));
+		unExpr.setOperand(transform(unaryExpr.getOperand()));
 		return unExpr;
 	}
 
-	public ArithmeticExpression transform(final GipsBracketExpr bracketExpr) throws Exception {
-		UnaryArithmeticExpression unExpr = factory.createUnaryArithmeticExpression();
-		unExpr.setOperator(UnaryArithmeticOperator.BRACKET);
-		unExpr.setExpression(transform(bracketExpr.getOperand()));
+	public ArithmeticExpression transform(final GipsArithmeticBracket bracket) throws Exception {
+		ArithmeticUnaryExpression unExpr = factory.createArithmeticUnaryExpression();
+		unExpr.setOperator(ArithmeticUnaryOperator.BRACKET);
+		unExpr.setOperand(transform(bracket.getOperand()));
 		return unExpr;
 	}
 
-	public ArithmeticExpression transform(final GipsArithmeticLiteral lit) throws Exception {
+	public ArithmeticExpression transform(final GipsArithmeticLiteral literal) throws Exception {
 		try {
-			int value = Integer.parseInt(lit.getValue());
+			int value = Integer.parseInt(literal.getValue());
 			IntegerLiteral intLit = factory.createIntegerLiteral();
 			intLit.setLiteral(value);
 			return intLit;
 		} catch (Exception e) {
 			try {
-				double dValue = Double.parseDouble(lit.getValue());
+				double dValue = Double.parseDouble(literal.getValue());
 				DoubleLiteral doubleLit = factory.createDoubleLiteral();
 				doubleLit.setLiteral(dValue);
 				return doubleLit;
 			} catch (Exception e2) {
 				throw new IllegalArgumentException(
-						"Value <" + lit.getValue() + "> can't be parsed to neither integer nor double value.");
+						"Value <" + literal.getValue() + "> can't be parsed to neither integer nor double value.");
 			}
 		}
 	}
 
-	public ArithmeticExpression transform(final GipsConstant constant) throws Exception {
-		return switch (constant.getValue()) {
+	public ArithmeticExpression transform(final GipsArithmeticConstant constant) throws Exception {
+		ConstantLiteral constantLiteral = factory.createConstantLiteral();
+		switch (constant.getValue()) {
 		case E -> {
-			DoubleLiteral doubleLit = factory.createDoubleLiteral();
-			doubleLit.setLiteral(Math.E);
-			yield doubleLit;
+			constantLiteral.setConstant(Constant.E);
 		}
 		case NULL -> {
-			ArithmeticNullLiteral nullLit = factory.createArithmeticNullLiteral();
-			yield nullLit;
+			constantLiteral.setConstant(Constant.NULL);
 		}
 		case PI -> {
-			DoubleLiteral doubleLit = factory.createDoubleLiteral();
-			doubleLit.setLiteral(Math.PI);
-			yield doubleLit;
+			constantLiteral.setConstant(Constant.PI);
 		}
 		default -> {
 			throw new IllegalArgumentException("Unknown constant type " + constant.getValue());
 		}
-		};
+		}
+		;
+		return constantLiteral;
 	}
 
-	public ArithmeticExpression transform(final GipsObjectiveExpression objExpr) throws Exception {
+	public ArithmeticExpression transform(final GipsLinearFunctionReference function) throws Exception {
 		throw new UnsupportedOperationException(
 				"References to objective function values not permitted within constraints or objective functions.");
 	}
 
-	public ArithmeticExpression transform(final GipsAttributeExpr objExpr) throws Exception {
-		ArithmeticValue aValue = factory.createArithmeticValue();
-		AttributeExpressionTransformer transformer = transformerFactory.createAttributeTransformer(context);
-		aValue.setValue(transformer.transform(objExpr));
-		return aValue;
+	public ArithmeticExpression transform(final GipsValueExpression eValue) throws Exception {
+		ValueExpressionTransformer transformer = null;
+		if (setContext == null) {
+			transformer = transformerFactory.createValueTransformer(localContext);
+		} else {
+			transformer = transformerFactory.createValueTransformer(localContext, setContext);
+		}
+		return transformer.transform(eValue);
 	}
 }

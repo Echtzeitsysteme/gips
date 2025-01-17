@@ -10,7 +10,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
@@ -26,6 +25,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
@@ -87,7 +87,7 @@ public class GipsToIntermediate {
 		transformMappings();
 		transformConstraints();
 		transformLinearFunctions();
-		transformGlobalObjective();
+		transformObjective();
 
 		// add all required data types
 		data.model().getRequiredPatterns().addAll(data.ePattern2ibex().values().stream()
@@ -218,6 +218,7 @@ public class GipsToIntermediate {
 			mapping.setName(eMapping.getName());
 			Variable mappingVariable = GipsConstraintUtils.createBinaryVariable(data, factory, eMapping.getName());
 			mapping.setMappingVariable(mappingVariable);
+			data.eVariable2Variable().put(eMapping, mappingVariable);
 
 			data.model().getMappings().add(mapping);
 			data.eMapping2Mapping().put(eMapping, mapping);
@@ -255,7 +256,7 @@ public class GipsToIntermediate {
 		}
 	}
 
-	protected void transformMappingVariables(GipsMapping mapping, PatternMapping gtMapping) {
+	protected void transformMappingVariables(GipsMapping mapping, PatternMapping patternMapping) {
 		if (mapping.getVariables() == null || mapping.getVariables().isEmpty())
 			return;
 
@@ -265,7 +266,7 @@ public class GipsToIntermediate {
 			var.setName(gipsVar.getName());
 			var.setLowerBound(GipsTransformationUtils.getLowerBound(gipsVar, var.getType()));
 			var.setUpperBound(GipsTransformationUtils.getUpperBound(gipsVar, var.getType()));
-			gtMapping.getFreeVariables().add(var);
+			patternMapping.getFreeVariables().add(var);
 			data.model().getVariables().add(var);
 			data.eVariable2Variable().put(gipsVar, var);
 		}
@@ -346,7 +347,7 @@ public class GipsToIntermediate {
 							DoubleLiteral d2 = factory.createDoubleLiteral();
 							d2.setLiteral(-1.0);
 							negSum.setRhs(d2);
-							negSum.setLhs(substituteRelation.getRhs());
+							negSum.setLhs((ArithmeticExpression) substituteRelation.getRhs());
 							substituteRelation.setRhs(negSum);
 
 							ArithmeticBinaryExpression negation = factory.createArithmeticBinaryExpression();
@@ -456,7 +457,7 @@ public class GipsToIntermediate {
 			data.model().getFunctions().add(linearFunction);
 			data.eFunction2Function().put(eLinearFunction, linearFunction);
 
-			ArithmeticExpressionTransformer<? extends EObject> transformer = transformationFactory
+			ArithmeticExpressionTransformer transformer = transformationFactory
 					.createArithmeticTransformer(linearFunction);
 			linearFunction.setExpression(transformer.transform(eLinearFunction.getExpression()));
 			// Rewrite the expression, which will be translated into ILP-Terms, into a sum
@@ -466,7 +467,7 @@ public class GipsToIntermediate {
 		}
 	}
 
-	protected void transformGlobalObjective() throws Exception {
+	protected void transformObjective() throws Exception {
 		GipsObjective eObjective = data.gipslFile().getObjective();
 		if (eObjective == null) {
 			return;
@@ -487,8 +488,7 @@ public class GipsToIntermediate {
 		}
 		}
 
-		ArithmeticExpressionTransformer<? extends EObject> transformer = transformationFactory
-				.createArithmeticTransformer(objective);
+		ArithmeticExpressionTransformer transformer = transformationFactory.createArithmeticTransformer(objective);
 		objective.setExpression(transformer.transform(eObjective.getExpression()));
 		// Rewrite the expression, which will be translated into ILP-Terms, into a sum
 		// of products.
@@ -533,6 +533,7 @@ public class GipsToIntermediate {
 			constraint.setName("TypeConstraint" + counter + "On" + type.getName());
 			constraint.setType(type);
 			constraint.setGlobal(false);
+			data.requiredTypes().add(type);
 			return constraint;
 		} else {
 			Constraint constraint = factory.createConstraint();
@@ -585,6 +586,7 @@ public class GipsToIntermediate {
 			constraint.setDepending(true);
 			constraint.setType(type);
 			constraint.setGlobal(false);
+			data.requiredTypes().add(type);
 			return constraint;
 		} else {
 			Constraint constraint = factory.createConstraint();
@@ -628,6 +630,7 @@ public class GipsToIntermediate {
 			TypeFunction function = factory.createTypeFunction();
 			function.setName(eLinearFunction.getName());
 			function.setType((EClass) eLinearFunction.getContext());
+			data.requiredTypes().add(function.getType());
 			return function;
 		}
 	}

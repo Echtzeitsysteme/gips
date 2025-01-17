@@ -328,7 +328,7 @@ enum AlgorithmOperator :
 
 // Currently we only allow the concatenation of sets containing the same types of values.
 GipsConcatenationOperation:
-	operator = ConcatenationOperator '(' value = GipsArithmeticOperand ')'
+	operator = ConcatenationOperator '(' value = GipsValueExpression ')'
 ;
 
 enum ConcatenationOperator :

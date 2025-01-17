@@ -7,61 +7,37 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.emoflon.gips.gipsl.gipsl.GipsFeatureExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsFeatureLit;
-import org.emoflon.gips.gipsl.gipsl.GipsFeatureNavigation;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
-import org.emoflon.gips.gipsl.gipsl.GipsStreamExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsStreamNavigation;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.BinaryArithmeticExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolBinaryExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolUnaryExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.BoolValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNode;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingNodeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextMappingVariablesReference;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNode;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternNodeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextPatternValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextSumExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextTypeValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.FeatureExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.FeatureLiteral;
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingNodeValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariableValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorMappingVariablesReference;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternNodeValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorPatternValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeFeatureValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.IteratorTypeValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
-import org.emoflon.gips.intermediate.GipsIntermediate.MappingSumExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
-import org.emoflon.gips.intermediate.GipsIntermediate.ObjectiveFunctionValue;
-import org.emoflon.gips.intermediate.GipsIntermediate.PatternSumExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.AttributeReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BooleanExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BooleanLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.BooleanUnaryExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.Constant;
+import org.emoflon.gips.intermediate.GipsIntermediate.ConstantLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunction;
+import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.NodeReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.QueryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
-import org.emoflon.gips.intermediate.GipsIntermediate.StreamContainsOperation;
-import org.emoflon.gips.intermediate.GipsIntermediate.StreamExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.StreamFilterOperation;
-import org.emoflon.gips.intermediate.GipsIntermediate.TypeSumExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.RuleReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetElementQuery;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetSimpleQuery;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetSimpleSelect;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetSummation;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetTypeQuery;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
-import org.emoflon.gips.intermediate.GipsIntermediate.VariableSet;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
 
 public final class GipsTransformationUtils {
@@ -77,31 +53,6 @@ public final class GipsTransformationUtils {
 		} else {
 			throw new UnsupportedOperationException("Unsupported ilp variable type: " + type);
 		}
-	}
-
-	public static GipsStreamExpr getTerminalStreamExpression(final GipsStreamExpr expr) {
-		if (expr instanceof GipsStreamNavigation nav) {
-			return getTerminalStreamExpression(nav.getRight());
-		} else {
-			return expr;
-		}
-	}
-
-	public static FeatureExpression transformFeatureExpression(final GipsFeatureExpr eFeature) {
-		FeatureExpression feature = GipsIntermediateFactory.eINSTANCE.createFeatureExpression();
-		if (eFeature instanceof GipsFeatureNavigation nav) {
-			feature.setCurrent(createFeatureLiteral((GipsFeatureLit) nav.getLeft()));
-			feature.setChild(transformFeatureExpression(nav.getRight()));
-		} else {
-			feature.setCurrent(createFeatureLiteral((GipsFeatureLit) eFeature));
-		}
-		return feature;
-	}
-
-	public static FeatureLiteral createFeatureLiteral(final GipsFeatureLit eFeature) {
-		FeatureLiteral lit = GipsIntermediateFactory.eINSTANCE.createFeatureLiteral();
-		lit.setFeature(eFeature.getFeature());
-		return lit;
 	}
 
 	public static void flipOperator(final RelationalExpression expr) {
@@ -128,8 +79,8 @@ public final class GipsTransformationUtils {
 		}
 	}
 
-	public static ArithmeticExpressionType isConstantExpression(final BoolExpression expr) {
-		if (expr instanceof BoolBinaryExpression bin) {
+	public static ArithmeticExpressionType isConstantExpression(final BooleanExpression expression) {
+		if (expression instanceof BooleanBinaryExpression bin) {
 			ArithmeticExpressionType lhsType = isConstantExpression(bin.getLhs());
 			ArithmeticExpressionType rhsType = isConstantExpression(bin.getRhs());
 			if (lhsType == ArithmeticExpressionType.variableVector
@@ -141,587 +92,320 @@ public final class GipsTransformationUtils {
 			} else {
 				return ArithmeticExpressionType.constant;
 			}
-		} else if (expr instanceof BoolUnaryExpression unary) {
-			return isConstantExpression(unary.getExpression());
-		} else if (expr instanceof BoolLiteral) {
+		} else if (expression instanceof BooleanUnaryExpression unary) {
+			return isConstantExpression(unary.getOperand());
+		} else if (expression instanceof BooleanLiteral) {
 			return ArithmeticExpressionType.constant;
-		} else if (expr instanceof RelationalExpression relExpr) {
-			return isConstantExpression(relExpr);
+		} else if (expression instanceof ConstantLiteral) {
+			return ArithmeticExpressionType.constant;
+		} else if (expression instanceof ArithmeticExpression arithmetic) {
+			return isConstantExpression(arithmetic);
 		} else {
-			BoolValue value = (BoolValue) expr;
-			return isConstantExpression(value.getValue());
+			return isConstantExpression((RelationalExpression) expression);
 		}
 	}
 
-	public static ArithmeticExpressionType isConstantExpression(final RelationalExpression relExpr) {
-		if (relExpr.getRhs() == null) {
-			return isConstantExpression(relExpr.getLhs());
+	public static ArithmeticExpressionType isConstantExpression(final RelationalExpression relational) {
+		ArithmeticExpressionType lhsType = null;
+		ArithmeticExpressionType rhsType = null;
+		if (relational.getLhs() instanceof ArithmeticExpression arithmetic) {
+			lhsType = isConstantExpression(arithmetic);
 		} else {
-			ArithmeticExpressionType lhsType = isConstantExpression(relExpr.getLhs());
-			ArithmeticExpressionType rhsType = isConstantExpression(relExpr.getRhs());
-			if (lhsType == ArithmeticExpressionType.variableVector
-					|| rhsType == ArithmeticExpressionType.variableVector) {
-				return ArithmeticExpressionType.variableVector;
-			} else if (lhsType == ArithmeticExpressionType.variableValue
-					|| rhsType == ArithmeticExpressionType.variableValue) {
-				return ArithmeticExpressionType.variableValue;
-			} else {
-				return ArithmeticExpressionType.constant;
-			}
+			lhsType = isConstantExpression((BooleanExpression) relational.getLhs());
 		}
-	}
+		if (relational.getRhs() instanceof ArithmeticExpression arithmetic) {
+			rhsType = isConstantExpression(arithmetic);
+		} else {
+			rhsType = isConstantExpression((BooleanExpression) relational.getRhs());
+		}
 
-	public static ArithmeticExpressionType isConstantExpression(final ArithmeticExpression expr) {
-		if (expr instanceof BinaryArithmeticExpression bin) {
-			ArithmeticExpressionType lhsType = isConstantExpression(bin.getLhs());
-			ArithmeticExpressionType rhsType = isConstantExpression(bin.getRhs());
-			if (lhsType == ArithmeticExpressionType.variableVector
-					|| rhsType == ArithmeticExpressionType.variableVector) {
-				return ArithmeticExpressionType.variableVector;
-			} else if (lhsType == ArithmeticExpressionType.variableValue
-					|| rhsType == ArithmeticExpressionType.variableValue) {
-				return ArithmeticExpressionType.variableValue;
-			} else {
-				return ArithmeticExpressionType.constant;
-			}
-		} else if (expr instanceof UnaryArithmeticExpression unary) {
-			return isConstantExpression(unary.getExpression());
-		} else if (expr instanceof ArithmeticLiteral) {
-			return ArithmeticExpressionType.constant;
-		} else if (expr instanceof VariableReference) {
+		if (lhsType == ArithmeticExpressionType.variableVector || rhsType == ArithmeticExpressionType.variableVector) {
+			return ArithmeticExpressionType.variableVector;
+		} else if (lhsType == ArithmeticExpressionType.variableValue
+				|| rhsType == ArithmeticExpressionType.variableValue) {
 			return ArithmeticExpressionType.variableValue;
 		} else {
-			ArithmeticValue value = (ArithmeticValue) expr;
-			return isConstantExpression(value.getValue());
+			return ArithmeticExpressionType.constant;
 		}
 	}
 
-	public static ArithmeticExpressionType isConstantExpression(final ValueExpression expr) {
-		if (expr instanceof MappingSumExpression) {
+	public static ArithmeticExpressionType isConstantExpression(final ArithmeticExpression expression) {
+		if (expression instanceof ArithmeticBinaryExpression bin) {
+			ArithmeticExpressionType lhsType = isConstantExpression(bin.getLhs());
+			ArithmeticExpressionType rhsType = isConstantExpression(bin.getRhs());
+			if (lhsType == ArithmeticExpressionType.variableVector
+					|| rhsType == ArithmeticExpressionType.variableVector) {
+				return ArithmeticExpressionType.variableVector;
+			} else if (lhsType == ArithmeticExpressionType.variableValue
+					|| rhsType == ArithmeticExpressionType.variableValue) {
+				return ArithmeticExpressionType.variableValue;
+			} else {
+				return ArithmeticExpressionType.constant;
+			}
+		} else if (expression instanceof ArithmeticUnaryExpression unary) {
+			return isConstantExpression(unary.getOperand());
+		} else if (expression instanceof ArithmeticLiteral) {
+			return ArithmeticExpressionType.constant;
+		} else if (expression instanceof ConstantLiteral) {
+			return ArithmeticExpressionType.constant;
+		} else if (expression instanceof LinearFunctionReference) {
 			return ArithmeticExpressionType.variableVector;
-		} else if (expr instanceof TypeSumExpression typeSum) {
-			ArithmeticExpressionType exprType = isConstantExpression(typeSum.getExpression());
-			ArithmeticExpressionType filterType = isConstantExpression(typeSum.getFilter());
-			if (exprType == ArithmeticExpressionType.variableVector
-					|| filterType == ArithmeticExpressionType.variableVector) {
-				return ArithmeticExpressionType.variableVector;
-			} else if (exprType == ArithmeticExpressionType.variableValue
-					|| filterType == ArithmeticExpressionType.variableValue) {
-				return ArithmeticExpressionType.variableValue;
-			} else {
-				return ArithmeticExpressionType.constant;
-			}
-		} else if (expr instanceof PatternSumExpression patternSum) {
-			ArithmeticExpressionType exprType = isConstantExpression(patternSum.getExpression());
-			ArithmeticExpressionType filterType = isConstantExpression(patternSum.getFilter());
-			if (exprType == ArithmeticExpressionType.variableVector
-					|| filterType == ArithmeticExpressionType.variableVector) {
-				return ArithmeticExpressionType.variableVector;
-			} else if (exprType == ArithmeticExpressionType.variableValue
-					|| filterType == ArithmeticExpressionType.variableValue) {
-				return ArithmeticExpressionType.variableValue;
-			} else {
-				return ArithmeticExpressionType.constant;
-			}
-		} else if (expr instanceof ContextSumExpression contextSum) {
-			if (contextSum.getContext() instanceof Mapping) {
-				return ArithmeticExpressionType.variableVector;
-			} else {
-				ArithmeticExpressionType exprType = isConstantExpression(contextSum.getExpression());
-				ArithmeticExpressionType filterType = isConstantExpression(contextSum.getFilter());
-				if (exprType == ArithmeticExpressionType.variableVector
-						|| filterType == ArithmeticExpressionType.variableVector) {
-					return ArithmeticExpressionType.variableVector;
-				} else if (exprType == ArithmeticExpressionType.variableValue
-						|| filterType == ArithmeticExpressionType.variableValue) {
-					return ArithmeticExpressionType.variableValue;
-				} else {
-					return ArithmeticExpressionType.constant;
+		} else {
+			return isConstantExpression((ValueExpression) expression);
+		}
+	}
+
+	public static ArithmeticExpressionType isConstantExpression(final ValueExpression expression) {
+		ArithmeticExpressionType expressionType = null;
+		if (expression instanceof MappingReference) {
+			expressionType = ArithmeticExpressionType.constant;
+		} else if (expression instanceof TypeReference) {
+			expressionType = ArithmeticExpressionType.constant;
+		} else if (expression instanceof PatternReference) {
+			expressionType = ArithmeticExpressionType.constant;
+		} else if (expression instanceof RuleReference) {
+			expressionType = ArithmeticExpressionType.constant;
+		} else if (expression instanceof NodeReference) {
+			expressionType = ArithmeticExpressionType.constant;
+		} else if (expression instanceof AttributeReference) {
+			expressionType = ArithmeticExpressionType.constant;
+		} else {
+			// Case: VariableReference
+			expressionType = ArithmeticExpressionType.variableValue;
+		}
+
+		if (expression.getSetExpression() != null) {
+			if (expression.getSetExpression().getSetReduce() != null
+					&& expression.getSetExpression().getSetReduce() instanceof SetSummation sum) {
+				expressionType = isConstantExpression(sum.getExpression());
+				if (expressionType == ArithmeticExpressionType.variableValue) {
+					expressionType = ArithmeticExpressionType.variableVector;
 				}
 			}
-		} else if (expr instanceof ContextTypeFeatureValue) {
-			return ArithmeticExpressionType.constant;
-		} else if (expr instanceof ContextTypeValue) {
-			return ArithmeticExpressionType.constant;
-		} else if (expr instanceof ContextPatternNodeFeatureValue) {
-			return ArithmeticExpressionType.constant;
-		} else if (expr instanceof ContextMappingNodeFeatureValue) {
-			// TODO: This is a critical case, where a feature of a mapping is accessed that
-			// is associated with a mapping variable.
-			// This used to be associated with a special arithmetic expression type that was
-			// removed in the meantime, to prevent further confusion.
-			// This special case is resolved through the get variable method, but might
-			// produce unforeseen problems.
-			return ArithmeticExpressionType.variableDependant;
-		} else if (expr instanceof ContextMappingNode) {
-			// TODO: This is a critical case, where a node of a mapping is accessed that is
-			// associated with a mapping variable.
-			// This used to be associated with a special arithmetic expression type that was
-			// removed in the meantime, to prevent further confusion.
-			// This special case is resolved through the get variable method, but might
-			// produce unforeseen problems.
-			return ArithmeticExpressionType.variableDependant;
-		} else if (expr instanceof ContextMappingValue) {
-			return ArithmeticExpressionType.variableValue;
-		} else if (expr instanceof ContextPatternNode) {
-			return ArithmeticExpressionType.constant;
-		} else if (expr instanceof ContextPatternValue) {
-			return ArithmeticExpressionType.constant;
-		} else if (expr instanceof ObjectiveFunctionValue) {
-			return ArithmeticExpressionType.variableVector;
-		} else if (expr instanceof IteratorMappingValue) {
-			// TODO: This is a critical case, where a match of a mapping is accessed that is
-			// associated with a mapping variable.
-			// This used to be associated with a special arithmetic expression type that was
-			// removed in the meantime, to prevent further confusion.
-			// This special case is resolved through the get variable method, but might
-			// produce unforeseen problems.
-			return ArithmeticExpressionType.variableDependant;
-		} else if (expr instanceof IteratorMappingVariableValue || expr instanceof IteratorMappingVariablesReference) {
-			return ArithmeticExpressionType.variableValue;
-		} else if (expr instanceof IteratorMappingFeatureValue || expr instanceof IteratorMappingNodeValue
-				|| expr instanceof IteratorMappingNodeFeatureValue) {
-			// TODO: This is a critical case, where a feature or node of a mapping is
-			// accessed that is associated with a mapping variable.
-			// This used to be associated with a special arithmetic expression type that was
-			// removed in the meantime, to prevent further confusion.
-			// This special case is resolved through the get variable method, but might
-			// produce unforeseen problems.
-			return ArithmeticExpressionType.variableDependant;
-		} else if (expr instanceof IteratorPatternValue || expr instanceof IteratorPatternFeatureValue
-				|| expr instanceof IteratorPatternNodeValue || expr instanceof IteratorPatternNodeFeatureValue) {
-			return ArithmeticExpressionType.constant;
-		} else if (expr instanceof IteratorTypeValue || expr instanceof IteratorTypeFeatureValue) {
-			return ArithmeticExpressionType.constant;
-		} else if (expr instanceof ContextMappingVariablesReference) {
-			return ArithmeticExpressionType.variableValue;
-		} else {
-			throw new IllegalArgumentException("Unknown value expression Type: " + expr);
 		}
+		return expressionType;
 	}
 
-	public static ArithmeticExpressionType isConstantExpression(final StreamExpression expr) {
-		if (expr.getChild() == null) {
-			if (expr.getCurrent() instanceof StreamFilterOperation filterOp) {
-				return isConstantExpression(filterOp.getPredicate());
-			} else {
-				return ArithmeticExpressionType.constant;
-			}
-		} else {
-			ArithmeticExpressionType currentExpr = null;
-			if (expr.getCurrent() instanceof StreamFilterOperation filterOp) {
-				currentExpr = isConstantExpression(filterOp.getPredicate());
-			} else {
-				currentExpr = ArithmeticExpressionType.constant;
-			}
-			ArithmeticExpressionType childExpr = isConstantExpression(expr.getChild());
-
-			if (currentExpr == ArithmeticExpressionType.variableVector
-					|| childExpr == ArithmeticExpressionType.variableVector) {
-				return ArithmeticExpressionType.variableVector;
-			} else if (currentExpr == ArithmeticExpressionType.variableValue
-					|| childExpr == ArithmeticExpressionType.variableValue) {
-				return ArithmeticExpressionType.variableValue;
-			} else {
-				return ArithmeticExpressionType.constant;
-			}
-		}
-	}
-
-	public static boolean containsContextExpression(final ArithmeticExpression expr) {
-		if (expr instanceof BinaryArithmeticExpression bin) {
-			boolean lhsCheck = containsContextExpression(bin.getLhs());
-			boolean rhsCheck = containsContextExpression(bin.getRhs());
-			return lhsCheck || rhsCheck;
-		} else if (expr instanceof UnaryArithmeticExpression unary) {
-			return containsContextExpression(unary.getExpression());
-		} else if (expr instanceof ArithmeticLiteral) {
-			return false;
-		} else if (expr instanceof VariableReference) {
-			return false;
-		} else {
-			ArithmeticValue value = (ArithmeticValue) expr;
-			return containsContextExpression(value.getValue());
-		}
-	}
-
-	public static boolean containsContextExpression(final BoolExpression expr) {
-		if (expr instanceof BoolBinaryExpression bin) {
-			boolean lhsCheck = containsContextExpression(bin.getLhs());
-			boolean rhsCheck = containsContextExpression(bin.getRhs());
-			return lhsCheck || rhsCheck;
-		} else if (expr instanceof BoolUnaryExpression unary) {
-			return containsContextExpression(unary.getExpression());
-		} else if (expr instanceof BoolLiteral) {
-			return false;
-		} else if (expr instanceof RelationalExpression relExpr) {
-			return containsContextExpression(relExpr);
-		} else {
-			BoolValue value = (BoolValue) expr;
-			return containsContextExpression(value.getValue());
-		}
-	}
-
-	public static boolean containsContextExpression(final RelationalExpression relExpr) {
-		if (relExpr.getRhs() == null) {
-			return containsContextExpression(relExpr.getLhs());
-		} else {
-			boolean checkLhs = containsContextExpression(relExpr.getLhs());
-			boolean checkRhs = containsContextExpression(relExpr.getRhs());
-			return checkLhs || checkRhs;
-		}
-	}
-
-	public static boolean containsContextExpression(final StreamExpression expr) {
-		if (expr.getChild() == null) {
-			if (expr.getCurrent() instanceof StreamFilterOperation filterOp) {
-				return containsContextExpression(filterOp.getPredicate());
-			} else if (expr.getCurrent() instanceof StreamContainsOperation containsOp) {
-				return containsContextExpression(containsOp.getExpr());
-			} else {
-				return false;
-			}
-		} else {
-			boolean currentExpr = false;
-			if (expr.getCurrent() instanceof StreamFilterOperation filterOp) {
-				currentExpr = containsContextExpression(filterOp.getPredicate());
-			} else if (expr.getCurrent() instanceof StreamContainsOperation containsOp) {
-				currentExpr = containsContextExpression(containsOp.getExpr());
-			}
-			boolean childExpr = containsContextExpression(expr.getChild());
-			return currentExpr || childExpr;
-		}
-	}
-
-	public static boolean containsContextExpression(final ValueExpression expr) {
-		if (expr instanceof MappingSumExpression mapSum) {
-			return containsContextExpression(mapSum.getFilter()) || containsContextExpression(mapSum.getExpression());
-		} else if (expr instanceof TypeSumExpression typeSum) {
-			return containsContextExpression(typeSum.getFilter()) || containsContextExpression(typeSum.getExpression());
-		} else if (expr instanceof PatternSumExpression patternSum) {
-			return containsContextExpression(patternSum.getFilter())
-					|| containsContextExpression(patternSum.getExpression());
-		} else if (expr instanceof ContextSumExpression) {
-			return true;
-		} else if (expr instanceof ContextTypeFeatureValue) {
-			return true;
-		} else if (expr instanceof ContextTypeValue) {
-			return true;
-		} else if (expr instanceof ContextPatternNodeFeatureValue) {
-			return true;
-		} else if (expr instanceof ContextMappingNodeFeatureValue) {
-			return true;
-		} else if (expr instanceof ContextMappingNode) {
-			return true;
-		} else if (expr instanceof ContextMappingValue) {
-			return true;
-		} else if (expr instanceof ContextPatternNode) {
-			return true;
-		} else if (expr instanceof ContextPatternValue) {
-			return true;
-		} else if (expr instanceof ObjectiveFunctionValue) {
-			return false;
-		} else if (expr instanceof IteratorMappingValue || expr instanceof IteratorMappingVariableValue
-				|| expr instanceof IteratorMappingFeatureValue || expr instanceof IteratorMappingNodeValue
-				|| expr instanceof IteratorMappingNodeFeatureValue
-				|| expr instanceof IteratorMappingVariablesReference) {
-			return false;
-		} else if (expr instanceof IteratorTypeValue || expr instanceof IteratorTypeFeatureValue) {
-			return false;
-		} else if (expr instanceof IteratorPatternValue || expr instanceof IteratorPatternFeatureValue
-				|| expr instanceof IteratorPatternNodeValue || expr instanceof IteratorPatternNodeFeatureValue) {
-			return false;
-		} else if (expr instanceof ContextMappingVariablesReference varRefValue) {
-			return true;
-		} else {
-			throw new IllegalArgumentException("Unknown value expression Type: " + expr);
-		}
-	}
-
-	public static Set<VariableSet> extractVariable(final ArithmeticExpression expr) {
-		if (expr instanceof BinaryArithmeticExpression bin) {
-			Set<VariableSet> variables = new HashSet<>();
+	public static Set<Variable> extractVariable(final ArithmeticExpression expression) {
+		if (expression instanceof ArithmeticBinaryExpression bin) {
+			Set<Variable> variables = new HashSet<>();
 			variables.addAll(extractVariable(bin.getLhs()));
 			variables.addAll(extractVariable(bin.getRhs()));
 			return variables;
-		} else if (expr instanceof UnaryArithmeticExpression unary) {
-			return extractVariable(unary.getExpression());
-		} else if (expr instanceof ArithmeticLiteral) {
+		} else if (expression instanceof ArithmeticUnaryExpression unary) {
+			return extractVariable(unary.getOperand());
+		} else if (expression instanceof ArithmeticLiteral) {
 			return new HashSet<>();
-		} else if (expr instanceof VariableReference varRef) {
-			Set<VariableSet> variables = new HashSet<>();
-			variables.add(varRef.getVariable());
-			return variables;
+		} else if (expression instanceof ConstantLiteral) {
+			return new HashSet<>();
+		} else if (expression instanceof LinearFunctionReference var) {
+			return extractVariable(var.getFunction().getExpression());
 		} else {
-			ArithmeticValue value = (ArithmeticValue) expr;
-			return extractVariable(value.getValue());
+			return extractVariable((ValueExpression) expression);
 		}
 	}
 
-	public static Set<VariableSet> extractVariable(final ValueExpression expr) {
-		Set<VariableSet> variables = new HashSet<>();
-		if (expr instanceof MappingSumExpression mapSum) {
-			variables.add(mapSum.getMapping());
-		} else if (expr instanceof TypeSumExpression typeSum) {
-			variables.addAll(extractVariable(typeSum.getExpression()));
-			variables.addAll(extractVariable(typeSum.getFilter()));
-		} else if (expr instanceof PatternSumExpression patternSum) {
-			variables.addAll(extractVariable(patternSum.getExpression()));
-			variables.addAll(extractVariable(patternSum.getFilter()));
-		} else if (expr instanceof ContextSumExpression contextSum) {
-			if (contextSum.getContext() instanceof Mapping mapping) {
-				variables.add(mapping);
+	public static Set<Variable> extractVariable(final ValueExpression expression) {
+		Set<Variable> variables = new HashSet<>();
+
+		if (expression instanceof VariableReference variable) {
+			variables.add(variable.getVariable());
+		}
+		// Else-Case: Sets of Types, Matches, Mappings
+
+		if (expression.getSetExpression() != null) {
+			if (expression.getSetExpression().getSetReduce() != null
+					&& expression.getSetExpression().getSetReduce() instanceof SetSummation sum) {
+				variables.addAll(extractVariable(sum.getExpression()));
 			}
-			variables.addAll(extractVariable(contextSum.getExpression()));
-			variables.addAll(extractVariable(contextSum.getFilter()));
-		} else if (expr instanceof ContextMappingNodeFeatureValue val) {
-			variables.add(val.getMappingContext());
-		} else if (expr instanceof ContextMappingNode val) {
-			variables.add(val.getMappingContext());
-		} else if (expr instanceof ContextMappingValue val) {
-			variables.add(val.getMappingContext());
-		} else if (expr instanceof IteratorMappingValue val) {
-			variables.add(val.getMappingContext());
-		} else if (expr instanceof IteratorMappingVariableValue val) {
-			variables.add(val.getMappingContext());
-		} else if (expr instanceof IteratorMappingFeatureValue val) {
-			variables.add(val.getMappingContext());
-		} else if (expr instanceof IteratorMappingNodeValue val) {
-			variables.add(val.getMappingContext());
-		} else if (expr instanceof IteratorMappingNodeFeatureValue val) {
-			variables.add(val.getMappingContext());
-		} else if (expr instanceof ContextMappingVariablesReference varRefValue) {
-			variables.add(varRefValue.getVar().getVariable());
-		} else if (expr instanceof IteratorMappingVariablesReference varRefValue) {
-			variables.add(varRefValue.getVar().getVariable());
 		}
 		return variables;
 	}
 
-	public static Set<VariableSet> extractVariable(final StreamExpression expr) {
-		if (expr.getChild() == null) {
-			if (expr.getCurrent() instanceof StreamFilterOperation filterOp) {
-				return extractVariable(filterOp.getPredicate());
-			} else {
-				return new HashSet<>();
-			}
-		} else {
-			Set<VariableSet> variables = new HashSet<>();
-			if (expr.getCurrent() instanceof StreamFilterOperation filterOp) {
-				variables.addAll(extractVariable(filterOp.getPredicate()));
-			}
-			variables.addAll(extractVariable(expr.getChild()));
-			return variables;
-		}
-	}
-
-	public static Set<VariableSet> extractVariable(final BoolExpression expr) {
-		if (expr instanceof BoolBinaryExpression bin) {
-			Set<VariableSet> variables = new HashSet<>();
+	public static Set<Variable> extractVariable(final BooleanExpression expression) {
+		if (expression instanceof BooleanBinaryExpression bin) {
+			Set<Variable> variables = new HashSet<>();
 			variables.addAll(extractVariable(bin.getLhs()));
 			variables.addAll(extractVariable(bin.getRhs()));
 			return variables;
-		} else if (expr instanceof BoolUnaryExpression unary) {
-			return extractVariable(unary.getExpression());
-		} else if (expr instanceof BoolLiteral) {
+		} else if (expression instanceof BooleanUnaryExpression unary) {
+			return extractVariable(unary.getOperand());
+		} else if (expression instanceof BooleanLiteral) {
 			return new HashSet<>();
-		} else if (expr instanceof RelationalExpression relExpr) {
-			return extractVariable(relExpr);
-		} else {
-			BoolValue value = (BoolValue) expr;
-			return extractVariable(value.getValue());
-		}
-	}
-
-	public static Set<VariableSet> extractVariable(final RelationalExpression relExpr) {
-		if (relExpr.getRhs() == null) {
-			return extractVariable(relExpr.getLhs());
-		} else {
-			Set<VariableSet> variables = new HashSet<>();
-			variables.addAll(extractVariable(relExpr.getLhs()));
-			variables.addAll(extractVariable(relExpr.getRhs()));
-			return variables;
-		}
-	}
-
-	public static Set<Objective> extractObjective(final ArithmeticExpression expr) {
-		if (expr instanceof BinaryArithmeticExpression bin) {
-			Set<Objective> objectives = new HashSet<>();
-			objectives.addAll(extractObjective(bin.getLhs()));
-			objectives.addAll(extractObjective(bin.getRhs()));
-			return objectives;
-		} else if (expr instanceof UnaryArithmeticExpression unary) {
-			return extractObjective(unary.getExpression());
-		} else if (expr instanceof ArithmeticLiteral) {
+		} else if (expression instanceof ConstantLiteral) {
 			return new HashSet<>();
-		} else if (expr instanceof VariableReference) {
-			return new HashSet<>();
+		} else if (expression instanceof ArithmeticExpression arithmetic) {
+			return extractVariable(arithmetic);
 		} else {
-			ArithmeticValue value = (ArithmeticValue) expr;
-			return extractObjective(value.getValue());
+			return extractVariable((RelationalExpression) expression);
 		}
 	}
 
-	public static Set<Objective> extractObjective(final ValueExpression expr) {
-		Set<Objective> objectives = new HashSet<>();
-		if (expr instanceof ObjectiveFunctionValue objVal) {
-			objectives.add(objVal.getObjective());
+	public static Set<Variable> extractVariable(final RelationalExpression relExpr) {
+		Set<Variable> variables = new HashSet<>();
+		if (relExpr.getLhs() instanceof ArithmeticExpression arithmetic) {
+			variables.addAll(extractVariable(arithmetic));
+		} else {
+			variables.addAll(extractVariable((BooleanExpression) relExpr.getLhs()));
 		}
-		return objectives;
+
+		if (relExpr.getRhs() instanceof ArithmeticExpression arithmetic) {
+			variables.addAll(extractVariable(arithmetic));
+		} else {
+			variables.addAll(extractVariable((BooleanExpression) relExpr.getRhs()));
+		}
+		return variables;
 	}
 
-	public static Set<Objective> extractObjective(final StreamExpression expr) {
-		if (expr.getChild() == null) {
-			if (expr.getCurrent() instanceof StreamFilterOperation filterOp) {
-				return extractObjective(filterOp.getPredicate());
+	public static Set<LinearFunction> extractLinearFunction(final ArithmeticExpression expression) {
+		if (expression instanceof ArithmeticBinaryExpression bin) {
+			Set<LinearFunction> functions = new HashSet<>();
+			functions.addAll(extractLinearFunction(bin.getLhs()));
+			functions.addAll(extractLinearFunction(bin.getRhs()));
+			return functions;
+		} else if (expression instanceof ArithmeticUnaryExpression unary) {
+			return extractLinearFunction(unary.getOperand());
+		} else if (expression instanceof ArithmeticLiteral) {
+			return new HashSet<>();
+		} else if (expression instanceof ConstantLiteral) {
+			return new HashSet<>();
+		} else if (expression instanceof LinearFunctionReference variable) {
+			Set<LinearFunction> functions = new HashSet<>();
+			functions.add(variable.getFunction());
+			return functions;
+		} else {
+			return new HashSet<>();
+		}
+	}
+
+	public static ExpressionReturnType extractReturnType(final BooleanExpression expression) {
+		if (expression instanceof BooleanBinaryExpression bin) {
+			ExpressionReturnType lhs = extractReturnType(bin.getLhs());
+			ExpressionReturnType rhs = extractReturnType(bin.getRhs());
+			if (lhs != ExpressionReturnType.bool || rhs != ExpressionReturnType.bool || lhs != rhs)
+				throw new UnsupportedOperationException("Boolean operator types are mismatching.");
+			return lhs;
+		} else if (expression instanceof BooleanUnaryExpression unary) {
+			return extractReturnType(unary.getOperand());
+		} else if (expression instanceof BooleanLiteral) {
+			return ExpressionReturnType.bool;
+		} else if (expression instanceof ConstantLiteral constant) {
+			if (constant.getConstant() == Constant.NULL) {
+				return ExpressionReturnType.object;
 			} else {
-				return new HashSet<>();
+				return ExpressionReturnType.bool;
 			}
+		} else if (expression instanceof ArithmeticExpression arithmetic) {
+			return extractReturnType(arithmetic);
 		} else {
-			Set<Objective> objective = new HashSet<>();
-			if (expr.getCurrent() instanceof StreamFilterOperation filterOp) {
-				objective.addAll(extractObjective(filterOp.getPredicate()));
-			}
-			objective.addAll(extractObjective(expr.getChild()));
-			return objective;
+			return ExpressionReturnType.bool;
 		}
 	}
 
-	public static Set<Objective> extractObjective(final BoolExpression expr) {
-		if (expr instanceof BoolBinaryExpression bin) {
-			Set<Objective> objectives = new HashSet<>();
-			objectives.addAll(extractObjective(bin.getLhs()));
-			objectives.addAll(extractObjective(bin.getRhs()));
-			return objectives;
-		} else if (expr instanceof BoolUnaryExpression unary) {
-			return extractObjective(unary.getExpression());
-		} else if (expr instanceof BoolLiteral) {
-			return new HashSet<>();
-		} else if (expr instanceof RelationalExpression relExpr) {
-			return extractObjective(relExpr);
-		} else {
-			BoolValue value = (BoolValue) expr;
-			return extractObjective(value.getValue());
-		}
-	}
-
-	public static Set<Objective> extractObjective(final RelationalExpression relExpr) {
-		if (relExpr.getRhs() == null) {
-			return extractObjective(relExpr.getLhs());
-		} else {
-			Set<Objective> objectives = new HashSet<>();
-			objectives.addAll(extractObjective(relExpr.getLhs()));
-			objectives.addAll(extractObjective(relExpr.getRhs()));
-			return objectives;
-		}
-	}
-
-	public static ExpressionReturnType extractReturnType(final ArithmeticExpression expr) {
-		if (expr instanceof BinaryArithmeticExpression bin) {
+	public static ExpressionReturnType extractReturnType(final ArithmeticExpression expression) {
+		if (expression instanceof ArithmeticBinaryExpression bin) {
 			ExpressionReturnType lhs = extractReturnType(bin.getLhs());
 			ExpressionReturnType rhs = extractReturnType(bin.getRhs());
 			if (lhs != rhs)
 				throw new UnsupportedOperationException("Arithmetic operator types are mismatching.");
 
 			return lhs;
-		} else if (expr instanceof UnaryArithmeticExpression unary) {
-			return extractReturnType(unary.getExpression());
-		} else if (expr instanceof ArithmeticLiteral) {
+		} else if (expression instanceof ArithmeticUnaryExpression unary) {
+			return extractReturnType(unary.getOperand());
+		} else if (expression instanceof ArithmeticLiteral) {
 			return ExpressionReturnType.number;
-		} else if (expr instanceof VariableReference) {
-			return ExpressionReturnType.number;
-		} else {
-			ArithmeticValue value = (ArithmeticValue) expr;
-			return extractReturnType(value.getValue());
-		}
-	}
-
-	public static ExpressionReturnType extractReturnType(final ValueExpression expr) {
-		if (expr instanceof MappingSumExpression mapSum) {
-			return ExpressionReturnType.number;
-		} else if (expr instanceof TypeSumExpression typeSum) {
-			return ExpressionReturnType.number;
-		} else if (expr instanceof PatternSumExpression patternSum) {
-			return ExpressionReturnType.number;
-		} else if (expr instanceof ContextSumExpression) {
-			return ExpressionReturnType.number;
-		} else if (expr instanceof ContextTypeFeatureValue feature) {
-			return extractReturnType(feature.getFeatureExpression());
-		} else if (expr instanceof ContextTypeValue) {
-			return ExpressionReturnType.object;
-		} else if (expr instanceof ContextPatternNodeFeatureValue feature) {
-			return extractReturnType(feature.getFeatureExpression());
-		} else if (expr instanceof ContextMappingNodeFeatureValue feature) {
-			return extractReturnType(feature.getFeatureExpression());
-		} else if (expr instanceof ContextMappingNode) {
-			return ExpressionReturnType.object;
-		} else if (expr instanceof ContextMappingValue) {
-			return ExpressionReturnType.number;
-		} else if (expr instanceof ContextPatternNode) {
-			return ExpressionReturnType.object;
-		} else if (expr instanceof ContextPatternValue) {
-			return ExpressionReturnType.object;
-		} else if (expr instanceof ObjectiveFunctionValue) {
-			return ExpressionReturnType.number;
-		} else if (expr instanceof IteratorMappingValue) {
-			return ExpressionReturnType.object;
-		} else if (expr instanceof IteratorMappingVariableValue) {
-			return ExpressionReturnType.number;
-		} else if (expr instanceof IteratorMappingVariablesReference) {
-			return ExpressionReturnType.number;
-		} else if (expr instanceof IteratorMappingFeatureValue feature) {
-			return extractReturnType(feature.getFeatureExpression());
-		} else if (expr instanceof IteratorMappingNodeFeatureValue feature) {
-			return extractReturnType(feature.getFeatureExpression());
-		} else if (expr instanceof IteratorMappingNodeValue) {
-			return ExpressionReturnType.object;
-		} else if (expr instanceof IteratorTypeValue) {
-			return ExpressionReturnType.object;
-		} else if (expr instanceof IteratorTypeFeatureValue feature) {
-			return extractReturnType(feature.getFeatureExpression());
-		} else if (expr instanceof IteratorPatternValue) {
-			return ExpressionReturnType.object;
-		} else if (expr instanceof IteratorPatternFeatureValue feature) {
-			return extractReturnType(feature.getFeatureExpression());
-		} else if (expr instanceof IteratorPatternNodeValue) {
-			return ExpressionReturnType.object;
-		} else if (expr instanceof IteratorPatternNodeFeatureValue feature) {
-			return extractReturnType(feature.getFeatureExpression());
-		} else if (expr instanceof ContextMappingVariablesReference) {
-			return ExpressionReturnType.number;
-		} else {
-			throw new IllegalArgumentException("Unknown value expression Type: " + expr);
-		}
-	}
-
-	public static ExpressionReturnType extractReturnType(final FeatureExpression expr) {
-		if (expr.getChild() == null) {
-			if (expr.getCurrent().getFeature().getEType() == EcorePackage.Literals.EBOOLEAN) {
-				return ExpressionReturnType.bool;
-			} else if (expr.getCurrent().getFeature().getEType() == EcorePackage.Literals.EDOUBLE) {
-				return ExpressionReturnType.number;
-			} else if (expr.getCurrent().getFeature().getEType() == EcorePackage.Literals.EFLOAT) {
-				return ExpressionReturnType.number;
-			} else if (expr.getCurrent().getFeature().getEType() == EcorePackage.Literals.EBYTE) {
-				return ExpressionReturnType.number;
-			} else if (expr.getCurrent().getFeature().getEType() == EcorePackage.Literals.ESHORT) {
-				return ExpressionReturnType.number;
-			} else if (expr.getCurrent().getFeature().getEType() == EcorePackage.Literals.EINT) {
-				return ExpressionReturnType.number;
-			} else if (expr.getCurrent().getFeature().getEType() == EcorePackage.Literals.ELONG) {
-				return ExpressionReturnType.number;
-			} else if (expr.getCurrent().getFeature().getEType() == EcorePackage.Literals.ESTRING) {
-				return ExpressionReturnType.object;
-			} else if (expr.getCurrent().getFeature().getEType() instanceof EClass) {
-				return ExpressionReturnType.object;
-			} else if (expr.getCurrent().getFeature().getEType() instanceof EEnum) {
+		} else if (expression instanceof ConstantLiteral lit) {
+			if (lit.getConstant() == Constant.NULL) {
 				return ExpressionReturnType.object;
 			} else {
-				throw new IllegalArgumentException(
-						"Unsupported data type: " + expr.getCurrent().getFeature().getEType());
+				return ExpressionReturnType.number;
+			}
+		} else if (expression instanceof LinearFunctionReference) {
+			return ExpressionReturnType.number;
+		} else {
+			return extractReturnType((ValueExpression) expression);
+		}
+	}
+
+	public static ExpressionReturnType extractReturnType(final ValueExpression expression) {
+		ExpressionReturnType expressionType = null;
+		if (expression instanceof MappingReference) {
+			expressionType = ExpressionReturnType.object;
+		} else if (expression instanceof TypeReference) {
+			expressionType = ExpressionReturnType.object;
+		} else if (expression instanceof PatternReference) {
+			expressionType = ExpressionReturnType.object;
+		} else if (expression instanceof RuleReference) {
+			expressionType = ExpressionReturnType.object;
+		} else if (expression instanceof NodeReference node) {
+			expressionType = extractReturnType(node);
+		} else if (expression instanceof AttributeReference attribute) {
+			expressionType = extractReturnType(attribute);
+		} else {
+			// Case: VariableReference
+			expressionType = ExpressionReturnType.number;
+		}
+
+		if (expression.getSetExpression() != null && expression.getSetExpression().getSetReduce() != null) {
+			if (expression.getSetExpression().getSetReduce() instanceof SetSummation) {
+				return ExpressionReturnType.number;
+			} else if (expression.getSetExpression().getSetReduce() instanceof SetSimpleSelect) {
+				return ExpressionReturnType.object;
+			} else if (expression.getSetExpression().getSetReduce() instanceof SetTypeQuery) {
+				return ExpressionReturnType.bool;
+			} else if (expression.getSetExpression().getSetReduce() instanceof SetElementQuery) {
+				return ExpressionReturnType.bool;
+			} else if (expression.getSetExpression().getSetReduce() instanceof SetSimpleQuery query) {
+				if (query.getOperator() == QueryOperator.EMPTY || query.getOperator() == QueryOperator.NOT_EMPTY) {
+					return ExpressionReturnType.bool;
+				} else {
+					// Case: Count
+					return ExpressionReturnType.number;
+				}
+			}
+		}
+		return expressionType;
+	}
+
+	public static ExpressionReturnType extractReturnType(final NodeReference expression) {
+		if (expression.getAttribute() == null) {
+			return ExpressionReturnType.object;
+		} else {
+			return extractReturnType(expression.getAttribute());
+		}
+	}
+
+	public static ExpressionReturnType extractReturnType(final AttributeReference expression) {
+		return extractReturnType(expression.getAttribute());
+	}
+
+	public static ExpressionReturnType extractReturnType(final AttributeExpression expression) {
+		if (expression.getNext() == null) {
+			if (expression.getFeature().getEType() == EcorePackage.Literals.EBOOLEAN) {
+				return ExpressionReturnType.bool;
+			} else if (expression.getFeature().getEType() == EcorePackage.Literals.EDOUBLE) {
+				return ExpressionReturnType.number;
+			} else if (expression.getFeature().getEType() == EcorePackage.Literals.EFLOAT) {
+				return ExpressionReturnType.number;
+			} else if (expression.getFeature().getEType() == EcorePackage.Literals.EBYTE) {
+				return ExpressionReturnType.number;
+			} else if (expression.getFeature().getEType() == EcorePackage.Literals.ESHORT) {
+				return ExpressionReturnType.number;
+			} else if (expression.getFeature().getEType() == EcorePackage.Literals.EINT) {
+				return ExpressionReturnType.number;
+			} else if (expression.getFeature().getEType() == EcorePackage.Literals.ELONG) {
+				return ExpressionReturnType.number;
+			} else if (expression.getFeature().getEType() == EcorePackage.Literals.ESTRING) {
+				return ExpressionReturnType.object;
+			} else if (expression.getFeature().getEType() instanceof EClass) {
+				return ExpressionReturnType.object;
+			} else if (expression.getFeature().getEType() instanceof EEnum) {
+				return ExpressionReturnType.object;
+			} else {
+				throw new IllegalArgumentException("Unsupported data type: " + expression.getFeature().getEType());
 			}
 		} else {
-			return extractReturnType(expr.getChild());
+			return extractReturnType(expression.getNext());
 		}
 	}
 

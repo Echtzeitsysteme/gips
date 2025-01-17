@@ -219,7 +219,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsConcatenationOperation" eSuperTypes="#//GipsSetOperation">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//ConcatenationOperator"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//GipsArithmeticOperand"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//GipsValueExpression"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="ConcatenationOperator">

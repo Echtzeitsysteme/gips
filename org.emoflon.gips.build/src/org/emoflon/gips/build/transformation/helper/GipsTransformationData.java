@@ -7,13 +7,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
-import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
@@ -37,7 +37,7 @@ public record GipsTransformationData(GipsIntermediateModel model, //
 		Map<GipsMapping, Mapping> eMapping2Mapping, //
 		Map<GipsConstraint, Collection<Constraint>> eConstraint2Constraints, //
 		Map<GipsLinearFunction, LinearFunction> eFunction2Function, //
-		Map<GipsMappingVariable, Variable> eVariable2Variable, //
+		Map<EObject, Variable> eVariable2Variable, //
 		Set<EClass> requiredTypes) {
 
 	public GipsTransformationData(final GipsIntermediateModel model, final EditorGTFile gipsSlangFile) {

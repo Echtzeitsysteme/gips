@@ -7,16 +7,16 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
-import org.emoflon.gips.gipsl.gipsl.GipsAndBoolExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsBool;
-import org.emoflon.gips.gipsl.gipsl.GipsBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsBooleanBracket;
+import org.emoflon.gips.gipsl.gipsl.GipsBooleanConjunction;
+import org.emoflon.gips.gipsl.gipsl.GipsBooleanDisjunction;
+import org.emoflon.gips.gipsl.gipsl.GipsBooleanExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsBooleanImplication;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
-import org.emoflon.gips.gipsl.gipsl.GipsBracketBoolExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsBooleanNegation;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
-import org.emoflon.gips.gipsl.gipsl.GipsImplicationBoolExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsNotBoolExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsOrBoolExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
+import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslFactory;
 import org.logicng.formulas.Formula;
 import org.logicng.formulas.FormulaFactory;
@@ -36,12 +36,12 @@ public class GipsConstraintSplitter {
 
 	public Collection<GipsAnnotatedConstraint> split() throws Exception {
 		Collection<GipsAnnotatedConstraint> constraints = new LinkedHashSet<>();
-		if (constraint.getExpr() == null || constraint.getExpr().getExpr() == null) {
+		if (constraint.getExpression() == null) {
 			throw new NullPointerException("Constraint can not be split, since its boolean expression is empty!");
 		}
 
 		StringBuilder expressionBuilder = new StringBuilder();
-		parseToString(expressionBuilder, constraint.getExpr().getExpr());
+		parseToString(expressionBuilder, constraint.getExpression());
 		String expression = expressionBuilder.toString();
 		FormulaFactory fFactory = new FormulaFactory();
 		PropositionalParser parser = new PropositionalParser(fFactory);
@@ -52,10 +52,11 @@ public class GipsConstraintSplitter {
 		return constraints;
 	}
 
-	protected void parseToString(final StringBuilder sb, final GipsBoolExpr expr) {
-		if (expr instanceof GipsBooleanLiteral || expr instanceof GipsRelExpr) {
+	protected void parseToString(final StringBuilder sb, final GipsBooleanExpression expr) {
+		if (expr instanceof GipsBooleanLiteral || expr instanceof GipsRelationalExpression
+				|| expr instanceof GipsArithmeticExpression) {
 			sb.append(data.addSymbol(expr));
-		} else if (expr instanceof GipsImplicationBoolExpr implication) {
+		} else if (expr instanceof GipsBooleanImplication implication) {
 			parseToString(sb, implication.getLeft());
 			switch (implication.getOperator()) {
 			case EQUIVALENCE -> {
@@ -68,7 +69,7 @@ public class GipsConstraintSplitter {
 				throw new UnsupportedOperationException("Unknown boolean operator type: " + implication.getOperator());
 			}
 			parseToString(sb, implication.getRight());
-		} else if (expr instanceof GipsOrBoolExpr orExpression) {
+		} else if (expr instanceof GipsBooleanDisjunction orExpression) {
 			switch (orExpression.getOperator()) {
 			case OR -> {
 				parseToString(sb, orExpression.getLeft());
@@ -95,7 +96,7 @@ public class GipsConstraintSplitter {
 			}
 
 			}
-		} else if (expr instanceof GipsAndBoolExpr andExpression) {
+		} else if (expr instanceof GipsBooleanConjunction andExpression) {
 			switch (andExpression.getOperator()) {
 			case AND -> {
 				parseToString(sb, andExpression.getLeft());
@@ -108,11 +109,11 @@ public class GipsConstraintSplitter {
 			}
 
 			}
-		} else if (expr instanceof GipsNotBoolExpr not) {
+		} else if (expr instanceof GipsBooleanNegation not) {
 			sb.append("~(");
 			parseToString(sb, not.getOperand());
 			sb.append(")");
-		} else if (expr instanceof GipsBracketBoolExpr bracket) {
+		} else if (expr instanceof GipsBooleanBracket bracket) {
 			sb.append("(");
 			parseToString(sb, bracket.getOperand());
 			sb.append(")");
@@ -123,13 +124,13 @@ public class GipsConstraintSplitter {
 
 	protected void splitAtAND(final Formula formula, Collection<GipsAnnotatedConstraint> constraints) throws Exception {
 		if (formula instanceof Literal literal && literal.phase()) {
-			GipsBoolExpr expr = data.symbol2Expr().get(literal.name());
+			GipsBooleanExpression expr = data.symbol2Expr().get(literal.name());
 			Map<Formula, GipsConstraint> result = new HashMap<>();
 			if (expr instanceof GipsBooleanLiteral gipsLit) {
 				result.put(literal, transform(gipsLit));
 				constraints.add(
 						new GipsAnnotatedConstraint(this.constraint, formula, AnnotatedConstraintType.LITERAL, result));
-			} else if (expr instanceof GipsRelExpr gipsRel) {
+			} else if (expr instanceof GipsRelationalExpression gipsRel) {
 				result.put(literal, transform(gipsRel));
 				constraints.add(
 						new GipsAnnotatedConstraint(this.constraint, formula, AnnotatedConstraintType.LITERAL, result));
@@ -138,13 +139,13 @@ public class GipsConstraintSplitter {
 						"Literals in a boolean expression in CNF-form should not be boolean expressions themselves.");
 			}
 		} else if (formula instanceof Literal literal && !literal.phase()) {
-			GipsBoolExpr expr = data.symbol2Expr().get(literal.name());
+			GipsBooleanExpression expr = data.symbol2Expr().get(literal.name());
 			Map<Formula, GipsConstraint> result = new HashMap<>();
 			if (expr instanceof GipsBooleanLiteral gipsLit) {
 				result.put(literal, transform(gipsLit));
 				constraints.add(new GipsAnnotatedConstraint(this.constraint, formula,
 						AnnotatedConstraintType.NEGATED_LITERAL, result));
-			} else if (expr instanceof GipsRelExpr gipsRel) {
+			} else if (expr instanceof GipsRelationalExpression gipsRel) {
 				result.put(literal, transform(gipsRel));
 				constraints.add(new GipsAnnotatedConstraint(this.constraint, formula,
 						AnnotatedConstraintType.NEGATED_LITERAL, result));
@@ -164,20 +165,20 @@ public class GipsConstraintSplitter {
 				Map<Formula, GipsConstraint> result = new HashMap<>();
 				for (Formula child : nAry) {
 					if (child instanceof Literal literal && literal.phase()) {
-						GipsBoolExpr expr = data.symbol2Expr().get(literal.name());
+						GipsBooleanExpression expr = data.symbol2Expr().get(literal.name());
 						if (expr instanceof GipsBooleanLiteral gipsLit) {
 							result.put(literal, transform(gipsLit));
-						} else if (expr instanceof GipsRelExpr gipsRel) {
+						} else if (expr instanceof GipsRelationalExpression gipsRel) {
 							result.put(literal, transform(gipsRel));
 						} else {
 							throw new UnsupportedOperationException(
 									"Literals in a boolean expression in CNF-form should not be boolean expressions themselves.");
 						}
 					} else if (child instanceof Literal literal && !literal.phase()) {
-						GipsBoolExpr expr = data.symbol2Expr().get(literal.name());
+						GipsBooleanExpression expr = data.symbol2Expr().get(literal.name());
 						if (expr instanceof GipsBooleanLiteral gipsLit) {
 							result.put(literal, transform(gipsLit));
-						} else if (expr instanceof GipsRelExpr gipsRel) {
+						} else if (expr instanceof GipsRelationalExpression gipsRel) {
 							result.put(literal, transform(gipsRel));
 						} else {
 							throw new UnsupportedOperationException(
@@ -205,18 +206,14 @@ public class GipsConstraintSplitter {
 	GipsConstraint transform(final GipsBooleanLiteral literal) {
 		GipsConstraint constraint = factory.createGipsConstraint();
 		constraint.setContext(EcoreUtil.copy(this.constraint.getContext()));
-		GipsBool boolContainer = factory.createGipsBool();
-		boolContainer.setExpr(EcoreUtil.copy(literal));
-		constraint.setExpr(boolContainer);
+		constraint.setExpression(EcoreUtil.copy(literal));
 		return constraint;
 	}
 
-	GipsConstraint transform(final GipsRelExpr relational) {
+	GipsConstraint transform(final GipsRelationalExpression relational) {
 		GipsConstraint constraint = factory.createGipsConstraint();
 		constraint.setContext(EcoreUtil.copy(this.constraint.getContext()));
-		GipsBool boolContainer = factory.createGipsBool();
-		boolContainer.setExpr(EcoreUtil.copy(relational));
-		constraint.setExpr(boolContainer);
+		constraint.setExpression(EcoreUtil.copy(relational));
 		return constraint;
 	}
 

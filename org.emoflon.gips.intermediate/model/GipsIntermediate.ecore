@@ -108,7 +108,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Objective">
+  <eClassifiers xsi:type="ecore:EClass" name="Objective" eSuperTypes="#//Context">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="goal" eType="#//Goal"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//ArithmeticExpression"
         containment="true"/>
@@ -180,9 +180,9 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RelationalExpression" eSuperTypes="#//BooleanExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//RelationalOperator"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="lhs" lowerBound="1" eType="#//ArithmeticExpression"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lhs" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="rhs" lowerBound="1" eType="#//ArithmeticExpression"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rhs" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="requiresComparables" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
@@ -241,6 +241,10 @@
     <eLiterals name="E" value="1"/>
     <eLiterals name="NULL" value="2"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LinearFunctionReference" eSuperTypes="#//ArithmeticExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="function" lowerBound="1"
+        eType="#//LinearFunction"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ValueExpression" abstract="true" eSuperTypes="#//ArithmeticExpression #//BooleanExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="setExpression" eType="#//SetExpression"
         containment="true"/>
@@ -268,6 +272,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeReference" eSuperTypes="#//ContextReference #//Context">
     <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXNode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attribute" eType="#//AttributeExpression"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AttributeReference" eSuperTypes="#//ContextReference">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attribute" lowerBound="1"

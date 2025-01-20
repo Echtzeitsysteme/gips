@@ -111,7 +111,8 @@ public final class GipsConstraintUtils {
 				// (I) - LHS: f(x) - Ms'
 				ArithmeticBinaryExpression lhs = factory.createArithmeticBinaryExpression(); // f(x) + (-Ms')
 				lhs.setOperator(ArithmeticBinaryOperator.ADD);
-				lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+				lhs.setLhs(
+						GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getLhs())); // f(x)
 				ArithmeticBinaryExpression term = factory.createArithmeticBinaryExpression(); // -Ms'
 				term.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 				term.setLhs(createInf(factory, false)); // -M
@@ -120,7 +121,8 @@ public final class GipsConstraintUtils {
 				// (I) - RHS: c + eps - M
 				ArithmeticBinaryExpression rhs = factory.createArithmeticBinaryExpression(); // c + eps - M
 				rhs.setOperator(ArithmeticBinaryOperator.ADD);
-				rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null)); // c
+				rhs.setLhs(
+						GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getRhs())); // c
 				ArithmeticBinaryExpression rhs_rhs = factory.createArithmeticBinaryExpression(); // eps - M
 				rhs_rhs.setOperator(ArithmeticBinaryOperator.SUBTRACT);
 				rhs_rhs.setLhs(createEpsilon(factory, true)); // eps
@@ -143,15 +145,16 @@ public final class GipsConstraintUtils {
 				// (II) - LHS: f(x) - Ms'
 				lhs = factory.createArithmeticBinaryExpression(); // f(x) + (-Ms')
 				lhs.setOperator(ArithmeticBinaryOperator.ADD);
-				lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+				lhs.setLhs(
+						GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getLhs())); // f(x)
 				term = factory.createArithmeticBinaryExpression(); // -Ms'
 				term.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 				term.setLhs(createInf(factory, false)); // -M
 				term.setRhs(createVariableReference(factory, s1)); // s'
 				lhs.setRhs(term);
 				// (II) - RHS: c
-				ArithmeticExpression shortRHS = GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(),
-						null); // c
+				ArithmeticExpression shortRHS = GipsArithmeticTransformer.cloneExpression(factory,
+						(ArithmeticExpression) expression.getRhs()); // c
 				// (II) - Combine: f(x) - Ms' <= c
 				relation = factory.createRelationalExpression();
 				relation.setOperator(RelationalOperator.LESS_OR_EQUAL); // <=
@@ -169,14 +172,16 @@ public final class GipsConstraintUtils {
 				// (III) - LHS: f(x) + Ms''
 				lhs = factory.createArithmeticBinaryExpression();
 				lhs.setOperator(ArithmeticBinaryOperator.ADD);
-				lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+				lhs.setLhs(
+						GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getLhs())); // f(x)
 				term = factory.createArithmeticBinaryExpression(); // Ms''
 				term.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 				term.setLhs(createInf(factory, true)); // M
 				term.setRhs(createVariableReference(factory, s2)); // s''
 				lhs.setRhs(term);
 				// (III) - RHS: c
-				shortRHS = GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null); // c
+				shortRHS = GipsArithmeticTransformer.cloneExpression(factory,
+						(ArithmeticExpression) expression.getRhs()); // c
 				// (III) - Combine: f(x) + Ms'' >= c
 				relation = factory.createRelationalExpression();
 				relation.setOperator(RelationalOperator.GREATER_OR_EQUAL);
@@ -194,7 +199,8 @@ public final class GipsConstraintUtils {
 				// (IV) - LHS: f(x) + Ms''
 				lhs = factory.createArithmeticBinaryExpression();
 				lhs.setOperator(ArithmeticBinaryOperator.ADD);
-				lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+				lhs.setLhs(
+						GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getLhs())); // f(x)
 				term = factory.createArithmeticBinaryExpression(); // Ms''
 				term.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 				term.setLhs(createInf(factory, true)); // M
@@ -206,7 +212,8 @@ public final class GipsConstraintUtils {
 				rhs.setLhs(createInf(factory, true)); // M
 				rhs_rhs = factory.createArithmeticBinaryExpression(); // c - eps
 				rhs_rhs.setOperator(ArithmeticBinaryOperator.SUBTRACT);
-				rhs_rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null)); // c
+				rhs_rhs.setLhs(
+						GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getRhs())); // c
 				rhs_rhs.setRhs(createEpsilon(factory, true)); // eps
 				rhs.setRhs(rhs_rhs);
 				// (IV) - Combine: f(x) + Ms'' <= M + c - eps
@@ -293,7 +300,7 @@ public final class GipsConstraintUtils {
 			// (I) - LHS: f(x) + Ms'
 			ArithmeticBinaryExpression lhs = factory.createArithmeticBinaryExpression(); // f(x) + Ms'
 			lhs.setOperator(ArithmeticBinaryOperator.ADD);
-			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getLhs())); // f(x)
 			ArithmeticBinaryExpression term = factory.createArithmeticBinaryExpression(); // Ms'
 			term.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 			term.setLhs(createInf(factory, true)); // M
@@ -302,7 +309,7 @@ public final class GipsConstraintUtils {
 			// (I) - RHS: c + eps
 			ArithmeticBinaryExpression rhs = factory.createArithmeticBinaryExpression(); // c + eps
 			rhs.setOperator(ArithmeticBinaryOperator.ADD);
-			rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null)); // c
+			rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getRhs())); // c
 			rhs.setRhs(createEpsilon(factory, true)); // eps
 			// (I) - Combine: f(x) + Ms' >= c + eps
 			RelationalExpression relation = factory.createRelationalExpression();
@@ -321,7 +328,7 @@ public final class GipsConstraintUtils {
 			// (II) - LHS: f(x) + Ms'
 			lhs = factory.createArithmeticBinaryExpression(); // f(x) + Ms'
 			lhs.setOperator(ArithmeticBinaryOperator.ADD);
-			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getLhs())); // f(x)
 			term = factory.createArithmeticBinaryExpression(); // Ms'
 			term.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 			term.setLhs(createInf(factory, true)); // M
@@ -331,7 +338,7 @@ public final class GipsConstraintUtils {
 			rhs = factory.createArithmeticBinaryExpression(); // M + c
 			rhs.setOperator(ArithmeticBinaryOperator.ADD);
 			rhs.setLhs(createInf(factory, true)); // M
-			rhs.setRhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null)); // c
+			rhs.setRhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getRhs())); // c
 			// (II) - Combine: f(x) + Ms' <= M + c
 			relation = factory.createRelationalExpression();
 			relation.setOperator(RelationalOperator.LESS_OR_EQUAL); // <=
@@ -349,7 +356,7 @@ public final class GipsConstraintUtils {
 			// (III) - LHS: f(x) - Ms''
 			lhs = factory.createArithmeticBinaryExpression();
 			lhs.setOperator(ArithmeticBinaryOperator.ADD);
-			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getLhs())); // f(x)
 			term = factory.createArithmeticBinaryExpression(); // -Ms''
 			term.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 			term.setLhs(createInf(factory, false)); // -M
@@ -358,7 +365,7 @@ public final class GipsConstraintUtils {
 			// (III) - RHS: c - M
 			rhs = factory.createArithmeticBinaryExpression(); // c - M
 			rhs.setOperator(ArithmeticBinaryOperator.SUBTRACT);
-			rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null)); // c
+			rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getRhs())); // c
 			rhs.setRhs(createInf(factory, true)); // M
 			// (III) - Combine: f(x) - Ms'' >= c - M
 			relation = factory.createRelationalExpression();
@@ -377,7 +384,7 @@ public final class GipsConstraintUtils {
 			// (IV) - LHS: f(x) - Ms''
 			lhs = factory.createArithmeticBinaryExpression();
 			lhs.setOperator(ArithmeticBinaryOperator.ADD);
-			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getLhs())); // f(x)
 			term = factory.createArithmeticBinaryExpression(); // -Ms''
 			term.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 			term.setLhs(createInf(factory, false)); // -M
@@ -386,7 +393,7 @@ public final class GipsConstraintUtils {
 			// (IV) - RHS: c - eps
 			rhs = factory.createArithmeticBinaryExpression(); // c - eps
 			rhs.setOperator(ArithmeticBinaryOperator.SUBTRACT);
-			rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null)); // c
+			rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getRhs())); // c
 			rhs.setRhs(createEpsilon(factory, true)); // eps
 			// (IV) - Combine: f(x) - Ms'' <= c - eps
 			relation = factory.createRelationalExpression();
@@ -493,7 +500,7 @@ public final class GipsConstraintUtils {
 			// (I) - LHS: f(x) - Ms
 			ArithmeticBinaryExpression lhs = factory.createArithmeticBinaryExpression(); // f(x) + (-M)s
 			lhs.setOperator(ArithmeticBinaryOperator.ADD);
-			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getLhs())); // f(x)
 			ArithmeticBinaryExpression term = factory.createArithmeticBinaryExpression(); // -Ms
 			term.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 			term.setLhs(createInf(factory, false)); // M
@@ -502,7 +509,7 @@ public final class GipsConstraintUtils {
 			// (I) - RHS: c + eps - M
 			ArithmeticBinaryExpression rhs = factory.createArithmeticBinaryExpression(); // c + eps - M
 			rhs.setOperator(ArithmeticBinaryOperator.SUBTRACT);
-			rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null)); // c
+			rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getRhs())); // c
 			ArithmeticBinaryExpression rhs_rhs = factory.createArithmeticBinaryExpression(); // eps - M
 			rhs_rhs.setOperator(ArithmeticBinaryOperator.SUBTRACT);
 			rhs_rhs.setLhs(createEpsilon(factory, true)); // eps
@@ -525,7 +532,7 @@ public final class GipsConstraintUtils {
 			// (II) - LHS: f(x) - Ms
 			lhs = factory.createArithmeticBinaryExpression(); // f(x) + (-M)s
 			lhs.setOperator(ArithmeticBinaryOperator.ADD);
-			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getLhs())); // f(x)
 			term = factory.createArithmeticBinaryExpression(); // -Ms
 			term.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 			term.setLhs(createInf(factory, false)); // M
@@ -533,7 +540,7 @@ public final class GipsConstraintUtils {
 			lhs.setRhs(term);
 			// (II) - RHS: c
 			ArithmeticExpression shortRHS = //
-					GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null); // c
+					GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getRhs()); // c
 			// (II) - Combine: f(x) - Ms <= c
 			relation = factory.createRelationalExpression();
 			relation.setOperator(RelationalOperator.LESS_OR_EQUAL); // <=
@@ -561,7 +568,7 @@ public final class GipsConstraintUtils {
 			// (I) - LHS: f(x) - Ms
 			ArithmeticBinaryExpression lhs = factory.createArithmeticBinaryExpression(); // f(x) + (-M)s
 			lhs.setOperator(ArithmeticBinaryOperator.ADD);
-			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getLhs())); // f(x)
 			ArithmeticBinaryExpression term = factory.createArithmeticBinaryExpression(); // -Ms
 			term.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 			term.setLhs(createInf(factory, false)); // M
@@ -570,7 +577,7 @@ public final class GipsConstraintUtils {
 			// (I) - RHS: c - M
 			ArithmeticBinaryExpression rhs = factory.createArithmeticBinaryExpression(); // c - M
 			rhs.setOperator(ArithmeticBinaryOperator.SUBTRACT);
-			rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null)); // c
+			rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getRhs())); // c
 			rhs.setRhs(createInf(factory, true)); // M
 			// (I) - Combine: f(x) - Ms >= c - M
 			RelationalExpression relation = factory.createRelationalExpression();
@@ -589,7 +596,7 @@ public final class GipsConstraintUtils {
 			// (II) - LHS: f(x) - Ms
 			lhs = factory.createArithmeticBinaryExpression(); // f(x) + (-M)s
 			lhs.setOperator(ArithmeticBinaryOperator.ADD);
-			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getLhs())); // f(x)
 			term = factory.createArithmeticBinaryExpression(); // -Ms
 			term.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 			term.setLhs(createInf(factory, false)); // M
@@ -598,7 +605,7 @@ public final class GipsConstraintUtils {
 			// (II) - RHS: c - eps
 			rhs = factory.createArithmeticBinaryExpression(); // c - eps
 			rhs.setOperator(ArithmeticBinaryOperator.SUBTRACT);
-			rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null)); // c
+			rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getRhs())); // c
 			rhs.setRhs(createEpsilon(factory, true)); // eps
 			// (II) - Combine: f(x) - Ms <= c - eps
 			relation = factory.createRelationalExpression();
@@ -627,15 +634,15 @@ public final class GipsConstraintUtils {
 			// (I) - LHS: f(x) + Ms
 			ArithmeticBinaryExpression lhs = factory.createArithmeticBinaryExpression(); // f(x) + Ms
 			lhs.setOperator(ArithmeticBinaryOperator.ADD);
-			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getLhs())); // f(x)
 			ArithmeticBinaryExpression term = factory.createArithmeticBinaryExpression(); // Ms
 			term.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 			term.setLhs(createInf(factory, true)); // M
 			term.setRhs(createVariableReference(factory, symbolicVariable)); // s
 			lhs.setRhs(term);
 			// (I) - RHS: c
-			ArithmeticExpression shortRHS = GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(),
-					null); // c
+			ArithmeticExpression shortRHS = GipsArithmeticTransformer.cloneExpression(factory,
+					(ArithmeticExpression) expression.getRhs()); // c
 			// (I) - Combine: f(x) + Ms >= c
 			RelationalExpression relation = factory.createRelationalExpression();
 			relation.setOperator(RelationalOperator.GREATER_OR_EQUAL); // >=
@@ -653,7 +660,7 @@ public final class GipsConstraintUtils {
 			// (II) - LHS: f(x) + Ms
 			lhs = factory.createArithmeticBinaryExpression(); // f(x) + Ms
 			lhs.setOperator(ArithmeticBinaryOperator.ADD);
-			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getLhs())); // f(x)
 			term = factory.createArithmeticBinaryExpression(); // Ms
 			term.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 			term.setLhs(createInf(factory, true)); // M
@@ -665,7 +672,8 @@ public final class GipsConstraintUtils {
 			rhs.setLhs(createInf(factory, true)); // M
 			ArithmeticBinaryExpression rhs_rhs = factory.createArithmeticBinaryExpression(); // c - eps
 			rhs_rhs.setOperator(ArithmeticBinaryOperator.SUBTRACT);
-			rhs_rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null)); // c
+			rhs_rhs.setLhs(
+					GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getRhs())); // c
 			rhs_rhs.setRhs(createEpsilon(factory, true)); // eps
 			rhs.setRhs(rhs_rhs);
 			// (II) - Combine: f(x) + Ms <= M + c - eps
@@ -695,7 +703,7 @@ public final class GipsConstraintUtils {
 			// (I) - LHS: f(x) + Ms
 			ArithmeticBinaryExpression lhs = factory.createArithmeticBinaryExpression(); // f(x) + Ms
 			lhs.setOperator(ArithmeticBinaryOperator.ADD);
-			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getLhs())); // f(x)
 			ArithmeticBinaryExpression term = factory.createArithmeticBinaryExpression(); // Ms
 			term.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 			term.setLhs(createInf(factory, true)); // M
@@ -704,7 +712,7 @@ public final class GipsConstraintUtils {
 			// (I) - RHS: c + eps
 			ArithmeticBinaryExpression rhs = factory.createArithmeticBinaryExpression(); // c + eps
 			rhs.setOperator(ArithmeticBinaryOperator.ADD);
-			rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null)); // c
+			rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getRhs())); // c
 			rhs.setRhs(createEpsilon(factory, true));
 			// (I) - Combine: f(x) + Ms >= c + eps
 			RelationalExpression relation = factory.createRelationalExpression();
@@ -723,7 +731,7 @@ public final class GipsConstraintUtils {
 			// (II) - LHS: f(x) + Ms
 			lhs = factory.createArithmeticBinaryExpression(); // f(x) + Ms
 			lhs.setOperator(ArithmeticBinaryOperator.ADD);
-			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getLhs())); // f(x)
 			term = factory.createArithmeticBinaryExpression(); // Ms
 			term.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 			term.setLhs(createInf(factory, true)); // M
@@ -732,7 +740,7 @@ public final class GipsConstraintUtils {
 			// (II) - RHS: M + c
 			rhs = factory.createArithmeticBinaryExpression(); // c + eps
 			rhs.setOperator(ArithmeticBinaryOperator.ADD);
-			rhs.setRhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null)); // c
+			rhs.setRhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getRhs())); // c
 			rhs.setLhs(createInf(factory, true));
 			// (II) - Combine: f(x) + Ms <= M + c
 			relation = factory.createRelationalExpression();
@@ -768,7 +776,7 @@ public final class GipsConstraintUtils {
 			// (I) - LHS: f(x) - Ms'
 			ArithmeticBinaryExpression lhs = factory.createArithmeticBinaryExpression(); // f(x) + (-Ms')
 			lhs.setOperator(ArithmeticBinaryOperator.ADD);
-			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getLhs())); // f(x)
 			ArithmeticBinaryExpression term = factory.createArithmeticBinaryExpression(); // -Ms'
 			term.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 			term.setLhs(createInf(factory, false)); // -M
@@ -777,7 +785,7 @@ public final class GipsConstraintUtils {
 			// (I) - RHS: c + eps - M
 			ArithmeticBinaryExpression rhs = factory.createArithmeticBinaryExpression(); // c + eps - M
 			rhs.setOperator(ArithmeticBinaryOperator.ADD);
-			rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null)); // c
+			rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getRhs())); // c
 			ArithmeticBinaryExpression rhs_rhs = factory.createArithmeticBinaryExpression(); // eps - M
 			rhs_rhs.setOperator(ArithmeticBinaryOperator.SUBTRACT);
 			rhs_rhs.setLhs(createEpsilon(factory, true)); // eps
@@ -800,7 +808,7 @@ public final class GipsConstraintUtils {
 			// (II) - LHS: f(x) - Ms'
 			lhs = factory.createArithmeticBinaryExpression(); // f(x) + (-Ms')
 			lhs.setOperator(ArithmeticBinaryOperator.ADD);
-			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getLhs())); // f(x)
 			term = factory.createArithmeticBinaryExpression(); // -Ms'
 			term.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 			term.setLhs(createInf(factory, false)); // -M
@@ -808,7 +816,7 @@ public final class GipsConstraintUtils {
 			lhs.setRhs(term);
 			// (II) - RHS: c
 			ArithmeticExpression shortRHS = //
-					GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null); // c
+					GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getRhs()); // c
 			// (II) - Combine: f(x) - Ms' <= c
 			relation = factory.createRelationalExpression();
 			relation.setOperator(RelationalOperator.LESS_OR_EQUAL); // <=
@@ -826,14 +834,14 @@ public final class GipsConstraintUtils {
 			// (III) - LHS: f(x) + Ms''
 			lhs = factory.createArithmeticBinaryExpression();
 			lhs.setOperator(ArithmeticBinaryOperator.ADD);
-			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getLhs())); // f(x)
 			term = factory.createArithmeticBinaryExpression(); // Ms''
 			term.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 			term.setLhs(createInf(factory, true)); // M
 			term.setRhs(createVariableReference(factory, s2)); // s''
 			lhs.setRhs(term);
 			// (III) - RHS: c
-			shortRHS = GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null); // c
+			shortRHS = GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getRhs()); // c
 			// (III) - Combine: f(x) + Ms'' >= c
 			relation = factory.createRelationalExpression();
 			relation.setOperator(RelationalOperator.GREATER_OR_EQUAL);
@@ -851,7 +859,7 @@ public final class GipsConstraintUtils {
 			// (IV) - LHS: f(x) + Ms''
 			lhs = factory.createArithmeticBinaryExpression();
 			lhs.setOperator(ArithmeticBinaryOperator.ADD);
-			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getLhs(), null)); // f(x)
+			lhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getLhs())); // f(x)
 			term = factory.createArithmeticBinaryExpression(); // Ms''
 			term.setOperator(ArithmeticBinaryOperator.MULTIPLY);
 			term.setLhs(createInf(factory, true)); // M
@@ -863,7 +871,8 @@ public final class GipsConstraintUtils {
 			rhs.setLhs(createInf(factory, true)); // M
 			rhs_rhs = factory.createArithmeticBinaryExpression(); // c - eps
 			rhs_rhs.setOperator(ArithmeticBinaryOperator.SUBTRACT);
-			rhs_rhs.setLhs(GipsArithmeticTransformer.cloneExpression(factory, expression.getRhs(), null)); // c
+			rhs_rhs.setLhs(
+					GipsArithmeticTransformer.cloneExpression(factory, (ArithmeticExpression) expression.getRhs())); // c
 			rhs_rhs.setRhs(createEpsilon(factory, true)); // eps
 			rhs.setRhs(rhs_rhs);
 			// (IV) - Combine: f(x) + Ms'' <= M + c - eps

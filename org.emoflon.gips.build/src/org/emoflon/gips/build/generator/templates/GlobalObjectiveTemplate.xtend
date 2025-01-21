@@ -22,7 +22,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation
 import org.emoflon.gips.intermediate.GipsIntermediate.UnaryArithmeticExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 
-class GlobalObjectiveTemplate extends GeneratorTemplate<GlobalObjective> {
+class GlobalObjectiveTemplate extends GeneratorTemplate<Objective> {
 
 	protected val referencedObjectives = new HashSet<Objective>;
 	protected val iterator2variableName = new HashMap<SetOperation, String>();
@@ -31,13 +31,13 @@ class GlobalObjectiveTemplate extends GeneratorTemplate<GlobalObjective> {
 	protected val builderMethodDefinitions = new HashMap<EObject,String>
 	protected val builderMethodCalls = new LinkedList<String>
 
-	new(TemplateData data, GlobalObjective context) {
+	new(TemplateData data, Objective context) {
 		super(data, context)
 	}
 	
 	override init() {
 		packageName = data.apiData.gipsObjectivePkg
-		className = data.globalObjectiveClassName
+		className = data.objectiveClassName
 		fqn = packageName + "." + className;
 		filePath = data.apiData.gipsObjectivePkgPath + "/" + className + ".java"
 		imports.add("java.util.List")

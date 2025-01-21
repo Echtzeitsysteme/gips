@@ -34,6 +34,7 @@ import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.AttributeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.Context;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.NodeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternReference;
@@ -117,9 +118,15 @@ public class ValueExpressionTransformer extends TransformationContext {
 				EObject context = GipslScopeContextUtil.getLocalContext(eValue);
 				vValue.setVariable(data.eVariable2Variable().get(context));
 			}
+			vValue.setLocal(true);
 			value = vValue;
 		} else if (eValue.getExpression() instanceof GipsAttributeExpression eAttribute) {
 			value = transform(eAttribute, localContext);
+		} else if (eValue.getExpression() == null) {
+			ContextReference cValue = factory.createContextReference();
+			cValue.setContext(localContext);
+			cValue.setLocal(true);
+			value = cValue;
 		} else {
 			throw new UnsupportedOperationException("Unkown local value expression: " + eValue.getExpression());
 		}
@@ -139,9 +146,15 @@ public class ValueExpressionTransformer extends TransformationContext {
 				EObject context = GipslScopeContextUtil.getSetContext(eValue);
 				vValue.setVariable(data.eVariable2Variable().get(context));
 			}
+			vValue.setLocal(false);
 			value = vValue;
 		} else if (eValue.getExpression() instanceof GipsAttributeExpression eAttribute) {
 			value = transform(eAttribute, setContext);
+		} else if (eValue.getExpression() == null) {
+			ContextReference cValue = factory.createContextReference();
+			cValue.setContext(setContext);
+			cValue.setLocal(false);
+			value = cValue;
 		} else {
 			throw new UnsupportedOperationException("Unkown local value expression: " + eValue.getExpression());
 		}
@@ -155,6 +168,11 @@ public class ValueExpressionTransformer extends TransformationContext {
 		if (node.getAttributeExpression() != null) {
 			nValue.setAttribute(transform(node.getAttributeExpression()));
 		}
+		if (context.equals(localContext)) {
+			nValue.setLocal(true);
+		} else {
+			nValue.setLocal(false);
+		}
 		return nValue;
 	}
 
@@ -162,6 +180,11 @@ public class ValueExpressionTransformer extends TransformationContext {
 		AttributeReference aValue = factory.createAttributeReference();
 		aValue.setContext(context);
 		aValue.setAttribute(transform(eAttribute));
+		if (context.equals(localContext)) {
+			aValue.setLocal(true);
+		} else {
+			aValue.setLocal(false);
+		}
 		return aValue;
 	}
 

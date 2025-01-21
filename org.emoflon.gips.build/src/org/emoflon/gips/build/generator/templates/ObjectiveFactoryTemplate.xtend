@@ -13,7 +13,7 @@ class ObjectiveFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> 
 
 	override init() {
 		packageName = data.apiData.gipsApiPkg
-		className = data.objectiveFactoryClassName
+		className = data.functionFactoryClassName
 		fqn = packageName + "." + className;
 		filePath = data.apiData.gipsApiPkgPath + "/" + className + ".java"
 		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)

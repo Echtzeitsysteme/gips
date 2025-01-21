@@ -21,8 +21,8 @@ public abstract class GipsEngine {
 	protected GipsConstraintValidationLog validationLog;
 	final protected Map<String, GipsConstraint<?, ?, ?>> constraints = new HashMap<>();
 	final protected Map<String, GipsLinearFunction<?, ?, ?>> functions = new HashMap<>();
-	protected GipsObjective globalObjective;
-	protected Solver ilpSolver;
+	protected GipsObjective objective;
+	protected Solver solver;
 
 	public abstract void update();
 
@@ -30,7 +30,7 @@ public abstract class GipsEngine {
 
 	public abstract void saveResult(final String path) throws IOException;
 
-	public void buildILPProblemTimed(boolean doUpdate) {
+	public void buildProblemTimed(boolean doUpdate) {
 		Observer observer = Observer.getInstance();
 		observer.observe("BUILD", () -> {
 			if (doUpdate)
@@ -57,17 +57,17 @@ public abstract class GipsEngine {
 				constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());
 				constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
 
-				if (globalObjective != null)
-					globalObjective.buildObjectiveFunction();
+				if (objective != null)
+					objective.buildObjectiveFunction();
 			});
 
 			observer.observe("BUILD_SOLVER", () -> {
-				ilpSolver.buildILPProblem();
+				solver.buildILPProblem();
 			});
 		});
 	}
 
-	public void buildILPProblem(boolean doUpdate) {
+	public void buildProblem(boolean doUpdate) {
 		if (doUpdate)
 			update();
 
@@ -95,41 +95,41 @@ public abstract class GipsEngine {
 
 		constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());
 		constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
-		if (globalObjective != null)
-			globalObjective.buildObjectiveFunction();
+		if (objective != null)
+			objective.buildObjectiveFunction();
 
-		ilpSolver.buildILPProblem();
+		solver.buildILPProblem();
 	}
 
-	public SolverOutput solveILPProblemTimed() {
+	public SolverOutput solveProblemTimed() {
 		Observer observer = Observer.getInstance();
 		SolverOutput out = observer.observe("SOLVE_PROBLEM", () -> {
 			if (validationLog.isNotValid()) {
 				SolverOutput output = new SolverOutput(SolverStatus.INFEASIBLE, Double.NaN, validationLog, 0, null);
-				ilpSolver.reset();
+				solver.reset();
 				return output;
 			}
-			SolverOutput output = ilpSolver.solve();
+			SolverOutput output = solver.solve();
 			if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0)
-				ilpSolver.updateValuesFromSolution();
+				solver.updateValuesFromSolution();
 
-			ilpSolver.reset();
+			solver.reset();
 			return output;
 		});
 		return out;
 	}
 
-	public SolverOutput solveILPProblem() {
+	public SolverOutput solveProblem() {
 		if (validationLog.isNotValid()) {
 			SolverOutput output = new SolverOutput(SolverStatus.INFEASIBLE, Double.NaN, validationLog, 0, null);
-			ilpSolver.reset();
+			solver.reset();
 			return output;
 		}
-		SolverOutput output = ilpSolver.solve();
+		SolverOutput output = solver.solve();
 		if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0)
-			ilpSolver.updateValuesFromSolution();
+			solver.updateValuesFromSolution();
 
-		ilpSolver.reset();
+		solver.reset();
 		return output;
 	}
 
@@ -157,12 +157,12 @@ public abstract class GipsEngine {
 		return validationLog;
 	}
 
-	public GipsObjective getGlobalObjective() {
-		return globalObjective;
+	public GipsObjective getObjective() {
+		return objective;
 	}
 
 	public void terminate() {
-		ilpSolver.terminate();
+		solver.terminate();
 		indexer.terminate();
 		mappers.forEach((name, mapper) -> mapper.terminate());
 	}
@@ -202,15 +202,15 @@ public abstract class GipsEngine {
 		constraints.put(constraint.getName(), constraint);
 	}
 
-	protected void addObjective(final GipsLinearFunction<?, ?, ?> function) {
+	protected void addLinearFunction(final GipsLinearFunction<?, ?, ?> function) {
 		functions.put(function.getName(), function);
 	}
 
-	protected void setGlobalObjective(final GipsObjective globalObjective) {
-		this.globalObjective = globalObjective;
+	protected void setObjective(final GipsObjective objective) {
+		this.objective = objective;
 	}
 
-	public void setILPSolver(final Solver solver) {
-		this.ilpSolver = solver;
+	public void setSolver(final Solver solver) {
+		this.solver = solver;
 	}
 }

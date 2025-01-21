@@ -10,7 +10,7 @@
         eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXModel"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="config" lowerBound="1"
-        eType="#//ILPConfig" containment="true"/>
+        eType="#//SolverConfig" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="variables" upperBound="-1"
         eType="#//Variable" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappings" upperBound="-1"
@@ -28,8 +28,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="requiredRules" upperBound="-1"
         eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXRule"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ILPConfig">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="solver" eType="#//ILPSolverType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SolverConfig">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="solver" eType="#//SolverType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="solverHomeDir" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="solverLicenseFile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="buildLaunchConfig" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -49,7 +49,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="threadCountEnabled" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="threadCount" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="ILPSolverType">
+  <eClassifiers xsi:type="ecore:EEnum" name="SolverType">
     <eLiterals name="GUROBI"/>
     <eLiterals name="GLPK" value="1"/>
     <eLiterals name="CPLEX" value="2"/>
@@ -267,8 +267,9 @@
         eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXContextPattern"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rule" lowerBound="1" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXRule"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ContextReference" abstract="true" eSuperTypes="#//ValueExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="ContextReference" eSuperTypes="#//ValueExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="#//Context"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="local" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeReference" eSuperTypes="#//ContextReference #//Context">
     <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXNode"/>

@@ -20,8 +20,8 @@ public class TemplateData {
 	public String gipsApiClassName;
 	public String mapperFactoryClassName;
 	public String constraintFactoryClassName;
-	public String objectiveFactoryClassName;
-	public String globalObjectiveClassName;
+	public String functionFactoryClassName;
+	public String objectiveClassName;
 
 	final public Map<Mapping, String> mapping2mappingClassName = new HashMap<>();
 	final public Map<Mapping, String> mapping2mapperClassName = new HashMap<>();
@@ -46,7 +46,7 @@ public class TemplateData {
 		gipsApiClassName = apiData.apiClassNamePrefix + "GipsAPI";
 		mapperFactoryClassName = apiData.apiClassNamePrefix + "GipsMapperFactory";
 		constraintFactoryClassName = apiData.apiClassNamePrefix + "GipsConstraintFactory";
-		objectiveFactoryClassName = apiData.apiClassNamePrefix + "GipsObjectiveFactory";
+		functionFactoryClassName = apiData.apiClassNamePrefix + "GipsLinearFunctionFactory";
 		model.getVariables().stream().filter(var -> var instanceof Mapping).map(var -> (Mapping) var)
 				.forEach(mapping -> {
 					mapping2mapperClassName.put(mapping, firstToUpper(mapping.getName()) + "Mapper");
@@ -76,7 +76,7 @@ public class TemplateData {
 		if (model.getObjective() == null)
 			return;
 
-		globalObjectiveClassName = apiData.apiClassNamePrefix + "GipsGlobalObjective";
+		objectiveClassName = apiData.apiClassNamePrefix + "GipsObjective";
 	}
 
 	public static String firstToUpper(final String str) {

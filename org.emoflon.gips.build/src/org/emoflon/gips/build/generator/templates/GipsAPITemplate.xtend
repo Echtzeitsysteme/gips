@@ -18,18 +18,18 @@ class GipsAPITemplate extends GeneratorTemplate<GipsIntermediateModel> {
 		fqn = packageName + "." + className;
 		filePath = data.apiData.gipsApiPkgPath + "/" + className + ".java"
 		imports.add("org.emoflon.gips.core.api.GipsEngineAPI")
-		imports.add("org.emoflon.gips.core.GipsGlobalObjective")
-		imports.add("org.emoflon.gips.core.ilp.ILPSolver")
-		imports.add("org.emoflon.gips.core.ilp.GurobiSolver")
-		imports.add("org.emoflon.gips.core.ilp.GlpkSolver")
-		imports.add("org.emoflon.gips.core.ilp.CplexSolver")
-		imports.add("org.emoflon.gips.core.ilp.ILPSolverConfig")
+		imports.add("org.emoflon.gips.core.GipsObjective")
+		imports.add("org.emoflon.gips.core.milp.Solver")
+		imports.add("org.emoflon.gips.core.milp.GurobiSolver")
+		imports.add("org.emoflon.gips.core.milp.GlpkSolver")
+		imports.add("org.emoflon.gips.core.milp.CplexSolver")
+		imports.add("org.emoflon.gips.core.milp.SolverConfig")
 		imports.add("org.eclipse.emf.ecore.resource.ResourceSet")
 		imports.add(data.apiData.apiPkg + "." + data.apiData.engineAppClasses.get(GipsAPIData.HIPE_ENGINE_NAME))
 		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)
 		imports.add("org.eclipse.emf.common.util.URI");
-		if(data.model.globalObjective !== null) {
-			imports.add(data.apiData.gipsObjectivePkg+"."+data.globalObjectiveClassName)
+		if(data.model.objective !== null) {
+			imports.add(data.apiData.gipsObjectivePkg+"."+data.objectiveClassName)
 		}
 		data.model.variables
 			.filter[v | v instanceof Mapping]
@@ -152,23 +152,23 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 	}
 	
 	@Override	
-	protected void initObjectiveFactory() {
-		objectiveFactory = new «data.objectiveFactoryClassName»(this, eMoflonAPI);
+	protected void initLinearFunctionFactory() {
+		objectiveFactory = new «data.functionFactoryClassName»(this, eMoflonAPI);
 	}
 	
 	@Override
-	protected GipsGlobalObjective createGlobalObjective() {
-		«IF data.model.globalObjective === null»
-		// No global objective was defined!
+	protected GipsObjective createObjective() {
+		«IF data.model.objective === null»
+		// No objective was defined!
 		return null;
 		«ELSE»
-		return new «data.globalObjectiveClassName»(this, gipsModel.getGlobalObjective());
+		return new «data.objectiveClassName»(this, gipsModel.getObjective());
 		«ENDIF»
 	}
 	
 	@Override
-	protected ILPSolver createSolver() {
-		ILPSolver solver = null;
+	protected Solver createSolver() {
+		Solver solver = null;
 		try {
 			solver = «solverInit()»;
 		} catch (Exception e) {

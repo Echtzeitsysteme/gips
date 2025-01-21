@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.emoflon.gips.build.GipsAPIData;
 import org.emoflon.gips.build.generator.templates.ConstraintFactoryTemplate;
-import org.emoflon.gips.build.generator.templates.GTMapperTemplate;
-import org.emoflon.gips.build.generator.templates.GTMappingTemplate;
+import org.emoflon.gips.build.generator.templates.RuleMapperTemplate;
+import org.emoflon.gips.build.generator.templates.RuleMappingTemplate;
 import org.emoflon.gips.build.generator.templates.GipsAPITemplate;
 import org.emoflon.gips.build.generator.templates.GlobalConstraintTemplate;
 import org.emoflon.gips.build.generator.templates.GlobalObjectiveTemplate;
@@ -29,6 +29,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.MappingFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternMapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.RuleConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.RuleFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleMapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeFunction;
@@ -51,8 +53,8 @@ public class GipsCodeGenerator {
 		data.model.getVariables().parallelStream().filter(mapping -> mapping instanceof Mapping)
 				.map(mapping -> (Mapping) mapping).forEach(mapping -> {
 					if (mapping instanceof RuleMapping gtMapping) {
-						templates.add(new GTMappingTemplate(data, gtMapping));
-						templates.add(new GTMapperTemplate(data, gtMapping));
+						templates.add(new RuleMappingTemplate(data, gtMapping));
+						templates.add(new RuleMapperTemplate(data, gtMapping));
 					} else {
 						PatternMapping pmMapping = (PatternMapping) mapping;
 						templates.add(new PatternMappingTemplate(data, pmMapping));
@@ -65,6 +67,8 @@ public class GipsCodeGenerator {
 				templates.add(new MappingConstraintTemplate(data, mappingConstraint));
 			} else if (constraint instanceof PatternConstraint patternConstraint) {
 				templates.add(new PatternConstraintTemplate(data, patternConstraint));
+			} else if (constraint instanceof RuleConstraint ruleConstraint) {
+				templates.add(new RuleConstraintTemplate(data, ruleConstraint));
 			} else if (constraint instanceof TypeConstraint typeConstraint) {
 				templates.add(new TypeConstraintTemplate(data, typeConstraint));
 			} else {
@@ -76,6 +80,8 @@ public class GipsCodeGenerator {
 				templates.add(new MappingObjectiveTemplate(data, mappingFn));
 			} else if (fn instanceof PatternFunction patternFn) {
 				templates.add(new PatternObjectiveTemplate(data, patternFn));
+			} else if (fn instanceof RuleFunction ruleFn) {
+				templates.add(new RuleFunctionTemplate(data, ruleFn));
 			} else {
 				TypeFunction typeFn = (TypeFunction) fn;
 				templates.add(new TypeObjectiveTemplate(data, typeFn));

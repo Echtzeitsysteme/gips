@@ -17,7 +17,6 @@ import org.emoflon.gips.core.milp.SolverConfig;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
-import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.ibex.gt.api.GraphTransformationAPI;
 import org.emoflon.ibex.gt.api.GraphTransformationApp;
@@ -33,7 +32,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	protected SolverConfig solverConfig;
 	protected GipsMapperFactory<EMOFLON_API> mapperFactory;
 	protected GipsConstraintFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> constraintFactory;
-	protected GipsLinearFunctionFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> objectiveFactory;
+	protected GipsLinearFunctionFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> functionFactory;
 
 	protected GipsEngineAPI(final EMOFLON_APP eMoflonApp) {
 		this.eMoflonApp = eMoflonApp;
@@ -158,7 +157,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		this.getEMoflonAPI().terminate();
 	}
 
-	protected void setSolverConfig(final ILPConfig config) {
+	protected void setSolverConfig(final org.emoflon.gips.intermediate.GipsIntermediate.SolverConfig config) {
 		solverConfig = new SolverConfig(config.isEnableTimeLimit(), config.getIlpTimeLimit(), //
 				config.isEnableRndSeed(), config.getIlpRndSeed(), //
 				config.isEnablePresolve(), //
@@ -255,9 +254,9 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		createObjectives();
 
 		if (gipsModel.getObjective() != null)
-			setGlobalObjective(createGlobalObjective());
+			setObjective(createGlobalObjective());
 
-		setILPSolver(createSolver());
+		setSolver(createSolver());
 	}
 
 	protected void loadIntermediateModel(final URI gipsModelURI) {
@@ -291,7 +290,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	}
 
 	protected void createObjectives() {
-		gipsModel.getFunctions().stream().forEach(fn -> addObjective(objectiveFactory.createLinearFunction(fn)));
+		gipsModel.getFunctions().stream().forEach(fn -> addLinearFunction(functionFactory.createLinearFunction(fn)));
 	}
 
 	protected abstract void initMapperFactory();

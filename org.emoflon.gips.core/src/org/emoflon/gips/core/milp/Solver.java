@@ -21,7 +21,7 @@ public abstract class Solver {
 		engine.getMappers().values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
 				.forEach(mapping -> translateMapping(mapping));
 		engine.getConstraints().values().forEach(constraint -> translateConstraint(constraint));
-		GipsObjective go = engine.getGlobalObjective();
+		GipsObjective go = engine.getObjective();
 		if (go != null)
 			translateObjective(go);
 	}

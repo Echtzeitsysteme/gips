@@ -257,6 +257,77 @@ public final class GipsTransformationUtils {
 		return variables;
 	}
 
+	public static Set<VariableReference> extractVariableReference(final ArithmeticExpression expression) {
+		if (expression instanceof ArithmeticBinaryExpression bin) {
+			Set<VariableReference> variables = new HashSet<>();
+			variables.addAll(extractVariableReference(bin.getLhs()));
+			variables.addAll(extractVariableReference(bin.getRhs()));
+			return variables;
+		} else if (expression instanceof ArithmeticUnaryExpression unary) {
+			return extractVariableReference(unary.getOperand());
+		} else if (expression instanceof ArithmeticLiteral) {
+			return new HashSet<>();
+		} else if (expression instanceof ConstantLiteral) {
+			return new HashSet<>();
+		} else if (expression instanceof LinearFunctionReference var) {
+			return extractVariableReference(var.getFunction().getExpression());
+		} else {
+			return extractVariableReference((ValueExpression) expression);
+		}
+	}
+
+	public static Set<VariableReference> extractVariableReference(final ValueExpression expression) {
+		Set<VariableReference> variables = new HashSet<>();
+
+		if (expression instanceof VariableReference variable) {
+			variables.add(variable);
+		}
+		// Else-Case: Sets of Types, Matches, Mappings
+
+		if (expression.getSetExpression() != null) {
+			if (expression.getSetExpression().getSetReduce() != null
+					&& expression.getSetExpression().getSetReduce() instanceof SetSummation sum) {
+				variables.addAll(extractVariableReference(sum.getExpression()));
+			}
+		}
+		return variables;
+	}
+
+	public static Set<VariableReference> extractVariableReference(final BooleanExpression expression) {
+		if (expression instanceof BooleanBinaryExpression bin) {
+			Set<VariableReference> variables = new HashSet<>();
+			variables.addAll(extractVariableReference(bin.getLhs()));
+			variables.addAll(extractVariableReference(bin.getRhs()));
+			return variables;
+		} else if (expression instanceof BooleanUnaryExpression unary) {
+			return extractVariableReference(unary.getOperand());
+		} else if (expression instanceof BooleanLiteral) {
+			return new HashSet<>();
+		} else if (expression instanceof ConstantLiteral) {
+			return new HashSet<>();
+		} else if (expression instanceof ArithmeticExpression arithmetic) {
+			return extractVariableReference(arithmetic);
+		} else {
+			return extractVariableReference((RelationalExpression) expression);
+		}
+	}
+
+	public static Set<VariableReference> extractVariableReference(final RelationalExpression relExpr) {
+		Set<VariableReference> variables = new HashSet<>();
+		if (relExpr.getLhs() instanceof ArithmeticExpression arithmetic) {
+			variables.addAll(extractVariableReference(arithmetic));
+		} else {
+			variables.addAll(extractVariableReference((BooleanExpression) relExpr.getLhs()));
+		}
+
+		if (relExpr.getRhs() instanceof ArithmeticExpression arithmetic) {
+			variables.addAll(extractVariableReference(arithmetic));
+		} else {
+			variables.addAll(extractVariableReference((BooleanExpression) relExpr.getRhs()));
+		}
+		return variables;
+	}
+
 	public static Set<LinearFunction> extractLinearFunction(final ArithmeticExpression expression) {
 		if (expression instanceof ArithmeticBinaryExpression bin) {
 			Set<LinearFunction> functions = new HashSet<>();
@@ -341,9 +412,11 @@ public final class GipsTransformationUtils {
 			expressionType = extractReturnType(node);
 		} else if (expression instanceof AttributeReference attribute) {
 			expressionType = extractReturnType(attribute);
-		} else {
-			// Case: VariableReference
+		} else if (expression instanceof VariableReference) {
 			expressionType = ExpressionReturnType.number;
+		} else {
+			// Case: ContextReference
+			expressionType = ExpressionReturnType.object;
 		}
 
 		if (expression.getSetExpression() != null && expression.getSetExpression().getSetReduce() != null) {

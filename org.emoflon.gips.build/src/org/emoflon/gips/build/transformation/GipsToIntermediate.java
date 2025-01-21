@@ -31,8 +31,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.Goal;
-import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
-import org.emoflon.gips.intermediate.GipsIntermediate.ILPSolverType;
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
@@ -47,6 +45,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.RuleConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleMapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleParameterVariable;
+import org.emoflon.gips.intermediate.GipsIntermediate.SolverConfig;
+import org.emoflon.gips.intermediate.GipsIntermediate.SolverType;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
@@ -123,16 +123,16 @@ public class GipsToIntermediate {
 
 	protected void transformConfig() {
 		GipsConfig eConfig = data.gipslFile().getConfig();
-		ILPConfig config = factory.createILPConfig();
+		SolverConfig config = factory.createSolverConfig();
 		switch (eConfig.getSolver()) {
 		case GUROBI -> {
-			config.setSolver(ILPSolverType.GUROBI);
+			config.setSolver(SolverType.GUROBI);
 		}
 		case GLPK -> {
-			config.setSolver(ILPSolverType.GLPK);
+			config.setSolver(SolverType.GLPK);
 		}
 		case CPLEX -> {
-			config.setSolver(ILPSolverType.CPLEX);
+			config.setSolver(SolverType.CPLEX);
 		}
 		default -> {
 			throw new IllegalArgumentException("Unsupported solver type: " + eConfig.getSolver());

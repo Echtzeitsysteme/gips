@@ -26,6 +26,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.BooleanUnaryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.ConcatenationOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constant;
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
 import org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral;
@@ -910,16 +911,24 @@ public class GipsArithmeticTransformer {
 			if (node.getAttribute() != null) {
 				ref.setAttribute(cloneExpression(factory, node.getAttribute()));
 			}
+			ref.setLocal(node.isLocal());
 			clone = ref;
 		} else if (value instanceof AttributeReference attribute) {
 			AttributeReference ref = factory.createAttributeReference();
 			ref.setContext(attribute.getContext());
 			ref.setAttribute(cloneExpression(factory, attribute.getAttribute()));
+			ref.setLocal(attribute.isLocal());
 			clone = ref;
 		} else if (value instanceof VariableReference variable) {
 			VariableReference ref = factory.createVariableReference();
 			ref.setVariable(variable.getVariable());
 			ref.setContext(variable.getContext());
+			ref.setLocal(variable.isLocal());
+			clone = ref;
+		} else if (value instanceof ContextReference context) {
+			ContextReference ref = factory.createContextReference();
+			ref.setContext(context.getContext());
+			ref.setLocal(context.isLocal());
 			clone = ref;
 		} else {
 			throw new UnsupportedOperationException("Unknown arithmetic expression type: " + value);

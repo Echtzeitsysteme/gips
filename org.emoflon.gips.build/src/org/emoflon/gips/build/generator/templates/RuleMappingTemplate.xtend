@@ -4,15 +4,15 @@ import org.emoflon.gips.build.generator.GeneratorTemplate
 import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives
-import org.emoflon.gips.intermediate.GipsIntermediate.GTMapping
 import org.emoflon.gips.build.generator.GipsImportManager
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableType
+import org.emoflon.gips.intermediate.GipsIntermediate.RuleMapping
 
-class GTMappingTemplate extends GeneratorTemplate<GTMapping> {
+class RuleMappingTemplate extends GeneratorTemplate<RuleMapping> {
 	
 	IBeXContextPattern pattern;
 	
-	new(TemplateData data, GTMapping context) {
+	new(TemplateData data, RuleMapping context) {
 		super(data, context)
 	}
 	
@@ -21,11 +21,11 @@ class GTMappingTemplate extends GeneratorTemplate<GTMapping> {
 		className = data.mapping2mappingClassName.get(context)
 		fqn = packageName + "." + className
 		filePath = data.apiData.gipsMappingPkgPath + "/" + className + ".java"
-		imports.add("org.emoflon.gips.core.gt.GTMapping")
-		imports.add("org.emoflon.gips.core.ilp.ILPVariable")
-		imports.add("org.emoflon.gips.core.ilp.ILPIntegerVariable")
-		imports.add("org.emoflon.gips.core.ilp.ILPRealVariable")
-		imports.add("org.emoflon.gips.core.ilp.ILPBinaryVariable")
+		imports.add("org.emoflon.gips.core.gt.RuleMapping")
+		imports.add("org.emoflon.gips.core.milp.model.Variable")
+		imports.add("org.emoflon.gips.core.milp.model.IntegerVariable")
+		imports.add("org.emoflon.gips.core.milp.model.RealVariable")
+		imports.add("org.emoflon.gips.core.milp.model.BinaryVariable")
 		imports.add(data.apiData.rulesPkg+"."+data.mapping2ruleClassName.get(context))
 		imports.add(data.apiData.matchesPkg+"."+data.mapping2matchClassName.get(context))
 		
@@ -43,7 +43,7 @@ class GTMappingTemplate extends GeneratorTemplate<GTMapping> {
 import «imp»;
 «ENDFOR»
 		
-public class «className» extends GTMapping<«data.mapping2matchClassName.get(context)», «data.mapping2ruleClassName.get(context)»> {
+public class «className» extends RuleMapping<«data.mapping2matchClassName.get(context)», «data.mapping2ruleClassName.get(context)»> {
 	
 	«IF !context.freeVariables.isNullOrEmpty»
 	«FOR v : context.freeVariables»
@@ -176,7 +176,7 @@ public class «className» extends GTMapping<«data.mapping2matchClassName.get(c
 	}
 	
 	@Override
-	public Map<String, ILPVariable<?>> getAdditionalVariables() {
+	public Map<String, Variable<?>> getAdditionalVariables() {
 		return Map.of(«getAllVariableEntries(",\n")»);
 	}
 	
@@ -186,7 +186,7 @@ public class «className» extends GTMapping<«data.mapping2matchClassName.get(c
 	}
 	
 	@Override
-	public Map<String, ILPVariable<?>> getFreeVariables() {
+	public Map<String, Variable<?>> getFreeVariables() {
 		return Map.of(«getFreeVariableEntries(",\n")»);
 	}
 	
@@ -196,7 +196,7 @@ public class «className» extends GTMapping<«data.mapping2matchClassName.get(c
 	}
 	
 	@Override
-	public Map<String, ILPVariable<?>> getBoundVariables() {
+	public Map<String, Variable<?>> getBoundVariables() {
 		return Map.of(«getBoundVariableEntries(",\n")»);
 	}
 	

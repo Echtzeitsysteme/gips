@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
+import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 
 public abstract class GeneratorTemplate<CONTEXT extends EObject> {
 	final protected TemplateData data;
@@ -32,5 +33,10 @@ public abstract class GeneratorTemplate<CONTEXT extends EObject> {
 		String path = data.apiData.project.getLocation().toPortableString() + "/" + filePath;
 		File file = new File(path);
 		Files.write(file.toPath(), code.getBytes());
+	}
+
+	public boolean isMappingVariable(final Variable variable) {
+		return data.mapping2mappingClassName.keySet().stream().filter(m -> m.getMappingVariable().equals(variable))
+				.findAny().isPresent();
 	}
 }

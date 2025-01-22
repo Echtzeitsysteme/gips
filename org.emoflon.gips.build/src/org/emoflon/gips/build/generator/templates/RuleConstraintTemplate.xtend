@@ -1,17 +1,16 @@
 package org.emoflon.gips.build.generator.templates
 
 import org.emoflon.gips.build.generator.TemplateData
-import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
-import org.emoflon.gips.intermediate.GipsIntermediate.Constraint
+import org.emoflon.gips.intermediate.GipsIntermediate.RuleConstraint
 
-class GlobalConstraintTemplate extends ConstraintTemplate<Constraint> {
-	
-	new(TemplateData data, Constraint context) {
+class RuleConstraintTemplate extends ConstraintTemplate<RuleConstraint> {
+
+	new(TemplateData data, RuleConstraint context) {
 		super(data, context)
 	}
-	
-		override init() {
+
+	override init() {
 		packageName = data.apiData.gipsConstraintPkg
 		className = data.constraint2constraintClassName.get(context)
 		fqn = packageName + "." + className;
@@ -19,15 +18,14 @@ class GlobalConstraintTemplate extends ConstraintTemplate<Constraint> {
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
 		imports.add("java.util.Collections");
-		imports.add("org.eclipse.emf.ecore.EClass")
-		imports.add("org.eclipse.emf.ecore.EObject")
 		imports.add("org.emoflon.gips.core.GipsEngine")
-		imports.add("org.emoflon.gips.core.GipsMapping")
-		imports.add("org.emoflon.gips.core.GipsGlobalConstraint")
+		imports.add("org.emoflon.gips.core.gt.GipsRuleConstraint")
 		imports.add("org.emoflon.gips.core.milp.model.Term")
 		imports.add("org.emoflon.gips.core.milp.model.Constraint")
-		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.Constraint")
+		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.RuleConstraint")
 		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
+		imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(context.rule))
+		imports.add(data.apiData.rulesPkg+"."+data.ibex2ibexClassName.get(context.rule))
 	}
 	
 	override String generatePackageDeclaration() {
@@ -41,35 +39,26 @@ import «imp»;
 	}
 	
 	override String generateClassSignature() {
-		return '''public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName»> '''
+		return '''public class «className» extends GipsRuleConstraint<«data.gipsApiClassName», «data.ibex2matchClassName.get(context.rule)», «data.ibex2ibexClassName.get(context.rule)»>'''
 	}
 	
 	override String generateClassConstructor() {
 		return '''
-public «className»(final «data.gipsApiClassName» engine, final Constraint constraint) {
-	super(engine, constraint);
+public «className»(final «data.gipsApiClassName» engine, final RuleConstraint constraint, final «data.ibex2ibexClassName.get(context.rule)» rule) {
+	super(engine, constraint, rule);
 }
 '''
 	}
 	
-	override getVariable(Variable variable) {
+	override String getVariable(Variable variable) {
 		if(!isMappingVariable(variable)) {
 			return '''engine.getNonMappingVariable(context, "«variable.name»")'''
 		} else {
-			throw new UnsupportedOperationException("Mapping context access is not possible within a global context.")
+			throw new UnsupportedOperationException("Mapping context access is not possible within a pattern context.")
 		}
 	}
-
+	
 	override String getContextParameterType() {
-		return ""
+		return data.ibex2matchClassName.get(context.rule)
 	}
-	
-	override String getContextParameter() {
-		return ""
-	}
-	
-	override getAdditionalVariableName(VariableReference varRef) {
-		return '''engine.getNonMappingVariable(constraint, "«varRef.variable.name»").getName()'''
-	}
-
 }

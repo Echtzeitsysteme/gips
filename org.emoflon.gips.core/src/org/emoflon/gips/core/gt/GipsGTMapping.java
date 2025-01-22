@@ -9,12 +9,12 @@ import org.emoflon.gips.core.milp.model.Variable;
 import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 import org.emoflon.ibex.gt.api.GraphTransformationPattern;
 
-public abstract class GipsRuleMapping<M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
+public abstract class GipsGTMapping<M extends GraphTransformationMatch<M, P>, P extends GraphTransformationPattern<M, P>>
 		extends GipsMapping {
 
 	final protected M match;
 
-	protected GipsRuleMapping(final String ilpVariable, final M match) {
+	protected GipsGTMapping(final String ilpVariable, final M match) {
 		super(ilpVariable);
 		this.match = match;
 	}
@@ -26,7 +26,7 @@ public abstract class GipsRuleMapping<M extends GraphTransformationMatch<M, P>, 
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof GipsRuleMapping<?, ?> other) {
+		if (obj instanceof GipsGTMapping<?, ?> other) {
 			if (name.equals(other.name) && match.equals(other.match)) {
 				return true;
 			} else {

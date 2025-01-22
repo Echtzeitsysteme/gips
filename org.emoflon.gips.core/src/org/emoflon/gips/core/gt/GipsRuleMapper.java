@@ -16,7 +16,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.RuleMapping;
 import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 import org.emoflon.ibex.gt.api.GraphTransformationRule;
 
-public abstract class GipsRuleMapper<GTM extends GipsRuleMapping<M, R>, M extends GraphTransformationMatch<M, R>, R extends GraphTransformationRule<M, R>>
+public abstract class GipsRuleMapper<GTM extends GipsGTMapping<M, R>, M extends GraphTransformationMatch<M, R>, R extends GraphTransformationRule<M, R>>
 		extends GipsMapper<GTM> {
 
 	final protected R rule;

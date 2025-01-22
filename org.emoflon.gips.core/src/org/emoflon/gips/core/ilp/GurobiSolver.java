@@ -152,7 +152,7 @@ public class GurobiSolver extends ILPSolver {
 		} catch (final Error e) {
 			gurobiInitError = e;
 		}
-		if (!config.enableOutput()) {
+		if (!config.enableOutput() && env != null) {
 			env.set(IntParam.OutputFlag, 0);
 			env.set(IntParam.LogToConsole, 0);
 		}

@@ -47,6 +47,16 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		return solverConfig;
 	}
 
+	/**
+	 * Overwrites the previously configured number of ILP solver threads with the
+	 * given parameter's value.
+	 * 
+	 * @param numberOfThreads Number of ILP solver threads to set.
+	 */
+	public void setIlpSolverThreads(final int numberOfThreads) {
+		this.solverConfig = solverConfig.withThreadCount(numberOfThreads);
+	}
+
 	public EMOFLON_APP getEMoflonApp() {
 		return eMoflonApp;
 	}

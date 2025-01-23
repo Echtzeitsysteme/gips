@@ -1,4 +1,4 @@
-package org.emoflon.gips.build.generator
+package org.emoflon.gips.build.generator.templates
 
 import java.util.Set
 import java.util.HashSet
@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EObject
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import java.nio.file.Files
 import java.io.File
+import org.emoflon.gips.build.generator.TemplateData
 
 abstract class GeneratorTemplate <CONTEXT extends EObject>{
 	final protected TemplateData data;

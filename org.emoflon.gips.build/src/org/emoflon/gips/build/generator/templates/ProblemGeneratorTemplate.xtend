@@ -1,6 +1,5 @@
-package org.emoflon.gips.build.generator
+package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.gips.build.generator.GeneratorTemplate
 import org.eclipse.emf.ecore.EObject
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantLiteral
@@ -37,7 +36,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral
 import org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryOperator
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanExpression
@@ -46,6 +44,7 @@ import java.util.HashSet
 import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
 import java.util.HashMap
+import org.emoflon.gips.build.generator.TemplateData
 
 abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends GeneratorTemplate<CONTEXT> {
 	
@@ -102,37 +101,6 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	
 	def String generateConstTermBuilder(BooleanExpression constExpr) {
 		return '''«generateConstantExpression(constExpr)»'''
-	}
-	
-	def void generateVariableTermBuilder(ArithmeticExpression expr, LinkedList<String> methodCalls) {
-		if(expr instanceof ArithmeticBinaryExpression) {
-			if(expr.operator == ArithmeticBinaryOperator.ADD) {
-				generateVariableTermBuilder(expr.lhs, methodCalls)
-				generateVariableTermBuilder(expr.rhs, methodCalls)
-			} else if(expr.operator == ArithmeticBinaryOperator.SUBTRACT) {
-				throw new UnsupportedOperationException("Code generator does not support subtraction of variables.");
-			} else {
-				val variable = GipsTransformationUtils.extractVariable(expr);
-				if(variable.size > 1)
-					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
-				
-				val builderMethodName = generateBuilder(expr, methodCalls)
-				val instruction = '''terms.add(new Term(«getVariable(variable.iterator.next)», «builderMethodName»(context)));'''
-				methodCalls.add(instruction)
-			}
-		} else if(expr instanceof ArithmeticUnaryExpression) {
-				val variable = GipsTransformationUtils.extractVariable(expr);
-				if(variable.size > 1)
-					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
-				
-				val builderMethodName = generateBuilder(expr, methodCalls)
-				val instruction = '''terms.add(new Term(«getVariable(variable.iterator.next)», «builderMethodName»(context)));'''
-				methodCalls.add(instruction)
-		} else if(expr instanceof ValueExpression) {
-			generateBuilder(expr, methodCalls)
-		} else {
-			throw new IllegalArgumentException("Terms on the lhs of a linear (in-)equality may not be constant")
-		}
 	}
 	
 	def String getAdditionalVariableName(VariableReference varRef) {

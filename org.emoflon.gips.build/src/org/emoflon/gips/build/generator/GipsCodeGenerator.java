@@ -5,23 +5,26 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.emoflon.gips.build.GipsAPIData;
-import org.emoflon.gips.build.generator.templates.ConstraintFactoryTemplate;
-import org.emoflon.gips.build.generator.templates.RuleMapperTemplate;
-import org.emoflon.gips.build.generator.templates.RuleMappingTemplate;
+import org.emoflon.gips.build.generator.templates.GeneratorTemplate;
 import org.emoflon.gips.build.generator.templates.GipsAPITemplate;
-import org.emoflon.gips.build.generator.templates.GlobalConstraintTemplate;
-import org.emoflon.gips.build.generator.templates.GlobalObjectiveTemplate;
 import org.emoflon.gips.build.generator.templates.LaunchFileTemplate;
 import org.emoflon.gips.build.generator.templates.MapperFactoryTemplate;
-import org.emoflon.gips.build.generator.templates.MappingConstraintTemplate;
-import org.emoflon.gips.build.generator.templates.MappingObjectiveTemplate;
-import org.emoflon.gips.build.generator.templates.ObjectiveFactoryTemplate;
-import org.emoflon.gips.build.generator.templates.PatternConstraintTemplate;
+import org.emoflon.gips.build.generator.templates.ObjectiveTemplate;
 import org.emoflon.gips.build.generator.templates.PatternMapperTemplate;
 import org.emoflon.gips.build.generator.templates.PatternMappingTemplate;
-import org.emoflon.gips.build.generator.templates.PatternObjectiveTemplate;
-import org.emoflon.gips.build.generator.templates.TypeConstraintTemplate;
-import org.emoflon.gips.build.generator.templates.TypeObjectiveTemplate;
+import org.emoflon.gips.build.generator.templates.RuleMapperTemplate;
+import org.emoflon.gips.build.generator.templates.RuleMappingTemplate;
+import org.emoflon.gips.build.generator.templates.constraint.ConstraintFactoryTemplate;
+import org.emoflon.gips.build.generator.templates.constraint.GlobalConstraintTemplate;
+import org.emoflon.gips.build.generator.templates.constraint.MappingConstraintTemplate;
+import org.emoflon.gips.build.generator.templates.constraint.PatternConstraintTemplate;
+import org.emoflon.gips.build.generator.templates.constraint.RuleConstraintTemplate;
+import org.emoflon.gips.build.generator.templates.constraint.TypeConstraintTemplate;
+import org.emoflon.gips.build.generator.templates.function.FunctionFactoryTemplate;
+import org.emoflon.gips.build.generator.templates.function.MappingFunctionTemplate;
+import org.emoflon.gips.build.generator.templates.function.PatternFunctionTemplate;
+import org.emoflon.gips.build.generator.templates.function.RuleFunctionTemplate;
+import org.emoflon.gips.build.generator.templates.function.TypeFunctionTemplate;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
@@ -49,7 +52,7 @@ public class GipsCodeGenerator {
 		templates.add(new GipsAPITemplate(data, data.model));
 		templates.add(new MapperFactoryTemplate(data, data.model));
 		templates.add(new ConstraintFactoryTemplate(data, data.model));
-		templates.add(new ObjectiveFactoryTemplate(data, data.model));
+		templates.add(new FunctionFactoryTemplate(data, data.model));
 		data.model.getVariables().parallelStream().filter(mapping -> mapping instanceof Mapping)
 				.map(mapping -> (Mapping) mapping).forEach(mapping -> {
 					if (mapping instanceof RuleMapping gtMapping) {
@@ -77,18 +80,18 @@ public class GipsCodeGenerator {
 		});
 		data.model.getFunctions().parallelStream().forEach(fn -> {
 			if (fn instanceof MappingFunction mappingFn) {
-				templates.add(new MappingObjectiveTemplate(data, mappingFn));
+				templates.add(new MappingFunctionTemplate(data, mappingFn));
 			} else if (fn instanceof PatternFunction patternFn) {
-				templates.add(new PatternObjectiveTemplate(data, patternFn));
+				templates.add(new PatternFunctionTemplate(data, patternFn));
 			} else if (fn instanceof RuleFunction ruleFn) {
 				templates.add(new RuleFunctionTemplate(data, ruleFn));
 			} else {
 				TypeFunction typeFn = (TypeFunction) fn;
-				templates.add(new TypeObjectiveTemplate(data, typeFn));
+				templates.add(new TypeFunctionTemplate(data, typeFn));
 			}
 		});
 		if (data.model.getObjective() != null) {
-			templates.add(new GlobalObjectiveTemplate(data, data.model.getObjective()));
+			templates.add(new ObjectiveTemplate(data, data.model.getObjective()));
 		}
 		templates.parallelStream().forEach(template -> {
 			try {

@@ -1,6 +1,5 @@
 package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.gips.build.generator.GeneratorTemplate
 import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives

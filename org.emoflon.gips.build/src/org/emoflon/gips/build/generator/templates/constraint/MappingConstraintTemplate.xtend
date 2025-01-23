@@ -1,8 +1,9 @@
-package org.emoflon.gips.build.generator.templates
+package org.emoflon.gips.build.generator.templates.constraint
 
 import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
+import org.emoflon.gips.build.generator.templates.constraint.ConstraintTemplate
 
 class MappingConstraintTemplate extends ConstraintTemplate<MappingConstraint> {
 

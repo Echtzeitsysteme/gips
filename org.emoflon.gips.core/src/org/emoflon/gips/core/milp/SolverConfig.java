@@ -10,12 +10,12 @@ public record SolverConfig(boolean timeLimitEnabled, double timeLimit, boolean r
 	 * @param newThreads Number of threads to be used by the ILP solver.
 	 * @return New ILPSolverConfig record with the given number of threads.
 	 */
-	public ILPSolverConfig withThreadCount(final int newThreads) {
+	public SolverConfig withThreadCount(final int newThreads) {
 		if (newThreads <= 0) {
 			throw new IllegalArgumentException("Given number of ILP solver threads is smaller or equal to 0.");
 		}
 
-		return new ILPSolverConfig( //
+		return new SolverConfig( //
 				timeLimitEnabled, timeLimit, //
 				rndSeedEnabled, randomSeed, //
 				enablePresolve, //

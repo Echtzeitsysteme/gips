@@ -245,8 +245,8 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		} else if(expression instanceof ValueExpression) {
 			return generateConstantExpression(expression);
 		} else {
-			// CASE: LinearFunctionReference
-			throw new IllegalArgumentException("Constant expressions may not contain references to linear functions.")
+			// CASE: LinearFunctionReference -> return a constant 1 since the variable should have already been extracted.
+			return '''1.0'''
 		}
 		
 	}

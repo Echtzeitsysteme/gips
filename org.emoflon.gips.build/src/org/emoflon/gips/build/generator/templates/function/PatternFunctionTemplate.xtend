@@ -20,7 +20,7 @@ class PatternFunctionTemplate extends LinearFunctionTemplate<PatternFunction> {
 		imports.add("org.emoflon.gips.core.GipsEngine")
 		imports.add("org.emoflon.gips.core.gt.GipsPatternLinearFunction")
 		imports.add("org.emoflon.gips.core.milp.model.Term")
-		imports.add("org.emoflon.gips.core.milp.model.Constraint")
+		imports.add("org.emoflon.gips.core.milp.model.Constant")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.PatternFunction")
 		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
 		imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(context.pattern))

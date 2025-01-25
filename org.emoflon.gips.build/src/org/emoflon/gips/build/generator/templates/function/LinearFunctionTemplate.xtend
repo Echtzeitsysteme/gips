@@ -43,7 +43,7 @@ protected void buildTerms(final «getContextParameterType()» context) {
 	
 	def void generateTermBuilder(ArithmeticExpression expr) {
 		if(GipsTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
-			builderMethodCalls2.add('''constantTerms.add(new ILPConstant(«generateConstantExpression(expr)»(context)));''')
+			builderMethodCalls2.add('''constantTerms.add(new Constant(«generateConstantExpression(expr)»));''')
 			return
 		}
 		

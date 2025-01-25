@@ -391,8 +391,7 @@ public class GipsArithmeticTransformer {
 				modified = cloneExpression(factory, valExpr);
 			}
 		} else if (expression instanceof LinearFunctionReference function) {
-			throw new IllegalArgumentException(
-					"There must be no linear function references in constraints: " + function);
+			return function;
 		} else {
 			// CASE: Literals & Constants
 			modified = cloneExpression(factory, expression);
@@ -556,8 +555,7 @@ public class GipsArithmeticTransformer {
 				modified = cloneExpression(factory, valExpr);
 			}
 		} else if (expression instanceof LinearFunctionReference function) {
-			throw new IllegalArgumentException(
-					"There must be no linear function references in constraints: " + function);
+			return function;
 		} else {
 			// CASE: Literals and Constants
 			modified = cloneExpression(factory, expression);

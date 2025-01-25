@@ -22,6 +22,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ConstantLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.Context;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference;
 
 public class ArithmeticExpressionTransformer extends TransformationContext {
 	protected ArithmeticExpressionTransformer(GipsTransformationData data, Context localContext,
@@ -183,8 +184,9 @@ public class ArithmeticExpressionTransformer extends TransformationContext {
 	}
 
 	public ArithmeticExpression transform(final GipsLinearFunctionReference function) throws Exception {
-		throw new UnsupportedOperationException(
-				"References to objective function values not permitted within constraints or objective functions.");
+		LinearFunctionReference reference = factory.createLinearFunctionReference();
+		reference.setFunction(data.eFunction2Function().get(function.getFunction()));
+		return reference;
 	}
 
 	public ArithmeticExpression transform(final GipsValueExpression eValue) throws Exception {

@@ -1,15 +1,11 @@
 package org.emoflon.gips.build.generator.templates
 
-import java.util.HashMap
 import java.util.HashSet
-import java.util.LinkedList
-import org.eclipse.emf.ecore.EObject
 import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective
-import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryOperator
@@ -21,11 +17,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 class ObjectiveTemplate extends ProblemGeneratorTemplate<Objective> {
 
 	protected val referencedObjectives = new HashSet<LinearFunction>;
-	protected val iterator2variableName = new HashMap<SetOperation, String>();
-	protected val builderMethodNames = new HashSet<String>
-	protected val builderMethods = new HashMap<EObject,String>
-	protected val builderMethodDefinitions = new HashMap<EObject,String>
-	protected val builderMethodCalls = new LinkedList<String>
 
 	new(TemplateData data, Objective context) {
 		super(data, context)
@@ -96,7 +87,7 @@ import «imp»;
 		return '''@Override
 protected void initLocalObjectives() {
 	«FOR obj : referencedObjectives»
-	«obj.name.toFirstLower» = («data.function2functionClassName.get(obj)») engine.getObjectives().get("«obj.name»");
+	«obj.name.toFirstLower» = («data.function2functionClassName.get(obj)») engine.getLinearFunctions().get("«obj.name»");
 	«ENDFOR»
 }'''
 	}
@@ -109,7 +100,7 @@ protected void initLocalObjectives() {
 		generateTermBuilder(expr)
 		return '''@Override
 protected void buildTerms() {
-	«FOR instruction : builderMethodCalls»
+	«FOR instruction : builderMethodCalls2»
 	«instruction»
 	«ENDFOR»
 }'''
@@ -125,7 +116,7 @@ protected void buildTerms() {
 	
 	def void generateTermBuilder(ArithmeticExpression expr) {
 		if(GipsTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
-			builderMethodCalls2.add('''constantTerms.add(new ILPConstant(«generateConstantExpression(expr)»(context)));''')
+			builderMethodCalls2.add('''constantTerms.add(new Constant(«generateConstantExpression(expr)»));''') 
 			return
 		}
 		
@@ -143,7 +134,7 @@ protected void buildTerms() {
 				val function = functions.iterator.next
 				referencedObjectives.add(function)
 				val builderMethodName = generateBuilder(expr, builderMethodCalls2)
-				val instruction = '''weightedFunctions.add(new ILPWeightedLinearFunction(«function.name».getObjectiveFunction(), «builderMethodName»()));'''
+				val instruction = '''weightedFunctions.add(new WeightedLinearFunction(«function.name».getLinearFunctionFunction(), «builderMethodName»()));'''
 				builderMethodCalls2.add(instruction)
 			}
 		} else if(expr instanceof ArithmeticUnaryExpression) {
@@ -154,10 +145,11 @@ protected void buildTerms() {
 				val function = functions.iterator.next
 				referencedObjectives.add(function)
 				val builderMethodName = generateBuilder(expr, builderMethodCalls2)
-				val instruction = '''weightedFunctions.add(new ILPWeightedLinearFunction(«function.name».getObjectiveFunction(), «builderMethodName»()));'''
+				val instruction = '''weightedFunctions.add(new WeightedLinearFunction(«function.name».getLinearFunctionFunction(), «builderMethodName»()));'''
 				builderMethodCalls2.add(instruction)
 		} else if(expr instanceof LinearFunctionReference) {
-			builderMethodCalls2.add('''weightedFunctions.add(new ILPWeightedLinearFunction(«expr.function.name».getObjectiveFunction(), 1.0));''')
+			referencedObjectives.add(expr.function)
+			builderMethodCalls2.add('''weightedFunctions.add(new WeightedLinearFunction(«expr.function.name».getLinearFunctionFunction(), 1.0));''')
 		} else {
 			generateBuilder(expr as ValueExpression, builderMethodCalls2)
 		}

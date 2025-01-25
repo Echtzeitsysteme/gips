@@ -20,7 +20,7 @@ class RuleFunctionTemplate extends LinearFunctionTemplate<RuleFunction> {
 		imports.add("org.emoflon.gips.core.GipsEngine")
 		imports.add("org.emoflon.gips.core.gt.GipsRuleLinearFunction")
 		imports.add("org.emoflon.gips.core.milp.model.Term")
-		imports.add("org.emoflon.gips.core.milp.model.Constraint")
+		imports.add("org.emoflon.gips.core.milp.model.Constant")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.RuleFunction")
 		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
 		imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(context.rule))

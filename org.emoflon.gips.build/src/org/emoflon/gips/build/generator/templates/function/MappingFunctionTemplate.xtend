@@ -20,7 +20,7 @@ class MappingFunctionTemplate extends LinearFunctionTemplate<MappingFunction> {
 		imports.add("org.emoflon.gips.core.GipsEngine")
 		imports.add("org.emoflon.gips.core.GipsMappingLinearFunction")
 		imports.add("org.emoflon.gips.core.milp.model.Term")
-		imports.add("org.emoflon.gips.core.milp.model.Constraint")
+		imports.add("org.emoflon.gips.core.milp.model.Constant")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingFunction")
 		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
 		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(context.mapping))

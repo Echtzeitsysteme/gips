@@ -610,7 +610,7 @@ public final class GipslExpressionValidator {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.ARITH_EXPR_VAR_REF_ERROR_MESSAGE, //
-							expression, //
+							expression.getExpression(), //
 							GipslPackage.Literals.GIPS_VARIABLE_REFERENCE_EXPRESSION__VARIABLE //
 					);
 				});
@@ -623,7 +623,7 @@ public final class GipslExpressionValidator {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.ARITH_EXPR_VAR_USE_ERROR_MESSAGE, //
-							expression, //
+							expression.getExpression(), //
 							GipslPackage.Literals.GIPS_VARIABLE_REFERENCE_EXPRESSION__VARIABLE //
 					);
 				});
@@ -634,17 +634,17 @@ public final class GipslExpressionValidator {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.ARITH_EXPR_VAR_USE_ERROR_MESSAGE, //
-							expression, //
+							expression.getExpression(), //
 							GipslPackage.Literals.GIPS_VARIABLE_REFERENCE_EXPRESSION__VARIABLE //
 					);
 				});
 			}
 		} else if (expression.getExpression() instanceof GipsNodeExpression node) {
-			if (localContext instanceof GipsTypeExpression) {
+			if (localContext instanceof EClass) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.TYPE_DOES_NOT_CONTAIN_NODES, //
-							expression, //
+							expression.getExpression(), //
 							GipslPackage.Literals.GIPS_NODE_EXPRESSION__NODE //
 					);
 				});
@@ -653,11 +653,11 @@ public final class GipslExpressionValidator {
 				valueType = evaluate(node, errors);
 			}
 		} else if (expression.getExpression() instanceof GipsAttributeExpression attribute) {
-			if (!(localContext instanceof GipsTypeExpression)) {
+			if (!(localContext instanceof EClass)) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.TYPE_CONTAINS_ATTRIBUTES, //
-							expression, //
+							expression.getExpression(), //
 							GipslPackage.Literals.GIPS_ATTRIBUTE_EXPRESSION__ATTRIBUTE //
 					);
 				});
@@ -666,7 +666,9 @@ public final class GipslExpressionValidator {
 				valueType = evaluate(attribute, errors);
 			}
 		} else {
-			valueType = ExpressionType.Unknown;
+			// Case: expression.getExpression() == null, which is a reference to the plain
+			// context object
+			valueType = ExpressionType.Object;
 		}
 
 		return valueType;
@@ -682,7 +684,7 @@ public final class GipslExpressionValidator {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.ARITH_EXPR_VAR_REF_ERROR_MESSAGE, //
-							expression, //
+							expression.getExpression(), //
 							GipslPackage.Literals.GIPS_VARIABLE_REFERENCE_EXPRESSION__VARIABLE //
 					);
 				});
@@ -693,7 +695,7 @@ public final class GipslExpressionValidator {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.ARITH_EXPR_VAR_USE_ERROR_MESSAGE, //
-							expression, //
+							expression.getExpression(), //
 							GipslPackage.Literals.GIPS_VARIABLE_REFERENCE_EXPRESSION__VARIABLE //
 					);
 				});
@@ -705,17 +707,17 @@ public final class GipslExpressionValidator {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.ARITH_EXPR_VAR_USE_ERROR_MESSAGE, //
-							expression, //
+							expression.getExpression(), //
 							GipslPackage.Literals.GIPS_VARIABLE_REFERENCE_EXPRESSION__VARIABLE //
 					);
 				});
 			}
 		} else if (expression.getExpression() instanceof GipsNodeExpression node) {
-			if (setContext instanceof GipsTypeExpression) {
+			if (setContext instanceof EClass) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.TYPE_DOES_NOT_CONTAIN_NODES, //
-							expression, //
+							expression.getExpression(), //
 							GipslPackage.Literals.GIPS_NODE_EXPRESSION__NODE //
 					);
 				});
@@ -724,11 +726,11 @@ public final class GipslExpressionValidator {
 				valueType = evaluate(node, errors);
 			}
 		} else if (expression.getExpression() instanceof GipsAttributeExpression attribute) {
-			if (!(setContext instanceof GipsTypeExpression)) {
+			if (!(setContext instanceof EClass)) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.TYPE_CONTAINS_ATTRIBUTES, //
-							expression, //
+							expression.getExpression(), //
 							GipslPackage.Literals.GIPS_ATTRIBUTE_EXPRESSION__ATTRIBUTE //
 					);
 				});
@@ -737,7 +739,9 @@ public final class GipslExpressionValidator {
 				valueType = evaluate(attribute, errors);
 			}
 		} else {
-			valueType = ExpressionType.Unknown;
+			// Case: expression.getExpression() == null, which is a reference to the plain
+			// set element
+			valueType = ExpressionType.Object;
 		}
 
 		return valueType;

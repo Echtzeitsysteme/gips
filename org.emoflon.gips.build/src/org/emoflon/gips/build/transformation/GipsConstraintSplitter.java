@@ -205,14 +205,14 @@ public class GipsConstraintSplitter {
 
 	GipsConstraint transform(final GipsBooleanLiteral literal) {
 		GipsConstraint constraint = factory.createGipsConstraint();
-		constraint.setContext(EcoreUtil.copy(this.constraint.getContext()));
+		constraint.setContext(this.constraint.getContext());
 		constraint.setExpression(EcoreUtil.copy(literal));
 		return constraint;
 	}
 
 	GipsConstraint transform(final GipsRelationalExpression relational) {
 		GipsConstraint constraint = factory.createGipsConstraint();
-		constraint.setContext(EcoreUtil.copy(this.constraint.getContext()));
+		constraint.setContext(this.constraint.getContext());
 		constraint.setExpression(EcoreUtil.copy(relational));
 		return constraint;
 	}

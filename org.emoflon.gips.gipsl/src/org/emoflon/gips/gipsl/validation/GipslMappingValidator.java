@@ -134,14 +134,14 @@ public class GipslMappingValidator {
 	 * @param mapping Mapping to start checking for.
 	 */
 	public static void checkAtMostOneMappingPerRule(final GipsMapping mapping) {
-		if (mapping == null || mapping.getName() == null) {
+		if (mapping == null || mapping.getName() == null || mapping.getPattern() == null) {
 			return;
 		}
 
 		final EditorGTFile container = (EditorGTFile) mapping.eContainer();
 		final Set<EditorPattern> foundPatterns = new HashSet<>();
 
-		container.getMappings().forEach(m -> {
+		container.getMappings().stream().filter(m -> m.getPattern() != null).forEach(m -> {
 			final boolean alreadyUsed = !foundPatterns.add(m.getPattern());
 			if (alreadyUsed) {
 				GipslValidator.err( //

@@ -293,6 +293,9 @@ public final class GipslExpressionValidator {
 			});
 		}
 
+		if (expression == null || expression.eContainer() == null)
+			return errors;
+
 		if (expression.eContainer() instanceof GipsObjective obj
 				&& !(result == ExpressionType.Variable || result == ExpressionType.Number)) {
 			errors.add(() -> {
@@ -814,6 +817,16 @@ public final class GipslExpressionValidator {
 
 	public static ExpressionType evaluate(final GipsValueExpression context, final GipsSetExpression expression,
 			Collection<Runnable> errors) {
+		if (expression.getOperation() == null) {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.SET_OPERATION_MISSING, //
+						expression, //
+						GipslPackage.Literals.GIPS_SET_EXPRESSION__OPERATION //
+				);
+			});
+			return ExpressionType.Error;
+		}
 		if (expression.getOperation() instanceof GipsSetOperation && expression.getRight() == null) {
 			errors.add(() -> {
 				GipslValidator.err( //

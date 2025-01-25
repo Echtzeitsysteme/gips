@@ -323,7 +323,7 @@ public final class GipslExpressionValidator {
 			ExpressionType lhs = evaluate(sum.getLeft(), errors);
 			ExpressionType rhs = evaluate(sum.getRight(), errors);
 
-			if (lhs != ExpressionType.String || lhs != ExpressionType.Number || lhs != ExpressionType.Variable) {
+			if (lhs != ExpressionType.String && lhs != ExpressionType.Number && lhs != ExpressionType.Variable) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
@@ -332,7 +332,7 @@ public final class GipslExpressionValidator {
 					);
 				});
 			}
-			if (rhs != ExpressionType.String || rhs != ExpressionType.Number || rhs != ExpressionType.Variable) {
+			if (rhs != ExpressionType.String && rhs != ExpressionType.Number && rhs != ExpressionType.Variable) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
@@ -362,7 +362,7 @@ public final class GipslExpressionValidator {
 			ExpressionType lhs = evaluate(product.getLeft(), errors);
 			ExpressionType rhs = evaluate(product.getRight(), errors);
 
-			if (lhs != ExpressionType.Number || lhs != ExpressionType.Variable) {
+			if (lhs != ExpressionType.Number && lhs != ExpressionType.Variable) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
@@ -371,7 +371,7 @@ public final class GipslExpressionValidator {
 					);
 				});
 			}
-			if (rhs != ExpressionType.Number || rhs != ExpressionType.Variable) {
+			if (rhs != ExpressionType.Number && rhs != ExpressionType.Variable) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
@@ -640,7 +640,7 @@ public final class GipslExpressionValidator {
 				});
 			}
 		} else if (expression.getExpression() instanceof GipsNodeExpression node) {
-			if (localContext instanceof EClass) {
+			if (localContext instanceof EClass || localContext instanceof GipsTypeExpression) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.TYPE_DOES_NOT_CONTAIN_NODES, //
@@ -653,7 +653,7 @@ public final class GipslExpressionValidator {
 				valueType = evaluate(node, errors);
 			}
 		} else if (expression.getExpression() instanceof GipsAttributeExpression attribute) {
-			if (!(localContext instanceof EClass)) {
+			if (!(localContext instanceof EClass || localContext instanceof GipsTypeExpression)) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.TYPE_CONTAINS_ATTRIBUTES, //
@@ -713,7 +713,7 @@ public final class GipslExpressionValidator {
 				});
 			}
 		} else if (expression.getExpression() instanceof GipsNodeExpression node) {
-			if (setContext instanceof EClass) {
+			if (setContext instanceof EClass || setContext instanceof GipsTypeExpression) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.TYPE_DOES_NOT_CONTAIN_NODES, //
@@ -726,7 +726,7 @@ public final class GipslExpressionValidator {
 				valueType = evaluate(node, errors);
 			}
 		} else if (expression.getExpression() instanceof GipsAttributeExpression attribute) {
-			if (!(setContext instanceof EClass)) {
+			if (!(setContext instanceof EClass || setContext instanceof GipsTypeExpression)) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.TYPE_CONTAINS_ATTRIBUTES, //

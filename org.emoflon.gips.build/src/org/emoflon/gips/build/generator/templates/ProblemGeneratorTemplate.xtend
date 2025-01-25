@@ -356,7 +356,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	
 	def String generateConstantExpression(SetReduce expression) {
 		if(expression instanceof SetSummation) {
-			return '''.reduce(0.0, (sum, elt) -> sum + («generateConstantExpression(expression.expression)»)'''
+			return '''.map(elt -> (double)(«generateConstantExpression(expression.expression)»)).reduce(0.0, (sum, elt) -> sum + elt)'''
 		} else if(expression instanceof SetSimpleSelect) {
 			switch(expression.operator) {
 				case ANY: {

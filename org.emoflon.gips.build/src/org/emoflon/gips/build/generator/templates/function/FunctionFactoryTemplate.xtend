@@ -38,17 +38,17 @@ class FunctionFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 import «imp»;
 «ENDFOR»
 
-public class «className» extends GipsObjectiveFactory<«data.gipsApiClassName», «data.apiData.apiClass»> {
+public class «className» extends GipsLinearFunctionFactory<«data.gipsApiClassName», «data.apiData.apiClass»> {
 	public «className»(final «data.gipsApiClassName» engine, final «data.apiData.apiClass» eMoflonApi) {
 		super(engine, eMoflonApi);
 	}
 	
 	@Override
-	public GipsLinearFunction<«data.gipsApiClassName», ? extends LinearFunction, ? extends Object> createObjective(final LinearFunction function) {
+	public GipsLinearFunction<«data.gipsApiClassName», ? extends LinearFunction, ? extends Object> createLinearFunction(final LinearFunction function) {
 		«IF context.functions.isNullOrEmpty»
 		throw new IllegalArgumentException("Unknown linear function type: " + function);
 		«ELSE»
-		switch(objective.getName()) {
+		switch(function.getName()) {
 			«FOR function : context.functions»
 			case "«function.name»" -> {
 				«IF function instanceof PatternFunction»

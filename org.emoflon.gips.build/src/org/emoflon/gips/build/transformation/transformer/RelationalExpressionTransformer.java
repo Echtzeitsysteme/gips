@@ -42,36 +42,32 @@ public class RelationalExpressionTransformer extends TransformationContext {
 		ExpressionReturnType lhsType = null;
 		ExpressionReturnType rhsType = null;
 
-		if (eRelational.getLeft() instanceof GipsBooleanExpression bool) {
-			BooleanExpressionTransformer transformer //
-					= transformerFactory.createBooleanTransformer(localContext, setContext);
-			BooleanExpression lhs = transformer.transform(bool);
-			relation.setLhs(lhs);
-			lhsType = GipsTransformationUtils.extractReturnType(lhs);
-		} else if (eRelational.getLeft() instanceof GipsArithmeticExpression arithmetic) {
+		if (eRelational.getLeft() instanceof GipsArithmeticExpression arithmetic) {
 			ArithmeticExpressionTransformer transformer //
 					= transformerFactory.createArithmeticTransformer(localContext, setContext);
 			ArithmeticExpression lhs = transformer.transform(arithmetic);
 			relation.setLhs(lhs);
 			lhsType = GipsTransformationUtils.extractReturnType(lhs);
 		} else {
-			throw new IllegalArgumentException("Illegal lhs relational operand type: " + eRelational.getLeft());
-		}
-
-		if (eRelational.getRight() instanceof GipsBooleanExpression bool) {
 			BooleanExpressionTransformer transformer //
 					= transformerFactory.createBooleanTransformer(localContext, setContext);
-			BooleanExpression rhs = transformer.transform(bool);
-			relation.setRhs(rhs);
-			lhsType = GipsTransformationUtils.extractReturnType(rhs);
-		} else if (eRelational.getRight() instanceof GipsArithmeticExpression arithmetic) {
+			BooleanExpression lhs = transformer.transform((GipsBooleanExpression) eRelational.getLeft());
+			relation.setLhs(lhs);
+			lhsType = GipsTransformationUtils.extractReturnType(lhs);
+		}
+
+		if (eRelational.getRight() instanceof GipsArithmeticExpression arithmetic) {
 			ArithmeticExpressionTransformer transformer //
 					= transformerFactory.createArithmeticTransformer(localContext, setContext);
 			ArithmeticExpression rhs = transformer.transform(arithmetic);
 			relation.setRhs(rhs);
-			lhsType = GipsTransformationUtils.extractReturnType(rhs);
+			rhsType = GipsTransformationUtils.extractReturnType(rhs);
 		} else {
-			throw new IllegalArgumentException("Illegal lhs relational operand type: " + eRelational.getRight());
+			BooleanExpressionTransformer transformer //
+					= transformerFactory.createBooleanTransformer(localContext, setContext);
+			BooleanExpression rhs = transformer.transform((GipsBooleanExpression) eRelational.getRight());
+			relation.setRhs(rhs);
+			rhsType = GipsTransformationUtils.extractReturnType(rhs);
 		}
 
 		if (lhsType != rhsType) {

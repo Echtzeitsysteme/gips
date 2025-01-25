@@ -9,18 +9,18 @@ import org.emoflon.gips.core.milp.model.Constraint;
 import org.emoflon.gips.core.milp.model.Term;
 import org.emoflon.gips.core.milp.model.Variable;
 import org.emoflon.gips.core.validation.GipsValidationEventType;
-import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.RuleConstraint;
 import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 import org.emoflon.ibex.gt.api.GraphTransformationRule;
 
 public abstract class GipsRuleConstraint<ENGINE extends GipsEngine, M extends GraphTransformationMatch<M, R>, R extends GraphTransformationRule<M, R>>
-		extends GipsConstraint<ENGINE, PatternConstraint, M> {
+		extends GipsConstraint<ENGINE, RuleConstraint, M> {
 
 	final protected GraphTransformationRule<M, R> rule;
 
-	public GipsRuleConstraint(ENGINE engine, PatternConstraint constraint, final R rule) {
+	public GipsRuleConstraint(ENGINE engine, RuleConstraint constraint, final R rule) {
 		super(engine, constraint);
 		this.rule = rule;
 	}

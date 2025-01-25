@@ -19,7 +19,7 @@ class PatternMappingTemplate extends GeneratorTemplate<PatternMapping> {
 		className = data.mapping2mappingClassName.get(context)
 		fqn = packageName + "." + className
 		filePath = data.apiData.gipsMappingPkgPath + "/" + className + ".java"
-		imports.add("org.emoflon.gips.core.gt.RuleMapping")
+		imports.add("org.emoflon.gips.core.gt.GipsGTMapping")
 		imports.add("org.emoflon.gips.core.milp.model.Variable")
 		imports.add("org.emoflon.gips.core.milp.model.IntegerVariable")
 		imports.add("org.emoflon.gips.core.milp.model.RealVariable")
@@ -41,7 +41,7 @@ class PatternMappingTemplate extends GeneratorTemplate<PatternMapping> {
 import «imp»;
 «ENDFOR»
 		
-public class «className» extends RuleMapping<«data.mapping2matchClassName.get(context)», «data.mapping2patternClassName.get(context)»> {
+public class «className» extends GipsGTMapping<«data.mapping2matchClassName.get(context)», «data.mapping2patternClassName.get(context)»> {
 	«IF !context.freeVariables.isNullOrEmpty»
 	«FOR v : context.freeVariables»
 	protected «GipsImportManager.variableToJavaDataType(v, imports)» «v.name.toFirstLower»;

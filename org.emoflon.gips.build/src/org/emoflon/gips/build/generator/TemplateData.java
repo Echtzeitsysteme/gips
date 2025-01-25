@@ -47,21 +47,18 @@ public class TemplateData {
 		mapperFactoryClassName = apiData.apiClassNamePrefix + "GipsMapperFactory";
 		constraintFactoryClassName = apiData.apiClassNamePrefix + "GipsConstraintFactory";
 		functionFactoryClassName = apiData.apiClassNamePrefix + "GipsLinearFunctionFactory";
-		model.getVariables().stream().filter(var -> var instanceof Mapping).map(var -> (Mapping) var)
-				.forEach(mapping -> {
-					mapping2mapperClassName.put(mapping, firstToUpper(mapping.getName()) + "Mapper");
-					mapping2mappingClassName.put(mapping, firstToUpper(mapping.getName()) + "Mapping");
-					if (mapping instanceof RuleMapping gtMapping) {
-						mapping2ruleClassName.put(gtMapping, firstToUpper(gtMapping.getRule().getName()) + "Rule");
-						mapping2matchClassName.put(gtMapping, firstToUpper(gtMapping.getRule().getName()) + "Match");
-					} else {
-						PatternMapping pmMapping = (PatternMapping) mapping;
-						mapping2patternClassName.put(pmMapping,
-								firstToUpper(pmMapping.getPattern().getName()) + "Pattern");
-						mapping2matchClassName.put(pmMapping, firstToUpper(pmMapping.getPattern().getName()) + "Match");
-					}
-
-				});
+		model.getMappings().stream().forEach(mapping -> {
+			mapping2mapperClassName.put(mapping, firstToUpper(mapping.getName()) + "Mapper");
+			mapping2mappingClassName.put(mapping, firstToUpper(mapping.getName()) + "Mapping");
+			if (mapping instanceof RuleMapping gtMapping) {
+				mapping2ruleClassName.put(gtMapping, firstToUpper(gtMapping.getRule().getName()) + "Rule");
+				mapping2matchClassName.put(gtMapping, firstToUpper(gtMapping.getRule().getName()) + "Match");
+			} else {
+				PatternMapping pmMapping = (PatternMapping) mapping;
+				mapping2patternClassName.put(pmMapping, firstToUpper(pmMapping.getPattern().getName()) + "Pattern");
+				mapping2matchClassName.put(pmMapping, firstToUpper(pmMapping.getPattern().getName()) + "Match");
+			}
+		});
 		model.getRequiredPatterns().forEach(pattern -> {
 			ibex2ibexClassName.put(pattern, firstToUpper(pattern.getName()) + "Pattern");
 			ibex2matchClassName.put(pattern, firstToUpper(pattern.getName()) + "Match");

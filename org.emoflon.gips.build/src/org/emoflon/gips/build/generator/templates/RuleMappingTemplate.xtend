@@ -20,7 +20,7 @@ class RuleMappingTemplate extends GeneratorTemplate<RuleMapping> {
 		className = data.mapping2mappingClassName.get(context)
 		fqn = packageName + "." + className
 		filePath = data.apiData.gipsMappingPkgPath + "/" + className + ".java"
-		imports.add("org.emoflon.gips.core.gt.RuleMapping")
+		imports.add("org.emoflon.gips.core.gt.GipsGTMapping")
 		imports.add("org.emoflon.gips.core.milp.model.Variable")
 		imports.add("org.emoflon.gips.core.milp.model.IntegerVariable")
 		imports.add("org.emoflon.gips.core.milp.model.RealVariable")
@@ -42,7 +42,7 @@ class RuleMappingTemplate extends GeneratorTemplate<RuleMapping> {
 import «imp»;
 «ENDFOR»
 		
-public class «className» extends RuleMapping<«data.mapping2matchClassName.get(context)», «data.mapping2ruleClassName.get(context)»> {
+public class «className» extends GipsGTMapping<«data.mapping2matchClassName.get(context)», «data.mapping2ruleClassName.get(context)»> {
 	
 	«IF !context.freeVariables.isNullOrEmpty»
 	«FOR v : context.freeVariables»

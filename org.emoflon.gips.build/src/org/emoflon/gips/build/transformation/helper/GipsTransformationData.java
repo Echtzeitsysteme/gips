@@ -23,7 +23,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNamedElement;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPattern;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
@@ -32,7 +31,8 @@ public record GipsTransformationData(GipsIntermediateModel model, //
 		EditorGTFile gipslFile, //
 		Map<String, GipsBooleanExpression> symbol2Expr, //
 		Map<GipsBooleanExpression, String> expr2Symbol, //
-		Map<EditorPattern, IBeXNamedElement> ePattern2ibex, //
+		Map<String, IBeXPattern> ePattern2pattern, //
+		Map<String, IBeXRule> ePattern2rule, //
 		Map<EditorNode, IBeXNode> eNode2Node, //
 		Map<GipsMapping, Mapping> eMapping2Mapping, //
 		Map<GipsConstraint, Collection<Constraint>> eConstraint2Constraints, //
@@ -42,7 +42,7 @@ public record GipsTransformationData(GipsIntermediateModel model, //
 
 	public GipsTransformationData(final GipsIntermediateModel model, final EditorGTFile gipsSlangFile) {
 		this(model, gipsSlangFile, new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(),
-				new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashSet<>());
+				new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashSet<>());
 	}
 
 	public String addSymbol(final GipsBooleanExpression expr) {
@@ -68,19 +68,19 @@ public record GipsTransformationData(GipsIntermediateModel model, //
 		return symbol;
 	}
 
+	public void addPattern(final EditorPattern ePattern, final IBeXPattern pattern) {
+		ePattern2pattern.put(ePattern.getName(), pattern);
+	}
+
 	public IBeXPattern getPattern(final EditorPattern pattern) {
-		if (ePattern2ibex.containsKey(pattern)) {
-			return (IBeXPattern) ePattern2ibex.get(pattern);
-		} else {
-			return null;
-		}
+		return ePattern2pattern.get(pattern.getName());
+	}
+
+	public void addRule(final EditorPattern eRule, final IBeXRule rule) {
+		ePattern2rule.put(eRule.getName(), rule);
 	}
 
 	public IBeXRule getRule(final EditorPattern rule) {
-		if (ePattern2ibex.containsKey(rule)) {
-			return (IBeXRule) ePattern2ibex.get(rule);
-		} else {
-			return null;
-		}
+		return ePattern2rule.get(rule.getName());
 	}
 }

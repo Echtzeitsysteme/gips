@@ -59,7 +59,6 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContext;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXModel;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNamedElement;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPattern;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
@@ -90,10 +89,8 @@ public class GipsToIntermediate {
 		transformObjective();
 
 		// add all required data types
-		data.model().getRequiredPatterns().addAll(data.ePattern2ibex().values().stream()
-				.filter(p -> p instanceof IBeXPattern).map(p -> (IBeXPattern) p).collect(Collectors.toList()));
-		data.model().getRequiredRules().addAll(data.ePattern2ibex().values().stream().filter(p -> p instanceof IBeXRule)
-				.map(p -> (IBeXRule) p).collect(Collectors.toList()));
+		data.model().getRequiredPatterns().addAll(data.ePattern2pattern().values());
+		data.model().getRequiredRules().addAll(data.ePattern2rule().values());
 		data.model().getRequiredTypes().addAll(data.requiredTypes());
 
 		return data.model();
@@ -205,7 +202,7 @@ public class GipsToIntermediate {
 				PatternMapping pmMapping = factory.createPatternMapping();
 				mapping = pmMapping;
 
-				IBeXPattern pattern = (IBeXPattern) data.ePattern2ibex().get(eMapping.getPattern());
+				IBeXPattern pattern = data.getPattern(eMapping.getPattern());
 				if (pattern instanceof IBeXContextAlternatives alt) {
 					pmMapping.setContextPattern(alt.getContext());
 				} else {
@@ -502,8 +499,8 @@ public class GipsToIntermediate {
 			constraint.setMapping(data.eMapping2Mapping().get(mapping));
 			return constraint;
 		} else if (eConstraint.getContext() instanceof EditorPattern ePattern) {
-			IBeXNamedElement ibexElt = data.ePattern2ibex().get(ePattern);
-			if (ibexElt instanceof IBeXRule rule) {
+			if (GTEditorPatternUtils.containsCreatedOrDeletedElements(ePattern)) {
+				IBeXRule rule = data.getRule(ePattern);
 				RuleConstraint constraint = factory.createRuleConstraint();
 				constraint.setName("RuleConstraint" + counter + "On" + rule.getName());
 				constraint.setRule(rule);
@@ -514,7 +511,8 @@ public class GipsToIntermediate {
 				}
 				constraint.setGlobal(false);
 				return constraint;
-			} else if (ibexElt instanceof IBeXPattern pattern) {
+			} else {
+				IBeXPattern pattern = data.getPattern(ePattern);
 				PatternConstraint constraint = factory.createPatternConstraint();
 				constraint.setName("PatternConstraint" + counter + "On" + pattern.getName());
 				constraint.setPattern(pattern);
@@ -525,8 +523,6 @@ public class GipsToIntermediate {
 				}
 				constraint.setGlobal(false);
 				return constraint;
-			} else {
-				return null;
 			}
 		} else if (eConstraint.getContext() instanceof EClass type) {
 			TypeConstraint constraint = factory.createTypeConstraint();
@@ -552,8 +548,8 @@ public class GipsToIntermediate {
 			constraint.setGlobal(false);
 			return constraint;
 		} else if (eConstraint.input().getContext() instanceof EditorPattern ePattern) {
-			IBeXNamedElement ibexElt = data.ePattern2ibex().get(ePattern);
-			if (ibexElt instanceof IBeXRule rule) {
+			if (GTEditorPatternUtils.containsCreatedOrDeletedElements(ePattern)) {
+				IBeXRule rule = data.getRule(ePattern);
 				RuleConstraint constraint = factory.createRuleConstraint();
 				constraint.setName("DisjunctRuleConstraint" + counter + "On" + rule.getName());
 				constraint.setRule(rule);
@@ -565,7 +561,8 @@ public class GipsToIntermediate {
 				constraint.setDepending(true);
 				constraint.setGlobal(false);
 				return constraint;
-			} else if (ibexElt instanceof IBeXPattern pattern) {
+			} else {
+				IBeXPattern pattern = data.getPattern(ePattern);
 				PatternConstraint constraint = factory.createPatternConstraint();
 				constraint.setName("DisjunctPatternConstraint" + counter + "On" + pattern.getName());
 				constraint.setPattern(pattern);
@@ -577,8 +574,6 @@ public class GipsToIntermediate {
 				constraint.setDepending(true);
 				constraint.setGlobal(false);
 				return constraint;
-			} else {
-				return null;
 			}
 		} else if (eConstraint.input().getContext() instanceof EClass type) {
 			TypeConstraint constraint = factory.createTypeConstraint();
@@ -604,8 +599,8 @@ public class GipsToIntermediate {
 			function.setMapping(data.eMapping2Mapping().get(mapping));
 			return function;
 		} else if (eLinearFunction.getContext() instanceof EditorPattern ePattern) {
-			IBeXNamedElement ibexElt = data.ePattern2ibex().get(ePattern);
-			if (ibexElt instanceof IBeXRule rule) {
+			if (GTEditorPatternUtils.containsCreatedOrDeletedElements(ePattern)) {
+				IBeXRule rule = data.getRule(ePattern);
 				RuleFunction function = factory.createRuleFunction();
 				function.setRule(rule);
 				if (rule.getLhs() instanceof IBeXContextAlternatives alt) {
@@ -614,7 +609,8 @@ public class GipsToIntermediate {
 					function.setContextPattern((IBeXContextPattern) rule.getLhs());
 				}
 				return function;
-			} else if (ibexElt instanceof IBeXPattern pattern) {
+			} else {
+				IBeXPattern pattern = data.getPattern(ePattern);
 				PatternFunction function = factory.createPatternFunction();
 				function.setPattern(pattern);
 				if (pattern instanceof IBeXContextAlternatives alt) {
@@ -623,8 +619,6 @@ public class GipsToIntermediate {
 					function.setContextPattern((IBeXContextPattern) pattern);
 				}
 				return function;
-			} else {
-				return null;
 			}
 		} else {
 			TypeFunction function = factory.createTypeFunction();
@@ -648,7 +642,7 @@ public class GipsToIntermediate {
 		for (EditorPattern ePattern : allEditorPatterns) {
 			for (IBeXRule rule : data.model().getIbexModel().getRuleSet().getRules()) {
 				if (rule.getName().equals(ePattern.getName())) {
-					data.ePattern2ibex().put(ePattern, rule);
+					data.addRule(ePattern, rule);
 					for (EditorNode eNode : ePattern.getNodes()) {
 						for (IBeXNode node : toContextPattern(rule.getLhs()).getSignatureNodes()) {
 							if (eNode.getName().equals(node.getName())) {
@@ -669,8 +663,7 @@ public class GipsToIntermediate {
 		for (EditorPattern ePattern : allEditorPatterns) {
 			for (IBeXContext pattern : data.model().getIbexModel().getPatternSet().getContextPatterns()) {
 				if (pattern.getName().equals(ePattern.getName())) {
-					data.ePattern2ibex().put(ePattern, pattern);
-
+					data.addPattern(ePattern, pattern);
 					for (EditorNode eNode : ePattern.getNodes()) {
 						for (IBeXNode node : toContextPattern(pattern).getSignatureNodes()) {
 							if (eNode.getName().equals(node.getName())) {

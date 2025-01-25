@@ -260,11 +260,11 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		createMappers();
 		initConstraintFactory();
 		createConstraints();
-		initObjectiveFactory();
+		initLinearFunctionFactory();
 		createObjectives();
 
 		if (gipsModel.getObjective() != null)
-			setObjective(createGlobalObjective());
+			setObjective(createObjective());
 
 		setSolver(createSolver());
 	}
@@ -307,9 +307,9 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 
 	protected abstract void initConstraintFactory();
 
-	protected abstract void initObjectiveFactory();
+	protected abstract void initLinearFunctionFactory();
 
-	protected abstract GipsObjective createGlobalObjective();
+	protected abstract GipsObjective createObjective();
 
 	protected abstract Solver createSolver();
 

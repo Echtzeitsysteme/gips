@@ -57,8 +57,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.SetTypeSelect;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPattern;
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXRule;
 
 public class ValueExpressionTransformer extends TransformationContext {
 
@@ -83,17 +81,17 @@ public class ValueExpressionTransformer extends TransformationContext {
 			data.requiredTypes().add(eType.getType());
 			tValue.setType(eType.getType());
 			value = tValue;
-		} else if (eValue instanceof GipsPatternExpression ePattern) {
+		} else if (eValue.getValue() instanceof GipsPatternExpression ePattern) {
 			PatternReference pValue = factory.createPatternReference();
-			pValue.setPattern((IBeXPattern) data.ePattern2ibex().get(ePattern.getPattern()));
+			pValue.setPattern(data.getPattern(ePattern.getPattern()));
 			value = pValue;
-		} else if (eValue instanceof GipsRuleExpression eRule) {
+		} else if (eValue.getValue() instanceof GipsRuleExpression eRule) {
 			RuleReference rValue = factory.createRuleReference();
-			rValue.setRule((IBeXRule) data.ePattern2ibex().get(eRule.getRule()));
+			rValue.setRule(data.getRule(eRule.getRule()));
 			value = rValue;
-		} else if (eValue instanceof GipsLocalContextExpression eContext) {
+		} else if (eValue.getValue() instanceof GipsLocalContextExpression eContext) {
 			value = transform(eContext);
-		} else if (eValue instanceof GipsSetElementExpression eSet) {
+		} else if (eValue.getValue() instanceof GipsSetElementExpression eSet) {
 			value = transform(eSet);
 		} else {
 			throw new UnsupportedOperationException("Unkown value expression: " + eValue);

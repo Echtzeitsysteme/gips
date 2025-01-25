@@ -14,7 +14,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="variables" upperBound="-1"
         eType="#//Variable" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappings" upperBound="-1"
-        eType="#//Mapping"/>
+        eType="#//Mapping" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="constraints" upperBound="-1"
         eType="#//Constraint" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="functions" upperBound="-1"

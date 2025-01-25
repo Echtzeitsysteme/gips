@@ -26,7 +26,6 @@ import org.emoflon.gips.build.generator.templates.function.PatternFunctionTempla
 import org.emoflon.gips.build.generator.templates.function.RuleFunctionTemplate;
 import org.emoflon.gips.build.generator.templates.function.TypeFunctionTemplate;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
-import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
@@ -53,18 +52,17 @@ public class GipsCodeGenerator {
 		templates.add(new MapperFactoryTemplate(data, data.model));
 		templates.add(new ConstraintFactoryTemplate(data, data.model));
 		templates.add(new FunctionFactoryTemplate(data, data.model));
-		data.model.getVariables().parallelStream().filter(mapping -> mapping instanceof Mapping)
-				.map(mapping -> (Mapping) mapping).forEach(mapping -> {
-					if (mapping instanceof RuleMapping gtMapping) {
-						templates.add(new RuleMappingTemplate(data, gtMapping));
-						templates.add(new RuleMapperTemplate(data, gtMapping));
-					} else {
-						PatternMapping pmMapping = (PatternMapping) mapping;
-						templates.add(new PatternMappingTemplate(data, pmMapping));
-						templates.add(new PatternMapperTemplate(data, pmMapping));
-					}
+		data.model.getMappings().parallelStream().forEach(mapping -> {
+			if (mapping instanceof RuleMapping gtMapping) {
+				templates.add(new RuleMappingTemplate(data, gtMapping));
+				templates.add(new RuleMapperTemplate(data, gtMapping));
+			} else {
+				PatternMapping pmMapping = (PatternMapping) mapping;
+				templates.add(new PatternMappingTemplate(data, pmMapping));
+				templates.add(new PatternMapperTemplate(data, pmMapping));
+			}
 
-				});
+		});
 		data.model.getConstraints().parallelStream().forEach(constraint -> {
 			if (constraint instanceof MappingConstraint mappingConstraint) {
 				templates.add(new MappingConstraintTemplate(data, mappingConstraint));

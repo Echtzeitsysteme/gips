@@ -40,6 +40,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsNodeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsRuleExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsSetElementExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsTransformOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeQuery;
@@ -334,7 +335,8 @@ public final class GipslScopeContextUtil {
 			return select.getType();
 		} else if (expression instanceof GipsTransformOperation transform && transform.getExpression() != null) {
 			return transform.getExpression();
-		} else if (expression.eContainer() instanceof GipsValueExpression root) {
+		} else if (expression.eContainer() instanceof GipsValueExpression root
+				&& !(root.getValue() instanceof GipsSetElementExpression)) {
 			return root.getValue();
 		} else if (expression.eContainer() == null) {
 			return null;

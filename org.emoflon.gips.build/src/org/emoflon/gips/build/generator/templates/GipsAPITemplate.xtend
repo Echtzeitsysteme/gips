@@ -30,8 +30,7 @@ class GipsAPITemplate extends GeneratorTemplate<GipsIntermediateModel> {
 		if(data.model.objective !== null) {
 			imports.add(data.apiData.gipsObjectivePkg+"."+data.objectiveClassName)
 		}
-		data.model.variables
-			.filter[v | v instanceof Mapping]
+		data.model.mappings
 			.map[m | data.mapping2mapperClassName.get(m)]
 			.forEach[m | imports.add(data.apiData.gipsMapperPkg+"."+m)]
 	}
@@ -46,7 +45,7 @@ import «imp»;
 public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasses.get(GipsAPIData.HIPE_ENGINE_NAME)», «data.apiData.apiClass»>{
 	final public static URI INTERMEDIATE_MODEL_URI = URI.createFileURI("«data.apiData.project.location.toPortableString»«data.apiData.intermediateModelURI.toPlatformString(false)»");
 	
-	«FOR mapping : data.model.variables.filter[v | v instanceof Mapping]»
+	«FOR mapping : data.model.mappings»
 	protected «data.mapping2mapperClassName.get(mapping)» «mapping.name.toFirstLower»;
 	«ENDFOR»
 	
@@ -126,7 +125,7 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 		super.initInternal(gipsModelUri, model, ibexPatternPath);
 	}
 	
-	«FOR mapping : data.model.variables.filter[v | v instanceof Mapping]»
+	«FOR mapping : data.model.mappings»
 	public «data.mapping2mapperClassName.get(mapping)» get«mapping.name.toFirstUpper»() {
 		return «mapping.name.toFirstLower»;
 	}
@@ -134,7 +133,7 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 	
 	@Override
 	protected void createMappers() {
-		«FOR mapping : data.model.variables.filter[v | v instanceof Mapping]»
+		«FOR mapping : data.model.mappings»
 		«mapping.name.toFirstLower» = («data.mapping2mapperClassName.get(mapping)») mapperFactory.createMapper(name2Mapping.get("«mapping.name»"));
 		addMapper(«mapping.name.toFirstLower»);
 		«ENDFOR»
@@ -152,7 +151,7 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 	
 	@Override	
 	protected void initLinearFunctionFactory() {
-		objectiveFactory = new «data.functionFactoryClassName»(this, eMoflonAPI);
+		functionFactory = new «data.functionFactoryClassName»(this, eMoflonAPI);
 	}
 	
 	@Override

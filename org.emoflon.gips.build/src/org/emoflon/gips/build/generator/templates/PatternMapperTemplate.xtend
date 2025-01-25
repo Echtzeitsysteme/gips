@@ -16,7 +16,7 @@ class PatternMapperTemplate extends GeneratorTemplate<PatternMapping> {
 		filePath = data.apiData.gipsMapperPkgPath + "/" + className + ".java"
 		imports.add(data.apiData.apiPkg+"."+data.apiData.apiClass)
 		imports.add("org.emoflon.gips.core.GipsEngine")
-		imports.add("org.emoflon.gips.core.gt.PatternMapper")
+		imports.add("org.emoflon.gips.core.gt.GipsPatternMapper")
 		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(context))
 		imports.add(data.apiData.rulesPkg+"."+data.mapping2patternClassName.get(context))
 		imports.add(data.apiData.matchesPkg+"."+data.mapping2matchClassName.get(context))
@@ -30,7 +30,7 @@ class PatternMapperTemplate extends GeneratorTemplate<PatternMapping> {
 import «imp»;
 «ENDFOR»
 		
-public class «className» extends PatternMapper<«data.mapping2mappingClassName.get(context)», «data.mapping2matchClassName.get(context)», «data.mapping2patternClassName.get(context)»> {
+public class «className» extends GipsPatternMapper<«data.mapping2mappingClassName.get(context)», «data.mapping2matchClassName.get(context)», «data.mapping2patternClassName.get(context)»> {
 	public «className»(final GipsEngine engine, final Mapping mapping, final «data.mapping2patternClassName.get(context)» pattern) {
 		super(engine, mapping, pattern);
 	}

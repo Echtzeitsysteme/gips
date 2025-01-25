@@ -577,17 +577,17 @@ public final class GipslExpressionValidator {
 
 	public static ExpressionType evaluate(final GipsValueExpression expression, Collection<Runnable> errors) {
 		ExpressionType valueType = null;
-		if (expression instanceof GipsMappingExpression) {
+		if (expression.getValue() instanceof GipsMappingExpression) {
 			valueType = ExpressionType.Set;
-		} else if (expression instanceof GipsTypeExpression) {
+		} else if (expression.getValue() instanceof GipsTypeExpression) {
 			valueType = ExpressionType.Set;
-		} else if (expression instanceof GipsPatternExpression) {
+		} else if (expression.getValue() instanceof GipsPatternExpression) {
 			valueType = ExpressionType.Set;
-		} else if (expression instanceof GipsRuleExpression) {
+		} else if (expression.getValue() instanceof GipsRuleExpression) {
 			valueType = ExpressionType.Set;
-		} else if (expression instanceof GipsLocalContextExpression local) {
+		} else if (expression.getValue() instanceof GipsLocalContextExpression local) {
 			valueType = evaluate(local, errors);
-		} else if (expression instanceof GipsSetElementExpression set) {
+		} else if (expression.getValue() instanceof GipsSetElementExpression set) {
 			valueType = evaluate(set, errors);
 		} else {
 			valueType = ExpressionType.Unknown;

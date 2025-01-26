@@ -134,6 +134,9 @@ public final class GipslScopeContextUtil {
 	}
 
 	public static Object getContainer(EObject node, Set<Class<?>> classes) {
+		if (node == null)
+			return null;
+
 		EObject current = node;
 		do {
 			current = current.eContainer();

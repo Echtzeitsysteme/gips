@@ -262,6 +262,8 @@ public class GipsArithmeticTransformer {
 			} else {
 				varTerms.add(expression);
 			}
+		} else {
+			constTerms.add(expression);
 		}
 	}
 

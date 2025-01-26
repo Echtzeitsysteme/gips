@@ -33,7 +33,7 @@ abstract class LinearFunctionTemplate <OBJECTIVE extends LinearFunction> extends
 		generateTermBuilder(expr)
 		return '''
 @Override
-protected void buildTerms(final «getContextParameterType()» context) {
+protected void buildTerms(«getContextParameter()») {
 	«FOR instruction : builderMethodCalls2»
 	«instruction»
 	«ENDFOR»

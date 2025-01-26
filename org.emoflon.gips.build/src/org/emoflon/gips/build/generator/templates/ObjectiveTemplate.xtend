@@ -107,11 +107,15 @@ protected void buildTerms() {
 	}
 		
 	override getVariable(Variable variable) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		throw new UnsupportedOperationException("Direct variable access is not possible within the objective context.")
 	}
 	
-	override getContextParameterType() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	override String getContextParameterType() {
+		return ""
+	}
+	
+	override String getContextParameter() {
+		return ""
 	}
 	
 	def void generateTermBuilder(ArithmeticExpression expr) {

@@ -25,6 +25,7 @@ class FunctionFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 		imports.add("org.emoflon.gips.core.GipsMappingLinearFunction")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.LinearFunction")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.PatternFunction")
+		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.RuleFunction")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingFunction")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.TypeFunction")
 		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)

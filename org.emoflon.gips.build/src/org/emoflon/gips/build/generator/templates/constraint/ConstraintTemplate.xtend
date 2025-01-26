@@ -26,10 +26,6 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGe
 	
 	def String generateClassConstructor();
 	
-	def String getContextParameter() {
-		return '''final «getContextParameterType()» context'''
-	}
-	
 	override generate() {
 		var classContent = "";
 		if(context.isConstant) {

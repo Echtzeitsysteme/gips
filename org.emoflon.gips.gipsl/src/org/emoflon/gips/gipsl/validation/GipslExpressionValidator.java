@@ -643,7 +643,16 @@ public final class GipslExpressionValidator {
 				});
 			}
 		} else if (expression.getExpression() instanceof GipsNodeExpression node) {
-			if (localContext instanceof EClass || localContext instanceof GipsTypeExpression) {
+			if (localContext instanceof EClass || localContext instanceof GipsTypeExpression
+					|| localContext instanceof GipsAttributeExpression
+					|| (localContext instanceof GipsLocalContextExpression lce
+							&& lce.getExpression() instanceof GipsAttributeExpression)
+					|| (localContext instanceof GipsLocalContextExpression lce
+							&& lce.getExpression() instanceof GipsVariableReferenceExpression)
+					|| (localContext instanceof GipsSetElementExpression see
+							&& see.getExpression() instanceof GipsAttributeExpression)
+					|| (localContext instanceof GipsSetElementExpression see
+							&& see.getExpression() instanceof GipsVariableReferenceExpression)) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.TYPE_DOES_NOT_CONTAIN_NODES, //
@@ -656,7 +665,19 @@ public final class GipslExpressionValidator {
 				valueType = evaluate(node, errors);
 			}
 		} else if (expression.getExpression() instanceof GipsAttributeExpression attribute) {
-			if (!(localContext instanceof EClass || localContext instanceof GipsTypeExpression)) {
+			if (!(localContext instanceof EClass || localContext instanceof GipsTypeExpression
+					|| (localContext instanceof GipsNodeExpression ne && ne.getAttributeExpression() != null)
+					|| localContext instanceof GipsAttributeExpression
+					|| (localContext instanceof GipsLocalContextExpression lce
+							&& lce.getExpression() instanceof GipsAttributeExpression)
+					|| (localContext instanceof GipsLocalContextExpression lce
+							&& (lce.getExpression() instanceof GipsNodeExpression ne
+									&& ne.getAttributeExpression() != null))
+					|| (localContext instanceof GipsSetElementExpression see
+							&& see.getExpression() instanceof GipsAttributeExpression)
+					|| (localContext instanceof GipsSetElementExpression see
+							&& (see.getExpression() instanceof GipsNodeExpression ne
+									&& ne.getAttributeExpression() != null)))) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.TYPE_CONTAINS_ATTRIBUTES, //
@@ -716,7 +737,16 @@ public final class GipslExpressionValidator {
 				});
 			}
 		} else if (expression.getExpression() instanceof GipsNodeExpression node) {
-			if (setContext instanceof EClass || setContext instanceof GipsTypeExpression) {
+			if (setContext instanceof EClass || setContext instanceof GipsTypeExpression
+					|| setContext instanceof GipsAttributeExpression
+					|| (setContext instanceof GipsLocalContextExpression lce
+							&& lce.getExpression() instanceof GipsAttributeExpression)
+					|| (setContext instanceof GipsLocalContextExpression lce
+							&& lce.getExpression() instanceof GipsVariableReferenceExpression)
+					|| (setContext instanceof GipsSetElementExpression see
+							&& see.getExpression() instanceof GipsAttributeExpression)
+					|| (setContext instanceof GipsSetElementExpression see
+							&& see.getExpression() instanceof GipsVariableReferenceExpression)) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.TYPE_DOES_NOT_CONTAIN_NODES, //
@@ -729,7 +759,19 @@ public final class GipslExpressionValidator {
 				valueType = evaluate(node, errors);
 			}
 		} else if (expression.getExpression() instanceof GipsAttributeExpression attribute) {
-			if (!(setContext instanceof EClass || setContext instanceof GipsTypeExpression)) {
+			if (!(setContext instanceof EClass || setContext instanceof GipsTypeExpression
+					|| (setContext instanceof GipsNodeExpression ne && ne.getAttributeExpression() != null)
+					|| setContext instanceof GipsAttributeExpression
+					|| (setContext instanceof GipsLocalContextExpression lce
+							&& lce.getExpression() instanceof GipsAttributeExpression)
+					|| (setContext instanceof GipsLocalContextExpression lce
+							&& (lce.getExpression() instanceof GipsNodeExpression ne
+									&& ne.getAttributeExpression() != null))
+					|| (setContext instanceof GipsSetElementExpression see
+							&& see.getExpression() instanceof GipsAttributeExpression)
+					|| (setContext instanceof GipsSetElementExpression see
+							&& (see.getExpression() instanceof GipsNodeExpression ne
+									&& ne.getAttributeExpression() != null)))) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.TYPE_CONTAINS_ATTRIBUTES, //

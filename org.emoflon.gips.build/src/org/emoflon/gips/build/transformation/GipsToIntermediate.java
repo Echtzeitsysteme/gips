@@ -608,6 +608,7 @@ public class GipsToIntermediate {
 				} else {
 					function.setContextPattern((IBeXContextPattern) rule.getLhs());
 				}
+				function.setName(eLinearFunction.getName());
 				return function;
 			} else {
 				IBeXPattern pattern = data.getPattern(ePattern);
@@ -618,6 +619,7 @@ public class GipsToIntermediate {
 				} else {
 					function.setContextPattern((IBeXContextPattern) pattern);
 				}
+				function.setName(eLinearFunction.getName());
 				return function;
 			}
 		} else {

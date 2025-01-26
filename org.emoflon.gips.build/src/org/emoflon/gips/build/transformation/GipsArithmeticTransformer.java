@@ -872,8 +872,9 @@ public class GipsArithmeticTransformer {
 			}
 			clone = cl;
 		} else if (expr instanceof LinearFunctionReference function) {
-			throw new IllegalArgumentException(
-					"There must be no linear function references in constraints: " + function);
+			LinearFunctionReference reference = factory.createLinearFunctionReference();
+			reference.setFunction(function.getFunction());
+			clone = reference;
 		} else if (expr instanceof ValueExpression val) {
 			clone = cloneExpression(factory, val);
 		} else {

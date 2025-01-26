@@ -62,6 +62,9 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	def String generateImports();
 	def String getVariable(Variable variable);
 	def String getContextParameterType();
+	def String getContextParameter() {
+		return '''final «getContextParameterType()» context'''
+	}
 	
 		def String getVariableInSet(Variable variable) {
 		if(isMappingVariable(variable)) {
@@ -111,7 +114,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		val method = '''
-	protected double «methodName»(final «getContextParameterType()» context) {
+	protected double «methodName»(«getContextParameter()») {
 		return «generateConstantExpression(expr)»;
 	}
 		'''
@@ -123,7 +126,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		val method = '''
-	protected double «methodName»(final «getContextParameterType()» context) {
+	protected double «methodName»(«getContextParameter()») {
 		return «generateConstantExpression(expr)»;
 	}
 		'''
@@ -133,7 +136,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	
 	def void generateBuilder(ValueExpression expr, LinkedList<String> methodCalls) {
 		if(expr instanceof VariableReference) {
-			val instruction = '''terms.add(new Term(«getVariable(expr.variable)», 1.0);'''
+			val instruction = '''terms.add(new Term(«getVariable(expr.variable)», 1.0));'''
 			methodCalls.add(instruction)
 			return
 		}
@@ -168,7 +171,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		val variable = varRefs.iterator.next
 		
 		val method = '''
-	protected void «builderMethodName»(final List<Term> terms, final «getContextParameterType()» context) {
+	protected void «builderMethodName»(final List<Term> terms, «getContextParameter()») {
 		«generateValueAccess(expr)»
 		«IF expr.setExpression.setOperation !== null»«generateConstantExpression(expr.setExpression.setOperation)»«ENDIF»
 		.forEach(elt -> {
@@ -282,11 +285,12 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		} else if(expression instanceof AttributeReference) {
 			instruction = getIterator(expression)
 			instruction = '''«instruction».«generateAttributeExpression(expression.attribute)»'''
-		} else if(expression instanceof ContextReference) {
-			instruction = getIterator(expression)
-		} else {
+		} else if(expression instanceof VariableReference) {
 			// CASE: VariableReference -> return a constant 1 since the variable should have already been extracted.
 			instruction = '''1.0'''
+		} else {
+			// CASE: ContextReference
+			instruction = getIterator(expression as ContextReference)
 		}
 		if(expression.setExpression !== null) {
 			instruction += generateConstantExpression(expression.setExpression)

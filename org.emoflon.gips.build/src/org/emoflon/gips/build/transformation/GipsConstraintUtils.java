@@ -14,6 +14,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
+import org.emoflon.gips.intermediate.GipsIntermediate.RuleConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
@@ -965,6 +966,11 @@ public final class GipsConstraintUtils {
 			PatternConstraint substitute = factory.createPatternConstraint();
 			substitute.setName(pConstraint.getName() + prefix + index);
 			substitute.setPattern(pConstraint.getPattern());
+			return substitute;
+		} else if (constraint instanceof RuleConstraint rConstraint) {
+			RuleConstraint substitute = factory.createRuleConstraint();
+			substitute.setName(rConstraint.getName() + prefix + index);
+			substitute.setRule(rConstraint.getRule());
 			return substitute;
 		} else if (constraint instanceof TypeConstraint tConstraint) {
 			TypeConstraint substitute = factory.createTypeConstraint();

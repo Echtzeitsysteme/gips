@@ -637,8 +637,10 @@ public final class GipslExpressionValidator {
 				});
 			}
 			// Variable references may not be used in nested set operations
-			container = GipslScopeContextUtil.getContainer(expression, Set.of(GipsValueExpressionImpl.class));
-			if (GipslScopeContextUtil.getContainer((EObject) container, Set.of(GipsSetExpressionImpl.class)) != null) {
+			container = GipslScopeContextUtil.getContainer(expression.eContainer(),
+					Set.of(GipsValueExpressionImpl.class));
+			if (GipslScopeContextUtil.getContainer((EObject) container,
+					Set.of(GipsValueExpressionImpl.class)) != null) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.ARITH_EXPR_VAR_USE_ERROR_MESSAGE, //
@@ -731,8 +733,10 @@ public final class GipslExpressionValidator {
 			}
 
 			// Variable references may not be used in nested set operations
-			container = GipslScopeContextUtil.getContainer(expression, Set.of(GipsSetExpressionImpl.class));
-			if (GipslScopeContextUtil.getContainer((EObject) container, Set.of(GipsSetExpressionImpl.class)) != null) {
+			container = GipslScopeContextUtil.getContainer(expression.eContainer(),
+					Set.of(GipsValueExpressionImpl.class));
+			if (GipslScopeContextUtil.getContainer((EObject) container,
+					Set.of(GipsValueExpressionImpl.class)) != null) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.ARITH_EXPR_VAR_USE_ERROR_MESSAGE, //

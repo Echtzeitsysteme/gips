@@ -109,7 +109,6 @@ public class ValueExpressionTransformer extends TransformationContext {
 			value = transform(node, localContext);
 		} else if (eValue.getExpression() instanceof GipsVariableReferenceExpression variable) {
 			VariableReference vValue = factory.createVariableReference();
-			vValue.setContext(localContext);
 			if (variable.getVariable() != null) {
 				vValue.setVariable(data.eVariable2Variable().get(variable.getVariable()));
 			} else {
@@ -122,7 +121,6 @@ public class ValueExpressionTransformer extends TransformationContext {
 			value = transform(eAttribute, localContext);
 		} else if (eValue.getExpression() == null) {
 			ContextReference cValue = factory.createContextReference();
-			cValue.setContext(localContext);
 			cValue.setLocal(true);
 			value = cValue;
 		} else {
@@ -137,7 +135,6 @@ public class ValueExpressionTransformer extends TransformationContext {
 			value = transform(node, setContext);
 		} else if (eValue.getExpression() instanceof GipsVariableReferenceExpression variable) {
 			VariableReference vValue = factory.createVariableReference();
-			vValue.setContext(setContext);
 			if (variable.getVariable() != null) {
 				vValue.setVariable(data.eVariable2Variable().get(variable.getVariable()));
 			} else {
@@ -150,7 +147,6 @@ public class ValueExpressionTransformer extends TransformationContext {
 			value = transform(eAttribute, setContext);
 		} else if (eValue.getExpression() == null) {
 			ContextReference cValue = factory.createContextReference();
-			cValue.setContext(setContext);
 			cValue.setLocal(false);
 			value = cValue;
 		} else {
@@ -161,7 +157,6 @@ public class ValueExpressionTransformer extends TransformationContext {
 
 	public ValueExpression transform(final GipsNodeExpression node, final Context context) {
 		NodeReference nValue = factory.createNodeReference();
-		nValue.setContext(context);
 		nValue.setNode(data.eNode2Node().get(node.getNode()));
 		if (node.getAttributeExpression() != null) {
 			nValue.setAttribute(transform(node.getAttributeExpression()));
@@ -176,7 +171,6 @@ public class ValueExpressionTransformer extends TransformationContext {
 
 	public ValueExpression transform(final GipsAttributeExpression eAttribute, final Context context) {
 		AttributeReference aValue = factory.createAttributeReference();
-		aValue.setContext(context);
 		aValue.setAttribute(transform(eAttribute));
 		if (context.equals(localContext)) {
 			aValue.setLocal(true);

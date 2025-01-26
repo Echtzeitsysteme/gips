@@ -181,8 +181,11 @@ GipsSetElementExpression: {GipsSetElementExpression}
 ;
 
 GipsVariableReferenceExpression returns GipsVariableReferenceExpression: 
-	'.' (isMappingValue ?= 'value') |
-	(isGenericValue ?= 'variables') '.' variable = [GipsMappingVariable|ID]
+	'.' 
+	(
+		(isMappingValue ?= 'value') |
+ 		(isGenericValue ?= 'variables') '.' variable = [GipsMappingVariable|ID]
+	)
 ;
 
 // TODO: Currently unused -> re-implement later!

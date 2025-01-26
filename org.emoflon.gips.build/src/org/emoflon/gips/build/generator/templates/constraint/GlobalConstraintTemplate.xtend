@@ -67,6 +67,14 @@ public «className»(final «data.gipsApiClassName» engine, final org.emoflon.g
 		return ""
 	}
 	
+	override String getParametersForVoidBuilder() {
+		return '''final List<Term> terms'''
+	}
+	
+	override String getCallParametersForVoidBuilder() {
+		return '''terms'''
+	}
+	
 	override getAdditionalVariableName(VariableReference varRef) {
 		return '''engine.getNonMappingVariable(constraint, "«varRef.variable.name»").getName()'''
 	}

@@ -268,7 +268,6 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="rule" lowerBound="1" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXRule"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContextReference" eSuperTypes="#//ValueExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="#//Context"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="local" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeReference" eSuperTypes="#//ContextReference #//Context">

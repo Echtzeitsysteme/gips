@@ -65,6 +65,12 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	def String getContextParameter() {
 		return '''final «getContextParameterType()» context'''
 	}
+	def String getParametersForVoidBuilder() {
+		return '''final List<Term> terms, «getContextParameter()»'''
+	}
+	def String getCallParametersForVoidBuilder() {
+		return '''terms, context'''
+	}
 	
 		def String getVariableInSet(Variable variable) {
 		if(isMappingVariable(variable)) {
@@ -152,7 +158,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		val sumExpression = expr.setExpression.setReduce as SetSummation
 		
 		val builderMethodName = '''builder_«builderMethods.size»'''
-		val instruction = '''«builderMethodName»(terms, context);'''
+		val instruction = '''«builderMethodName»(«callParametersForVoidBuilder»);'''
 		methodCalls.add(instruction)
 		
 		builderMethods.put(expr, builderMethodName)
@@ -171,12 +177,12 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		val variable = varRefs.iterator.next
 		
 		val method = '''
-	protected void «builderMethodName»(final List<Term> terms, «getContextParameter()») {
+	protected void «builderMethodName»(«parametersForVoidBuilder») {
 		«generateValueAccess(expr)»
 		«IF expr.setExpression.setOperation !== null»«generateConstantExpression(expr.setExpression.setOperation)»«ENDIF»
 		.forEach(elt -> {
 			«IF variable.local» terms.add(new Term(«getVariable(variable.variable)», (double)«generateConstantExpression(sumExpression.expression)»));
-			«ELSE»terms.add(new Term(«getVariableInSet(variable.variable)»), (double)«generateConstantExpression(sumExpression.expression)»));
+			«ELSE»terms.add(new Term(«getVariableInSet(variable.variable)», (double)«generateConstantExpression(sumExpression.expression)»));
 			«ENDIF»
 		});
 	}
@@ -256,7 +262,9 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	
 	def String generateConstantExpression(ValueExpression expression) {
 		var instruction = generateValueAccess(expression)
-		
+		if(expression.setExpression !== null) {
+			instruction += generateConstantExpression(expression.setExpression)
+		}
 		return instruction;
 	}
 	
@@ -291,9 +299,6 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		} else {
 			// CASE: ContextReference
 			instruction = getIterator(expression as ContextReference)
-		}
-		if(expression.setExpression !== null) {
-			instruction += generateConstantExpression(expression.setExpression)
 		}
 		return instruction;
 	}

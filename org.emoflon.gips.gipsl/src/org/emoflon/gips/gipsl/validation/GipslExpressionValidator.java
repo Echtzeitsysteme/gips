@@ -609,7 +609,7 @@ public final class GipslExpressionValidator {
 
 		if (expression.getExpression() instanceof GipsVariableReferenceExpression) {
 			valueType = ExpressionType.Variable;
-			if (!(localContext instanceof GipsMapping)) {
+			if (!(localContext instanceof GipsMappingExpression || localContext instanceof GipsMapping)) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.ARITH_EXPR_VAR_REF_ERROR_MESSAGE, //
@@ -704,7 +704,7 @@ public final class GipslExpressionValidator {
 
 		if (expression.getExpression() instanceof GipsVariableReferenceExpression) {
 			valueType = ExpressionType.Variable;
-			if (!(setContext instanceof GipsMapping)) {
+			if (!(setContext instanceof GipsMappingExpression || setContext instanceof GipsMapping)) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.ARITH_EXPR_VAR_REF_ERROR_MESSAGE, //
@@ -726,7 +726,7 @@ public final class GipslExpressionValidator {
 			}
 
 			// Variable references may not be used in nested set operations
-			container = GipslScopeContextUtil.getContainer(expression, Set.of(GipsValueExpressionImpl.class));
+			container = GipslScopeContextUtil.getContainer(expression, Set.of(GipsSetExpressionImpl.class));
 			if (GipslScopeContextUtil.getContainer((EObject) container, Set.of(GipsSetExpressionImpl.class)) != null) {
 				errors.add(() -> {
 					GipslValidator.err( //

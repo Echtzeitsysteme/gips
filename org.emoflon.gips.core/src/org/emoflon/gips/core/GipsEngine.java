@@ -108,6 +108,9 @@ public abstract class GipsEngine {
 		buildTracingTree();
 	}
 
+	// TODO Rework the way the trace is saved (here) and loaded (in Eclipse). Find a
+	// way to replace all the magic words here, they are also used within the LP
+	// editor connector.
 	protected void buildTracingTree() {
 		final var tracer = getTracer();
 

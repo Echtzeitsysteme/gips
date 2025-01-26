@@ -256,6 +256,11 @@ public final class GipslExpressionValidator {
 			return ExpressionType.Error;
 		}
 
+		if (lhs == ExpressionType.Number && rhs == ExpressionType.Variable
+				|| rhs == ExpressionType.Number && lhs == ExpressionType.Variable) {
+			return ExpressionType.Boolean;
+		}
+
 		if (lhs != rhs) {
 			errors.add(() -> {
 				GipslValidator.err( //

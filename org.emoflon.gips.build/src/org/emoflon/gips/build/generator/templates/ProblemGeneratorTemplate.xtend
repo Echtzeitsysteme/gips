@@ -72,7 +72,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		return '''terms, context'''
 	}
 	
-		def String getVariableInSet(Variable variable) {
+	def String getVariableInSet(Variable variable) {
 		if(isMappingVariable(variable)) {
 			return '''elt'''
 		} else {

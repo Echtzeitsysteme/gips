@@ -8,9 +8,12 @@ import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
 import org.emoflon.gips.build.transformation.helper.TransformationContext;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsConcatenationOperation;
+import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsElementQuery;
 import org.emoflon.gips.gipsl.gipsl.GipsFilterOperation;
+import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsLocalContextExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsNodeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternExpression;
@@ -56,6 +59,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.SetTypeQuery;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetTypeSelect;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 
 public class ValueExpressionTransformer extends TransformationContext {
@@ -113,7 +117,15 @@ public class ValueExpressionTransformer extends TransformationContext {
 				vValue.setVariable(data.eVariable2Variable().get(variable.getVariable()));
 			} else {
 				EObject context = GipslScopeContextUtil.getLocalContext(eValue);
-				vValue.setVariable(data.eVariable2Variable().get(context));
+				if (context instanceof GipsConstraint constraint) {
+					vValue.setVariable(data.eVariable2Variable().get(constraint.getContext()));
+				} else if (context instanceof GipsLinearFunction fun) {
+					vValue.setVariable(data.eVariable2Variable().get(fun.getContext()));
+				} else if (context instanceof GipsMapping map) {
+					vValue.setVariable(data.eVariable2Variable().get(map));
+				} else {
+					vValue.setVariable(null);
+				}
 			}
 			vValue.setLocal(true);
 			value = vValue;
@@ -138,8 +150,7 @@ public class ValueExpressionTransformer extends TransformationContext {
 			if (variable.getVariable() != null) {
 				vValue.setVariable(data.eVariable2Variable().get(variable.getVariable()));
 			} else {
-				EObject context = GipslScopeContextUtil.getSetContext(eValue);
-				vValue.setVariable(data.eVariable2Variable().get(context));
+				vValue.setVariable(getMappingVariable(eValue));
 			}
 			vValue.setLocal(false);
 			value = vValue;
@@ -153,6 +164,47 @@ public class ValueExpressionTransformer extends TransformationContext {
 			throw new UnsupportedOperationException("Unkown local value expression: " + eValue.getExpression());
 		}
 		return value;
+	}
+
+	public Variable getMappingVariable(final GipsSetElementExpression eValue) {
+		EObject context = GipslScopeContextUtil.getSetContext(eValue);
+		if (context instanceof GipsConstraint constraint) {
+			return data.eVariable2Variable().get(constraint.getContext());
+		} else if (context instanceof GipsLinearFunction fun) {
+			return data.eVariable2Variable().get(fun.getContext());
+		} else if (context instanceof GipsMappingExpression map) {
+			return data.eVariable2Variable().get(map.getMapping());
+		} else if (context instanceof GipsLocalContextExpression lce) {
+			EObject rootContext = GipslScopeContextUtil.getLocalContext(lce);
+			if (rootContext instanceof GipsConstraint constraint) {
+				return data.eVariable2Variable().get(constraint.getContext());
+			} else if (rootContext instanceof GipsLinearFunction fun) {
+				return data.eVariable2Variable().get(fun.getContext());
+			} else {
+				return null;
+			}
+		} else if (context instanceof GipsSetElementExpression set) {
+			return getMappingVariable(set);
+		} else if (context instanceof GipsValueExpression ve) {
+			if (ve instanceof GipsMappingExpression map) {
+				return data.eVariable2Variable().get(map.getMapping());
+			} else if (ve instanceof GipsLocalContextExpression lce) {
+				EObject rootContext = GipslScopeContextUtil.getLocalContext(lce);
+				if (rootContext instanceof GipsConstraint constraint) {
+					return data.eVariable2Variable().get(constraint.getContext());
+				} else if (rootContext instanceof GipsLinearFunction fun) {
+					return data.eVariable2Variable().get(fun.getContext());
+				} else {
+					return null;
+				}
+			} else if (ve instanceof GipsSetElementExpression set) {
+				return getMappingVariable(set);
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 
 	public ValueExpression transform(final GipsNodeExpression node, final Context context) {

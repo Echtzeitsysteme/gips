@@ -597,42 +597,90 @@ public class GipsArithmeticTransformer {
 				final boolean rhsConst = (GipsTransformationUtils
 						.isConstantExpression(binaryExpr.getRhs()) == ArithmeticExpressionType.constant);
 
+				final boolean lhsSum = isSetSummation(binaryExpr.getLhs());
+				final boolean rhsSum = isSetSummation(binaryExpr.getRhs());
+
 				Set<ArithmeticExpression> currentFactors = new LinkedHashSet<>();
 				currentFactors.addAll(factors);
 
-				// First priority: never use a non-constant expression as a factor for a
-				// constant one
-				if (lhsConst && !rhsConst) {
-					currentFactors.add(binaryExpr.getLhs());
-					return expandProducts(binaryExpr.getRhs(), currentFactors);
-				} else if (!lhsConst && rhsConst) {
-					currentFactors.add(binaryExpr.getRhs());
-					return expandProducts(binaryExpr.getLhs(), currentFactors);
-				}
+				// Sanity Check: If both expressions are constant, there is nothing else to do:
+				if (lhsConst && rhsConst)
+					return binaryExpr;
 
-				// Second priority: if both terms are (non-)constant, use the one that is not a
-				// set summation as factor
-				if (binaryExpr.getLhs() instanceof ValueExpression ve && ve.getSetExpression() != null
-						&& ve.getSetExpression().getSetReduce() != null
-						&& ve.getSetExpression().getSetReduce() instanceof SetSummation
-						&& !(binaryExpr.getRhs() instanceof ValueExpression ve2 && ve2.getSetExpression() != null
-								&& ve2.getSetExpression().getSetReduce() != null
-								&& ve2.getSetExpression().getSetReduce() instanceof SetSummation)) {
-					currentFactors.add(binaryExpr.getRhs());
-					return expandProducts(binaryExpr.getLhs(), currentFactors);
-				} else if (binaryExpr.getRhs() instanceof ValueExpression ve && ve.getSetExpression() != null
-						&& ve.getSetExpression().getSetReduce() != null
-						&& ve.getSetExpression().getSetReduce() instanceof SetSummation
-						&& (binaryExpr.getLhs() instanceof ValueExpression ve2 && ve2.getSetExpression() != null
-								&& ve2.getSetExpression().getSetReduce() != null
-								&& ve2.getSetExpression().getSetReduce() instanceof SetSummation)) {
+				// Sanity Check: If both expressions are non-constant throw error.
+				if (!lhsConst && !rhsConst)
+					throw new UnsupportedOperationException(
+							"Two variable references may not be multiplied with each other.");
+
+				// If lhs is constant and rhs is non-constant and not expanded or a summation ->
+				// expand
+				if (lhsConst && !rhsConst && (!rhsExpanded || rhsSum)) {
 					currentFactors.add(binaryExpr.getLhs());
 					return expandProducts(binaryExpr.getRhs(), currentFactors);
 				}
 
-				// Otherwise, if both lhs and rhs are (non-)constant, there is nothing one can
-				// do.
+				// If rhs is constant and lhs is non-constant and not expanded or a summation ->
+				// expand
+				if (rhsConst && !lhsConst && (!lhsExpanded || lhsSum)) {
+					currentFactors.add(binaryExpr.getRhs());
+					return expandProducts(binaryExpr.getLhs(), currentFactors);
+				}
+
+				// Else -> do nothing
 				return binaryExpr;
+
+//				// Sanity Check: If both expressions are constant, there is nothing else to do:
+//				if (lhsConst && rhsConst)
+//					return binaryExpr;
+//				
+//				// Sanity Check: If both expressions are non-constant throw error.
+//				if (!lhsConst && !rhsConst)
+//					throw new UnsupportedOperationException("Two variable references may not be multiplied with each other.");
+//
+//				// If the lhs is non-constant, expanded and not a set summation, and the rhs is
+//				// constant there is nothing else to do
+//				if (!lhsConst && lhsExpanded && !lhsSum && rhsConst)
+//					return binaryExpr;
+//
+//				// If the rhs is non-constant, expanded and not a set summation, and the lhs is
+//				// constant there is nothing else to do
+//				if (!rhsConst && rhsExpanded && !rhsSum && lhsConst)
+//					return binaryExpr;
+//
+//				// Second priority: never use a non-constant expression that is not-expanded as
+//				// a factor for a
+//				// constant one
+//				if (lhsConst && !rhsConst && !rhsExpanded) {
+//					currentFactors.add(binaryExpr.getLhs());
+//					return expandProducts(binaryExpr.getRhs(), currentFactors);
+//				} else if (!lhsConst && !lhsExpanded && rhsConst) {
+//					currentFactors.add(binaryExpr.getRhs());
+//					return expandProducts(binaryExpr.getLhs(), currentFactors);
+//				}
+//
+//				// Second priority: if both terms are (non-)constant, use the one that is not a
+//				// set summation as factor
+//				if (binaryExpr.getLhs() instanceof ValueExpression ve && ve.getSetExpression() != null
+//						&& ve.getSetExpression().getSetReduce() != null
+//						&& ve.getSetExpression().getSetReduce() instanceof SetSummation
+//						&& !(binaryExpr.getRhs() instanceof ValueExpression ve2 && ve2.getSetExpression() != null
+//								&& ve2.getSetExpression().getSetReduce() != null
+//								&& ve2.getSetExpression().getSetReduce() instanceof SetSummation)) {
+//					currentFactors.add(binaryExpr.getRhs());
+//					return expandProducts(binaryExpr.getLhs(), currentFactors);
+//				} else if (binaryExpr.getRhs() instanceof ValueExpression ve && ve.getSetExpression() != null
+//						&& ve.getSetExpression().getSetReduce() != null
+//						&& ve.getSetExpression().getSetReduce() instanceof SetSummation
+//						&& (binaryExpr.getLhs() instanceof ValueExpression ve2 && ve2.getSetExpression() != null
+//								&& ve2.getSetExpression().getSetReduce() != null
+//								&& ve2.getSetExpression().getSetReduce() instanceof SetSummation)) {
+//					currentFactors.add(binaryExpr.getLhs());
+//					return expandProducts(binaryExpr.getRhs(), currentFactors);
+//				}
+//
+//				// Otherwise, if both lhs and rhs are (non-)constant, there is nothing one can
+//				// do.
+//				return binaryExpr;
 			}
 			default -> {
 				return foldAndMultiplyFactors(factors, cloneExpression(factory, binaryExpr));
@@ -657,6 +705,18 @@ public class GipsArithmeticTransformer {
 			// Case: Literals and Constants
 			return foldAndMultiplyFactors(factors, cloneExpression(factory, expression));
 		}
+	}
+
+	protected boolean isSetSummation(final ArithmeticExpression expression) {
+		if (expression instanceof ArithmeticBinaryExpression abe) {
+			if (abe.getOperator() == ArithmeticBinaryOperator.ADD
+					|| abe.getOperator() == ArithmeticBinaryOperator.SUBTRACT) {
+				return true;
+			}
+		}
+		return (expression instanceof ValueExpression ve && ve.getSetExpression() != null
+				&& ve.getSetExpression().getSetReduce() != null
+				&& ve.getSetExpression().getSetReduce() instanceof SetSummation);
 	}
 
 	protected ArithmeticExpression foldAndMultiplyFactors(Collection<ArithmeticExpression> factors,
@@ -699,7 +759,85 @@ public class GipsArithmeticTransformer {
 							&& isExpanded(binaryExpr.getRhs(), traversedProduct);
 				}
 			case MULTIPLY:
-				return isExpanded(binaryExpr.getLhs(), true) && isExpanded(binaryExpr.getRhs(), true);
+				final boolean lhsConst = (GipsTransformationUtils
+						.isConstantExpression(binaryExpr.getLhs()) == ArithmeticExpressionType.constant);
+				final boolean rhsConst = (GipsTransformationUtils
+						.isConstantExpression(binaryExpr.getRhs()) == ArithmeticExpressionType.constant);
+
+				boolean lhsExpanded = isExpanded(binaryExpr.getLhs(), true);
+				boolean rhsExpanded = isExpanded(binaryExpr.getRhs(), true);
+
+				final boolean lhsSum = isSetSummation(binaryExpr.getLhs());
+				final boolean rhsSum = isSetSummation(binaryExpr.getRhs());
+
+				// Sanity Check: If both expressions are constant, there is nothing else to do:
+				if (lhsConst && rhsConst)
+					return true;
+
+				// Sanity Check: If both expressions are non-constant throw error.
+				if (!lhsConst && !rhsConst)
+					throw new UnsupportedOperationException(
+							"Two variable references may not be multiplied with each other.");
+
+				// If lhs is constant and rhs is non-constant and not expanded or a summation ->
+				// expand
+				if (lhsConst && !rhsConst && (!rhsExpanded || rhsSum)) {
+					return false;
+				}
+
+				// If rhs is constant and lhs is non-constant and not expanded or a summation ->
+				// expand
+				if (rhsConst && !lhsConst && (!lhsExpanded || lhsSum)) {
+					return false;
+				}
+
+				// Else -> do nothing
+				return true;
+
+//				// Sanity Check: If both expressions are constant, there is nothing else to do:
+//				if (lhsConst && rhsConst)
+//					return true;
+//
+//				// First priority: If the lhs is non-constant and expanded, and the rhs is
+//				// constant there is nothing else to do
+//				if (!lhsConst && lhsExpanded && rhsConst)
+//					return true;
+//
+//				// First priority: If the rhs is non-constant and expanded, and the lhs is
+//				// constant there is nothing else to do
+//				if (!rhsConst && rhsExpanded && lhsConst)
+//					return true;
+//
+//				// Second priority: never use a non-constant expression that is not-expanded as
+//				// a factor for a
+//				// constant one
+//				if (lhsConst && !rhsConst && !rhsExpanded) {
+//					return false;
+//				} else if (!lhsConst && !lhsExpanded && rhsConst) {
+//					return false;
+//				}
+//
+//				// Second priority: if both terms are (non-)constant, use the one that is not a
+//				// set summation as factor
+//				if (binaryExpr.getLhs() instanceof ValueExpression ve && ve.getSetExpression() != null
+//						&& ve.getSetExpression().getSetReduce() != null
+//						&& ve.getSetExpression().getSetReduce() instanceof SetSummation
+//						&& !(binaryExpr.getRhs() instanceof ValueExpression ve2 && ve2.getSetExpression() != null
+//								&& ve2.getSetExpression().getSetReduce() != null
+//								&& ve2.getSetExpression().getSetReduce() instanceof SetSummation)) {
+//					return false;
+//				} else if (binaryExpr.getRhs() instanceof ValueExpression ve && ve.getSetExpression() != null
+//						&& ve.getSetExpression().getSetReduce() != null
+//						&& ve.getSetExpression().getSetReduce() instanceof SetSummation
+//						&& (binaryExpr.getLhs() instanceof ValueExpression ve2 && ve2.getSetExpression() != null
+//								&& ve2.getSetExpression().getSetReduce() != null
+//								&& ve2.getSetExpression().getSetReduce() instanceof SetSummation)) {
+//					return false;
+//				}
+//
+//				// Otherwise, if both lhs and rhs are (non-)constant, there is nothing one can
+//				// do.
+//				return true;
 			// POW, DIVIDE, LOG can never be expanded
 			case POW, DIVIDE, LOG:
 				return traversedProduct;

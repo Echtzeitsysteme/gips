@@ -17,13 +17,13 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
-import org.emoflon.ibex.gt.api.GraphTransformationAPI;
 
 public class TypeIndexer {
 
-	final protected GraphTransformationAPI eMoflonAPI;
+	final protected ResourceSet model;
 	final protected GipsIntermediateModel gipsModel;
 	protected TypeListener listener;
 	final protected Map<EClass, Set<EClass>> class2subclass = Collections.synchronizedMap(new LinkedHashMap<>());
@@ -32,8 +32,8 @@ public class TypeIndexer {
 	final protected Map<String, EClass> typeByName = Collections.synchronizedMap(new LinkedHashMap<>());
 	protected boolean cascadingNotifications = false;
 
-	public TypeIndexer(final GraphTransformationAPI eMoflonAPI, final GipsIntermediateModel gipsModel) {
-		this.eMoflonAPI = eMoflonAPI;
+	public TypeIndexer(final ResourceSet model, final GipsIntermediateModel gipsModel) {
+		this.model = model;
 		this.gipsModel = gipsModel;
 		initIndex();
 		injectListener();
@@ -184,19 +184,18 @@ public class TypeIndexer {
 			});
 		});
 
-		eMoflonAPI.getModel().getResources().parallelStream().filter(r -> !r.getURI().toString().contains("trash.xmi"))
-				.forEach(r -> {
-					r.getContents().forEach(node -> {
-						if (index.keySet().contains(node.eClass()))
-							node = putObject(node.eClass(), node);
+		model.getResources().parallelStream().filter(r -> !r.getURI().toString().contains("trash.xmi")).forEach(r -> {
+			r.getContents().forEach(node -> {
+				if (index.keySet().contains(node.eClass()))
+					node = putObject(node.eClass(), node);
 
-						explore(node);
-					});
-				});
+				explore(node);
+			});
+		});
 	}
 
 	private void injectListener() {
-		listener = new TypeListener(this, eMoflonAPI.getModel());
+		listener = new TypeListener(this, model);
 		listener.injectListener();
 	}
 

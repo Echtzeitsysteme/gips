@@ -197,10 +197,10 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 					return '''«generateConstantExpression(expression.lhs)» + «generateConstantExpression(expression.rhs)»'''
 				}
 				case DIVIDE: {
-					return '''«generateConstantExpression(expression.lhs)» / «generateConstantExpression(expression.rhs)»'''
+					return '''(«generateConstantExpression(expression.lhs)») / («generateConstantExpression(expression.rhs)»)'''
 				}
 				case MULTIPLY: {
-					return '''«generateConstantExpression(expression.lhs)» * «generateConstantExpression(expression.rhs)»'''
+					return '''(«generateConstantExpression(expression.lhs)») * («generateConstantExpression(expression.rhs)»)'''
 				}
 				case POW: {
 					return '''Math.pow(«generateConstantExpression(expression.lhs)», «generateConstantExpression(expression.rhs)»)'''

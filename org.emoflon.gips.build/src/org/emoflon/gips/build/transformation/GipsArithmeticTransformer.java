@@ -605,7 +605,7 @@ public class GipsArithmeticTransformer {
 
 				// Sanity Check: If both expressions are constant, there is nothing else to do:
 				if (lhsConst && rhsConst)
-					return binaryExpr;
+					return foldAndMultiplyFactors(currentFactors, cloneExpression(factory, binaryExpr));
 
 				// Sanity Check: If both expressions are non-constant throw error.
 				if (!lhsConst && !rhsConst)
@@ -627,7 +627,7 @@ public class GipsArithmeticTransformer {
 				}
 
 				// Else -> do nothing
-				return binaryExpr;
+				return foldAndMultiplyFactors(currentFactors, cloneExpression(factory, binaryExpr));
 
 //				// Sanity Check: If both expressions are constant, there is nothing else to do:
 //				if (lhsConst && rhsConst)

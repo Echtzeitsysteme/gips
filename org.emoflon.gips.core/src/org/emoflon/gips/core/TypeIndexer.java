@@ -2,6 +2,7 @@ package org.emoflon.gips.core;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -144,6 +145,7 @@ public class TypeIndexer {
 	}
 
 	private void initIndex() {
+		Set<EClass> requiredTypes = new HashSet<>(gipsModel.getRequiredTypes());
 		gipsModel.getRequiredTypes().stream().filter(type -> !index.containsKey(type)).forEach(type -> {
 			index.put(type, Collections.synchronizedSet(new LinkedHashSet<>()));
 			typeByName.put(type.getName(), type);
@@ -153,7 +155,7 @@ public class TypeIndexer {
 					.filter(cls -> (cls instanceof EClass)).map(cls -> (EClass) cls).filter(cls -> !cls.equals(type))
 					.filter(cls -> cls.getEAllSuperTypes().contains(type)).collect(Collectors.toSet());
 			class2subclass.putIfAbsent(type, subclasses);
-			subclasses.stream().filter(cls -> !index.containsKey(cls)).forEach(cls -> {
+			subclasses.stream().filter(cls -> !index.containsKey(cls) && !requiredTypes.contains(cls)).forEach(cls -> {
 				index.put(cls, Collections.synchronizedSet(new LinkedHashSet<>()));
 				typeByName.put(cls.getName(), cls);
 			});

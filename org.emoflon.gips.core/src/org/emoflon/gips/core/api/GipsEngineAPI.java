@@ -288,8 +288,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 
 		gipsModel = (GipsIntermediateModel) model.getContents().get(0);
 
-		gipsModel.getVariables().stream().filter(var -> var instanceof Mapping).map(var -> (Mapping) var)
-				.forEach(mapping -> name2Mapping.put(mapping.getName(), mapping));
+		gipsModel.getMappings().forEach(mapping -> name2Mapping.put(mapping.getName(), mapping));
 	}
 
 	protected abstract void createMappers();

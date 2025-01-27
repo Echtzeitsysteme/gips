@@ -34,7 +34,7 @@ class MapperFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 		imports.add("org.emoflon.gips.core.GipsMapping")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.Mapping")
 		//TODO: insert mapper imports!
-		mappings = context.variables.filter[v | v instanceof Mapping].map[m | m  as Mapping].toList
+		mappings = context.mappings
 		mappings.forEach[mapping | imports.add(data.apiData.gipsMapperPkg+"."+data.mapping2mapperClassName.get(mapping))]
 	}
 	

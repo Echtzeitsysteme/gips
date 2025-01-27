@@ -830,6 +830,8 @@ public class GipsArithmeticTransformer {
 			clone.setRhs(cloneExpression(factory, (BooleanExpression) expr.getRhs()));
 		}
 
+		clone.setRequiresComparables(expr.isRequiresComparables());
+
 		return clone;
 	}
 

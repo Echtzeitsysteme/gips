@@ -4,11 +4,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsConstraint;
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsGlobalConstraint;
-import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.GipsMapping;
 import org.emoflon.gips.core.GipsMappingConstraint;
+import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.GipsTypeConstraint;
 import org.emoflon.gips.core.gt.GipsPatternConstraint;
+import org.emoflon.gips.core.gt.GipsRuleConstraint;
 
 public abstract class Solver {
 	final protected GipsEngine engine;
@@ -38,6 +39,8 @@ public abstract class Solver {
 			translateConstraint((GipsMappingConstraint<?, ? extends EObject>) mapping);
 		} else if (constraint instanceof GipsPatternConstraint<?, ?, ?> pattern) {
 			translateConstraint(pattern);
+		} else if (constraint instanceof GipsRuleConstraint<?, ?, ?> rule) {
+			translateConstraint(rule);
 		} else if (constraint instanceof GipsTypeConstraint<?, ?> type) {
 			translateConstraint(type);
 		} else {
@@ -48,6 +51,8 @@ public abstract class Solver {
 	protected abstract void translateConstraint(final GipsMappingConstraint<?, ? extends EObject> constraint);
 
 	protected abstract void translateConstraint(final GipsPatternConstraint<?, ?, ?> constraint);
+
+	protected abstract void translateConstraint(final GipsRuleConstraint<?, ?, ?> constraint);
 
 	protected abstract void translateConstraint(final GipsTypeConstraint<?, ? extends EObject> constraint);
 

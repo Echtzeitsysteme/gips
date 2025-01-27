@@ -10,12 +10,13 @@ import java.util.Map.Entry;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsGlobalConstraint;
-import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.GipsMapper;
 import org.emoflon.gips.core.GipsMapping;
 import org.emoflon.gips.core.GipsMappingConstraint;
+import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.GipsTypeConstraint;
 import org.emoflon.gips.core.gt.GipsPatternConstraint;
+import org.emoflon.gips.core.gt.GipsRuleConstraint;
 import org.emoflon.gips.core.milp.model.BinaryVariable;
 import org.emoflon.gips.core.milp.model.Constraint;
 import org.emoflon.gips.core.milp.model.IntegerVariable;
@@ -248,6 +249,13 @@ public class GurobiSolver extends Solver {
 
 	@Override
 	protected void translateConstraint(final GipsPatternConstraint<?, ?, ?> constraint) {
+		createOrGetAdditionalVars(constraint.getAdditionalVariables());
+		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
+		addIlpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
+	}
+
+	@Override
+	protected void translateConstraint(final GipsRuleConstraint<?, ?, ?> constraint) {
 		createOrGetAdditionalVars(constraint.getAdditionalVariables());
 		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
 		addIlpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);

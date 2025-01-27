@@ -11,12 +11,13 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsGlobalConstraint;
-import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.GipsMapper;
 import org.emoflon.gips.core.GipsMapping;
 import org.emoflon.gips.core.GipsMappingConstraint;
+import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.GipsTypeConstraint;
 import org.emoflon.gips.core.gt.GipsPatternConstraint;
+import org.emoflon.gips.core.gt.GipsRuleConstraint;
 import org.emoflon.gips.core.milp.model.BinaryVariable;
 import org.emoflon.gips.core.milp.model.Constant;
 import org.emoflon.gips.core.milp.model.Constraint;
@@ -243,6 +244,15 @@ public class GlpkSolver extends Solver {
 
 	@Override
 	protected void translateConstraint(final GipsPatternConstraint<?, ?, ?> constraint) {
+		createAdditionalVars(constraint.getAdditionalVariables());
+		final Set<Constraint> collectedCnstr = new HashSet<>();
+		collectedCnstr.addAll(constraint.getConstraints());
+		collectedCnstr.addAll(constraint.getAdditionalConstraints());
+		constraints.put(constraint.getName(), collectedCnstr);
+	}
+
+	@Override
+	protected void translateConstraint(final GipsRuleConstraint<?, ?, ?> constraint) {
 		createAdditionalVars(constraint.getAdditionalVariables());
 		final Set<Constraint> collectedCnstr = new HashSet<>();
 		collectedCnstr.addAll(constraint.getConstraints());

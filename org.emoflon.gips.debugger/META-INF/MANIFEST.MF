@@ -7,7 +7,7 @@ Bundle-Version: 1.0.0.qualifier
 Export-Package: org.emoflon.gips.debugger.api,
  org.emoflon.gips.debugger.utility
 Import-Package: com.google.common.base
-Bundle-Activator: org.emoflon.gips.debugger.Activator
+Bundle-Activator: org.emoflon.gips.debugger.TracePlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.xtext.ui,

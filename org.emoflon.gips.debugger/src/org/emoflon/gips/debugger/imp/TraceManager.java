@@ -13,9 +13,11 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
+import org.emoflon.gips.debugger.api.IEditorTracker;
 import org.emoflon.gips.debugger.api.ITraceContext;
 import org.emoflon.gips.debugger.api.ITraceManager;
-import org.emoflon.gips.debugger.api.IEditorTracker;
 import org.emoflon.gips.debugger.api.ITraceSelectionListener;
 import org.emoflon.gips.debugger.api.ITraceUpdateListener;
 import org.emoflon.gips.debugger.api.TraceModelNotFoundException;
@@ -23,11 +25,13 @@ import org.emoflon.gips.debugger.imp.connector.EditorTraceConnectionFactory;
 import org.emoflon.gips.debugger.imp.connector.GenericXmiEditorTraceConnectionFactory;
 import org.emoflon.gips.debugger.imp.connector.GipslEditorTraceConnectionFactory;
 import org.emoflon.gips.debugger.imp.connector.LpEditorTraceConnectionFactory;
+import org.emoflon.gips.debugger.pref.PluginPreferences;
 
 public final class TraceManager implements ITraceManager {
 
 	private final Object syncLock = new Object();
 	private final IResourceChangeListener workspaceResourceListener = this::onWorkspaceResourceChange;
+	private final IPropertyChangeListener preferenceListener = this::onPreferenceChange;
 
 	private final Map<String, ProjectTraceContext> contextById = new HashMap<>();
 
@@ -47,10 +51,16 @@ public final class TraceManager implements ITraceManager {
 
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		workspace.addResourceChangeListener(workspaceResourceListener);
+
+		var preferences = PluginPreferences.getPreferenceStore();
+		preferences.addPropertyChangeListener(preferenceListener);
+		visualisationActive = preferences.getBoolean(PluginPreferences.PREF_TRACE_DISPLAY_ACTIVE);
 	}
 
 	public void dispose() {
 		contextById.clear();
+
+		PluginPreferences.getPreferenceStore().removePropertyChangeListener(preferenceListener);
 
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		workspace.removeResourceChangeListener(workspaceResourceListener);
@@ -59,19 +69,13 @@ public final class TraceManager implements ITraceManager {
 		tracker = null;
 	}
 
+	private void onPreferenceChange(PropertyChangeEvent event) {
+		if (PluginPreferences.PREF_TRACE_DISPLAY_ACTIVE.equals(event.getProperty()))
+			visualisationActive = ((Boolean) event.getNewValue()).booleanValue();
+	}
+
 	@Override
 	public boolean isVisualisationActive() {
-		return visualisationActive;
-	}
-
-	@Override
-	public void setVisualisation(boolean active) {
-		visualisationActive = active;
-	}
-
-	@Override
-	public boolean toggleVisualisation() {
-		visualisationActive = !visualisationActive;
 		return visualisationActive;
 	}
 

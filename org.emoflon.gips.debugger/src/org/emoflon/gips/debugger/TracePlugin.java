@@ -1,7 +1,13 @@
 package org.emoflon.gips.debugger;
 
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.preferences.ConfigurationScope;
+import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.emoflon.gips.debugger.api.ITraceManager;
 import org.emoflon.gips.debugger.imp.TraceManager;
 import org.emoflon.gips.debugger.imp.TraceRemoteService;
@@ -10,33 +16,43 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIPlugin {
+public final class TracePlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.emoflon.gips.debugger"; //$NON-NLS-1$
 
+	// synchronization lock
+	private static final Object lock = new Object();
+
 	// The shared instance
-	private static Activator INSTANCE;
+	private static TracePlugin INSTANCE;
 
 	/**
 	 * Returns the shared instance
 	 *
 	 * @return the shared instance
 	 */
-	public static Activator getInstance() {
+	public static TracePlugin getInstance() {
 		return INSTANCE;
+	}
+
+	public static void log(IStatus status) {
+		getInstance().getLog().log(status);
 	}
 
 	private TraceManager traceManager;
 	private TraceRemoteService remoteService;
 
-	public Activator() {
+	private ScopedPreferenceStore preferenceStore;
+
+	public TracePlugin() {
+		Assert.isTrue(INSTANCE == null);
+		INSTANCE = this;
 	}
 
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
 		super.start(bundleContext);
-		INSTANCE = this;
 
 		traceManager = new TraceManager();
 		traceManager.initialize();
@@ -60,9 +76,22 @@ public class Activator extends AbstractUIPlugin {
 		remoteService.dispose();
 		traceManager.dispose();
 
-		INSTANCE = null;
-
 		super.stop(context);
+	}
+
+	@Override
+	public ScopedPreferenceStore getPreferenceStore() {
+		if (preferenceStore == null) {
+			synchronized (lock) {
+				if (preferenceStore == null) {
+					preferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, PLUGIN_ID);
+					preferenceStore.setSearchContexts(
+							new IScopeContext[] { InstanceScope.INSTANCE, ConfigurationScope.INSTANCE });
+
+				}
+			}
+		}
+		return this.preferenceStore;
 	}
 
 	/**

@@ -46,7 +46,7 @@
             name="Open LP">
       </command>
       <command
-            defaultHandler="org.emoflon.gips.debugger.handler.ToggleVisualisation"
+            defaultHandler="org.emoflon.gips.debugger.handler.ToggleVisualisationHandler"
             description="Activates or deactivates the visualization of gipsl to ilp model transformations"
             id="org.emoflon.gips.debugger.visualizer.toggle"
             name="Toggle GIPSL ILP Visualisation">
@@ -120,6 +120,20 @@
             verticalRulerPreferenceKey="org.emoflon.gips.debugger.marker.vruler"
             verticalRulerPreferenceValue="true">
       </specification>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.emoflon.gips.debugger.pref.PluginPreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.emoflon.gips.debugger.pref.PluginPreferencePage"
+            id="org.emoflon.gips.debugger.page1"
+            name="GIPS Tracing">
+      </page>
    </extension>
 
 </plugin>

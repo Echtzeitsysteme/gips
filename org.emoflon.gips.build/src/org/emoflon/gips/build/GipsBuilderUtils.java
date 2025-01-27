@@ -312,16 +312,6 @@ public final class GipsBuilderUtils {
 		// each project has it's own trace.
 		ITraceContext traceContext = ITraceManager.getInstance().getContext(project.getName());
 
-		// TODO: this part needs to go
-		// Maybe some app-2-app com
-		try {
-			var runtimeTrace = project.getLocation().append("traces").append("gips2ilp-trace.xmi");
-			traceContext.loadAndUpdateTraceModel(URI.createFileURI(runtimeTrace.toString()));
-		} catch (Exception e) {
-//			LogUtils.error(logger, e.toString());
-			e.printStackTrace();
-		}
-
 		try {
 			// file name as model id
 			String gipslModelId = gipslModelURI.trimFileExtension().lastSegment();
@@ -335,16 +325,7 @@ public final class GipsBuilderUtils {
 
 			traceContext
 					.updateTraceModel(new TraceModelLink(gipslModelId, intermediateModelId, gipsl2intermediateMppings));
-
-			// xmi trace file
-//			var traceGraph = new TraceGraph();
-//			traceGraph.addOrReplaceTraceLink(new TraceModelLink(gipslModelId, gipsModelId, gipsl2gipsMppings));
-//			var traceModel = HelperGraph2Ecore.buildModelFromGraph(traceGraph);
-//			GipsBuilderUtils.saveResource(traceModel,
-//					project.getLocation().append("traces").append("gipsl2gips-trace.xmi").toOSString());
-
 		} catch (Exception e) {
-//			LogUtils.error(logger, e.toString());
 			e.printStackTrace();
 		}
 	}

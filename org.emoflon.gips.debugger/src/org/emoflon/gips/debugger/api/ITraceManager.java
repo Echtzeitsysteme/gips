@@ -2,7 +2,7 @@ package org.emoflon.gips.debugger.api;
 
 import java.util.Collection;
 
-import org.emoflon.gips.debugger.Activator;
+import org.emoflon.gips.debugger.TracePlugin;
 
 public interface ITraceManager {
 
@@ -10,7 +10,7 @@ public interface ITraceManager {
 	 * Shared singleton instance
 	 */
 	public static ITraceManager getInstance() {
-		return Activator.getInstance().getTraceManager();
+		return TracePlugin.getInstance().getTraceManager();
 	}
 
 	void addListener(String contextId, ITraceSelectionListener listener);
@@ -38,9 +38,5 @@ public interface ITraceManager {
 	boolean doesContextExist(String contextId);
 
 	boolean isVisualisationActive();
-
-	void setVisualisation(boolean active);
-
-	boolean toggleVisualisation();
 
 }

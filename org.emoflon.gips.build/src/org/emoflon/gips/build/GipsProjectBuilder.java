@@ -106,7 +106,7 @@ public class GipsProjectBuilder implements GipsBuilderExtension {
 
 		// update gipsl->intermediate tracing
 		LogUtils.info(logger, "GipsProjectBuilder: update trace...");
-		GipsBuilderUtils.updateTrace(project, gipsApiData.intermediateModelURI, gipsSlangFile.eResource().getURI(),
+		GipsBuilderUtils.updateTrace(project, gipsSlangFile.eResource().getURI(), gipsApiData.intermediateModelURI,
 				transformer);
 
 		LogUtils.info(logger, "GipsProjectBuilder: Done!");
@@ -118,5 +118,4 @@ public class GipsProjectBuilder implements GipsBuilderExtension {
 			e.printStackTrace();
 		}
 	}
-
 }

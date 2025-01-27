@@ -134,6 +134,10 @@ public class GipsConstraintSplitter {
 				result.put(literal, transform(gipsRel));
 				constraints.add(
 						new GipsAnnotatedConstraint(this.constraint, formula, AnnotatedConstraintType.LITERAL, result));
+			} else if (expr instanceof GipsArithmeticExpression arithmetic) {
+				result.put(literal, transform(arithmetic));
+				constraints.add(
+						new GipsAnnotatedConstraint(this.constraint, formula, AnnotatedConstraintType.LITERAL, result));
 			} else {
 				throw new UnsupportedOperationException(
 						"Literals in a boolean expression in CNF-form should not be boolean expressions themselves.");
@@ -147,6 +151,10 @@ public class GipsConstraintSplitter {
 						AnnotatedConstraintType.NEGATED_LITERAL, result));
 			} else if (expr instanceof GipsRelationalExpression gipsRel) {
 				result.put(literal, transform(gipsRel));
+				constraints.add(new GipsAnnotatedConstraint(this.constraint, formula,
+						AnnotatedConstraintType.NEGATED_LITERAL, result));
+			} else if (expr instanceof GipsArithmeticExpression arithmetic) {
+				result.put(literal, transform(arithmetic));
 				constraints.add(new GipsAnnotatedConstraint(this.constraint, formula,
 						AnnotatedConstraintType.NEGATED_LITERAL, result));
 			} else {
@@ -170,6 +178,8 @@ public class GipsConstraintSplitter {
 							result.put(literal, transform(gipsLit));
 						} else if (expr instanceof GipsRelationalExpression gipsRel) {
 							result.put(literal, transform(gipsRel));
+						} else if (expr instanceof GipsArithmeticExpression arithmetic) {
+							result.put(literal, transform(arithmetic));
 						} else {
 							throw new UnsupportedOperationException(
 									"Literals in a boolean expression in CNF-form should not be boolean expressions themselves.");
@@ -180,6 +190,8 @@ public class GipsConstraintSplitter {
 							result.put(literal, transform(gipsLit));
 						} else if (expr instanceof GipsRelationalExpression gipsRel) {
 							result.put(literal, transform(gipsRel));
+						} else if (expr instanceof GipsArithmeticExpression arithmetic) {
+							result.put(literal, transform(arithmetic));
 						} else {
 							throw new UnsupportedOperationException(
 									"Literals in a boolean expression in CNF-form should not be boolean expressions themselves.");
@@ -214,6 +226,13 @@ public class GipsConstraintSplitter {
 		GipsConstraint constraint = factory.createGipsConstraint();
 		constraint.setContext(this.constraint.getContext());
 		constraint.setExpression(EcoreUtil.copy(relational));
+		return constraint;
+	}
+
+	GipsConstraint transform(final GipsArithmeticExpression arithmetic) {
+		GipsConstraint constraint = factory.createGipsConstraint();
+		constraint.setContext(this.constraint.getContext());
+		constraint.setExpression(EcoreUtil.copy(arithmetic));
 		return constraint;
 	}
 

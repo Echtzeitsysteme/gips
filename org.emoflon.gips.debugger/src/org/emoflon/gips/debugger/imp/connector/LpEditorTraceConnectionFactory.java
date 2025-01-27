@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.xtext.ui.editor.XtextEditor;
+import org.emoflon.gips.debugger.api.ILPTraceKeywords;
 import org.emoflon.gips.debugger.api.ITraceContext;
 import org.emoflon.gips.debugger.cplexLp.ConstraintExpression;
 import org.emoflon.gips.debugger.cplexLp.LinearTerm;
@@ -38,16 +39,7 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 
 	private static final class LpEditorTraceConnection extends XtextEditorTraceConnection {
 
-		private static final String TYPE_VALUE_DELIMITER = "::";
-		private static final String TYPE_CONSTRAINT = "constraint";
-		private static final String TYPE_CONSTRAINT_VAR = "constraint-var";
-		private static final String TYPE_OBJECTIVE = "objective";
-		private static final String TYPE_OBJECTIVE_VAR = "objective-var";
-		private static final String TYPE_GLOBAL_OBJECTIVE = "globalObjective";
-		private static final String TYPE_VARIABLE = "variable";
-		private static final String TYPE_MAPPING = "mapping";
-
-//		private TraceMap<String, EObject> traceMap;
+		// private TraceMap<String, EObject> traceMap;
 		private String contextId;
 		private String modelId;
 
@@ -109,16 +101,16 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 					}
 
 					if (parent instanceof ConstraintExpression) {
-						elementIds.add(TYPE_CONSTRAINT_VAR + TYPE_VALUE_DELIMITER + variableName);
+						elementIds.add(buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT_VAR, variableName));
 					} else if (parent instanceof ObjectiveExpression) {
-						elementIds.add(TYPE_OBJECTIVE_VAR + TYPE_VALUE_DELIMITER + variableName);
+						elementIds.add(buildElementId(ILPTraceKeywords.TYPE_OBJECTIVE_VAR, variableName));
 					} else {
-						elementIds.add(TYPE_VARIABLE + TYPE_VALUE_DELIMITER + variableName);
+						elementIds.add(buildElementId(ILPTraceKeywords.TYPE_VARIABLE, variableName));
 					}
 
 					var delimiter = variableName.indexOf("#");
 					var shortVariableName = delimiter < 0 ? variableName : variableName.substring(0, delimiter);
-					elementIds.add(TYPE_MAPPING + TYPE_VALUE_DELIMITER + shortVariableName);
+					elementIds.add(buildElementId(ILPTraceKeywords.TYPE_MAPPING, shortVariableName));
 
 					continue;
 				}
@@ -129,16 +121,20 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 					if (delimiter >= 0) {
 						name = name.substring(0, delimiter);
 					}
-					name = TYPE_CONSTRAINT + TYPE_VALUE_DELIMITER + name;
+					name = buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT, name);
 					elementIds.add(name);
 				}
 
 				if (eObject instanceof SectionObjective) {
-					elementIds.add(TYPE_GLOBAL_OBJECTIVE + TYPE_VALUE_DELIMITER);
+					elementIds.add(buildElementId(ILPTraceKeywords.TYPE_GLOBAL_OBJECTIVE, ""));
 					continue;
 				}
 			}
 			return elementIds;
+		}
+
+		private static String buildElementId(String type, String elementName) {
+			return ILPTraceKeywords.buildElementId(type, elementName);
 		}
 
 		@Override
@@ -165,16 +161,18 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 				var typeAndValue = getTypeAndValue(localElement);
 
 				switch (typeAndValue.type) {
-				case TYPE_CONSTRAINT: {
+				case ILPTraceKeywords.TYPE_CONSTRAINT: {
 					var eObjects = getConstraintsWhichStartWith(typeAndValue.value + "_");
 					var markers = convertEObjectsToMarkers(eObjects, "Created by: " + typeAndValue.value);
 					highlightMarkers.addAll(markers);
 //					traceMap.mapOneToMany(localElement, eObjects);
 					break;
 				}
-				case TYPE_OBJECTIVE: {
-					var variables = localElements.stream().filter(e -> e.startsWith(TYPE_OBJECTIVE_VAR))
-							.map(e -> e.substring(TYPE_OBJECTIVE_VAR.length() + TYPE_VALUE_DELIMITER.length()));
+				case ILPTraceKeywords.TYPE_OBJECTIVE: {
+					var variables = localElements.stream()
+							.filter(e -> e.startsWith(ILPTraceKeywords.TYPE_OBJECTIVE_VAR))
+							.map(e -> e.substring(ILPTraceKeywords.TYPE_OBJECTIVE_VAR.length()
+									+ ILPTraceKeywords.TYPE_VALUE_DELIMITER.length()));
 					var eObject = getGlobalObjective();
 //					traceMap.map(localElement, eObject);
 					var marker = convertEObjectToMarker(eObject);
@@ -182,14 +180,14 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 					highlightMarkers.add(marker);
 					break;
 				}
-				case TYPE_GLOBAL_OBJECTIVE: {
+				case ILPTraceKeywords.TYPE_GLOBAL_OBJECTIVE: {
 					var eObject = getGlobalObjective();
 //					traceMap.map(localElement, eObject);
 					var marker = convertEObjectToMarker(eObject);
 					highlightMarkers.add(marker);
 					break;
 				}
-				case TYPE_MAPPING: {
+				case ILPTraceKeywords.TYPE_MAPPING: {
 					var eObjects = editor.getDocument().readOnly(resource -> {
 						var result = new LinkedList<EObject>();
 						var iterator = resource.getAllContents();
@@ -229,13 +227,13 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 			String type = null;
 			String value = null;
 
-			var delimiter = text.indexOf(TYPE_VALUE_DELIMITER);
+			var delimiter = text.indexOf(ILPTraceKeywords.TYPE_VALUE_DELIMITER);
 			if (delimiter < 0) {
 				type = "";
 				value = text;
 			} else {
 				type = text.substring(0, delimiter);
-				value = text.substring(delimiter + TYPE_VALUE_DELIMITER.length());
+				value = text.substring(delimiter + ILPTraceKeywords.TYPE_VALUE_DELIMITER.length());
 			}
 
 			return new TypeValuePair(type, value);

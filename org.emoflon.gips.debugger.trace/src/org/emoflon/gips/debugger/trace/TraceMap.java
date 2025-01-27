@@ -1,5 +1,6 @@
 package org.emoflon.gips.debugger.trace;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,7 +20,9 @@ import org.emoflon.gips.debugger.trace.resolver.ResolveElement2Id;
  * @param <S> the (general) type of source elements
  * @param <T> the (general) type of target elements
  */
-public class TraceMap<S, T> {
+public class TraceMap<S, T> implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * This method can be used to reduce two {@link TraceMap} into a new one. The

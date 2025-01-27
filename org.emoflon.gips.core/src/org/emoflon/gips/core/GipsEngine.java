@@ -3,17 +3,16 @@ package org.emoflon.gips.core;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.emoflon.gips.core.ilp.ILPSolver;
 import org.emoflon.gips.core.ilp.ILPSolverOutput;
 import org.emoflon.gips.core.ilp.ILPSolverStatus;
 import org.emoflon.gips.core.ilp.ILPVariable;
 import org.emoflon.gips.core.util.Observer;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
-import org.emoflon.gips.debugger.api.Gips2IlpTracer;
+import org.emoflon.gips.debugger.api.Gips2IlpTraceHelper;
+import org.emoflon.gips.debugger.api.ILPTraceKeywords;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 
 public abstract class GipsEngine {
@@ -27,7 +26,7 @@ public abstract class GipsEngine {
 	final protected Map<String, GipsObjective<?, ?, ?>> objectives = new HashMap<>();
 	protected GipsGlobalObjective globalObjective;
 	protected ILPSolver ilpSolver;
-	protected Gips2IlpTracer tracer;
+	protected Gips2IlpTraceHelper tracer;
 
 	public abstract void update();
 
@@ -117,39 +116,45 @@ public abstract class GipsEngine {
 		// try to build a bridge between ILP model and ILP text file
 
 		for (final var mapper : this.mappers.values()) {
-			tracer.gips2intern(mapper.mapping, "mapping::" + mapper.getName());
-			final var fragmentPath = EcoreUtil.getURI(mapper.mapping);
+			tracer.gips2intern(mapper.mapping,
+					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_MAPPING, mapper.getName()));
+//			final var fragmentPath = EcoreUtil.getURI(mapper.mapping);
 		}
 
 		for (final var constraint : this.constraints.values()) {
-			tracer.gips2intern(constraint.constraint, "constraint::" + constraint.getName());
+			tracer.gips2intern(constraint.constraint,
+					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT, constraint.getName()));
 			for (final var ilpConstraint : constraint.getConstraints()) {
 				for (final var ilpTerm : ilpConstraint.lhsTerms()) {
-					tracer.gips2intern(constraint.constraint.getExpression(),
-							"constraint-var::" + ilpTerm.variable().getName());
+					tracer.gips2intern(constraint.constraint.getExpression(), ILPTraceKeywords
+							.buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT_VAR, ilpTerm.variable().getName()));
 				}
 			}
 
 			for (final var variables : constraint.getAdditionalVariables()) {
-				tracer.gips2intern(constraint.constraint.getExpression(), "constraint-var::" + variables.getName());
+				tracer.gips2intern(constraint.constraint.getExpression(),
+						ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT_VAR, variables.getName()));
 			}
 		}
 
 		for (final var objective : this.objectives.values()) {
-			tracer.gips2intern(objective.objective, "objective::" + objective.getName());
+			tracer.gips2intern(objective.objective,
+					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_OBJECTIVE, objective.getName()));
 			for (var term : objective.terms) {
-				tracer.gips2intern(objective.objective, "objective-var::" + term.variable().getName());
+				tracer.gips2intern(objective.objective, ILPTraceKeywords
+						.buildElementId(ILPTraceKeywords.TYPE_OBJECTIVE_VAR, term.variable().getName()));
 			}
 		}
 
-		final var constraintsInMapper = new HashSet<>(this.mappers.keySet());
-		constraintsInMapper.retainAll(this.constraints.keySet());
-
-		final var objectsInMapper = new HashSet<>(this.mappers.keySet());
-		objectsInMapper.retainAll(this.objectives.keySet());
+//		final var constraintsInMapper = new HashSet<>(this.mappers.keySet());
+//		constraintsInMapper.retainAll(this.constraints.keySet());
+//
+//		final var objectsInMapper = new HashSet<>(this.mappers.keySet());
+//		objectsInMapper.retainAll(this.objectives.keySet());
 
 		if (globalObjective != null) {
-			tracer.gips2intern(globalObjective.objective, "globalObjective::");
+			tracer.gips2intern(globalObjective.objective,
+					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_GLOBAL_OBJECTIVE, ""));
 		}
 
 		tracer.finalizeTrace();
@@ -270,11 +275,11 @@ public abstract class GipsEngine {
 		this.ilpSolver = solver;
 	}
 
-	public void setTracer(final Gips2IlpTracer tracer) {
+	public void setTracer(final Gips2IlpTraceHelper tracer) {
 		this.tracer = tracer;
 	}
 
-	public Gips2IlpTracer getTracer() {
+	public Gips2IlpTraceHelper getTracer() {
 		return this.tracer;
 	}
 }

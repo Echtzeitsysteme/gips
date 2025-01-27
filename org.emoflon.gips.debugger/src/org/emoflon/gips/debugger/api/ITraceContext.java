@@ -24,7 +24,7 @@ public interface ITraceContext {
 
 	Set<String> getTargetModels(String modelId);
 
-	void selectElementsByTrace(String modelId, Collection<String> elementIds) throws TraceModelNotFound;
+	void selectElementsByTrace(String modelId, Collection<String> elementIds) throws TraceModelNotFoundException;
 
 	IModelLink getModelChain(String modelId1, String modelId2);
 

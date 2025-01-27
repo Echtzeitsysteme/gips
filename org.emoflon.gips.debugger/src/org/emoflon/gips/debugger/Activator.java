@@ -4,6 +4,7 @@ import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.emoflon.gips.debugger.api.ITraceManager;
 import org.emoflon.gips.debugger.imp.TraceManager;
+import org.emoflon.gips.debugger.imp.TraceRemoteService;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -27,6 +28,7 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	private TraceManager traceManager;
+	private TraceRemoteService remoteService;
 
 	public Activator() {
 	}
@@ -48,10 +50,14 @@ public class Activator extends AbstractUIPlugin {
 
 //		var eclipseContext = EclipseContextHelper.getActiveContext();
 //		this.watcher = ContextInjectionFactory.make(EditorWatcher.class, eclipseContext);
+
+		remoteService = new TraceRemoteService();
+		remoteService.initialize();
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
+		remoteService.dispose();
 		traceManager.dispose();
 
 		INSTANCE = null;

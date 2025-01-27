@@ -16,7 +16,7 @@ import org.emoflon.gips.core.TypeIndexer;
 import org.emoflon.gips.core.ilp.ILPSolver;
 import org.emoflon.gips.core.ilp.ILPSolverConfig;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
-import org.emoflon.gips.debugger.api.Gips2IlpTracer;
+import org.emoflon.gips.debugger.api.Gips2IlpTraceHelper;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
@@ -298,7 +298,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	}
 
 	protected void initTracer() {
-		var tracer = new Gips2IlpTracer();
+		var tracer = new Gips2IlpTraceHelper();
 		tracer.setOutputLocation(Path.of("").resolve("traces").resolve("gips2ilp-trace.xmi"));
 		tracer.computeGipsModelId(gipsModel.eResource().getURI());
 		tracer.computeLpModelId(gipsModel.getConfig().getLpPath());

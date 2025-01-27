@@ -1,5 +1,6 @@
 package org.emoflon.gips.debugger.trace;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -9,7 +10,9 @@ import java.util.Set;
 /**
  * 
  */
-public class TraceModelLink {
+public class TraceModelLink implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	public final String srcModelId;
 	public final String dstModelId;

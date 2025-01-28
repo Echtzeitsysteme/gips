@@ -136,79 +136,7 @@ enum RelationalOperator:
   SMALLER='<'
 ;
 
-GipsValueExpression:
-	value = (
-		GipsMappingExpression 			| 	
-		GipsTypeExpression 				|
-		GipsPatternExpression 			|
-		GipsRuleExpression 				|
-		GipsLocalContextExpression 		|
-		GipsSetElementExpression
-	) (setExperession = GipsSetExpression)?
-;
 
-GipsMappingExpression: {GipsMappingExpression}
-	'mappings' '.' mapping=[GipsMapping|ID]
-;
-
-GipsTypeExpression: {GipsTypeExpression}
-	'types' '.' type=[ecore::EClass]
-;
-
-GipsPatternExpression: {GipsPatternExpression}
-	'patterns' '.' pattern=[GT::EditorPattern|ID]
-;
-
-GipsRuleExpression: {GipsRuleExpression}
-	'rules' '.' rule=[GT::EditorPattern|ID]
-;
-
-GipsLocalContextExpression: {GipsLocalContextExpression}
-	'context' 
-	 (   expression = GipsNodeExpression 				| 
-	 	 expression = GipsVariableReferenceExpression 	| 
-	 	 expression = GipsAttributeExpression
-	 )?
-;
-
-//TODO: Nested streams are now possible but should be forbidden in the validator.
-GipsSetElementExpression: {GipsSetElementExpression}
-	'element'
-	( 	 expression = GipsNodeExpression 				|
-		 expression = GipsVariableReferenceExpression 	|
-		 expression = GipsAttributeExpression 
-	)?
-;
-
-GipsVariableReferenceExpression returns GipsVariableReferenceExpression: 
-	'.' 
-	(
-		(isMappingValue ?= 'value') |
- 		(isGenericValue ?= 'variables') '.' variable = [GipsMappingVariable|ID]
-	)
-;
-
-// TODO: Currently unused -> re-implement later!
-//GipsTypeCast:
-//	'toType(' type=[ecore::EClass] ')'
-//;
-
-GipsNodeExpression: {GipsNodeExpression}
-	'.' 'nodes' '.' node=[GT::EditorNode|ID]
-	(attributeExpression = GipsAttributeExpression)?
-;
-
-GipsAttributeExpression: {GipsAttributeExpression}
-	'.'
-	(
-		attribute = GipsAttributeLiteral right = GipsAttributeExpression |
-		attribute = GipsAttributeLiteral
-	)
-;
-
-GipsAttributeLiteral:
-	literal = [ecore::EStructuralFeature]
-;
 
 GipsArithmeticExpression:
 	GipsArithmeticSum
@@ -275,6 +203,74 @@ enum GipsUnaryOperator:
 	cos='cos'
 ;
 
+GipsValueExpression:
+	value = (
+		GipsMappingExpression 			| 	
+		GipsTypeExpression 				|
+		GipsPatternExpression 			|
+		GipsRuleExpression 				|
+		GipsLocalContextExpression 		|
+		GipsSetElementExpression
+	) (setExperession = GipsSetExpression)?
+;
+
+GipsMappingExpression: {GipsMappingExpression}
+	'mappings' '.' mapping=[GipsMapping|ID]
+;
+
+GipsTypeExpression: {GipsTypeExpression}
+	'types' '.' type=[ecore::EClass]
+;
+
+GipsPatternExpression: {GipsPatternExpression}
+	'patterns' '.' pattern=[GT::EditorPattern|ID]
+;
+
+GipsRuleExpression: {GipsRuleExpression}
+	'rules' '.' rule=[GT::EditorPattern|ID]
+;
+
+GipsLocalContextExpression: {GipsLocalContextExpression}
+	'context' 
+	 (   expression = GipsNodeExpression 				| 
+	 	 expression = GipsVariableReferenceExpression 	| 
+	 	 expression = GipsAttributeExpression
+	 )?
+;
+
+GipsSetElementExpression: {GipsSetElementExpression}
+	'element'
+	( 	 expression = GipsNodeExpression 				|
+		 expression = GipsVariableReferenceExpression 	|
+		 expression = GipsAttributeExpression 
+	)?
+;
+
+GipsVariableReferenceExpression returns GipsVariableReferenceExpression: 
+	'.' 
+	(
+		(isMappingValue ?= 'value') |
+ 		(isGenericValue ?= 'variables') '.' variable = [GipsMappingVariable|ID]
+	)
+;
+
+GipsNodeExpression: {GipsNodeExpression}
+	'.' 'nodes' '.' node=[GT::EditorNode|ID]
+	(attributeExpression = GipsAttributeExpression)?
+;
+
+GipsAttributeExpression: {GipsAttributeExpression}
+	'.'
+	(
+		attribute = GipsAttributeLiteral right = GipsAttributeExpression |
+		attribute = GipsAttributeLiteral
+	)
+;
+
+GipsAttributeLiteral:
+	literal = [ecore::EStructuralFeature]
+;
+
 GipsSetExpression: {GipsSetExpression}
 	'->'
 	(
@@ -325,8 +321,7 @@ GipsSimpleAlgorithm:
 ;
 
 enum AlgorithmOperator :
-	UNIQUE = 'unique' // |
-	// FLAT = 'flat'
+	UNIQUE = 'unique'
 ;
 
 // Currently we only allow the concatenation of sets containing the same types of values.

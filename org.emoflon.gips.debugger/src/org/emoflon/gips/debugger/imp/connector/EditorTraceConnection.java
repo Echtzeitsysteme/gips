@@ -140,6 +140,12 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 		};
 	}
 
+	/**
+	 * Called when the selection on the connected editor changes. Must be passed to
+	 * the trace manager.
+	 * 
+	 * @param selection editor selection, may be null
+	 */
 	protected void onEditorSelection(ISelection selection) {
 		if (pauseEditorSelection) {
 			return;
@@ -230,12 +236,13 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 	}
 
 	protected void setModelId(String modelId) {
-		this.modelId = modelId;
+		this.modelId = contextId;
 	}
 
 	/**
 	 * This method is called automatically on object instantiation and when the
-	 * editor input changes.
+	 * editor input changes. Compute context and model id and set them using
+	 * {@link #setContextId(String)} and {@link #setModelId(String)}.
 	 */
 	protected abstract void computeContextAndModelId();
 

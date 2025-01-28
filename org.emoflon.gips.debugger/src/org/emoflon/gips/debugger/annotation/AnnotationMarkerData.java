@@ -1,4 +1,4 @@
-package org.emoflon.gips.debugger.marker;
+package org.emoflon.gips.debugger.annotation;
 
 public final class AnnotationMarkerData {
 

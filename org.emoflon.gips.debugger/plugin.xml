@@ -95,7 +95,7 @@
       </perspectiveExtension>
    </extension>
    <extension
-         id="org.emoflon.gips.debugger.marker"
+         id="org.emoflon.gips.trace.marker.link"
          name="Gipsl Lp Linkmarker"
          point="org.eclipse.core.resources.markers">
       <super
@@ -108,28 +108,28 @@
    <extension
          point="org.eclipse.ui.editors.annotationTypes">
       <type
-            markerType="org.emoflon.gips.debugger.marker"
-            name="org.emoflon.gips.debugger.marker">
+            markerType="org.emoflon.gips.trace.marker.link"
+            name="org.emoflon.gips.trace.marker.link">
       </type>
    </extension>
    <extension
          point="org.eclipse.ui.editors.markerAnnotationSpecification">
       <specification
-            annotationType="org.emoflon.gips.debugger.marker"
-            colorPreferenceKey="org.emoflon.gips.debugger.marker.color"
-            colorPreferenceValue="245, 250, 171"
+            annotationType="org.emoflon.gips.trace.marker.link"
+            colorPreferenceKey="org.emoflon.gips.trace.marker.link.color"
+            colorPreferenceValue="249, 57, 235"
             contributesToHeader="false"
-            highlightPreferenceKey="org.emoflon.gips.debugger.marker.highlight"
+            highlightPreferenceKey="org.emoflon.gips.trace.marker.link.highlight"
             highlightPreferenceValue="true"
             includeOnPreferencePage="true"
-            label="Gipsl Lp Linkmarker"
-            overviewRulerPreferenceKey="org.emoflon.gips.debugger.marker.oruler"
+            label="GIPS Trace"
+            overviewRulerPreferenceKey="org.emoflon.gips.trace.marker.link.oruler"
             overviewRulerPreferenceValue="true"
             presentationLayer="3"
-            textPreferenceKey="org.emoflon.gips.debugger.marker.text"
+            textPreferenceKey="org.emoflon.gips.trace.marker.link.text"
             textPreferenceValue="true"
-            textStylePreferenceValue="BOX"
-            verticalRulerPreferenceKey="org.emoflon.gips.debugger.marker.vruler"
+            textStylePreferenceValue="SQUIGGLES"
+            verticalRulerPreferenceKey="org.emoflon.gips.trace.marker.link.vruler"
             verticalRulerPreferenceValue="true">
       </specification>
    </extension>

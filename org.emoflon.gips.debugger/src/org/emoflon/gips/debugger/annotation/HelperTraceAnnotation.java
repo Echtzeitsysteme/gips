@@ -1,4 +1,4 @@
-package org.emoflon.gips.debugger.marker;
+package org.emoflon.gips.debugger.annotation;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,8 +10,8 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 
-public final class HelperAnnotationTracerMarker {
-	private HelperAnnotationTracerMarker() {
+public final class HelperTraceAnnotation {
+	private HelperTraceAnnotation() {
 
 	}
 
@@ -27,7 +27,7 @@ public final class HelperAnnotationTracerMarker {
 	 * <li>org.eclipse.ui.editors.markerAnnotationSpecification
 	 * </ul>
 	 */
-	public static String TRACE_MARKER_ID = "org.emoflon.gips.debugger.marker";
+	public static String TRACE_MARKER_ID = "org.emoflon.gips.trace.marker.link";
 
 	public static IMarker createMarker(IResource resource) throws CoreException {
 		if (resource.exists() && resource.getProject().isOpen()) {
@@ -37,7 +37,7 @@ public final class HelperAnnotationTracerMarker {
 	}
 
 	public static IMarker createMarker(IResource resource, AnnotationMarkerData data) throws CoreException {
-		return HelperAnnotationTracerMarker.createMarker(resource, data.offset, data.length, data.comment);
+		return HelperTraceAnnotation.createMarker(resource, data.offset, data.length, data.comment);
 	}
 
 	public static IMarker createMarker(IResource resource, int offset, int length, String comment)
@@ -58,12 +58,12 @@ public final class HelperAnnotationTracerMarker {
 
 	public static void deleteAllMarkers(IResource resource) throws CoreException {
 		if (resource.exists() && resource.getProject().isOpen()) {
-			resource.deleteMarkers(HelperAnnotationTracerMarker.TRACE_MARKER_ID, false, IResource.DEPTH_INFINITE);
+			resource.deleteMarkers(HelperTraceAnnotation.TRACE_MARKER_ID, false, IResource.DEPTH_INFINITE);
 		}
 	}
 
 	public static List<AnnotationMarkerData> mergeMarkers(Collection<AnnotationMarkerData> markers, int delta,
-			HelperAnnotationTracerMarker.CommentMerger commentMerger) {
+			HelperTraceAnnotation.CommentMerger commentMerger) {
 
 		if (delta < 0) {
 			throw new IllegalArgumentException("delta must be greater than or equal to zero");

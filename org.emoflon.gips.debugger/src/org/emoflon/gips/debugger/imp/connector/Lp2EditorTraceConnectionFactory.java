@@ -2,9 +2,15 @@ package org.emoflon.gips.debugger.imp.connector;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -21,7 +27,13 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
+import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.XtextEditor;
+import org.eclipse.xtext.ui.editor.model.IXtextDocument;
+import org.eclipse.xtext.util.CancelIndicator;
+import org.eclipse.xtext.util.concurrent.CancelableUnitOfWork;
+import org.emoflon.gips.debugger.annotation.HelperTraceAnnotation;
 import org.emoflon.gips.debugger.api.ILPTraceKeywords;
 import org.emoflon.gips.debugger.api.ITraceContext;
 import org.emoflon.gips.debugger.cplexLp.ConstraintExpression;
@@ -159,31 +171,9 @@ public class Lp2EditorTraceConnectionFactory extends XtextEditorTraceConnectionF
 			return new TypeValuePair(type, value);
 		}
 
-		private Collection<EObject> getConstraintsWhichStartWith(String constraintName) {
-			return editor.getDocument().readOnly(resource -> {
-				final var result = new LinkedList<EObject>();
-
-				var model = (org.emoflon.gips.debugger.cplexLp.Model) resource.getContents().get(0);
-				for (var constraint : model.getConstraint().getStatements()) {
-					if (constraint.getName() != null && constraint.getName().startsWith(constraintName)) {
-						result.add(constraint);
-					}
-				}
-
-				return result;
-			});
-		}
-
-		private EObject getGlobalObjective() {
-			return editor.getDocument().readOnly(resource -> {
-				var model = (org.emoflon.gips.debugger.cplexLp.Model) resource.getContents().get(0);
-				return model.getObjective();
-			});
-		}
-
 		private final class AnnotationJob extends Job {
 
-			private ITextEditor editor;
+			private XtextEditor editor;
 			private Collection<String> remoteElementIds;
 			private ITraceContext context;
 			private String remoteModelId;
@@ -201,32 +191,46 @@ public class Lp2EditorTraceConnectionFactory extends XtextEditorTraceConnectionF
 			}
 
 			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				final SubMonitor progress = SubMonitor.convert(monitor, 3);
+			protected IStatus run(IProgressMonitor eclipseMonitor) {
+				final SubMonitor subMonitor = SubMonitor.convert(eclipseMonitor, 3);
 
-				progress.split(1);
+				subMonitor.split(1);
 				var chain = context.getModelChain(remoteModelId, getModelId());
 				var elementIds = chain.resolveElements(remoteElementIds);
 
 				// TODO Auto-generated method stub
-				final ITextEditor selectedEditor = editor;
-				var annotationsToAdd = computeAnnotationMapping(editor, elementIds, progress.split(1));
-				Annotation[] annotationsToRemove = new Annotation[0];
+				final XtextEditor selectedEditor = editor;
+				var annotationsToAdd = computeAnnotationMapping(editor, elementIds, subMonitor.split(1));
+				var annotationsToRemove = getExistingAnnotations(getAnnotationModel(selectedEditor));
 
-				if (!progress.isCanceled()) {
+				if (subMonitor.isCanceled())
+					return Status.CANCEL_STATUS;
+
+				if (!subMonitor.isCanceled()) {
 					Display.getDefault().asyncExec(() -> {
-						if (progress.isCanceled())
+						if (subMonitor.isCanceled())
 							return;
 
 						var annotationModel = getAnnotationModel(selectedEditor);
-						if (annotationModel == null)
+						if (annotationModel == null){
+							subMonitor.done();
 							return;
+						}
 
 						if (annotationModel instanceof IAnnotationModelExtension aModel) {
-
 							aModel.replaceAnnotations(annotationsToRemove, annotationsToAdd);
 						} else {
+							for (var annotation : annotationsToRemove) {
+								if (subMonitor.isCanceled())
+									return;
+								annotationModel.removeAnnotation(annotation);
+							}
 
+							for (var annotation : annotationsToAdd.entrySet()) {
+								if (subMonitor.isCanceled())
+									return;
+								annotationModel.addAnnotation(annotation.getKey(), annotation.getValue());
+							}
 						}
 
 						// TODO Auto-generated method stub
@@ -234,24 +238,149 @@ public class Lp2EditorTraceConnectionFactory extends XtextEditorTraceConnectionF
 					return Status.OK_STATUS;
 				}
 
-				return Status.CANCEL_STATUS;
+				return Status.OK_STATUS;
 			}
 
-			private Map<Annotation, Position> computeAnnotationMapping(ITextEditor editor,
+			private Map<Annotation, Position> computeAnnotationMapping(XtextEditor editor,
 					Collection<String> elementIds, SubMonitor monitor) {
-				// TODO Auto-generated method stub
+
+				IXtextDocument document = editor.getDocument();
+				if (document == null)
+					return Collections.emptyMap();
+
+				Map<Annotation, Position> annotations = document
+						.readOnly(new CancelableUnitOfWork<Map<Annotation, Position>, XtextResource>() {
+							@Override
+							public Map<Annotation, Position> exec(XtextResource state, CancelIndicator cancelIndicator)
+									throws Exception {
+
+								var workRemaining = elementIds.size();
+								monitor.setWorkRemaining(workRemaining);
+
+								Map<Annotation, Position> result = new HashMap<>(elementIds.size() + 1);
+
+								for (var elementId : elementIds) {
+									if (monitor.isCanceled()) {
+										monitor.done();
+										break;
+									}
+
+									TypeValuePair typeAndValue = getTypeAndValue(elementId);
+
+									switch (typeAndValue.type) {
+									case ILPTraceKeywords.TYPE_CONSTRAINT: {
+										var eObjects = getConstraintsWhichStartWith(state, typeAndValue.value + "_");
+										addAnnotations(result, eObjects, null);
+										break;
+									}
+									case ILPTraceKeywords.TYPE_OBJECTIVE: {
+										String variables = elementIds.stream() //
+												.filter(e -> e.startsWith(ILPTraceKeywords.TYPE_OBJECTIVE_VAR)) //
+												.map(e -> e.substring(ILPTraceKeywords.TYPE_OBJECTIVE_VAR.length()
+														+ ILPTraceKeywords.TYPE_VALUE_DELIMITER.length())) //
+												.collect(Collectors.joining(", "));
+										var eObject = getGlobalObjective(state);
+										addAnnotation(result, eObject, "Variables: " + variables);
+										break;
+									}
+									case ILPTraceKeywords.TYPE_GLOBAL_OBJECTIVE: {
+										var eObject = getGlobalObjective(state);
+										addAnnotation(result, eObject, null);
+										break;
+									}
+									case ILPTraceKeywords.TYPE_MAPPING: {
+										var eObjects = getMappings(state, typeAndValue.value);
+										addAnnotations(result, eObjects, "Created by: " + typeAndValue.value);
+										break;
+									}
+									}
+
+									monitor.setWorkRemaining(--workRemaining);
+								}
+
+								return result;
+							}
+						});
+
+				return annotations;
+			}
+
+			private Annotation[] getExistingAnnotations(IAnnotationModel annotationModel) {
+				Set<Annotation> result = new HashSet<>();
+				Iterator<Annotation> annotationIter = annotationModel.getAnnotationIterator();
+
+				while (annotationIter.hasNext()) {
+					Annotation annotation = annotationIter.next();
+					if (HelperTraceAnnotation.TRACE_MARKER_ID.equals(annotation.getType()))
+						result.add(annotation);
+				}
+
+				return result.toArray(s -> new Annotation[s]);
+			}
+
+			private IAnnotationModel getAnnotationModel(ITextEditor editor) {
+				if (editor == null)
+					return null;
+
+				IEditorInput editorInput = editor.getEditorInput();
+				IDocumentProvider documentProvider = editor.getDocumentProvider();
+				if (editorInput != null && documentProvider != null)
+					return documentProvider.getAnnotationModel(editorInput);
+
 				return null;
 			}
 
-			protected IAnnotationModel getAnnotationModel(ITextEditor editor) {
-				if (editor != null) {
-					IEditorInput editorInput = editor.getEditorInput();
-					IDocumentProvider documentProvider = editor.getDocumentProvider();
-					if (editorInput != null && documentProvider != null) {
-						return documentProvider.getAnnotationModel(editorInput);
+			private static void addAnnotations(Map<Annotation, Position> annotations, Collection<EObject> addThese,
+					String comment) {
+				for (var eObject : addThese)
+					addAnnotation(annotations, eObject, comment);
+			}
+
+			private static void addAnnotation(Map<Annotation, Position> annotations, EObject eObject, String comment) {
+				var textNode = NodeModelUtils.findActualNodeFor(eObject);
+				var annotation = new Annotation(HelperTraceAnnotation.TRACE_MARKER_ID, false, comment);
+				var position = new Position(textNode.getOffset(), textNode.getLength());
+				annotations.put(annotation, position);
+			}
+
+			private static Collection<EObject> getConstraintsWhichStartWith(XtextResource resource,
+					String constraintName) {
+				final var result = new LinkedList<EObject>();
+
+				var model = (org.emoflon.gips.debugger.cplexLp.Model) resource.getContents().get(0);
+				for (var constraint : model.getConstraint().getStatements()) {
+					if (constraint.getName() != null && constraint.getName().startsWith(constraintName))
+						result.add(constraint);
+				}
+
+				return result;
+			}
+
+			private static EObject getGlobalObjective(XtextResource resource) {
+				var model = (org.emoflon.gips.debugger.cplexLp.Model) resource.getContents().get(0);
+				return model.getObjective();
+			}
+
+			private static Collection<EObject> getMappings(XtextResource resource, String name) {
+				final var result = new LinkedList<EObject>();
+
+				var iterator = resource.getAllContents();
+				while (iterator.hasNext()) {
+					var eObject = iterator.next();
+					if (eObject instanceof Variable) {
+						if (eObject instanceof VariableDecleration vd) {
+							if (vd.getName().startsWith(name)) {
+								result.add(vd);
+							}
+						} else if (eObject instanceof VariableRef vr) {
+							if (vr.getRef().getName().startsWith(name)) {
+								result.add(vr);
+							}
+						}
 					}
 				}
-				return null;
+
+				return result;
 			}
 		}
 

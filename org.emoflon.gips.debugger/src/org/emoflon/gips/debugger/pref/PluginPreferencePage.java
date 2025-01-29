@@ -72,10 +72,10 @@ public class PluginPreferencePage extends FieldEditorPreferencePage implements I
 			editorTraceStorePath.setPropertyChangeListener(null);
 			addField(editorTraceStorePath);
 
-			var editorTraceStoreMaxTime = new IntegerFieldEditor(PluginPreferences.PREF_TRACE_CACHE_MAX_TIME,
-					"Max &cache time (hours)", configGroup);
-			editorTraceStoreMaxTime.setValidRange(0, Integer.MAX_VALUE);
-			addField(editorTraceStoreMaxTime);
+//			var editorTraceStoreMaxTime = new IntegerFieldEditor(PluginPreferences.PREF_TRACE_CACHE_MAX_TIME,
+//					"Max &cache time (hours)", configGroup);
+//			editorTraceStoreMaxTime.setValidRange(0, Integer.MAX_VALUE);
+//			addField(editorTraceStoreMaxTime);
 		}
 	}
 

@@ -5,13 +5,14 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.e4.core.contexts.EclipseContextFactory;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.emoflon.gips.debugger.api.ITraceManager;
 import org.emoflon.gips.debugger.imp.TraceManager;
 import org.emoflon.gips.debugger.imp.TraceRemoteService;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -41,6 +42,8 @@ public final class TracePlugin extends AbstractUIPlugin {
 	}
 
 	private TraceManager traceManager;
+	private ServiceRegistration<ITraceManager> traceManagerRegistration;
+
 	private TraceRemoteService remoteService;
 
 	private ScopedPreferenceStore preferenceStore;
@@ -57,11 +60,22 @@ public final class TracePlugin extends AbstractUIPlugin {
 		traceManager = new TraceManager();
 		traceManager.initialize();
 
-		var eclipseContext = EclipseContextFactory.getServiceContext(bundleContext);
-		eclipseContext.set(ITraceManager.class, traceManager);
+//		var eclipseContext = PlatformUI.getWorkbench().getService(IEclipseContext.class);
+//		eclipseContext.set(ITraceManager.class, traceManager); 		
+//		var eclipseContext = EclipseContextFactory.getServiceContext(bundleContext);
+//		eclipseContext.set(ITraceManager.class, traceManager);
+		traceManagerRegistration = getBundle().getBundleContext().registerService(ITraceManager.class, traceManager,
+				null);
+
+		var test = PlatformUI.getWorkbench().getService(ITraceManager.class);
+		System.out.println("FOUND! " + test != null);
 
 //		if(eclipseContext!=null) {
-//			ContextInjectionFactory.inject(debugService, eclipseContext);
+//		try {
+//			var test = ContextInjectionFactory.make(InjectionTest.class, eclipseContext);
+//		} catch (Exception e) {
+//
+//		}
 //		}
 
 //		var eclipseContext = EclipseContextHelper.getActiveContext();
@@ -73,6 +87,8 @@ public final class TracePlugin extends AbstractUIPlugin {
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
+		traceManagerRegistration.unregister();
+
 		remoteService.dispose();
 		traceManager.dispose();
 

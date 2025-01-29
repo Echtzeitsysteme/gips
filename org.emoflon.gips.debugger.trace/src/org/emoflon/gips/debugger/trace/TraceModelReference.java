@@ -1,9 +1,11 @@
 package org.emoflon.gips.debugger.trace;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class TraceModelReference {
+public class TraceModelReference implements Serializable {
 
+	private static final long serialVersionUID = 6457272488769375850L;
 	private final String modelId;
 	private String uri;
 

@@ -22,7 +22,7 @@ import org.emoflon.gips.debugger.trace.resolver.ResolveElement2Id;
  */
 public class TraceMap<S, T> implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 7587509919729026599L;
 
 	/**
 	 * This method can be used to reduce two {@link TraceMap} into a new one. The

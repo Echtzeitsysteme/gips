@@ -13,6 +13,7 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.emoflon.gips.debugger.api.IEditorTracker;
@@ -26,6 +27,7 @@ import org.emoflon.gips.debugger.imp.connector.GenericXmiEditorTraceConnectionFa
 import org.emoflon.gips.debugger.imp.connector.GipslEditorTraceConnectionFactory;
 import org.emoflon.gips.debugger.imp.connector.LpEditorTraceConnectionFactory;
 import org.emoflon.gips.debugger.pref.PluginPreferences;
+import org.emoflon.gips.debugger.utility.HelperEclipse;
 
 public final class TraceManager implements ITraceManager {
 
@@ -39,34 +41,59 @@ public final class TraceManager implements ITraceManager {
 	private boolean visualisationActive;
 
 	public void initialize() {
-		contextById.clear();
+		synchronized (syncLock) {
+			contextById.clear();
 
-		var connectionFactory = new EditorTraceConnectionFactory();
-		connectionFactory.addConnectionFactory(new GipslEditorTraceConnectionFactory());
-		connectionFactory.addConnectionFactory(new LpEditorTraceConnectionFactory());
-		connectionFactory.addConnectionFactory(new GenericXmiEditorTraceConnectionFactory());
+			EditorTraceConnectionFactory connectionFactory = new EditorTraceConnectionFactory();
+			connectionFactory.addConnectionFactory(new GipslEditorTraceConnectionFactory());
+			connectionFactory.addConnectionFactory(new LpEditorTraceConnectionFactory());
+			connectionFactory.addConnectionFactory(new GenericXmiEditorTraceConnectionFactory());
 
-		tracker = new EditorTracker(connectionFactory);
-		tracker.initialize();
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			workspace.addResourceChangeListener(workspaceResourceListener);
 
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		workspace.addResourceChangeListener(workspaceResourceListener);
+			IPreferenceStore preferences = PluginPreferences.getPreferenceStore();
+			preferences.addPropertyChangeListener(preferenceListener);
+			visualisationActive = preferences.getBoolean(PluginPreferences.PREF_TRACE_DISPLAY_ACTIVE);
 
-		var preferences = PluginPreferences.getPreferenceStore();
-		preferences.addPropertyChangeListener(preferenceListener);
-		visualisationActive = preferences.getBoolean(PluginPreferences.PREF_TRACE_DISPLAY_ACTIVE);
+			// Restore any previously saved context
+			if (preferences.getBoolean(PluginPreferences.PREF_TRACE_CACHE_ENABLED)) {
+				IProject[] allProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+				for (var project : allProjects) {
+					if (ProjectTraceContext.hasCache(preferences, project))
+						getOrCreateContext(project.getName(), true);
+				}
+			}
+
+			tracker = new EditorTracker(connectionFactory);
+			tracker.initialize();
+		}
 	}
 
 	public void dispose() {
-		contextById.clear();
+		synchronized (syncLock) {
+			IPreferenceStore preferences = PluginPreferences.getPreferenceStore();
+			preferences.removePropertyChangeListener(preferenceListener);
 
-		PluginPreferences.getPreferenceStore().removePropertyChangeListener(preferenceListener);
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			workspace.removeResourceChangeListener(workspaceResourceListener);
 
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		workspace.removeResourceChangeListener(workspaceResourceListener);
+			tracker.dispose();
+			tracker = null;
 
-		tracker.dispose();
-		tracker = null;
+			if (ProjectTraceContext.isCacheEnabled(preferences)) {
+				for (var context : contextById.values()) {
+					try {
+						context.saveCache();
+					} catch (CoreException e) {
+						e.printStackTrace();
+					}
+//					context.dispose();
+				}
+			}
+
+			contextById.clear();
+		}
 	}
 
 	private void onPreferenceChange(PropertyChangeEvent event) {
@@ -88,18 +115,16 @@ public final class TraceManager implements ITraceManager {
 	@Override
 	public void removeListener(ITraceSelectionListener listener) {
 		synchronized (syncLock) {
-			for (var context : contextById.values()) {
+			for (var context : contextById.values())
 				context.removeListener(listener);
-			}
 		}
 	}
 
 	@Override
 	public void removeListener(String contextId, ITraceSelectionListener listener) {
 		var context = getOrCreateContext(contextId, false);
-		if (context != null) {
+		if (context != null)
 			context.addListener(listener);
-		}
 	}
 
 	@Override
@@ -111,18 +136,16 @@ public final class TraceManager implements ITraceManager {
 	@Override
 	public void removeListener(ITraceUpdateListener listener) {
 		synchronized (syncLock) {
-			for (var context : contextById.values()) {
+			for (var context : contextById.values())
 				context.removeListener(listener);
-			}
 		}
 	}
 
 	@Override
 	public void removeListener(String contextId, ITraceUpdateListener listener) {
 		var context = getOrCreateContext(contextId, false);
-		if (context != null) {
+		if (context != null)
 			context.addListener(listener);
-		}
 	}
 
 	@Override
@@ -144,15 +167,13 @@ public final class TraceManager implements ITraceManager {
 	public void selectElementsByTraceModel(String contextId, String modelId, Collection<String> selection)
 			throws TraceModelNotFoundException {
 		var context = getOrCreateContext(contextId, false);
-		if (context != null) {
+		if (context != null)
 			context.selectElementsByTrace(modelId, selection);
-		}
 	}
 
 	private void onWorkspaceResourceChange(IResourceChangeEvent event) {
-		if (event == null || event.getDelta() == null) {
+		if (event == null || event.getDelta() == null)
 			return;
-		}
 
 		try {
 			event.getDelta().accept(delta -> {
@@ -175,30 +196,40 @@ public final class TraceManager implements ITraceManager {
 	}
 
 	private void onWorkspaceProjectChange(IProject project) {
-		if (!project.exists()) {
+		if (!project.exists())
 			removeContext(project.getName());
-		}
 	}
 
 	private ProjectTraceContext getOrCreateContext(String contextId, boolean createOnDemand) {
 		Objects.requireNonNull(contextId, "contextId");
+		ProjectTraceContext context = contextById.get(contextId);
 
-		// TODO: check against workspace projects and only allow context creation for
-		// existing projects
+		if (createOnDemand && context == null) {
+			synchronized (syncLock) {
+				context = contextById.get(contextId);
+				if (context != null)
+					return context;
 
-		synchronized (syncLock) {
-			var context = contextById.get(contextId);
-			if (context == null && createOnDemand) {
+				var project = HelperEclipse.tryAndGetProject(contextId);
+				if (project == null)
+					throw new IllegalArgumentException("Unknown project for context id: " + contextId);
+
 				context = new ProjectTraceContext(this, contextId);
 				contextById.put(contextId, context);
+
+				if (PluginPreferences.getPreferenceStore().getBoolean(PluginPreferences.PREF_TRACE_CACHE_ENABLED))
+					context.loadCacheIfAvailable();
 			}
-			return context;
 		}
+
+		return context;
 	}
 
 	private void removeContext(String contextId) {
 		synchronized (syncLock) {
-			contextById.remove(contextId);
+			var context = contextById.remove(contextId);
+//			if (context != null)
+//				context.dispose();
 		}
 	}
 

@@ -12,8 +12,7 @@ import java.util.Set;
  */
 public class TraceModelLink implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = 4324514417881650135L;
 	public final String srcModelId;
 	public final String dstModelId;
 	public final TraceMap<String, String> mappings;

@@ -91,6 +91,15 @@ public final class HelperEclipse {
 		return false;
 	}
 
+	public static IProject tryAndGetProject(String name) {
+		for (var project : getWorkspace().getRoot().getProjects()) {
+			if (project.getName().equalsIgnoreCase(name)) {
+				return project;
+			}
+		}
+		return null;
+	}
+
 	public static IProject tryAndGetProject(org.eclipse.emf.ecore.resource.Resource resource) {
 		var uri = resource.getURI();
 		if (uri == null) {
@@ -101,13 +110,10 @@ public final class HelperEclipse {
 
 	public static IProject tryAndGetProject(org.eclipse.emf.common.util.URI uri) {
 		if (uri.isPlatformResource()) {
-			var expectedProjectName = uri.segment(1);
-			for (var project : getWorkspace().getRoot().getProjects()) {
-				if (project.getName().equalsIgnoreCase(expectedProjectName)) {
-					return project;
-				}
-			}
-			return null;
+			String expectedProjectName = uri.segment(1);
+			IProject project = tryAndGetProject(expectedProjectName);
+			if (project != null)
+				return project;
 		}
 
 		var path = IPath.fromOSString(uri.toFileString());

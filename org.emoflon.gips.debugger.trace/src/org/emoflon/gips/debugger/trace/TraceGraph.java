@@ -1,5 +1,8 @@
 package org.emoflon.gips.debugger.trace;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,13 +20,33 @@ import org.emoflon.gips.debugger.trace.PathFinder.SearchDirection;
  * transformation and the target its result.
  * 
  */
-public class TraceGraph {
+public class TraceGraph implements Serializable {
 
-	private final Object lock = new Object();
-
+	private static final long serialVersionUID = -1428442558464158336L;
+	private transient Object lock = new Object();
 	private final Map<String, Map<String, TraceModelLink>> links = new HashMap<>();
 	private final Map<String, Set<String>> reverseLinks = new HashMap<>();
 	private final Map<String, TraceModelReference> storedReferences = new HashMap<>();
+
+//	private TraceGraph(TraceGraph traceGraph) {
+//		links.putAll(traceGraph.links);
+//		reverseLinks.putAll(traceGraph.reverseLinks);
+//		storedReferences.putAll(traceGraph.storedReferences);
+//	}
+//
+//	/**
+//	 * Part of {@link Serializable}
+//	 * 
+//	 * @return
+//	 */
+//	private Object readResolve() {
+//		return new TraceGraph(this);
+//	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+		this.lock = new Object();
+	}
 
 	public TraceModelReference getModelReference(final String modelId, final boolean createOnDemand) {
 		final var ref = storedReferences.get(modelId);

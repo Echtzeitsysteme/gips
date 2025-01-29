@@ -91,15 +91,11 @@ final class ProjectTraceContext implements ITraceContext {
 		if (!graphDirty)
 			return;
 
-		var config = TracePlugin.getInstance().getPreferenceStore();
-		if (!isCacheEnabled(config))
-			return;
-
 		IProject assignedProject = HelperEclipse.tryAndGetProject(contextId);
 		if (assignedProject == null || !assignedProject.isAccessible())
 			return;
 
-		IFolder cacheFolder = getCacheLocation(config, assignedProject);
+		IFolder cacheFolder = getCacheLocation(PluginPreferences.getPreferenceStore(), assignedProject);
 		if (!cacheFolder.exists())
 			cacheFolder.create(true, true, null);
 
@@ -118,15 +114,12 @@ final class ProjectTraceContext implements ITraceContext {
 	}
 
 	public void loadCacheIfAvailable() {
-		var config = TracePlugin.getInstance().getPreferenceStore();
-		if (!isCacheEnabled(config))
-			return;
-
 		IProject assignedProject = HelperEclipse.tryAndGetProject(contextId);
 		if (assignedProject == null || !assignedProject.isAccessible())
 			return;
 
-		IFile cacheFile = getCacheLocation(config, assignedProject).getFile(CACHE_FILE_NAME);
+		IFile cacheFile = getCacheLocation(PluginPreferences.getPreferenceStore(), assignedProject)
+				.getFile(CACHE_FILE_NAME);
 		if (!cacheFile.exists())
 			return;
 

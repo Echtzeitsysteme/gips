@@ -57,7 +57,7 @@ public final class TraceManager implements ITraceManager {
 			visualisationActive = preferences.getBoolean(PluginPreferences.PREF_TRACE_DISPLAY_ACTIVE);
 
 			// Restore any previously saved context
-			if (preferences.getBoolean(PluginPreferences.PREF_TRACE_CACHE_ENABLED)) {
+			if (ProjectTraceContext.isCacheEnabled(preferences)) {
 				IProject[] allProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 				for (var project : allProjects) {
 					if (ProjectTraceContext.hasCache(preferences, project))
@@ -217,7 +217,7 @@ public final class TraceManager implements ITraceManager {
 				context = new ProjectTraceContext(this, contextId);
 				contextById.put(contextId, context);
 
-				if (PluginPreferences.getPreferenceStore().getBoolean(PluginPreferences.PREF_TRACE_CACHE_ENABLED))
+				if (ProjectTraceContext.isCacheEnabled(PluginPreferences.getPreferenceStore()))
 					context.loadCacheIfAvailable();
 			}
 		}

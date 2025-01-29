@@ -32,6 +32,8 @@ import org.eclipse.xtext.scoping.Scopes;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeLiteral;
+import org.emoflon.gips.gipsl.gipsl.GipsConstant;
+import org.emoflon.gips.gipsl.gipsl.GipsConstantReference;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunctionReference;
@@ -40,6 +42,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsNodeExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsPatternExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsRuleExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsSetElementExpression;
@@ -52,9 +55,12 @@ import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression;
 import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
 import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsLinearFunctionImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsLocalContextExpressionImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsMappingImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsNodeExpressionImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsSetElementExpressionImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsSortPredicateImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsTransformOperationImpl;
@@ -96,6 +102,8 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			return scopeForGipsMappingVariableType((GipsMappingVariable) context, reference);
 		} else if (GipslScopeContextUtil.isGipsMappingVariableParameter(context, reference)) {
 			return scopeForGipsMappingVariableParameter((GipsMappingVariable) context, reference);
+		} else if (GipslScopeContextUtil.isGipsConstantReference(context, reference)) {
+			return scopeForGipsConstantReference((GipsConstantReference) context, reference);
 		} else if (GipslScopeContextUtil.isGipsVariableReferenceExpression(context, reference)) {
 			return scopeForGipsVariableReferenceExpression((GipsVariableReferenceExpression) context, reference);
 		} else if (GipslScopeContextUtil.isGipsConstraintContext(context, reference)) {
@@ -342,6 +350,25 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 		} else {
 			return IScope.NULLSCOPE;
 		}
+
+	}
+
+	public IScope scopeForGipsConstantReference(GipsConstantReference context, EReference reference) {
+		EObject container = (EObject) GipslScopeContextUtil.getContainer(context, Set.of(EditorGTFileImpl.class,
+				GipsConstraintImpl.class, GipsLinearFunctionImpl.class, GipsObjectiveImpl.class));
+		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
+		List<GipsConstant> constants = new LinkedList<>();
+		constants.addAll(editorFile.getConstants());
+
+		if (container instanceof GipsConstraint constraint) {
+			constants.addAll(constraint.getConstants());
+		} else if (container instanceof GipsLinearFunction function) {
+			constants.addAll(function.getConstants());
+		} else if (container instanceof GipsObjective objective) {
+			constants.addAll(objective.getConstants());
+		}
+
+		return Scopes.scopeFor(constants);
 
 	}
 

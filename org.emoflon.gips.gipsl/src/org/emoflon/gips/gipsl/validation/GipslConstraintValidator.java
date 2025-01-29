@@ -31,15 +31,6 @@ public class GipslConstraintValidator {
 			return;
 		}
 
-		if (constraint.getExpression() == null) {
-			GipslValidator.err( //
-					String.format(GipslValidatorUtil.CONSTRAINT_EMPTY_MESSAGE), //
-					constraint, //
-					GipslPackage.Literals.GIPS_CONSTRAINT__EXPRESSION //
-			);
-			return;
-		}
-
 		// Check boolean expression and spool errors
 		GipslExpressionValidator.checkBooleanExpression(constraint.getExpression()).forEach(err -> err.run());
 	}

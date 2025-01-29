@@ -20,6 +20,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsBooleanExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanImplication;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanNegation;
+import org.emoflon.gips.gipsl.gipsl.GipsConstantReference;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunctionReference;
 import org.emoflon.gips.gipsl.gipsl.GipsLocalContextExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
@@ -115,6 +116,10 @@ public class GipslValidatorUtil {
 	public static final String FUNCTION_EVAL_NOT_NUMBER_MESSAGE = "Linear function does not evaluate to an integer, double or variable.";
 
 	// Other errors for types
+	public static final String CONSTANT_NAME_UNIQUE = "Constant name is not unique in the current scope.";
+	public static final String CONSTANT_NOT_ASSIGNED = "Constant has not been assigned any value.";
+	public static final String CONSTANT_CONTAINS_VARIABLE = "Constant may not contain variable references.";
+	public static final String CONSTANT_CONTAINS_ERRORS = "Constant definition contains errors.";
 	public static final String CONSTRAINT_EMPTY_MESSAGE = "Constraint is empty.";
 
 	public static final String BOOL_EXPR_CONTAINS_ERRORS = "Boolean expression contains errors.";
@@ -148,17 +153,6 @@ public class GipslValidatorUtil {
 	public static final String SET_CONCAT_ERROR = "Only sets of values can be concatenated.";
 	public static final String SET_SORT_PREDICATE_RELATION_ERROR = "Sorting predicate must impose an order, which means == and != are invalid operators.";
 	public static final String SET_FILTER_ERROR = "Filter operations on sets must be performed with Boolean predicates. Furthermore, these must be constant at MILP compilation time, which means that they must never contain variable references.";
-
-	/**
-	 * Returns true if the provided type is a number.
-	 * 
-	 * @param input EvalType to check.
-	 * @return True if given EvalType is a number.
-	 */
-	public static boolean isNumber(final EvalType input) {
-		return input != EvalType.INTEGER || input != EvalType.LONG || input != EvalType.FLOAT
-				|| input != EvalType.DOUBLE;
-	}
 
 	public static Set<GipsMapping> extractMappings(final GipsBooleanExpression expression) {
 		Set<GipsMapping> mappings = new HashSet<>();
@@ -232,6 +226,14 @@ public class GipslValidatorUtil {
 			return mappings;
 		} else if (expression instanceof GipsArithmeticConstant) {
 			return mappings;
+		} else if (expression instanceof GipsConstantReference reference) {
+			if (reference.getConstant() == null) {
+				return mappings;
+			}
+			if (reference.getConstant().getExpression() == null) {
+				return mappings;
+			}
+			mappings.addAll(extractMappings(reference.getConstant().getExpression()));
 		} else {
 			throw new UnsupportedOperationException("Unknown arithmetic expression type: " + expression);
 		}

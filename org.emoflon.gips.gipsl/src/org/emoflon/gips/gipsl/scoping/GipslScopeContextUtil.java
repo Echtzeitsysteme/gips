@@ -31,6 +31,7 @@ import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeLiteral;
+import org.emoflon.gips.gipsl.gipsl.GipsConstantReference;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunctionReference;
@@ -77,6 +78,11 @@ public final class GipslScopeContextUtil {
 	public static boolean isGipsMappingVariableParameter(final EObject context, final EReference reference) {
 		return context instanceof GipsMappingVariable
 				&& reference == GipslPackage.Literals.GIPS_MAPPING_VARIABLE__PARAMETER;
+	}
+
+	public static boolean isGipsConstantReference(final EObject context, final EReference reference) {
+		return context instanceof GipsConstantReference
+				&& reference == GipslPackage.Literals.GIPS_CONSTANT_REFERENCE__CONSTANT;
 	}
 
 	public static boolean isGipsVariableReferenceExpression(final EObject context, final EReference reference) {

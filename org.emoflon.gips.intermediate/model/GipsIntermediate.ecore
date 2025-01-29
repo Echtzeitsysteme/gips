@@ -11,6 +11,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="config" lowerBound="1"
         eType="#//SolverConfig" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="globalConstants" upperBound="-1"
+        eType="#//Constant" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="variables" upperBound="-1"
         eType="#//Variable" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappings" upperBound="-1"
@@ -86,12 +88,18 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" lowerBound="1"
         eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXPattern"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Constant" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Context" abstract="true" interface="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="Constraint" eSuperTypes="#//NamedElement #//Context">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="global" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="depending" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="constant" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="negated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="constants" upperBound="-1"
+        eType="#//Constant" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
         eType="#//BooleanExpression" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="dependencies" upperBound="-1"
@@ -105,11 +113,15 @@
         eType="#//RelationalExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LinearFunction" eSuperTypes="#//NamedElement #//Context">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="constants" upperBound="-1"
+        eType="#//Constant" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Objective" eSuperTypes="#//Context">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="goal" eType="#//Goal"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="constants" upperBound="-1"
+        eType="#//Constant" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>
@@ -234,12 +246,16 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="literal" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConstantLiteral" eSuperTypes="#//ArithmeticExpression #//BooleanExpression">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="constant" eType="#//Constant"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="constant" eType="#//ConstantValue"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="Constant">
+  <eClassifiers xsi:type="ecore:EEnum" name="ConstantValue">
     <eLiterals name="PI"/>
     <eLiterals name="E" value="1"/>
     <eLiterals name="NULL" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConstantReference" eSuperTypes="#//ArithmeticExpression #//BooleanExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="constant" lowerBound="1"
+        eType="#//Constant"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LinearFunctionReference" eSuperTypes="#//ArithmeticExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="function" lowerBound="1"

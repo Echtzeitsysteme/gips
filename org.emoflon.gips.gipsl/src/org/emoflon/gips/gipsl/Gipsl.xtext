@@ -14,6 +14,7 @@ EditorGTFile: {EditorGTFile}
   	(patterns+=EditorPattern |
   	conditions+=EditorCondition |
   	mappings += GipsMapping |
+  	constants += GipsConstant |
   	constraints += GipsConstraint |
   	functions += GipsLinearFunction)*
   	(objective = GipsObjective)?	
@@ -55,14 +56,24 @@ GipsMappingVariable :
 	'var' name=ID ':' type=[ecore::EDataType] (bound ?= 'bind' parameter=[GT::EditorParameter])?
 ;
 
+GipsConstant:
+	'let' name=ID ':=' expression = GipsBooleanExpression ';'
+;
+
+GipsConstantReference :
+	'constants' '.' constant = [GipsConstant | ID]
+;
+
 GipsConstraint : 
 	'constraint' (isLocal?='with' context=[ecore::EObject|ID])? '{'
+		(constants += GipsConstant)*
 		expression = GipsBooleanExpression
 	'}'
 ;	
 
 GipsLinearFunction : 
 	'function' name=ID 'with' context=[ecore::EObject|ID] '{'
+		(constants += GipsConstant)*
 		expression = GipsArithmeticExpression
 	'}'
 ;
@@ -73,6 +84,7 @@ GipsLinearFunctionReference:
 
 GipsObjective :
 	'objective' ':' goal = OptimizationGoal '{'
+		(constants += GipsConstant)*
 		expression = GipsArithmeticExpression
 	'}'
 ;
@@ -163,7 +175,7 @@ GipsArithmeticBracket returns GipsArithmeticExpression: {GipsArithmeticBracket}
 ;
 
 GipsArithmeticOperand:
-	GipsValueExpression | GipsLinearFunctionReference | GipsArithmeticLiteral | GipsArithmeticConstant
+	GipsValueExpression | GipsLinearFunctionReference | GipsArithmeticLiteral | GipsArithmeticConstant | GipsConstantReference
 ;
 
 GipsArithmeticLiteral:

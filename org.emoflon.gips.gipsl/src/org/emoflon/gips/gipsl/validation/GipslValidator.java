@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -24,6 +25,7 @@ import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanDisjunction;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanImplication;
 import org.emoflon.gips.gipsl.gipsl.GipsConfig;
+import org.emoflon.gips.gipsl.gipsl.GipsConstant;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
@@ -35,6 +37,9 @@ import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
 import org.emoflon.gips.gipsl.gipsl.Package;
 import org.emoflon.gips.gipsl.gipsl.SolverType;
 import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsLinearFunctionImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 import org.emoflon.ibex.gt.editor.gT.GTPackage;
@@ -420,6 +425,57 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 		GipslMappingValidator.checkMappingVariableNameUnique(variable);
 
+	}
+
+	@Check
+	public void checkConstant(final GipsConstant constant) {
+		if (GipslValidator.DISABLE_VALIDATOR) {
+			return;
+		}
+
+		if (constant == null) {
+			return;
+		}
+
+		if (constant.getName() == null) {
+			return;
+		}
+
+		EObject container = (EObject) GipslScopeContextUtil.getContainer(constant, Set.of(EditorGTFileImpl.class,
+				GipsConstraintImpl.class, GipsLinearFunctionImpl.class, GipsObjectiveImpl.class));
+		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(constant, EditorGTFileImpl.class);
+		long count = editorFile.getConstants().stream().filter(c -> c.getName() != null).map(c -> c.getName())
+				.filter(n -> n.equals(constant.getName())).count();
+		if (container instanceof GipsConstraint constraint) {
+			count += constraint.getConstants().stream().filter(c -> c.getName() != null).map(c -> c.getName())
+					.filter(n -> n.equals(constant.getName())).count();
+		} else if (container instanceof GipsLinearFunction function) {
+			count += function.getConstants().stream().filter(c -> c.getName() != null).map(c -> c.getName())
+					.filter(n -> n.equals(constant.getName())).count();
+		} else if (container instanceof GipsObjective objective) {
+			count += objective.getConstants().stream().filter(c -> c.getName() != null).map(c -> c.getName())
+					.filter(n -> n.equals(constant.getName())).count();
+		}
+
+		if (count > 1) {
+			GipslValidator.err( //
+					String.format(GipslValidatorUtil.CONSTANT_NAME_UNIQUE), //
+					constant, //
+					GipslPackage.Literals.GIPS_CONSTANT__NAME //
+			);
+		}
+
+		if (constant.getExpression() == null) {
+			GipslValidator.err( //
+					String.format(GipslValidatorUtil.CONSTANT_NOT_ASSIGNED), //
+					constant, //
+					GipslPackage.Literals.GIPS_CONSTANT__EXPRESSION //
+			);
+			return;
+		}
+
+		// Check boolean expression and spool errors
+		GipslExpressionValidator.checkBooleanExpression(constant.getExpression()).forEach(err -> err.run());
 	}
 
 	@Check

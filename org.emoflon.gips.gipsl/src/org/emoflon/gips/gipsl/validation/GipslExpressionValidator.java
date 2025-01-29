@@ -28,6 +28,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanNegation;
 import org.emoflon.gips.gipsl.gipsl.GipsConcatenationOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsConstantLiteral;
+import org.emoflon.gips.gipsl.gipsl.GipsConstantReference;
 import org.emoflon.gips.gipsl.gipsl.GipsFilterOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunctionReference;
@@ -545,6 +546,35 @@ public final class GipslExpressionValidator {
 			} else {
 				return ExpressionType.Number;
 			}
+		} else if (expression instanceof GipsConstantReference reference) {
+			if (reference.getConstant() == null)
+				return ExpressionType.Error;
+
+			if (reference.getConstant().getExpression() == null)
+				return ExpressionType.Error;
+
+			ExpressionType type = evaluate(reference.getConstant().getExpression(), errors);
+			if (type == ExpressionType.Variable) {
+				errors.add(() -> {
+					GipslValidator.err( //
+							GipslValidatorUtil.CONSTANT_CONTAINS_VARIABLE, //
+							reference, //
+							GipslPackage.Literals.GIPS_CONSTANT_REFERENCE__CONSTANT //
+					);
+				});
+				return ExpressionType.Variable;
+			}
+			if (type == ExpressionType.Error || type == ExpressionType.Unknown) {
+				errors.add(() -> {
+					GipslValidator.err( //
+							GipslValidatorUtil.CONSTANT_CONTAINS_ERRORS, //
+							reference, //
+							GipslPackage.Literals.GIPS_CONSTANT_REFERENCE__CONSTANT //
+					);
+				});
+				return ExpressionType.Error;
+			}
+			return type;
 		} else {
 			errors.add(() -> {
 				GipslValidator.err( //

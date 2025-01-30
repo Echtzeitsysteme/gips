@@ -49,6 +49,8 @@ public class «className» extends GipsPatternLinearFunction<«data.gipsApiClass
 	«FOR methods : builderMethodDefinitions.values»
 	«methods»
 	«ENDFOR»
+	
+	«getConstantCalculators(context.constants)»
 }'''
 	}
 

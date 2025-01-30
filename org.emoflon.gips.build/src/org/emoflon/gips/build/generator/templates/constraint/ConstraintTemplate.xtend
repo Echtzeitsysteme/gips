@@ -26,6 +26,10 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGe
 	
 	def String generateClassConstructor();
 	
+	override getConstants() {
+		return context.constants;
+	}
+	
 	override generate() {
 		var classContent = "";
 		if(context.isConstant) {
@@ -63,7 +67,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGe
 					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 				
 				val builderMethodName = generateBuilder(expr, methodCalls)
-				val instruction = '''terms.add(new Term(«getVariable(variable.iterator.next)», «builderMethodName»(context)));'''
+				val instruction = '''terms.add(new Term(«getVariable(variable.iterator.next)», «builderMethodName»(context«IF !getConstants().empty», «ENDIF»«getCallParametersForConstants(getConstants())»)));'''
 				methodCalls.add(instruction)
 			}
 		} else if(expr instanceof ArithmeticUnaryExpression) {
@@ -72,7 +76,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGe
 					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 				
 				val builderMethodName = generateBuilder(expr, methodCalls)
-				val instruction = '''terms.add(new Term(«getVariable(variable.iterator.next)», «builderMethodName»(context)));'''
+				val instruction = '''terms.add(new Term(«getVariable(variable.iterator.next)», «builderMethodName»(context«IF !getConstants().empty», «ENDIF»«getCallParametersForConstants(getConstants())»)));'''
 				methodCalls.add(instruction)
 		} else if(expr instanceof ValueExpression) {
 			generateBuilder(expr, methodCalls)
@@ -110,6 +114,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGe
 	}
 		
 	«generateDependencyConstraints()»
+	«getConstantCalculators(context.constants)»
 	«FOR methods : builderMethodDefinitions.values»
 	«methods»
 	«ENDFOR»
@@ -124,6 +129,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGe
 	
 	@Override
 	protected double buildConstantLhs(«getContextParameter()») {
+		«getConstantFields(context.constants)»
 		«IF relExpr.lhs instanceof ArithmeticExpression» return «generateConstTermBuilder(relExpr.lhs as ArithmeticExpression)»;
 		«ELSE» return «generateConstTermBuilder(relExpr.lhs as BooleanExpression)»;
 		«ENDIF»
@@ -131,6 +137,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGe
 	
 	@Override
 	protected double buildConstantRhs(«getContextParameter()») {
+		«getConstantFields(context.constants)»
 		«IF relExpr.rhs instanceof ArithmeticExpression» return «generateConstTermBuilder(relExpr.rhs as ArithmeticExpression)»;
 		«ELSE» return «generateConstTermBuilder(relExpr.rhs as BooleanExpression)»;
 		«ENDIF»
@@ -147,6 +154,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGe
 	}
 		
 	«generateDependencyConstraints()»
+	«getConstantCalculators(context.constants)»
 	«FOR methods : builderMethodDefinitions.values»
 	«methods»
 	«ENDFOR»
@@ -173,10 +181,12 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGe
 	
 	@Override
 	protected boolean buildConstantExpression(«getContextParameter()») {
+		«getConstantFields(context.constants)»
 		return «generateConstantExpression(relExpr)»;
 	}
 		
 	«generateDependencyConstraints()»
+	«getConstantCalculators(context.constants)»
 	«FOR methods : builderMethodDefinitions.values»
 	«methods»
 	«ENDFOR»
@@ -207,10 +217,12 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGe
 	
 	@Override
 	protected boolean buildConstantExpression(«getContextParameter()») {
+		«getConstantFields(context.constants)»
 		return «generateConstantExpression(boolExpr)»;
 	}
 	
-	«generateDependencyConstraints()»	
+	«generateDependencyConstraints()»
+	«getConstantCalculators(context.constants)»
 	«FOR methods : builderMethodDefinitions.values»
 	«methods»
 	«ENDFOR»
@@ -222,11 +234,15 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGe
 		return '''
 @Override
 protected double buildConstantRhs(«getContextParameter()») {
+	«getConstantFields(context.constants)»
+	
 	return «generateConstTermBuilder(constExpr)»;
 }
 	
 @Override
 protected List<Term> buildVariableLhs(«getContextParameter()») {
+	«getConstantFields(context.constants)»
+	
 	List<Term> terms = Collections.synchronizedList(new LinkedList<>());
 	«FOR instruction : builderMethodCalls2»
 	«instruction»
@@ -255,6 +271,8 @@ protected List<Term> buildVariableLhs(«getContextParameter()») {
 			return '''
 	@Override
 	protected List<Constraint> buildAdditionalConstraints(«getContextParameter()») {
+		«getConstantFields(context.constants)»
+		
 		List<Constraint> additionalConstraints = new LinkedList<>();
 		Constraint constraint = null;
 		List<Term> terms = new LinkedList<>();

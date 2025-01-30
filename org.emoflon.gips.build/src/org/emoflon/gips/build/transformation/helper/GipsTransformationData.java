@@ -11,11 +11,13 @@ import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
+import org.emoflon.gips.gipsl.gipsl.GipsConstant;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.Constant;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunction;
@@ -35,6 +37,7 @@ public record GipsTransformationData(GipsIntermediateModel model, //
 		Map<String, IBeXRule> ePattern2rule, //
 		Map<EditorNode, IBeXNode> eNode2Node, //
 		Map<GipsMapping, Mapping> eMapping2Mapping, //
+		Map<EObject, Map<String, Constant>> eContext2Constants,
 		Map<GipsConstraint, Collection<Constraint>> eConstraint2Constraints, //
 		Map<GipsLinearFunction, LinearFunction> eFunction2Function, //
 		Map<EObject, Variable> eVariable2Variable, //
@@ -42,7 +45,7 @@ public record GipsTransformationData(GipsIntermediateModel model, //
 
 	public GipsTransformationData(final GipsIntermediateModel model, final EditorGTFile gipsSlangFile) {
 		this(model, gipsSlangFile, new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(),
-				new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashSet<>());
+				new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashSet<>());
 	}
 
 	public String addSymbol(final GipsBooleanExpression expr) {
@@ -66,6 +69,34 @@ public record GipsTransformationData(GipsIntermediateModel model, //
 		symbol2Expr.put(symbol, expr);
 
 		return symbol;
+	}
+
+	public void addConstant(final EObject context, final GipsConstant eConstant, final Constant constant) {
+		Map<String, Constant> constants = eContext2Constants.get(context);
+		if (constants == null) {
+			constants = new HashMap<>();
+			eContext2Constants.put(context, constants);
+		}
+
+		constants.put(eConstant.getName(), constant);
+	}
+
+	public void addConstant(final EObject context, final String eConstant, final Constant constant) {
+		Map<String, Constant> constants = eContext2Constants.get(context);
+		if (constants == null) {
+			constants = new HashMap<>();
+			eContext2Constants.put(context, constants);
+		}
+
+		constants.put(eConstant, constant);
+	}
+
+	public Constant getConstant(final EObject context, final GipsConstant constant) {
+		Map<String, Constant> constants = eContext2Constants.get(context);
+		if (constants == null)
+			return null;
+
+		return constants.get(constant.getName());
 	}
 
 	public void addPattern(final EditorPattern ePattern, final IBeXPattern pattern) {

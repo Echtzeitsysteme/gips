@@ -24,8 +24,9 @@ import org.emoflon.gips.intermediate.GipsIntermediate.BooleanLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanUnaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanUnaryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.ConcatenationOperator;
-import org.emoflon.gips.intermediate.GipsIntermediate.Constant;
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.ConstantValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
@@ -233,7 +234,7 @@ public class GipsArithmeticTransformer {
 			throw new IllegalArgumentException(
 					"There must be no linear function references in constraints: " + function);
 		} else {
-			// Case: Literals and Constants
+			// Case: Literals, Constants and Constant references
 			constTerms.add(expression);
 		}
 	}
@@ -394,7 +395,7 @@ public class GipsArithmeticTransformer {
 		} else if (expression instanceof LinearFunctionReference function) {
 			return function;
 		} else {
-			// CASE: Literals & Constants
+			// CASE: Literals, Constants and Constant references
 			modified = cloneExpression(factory, expression);
 		}
 
@@ -561,7 +562,7 @@ public class GipsArithmeticTransformer {
 		} else if (expression instanceof LinearFunctionReference function) {
 			return function;
 		} else {
-			// CASE: Literals and Constants
+			// CASE: Literals, Constants and Constant references
 			modified = cloneExpression(factory, expression);
 		}
 		return modified;
@@ -649,7 +650,7 @@ public class GipsArithmeticTransformer {
 			throw new IllegalArgumentException(
 					"There must be no linear function references in constraints: " + function);
 		} else {
-			// Case: Literals and Constants
+			// Case: Literals, Constants and Constant references
 			return foldAndMultiplyFactors(factors, cloneExpression(factory, expression));
 		}
 	}
@@ -800,6 +801,11 @@ public class GipsArithmeticTransformer {
 			SetSummation sum = (SetSummation) cs.getSetExpression().getSetReduce();
 			sum.setExpression(cloneExpression(factory, (ArithmeticExpression) constant));
 			clone = cs;
+		} else if (transformed instanceof ConstantReference reference) {
+			ValueExpression cs = (ValueExpression) cloneExpression(factory, sumTemplate);
+			SetSummation sum = (SetSummation) cs.getSetExpression().getSetReduce();
+			sum.setExpression(cloneExpression(factory, (ArithmeticExpression) reference));
+			clone = cs;
 		} else if (transformed instanceof LinearFunctionReference function) {
 			throw new IllegalArgumentException(
 					"There must be no linear function references in constraints: " + function);
@@ -904,14 +910,18 @@ public class GipsArithmeticTransformer {
 		} else if (expr instanceof ConstantLiteral literal) {
 			ConstantLiteral cl = factory.createConstantLiteral();
 			switch (literal.getConstant()) {
-			case E -> cl.setConstant(Constant.E);
-			case PI -> cl.setConstant(Constant.PI);
-			case NULL -> cl.setConstant(Constant.NULL);
+			case E -> cl.setConstant(ConstantValue.E);
+			case PI -> cl.setConstant(ConstantValue.PI);
+			case NULL -> cl.setConstant(ConstantValue.NULL);
 			}
 			clone = cl;
 		} else if (expr instanceof LinearFunctionReference function) {
 			LinearFunctionReference reference = factory.createLinearFunctionReference();
 			reference.setFunction(function.getFunction());
+			clone = reference;
+		} else if (expr instanceof ConstantReference constant) {
+			ConstantReference reference = factory.createConstantReference();
+			reference.setConstant(constant.getConstant());
 			clone = reference;
 		} else if (expr instanceof ValueExpression val) {
 			clone = cloneExpression(factory, val);
@@ -1150,6 +1160,9 @@ public class GipsArithmeticTransformer {
 			case NULL -> sb.append("NULL_Constant");
 			case PI -> sb.append("PI_Constant");
 			}
+		} else if (expr instanceof ConstantReference reference) {
+			if (reference.getConstant().getExpression() instanceof ArithmeticExpression ae)
+				sb.append(parseToString(ae));
 		} else {
 			// CASE: Literals
 			if (expr instanceof DoubleLiteral d) {

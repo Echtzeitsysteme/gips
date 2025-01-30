@@ -1,7 +1,11 @@
 package org.emoflon.gips.build.transformation.transformer;
 
+import java.util.Set;
+
+import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.TransformationContext;
+import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticBracket;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticConstant;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExponential;
@@ -10,15 +14,25 @@ import org.emoflon.gips.gipsl.gipsl.GipsArithmeticLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticProduct;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticSum;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticUnary;
+import org.emoflon.gips.gipsl.gipsl.GipsConstantReference;
+import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunctionReference;
+import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
+import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsLinearFunctionImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
+import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryOperator;
-import org.emoflon.gips.intermediate.GipsIntermediate.Constant;
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.ConstantValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Context;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral;
@@ -52,6 +66,8 @@ public class ArithmeticExpressionTransformer extends TransformationContext {
 			return transform(constant);
 		} else if (eExpression instanceof GipsLinearFunctionReference function) {
 			return transform(function);
+		} else if (eExpression instanceof GipsConstantReference reference) {
+			return transform(reference);
 		} else {
 			return transform((GipsValueExpression) eExpression);
 		}
@@ -167,13 +183,13 @@ public class ArithmeticExpressionTransformer extends TransformationContext {
 		ConstantLiteral constantLiteral = factory.createConstantLiteral();
 		switch (constant.getValue()) {
 		case E -> {
-			constantLiteral.setConstant(Constant.E);
+			constantLiteral.setConstant(ConstantValue.E);
 		}
 		case NULL -> {
-			constantLiteral.setConstant(Constant.NULL);
+			constantLiteral.setConstant(ConstantValue.NULL);
 		}
 		case PI -> {
-			constantLiteral.setConstant(Constant.PI);
+			constantLiteral.setConstant(ConstantValue.PI);
 		}
 		default -> {
 			throw new IllegalArgumentException("Unknown constant type " + constant.getValue());
@@ -186,6 +202,25 @@ public class ArithmeticExpressionTransformer extends TransformationContext {
 	public ArithmeticExpression transform(final GipsLinearFunctionReference function) throws Exception {
 		LinearFunctionReference reference = factory.createLinearFunctionReference();
 		reference.setFunction(data.eFunction2Function().get(function.getFunction()));
+		return reference;
+	}
+
+	public ArithmeticExpression transform(final GipsConstantReference eReference) throws Exception {
+		EObject container = (EObject) GipslScopeContextUtil.getContainer(eReference, Set.of(EditorGTFileImpl.class,
+				GipsConstraintImpl.class, GipsLinearFunctionImpl.class, GipsObjectiveImpl.class));
+
+		ConstantReference reference = factory.createConstantReference();
+		if (container instanceof GipsConstraint eConstraint) {
+			reference.setConstant(data.getConstant(eConstraint, eReference.getConstant()));
+		} else if (container instanceof GipsLinearFunction eFunction) {
+			reference.setConstant(data.getConstant(eFunction, eReference.getConstant()));
+		} else if (container instanceof GipsObjective eObjective) {
+			reference.setConstant(data.getConstant(eObjective, eReference.getConstant()));
+		} else {
+			// Case: Container instanceof EditorGTFile
+			reference.setConstant(data.getConstant((EditorGTFile) container, eReference.getConstant()));
+		}
+
 		return reference;
 	}
 

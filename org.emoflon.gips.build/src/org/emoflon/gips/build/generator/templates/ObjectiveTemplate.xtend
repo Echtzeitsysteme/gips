@@ -39,6 +39,10 @@ class ObjectiveTemplate extends ProblemGeneratorTemplate<Objective> {
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.Objective")
 	}
 	
+	override getConstants() {
+		return context.constants;
+	}
+	
 	override generate() {
 		val classContent = generateClassContent()
 		val attributes = generateAttributes();
@@ -100,9 +104,13 @@ protected void initLocalObjectives() {
 		generateTermBuilder(expr)
 		return '''@Override
 protected void buildTerms() {
+	«getConstantFields(context.constants)»
+	
 	«FOR instruction : builderMethodCalls2»
 	«instruction»
 	«ENDFOR»
+	
+	«getConstantCalculators(context.constants)»
 }'''
 	}
 		
@@ -138,7 +146,7 @@ protected void buildTerms() {
 				val function = functions.iterator.next
 				referencedObjectives.add(function)
 				val builderMethodName = generateBuilder(expr, builderMethodCalls2)
-				val instruction = '''weightedFunctions.add(new WeightedLinearFunction(«function.name».getLinearFunctionFunction(), «builderMethodName»()));'''
+				val instruction = '''weightedFunctions.add(new WeightedLinearFunction(«function.name».getLinearFunctionFunction(), «builderMethodName»(«getCallParametersForConstants(getConstants())»)));'''
 				builderMethodCalls2.add(instruction)
 			}
 		} else if(expr instanceof ArithmeticUnaryExpression) {
@@ -149,7 +157,7 @@ protected void buildTerms() {
 				val function = functions.iterator.next
 				referencedObjectives.add(function)
 				val builderMethodName = generateBuilder(expr, builderMethodCalls2)
-				val instruction = '''weightedFunctions.add(new WeightedLinearFunction(«function.name».getLinearFunctionFunction(), «builderMethodName»()));'''
+				val instruction = '''weightedFunctions.add(new WeightedLinearFunction(«function.name».getLinearFunctionFunction(), «builderMethodName»(«getCallParametersForConstants(getConstants())»)));'''
 				builderMethodCalls2.add(instruction)
 		} else if(expr instanceof LinearFunctionReference) {
 			referencedObjectives.add(expr.function)

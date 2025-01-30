@@ -45,6 +45,13 @@ import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
 import java.util.HashMap
 import org.emoflon.gips.build.generator.TemplateData
+import org.emoflon.gips.intermediate.GipsIntermediate.Constant
+import java.util.Collection
+import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference
+import org.emoflon.gips.intermediate.GipsIntermediate.QueryOperator
+import org.eclipse.emf.ecore.EEnum
+import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference
+import org.eclipse.emf.ecore.EClass
 
 abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends GeneratorTemplate<CONTEXT> {
 	
@@ -79,6 +86,58 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 			return '''engine.getNonMappingVariable(elt, "«variable.name»")'''
 		}
 	}
+	
+	def String getConstantName(Constant constant) {
+		if(constant.isGlobal)
+			return constant.name
+		else
+			return '''c«constant.name.toFirstUpper»'''
+	}
+	
+	def String getConstantValue(Constant constant) {
+		if(constant.isGlobal) {
+			return '''(«extractReturnType(constant.expression)»)engine.getConstantValue(«getConstantName(constant)»)'''
+		} else {
+			return '''«getConstantName(constant)»'''
+		}
+	}
+	
+	def String getParametersForConstants(Collection<Constant> constants) {
+		return '''«FOR constant : constants SEPARATOR ', '»«extractReturnType(constant.expression)» «getConstantName(constant)»«ENDFOR»'''
+	}
+	
+	def String getCallParametersForConstants(Collection<Constant> constants) {
+		return '''«FOR constant : constants SEPARATOR ', '»«getConstantName(constant)»«ENDFOR»'''
+	}
+	
+	def String getCallConstantCalculator(Constant constant) {
+		return '''calculate«constant.name.toFirstUpper»()'''
+	}
+	
+	def String getConstantCalculator(Constant constant) {
+		return '''
+		protected «extractReturnType(constant.expression)» calculate«constant.name.toFirstUpper»() {
+			return 	«IF constant.expression instanceof ArithmeticExpression»«generateConstantExpression(constant.expression as ArithmeticExpression)»«ELSE»«generateConstantExpression(constant.expression as BooleanExpression)»«ENDIF»;
+		}
+		'''
+	}
+	
+	def String getConstantFields(Collection<Constant> constants) {
+		return '''
+		«FOR constant : constants»
+		«extractReturnType(constant.expression)» «getConstantName(constant)» = «getCallConstantCalculator(constant)»;
+		«ENDFOR»'''
+	}
+	
+	def String getConstantCalculators(Collection<Constant> constants) {
+		return '''
+		«FOR constant : constants»
+		«getConstantCalculator(constant)»
+		
+		«ENDFOR»'''
+	}
+	
+	def Collection<Constant> getConstants();
 	
 	def String getIterator(ContextReference reference) {
 		if(reference.isLocal)
@@ -120,7 +179,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		val method = '''
-	protected double «methodName»(«getContextParameter()») {
+	protected double «methodName»(«getContextParameter()»«IF !getConstants().empty», «ENDIF»«getParametersForConstants(getConstants())») {
 		return «generateConstantExpression(expr)»;
 	}
 		'''
@@ -132,7 +191,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		val method = '''
-	protected double «methodName»(«getContextParameter()») {
+	protected double «methodName»(«getContextParameter()»«IF !getConstants().empty», «ENDIF»«getParametersForConstants(getConstants())») {
 		return «generateConstantExpression(expr)»;
 	}
 		'''
@@ -158,7 +217,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		val sumExpression = expr.setExpression.setReduce as SetSummation
 		
 		val builderMethodName = '''builder_«builderMethods.size»'''
-		val instruction = '''«builderMethodName»(«callParametersForVoidBuilder»);'''
+		val instruction = '''«builderMethodName»(«callParametersForVoidBuilder»«IF !getConstants().empty», «ENDIF»«getCallParametersForConstants(getConstants())»);'''
 		methodCalls.add(instruction)
 		
 		builderMethods.put(expr, builderMethodName)
@@ -177,7 +236,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		val variable = varRefs.iterator.next
 		
 		val method = '''
-	protected void «builderMethodName»(«parametersForVoidBuilder») {
+	protected void «builderMethodName»(«parametersForVoidBuilder»«getParametersForConstants(getConstants())») {
 		«generateValueAccess(expr)»
 		«IF expr.setExpression.setOperation !== null»«generateConstantExpression(expr.setExpression.setOperation)»«ENDIF»
 		.forEach(elt -> {
@@ -251,8 +310,10 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 					return '''Math.PI'''
 				}
 			}
+		} else if(expression instanceof ConstantReference) {
+			return getConstantValue(expression.constant)
 		} else if(expression instanceof ValueExpression) {
-			return generateConstantExpression(expression);
+			return generateConstantExpression(expression)
 		} else {
 			// CASE: LinearFunctionReference -> return a constant 1 since the variable should have already been extracted.
 			return '''1.0'''
@@ -432,6 +493,8 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 					throw new UnsupportedOperationException("Numeric values may not be part of boolean expressions.")
 				}
 			}
+		} else if(expr instanceof ConstantReference) {
+			return getConstantValue(expr.constant)
 		} else if(expr instanceof RelationalExpression) {
 			return generateConstantExpression(expr)
 		} else {
@@ -506,6 +569,197 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 					throw new UnsupportedOperationException("Boolean values cannot be compared with operators other than '==' and '!='.")
 				}
 			}
+		}
+	}
+	
+	def String extractReturnType(EObject expression) {
+		if(expression instanceof ArithmeticExpression) {
+			return extractReturnType(expression as ArithmeticExpression)
+		} else {
+			return extractReturnType(expression as BooleanExpression)
+		}
+	}
+	
+	def String extractReturnType(BooleanExpression expression) {
+		if (expression instanceof BooleanBinaryExpression) {
+			return '''boolean''';
+		} else if (expression instanceof BooleanUnaryExpression) {
+			return '''boolean''';
+		} else if (expression instanceof BooleanLiteral) {
+			return '''boolean''';
+		} else if (expression instanceof ConstantLiteral) {
+			return '''boolean''';
+		} else if (expression instanceof ConstantReference) {
+			return extractReturnType(expression.constant.expression as BooleanExpression);
+		} else if (expression instanceof ArithmeticExpression) {
+			return extractReturnType(expression as ArithmeticExpression);
+		} else {
+			return '''boolean''';
+		}
+	}
+
+	def String extractReturnType(ArithmeticExpression expression) {
+		if (expression instanceof ArithmeticBinaryExpression) {
+			val lhs = extractReturnType(expression.getLhs);
+			val rhs = extractReturnType(expression.getRhs);
+			if (!lhs.equals(rhs))
+				throw new UnsupportedOperationException("Arithmetic operator types are mismatching.");
+
+			return lhs;
+		} else if (expression instanceof ArithmeticUnaryExpression) {
+			return extractReturnType(expression.getOperand());
+		} else if (expression instanceof ArithmeticLiteral) {
+			return '''double''';
+		} else if (expression instanceof ConstantLiteral) {
+			return '''double'''
+		} else if (expression instanceof LinearFunctionReference) {
+			return '''double''';	
+		} else if (expression instanceof ConstantReference) {
+			return extractReturnType(expression.constant.expression as ArithmeticExpression);
+		} else {
+			return extractReturnType(expression as ValueExpression);
+		}
+	}
+
+	def String extractReturnType(ValueExpression expression) {
+		var objectType = ""
+		var expressionType = "";
+		if (expression instanceof MappingReference) {
+			imports.add("java.util.Collection");
+			imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expression.mapping));
+			expressionType = '''Collection<«data.mapping2mappingClassName.get(expression.mapping)»>''';
+			objectType = data.mapping2mappingClassName.get(expression.mapping);
+		} else if (expression instanceof TypeReference) {
+			imports.add("java.util.Collection");
+			imports.add(data.classToPackage.getImportsForType(expression.type));
+			expressionType = '''Collection<«expression.type.name»>''';
+			objectType = expression.type.name;
+		} else if (expression instanceof PatternReference) {
+			imports.add("java.util.Collection");
+			imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(expression.pattern))
+			expressionType = '''Collection<«data.ibex2matchClassName.get(expression.pattern)»>''';
+			objectType = data.ibex2matchClassName.get(expression.pattern);
+		} else if (expression instanceof RuleReference) {
+			imports.add("java.util.Collection");
+			imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(expression.rule))
+			expressionType = '''Collection<«data.ibex2matchClassName.get(expression.rule)»>''';
+			objectType = data.ibex2matchClassName.get(expression.rule);
+		} else if (expression instanceof NodeReference) {
+			expressionType = extractReturnType(expression);
+			objectType = expressionType;
+		} else if (expression instanceof AttributeReference) {
+			expressionType = extractReturnType(expression);
+			objectType = expressionType;
+		} else if (expression instanceof VariableReference) {
+			expressionType = '''double''';
+			objectType = expressionType;
+		} else {
+			// Case: ContextReference
+			expressionType = getContextParameterType();
+			objectType = expressionType;
+		}
+
+		if (expression.getSetExpression() !== null) {
+			if (expression.setExpression.setOperation !== null) {
+				imports.add("java.util.Collection");
+				objectType = extractReturnType(objectType, expression.setExpression.setOperation);
+				expressionType = '''Collection<«objectType»>''';
+			}
+			if (expression.setExpression.setReduce !== null) {
+				val reduce = expression.getSetExpression().getSetReduce();
+				if (reduce instanceof SetSummation) {
+					return '''double''';
+				} else if (reduce instanceof SetSimpleSelect) {
+					return objectType;
+				} else if (reduce instanceof SetTypeQuery) {
+					return '''boolean''';
+				} else if (reduce instanceof SetElementQuery) {
+					return '''boolean''';
+				} else if (reduce instanceof SetSimpleQuery) {
+					if (reduce.operator == QueryOperator.EMPTY || reduce.operator == QueryOperator.NOT_EMPTY) {
+						return '''boolean''';
+					} else {
+						return '''double''';
+					}
+				}
+			}
+		} else {
+			return expressionType;
+		}
+	}
+	
+	def String extractReturnType(String previousType, SetOperation expression) {
+		var currentType = "";
+		if(expression instanceof SetFilter) {
+			currentType = previousType;
+		} else if(expression instanceof SetTypeSelect) {
+			imports.add(data.classToPackage.getImportsForType(expression.type));
+			currentType = expression.type.name;
+		} else if(expression instanceof SetSort) {
+			currentType = previousType;
+		} else if(expression instanceof SetConcatenation) {
+			currentType = previousType;
+		} else if(expression instanceof SetSimpleOperation) {
+			currentType = previousType;
+		} else {
+			val transform = expression as SetTransformation;
+			currentType = extractReturnType(transform.expression);
+			if(currentType.contains("Collection")) {
+				val first = currentType.split("<");
+				val second = first.get(0).split(">");
+				currentType = second.get(0);
+			} 
+		}
+		
+		if(expression.next !== null) {
+			return extractReturnType(currentType, expression.next);
+		} else {
+			return currentType;
+		}
+	}
+
+	def String extractReturnType(NodeReference expression) {
+		if (expression.attribute === null) {
+			imports.add(data.classToPackage.getImportsForType(expression.node.type));
+			return expression.node.type.name;
+		} else {
+			return extractReturnType(expression.attribute);
+		}
+	}
+
+	def String extractReturnType(AttributeReference expression) {
+		return extractReturnType(expression.attribute);
+	}
+
+	def String extractReturnType(AttributeExpression expression) {
+		if (expression.next === null) {
+			if (expression.feature.EType == EcorePackage.Literals.EBOOLEAN) {
+				return '''boolean''';
+			} else if (expression.getFeature().getEType() == EcorePackage.Literals.EDOUBLE) {
+				return '''double''';
+			} else if (expression.getFeature().getEType() == EcorePackage.Literals.EFLOAT) {
+				return '''double''';
+			} else if (expression.getFeature().getEType() == EcorePackage.Literals.EBYTE) {
+				return '''double''';
+			} else if (expression.getFeature().getEType() == EcorePackage.Literals.ESHORT) {
+				return '''double''';
+			} else if (expression.getFeature().getEType() == EcorePackage.Literals.EINT) {
+				return '''double''';
+			} else if (expression.getFeature().getEType() == EcorePackage.Literals.ELONG) {
+				return '''double''';
+			} else if (expression.getFeature().getEType() == EcorePackage.Literals.ESTRING) {
+				return '''String''';
+			} else if (expression.getFeature().getEType() instanceof EClass) {
+				imports.add(data.classToPackage.getImportsForType(expression.getFeature().getEType()));
+				return expression.feature.EType.name;
+			} else if (expression.feature.EType instanceof EEnum) {
+				imports.add(data.classToPackage.getImportsForType(expression.feature.EType));
+				return expression.feature.EType.name;
+			} else {
+				throw new IllegalArgumentException("Unsupported data type: " + expression.getFeature().getEType());
+			}
+		} else {
+			return extractReturnType(expression.getNext());
 		}
 	}
 }

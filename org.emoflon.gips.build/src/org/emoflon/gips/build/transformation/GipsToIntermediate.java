@@ -17,7 +17,10 @@ import org.emoflon.gips.build.transformation.transformer.ArithmeticExpressionTra
 import org.emoflon.gips.build.transformation.transformer.BooleanExpressionTransformer;
 import org.emoflon.gips.build.transformation.transformer.TransformerFactory;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsBooleanExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsConfig;
+import org.emoflon.gips.gipsl.gipsl.GipsConstant;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
@@ -26,6 +29,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.Constant;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
@@ -84,7 +88,17 @@ public class GipsToIntermediate {
 		// transform Gips components
 		transformConfig();
 		transformMappings();
+		transformGlobalConstants();
+
 		transformConstraints();
+		// add only absolute necessary constants to each constraint
+		data.model().getConstraints().forEach(constraint -> {
+			Collection<Constant> constants = GipsTransformationUtils
+					.extractConstantReference(constraint.getExpression()).stream().map(c -> c.getConstant())
+					.filter(c -> !c.isGlobal()).distinct().collect(Collectors.toList());
+			constraint.getConstants().addAll(constants);
+		});
+
 		transformLinearFunctions();
 		transformObjective();
 
@@ -222,6 +236,17 @@ public class GipsToIntermediate {
 		});
 	}
 
+	protected void transformGlobalConstants() throws Exception {
+		if (data.gipslFile().getConstants() == null)
+			return;
+
+		for (GipsConstant eConstant : data.gipslFile().getConstants()) {
+			Constant constant = createConstant(eConstant);
+			data.model().getConstants().add(constant);
+			data.addConstant(data.gipslFile(), eConstant, constant);
+		}
+	}
+
 	protected void transformMappingVariables(GipsMapping mapping, RuleMapping ruleMapping) {
 		if (mapping.getVariables() == null || mapping.getVariables().isEmpty())
 			return;
@@ -276,10 +301,25 @@ public class GipsToIntermediate {
 				continue;
 			}
 
+			// Create all constants
+			if (eConstraint.getConstants() != null && !eConstraint.getConstants().isEmpty()) {
+				for (GipsConstant eConstant : eConstraint.getConstants()) {
+					Constant constant = createConstant(eConstant);
+					data.model().getConstants().add(constant);
+					data.addConstant(eConstraint, eConstant, constant);
+				}
+			}
+
 			GipsConstraintSplitter splitter = new GipsConstraintSplitter(data, eConstraint);
 			Collection<GipsAnnotatedConstraint> eConstraints = splitter.split();
 
 			for (GipsAnnotatedConstraint eSubConstraint : eConstraints) {
+				for (GipsConstraint subConstraint : eSubConstraint.result().values()) {
+					data.eContext2Constants().get(eConstraint).forEach((eConstant, constant) -> {
+						data.addConstant(subConstraint, eConstant, constant);
+					});
+				}
+
 				switch (eSubConstraint.type()) {
 				case DISJUNCTION_OF_LITERALS -> {
 					Constraint disjunction = createDisjunctConstraint(eSubConstraint, constraintCounter);
@@ -454,6 +494,16 @@ public class GipsToIntermediate {
 			data.model().getFunctions().add(linearFunction);
 			data.eFunction2Function().put(eLinearFunction, linearFunction);
 
+			// Create all constants
+			if (eLinearFunction.getConstants() != null && !eLinearFunction.getConstants().isEmpty()) {
+				for (GipsConstant eConstant : eLinearFunction.getConstants()) {
+					Constant constant = createConstant(eConstant);
+					data.model().getConstants().add(constant);
+					linearFunction.getConstants().add(constant);
+					data.addConstant(eLinearFunction, eConstant, constant);
+				}
+			}
+
 			ArithmeticExpressionTransformer transformer = transformationFactory
 					.createArithmeticTransformer(linearFunction);
 			linearFunction.setExpression(transformer.transform(eLinearFunction.getExpression()));
@@ -472,6 +522,16 @@ public class GipsToIntermediate {
 
 		Objective objective = factory.createObjective();
 		data.model().setObjective(objective);
+
+		// Create all constants
+		if (eObjective.getConstants() != null && !eObjective.getConstants().isEmpty()) {
+			for (GipsConstant eConstant : eObjective.getConstants()) {
+				Constant constant = createConstant(eConstant);
+				data.model().getConstants().add(constant);
+				objective.getConstants().add(constant);
+				data.addConstant(eObjective, eConstant, constant);
+			}
+		}
 
 		switch (eObjective.getGoal()) {
 		case MAX -> {
@@ -629,6 +689,24 @@ public class GipsToIntermediate {
 			data.requiredTypes().add(function.getType());
 			return function;
 		}
+	}
+
+	protected Constant createConstant(final GipsConstant eConstant) throws Exception {
+		Constant constant = factory.createConstant();
+		constant.setName(eConstant.getName());
+
+		if (eConstant.eContainer() instanceof EditorGTFile)
+			constant.setGlobal(true);
+
+		if (eConstant.getExpression() instanceof GipsArithmeticExpression gae) {
+			ArithmeticExpressionTransformer transformer = transformationFactory.createArithmeticTransformer(null);
+			constant.setExpression(transformer.transform(gae));
+		} else {
+			BooleanExpressionTransformer transformer = transformationFactory.createBooleanTransformer(null);
+			constant.setExpression(transformer.transform((GipsBooleanExpression) eConstant.getExpression()));
+		}
+
+		return constant;
 	}
 
 	protected void mapGT2IBeXElements() {

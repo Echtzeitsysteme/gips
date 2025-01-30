@@ -27,6 +27,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsBooleanImplication;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanNegation;
 import org.emoflon.gips.gipsl.gipsl.GipsConcatenationOperation;
+import org.emoflon.gips.gipsl.gipsl.GipsConstant;
 import org.emoflon.gips.gipsl.gipsl.GipsConstantLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsConstantReference;
 import org.emoflon.gips.gipsl.gipsl.GipsFilterOperation;
@@ -58,6 +59,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.QueryOperator;
 import org.emoflon.gips.gipsl.gipsl.RelationalOperator;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsConstantImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsSetExpressionImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsSumOperationImpl;
@@ -548,11 +550,13 @@ public final class GipslExpressionValidator {
 			}
 		} else if (expression instanceof GipsConstantReference reference) {
 			if (reference.getConstant() == null)
-				return ExpressionType.Error;
+				return ExpressionType.Unknown;
 
 			if (reference.getConstant().getExpression() == null)
-				return ExpressionType.Error;
+				return ExpressionType.Unknown;
 
+			// Check for forbidden expressions, i.e., variable references, errors or
+			// unknowns.
 			ExpressionType type = evaluate(reference.getConstant().getExpression(), errors);
 			if (type == ExpressionType.Variable) {
 				errors.add(() -> {
@@ -574,6 +578,20 @@ public final class GipslExpressionValidator {
 				});
 				return ExpressionType.Error;
 			}
+			// Check if reference is not used in another constant definition
+			GipsConstant root = (GipsConstant) GipslScopeContextUtil.getContainer(reference,
+					Set.of(GipsConstantImpl.class));
+			if (root != null) {
+				errors.add(() -> {
+					GipslValidator.err( //
+							GipslValidatorUtil.CONSTANT_CONTAINS_CONSTANT, //
+							root, //
+							GipslPackage.Literals.GIPS_CONSTANT__EXPRESSION //
+					);
+				});
+				return ExpressionType.Error;
+			}
+
 			return type;
 		} else {
 			errors.add(() -> {

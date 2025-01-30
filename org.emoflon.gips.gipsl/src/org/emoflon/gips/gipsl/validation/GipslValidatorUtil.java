@@ -118,6 +118,7 @@ public class GipslValidatorUtil {
 	// Other errors for types
 	public static final String CONSTANT_NAME_UNIQUE = "Constant name is not unique in the current scope.";
 	public static final String CONSTANT_NOT_ASSIGNED = "Constant has not been assigned any value.";
+	public static final String CONSTANT_CONTAINS_CONSTANT = "Constant may not contain constant references.";
 	public static final String CONSTANT_CONTAINS_VARIABLE = "Constant may not contain variable references.";
 	public static final String CONSTANT_CONTAINS_ERRORS = "Constant definition contains errors.";
 	public static final String CONSTRAINT_EMPTY_MESSAGE = "Constraint is empty.";

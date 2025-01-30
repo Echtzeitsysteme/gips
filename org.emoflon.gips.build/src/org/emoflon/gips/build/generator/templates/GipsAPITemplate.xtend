@@ -3,9 +3,9 @@ package org.emoflon.gips.build.generator.templates
 import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
 import org.emoflon.gips.build.GipsAPIData
-import org.emoflon.gips.intermediate.GipsIntermediate.Mapping
+import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 
-class GipsAPITemplate extends GeneratorTemplate<GipsIntermediateModel> {
+class GipsAPITemplate extends ProblemGeneratorTemplate<GipsIntermediateModel> {
 	
 	new(TemplateData data, GipsIntermediateModel context) {
 		super(data, context)
@@ -35,12 +35,14 @@ class GipsAPITemplate extends GeneratorTemplate<GipsIntermediateModel> {
 			.forEach[m | imports.add(data.apiData.gipsMapperPkg+"."+m)]
 	}
 	
+	override getConstants() {
+		return context.constants.filter[c | c.isGlobal].toList;
+	}
+	
 	override generate() {
-		code = '''package «packageName»;
+		code = '''«generatePackageDeclaration()»;
 		
-«FOR imp : imports»
-import «imp»;
-«ENDFOR»
+«generateImports()»
 		
 public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasses.get(GipsAPIData.HIPE_ENGINE_NAME)», «data.apiData.apiClass»>{
 	final public static URI INTERMEDIATE_MODEL_URI = URI.createFileURI("«data.apiData.project.location.toPortableString»«data.apiData.intermediateModelURI.toPlatformString(false)»");
@@ -174,6 +176,17 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 		}
 		return solver;
 	}
+	
+	@Override
+	protected void updateConstants() {
+		«FOR constant : data.model.constants.filter[c | c.isGlobal]»
+		addConstantValue("«getConstantName(constant)»", «getCallConstantCalculator(constant)»);
+		«ENDFOR»
+	}
+	
+	«FOR constant : data.model.constants.filter[c | c.isGlobal]»
+	«getConstantCalculator(constant)»
+	«ENDFOR»
 }'''
 	}
 	
@@ -189,6 +202,25 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 				return '''new CplexSolver(this, solverConfig)'''
 			}
 		}
+	}
+	
+	override generatePackageDeclaration() {
+		return '''package «packageName»;'''
+	}
+	
+	override generateImports() {
+		return 
+		'''«FOR imp : imports»
+import «imp»;
+		«ENDFOR»'''
+	}
+	
+	override getVariable(Variable variable) {
+		throw new UnsupportedOperationException("Variables cannot be accessed in a constant.")
+	}
+	
+	override getContextParameterType() {
+		throw new UnsupportedOperationException("There is not context for a global constant.")
 	}
 	
 }

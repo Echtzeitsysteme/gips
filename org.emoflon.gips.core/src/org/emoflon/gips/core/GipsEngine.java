@@ -14,13 +14,14 @@ import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 
 public abstract class GipsEngine {
 
-	final protected Map<String, GipsMapper<?>> mappers = new HashMap<>();
-	final protected Map<Object, Map<String, Variable<?>>> nonMappingVariables = Collections
-			.synchronizedMap(new HashMap<>());
 	protected TypeIndexer indexer;
 	protected GipsConstraintValidationLog validationLog;
-	final protected Map<String, GipsConstraint<?, ?, ?>> constraints = new HashMap<>();
-	final protected Map<String, GipsLinearFunction<?, ?, ?>> functions = new HashMap<>();
+	final protected Map<String, GipsMapper<?>> mappers = Collections.synchronizedMap(new HashMap<>());
+	final protected Map<Object, Map<String, Variable<?>>> nonMappingVariables = Collections
+			.synchronizedMap(new HashMap<>());
+	final protected Map<String, Object> globalConstants = Collections.synchronizedMap(new HashMap<>());
+	final protected Map<String, GipsConstraint<?, ?, ?>> constraints = Collections.synchronizedMap(new HashMap<>());
+	final protected Map<String, GipsLinearFunction<?, ?, ?>> functions = Collections.synchronizedMap(new HashMap<>());
 	protected GipsObjective objective;
 	protected Solver solver;
 
@@ -29,6 +30,8 @@ public abstract class GipsEngine {
 	public abstract void saveResult() throws IOException;
 
 	public abstract void saveResult(final String path) throws IOException;
+
+	protected abstract void updateConstants();
 
 	public void buildProblemTimed(boolean doUpdate) {
 		Observer observer = Observer.getInstance();
@@ -55,6 +58,9 @@ public abstract class GipsEngine {
 						});
 
 				constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());
+
+				updateConstants();
+
 				constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
 
 				if (objective != null)
@@ -94,6 +100,9 @@ public abstract class GipsEngine {
 				});
 
 		constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());
+
+		updateConstants();
+
 		constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
 		if (objective != null)
 			objective.buildObjectiveFunction();
@@ -188,6 +197,17 @@ public abstract class GipsEngine {
 		}
 		variables.put(variableType.getName(), variable);
 
+	}
+
+	public synchronized void addConstantValue(final String constant, final double value) {
+		globalConstants.put(constant, value);
+	}
+
+	public synchronized Object getConstantValue(final String constant) {
+		if (!globalConstants.containsKey(constant))
+			throw new RuntimeException("Constant <" + constant + "> is not present in the constants index.");
+
+		return globalConstants.get(constant);
 	}
 
 	public synchronized void removeNonMappingVariable(final Variable<?> ilpVar) {

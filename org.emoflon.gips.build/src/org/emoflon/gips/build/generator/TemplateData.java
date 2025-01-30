@@ -1,13 +1,17 @@
 package org.emoflon.gips.build.generator;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import org.emoflon.gips.build.GipsAPIData;
+import org.emoflon.gips.intermediate.GipsIntermediate.Constant;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.NamedElement;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternMapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleMapping;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNamedElement;
@@ -30,6 +34,7 @@ public class TemplateData {
 	final public Map<Mapping, String> mapping2matchClassName = new HashMap<>();
 	final public Map<IBeXNamedElement, String> ibex2matchClassName = new HashMap<>();
 	final public Map<IBeXNamedElement, String> ibex2ibexClassName = new HashMap<>();
+	final public Map<NamedElement, Collection<Constant>> context2constants = new HashMap<>();
 
 	final public Map<Constraint, String> constraint2constraintClassName = new HashMap<>();
 	final public Map<LinearFunction, String> function2functionClassName = new HashMap<>();
@@ -59,6 +64,28 @@ public class TemplateData {
 				mapping2matchClassName.put(pmMapping, firstToUpper(pmMapping.getPattern().getName()) + "Match");
 			}
 		});
+
+		// Add global constants
+		context2constants.put(model, new LinkedList<>());
+		model.getConstants().stream().filter(c -> c.isGlobal()).forEach(c -> context2constants.get(model).add(c));
+
+		// Add local constants
+		model.getConstraints().stream().filter(c -> c.getConstants() != null && !c.getConstants().isEmpty())
+				.forEach(c -> {
+					context2constants.put(c, new LinkedList<>());
+					context2constants.get(c).addAll(c.getConstants());
+				});
+		model.getFunctions().stream().filter(f -> f.getConstants() != null && !f.getConstants().isEmpty())
+				.forEach(f -> {
+					context2constants.put(f, new LinkedList<>());
+					context2constants.get(f).addAll(f.getConstants());
+				});
+		if (model.getObjective() != null && model.getObjective().getConstants() != null
+				&& !model.getObjective().getConstants().isEmpty()) {
+			context2constants.put(model.getObjective(), new LinkedList<>());
+			context2constants.get(model.getObjective()).addAll(model.getObjective().getConstants());
+		}
+
 		model.getRequiredPatterns().forEach(pattern -> {
 			ibex2ibexClassName.put(pattern, firstToUpper(pattern.getName()) + "Pattern");
 			ibex2matchClassName.put(pattern, firstToUpper(pattern.getName()) + "Match");

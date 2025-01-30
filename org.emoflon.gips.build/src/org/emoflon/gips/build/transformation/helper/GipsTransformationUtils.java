@@ -18,8 +18,9 @@ import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanUnaryExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.Constant;
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.ConstantValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingReference;
@@ -29,10 +30,16 @@ import org.emoflon.gips.intermediate.GipsIntermediate.QueryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetConcatenation;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetElementQuery;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetFilter;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetReduce;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetSimpleQuery;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetSimpleSelect;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetSort;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetSummation;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetTransformation;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetTypeQuery;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
@@ -98,6 +105,8 @@ public final class GipsTransformationUtils {
 			return ArithmeticExpressionType.constant;
 		} else if (expression instanceof ConstantLiteral) {
 			return ArithmeticExpressionType.constant;
+		} else if (expression instanceof ConstantReference reference) {
+			return isConstantExpression((BooleanExpression) reference.getConstant().getExpression());
 		} else if (expression instanceof ArithmeticExpression arithmetic) {
 			return isConstantExpression(arithmetic);
 		} else {
@@ -150,6 +159,8 @@ public final class GipsTransformationUtils {
 			return ArithmeticExpressionType.constant;
 		} else if (expression instanceof LinearFunctionReference) {
 			return ArithmeticExpressionType.variableVector;
+		} else if (expression instanceof ConstantReference reference) {
+			return isConstantExpression((ArithmeticExpression) reference.getConstant().getExpression());
 		} else {
 			return isConstantExpression((ValueExpression) expression);
 		}
@@ -349,6 +360,111 @@ public final class GipsTransformationUtils {
 		}
 	}
 
+	public static Set<ConstantReference> extractConstantReference(final ArithmeticExpression expression) {
+		if (expression instanceof ArithmeticBinaryExpression bin) {
+			Set<ConstantReference> constants = new HashSet<>();
+			constants.addAll(extractConstantReference(bin.getLhs()));
+			constants.addAll(extractConstantReference(bin.getRhs()));
+			return constants;
+		} else if (expression instanceof ArithmeticUnaryExpression unary) {
+			return extractConstantReference(unary.getOperand());
+		} else if (expression instanceof ArithmeticLiteral) {
+			return new HashSet<>();
+		} else if (expression instanceof ConstantLiteral) {
+			return new HashSet<>();
+		} else if (expression instanceof LinearFunctionReference var) {
+			return extractConstantReference(var.getFunction().getExpression());
+		} else if (expression instanceof ConstantReference ref) {
+			Set<ConstantReference> constants = new HashSet<>();
+			constants.add(ref);
+			return constants;
+		} else {
+			return extractConstantReference((ValueExpression) expression);
+		}
+	}
+
+	public static Set<ConstantReference> extractConstantReference(final ValueExpression expression) {
+		Set<ConstantReference> constants = new HashSet<>();
+		if (expression.getSetExpression() != null) {
+			if (expression.getSetExpression().getSetOperation() != null) {
+				constants.addAll(extractConstantReference(expression.getSetExpression().getSetOperation()));
+			}
+			if (expression.getSetExpression().getSetReduce() != null) {
+				constants.addAll(extractConstantReference(expression.getSetExpression().getSetReduce()));
+			}
+		}
+		return constants;
+	}
+
+	public static Set<ConstantReference> extractConstantReference(final SetOperation expression) {
+		Set<ConstantReference> constants = new HashSet<>();
+		if (expression instanceof SetFilter filter) {
+			constants.addAll(extractConstantReference(filter.getExpression()));
+		} else if (expression instanceof SetSort sort) {
+			constants.addAll(extractConstantReference(sort.getPredicate()));
+		} else if (expression instanceof SetConcatenation cat) {
+			constants.addAll(extractConstantReference(cat.getOther()));
+		} else if (expression instanceof SetTransformation transform) {
+			constants.addAll(extractConstantReference(transform.getExpression()));
+		}
+
+		if (expression.getNext() != null) {
+			constants.addAll(extractConstantReference(expression.getNext()));
+		}
+
+		return constants;
+	}
+
+	public static Set<ConstantReference> extractConstantReference(final SetReduce expression) {
+		Set<ConstantReference> constants = new HashSet<>();
+		if (expression instanceof SetSummation sum) {
+			constants.addAll(extractConstantReference(sum.getExpression()));
+		} else if (expression instanceof SetElementQuery query) {
+			constants.addAll(extractConstantReference(query.getElement()));
+		}
+
+		return constants;
+	}
+
+	public static Set<ConstantReference> extractConstantReference(final BooleanExpression expression) {
+		if (expression instanceof BooleanBinaryExpression bin) {
+			Set<ConstantReference> constants = new HashSet<>();
+			constants.addAll(extractConstantReference(bin.getLhs()));
+			constants.addAll(extractConstantReference(bin.getRhs()));
+			return constants;
+		} else if (expression instanceof BooleanUnaryExpression unary) {
+			return extractConstantReference(unary.getOperand());
+		} else if (expression instanceof BooleanLiteral) {
+			return new HashSet<>();
+		} else if (expression instanceof ConstantLiteral) {
+			return new HashSet<>();
+		} else if (expression instanceof ConstantReference ref) {
+			Set<ConstantReference> constants = new HashSet<>();
+			constants.add(ref);
+			return constants;
+		} else if (expression instanceof ArithmeticExpression arithmetic) {
+			return extractConstantReference(arithmetic);
+		} else {
+			return extractConstantReference((RelationalExpression) expression);
+		}
+	}
+
+	public static Set<ConstantReference> extractConstantReference(final RelationalExpression relExpr) {
+		Set<ConstantReference> constants = new HashSet<>();
+		if (relExpr.getLhs() instanceof ArithmeticExpression arithmetic) {
+			constants.addAll(extractConstantReference(arithmetic));
+		} else {
+			constants.addAll(extractConstantReference((BooleanExpression) relExpr.getLhs()));
+		}
+
+		if (relExpr.getRhs() instanceof ArithmeticExpression arithmetic) {
+			constants.addAll(extractConstantReference(arithmetic));
+		} else {
+			constants.addAll(extractConstantReference((BooleanExpression) relExpr.getRhs()));
+		}
+		return constants;
+	}
+
 	public static ExpressionReturnType extractReturnType(final BooleanExpression expression) {
 		if (expression instanceof BooleanBinaryExpression bin) {
 			ExpressionReturnType lhs = extractReturnType(bin.getLhs());
@@ -361,11 +477,13 @@ public final class GipsTransformationUtils {
 		} else if (expression instanceof BooleanLiteral) {
 			return ExpressionReturnType.bool;
 		} else if (expression instanceof ConstantLiteral constant) {
-			if (constant.getConstant() == Constant.NULL) {
+			if (constant.getConstant() == ConstantValue.NULL) {
 				return ExpressionReturnType.object;
 			} else {
 				return ExpressionReturnType.bool;
 			}
+		} else if (expression instanceof ConstantReference reference) {
+			return extractReturnType((BooleanExpression) reference.getConstant().getExpression());
 		} else if (expression instanceof ArithmeticExpression arithmetic) {
 			return extractReturnType(arithmetic);
 		} else {
@@ -386,13 +504,15 @@ public final class GipsTransformationUtils {
 		} else if (expression instanceof ArithmeticLiteral) {
 			return ExpressionReturnType.number;
 		} else if (expression instanceof ConstantLiteral lit) {
-			if (lit.getConstant() == Constant.NULL) {
+			if (lit.getConstant() == ConstantValue.NULL) {
 				return ExpressionReturnType.object;
 			} else {
 				return ExpressionReturnType.number;
 			}
 		} else if (expression instanceof LinearFunctionReference) {
 			return ExpressionReturnType.number;
+		} else if (expression instanceof ConstantReference reference) {
+			return extractReturnType((ArithmeticExpression) reference.getConstant().getExpression());
 		} else {
 			return extractReturnType((ValueExpression) expression);
 		}

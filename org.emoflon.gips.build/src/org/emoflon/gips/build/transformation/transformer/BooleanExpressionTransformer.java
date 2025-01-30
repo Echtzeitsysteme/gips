@@ -1,7 +1,11 @@
 package org.emoflon.gips.build.transformation.transformer;
 
+import java.util.Set;
+
+import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.TransformationContext;
+import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticConstant;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanBracket;
@@ -12,14 +16,24 @@ import org.emoflon.gips.gipsl.gipsl.GipsBooleanImplication;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanNegation;
 import org.emoflon.gips.gipsl.gipsl.GipsConstantLiteral;
+import org.emoflon.gips.gipsl.gipsl.GipsConstantReference;
+import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
+import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
+import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsLinearFunctionImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
+import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanUnaryExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.Constant;
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantLiteral;
+import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.ConstantValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Context;
 
 public class BooleanExpressionTransformer extends TransformationContext {
@@ -77,8 +91,26 @@ public class BooleanExpressionTransformer extends TransformationContext {
 					throw new IllegalArgumentException("Illegal boolean expression type: " + eConstant);
 				}
 				ConstantLiteral constant = factory.createConstantLiteral();
-				constant.setConstant(Constant.NULL);
+				constant.setConstant(ConstantValue.NULL);
 				return constant;
+			} else if (arithmetic instanceof GipsConstantReference eReference) {
+				EObject container = (EObject) GipslScopeContextUtil.getContainer(eReference,
+						Set.of(EditorGTFileImpl.class, GipsConstraintImpl.class, GipsLinearFunctionImpl.class,
+								GipsObjectiveImpl.class));
+
+				ConstantReference reference = factory.createConstantReference();
+				if (container instanceof GipsConstraint eConstraint) {
+					reference.setConstant(data.getConstant(eConstraint, eReference.getConstant()));
+				} else if (container instanceof GipsLinearFunction eFunction) {
+					reference.setConstant(data.getConstant(eFunction, eReference.getConstant()));
+				} else if (container instanceof GipsObjective eObjective) {
+					reference.setConstant(data.getConstant(eObjective, eReference.getConstant()));
+				} else {
+					// Case: Container instanceof EditorGTFile
+					reference.setConstant(data.getConstant((EditorGTFile) container, eReference.getConstant()));
+				}
+
+				return reference;
 			} else {
 				throw new IllegalArgumentException("Illegal boolean expression type: " + arithmetic);
 			}

@@ -16,6 +16,10 @@ abstract class LinearFunctionTemplate <OBJECTIVE extends LinearFunction> extends
 		super(data, context)
 	}
 	
+	override getConstants() {
+		return context.constants;
+	}
+	
 	override generate() {
 		val classContent = generateClassContent()
 		val importStatements = generateImports();
@@ -34,6 +38,8 @@ abstract class LinearFunctionTemplate <OBJECTIVE extends LinearFunction> extends
 		return '''
 @Override
 protected void buildTerms(«getContextParameter()») {
+	«getConstantFields(context.constants)»
+	
 	«FOR instruction : builderMethodCalls2»
 	«instruction»
 	«ENDFOR»
@@ -59,7 +65,7 @@ protected void buildTerms(«getContextParameter()») {
 					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 					
 				val builderMethodName = generateBuilder(expr, builderMethodCalls2)
-				val instruction = '''terms.add(new Term(«getVariable(variable.iterator.next)», «builderMethodName»(context)));'''
+				val instruction = '''terms.add(new Term(«getVariable(variable.iterator.next)», «builderMethodName»(context«IF !getConstants().empty», «ENDIF»«getCallParametersForConstants(getConstants())»)));'''
 				builderMethodCalls2.add(instruction)
 			}
 		} else if(expr instanceof ArithmeticUnaryExpression) {
@@ -68,7 +74,7 @@ protected void buildTerms(«getContextParameter()») {
 					throw new UnsupportedOperationException("Access to multiple different variables in the same product is forbidden.");
 				
 				val builderMethodName = generateBuilder(expr, builderMethodCalls2)
-				val instruction = '''terms.add(new Term(«getVariable(variable.iterator.next)», «builderMethodName»(context)));'''
+				val instruction = '''terms.add(new Term(«getVariable(variable.iterator.next)», «builderMethodName»(context«IF !getConstants().empty», «ENDIF»«getCallParametersForConstants(getConstants())»)));'''
 				builderMethodCalls2.add(instruction)
 		} else {
 			generateBuilder(expr as ValueExpression, builderMethodCalls2)

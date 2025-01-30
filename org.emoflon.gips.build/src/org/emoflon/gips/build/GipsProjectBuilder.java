@@ -73,6 +73,10 @@ public class GipsProjectBuilder implements GipsBuilderExtension {
 		GipsBuilderUtils.saveResource(model, gipsApiData.apiPackageFolder.getLocation() + "/gips/gips-model.xmi");
 		gipsApiData.intermediateModelURI = URI.createPlatformResourceURI(
 				gipsApiData.apiPackageFolder.getProjectRelativePath() + "/gips/gips-model.xmi", true);
+		// FIXME; createPlatformResourceURI requires a path of the form
+		// "/project-name/path", but getProjectRelativePath() does not include
+		// "project-name"
+		// TODO: See if this can be easily fixed.
 
 		// build HiPE engine code
 		if (ibexModel != null && !ibexModel.getPatternSet().getContextPatterns().isEmpty()) {
@@ -99,6 +103,12 @@ public class GipsProjectBuilder implements GipsBuilderExtension {
 		// generate files
 		GipsCodeGenerator gipsGen = new GipsCodeGenerator(model, gipsApiData, manager);
 		gipsGen.generate();
+
+		// update gipsl->intermediate tracing
+		LogUtils.info(logger, "GipsProjectBuilder: update trace...");
+		GipsBuilderUtils.updateTrace(project, gipsSlangFile.eResource().getURI(), gipsApiData.intermediateModelURI,
+				transformer);
+
 		LogUtils.info(logger, "GipsProjectBuilder: Done!");
 
 		try {
@@ -108,5 +118,4 @@ public class GipsProjectBuilder implements GipsBuilderExtension {
 			e.printStackTrace();
 		}
 	}
-
 }

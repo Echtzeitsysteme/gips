@@ -111,12 +111,12 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	}
 	
 	def String getCallConstantCalculator(Constant constant) {
-		return '''calculate«constant.name.toFirstUpper»()'''
+		return '''calculate«constant.name.toFirstUpper»(context)'''
 	}
 	
 	def String getConstantCalculator(Constant constant) {
 		return '''
-		protected «extractReturnType(constant.expression)» calculate«constant.name.toFirstUpper»() {
+		protected «extractReturnType(constant.expression)» calculate«constant.name.toFirstUpper»(«getContextParameter()») {
 			return 	«IF constant.expression instanceof ArithmeticExpression»«generateConstantExpression(constant.expression as ArithmeticExpression)»«ELSE»«generateConstantExpression(constant.expression as BooleanExpression)»«ENDIF»;
 		}
 		'''

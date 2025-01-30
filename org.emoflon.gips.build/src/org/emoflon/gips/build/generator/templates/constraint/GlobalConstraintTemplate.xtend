@@ -4,6 +4,7 @@ import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint
+import org.emoflon.gips.intermediate.GipsIntermediate.Constant
 
 class GlobalConstraintTemplate extends ConstraintTemplate<Constraint> {
 	
@@ -57,6 +58,10 @@ public «className»(final «data.gipsApiClassName» engine, final org.emoflon.g
 		} else {
 			throw new UnsupportedOperationException("Mapping context access is not possible within a global context.")
 		}
+	}
+	
+	override getCallConstantCalculator(Constant constant) {
+		return '''calculate«constant.name.toFirstUpper»()'''
 	}
 
 	override String getContextParameterType() {

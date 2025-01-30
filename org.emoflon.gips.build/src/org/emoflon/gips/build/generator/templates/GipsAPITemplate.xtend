@@ -4,6 +4,7 @@ import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
 import org.emoflon.gips.build.GipsAPIData
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
+import org.emoflon.gips.intermediate.GipsIntermediate.Constant
 
 class GipsAPITemplate extends ProblemGeneratorTemplate<GipsIntermediateModel> {
 	
@@ -40,7 +41,7 @@ class GipsAPITemplate extends ProblemGeneratorTemplate<GipsIntermediateModel> {
 	}
 	
 	override generate() {
-		code = '''«generatePackageDeclaration()»;
+		code = '''«generatePackageDeclaration()»
 		
 «generateImports()»
 		
@@ -220,7 +221,15 @@ import «imp»;
 	}
 	
 	override getContextParameterType() {
-		throw new UnsupportedOperationException("There is not context for a global constant.")
+		return ''''''
+	}
+	
+	override getContextParameter() {
+		return ''''''
+	}
+	
+	override getCallConstantCalculator(Constant constant) {
+		return '''calculate«constant.name.toFirstUpper»()'''
 	}
 	
 }

@@ -13,6 +13,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunction
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
+import org.emoflon.gips.intermediate.GipsIntermediate.Constant
 
 class ObjectiveTemplate extends ProblemGeneratorTemplate<Objective> {
 
@@ -124,6 +125,10 @@ protected void buildTerms() {
 	
 	override String getContextParameter() {
 		return ""
+	}
+	
+	override getCallConstantCalculator(Constant constant) {
+		return '''calculate«constant.name.toFirstUpper»()'''
 	}
 	
 	def void generateTermBuilder(ArithmeticExpression expr) {

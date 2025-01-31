@@ -37,6 +37,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Context;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
 
 public class ArithmeticExpressionTransformer extends TransformationContext {
 	protected ArithmeticExpressionTransformer(GipsTransformationData data, Context localContext,
@@ -219,6 +220,16 @@ public class ArithmeticExpressionTransformer extends TransformationContext {
 		} else {
 			// Case: Container instanceof EditorGTFile
 			reference.setConstant(data.getConstant((EditorGTFile) container, eReference.getConstant()));
+		}
+
+		if (eReference.getSetExpression() != null) {
+			ValueExpressionTransformer transformer = null;
+			if (reference.getConstant().getExpression() instanceof SetOperation setOp) {
+				transformer = transformerFactory.createValueTransformer(localContext, setOp);
+			} else {
+				transformer = transformerFactory.createValueTransformer(localContext);
+			}
+			reference.setSetExpression(transformer.transform(eReference.getSetExpression()));
 		}
 
 		return reference;

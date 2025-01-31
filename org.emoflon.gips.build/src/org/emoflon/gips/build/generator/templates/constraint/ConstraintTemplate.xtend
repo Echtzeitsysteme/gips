@@ -15,6 +15,7 @@ import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils
 import java.util.HashMap
 import java.util.List
 import java.util.LinkedList
+import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference
 
 abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGeneratorTemplate<CONTEXT> {
 	
@@ -78,6 +79,8 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGe
 				val builderMethodName = generateBuilder(expr, methodCalls)
 				val instruction = '''terms.add(new Term(«getVariable(variable.iterator.next)», «builderMethodName»(context«IF !getConstants().empty», «ENDIF»«getCallParametersForConstants(getConstants())»)));'''
 				methodCalls.add(instruction)
+		} else if(expr instanceof ConstantReference) {
+			generateBuilder(expr, methodCalls)
 		} else if(expr instanceof ValueExpression) {
 			generateBuilder(expr, methodCalls)
 		} else {
@@ -130,17 +133,13 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGe
 	@Override
 	protected double buildConstantLhs(«getContextParameter()») {
 		«getConstantFields(context.constants)»
-		«IF relExpr.lhs instanceof ArithmeticExpression» return «generateConstTermBuilder(relExpr.lhs as ArithmeticExpression)»;
-		«ELSE» return «generateConstTermBuilder(relExpr.lhs as BooleanExpression)»;
-		«ENDIF»
+		«IF relExpr.lhs instanceof ArithmeticExpression» return «generateConstTermBuilder(relExpr.lhs as ArithmeticExpression)»;«ELSE» return «generateConstTermBuilder(relExpr.lhs as BooleanExpression)»;«ENDIF»
 	}
 	
 	@Override
 	protected double buildConstantRhs(«getContextParameter()») {
 		«getConstantFields(context.constants)»
-		«IF relExpr.rhs instanceof ArithmeticExpression» return «generateConstTermBuilder(relExpr.rhs as ArithmeticExpression)»;
-		«ELSE» return «generateConstTermBuilder(relExpr.rhs as BooleanExpression)»;
-		«ENDIF»
+		«IF relExpr.rhs instanceof ArithmeticExpression» return «generateConstTermBuilder(relExpr.rhs as ArithmeticExpression)»;«ELSE» return «generateConstTermBuilder(relExpr.rhs as BooleanExpression)»;«ENDIF»
 	}
 	
 	@Override
@@ -235,14 +234,12 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGe
 @Override
 protected double buildConstantRhs(«getContextParameter()») {
 	«getConstantFields(context.constants)»
-	
 	return «generateConstTermBuilder(constExpr)»;
 }
 	
 @Override
 protected List<Term> buildVariableLhs(«getContextParameter()») {
 	«getConstantFields(context.constants)»
-	
 	List<Term> terms = Collections.synchronizedList(new LinkedList<>());
 	«FOR instruction : builderMethodCalls2»
 	«instruction»

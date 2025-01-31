@@ -32,6 +32,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetConcatenation;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetElementQuery;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetFilter;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetReduce;
@@ -106,7 +107,11 @@ public final class GipsTransformationUtils {
 		} else if (expression instanceof ConstantLiteral) {
 			return ArithmeticExpressionType.constant;
 		} else if (expression instanceof ConstantReference reference) {
-			return isConstantExpression((BooleanExpression) reference.getConstant().getExpression());
+			if (reference.getSetExpression() == null) {
+				return isConstantExpression((BooleanExpression) reference.getConstant().getExpression());
+			} else {
+				return isConstantExpression(reference.getSetExpression());
+			}
 		} else if (expression instanceof ArithmeticExpression arithmetic) {
 			return isConstantExpression(arithmetic);
 		} else {
@@ -160,7 +165,11 @@ public final class GipsTransformationUtils {
 		} else if (expression instanceof LinearFunctionReference) {
 			return ArithmeticExpressionType.variableVector;
 		} else if (expression instanceof ConstantReference reference) {
-			return isConstantExpression((ArithmeticExpression) reference.getConstant().getExpression());
+			if (reference.getSetExpression() == null) {
+				return isConstantExpression((ArithmeticExpression) reference.getConstant().getExpression());
+			} else {
+				return isConstantExpression(reference.getSetExpression());
+			}
 		} else {
 			return isConstantExpression((ValueExpression) expression);
 		}
@@ -186,15 +195,26 @@ public final class GipsTransformationUtils {
 		}
 
 		if (expression.getSetExpression() != null) {
-			if (expression.getSetExpression().getSetReduce() != null
-					&& expression.getSetExpression().getSetReduce() instanceof SetSummation sum) {
-				expressionType = isConstantExpression(sum.getExpression());
-				if (expressionType == ArithmeticExpressionType.variableValue) {
-					expressionType = ArithmeticExpressionType.variableVector;
-				}
-			}
+			expressionType = isConstantExpression(expression.getSetExpression());
 		}
 		return expressionType;
+	}
+
+	public static ArithmeticExpressionType isConstantExpression(final SetExpression expression) {
+		if (expression != null) {
+			if (expression.getSetReduce() != null && expression.getSetReduce() instanceof SetSummation sum) {
+				ArithmeticExpressionType expressionType = isConstantExpression(sum.getExpression());
+				if (expressionType == ArithmeticExpressionType.variableValue) {
+					return ArithmeticExpressionType.variableVector;
+				} else {
+					return expressionType;
+				}
+			} else {
+				return ArithmeticExpressionType.constant;
+			}
+		} else {
+			return ArithmeticExpressionType.constant;
+		}
 	}
 
 	public static Set<Variable> extractVariable(final ArithmeticExpression expression) {
@@ -209,6 +229,12 @@ public final class GipsTransformationUtils {
 			return new HashSet<>();
 		} else if (expression instanceof ConstantLiteral) {
 			return new HashSet<>();
+		} else if (expression instanceof ConstantReference reference) {
+			if (reference.getSetExpression() != null) {
+				return extractVariable(reference.getSetExpression());
+			} else {
+				return new HashSet<>();
+			}
 		} else if (expression instanceof LinearFunctionReference var) {
 			return extractVariable(var.getFunction().getExpression());
 		} else {
@@ -225,8 +251,15 @@ public final class GipsTransformationUtils {
 		// Else-Case: Sets of Types, Matches, Mappings
 
 		if (expression.getSetExpression() != null) {
-			if (expression.getSetExpression().getSetReduce() != null
-					&& expression.getSetExpression().getSetReduce() instanceof SetSummation sum) {
+			variables.addAll(extractVariable(expression.getSetExpression()));
+		}
+		return variables;
+	}
+
+	public static Set<Variable> extractVariable(final SetExpression expression) {
+		Set<Variable> variables = new HashSet<>();
+		if (expression != null) {
+			if (expression.getSetReduce() != null && expression.getSetReduce() instanceof SetSummation sum) {
 				variables.addAll(extractVariable(sum.getExpression()));
 			}
 		}
@@ -245,6 +278,12 @@ public final class GipsTransformationUtils {
 			return new HashSet<>();
 		} else if (expression instanceof ConstantLiteral) {
 			return new HashSet<>();
+		} else if (expression instanceof ConstantReference reference) {
+			if (reference.getSetExpression() != null) {
+				return extractVariable(reference.getSetExpression());
+			} else {
+				return new HashSet<>();
+			}
 		} else if (expression instanceof ArithmeticExpression arithmetic) {
 			return extractVariable(arithmetic);
 		} else {
@@ -280,6 +319,12 @@ public final class GipsTransformationUtils {
 			return new HashSet<>();
 		} else if (expression instanceof ConstantLiteral) {
 			return new HashSet<>();
+		} else if (expression instanceof ConstantReference reference) {
+			if (reference.getSetExpression() != null) {
+				return extractVariableReference(reference.getSetExpression());
+			} else {
+				return new HashSet<>();
+			}
 		} else if (expression instanceof LinearFunctionReference var) {
 			return extractVariableReference(var.getFunction().getExpression());
 		} else {
@@ -296,8 +341,15 @@ public final class GipsTransformationUtils {
 		// Else-Case: Sets of Types, Matches, Mappings
 
 		if (expression.getSetExpression() != null) {
-			if (expression.getSetExpression().getSetReduce() != null
-					&& expression.getSetExpression().getSetReduce() instanceof SetSummation sum) {
+			variables.addAll(extractVariableReference(expression.getSetExpression()));
+		}
+		return variables;
+	}
+
+	public static Set<VariableReference> extractVariableReference(final SetExpression expression) {
+		Set<VariableReference> variables = new HashSet<>();
+		if (expression != null) {
+			if (expression.getSetReduce() != null && expression.getSetReduce() instanceof SetSummation sum) {
 				variables.addAll(extractVariableReference(sum.getExpression()));
 			}
 		}
@@ -316,6 +368,12 @@ public final class GipsTransformationUtils {
 			return new HashSet<>();
 		} else if (expression instanceof ConstantLiteral) {
 			return new HashSet<>();
+		} else if (expression instanceof ConstantReference reference) {
+			if (reference.getSetExpression() != null) {
+				return extractVariableReference(reference.getSetExpression());
+			} else {
+				return new HashSet<>();
+			}
 		} else if (expression instanceof ArithmeticExpression arithmetic) {
 			return extractVariableReference(arithmetic);
 		} else {
@@ -483,7 +541,11 @@ public final class GipsTransformationUtils {
 				return ExpressionReturnType.bool;
 			}
 		} else if (expression instanceof ConstantReference reference) {
-			return extractReturnType((BooleanExpression) reference.getConstant().getExpression());
+			if (reference.getSetExpression() == null) {
+				return extractReturnType((BooleanExpression) reference.getConstant().getExpression());
+			} else {
+				return extractReturnType(reference.getSetExpression());
+			}
 		} else if (expression instanceof ArithmeticExpression arithmetic) {
 			return extractReturnType(arithmetic);
 		} else {
@@ -512,7 +574,12 @@ public final class GipsTransformationUtils {
 		} else if (expression instanceof LinearFunctionReference) {
 			return ExpressionReturnType.number;
 		} else if (expression instanceof ConstantReference reference) {
-			return extractReturnType((ArithmeticExpression) reference.getConstant().getExpression());
+			if (reference.getSetExpression() == null) {
+				return extractReturnType((ArithmeticExpression) reference.getConstant().getExpression());
+			} else {
+				return extractReturnType(reference.getSetExpression());
+			}
+
 		} else {
 			return extractReturnType((ValueExpression) expression);
 		}
@@ -540,24 +607,34 @@ public final class GipsTransformationUtils {
 		}
 
 		if (expression.getSetExpression() != null && expression.getSetExpression().getSetReduce() != null) {
-			if (expression.getSetExpression().getSetReduce() instanceof SetSummation) {
+			expressionType = extractReturnType(expression.getSetExpression());
+		}
+		return expressionType;
+	}
+
+	public static ExpressionReturnType extractReturnType(final SetExpression expression) {
+		if (expression != null && expression.getSetReduce() != null) {
+			if (expression.getSetReduce() instanceof SetSummation) {
 				return ExpressionReturnType.number;
-			} else if (expression.getSetExpression().getSetReduce() instanceof SetSimpleSelect) {
+			} else if (expression.getSetReduce() instanceof SetSimpleSelect) {
 				return ExpressionReturnType.object;
-			} else if (expression.getSetExpression().getSetReduce() instanceof SetTypeQuery) {
+			} else if (expression.getSetReduce() instanceof SetTypeQuery) {
 				return ExpressionReturnType.bool;
-			} else if (expression.getSetExpression().getSetReduce() instanceof SetElementQuery) {
+			} else if (expression.getSetReduce() instanceof SetElementQuery) {
 				return ExpressionReturnType.bool;
-			} else if (expression.getSetExpression().getSetReduce() instanceof SetSimpleQuery query) {
+			} else if (expression.getSetReduce() instanceof SetSimpleQuery query) {
 				if (query.getOperator() == QueryOperator.EMPTY || query.getOperator() == QueryOperator.NOT_EMPTY) {
 					return ExpressionReturnType.bool;
 				} else {
 					// Case: Count
 					return ExpressionReturnType.number;
 				}
+			} else {
+				return ExpressionReturnType.object;
 			}
+		} else {
+			return ExpressionReturnType.object;
 		}
-		return expressionType;
 	}
 
 	public static ExpressionReturnType extractReturnType(final NodeReference expression) {

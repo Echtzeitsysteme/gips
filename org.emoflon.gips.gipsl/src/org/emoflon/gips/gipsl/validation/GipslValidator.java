@@ -31,12 +31,15 @@ import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
+import org.emoflon.gips.gipsl.gipsl.GipsReduceOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsSetExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
 import org.emoflon.gips.gipsl.gipsl.Package;
 import org.emoflon.gips.gipsl.gipsl.SolverType;
 import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsConstantImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsLinearFunctionImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
@@ -476,6 +479,31 @@ public class GipslValidator extends AbstractGipslValidator {
 
 		// Check boolean expression and spool errors
 		GipslExpressionValidator.checkBooleanExpression(constant.getExpression()).forEach(err -> err.run());
+	}
+
+	@Check
+	public void checkSetExpression(final GipsSetExpression expression) {
+		// Check if sets are properly reduced to a scalar value, when not assigned to a
+		// constant
+
+		// Case 1: Set is reduced -> nothing to do
+		if (expression.getRight() == null && expression.getOperation() instanceof GipsReduceOperation) {
+			return;
+		}
+		// Case 2: Set operation is followed by another set operation -> nothing to do
+		if (expression.getRight() != null) {
+			return;
+		}
+		// Case 3: Set is not reduced -> This is only allowed, when assigned to a
+		// constant
+		GipsConstant container = (GipsConstant) GipslScopeContextUtil.getContainer(expression,
+				Set.of(GipsConstantImpl.class));
+		if (container == null)
+			GipslValidator.err( //
+					String.format(GipslValidatorUtil.SET_OPERATION_MISSING), //
+					expression, //
+					GipslPackage.Literals.GIPS_SET_EXPRESSION__RIGHT //
+			);
 	}
 
 	@Check

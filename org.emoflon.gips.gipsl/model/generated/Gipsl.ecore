@@ -69,6 +69,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsConstantReference" eSuperTypes="#//GipsArithmeticOperand">
     <eStructuralFeatures xsi:type="ecore:EReference" name="constant" eType="#//GipsConstant"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="setExpression" eType="#//GipsSetExpression"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsConstraint">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isLocal" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>

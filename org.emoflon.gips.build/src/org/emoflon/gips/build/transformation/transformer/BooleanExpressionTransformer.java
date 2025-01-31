@@ -35,6 +35,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ConstantLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Context;
+import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
 
 public class BooleanExpressionTransformer extends TransformationContext {
 	protected BooleanExpressionTransformer(GipsTransformationData data, Context localContext,
@@ -108,6 +109,16 @@ public class BooleanExpressionTransformer extends TransformationContext {
 				} else {
 					// Case: Container instanceof EditorGTFile
 					reference.setConstant(data.getConstant((EditorGTFile) container, eReference.getConstant()));
+				}
+
+				if (eReference.getSetExpression() != null) {
+					ValueExpressionTransformer transformer = null;
+					if (reference.getConstant().getExpression() instanceof SetOperation setOp) {
+						transformer = transformerFactory.createValueTransformer(localContext, setOp);
+					} else {
+						transformer = transformerFactory.createValueTransformer(localContext);
+					}
+					reference.setSetExpression(transformer.transform(eReference.getSetExpression()));
 				}
 
 				return reference;

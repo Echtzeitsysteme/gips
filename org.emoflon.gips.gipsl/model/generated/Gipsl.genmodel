@@ -128,6 +128,7 @@
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsConstantReference">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsConstantReference/constant"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsConstantReference/setExpression"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsConstraint">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConstraint/isLocal"/>

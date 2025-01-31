@@ -592,6 +592,10 @@ public final class GipslExpressionValidator {
 				return ExpressionType.Error;
 			}
 
+			if (reference.getSetExpression() != null) {
+				type = evaluate(reference.getSetExpression(), errors);
+			}
+
 			return type;
 		} else {
 			errors.add(() -> {
@@ -650,7 +654,7 @@ public final class GipslExpressionValidator {
 		}
 
 		if (expression.getSetExperession() != null) {
-			return evaluate(expression, expression.getSetExperession(), errors);
+			return evaluate(expression.getSetExperession(), errors);
 		} else {
 			return valueType;
 		}
@@ -916,7 +920,7 @@ public final class GipslExpressionValidator {
 	public static Collection<Runnable> checkSetExpression(final GipsValueExpression context,
 			final GipsSetExpression expression) {
 		Collection<Runnable> errors = Collections.synchronizedCollection(new LinkedList<>());
-		ExpressionType result = evaluate(context, expression, errors);
+		ExpressionType result = evaluate(expression, errors);
 
 		if (result == ExpressionType.Unknown) {
 			errors.add(() -> {
@@ -940,8 +944,7 @@ public final class GipslExpressionValidator {
 		return errors;
 	}
 
-	public static ExpressionType evaluate(final GipsValueExpression context, final GipsSetExpression expression,
-			Collection<Runnable> errors) {
+	public static ExpressionType evaluate(final GipsSetExpression expression, Collection<Runnable> errors) {
 		if (expression.getOperation() == null) {
 			errors.add(() -> {
 				GipslValidator.err( //
@@ -1070,7 +1073,7 @@ public final class GipslExpressionValidator {
 					});
 				}
 			}
-			return evaluate(context, expression.getRight(), errors);
+			return evaluate(expression.getRight(), errors);
 		}
 	}
 

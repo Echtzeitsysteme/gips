@@ -96,7 +96,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	
 	def String getConstantValue(Constant constant) {
 		if(constant.isGlobal) {
-			return '''(«extractReturnType(constant.expression)»)engine.getConstantValue("«getConstantName(constant)»")'''
+			return '''((«extractReturnType(constant.expression)»)engine.getConstantValue("«getConstantName(constant)»"))'''
 		} else {
 			return '''«getConstantName(constant)»'''
 		}
@@ -124,14 +124,16 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	def String getConstantFields(Collection<Constant> constants) {
 		return '''«FOR constant : constants»
 		«extractReturnType(constant.expression)» «getConstantName(constant)» = «getCallConstantCalculator(constant)»;
-		«ENDFOR»'''
+		«ENDFOR»
+		'''
 	}
 	
 	def String getConstantCalculators(Collection<Constant> constants) {
 		return '''«FOR constant : constants»
 		«getConstantCalculator(constant)»
 		
-		«ENDFOR»'''
+		«ENDFOR»
+		'''
 	}
 	
 	def Collection<Constant> getConstants();
@@ -194,6 +196,50 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		'''
 		builderMethodDefinitions.put(expr, method)
 		return methodName
+	}
+	
+	def void generateBuilder(ConstantReference expr, LinkedList<String> methodCalls) {
+		if(expr.setExpression === null){
+			return
+		}
+			
+		if(expr.setExpression.setReduce === null){
+			return
+		}
+		
+		val sumExpression = expr.setExpression.setReduce as SetSummation
+		
+		val builderMethodName = '''builder_«builderMethods.size»'''
+		val instruction = '''«builderMethodName»(«callParametersForVoidBuilder»«IF !getConstants().empty», «ENDIF»«getCallParametersForConstants(getConstants())»);'''
+		methodCalls.add(instruction)
+		
+		builderMethods.put(expr, builderMethodName)
+		imports.add("java.util.stream.Collectors")
+		val vars = new HashSet
+		val varRefs = new HashSet
+		
+		GipsTransformationUtils.extractVariableReference(sumExpression.expression).forEach[ref |
+			if(vars.add(ref.variable)) {
+				varRefs.add(ref)
+			}
+		]
+		
+		if(vars.size > 1 || varRefs.size > 1)
+			throw new UnsupportedOperationException("A single sum operation over a set of variables may not contain different kinds of variables.")
+		val variable = varRefs.iterator.next
+		
+		val method = '''
+	protected void «builderMethodName»(«parametersForVoidBuilder»«IF !getConstants().empty», «ENDIF»«getParametersForConstants(getConstants())») {
+		«generateValueAccess(expr)»
+		«IF expr.setExpression.setOperation !== null»«generateConstantExpression(expr.setExpression.setOperation)»«ENDIF»
+		.forEach(elt -> {
+			«IF variable.local» terms.add(new Term(«getVariable(variable.variable)», (double)«generateConstantExpression(sumExpression.expression)»));
+			«ELSE»terms.add(new Term(«getVariableInSet(variable.variable)», (double)«generateConstantExpression(sumExpression.expression)»));
+			«ENDIF»
+		});
+	}
+		'''
+		builderMethodDefinitions.put(expr, method)
 	}
 	
 	def void generateBuilder(ValueExpression expr, LinkedList<String> methodCalls) {
@@ -308,7 +354,11 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 				}
 			}
 		} else if(expression instanceof ConstantReference) {
-			return getConstantValue(expression.constant)
+			if(expression.setExpression !== null) {
+				return '''«getConstantValue(expression.constant)»«generateConstantExpression(expression.setExpression)»'''
+			} else {
+				return getConstantValue(expression.constant)
+			}
 		} else if(expression instanceof ValueExpression) {
 			return generateConstantExpression(expression)
 		} else {
@@ -322,6 +372,14 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		var instruction = generateValueAccess(expression)
 		if(expression.setExpression !== null) {
 			instruction += generateConstantExpression(expression.setExpression)
+		}
+		return instruction;
+	}
+	
+	def String generateConstantExpression(ValueExpression expression, boolean ignoreReduce) {
+		var instruction = generateValueAccess(expression)
+		if(expression.setExpression !== null) {
+			instruction += generateConstantExpression(expression.setExpression, ignoreReduce)
 		}
 		return instruction;
 	}
@@ -361,6 +419,17 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		return instruction;
 	}
 	
+	def String generateValueAccess(ConstantReference expression) {
+		var instruction = "";
+		if(expression.constant.expression instanceof ValueExpression) {
+			instruction = generateConstantExpression(expression.constant.expression as ValueExpression, true) 
+		} else if(expression.constant.expression instanceof SetExpression)  {
+			instruction = generateConstantExpression(expression.constant.expression as SetExpression, true)
+		}
+
+		return instruction;
+	}
+	
 	def String generateAttributeExpression(AttributeExpression expression) {
 		var getOrIs = "get"
 		if(expression.feature.EType == EcorePackage.Literals.EBOOLEAN)
@@ -383,6 +452,17 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 			instruction += generateConstantExpression(expression.setOperation);
 		}
 		if(expression.setReduce !== null) {
+			instruction += generateConstantExpression(expression.setReduce);
+		}
+		return instruction;
+	}
+	
+	def String generateConstantExpression(SetExpression expression, boolean ignoreReduce) {
+		var instruction = "";
+		if(expression.setOperation !== null) {
+			instruction += generateConstantExpression(expression.setOperation);
+		}
+		if(expression.setReduce !== null && !ignoreReduce) {
 			instruction += generateConstantExpression(expression.setReduce);
 		}
 		return instruction;
@@ -491,7 +571,11 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 				}
 			}
 		} else if(expr instanceof ConstantReference) {
-			return getConstantValue(expr.constant)
+			if(expr.setExpression !== null) {
+				return '''«getConstantValue(expr.constant)»«generateConstantExpression(expr.setExpression)»'''
+			} else {
+				return getConstantValue(expr.constant)
+			}
 		} else if(expr instanceof RelationalExpression) {
 			return generateConstantExpression(expr)
 		} else {
@@ -622,24 +706,24 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		var objectType = ""
 		var expressionType = "";
 		if (expression instanceof MappingReference) {
-			imports.add("java.util.Collection");
+			imports.add("java.util.stream.Stream");
 			imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expression.mapping));
-			expressionType = '''Collection<«data.mapping2mappingClassName.get(expression.mapping)»>''';
+			expressionType = '''Stream<«data.mapping2mappingClassName.get(expression.mapping)»>''';
 			objectType = data.mapping2mappingClassName.get(expression.mapping);
 		} else if (expression instanceof TypeReference) {
-			imports.add("java.util.Collection");
+			imports.add("java.util.stream.Stream");
 			imports.add(data.classToPackage.getImportsForType(expression.type));
-			expressionType = '''Collection<«expression.type.name»>''';
+			expressionType = '''Stream<«expression.type.name»>''';
 			objectType = expression.type.name;
 		} else if (expression instanceof PatternReference) {
-			imports.add("java.util.Collection");
+			imports.add("java.util.stream.Stream");
 			imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(expression.pattern))
-			expressionType = '''Collection<«data.ibex2matchClassName.get(expression.pattern)»>''';
+			expressionType = '''Stream<«data.ibex2matchClassName.get(expression.pattern)»>''';
 			objectType = data.ibex2matchClassName.get(expression.pattern);
 		} else if (expression instanceof RuleReference) {
-			imports.add("java.util.Collection");
+			imports.add("java.util.stream.Stream");
 			imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(expression.rule))
-			expressionType = '''Collection<«data.ibex2matchClassName.get(expression.rule)»>''';
+			expressionType = '''Stream<«data.ibex2matchClassName.get(expression.rule)»>''';
 			objectType = data.ibex2matchClassName.get(expression.rule);
 		} else if (expression instanceof NodeReference) {
 			expressionType = extractReturnType(expression);
@@ -658,9 +742,9 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 
 		if (expression.getSetExpression() !== null) {
 			if (expression.setExpression.setOperation !== null) {
-				imports.add("java.util.Collection");
+				imports.add("java.util.stream.Stream");
 				objectType = extractReturnType(objectType, expression.setExpression.setOperation);
-				expressionType = '''Collection<«objectType»>''';
+				expressionType = '''Stream<«objectType»>''';
 			}
 			if (expression.setExpression.setReduce !== null) {
 				val reduce = expression.getSetExpression().getSetReduce();
@@ -701,7 +785,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		} else {
 			val transform = expression as SetTransformation;
 			currentType = extractReturnType(transform.expression);
-			if(currentType.contains("Collection")) {
+			if(currentType.contains("Stream")) {
 				val first = currentType.split("<");
 				val second = first.get(0).split(">");
 				currentType = second.get(0);

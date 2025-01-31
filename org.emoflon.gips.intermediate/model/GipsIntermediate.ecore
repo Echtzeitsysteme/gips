@@ -258,6 +258,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="ConstantReference" eSuperTypes="#//ArithmeticExpression #//BooleanExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="constant" lowerBound="1"
         eType="#//Constant"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="setExpression" eType="#//SetExpression"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LinearFunctionReference" eSuperTypes="#//ArithmeticExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="function" lowerBound="1"

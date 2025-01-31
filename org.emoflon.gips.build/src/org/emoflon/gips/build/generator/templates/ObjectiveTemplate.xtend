@@ -14,6 +14,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunction
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.intermediate.GipsIntermediate.Constant
+import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference
 
 class ObjectiveTemplate extends ProblemGeneratorTemplate<Objective> {
 
@@ -167,6 +168,8 @@ protected void buildTerms() {
 		} else if(expr instanceof LinearFunctionReference) {
 			referencedObjectives.add(expr.function)
 			builderMethodCalls2.add('''weightedFunctions.add(new WeightedLinearFunction(«expr.function.name».getLinearFunctionFunction(), 1.0));''')
+		} else if (expr instanceof ConstantReference) {
+			generateBuilder(expr, builderMethodCalls2)
 		} else {
 			generateBuilder(expr as ValueExpression, builderMethodCalls2)
 		}

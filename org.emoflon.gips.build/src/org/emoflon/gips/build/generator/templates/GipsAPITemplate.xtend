@@ -5,6 +5,15 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
 import org.emoflon.gips.build.GipsAPIData
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.intermediate.GipsIntermediate.Constant
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
+import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingReference
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternReference
+import org.emoflon.gips.intermediate.GipsIntermediate.RuleReference
+import org.emoflon.gips.intermediate.GipsIntermediate.NodeReference
+import org.emoflon.gips.intermediate.GipsIntermediate.AttributeReference
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextReference
 
 class GipsAPITemplate extends ProblemGeneratorTemplate<GipsIntermediateModel> {
 	
@@ -41,6 +50,7 @@ class GipsAPITemplate extends ProblemGeneratorTemplate<GipsIntermediateModel> {
 	}
 	
 	override generate() {
+		val codeForConstants = generateCodeForConstants();
 		code = '''«generatePackageDeclaration()»
 		
 «generateImports()»
@@ -178,17 +188,21 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 		return solver;
 	}
 	
-	@Override
-	protected void updateConstants() {
-		«FOR constant : data.model.constants.filter[c | c.isGlobal]»
-		addConstantValue("«getConstantName(constant)»", «getCallConstantCalculator(constant)»);
-		«ENDFOR»
+	«codeForConstants»
+}'''
 	}
 	
-	«FOR constant : data.model.constants.filter[c | c.isGlobal]»
-	«getConstantCalculator(constant)»
-	«ENDFOR»
-}'''
+	def String generateCodeForConstants() {
+		return'''@Override
+protected void updateConstants() {
+«FOR constant : data.model.constants.filter[c | c.isGlobal]»
+		addConstantValue("«getConstantName(constant)»", «getCallConstantCalculator(constant)»);
+«ENDFOR»
+}
+			
+«FOR constant : data.model.constants.filter[c | c.isGlobal]»
+«getConstantCalculator(constant)»
+«ENDFOR»'''
 	}
 	
 	def String solverInit() {
@@ -230,6 +244,53 @@ import «imp»;
 	
 	override getCallConstantCalculator(Constant constant) {
 		return '''calculate«constant.name.toFirstUpper»()'''
+	}
+	
+	override String getVariableInSet(Variable variable) {
+		if(isMappingVariable(variable)) {
+			return '''elt'''
+		} else {
+			return '''getNonMappingVariable(elt, "«variable.name»")'''
+		}
+	}
+	
+	override String getAdditionalVariableName(VariableReference varRef) {
+		return '''getNonMappingVariable(context, "«varRef.variable.name»").getName()'''
+	}
+	
+	override String generateValueAccess(ValueExpression expression) {
+		var instruction = "";
+		if(expression instanceof MappingReference) {
+			imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expression.mapping))
+			instruction = '''getMapper("«expression.mapping.name»").getMappings().values().parallelStream()
+			.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
+		} else if(expression instanceof TypeReference) {
+			imports.add(data.classToPackage.getImportsForType(expression.type))
+			instruction = '''indexer.getObjectsOfType("«expression.type.name»").parallelStream()
+						.map(type -> («expression.type.name») type)'''
+		} else if(expression instanceof PatternReference) {
+			imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(expression.pattern))
+			instruction = '''getEMoflonAPI().«expression.pattern.name»().findMatches(false).parallelStream()'''
+		} else if(expression instanceof RuleReference) {
+			imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(expression.rule))
+			instruction = '''getEMoflonAPI().«expression.rule.name»().findMatches(false).parallelStream()'''
+		} else if(expression instanceof NodeReference) {
+			instruction = getIterator(expression)
+			instruction = '''«instruction».get«expression.node.name.toFirstUpper»()'''
+			if(expression.attribute !== null) {
+				instruction = '''«instruction».«generateAttributeExpression(expression.attribute)»'''
+			}
+		} else if(expression instanceof AttributeReference) {
+			instruction = getIterator(expression)
+			instruction = '''«instruction».«generateAttributeExpression(expression.attribute)»'''
+		} else if(expression instanceof VariableReference) {
+			// CASE: VariableReference -> return a constant 1 since the variable should have already been extracted.
+			instruction = '''1.0'''
+		} else {
+			// CASE: ContextReference
+			instruction = getIterator(expression as ContextReference)
+		}
+		return instruction;
 	}
 	
 }

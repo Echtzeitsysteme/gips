@@ -51,6 +51,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
 import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsConstantReferenceImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsLinearFunctionImpl;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
@@ -315,12 +316,15 @@ public final class GipslScopeContextUtil {
 
 	public static EObject getLocalContext(final EObject expression) {
 		EObject root = (EObject) GipslScopeContextUtil.getContainer(expression,
-				Set.of(GipsConstraintImpl.class, GipsLinearFunctionImpl.class));
+				Set.of(GipsConstraintImpl.class, GipsLinearFunctionImpl.class, GipsConstantReferenceImpl.class));
 
 		if (root instanceof GipsConstraint constraint) {
 			return constraint.getContext();
 		} else if (root instanceof GipsLinearFunction function) {
 			return function.getContext();
+		} else if (root instanceof GipsConstantReference reference && reference.getConstant() != null
+				&& reference.getConstant().getExpression() != null) {
+			return getLocalContext(reference.getConstant().getExpression());
 		} else {
 			return null;
 		}
@@ -344,9 +348,12 @@ public final class GipslScopeContextUtil {
 			return select.getType();
 		} else if (expression instanceof GipsTransformOperation transform && transform.getExpression() != null) {
 			return transform.getExpression();
-		} else if (expression.eContainer() instanceof GipsValueExpression root
+		} else if (expression instanceof GipsValueExpression root
 				&& !(root.getValue() instanceof GipsSetElementExpression)) {
 			return root.getValue();
+		} else if (expression.eContainer() instanceof GipsConstantReference reference && reference.getConstant() != null
+				&& reference.getConstant().getExpression() != null) {
+			return getSetContext(reference.getConstant().getExpression());
 		} else if (expression.eContainer() == null) {
 			return null;
 		} else {

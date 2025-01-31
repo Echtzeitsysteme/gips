@@ -7,6 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
+import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression;
@@ -228,6 +229,8 @@ public class GipsArithmeticTransformer {
 			}
 			}
 
+		} else if (expression instanceof ConstantReference reference) {
+			splitIntoConstAndVarTerms(reference, constTerms, varTerms);
 		} else if (expression instanceof ValueExpression value) {
 			splitIntoConstAndVarTerms(value, constTerms, varTerms);
 		} else if (expression instanceof LinearFunctionReference function) {
@@ -235,6 +238,30 @@ public class GipsArithmeticTransformer {
 					"There must be no linear function references in constraints: " + function);
 		} else {
 			// Case: Literals, Constants and Constant references
+			constTerms.add(expression);
+		}
+	}
+
+	public void splitIntoConstAndVarTerms(final ConstantReference expression,
+			final Collection<ArithmeticExpression> constTerms, final Collection<ArithmeticExpression> varTerms) {
+		if (expression.getSetExpression() == null) {
+			constTerms.add(expression);
+			return;
+		}
+
+		if (expression.getSetExpression().getSetReduce() == null) {
+			constTerms.add(expression);
+			return;
+		}
+
+		if (expression.getSetExpression().getSetReduce() instanceof SetSummation sum) {
+			if (GipsTransformationUtils
+					.isConstantExpression(sum.getExpression()) == ArithmeticExpressionType.constant) {
+				constTerms.add(expression);
+			} else {
+				varTerms.add(expression);
+			}
+		} else {
 			constTerms.add(expression);
 		}
 	}
@@ -380,6 +407,18 @@ public class GipsArithmeticTransformer {
 			}
 			}
 
+		} else if (expression instanceof ConstantReference reference) {
+			// CASE: SUM-Expressions
+			if (reference.getSetExpression() != null && reference.getSetExpression().getSetReduce() != null
+					&& reference.getSetExpression().getSetReduce() instanceof SetSummation) {
+				// TODO: This might be a critical point in case nested sums are used.
+				ConstantReference cr = (ConstantReference) cloneExpression(factory, (EObject) reference);
+				SetSummation mss = (SetSummation) cr.getSetExpression().getSetReduce();
+				mss.setExpression(removeSubtractions(mss.getExpression()));
+				modified = cr;
+			} else {
+				modified = cloneExpression(factory, (ArithmeticExpression) reference);
+			}
 		} else if (expression instanceof ValueExpression valExpr) {
 			// CASE: SUM-Expressions
 			if (valExpr.getSetExpression() != null && valExpr.getSetExpression().getSetReduce() != null
@@ -548,6 +587,17 @@ public class GipsArithmeticTransformer {
 			}
 			}
 
+		} else if (expression instanceof ConstantReference reference) {
+			// CASE: SUM-Expressions
+			if (reference.getSetExpression() != null && reference.getSetExpression().getSetReduce() != null
+					&& reference.getSetExpression().getSetReduce() instanceof SetSummation) {
+				// TODO: This might be a critical point in case nested sums are used.
+				ConstantReference cr = (ConstantReference) cloneExpression(factory, (EObject) reference);
+				SetSummation mss = (SetSummation) cr.getSetExpression().getSetReduce();
+				modified = wrapTermsIntoNewSum(expandArithmeticExpressions(mss.getExpression()), cr);
+			} else {
+				modified = cloneExpression(factory, (ArithmeticExpression) reference);
+			}
 		} else if (expression instanceof ValueExpression valExpr) {
 			// CASE: SUM-Expressions
 			if (valExpr.getSetExpression() != null && valExpr.getSetExpression().getSetReduce() != null
@@ -636,6 +686,16 @@ public class GipsArithmeticTransformer {
 			}
 		} else if (expression instanceof ArithmeticUnaryExpression unaryExpr) {
 			return foldAndMultiplyFactors(factors, cloneExpression(factory, unaryExpr));
+		} else if (expression instanceof ConstantReference reference) {
+			if (reference.getSetExpression() != null && reference.getSetExpression().getSetReduce() != null
+					&& reference.getSetExpression().getSetReduce() instanceof SetSummation) {
+				// TODO: This might be a critical point in case nested sums are used.
+				ConstantReference cr = (ConstantReference) cloneExpression(factory, (EObject) reference);
+				SetSummation mss = (SetSummation) cr.getSetExpression().getSetReduce();
+				return wrapTermsIntoNewSum(expandProducts(mss.getExpression(), factors), cr);
+			} else {
+				return foldAndMultiplyFactors(factors, cloneExpression(factory, (ArithmeticExpression) reference));
+			}
 		} else if (expression instanceof ValueExpression valExpr) {
 			if (valExpr.getSetExpression() != null && valExpr.getSetExpression().getSetReduce() != null
 					&& valExpr.getSetExpression().getSetReduce() instanceof SetSummation) {
@@ -662,6 +722,13 @@ public class GipsArithmeticTransformer {
 				return true;
 			}
 		}
+
+		if (expression instanceof ConstantReference cr && cr.getSetExpression() != null
+				&& cr.getSetExpression().getSetReduce() != null
+				&& cr.getSetExpression().getSetReduce() instanceof SetSummation) {
+			return true;
+		}
+
 		return (expression instanceof ValueExpression ve && ve.getSetExpression() != null
 				&& ve.getSetExpression().getSetReduce() != null
 				&& ve.getSetExpression().getSetReduce() instanceof SetSummation);
@@ -751,6 +818,17 @@ public class GipsArithmeticTransformer {
 			}
 		} else if (expression instanceof ArithmeticUnaryExpression) {
 			return true;
+		} else if (expression instanceof ConstantReference reference) {
+			if (reference.getSetExpression() != null && reference.getSetExpression().getSetReduce() != null
+					&& reference.getSetExpression().getSetReduce() instanceof SetSummation sum) {
+				if (traversedProduct) {
+					return false;
+				} else {
+					return isExpanded(sum.getExpression(), traversedProduct);
+				}
+			} else {
+				return true;
+			}
 		} else if (expression instanceof ValueExpression valExpr) {
 			if (valExpr.getSetExpression() != null && valExpr.getSetExpression().getSetReduce() != null
 					&& valExpr.getSetExpression().getSetReduce() instanceof SetSummation sum) {
@@ -818,6 +896,67 @@ public class GipsArithmeticTransformer {
 			throw new UnsupportedOperationException("Unknown arithmetic expression type: " + transformed);
 		}
 		return clone;
+	}
+
+	protected ArithmeticExpression wrapTermsIntoNewSum(final ArithmeticExpression transformed,
+			final ConstantReference sumTemplate) {
+		ArithmeticExpression clone = null;
+		if (transformed instanceof ArithmeticBinaryExpression binary) {
+			switch (binary.getOperator()) {
+			case ADD:
+			case SUBTRACT:
+				ArithmeticBinaryExpression cb = factory.createArithmeticBinaryExpression();
+				clone = cb;
+				cb.setOperator(binary.getOperator());
+				cb.setLhs(wrapTermsIntoNewSum(binary.getLhs(), sumTemplate));
+				cb.setRhs(wrapTermsIntoNewSum(binary.getRhs(), sumTemplate));
+				break;
+			default:
+				ConstantReference cs = (ConstantReference) cloneExpression(factory, (EObject) sumTemplate);
+				SetSummation sum = (SetSummation) cs.getSetExpression().getSetReduce();
+				sum.setExpression(cloneExpression(factory, binary));
+				clone = cs;
+			}
+		} else if (transformed instanceof ArithmeticUnaryExpression unary) {
+			ConstantReference cs = (ConstantReference) cloneExpression(factory, (EObject) sumTemplate);
+			SetSummation sum = (SetSummation) cs.getSetExpression().getSetReduce();
+			sum.setExpression(cloneExpression(factory, unary));
+			clone = cs;
+		} else if (transformed instanceof ArithmeticLiteral literal) {
+			ConstantReference cs = (ConstantReference) cloneExpression(factory, (EObject) sumTemplate);
+			SetSummation sum = (SetSummation) cs.getSetExpression().getSetReduce();
+			sum.setExpression(cloneExpression(factory, literal));
+			clone = cs;
+		} else if (transformed instanceof ConstantLiteral constant) {
+			ConstantReference cs = (ConstantReference) cloneExpression(factory, (EObject) sumTemplate);
+			SetSummation sum = (SetSummation) cs.getSetExpression().getSetReduce();
+			sum.setExpression(cloneExpression(factory, (ArithmeticExpression) constant));
+			clone = cs;
+		} else if (transformed instanceof ConstantReference reference) {
+			ConstantReference cs = (ConstantReference) cloneExpression(factory, (EObject) sumTemplate);
+			SetSummation sum = (SetSummation) cs.getSetExpression().getSetReduce();
+			sum.setExpression(cloneExpression(factory, (ArithmeticExpression) reference));
+			clone = cs;
+		} else if (transformed instanceof LinearFunctionReference function) {
+			throw new IllegalArgumentException(
+					"There must be no linear function references in constraints: " + function);
+		} else if (transformed instanceof ValueExpression val) {
+			ConstantReference cs = (ConstantReference) cloneExpression(factory, (EObject) sumTemplate);
+			SetSummation sum = (SetSummation) cs.getSetExpression().getSetReduce();
+			sum.setExpression(cloneExpression(factory, val));
+			clone = cs;
+		} else {
+			throw new UnsupportedOperationException("Unknown arithmetic expression type: " + transformed);
+		}
+		return clone;
+	}
+
+	static public EObject cloneExpression(GipsIntermediateFactory factory, final EObject expr) {
+		if (expr instanceof ArithmeticExpression ae) {
+			return cloneExpression(factory, ae);
+		} else {
+			return cloneExpression(factory, (BooleanExpression) expr);
+		}
 	}
 
 	static public BooleanExpression cloneExpression(GipsIntermediateFactory factory, final BooleanExpression expr) {
@@ -922,6 +1061,9 @@ public class GipsArithmeticTransformer {
 		} else if (expr instanceof ConstantReference constant) {
 			ConstantReference reference = factory.createConstantReference();
 			reference.setConstant(constant.getConstant());
+			if (constant.getSetExpression() != null) {
+				reference.setSetExpression(cloneExpression(factory, constant.getSetExpression()));
+			}
 			clone = reference;
 		} else if (expr instanceof ValueExpression val) {
 			clone = cloneExpression(factory, val);

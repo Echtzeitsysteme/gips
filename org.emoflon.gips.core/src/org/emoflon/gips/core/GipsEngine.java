@@ -199,7 +199,7 @@ public abstract class GipsEngine {
 
 	}
 
-	public synchronized void addConstantValue(final String constant, final double value) {
+	public synchronized void addConstantValue(final String constant, final Object value) {
 		globalConstants.put(constant, value);
 	}
 

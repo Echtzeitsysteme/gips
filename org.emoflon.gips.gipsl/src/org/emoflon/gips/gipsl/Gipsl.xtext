@@ -61,7 +61,7 @@ GipsConstant:
 ;
 
 GipsConstantReference :
-	'constants' '.' constant = [GipsConstant | ID]
+	'constants' '.' constant = [GipsConstant | ID] (setExpression = GipsSetExpression)?
 ;
 
 GipsConstraint : 
@@ -287,7 +287,7 @@ GipsSetExpression: {GipsSetExpression}
 	'->'
 	(
 		operation = GipsSetOperation right = GipsSetExpression |
-		operation = GipsReduceOperation
+		(operation = GipsReduceOperation)?
 	)
 ;
 

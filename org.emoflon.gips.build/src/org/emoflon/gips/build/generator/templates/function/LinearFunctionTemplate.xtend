@@ -10,6 +10,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryOperator
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunction
+import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference
 
 abstract class LinearFunctionTemplate <OBJECTIVE extends LinearFunction> extends ProblemGeneratorTemplate<OBJECTIVE> {
 	new(TemplateData data, OBJECTIVE context) {
@@ -76,6 +77,8 @@ protected void buildTerms(«getContextParameter()») {
 				val builderMethodName = generateBuilder(expr, builderMethodCalls2)
 				val instruction = '''terms.add(new Term(«getVariable(variable.iterator.next)», «builderMethodName»(context«IF !getConstants().empty», «ENDIF»«getCallParametersForConstants(getConstants())»)));'''
 				builderMethodCalls2.add(instruction)
+		} else if(expr instanceof ConstantReference) {
+			generateBuilder(expr, builderMethodCalls2)
 		} else {
 			generateBuilder(expr as ValueExpression, builderMethodCalls2)
 		}

@@ -697,6 +697,19 @@ public final class GipslExpressionValidator {
 					);
 				});
 			}
+			// Variable references may not be used to define a constant
+			final GipsConstant constant = (GipsConstant) GipslScopeContextUtil.getContainer(expression.eContainer(),
+					Set.of(GipsConstantImpl.class));
+			if (constant != null) {
+				errors.add(() -> {
+					GipslValidator.err( //
+							GipslValidatorUtil.CONSTANT_CONTAINS_VARIABLE, //
+							constant, //
+							GipslPackage.Literals.GIPS_CONSTANT__EXPRESSION //
+					);
+				});
+			}
+
 		} else if (expression.getExpression() instanceof GipsNodeExpression node) {
 			if (localContext instanceof EClass || localContext instanceof GipsTypeExpression
 					|| localContext instanceof GipsAttributeExpression
@@ -790,6 +803,19 @@ public final class GipslExpressionValidator {
 							GipslValidatorUtil.ARITH_EXPR_VAR_USE_ERROR_MESSAGE, //
 							expression.getExpression(), //
 							GipslPackage.Literals.GIPS_VARIABLE_REFERENCE_EXPRESSION__VARIABLE //
+					);
+				});
+			}
+
+			// Variable references may not be used to define a constant
+			final GipsConstant constant = (GipsConstant) GipslScopeContextUtil.getContainer(expression.eContainer(),
+					Set.of(GipsConstantImpl.class));
+			if (constant != null) {
+				errors.add(() -> {
+					GipslValidator.err( //
+							GipslValidatorUtil.CONSTANT_CONTAINS_VARIABLE, //
+							constant, //
+							GipslPackage.Literals.GIPS_CONSTANT__EXPRESSION //
 					);
 				});
 			}

@@ -93,16 +93,35 @@ public class GipsToIntermediate {
 		transformGlobalConstants();
 
 		transformConstraints();
-		// add only absolute necessary constants to each constraint
+		// add only absolute necessary constants to each constraint and remove global
+		// constants
 		data.model().getConstraints().forEach(constraint -> {
 			Collection<Constant> constants = GipsTransformationUtils
 					.extractConstantReference(constraint.getExpression()).stream().map(c -> c.getConstant())
 					.filter(c -> !c.isGlobal()).distinct().collect(Collectors.toList());
+			constraint.getConstants().clear();
 			constraint.getConstants().addAll(constants);
 		});
 
 		transformLinearFunctions();
+		// remove global constants from linear function
+		data.model().getFunctions().forEach(function -> {
+			Collection<Constant> constants = GipsTransformationUtils.extractConstantReference(function.getExpression())
+					.stream().map(c -> c.getConstant()).filter(c -> !c.isGlobal()).distinct()
+					.collect(Collectors.toList());
+			function.getConstants().clear();
+			function.getConstants().addAll(constants);
+		});
+
 		transformObjective();
+		// remove global constants from objective
+		if (data.model().getObjective() != null) {
+			Collection<Constant> constants = GipsTransformationUtils
+					.extractConstantReference(data.model().getObjective().getExpression()).stream()
+					.map(c -> c.getConstant()).filter(c -> !c.isGlobal()).distinct().collect(Collectors.toList());
+			data.model().getObjective().getConstants().clear();
+			data.model().getObjective().getConstants().addAll(constants);
+		}
 
 		// add all required data types
 		data.model().getRequiredPatterns().addAll(data.ePattern2pattern().values());
@@ -304,15 +323,20 @@ public class GipsToIntermediate {
 			}
 
 			// Create all constants
-			Map<GipsConstant, Constant> constant2constant = new HashMap<>();
+			Map<String, Constant> constant2constant = new HashMap<>();
 			if (eConstraint.getConstants() != null && !eConstraint.getConstants().isEmpty()) {
 				for (GipsConstant eConstant : eConstraint.getConstants()) {
 					Constraint dummyConstraint = createConstraint(eConstraint, -2);
 					Constant constant = createConstant(eConstant, dummyConstraint);
 					data.model().getConstants().add(constant);
 					data.addConstant(eConstraint, eConstant, constant);
-					constant2constant.put(eConstant, constant);
+					constant2constant.put(eConstant.getName(), constant);
 				}
+			}
+			// Add global constants to local scope
+			if (data.eContext2Constants().get(data.gipslFile()) != null) {
+				data.eContext2Constants().get(data.gipslFile())
+						.forEach((eConstant, constant) -> constant2constant.put(eConstant, constant));
 			}
 
 			GipsConstraintSplitter splitter = new GipsConstraintSplitter(data, eConstraint);
@@ -441,13 +465,6 @@ public class GipsToIntermediate {
 		constraint.setDepending(false);
 		constraint.setNegated(false);
 
-//		if (subConstraint.getConstants() != null && !subConstraint.getConstants().isEmpty()) {
-//			for (Entry<String, Constant> entry : data.eContext2Constants().get(subConstraint).entrySet()) {
-//				updateConstant(entry.getValue(), subConstraint.getExpression(), constraint);
-//				data.addConstant(subConstraint, entry.getKey(), entry.getValue());
-//			}
-//		}
-
 		data.model().getConstraints().add(constraint);
 		data.eConstraint2Constraints().put(subConstraint, new LinkedList<>(List.of(constraint)));
 		constraintCounter++;
@@ -513,6 +530,12 @@ public class GipsToIntermediate {
 				}
 			}
 
+			// Add global constants to local scope
+			if (data.eContext2Constants().get(data.gipslFile()) != null) {
+				data.eContext2Constants().get(data.gipslFile())
+						.forEach((eConstant, constant) -> data.addConstant(eLinearFunction, eConstant, constant));
+			}
+
 			ArithmeticExpressionTransformer transformer = transformationFactory
 					.createArithmeticTransformer(linearFunction);
 			linearFunction.setExpression(transformer.transform(eLinearFunction.getExpression()));
@@ -540,6 +563,12 @@ public class GipsToIntermediate {
 				objective.getConstants().add(constant);
 				data.addConstant(eObjective, eConstant, constant);
 			}
+		}
+
+		// Add global constants to local scope
+		if (data.eContext2Constants().get(data.gipslFile()) != null) {
+			data.eContext2Constants().get(data.gipslFile())
+					.forEach((eConstant, constant) -> data.addConstant(eObjective, eConstant, constant));
 		}
 
 		switch (eObjective.getGoal()) {

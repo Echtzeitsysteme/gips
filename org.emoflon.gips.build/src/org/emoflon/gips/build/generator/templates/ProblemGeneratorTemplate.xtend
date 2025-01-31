@@ -96,7 +96,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	
 	def String getConstantValue(Constant constant) {
 		if(constant.isGlobal) {
-			return '''(«extractReturnType(constant.expression)»)engine.getConstantValue(«getConstantName(constant)»)'''
+			return '''(«extractReturnType(constant.expression)»)engine.getConstantValue("«getConstantName(constant)»")'''
 		} else {
 			return '''«getConstantName(constant)»'''
 		}
@@ -115,23 +115,20 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	}
 	
 	def String getConstantCalculator(Constant constant) {
-		return '''
-		protected «extractReturnType(constant.expression)» calculate«constant.name.toFirstUpper»(«getContextParameter()») {
-			return 	«IF constant.expression instanceof ArithmeticExpression»«generateConstantExpression(constant.expression as ArithmeticExpression)»«ELSE»«generateConstantExpression(constant.expression as BooleanExpression)»«ENDIF»;
-		}
+		return '''protected «extractReturnType(constant.expression)» calculate«constant.name.toFirstUpper»(«getContextParameter()») {
+	return 	«IF constant.expression instanceof ArithmeticExpression»«generateConstantExpression(constant.expression as ArithmeticExpression)»«ELSE»«generateConstantExpression(constant.expression as BooleanExpression)»«ENDIF»;
+}
 		'''
 	}
 	
 	def String getConstantFields(Collection<Constant> constants) {
-		return '''
-		«FOR constant : constants»
+		return '''«FOR constant : constants»
 		«extractReturnType(constant.expression)» «getConstantName(constant)» = «getCallConstantCalculator(constant)»;
 		«ENDFOR»'''
 	}
 	
 	def String getConstantCalculators(Collection<Constant> constants) {
-		return '''
-		«FOR constant : constants»
+		return '''«FOR constant : constants»
 		«getConstantCalculator(constant)»
 		
 		«ENDFOR»'''
@@ -236,7 +233,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		val variable = varRefs.iterator.next
 		
 		val method = '''
-	protected void «builderMethodName»(«parametersForVoidBuilder»«getParametersForConstants(getConstants())») {
+	protected void «builderMethodName»(«parametersForVoidBuilder»«IF !getConstants().empty», «ENDIF»«getParametersForConstants(getConstants())») {
 		«generateValueAccess(expr)»
 		«IF expr.setExpression.setOperation !== null»«generateConstantExpression(expr.setExpression.setOperation)»«ENDIF»
 		.forEach(elt -> {

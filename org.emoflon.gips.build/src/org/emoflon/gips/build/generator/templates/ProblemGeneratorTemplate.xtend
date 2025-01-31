@@ -764,6 +764,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 					}
 				}
 			}
+			return expressionType;
 		} else {
 			return expressionType;
 		}

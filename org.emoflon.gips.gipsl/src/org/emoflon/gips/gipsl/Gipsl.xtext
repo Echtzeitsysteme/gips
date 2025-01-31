@@ -286,7 +286,7 @@ GipsAttributeLiteral:
 GipsSetExpression: {GipsSetExpression}
 	'->'
 	(
-		operation = GipsSetOperation right = GipsSetExpression |
+		operation = GipsSetOperation (right = GipsSetExpression)? |
 		(operation = GipsReduceOperation)?
 	)
 ;

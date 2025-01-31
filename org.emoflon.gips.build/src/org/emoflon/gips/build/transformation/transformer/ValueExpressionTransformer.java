@@ -250,6 +250,12 @@ public class ValueExpressionTransformer extends TransformationContext {
 	public void transform(final SetExpression set, final GipsSetExpression eSet) throws Exception {
 		if (eSet.getRight() == null && eSet.getOperation() instanceof GipsReduceOperation eReduce) {
 			set.setSetReduce(transform(eReduce));
+		} else if (eSet.getRight() == null && eSet.getOperation() instanceof GipsSetOperation eOp) {
+			if (set.getSetOperation() != null) {
+				set.getSetOperation().setNext(transform(eOp));
+			} else {
+				set.setSetOperation(transform(eOp));
+			}
 		} else if (eSet.getOperation() instanceof GipsSetOperation eOp
 				&& eSet.getRight() instanceof GipsSetExpression right) {
 			if (set.getSetOperation() != null) {

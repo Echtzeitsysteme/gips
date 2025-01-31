@@ -945,7 +945,7 @@ public final class GipslExpressionValidator {
 	}
 
 	public static ExpressionType evaluate(final GipsSetExpression expression, Collection<Runnable> errors) {
-		if (expression.getOperation() == null) {
+		if (expression.getOperation() == null && expression.getRight() == null) {
 			errors.add(() -> {
 				GipslValidator.err( //
 						GipslValidatorUtil.SET_OPERATION_MISSING, //
@@ -956,14 +956,19 @@ public final class GipslExpressionValidator {
 			return ExpressionType.Error;
 		}
 		if (expression.getOperation() instanceof GipsSetOperation && expression.getRight() == null) {
-			errors.add(() -> {
-				GipslValidator.err( //
-						GipslValidatorUtil.SET_OPERATION_MISSING, //
-						expression, //
-						GipslPackage.Literals.GIPS_SET_EXPRESSION__OPERATION //
-				);
-			});
-			return ExpressionType.Error;
+			GipsConstant container = (GipsConstant) GipslScopeContextUtil.getContainer(expression,
+					Set.of(GipsConstantImpl.class));
+			if (container == null) {
+				errors.add(() -> {
+					GipslValidator.err( //
+							GipslValidatorUtil.SET_OPERATION_MISSING, //
+							expression, //
+							GipslPackage.Literals.GIPS_SET_EXPRESSION__OPERATION //
+					);
+				});
+				return ExpressionType.Error;
+			}
+
 		}
 
 		if (expression.getRight() == null && expression.getOperation() instanceof GipsReduceOperation reduce) {
@@ -993,6 +998,8 @@ public final class GipslExpressionValidator {
 			} else {
 				return ExpressionType.Boolean;
 			}
+		} else if (expression.getRight() == null && expression.getOperation() instanceof GipsSetOperation) {
+			return ExpressionType.Set;
 		} else {
 			if (expression.getOperation() instanceof GipsFilterOperation filter) {
 				ExpressionType type = evaluate(filter.getExpression(), errors);
@@ -1073,6 +1080,7 @@ public final class GipslExpressionValidator {
 					});
 				}
 			}
+
 			return evaluate(expression.getRight(), errors);
 		}
 	}

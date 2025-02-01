@@ -30,6 +30,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsConstantReference;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
@@ -125,6 +126,11 @@ public final class GipslScopeContextUtil {
 
 	public static boolean isGipsNodeExpression(final EObject context, final EReference reference) {
 		return context instanceof GipsNodeExpression && reference == GipslPackage.Literals.GIPS_NODE_EXPRESSION__NODE;
+	}
+
+	public static boolean isGipsAttributeExpression(final EObject context, final EReference reference) {
+		return context instanceof GipsAttributeExpression
+				&& reference == GipslPackage.Literals.GIPS_ATTRIBUTE_LITERAL__LITERAL;
 	}
 
 	public static boolean isGipsAttributeLiteral(final EObject context, final EReference reference) {
@@ -348,6 +354,9 @@ public final class GipslScopeContextUtil {
 			return select.getType();
 		} else if (expression instanceof GipsTransformOperation transform && transform.getExpression() != null) {
 			return transform.getExpression();
+		} else if (expression.eContainer() instanceof GipsValueExpression root
+				&& !(root.getValue() instanceof GipsSetElementExpression)) {
+			return root.getValue();
 		} else if (expression instanceof GipsValueExpression root
 				&& !(root.getValue() instanceof GipsSetElementExpression)) {
 			return root.getValue();

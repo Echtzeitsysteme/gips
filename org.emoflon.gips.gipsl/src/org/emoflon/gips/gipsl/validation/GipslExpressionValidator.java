@@ -889,6 +889,9 @@ public final class GipslExpressionValidator {
 
 	public static ExpressionType evaluate(final GipsAttributeExpression expression, Collection<Runnable> errors) {
 		if (expression.getRight() == null) {
+			if (expression.getAttribute() == null) {
+				return ExpressionType.Unknown;
+			}
 			if (expression.getAttribute().getLiteral().isMany()) {
 				return ExpressionType.Set;
 			} else if (!expression.getAttribute().getLiteral().isMany()) {

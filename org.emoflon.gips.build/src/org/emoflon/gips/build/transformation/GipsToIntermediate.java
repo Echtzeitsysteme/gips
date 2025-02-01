@@ -782,13 +782,6 @@ public class GipsToIntermediate {
 			for (IBeXRule rule : data.model().getIbexModel().getRuleSet().getRules()) {
 				if (rule.getName().equals(ePattern.getName())) {
 					data.addRule(ePattern, rule);
-					for (EditorNode eNode : ePattern.getNodes()) {
-						for (IBeXNode node : toContextPattern(rule.getLhs()).getSignatureNodes()) {
-							if (eNode.getName().equals(node.getName())) {
-								data.eNode2Node().put(eNode, node);
-							}
-						}
-					}
 				}
 			}
 		}
@@ -797,7 +790,6 @@ public class GipsToIntermediate {
 		allEditorPatterns.addAll(data.gipslFile().getPatterns());
 		allEditorPatterns.addAll(data.gipslFile().getImportedPattern().stream() //
 				.map(ip -> ip.getPattern()).collect(Collectors.toList()));
-
 		// Add all patterns
 		for (EditorPattern ePattern : allEditorPatterns) {
 			for (IBeXContext pattern : data.model().getIbexModel().getPatternSet().getContextPatterns()) {

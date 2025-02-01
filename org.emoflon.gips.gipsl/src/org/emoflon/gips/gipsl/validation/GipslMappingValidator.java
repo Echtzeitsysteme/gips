@@ -168,20 +168,15 @@ public class GipslMappingValidator {
 				.flatMap(c -> GipslValidatorUtil.extractMappings(c.getExpression()).stream())
 				.collect(Collectors.toSet());
 
-		boolean usedAsContext = container.getConstraints().stream().filter(c -> c.getContext() != null)
-				.filter(c -> (c.getContext() instanceof GipsMapping)) //
-				.map(c -> (GipsMapping) c.getContext()) //
-				.filter(m -> m.equals(mapping)).findAny().isPresent(); //
-
 		if (!mappings.contains(mapping)) {
 			GipslValidator.warn( //
 					String.format(GipslValidatorUtil.MAPPING_W_O_CONSTRAINTS_MESSAGE, mapping.getName()), //
 					GipslPackage.Literals.GIPS_MAPPING__NAME);
 		}
 
-		mappings = container.getFunctions().stream()
+		mappings.addAll(container.getFunctions().stream()
 				.flatMap(f -> GipslValidatorUtil.extractMappings(f.getExpression()).stream())
-				.collect(Collectors.toSet());
+				.collect(Collectors.toSet()));
 
 		if (!mappings.contains(mapping)) {
 			GipslValidator.warn( //

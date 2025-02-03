@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.emoflon.gips.intermediate;singleton:=true
 Automatic-Module-Name: org.emoflon.gips.intermediate
-Bundle-Version: 0.1.0.qualifier
+Bundle-Version: 1.5.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin

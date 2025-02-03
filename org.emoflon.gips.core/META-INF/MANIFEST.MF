@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Gips::Core
 Bundle-SymbolicName: org.emoflon.gips.core
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.5.0.qualifier
 Automatic-Module-Name: org.emoflon.gips.core
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: org.emoflon.ibex.gt;visibility:=reexport,

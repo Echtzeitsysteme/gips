@@ -1,6 +1,5 @@
 package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.gips.build.generator.GeneratorTemplate
 import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives
@@ -20,11 +19,11 @@ class PatternMappingTemplate extends GeneratorTemplate<PatternMapping> {
 		className = data.mapping2mappingClassName.get(context)
 		fqn = packageName + "." + className
 		filePath = data.apiData.gipsMappingPkgPath + "/" + className + ".java"
-		imports.add("org.emoflon.gips.core.gt.GTMapping")
-		imports.add("org.emoflon.gips.core.ilp.ILPVariable")
-		imports.add("org.emoflon.gips.core.ilp.ILPIntegerVariable")
-		imports.add("org.emoflon.gips.core.ilp.ILPRealVariable")
-		imports.add("org.emoflon.gips.core.ilp.ILPBinaryVariable")
+		imports.add("org.emoflon.gips.core.gt.GipsGTMapping")
+		imports.add("org.emoflon.gips.core.milp.model.Variable")
+		imports.add("org.emoflon.gips.core.milp.model.IntegerVariable")
+		imports.add("org.emoflon.gips.core.milp.model.RealVariable")
+		imports.add("org.emoflon.gips.core.milp.model.BinaryVariable")
 		imports.add(data.apiData.rulesPkg+"."+data.mapping2patternClassName.get(context))
 		imports.add(data.apiData.matchesPkg+"."+data.mapping2matchClassName.get(context))
 		
@@ -42,7 +41,7 @@ class PatternMappingTemplate extends GeneratorTemplate<PatternMapping> {
 import «imp»;
 «ENDFOR»
 		
-public class «className» extends GTMapping<«data.mapping2matchClassName.get(context)», «data.mapping2patternClassName.get(context)»> {
+public class «className» extends GipsGTMapping<«data.mapping2matchClassName.get(context)», «data.mapping2patternClassName.get(context)»> {
 	«IF !context.freeVariables.isNullOrEmpty»
 	«FOR v : context.freeVariables»
 	protected «GipsImportManager.variableToJavaDataType(v, imports)» «v.name.toFirstLower»;
@@ -116,7 +115,7 @@ public class «className» extends GTMapping<«data.mapping2matchClassName.get(c
 	}
 	
 	@Override
-	public Map<String, ILPVariable<?>> getAdditionalVariables() {
+	public Map<String, Variable<?>> getAdditionalVariables() {
 		return Map.of(«getAllVariableEntries(",\n")»);
 	}
 	
@@ -126,7 +125,7 @@ public class «className» extends GTMapping<«data.mapping2matchClassName.get(c
 	}
 	
 	@Override
-	public Map<String, ILPVariable<?>> getFreeVariables() {
+	public Map<String, Variable<?>> getFreeVariables() {
 		return Map.of(«getAllVariableEntries(",\n")»);
 	}
 	
@@ -136,7 +135,7 @@ public class «className» extends GTMapping<«data.mapping2matchClassName.get(c
 	}
 	
 	@Override
-	public Map<String, ILPVariable<?>> getBoundVariables() {
+	public Map<String, Variable<?>> getBoundVariables() {
 		return Map.of();
 	}
 	

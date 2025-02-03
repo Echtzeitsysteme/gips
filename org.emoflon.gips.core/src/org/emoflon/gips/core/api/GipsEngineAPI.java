@@ -10,14 +10,13 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.emoflon.gips.core.GipsEngine;
-import org.emoflon.gips.core.GipsGlobalObjective;
+import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.TypeIndexer;
-import org.emoflon.gips.core.ilp.ILPSolver;
-import org.emoflon.gips.core.ilp.ILPSolverConfig;
+import org.emoflon.gips.core.milp.Solver;
+import org.emoflon.gips.core.milp.SolverConfig;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
-import org.emoflon.gips.intermediate.GipsIntermediate.ILPConfig;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.ibex.gt.api.GraphTransformationAPI;
 import org.emoflon.ibex.gt.api.GraphTransformationApp;
@@ -28,22 +27,23 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 
 	final protected EMOFLON_APP eMoflonApp;
 	protected EMOFLON_API eMoflonAPI;
+	protected ResourceSet model;
 	protected GipsIntermediateModel gipsModel;
 	final protected Map<String, Mapping> name2Mapping = new HashMap<>();
-	protected ILPSolverConfig solverConfig;
+	protected SolverConfig solverConfig;
 	protected GipsMapperFactory<EMOFLON_API> mapperFactory;
 	protected GipsConstraintFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> constraintFactory;
-	protected GipsObjectiveFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> objectiveFactory;
+	protected GipsLinearFunctionFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> functionFactory;
 
 	protected GipsEngineAPI(final EMOFLON_APP eMoflonApp) {
 		this.eMoflonApp = eMoflonApp;
 	}
 
-	public void setSolverConfig(final ILPSolverConfig solverConfig) {
+	public void setSolverConfig(final SolverConfig solverConfig) {
 		this.solverConfig = solverConfig;
 	}
 
-	public ILPSolverConfig getSolverConfig() {
+	public SolverConfig getSolverConfig() {
 		return solverConfig;
 	}
 
@@ -62,12 +62,19 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	}
 
 	public EMOFLON_API getEMoflonAPI() {
-		return eMoflonAPI;
+		if (eMoflonAPI == null) {
+			throw new UnsupportedOperationException(
+					"EMoflon API does not exist since there are no patterns defined in the ibex model.");
+		} else {
+			return eMoflonAPI;
+		}
 	}
 
 	@Override
 	public void update() {
-		eMoflonAPI.updateMatches();
+		if (eMoflonAPI != null) {
+			eMoflonAPI.updateMatches();
+		}
 	}
 
 	@Override
@@ -91,7 +98,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 
 	@Override
 	protected void initTypeIndexer() {
-		indexer = new TypeIndexer(eMoflonAPI, gipsModel);
+		indexer = new TypeIndexer(model, gipsModel);
 	}
 
 	/**
@@ -153,7 +160,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 * @return Resource set from the eMoflon API.
 	 */
 	public ResourceSet getResourceSet() {
-		return this.eMoflonAPI.getModel();
+		return model;
 	}
 
 	/**
@@ -165,11 +172,12 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		super.terminate();
 
 		// Terminate the eMoflon::IBeX engine (including HiPE)
-		this.getEMoflonAPI().terminate();
+		if (eMoflonAPI != null)
+			eMoflonAPI.terminate();
 	}
 
-	protected void setSolverConfig(final ILPConfig config) {
-		solverConfig = new ILPSolverConfig(config.isEnableTimeLimit(), config.getIlpTimeLimit(), //
+	protected void setSolverConfig(final org.emoflon.gips.intermediate.GipsIntermediate.SolverConfig config) {
+		solverConfig = new SolverConfig(config.isEnableTimeLimit(), config.getIlpTimeLimit(), //
 				config.isEnableRndSeed(), config.getIlpRndSeed(), //
 				config.isEnablePresolve(), //
 				config.isEnableDebugOutput(), //
@@ -187,9 +195,16 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 * @param modelUri     Model URI to load.
 	 */
 	protected void initInternal(final URI gipsModelURI, final URI modelUri) {
+		loadIntermediateModel(gipsModelURI);
 		eMoflonApp.registerMetaModels();
 		eMoflonApp.loadModel(modelUri);
-		eMoflonAPI = eMoflonApp.initAPI();
+		model = eMoflonApp.getModel();
+
+		// init eMoflon only if there are patterns present in the ibex model
+		if (!gipsModel.getIbexModel().getPatternSet().getContextPatterns().isEmpty()
+				|| !gipsModel.getIbexModel().getRuleSet().getRules().isEmpty()) {
+			eMoflonAPI = eMoflonApp.initAPI();
+		}
 
 		initInternalCommon(gipsModelURI);
 	}
@@ -204,9 +219,16 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 * @param ibexPatternPath IBeX pattern path to load.
 	 */
 	protected void initInternal(final URI gipsModelURI, final URI modelUri, final URI ibexPatternPath) {
+		loadIntermediateModel(gipsModelURI);
 		eMoflonApp.registerMetaModels();
 		eMoflonApp.loadModel(modelUri);
-		eMoflonAPI = eMoflonApp.initAPI(ibexPatternPath);
+		model = eMoflonApp.getModel();
+
+		// init eMoflon only if there are patterns present in the ibex model
+		if (!gipsModel.getIbexModel().getPatternSet().getContextPatterns().isEmpty()
+				|| !gipsModel.getIbexModel().getRuleSet().getRules().isEmpty()) {
+			eMoflonAPI = eMoflonApp.initAPI(ibexPatternPath);
+		}
 
 		initInternalCommon(gipsModelURI);
 	}
@@ -220,9 +242,16 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 *                     instance.
 	 */
 	protected void initInternal(final URI gipsModelURI, final ResourceSet model) {
+		loadIntermediateModel(gipsModelURI);
 		eMoflonApp.registerMetaModels();
 		eMoflonApp.setModel(model);
-		eMoflonAPI = eMoflonApp.initAPI();
+		this.model = eMoflonApp.getModel();
+
+		// init eMoflon only if there are patterns present in the ibex model
+		if (!gipsModel.getIbexModel().getPatternSet().getContextPatterns().isEmpty()
+				|| !gipsModel.getIbexModel().getRuleSet().getRules().isEmpty()) {
+			eMoflonAPI = eMoflonApp.initAPI();
+		}
 
 		initInternalCommon(gipsModelURI);
 	}
@@ -238,9 +267,16 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 * @param ibexPatternPath IBeX pattern path to load.
 	 */
 	protected void initInternal(final URI gipsModelURI, final ResourceSet model, final URI ibexPatternPath) {
+		loadIntermediateModel(gipsModelURI);
 		eMoflonApp.registerMetaModels();
 		eMoflonApp.setModel(model);
-		eMoflonAPI = eMoflonApp.initAPI(ibexPatternPath);
+		this.model = eMoflonApp.getModel();
+
+		// init eMoflon only if there are patterns present in the ibex model
+		if (!gipsModel.getIbexModel().getPatternSet().getContextPatterns().isEmpty()
+				|| !gipsModel.getIbexModel().getRuleSet().getRules().isEmpty()) {
+			eMoflonAPI = eMoflonApp.initAPI(ibexPatternPath);
+		}
 
 		initInternalCommon(gipsModelURI);
 	}
@@ -253,7 +289,6 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 * @param gipsModelURI URI to the GIPS (intermediate) model.
 	 */
 	private void initInternalCommon(final URI gipsModelURI) {
-		loadIntermediateModel(gipsModelURI);
 		initTypeIndexer();
 		validationLog = new GipsConstraintValidationLog();
 		setSolverConfig(gipsModel.getConfig());
@@ -261,13 +296,13 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		createMappers();
 		initConstraintFactory();
 		createConstraints();
-		initObjectiveFactory();
+		initLinearFunctionFactory();
 		createObjectives();
 
-		if (gipsModel.getGlobalObjective() != null)
-			setGlobalObjective(createGlobalObjective());
+		if (gipsModel.getObjective() != null)
+			setObjective(createObjective());
 
-		setILPSolver(createSolver());
+		setSolver(createSolver());
 	}
 
 	protected void loadIntermediateModel(final URI gipsModelURI) {
@@ -289,8 +324,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 
 		gipsModel = (GipsIntermediateModel) model.getContents().get(0);
 
-		gipsModel.getVariables().stream().filter(var -> var instanceof Mapping).map(var -> (Mapping) var)
-				.forEach(mapping -> name2Mapping.put(mapping.getName(), mapping));
+		gipsModel.getMappings().forEach(mapping -> name2Mapping.put(mapping.getName(), mapping));
 	}
 
 	protected abstract void createMappers();
@@ -301,18 +335,17 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	}
 
 	protected void createObjectives() {
-		gipsModel.getObjectives().stream()
-				.forEach(objective -> addObjective(objectiveFactory.createObjective(objective)));
+		gipsModel.getFunctions().stream().forEach(fn -> addLinearFunction(functionFactory.createLinearFunction(fn)));
 	}
 
 	protected abstract void initMapperFactory();
 
 	protected abstract void initConstraintFactory();
 
-	protected abstract void initObjectiveFactory();
+	protected abstract void initLinearFunctionFactory();
 
-	protected abstract GipsGlobalObjective createGlobalObjective();
+	protected abstract GipsObjective createObjective();
 
-	protected abstract ILPSolver createSolver();
+	protected abstract Solver createSolver();
 
 }

@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: org.emoflon.gips.intermediate
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.emoflon.gips.intermediate;singleton:=true
 Automatic-Module-Name: org.emoflon.gips.intermediate
-Bundle-Version: 0.1.0.qualifier
+Bundle-Version: 1.5.0.qualifier
 Bundle-ClassPath: .
-Bundle-Vendor: Real-Time Systems Lab - TU Darmstadt
+Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Export-Package: org.emoflon.gips.intermediate.GipsIntermediate,

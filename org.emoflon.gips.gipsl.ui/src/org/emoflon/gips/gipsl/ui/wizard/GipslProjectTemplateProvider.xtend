@@ -60,16 +60,15 @@ final class HelloWorldProject {
 			addFile('''src/«path»/Model.gipsl''', '''
 				package "«path»"
 				import "http://www.eclipse.org/emf/2002/Ecore"
-				// import a metamodel here
+				// ^import a metamodel here
 				
 				config {  
-					solver := «solver» [home:="fu", license:="bar"];
-					launchConfig := true [main := "TODO"];
+					solver := GUROBI;
 					timeLimit := true [value := 42.0];
 					randomSeed := true [value := 73];
 					presolve := true;
 					debugOutput := true;
-					tolerance := true [value := 0.00001];
+					tolerance := true [value := 0.000001];
 				}
 				
 				// specify an example rule
@@ -82,21 +81,21 @@ final class HelloWorldProject {
 				}
 				
 				// create a mapping on the rule
-				mapping mapNode with exampleRule;
+				mapping mapNode to exampleRule;
 				
 				// create a constraint on one class
-				constraint -> class::EOperation {
-					mappings.mapNode->filter(m | m.nodes().clazz.^abstract)->count() > self.lowerBound
+				constraint with EOperation {
+					mappings.mapNode->filter(element.nodes.clazz.^abstract)->sum(element.value) > context.lowerBound
 				}
 				
 				// create an objective for the mapping
-				objective nodeObj -> mapping::mapNode {
-					self.nodes().op.upperBound * sin(73)
+				function nodeObj with mapNode {
+					context.nodes.op.upperBound * sin(73)
 				}
 				
 				// create an overall objective
-				global objective : min {
-					2 * nodeObj
+				objective : min {
+					2 * functions.nodeObj
 				}
 			''')
 		])

@@ -4,15 +4,14 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.emoflon.gips.core.ilp.ILPBinaryVariable;
-import org.emoflon.gips.core.ilp.ILPConstraint;
-import org.emoflon.gips.core.ilp.ILPTerm;
-import org.emoflon.gips.core.ilp.ILPVariable;
+import org.emoflon.gips.core.milp.model.BinaryVariable;
+import org.emoflon.gips.core.milp.model.Constraint;
+import org.emoflon.gips.core.milp.model.Term;
+import org.emoflon.gips.core.milp.model.Variable;
 import org.emoflon.gips.core.validation.GipsValidationEventType;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 
 public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT extends EObject>
 		extends GipsConstraint<ENGINE, TypeConstraint, CONTEXT> {
@@ -21,7 +20,7 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 
 	public GipsTypeConstraint(ENGINE engine, TypeConstraint constraint) {
 		super(engine, constraint);
-		type = constraint.getModelType().getType();
+		type = constraint.getType();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -30,7 +29,7 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 		// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT
 		// language
 		indexer.getObjectsOfType(type).stream().forEach(context -> {
-			final ILPConstraint candidate = buildConstraint((CONTEXT) context);
+			final Constraint candidate = buildConstraint((CONTEXT) context);
 			if (candidate != null) {
 				ilpConstraints.put((CONTEXT) context, candidate);
 			}
@@ -40,7 +39,7 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 			// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT
 			// language
 			indexer.getObjectsOfType(type).stream().forEach(context -> {
-				final List<ILPConstraint> constraints = buildAdditionalConstraints((CONTEXT) context);
+				final List<Constraint> constraints = buildAdditionalConstraints((CONTEXT) context);
 				additionalIlpConstraints.put((CONTEXT) context, constraints);
 			});
 
@@ -48,16 +47,16 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 	}
 
 	@Override
-	public ILPConstraint buildConstraint(final CONTEXT context) {
+	public Constraint buildConstraint(final CONTEXT context) {
 		if (!isConstant && !(constraint.getExpression() instanceof RelationalExpression))
 			throw new IllegalArgumentException("Boolean values can not be transformed to ilp relational constraints.");
 
 		if (!isConstant) {
 			RelationalOperator operator = ((RelationalExpression) constraint.getExpression()).getOperator();
 			double constTerm = buildConstantRhs(context);
-			List<ILPTerm> terms = buildVariableLhs(context);
+			List<Term> terms = buildVariableLhs(context);
 			if (!terms.isEmpty())
-				return new ILPConstraint(terms, operator, constTerm);
+				return new Constraint(terms, operator, constTerm);
 
 			if (constraint.getReferencedBy() == null) {
 				// If the terms list is empty, no suitable mapping candidates are present in the
@@ -77,9 +76,8 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 							sb.toString());
 				}
 			} else {
-				Variable symbolicVar = constraint.getSymbolicVariable();
-				ILPBinaryVariable var = (ILPBinaryVariable) engine.getNonMappingVariable(context,
-						symbolicVar.getName());
+				org.emoflon.gips.intermediate.GipsIntermediate.Variable symbolicVar = constraint.getSymbolicVariable();
+				BinaryVariable var = (BinaryVariable) engine.getNonMappingVariable(context, symbolicVar.getName());
 
 				// If the terms list is empty, no suitable mapping candidates are present in the
 				// model. Therefore, zero variables are created, which in turn, can only result
@@ -104,8 +102,7 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 		} else {
 			if (constraint.getReferencedBy() == null) {
 				if (constraint.getExpression() instanceof RelationalExpression relExpr
-						&& relExpr.getOperator() != RelationalOperator.OBJECT_EQUAL
-						&& relExpr.getOperator() != RelationalOperator.OBJECT_NOT_EQUAL) {
+						&& !relExpr.isRequiresComparables()) {
 					double lhs = buildConstantLhs(context);
 					double rhs = buildConstantRhs(context);
 					boolean result = evaluateConstantConstraint(lhs, rhs, relExpr.getOperator());
@@ -132,14 +129,12 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 					}
 				}
 			} else {
-				Variable symbolicVar = constraint.getSymbolicVariable();
-				ILPBinaryVariable var = (ILPBinaryVariable) engine.getNonMappingVariable(context,
-						symbolicVar.getName());
+				org.emoflon.gips.intermediate.GipsIntermediate.Variable symbolicVar = constraint.getSymbolicVariable();
+				BinaryVariable var = (BinaryVariable) engine.getNonMappingVariable(context, symbolicVar.getName());
 				boolean result = false;
 
 				if (constraint.getExpression() instanceof RelationalExpression relExpr
-						&& relExpr.getOperator() != RelationalOperator.OBJECT_EQUAL
-						&& relExpr.getOperator() != RelationalOperator.OBJECT_NOT_EQUAL) {
+						&& !relExpr.isRequiresComparables()) {
 					double lhs = buildConstantLhs(context);
 					double rhs = buildConstantRhs(context);
 					result = evaluateConstantConstraint(lhs, rhs, relExpr.getOperator());
@@ -165,9 +160,9 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 	@SuppressWarnings("unchecked")
 	@Override
 	public void calcAdditionalVariables() {
-		for (Variable variable : constraint.getHelperVariables()) {
+		for (org.emoflon.gips.intermediate.GipsIntermediate.Variable variable : constraint.getHelperVariables()) {
 			for (EObject context : indexer.getObjectsOfType(type)) {
-				ILPVariable<?> ilpVar = buildVariable(variable, (CONTEXT) context);
+				Variable<?> ilpVar = buildVariable(variable, (CONTEXT) context);
 				addAdditionalVariable((CONTEXT) context, variable, ilpVar);
 				engine.addNonMappingVariable((CONTEXT) context, variable, ilpVar);
 			}
@@ -175,7 +170,8 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 	}
 
 	@Override
-	public String buildVariableName(final Variable variable, final CONTEXT context) {
+	public String buildVariableName(final org.emoflon.gips.intermediate.GipsIntermediate.Variable variable,
+			final CONTEXT context) {
 		return context + "->" + variable.getName() + "#" + variableIdx++;
 	}
 

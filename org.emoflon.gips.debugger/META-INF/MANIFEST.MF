@@ -21,6 +21,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.emf.edit.ui,
  org.eclipse.emf.ecore,
  org.emoflon.gips.gipsl,
+ org.eclipse.jface,
  org.emoflon.gips.debugger.cplexlp;bundle-version="[1.0.0,2.0.0)",
  org.emoflon.gips.debugger.trace;bundle-version="[1.0.0,2.0.0)";visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-21

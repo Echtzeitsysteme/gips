@@ -57,10 +57,10 @@
       <view
             allowMultiple="false"
             category="org.emoflon.gips"
-            class="org.emoflon.gips.debugger.view.GipsDebuggerView"
+            class="org.emoflon.gips.debugger.view.GipsTraceView"
             id="org.emoflon.gips.debugger.view"
             inject="true"
-            name="GIPSL Debugger View"
+            name="GIPS Trace View"
             restorable="true">
       </view>
       <category

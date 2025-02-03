@@ -31,7 +31,7 @@ public final class ToggleVisualisationHandler extends AbstractHandler implements
 	private ImageDescriptor iconDisabled;
 
 	public ToggleVisualisationHandler() {
-		loadImageDescriptors();
+//		loadImageDescriptors();
 		setupPreferenceListener();
 	}
 
@@ -73,11 +73,12 @@ public final class ToggleVisualisationHandler extends AbstractHandler implements
 		if (isActive) {
 			element.setTooltip("Pause GIPSL visualisation");
 			element.setChecked(true);
-			element.setIcon(iconOn);
+			// doesn't work for some reasons, icon turns invisible
+//			element.setIcon(iconOn);
 		} else {
 			element.setTooltip("Activate GIPSL visualisation");
 			element.setChecked(false);
-			element.setIcon(iconOff);
+//			element.setIcon(iconOff);
 		}
 	}
 

@@ -1,11 +1,9 @@
 package org.emoflon.gips.debugger;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.emoflon.gips.debugger.api.ITraceManager;
@@ -23,7 +21,7 @@ public final class TracePlugin extends AbstractUIPlugin {
 	public static final String PLUGIN_ID = "org.emoflon.gips.debugger"; //$NON-NLS-1$
 
 	// synchronization lock
-	private static final Object lock = new Object();
+	private static final Object syncLock = new Object();
 
 	// The shared instance
 	private static TracePlugin INSTANCE;
@@ -37,9 +35,9 @@ public final class TracePlugin extends AbstractUIPlugin {
 		return INSTANCE;
 	}
 
-	public static void log(IStatus status) {
-		getInstance().getLog().log(status);
-	}
+//	public static void log(IStatus status) {
+//		getInstance().getLog().log(status);
+//	}
 
 	private TraceManager traceManager;
 	private ServiceRegistration<ITraceManager> traceManagerRegistration;
@@ -66,9 +64,6 @@ public final class TracePlugin extends AbstractUIPlugin {
 //		eclipseContext.set(ITraceManager.class, traceManager);
 		traceManagerRegistration = getBundle().getBundleContext().registerService(ITraceManager.class, traceManager,
 				null);
-
-		var test = PlatformUI.getWorkbench().getService(ITraceManager.class);
-		System.out.println("FOUND! " + test != null);
 
 //		if(eclipseContext!=null) {
 //		try {
@@ -98,7 +93,7 @@ public final class TracePlugin extends AbstractUIPlugin {
 	@Override
 	public ScopedPreferenceStore getPreferenceStore() {
 		if (preferenceStore == null) {
-			synchronized (lock) {
+			synchronized (syncLock) {
 				if (preferenceStore == null) {
 					preferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, PLUGIN_ID);
 					preferenceStore.setSearchContexts(

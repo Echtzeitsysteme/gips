@@ -2,8 +2,10 @@ package org.emoflon.gips.debugger.imp;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -13,6 +15,7 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -22,6 +25,9 @@ import org.emoflon.gips.debugger.api.ITraceManager;
 import org.emoflon.gips.debugger.api.ITraceSelectionListener;
 import org.emoflon.gips.debugger.api.ITraceUpdateListener;
 import org.emoflon.gips.debugger.api.TraceModelNotFoundException;
+import org.emoflon.gips.debugger.api.event.ITraceManagerListener;
+import org.emoflon.gips.debugger.api.event.TraceManagerEvent;
+import org.emoflon.gips.debugger.api.event.TraceManagerEvent.EventType;
 import org.emoflon.gips.debugger.imp.connector.EditorTraceConnectionFactory;
 import org.emoflon.gips.debugger.imp.connector.GenericXmiEditorTraceConnectionFactory;
 import org.emoflon.gips.debugger.imp.connector.GipslEditorTraceConnectionFactory;
@@ -29,11 +35,13 @@ import org.emoflon.gips.debugger.imp.connector.LpEditorTraceConnectionFactory;
 import org.emoflon.gips.debugger.pref.PluginPreferences;
 import org.emoflon.gips.debugger.utility.HelperEclipse;
 
-public final class TraceManager implements ITraceManager {
+public class TraceManager implements ITraceManager {
 
 	private final Object syncLock = new Object();
 	private final IResourceChangeListener workspaceResourceListener = this::onWorkspaceResourceChange;
 	private final IPropertyChangeListener preferenceListener = this::onPreferenceChange;
+
+	private final ListenerList<ITraceManagerListener> contextListener = new ListenerList<>();
 
 	private final Map<String, ProjectTraceContext> contextById = new HashMap<>();
 
@@ -99,6 +107,16 @@ public final class TraceManager implements ITraceManager {
 	private void onPreferenceChange(PropertyChangeEvent event) {
 		if (PluginPreferences.PREF_TRACE_DISPLAY_ACTIVE.equals(event.getProperty()))
 			visualisationActive = ((Boolean) event.getNewValue()).booleanValue();
+	}
+
+	@Override
+	public void addTraceManagerListener(ITraceManagerListener listener) {
+		contextListener.add(Objects.requireNonNull(listener, "listener"));
+	}
+
+	@Override
+	public void removeTraceManagerListener(ITraceManagerListener listener) {
+		contextListener.remove(listener);
 	}
 
 	@Override
@@ -171,6 +189,11 @@ public final class TraceManager implements ITraceManager {
 			context.selectElementsByTrace(modelId, selection);
 	}
 
+	@Override
+	public Set<String> getAvailableContextIds() {
+		return new HashSet<>(contextById.keySet());
+	}
+
 	private void onWorkspaceResourceChange(IResourceChangeEvent event) {
 		if (event == null || event.getDelta() == null)
 			return;
@@ -220,6 +243,10 @@ public final class TraceManager implements ITraceManager {
 				if (ProjectTraceContext.isCacheEnabled(PluginPreferences.getPreferenceStore()))
 					context.loadCacheIfAvailable();
 			}
+
+			var event = new TraceManagerEvent(this, EventType.NEW, contextId);
+			for (var listener : contextListener)
+				listener.contextChanged(event);
 		}
 
 		return context;
@@ -228,8 +255,13 @@ public final class TraceManager implements ITraceManager {
 	private void removeContext(String contextId) {
 		synchronized (syncLock) {
 			var context = contextById.remove(contextId);
-//			if (context != null)
+			if (context != null) {
 //				context.dispose();
+
+				var event = new TraceManagerEvent(this, EventType.DELETED, contextId);
+				for (var listener : contextListener)
+					listener.contextChanged(event);
+			}
 		}
 	}
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Collection;
@@ -18,6 +19,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.emoflon.gips.debugger.TracePlugin;
@@ -44,7 +46,7 @@ final class ProjectTraceContext implements ITraceContext {
 		return store.getBoolean(PluginPreferences.PREF_TRACE_CACHE_ENABLED);
 	}
 
-	public static IFolder getCacheLocation(IPreferenceStore store, IProject project) {
+	private static IFolder getCacheLocation(IPreferenceStore store, IProject project) {
 		var config = TracePlugin.getInstance().getPreferenceStore();
 		var location = config.getString(PluginPreferences.PREF_TRACE_CACHE_LOCATION);
 		IPath relativePath = IPath.fromPortableString(location);
@@ -54,23 +56,26 @@ final class ProjectTraceContext implements ITraceContext {
 		return project.getFolder(relativePath);
 	}
 
-	public static IFile getCacheFile(IPreferenceStore store, IProject project) {
+	private static IFile getCacheFile(IPreferenceStore store, IProject project) {
 		IFolder cacheFolder = getCacheLocation(store, project);
 		return cacheFolder.getFile(ProjectTraceContext.CACHE_FILE_NAME);
 	}
 
 	public static boolean hasCache(IPreferenceStore store, IProject project) {
-		return getCacheFile(store, project).exists();
+		IFile cacheFile = getCacheFile(store, project); // .exists() check is not reliable because it just returns a
+														// cached value by eclipse
+
+		Path osPath = cacheFile.getLocation().toPath();
+		return Files.exists(osPath); // we need to ask the OS directly
 	}
 
-	private final Object lock = new Object();
-
+	private final Object syncLock = new Object();
 	private final TraceManager service;
 	private final String contextId;
 	private TraceGraph graph = new TraceGraph();
 
-	private final Set<ITraceSelectionListener> selectionListener = new HashSet<>();
-	private final Set<ITraceUpdateListener> updateListener = new HashSet<>();
+	private final ListenerList<ITraceSelectionListener> selectionListener = new ListenerList<>();
+	private final ListenerList<ITraceUpdateListener> updateListener = new ListenerList<>();
 
 	private boolean graphDirty = false;
 
@@ -88,52 +93,65 @@ final class ProjectTraceContext implements ITraceContext {
 //	}
 
 	public void saveCache() throws CoreException {
-		if (!graphDirty)
-			return;
+		synchronized (syncLock) {
+			if (!graphDirty)
+				return;
 
-		IProject assignedProject = HelperEclipse.tryAndGetProject(contextId);
-		if (assignedProject == null || !assignedProject.isAccessible())
-			return;
+			IProject assignedProject = HelperEclipse.tryAndGetProject(contextId);
+			if (assignedProject == null || !assignedProject.isAccessible())
+				return;
 
-		IFolder cacheFolder = getCacheLocation(PluginPreferences.getPreferenceStore(), assignedProject);
-		if (!cacheFolder.exists())
-			cacheFolder.create(true, true, null);
+			IFolder cacheFolder = getCacheLocation(PluginPreferences.getPreferenceStore(), assignedProject);
+			if (!cacheFolder.exists())
+				cacheFolder.create(true, true, null);
 
-		Path cacheFilePath = cacheFolder.getFile(CACHE_FILE_NAME).getLocation().toPath();
+			Path cacheFilePath = cacheFolder.getFile(CACHE_FILE_NAME).getLocation().toPath();
 
-		try (var outputStream = Files.newOutputStream(cacheFilePath, StandardOpenOption.CREATE,
-				StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
-				var objectOut = new ObjectOutputStream(outputStream)) {
+			try (var outputStream = Files.newOutputStream(cacheFilePath, StandardOpenOption.CREATE,
+					StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+					var objectOut = new ObjectOutputStream(outputStream)) {
 
-			objectOut.writeObject(graph);
-			graphDirty = false;
+				objectOut.writeObject(graph);
+				graphDirty = false;
 
-		} catch (IOException e) {
-			e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	public void loadCacheIfAvailable() {
-		IProject assignedProject = HelperEclipse.tryAndGetProject(contextId);
-		if (assignedProject == null || !assignedProject.isAccessible())
-			return;
+		synchronized (syncLock) {
+			IProject assignedProject = HelperEclipse.tryAndGetProject(contextId);
+			if (assignedProject == null || !assignedProject.isAccessible())
+				return;
 
-		IFile cacheFile = getCacheLocation(PluginPreferences.getPreferenceStore(), assignedProject)
-				.getFile(CACHE_FILE_NAME);
-		if (!cacheFile.exists())
-			return;
+			IFile cacheFile = getCacheLocation(PluginPreferences.getPreferenceStore(), assignedProject)
+					.getFile(CACHE_FILE_NAME);
+//			if (!cacheFile.exists()) // not reliable
+//				return;
 
-		Path cacheFilePath = cacheFile.getLocation().toPath();
+			Path cacheFilePath = cacheFile.getLocation().toPath();
 
-		try (var inputStream = Files.newInputStream(cacheFilePath, StandardOpenOption.READ);
-				var objectIn = new ObjectInputStream(inputStream)) {
+			if (!Files.exists(cacheFilePath))
+				return;
 
-			this.graph = (TraceGraph) objectIn.readObject();
-			this.graphDirty = false;
+			try (var inputStream = Files.newInputStream(cacheFilePath, StandardOpenOption.READ);
+					var objectIn = new ObjectInputStream(inputStream)) {
 
-		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
+				this.graph = (TraceGraph) objectIn.readObject();
+				this.graphDirty = false;
+			} catch (NoSuchFileException e) {
+				// ignore
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
+	}
+
+	@Override
+	public Set<String> getAllModels() {
+		return new HashSet<>(graph.getAllModelReferenceIds());
 	}
 
 	@Override
@@ -164,13 +182,12 @@ final class ProjectTraceContext implements ITraceContext {
 		Objects.requireNonNull(modelId, "modelId");
 		Objects.requireNonNull(elementIds, "elementIds");
 
-		if (!graph.hasModelReference(modelId)) {
+		if (!graph.hasModelReference(modelId))
 			throw new TraceModelNotFoundException(modelId);
-		}
 
-		if (service.isVisualisationActive()) {
+		if (service.isVisualisationActive())
 			fireModelSelectionNotification(modelId, elementIds);
-		}
+
 	}
 
 	@Override
@@ -228,9 +245,9 @@ final class ProjectTraceContext implements ITraceContext {
 	public Collection<String> resolveElementsByTrace(String startModelId, String endModelId,
 			Collection<String> elements, boolean bidirectional) {
 		var link = getModelChain(startModelId, endModelId);
-		if (link.isResolved()) {
+		if (link.isResolved())
 			return link.resolveElements(elements);
-		}
+
 		return Collections.emptyList();
 	}
 
@@ -261,9 +278,8 @@ final class ProjectTraceContext implements ITraceContext {
 
 		// TODO: run (each) in a separate thread with a cancellation token
 
-		for (var listener : selectionListener) {
+		for (var listener : selectionListener)
 			listener.selectedByModel(this, modelId, elementIds);
-		}
 	}
 
 	/**
@@ -274,9 +290,8 @@ final class ProjectTraceContext implements ITraceContext {
 	private void fireModelUpdateNotification(Set<String> updatedModels) {
 		Objects.requireNonNull(updatedModels, "updatedModels");
 		graphDirty = true;
-		for (var listener : this.updateListener) {
+		for (var listener : this.updateListener)
 			listener.updatedModels(this, updatedModels);
-		}
 	}
 
 }

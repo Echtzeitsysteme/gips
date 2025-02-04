@@ -20,8 +20,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.emoflon.gips.debugger.api.ITraceContext;
 import org.emoflon.gips.debugger.api.ITraceManager;
-import org.emoflon.gips.debugger.api.ITraceUpdateListener;
 import org.emoflon.gips.debugger.api.event.ITraceManagerListener;
+import org.emoflon.gips.debugger.api.event.ITraceUpdateListener;
 import org.emoflon.gips.debugger.api.event.TraceManagerEvent;
 
 public class GipsTraceView extends ViewPart {
@@ -104,7 +104,7 @@ public class GipsTraceView extends ViewPart {
 				for (var contextId : availableContextIds) {
 					rNode.childs.computeIfAbsent(contextId, id -> {
 						var cNode = new ContextNode(rNode, id);
-						cNode.listener = (context, modelIds) -> refreshNode.accept(cNode);
+						cNode.listener = event -> refreshNode.accept(cNode);
 						trace.getContext(id).addListener(cNode.listener);
 						return cNode;
 					});

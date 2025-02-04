@@ -1,7 +1,9 @@
-package org.emoflon.gips.debugger.api;
+package org.emoflon.gips.debugger.api.event;
 
 import java.util.Collection;
 import java.util.EventListener;
+
+import org.emoflon.gips.debugger.api.ITraceContext;
 
 /**
  * Interface for listening to selection events created by the tracing framework.
@@ -14,9 +16,8 @@ public interface ITraceSelectionListener extends EventListener {
 	/**
 	 * Notifies this listener that a selection has been made.
 	 * 
-	 * @param context    the context in which the event was raised
-	 * @param modelId    the model that triggered the event
-	 * @param elementIds the elements that have been selected on {@code modelId}
+	 * @param event which was raised, contains all relevant data
+	 * @see TraceSelectionEvent
 	 */
-	public void selectedByModel(ITraceContext context, String modelId, Collection<String> elementIds);
+	public void selectedByModel(TraceSelectionEvent event);
 }

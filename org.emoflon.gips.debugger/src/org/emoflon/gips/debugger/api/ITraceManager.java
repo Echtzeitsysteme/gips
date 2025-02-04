@@ -5,6 +5,8 @@ import java.util.Set;
 
 import org.emoflon.gips.debugger.TracePlugin;
 import org.emoflon.gips.debugger.api.event.ITraceManagerListener;
+import org.emoflon.gips.debugger.api.event.ITraceSelectionListener;
+import org.emoflon.gips.debugger.api.event.ITraceUpdateListener;
 
 public interface ITraceManager {
 

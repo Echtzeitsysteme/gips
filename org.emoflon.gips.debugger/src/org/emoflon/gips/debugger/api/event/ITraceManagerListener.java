@@ -4,5 +4,7 @@ import java.util.EventListener;
 
 @FunctionalInterface
 public interface ITraceManagerListener extends EventListener {
+
 	void contextChanged(TraceManagerEvent event);
+
 }

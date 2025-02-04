@@ -18,8 +18,9 @@ import org.eclipse.ui.SelectionListenerFactory.ISelectionModel;
 import org.emoflon.gips.debugger.TracePlugin;
 import org.emoflon.gips.debugger.api.ITraceContext;
 import org.emoflon.gips.debugger.api.ITraceManager;
-import org.emoflon.gips.debugger.api.ITraceSelectionListener;
 import org.emoflon.gips.debugger.api.TraceModelNotFoundException;
+import org.emoflon.gips.debugger.api.event.ITraceSelectionListener;
+import org.emoflon.gips.debugger.api.event.TraceSelectionEvent;
 import org.emoflon.gips.debugger.listener.PartSelectionFilterListener;
 
 /**
@@ -81,7 +82,7 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 		editor.addPropertyListener(propertyListener);
 		editor.getSite().getService(IPartService.class).addPartListener(partListener);
 		editor.getSite().getService(ISelectionService.class).addPostSelectionListener(partSelectionListener);
-		TracePlugin.getInstance().getTraceManager().addListener(getContextId(), traceSelectionListener);
+		ITraceManager.getInstance().getContext(getContextId()).addListener(traceSelectionListener);
 
 		isInstalled = true;
 	}
@@ -95,7 +96,7 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 		editor.removePropertyListener(propertyListener);
 		editor.getSite().getService(IPartService.class).removePartListener(partListener);
 		editor.getSite().getService(ISelectionService.class).removePostSelectionListener(partSelectionListener);
-		TracePlugin.getInstance().getTraceManager().removeListener(traceSelectionListener);
+		ITraceManager.getInstance().removeListener(traceSelectionListener);
 
 		this.partListener = null;
 		this.propertyListener = null;
@@ -120,8 +121,8 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 		return (source, propId) -> {
 			if (IEditorPart.PROP_INPUT == propId) {
 				onEditorInputChange();
-				TracePlugin.getInstance().getTraceManager().removeListener(traceSelectionListener);
-				TracePlugin.getInstance().getTraceManager().addListener(getContextId(), traceSelectionListener);
+				ITraceManager.getInstance().removeListener(traceSelectionListener);
+				ITraceManager.getInstance().getContext(getContextId()).addListener(traceSelectionListener);
 			}
 		};
 	}
@@ -132,8 +133,8 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 	}
 
 	protected ITraceSelectionListener buildTraceSelectionListener() {
-		return (context, modelId, selection) -> {
-			onTraceSelection(context, modelId, selection);
+		return event -> {
+			onTraceSelection(event);
 		};
 	}
 
@@ -176,12 +177,12 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 		}
 	}
 
-	protected void onTraceSelection(ITraceContext context, String modelId, Collection<String> selectedElementsById) {
+	protected void onTraceSelection(TraceSelectionEvent event) {
 		if (pauseTraceSelection) {
 			return;
 		}
 
-		if (getModelId().equals(modelId)) {
+		if (getModelId().equals(event.getModelId())) {
 			return;
 		}
 
@@ -190,14 +191,14 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 			return;
 		}
 
-		if (!context.hasTraceFor(getModelId())) {
+		if (!event.getContext().hasTraceFor(getModelId())) {
 			return;
 		}
 
-		if (selectedElementsById.isEmpty()) {
+		if (event.getElementIds().isEmpty()) {
 			removeEditorHighlight();
 		} else {
-			computeEditorHighligt(context, modelId, selectedElementsById);
+			computeEditorHighligt(event.getContext(), event.getModelId(), event.getElementIds());
 		}
 	}
 

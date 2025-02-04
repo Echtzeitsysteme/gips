@@ -25,9 +25,11 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.emoflon.gips.debugger.TracePlugin;
 import org.emoflon.gips.debugger.api.IModelLink;
 import org.emoflon.gips.debugger.api.ITraceContext;
-import org.emoflon.gips.debugger.api.ITraceSelectionListener;
-import org.emoflon.gips.debugger.api.ITraceUpdateListener;
 import org.emoflon.gips.debugger.api.TraceModelNotFoundException;
+import org.emoflon.gips.debugger.api.event.ITraceSelectionListener;
+import org.emoflon.gips.debugger.api.event.ITraceUpdateListener;
+import org.emoflon.gips.debugger.api.event.TraceSelectionEvent;
+import org.emoflon.gips.debugger.api.event.TraceUpdateEvent;
 import org.emoflon.gips.debugger.pref.PluginPreferences;
 import org.emoflon.gips.debugger.trace.EcoreReader;
 import org.emoflon.gips.debugger.trace.ModelReference;
@@ -278,8 +280,9 @@ final class ProjectTraceContext implements ITraceContext {
 
 		// TODO: run (each) in a separate thread with a cancellation token
 
+		var event = new TraceSelectionEvent(this, modelId, elementIds);
 		for (var listener : selectionListener)
-			listener.selectedByModel(this, modelId, elementIds);
+			listener.selectedByModel(event);
 	}
 
 	/**
@@ -290,8 +293,10 @@ final class ProjectTraceContext implements ITraceContext {
 	private void fireModelUpdateNotification(Set<String> updatedModels) {
 		Objects.requireNonNull(updatedModels, "updatedModels");
 		graphDirty = true;
+
+		var event = new TraceUpdateEvent(this, updatedModels);
 		for (var listener : this.updateListener)
-			listener.updatedModels(this, updatedModels);
+			listener.updatedModels(event);
 	}
 
 }

@@ -15,7 +15,6 @@ public final class TraceManagerEvent {
 	private final String contextId;
 
 	public TraceManagerEvent(ITraceManager source, EventType eventType, String contextId) {
-		super();
 		this.source = Objects.requireNonNull(source, "source");
 		this.eventType = Objects.requireNonNull(eventType, "eventType");
 		this.contextId = Objects.requireNonNull(contextId, "contextId");

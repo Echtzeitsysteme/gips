@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.URI;
+import org.emoflon.gips.debugger.api.event.ITraceSelectionListener;
+import org.emoflon.gips.debugger.api.event.ITraceUpdateListener;
 import org.emoflon.gips.debugger.trace.TraceModelLink;
 
 public interface ITraceContext {

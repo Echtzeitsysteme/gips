@@ -5,25 +5,25 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.emoflon.gips.core.ilp.ILPSolver;
-import org.emoflon.gips.core.ilp.ILPSolverOutput;
-import org.emoflon.gips.core.ilp.ILPSolverStatus;
-import org.emoflon.gips.core.ilp.ILPVariable;
+import org.emoflon.gips.core.milp.Solver;
+import org.emoflon.gips.core.milp.SolverOutput;
+import org.emoflon.gips.core.milp.SolverStatus;
+import org.emoflon.gips.core.milp.model.Variable;
 import org.emoflon.gips.core.util.Observer;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
-import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 
 public abstract class GipsEngine {
 
-	final protected Map<String, GipsMapper<?>> mappers = new HashMap<>();
-	final protected Map<Object, Map<String, ILPVariable<?>>> nonMappingVariables = Collections
-			.synchronizedMap(new HashMap<>());
 	protected TypeIndexer indexer;
 	protected GipsConstraintValidationLog validationLog;
-	final protected Map<String, GipsConstraint<?, ?, ?>> constraints = new HashMap<>();
-	final protected Map<String, GipsObjective<?, ?, ?>> objectives = new HashMap<>();
-	protected GipsGlobalObjective globalObjective;
-	protected ILPSolver ilpSolver;
+	final protected Map<String, GipsMapper<?>> mappers = Collections.synchronizedMap(new HashMap<>());
+	final protected Map<Object, Map<String, Variable<?>>> nonMappingVariables = Collections
+			.synchronizedMap(new HashMap<>());
+	final protected Map<String, Object> globalConstants = Collections.synchronizedMap(new HashMap<>());
+	final protected Map<String, GipsConstraint<?, ?, ?>> constraints = Collections.synchronizedMap(new HashMap<>());
+	final protected Map<String, GipsLinearFunction<?, ?, ?>> functions = Collections.synchronizedMap(new HashMap<>());
+	protected GipsObjective objective;
+	protected Solver solver;
 
 	public abstract void update();
 
@@ -31,7 +31,9 @@ public abstract class GipsEngine {
 
 	public abstract void saveResult(final String path) throws IOException;
 
-	public void buildILPProblemTimed(boolean doUpdate) {
+	protected abstract void updateConstants();
+
+	public void buildProblemTimed(boolean doUpdate) {
 		Observer observer = Observer.getInstance();
 		observer.observe("BUILD", () -> {
 			if (doUpdate)
@@ -47,7 +49,7 @@ public abstract class GipsEngine {
 				nonMappingVariables.clear();
 				mappers.values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
 						.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
-							Map<String, ILPVariable<?>> variables = nonMappingVariables.get(m);
+							Map<String, Variable<?>> variables = nonMappingVariables.get(m);
 							if (variables == null) {
 								variables = Collections.synchronizedMap(new HashMap<>());
 								nonMappingVariables.put(m, variables);
@@ -56,19 +58,22 @@ public abstract class GipsEngine {
 						});
 
 				constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());
+
+				updateConstants();
+
 				constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
 
-				if (globalObjective != null)
-					globalObjective.buildObjectiveFunction();
+				if (objective != null)
+					objective.buildObjectiveFunction();
 			});
 
 			observer.observe("BUILD_SOLVER", () -> {
-				ilpSolver.buildILPProblem();
+				solver.buildILPProblem();
 			});
 		});
 	}
 
-	public void buildILPProblem(boolean doUpdate) {
+	public void buildProblem(boolean doUpdate) {
 		if (doUpdate)
 			update();
 
@@ -86,7 +91,7 @@ public abstract class GipsEngine {
 		nonMappingVariables.clear();
 		mappers.values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
 				.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
-					Map<String, ILPVariable<?>> variables = nonMappingVariables.get(m);
+					Map<String, Variable<?>> variables = nonMappingVariables.get(m);
 					if (variables == null) {
 						variables = Collections.synchronizedMap(new HashMap<>());
 						nonMappingVariables.put(m, variables);
@@ -95,44 +100,45 @@ public abstract class GipsEngine {
 				});
 
 		constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());
-		constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
-		if (globalObjective != null)
-			globalObjective.buildObjectiveFunction();
 
-		ilpSolver.buildILPProblem();
+		updateConstants();
+
+		constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
+		if (objective != null)
+			objective.buildObjectiveFunction();
+
+		solver.buildILPProblem();
 	}
 
-	public ILPSolverOutput solveILPProblemTimed() {
+	public SolverOutput solveProblemTimed() {
 		Observer observer = Observer.getInstance();
-		ILPSolverOutput out = observer.observe("SOLVE_PROBLEM", () -> {
+		SolverOutput out = observer.observe("SOLVE_PROBLEM", () -> {
 			if (validationLog.isNotValid()) {
-				ILPSolverOutput output = new ILPSolverOutput(ILPSolverStatus.INFEASIBLE, Double.NaN, validationLog, 0,
-						null);
-				ilpSolver.reset();
+				SolverOutput output = new SolverOutput(SolverStatus.INFEASIBLE, Double.NaN, validationLog, 0, null);
+				solver.reset();
 				return output;
 			}
-			ILPSolverOutput output = ilpSolver.solve();
-			if (output.status() != ILPSolverStatus.INFEASIBLE && output.solutionCount() > 0)
-				ilpSolver.updateValuesFromSolution();
+			SolverOutput output = solver.solve();
+			if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0)
+				solver.updateValuesFromSolution();
 
-			ilpSolver.reset();
+			solver.reset();
 			return output;
 		});
 		return out;
 	}
 
-	public ILPSolverOutput solveILPProblem() {
+	public SolverOutput solveProblem() {
 		if (validationLog.isNotValid()) {
-			ILPSolverOutput output = new ILPSolverOutput(ILPSolverStatus.INFEASIBLE, Double.NaN, validationLog, 0,
-					null);
-			ilpSolver.reset();
+			SolverOutput output = new SolverOutput(SolverStatus.INFEASIBLE, Double.NaN, validationLog, 0, null);
+			solver.reset();
 			return output;
 		}
-		ILPSolverOutput output = ilpSolver.solve();
-		if (output.status() != ILPSolverStatus.INFEASIBLE && output.solutionCount() > 0)
-			ilpSolver.updateValuesFromSolution();
+		SolverOutput output = solver.solve();
+		if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0)
+			solver.updateValuesFromSolution();
 
-		ilpSolver.reset();
+		solver.reset();
 		return output;
 	}
 
@@ -148,8 +154,8 @@ public abstract class GipsEngine {
 		return constraints;
 	}
 
-	public Map<String, GipsObjective<?, ?, ?>> getObjectives() {
-		return objectives;
+	public Map<String, GipsLinearFunction<?, ?, ?>> getLinearFunctions() {
+		return functions;
 	}
 
 	public TypeIndexer getIndexer() {
@@ -160,20 +166,20 @@ public abstract class GipsEngine {
 		return validationLog;
 	}
 
-	public GipsGlobalObjective getGlobalObjective() {
-		return globalObjective;
+	public GipsObjective getObjective() {
+		return objective;
 	}
 
 	public void terminate() {
-		ilpSolver.terminate();
+		solver.terminate();
 		indexer.terminate();
 		mappers.forEach((name, mapper) -> mapper.terminate());
 	}
 
 	protected abstract void initTypeIndexer();
 
-	public synchronized ILPVariable<?> getNonMappingVariable(final Object context, final String variableTypeName) {
-		Map<String, ILPVariable<?>> variables = nonMappingVariables.get(context);
+	public synchronized Variable<?> getNonMappingVariable(final Object context, final String variableTypeName) {
+		Map<String, Variable<?>> variables = nonMappingVariables.get(context);
 		if (variables == null)
 			throw new RuntimeException(
 					"Variable <" + variableTypeName + "> is not present in the non-mapping variable index.");
@@ -182,9 +188,9 @@ public abstract class GipsEngine {
 
 	}
 
-	public synchronized void addNonMappingVariable(final Object context, final Variable variableType,
-			ILPVariable<?> variable) {
-		Map<String, ILPVariable<?>> variables = nonMappingVariables.get(context);
+	public synchronized void addNonMappingVariable(final Object context,
+			final org.emoflon.gips.intermediate.GipsIntermediate.Variable variableType, Variable<?> variable) {
+		Map<String, Variable<?>> variables = nonMappingVariables.get(context);
 		if (variables == null) {
 			variables = Collections.synchronizedMap(new HashMap<>());
 			nonMappingVariables.put(context, variables);
@@ -193,7 +199,18 @@ public abstract class GipsEngine {
 
 	}
 
-	public synchronized void removeNonMappingVariable(final ILPVariable<?> ilpVar) {
+	public synchronized void addConstantValue(final String constant, final Object value) {
+		globalConstants.put(constant, value);
+	}
+
+	public synchronized Object getConstantValue(final String constant) {
+		if (!globalConstants.containsKey(constant))
+			throw new RuntimeException("Constant <" + constant + "> is not present in the constants index.");
+
+		return globalConstants.get(constant);
+	}
+
+	public synchronized void removeNonMappingVariable(final Variable<?> ilpVar) {
 		nonMappingVariables.remove(ilpVar.getName());
 	}
 
@@ -205,15 +222,15 @@ public abstract class GipsEngine {
 		constraints.put(constraint.getName(), constraint);
 	}
 
-	protected void addObjective(final GipsObjective<?, ?, ?> objective) {
-		objectives.put(objective.getName(), objective);
+	protected void addLinearFunction(final GipsLinearFunction<?, ?, ?> function) {
+		functions.put(function.getName(), function);
 	}
 
-	protected void setGlobalObjective(final GipsGlobalObjective globalObjective) {
-		this.globalObjective = globalObjective;
+	protected void setObjective(final GipsObjective objective) {
+		this.objective = objective;
 	}
 
-	public void setILPSolver(final ILPSolver solver) {
-		this.ilpSolver = solver;
+	public void setSolver(final Solver solver) {
+		this.solver = solver;
 	}
 }

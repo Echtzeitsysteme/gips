@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.emoflon.gips.feature_1.0.0.qualifier.jar" id="org.emoflon.gips.feature" version="1.0.0.qualifier">
+   <feature url="features/org.emoflon.gips.feature_1.5.0.qualifier.jar" id="org.emoflon.gips.feature" version="1.5.0.qualifier">
       <category name="gips"/>
    </feature>
    <category-def name="gips" label="GIPS">

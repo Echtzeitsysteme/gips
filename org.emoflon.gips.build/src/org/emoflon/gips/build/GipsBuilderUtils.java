@@ -187,7 +187,7 @@ public final class GipsBuilderUtils {
 		findAllEPackages(model.getIbexModel(), packageRegistry);
 		model.getConstraints().stream().filter(constr -> constr instanceof TypeConstraint)
 				.map(constr -> (TypeConstraint) constr).forEach(constr -> {
-					EPackage foreign = constr.getModelType().getType().getEPackage();
+					EPackage foreign = constr.getType().getEPackage();
 					if (!packageRegistry.containsKey(foreign.getNsURI())) {
 						packageRegistry.put(foreign.getNsURI(), foreign);
 					}

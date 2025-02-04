@@ -1,49 +1,46 @@
 package org.emoflon.gips.core;
 
+import java.util.LinkedList;
 import java.util.List;
 
-import org.emoflon.gips.core.ilp.ILPConstant;
-import org.emoflon.gips.core.ilp.ILPLinearFunction;
-import org.emoflon.gips.core.ilp.ILPTerm;
+import org.emoflon.gips.core.milp.model.Constant;
+import org.emoflon.gips.core.milp.model.NestedLinearFunction;
+import org.emoflon.gips.core.milp.model.WeightedLinearFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
 
-public abstract class GipsObjective<ENGINE extends GipsEngine, OBJECTIVE extends Objective, CONTEXT extends Object> {
-	final protected ENGINE engine;
-	final protected OBJECTIVE objective;
-	final protected String name;
-	final protected TypeIndexer indexer;
-	protected List<ILPTerm> terms;
-	protected List<ILPConstant> constantTerms;
-	protected ILPLinearFunction ilpObjective;
+public abstract class GipsObjective {
 
-	public GipsObjective(final ENGINE engine, final OBJECTIVE objective) {
+	final protected GipsEngine engine;
+	final protected Objective objective;
+	protected NestedLinearFunction milpObjective;
+	protected List<WeightedLinearFunction> weightedFunctions;
+	protected List<Constant> constantTerms;
+
+	public GipsObjective(final GipsEngine engine, final Objective objective) {
 		this.engine = engine;
 		this.objective = objective;
-		this.name = objective.getName();
-		indexer = engine.getIndexer();
+		initLocalObjectives();
 	}
 
-	/**
-	 * Clears all Lists within this objective builder.
-	 */
-	public void clear() {
-		if (terms != null) {
-			terms.clear();
-		}
-		if (constantTerms != null) {
-			constantTerms.clear();
-		}
+	public void buildObjectiveFunction() {
+		weightedFunctions = new LinkedList<>();
+		constantTerms = new LinkedList<>();
+		buildLocalObjectives();
+		buildTerms();
+		milpObjective = new NestedLinearFunction(weightedFunctions, constantTerms, objective.getGoal());
 	}
 
-	public abstract void buildObjectiveFunction();
-
-	public String getName() {
-		return name;
+	public NestedLinearFunction getObjectiveFunction() {
+		return milpObjective;
 	}
 
-	public ILPLinearFunction getObjectiveFunction() {
-		return ilpObjective;
+	protected void buildLocalObjectives() {
+		// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT
+		// language
+		engine.getLinearFunctions().values().stream().forEach(fn -> fn.buildLinearFunction());
 	}
 
-	protected abstract void buildTerms(final CONTEXT context);
+	protected abstract void initLocalObjectives();
+
+	protected abstract void buildTerms();
 }

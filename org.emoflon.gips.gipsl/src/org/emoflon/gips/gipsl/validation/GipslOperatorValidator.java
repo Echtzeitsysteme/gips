@@ -2,13 +2,15 @@ package org.emoflon.gips.gipsl.validation;
 
 import org.eclipse.xtext.validation.Check;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
-import org.emoflon.gips.gipsl.gipsl.GipsBoolExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsImplicationBoolExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsOrBoolExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsRelExpr;
-import org.emoflon.gips.gipsl.gipsl.GipsRelOperator;
+import org.emoflon.gips.gipsl.gipsl.GipsBooleanDisjunction;
+import org.emoflon.gips.gipsl.gipsl.GipsBooleanExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsBooleanImplication;
+import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
+import org.emoflon.gips.gipsl.gipsl.RelationalOperator;
 import org.emoflon.gips.gipsl.gipsl.SolverType;
+import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
+import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
 
 /**
  * This class is a validator for the operators used in the relational
@@ -25,8 +27,7 @@ public class GipslOperatorValidator {
 	 * 
 	 * @param expr Implication or equivalence Boolean expression to check.
 	 */
-	@Check
-	public static void checkImpl(final GipsImplicationBoolExpr expr) {
+	public static void checkBooleanImplication(final GipsBooleanImplication expr) {
 		checkAndWarn(expr);
 	}
 
@@ -35,8 +36,7 @@ public class GipslOperatorValidator {
 	 * 
 	 * @param expr Or Boolean expression to check.
 	 */
-	@Check
-	public static void checkOr(final GipsOrBoolExpr expr) {
+	public static void checkBooleanDisjunction(final GipsBooleanDisjunction expr) {
 		checkAndWarn(expr);
 	}
 
@@ -46,10 +46,10 @@ public class GipslOperatorValidator {
 	 * @param expr Relational Boolean expression to check.
 	 */
 	@Check
-	public static void checkRel(final GipsRelExpr expr) {
-		if (!(expr.getOperator() == GipsRelOperator.EQUAL //
-				|| expr.getOperator() == GipsRelOperator.SMALLER_OR_EQUAL //
-				|| expr.getOperator() == GipsRelOperator.GREATER_OR_EQUAL)) {
+	public static void checkRelationalExpression(final GipsRelationalExpression expr) {
+		if (!(expr.getOperator() == RelationalOperator.EQUAL //
+				|| expr.getOperator() == RelationalOperator.SMALLER_OR_EQUAL //
+				|| expr.getOperator() == RelationalOperator.GREATER_OR_EQUAL)) {
 			checkAndWarn(expr);
 		}
 	}
@@ -64,7 +64,7 @@ public class GipslOperatorValidator {
 	 * @param expr Boolean expression to check and potentially generate a warning
 	 *             for.
 	 */
-	private static void checkAndWarn(final GipsBoolExpr expr) {
+	private static void checkAndWarn(final GipsBooleanExpression expr) {
 		if (GipslValidator.DISABLE_VALIDATOR) {
 			return;
 		}
@@ -86,18 +86,9 @@ public class GipslOperatorValidator {
 	 * @return SolverType found in the EditorGTFile containing the given Boolean
 	 *         expression.
 	 */
-	private static SolverType getSolverFromExpr(final GipsBoolExpr expr) {
-		// find root element (= EditorGTFile)
-		int safety = 0;
-		var container = expr.eContainer();
-		while (container.eContainer() != null && safety < 1000) {
-			container = container.eContainer();
-			safety++;
-		}
-
-		// get configured solver type from EditorGTFile
-		final EditorGTFile gipslFile = (EditorGTFile) container;
-		return gipslFile.getConfig().getSolver();
+	private static SolverType getSolverFromExpr(final GipsBooleanExpression expr) {
+		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(expr, EditorGTFileImpl.class);
+		return editorFile.getConfig().getSolver();
 	}
 
 	/**
@@ -108,21 +99,21 @@ public class GipslOperatorValidator {
 	 * @param expr       Boolean expression on whose operator the warning must
 	 *                   appear.
 	 */
-	private static void generateSolverWarning(final SolverType solverType, final GipsBoolExpr expr) {
-		if (expr instanceof GipsImplicationBoolExpr implExpr) {
+	private static void generateSolverWarning(final SolverType solverType, final GipsBooleanExpression expr) {
+		if (expr instanceof GipsBooleanImplication implExpr) {
 			GipslValidator.warn( //
 					generateWarningString(solverType, implExpr.getOperator().getName()), //
-					GipslPackage.Literals.GIPS_IMPLICATION_BOOL_EXPR__OPERATOR //
+					GipslPackage.Literals.GIPS_BOOLEAN_IMPLICATION__OPERATOR //
 			);
-		} else if (expr instanceof GipsOrBoolExpr orExpr) {
+		} else if (expr instanceof GipsBooleanDisjunction orExpr) {
 			GipslValidator.warn( //
 					generateWarningString(solverType, orExpr.getOperator().getName()), //
-					GipslPackage.Literals.GIPS_OR_BOOL_EXPR__OPERATOR //
+					GipslPackage.Literals.GIPS_BOOLEAN_DISJUNCTION__OPERATOR //
 			);
-		} else if (expr instanceof GipsRelExpr relExpr) {
+		} else if (expr instanceof GipsRelationalExpression relExpr) {
 			GipslValidator.warn( //
 					generateWarningString(solverType, relExpr.getOperator().getName()), //
-					GipslPackage.Literals.GIPS_REL_EXPR__OPERATOR //
+					GipslPackage.Literals.GIPS_RELATIONAL_EXPRESSION__OPERATOR //
 			);
 		}
 	}

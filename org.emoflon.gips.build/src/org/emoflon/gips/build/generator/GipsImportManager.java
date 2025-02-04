@@ -206,14 +206,14 @@ public class GipsImportManager {
 	public static String variableToJavaDataType(final Variable var, final Collection<String> imports) {
 		switch (var.getType()) {
 		case BINARY:
-			imports.add("org.emoflon.gips.core.ilp.ILPBinaryVariable");
-			return "ILPBinaryVariable";
+			imports.add("org.emoflon.gips.core.milp.model.BinaryVariable");
+			return "BinaryVariable";
 		case INTEGER:
-			imports.add("org.emoflon.gips.core.ilp.ILPIntegerVariable");
-			return "ILPIntegerVariable";
+			imports.add("org.emoflon.gips.core.milp.model.IntegerVariable");
+			return "IntegerVariable";
 		case REAL:
-			imports.add("org.emoflon.gips.core.ilp.ILPRealVariable");
-			return "ILPRealVariable";
+			imports.add("org.emoflon.gips.core.milp.model.RealVariable");
+			return "RealVariable";
 		default:
 			throw new UnsupportedOperationException("Unsupported ilp variable data type : " + var.getType());
 

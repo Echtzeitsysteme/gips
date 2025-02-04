@@ -7,23 +7,21 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.emoflon.gips.gipsl.gipsl.EditorGTFile
-import org.eclipse.emf.common.util.URI
-import org.eclipse.emf.ecore.util.EcoreUtil
-import org.eclipse.core.resources.IWorkspace
-import org.eclipse.core.resources.ResourcesPlugin
-import org.eclipse.core.resources.IProject
-import java.util.function.Consumer
-import org.eclipse.core.runtime.ISafeRunnable
-import org.eclipse.core.runtime.SafeRunner
 import java.util.Collection
-import java.util.ArrayDeque
-import org.eclipse.core.runtime.Platform
-import org.eclipse.core.runtime.IConfigurationElement
-import org.eclipse.core.runtime.CoreException
-import java.io.FileNotFoundException
+import org.apache.log4j.Logger
+import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.xtext.resource.SynchronizedXtextResourceSet
+import org.emoflon.ibex.common.slimgt.util.SlimGTWorkspaceUtil
+import java.util.LinkedList
+import java.io.File
+import org.emoflon.gips.gipsl.util.GipslResourceManager
+import java.util.HashMap
+import org.eclipse.xtext.EcoreUtil2
+import org.emoflon.ibex.gt.gtl.gTL.EditorFile
+import org.emoflon.gips.gipsl.util.GipslModelFlattener
+import org.moflon.core.utilities.LogUtils
+import org.moflon.core.utilities.ExtensionsUtil
+import org.emoflon.ibex.common.slimgt.build.SlimGTBuilderExtension
 
 /**
  * Generates code from your model files on save.
@@ -32,117 +30,64 @@ import java.io.FileNotFoundException
  */
 class GipslGenerator extends AbstractGenerator {
 
-	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		// extract model out of the resource
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl())
-		val rs = new ResourceSetImpl;
-		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl())
-		val model = resource.contents.get(0) as EditorGTFile;
-		val output = rs.createResource(URI.createURI(resource.URI.trimFileExtension+".xmi"))
-		// add model and resolve
-		output.contents.add(model)
-		EcoreUtil.resolveAll(output)
+	Logger logger = Logger.getLogger(typeof(GipslGenerator));
+	var ResourceSet resourceSet = null
+
+	override void doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
+		var lResource = input.resourceSet as SynchronizedXtextResourceSet
+		val iProject = SlimGTWorkspaceUtil.getCurrentProject(input)
 		
-////		 configure save options
-//		val saveOptions = (output as XMIResource).getDefaultSaveOptions()
-//		saveOptions.put(XMIResource.OPTION_ENCODING,"UTF-8");
-//		saveOptions.put(XMIResource.OPTION_USE_XMI_TYPE, Boolean.TRUE);
-//		saveOptions.put(XMIResource.OPTION_SAVE_TYPE_INFORMATION,Boolean.TRUE);
-//		saveOptions.put(XMIResource.OPTION_SCHEMA_LOCATION_IMPLEMENTATION, Boolean.TRUE);
-//		// save output
-//		(output as XMIResource).save(saveOptions)
-//		System.out.println("Xtext model saved to: "+output.URI.path)
-		
-		// run the builder with model
-		val workspace = getWorkspace()
-		val project = getProjectOfResource(workspace, output)
-		if(project === null)
-			throw new FileNotFoundException("Could not find xtext model file: "+ output.URI.path)
-			
-		runBuilderExtensions([ext | ext.build(project, output)])
-	}
-	
-	/**
-	 * @returns the resource plugin workspace 
-	 */
-	def static IWorkspace getWorkspace() {
-		return ResourcesPlugin.getWorkspace()
-	}
-	
-	/**
-	 * Returns the project for resource URI in a given workspace
-	 * 
-	 * @param workspace
-	 * 				to be searched in for the project
-	 * @param resource
-	 * 				in the project, which should be returned
-	 * @return the project for the given resource or null, if no corresponding project
-	 * 				is found or the segment count for the resource is to small
-	 * 
-	 */
-	def static IProject getProjectOfResource(IWorkspace workspace, Resource resource) {
-		if(resource.URI.segmentCount<2)
-				return null;
-				
-		for(project : workspace.root.projects) {
-			val projectName = resource.URI.segment(1)
-			if(project.name.equalsIgnoreCase(projectName)) {
-				return project;
-			}
+		if(resourceSet === null) {
+			resourceSet = lResource
+		} else if(resourceSet !== null && !resourceSet.equals(lResource)) {
+			resourceSet = lResource
+		} else {
+			return
 		}
 		
-		return null;
-	}
-	
-	/**
-	 * Runs builder extensions with for all extensions with the GrapelBuilderExtension ID as a runnable.
-	 * 
-	 * @param action
-	 * 			the consumer action for the GrapelBuilderExtension
-	 * 
-	 */
-	def static void runBuilderExtensions(Consumer<GipsBuilderExtension> action) {
-		val ISafeRunnable runnable = new ISafeRunnable() {
-			
-			override handleException(Throwable e) {
-				System.err.println(e.getMessage())
-			}
-			
-			override run() throws Exception {
-				collectExtensions(GipsBuilderExtension.BUILDER_EXTENSON_ID, "class", typeof(GipsBuilderExtension))
-						.forEach(action);
-			}
-
-		};
-		SafeRunner.run(runnable);
-	}
-	
-	/**
-	 * Collects all registered extensions with the given ID.
-	 * 
-	 * @param extensionID
-	 *            the ID of the extension
-	 * @param property
-	 *            the name of the property
-	 * @param extensionType
-	 *            the extension type
-	 * @return all extensions with the given ID as extensions of the given type
-	 */
-	def static <T> Collection<T> collectExtensions(String extensionID, String property, Class<T> extensionType) {
-		val extensions = new ArrayDeque<T>();
-		val config = Platform.getExtensionRegistry().getConfigurationElementsFor(extensionID);
-		try {
-			for (IConfigurationElement e : config) {
-				val o = e.createExecutableExtension(property);
-				if (extensionType.isInstance(o)) {
-					extensions.add(extensionType.cast(o));
+		logger.info('''Building project «iProject.name» ...''')
+		val files = new LinkedList
+		SlimGTWorkspaceUtil.gatherFilesWithEnding(files, new File(iProject.location.toPortableString), ".gipsl", true)
+		
+		val manager = new GipslResourceManager();
+		val pkg2Files = new HashMap<String, Collection<EditorFile>>
+		for(File f : files) {
+			val efOpt = manager.loadGTLModelByFullPath(input, f.canonicalPath)
+			if(efOpt.isPresent) {
+				val ef = efOpt.get
+				var editorFiles = pkg2Files.get(ef.package.name)
+				if(editorFiles === null) {
+					editorFiles = new LinkedList
+					pkg2Files.put(ef.package.name, editorFiles)
 				}
+				editorFiles.add(ef)
+				EcoreUtil2.resolveLazyCrossReferences(ef.eResource, [| false]);
+				EcoreUtil2.resolveAll(ef)
 			}
-		} catch (CoreException ex) {
-			System.err.println(ex.message)
 		}
-
-		return extensions;
+		
+		logger.info('''Building project «iProject.name» -> flattening gipsl & gtl files ...''')
+		val pkg2flattened = new HashMap<String, org.emoflon.gips.gipsl.gipsl.EditorFile>
+		try{
+			flatten(pkg2flattened, pkg2Files, manager);
+		} catch(Exception e) {
+			LogUtils.error(logger, e)
+		}
+		
+		logger.info('''Building project «iProject.name» -> calling gips builder extensions ...''')
+		ExtensionsUtil
+			.collectExtensions(SlimGTBuilderExtension.BUILDER_EXTENSON_ID, "builder", typeof(SlimGTBuilderExtension))
+			.filter[builder | builder.hasProperNature(iProject)]
+			.forEach[builder | pkg2flattened.values.forEach[ef | builder.build(iProject, ef)]];
+	}
+	
+	def void flatten(HashMap<String, org.emoflon.gips.gipsl.gipsl.EditorFile> pkg2flattened, HashMap<String, Collection<EditorFile>> pkg2Files, GipslResourceManager manager) {
+		for(String pkg : pkg2Files.keySet) {
+			val efs = pkg2Files.get(pkg)
+			val flattener = new GipslModelFlattener(manager, efs)
+			val flattenedEf = flattener.flattenedModel
+			pkg2flattened.put(pkg, flattenedEf)
+		}
 	}
 }
  

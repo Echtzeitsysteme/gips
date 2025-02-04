@@ -1,31 +1,24 @@
-grammar org.emoflon.gips.gipsl.Gipsl with org.emoflon.ibex.gt.editor.GT
+grammar org.emoflon.gips.gipsl.Gipsl with org.emoflon.ibex.gt.gtl.GTL
 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
-import "http://www.emoflon.org/ibex/gt/editor/GT" as GT
+import "http://www.emoflon.org/ibex/gt/gtl/GTL" as GTL
 
 generate gipsl "http://www.emoflon.org/gips/gipsl/Gipsl"
 
 @Override 
-EditorGTFile: {EditorGTFile}
-	package = Package
-	(imports+=EditorImport)*
-	(importedPattern+=ImportedPattern)*
+EditorFile: {EditorFile}
+	package = PackageDeclaration
+	(imports+=Import)*
+	(importedPattern += PatternImport)*
 	config = GipsConfig
-  	(patterns+=EditorPattern |
-  	conditions+=EditorCondition |
-  	mappings += GipsMapping |
-  	constants += GipsConstant |
-  	constraints += GipsConstraint |
-  	functions += GipsLinearFunction)*
+  	(
+	  	rules +=SlimRule |
+	  	mappings += GipsMapping |
+	  	constants += GipsConstant |
+	  	constraints += GipsConstraint |
+	  	functions += GipsLinearFunction
+  	)*
   	(objective = GipsObjective)?	
-;
-
-Package: 
-	'package' name=GipsStringLiteral
-;
-
-ImportedPattern : 
-	'from' file = GipsStringLiteral 'import' pattern = [GT::EditorPattern|ID]
 ;
 
 GipsConfig : {GipsConfig}
@@ -47,13 +40,13 @@ enum SolverType:
 ;
 
 GipsMapping :
-	'mapping' name=ID 'to' pattern=[GT::EditorPattern|ID] ('{'
+	'mapping' name=ID 'to' pattern=[GTL::SlimRule|ID] ('{'
 		(variables += GipsMappingVariable)+
 	'}')?';'
 ;
 
 GipsMappingVariable :
-	'var' name=ID ':' type=[ecore::EDataType] (bound ?= 'bind' parameter=[GT::EditorParameter])?
+	'var' name=ID ':' type=[ecore::EDataType] (bound ?= 'bind' parameter=[GTL::SlimParameter])?
 ;
 
 GipsConstant:
@@ -122,15 +115,6 @@ enum ImplicationOperator:
   EQUIVALENCE='<=>'
 ;
 
-enum DisjunctionOperator:
-  OR='|' |
-  XOR='^'
-;
-
-enum ConjunctionOperator:
-  AND='&'
-;
-
 GipsBooleanLiteral:
 	literal = GipsBoolean
 ;
@@ -138,17 +122,6 @@ GipsBooleanLiteral:
 GipsRelationalExpression returns GipsBooleanExpression:
 	GipsArithmeticExpression({GipsRelationalExpression.left = current} operator=RelationalOperator right=GipsArithmeticExpression)*
 ;
-
-enum RelationalOperator:
-  GREATER='>' |
-  GREATER_OR_EQUAL='>=' |
-  EQUAL='==' |
-  UNEQUAL='!=' |
-  SMALLER_OR_EQUAL='<=' |
-  SMALLER='<'
-;
-
-
 
 GipsArithmeticExpression:
 	GipsArithmeticSum
@@ -235,11 +208,11 @@ GipsTypeExpression: {GipsTypeExpression}
 ;
 
 GipsPatternExpression: {GipsPatternExpression}
-	'patterns' '.' pattern=[GT::EditorPattern|ID]
+	'patterns' '.' pattern=[GTL::SlimRule|ID]
 ;
 
 GipsRuleExpression: {GipsRuleExpression}
-	'rules' '.' rule=[GT::EditorPattern|ID]
+	'rules' '.' rule=[GTL::SlimRule|ID]
 ;
 
 GipsLocalContextExpression: {GipsLocalContextExpression}
@@ -267,7 +240,7 @@ GipsVariableReferenceExpression returns GipsVariableReferenceExpression:
 ;
 
 GipsNodeExpression: {GipsNodeExpression}
-	'.' 'nodes' '.' node=[GT::EditorNode|ID]
+	'.' 'nodes' '.' node=[GTL::SlimRuleNode|ID]
 	(attributeExpression = GipsAttributeExpression)?
 ;
 
@@ -407,28 +380,10 @@ GipsInteger returns ecore::EInt:
 	(('-')? INT)
 ;
 
-@Override
-terminal INT returns ecore::EInt:
-	'0'..'9' ('0'..'9')*
-;
-
 GipsBoolean returns ecore::EBoolean:
 	TRUE | FALSE
 ;
 
-terminal TRUE returns ecore::EBoolean:
-	'true'
-;
-
-terminal FALSE returns ecore::EBoolean:
-	'false'
-;
-
 GipsStringLiteral:
 	STRING
-;
-
-@Override
-terminal STRING returns ecore::EString:
-	'"' ( '""' | !('"') )* '"'
 ;

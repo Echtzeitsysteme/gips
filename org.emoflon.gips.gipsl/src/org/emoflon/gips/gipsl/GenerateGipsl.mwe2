@@ -11,8 +11,8 @@ Workflow {
 	bean = StandaloneSetup {
 		    platformUri = "${rootPath}"
     		scanClassPath = true
-    		registerGeneratedEPackage = "org.emoflon.ibex.gt.editor.gT.GTPackage"
-    		registerGenModelFile = "platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.genmodel"
+    		registerGeneratedEPackage = "org.emoflon.ibex.gt.gtl.gTL.GTLPackage"
+    		registerGenModelFile = "platform:/resource/org.emoflon.ibex.gt.gtl/model/generated/GTL.genmodel"
 	}
 	
 	component = XtextGenerator {
@@ -42,7 +42,7 @@ Workflow {
 			name = "org.emoflon.gips.gipsl.Gipsl"
 			fileExtensions = "gipsl"
 			
-			referencedResource = "platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.genmodel"
+			referencedResource = "platform:/resource/org.emoflon.ibex.gt.gtl/model/generated/GTL.genmodel"
 
 			serializer = {
 				generateStub = false

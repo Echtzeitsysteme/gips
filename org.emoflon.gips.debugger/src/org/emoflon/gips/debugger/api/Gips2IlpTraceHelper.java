@@ -16,16 +16,16 @@ import org.emoflon.gips.debugger.trace.TransformGraph2Ecore;
 import org.emoflon.gips.debugger.trace.resolver.ResolveEcore2Id;
 import org.emoflon.gips.debugger.trace.resolver.ResolveIdentity2Id;
 
-//TODO: move this to org.emoflon.gips.core
-//TODO: export trace dependency
-//TODO: debugger shouldn't be needed as a dependency to run gips
 public class Gips2IlpTraceHelper {
 
 	private final TraceMap<EObject, String> gips2intern = new TraceMap<>();
+	@Deprecated
 	private final TraceMap<String, String> intern2lp = new TraceMap<>();
 
 	@Deprecated
 	private Path saveLocation;
+
+	private int rmiServicePort = 2842;
 	private String gipsModelId;
 	private String ilpModelId;
 
@@ -41,13 +41,17 @@ public class Gips2IlpTraceHelper {
 		gips2intern.map(src, dst);
 	}
 
+	public void setRMIPort(int port) {
+		this.rmiServicePort = port;
+	}
+
 	public void finalizeTrace() {
 		var mapping = TraceMap.normalize(gips2intern, ResolveEcore2Id.INSTANCE, ResolveIdentity2Id.INSTANCE);
 		var link = new TraceModelLink(gipsModelId, ilpModelId, mapping);
 
 		try {
-			ITraceRemoteService service = (ITraceRemoteService) LocateRegistry.getRegistry(2842)
-					.lookup("ITraceRemoteService");
+			ITraceRemoteService service = (ITraceRemoteService) LocateRegistry.getRegistry(rmiServicePort)
+					.lookup(ITraceRemoteService.SERVICE_NAME);
 
 			// this should, in theory, be the eclipse project name
 			var workingDirectoryName = Paths.get("").toAbsolutePath().getFileName().toString();

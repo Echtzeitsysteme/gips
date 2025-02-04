@@ -18,6 +18,9 @@ import org.emoflon.gips.debugger.trace.TraceModelLink;
  * 
  */
 public interface ITraceRemoteService extends Remote {
+
+	public static final String SERVICE_NAME = "ITraceRemoteService";
+
 	/**
 	 * Updates the trace data of a given Eclipse project.
 	 * 

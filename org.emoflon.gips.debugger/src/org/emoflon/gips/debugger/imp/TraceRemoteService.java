@@ -65,7 +65,7 @@ public final class TraceRemoteService implements ITraceRemoteService {
 		try { // setup RMI service
 			exportedStub = (ITraceRemoteService) UnicastRemoteObject.exportObject(this, 0);
 			registry = LocateRegistry.createRegistry(port);
-			registry.bind("ITraceRemoteService", exportedStub);
+			registry.bind(ITraceRemoteService.SERVICE_NAME, exportedStub);
 		} catch (AccessException e) {
 			throw new IllegalStateException("Unable to start service. Access denied", e);
 		} catch (AlreadyBoundException e) {
@@ -89,7 +89,7 @@ public final class TraceRemoteService implements ITraceRemoteService {
 		}
 
 		try {
-			registry.unbind("ITraceRemoteService");
+			registry.unbind(ITraceRemoteService.SERVICE_NAME);
 			registry = null;
 		} catch (AccessException e) {
 			throw new IllegalStateException("Unable to shutdown service. Access denied", e);
@@ -129,7 +129,6 @@ public final class TraceRemoteService implements ITraceRemoteService {
 
 	@Override
 	public void updateTraceModel(String contextId, TraceModelLink traceLink) {
-		// TODO Auto-generated method stub
 		var context = TracePlugin.getInstance().getTraceManager().getContext(contextId);
 		context.updateTraceModel(traceLink);
 	}

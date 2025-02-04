@@ -24,6 +24,7 @@ public class Gips2IlpTraceHelper {
 	private final TraceMap<EObject, String> gips2intern = new TraceMap<>();
 	private final TraceMap<String, String> intern2lp = new TraceMap<>();
 
+	@Deprecated
 	private Path saveLocation;
 	private String gipsModelId;
 	private String ilpModelId;
@@ -41,11 +42,6 @@ public class Gips2IlpTraceHelper {
 	}
 
 	public void finalizeTrace() {
-		var startTimeA = System.nanoTime();
-		saveGraph();
-		System.out.println("TRACE TRANSFER - TIME A (partial): " + (System.nanoTime() - startTimeA));
-
-		var startTimeB = System.nanoTime();
 		var mapping = TraceMap.normalize(gips2intern, ResolveEcore2Id.INSTANCE, ResolveIdentity2Id.INSTANCE);
 		var link = new TraceModelLink(gipsModelId, ilpModelId, mapping);
 
@@ -60,8 +56,6 @@ public class Gips2IlpTraceHelper {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		System.out.println("TRACE TRANSFER - TIME B (fully): " + (System.nanoTime() - startTimeB));
 	}
 
 	private TraceGraph buildGraph() {
@@ -72,14 +66,15 @@ public class Gips2IlpTraceHelper {
 		return graph;
 	}
 
-	private void saveGraph() {
+	public void saveGraph(Path filePath) {
 		var graph = buildGraph();
 
 		var root = TransformGraph2Ecore.buildModelFromGraph(graph);
-		var uri = URI.createFileURI(saveLocation.toAbsolutePath().toString());
+		var uri = URI.createFileURI(filePath.toAbsolutePath().toString());
 		EcoreWriter.saveModel(root, uri);
 	}
 
+	@Deprecated
 	public void setOutputLocation(Path filePath) {
 		this.saveLocation = filePath;
 	}

@@ -1,6 +1,5 @@
 package org.emoflon.gips.build.generator.templates.function
 
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils
@@ -11,9 +10,10 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryOperator
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunction
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference
+import org.emoflon.gips.build.GipsAPIData
 
 abstract class LinearFunctionTemplate <OBJECTIVE extends LinearFunction> extends ProblemGeneratorTemplate<OBJECTIVE> {
-	new(TemplateData data, OBJECTIVE context) {
+	new(GipsAPIData data, OBJECTIVE context) {
 		super(data, context)
 	}
 	

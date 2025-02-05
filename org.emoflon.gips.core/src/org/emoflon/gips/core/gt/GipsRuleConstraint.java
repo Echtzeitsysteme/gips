@@ -12,13 +12,16 @@ import org.emoflon.gips.core.validation.GipsValidationEventType;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleConstraint;
-import org.emoflon.ibex.gt.api.GraphTransformationMatch;
-import org.emoflon.ibex.gt.api.GraphTransformationRule;
+import org.emoflon.ibex.gt.engine.IBeXGTCoMatch;
+import org.emoflon.ibex.gt.engine.IBeXGTCoPattern;
+import org.emoflon.ibex.gt.engine.IBeXGTMatch;
+import org.emoflon.ibex.gt.engine.IBeXGTPattern;
+import org.emoflon.ibex.gt.engine.IBeXGTRule;
 
-public abstract class GipsRuleConstraint<ENGINE extends GipsEngine, M extends GraphTransformationMatch<M, R>, R extends GraphTransformationRule<M, R>>
+public abstract class GipsRuleConstraint<ENGINE extends GipsEngine, R extends IBeXGTRule<R, P, M, CP, CM>, P extends IBeXGTPattern<P, M>, M extends IBeXGTMatch<M, P>, CP extends IBeXGTCoPattern<CP, CM, R, P, M>, CM extends IBeXGTCoMatch<CM, CP, R, P, M>>
 		extends GipsConstraint<ENGINE, RuleConstraint, M> {
 
-	final protected GraphTransformationRule<M, R> rule;
+	final protected R rule;
 
 	public GipsRuleConstraint(ENGINE engine, RuleConstraint constraint, final R rule) {
 		super(engine, constraint);
@@ -29,7 +32,7 @@ public abstract class GipsRuleConstraint<ENGINE extends GipsEngine, M extends Gr
 	public void buildConstraints() {
 		// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT
 		// language
-		rule.findMatches(false).stream().forEach(context -> {
+		rule.getMatches(false).stream().forEach(context -> {
 			final Constraint candidate = buildConstraint(context);
 			if (candidate != null) {
 				ilpConstraints.put(context, buildConstraint(context));
@@ -39,7 +42,7 @@ public abstract class GipsRuleConstraint<ENGINE extends GipsEngine, M extends Gr
 		if (constraint.isDepending()) {
 			// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT
 			// language
-			rule.findMatches(false).stream().forEach(context -> {
+			rule.getMatches(false).stream().forEach(context -> {
 				final List<Constraint> constraints = buildAdditionalConstraints(context);
 				additionalIlpConstraints.put(context, constraints);
 			});
@@ -160,7 +163,7 @@ public abstract class GipsRuleConstraint<ENGINE extends GipsEngine, M extends Gr
 	@Override
 	public void calcAdditionalVariables() {
 		for (org.emoflon.gips.intermediate.GipsIntermediate.Variable variable : constraint.getHelperVariables()) {
-			for (M context : rule.findMatches(false)) {
+			for (M context : rule.getMatches(false)) {
 				Variable<?> ilpVar = buildVariable(variable, context);
 				addAdditionalVariable(context, variable, ilpVar);
 				engine.addNonMappingVariable(context, variable, ilpVar);
@@ -171,7 +174,7 @@ public abstract class GipsRuleConstraint<ENGINE extends GipsEngine, M extends Gr
 	@Override
 	public String buildVariableName(final org.emoflon.gips.intermediate.GipsIntermediate.Variable variable,
 			final M context) {
-		return context.getPattern().getPatternName() + "->" + variable.getName() + "#" + variableIdx++;
+		return context.getPattern().patternName + "->" + variable.getName() + "#" + variableIdx++;
 	}
 
 }

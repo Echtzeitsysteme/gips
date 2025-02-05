@@ -1,33 +1,31 @@
 package org.emoflon.gips.build.generator.templates
 
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
-import org.emoflon.gips.build.generator.TemplateData
+
 import java.util.List
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleMapping
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternMapping
-import org.emoflon.gips.build.generator.GipsImportManager
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXParameter
 import java.util.Collection
-import java.util.LinkedList
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPattern
+import org.emoflon.gips.build.GipsAPIData
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTPattern
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTParameter
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTRule
 
 class MapperFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 	
 	List<Mapping> mappings;
 	
-	new(TemplateData data, GipsIntermediateModel context) {
+	new(GipsAPIData data, GipsIntermediateModel context) {
 		super(data, context)
 	}
 	
 	override init() {
-		packageName = data.apiData.gipsApiPkg;
+		packageName = data.gipsApiPkg;
 		className = data.mapperFactoryClassName
 		fqn = packageName + "." + className;
-		filePath = data.apiData.gipsApiPkgPath + "/" + className + ".java"
-		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)
+		filePath = data.gipsApiPkgPath + "/" + className + ".java"
+		imports.add(data.apiPackage + "." + data.apiAbstractClassName)
 		imports.add("org.emoflon.gips.core.api.GipsMapperFactory")
 		imports.add("org.emoflon.gips.core.GipsEngine")
 		imports.add("org.emoflon.gips.core.GipsMapper")
@@ -35,7 +33,7 @@ class MapperFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.Mapping")
 		//TODO: insert mapper imports!
 		mappings = context.mappings
-		mappings.forEach[mapping | imports.add(data.apiData.gipsMapperPkg+"."+data.mapping2mapperClassName.get(mapping))]
+		mappings.forEach[mapping | imports.add(data.gipsMapperPkg+"."+data.mapping2mapperClassName.get(mapping))]
 	}
 	
 	override generate() {
@@ -45,8 +43,8 @@ class MapperFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 import «imp»;
 «ENDFOR»
 
-public class «className» extends GipsMapperFactory<«data.apiData.apiClass»> {
-	public «className»(final GipsEngine engine, final «data.apiData.apiClass» eMoflonApi) {
+public class «className» extends GipsMapperFactory<«data.apiAbstractClassName»> {
+	public «className»(final GipsEngine engine, final «data.apiAbstractClassName» eMoflonApi) {
 		super(engine, eMoflonApi);
 	}
 	
@@ -58,12 +56,12 @@ public class «className» extends GipsMapperFactory<«data.apiData.apiClass»> 
 		switch(mapping.getName()) {
 			«FOR mapping : mappings.filter[m | m instanceof RuleMapping].map[m | m as RuleMapping]»
 			case "«mapping.name»" -> {
-				return new «data.mapping2mapperClassName.get(mapping)»(engine, mapping, eMoflonApi.«mapping.rule.name.toFirstLower»(«FOR param:mapping.rule.parameters SEPARATOR ", "»«GipsImportManager.parameterToJavaDefaultValue(param)»«ENDFOR»));
+				return new «data.mapping2mapperClassName.get(mapping)»(engine, mapping, eMoflonApi.«mapping.rule.name.toFirstLower»(«FOR param:mapping.rule.parameters SEPARATOR ", "»«exprHelper.EDataType2ExactJava(param.type)»«ENDFOR»));
 			}
 			«ENDFOR»
 			«FOR mapping : mappings.filter[m | m instanceof PatternMapping].map[m | m as PatternMapping]»
 			case "«mapping.name»" -> {
-				return new «data.mapping2mapperClassName.get(mapping)»(engine, mapping, eMoflonApi.«mapping.pattern.name.toFirstLower»(«FOR param:contextToParameter(mapping.pattern) SEPARATOR ", "»«GipsImportManager.parameterToJavaDefaultValue(param)»«ENDFOR»));
+				return new «data.mapping2mapperClassName.get(mapping)»(engine, mapping, eMoflonApi.«mapping.pattern.name.toFirstLower»(«FOR param:contextToParameter(mapping.pattern) SEPARATOR ", "»«exprHelper.EDataType2ExactJava(param.type)»«ENDFOR»));
 			}
 			«ENDFOR»
 			default -> {
@@ -76,19 +74,12 @@ public class «className» extends GipsMapperFactory<«data.apiData.apiClass»> 
 }'''
 	}
 
-	def Collection<IBeXParameter> contextToParameter(IBeXPattern context) {
-		val params = new LinkedList<IBeXParameter>
-		if (context instanceof IBeXContextAlternatives) {
-			if (context.context.parameters !== null) {
-				params.addAll(context.context.parameters)
-			}
-		} else {
-			val c = context as IBeXContextPattern
-			if (c.parameters !== null) {
-				params.addAll(c.parameters)
-			}
-		}
-		return params
+	def Collection<GTParameter> contextToParameter(GTPattern context) {
+		return context.parameters
+	}
+	
+	def Collection<GTParameter> contextToParameter(GTRule context) {
+		return context.parameters
 	}
 	
 }

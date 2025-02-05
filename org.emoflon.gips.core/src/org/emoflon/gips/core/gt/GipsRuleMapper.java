@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -13,10 +12,13 @@ import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsMapper;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleMapping;
-import org.emoflon.ibex.gt.api.GraphTransformationMatch;
-import org.emoflon.ibex.gt.api.GraphTransformationRule;
+import org.emoflon.ibex.gt.engine.IBeXGTCoMatch;
+import org.emoflon.ibex.gt.engine.IBeXGTCoPattern;
+import org.emoflon.ibex.gt.engine.IBeXGTMatch;
+import org.emoflon.ibex.gt.engine.IBeXGTPattern;
+import org.emoflon.ibex.gt.engine.IBeXGTRule;
 
-public abstract class GipsRuleMapper<GTM extends GipsGTMapping<M, R>, M extends GraphTransformationMatch<M, R>, R extends GraphTransformationRule<M, R>>
+public abstract class GipsRuleMapper<GTM extends GipsGTMapping<M, P>, R extends IBeXGTRule<R, P, M, CP, CM>, P extends IBeXGTPattern<P, M>, M extends IBeXGTMatch<M, P>, CP extends IBeXGTCoPattern<CP, CM, R, P, M>, CM extends IBeXGTCoMatch<CM, CP, R, P, M>>
 		extends GipsMapper<GTM> {
 
 	final protected R rule;
@@ -43,7 +45,7 @@ public abstract class GipsRuleMapper<GTM extends GipsGTMapping<M, R>, M extends 
 		return rule;
 	}
 
-	public Collection<Optional<M>> applyNonZeroMappings() {
+	public Collection<CM> applyNonZeroMappings() {
 		return getNonZeroVariableMappings().stream().map(m -> {
 			if (m.hasBoundVariables()) {
 				Map<String, Object> parameters = rule.getParameters();
@@ -55,7 +57,7 @@ public abstract class GipsRuleMapper<GTM extends GipsGTMapping<M, R>, M extends 
 		}).map(m -> rule.apply(m.match)).collect(Collectors.toSet());
 	}
 
-	public Collection<Optional<M>> applyMappings(Function<Integer, Boolean> predicate) {
+	public Collection<CM> applyMappings(Function<Integer, Boolean> predicate) {
 		return getMappings(predicate).stream().map(m -> {
 			if (m.hasBoundVariables()) {
 				Map<String, Object> parameters = rule.getParameters();
@@ -67,7 +69,7 @@ public abstract class GipsRuleMapper<GTM extends GipsGTMapping<M, R>, M extends 
 		}).map(m -> rule.apply(m.match)).collect(Collectors.toSet());
 	}
 
-	public Collection<Optional<M>> applyNonZeroMappings(final boolean doUpdate) {
+	public Collection<CM> applyNonZeroMappings(final boolean doUpdate) {
 		return getNonZeroVariableMappings().stream().map(m -> {
 			if (m.hasBoundVariables()) {
 				final Map<String, Object> parameters = rule.getParameters();
@@ -79,7 +81,7 @@ public abstract class GipsRuleMapper<GTM extends GipsGTMapping<M, R>, M extends 
 		}).map(m -> rule.apply(m.match, doUpdate)).collect(Collectors.toSet());
 	}
 
-	public Collection<Optional<M>> applyMappings(final Function<Integer, Boolean> predicate, final boolean doUpdate) {
+	public Collection<CM> applyMappings(final Function<Integer, Boolean> predicate, final boolean doUpdate) {
 		return getMappings(predicate).stream().map(m -> {
 			if (m.hasBoundVariables()) {
 				final Map<String, Object> parameters = rule.getParameters();

@@ -39,7 +39,7 @@ public abstract class Solver {
 			translateConstraint((GipsMappingConstraint<?, ? extends EObject>) mapping);
 		} else if (constraint instanceof GipsPatternConstraint<?, ?, ?> pattern) {
 			translateConstraint(pattern);
-		} else if (constraint instanceof GipsRuleConstraint<?, ?, ?> rule) {
+		} else if (constraint instanceof GipsRuleConstraint<?, ?, ?, ?, ?, ?> rule) {
 			translateConstraint(rule);
 		} else if (constraint instanceof GipsTypeConstraint<?, ?> type) {
 			translateConstraint(type);
@@ -52,7 +52,7 @@ public abstract class Solver {
 
 	protected abstract void translateConstraint(final GipsPatternConstraint<?, ?, ?> constraint);
 
-	protected abstract void translateConstraint(final GipsRuleConstraint<?, ?, ?> constraint);
+	protected abstract void translateConstraint(final GipsRuleConstraint<?, ?, ?, ?, ?, ?> constraint);
 
 	protected abstract void translateConstraint(final GipsTypeConstraint<?, ? extends EObject> constraint);
 

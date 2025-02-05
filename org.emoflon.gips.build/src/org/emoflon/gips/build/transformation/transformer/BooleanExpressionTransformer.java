@@ -5,7 +5,7 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.TransformationContext;
-import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.EditorFile;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticConstant;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanBracket;
@@ -22,7 +22,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
-import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.EditorFileImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsLinearFunctionImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
@@ -96,7 +96,7 @@ public class BooleanExpressionTransformer extends TransformationContext {
 				return constant;
 			} else if (arithmetic instanceof GipsConstantReference eReference) {
 				EObject container = (EObject) GipslScopeContextUtil.getContainer(eReference,
-						Set.of(EditorGTFileImpl.class, GipsConstraintImpl.class, GipsLinearFunctionImpl.class,
+						Set.of(EditorFileImpl.class, GipsConstraintImpl.class, GipsLinearFunctionImpl.class,
 								GipsObjectiveImpl.class));
 
 				ConstantReference reference = factory.createConstantReference();
@@ -108,7 +108,7 @@ public class BooleanExpressionTransformer extends TransformationContext {
 					reference.setConstant(data.getConstant(eObjective, eReference.getConstant()));
 				} else {
 					// Case: Container instanceof EditorGTFile
-					reference.setConstant(data.getConstant((EditorGTFile) container, eReference.getConstant()));
+					reference.setConstant(data.getConstant((EditorFile) container, eReference.getConstant()));
 				}
 
 				if (eReference.getSetExpression() != null) {

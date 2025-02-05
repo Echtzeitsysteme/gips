@@ -1,27 +1,24 @@
 package org.emoflon.gips.build.generator.templates.constraint
 
 import org.emoflon.gips.build.generator.templates.GeneratorTemplate
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint
-import org.emoflon.gips.build.generator.GipsImportManager
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPattern
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleConstraint
+import org.emoflon.gips.build.GipsAPIData
 
 class ConstraintFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 	
-	new(TemplateData data, GipsIntermediateModel context) {
+	new(GipsAPIData data, GipsIntermediateModel context) {
 		super(data, context)
 	}
 
 	override init() {
-		packageName = data.apiData.gipsApiPkg
+		packageName = data.gipsApiPkg
 		className = data.constraintFactoryClassName
 		fqn = packageName + "." + className;
-		filePath = data.apiData.gipsApiPkgPath + "/" + className + ".java"
-		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)
+		filePath = data.gipsApiPkgPath + "/" + className + ".java"
+		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
+		imports.add(data.apiPackage + "." + data.apiAbstractClassName)
 		imports.add("org.emoflon.gips.core.api.GipsConstraintFactory")
 		imports.add("org.emoflon.gips.core.GipsEngine")
 		imports.add("org.emoflon.gips.core.GipsConstraint")
@@ -35,8 +32,7 @@ class ConstraintFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel>
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.Constraint")
-		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
-		data.constraint2constraintClassName.values.forEach[c | imports.add(data.apiData.gipsConstraintPkg+"."+c)]
+		data.constraint2constraintClassName.values.forEach[c | imports.add(data.gipsConstraintPkg+"."+c)]
 	}
 	
 	override generate() {
@@ -46,8 +42,8 @@ class ConstraintFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel>
 import «imp»;
 «ENDFOR»
 
-public class «className» extends GipsConstraintFactory<«data.gipsApiClassName», «data.apiData.apiClass»> {
-	public «className»(final «data.gipsApiClassName» engine, final «data.apiData.apiClass» eMoflonApi) {
+public class «className» extends GipsConstraintFactory<«data.gipsApiClassName», «data.apiAbstractClassName»> {
+	public «className»(final «data.gipsApiClassName» engine, final «data.apiAbstractClassName» eMoflonApi) {
 		super(engine, eMoflonApi);
 	}
 	
@@ -60,9 +56,9 @@ public class «className» extends GipsConstraintFactory<«data.gipsApiClassName
 			«FOR constraint : context.constraints»
 			case "«constraint.name»" -> {
 			«IF constraint instanceof PatternConstraint»
-				return new «data.constraint2constraintClassName.get(constraint)»(engine, («constraint.eClass.name»)constraint, eMoflonApi.«constraint.pattern.name.toFirstLower»(«FOR param: getPattern(constraint.pattern).parameters SEPARATOR ", "»«GipsImportManager.parameterToJavaDefaultValue(param)»«ENDFOR»));
+				return new «data.constraint2constraintClassName.get(constraint)»(engine, («constraint.eClass.name»)constraint, eMoflonApi.«constraint.pattern.name.toFirstLower»(«FOR param: constraint.pattern.parameters SEPARATOR ", "»«exprHelper.parameterToJavaDefaultValue(param)»«ENDFOR»));
 			«ELSEIF constraint instanceof RuleConstraint»
-			    return new «data.constraint2constraintClassName.get(constraint)»(engine, («constraint.eClass.name»)constraint, eMoflonApi.«constraint.rule.name.toFirstLower»(«FOR param: constraint.rule.parameters SEPARATOR ", "»«GipsImportManager.parameterToJavaDefaultValue(param)»«ENDFOR»));
+			    return new «data.constraint2constraintClassName.get(constraint)»(engine, («constraint.eClass.name»)constraint, eMoflonApi.«constraint.rule.name.toFirstLower»(«FOR param: constraint.rule.parameters SEPARATOR ", "»«exprHelper.parameterToJavaDefaultValue(param)»«ENDFOR»));
 			«ELSE»
 				return new «data.constraint2constraintClassName.get(constraint)»(engine, («constraint.eClass.name»)constraint);
 			«ENDIF»
@@ -77,13 +73,5 @@ public class «className» extends GipsConstraintFactory<«data.gipsApiClassName
 	}
 }'''
 	}
-
-	def IBeXContextPattern getPattern(IBeXPattern pattern) {
-		if(pattern instanceof IBeXContextAlternatives) {
-			return pattern.context
-		} else {
-			return pattern as IBeXContextPattern
-		}
-	} 
 	
 }

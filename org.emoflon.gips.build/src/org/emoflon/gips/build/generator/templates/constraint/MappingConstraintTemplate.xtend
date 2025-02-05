@@ -1,21 +1,21 @@
 package org.emoflon.gips.build.generator.templates.constraint
 
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.build.generator.templates.constraint.ConstraintTemplate
+import org.emoflon.gips.build.GipsAPIData
 
 class MappingConstraintTemplate extends ConstraintTemplate<MappingConstraint> {
 
-	new(TemplateData data, MappingConstraint context) {
+	new(GipsAPIData data, MappingConstraint context) {
 		super(data, context)
 	}
 
 	override init() {
-		packageName = data.apiData.gipsConstraintPkg
+		packageName = data.gipsConstraintPkg
 		className = data.constraint2constraintClassName.get(context)
 		fqn = packageName + "." + className;
-		filePath = data.apiData.gipsConstraintPkgPath + "/" + className + ".java"
+		filePath = data.gipsConstraintPkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
 		imports.add("java.util.Collections");
@@ -28,8 +28,8 @@ class MappingConstraintTemplate extends ConstraintTemplate<MappingConstraint> {
 			imports.add("org.emoflon.gips.core.milp.model.RealVariable");
 		}
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint")
-		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
-		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(context.mapping))
+		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
+		imports.add(data.gipsMappingPkg+"."+data.mapping2mappingClassName.get(context.mapping))
 	}
 	
 	override String generatePackageDeclaration() {

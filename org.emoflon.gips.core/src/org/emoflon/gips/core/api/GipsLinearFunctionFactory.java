@@ -3,9 +3,9 @@ package org.emoflon.gips.core.api;
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsLinearFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunction;
-import org.emoflon.ibex.gt.api.GraphTransformationAPI;
+import org.emoflon.ibex.gt.api.IBeXGtAPI;
 
-public abstract class GipsLinearFunctionFactory<ENGINE extends GipsEngine, EMOFLON_API extends GraphTransformationAPI> {
+public abstract class GipsLinearFunctionFactory<ENGINE extends GipsEngine, EMOFLON_API extends IBeXGtAPI<?, ?, ?>> {
 	protected final ENGINE engine;
 	protected final EMOFLON_API eMoflonApi;
 

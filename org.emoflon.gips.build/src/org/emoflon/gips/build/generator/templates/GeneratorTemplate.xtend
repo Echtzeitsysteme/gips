@@ -6,11 +6,13 @@ import org.eclipse.emf.ecore.EObject
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import java.nio.file.Files
 import java.io.File
-import org.emoflon.gips.build.generator.TemplateData
+import org.emoflon.gips.build.GipsAPIData
+import org.emoflon.gips.build.generator.GipsExpressionHelper
 
 abstract class GeneratorTemplate <CONTEXT extends EObject>{
-	final protected TemplateData data;
+	final protected GipsAPIData data;
 	final protected CONTEXT context;
+	final protected GipsExpressionHelper exprHelper;
 
 	protected String packageName;
 	protected String className;
@@ -20,9 +22,10 @@ abstract class GeneratorTemplate <CONTEXT extends EObject>{
 	protected String code;
 	protected Set<String> imports = new HashSet();
 
-	new (TemplateData data, CONTEXT context) {
+	new (GipsAPIData data, CONTEXT context) {
 		this.data = data;
 		this.context = context;
+		this.exprHelper = new GipsExpressionHelper(data, imports);
 	}
 
 	def void init();
@@ -30,7 +33,7 @@ abstract class GeneratorTemplate <CONTEXT extends EObject>{
 	def void generate();
 
 	def void writeToFile() throws Exception {
-		val path = data.apiData.project.getLocation().toPortableString() + "/" + filePath;
+		val path = data.project.getLocation().toPortableString() + "/" + filePath;
 		val file = new File(path);
 		Files.write(file.toPath(), code.getBytes());
 	}

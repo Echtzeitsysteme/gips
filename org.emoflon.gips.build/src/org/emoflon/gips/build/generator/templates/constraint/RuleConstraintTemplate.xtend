@@ -1,20 +1,20 @@
 package org.emoflon.gips.build.generator.templates.constraint
 
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleConstraint
+import org.emoflon.gips.build.GipsAPIData
 
 class RuleConstraintTemplate extends ConstraintTemplate<RuleConstraint> {
 
-	new(TemplateData data, RuleConstraint context) {
+	new(GipsAPIData data, RuleConstraint context) {
 		super(data, context)
 	}
 
 	override init() {
-		packageName = data.apiData.gipsConstraintPkg
+		packageName = data.gipsConstraintPkg
 		className = data.constraint2constraintClassName.get(context)
 		fqn = packageName + "." + className;
-		filePath = data.apiData.gipsConstraintPkgPath + "/" + className + ".java"
+		filePath = data.gipsConstraintPkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
 		imports.add("java.util.Collections");
@@ -23,9 +23,9 @@ class RuleConstraintTemplate extends ConstraintTemplate<RuleConstraint> {
 		imports.add("org.emoflon.gips.core.milp.model.Term")
 		imports.add("org.emoflon.gips.core.milp.model.Constraint")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.RuleConstraint")
-		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
-		imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(context.rule))
-		imports.add(data.apiData.rulesPkg+"."+data.ibex2ibexClassName.get(context.rule))
+		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
+		imports.add(data.matchPackage+"."+data.ibex2matchClassName.get(context.rule))
+		imports.add(data.rulePackage+"."+data.ibex2ibexClassName.get(context.rule))
 	}
 	
 	override String generatePackageDeclaration() {

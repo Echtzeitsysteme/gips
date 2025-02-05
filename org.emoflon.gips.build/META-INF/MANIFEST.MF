@@ -12,12 +12,15 @@ Require-Bundle: org.emoflon.gips.intermediate;bundle-version="1.5.0",
  org.moflon.core.build,
  org.emoflon.core.dependencies,
  org.moflon.core.utilities,
- org.emoflon.ibex.gt.editor;bundle-version="1.1.0",
- org.emoflon.ibex.gt,
  org.moflon.core.plugins,
  org.emoflon.gips.core.dependencies,
  org.junit,
- junit-jupiter-api
+ junit-jupiter-api,
+ org.emoflon.ibex.gt,
+ org.emoflon.gips.gipsl.ui,
+ org.emoflon.ibex.common.slimgt;bundle-version="1.0.0",
+ org.emoflon.ibex.gt.gtl;bundle-version="1.0.0",
+ org.emoflon.ibex.common.coremodel
 Bundle-Vendor: Real-Time Systems Lab - TU Darmstadt
 Export-Package: org.emoflon.gips.build.generator.templates,
  org.emoflon.gips.build.transformation

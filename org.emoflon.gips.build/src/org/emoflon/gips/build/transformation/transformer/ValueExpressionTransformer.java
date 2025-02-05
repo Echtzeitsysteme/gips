@@ -61,6 +61,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTPattern;
 
 public class ValueExpressionTransformer extends TransformationContext {
 
@@ -87,7 +88,7 @@ public class ValueExpressionTransformer extends TransformationContext {
 			value = tValue;
 		} else if (eValue.getValue() instanceof GipsPatternExpression ePattern) {
 			PatternReference pValue = factory.createPatternReference();
-			pValue.setPattern(data.getPattern(ePattern.getPattern()));
+			pValue.setPattern((GTPattern) data.getPattern(ePattern.getPattern()));
 			value = pValue;
 		} else if (eValue.getValue() instanceof GipsRuleExpression eRule) {
 			RuleReference rValue = factory.createRuleReference();

@@ -1,35 +1,34 @@
 package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.gips.build.generator.TemplateData
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives
-import org.emoflon.gips.build.generator.GipsImportManager
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableType
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleMapping
+import org.emoflon.gips.build.GipsAPIData
+import org.emoflon.ibex.common.coremodel.IBeXCoreModel.IBeXPattern
 
 class RuleMappingTemplate extends GeneratorTemplate<RuleMapping> {
 	
-	IBeXContextPattern pattern;
+	IBeXPattern pattern;
 	
-	new(TemplateData data, RuleMapping context) {
+	new(GipsAPIData data, RuleMapping context) {
 		super(data, context)
 	}
 	
 	override init() {
-		packageName = data.apiData.gipsMappingPkg
+		packageName = data.gipsMappingPkg
 		className = data.mapping2mappingClassName.get(context)
 		fqn = packageName + "." + className
-		filePath = data.apiData.gipsMappingPkgPath + "/" + className + ".java"
+		filePath = data.gipsMappingPkgPath + "/" + className + ".java"
 		imports.add("org.emoflon.gips.core.gt.GipsGTMapping")
 		imports.add("org.emoflon.gips.core.milp.model.Variable")
 		imports.add("org.emoflon.gips.core.milp.model.IntegerVariable")
 		imports.add("org.emoflon.gips.core.milp.model.RealVariable")
 		imports.add("org.emoflon.gips.core.milp.model.BinaryVariable")
-		imports.add(data.apiData.rulesPkg+"."+data.mapping2ruleClassName.get(context))
-		imports.add(data.apiData.matchesPkg+"."+data.mapping2matchClassName.get(context))
+		imports.add(data.rulePackage+"."+data.mapping2ruleClassName.get(context))
+		imports.add(data.matchPackage+"."+data.mapping2matchClassName.get(context))
 		
-		pattern = (context.rule.lhs instanceof IBeXContextPattern) ? context.rule.lhs as IBeXContextPattern : (context.rule.lhs as IBeXContextAlternatives).context
-		imports.addAll(data.classToPackage.getImportsForNodeTypes(pattern.signatureNodes))
+		pattern = context.rule.precondition
+		context.rule.precondition.signatureNodes.forEach[sn | imports.add(data.getFQN(sn.type))]
+		context.rule.postcondition.signatureNodes.forEach[sn | imports.add(data.getFQN(sn.type))]
 		imports.add("java.util.List")
 		imports.add("java.util.Map")
 		imports.add("java.util.Collection")
@@ -46,24 +45,24 @@ public class «className» extends GipsGTMapping<«data.mapping2matchClassName.g
 	
 	«IF !context.freeVariables.isNullOrEmpty»
 	«FOR v : context.freeVariables»
-	protected «GipsImportManager.variableToJavaDataType(v, imports)» «v.name.toFirstLower»;
+	protected «exprHelper.variableToJavaDataType(v)» «v.name.toFirstLower»;
 	«ENDFOR»
 	«ENDIF»
 	«IF !context.boundVariables.isNullOrEmpty»
 	«FOR v : context.boundVariables»
-	protected «GipsImportManager.variableToJavaDataType(v, imports)» «v.name.toFirstLower»;
+	protected «exprHelper.variableToJavaDataType(v)» «v.name.toFirstLower»;
 	«ENDFOR»
 	«ENDIF»
 	public «className»(final String ilpVariable, final «data.mapping2matchClassName.get(context)» match) {
 		super(ilpVariable, match);
 		«IF !context.freeVariables.isNullOrEmpty»
 		«FOR v : context.freeVariables»
-		«v.name.toFirstLower» = new «GipsImportManager.variableToJavaDataType(v, imports)»(name + "->«v.name»");
+		«v.name.toFirstLower» = new «exprHelper.variableToJavaDataType(v)»(name + "->«v.name»");
 		«ENDFOR»
 		«ENDIF»
 		«IF !context.boundVariables.isNullOrEmpty»
 		«FOR v : context.boundVariables»
-		«v.name.toFirstLower» = new «GipsImportManager.variableToJavaDataType(v, imports)»(name + "->«v.name»");
+		«v.name.toFirstLower» = new «exprHelper.variableToJavaDataType(v)»(name + "->«v.name»");
 		«ENDFOR»
 		«ENDIF»
 	}
@@ -76,7 +75,7 @@ public class «className» extends GipsGTMapping<«data.mapping2matchClassName.g
 	«ENDFOR»
 	«IF !context.freeVariables.isNullOrEmpty»
 	«FOR v : context.freeVariables»
-	public «GipsImportManager.variableToJavaDataType(v, imports)» get«v.name.toFirstUpper»() {
+	public «exprHelper.variableToJavaDataType(v)» get«v.name.toFirstUpper»() {
 		return «v.name.toFirstLower»;
 	}
 	
@@ -84,7 +83,7 @@ public class «className» extends GipsGTMapping<«data.mapping2matchClassName.g
 	«ENDIF»
 	«IF !context.boundVariables.isNullOrEmpty»
 	«FOR v : context.boundVariables»
-	public «GipsImportManager.variableToJavaDataType(v, imports)» get«v.name.toFirstUpper»() {
+	public «exprHelper.variableToJavaDataType(v)» get«v.name.toFirstUpper»() {
 		return «v.name.toFirstLower»;
 	}
 	
@@ -92,7 +91,7 @@ public class «className» extends GipsGTMapping<«data.mapping2matchClassName.g
 	«ENDIF»
 	«IF !context.freeVariables.isNullOrEmpty»
 	«FOR v : context.freeVariables»
-	public void set«v.name.toFirstUpper»(final «GipsImportManager.variableToJavaDataType(v, imports)» «v.name.toFirstLower») {
+	public void set«v.name.toFirstUpper»(final «exprHelper.variableToJavaDataType(v)» «v.name.toFirstLower») {
 		this.«v.name.toFirstLower» = «v.name.toFirstLower»;
 	}
 	
@@ -100,7 +99,7 @@ public class «className» extends GipsGTMapping<«data.mapping2matchClassName.g
 	«ENDIF»
 	«IF !context.boundVariables.isNullOrEmpty»
 	«FOR v : context.boundVariables»
-	public void set«v.name.toFirstUpper»(final «GipsImportManager.variableToJavaDataType(v, imports)» «v.name.toFirstLower») {
+	public void set«v.name.toFirstUpper»(final «exprHelper.variableToJavaDataType(v)» «v.name.toFirstLower») {
 		this.«v.name.toFirstLower» = «v.name.toFirstLower»;
 	}
 	
@@ -108,8 +107,8 @@ public class «className» extends GipsGTMapping<«data.mapping2matchClassName.g
 	«ENDIF»
 	«IF !context.freeVariables.isNullOrEmpty»
 	«FOR v : context.freeVariables»
-	public «GipsImportManager.variableToSimpleJavaDataType(v, imports)» getValueOf«v.name.toFirstUpper»() {
-		«IF GipsImportManager.variableToSimpleJavaDataType(v, imports) == "boolean"»
+	public «exprHelper.variableToSimpleJavaDataType(v)» getValueOf«v.name.toFirstUpper»() {
+		«IF exprHelper.variableToSimpleJavaDataType(v) == "boolean"»
 		return «v.name.toFirstLower».getValue() != 0;
 		«ELSE»
 		return «v.name.toFirstLower».getValue();
@@ -120,8 +119,8 @@ public class «className» extends GipsGTMapping<«data.mapping2matchClassName.g
 	«ENDIF»
 	«IF !context.boundVariables.isNullOrEmpty»
 	«FOR v : context.boundVariables»
-	public «GipsImportManager.variableToSimpleJavaDataType(v, imports)» getValueOf«v.name.toFirstUpper»() {
-		«IF GipsImportManager.variableToSimpleJavaDataType(v, imports) == "boolean"»
+	public «exprHelper.variableToSimpleJavaDataType(v)» getValueOf«v.name.toFirstUpper»() {
+		«IF exprHelper.variableToSimpleJavaDataType(v) == "boolean"»
 		return «v.name.toFirstLower».getValue() != 0;
 		«ELSE»
 		return «v.name.toFirstLower».getValue();
@@ -132,8 +131,8 @@ public class «className» extends GipsGTMapping<«data.mapping2matchClassName.g
 	«ENDIF»
 	«IF !context.freeVariables.isNullOrEmpty»
 	«FOR v : context.freeVariables»
-	public void setValueOf«v.name.toFirstUpper»(final «GipsImportManager.variableToSimpleJavaDataType(v, imports)» «v.name.toFirstLower») {
-		«IF GipsImportManager.variableToSimpleJavaDataType(v, imports) == "boolean"»
+	public void setValueOf«v.name.toFirstUpper»(final «exprHelper.variableToSimpleJavaDataType(v)» «v.name.toFirstLower») {
+		«IF exprHelper.variableToSimpleJavaDataType(v) == "boolean"»
 		this.«v.name.toFirstLower».setValue(«v.name.toFirstLower» ? 1 : 0);
 		«ELSE»
 		this.«v.name.toFirstLower».setValue(«v.name.toFirstLower»);
@@ -144,8 +143,8 @@ public class «className» extends GipsGTMapping<«data.mapping2matchClassName.g
 	«ENDIF»
 	«IF !context.boundVariables.isNullOrEmpty»
 	«FOR v : context.boundVariables»
-	public void setValueOf«v.name.toFirstUpper»(final «GipsImportManager.variableToSimpleJavaDataType(v, imports)» «v.name.toFirstLower») {
-		«IF GipsImportManager.variableToSimpleJavaDataType(v, imports) == "boolean"»
+	public void setValueOf«v.name.toFirstUpper»(final «exprHelper.variableToSimpleJavaDataType(v)» «v.name.toFirstLower») {
+		«IF exprHelper.variableToSimpleJavaDataType(v) == "boolean"»
 		this.«v.name.toFirstLower».setValue(«v.name.toFirstLower» ? 1 : 0);
 		«ELSE»
 		this.«v.name.toFirstLower».setValue(«v.name.toFirstLower»);
@@ -206,7 +205,7 @@ public class «className» extends GipsGTMapping<«data.mapping2matchClassName.g
 			«IF !context.freeVariables.isNullOrEmpty»
 			«FOR v : context.freeVariables»
 			case "«v.name»" : {
-				«v.name.toFirstLower».setValue(«IF v.type == VariableType.BINARY»(int) value)«ELSEIF v.type == VariableType.INTEGER»Math.round((«GipsImportManager.variableToSimpleJavaDataType(v, imports)») value))«ELSE»(«GipsImportManager.variableToSimpleJavaDataType(v, imports)») value)«ENDIF»;
+				«v.name.toFirstLower».setValue(«IF v.type == VariableType.BINARY»(int) value)«ELSEIF v.type == VariableType.INTEGER»Math.round((«exprHelper.variableToSimpleJavaDataType(v)») value))«ELSE»(«exprHelper.variableToSimpleJavaDataType(v)») value)«ENDIF»;
 				break;
 			}
 			«ENDFOR»
@@ -214,7 +213,7 @@ public class «className» extends GipsGTMapping<«data.mapping2matchClassName.g
 			«IF !context.boundVariables.isNullOrEmpty»
 			«FOR v : context.boundVariables»
 			case "«v.name»" : {
-				«v.name.toFirstLower».setValue(«IF v.type == VariableType.BINARY»(int) value)«ELSEIF v.type == VariableType.INTEGER»Math.round((«GipsImportManager.variableToSimpleJavaDataType(v, imports)») value))«ELSE»(«GipsImportManager.variableToSimpleJavaDataType(v, imports)») value)«ENDIF»;
+				«v.name.toFirstLower».setValue(«IF v.type == VariableType.BINARY»(int) value)«ELSEIF v.type == VariableType.INTEGER»Math.round((«exprHelper.variableToSimpleJavaDataType(v)») value))«ELSE»(«exprHelper.variableToSimpleJavaDataType(v)») value)«ENDIF»;
 				break;
 			}
 			«ENDFOR»

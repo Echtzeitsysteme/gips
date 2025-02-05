@@ -1,7 +1,6 @@
 package org.emoflon.gips.build.generator.templates
 
 import java.util.HashSet
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
@@ -15,20 +14,21 @@ import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.intermediate.GipsIntermediate.Constant
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference
+import org.emoflon.gips.build.GipsAPIData
 
 class ObjectiveTemplate extends ProblemGeneratorTemplate<Objective> {
 
 	protected val referencedObjectives = new HashSet<LinearFunction>;
 
-	new(TemplateData data, Objective context) {
+	new(GipsAPIData data, Objective context) {
 		super(data, context)
 	}
 	
 	override init() {
-		packageName = data.apiData.gipsObjectivePkg
+		packageName = data.gipsObjectivePkg
 		className = data.objectiveClassName
 		fqn = packageName + "." + className;
-		filePath = data.apiData.gipsObjectivePkgPath + "/" + className + ".java"
+		filePath = data.gipsObjectivePkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
 		imports.add("org.emoflon.gips.core.GipsEngine")
@@ -83,7 +83,7 @@ import «imp»;
 	}
 	
 	def String generateAttributes() {
-			referencedObjectives.forEach[o | imports.add(data.apiData.gipsObjectivePkg+"."+data.function2functionClassName.get(o))]
+			referencedObjectives.forEach[o | imports.add(data.gipsObjectivePkg+"."+data.function2functionClassName.get(o))]
 		return '''«FOR obj : referencedObjectives»
 	protected «data.function2functionClassName.get(obj)» «obj.name.toFirstLower»;
 «ENDFOR»'''

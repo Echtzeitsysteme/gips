@@ -44,7 +44,6 @@ import java.util.HashSet
 import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
 import java.util.HashMap
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.Constant
 import java.util.Collection
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference
@@ -52,6 +51,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.QueryOperator
 import org.eclipse.emf.ecore.EEnum
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference
 import org.eclipse.emf.ecore.EClass
+import org.emoflon.gips.build.GipsAPIData
 
 abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends GeneratorTemplate<CONTEXT> {
 	
@@ -61,7 +61,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	public val builderMethodDefinitions = new HashMap<EObject,String>
 	public val builderMethodCalls2 = new LinkedList<String>
 	
-	new(TemplateData data, CONTEXT context) {
+	new(GipsAPIData data, CONTEXT context) {
 		super(data, context)
 	}
 	
@@ -387,18 +387,18 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	def String generateValueAccess(ValueExpression expression) {
 		var instruction = "";
 		if(expression instanceof MappingReference) {
-			imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expression.mapping))
+			imports.add(data.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expression.mapping))
 			instruction = '''engine.getMapper("«expression.mapping.name»").getMappings().values().parallelStream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
 		} else if(expression instanceof TypeReference) {
-			imports.add(data.classToPackage.getImportsForType(expression.type))
+			imports.add(data.getPackageFQN(expression.type));
 			instruction = '''indexer.getObjectsOfType("«expression.type.name»").parallelStream()
 						.map(type -> («expression.type.name») type)'''
 		} else if(expression instanceof PatternReference) {
-			imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(expression.pattern))
+			imports.add(data.matchPackage+"."+data.ibex2matchClassName.get(expression.pattern))
 			instruction = '''engine.getEMoflonAPI().«expression.pattern.name»().findMatches(false).parallelStream()'''
 		} else if(expression instanceof RuleReference) {
-			imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(expression.rule))
+			imports.add(data.matchPackage+"."+data.ibex2matchClassName.get(expression.rule))
 			instruction = '''engine.getEMoflonAPI().«expression.rule.name»().findMatches(false).parallelStream()'''
 		} else if(expression instanceof NodeReference) {
 			instruction = getIterator(expression)
@@ -473,7 +473,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		if(expression instanceof SetFilter) {
 			instruction = '''.filter(elt -> «generateConstantExpression(expression.expression)»)'''
 		} else if(expression instanceof SetTypeSelect) {
-			imports.add(data.classToPackage.getImportsForType(expression.type))
+			imports.add(data.getPackageFQN(expression.type));
 			instruction = '''.filter(elt -> (elt instanceof «expression.type.name»))
 			.map(elt -> («expression.type.name») elt)'''
 		} else if(expression instanceof SetSort) {
@@ -707,22 +707,22 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		var expressionType = "";
 		if (expression instanceof MappingReference) {
 			imports.add("java.util.stream.Stream");
-			imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expression.mapping));
+			imports.add(data.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expression.mapping));
 			expressionType = '''Stream<«data.mapping2mappingClassName.get(expression.mapping)»>''';
 			objectType = data.mapping2mappingClassName.get(expression.mapping);
 		} else if (expression instanceof TypeReference) {
 			imports.add("java.util.stream.Stream");
-			imports.add(data.classToPackage.getImportsForType(expression.type));
+			imports.add(data.getPackageFQN(expression.type));
 			expressionType = '''Stream<«expression.type.name»>''';
 			objectType = expression.type.name;
 		} else if (expression instanceof PatternReference) {
 			imports.add("java.util.stream.Stream");
-			imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(expression.pattern))
+			imports.add(data.matchPackage+"."+data.ibex2matchClassName.get(expression.pattern))
 			expressionType = '''Stream<«data.ibex2matchClassName.get(expression.pattern)»>''';
 			objectType = data.ibex2matchClassName.get(expression.pattern);
 		} else if (expression instanceof RuleReference) {
 			imports.add("java.util.stream.Stream");
-			imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(expression.rule))
+			imports.add(data.matchPackage+"."+data.ibex2matchClassName.get(expression.rule))
 			expressionType = '''Stream<«data.ibex2matchClassName.get(expression.rule)»>''';
 			objectType = data.ibex2matchClassName.get(expression.rule);
 		} else if (expression instanceof NodeReference) {
@@ -775,7 +775,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		if(expression instanceof SetFilter) {
 			currentType = previousType;
 		} else if(expression instanceof SetTypeSelect) {
-			imports.add(data.classToPackage.getImportsForType(expression.type));
+			imports.add(data.getPackageFQN(expression.type));
 			currentType = expression.type.name;
 		} else if(expression instanceof SetSort) {
 			currentType = previousType;
@@ -802,7 +802,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 
 	def String extractReturnType(NodeReference expression) {
 		if (expression.attribute === null) {
-			imports.add(data.classToPackage.getImportsForType(expression.node.type));
+			imports.add(data.getPackageFQN(expression.node.type));
 			return expression.node.type.name;
 		} else {
 			return extractReturnType(expression.attribute);
@@ -832,10 +832,10 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 			} else if (expression.getFeature().getEType() == EcorePackage.Literals.ESTRING) {
 				return '''String''';
 			} else if (expression.getFeature().getEType() instanceof EClass) {
-				imports.add(data.classToPackage.getImportsForType(expression.getFeature().getEType()));
+				imports.add(data.getPackageFQN(expression.getFeature().getEType()));
 				return expression.feature.EType.name;
 			} else if (expression.feature.EType instanceof EEnum) {
-				imports.add(data.classToPackage.getImportsForType(expression.feature.EType));
+				imports.add(data.getPackageFQN(expression.feature.EType));
 				return expression.feature.EType.name;
 			} else {
 				throw new IllegalArgumentException("Unsupported data type: " + expression.getFeature().getEType());

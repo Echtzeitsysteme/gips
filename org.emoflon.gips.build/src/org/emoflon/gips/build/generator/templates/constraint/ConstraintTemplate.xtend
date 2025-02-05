@@ -1,6 +1,5 @@
 package org.emoflon.gips.build.generator.templates.constraint
 
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryOperator
@@ -16,10 +15,11 @@ import java.util.HashMap
 import java.util.List
 import java.util.LinkedList
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference
+import org.emoflon.gips.build.GipsAPIData
 
 abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGeneratorTemplate<CONTEXT> {
 	
-	new(TemplateData data, CONTEXT context) {
+	new(GipsAPIData data, CONTEXT context) {
 		super(data, context)
 	}
 	

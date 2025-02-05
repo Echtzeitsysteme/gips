@@ -255,7 +255,7 @@ public class GurobiSolver extends Solver {
 	}
 
 	@Override
-	protected void translateConstraint(final GipsRuleConstraint<?, ?, ?> constraint) {
+	protected void translateConstraint(final GipsRuleConstraint<?, ?, ?, ?, ?, ?> constraint) {
 		createOrGetAdditionalVars(constraint.getAdditionalVariables());
 		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
 		addIlpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);

@@ -1086,7 +1086,6 @@ public class GipsArithmeticTransformer {
 		} else if (value instanceof PatternReference pattern) {
 			PatternReference ref = factory.createPatternReference();
 			ref.setPattern(pattern.getPattern());
-			ref.setContextPattern(pattern.getContextPattern());
 			clone = ref;
 		} else if (value instanceof RuleReference rule) {
 			RuleReference ref = factory.createRuleReference();

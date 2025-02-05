@@ -1,20 +1,20 @@
 package org.emoflon.gips.build.generator.templates.function
 
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeFunction
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
+import org.emoflon.gips.build.GipsAPIData
 
 class TypeFunctionTemplate extends LinearFunctionTemplate<TypeFunction> {
 	
-	new(TemplateData data, TypeFunction context) {
+	new(GipsAPIData data, TypeFunction context) {
 		super(data, context)
 	}
 	
 		override init() {
-		packageName = data.apiData.gipsObjectivePkg
+		packageName = data.gipsObjectivePkg
 		className = data.function2functionClassName.get(context)
 		fqn = packageName + "." + className;
-		filePath = data.apiData.gipsObjectivePkgPath + "/" + className + ".java"
+		filePath = data.gipsObjectivePkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
 		imports.add("org.eclipse.emf.ecore.EClass")
@@ -25,8 +25,8 @@ class TypeFunctionTemplate extends LinearFunctionTemplate<TypeFunction> {
 		imports.add("org.emoflon.gips.core.milp.model.Term")
 		imports.add("org.emoflon.gips.core.milp.model.Constant")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.TypeFunction")
-		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
-		imports.add(data.classToPackage.getImportsForType(context.type))
+		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
+		imports.add(data.getFQN(context.type))
 	}
 	
 	override String generatePackageDeclaration() {

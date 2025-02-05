@@ -36,23 +36,25 @@ import org.emoflon.gips.intermediate.GipsIntermediate.RuleFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleMapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeFunction;
+import org.emoflon.ibex.common.engine.IBeXPMEngineInformation;
 
 public class GipsCodeGenerator {
 
-	final protected TemplateData data;
+	final protected GipsAPIData data;
 	protected List<GeneratorTemplate<?>> templates = Collections.synchronizedList(new LinkedList<>());
 
-	public GipsCodeGenerator(final GipsIntermediateModel model, final GipsAPIData apiData,
-			final GipsImportManager classToPackage) {
-		data = new TemplateData(model, apiData, classToPackage);
+	public GipsCodeGenerator(final GipsIntermediateModel model, final GipsAPIData apiData) {
+		data = new GipsAPIData(model);
 	}
 
 	public void generate() {
-		templates.add(new GipsAPITemplate(data, data.model));
-		templates.add(new MapperFactoryTemplate(data, data.model));
-		templates.add(new ConstraintFactoryTemplate(data, data.model));
-		templates.add(new FunctionFactoryTemplate(data, data.model));
-		data.model.getMappings().parallelStream().forEach(mapping -> {
+		for (IBeXPMEngineInformation engine : data.engines.values()) {
+			templates.add(new GipsAPITemplate(data, data.gipsModel, engine));
+		}
+		templates.add(new MapperFactoryTemplate(data, data.gipsModel));
+		templates.add(new ConstraintFactoryTemplate(data, data.gipsModel));
+		templates.add(new FunctionFactoryTemplate(data, data.gipsModel));
+		data.gipsModel.getMappings().parallelStream().forEach(mapping -> {
 			if (mapping instanceof RuleMapping gtMapping) {
 				templates.add(new RuleMappingTemplate(data, gtMapping));
 				templates.add(new RuleMapperTemplate(data, gtMapping));
@@ -63,7 +65,7 @@ public class GipsCodeGenerator {
 			}
 
 		});
-		data.model.getConstraints().parallelStream().forEach(constraint -> {
+		data.gipsModel.getConstraints().parallelStream().forEach(constraint -> {
 			if (constraint instanceof MappingConstraint mappingConstraint) {
 				templates.add(new MappingConstraintTemplate(data, mappingConstraint));
 			} else if (constraint instanceof PatternConstraint patternConstraint) {
@@ -76,7 +78,7 @@ public class GipsCodeGenerator {
 				templates.add(new GlobalConstraintTemplate(data, constraint));
 			}
 		});
-		data.model.getFunctions().parallelStream().forEach(fn -> {
+		data.gipsModel.getFunctions().parallelStream().forEach(fn -> {
 			if (fn instanceof MappingFunction mappingFn) {
 				templates.add(new MappingFunctionTemplate(data, mappingFn));
 			} else if (fn instanceof PatternFunction patternFn) {
@@ -88,8 +90,8 @@ public class GipsCodeGenerator {
 				templates.add(new TypeFunctionTemplate(data, typeFn));
 			}
 		});
-		if (data.model.getObjective() != null) {
-			templates.add(new ObjectiveTemplate(data, data.model.getObjective()));
+		if (data.gipsModel.getObjective() != null) {
+			templates.add(new ObjectiveTemplate(data, data.gipsModel.getObjective()));
 		}
 		templates.parallelStream().forEach(template -> {
 			try {
@@ -100,8 +102,8 @@ public class GipsCodeGenerator {
 				e.printStackTrace();
 			}
 		});
-		if (data.model.getConfig().isBuildLaunchConfig()) {
-			GeneratorTemplate<?> launchTemplate = new LaunchFileTemplate(data, data.model);
+		if (data.gipsModel.getConfig().isBuildLaunchConfig()) {
+			GeneratorTemplate<?> launchTemplate = new LaunchFileTemplate(data, data.gipsModel);
 			try {
 				launchTemplate.init();
 				launchTemplate.generate();

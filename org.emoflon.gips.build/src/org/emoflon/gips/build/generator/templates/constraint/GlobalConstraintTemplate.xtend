@@ -1,22 +1,22 @@
 package org.emoflon.gips.build.generator.templates.constraint
 
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint
 import org.emoflon.gips.intermediate.GipsIntermediate.Constant
+import org.emoflon.gips.build.GipsAPIData
 
 class GlobalConstraintTemplate extends ConstraintTemplate<Constraint> {
 	
-	new(TemplateData data, Constraint context) {
+	new(GipsAPIData data, Constraint context) {
 		super(data, context)
 	}
 	
 		override init() {
-		packageName = data.apiData.gipsConstraintPkg
+		packageName = data.gipsConstraintPkg
 		className = data.constraint2constraintClassName.get(context)
 		fqn = packageName + "." + className;
-		filePath = data.apiData.gipsConstraintPkgPath + "/" + className + ".java"
+		filePath = data.gipsConstraintPkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
 		imports.add("java.util.Collections");
@@ -27,7 +27,7 @@ class GlobalConstraintTemplate extends ConstraintTemplate<Constraint> {
 		imports.add("org.emoflon.gips.core.GipsGlobalConstraint")
 		imports.add("org.emoflon.gips.core.milp.model.Term")
 		imports.add("org.emoflon.gips.core.milp.model.Constraint")
-		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
+		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
 	}
 	
 	override String generatePackageDeclaration() {

@@ -1,6 +1,5 @@
 package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
 import org.emoflon.gips.build.GipsAPIData
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
@@ -14,18 +13,22 @@ import org.emoflon.gips.intermediate.GipsIntermediate.RuleReference
 import org.emoflon.gips.intermediate.GipsIntermediate.NodeReference
 import org.emoflon.gips.intermediate.GipsIntermediate.AttributeReference
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextReference
+import org.emoflon.ibex.common.engine.IBeXPMEngineInformation
 
 class GipsAPITemplate extends ProblemGeneratorTemplate<GipsIntermediateModel> {
 	
-	new(TemplateData data, GipsIntermediateModel context) {
+	val IBeXPMEngineInformation engine;
+	
+	new(GipsAPIData data, GipsIntermediateModel context, IBeXPMEngineInformation engine) {
 		super(data, context)
+		this.engine = engine;
 	}
 	
 	override init() {
-		packageName = data.apiData.gipsApiPkg;
+		packageName = data.gipsApiPkg;
 		className = data.gipsApiClassName;
 		fqn = packageName + "." + className;
-		filePath = data.apiData.gipsApiPkgPath + "/" + className + ".java"
+		filePath = data.gipsApiPkgPath + "/" + className + ".java"
 		imports.add("org.emoflon.gips.core.api.GipsEngineAPI")
 		imports.add("org.emoflon.gips.core.GipsObjective")
 		imports.add("org.emoflon.gips.core.milp.Solver")
@@ -34,15 +37,15 @@ class GipsAPITemplate extends ProblemGeneratorTemplate<GipsIntermediateModel> {
 		imports.add("org.emoflon.gips.core.milp.CplexSolver")
 		imports.add("org.emoflon.gips.core.milp.SolverConfig")
 		imports.add("org.eclipse.emf.ecore.resource.ResourceSet")
-		imports.add(data.apiData.apiPkg + "." + data.apiData.engineAppClasses.get(GipsAPIData.HIPE_ENGINE_NAME))
-		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)
+		imports.add(data.apiPackage + "." + data.apiAbstractClassName)
+		imports.add(data.apiPackage + "." + data.apiClassNames.get(engine))
 		imports.add("org.eclipse.emf.common.util.URI");
-		if(data.model.objective !== null) {
-			imports.add(data.apiData.gipsObjectivePkg+"."+data.objectiveClassName)
+		if(data.gipsModel.objective !== null) {
+			imports.add(data.gipsObjectivePkg+"."+data.objectiveClassName)
 		}
-		data.model.mappings
+		data.gipsModel.mappings
 			.map[m | data.mapping2mapperClassName.get(m)]
-			.forEach[m | imports.add(data.apiData.gipsMapperPkg+"."+m)]
+			.forEach[m | imports.add(data.gipsMapperPkg+"."+m)]
 	}
 	
 	override getConstants() {
@@ -55,15 +58,15 @@ class GipsAPITemplate extends ProblemGeneratorTemplate<GipsIntermediateModel> {
 		
 «generateImports()»
 		
-public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasses.get(GipsAPIData.HIPE_ENGINE_NAME)», «data.apiData.apiClass»>{
-	final public static URI INTERMEDIATE_MODEL_URI = URI.createFileURI("«data.apiData.project.location.toPortableString»«data.apiData.intermediateModelURI.toPlatformString(false)»");
+public class «data.gipsApiClassNames.get(engine)» extends «data.gipsApiClassName» <«data.apiClassNames.get(engine)»>
+	final public static URI INTERMEDIATE_MODEL_URI = URI.createFileURI("«data.project.location.toPortableString»«data.intermediateModelURI.toPlatformString(false)»");
 	
-	«FOR mapping : data.model.mappings»
+	«FOR mapping : data.gipsModel.mappings»
 	protected «data.mapping2mapperClassName.get(mapping)» «mapping.name.toFirstLower»;
 	«ENDFOR»
 	
 	public «className»() {
-		super(new «data.apiData.engineAppClasses.get(GipsAPIData.HIPE_ENGINE_NAME)»());
+		super(new «data.apiClassNames.get(engine)»());
 	}
 	
 	/**
@@ -138,7 +141,7 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 		super.initInternal(gipsModelUri, model, ibexPatternPath);
 	}
 	
-	«FOR mapping : data.model.mappings»
+	«FOR mapping : data.gipsModel.mappings»
 	public «data.mapping2mapperClassName.get(mapping)» get«mapping.name.toFirstUpper»() {
 		return «mapping.name.toFirstLower»;
 	}
@@ -146,7 +149,7 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 	
 	@Override
 	protected void createMappers() {
-		«FOR mapping : data.model.mappings»
+		«FOR mapping : data.gipsModel.mappings»
 		«mapping.name.toFirstLower» = («data.mapping2mapperClassName.get(mapping)») mapperFactory.createMapper(name2Mapping.get("«mapping.name»"));
 		addMapper(«mapping.name.toFirstLower»);
 		«ENDFOR»
@@ -169,7 +172,7 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 	
 	@Override
 	protected GipsObjective createObjective() {
-		«IF data.model.objective === null»
+		«IF data.gipsModel.objective === null»
 		// No objective was defined!
 		return null;
 		«ELSE»
@@ -195,18 +198,18 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 	def String generateCodeForConstants() {
 		return'''@Override
 protected void updateConstants() {
-«FOR constant : data.model.constants.filter[c | c.isGlobal]»
+«FOR constant : data.gipsModel.constants.filter[c | c.isGlobal]»
 		addConstantValue("«getConstantName(constant)»", «getCallConstantCalculator(constant)»);
 «ENDFOR»
 }
 			
-«FOR constant : data.model.constants.filter[c | c.isGlobal]»
+«FOR constant : data.gipsModel.constants.filter[c | c.isGlobal]»
 «getConstantCalculator(constant)»
 «ENDFOR»'''
 	}
 	
 	def String solverInit() {
-		switch(data.model.config.solver) {
+		switch(data.gipsModel.config.solver) {
 			case GUROBI: {
 				return '''new GurobiSolver(this, solverConfig)'''
 			}
@@ -261,18 +264,18 @@ import «imp»;
 	override String generateValueAccess(ValueExpression expression) {
 		var instruction = "";
 		if(expression instanceof MappingReference) {
-			imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expression.mapping))
+			imports.add(data.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expression.mapping))
 			instruction = '''getMapper("«expression.mapping.name»").getMappings().values().parallelStream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
 		} else if(expression instanceof TypeReference) {
-			imports.add(data.classToPackage.getImportsForType(expression.type))
+			imports.add(data.getPackageFQN(expression.type));
 			instruction = '''indexer.getObjectsOfType("«expression.type.name»").parallelStream()
 						.map(type -> («expression.type.name») type)'''
 		} else if(expression instanceof PatternReference) {
-			imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(expression.pattern))
+			imports.add(data.matchPackage+"."+data.ibex2matchClassName.get(expression.pattern))
 			instruction = '''getEMoflonAPI().«expression.pattern.name»().findMatches(false).parallelStream()'''
 		} else if(expression instanceof RuleReference) {
-			imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(expression.rule))
+			imports.add(data.matchPackage+"."+data.ibex2matchClassName.get(expression.rule))
 			instruction = '''getEMoflonAPI().«expression.rule.name»().findMatches(false).parallelStream()'''
 		} else if(expression instanceof NodeReference) {
 			instruction = getIterator(expression)

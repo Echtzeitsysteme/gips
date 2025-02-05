@@ -253,7 +253,7 @@ public class CplexSolver extends Solver {
 	}
 
 	@Override
-	protected void translateConstraint(final GipsRuleConstraint<?, ?, ?> constraint) {
+	protected void translateConstraint(final GipsRuleConstraint<?, ?, ?, ?, ?, ?> constraint) {
 		createAdditionalVars(constraint.getAdditionalVariables());
 		final Set<Constraint> collectedCnstr = new HashSet<>();
 		collectedCnstr.addAll(constraint.getConstraints());

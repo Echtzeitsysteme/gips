@@ -1,23 +1,23 @@
 package org.emoflon.gips.build.generator.templates.function
 
 import org.emoflon.gips.build.generator.templates.GeneratorTemplate
-import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternFunction
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleFunction
+import org.emoflon.gips.build.GipsAPIData
 
 class FunctionFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 	
-	new(TemplateData data, GipsIntermediateModel context) {
+	new(GipsAPIData data, GipsIntermediateModel context) {
 		super(data, context)
 	}
 
 	override init() {
-		packageName = data.apiData.gipsApiPkg
+		packageName = data.gipsApiPkg
 		className = data.functionFactoryClassName
 		fqn = packageName + "." + className;
-		filePath = data.apiData.gipsApiPkgPath + "/" + className + ".java"
-		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)
+		filePath = data.gipsApiPkgPath + "/" + className + ".java"
+		imports.add(data.apiPackage + "." + data.apiAbstractClassName)
 		imports.add("org.emoflon.gips.core.api.GipsLinearFunctionFactory")
 		imports.add("org.emoflon.gips.core.GipsEngine")
 		imports.add("org.emoflon.gips.core.GipsLinearFunction")
@@ -28,8 +28,8 @@ class FunctionFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.RuleFunction")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingFunction")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.TypeFunction")
-		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
-		data.function2functionClassName.values.forEach[o | imports.add(data.apiData.gipsObjectivePkg+"."+o)]
+		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
+		data.function2functionClassName.values.forEach[o | imports.add(data.gipsObjectivePkg+"."+o)]
 	}
 	
 	override generate() {
@@ -39,8 +39,8 @@ class FunctionFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 import «imp»;
 «ENDFOR»
 
-public class «className» extends GipsLinearFunctionFactory<«data.gipsApiClassName», «data.apiData.apiClass»> {
-	public «className»(final «data.gipsApiClassName» engine, final «data.apiData.apiClass» eMoflonApi) {
+public class «className» extends GipsLinearFunctionFactory<«data.gipsApiClassName», «data.apiAbstractClassName»> {
+	public «className»(final «data.gipsApiClassName» engine, final «data.apiAbstractClassName» eMoflonApi) {
 		super(engine, eMoflonApi);
 	}
 	

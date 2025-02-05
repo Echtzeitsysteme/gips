@@ -82,11 +82,6 @@ public class GipslModelFlattener extends GTLModelFlattener {
 	protected Map<String, List<Consumer<GipsLinearFunction>>> pendingFunctionJobs = Collections
 			.synchronizedMap(new LinkedHashMap<>());
 
-//	// This map prevents infinite loops (or stack overflows) since the var-variable
-//	// of a lambda expression might reference itself.
-//	protected Map<GipsLambdaExpression, GipsLambdaExpression> LE2flattenedLE = Collections
-//			.synchronizedMap(new LinkedHashMap<>());
-
 	public GipslModelFlattener(final GipslResourceManager gtlManager,
 			final Collection<org.emoflon.ibex.gt.gtl.gTL.EditorFile> files) throws Exception {
 		super(gtlManager, files);

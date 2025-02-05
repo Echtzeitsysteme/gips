@@ -5,18 +5,21 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.EditorFile;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
-import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
-import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
-import org.emoflon.ibex.gt.editor.gT.EditorPattern;
-import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
+import org.emoflon.gips.gipsl.gipsl.impl.EditorFileImpl;
+import org.emoflon.gips.gipsl.util.GipslResourceManager;
+import org.emoflon.ibex.common.slimgt.util.SlimGTModelUtil;
+import org.emoflon.ibex.gt.gtl.gTL.SlimRule;
 
 public class GipslMappingValidator {
 
-	private GipslMappingValidator() {
+	final protected GipslResourceManager gipslManager;
+
+	public GipslMappingValidator(final GipslResourceManager gipslManager) {
+		this.gipslManager = gipslManager;
 	}
 
 	/**
@@ -24,7 +27,7 @@ public class GipslMappingValidator {
 	 * 
 	 * @param mapping Input Gips mapping to check.
 	 */
-	public static void checkMapping(final GipsMapping mapping) {
+	public void checkMapping(final GipsMapping mapping) {
 		if (GipslValidator.DISABLE_VALIDATOR) {
 			return;
 		}
@@ -55,9 +58,7 @@ public class GipslMappingValidator {
 		if (GipslValidatorUtil.INVALID_NAMES.contains(mapping.getName())) {
 			GipslValidator.err( //
 					String.format(GipslValidatorUtil.MAPPING_NAME_FORBIDDEN_MESSAGE, mapping.getName()), //
-					GipslPackage.Literals.GIPS_MAPPING__NAME, //
-					GipslValidator.NAME_EXPECT_UNIQUE //
-			);
+					GipslPackage.Literals.GIPS_MAPPING__NAME);
 		} else {
 			// The mapping name should be lowerCamelCase.
 			if (mapping.getName().contains("_")) {
@@ -71,7 +72,7 @@ public class GipslMappingValidator {
 					GipslValidator.warn( //
 							String.format(GipslValidatorUtil.MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE,
 									mapping.getName()), //
-							GipslPackage.Literals.GIPS_MAPPING__NAME, GipslValidator.NAME_EXPECT_LOWER_CASE //
+							GipslPackage.Literals.GIPS_MAPPING__NAME //
 					);
 				}
 			}
@@ -84,28 +85,26 @@ public class GipslMappingValidator {
 	 *
 	 * @param mapping Gips mapping to check uniqueness of the name for.
 	 */
-	public static void checkMappingNameUnique(final GipsMapping mapping) {
+	public void checkMappingNameUnique(final GipsMapping mapping) {
 		if (mapping == null || mapping.getName() == null) {
 			return;
 		}
 
-		long count = GipslScopeContextUtil.getAllEditorPatterns(mapping).stream()
-				.filter(p -> p != null && p.getName() != null).filter(p -> p.getName().equals(mapping.getName()))
+		EditorFile file = (EditorFile) SlimGTModelUtil.getContainer(mapping, EditorFileImpl.class);
+		long count = SlimGTModelUtil.getClasses(file).stream().filter(cls -> cls.getName().equals(mapping.getName()))
 				.count();
 
-		count += GipslScopeContextUtil.getClasses(mapping).stream()
-				.filter(cls -> cls.getName().equals(mapping.getName())).count();
-
-		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(mapping, EditorGTFileImpl.class);
-		count += editorFile.getMappings().stream().filter(m -> m != null && m.getName() != null)
+		count += gipslManager.getAllMappingsInScope(file).stream().filter(m -> m != null && m.getName() != null)
 				.filter(m -> m.getName().equals(mapping.getName())).count();
+
+		count = gipslManager.getAllRulesInScope(file).stream().filter(p -> p != null && p.getName() != null)
+				.filter(p -> p.getName().equals(mapping.getName())).count();
 
 		if (count != 1) {
 			GipslValidator.err( //
 					String.format(GipslValidatorUtil.MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE, mapping.getName(),
-							GipslValidator.getTimes((int) count)), //
-					GipslPackage.Literals.GIPS_MAPPING__NAME, //
-					GipslValidator.NAME_EXPECT_UNIQUE //
+							GipslValidatorUtil.getTimes((int) count)), //
+					GipslPackage.Literals.GIPS_MAPPING__NAME //
 			);
 		}
 	}
@@ -133,15 +132,15 @@ public class GipslMappingValidator {
 	 * 
 	 * @param mapping Mapping to start checking for.
 	 */
-	public static void checkAtMostOneMappingPerRule(final GipsMapping mapping) {
+	public void checkAtMostOneMappingPerRule(final GipsMapping mapping) {
 		if (mapping == null || mapping.getName() == null || mapping.getPattern() == null) {
 			return;
 		}
 
-		final EditorGTFile container = (EditorGTFile) mapping.eContainer();
-		final Set<EditorPattern> foundPatterns = new HashSet<>();
+		EditorFile file = (EditorFile) SlimGTModelUtil.getContainer(mapping, EditorFileImpl.class);
+		final Set<SlimRule> foundPatterns = new HashSet<>();
 
-		container.getMappings().stream().filter(m -> m.getPattern() != null).forEach(m -> {
+		gipslManager.getAllMappingsInScope(file).stream().filter(m -> m.getPattern() != null).forEach(m -> {
 			final boolean alreadyUsed = !foundPatterns.add(m.getPattern());
 			if (alreadyUsed) {
 				GipslValidator.err( //
@@ -162,8 +161,8 @@ public class GipslMappingValidator {
 	 * 
 	 * @param mapping Gips mapping to be checked.
 	 */
-	public static void checkMappingUnused(final GipsMapping mapping) {
-		final EditorGTFile container = GTEditorPatternUtils.getContainer(mapping, EditorGTFileImpl.class);
+	public void checkMappingUnused(final GipsMapping mapping) {
+		EditorFile container = (EditorFile) SlimGTModelUtil.getContainer(mapping, EditorFileImpl.class);
 		Set<GipsMapping> mappings = container.getConstraints().stream()
 				.flatMap(c -> GipslValidatorUtil.extractMappings(c.getExpression()).stream())
 				.collect(Collectors.toSet());
@@ -174,7 +173,7 @@ public class GipslMappingValidator {
 					GipslPackage.Literals.GIPS_MAPPING__NAME);
 		}
 
-		mappings.addAll(container.getFunctions().stream()
+		mappings.addAll(gipslManager.getAllFunctionsInScope(container).stream()
 				.flatMap(f -> GipslValidatorUtil.extractMappings(f.getExpression()).stream())
 				.collect(Collectors.toSet()));
 
@@ -201,9 +200,7 @@ public class GipslMappingValidator {
 			GipslValidator.err( //
 					String.format(GipslValidatorUtil.MAPPING_VARIABLE_NAME_MULTIPLE_DECLARATIONS_MESSAGE,
 							mappingVariable.getName()), //
-					GipslPackage.Literals.GIPS_MAPPING_VARIABLE__NAME, //
-					GipslValidator.NAME_EXPECT_UNIQUE //
-			);
+					GipslPackage.Literals.GIPS_MAPPING_VARIABLE__NAME);
 		}
 	}
 }

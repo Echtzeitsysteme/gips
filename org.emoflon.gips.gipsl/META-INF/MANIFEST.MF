@@ -23,15 +23,16 @@ Require-Bundle: org.eclipse.swt,
  org.moflon.core.utilities;bundle-version="3.0.0",
  org.apache.commons.commons-io;bundle-version="2.17.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
-Export-Package: org.emoflon.gips.gipsl.parser.antlr,
+Export-Package: org.emoflon.gips.gipsl,
+ org.emoflon.gips.gipsl.generator,
+ org.emoflon.gips.gipsl.gipsl,
+ org.emoflon.gips.gipsl.gipsl.impl,
+ org.emoflon.gips.gipsl.gipsl.util,
+ org.emoflon.gips.gipsl.parser.antlr,
+ org.emoflon.gips.gipsl.parser.antlr.internal,
+ org.emoflon.gips.gipsl.scoping,
  org.emoflon.gips.gipsl.serializer,
  org.emoflon.gips.gipsl.services,
- org.emoflon.gips.gipsl,
- org.emoflon.gips.gipsl.validation,
- org.emoflon.gips.gipsl.gipsl.util,
- org.emoflon.gips.gipsl.scoping,
- org.emoflon.gips.gipsl.generator,
- org.emoflon.gips.gipsl.gipsl.impl,
- org.emoflon.gips.gipsl.gipsl,
- org.emoflon.gips.gipsl.parser.antlr.internal
+ org.emoflon.gips.gipsl.util,
+ org.emoflon.gips.gipsl.validation
 Import-Package: org.apache.log4j

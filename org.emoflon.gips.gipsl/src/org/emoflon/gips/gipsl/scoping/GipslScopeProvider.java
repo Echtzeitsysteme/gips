@@ -3,33 +3,20 @@
  */
 package org.emoflon.gips.gipsl.scoping;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.Scopes;
-import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.EditorFile;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsConstant;
@@ -53,8 +40,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeQuery;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeSelect;
 import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression;
-import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
-import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.EditorFileImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsAttributeExpressionImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsLinearFunctionImpl;
@@ -66,9 +52,12 @@ import org.emoflon.gips.gipsl.gipsl.impl.GipsSetElementExpressionImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsSortPredicateImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsTransformOperationImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsValueExpressionImpl;
-import org.emoflon.ibex.gt.editor.gT.EditorOperator;
-import org.emoflon.ibex.gt.editor.gT.EditorPattern;
-import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
+import org.emoflon.gips.gipsl.util.GipslResourceManager;
+import org.emoflon.ibex.common.slimgt.util.SlimGTModelUtil;
+import org.emoflon.ibex.gt.gtl.gTL.SlimParameter;
+import org.emoflon.ibex.gt.gtl.gTL.SlimRule;
+import org.emoflon.ibex.gt.gtl.scoping.GTLScopeProvider;
+import org.emoflon.ibex.gt.gtl.util.GTLModelUtil;
 
 /**
  * This class contains custom scoping description.
@@ -77,12 +66,23 @@ import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
  * https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#scoping
  * on how and when to use it.
  */
-public class GipslScopeProvider extends AbstractGipslScopeProvider {
+public class GipslScopeProvider extends GTLScopeProvider {
 
-	protected Map<Resource, Map<URI, Resource>> resourceCache = new HashMap<>();
-	protected Set<EDataType> variableDataTypes = Set.of(EcorePackage.Literals.EDOUBLE, EcorePackage.Literals.EFLOAT,
-			EcorePackage.Literals.EINT, EcorePackage.Literals.ELONG, EcorePackage.Literals.ESHORT,
-			EcorePackage.Literals.EBYTE, EcorePackage.Literals.EBOOLEAN);
+	final public static Set<EDataType> variableDataTypes = Set.of(EcorePackage.Literals.EDOUBLE,
+			EcorePackage.Literals.EFLOAT, EcorePackage.Literals.EINT, EcorePackage.Literals.ELONG,
+			EcorePackage.Literals.ESHORT, EcorePackage.Literals.EBYTE, EcorePackage.Literals.EBOOLEAN);
+
+	final protected GipslResourceManager gipslManager;
+
+	public GipslScopeProvider() {
+		super(new GipslResourceManager());
+		gipslManager = (GipslResourceManager) gtlManager;
+	}
+
+	public GipslScopeProvider(GipslResourceManager gipslManager) {
+		super(gipslManager);
+		this.gipslManager = gipslManager;
+	}
 
 	@Override
 	public IScope getScope(EObject context, EReference reference) {
@@ -95,9 +95,7 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 	}
 
 	public IScope getScopeInternal(EObject context, EReference reference) throws Exception {
-		if (GipslScopeContextUtil.isPatternImportPattern(context, reference)) {
-			return scopeForImportedPatternPattern((ImportedPattern) context, reference);
-		} else if (GipslScopeContextUtil.isGipsMapping(context, reference)) {
+		if (GipslScopeContextUtil.isGipsMapping(context, reference)) {
 			return scopeForGipsMapping((GipsMapping) context, reference);
 		} else if (GipslScopeContextUtil.isGipsMappingVariableType(context, reference)) {
 			return scopeForGipsMappingVariableType((GipsMappingVariable) context, reference);
@@ -131,144 +129,17 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			return scopeForGipsTypeSelect((GipsTypeSelect) context, reference);
 		} else if (GipslScopeContextUtil.isGipsTypeQuery(context, reference)) {
 			return scopeForGipsTypeQuery((GipsTypeQuery) context, reference);
-		} else {
-			return super.getScope(context, reference);
-		}
-	}
-
-	protected Resource loadResource(final Resource requester, final URI gtModelUri) {
-		Map<URI, Resource> cache = resourceCache.get(requester);
-		if (cache == null) {
-			cache = new HashMap<>();
-			resourceCache.put(requester, cache);
 		}
 
-		Resource other = cache.get(gtModelUri);
-		if (other == null) {
-			XtextResourceSet rs = new XtextResourceSet();
-			try {
-				other = rs.getResource(gtModelUri, true);
-			} catch (Exception e) {
-				return other;
-			}
-			cache.put(gtModelUri, other);
-
-			if (other == null)
-				return other;
-
-			EcoreUtil2.resolveLazyCrossReferences(other, () -> false);
-		}
-
-		return other;
-	}
-
-	private IScope scopeForImportedPatternPattern(ImportedPattern context, EReference reference) {
-		if (context == null || context.getFile() == null || context.getFile().isBlank())
-			return IScope.NULLSCOPE;
-
-		Resource resource = null;
-		String currentImport = context.getFile().replace("\"", "");
-		File importFile = new File(currentImport);
-		if (importFile.exists() && importFile.isFile() && importFile.isAbsolute()) {
-			URI gtModelUri = URI.createFileURI(currentImport);
-			resource = loadResource(context.eResource(), gtModelUri);
-			if (resource == null)
-				return IScope.NULLSCOPE;
-		} else {
-			// 1. Case: package name
-			if (!(currentImport.contains("/") || currentImport.contains("\\"))) {
-				IProject currentProject = GipslScopeContextUtil.getCurrentProject(context.eResource());
-
-				String currentFile = context.eResource().getURI().toString().replace("platform:/resource/", "")
-						.replace(currentProject.getName(), "");
-				currentFile = currentProject.getLocation().toPortableString() + currentFile;
-				currentFile = currentFile.replace("/", "\\");
-
-				IWorkspace ws = ResourcesPlugin.getWorkspace();
-				for (IProject project : ws.getRoot().getProjects()) {
-					try {
-						if (!project.hasNature("org.emoflon.gips.gipsl.ui.gipsNature"))
-							continue;
-					} catch (CoreException e) {
-						continue;
-					}
-
-					File projectFile = new File(project.getLocation().toPortableString());
-					List<File> gtFiles = new LinkedList<>();
-					GipslScopeContextUtil.gatherFilesWithEnding(gtFiles, projectFile, ".gipsl", true);
-
-					for (File gtFile : gtFiles) {
-						URI gtModelUri;
-						try {
-							gtModelUri = URI.createFileURI(gtFile.getCanonicalPath());
-						} catch (IOException e) {
-							continue;
-						}
-
-						String fileString = gtModelUri.toFileString();
-
-						if (fileString.equals(currentFile))
-							continue;
-
-						resource = loadResource(context.eResource(), gtModelUri);
-						if (resource == null)
-							continue;
-
-						EObject gtModel = resource.getContents().get(0);
-
-						if (gtModel == null)
-							continue;
-
-						if (gtModel instanceof EditorGTFile gipsEditorFile) {
-							if (gipsEditorFile.getPackage().getName().equals(context.getFile())) {
-								break;
-							}
-						}
-						resource = null;
-					}
-
-					if (resource != null)
-						break;
-				}
-			} else { // 2. Case: relative path
-				IProject currentProject = GipslScopeContextUtil.getCurrentProject(context.eResource());
-				if (currentProject == null)
-					return IScope.NULLSCOPE;
-
-				String absolutePath = null;
-				try {
-					absolutePath = Paths.get(currentProject.getLocation().toPortableString())
-							.resolve(Paths.get(currentImport)).toFile().getCanonicalPath();
-				} catch (IOException e) {
-					return IScope.NULLSCOPE;
-				}
-				URI gtModelUri = URI.createFileURI(absolutePath);
-				resource = loadResource(context.eResource(), gtModelUri);
-				if (resource == null)
-					return IScope.NULLSCOPE;
-			}
-		}
-
-		Set<String> allPatterns = new HashSet<>();
-		EditorGTFile currentFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
-		currentFile.getPatterns().forEach(p -> allPatterns.add(p.getName()));
-
-		EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
-		EObject gtModel = resource.getContents().get(0);
-		if (gtModel instanceof org.emoflon.ibex.gt.editor.gT.EditorGTFile gtFile) {
-			return Scopes.scopeFor(gtFile.getPatterns().stream().filter(p -> !allPatterns.contains(p.getName()))
-					.collect(Collectors.toList()));
-		} else if (gtModel instanceof EditorGTFile gipsFile) {
-			return Scopes.scopeFor(gipsFile.getPatterns().stream().filter(p -> !allPatterns.contains(p.getName()))
-					.collect(Collectors.toList()));
-		} else {
-			return IScope.NULLSCOPE;
-		}
-
+		return super.getScopeInternal(context, reference);
 	}
 
 	public IScope scopeForGipsMapping(GipsMapping context, EReference reference) {
-		return Scopes.scopeFor(GipslScopeContextUtil.getAllEditorPatterns(context));
+		EditorFile currentFile = SlimGTModelUtil.getContainer(context, EditorFile.class);
+		if (currentFile == null)
+			return IScope.NULLSCOPE;
+
+		return Scopes.scopeFor(gtlManager.getAllRulesInScope(currentFile));
 	}
 
 	public IScope scopeForGipsMappingVariableType(GipsMappingVariable context, EReference reference) {
@@ -279,21 +150,23 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 		if (context.getType() == null)
 			return IScope.NULLSCOPE;
 
-		GipsMapping mapping = GTEditorPatternUtils.getContainer(context, GipsMappingImpl.class);
+		GipsMapping mapping = SlimGTModelUtil.getContainer(context, GipsMappingImpl.class);
 		if (mapping == null)
 			return IScope.NULLSCOPE;
 
-		EditorPattern pattern = mapping.getPattern();
+		SlimRule pattern = mapping.getPattern();
+
 		if (pattern == null)
 			return IScope.NULLSCOPE;
 
-		if (pattern.getParameters() == null || pattern.getParameters().isEmpty())
+		Collection<SlimParameter> parameters = GTLModelUtil.getAllParameters(pattern);
+		if (parameters == null || parameters.isEmpty())
 			return IScope.NULLSCOPE;
 
 		// TODO: Exclude parameters that are not exclusively used in attribute
 		// assignments (i.e. parameters used in conditions for pattern matching)
-		return Scopes.scopeFor(pattern.getParameters().stream()
-				.filter(param -> variableDataTypes.contains(param.getType())).collect(Collectors.toList()));
+		return Scopes.scopeFor(parameters.stream().filter(param -> variableDataTypes.contains(param.getType()))
+				.collect(Collectors.toList()));
 	}
 
 	public IScope scopeForGipsVariableReferenceExpression(GipsVariableReferenceExpression context,
@@ -357,11 +230,10 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 	}
 
 	public IScope scopeForGipsConstantReference(GipsConstantReference context, EReference reference) {
-		EObject container = (EObject) GipslScopeContextUtil.getContainer(context, Set.of(EditorGTFileImpl.class,
+		EObject container = (EObject) GipslScopeContextUtil.getContainer(context, Set.of(EditorFileImpl.class,
 				GipsConstraintImpl.class, GipsLinearFunctionImpl.class, GipsObjectiveImpl.class));
-		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
-		List<GipsConstant> constants = new LinkedList<>();
-		constants.addAll(editorFile.getConstants());
+		EditorFile editorFile = (EditorFile) SlimGTModelUtil.getContainer(context, EditorFileImpl.class);
+		Collection<GipsConstant> constants = gipslManager.getAllConstantsInScope(editorFile);
 
 		if (container instanceof GipsConstraint constraint) {
 			constants.addAll(constraint.getConstants());
@@ -376,50 +248,53 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 	}
 
 	public IScope scopeForGipsConstraintContext(GipsConstraint context, EReference reference) {
-		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
+		EditorFile editorFile = (EditorFile) SlimGTModelUtil.getContainer(context, EditorFileImpl.class);
 		List<EObject> allContext = new LinkedList<>();
-		allContext.addAll(editorFile.getMappings());
-		allContext.addAll(GipslScopeContextUtil.getClasses(context));
-		allContext.addAll(GipslScopeContextUtil.getAllEditorPatterns(context));
+		allContext.addAll(gipslManager.getAllMappingsInScope(editorFile));
+		allContext.addAll(SlimGTModelUtil.getClasses(editorFile));
+		allContext.addAll(gipslManager.getAllRulesInScope(editorFile));
 		return Scopes.scopeFor(allContext);
 	}
 
 	public IScope scopeForGipsLinearFunctionContext(GipsLinearFunction context, EReference reference) {
-		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
+		EditorFile editorFile = (EditorFile) SlimGTModelUtil.getContainer(context, EditorFileImpl.class);
 		List<EObject> allContext = new LinkedList<>();
-		allContext.addAll(editorFile.getMappings());
-		allContext.addAll(GipslScopeContextUtil.getClasses(context));
-		allContext.addAll(GipslScopeContextUtil.getAllEditorPatterns(context));
+		allContext.addAll(gipslManager.getAllMappingsInScope(editorFile));
+		allContext.addAll(SlimGTModelUtil.getClasses(editorFile));
+		allContext.addAll(gipslManager.getAllRulesInScope(editorFile));
 		return Scopes.scopeFor(allContext);
 	}
 
 	public IScope scopeForGipsLinearFunctionReference(GipsLinearFunctionReference context, EReference reference) {
-		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
-		return Scopes.scopeFor(editorFile.getFunctions());
+		EditorFile editorFile = (EditorFile) SlimGTModelUtil.getContainer(context, EditorFileImpl.class);
+		return Scopes.scopeFor(gipslManager.getAllFunctionsInScope(editorFile));
 	}
 
 	public IScope scopeForGipsMappingExpression(GipsMappingExpression context, EReference reference) {
-		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(context, EditorGTFileImpl.class);
-		return Scopes.scopeFor(editorFile.getMappings());
+		EditorFile editorFile = (EditorFile) SlimGTModelUtil.getContainer(context, EditorFileImpl.class);
+		return Scopes.scopeFor(gipslManager.getAllMappingsInScope(editorFile));
 	}
 
 	public IScope scopeForGipsTypeExpression(GipsTypeExpression context, EReference reference) {
-		return Scopes.scopeFor(GipslScopeContextUtil.getClasses(context));
+		EditorFile editorFile = (EditorFile) SlimGTModelUtil.getContainer(context, EditorFileImpl.class);
+		return Scopes.scopeFor(SlimGTModelUtil.getClasses(editorFile));
 	}
 
 	public IScope scopeForGipsPatternExpression(GipsPatternExpression context, EReference reference) {
-		return Scopes.scopeFor(GipslScopeContextUtil.getPatterns(context));
+		EditorFile editorFile = (EditorFile) SlimGTModelUtil.getContainer(context, EditorFileImpl.class);
+		return Scopes.scopeFor(gipslManager.getAllTruePatternsInScope(editorFile));
 	}
 
 	public IScope scopeForGipsRuleExpression(GipsRuleExpression context, EReference reference) {
-		return Scopes.scopeFor(GipslScopeContextUtil.getRules(context));
+		EditorFile editorFile = (EditorFile) SlimGTModelUtil.getContainer(context, EditorFileImpl.class);
+		return Scopes.scopeFor(gipslManager.getAllTrueRulesInScope(editorFile));
 	}
 
 	public IScope scopeForGipsNodeExpression(GipsNodeExpression context, EReference reference) {
 		EObject container = (EObject) GipslScopeContextUtil.getContainer(context, Set.of(
 				GipsLocalContextExpressionImpl.class, GipsSetElementExpressionImpl.class, GipsSortPredicateImpl.class));
 
-		EditorPattern editorPattern = null;
+		SlimRule slimRule = null;
 
 		if (container instanceof GipsLocalContextExpression root) {
 			if (!GipslScopeContextUtil.hasLocalContext(root)) {
@@ -428,12 +303,12 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			EObject localContext = GipslScopeContextUtil.getLocalContext(root);
 			if (localContext instanceof GipsMapping mapping) {
 				if (mapping.getPattern() != null) {
-					editorPattern = mapping.getPattern();
+					slimRule = mapping.getPattern();
 				} else {
 					return IScope.NULLSCOPE;
 				}
-			} else if (localContext instanceof EditorPattern) {
-				editorPattern = (EditorPattern) localContext;
+			} else if (localContext instanceof SlimRule) {
+				slimRule = (SlimRule) localContext;
 			} else {
 				return IScope.NULLSCOPE;
 			}
@@ -441,19 +316,19 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			EObject setContext = GipslScopeContextUtil.getSetContext(container);
 			if (setContext instanceof GipsMappingExpression mapping) {
 				if (mapping.getMapping() != null && mapping.getMapping().getPattern() != null) {
-					editorPattern = mapping.getMapping().getPattern();
+					slimRule = mapping.getMapping().getPattern();
 				} else {
 					return IScope.NULLSCOPE;
 				}
 			} else if (setContext instanceof GipsPatternExpression pattern) {
 				if (pattern.getPattern() != null) {
-					editorPattern = pattern.getPattern();
+					slimRule = pattern.getPattern();
 				} else {
 					return IScope.NULLSCOPE;
 				}
 			} else if (setContext instanceof GipsRuleExpression rule) {
 				if (rule.getRule() != null) {
-					editorPattern = rule.getRule();
+					slimRule = rule.getRule();
 				} else {
 					return IScope.NULLSCOPE;
 				}
@@ -464,8 +339,7 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			return IScope.NULLSCOPE;
 		}
 
-		return Scopes.scopeFor(editorPattern.getNodes().stream().filter(n -> n.getOperator() != EditorOperator.CREATE)
-				.collect(Collectors.toList()));
+		return Scopes.scopeFor(GTLModelUtil.getAllDeletedAndContextRuleNodesNoLocals(slimRule));
 	}
 
 	public IScope scopeForGipsAttributeExpression(GipsAttributeExpression context, EReference reference) {
@@ -641,11 +515,13 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 	}
 
 	public IScope scopeForGipsTypeSelect(GipsTypeSelect context, EReference reference) {
-		return Scopes.scopeFor(GipslScopeContextUtil.getClasses(context));
+		EditorFile editorFile = (EditorFile) SlimGTModelUtil.getContainer(context, EditorFileImpl.class);
+		return Scopes.scopeFor(SlimGTModelUtil.getClasses(editorFile));
 	}
 
 	public IScope scopeForGipsTypeQuery(GipsTypeQuery context, EReference reference) {
-		return Scopes.scopeFor(GipslScopeContextUtil.getClasses(context));
+		EditorFile editorFile = (EditorFile) SlimGTModelUtil.getContainer(context, EditorFileImpl.class);
+		return Scopes.scopeFor(SlimGTModelUtil.getClasses(editorFile));
 	}
 
 }

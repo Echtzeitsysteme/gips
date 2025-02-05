@@ -265,4 +265,11 @@ public class GipslValidatorUtil {
 		return mappings;
 	}
 
+	/**
+	 * Converts an integer into a "... times" String.
+	 */
+	public static String getTimes(int count) {
+		return (count == 2) ? "twice" : count + " times";
+	}
+
 }

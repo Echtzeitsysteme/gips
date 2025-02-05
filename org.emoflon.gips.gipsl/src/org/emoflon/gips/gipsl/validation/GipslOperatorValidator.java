@@ -1,16 +1,16 @@
 package org.emoflon.gips.gipsl.validation;
 
 import org.eclipse.xtext.validation.Check;
-import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.EditorFile;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanDisjunction;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanImplication;
 import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
-import org.emoflon.gips.gipsl.gipsl.RelationalOperator;
 import org.emoflon.gips.gipsl.gipsl.SolverType;
-import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
-import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
+import org.emoflon.gips.gipsl.gipsl.impl.EditorFileImpl;
+import org.emoflon.ibex.common.slimgt.slimGT.RelationalOperator;
+import org.emoflon.ibex.common.slimgt.util.SlimGTModelUtil;
 
 /**
  * This class is a validator for the operators used in the relational
@@ -25,32 +25,32 @@ public class GipslOperatorValidator {
 	 * Checks if a warning is needed for the given implication of equivalence
 	 * Boolean expression.
 	 * 
-	 * @param expr Implication or equivalence Boolean expression to check.
+	 * @param expression Implication or equivalence Boolean expression to check.
 	 */
-	public static void checkBooleanImplication(final GipsBooleanImplication expr) {
-		checkAndWarn(expr);
+	public static void checkBooleanImplication(final GipsBooleanImplication expression) {
+		checkAndWarn(expression);
 	}
 
 	/**
 	 * Checks if a warning is needed for the given or expression.
 	 * 
-	 * @param expr Or Boolean expression to check.
+	 * @param expression Or Boolean expression to check.
 	 */
-	public static void checkBooleanDisjunction(final GipsBooleanDisjunction expr) {
-		checkAndWarn(expr);
+	public static void checkBooleanDisjunction(final GipsBooleanDisjunction expression) {
+		checkAndWarn(expression);
 	}
 
 	/**
 	 * Checks if a warning is needed for the given relational Boolean expression.
 	 * 
-	 * @param expr Relational Boolean expression to check.
+	 * @param expression Relational Boolean expression to check.
 	 */
 	@Check
-	public static void checkRelationalExpression(final GipsRelationalExpression expr) {
-		if (!(expr.getOperator() == RelationalOperator.EQUAL //
-				|| expr.getOperator() == RelationalOperator.SMALLER_OR_EQUAL //
-				|| expr.getOperator() == RelationalOperator.GREATER_OR_EQUAL)) {
-			checkAndWarn(expr);
+	public static void checkRelationalExpression(final GipsRelationalExpression expression) {
+		if (!(expression.getOperator() == RelationalOperator.EQUAL //
+				|| expression.getOperator() == RelationalOperator.SMALLER_OR_EQUAL //
+				|| expression.getOperator() == RelationalOperator.GREATER_OR_EQUAL)) {
+			checkAndWarn(expression);
 		}
 	}
 
@@ -61,17 +61,17 @@ public class GipslOperatorValidator {
 	/**
 	 * Determines if a warning must be displayed for the given Boolean expression.
 	 * 
-	 * @param expr Boolean expression to check and potentially generate a warning
+	 * @param expression Boolean expression to check and potentially generate a warning
 	 *             for.
 	 */
-	private static void checkAndWarn(final GipsBooleanExpression expr) {
+	private static void checkAndWarn(final GipsBooleanExpression expression) {
 		if (GipslValidator.DISABLE_VALIDATOR) {
 			return;
 		}
 
-		final SolverType solver = getSolverFromExpr(expr);
+		final SolverType solver = getSolverFromExpression(expression);
 		if (warningForSolver(solver)) {
-			generateSolverWarning(solver, expr);
+			generateSolverWarning(solver, expression);
 		}
 	}
 
@@ -81,13 +81,13 @@ public class GipslOperatorValidator {
 	 * left (i.e., it must be the EditorGTFile) and reads the configured solver from
 	 * the config block of the EditorGTFile.
 	 * 
-	 * @param expr Boolean expression that is used as a starting point to get the
+	 * @param expression Boolean expression that is used as a starting point to get the
 	 *             SolverType form.
 	 * @return SolverType found in the EditorGTFile containing the given Boolean
 	 *         expression.
 	 */
-	private static SolverType getSolverFromExpr(final GipsBooleanExpression expr) {
-		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(expr, EditorGTFileImpl.class);
+	private static SolverType getSolverFromExpression(final GipsBooleanExpression expression) {
+		EditorFile editorFile = (EditorFile) SlimGTModelUtil.getContainer(expression, EditorFileImpl.class);
 		return editorFile.getConfig().getSolver();
 	}
 
@@ -96,21 +96,21 @@ public class GipslOperatorValidator {
 	 * expression.
 	 * 
 	 * @param solverType SolverType used in the warning.
-	 * @param expr       Boolean expression on whose operator the warning must
+	 * @param expression       Boolean expression on whose operator the warning must
 	 *                   appear.
 	 */
-	private static void generateSolverWarning(final SolverType solverType, final GipsBooleanExpression expr) {
-		if (expr instanceof GipsBooleanImplication implExpr) {
+	private static void generateSolverWarning(final SolverType solverType, final GipsBooleanExpression expression) {
+		if (expression instanceof GipsBooleanImplication implExpr) {
 			GipslValidator.warn( //
 					generateWarningString(solverType, implExpr.getOperator().getName()), //
 					GipslPackage.Literals.GIPS_BOOLEAN_IMPLICATION__OPERATOR //
 			);
-		} else if (expr instanceof GipsBooleanDisjunction orExpr) {
+		} else if (expression instanceof GipsBooleanDisjunction orExpr) {
 			GipslValidator.warn( //
 					generateWarningString(solverType, orExpr.getOperator().getName()), //
 					GipslPackage.Literals.GIPS_BOOLEAN_DISJUNCTION__OPERATOR //
 			);
-		} else if (expr instanceof GipsRelationalExpression relExpr) {
+		} else if (expression instanceof GipsRelationalExpression relExpr) {
 			GipslValidator.warn( //
 					generateWarningString(solverType, relExpr.getOperator().getName()), //
 					GipslPackage.Literals.GIPS_RELATIONAL_EXPRESSION__OPERATOR //

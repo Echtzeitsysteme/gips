@@ -1,11 +1,20 @@
 package org.emoflon.gips.gipsl.validation;
 
-import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.EditorFile;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
+import org.emoflon.gips.gipsl.gipsl.impl.EditorFileImpl;
+import org.emoflon.gips.gipsl.util.GipslResourceManager;
+import org.emoflon.ibex.common.slimgt.util.SlimGTModelUtil;
 
 public class GipslObjectiveValidator {
+
+	final protected GipslResourceManager gipslManager;
+
+	public GipslObjectiveValidator(final GipslResourceManager gipslManager) {
+		this.gipslManager = gipslManager;
+	}
 
 	/**
 	 * Checks the global objective regarding the use of dynamic sub types like
@@ -31,7 +40,7 @@ public class GipslObjectiveValidator {
 	 * 
 	 * @param function Gips linear function to check.
 	 */
-	public static void checkLinearFunction(final GipsLinearFunction function) {
+	public void checkLinearFunction(final GipsLinearFunction function) {
 		if (GipslValidator.DISABLE_VALIDATOR) {
 			return;
 		}
@@ -79,9 +88,7 @@ public class GipslObjectiveValidator {
 					GipslValidator.warn( //
 							String.format(GipslValidatorUtil.FUNCTION_NAME_STARTS_WITH_LOWER_CASE_MESSAGE,
 									function.getName()), //
-							GipslPackage.Literals.GIPS_LINEAR_FUNCTION__NAME, //
-							GipslValidator.NAME_EXPECT_LOWER_CASE //
-					);
+							GipslPackage.Literals.GIPS_LINEAR_FUNCTION__NAME);
 				}
 			}
 		}
@@ -92,21 +99,19 @@ public class GipslObjectiveValidator {
 	 * 
 	 * @param function Gips linear function to check uniqueness of the name for.
 	 */
-	public static void checkObjectiveNameUnique(final GipsLinearFunction function) {
+	public void checkObjectiveNameUnique(final GipsLinearFunction function) {
 		if (function == null || function.eContainer() == null) {
 			return;
 		}
 
-		final EditorGTFile container = (EditorGTFile) function.eContainer();
-		final long count = container.getFunctions().stream()
+		EditorFile editorFile = (EditorFile) SlimGTModelUtil.getContainer(function, EditorFileImpl.class);
+		final long count = gipslManager.getAllFunctionsInScope(editorFile).stream()
 				.filter(o -> o.getName() != null && o.getName().equals(function.getName())).count();
 		if (count != 1) {
 			GipslValidator.err( //
 					String.format(GipslValidatorUtil.FUNCTION_NAME_MULTIPLE_DECLARATIONS_MESSAGE, function.getName(),
-							GipslValidator.getTimes((int) count)), //
-					GipslPackage.Literals.GIPS_LINEAR_FUNCTION__NAME, //
-					GipslValidator.NAME_EXPECT_UNIQUE //
-			);
+							GipslValidatorUtil.getTimes((int) count)), //
+					GipslPackage.Literals.GIPS_LINEAR_FUNCTION__NAME);
 		}
 	}
 

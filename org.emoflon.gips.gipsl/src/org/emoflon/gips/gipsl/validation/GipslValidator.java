@@ -3,25 +3,12 @@
  */
 package org.emoflon.gips.gipsl.validation;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.validation.Check;
-import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.EditorFile;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanDisjunction;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanImplication;
 import org.emoflon.gips.gipsl.gipsl.GipsConfig;
@@ -35,18 +22,19 @@ import org.emoflon.gips.gipsl.gipsl.GipsReduceOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsSetExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
-import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
-import org.emoflon.gips.gipsl.gipsl.Package;
 import org.emoflon.gips.gipsl.gipsl.SolverType;
-import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.EditorFileImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsConstantImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsLinearFunctionImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
-import org.emoflon.ibex.gt.editor.gT.EditorPattern;
-import org.emoflon.ibex.gt.editor.gT.GTPackage;
-import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
+import org.emoflon.gips.gipsl.util.GipslResourceManager;
+import org.emoflon.ibex.common.slimgt.util.SlimGTModelUtil;
+import org.emoflon.ibex.gt.gtl.gTL.GTLPackage;
+import org.emoflon.ibex.gt.gtl.gTL.PatternImport;
+import org.emoflon.ibex.gt.gtl.gTL.SlimRule;
+import org.emoflon.ibex.gt.gtl.validation.GTLValidator;
 
 /**
  * This class contains custom validation rules.
@@ -54,24 +42,39 @@ import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
  * See
  * https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
-public class GipslValidator extends AbstractGipslValidator {
+public class GipslValidator extends GTLValidator {
 
 	public static String PATTERN_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Pattern, Rule, Mapping or Type  '%s' must not be declared %s.";
-
-	/**
-	 * Global switch to turn off the whole validation.
-	 */
-	static final boolean DISABLE_VALIDATOR = false;
 
 	/**
 	 * Instance of this class
 	 */
 	private static GipslValidator val;
 
+	final protected GipslResourceManager gipslManager;
+
+	/**
+	 * Global switch to turn off the whole validation.
+	 */
+	static final boolean DISABLE_VALIDATOR = false;
+
 	protected GipslValidator() {
+		super(new GipslResourceManager());
 		if (val != null) {
 			throw new UnsupportedOperationException("Only one instance of the GIPSL validator can be created!");
 		}
+
+		gipslManager = (GipslResourceManager) gtlManager;
+		val = this;
+	}
+
+	protected GipslValidator(GipslResourceManager gipslManager) {
+		super(gipslManager);
+		if (val != null) {
+			throw new UnsupportedOperationException("Only one instance of the GIPSL validator can be created!");
+		}
+
+		this.gipslManager = gipslManager;
 		val = this;
 	}
 
@@ -83,262 +86,45 @@ public class GipslValidator extends AbstractGipslValidator {
 	}
 
 	/**
-	 * This prevents all exceptions being "swallowed" by the default validator
-	 * implementation. TODO: Remove this or make it a little nice for future stable
-	 * release candidates.
-	 */
-	@Override
-	protected void handleExceptionDuringValidation(final Throwable targetException) throws RuntimeException {
-		targetException.printStackTrace();
-	}
-
-	/**
 	 * Rule, Pattern, Mapping and Type names must be unique.
 	 */
 	@Override
-	public void checkPatternNameUnique(EditorPattern pattern) {
-		long count = GipslScopeContextUtil.getAllEditorPatterns(pattern).stream()
-				.filter(p -> p != null && p.getName() != null).filter(p -> p.getName().equals(pattern.getName()))
+	protected void checkRuleNameUnique(SlimRule rule) {
+		super.checkRuleNameUnique(rule);
+
+		EditorFile file = (EditorFile) SlimGTModelUtil.getContainer(rule, EditorFileImpl.class);
+		long count = SlimGTModelUtil.getClasses(file).stream().filter(cls -> cls.getName().equals(rule.getName()))
 				.count();
 
-		count += GipslScopeContextUtil.getClasses(pattern).stream()
-				.filter(cls -> cls.getName().equals(pattern.getName())).count();
-
-		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(pattern, EditorGTFileImpl.class);
-		count += editorFile.getMappings().stream().filter(m -> m != null && m.getName() != null)
-				.filter(m -> m.getName().equals(pattern.getName())).count();
+		count += gipslManager.getAllMappingsInScope(file).stream().filter(m -> m != null && m.getName() != null)
+				.filter(m -> m.getName().equals(rule.getName())).count();
 
 		if (count != 1) {
-			error(String.format(PATTERN_NAME_MULTIPLE_DECLARATIONS_MESSAGE, pattern.getName(),
-					super.getTimes((int) count)), GTPackage.Literals.EDITOR_PATTERN__NAME, NAME_EXPECT_UNIQUE);
-		}
-
-	}
-
-	@Check
-	public void packageValid(Package pkg) {
-		if (pkg.getName() == null || pkg.getName().isBlank()) {
-			error("Package name must not be empty!", GipslPackage.Literals.PACKAGE__NAME);
-			return;
-		}
-
-		if (pkg.getName().contains(" ")) {
-			error("Package name may not contain any white spaces.", GipslPackage.Literals.PACKAGE__NAME);
-		}
-
-		if (pkg.getName().contains("\\")) {
-			error("Package name may not contain any slashes.", GipslPackage.Literals.PACKAGE__NAME);
-		}
-
-		if (pkg.getName().contains("/")) {
-			error("Package name may not contain any slashes.", GipslPackage.Literals.PACKAGE__NAME);
-		}
-
-		StringBuilder sb = new StringBuilder();
-
-		if (pkg.getName().chars().filter(c -> Character.isUpperCase(c)).map(c -> {
-			sb.append((char) c + " ");
-			return c;
-		}).findAny().isPresent()) {
-			error("Package name may not contain any upper case letters. The following illegal characters were found: "
-					+ sb.toString(), GipslPackage.Literals.PACKAGE__NAME);
-		}
-
-		if (pkg.getName().chars().filter(c -> !(Character.isLetter(c) || Character.isDigit(c) || c == '.' || c == '"'))
-				.map(c -> {
-					sb.append((char) c + " ");
-					return c;
-				}).findAny().isPresent()) {
-			error("Package name may not contain any characters other than lower case letters, digits or dots. The following illegal characters were found: "
-					+ sb.toString(), GipslPackage.Literals.PACKAGE__NAME);
-		}
-
-		// Check Workspace uniqueness
-		IProject currentProject = GipslScopeContextUtil.getCurrentProject(pkg.eResource());
-		String currentFile = pkg.eResource().getURI().toString().replace("platform:/resource/", "")
-				.replaceFirst(currentProject.getName(), "");
-		currentFile = currentProject.getLocation().toPortableString() + currentFile;
-		currentFile = currentFile.replace("/", "\\");
-
-		IWorkspace ws = ResourcesPlugin.getWorkspace();
-		for (IProject project : ws.getRoot().getProjects()) {
-			try {
-				if (!project.hasNature("org.emoflon.gips.gipsl.ui.gipsNature"))
-					continue;
-			} catch (CoreException e) {
-				continue;
-			}
-
-			File projectFile = new File(project.getLocation().toPortableString());
-			List<File> gtFiles = new LinkedList<>();
-			GipslScopeContextUtil.gatherFilesWithEnding(gtFiles, projectFile, ".gipsl", true);
-
-			for (File gtFile : gtFiles) {
-
-				XtextResourceSet rs = new XtextResourceSet();
-				URI gtModelUri;
-				try {
-					gtModelUri = URI.createFileURI(gtFile.getCanonicalPath());
-				} catch (IOException e) {
-					continue;
-				}
-
-				String fileString = gtModelUri.toFileString();
-				fileString = fileString.replace("/", "\\");
-
-				if (fileString.equals(currentFile))
-					continue;
-
-				Resource resource = rs.getResource(gtModelUri, true);
-//				EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
-				EObject gtModel = resource.getContents().get(0);
-
-				if (gtModel == null)
-					continue;
-
-				if (gtModel instanceof EditorGTFile gipsEditorFile) {
-					if (gipsEditorFile.getPackage().getName().equals(pkg.getName())) {
-						error("Package name must be unique within the current workspace. Package name clash with: "
-								+ gtModelUri, GipslPackage.Literals.PACKAGE__NAME);
-					}
-				}
-			}
-		}
-
-	}
-
-	/**
-	 * Pattern names must be unique.
-	 */
-	@Check
-	public void checkImportNameUnique(ImportedPattern pattern) {
-		if (pattern.getPattern() == null)
-			return;
-
-		long count = GipslScopeContextUtil.getAllEditorPatterns(pattern).stream()
-				.filter(p -> p != null && p.getName() != null)
-				.filter(p -> p.getName().equals(pattern.getPattern().getName())).count();
-
-		count += GipslScopeContextUtil.getClasses(pattern).stream()
-				.filter(cls -> cls.getName().equals(pattern.getPattern().getName())).count();
-
-		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(pattern, EditorGTFileImpl.class);
-		count += editorFile.getMappings().stream().filter(m -> m != null && m.getName() != null)
-				.filter(m -> m.getName().equals(pattern.getPattern().getName())).count();
-
-		if (count != 1) {
-			error(String.format(PATTERN_NAME_MULTIPLE_DECLARATIONS_MESSAGE, pattern.getPattern().getName(),
-					super.getTimes((int) count)), GipslPackage.Literals.IMPORTED_PATTERN__PATTERN, NAME_EXPECT_UNIQUE);
+			error(String.format("Pattern/rule '%s' must not be declared more than once.", rule.getName(),
+					GipslValidatorUtil.getTimes((int) count)), GTLPackage.Literals.SLIM_RULE__NAME);
 		}
 	}
 
 	/**
-	 * URI valid
+	 * Imported Pattern/Rule names must be unique among all Rule, Pattern, Mapping
+	 * and Type names.
 	 */
-	@Check
-	public void checkImportUriExists(ImportedPattern pattern) {
-		if (pattern.getFile() == null || pattern.getFile().isBlank())
-			return;
+	@Override
+	public void checkImportNameUnique(PatternImport pImport) {
+		super.checkImportNameUnique(pImport);
 
-		XtextResourceSet rs = new XtextResourceSet();
-		Resource resource = null;
-		URI gtModelUri = null;
-		String currentImport = pattern.getFile().replace("\"", "");
-		File importFile = new File(currentImport);
+		EditorFile file = (EditorFile) SlimGTModelUtil.getContainer(pImport, EditorFileImpl.class);
+		long count = SlimGTModelUtil.getClasses(file).stream()
+				.filter(cls -> cls.getName().equals(pImport.getPattern().getName())).count();
 
-		if (importFile.exists() && importFile.isFile() && importFile.isAbsolute()) {
-			gtModelUri = URI.createFileURI(currentImport);
-			try {
-				resource = rs.getResource(gtModelUri, true);
-			} catch (Exception e) {
-				error("Import URI <" + gtModelUri.toFileString() + "> is not valid.",
-						GipslPackage.Literals.IMPORTED_PATTERN__FILE);
-				return;
-			}
-		} else {
-			// 1. Case: package name
-			if (!(currentImport.contains("/") || currentImport.contains("\\"))) {
-				IProject currentProject = GipslScopeContextUtil.getCurrentProject(pattern.eResource());
+		count += gipslManager.getAllMappingsInScope(file).stream().filter(m -> m != null && m.getName() != null)
+				.filter(m -> m.getName().equals(pImport.getPattern().getName())).count();
 
-				String currentFile = pattern.eResource().getURI().toString().replace("platform:/resource/", "")
-						.replace(currentProject.getName(), "");
-				currentFile = currentProject.getLocation().toPortableString() + currentFile;
-				currentFile = currentFile.replace("/", "\\");
-
-				IWorkspace ws = ResourcesPlugin.getWorkspace();
-				for (IProject project : ws.getRoot().getProjects()) {
-					try {
-						if (!project.hasNature("org.emoflon.gips.gipsl.ui.gipsNature"))
-							continue;
-					} catch (CoreException e) {
-						continue;
-					}
-
-					File projectFile = new File(project.getLocation().toPortableString());
-					List<File> gtFiles = new LinkedList<>();
-					GipslScopeContextUtil.gatherFilesWithEnding(gtFiles, projectFile, ".gipsl", true);
-
-					for (File gtFile : gtFiles) {
-
-						rs = new XtextResourceSet();
-						try {
-							gtModelUri = URI.createFileURI(gtFile.getCanonicalPath());
-						} catch (IOException e) {
-							continue;
-						}
-
-						String fileString = gtModelUri.toFileString();
-
-						if (fileString.equals(currentFile))
-							continue;
-
-						resource = rs.getResource(gtModelUri, true);
-						EcoreUtil2.resolveLazyCrossReferences(resource, () -> false);
-						EObject gtModel = resource.getContents().get(0);
-
-						if (gtModel == null)
-							continue;
-
-						if (gtModel instanceof EditorGTFile gipsEditorFile) {
-							if (gipsEditorFile.getPackage().getName().equals(pattern.getFile())) {
-								break;
-							}
-						}
-
-						rs = null;
-						resource = null;
-					}
-
-					if (resource != null)
-						break;
-				}
-			} else { // 2. Case: relative path
-				IProject currentProject = GipslScopeContextUtil.getCurrentProject(pattern.eResource());
-
-				String absolutePath = null;
-				try {
-					absolutePath = Paths.get(currentProject.getLocation().toPortableString())
-							.resolve(Paths.get(currentImport)).toFile().getCanonicalPath();
-				} catch (IOException e1) {
-					error("Relative import URI <" + currentImport + "> is not resolvable.",
-							GipslPackage.Literals.IMPORTED_PATTERN__FILE);
-					return;
-				}
-
-				gtModelUri = URI.createFileURI(absolutePath);
-				try {
-					resource = rs.getResource(gtModelUri, true);
-				} catch (Exception e) {
-					error("Import URI <" + gtModelUri.toFileString() + "> is not valid.",
-							GipslPackage.Literals.IMPORTED_PATTERN__FILE);
-					return;
-				}
-			}
+		if (count != 1) {
+			error(String.format("Pattern/rule '%s' must not be declared more than once.",
+					pImport.getPattern().getName(), GipslValidatorUtil.getTimes((int) count)),
+					GTLPackage.Literals.EDITOR_FILE__IMPORTED_PATTERNS);
 		}
-
-		if (resource == null)
-			error("Import URI <" + gtModelUri.toFileString() + "> is not valid.",
-					GipslPackage.Literals.IMPORTED_PATTERN__FILE);
 	}
 
 	/*
@@ -415,7 +201,8 @@ public class GipslValidator extends AbstractGipslValidator {
 
 	@Check
 	public void checkMapping(final GipsMapping mapping) {
-		GipslMappingValidator.checkMapping(mapping);
+		GipslMappingValidator mappingValidator = new GipslMappingValidator(gipslManager);
+		mappingValidator.checkMapping(mapping);
 	}
 
 	@Check
@@ -444,11 +231,13 @@ public class GipslValidator extends AbstractGipslValidator {
 			return;
 		}
 
-		EObject container = (EObject) GipslScopeContextUtil.getContainer(constant, Set.of(EditorGTFileImpl.class,
+		EObject container = (EObject) GipslScopeContextUtil.getContainer(constant, Set.of(EditorFileImpl.class,
 				GipsConstraintImpl.class, GipsLinearFunctionImpl.class, GipsObjectiveImpl.class));
-		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(constant, EditorGTFileImpl.class);
-		long count = editorFile.getConstants().stream().filter(c -> c.getName() != null).map(c -> c.getName())
-				.filter(n -> n.equals(constant.getName())).count();
+
+		EditorFile editorFile = (EditorFile) SlimGTModelUtil.getContainer(constant, EditorFileImpl.class);
+
+		long count = gipslManager.getAllConstantsInScope(editorFile).stream().filter(c -> c.getName() != null)
+				.map(c -> c.getName()).filter(n -> n.equals(constant.getName())).count();
 		if (container instanceof GipsConstraint constraint) {
 			count += constraint.getConstants().stream().filter(c -> c.getName() != null).map(c -> c.getName())
 					.filter(n -> n.equals(constant.getName())).count();
@@ -496,8 +285,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 		// Case 3: Set is not reduced -> This is only allowed, when assigned to a
 		// constant
-		GipsConstant container = (GipsConstant) GipslScopeContextUtil.getContainer(expression,
-				Set.of(GipsConstantImpl.class));
+		GipsConstant container = (GipsConstant) SlimGTModelUtil.getContainer(expression, GipsConstantImpl.class);
 		if (container == null)
 			GipslValidator.err( //
 					String.format(GipslValidatorUtil.SET_OPERATION_MISSING), //
@@ -513,7 +301,8 @@ public class GipslValidator extends AbstractGipslValidator {
 
 	@Check
 	public void checkObjective(final GipsLinearFunction function) {
-		GipslObjectiveValidator.checkLinearFunction(function);
+		GipslObjectiveValidator objectiveValidator = new GipslObjectiveValidator(gipslManager);
+		objectiveValidator.checkLinearFunction(function);
 	}
 
 	@Check

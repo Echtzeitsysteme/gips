@@ -26,9 +26,13 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.emoflon.gips.gipsl.gipsl.GipsConstant;
+import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
+import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.ibex.common.slimgt.util.SlimGTWorkspaceUtil;
 import org.emoflon.ibex.common.slimgt.util.XtextResourceManager;
 import org.emoflon.ibex.gt.gtl.gTL.EditorFile;
+import org.emoflon.ibex.gt.gtl.gTL.GTLRuleType;
 import org.emoflon.ibex.gt.gtl.gTL.SlimRule;
 import org.emoflon.ibex.gt.gtl.util.GTLResourceManager;
 import org.moflon.core.utilities.LogUtils;
@@ -388,5 +392,53 @@ public class GipslResourceManager extends GTLResourceManager {
 		}
 
 		return true;
+	}
+
+	public Collection<GipsConstant> getAllConstantsInScope(final org.emoflon.gips.gipsl.gipsl.EditorFile file) {
+		Set<GipsConstant> constantSet = new HashSet<>();
+		constantSet.addAll(file.getConstants());
+
+		// Add patterns in package name
+		loadAllOtherEditorFilesInPackage(file).stream()
+				.filter(f -> (f instanceof org.emoflon.gips.gipsl.gipsl.EditorFile))
+				.map(f -> (org.emoflon.gips.gipsl.gipsl.EditorFile) f)
+				.forEach(f -> constantSet.addAll(f.getConstants()));
+
+		return constantSet;
+	}
+
+	public Collection<GipsMapping> getAllMappingsInScope(final org.emoflon.gips.gipsl.gipsl.EditorFile file) {
+		Set<GipsMapping> mappingSet = new HashSet<>();
+		mappingSet.addAll(file.getMappings());
+
+		// Add patterns in package name
+		loadAllOtherEditorFilesInPackage(file).stream()
+				.filter(f -> (f instanceof org.emoflon.gips.gipsl.gipsl.EditorFile))
+				.map(f -> (org.emoflon.gips.gipsl.gipsl.EditorFile) f).forEach(f -> mappingSet.addAll(f.getMappings()));
+
+		return mappingSet;
+	}
+
+	public Collection<GipsLinearFunction> getAllFunctionsInScope(final org.emoflon.gips.gipsl.gipsl.EditorFile file) {
+		Set<GipsLinearFunction> functionSet = new HashSet<>();
+		functionSet.addAll(file.getFunctions());
+
+		// Add patterns in package name
+		loadAllOtherEditorFilesInPackage(file).stream()
+				.filter(f -> (f instanceof org.emoflon.gips.gipsl.gipsl.EditorFile))
+				.map(f -> (org.emoflon.gips.gipsl.gipsl.EditorFile) f)
+				.forEach(f -> functionSet.addAll(f.getFunctions()));
+
+		return functionSet;
+	}
+
+	public Collection<SlimRule> getAllTrueRulesInScope(final org.emoflon.gips.gipsl.gipsl.EditorFile file) {
+		return getAllRulesInScope(file).stream().filter(r -> r.getType() == GTLRuleType.RULE)
+				.collect(Collectors.toList());
+	}
+
+	public Collection<SlimRule> getAllTruePatternsInScope(final org.emoflon.gips.gipsl.gipsl.EditorFile file) {
+		return getAllRulesInScope(file).stream().filter(r -> r.getType() == GTLRuleType.PATTERN)
+				.collect(Collectors.toList());
 	}
 }

@@ -5,6 +5,8 @@ import java.nio.file.Paths;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -26,8 +28,9 @@ public class Gips2IlpTraceHelper {
 	private Path saveLocation;
 
 	private int rmiServicePort = 2842;
-	private String gipsModelId;
-	private String ilpModelId;
+
+	private String intermediateModelId;
+	private String lpModelId;
 
 	public Gips2IlpTraceHelper() {
 
@@ -46,26 +49,45 @@ public class Gips2IlpTraceHelper {
 	}
 
 	public void finalizeTrace() {
-		var mapping = TraceMap.normalize(gips2intern, ResolveEcore2Id.INSTANCE, ResolveIdentity2Id.INSTANCE);
-		var link = new TraceModelLink(gipsModelId, ilpModelId, mapping);
+		Path workingDirectory = Paths.get("").toAbsolutePath();
+		// this should, in theory, be the eclipse project name
+		String contextId = workingDirectory.getFileName().toString();
+
+//		String intermediateModelId = computeModelIdFromPath(workingDirectory, intermediatePath);
+//		String lpModelId = computeModelIdFromPath(workingDirectory, lpPath);
+
+		TraceMap<String, String> mapping = TraceMap.normalize(gips2intern, ResolveEcore2Id.INSTANCE,
+				ResolveIdentity2Id.INSTANCE);
+		TraceModelLink link = new TraceModelLink(intermediateModelId, lpModelId, mapping);
 
 		try {
 			ITraceRemoteService service = (ITraceRemoteService) LocateRegistry.getRegistry(rmiServicePort)
 					.lookup(ITraceRemoteService.SERVICE_NAME);
-
-			// this should, in theory, be the eclipse project name
-			var workingDirectoryName = Paths.get("").toAbsolutePath().getFileName().toString();
-			service.updateTraceModel(workingDirectoryName, link);
+			service.updateTraceModel(contextId, link);
 		} catch (RemoteException | NotBoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	private String computeModelIdFromPath(Path modelPath) {
+		return computeModelIdFromPath(Paths.get("").toAbsolutePath(), modelPath);
+	}
+
+	private String computeModelIdFromPath(Path root, Path modelPath) {
+		if (!modelPath.isAbsolute())
+			modelPath = root.resolve(modelPath).normalize();
+
+		Path relativePath = root.relativize(modelPath); // we use the relative path as id
+		String id = StreamSupport.stream(relativePath.spliterator(), false).map(Path::toString)
+				.collect(Collectors.joining("/")); // use '/' like IPath.toString
+		return id;
+	}
+
 	private TraceGraph buildGraph() {
 		var graph = new TraceGraph();
 		var mapping = TraceMap.normalize(gips2intern, ResolveEcore2Id.INSTANCE, ResolveIdentity2Id.INSTANCE);
-		var link = new TraceModelLink(gipsModelId, ilpModelId, mapping);
+		var link = new TraceModelLink(intermediateModelId, lpModelId, mapping);
 		graph.addOrReplaceTraceLink(link);
 		return graph;
 	}
@@ -83,23 +105,18 @@ public class Gips2IlpTraceHelper {
 		this.saveLocation = filePath;
 	}
 
-	public void setGipsModelId(String id) {
-		this.gipsModelId = id;
-	}
-
-	public void setIlpModelId(String id) {
-		this.ilpModelId = id;
-	}
-
 	public void computeGipsModelId(URI modelUri) {
-		String modelId = modelUri.trimFileExtension().lastSegment();
-		setGipsModelId(modelId);
+		Path intermediatePath;
+		if (modelUri.isPlatform())
+			intermediatePath = Path.of(modelUri.toPlatformString(true));
+		else
+			intermediatePath = Path.of(modelUri.toFileString());
+
+		intermediateModelId = computeModelIdFromPath(intermediatePath);
 	}
 
 	public void computeLpModelId(String lpPath) {
-		Path path = Path.of(lpPath);
-		String modelId = path.getFileName().toString();
-		setIlpModelId(modelId);
+		lpModelId = computeModelIdFromPath(Path.of(lpPath));
 	}
 
 }

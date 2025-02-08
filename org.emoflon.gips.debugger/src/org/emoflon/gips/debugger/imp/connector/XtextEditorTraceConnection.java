@@ -6,7 +6,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
@@ -14,11 +17,29 @@ import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.emoflon.gips.debugger.marker.AnnotationMarkerData;
 import org.emoflon.gips.debugger.marker.HelperAnnotationTracerMarker;
+import org.emoflon.gips.debugger.utility.HelperEclipse;
 
 public abstract class XtextEditorTraceConnection extends EditorTraceConnection<XtextEditor> {
 
 	public XtextEditorTraceConnection(XtextEditor editor) {
 		super(editor);
+	}
+
+	@Override
+	protected void computeContextAndModelId() {
+		URI uri = editor.getDocument().getResourceURI();
+
+		IProject project = HelperEclipse.tryAndGetProject(uri);
+		if (project == null) { // TODO: a way to support files outside of eclipse projects
+			setContextId(null);
+			setModelId(null);
+			return;
+		}
+
+		setContextId(project.getName());
+		IPath filePath = IPath.fromOSString(HelperEclipse.toFileURI(uri).toFileString());
+		IPath relativeFilePath = filePath.makeRelativeTo(project.getLocation());
+		setModelId(relativeFilePath.toString());
 	}
 
 	@Override

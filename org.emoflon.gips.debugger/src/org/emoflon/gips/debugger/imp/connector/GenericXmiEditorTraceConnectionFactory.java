@@ -29,8 +29,6 @@ public class GenericXmiEditorTraceConnectionFactory implements IEditorTraceConne
 
 	private static final class XmiEditorTraceConnection extends EditorTraceConnection<EcoreEditor> {
 
-		private String contextId;
-		private String modelId;
 		private URI modelUri;
 
 		public XmiEditorTraceConnection(EcoreEditor editor) {
@@ -43,26 +41,14 @@ public class GenericXmiEditorTraceConnectionFactory implements IEditorTraceConne
 					editor.getEditingDomain().getResourceSet().getURIConverter());
 
 			modelUri = HelperEclipse.toPlatformURI(uri);
-
-			contextId = HelperEclipse.tryAndGetProject(modelUri).getName();
-//			modelId = HelperEclipse.toPlatformURI(modelUri).toPlatformString(true);
-			modelId = modelUri.trimFileExtension().lastSegment();
+			setContextId(HelperEclipse.tryAndGetProject(modelUri).getName());
+			setModelId(modelUri.toPlatformString(true));
 		}
 
 		private boolean isSameResourceURI(URI uri) {
-//			var relativeUri = HelperEclipse.toPlatformURI(uri);
-//			return modelUri.equals(relativeUri);
-			return modelId.equals(uri.trimFileExtension().lastSegment());
-		}
-
-		@Override
-		protected String getContextId() {
-			return contextId;
-		}
-
-		@Override
-		protected String getModelId() {
-			return modelId;
+			var relativeUri = HelperEclipse.toPlatformURI(uri);
+			return getModelId().equals(relativeUri.toPlatformString(true));
+//			return getModelId().equals(uri.trimFileExtension().lastSegment());
 		}
 
 		@Override
@@ -72,9 +58,8 @@ public class GenericXmiEditorTraceConnectionFactory implements IEditorTraceConne
 				for (var selection : treeSelection) {
 					if (selection instanceof EObject eObject) {
 						var resource = eObject.eResource();
-						if (resource != null && !isSameResourceURI(resource.getURI())) {
+						if (resource != null && !isSameResourceURI(resource.getURI()))
 							continue;
-						}
 
 						var elementId = ResolveEcore2Id.INSTANCE.resolve(eObject);
 						elementIds.add(elementId);

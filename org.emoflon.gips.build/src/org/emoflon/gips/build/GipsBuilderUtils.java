@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -35,6 +36,7 @@ import org.emoflon.gips.debugger.api.ITraceManager;
 import org.emoflon.gips.debugger.trace.TraceMap;
 import org.emoflon.gips.debugger.trace.TraceModelLink;
 import org.emoflon.gips.debugger.trace.resolver.ResolveEcore2Id;
+import org.emoflon.gips.debugger.utility.HelperEclipse;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.ibex.gt.codegen.EClassifiersManager;
@@ -157,7 +159,7 @@ public final class GipsBuilderUtils {
 		saveOptions.put(XMLResource.OPTION_SAVE_TYPE_INFORMATION, Boolean.TRUE);
 		saveOptions.put(XMLResource.OPTION_SCHEMA_LOCATION_IMPLEMENTATION, Boolean.TRUE);
 		try {
-			((XMIResource) output).save(saveOptions);
+			output.save(saveOptions);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -191,8 +193,8 @@ public final class GipsBuilderUtils {
 	public static Registry createEPackageRegistry(final GipsIntermediateModel model) {
 		Registry packageRegistry = new EPackageRegistryImpl();
 		findAllEPackages(model.getIbexModel(), packageRegistry);
-		model.getConstraints().stream().filter(constr -> constr instanceof TypeConstraint)
-				.map(constr -> (TypeConstraint) constr).forEach(constr -> {
+		model.getConstraints().stream().filter(TypeConstraint.class::isInstance).map(constr -> (TypeConstraint) constr)
+				.forEach(constr -> {
 					EPackage foreign = constr.getModelType().getType().getEPackage();
 					if (!packageRegistry.containsKey(foreign.getNsURI())) {
 						packageRegistry.put(foreign.getNsURI(), foreign);
@@ -313,9 +315,20 @@ public final class GipsBuilderUtils {
 		ITraceContext traceContext = ITraceManager.getInstance().getContext(project.getName());
 
 		try {
-			// file name as model id
-			String gipslModelId = gipslModelURI.trimFileExtension().lastSegment();
-			String intermediateModelId = intermediateModelURI.trimFileExtension().lastSegment();
+			// adjust file extension from xmi to gipsl
+			URI gipslURI = HelperEclipse.toPlatformURI(gipslModelURI.trimFileExtension().appendFileExtension("gipsl"));
+			// first segment of an URI is the project name, by removing it we get a
+			// project relative path
+			IPath gipslPath = IPath.fromOSString(gipslURI.toPlatformString(true)).makeRelative().removeFirstSegments(1);
+
+			URI intermediateURI = HelperEclipse.toPlatformURI(intermediateModelURI);
+			// FIXME: the intermediate URI isn't a valid URI. The first segment is not the
+			// project name.
+			IPath intermediatePath = IPath.fromOSString(intermediateURI.toPlatformString(true)).makeRelative();
+
+			String gipslModelId = gipslPath.toString(); // gipslModelURI.trimFileExtension().lastSegment();
+			String intermediateModelId = intermediatePath.toString(); // intermediateModelURI.trimFileExtension().lastSegment();
+
 			if (gipslModelId.equalsIgnoreCase(intermediateModelId))
 				throw new IllegalArgumentException(
 						"GIPSL and Intermediate model id should not be equal: '" + gipslModelId + "'");

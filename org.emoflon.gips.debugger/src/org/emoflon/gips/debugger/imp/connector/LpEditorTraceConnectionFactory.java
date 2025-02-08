@@ -22,7 +22,6 @@ import org.emoflon.gips.debugger.cplexLp.VariableRef;
 import org.emoflon.gips.debugger.imp.HelperEcoreSelection;
 import org.emoflon.gips.debugger.marker.AnnotationMarkerData;
 import org.emoflon.gips.debugger.utility.HelperEObjects;
-import org.emoflon.gips.debugger.utility.HelperEclipse;
 
 public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnectionFactory {
 
@@ -40,32 +39,9 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 	private static final class LpEditorTraceConnection extends XtextEditorTraceConnection {
 
 		// private TraceMap<String, EObject> traceMap;
-		private String contextId;
-		private String modelId;
 
 		public LpEditorTraceConnection(XtextEditor editor) {
 			super(editor);
-		}
-
-		@Override
-		protected void computeContextAndModelId() {
-			var uri = editor.getDocument().getResourceURI();
-			contextId = HelperEclipse.tryAndGetProject(uri).getName();
-//			modelId = StaticModelIds.MODEL_ID_ILP;
-//			modelId = HelperEclipse.toPlatformURI(uri).toPlatformString(true);
-			modelId = uri.lastSegment();
-
-//			traceMap = new TraceMap<>();
-		}
-
-		@Override
-		protected String getContextId() {
-			return contextId;
-		}
-
-		@Override
-		protected String getModelId() {
-			return modelId;
 		}
 
 		@Override

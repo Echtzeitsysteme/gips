@@ -313,6 +313,7 @@ public final class HelperEclipse {
 		return null;
 	}
 
+	@Deprecated
 	public static <T> T runInUIThread(final Callable<T> call) throws Exception {
 		var result = PlatformUI.getWorkbench().getDisplay().syncCall(() -> call.call());
 		return result;

@@ -51,8 +51,10 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 
 	protected boolean pauseEditorSelection = false;
 	protected boolean pauseTraceSelection = false;
-
 	protected boolean showNoTraceModelError = true;
+
+	private String modelId;
+	private String contextId;
 
 	public EditorTraceConnection(T editor) {
 		this.editor = Objects.requireNonNull(editor, "editor");
@@ -203,19 +205,19 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 	}
 
 	/**
-	 * This method is called automatically on object instantiation and when the
-	 * editor input changes.
-	 */
-	protected abstract void computeContextAndModelId();
-
-	/**
 	 * The context id, which is usually the name of the eclipse project in which the
 	 * model is located. If there is no context with this id, the connection will
 	 * not process any selection events.
 	 * 
 	 * @return context id, can be null
 	 */
-	protected abstract String getContextId();
+	public String getContextId() {
+		return contextId;
+	}
+
+	protected void setContextId(String contextId) {
+		this.contextId = contextId;
+	}
 
 	/**
 	 * The id of the model, which is displayed by this editor. If there is no model
@@ -223,7 +225,19 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 	 * 
 	 * @return a model id, can be null
 	 */
-	protected abstract String getModelId();
+	public String getModelId() {
+		return modelId;
+	}
+
+	protected void setModelId(String modelId) {
+		this.modelId = modelId;
+	}
+
+	/**
+	 * This method is called automatically on object instantiation and when the
+	 * editor input changes.
+	 */
+	protected abstract void computeContextAndModelId();
 
 	/**
 	 * Converts a selection of elements into a set of ids based on the model

@@ -10,7 +10,6 @@ import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.emoflon.gips.debugger.api.ITraceContext;
 import org.emoflon.gips.debugger.imp.HelperEcoreSelection;
 import org.emoflon.gips.debugger.trace.resolver.ResolveEcore2Id;
-import org.emoflon.gips.debugger.utility.HelperEclipse;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsGlobalObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
@@ -31,30 +30,8 @@ public final class GipslEditorTraceConnectionFactory extends XtextEditorTraceCon
 
 	private static final class GipslEditorTraceConnection extends XtextEditorTraceConnection {
 
-		private String contextId;
-		private String modelId;
-
 		public GipslEditorTraceConnection(XtextEditor editor) {
 			super(editor);
-		}
-
-		@Override
-		protected void computeContextAndModelId() {
-			var uri = editor.getDocument().getResourceURI();
-			contextId = HelperEclipse.tryAndGetProject(uri).getName();
-//			modelId = StaticModelIds.MODEL_ID_GIPSL;
-			// modelId = HelperEclipse.toPlatformURI(uri).toPlatformString(true); //
-			modelId = uri.trimFileExtension().lastSegment();
-		}
-
-		@Override
-		protected String getContextId() {
-			return contextId;
-		}
-
-		@Override
-		protected String getModelId() {
-			return modelId;
 		}
 
 		@Override

@@ -20,7 +20,6 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.emoflon.gips.debugger.api.IEditorTracker;
-import org.emoflon.gips.debugger.api.ITraceContext;
 import org.emoflon.gips.debugger.api.ITraceManager;
 import org.emoflon.gips.debugger.api.TraceModelNotFoundException;
 import org.emoflon.gips.debugger.api.event.ITraceManagerListener;
@@ -172,7 +171,7 @@ public class TraceManager implements ITraceManager {
 	}
 
 	@Override
-	public ITraceContext getContext(String contextId) {
+	public ProjectTraceContext getContext(String contextId) {
 		return getOrCreateContext(contextId, true);
 	}
 

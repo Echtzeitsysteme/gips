@@ -106,11 +106,10 @@ public final class TracePlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Shareable singleton instance
-	 * 
-	 * @return
+	 * Shareable singleton instance, not intended to be accessible from outside the
+	 * plugin
 	 */
-	public ITraceManager getTraceManager() {
+	public TraceManager getTraceManager() {
 		return traceManager;
 	}
 

@@ -40,7 +40,7 @@ import org.emoflon.gips.debugger.trace.TraceModelLink;
 import org.emoflon.gips.debugger.trace.TransformEcore2Graph;
 import org.emoflon.gips.debugger.utility.HelperEclipse;
 
-final class ProjectTraceContext implements ITraceContext {
+public final class ProjectTraceContext implements ITraceContext {
 
 	public static final String CACHE_FILE_NAME = "trace_cache.bin";
 
@@ -202,6 +202,23 @@ final class ProjectTraceContext implements ITraceContext {
 		return graph.hasModelReference(modelId);
 	}
 
+	public void deleteModel(String modelId) {
+		Collection<String> fromIds = graph.getSourceModelIds(modelId);
+		Collection<String> toIds = graph.getTargetModelIds(modelId);
+		if (graph.deleteModelReference(modelId)) {
+			Collection<String> updated = new HashSet<>();
+			updated.add(modelId);
+			updated.addAll(fromIds);
+			updated.addAll(toIds);
+			fireModelUpdateNotification(updated);
+		}
+	}
+
+	public void deleteModelLink(String srcModel, String dstModel) {
+		if (graph.removeTraceLink(srcModel, dstModel))
+			fireModelUpdateNotification(Set.of(srcModel, dstModel));
+	}
+
 	@Override
 	public Set<String> getSourceModels(String modelId) {
 		return graph.getSourceModelIds(modelId);
@@ -268,8 +285,7 @@ final class ProjectTraceContext implements ITraceContext {
 			Root model = reader.loadModel();
 			TransformEcore2Graph.addModelToGraph(model, graph);
 
-			var updatedModels = model.getModels().stream().map(ModelReference::getModelId)
-					.collect(Collectors.toUnmodifiableSet());
+			var updatedModels = model.getModels().stream().map(ModelReference::getModelId).collect(Collectors.toSet());
 			fireModelUpdateNotification(updatedModels);
 		}
 	}
@@ -290,7 +306,7 @@ final class ProjectTraceContext implements ITraceContext {
 	 * 
 	 * @param updatedModels
 	 */
-	private void fireModelUpdateNotification(Set<String> updatedModels) {
+	private void fireModelUpdateNotification(Collection<String> updatedModels) {
 		Objects.requireNonNull(updatedModels, "updatedModels");
 		graphDirty = true;
 

@@ -6,23 +6,36 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import org.eclipse.jface.action.ContributionItem;
+import org.eclipse.jface.action.GroupMarker;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.IToolTipProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.emoflon.gips.debugger.TracePlugin;
 import org.emoflon.gips.debugger.api.ITraceContext;
 import org.emoflon.gips.debugger.api.ITraceManager;
 import org.emoflon.gips.debugger.api.event.ITraceManagerListener;
 import org.emoflon.gips.debugger.api.event.ITraceUpdateListener;
 import org.emoflon.gips.debugger.api.event.TraceManagerEvent;
+import org.emoflon.gips.debugger.imp.ProjectTraceContext;
 
 public class GipsTraceView extends ViewPart {
 
@@ -64,6 +77,10 @@ public class GipsTraceView extends ViewPart {
 		public int compareTo(ContextNode o) {
 			return String.CASE_INSENSITIVE_ORDER.compare(contextId, o.contextId);
 		}
+
+		public String getContextId() {
+			return contextId;
+		}
 	}
 
 	private static record ModelNode(ContextNode parent, String modelId) implements IContentNode {
@@ -71,12 +88,24 @@ public class GipsTraceView extends ViewPart {
 		public String toString() {
 			return modelId;
 		}
+
+		public String getContextId() {
+			return parent.getContextId();
+		}
 	}
 
-	private static record LinkModelNode(ModelNode parent, String modelId, int direction) implements IContentNode {
+	private static record LinkModelNode(ModelNode parent, String modelId, Direction direction) implements IContentNode {
+		public static enum Direction {
+			FORWARD, BACKWARD
+		}
+
 		@Override
 		public String toString() {
 			return modelId;
+		}
+
+		public String getContextId() {
+			return parent.getContextId();
 		}
 	}
 
@@ -123,9 +152,9 @@ public class GipsTraceView extends ViewPart {
 				ITraceContext context = ITraceManager.getInstance().getContext(mNode.parent.contextId);
 
 				var incoming = context.getSourceModels(mNode.modelId).stream().sorted(String.CASE_INSENSITIVE_ORDER)
-						.map(id -> new LinkModelNode(mNode, id, 0));
+						.map(id -> new LinkModelNode(mNode, id, LinkModelNode.Direction.BACKWARD));
 				var outgoing = context.getTargetModels(mNode.modelId).stream().sorted(String.CASE_INSENSITIVE_ORDER)
-						.map(id -> new LinkModelNode(mNode, id, 1));
+						.map(id -> new LinkModelNode(mNode, id, LinkModelNode.Direction.FORWARD));
 
 				return Stream.concat(incoming, outgoing).toArray();
 			}
@@ -170,7 +199,7 @@ public class GipsTraceView extends ViewPart {
 		}
 	}
 
-	private static final class TraceLabelProvider extends LabelProvider implements ILabelProvider {
+	private static final class TraceLabelProvider extends LabelProvider implements ILabelProvider, IToolTipProvider {
 
 		private Image projectImage;
 		private Image rightImage;
@@ -189,10 +218,11 @@ public class GipsTraceView extends ViewPart {
 				return projectImage;
 
 			if (element instanceof LinkModelNode node) {
-				if (node.direction == 0)
-					return rightImage;
-				else
-					return leftImage;
+				return switch (node.direction) {
+				case FORWARD -> rightImage;
+				case BACKWARD -> leftImage;
+				default -> null;
+				};
 			}
 
 			return null;
@@ -208,11 +238,39 @@ public class GipsTraceView extends ViewPart {
 			super.dispose();
 		}
 
+		@Override
+		public String getToolTipText(Object element) {
+			return "Tooltip (" + element + ")";
+		}
+
+//		@Override
+//		public Point getToolTipShift(Object object) {
+//			return new Point(5, 5);
+//		}
+//
+//		@Override
+//		public int getToolTipDisplayDelayTime(Object object) {
+//			return 2000;
+//		}
+//
+//		@Override
+//		public int getToolTipTimeDisplayed(Object object) {
+//			return 5000;
+//		}
+//
+//		@Override
+//		public void update(ViewerCell cell) {
+//			cell.setText(cell.getElement().toString());
+//		}
+
 	}
 
 	private final ITraceManagerListener traceManagerListener = this::onTraceContextChange;
 
 	private TreeViewer viewer;
+	private MenuManager menuManager;
+	private Menu menu;
+
 	private RootNode viewModelRootNode;
 //	private IMemento memento;
 
@@ -244,15 +302,10 @@ public class GipsTraceView extends ViewPart {
 		var layout = new FillLayout(); // new GridLayout(1, false);
 		parent.setLayout(layout);
 
-//		Label label = new Label(parent, SWT.NONE);
-//		label.setText("TraceGraph Links");
-
-//		this.getSite().getPage()
-//		this.workbench.addWindowListener(new WindowListener());
-
 		this.viewer = new TreeViewer(parent);
 		this.viewer.setContentProvider(new TraceContentProvider(this::refreshNode));
 		this.viewer.setLabelProvider(new TraceLabelProvider());
+//		ColumnViewerToolTipSupport.enableFor(this.viewer);
 
 		ITraceManager traceManager = ITraceManager.getInstance();
 		traceManager.addTraceManagerListener(traceManagerListener);
@@ -260,7 +313,97 @@ public class GipsTraceView extends ViewPart {
 		this.viewModelRootNode = new RootNode();
 		this.viewer.setInput(this.viewModelRootNode);
 
+		menuManager = new MenuManager();
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(this::fillContextMenu);
+		menu = menuManager.createContextMenu(viewer.getControl());
+
+		viewer.getControl().setMenu(menu);
+		// allows extensions
+//		getSite().registerContextMenu(menuManager, viewer);
+
 //		restoreSelection(this.memento);
+	}
+
+	private void fillContextMenu(IMenuManager manager) {
+		manager.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
+
+		var selection = this.viewer.getStructuredSelection();
+		if (selection.getFirstElement() != null) {
+			var selectedElement = selection.getFirstElement();
+			if (selectedElement instanceof ContextNode cNode) {
+				manager.add(new ContributionItem() {
+					@Override
+					public void fill(Menu menu, int index) {
+						final var item = new MenuItem(menu, SWT.CHECK, index);
+						item.setText("Delete all");
+					}
+				});
+			}
+
+			if (selectedElement instanceof final ModelNode mNode) {
+				manager.add(new ContributionItem() {
+					@Override
+					public void fill(Menu menu, int index) {
+						final var item = new MenuItem(menu, SWT.CHECK, index);
+						item.setText("Delete entry");
+						item.addSelectionListener(new SelectionListener() {
+
+							@Override
+							public void widgetSelected(SelectionEvent e) {
+								var manager = TracePlugin.getInstance().getTraceManager();
+								manager.getContext(mNode.getContextId()).deleteModel(mNode.modelId);
+							}
+
+							@Override
+							public void widgetDefaultSelected(SelectionEvent e) {
+							}
+
+						});
+					}
+				});
+
+				manager.add(new ContributionItem() {
+					@Override
+					public void fill(Menu menu, int index) {
+						final var item = new MenuItem(menu, SWT.CHECK, index);
+						item.setText("Open in editor");
+					}
+				});
+			}
+
+			if (selectedElement instanceof final LinkModelNode lNode) {
+				manager.add(new ContributionItem() {
+					@Override
+					public void fill(Menu menu, int index) {
+						final var item = new MenuItem(menu, SWT.CHECK, index);
+						item.setText("Delete trace");
+						item.addSelectionListener(new SelectionListener() {
+
+							@Override
+							public void widgetSelected(SelectionEvent e) {
+								ProjectTraceContext context = TracePlugin.getInstance().getTraceManager()
+										.getContext(lNode.getContextId());
+
+								switch (lNode.direction) {
+								case FORWARD:
+									context.deleteModelLink(lNode.parent.modelId, lNode.modelId);
+									break;
+								case BACKWARD:
+									context.deleteModelLink(lNode.modelId, lNode.parent.modelId);
+									break;
+								}
+							}
+
+							@Override
+							public void widgetDefaultSelected(SelectionEvent e) {
+							}
+
+						});
+					}
+				});
+			}
+		}
 	}
 
 	@Override
@@ -281,15 +424,25 @@ public class GipsTraceView extends ViewPart {
 		}
 		this.viewModelRootNode = null;
 
-		var contentProvider = this.viewer.getContentProvider();
-		if (contentProvider != null)
-			contentProvider.dispose();
+		if (menu != null)
+			menu.dispose();
+		menu = null;
 
-		var labelProvider = this.viewer.getLabelProvider();
-		if (labelProvider != null)
-			labelProvider.dispose();
+		if (menuManager != null)
+			menuManager.dispose();
+		menuManager = null;
 
-		this.viewer = null;
+		if (viewer != null) {
+			var contentProvider = this.viewer.getContentProvider();
+			if (contentProvider != null)
+				contentProvider.dispose();
+
+			var labelProvider = this.viewer.getLabelProvider();
+			if (labelProvider != null)
+				labelProvider.dispose();
+
+			this.viewer = null;
+		}
 	}
 
 	private void onTraceContextChange(TraceManagerEvent event) {

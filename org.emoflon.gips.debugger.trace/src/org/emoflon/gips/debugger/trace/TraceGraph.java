@@ -71,11 +71,11 @@ public class TraceGraph implements Serializable {
 		}
 	}
 
-	public void deleteModelReference(final String modelId) {
+	public boolean deleteModelReference(final String modelId) {
 		synchronized (lock) {
 			final var ref = storedReferences.remove(modelId);
 			if (ref == null) {
-				return;
+				return false;
 			}
 
 			final var model2Target = links.remove(modelId);
@@ -89,6 +89,8 @@ public class TraceGraph implements Serializable {
 				final var modelCreatedBy = links.get(srcId);
 				modelCreatedBy.remove(modelId);
 			}
+
+			return true;
 		}
 	}
 
@@ -102,6 +104,21 @@ public class TraceGraph implements Serializable {
 
 	public Collection<TraceModelReference> getAllModelReferences() {
 		return Collections.unmodifiableCollection(storedReferences.values());
+	}
+
+	public boolean removeTraceLink(String srcModelId, String dstModelId) {
+		synchronized (lock) {
+			if (!hasModelReference(srcModelId) || !hasModelReference(dstModelId))
+				return false;
+
+			final var srcRef = getOrCreateModelReference(srcModelId);
+			final var dstRef = getOrCreateModelReference(dstModelId);
+			final var linksByDst = links.get(srcRef.getModelId());
+			final var oldLink = linksByDst.remove(dstRef.getModelId());
+			reverseLinks.get(dstRef.getModelId()).remove(srcRef.getModelId());
+
+			return oldLink != null;
+		}
 	}
 
 	public void addOrReplaceTraceLink(TraceModelLink link) {

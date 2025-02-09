@@ -1,23 +1,25 @@
 package org.emoflon.gips.debugger.view;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.IToolTipProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -27,15 +29,23 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
 import org.emoflon.gips.debugger.TracePlugin;
 import org.emoflon.gips.debugger.api.ITraceContext;
 import org.emoflon.gips.debugger.api.ITraceManager;
 import org.emoflon.gips.debugger.api.event.ITraceManagerListener;
-import org.emoflon.gips.debugger.api.event.ITraceUpdateListener;
 import org.emoflon.gips.debugger.api.event.TraceManagerEvent;
 import org.emoflon.gips.debugger.imp.ProjectTraceContext;
+import org.emoflon.gips.debugger.utility.HelperEclipse;
+import org.emoflon.gips.debugger.utility.HelperErrorDialog;
+import org.emoflon.gips.debugger.view.ITraceViewModel.ContextNode;
+import org.emoflon.gips.debugger.view.ITraceViewModel.LinkModelNode;
+import org.emoflon.gips.debugger.view.ITraceViewModel.ModelNode;
+import org.emoflon.gips.debugger.view.ITraceViewModel.RootNode;
 
 public class GipsTraceView extends ViewPart {
 
@@ -49,71 +59,11 @@ public class GipsTraceView extends ViewPart {
 	 */
 	public static final String ID = "org.emoflon.gips.debugger.view";
 
-	private static interface IContentNode {
-
-	}
-
-	private static class RootNode implements IContentNode {
-		public final Map<String, ContextNode> childs = new HashMap<>();
-	}
-
-	private static class ContextNode implements IContentNode, Comparable<ContextNode> {
-
-		public final RootNode parent;
-		public final String contextId;
-		public ITraceUpdateListener listener;
-
-		public ContextNode(RootNode parent, String contextId) {
-			this.parent = Objects.requireNonNull(parent, "parent");
-			this.contextId = Objects.requireNonNull(contextId, "contextId");
-		}
-
-		@Override
-		public String toString() {
-			return contextId;
-		}
-
-		@Override
-		public int compareTo(ContextNode o) {
-			return String.CASE_INSENSITIVE_ORDER.compare(contextId, o.contextId);
-		}
-
-		public String getContextId() {
-			return contextId;
-		}
-	}
-
-	private static record ModelNode(ContextNode parent, String modelId) implements IContentNode {
-		@Override
-		public String toString() {
-			return modelId;
-		}
-
-		public String getContextId() {
-			return parent.getContextId();
-		}
-	}
-
-	private static record LinkModelNode(ModelNode parent, String modelId, Direction direction) implements IContentNode {
-		public static enum Direction {
-			FORWARD, BACKWARD
-		}
-
-		@Override
-		public String toString() {
-			return modelId;
-		}
-
-		public String getContextId() {
-			return parent.getContextId();
-		}
-	}
-
 	private static final class TraceContentProvider implements ITreeContentProvider {
 
-		private final Consumer<IContentNode> refreshNode;
+		private final Consumer<ITraceViewModel> refreshNode;
 
-		public TraceContentProvider(Consumer<IContentNode> refreshNode) {
+		public TraceContentProvider(Consumer<ITraceViewModel> refreshNode) {
 			this.refreshNode = Objects.requireNonNull(refreshNode, "refreshNode");
 		}
 
@@ -143,13 +93,13 @@ public class GipsTraceView extends ViewPart {
 			}
 
 			if (parentElement instanceof ContextNode cNode) {
-				ITraceContext context = ITraceManager.getInstance().getContext(cNode.contextId);
+				ITraceContext context = ITraceManager.getInstance().getContext(cNode.getContextId());
 				return context.getAllModels().stream().sorted(String.CASE_INSENSITIVE_ORDER)
 						.map(id -> new ModelNode(cNode, id)).toArray();
 			}
 
 			if (parentElement instanceof ModelNode mNode) {
-				ITraceContext context = ITraceManager.getInstance().getContext(mNode.parent.contextId);
+				ITraceContext context = ITraceManager.getInstance().getContext(mNode.getContextId());
 
 				var incoming = context.getSourceModels(mNode.modelId).stream().sorted(String.CASE_INSENSITIVE_ORDER)
 						.map(id -> new LinkModelNode(mNode, id, LinkModelNode.Direction.BACKWARD));
@@ -185,12 +135,12 @@ public class GipsTraceView extends ViewPart {
 				return !ITraceManager.getInstance().getAvailableContextIds().isEmpty();
 
 			if (element instanceof ContextNode cNode) {
-				ITraceContext context = ITraceManager.getInstance().getContext(cNode.contextId);
+				ITraceContext context = ITraceManager.getInstance().getContext(cNode.getContextId());
 				return !context.getAllModels().isEmpty();
 			}
 
 			if (element instanceof ModelNode mNode) {
-				ITraceContext context = ITraceManager.getInstance().getContext(mNode.parent.contextId);
+				ITraceContext context = ITraceManager.getInstance().getContext(mNode.getContextId());
 				return !context.getSourceModels(mNode.modelId).isEmpty()
 						|| !context.getTargetModels(mNode.modelId).isEmpty();
 			}
@@ -347,18 +297,12 @@ public class GipsTraceView extends ViewPart {
 					public void fill(Menu menu, int index) {
 						final var item = new MenuItem(menu, SWT.CHECK, index);
 						item.setText("Delete entry");
-						item.addSelectionListener(new SelectionListener() {
-
+						item.addSelectionListener(new SelectionAdapter() {
 							@Override
 							public void widgetSelected(SelectionEvent e) {
 								var manager = TracePlugin.getInstance().getTraceManager();
 								manager.getContext(mNode.getContextId()).deleteModel(mNode.modelId);
 							}
-
-							@Override
-							public void widgetDefaultSelected(SelectionEvent e) {
-							}
-
 						});
 					}
 				});
@@ -368,6 +312,32 @@ public class GipsTraceView extends ViewPart {
 					public void fill(Menu menu, int index) {
 						final var item = new MenuItem(menu, SWT.CHECK, index);
 						item.setText("Open in editor");
+						item.addSelectionListener(new SelectionAdapter() {
+							@Override
+							public void widgetSelected(SelectionEvent event) {
+								IProject project = HelperEclipse.tryAndGetProject(mNode.getContextId());
+								if (project == null)
+									return;
+
+								IPath filePath = IPath.EMPTY;
+								for (var segment : mNode.modelId.split("/"))
+									filePath = filePath.append(segment);
+
+								IFile modelFile = project.getFile(filePath);
+
+								try {
+									IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+											.getActivePage();
+									IDE.openEditor(page, modelFile);
+								} catch (final PartInitException ex) {
+									ex.printStackTrace();
+									var error = HelperErrorDialog.createMultiStatus(ex.getLocalizedMessage(), ex);
+									ErrorDialog.openError(
+											PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Error",
+											"Unable to open file: " + modelFile, error);
+								}
+							}
+						});
 					}
 				});
 			}
@@ -378,8 +348,7 @@ public class GipsTraceView extends ViewPart {
 					public void fill(Menu menu, int index) {
 						final var item = new MenuItem(menu, SWT.CHECK, index);
 						item.setText("Delete trace");
-						item.addSelectionListener(new SelectionListener() {
-
+						item.addSelectionListener(new SelectionAdapter() {
 							@Override
 							public void widgetSelected(SelectionEvent e) {
 								ProjectTraceContext context = TracePlugin.getInstance().getTraceManager()
@@ -394,11 +363,6 @@ public class GipsTraceView extends ViewPart {
 									break;
 								}
 							}
-
-							@Override
-							public void widgetDefaultSelected(SelectionEvent e) {
-							}
-
 						});
 					}
 				});
@@ -449,7 +413,7 @@ public class GipsTraceView extends ViewPart {
 		refreshNode(this.viewModelRootNode);
 	}
 
-	private void refreshNode(IContentNode node) {
+	private void refreshNode(ITraceViewModel node) {
 		// needs to run on the UI-Thread
 		Display.getDefault().asyncExec(() -> {
 			if (this.viewer != null)

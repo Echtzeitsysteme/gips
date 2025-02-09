@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.presentation.EcoreEditor;
@@ -42,12 +43,12 @@ public class GenericXmiEditorTraceConnectionFactory implements IEditorTraceConne
 
 			modelUri = HelperEclipse.toPlatformURI(uri);
 			setContextId(HelperEclipse.tryAndGetProject(modelUri).getName());
-			setModelId(modelUri.toPlatformString(true));
+			setModelId(IPath.fromOSString(modelUri.toPlatformString(true)).removeFirstSegments(1).toString());
 		}
 
 		private boolean isSameResourceURI(URI uri) {
 			var relativeUri = HelperEclipse.toPlatformURI(uri);
-			return getModelId().equals(relativeUri.toPlatformString(true));
+			return modelUri.equals(relativeUri);
 //			return getModelId().equals(uri.trimFileExtension().lastSegment());
 		}
 

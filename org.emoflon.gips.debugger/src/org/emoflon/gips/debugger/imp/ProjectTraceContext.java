@@ -205,13 +205,19 @@ public final class ProjectTraceContext implements ITraceContext {
 	public void deleteModel(String modelId) {
 		Collection<String> fromIds = graph.getSourceModelIds(modelId);
 		Collection<String> toIds = graph.getTargetModelIds(modelId);
-		if (graph.deleteModelReference(modelId)) {
+		if (graph.removeModelReference(modelId)) {
 			Collection<String> updated = new HashSet<>();
 			updated.add(modelId);
 			updated.addAll(fromIds);
 			updated.addAll(toIds);
 			fireModelUpdateNotification(updated);
 		}
+	}
+
+	public void deleteAllModels() {
+		Collection<String> allIds = getAllModels();
+		graph.clear();
+		fireModelUpdateNotification(allIds);
 	}
 
 	public void deleteModelLink(String srcModel, String dstModel) {

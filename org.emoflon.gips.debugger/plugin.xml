@@ -37,6 +37,18 @@
             </command>
          </toolbar>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.emoflon.gips.debugger.view?befor=additions">
+         <dynamic
+               class="org.emoflon.gips.debugger.view.menu.OpenModelNodeInEditor"
+               id="org.emoflon.gips.debugger.view.openModel">
+         </dynamic>
+         <dynamic
+               class="org.emoflon.gips.debugger.view.menu.DeleteNode"
+               id="org.emoflon.gips.debugger.view.delete">
+         </dynamic>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

@@ -71,7 +71,7 @@ public class TraceGraph implements Serializable {
 		}
 	}
 
-	public boolean deleteModelReference(final String modelId) {
+	public boolean removeModelReference(final String modelId) {
 		synchronized (lock) {
 			final var ref = storedReferences.remove(modelId);
 			if (ref == null) {
@@ -91,6 +91,14 @@ public class TraceGraph implements Serializable {
 			}
 
 			return true;
+		}
+	}
+
+	public void clear() {
+		synchronized (lock) {
+			links.clear();
+			reverseLinks.clear();
+			storedReferences.clear();
 		}
 	}
 

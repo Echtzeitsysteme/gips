@@ -39,7 +39,7 @@ public class OpenModelNodeInEditor extends ContributionItem {
 		if (!(structuredSelection.getFirstElement() instanceof ModelNode modelNode))
 			return;
 
-		final var item = new MenuItem(menu, SWT.CHECK, index);
+		MenuItem item = new MenuItem(menu, SWT.CHECK, index);
 		item.setText("Open in editor");
 		item.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -49,7 +49,7 @@ public class OpenModelNodeInEditor extends ContributionItem {
 					return;
 
 				IPath filePath = IPath.EMPTY;
-				for (var segment : modelNode.modelId.split("/"))
+				for (String segment : modelNode.modelId.split("/"))
 					filePath = filePath.append(segment);
 
 				IFile modelFile = project.getFile(filePath);

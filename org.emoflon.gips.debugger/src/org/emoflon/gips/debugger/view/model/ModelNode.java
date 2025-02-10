@@ -2,7 +2,7 @@ package org.emoflon.gips.debugger.view.model;
 
 import java.util.Objects;
 
-public class ModelNode {
+public class ModelNode implements INode {
 
 	public final ContextNode parent;
 	public final String modelId;

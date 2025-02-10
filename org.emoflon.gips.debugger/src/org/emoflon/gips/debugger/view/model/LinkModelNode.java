@@ -2,7 +2,7 @@ package org.emoflon.gips.debugger.view.model;
 
 import java.util.Objects;
 
-public class LinkModelNode  {
+public class LinkModelNode implements INode {
 
 	public static enum Direction {
 		FORWARD, BACKWARD

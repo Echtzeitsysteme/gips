@@ -213,6 +213,10 @@ public final class ProjectTraceContext implements ITraceContext {
 			fireModelUpdateNotification(updated);
 		}
 	}
+	
+	public TraceModelLink getModelLink(String srcModel, String dstModel) {
+		return graph.getLink(srcModel, dstModel);
+	}
 
 	public void deleteAllModels() {
 		Collection<String> allIds = getAllModels();

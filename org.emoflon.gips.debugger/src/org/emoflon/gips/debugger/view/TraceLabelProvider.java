@@ -6,8 +6,12 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
+import org.emoflon.gips.debugger.TracePlugin;
+import org.emoflon.gips.debugger.imp.ProjectTraceContext;
+import org.emoflon.gips.debugger.trace.TraceModelLink;
 import org.emoflon.gips.debugger.view.model.ContextNode;
 import org.emoflon.gips.debugger.view.model.LinkModelNode;
+import org.emoflon.gips.debugger.view.model.ModelNode;
 
 final class TraceLabelProvider extends LabelProvider implements ILabelProvider, IToolTipProvider {
 
@@ -40,7 +44,29 @@ final class TraceLabelProvider extends LabelProvider implements ILabelProvider, 
 
 		@Override
 		public String getText(Object element) {
-			return element != null ? element.toString() : "???";
+			String name = element != null ? element.toString() : "???";
+			
+			if (element instanceof ModelNode node) {
+				
+			}else if(element instanceof LinkModelNode node) {				
+				ProjectTraceContext context = TracePlugin.getInstance().getTraceManager().getContext(node.getContextId());
+				switch(node.direction) {
+				case FORWARD:
+				{
+					TraceModelLink link = context.getModelLink(node.parent.modelId, node.modelId);
+					name = "Creates '" + name + " (maps " + link.getSourceNodeIds().size() + " to " + link.getTargetNodeIds().size() + " nodes)";
+					break;
+				}
+				case BACKWARD:
+				{
+					TraceModelLink link = context.getModelLink(node.modelId, node.parent.modelId);
+					name = "Created by '" + name + " (maps " + link.getSourceNodeIds().size() + " to " + link.getTargetNodeIds().size() + " nodes)";
+					break;
+				}
+				}
+			}
+			
+			return name;
 		}
 
 		@Override

@@ -11,7 +11,7 @@ import org.emoflon.gips.debugger.api.ITraceContext;
 import org.emoflon.gips.debugger.imp.HelperEcoreSelection;
 import org.emoflon.gips.debugger.trace.resolver.ResolveEcore2Id;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
-import org.emoflon.gips.gipsl.gipsl.GipsGlobalObjective;
+import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 
@@ -53,9 +53,9 @@ public final class GipslEditorTraceConnectionFactory extends XtextEditorTraceCon
 		private EObject findRelevantObject(EObject eObject) {
 			if (eObject instanceof GipsConstraint) {
 				return eObject;
-			} else if (eObject instanceof GipsObjective) {
+			} else if (eObject instanceof GipsLinearFunction) {
 				return eObject;
-			} else if (eObject instanceof GipsGlobalObjective) {
+			} else if (eObject instanceof GipsObjective) {
 				return eObject;
 			} else if (eObject instanceof GipsMapping) {
 				return eObject;

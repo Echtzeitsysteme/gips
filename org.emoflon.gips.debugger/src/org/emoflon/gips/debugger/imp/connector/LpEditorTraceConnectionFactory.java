@@ -79,7 +79,7 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 					if (parent instanceof ConstraintExpression) {
 						elementIds.add(buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT_VAR, variableName));
 					} else if (parent instanceof ObjectiveExpression) {
-						elementIds.add(buildElementId(ILPTraceKeywords.TYPE_OBJECTIVE_VAR, variableName));
+						elementIds.add(buildElementId(ILPTraceKeywords.TYPE_FUNCTION_VAR, variableName));
 					} else {
 						elementIds.add(buildElementId(ILPTraceKeywords.TYPE_VARIABLE, variableName));
 					}
@@ -102,7 +102,7 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 				}
 
 				if (eObject instanceof SectionObjective) {
-					elementIds.add(buildElementId(ILPTraceKeywords.TYPE_GLOBAL_OBJECTIVE, ""));
+					elementIds.add(buildElementId(ILPTraceKeywords.TYPE_OBJECTIVE, ""));
 					continue;
 				}
 			}
@@ -144,10 +144,10 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 //					traceMap.mapOneToMany(localElement, eObjects);
 					break;
 				}
-				case ILPTraceKeywords.TYPE_OBJECTIVE: {
+				case ILPTraceKeywords.TYPE_FUNCTION: {
 					var variables = localElements.stream()
-							.filter(e -> e.startsWith(ILPTraceKeywords.TYPE_OBJECTIVE_VAR))
-							.map(e -> e.substring(ILPTraceKeywords.TYPE_OBJECTIVE_VAR.length()
+							.filter(e -> e.startsWith(ILPTraceKeywords.TYPE_FUNCTION_VAR))
+							.map(e -> e.substring(ILPTraceKeywords.TYPE_FUNCTION_VAR.length()
 									+ ILPTraceKeywords.TYPE_VALUE_DELIMITER.length()));
 					var eObject = getGlobalObjective();
 //					traceMap.map(localElement, eObject);
@@ -156,7 +156,7 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 					highlightMarkers.add(marker);
 					break;
 				}
-				case ILPTraceKeywords.TYPE_GLOBAL_OBJECTIVE: {
+				case ILPTraceKeywords.TYPE_OBJECTIVE: {
 					var eObject = getGlobalObjective();
 //					traceMap.map(localElement, eObject);
 					var marker = convertEObjectToMarker(eObject);

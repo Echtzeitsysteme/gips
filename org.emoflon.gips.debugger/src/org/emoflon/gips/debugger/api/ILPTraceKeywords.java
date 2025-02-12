@@ -11,9 +11,9 @@ public final class ILPTraceKeywords {
 	public static final String TYPE_CONSTRAINT = "constraint";
 	public static final String TYPE_MAPPING = "mapping";
 	public static final String TYPE_CONSTRAINT_VAR = "constraint-var";
+	public static final String TYPE_FUNCTION = "function";
+	public static final String TYPE_FUNCTION_VAR = "function-var";
 	public static final String TYPE_OBJECTIVE = "objective";
-	public static final String TYPE_OBJECTIVE_VAR = "objective-var";
-	public static final String TYPE_GLOBAL_OBJECTIVE = "globalObjective";
 	public static final String TYPE_VARIABLE = "variable";
 
 	public static String buildElementId(String type, String elementName) {

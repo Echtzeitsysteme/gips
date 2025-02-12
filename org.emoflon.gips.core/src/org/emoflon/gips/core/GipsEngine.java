@@ -13,7 +13,6 @@ import org.emoflon.gips.core.util.Observer;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 import org.emoflon.gips.debugger.api.Gips2IlpTraceHelper;
 import org.emoflon.gips.debugger.api.ILPTraceKeywords;
-import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 
 public abstract class GipsEngine {
 
@@ -145,12 +144,12 @@ public abstract class GipsEngine {
 			}
 		}
 
-		for (final var objective : this.objectives.values()) {
-			tracer.gips2intern(objective.objective,
-					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_OBJECTIVE, objective.getName()));
-			for (var term : objective.terms) {
-				tracer.gips2intern(objective.objective, ILPTraceKeywords
-						.buildElementId(ILPTraceKeywords.TYPE_OBJECTIVE_VAR, term.variable().getName()));
+		for (final var function : this.functions.values()) {
+			tracer.gips2intern(function.linearFunction,
+					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_FUNCTION, function.getName()));
+			for (var term : function.terms) {
+				tracer.gips2intern(function.linearFunction, ILPTraceKeywords
+						.buildElementId(ILPTraceKeywords.TYPE_FUNCTION_VAR, term.variable().getName()));
 			}
 		}
 
@@ -160,9 +159,9 @@ public abstract class GipsEngine {
 //		final var objectsInMapper = new HashSet<>(this.mappers.keySet());
 //		objectsInMapper.retainAll(this.objectives.keySet());
 
-		if (globalObjective != null) {
-			tracer.gips2intern(globalObjective.objective,
-					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_GLOBAL_OBJECTIVE, ""));
+		if (objective != null) {
+			tracer.gips2intern(objective.objective,
+					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_OBJECTIVE, ""));
 		}
 
 		tracer.finalizeTrace();

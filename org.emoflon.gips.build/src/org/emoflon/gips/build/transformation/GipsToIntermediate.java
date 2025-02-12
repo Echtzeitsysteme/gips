@@ -455,7 +455,7 @@ public class GipsToIntermediate {
 
 					substituteRelation.setLhs(substituteSum);
 					disjunction.setExpression(substituteRelation);
-					gipsl2gipsTrace.map(eConstraint.getExpr(), disjunction.getExpression());
+					gipsl2gipsTrace.map(eConstraint.getExpression(), disjunction.getExpression());
 				}
 				case LITERAL -> {
 					Collection<Constraint> constraints = transformConstraint(

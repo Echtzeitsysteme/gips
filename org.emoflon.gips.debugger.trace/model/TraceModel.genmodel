@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    modelDirectory="/org.emoflon.gips.debugger.trace/src-gen" creationIcons="false"
+    editDirectory="/org.emoflon.gips.debugger.trace.edit/src-gen" editorDirectory="/org.emoflon.gips.debugger.trace.editor/src-gen"
+    modelPluginID="org.emoflon.gips.debugger.trace" modelName="TraceModel" editPluginClass="org.emoflon.gips.debugger.trace.provider.TraceModelEditPlugin"
+    editorPluginClass="org.emoflon.gips.debugger.trace.presentation.TraceModelEditorPlugin"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" codeFormatting="true"
+    testSuiteClass="org.emoflon.gips.debugger.trace.tests.TraceModelAllTests" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="21.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
+  <foreignModel>TraceModel.ecore</foreignModel>
+  <testsDirectory xsi:nil="true"/>
+  <genPackages prefix="TraceModel" basePackage="org.emoflon.gips.debugger" disposableProviderFactory="true"
+      fileExtensions="trace" ecorePackage="TraceModel.ecore#/">
+    <genClasses ecoreClass="TraceModel.ecore#//ModelReference">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TraceModel.ecore#//ModelReference/modelId"/>
+      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference TraceModel.ecore#//ModelReference/transformsTo"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TraceModel.ecore#//ModelReference/createdBy"/>
+      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference TraceModel.ecore#//ModelReference/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="TraceModel.ecore#//ElementReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TraceModel.ecore#//ElementReference/transformsTo"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TraceModel.ecore#//ElementReference/createdBy"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TraceModel.ecore#//ElementReference/root"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TraceModel.ecore#//ElementReference/elementId"/>
+    </genClasses>
+    <genClasses ecoreClass="TraceModel.ecore#//ElementTransformation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TraceModel.ecore#//ElementTransformation/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TraceModel.ecore#//ElementTransformation/target"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TraceModel.ecore#//ElementTransformation/root"/>
+    </genClasses>
+    <genClasses ecoreClass="TraceModel.ecore#//ModelTransformation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TraceModel.ecore#//ModelTransformation/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TraceModel.ecore#//ModelTransformation/target"/>
+      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference TraceModel.ecore#//ModelTransformation/transformations"/>
+    </genClasses>
+    <genClasses ecoreClass="TraceModel.ecore#//Root">
+      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference TraceModel.ecore#//Root/models"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

@@ -11,6 +11,9 @@ import org.emoflon.gips.core.milp.SolverStatus;
 import org.emoflon.gips.core.milp.model.Variable;
 import org.emoflon.gips.core.util.Observer;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
+import org.emoflon.gips.debugger.api.Gips2IlpTraceHelper;
+import org.emoflon.gips.debugger.api.ILPTraceKeywords;
+import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 
 public abstract class GipsEngine {
 
@@ -24,6 +27,7 @@ public abstract class GipsEngine {
 	final protected Map<String, GipsLinearFunction<?, ?, ?>> functions = Collections.synchronizedMap(new HashMap<>());
 	protected GipsObjective objective;
 	protected Solver solver;
+	protected Gips2IlpTraceHelper tracer;
 
 	public abstract void update();
 
@@ -108,6 +112,60 @@ public abstract class GipsEngine {
 			objective.buildObjectiveFunction();
 
 		solver.buildILPProblem();
+		buildTracingTree();
+	}
+
+	// TODO Rework the way the trace is saved (here) and loaded (in Eclipse). Find a
+	// way to replace all the magic words here, they are also used within the LP
+	// editor connector.
+	protected void buildTracingTree() {
+		final var tracer = getTracer();
+
+		// try to build a bridge between ILP model and ILP text file
+
+		for (final var mapper : this.mappers.values()) {
+			tracer.gips2intern(mapper.mapping,
+					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_MAPPING, mapper.getName()));
+//			final var fragmentPath = EcoreUtil.getURI(mapper.mapping);
+		}
+
+		for (final var constraint : this.constraints.values()) {
+			tracer.gips2intern(constraint.constraint,
+					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT, constraint.getName()));
+			for (final var ilpConstraint : constraint.getConstraints()) {
+				for (final var ilpTerm : ilpConstraint.lhsTerms()) {
+					tracer.gips2intern(constraint.constraint.getExpression(), ILPTraceKeywords
+							.buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT_VAR, ilpTerm.variable().getName()));
+				}
+			}
+
+			for (final var variables : constraint.getAdditionalVariables()) {
+				tracer.gips2intern(constraint.constraint.getExpression(),
+						ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT_VAR, variables.getName()));
+			}
+		}
+
+		for (final var objective : this.objectives.values()) {
+			tracer.gips2intern(objective.objective,
+					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_OBJECTIVE, objective.getName()));
+			for (var term : objective.terms) {
+				tracer.gips2intern(objective.objective, ILPTraceKeywords
+						.buildElementId(ILPTraceKeywords.TYPE_OBJECTIVE_VAR, term.variable().getName()));
+			}
+		}
+
+//		final var constraintsInMapper = new HashSet<>(this.mappers.keySet());
+//		constraintsInMapper.retainAll(this.constraints.keySet());
+//
+//		final var objectsInMapper = new HashSet<>(this.mappers.keySet());
+//		objectsInMapper.retainAll(this.objectives.keySet());
+
+		if (globalObjective != null) {
+			tracer.gips2intern(globalObjective.objective,
+					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_GLOBAL_OBJECTIVE, ""));
+		}
+
+		tracer.finalizeTrace();
 	}
 
 	public SolverOutput solveProblemTimed() {
@@ -232,5 +290,13 @@ public abstract class GipsEngine {
 
 	public void setSolver(final Solver solver) {
 		this.solver = solver;
+	}
+
+	public void setTracer(final Gips2IlpTraceHelper tracer) {
+		this.tracer = tracer;
+	}
+
+	public Gips2IlpTraceHelper getTracer() {
+		return this.tracer;
 	}
 }

@@ -129,11 +129,11 @@ public abstract class GipsEngine {
 	}
 
 	public SolverOutput solveProblem() {
-		if (validationLog.isNotValid()) {
-			SolverOutput output = new SolverOutput(SolverStatus.INFEASIBLE, Double.NaN, validationLog, 0, null);
-			solver.reset();
-			return output;
-		}
+//		if (validationLog.isNotValid()) {
+//			SolverOutput output = new SolverOutput(SolverStatus.INFEASIBLE, Double.NaN, validationLog, 0, null);
+//			solver.reset();
+//			return output;
+//		}
 		SolverOutput output = solver.solve();
 		if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0)
 			solver.updateValuesFromSolution();

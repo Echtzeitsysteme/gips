@@ -219,7 +219,7 @@ public class TraceManager implements ITraceManager {
 	}
 
 	private void onWorkspaceProjectChange(IProject project) {
-		if (!project.exists())
+		if (!project.isAccessible())
 			removeContext(project.getName());
 	}
 

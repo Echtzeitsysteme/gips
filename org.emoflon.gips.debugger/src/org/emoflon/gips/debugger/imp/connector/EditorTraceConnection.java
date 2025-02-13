@@ -53,8 +53,8 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 	protected boolean pauseTraceSelection = false;
 	protected boolean showNoTraceModelError = true;
 
-	private String modelId;
-	private String contextId;
+	private String modelId = "";
+	private String contextId = "";
 
 	public EditorTraceConnection(T editor) {
 		this.editor = Objects.requireNonNull(editor, "editor");
@@ -218,28 +218,38 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 	 * model is located. If there is no context with this id, the connection will
 	 * not process any selection events.
 	 * 
-	 * @return context id, can be null
+	 * @return context id, never null
 	 */
 	public String getContextId() {
 		return contextId;
 	}
 
+	/**
+	 * Sets the current context id for this editor.
+	 * 
+	 * @param contextId, if there is no context set to empty string, may not be null
+	 */
 	protected void setContextId(String contextId) {
-		this.contextId = contextId;
+		this.contextId = Objects.requireNonNull(contextId, "contextId");
 	}
 
 	/**
 	 * The id of the model, which is displayed by this editor. If there is no model
 	 * with this id, the connection will not process any selection events.
 	 * 
-	 * @return a model id, can be null
+	 * @return a model id, never null
 	 */
 	public String getModelId() {
 		return modelId;
 	}
 
+	/**
+	 * Sets the current model id for this editor.
+	 * 
+	 * @param modelId if there is no model set to empty string, may not be null
+	 */
 	protected void setModelId(String modelId) {
-		this.modelId = contextId;
+		this.modelId = Objects.requireNonNull(modelId, "modelId");
 	}
 
 	/**

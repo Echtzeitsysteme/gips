@@ -2,7 +2,7 @@ package org.emoflon.gips.debugger.api;
 
 import java.util.Objects;
 
-public final class TraceModelNotFoundException extends Exception {
+public final class TraceModelNotFoundException extends RuntimeException {
 
 	private static final long serialVersionUID = -7965914712842445716L;
 

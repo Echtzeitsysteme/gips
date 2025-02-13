@@ -34,7 +34,6 @@ import org.emoflon.gips.debugger.cplexLp.VariableDecleration;
 import org.emoflon.gips.debugger.cplexLp.VariableRef;
 import org.emoflon.gips.debugger.imp.HelperEcoreSelection;
 import org.emoflon.gips.debugger.utility.HelperEObjects;
-import org.emoflon.gips.debugger.utility.HelperEclipse;
 
 public class Lp2EditorTraceConnectionFactory extends XtextEditorTraceConnectionFactory {
 
@@ -53,13 +52,11 @@ public class Lp2EditorTraceConnectionFactory extends XtextEditorTraceConnectionF
 
 		private final AnnotationJob annotationJob;
 
-
 		public Lp2EditorTraceConnection(XtextEditor editor) {
 			super(editor);
 			annotationJob = new AnnotationJob();
 		}
 
-		
 		@Override
 		protected Collection<String> transformSelectionToElementIds(ISelection selection) {
 			var eObjects = HelperEcoreSelection.selectionToEObjects(editor, selection);
@@ -131,11 +128,8 @@ public class Lp2EditorTraceConnectionFactory extends XtextEditorTraceConnectionF
 				Collection<String> remoteElementIds) {
 			// TODO Auto-generated method stub
 
-			var chain = context.getModelChain(remoteModelId, getModelId());
-			var localElementIds = chain.resolveElements(remoteElementIds);
-
 			this.annotationJob.cancel();
-			this.annotationJob.setup(editor, localElementIds);
+			this.annotationJob.setup(editor, context, remoteModelId, remoteElementIds);
 			this.annotationJob.setSystem(false);
 			this.annotationJob.setPriority(Job.DECORATE);
 			this.annotationJob.schedule();
@@ -190,47 +184,52 @@ public class Lp2EditorTraceConnectionFactory extends XtextEditorTraceConnectionF
 		private final class AnnotationJob extends Job {
 
 			private ITextEditor editor;
-			private Collection<String> elementIds;
+			private Collection<String> remoteElementIds;
+			private ITraceContext context;
+			private String remoteModelId;
 
 			public AnnotationJob() {
 				super("GIPS trace visualisation task");
 			}
 
-			public void setup(ITextEditor editor, Collection<String> elementIds) {
+			public void setup(ITextEditor editor, ITraceContext context, String remoteModelId,
+					Collection<String> remoteElementIds) {
 				this.editor = Objects.requireNonNull(editor, "editor");
-				this.elementIds = Objects.requireNonNull(elementIds, "elementIds");
+				this.context = Objects.requireNonNull(context, "context");
+				this.remoteModelId = Objects.requireNonNull(remoteModelId, "remoteModelId");
+				this.remoteElementIds = Objects.requireNonNull(remoteElementIds, "remoteElementIds");
 			}
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				final SubMonitor progress = SubMonitor.convert(monitor, 2);
-				final ITextEditor selectedEditor = editor;
+				final SubMonitor progress = SubMonitor.convert(monitor, 3);
+
+				progress.split(1);
+				var chain = context.getModelChain(remoteModelId, getModelId());
+				var elementIds = chain.resolveElements(remoteElementIds);
 
 				// TODO Auto-generated method stub
-
-				var annotationsToAdd = computeAnnotationMapping(editor, elementIds, progress.newChild(1));
+				final ITextEditor selectedEditor = editor;
+				var annotationsToAdd = computeAnnotationMapping(editor, elementIds, progress.split(1));
 				Annotation[] annotationsToRemove = new Annotation[0];
 
 				if (!progress.isCanceled()) {
-					Display.getDefault().asyncExec(new Runnable() {
-						@Override
-						public void run() {
-							if (progress.isCanceled())
-								return;
+					Display.getDefault().asyncExec(() -> {
+						if (progress.isCanceled())
+							return;
 
-							var annotationModel = getAnnotationModel(selectedEditor);
-							if (annotationModel == null)
-								return;
+						var annotationModel = getAnnotationModel(selectedEditor);
+						if (annotationModel == null)
+							return;
 
-							if (annotationModel instanceof IAnnotationModelExtension aModel) {
+						if (annotationModel instanceof IAnnotationModelExtension aModel) {
 
-								aModel.replaceAnnotations(annotationsToRemove, annotationsToAdd);
-							} else {
+							aModel.replaceAnnotations(annotationsToRemove, annotationsToAdd);
+						} else {
 
-							}
-
-							// TODO Auto-generated method stub
 						}
+
+						// TODO Auto-generated method stub
 					});
 					return Status.OK_STATUS;
 				}

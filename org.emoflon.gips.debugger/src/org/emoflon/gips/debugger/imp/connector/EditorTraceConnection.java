@@ -206,7 +206,10 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 		if (event.getElementIds().isEmpty()) {
 			removeEditorHighlight();
 		} else {
+			var time = System.nanoTime();
+			System.out.println("Start highlight");
 			computeEditorHighligt(event.getContext(), event.getModelId(), event.getElementIds());
+			System.out.println("End highlight: " + String.format("%.5g%n", (System.nanoTime() - time) / 100_000_000d));
 		}
 	}
 

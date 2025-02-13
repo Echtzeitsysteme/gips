@@ -15,8 +15,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.XtextEditor;
-import org.emoflon.gips.debugger.marker.AnnotationMarkerData;
-import org.emoflon.gips.debugger.marker.HelperAnnotationTracerMarker;
+import org.emoflon.gips.debugger.annotation.AnnotationMarkerData;
+import org.emoflon.gips.debugger.annotation.HelperTraceAnnotation;
+
 import org.emoflon.gips.debugger.utility.HelperEclipse;
 
 public abstract class XtextEditorTraceConnection extends EditorTraceConnection<XtextEditor> {
@@ -45,7 +46,7 @@ public abstract class XtextEditorTraceConnection extends EditorTraceConnection<X
 	@Override
 	protected void removeEditorHighlight() {
 		try {
-			HelperAnnotationTracerMarker.deleteAllMarkers(editor.getResource());
+			HelperTraceAnnotation.deleteAllMarkers(editor.getResource());
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
@@ -61,7 +62,7 @@ public abstract class XtextEditorTraceConnection extends EditorTraceConnection<X
 		final var editorResource = editor.getResource();
 		try {
 			for (final var marker : markers) {
-				HelperAnnotationTracerMarker.createMarker(editorResource, marker.offset, marker.length, marker.comment);
+				HelperTraceAnnotation.createMarker(editorResource, marker.offset, marker.length, marker.comment);
 			}
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block

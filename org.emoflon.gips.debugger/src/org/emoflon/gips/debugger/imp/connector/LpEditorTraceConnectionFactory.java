@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.xtext.ui.editor.XtextEditor;
+import org.emoflon.gips.debugger.annotation.AnnotationMarkerData;
 import org.emoflon.gips.debugger.api.ILPTraceKeywords;
 import org.emoflon.gips.debugger.api.ITraceContext;
 import org.emoflon.gips.debugger.cplexLp.ConstraintExpression;
@@ -20,7 +21,6 @@ import org.emoflon.gips.debugger.cplexLp.Variable;
 import org.emoflon.gips.debugger.cplexLp.VariableDecleration;
 import org.emoflon.gips.debugger.cplexLp.VariableRef;
 import org.emoflon.gips.debugger.imp.HelperEcoreSelection;
-import org.emoflon.gips.debugger.marker.AnnotationMarkerData;
 import org.emoflon.gips.debugger.utility.HelperEObjects;
 
 public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnectionFactory {
@@ -145,8 +145,7 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 					break;
 				}
 				case ILPTraceKeywords.TYPE_FUNCTION: {
-					var variables = localElements.stream()
-							.filter(e -> e.startsWith(ILPTraceKeywords.TYPE_FUNCTION_VAR))
+					var variables = localElements.stream().filter(e -> e.startsWith(ILPTraceKeywords.TYPE_FUNCTION_VAR))
 							.map(e -> e.substring(ILPTraceKeywords.TYPE_FUNCTION_VAR.length()
 									+ ILPTraceKeywords.TYPE_VALUE_DELIMITER.length()));
 					var eObject = getGlobalObjective();

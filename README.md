@@ -8,7 +8,7 @@
 * Install [AdoptOpenJDK 21 (HotSpot JVM)](https://adoptopenjdk.net/releases.html?variant=openjdk21&jvmVariant=hotspot) or newer.
 * Install eMoflon::IBeX as described [here](https://github.com/eMoflon/emoflon-ibex#how-to-develop).
 * Install at least one of the supported (M)ILP solvers:
-    * Install [Gurobi](https://www.gurobi.com/) in version `12.0.0` and activate a license for your computer.
+    * Install [Gurobi](https://www.gurobi.com/) in version `12.0.1` and activate a license for your computer.
         * Currently, Gurobi is the default (M)ILP solver used in GIPS because of the great performance.
     * Install [GLPK](https://www.gnu.org/software/glpk/) in the newest version (`4.6.5`) and add it to your path.
         * GLPK is an open-source (M)ILP solver that can be used without a charge.
@@ -53,7 +53,7 @@ By using this settings, you should be unable to commit unformatted code.
 * Install [AdoptOpenJDK 21 (HotSpot JVM)](https://adoptopenjdk.net/releases.html?variant=openjdk21&jvmVariant=hotspot) or newer.
 * Install eMoflon::IBeX as described [here](https://github.com/eMoflon/emoflon-ibex#how-to-develop).
 * Install at least one of the supported (M)ILP solvers:
-    * Install [Gurobi](https://www.gurobi.com/) in version `12.0.0` and activate a license for your computer.
+    * Install [Gurobi](https://www.gurobi.com/) in version `12.0.1` and activate a license for your computer.
         * Currently, Gurobi is the default (M)ILP solver used in GIPS because of the great performance.
     * Install [GLPK](https://www.gnu.org/software/glpk/) in the newest version (`4.6.5`) and add it to your path.
         * GLPK is an open-source (M)ILP solver that can be used without a charge.
@@ -69,15 +69,15 @@ When using GIPS within the Eclipse IDE, the following environment variables may 
 ```
 # Linux/macOS
 GRB_LICENSE_FILE=/home/mkratz/gurobi.lic
-GUROBI_HOME=/opt/gurobi1200/linux64/
-LD_LIBRARY_PATH=/opt/gurobi1200/linux64/lib/:/opt/ibm/ILOG/CPLEX_Studio2211/cplex/bin/x86-64_linux/
-PATH=/opt/gurobi1200/linux64/bin/:/opt/ibm/ILOG/CPLEX_Studio2211/cplex/bin/x86-64_linux/:$PATH
+GUROBI_HOME=/opt/gurobi1201/linux64/
+LD_LIBRARY_PATH=/opt/gurobi1201/linux64/lib/:/opt/ibm/ILOG/CPLEX_Studio2211/cplex/bin/x86-64_linux/
+PATH=/opt/gurobi1201/linux64/bin/:/opt/ibm/ILOG/CPLEX_Studio2211/cplex/bin/x86-64_linux/:$PATH
 
 # Windows
 GRB_LICENSE_FILE=C:\Users\mkratz\gurobi.lic
-GUROBI_HOME=C:\gurobi1200\win64
-LD_LIBRARY_PATH=C:\gurobi1200\win64\lib;C:\Program Files\IBM\ILOG\CPLEX_Studio2211\cplex\bin\x64_win64\
-PATH=C:\gurobi1200\win64\bin;C:\Program Files\IBM\ILOG\CPLEX_Studio2211\cplex\bin\x64_win64\
+GUROBI_HOME=C:\gurobi1201\win64
+LD_LIBRARY_PATH=C:\gurobi1201\win64\lib;C:\Program Files\IBM\ILOG\CPLEX_Studio2211\cplex\bin\x64_win64\
+PATH=C:\gurobi1201\win64\bin;C:\Program Files\IBM\ILOG\CPLEX_Studio2211\cplex\bin\x64_win64\
 ```
 
 

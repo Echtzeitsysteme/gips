@@ -24,9 +24,9 @@ Bundle-ClassPath: lib/cplex-22.1.1.jar,
  lib/slf4j-nop-2.0.16.jar,
  lib/slf4j-nop-2.0.16-javadoc.jar,
  lib/slf4j-nop-2.0.16-sources.jar,
- lib/gurobi-12.0.0.jar,
- lib/gurobi-javadoc-12.0.0.jar
-Export-Package: com.gurobi.gurobi;version="12.0.0",
+ lib/gurobi-12.0.1.jar,
+ lib/gurobi-javadoc-12.0.1.jar
+Export-Package: com.gurobi.gurobi;version="12.0.1",
  com.sun.jna;version="5.15.0",
  com.sun.jna.internal;version="5.15.0",
  com.sun.jna.platform;version="5.15.0",

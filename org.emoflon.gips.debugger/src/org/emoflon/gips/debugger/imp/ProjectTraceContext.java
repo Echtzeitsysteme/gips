@@ -240,8 +240,8 @@ public final class ProjectTraceContext implements ITraceContext {
 	}
 
 	@Override
-	public IModelLink getModelChain(String modelId1, String modelId2) {
-		var chain = graph.buildTraceChain(modelId1, modelId2, SearchDirection.AllDirections);
+	public IModelLink getModelChain(String startModelId, String endModelId) {
+		var chain = graph.buildTraceChain(startModelId, endModelId, SearchDirection.AllDirections);
 		// TODO: some caching.
 		// store chain between 1 and 2
 		// recalculate iff transformation chain between 1 and 2 changes (updateTrace)
@@ -250,12 +250,12 @@ public final class ProjectTraceContext implements ITraceContext {
 		return new IModelLink() {
 			@Override
 			public String getStartModelId() {
-				return modelId1;
+				return startModelId;
 			}
 
 			@Override
 			public String getEndModelId() {
-				return modelId2;
+				return endModelId;
 			}
 
 			@Override
@@ -264,7 +264,7 @@ public final class ProjectTraceContext implements ITraceContext {
 			}
 
 			@Override
-			public Collection<String> resolveElements(Collection<String> selectedElementsById) {
+			public Collection<String> resolveElementsFromSrcToDst(Collection<String> selectedElementsById) {
 				return chain.resolveElementFromStartToEnd(selectedElementsById);
 			}
 		};
@@ -275,7 +275,7 @@ public final class ProjectTraceContext implements ITraceContext {
 			Collection<String> elements, boolean bidirectional) {
 		var link = getModelChain(startModelId, endModelId);
 		if (link.isResolved())
-			return link.resolveElements(elements);
+			return link.resolveElementsFromSrcToDst(elements);
 
 		return Collections.emptyList();
 	}

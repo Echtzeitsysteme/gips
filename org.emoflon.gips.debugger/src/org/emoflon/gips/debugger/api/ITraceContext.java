@@ -37,7 +37,16 @@ public interface ITraceContext {
 	 */
 	void selectElementsByTrace(String modelId, Collection<String> elementIds) throws TraceModelNotFoundException;
 
-	IModelLink getModelChain(String modelId1, String modelId2);
+	/**
+	 * Returns a link between {@code startModelId} and {@code targetModelId}. With
+	 * this link it's possible to resolve elements from the start model to the end
+	 * model.
+	 * 
+	 * @param startModelId
+	 * @param targetModelId
+	 * @return
+	 */
+	IModelLink getModelChain(String startModelId, String targetModelId);
 
 	Collection<String> resolveElementsByTrace(String startModelId, String endModelId, Collection<String> elements,
 			boolean bidirectional);

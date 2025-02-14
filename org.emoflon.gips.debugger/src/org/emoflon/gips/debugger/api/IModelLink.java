@@ -10,6 +10,6 @@ public interface IModelLink {
 
 	boolean isResolved();
 
-	Collection<String> resolveElements(Collection<String> selectedElementsById);
+	Collection<String> resolveElementsFromSrcToDst(Collection<String> elementIds);
 
 }

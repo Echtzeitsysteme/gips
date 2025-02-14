@@ -130,7 +130,7 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 			List<AnnotationMarkerData> highlightMarkers = new ArrayList<>();
 
 			var chain = context.getModelChain(modelId, getModelId());
-			var localElements = chain.resolveElements(selectedElementsById);
+			var localElements = chain.resolveElementsFromSrcToDst(selectedElementsById);
 			for (var localElement : localElements) {
 
 //				var cache = traceMap.getTargets(localElement);

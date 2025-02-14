@@ -21,4 +21,32 @@ public final class ILPTraceKeywords {
 		elementName = elementName != null ? elementName : "";
 		return type + TYPE_VALUE_DELIMITER + elementName;
 	}
+
+	public static record TypeValuePair(String type, String value) {
+
+		@Override
+		public String toString() {
+			return getElementId();
+		}
+
+		public String getElementId() {
+			return buildElementId(type, value);
+		}
+	}
+
+	public static TypeValuePair getTypeAndValue(String text) {
+		String type = null;
+		String value = null;
+
+		var delimiter = text.indexOf(ILPTraceKeywords.TYPE_VALUE_DELIMITER);
+		if (delimiter < 0) {
+			type = "";
+			value = text;
+		} else {
+			type = text.substring(0, delimiter);
+			value = text.substring(delimiter + ILPTraceKeywords.TYPE_VALUE_DELIMITER.length());
+		}
+
+		return new TypeValuePair(type, value);
+	}
 }

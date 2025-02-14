@@ -36,7 +36,7 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 		return new LpEditorTraceConnection(editor);
 	}
 
-	private static final class LpEditorTraceConnection extends XtextEditorTraceConnection {
+	public static class LpEditorTraceConnection extends XtextEditorTraceConnection {
 
 		// private TraceMap<String, EObject> traceMap;
 
@@ -114,14 +114,19 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 		}
 
 		@Override
-		protected void computeEditorHighligt(ITraceContext context, String modelId,
+		protected void removeEditorHighlights() {
+			HelperMarker.removeEditorHighlights(getEditor());
+		}
+
+		@Override
+		protected void computeEditorHighlights(ITraceContext context, String modelId,
 				Collection<String> selectedElementsById) {
 
 //			if (StaticModelIds.MODEL_ID_ILP_AST.equals(modelId)) {
 //				return;
 //			}
 
-			removeEditorHighlight();
+			removeEditorHighlights();
 			List<AnnotationMarkerData> highlightMarkers = new ArrayList<>();
 
 			var chain = context.getModelChain(modelId, getModelId());
@@ -139,7 +144,7 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 				switch (typeAndValue.type) {
 				case ILPTraceKeywords.TYPE_CONSTRAINT: {
 					var eObjects = getConstraintsWhichStartWith(typeAndValue.value + "_");
-					var markers = convertEObjectsToMarkers(eObjects, "Created by: " + typeAndValue.value);
+					var markers = HelperMarker.convertEObjectsToMarkers(eObjects, "Created by: " + typeAndValue.value);
 					highlightMarkers.addAll(markers);
 //					traceMap.mapOneToMany(localElement, eObjects);
 					break;
@@ -150,7 +155,7 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 									+ ILPTraceKeywords.TYPE_VALUE_DELIMITER.length()));
 					var eObject = getGlobalObjective();
 //					traceMap.map(localElement, eObject);
-					var marker = convertEObjectToMarker(eObject);
+					var marker = HelperMarker.convertEObjectToMarker(eObject);
 					marker.comment = "Variables: " + variables.collect(Collectors.joining(", "));
 					highlightMarkers.add(marker);
 					break;
@@ -158,7 +163,7 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 				case ILPTraceKeywords.TYPE_OBJECTIVE: {
 					var eObject = getGlobalObjective();
 //					traceMap.map(localElement, eObject);
-					var marker = convertEObjectToMarker(eObject);
+					var marker = HelperMarker.convertEObjectToMarker(eObject);
 					highlightMarkers.add(marker);
 					break;
 				}
@@ -182,7 +187,7 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 						}
 						return result;
 					});
-					var markers = convertEObjectsToMarkers(eObjects, "Created by: " + typeAndValue.value);
+					var markers = HelperMarker.convertEObjectsToMarkers(eObjects, "Created by: " + typeAndValue.value);
 					highlightMarkers.addAll(markers);
 					break;
 				}
@@ -190,15 +195,15 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 			}
 
 			if (!highlightMarkers.isEmpty()) {
-				revealFirstMarker(highlightMarkers);
-				addHighlightMarkers(highlightMarkers);
+				HelperMarker.revealFirstMarker(getEditor(), highlightMarkers);
+				HelperMarker.addHighlightMarkers(getEditor(), highlightMarkers);
 			}
 		}
 
-		private record TypeValuePair(String type, String value) {
+		protected record TypeValuePair(String type, String value) {
 		};
 
-		private TypeValuePair getTypeAndValue(String text) {
+		protected TypeValuePair getTypeAndValue(String text) {
 			String type = null;
 			String value = null;
 
@@ -214,7 +219,7 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 			return new TypeValuePair(type, value);
 		}
 
-		private Collection<EObject> getConstraintsWhichStartWith(String constraintName) {
+		protected Collection<EObject> getConstraintsWhichStartWith(String constraintName) {
 			return editor.getDocument().readOnly(resource -> {
 				final var result = new LinkedList<EObject>();
 
@@ -229,7 +234,7 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 			});
 		}
 
-		private EObject getGlobalObjective() {
+		protected EObject getGlobalObjective() {
 			return editor.getDocument().readOnly(resource -> {
 				var model = (org.emoflon.gips.debugger.cplexLp.Model) resource.getContents().get(0);
 				return model.getObjective();

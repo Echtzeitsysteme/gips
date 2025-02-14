@@ -29,7 +29,7 @@ import org.emoflon.gips.debugger.listener.PartSelectionFilterListener;
  * 
  * @param <T> type of editor
  */
-abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTraceConnection {
+public abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTraceConnection {
 
 	public static class Predicates {
 		public static Predicate<ISelectionModel> selectionNotSeenYet = SelectionListenerFactory.Predicates.alreadyDeliveredAnyPart;
@@ -42,15 +42,15 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 	private boolean isInstalled = false;
 
 	private IPartListener2 partListener;
-
 	private IPropertyListener propertyListener;
-
 	private ISelectionListener partSelectionListener;
-
 	private ITraceSelectionListener traceSelectionListener;
 
+	@Deprecated
 	protected boolean pauseEditorSelection = false;
+	@Deprecated
 	protected boolean pauseTraceSelection = false;
+	@Deprecated
 	protected boolean showNoTraceModelError = true;
 
 	private String modelId = "";
@@ -72,9 +72,8 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 
 	@Override
 	public void connect() {
-		if (isConnected()) {
+		if (isConnected())
 			return;
-		}
 
 		this.partListener = buildPartListener();
 		this.propertyListener = buildPropertyListener();
@@ -91,9 +90,8 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 
 	@Override
 	public void disconnect() {
-		if (!isConnected()) {
+		if (!isConnected())
 			return;
-		}
 
 		editor.removePropertyListener(propertyListener);
 		editor.getSite().getService(IPartService.class).removePartListener(partListener);
@@ -112,9 +110,14 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 		return new IPartListener2() {
 			@Override
 			public void partClosed(IWorkbenchPartReference partRef) {
-				if (partRef.getPart(false) == editor) {
+				if (partRef.getPart(false) == editor)
 					disconnect();
-				}
+			}
+
+			@Override
+			public void partVisible(IWorkbenchPartReference partRef) {
+				if (partRef.getPart(false) == editor)
+					onPartVisible();
 			}
 		};
 	}
@@ -140,6 +143,11 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 		};
 	}
 
+	private void onPartVisible() {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * Called when the selection on the connected editor changes. Must be passed to
 	 * the trace manager.
@@ -161,12 +169,16 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 			return;
 		}
 
-		removeEditorHighlight();
+		removeEditorHighlights();
 
-		postEditorSelection(context, selection);
+		sendEditorSelectionToTraceManager(context, selection);
 	}
 
-	protected void postEditorSelection(ITraceContext context, ISelection selection) {
+	/**
+	 * @param context   current context for this editor
+	 * @param selection current editor selection, may be null
+	 */
+	protected void sendEditorSelectionToTraceManager(ITraceContext context, ISelection selection) {
 		Collection<String> elementIds = Collections.emptySet();
 		if (!selection.isEmpty()) {
 			elementIds = transformSelectionToElementIds(selection);
@@ -190,27 +202,27 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 			return;
 		}
 
-		if (getModelId().equals(event.getModelId())) {
+		if (getModelId().equals(event.getModelId()))
 			return;
-		}
 
-		if (!editor.getSite().getPage().isPartVisible(editor)) {
-			// don't bother
+		if (!editor.getSite().getPage().isPartVisible(editor))
 			return;
-		}
 
-		if (!event.getContext().hasTraceFor(getModelId())) {
+		if (!event.getContext().hasTraceFor(getModelId()))
 			return;
-		}
 
 		if (event.getElementIds().isEmpty()) {
-			removeEditorHighlight();
+			removeEditorHighlights();
 		} else {
 			var time = System.nanoTime();
 			System.out.println("Start highlight");
-			computeEditorHighligt(event.getContext(), event.getModelId(), event.getElementIds());
+			computeEditorHighlights(event.getContext(), event.getModelId(), event.getElementIds());
 			System.out.println("End highlight: " + String.format("%.5g%n", (System.nanoTime() - time) / 100_000_000d));
 		}
+	}
+
+	public T getEditor() {
+		return editor;
 	}
 
 	/**
@@ -269,9 +281,9 @@ abstract class EditorTraceConnection<T extends IEditorPart> implements IEditorTr
 	 */
 	protected abstract Collection<String> transformSelectionToElementIds(ISelection selection);
 
-	protected abstract void computeEditorHighligt(ITraceContext context, String remoteModelId,
+	protected abstract void computeEditorHighlights(ITraceContext context, String remoteModelId,
 			Collection<String> remoteElementsById);
 
-	protected abstract void removeEditorHighlight();
+	protected abstract void removeEditorHighlights();
 
 }

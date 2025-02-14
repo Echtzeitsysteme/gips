@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -30,7 +31,7 @@ public class GenericXmiEditorTraceConnectionFactory implements IEditorTraceConne
 
 	private static final class XmiEditorTraceConnection extends EditorTraceConnection<EcoreEditor> {
 
-		private URI modelUri;
+		private URI modelURI;
 
 		public XmiEditorTraceConnection(EcoreEditor editor) {
 			super(editor);
@@ -41,14 +42,17 @@ public class GenericXmiEditorTraceConnectionFactory implements IEditorTraceConne
 			URI uri = EditUIUtil.getURI(editor.getEditorInput(),
 					editor.getEditingDomain().getResourceSet().getURIConverter());
 
-			modelUri = HelperEclipse.toPlatformURI(uri);
-			setContextId(HelperEclipse.tryAndGetProject(modelUri).getName());
-			setModelId(IPath.fromOSString(modelUri.toPlatformString(true)).removeFirstSegments(1).toString());
+			modelURI = HelperEclipse.toPlatformURI(uri);
+			IProject project = HelperEclipse.tryAndGetProject(modelURI);
+			IPath relativeFilePath = IPath.fromOSString(modelURI.toPlatformString(true)).removeFirstSegments(1);
+
+			setContextId(project.getName());
+			setModelId(relativeFilePath.toString());
 		}
 
 		private boolean isSameResourceURI(URI uri) {
 			var relativeUri = HelperEclipse.toPlatformURI(uri);
-			return modelUri.equals(relativeUri);
+			return modelURI.equals(relativeUri);
 //			return getModelId().equals(uri.trimFileExtension().lastSegment());
 		}
 
@@ -72,12 +76,12 @@ public class GenericXmiEditorTraceConnectionFactory implements IEditorTraceConne
 		}
 
 		@Override
-		protected void removeEditorHighlight() {
-//			editor.setSelection(null);
+		protected void removeEditorHighlights() {
+
 		}
 
 		@Override
-		protected void computeEditorHighligt(ITraceContext context, String remoteModelId,
+		protected void computeEditorHighlights(ITraceContext context, String remoteModelId,
 				Collection<String> remoteElementsById) {
 
 			var localElementsById = context.resolveElementsByTrace(remoteModelId, getModelId(), remoteElementsById,
@@ -87,31 +91,26 @@ public class GenericXmiEditorTraceConnectionFactory implements IEditorTraceConne
 		}
 
 		protected void highlightElementsByUriFragment(Collection<String> uriFragments) {
-			if (uriFragments.isEmpty()) {
+			if (uriFragments.isEmpty())
 				return;
-			}
 
 			var resourceSet = editor.getEditingDomain().getResourceSet();
 			var targetSelection = new ArrayList<EObject>(uriFragments.size());
 
 			for (var resource : resourceSet.getResources()) {
-				if (!isSameResourceURI(resource.getURI())) {
+				if (!isSameResourceURI(resource.getURI()))
 					continue;
-				}
 
 				for (var uriFragment : uriFragments) {
 					var e = resource.getEObject(uriFragment);
-					if (e != null) {
+					if (e != null)
 						targetSelection.add(e);
-					}
 				}
 
 				break;
 			}
 
-//			selectionActive = false;
 			editor.setSelectionToViewer(targetSelection);
-//			selectionActive = true;
 		}
 	}
 

@@ -61,33 +61,36 @@ public final class GipslEditorTraceConnectionFactory extends XtextEditorTraceCon
 				return eObject;
 			}
 
-			if (eObject.eContainer() != null) {
+			if (eObject.eContainer() != null)
 				return findRelevantObject(eObject.eContainer());
-			}
 
 			return null;
 		}
 
 		@Override
-		protected void computeEditorHighligt(ITraceContext context, String remoteModelId,
+		protected void computeEditorHighlights(ITraceContext context, String remoteModelId,
 				Collection<String> remoteElementsById) {
 
 			var localElementsById = context.resolveElementsByTrace(remoteModelId, getModelId(), remoteElementsById,
 					true);
 
-			removeEditorHighlight();
+			removeEditorHighlights();
 
-			if (localElementsById.isEmpty()) {
+			if (localElementsById.isEmpty())
 				return;
-			}
 
-			var markers = editor.getDocument().readOnly(xtextResource -> {
-				var eObjects = convertUriFragmentsToEObjects(xtextResource, localElementsById);
-				return convertEObjectsToMarkers(eObjects);
+			var markers = getEditor().getDocument().readOnly(xtextResource -> {
+				var eObjects = HelperMarker.convertUriFragmentsToEObjects(xtextResource, localElementsById);
+				return HelperMarker.convertEObjectsToMarkers(eObjects);
 			});
 
-			revealFirstMarker(markers);
-			addHighlightMarkers(markers);
+			HelperMarker.revealFirstMarker(getEditor(), markers);
+			HelperMarker.addHighlightMarkers(getEditor(), markers);
+		}
+
+		@Override
+		protected void removeEditorHighlights() {
+			HelperMarker.removeEditorHighlights(getEditor());
 		}
 
 	}

@@ -7,7 +7,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.emoflon.gips.debugger.TracePlugin;
-import org.emoflon.gips.debugger.imp.ProjectTraceContext;
+import org.emoflon.gips.debugger.service.ProjectTraceContext;
 import org.emoflon.gips.debugger.trace.TraceModelLink;
 import org.emoflon.gips.debugger.view.model.ContextNode;
 import org.emoflon.gips.debugger.view.model.LinkModelNode;

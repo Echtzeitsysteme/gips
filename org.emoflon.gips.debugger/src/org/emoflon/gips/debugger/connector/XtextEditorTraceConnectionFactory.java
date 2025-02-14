@@ -1,4 +1,4 @@
-package org.emoflon.gips.debugger.imp.connector;
+package org.emoflon.gips.debugger.connector;
 
 import java.util.Objects;
 

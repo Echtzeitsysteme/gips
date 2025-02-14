@@ -1,4 +1,4 @@
-package org.emoflon.gips.debugger.imp;
+package org.emoflon.gips.debugger.service;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -192,6 +192,10 @@ public final class ProjectTraceContext implements ITraceContext {
 
 	}
 
+	public TraceManager getTraceManager() {
+		return this.service;
+	}
+
 	@Override
 	public String getContextId() {
 		return contextId;
@@ -213,7 +217,7 @@ public final class ProjectTraceContext implements ITraceContext {
 			fireModelUpdateNotification(updated);
 		}
 	}
-	
+
 	public TraceModelLink getModelLink(String srcModel, String dstModel) {
 		return graph.getLink(srcModel, dstModel);
 	}

@@ -10,6 +10,8 @@ import org.emoflon.gips.debugger.trace.TraceModelLink;
 
 public interface ITraceContext {
 
+	public ITraceManager getTraceManager();
+
 	String getContextId();
 
 	void addListener(ITraceSelectionListener listener);

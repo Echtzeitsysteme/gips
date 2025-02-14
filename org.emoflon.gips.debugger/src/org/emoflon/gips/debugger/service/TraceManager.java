@@ -1,4 +1,4 @@
-package org.emoflon.gips.debugger.imp;
+package org.emoflon.gips.debugger.service;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -27,10 +27,10 @@ import org.emoflon.gips.debugger.api.event.ITraceSelectionListener;
 import org.emoflon.gips.debugger.api.event.ITraceUpdateListener;
 import org.emoflon.gips.debugger.api.event.TraceManagerEvent;
 import org.emoflon.gips.debugger.api.event.TraceManagerEvent.EventType;
-import org.emoflon.gips.debugger.imp.connector.EditorTraceConnectionFactory;
-import org.emoflon.gips.debugger.imp.connector.GenericXmiEditorTraceConnectionFactory;
-import org.emoflon.gips.debugger.imp.connector.GipslEditorTraceConnectionFactory;
-import org.emoflon.gips.debugger.imp.connector.Lp2EditorTraceConnectionFactory;
+import org.emoflon.gips.debugger.connector.CplexLpEditorTraceConnectionFactory;
+import org.emoflon.gips.debugger.connector.EditorTraceConnectionFactory;
+import org.emoflon.gips.debugger.connector.GenericXmiEditorTraceConnectionFactory;
+import org.emoflon.gips.debugger.connector.GipslEditorTraceConnectionFactory;
 import org.emoflon.gips.debugger.pref.PluginPreferences;
 import org.emoflon.gips.debugger.utility.HelperEclipse;
 
@@ -53,8 +53,7 @@ public class TraceManager implements ITraceManager {
 
 			EditorTraceConnectionFactory connectionFactory = new EditorTraceConnectionFactory();
 			connectionFactory.addConnectionFactory(new GipslEditorTraceConnectionFactory());
-			connectionFactory.addConnectionFactory(new Lp2EditorTraceConnectionFactory());
-//			connectionFactory.addConnectionFactory(new LpEditorTraceConnectionFactory());
+			connectionFactory.addConnectionFactory(new CplexLpEditorTraceConnectionFactory());
 			connectionFactory.addConnectionFactory(new GenericXmiEditorTraceConnectionFactory());
 
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();

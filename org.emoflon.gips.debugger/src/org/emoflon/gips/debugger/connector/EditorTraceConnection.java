@@ -1,10 +1,11 @@
-package org.emoflon.gips.debugger.imp.connector;
+package org.emoflon.gips.debugger.connector;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPartListener2;
@@ -37,7 +38,9 @@ public abstract class EditorTraceConnection<T extends IEditorPart> implements IE
 				.getTargetPart();
 	}
 
+	protected final EditorTraceJob editorTraceJob = new EditorTraceJob();
 	protected final T editor;
+	protected final IHighlightStrategy<? super T> highlightStrategy;
 
 	private boolean isInstalled = false;
 
@@ -46,18 +49,12 @@ public abstract class EditorTraceConnection<T extends IEditorPart> implements IE
 	private ISelectionListener partSelectionListener;
 	private ITraceSelectionListener traceSelectionListener;
 
-	@Deprecated
-	protected boolean pauseEditorSelection = false;
-	@Deprecated
-	protected boolean pauseTraceSelection = false;
-	@Deprecated
-	protected boolean showNoTraceModelError = true;
-
 	private String modelId = "";
 	private String contextId = "";
 
-	public EditorTraceConnection(T editor) {
+	public EditorTraceConnection(T editor, IHighlightStrategy<? super T> highlightStrategy) {
 		this.editor = Objects.requireNonNull(editor, "editor");
+		this.highlightStrategy = Objects.requireNonNull(highlightStrategy, "highlightStrategy");
 		computeContextAndModelId();
 	}
 
@@ -106,7 +103,7 @@ public abstract class EditorTraceConnection<T extends IEditorPart> implements IE
 		isInstalled = false;
 	}
 
-	protected IPartListener2 buildPartListener() {
+	private IPartListener2 buildPartListener() {
 		return new IPartListener2() {
 			@Override
 			public void partClosed(IWorkbenchPartReference partRef) {
@@ -122,7 +119,7 @@ public abstract class EditorTraceConnection<T extends IEditorPart> implements IE
 		};
 	}
 
-	protected IPropertyListener buildPropertyListener() {
+	private IPropertyListener buildPropertyListener() {
 		return (source, propId) -> {
 			if (IEditorPart.PROP_INPUT == propId) {
 				onEditorInputChange();
@@ -132,12 +129,12 @@ public abstract class EditorTraceConnection<T extends IEditorPart> implements IE
 		};
 	}
 
-	protected ISelectionListener buildPartSelectionListener() {
+	private ISelectionListener buildPartSelectionListener() {
 		return new PartSelectionFilterListener(editor, (part, selection) -> this.onEditorSelection(selection),
 				Predicates.fromSelf.and(Predicates.selectionNotSeenYet));
 	}
 
-	protected ITraceSelectionListener buildTraceSelectionListener() {
+	private ITraceSelectionListener buildTraceSelectionListener() {
 		return event -> {
 			onTraceSelection(event);
 		};
@@ -154,15 +151,13 @@ public abstract class EditorTraceConnection<T extends IEditorPart> implements IE
 	 * 
 	 * @param selection editor selection, may be null
 	 */
-	protected void onEditorSelection(ISelection selection) {
-		if (pauseEditorSelection) {
-			return;
-		}
-
+	private void onEditorSelection(ISelection selection) {
 		ITraceManager service = TracePlugin.getInstance().getTraceManager();
-		if (!service.doesContextExist(getContextId())) {
+		if (!service.isVisualisationActive())
 			return;
-		}
+
+		if (!service.doesContextExist(getContextId()))
+			return;
 
 		ITraceContext context = service.getContext(getContextId());
 		if (!context.hasTraceFor(getModelId())) {
@@ -178,7 +173,7 @@ public abstract class EditorTraceConnection<T extends IEditorPart> implements IE
 	 * @param context   current context for this editor
 	 * @param selection current editor selection, may be null
 	 */
-	protected void sendEditorSelectionToTraceManager(ITraceContext context, ISelection selection) {
+	private void sendEditorSelectionToTraceManager(ITraceContext context, ISelection selection) {
 		Collection<String> elementIds = Collections.emptySet();
 		if (!selection.isEmpty()) {
 			elementIds = transformSelectionToElementIds(selection);
@@ -197,11 +192,7 @@ public abstract class EditorTraceConnection<T extends IEditorPart> implements IE
 		}
 	}
 
-	protected void onTraceSelection(TraceSelectionEvent event) {
-		if (pauseTraceSelection) {
-			return;
-		}
-
+	private void onTraceSelection(TraceSelectionEvent event) {
 		if (getModelId().equals(event.getModelId()))
 			return;
 
@@ -214,15 +205,32 @@ public abstract class EditorTraceConnection<T extends IEditorPart> implements IE
 		if (event.getElementIds().isEmpty()) {
 			removeEditorHighlights();
 		} else {
-			var time = System.nanoTime();
-			System.out.println("Start highlight");
 			computeEditorHighlights(event.getContext(), event.getModelId(), event.getElementIds());
-			System.out.println("End highlight: " + String.format("%.5g%n", (System.nanoTime() - time) / 100_000_000d));
 		}
+	}
+
+	private void computeEditorHighlights(ITraceContext context, String remoteModelId,
+			Collection<String> remoteElementsById) {
+		editorTraceJob.cancel();
+		editorTraceJob.setup(monitor -> highlightStrategy.computeEditorHighlights(editor, context, getModelId(),
+				remoteModelId, remoteElementsById, monitor));
+		editorTraceJob.setPriority(Job.DECORATE);
+		editorTraceJob.schedule();
+	}
+
+	private void removeEditorHighlights() {
+		editorTraceJob.cancel();
+		editorTraceJob.setup(monitor -> highlightStrategy.removeEditorHighlights(editor, monitor));
+		editorTraceJob.setPriority(Job.DECORATE);
+		editorTraceJob.schedule();
 	}
 
 	public T getEditor() {
 		return editor;
+	}
+
+	public IHighlightStrategy<? super T> getHighlightStrategy() {
+		return highlightStrategy;
 	}
 
 	/**
@@ -280,10 +288,5 @@ public abstract class EditorTraceConnection<T extends IEditorPart> implements IE
 	 * @return A set of ids. The collection can be empty but not null
 	 */
 	protected abstract Collection<String> transformSelectionToElementIds(ISelection selection);
-
-	protected abstract void computeEditorHighlights(ITraceContext context, String remoteModelId,
-			Collection<String> remoteElementsById);
-
-	protected abstract void removeEditorHighlights();
 
 }

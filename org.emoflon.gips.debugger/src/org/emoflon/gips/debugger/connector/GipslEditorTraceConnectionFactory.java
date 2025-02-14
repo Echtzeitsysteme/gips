@@ -1,4 +1,4 @@
-package org.emoflon.gips.debugger.imp.connector;
+package org.emoflon.gips.debugger.connector;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,9 +7,9 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.xtext.ui.editor.XtextEditor;
-import org.emoflon.gips.debugger.api.ITraceContext;
-import org.emoflon.gips.debugger.imp.HelperEcoreSelection;
+import org.emoflon.gips.debugger.connector.highlight.MarkerBasedHighlightStrategy;
 import org.emoflon.gips.debugger.trace.resolver.ResolveEcore2Id;
+import org.emoflon.gips.debugger.utility.HelperEcoreSelection;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
@@ -31,7 +31,7 @@ public final class GipslEditorTraceConnectionFactory extends XtextEditorTraceCon
 	private static final class GipslEditorTraceConnection extends XtextEditorTraceConnection {
 
 		public GipslEditorTraceConnection(XtextEditor editor) {
-			super(editor);
+			super(editor, new MarkerBasedHighlightStrategy());
 		}
 
 		@Override
@@ -65,32 +65,6 @@ public final class GipslEditorTraceConnectionFactory extends XtextEditorTraceCon
 				return findRelevantObject(eObject.eContainer());
 
 			return null;
-		}
-
-		@Override
-		protected void computeEditorHighlights(ITraceContext context, String remoteModelId,
-				Collection<String> remoteElementsById) {
-
-			var localElementsById = context.resolveElementsByTrace(remoteModelId, getModelId(), remoteElementsById,
-					true);
-
-			removeEditorHighlights();
-
-			if (localElementsById.isEmpty())
-				return;
-
-			var markers = getEditor().getDocument().readOnly(xtextResource -> {
-				var eObjects = HelperMarker.convertUriFragmentsToEObjects(xtextResource, localElementsById);
-				return HelperMarker.convertEObjectsToMarkers(eObjects);
-			});
-
-			HelperMarker.revealFirstMarker(getEditor(), markers);
-			HelperMarker.addHighlightMarkers(getEditor(), markers);
-		}
-
-		@Override
-		protected void removeEditorHighlights() {
-			HelperMarker.removeEditorHighlights(getEditor());
 		}
 
 	}

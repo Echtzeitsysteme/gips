@@ -1,4 +1,4 @@
-package org.emoflon.gips.debugger.imp;
+package org.emoflon.gips.debugger.service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,9 +9,9 @@ import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.emoflon.gips.debugger.api.IEditorTracker;
-import org.emoflon.gips.debugger.imp.connector.EditorTraceConnectionFactory;
-import org.emoflon.gips.debugger.imp.connector.IEditorTraceConnection;
-import org.emoflon.gips.debugger.imp.connector.IEditorTraceConnectionFactory;
+import org.emoflon.gips.debugger.connector.EditorTraceConnectionFactory;
+import org.emoflon.gips.debugger.connector.IEditorTraceConnection;
+import org.emoflon.gips.debugger.connector.IEditorTraceConnectionFactory;
 import org.emoflon.gips.debugger.listener.WorkbenchPartWatcher;
 
 /**

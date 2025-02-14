@@ -1,6 +1,6 @@
-package org.emoflon.gips.debugger.imp.connector;
+package org.emoflon.gips.debugger.connector;
 
-import org.emoflon.gips.debugger.imp.TraceManager;
+import org.emoflon.gips.debugger.service.TraceManager;
 
 /**
  * This represents the connection between an editor and a {@link TraceManager}.

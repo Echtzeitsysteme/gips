@@ -1,4 +1,4 @@
-package org.emoflon.gips.debugger.imp.connector;
+package org.emoflon.gips.debugger.connector;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
@@ -8,8 +8,8 @@ import org.emoflon.gips.debugger.utility.HelperEclipse;
 
 public abstract class XtextEditorTraceConnection extends EditorTraceConnection<XtextEditor> {
 
-	public XtextEditorTraceConnection(XtextEditor editor) {
-		super(editor);
+	public XtextEditorTraceConnection(XtextEditor editor, IHighlightStrategy<? super XtextEditor> highlightStrategy) {
+		super(editor, highlightStrategy);
 	}
 
 	@Override

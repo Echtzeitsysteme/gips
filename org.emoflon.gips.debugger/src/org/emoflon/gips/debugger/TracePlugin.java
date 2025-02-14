@@ -7,8 +7,8 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.emoflon.gips.debugger.api.ITraceManager;
-import org.emoflon.gips.debugger.imp.TraceManager;
-import org.emoflon.gips.debugger.imp.TraceRemoteService;
+import org.emoflon.gips.debugger.service.TraceManager;
+import org.emoflon.gips.debugger.service.TraceRemoteService;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
@@ -108,6 +108,8 @@ public final class TracePlugin extends AbstractUIPlugin {
 	/**
 	 * Shareable singleton instance, not intended to be accessible from outside the
 	 * plugin
+	 * 
+	 * @see ITraceManager#getInstance()
 	 */
 	public TraceManager getTraceManager() {
 		return traceManager;

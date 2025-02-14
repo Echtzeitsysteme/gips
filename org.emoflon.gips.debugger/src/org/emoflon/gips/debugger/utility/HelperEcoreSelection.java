@@ -1,4 +1,4 @@
-package org.emoflon.gips.debugger.imp;
+package org.emoflon.gips.debugger.utility;
 
 import java.util.ArrayList;
 import java.util.Collections;

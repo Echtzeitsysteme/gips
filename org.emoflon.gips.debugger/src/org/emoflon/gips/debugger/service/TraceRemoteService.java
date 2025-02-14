@@ -1,4 +1,4 @@
-package org.emoflon.gips.debugger.imp;
+package org.emoflon.gips.debugger.service;
 
 import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
@@ -11,7 +11,9 @@ import java.rmi.server.UnicastRemoteObject;
 
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.emoflon.gips.debugger.TracePlugin;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
+import org.emoflon.gips.debugger.api.ITraceContext;
+import org.emoflon.gips.debugger.api.ITraceManager;
 import org.emoflon.gips.debugger.api.ITraceRemoteService;
 import org.emoflon.gips.debugger.pref.PluginPreferences;
 import org.emoflon.gips.debugger.trace.TraceModelLink;
@@ -42,13 +44,12 @@ public final class TraceRemoteService implements ITraceRemoteService {
 	}
 
 	synchronized public void initialize() {
-		var preferences = PluginPreferences.getPreferenceStore();
+		ScopedPreferenceStore preferences = PluginPreferences.getPreferenceStore();
 		preferences.addPropertyChangeListener(preferenceListener);
 
 		setPort(preferences.getInt(PluginPreferences.PREF_TRACE_RMI_PORT));
 
-		var startSerivce = preferences.getBoolean(PluginPreferences.PREF_TRACE_RMI);
-
+		boolean startSerivce = preferences.getBoolean(PluginPreferences.PREF_TRACE_RMI);
 		if (startSerivce)
 			startService();
 	}
@@ -105,7 +106,7 @@ public final class TraceRemoteService implements ITraceRemoteService {
 	private void onPreferenceChange(PropertyChangeEvent event) {
 		switch (event.getProperty()) {
 		case PluginPreferences.PREF_TRACE_RMI:
-			var shouldServiceBeRunning = ((Boolean) event.getNewValue()).booleanValue();
+			boolean shouldServiceBeRunning = ((Boolean) event.getNewValue()).booleanValue();
 			if (this.isRunning == shouldServiceBeRunning)
 				return;
 
@@ -116,7 +117,7 @@ public final class TraceRemoteService implements ITraceRemoteService {
 
 			break;
 		case PluginPreferences.PREF_TRACE_RMI_PORT:
-			var newPort = ((Number) event.getNewValue()).intValue();
+			int newPort = ((Number) event.getNewValue()).intValue();
 			if (this.port == newPort)
 				return;
 
@@ -129,7 +130,7 @@ public final class TraceRemoteService implements ITraceRemoteService {
 
 	@Override
 	public void updateTraceModel(String contextId, TraceModelLink traceLink) {
-		var context = TracePlugin.getInstance().getTraceManager().getContext(contextId);
+		ITraceContext context = ITraceManager.getInstance().getContext(contextId);
 		context.updateTraceModel(traceLink);
 	}
 

@@ -7,7 +7,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsIntermediateModel" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ibexModel" lowerBound="1"
-        eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTModel"
+        eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTModel"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="config" lowerBound="1"
         eType="#//SolverConfig" containment="true"/>
@@ -26,9 +26,9 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="requiredTypes" upperBound="-1"
         eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="requiredPatterns" upperBound="-1"
-        eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTPattern"/>
+        eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTPattern"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="requiredRules" upperBound="-1"
-        eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTRule"/>
+        eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTRule"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SolverConfig">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="solver" eType="#//SolverType"/>
@@ -63,8 +63,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RuleParameterVariable" eSuperTypes="#//Variable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameter" lowerBound="1"
-        eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTParameter"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="rule" lowerBound="1" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTRule"/>
+        eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTParameter"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rule" lowerBound="1" eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTRule"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="VariableType">
     <eLiterals name="BINARY"/>
@@ -73,7 +73,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Mapping" abstract="true" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="contextPattern" lowerBound="1"
-        eType="ecore:EClass platform:/resource/org.emoflon.ibex.common.coremodel/model/IBeXCoreModel.ecore#//IBeXPattern"/>
+        eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTPattern"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappingVariable" lowerBound="1"
         eType="#//Variable"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="freeVariables" upperBound="-1"
@@ -82,11 +82,11 @@
         eType="#//RuleParameterVariable"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RuleMapping" eSuperTypes="#//Mapping">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="rule" lowerBound="1" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTRule"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rule" lowerBound="1" eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTRule"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PatternMapping" eSuperTypes="#//Mapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" lowerBound="1"
-        eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTPattern"/>
+        eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTPattern"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Constant" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
@@ -133,12 +133,12 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PatternConstraint" eSuperTypes="#//Constraint">
     <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" lowerBound="1"
-        eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTPattern"/>
+        eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTPattern"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RuleConstraint" eSuperTypes="#//Constraint">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="rule" lowerBound="1" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTRule"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rule" lowerBound="1" eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTRule"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="contextPattern" lowerBound="1"
-        eType="ecore:EClass platform:/resource/org.emoflon.ibex.common.coremodel/model/IBeXCoreModel.ecore#//IBeXPattern"/>
+        eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTPattern"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TypeConstraint" eSuperTypes="#//Constraint">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
@@ -149,12 +149,12 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PatternFunction" eSuperTypes="#//LinearFunction">
     <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" lowerBound="1"
-        eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTPattern"/>
+        eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTPattern"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RuleFunction" eSuperTypes="#//LinearFunction">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="rule" lowerBound="1" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTRule"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rule" lowerBound="1" eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTRule"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="contextPattern" lowerBound="1"
-        eType="ecore:EClass platform:/resource/org.emoflon.ibex.common.coremodel/model/IBeXCoreModel.ecore#//IBeXPattern"/>
+        eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTPattern"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TypeFunction" eSuperTypes="#//LinearFunction">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
@@ -274,18 +274,18 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PatternReference" eSuperTypes="#//ValueExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" lowerBound="1"
-        eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTPattern"/>
+        eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTPattern"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RuleReference" eSuperTypes="#//ValueExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="contextPattern" lowerBound="1"
-        eType="ecore:EClass platform:/resource/org.emoflon.ibex.common.coremodel/model/IBeXCoreModel.ecore#//IBeXPattern"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="rule" lowerBound="1" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTRule"/>
+        eType="ecore:EClass ../../org.emoflon.ibex.common.coremodel/model/IBeXCoreModel.ecore#//IBeXPattern"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rule" lowerBound="1" eType="ecore:EClass ../../org.emoflon.ibex.gt.gtmodel/model/IBeXGTModel.ecore#//GTRule"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContextReference" eSuperTypes="#//ValueExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="local" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeReference" eSuperTypes="#//ContextReference #//Context">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass platform:/resource/org.emoflon.ibex.common.coremodel/model/IBeXCoreModel.ecore#//IBeXNode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.common.coremodel/model/IBeXCoreModel.ecore#//IBeXNode"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="attribute" eType="#//AttributeExpression"
         containment="true"/>
   </eClassifiers>

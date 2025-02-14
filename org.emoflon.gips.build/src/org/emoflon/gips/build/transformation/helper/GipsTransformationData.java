@@ -24,16 +24,16 @@ import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.ibex.common.coremodel.IBeXCoreModel.IBeXNode;
-import org.emoflon.ibex.common.coremodel.IBeXCoreModel.IBeXPattern;
 import org.emoflon.ibex.gt.gtl.gTL.SlimRule;
 import org.emoflon.ibex.gt.gtl.gTL.SlimRuleNode;
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTPattern;
 import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.GTRule;
 
 public record GipsTransformationData(GipsIntermediateModel model, //
 		EditorFile gipslFile, //
 		Map<String, GipsBooleanExpression> symbol2Expr, //
 		Map<GipsBooleanExpression, String> expr2Symbol, //
-		Map<String, IBeXPattern> ePattern2pattern, //
+		Map<String, GTPattern> ePattern2pattern, //
 		Map<String, GTRule> ePattern2rule, //
 		Map<SlimRuleNode, IBeXNode> eNode2Node, //
 		Map<GipsMapping, Mapping> eMapping2Mapping, //
@@ -99,11 +99,11 @@ public record GipsTransformationData(GipsIntermediateModel model, //
 		return constants.get(constant.getName());
 	}
 
-	public void addPattern(final SlimRule ePattern, final IBeXPattern pattern) {
+	public void addPattern(final SlimRule ePattern, final GTPattern pattern) {
 		ePattern2pattern.put(ePattern.getName(), pattern);
 	}
 
-	public IBeXPattern getPattern(final SlimRule pattern) {
+	public GTPattern getPattern(final SlimRule pattern) {
 		return ePattern2pattern.get(pattern.getName());
 	}
 

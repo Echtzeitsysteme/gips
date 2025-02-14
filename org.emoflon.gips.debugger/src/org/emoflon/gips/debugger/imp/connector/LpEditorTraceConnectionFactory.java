@@ -139,12 +139,13 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 //					continue;
 //				}
 
-				var typeAndValue = getTypeAndValue(localElement);
+				var typeAndValue = ILPTraceKeywords.getTypeAndValue(localElement);
 
-				switch (typeAndValue.type) {
+				switch (typeAndValue.type()) {
 				case ILPTraceKeywords.TYPE_CONSTRAINT: {
-					var eObjects = getConstraintsWhichStartWith(typeAndValue.value + "_");
-					var markers = HelperMarker.convertEObjectsToMarkers(eObjects, "Created by: " + typeAndValue.value);
+					var eObjects = getConstraintsWhichStartWith(typeAndValue.value() + "_");
+					var markers = HelperMarker.convertEObjectsToMarkers(eObjects,
+							"Created by: " + typeAndValue.value());
 					highlightMarkers.addAll(markers);
 //					traceMap.mapOneToMany(localElement, eObjects);
 					break;
@@ -175,11 +176,11 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 							var eObject = iterator.next();
 							if (eObject instanceof Variable) {
 								if (eObject instanceof VariableDecleration vd) {
-									if (vd.getName().startsWith(typeAndValue.value)) {
+									if (vd.getName().startsWith(typeAndValue.value())) {
 										result.add(vd);
 									}
 								} else if (eObject instanceof VariableRef vr) {
-									if (vr.getRef().getName().startsWith(typeAndValue.value)) {
+									if (vr.getRef().getName().startsWith(typeAndValue.value())) {
 										result.add(vr);
 									}
 								}
@@ -187,7 +188,8 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 						}
 						return result;
 					});
-					var markers = HelperMarker.convertEObjectsToMarkers(eObjects, "Created by: " + typeAndValue.value);
+					var markers = HelperMarker.convertEObjectsToMarkers(eObjects,
+							"Created by: " + typeAndValue.value());
 					highlightMarkers.addAll(markers);
 					break;
 				}
@@ -198,25 +200,6 @@ public final class LpEditorTraceConnectionFactory extends XtextEditorTraceConnec
 				HelperMarker.revealFirstMarker(getEditor(), highlightMarkers);
 				HelperMarker.addHighlightMarkers(getEditor(), highlightMarkers);
 			}
-		}
-
-		protected record TypeValuePair(String type, String value) {
-		};
-
-		protected TypeValuePair getTypeAndValue(String text) {
-			String type = null;
-			String value = null;
-
-			var delimiter = text.indexOf(ILPTraceKeywords.TYPE_VALUE_DELIMITER);
-			if (delimiter < 0) {
-				type = "";
-				value = text;
-			} else {
-				type = text.substring(0, delimiter);
-				value = text.substring(delimiter + ILPTraceKeywords.TYPE_VALUE_DELIMITER.length());
-			}
-
-			return new TypeValuePair(type, value);
 		}
 
 		protected Collection<EObject> getConstraintsWhichStartWith(String constraintName) {

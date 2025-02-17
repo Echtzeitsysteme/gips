@@ -11,6 +11,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
 public abstract class GipsObjective {
 
 	final protected GipsEngine engine;
+	final protected TypeIndexer indexer;
 	final protected Objective objective;
 	protected NestedLinearFunction milpObjective;
 	protected List<WeightedLinearFunction> weightedFunctions;
@@ -18,6 +19,7 @@ public abstract class GipsObjective {
 
 	public GipsObjective(final GipsEngine engine, final Objective objective) {
 		this.engine = engine;
+		this.indexer = engine.getIndexer();
 		this.objective = objective;
 		initLocalObjectives();
 	}

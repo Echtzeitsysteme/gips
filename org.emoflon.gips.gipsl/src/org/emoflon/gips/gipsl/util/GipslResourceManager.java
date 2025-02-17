@@ -74,7 +74,7 @@ public class GipslResourceManager extends GTLResourceManager {
 					try {
 						String content = Files.readString(f.toPath());
 						Matcher m = pkgNamePattern.matcher(content);
-						if (m.find() && m.groupCount() == 3) {
+						if (m.find() && m.groupCount() == 3 && ef.getPackage().getName() != null) {
 							String pkgName = m.group(2);
 							return ef.getPackage().getName().equals(pkgName);
 						}

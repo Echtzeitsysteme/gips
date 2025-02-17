@@ -39,13 +39,13 @@ class FunctionFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 import «imp»;
 «ENDFOR»
 
-public class «className» extends GipsLinearFunctionFactory<«data.gipsApiClassName», «data.apiAbstractClassName»> {
-	public «className»(final «data.gipsApiClassName» engine, final «data.apiAbstractClassName» eMoflonApi) {
+public class «className» <MOFLON_API extends «data.apiAbstractClassName»<?>> extends GipsLinearFunctionFactory<«data.gipsApiClassName»<MOFLON_API>, MOFLON_API> {
+	public «className»(final «data.gipsApiClassName»<MOFLON_API> engine, final MOFLON_API eMoflonApi) {
 		super(engine, eMoflonApi);
 	}
 	
 	@Override
-	public GipsLinearFunction<«data.gipsApiClassName», ? extends LinearFunction, ? extends Object> createLinearFunction(final LinearFunction function) {
+	public GipsLinearFunction<«data.gipsApiClassName»<MOFLON_API>, ? extends LinearFunction, ? extends Object> createLinearFunction(final LinearFunction function) {
 		«IF context.functions.isNullOrEmpty»
 		throw new IllegalArgumentException("Unknown linear function type: " + function);
 		«ELSE»
@@ -53,11 +53,11 @@ public class «className» extends GipsLinearFunctionFactory<«data.gipsApiClass
 			«FOR function : context.functions»
 			case "«function.name»" -> {
 				«IF function instanceof PatternFunction»
-				return new «data.function2functionClassName.get(function)»(engine, («function.eClass.name»)function, eMoflonApi.«function.pattern.name.toFirstLower»());
+				return new «data.function2functionClassName.get(function)»<MOFLON_API>(engine, («function.eClass.name»)function, eMoflonApi.«function.pattern.name.toFirstLower»());
 				«ELSEIF function instanceof RuleFunction»
-				return new «data.function2functionClassName.get(function)»(engine, («function.eClass.name»)function, eMoflonApi.«function.rule.name.toFirstLower»());
+				return new «data.function2functionClassName.get(function)»<MOFLON_API>(engine, («function.eClass.name»)function, eMoflonApi.«function.rule.name.toFirstLower»());
 				«ELSE»
-				return new «data.function2functionClassName.get(function)»(engine, («function.eClass.name»)function);
+				return new «data.function2functionClassName.get(function)»<MOFLON_API>(engine, («function.eClass.name»)function);
 				«ENDIF»
 			}
 			«ENDFOR»

@@ -168,9 +168,13 @@ public abstract class GipsEngineAPI<EMOFLON_API extends IBeXGtAPI<?, ?, ?>> exte
 	 * @param modelUri     Model URI to load.
 	 * @throws Exception
 	 */
-	protected void initInternal(final URI gipsModelURI, final URI modelUri) throws Exception {
+	protected void initInternal(final URI gipsModelURI, final URI modelUri) {
 		loadIntermediateModel(gipsModelURI);
-		model = eMoflonAPI.addModel(modelUri).getResourceSet();
+		try {
+			model = eMoflonAPI.addModel(modelUri).getResourceSet();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		initInternalCommon(gipsModelURI);
 	}
 

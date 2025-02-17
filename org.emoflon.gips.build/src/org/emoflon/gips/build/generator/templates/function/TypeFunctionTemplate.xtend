@@ -26,6 +26,7 @@ class TypeFunctionTemplate extends LinearFunctionTemplate<TypeFunction> {
 		imports.add("org.emoflon.gips.core.milp.model.Constant")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.TypeFunction")
 		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
+		imports.add(data.apiPackage + "." + data.apiAbstractClassName)
 		imports.add(data.getFQN(context.type))
 	}
 	
@@ -41,8 +42,8 @@ import «imp»;
 	
 	override String generateClassContent() {
 		return '''
-public class «className» extends GipsTypeLinearFunction<«data.gipsApiClassName», «context.type.name»> {
-	public «className»(final «data.gipsApiClassName» engine, final TypeFunction function) {
+public class «className» <MOFLON_API extends «data.apiAbstractClassName»<?>> extends GipsTypeLinearFunction<«data.gipsApiClassName»<MOFLON_API>, «context.type.name»> {
+	public «className»(final «data.gipsApiClassName»<MOFLON_API> engine, final TypeFunction function) {
 		super(engine, function);
 	}
 	

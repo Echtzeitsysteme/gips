@@ -28,6 +28,7 @@ class TypeConstraintTemplate extends ConstraintTemplate<TypeConstraint> {
 		imports.add("org.emoflon.gips.core.milp.model.Constraint")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint")
 		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
+		imports.add(data.apiPackage + "." + data.apiAbstractClassName)
 		imports.add(data.getFQN(context.type))
 	}
 	
@@ -42,12 +43,12 @@ import «imp»;
 	}
 	
 	override String generateClassSignature() {
-		return '''public class «className» extends GipsTypeConstraint<«data.gipsApiClassName», «context.type.name»>'''
+		return '''public class «className» <MOFLON_API extends «data.apiAbstractClassName»<?>> extends GipsTypeConstraint<«data.gipsApiClassName»<MOFLON_API>, «context.type.name»>'''
 	}
 	
 	override String generateClassConstructor() {
 		return '''
-public «className»(final «data.gipsApiClassName» engine, final TypeConstraint constraint) {
+public «className»(final «data.gipsApiClassName»<MOFLON_API> engine, final TypeConstraint constraint) {
 	super(engine, constraint);
 }
 '''

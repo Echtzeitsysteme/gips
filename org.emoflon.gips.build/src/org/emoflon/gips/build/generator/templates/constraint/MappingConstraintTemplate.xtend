@@ -29,6 +29,7 @@ class MappingConstraintTemplate extends ConstraintTemplate<MappingConstraint> {
 		}
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint")
 		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
+		imports.add(data.apiPackage + "." + data.apiAbstractClassName)
 		imports.add(data.gipsMappingPkg+"."+data.mapping2mappingClassName.get(context.mapping))
 	}
 	
@@ -43,12 +44,12 @@ import «imp»;
 	}
 	
 	override String generateClassSignature() {
-		return '''public class «className» extends GipsMappingConstraint<«data.gipsApiClassName», «data.mapping2mappingClassName.get(context.mapping)»>'''
+		return '''public class «className» <MOFLON_API extends «data.apiAbstractClassName»<?>> extends GipsMappingConstraint<«data.gipsApiClassName»<MOFLON_API>, «data.mapping2mappingClassName.get(context.mapping)»>'''
 	}
 	
 	override String generateClassConstructor() {
 		return '''
-public «className»(final «data.gipsApiClassName» engine, final MappingConstraint constraint) {
+public «className»(final «data.gipsApiClassName»<MOFLON_API> engine, final MappingConstraint constraint) {
 	super(engine, constraint);
 }'''
 	}

@@ -24,8 +24,11 @@ class RuleConstraintTemplate extends ConstraintTemplate<RuleConstraint> {
 		imports.add("org.emoflon.gips.core.milp.model.Constraint")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.RuleConstraint")
 		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
+		imports.add(data.apiPackage + "." + data.apiAbstractClassName)
 		imports.add(data.matchPackage+"."+data.ibex2matchClassName.get(context.rule))
+		imports.add(data.matchPackage+"."+data.rule2CoMatchClassName.get(context.rule))
 		imports.add(data.rulePackage+"."+data.ibex2ibexClassName.get(context.rule))
+		imports.add(data.patternPackage+"."+data.rule2CoPatternClassName.get(context.rule))
 	}
 	
 	override String generatePackageDeclaration() {
@@ -39,12 +42,12 @@ import «imp»;
 	}
 	
 	override String generateClassSignature() {
-		return '''public class «className» extends GipsRuleConstraint<«data.gipsApiClassName», «data.ibex2matchClassName.get(context.rule)», «data.ibex2ibexClassName.get(context.rule)»>'''
+		return '''public class «className» <MOFLON_API extends «data.apiAbstractClassName»<?>> extends GipsRuleConstraint<«data.gipsApiClassName»<MOFLON_API>, «data.ibex2ibexClassName.get(context.rule)», «data.ibex2ibexClassName.get(context.rule)», «data.ibex2matchClassName.get(context.rule)», «data.rule2CoPatternClassName.get(context.rule)», «data.rule2CoMatchClassName.get(context.rule)»>'''
 	}
 	
 	override String generateClassConstructor() {
 		return '''
-public «className»(final «data.gipsApiClassName» engine, final RuleConstraint constraint, final «data.ibex2ibexClassName.get(context.rule)» rule) {
+public «className»(final «data.gipsApiClassName»<MOFLON_API> engine, final RuleConstraint constraint, final «data.ibex2ibexClassName.get(context.rule)» rule) {
 	super(engine, constraint, rule);
 }
 '''

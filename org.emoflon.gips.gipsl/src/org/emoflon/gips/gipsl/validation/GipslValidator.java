@@ -99,7 +99,7 @@ public class GipslValidator extends GTLValidator {
 		count += gipslManager.getAllMappingsInScope(file).stream().filter(m -> m != null && m.getName() != null)
 				.filter(m -> m.getName().equals(rule.getName())).count();
 
-		if (count != 1) {
+		if (count > 0) {
 			error(String.format("Pattern/rule '%s' must not be declared more than once.", rule.getName(),
 					GipslValidatorUtil.getTimes((int) count)), GTLPackage.Literals.SLIM_RULE__NAME);
 		}
@@ -120,7 +120,7 @@ public class GipslValidator extends GTLValidator {
 		count += gipslManager.getAllMappingsInScope(file).stream().filter(m -> m != null && m.getName() != null)
 				.filter(m -> m.getName().equals(pImport.getPattern().getName())).count();
 
-		if (count != 1) {
+		if (count > 0) {
 			error(String.format("Pattern/rule '%s' must not be declared more than once.",
 					pImport.getPattern().getName(), GipslValidatorUtil.getTimes((int) count)),
 					GTLPackage.Literals.EDITOR_FILE__IMPORTED_PATTERNS);

@@ -23,6 +23,7 @@ class MappingFunctionTemplate extends LinearFunctionTemplate<MappingFunction> {
 		imports.add("org.emoflon.gips.core.milp.model.Constant")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingFunction")
 		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
+		imports.add(data.apiPackage + "." + data.apiAbstractClassName)
 		imports.add(data.gipsMappingPkg+"."+data.mapping2mappingClassName.get(context.mapping))
 	}
 	
@@ -38,8 +39,8 @@ import «imp»;
 	
 	override String generateClassContent() {
 		return '''
-public class «className» extends GipsMappingLinearFunction<«data.gipsApiClassName», «data.mapping2mappingClassName.get(context.mapping)»>{
-	public «className»(final «data.gipsApiClassName» engine, final MappingFunction function) {
+public class «className» <MOFLON_API extends «data.apiAbstractClassName»<?>> extends GipsMappingLinearFunction<«data.gipsApiClassName»<MOFLON_API>, «data.mapping2mappingClassName.get(context.mapping)»>{
+	public «className»(final «data.gipsApiClassName»<MOFLON_API> engine, final MappingFunction function) {
 		super(engine, function);
 	}
 	

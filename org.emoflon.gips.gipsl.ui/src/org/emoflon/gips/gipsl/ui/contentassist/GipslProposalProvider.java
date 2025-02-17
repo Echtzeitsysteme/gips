@@ -9,6 +9,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.xtext.Assignment;
+import org.eclipse.xtext.Keyword;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
 import org.emoflon.ibex.common.slimgt.util.SlimGTWorkspaceUtil;
@@ -83,4 +84,16 @@ public class GipslProposalProvider extends AbstractGipslProposalProvider {
 
 		acceptor.accept(new CompletionProposal(pkgName.toLowerCase(), context.getOffset(), replacementLength, cursor));
 	}
+
+	@Override
+	public void completeKeyword(Keyword keyword, ContentAssistContext contentAssistContext,
+			ICompletionProposalAcceptor acceptor) {
+
+		// do not show keywords that were already typed in
+		if (keyword.getValue().equals(contentAssistContext.getPrefix()))
+			return;
+
+		super.completeKeyword(keyword, contentAssistContext, acceptor);
+	}
+
 }

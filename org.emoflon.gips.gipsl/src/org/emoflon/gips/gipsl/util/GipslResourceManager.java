@@ -153,7 +153,7 @@ public class GipslResourceManager extends GTLResourceManager {
 					Matcher m = pkgNamePattern.matcher(content);
 					if (m.find() && m.groupCount() == 3) {
 						String pkgName = m.group(2);
-						if (!ef.getPackage().getName().equals(pkgName))
+						if (ef.getPackage().getName() == null || !ef.getPackage().getName().equals(pkgName))
 							continue;
 					} else {
 						continue;

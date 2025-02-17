@@ -23,6 +23,7 @@ class PatternFunctionTemplate extends LinearFunctionTemplate<PatternFunction> {
 		imports.add("org.emoflon.gips.core.milp.model.Constant")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.PatternFunction")
 		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
+		imports.add(data.apiPackage + "." + data.apiAbstractClassName)
 		imports.add(data.matchPackage+"."+data.ibex2matchClassName.get(context.pattern))
 		imports.add(data.rulePackage+"."+data.ibex2ibexClassName.get(context.pattern))
 	}
@@ -39,8 +40,8 @@ import «imp»;
 	
 	override String generateClassContent() {
 		return '''
-public class «className» extends GipsPatternLinearFunction<«data.gipsApiClassName», «data.ibex2matchClassName.get(context.pattern)», «data.ibex2ibexClassName.get(context.pattern)»>{
-	public «className»(final «data.gipsApiClassName» engine, final PatternFunction function, final «data.ibex2ibexClassName.get(context.pattern)» pattern) {
+public class «className» <MOFLON_API extends «data.apiAbstractClassName»<?>> extends GipsPatternLinearFunction<«data.gipsApiClassName»<MOFLON_API>, «data.ibex2matchClassName.get(context.pattern)», «data.ibex2ibexClassName.get(context.pattern)»>{
+	public «className»(final «data.gipsApiClassName»<MOFLON_API> engine, final PatternFunction function, final «data.ibex2ibexClassName.get(context.pattern)» pattern) {
 		super(engine, function, pattern);
 	}
 	

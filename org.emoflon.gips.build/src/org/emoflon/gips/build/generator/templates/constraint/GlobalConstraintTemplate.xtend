@@ -27,6 +27,7 @@ class GlobalConstraintTemplate extends ConstraintTemplate<Constraint> {
 		imports.add("org.emoflon.gips.core.GipsGlobalConstraint")
 		imports.add("org.emoflon.gips.core.milp.model.Term")
 		imports.add("org.emoflon.gips.core.milp.model.Constraint")
+		imports.add(data.apiPackage + "." + data.apiAbstractClassName)
 		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
 	}
 	
@@ -41,12 +42,12 @@ import «imp»;
 	}
 	
 	override String generateClassSignature() {
-		return '''public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName»> '''
+		return '''public class «className» <MOFLON_API extends «data.apiAbstractClassName»<?>> extends GipsGlobalConstraint<«data.gipsApiClassName»<MOFLON_API>> '''
 	}
 	
 	override String generateClassConstructor() {
 		return '''
-public «className»(final «data.gipsApiClassName» engine, final org.emoflon.gips.intermediate.GipsIntermediate.Constraint constraint) {
+public «className»(final «data.gipsApiClassName»<MOFLON_API> engine, final org.emoflon.gips.intermediate.GipsIntermediate.Constraint constraint) {
 	super(engine, constraint);
 }
 '''

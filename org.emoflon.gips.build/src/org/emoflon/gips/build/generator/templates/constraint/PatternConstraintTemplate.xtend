@@ -25,6 +25,7 @@ class PatternConstraintTemplate extends ConstraintTemplate<PatternConstraint> {
 		imports.add("org.emoflon.gips.core.milp.model.Constraint")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint")
 		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
+		imports.add(data.apiPackage + "." + data.apiAbstractClassName)
 		imports.add(data.matchPackage+"."+data.ibex2matchClassName.get(context.pattern))
 		imports.add(data.rulePackage+"."+data.ibex2ibexClassName.get(context.pattern))
 	}
@@ -40,12 +41,12 @@ import «imp»;
 	}
 	
 	override String generateClassSignature() {
-		return '''public class «className» extends GipsPatternConstraint<«data.gipsApiClassName», «data.ibex2matchClassName.get(context.pattern)», «data.ibex2ibexClassName.get(context.pattern)»>'''
+		return '''public class «className» <MOFLON_API extends «data.apiAbstractClassName»<?>> extends GipsPatternConstraint<«data.gipsApiClassName»<MOFLON_API>, «data.ibex2matchClassName.get(context.pattern)», «data.ibex2ibexClassName.get(context.pattern)»>'''
 	}
 	
 	override String generateClassConstructor() {
 		return '''
-public «className»(final «data.gipsApiClassName» engine, final PatternConstraint constraint, final «data.ibex2ibexClassName.get(context.pattern)» pattern) {
+public «className»(final «data.gipsApiClassName»<MOFLON_API> engine, final PatternConstraint constraint, final «data.ibex2ibexClassName.get(context.pattern)» pattern) {
 	super(engine, constraint, pattern);
 }
 '''

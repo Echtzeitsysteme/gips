@@ -55,8 +55,8 @@ public class «className» extends GipsGTMapping<«data.mapping2matchClassName.g
 	}
 
 	«FOR node : pattern.signatureNodes»
-	public «node.type.name» get«node.name.toFirstUpper»() {
-		return match.get«node.name.toFirstUpper»();
+	public «node.type.name» «node.name»() {
+		return match.«node.name»();
 	}
 	«ENDFOR»
 

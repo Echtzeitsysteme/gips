@@ -23,8 +23,11 @@ class RuleFunctionTemplate extends LinearFunctionTemplate<RuleFunction> {
 		imports.add("org.emoflon.gips.core.milp.model.Constant")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.RuleFunction")
 		imports.add(data.gipsApiPkg+"."+data.gipsApiClassName)
+		imports.add(data.apiPackage + "." + data.apiAbstractClassName)
 		imports.add(data.matchPackage+"."+data.ibex2matchClassName.get(context.rule))
+		imports.add(data.matchPackage+"."+data.rule2CoMatchClassName.get(context.rule))
 		imports.add(data.rulePackage+"."+data.ibex2ibexClassName.get(context.rule))
+		imports.add(data.patternPackage+"."+data.rule2CoPatternClassName.get(context.rule))
 	}
 	
 	override String generatePackageDeclaration() {
@@ -39,8 +42,8 @@ import «imp»;
 	
 	override String generateClassContent() {
 		return '''
-public class «className» extends GipsRuleLinearFunction<«data.gipsApiClassName», «data.ibex2matchClassName.get(context.rule)», «data.ibex2ibexClassName.get(context.rule)»>{
-	public «className»(final «data.gipsApiClassName» engine, final RuleFunction function, final «data.ibex2ibexClassName.get(context.rule)» rule) {
+public class «className» <MOFLON_API extends «data.apiAbstractClassName»<?>> extends GipsRuleLinearFunction<«data.gipsApiClassName»<MOFLON_API>, «data.ibex2ibexClassName.get(context.rule)», «data.ibex2ibexClassName.get(context.rule)», «data.ibex2matchClassName.get(context.rule)», «data.rule2CoPatternClassName.get(context.rule)», «data.rule2CoMatchClassName.get(context.rule)»>{
+	public «className»(final «data.gipsApiClassName»<MOFLON_API> engine, final RuleFunction function, final «data.ibex2ibexClassName.get(context.rule)» rule) {
 		super(engine, function, rule);
 	}
 	

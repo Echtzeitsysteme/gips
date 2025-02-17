@@ -1,12 +1,20 @@
 package org.emoflon.gips.build.generator;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.emoflon.gips.build.GipsAPIData;
 import org.emoflon.gips.build.generator.templates.GeneratorTemplate;
 import org.emoflon.gips.build.generator.templates.GipsAPITemplate;
+import org.emoflon.gips.build.generator.templates.GipsAbstractAPITemplate;
 import org.emoflon.gips.build.generator.templates.LaunchFileTemplate;
 import org.emoflon.gips.build.generator.templates.MapperFactoryTemplate;
 import org.emoflon.gips.build.generator.templates.ObjectiveTemplate;
@@ -26,6 +34,7 @@ import org.emoflon.gips.build.generator.templates.function.PatternFunctionTempla
 import org.emoflon.gips.build.generator.templates.function.RuleFunctionTemplate;
 import org.emoflon.gips.build.generator.templates.function.TypeFunctionTemplate;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
@@ -37,17 +46,21 @@ import org.emoflon.gips.intermediate.GipsIntermediate.RuleMapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeFunction;
 import org.emoflon.ibex.common.engine.IBeXPMEngineInformation;
+import org.emoflon.ibex.gt.gtmodel.IBeXGTModel.IBeXGTModelPackage;
+import org.moflon.core.utilities.LogUtils;
 
 public class GipsCodeGenerator {
+	private Logger logger = Logger.getLogger(GipsCodeGenerator.class);
 
 	final protected GipsAPIData data;
 	protected List<GeneratorTemplate<?>> templates = Collections.synchronizedList(new LinkedList<>());
 
 	public GipsCodeGenerator(final GipsIntermediateModel model, final GipsAPIData apiData) {
-		data = new GipsAPIData(model);
+		data = apiData;
 	}
 
 	public void generate() {
+		templates.add(new GipsAbstractAPITemplate(data, data.gipsModel));
 		for (IBeXPMEngineInformation engine : data.engines.values()) {
 			templates.add(new GipsAPITemplate(data, data.gipsModel, engine));
 		}
@@ -99,7 +112,7 @@ public class GipsCodeGenerator {
 				template.generate();
 				template.writeToFile();
 			} catch (Exception e) {
-				e.printStackTrace();
+				LogUtils.error(logger, e);
 			}
 		});
 		if (data.gipsModel.getConfig().isBuildLaunchConfig()) {
@@ -109,9 +122,24 @@ public class GipsCodeGenerator {
 				launchTemplate.generate();
 				launchTemplate.writeToFile();
 			} catch (Exception e) {
-				e.printStackTrace();
+				LogUtils.error(logger, e);
 			}
 
+		}
+	}
+
+	public void saveModel() {
+		ResourceSet rs = new ResourceSetImpl();
+		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
+		rs.getPackageRegistry().put(IBeXGTModelPackage.eINSTANCE.getNsURI(), IBeXGTModelPackage.eINSTANCE);
+		rs.getPackageRegistry().put(GipsIntermediatePackage.eINSTANCE.getNsURI(), GipsIntermediatePackage.eINSTANCE);
+		URI uri = URI.createFileURI(data.model.getMetaData().getProjectPath() + "/" + data.gipsModelPath);
+		Resource r = rs.createResource(uri);
+		r.getContents().add(data.model);
+		try {
+			r.save(null);
+		} catch (IOException e) {
+			LogUtils.error(logger, e);
 		}
 	}
 }

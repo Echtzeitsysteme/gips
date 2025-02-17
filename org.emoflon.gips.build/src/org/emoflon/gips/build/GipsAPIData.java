@@ -59,8 +59,9 @@ public class GipsAPIData extends IBeXGTApiData {
 	final public Map<Constraint, String> constraint2constraintClassName = new HashMap<>();
 	final public Map<LinearFunction, String> function2functionClassName = new HashMap<>();
 
-	public GipsAPIData(final GipsIntermediateModel gipsModel) {
+	public GipsAPIData(final IProject project, final GipsIntermediateModel gipsModel) {
 		super(gipsModel.getIbexModel());
+		this.project = project;
 		this.gipsModel = gipsModel;
 
 		gipsApiClassName = apiPrefix + "GipsApi";

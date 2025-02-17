@@ -7,7 +7,11 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.emoflon.gips.build.generator.GipsCodeGenerator;
+import org.emoflon.gips.build.transformation.GipsToIntermediate;
+import org.emoflon.gips.gipsl.gipsl.EditorFile;
 import org.emoflon.gips.gipsl.ui.nature.GIPSNature;
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.ibex.gt.build.IBeXGtPackageBuilder;
 import org.moflon.core.utilities.LogUtils;
 
@@ -71,18 +75,18 @@ public class GipsProjectBuilder extends IBeXGtPackageBuilder {
 
 	@Override
 	protected void generateDependingPackages() {
-//		GipsToIntermediate transformer = new GipsToIntermediate((EditorFile) editorFile, gtModel);
-//		GipsIntermediateModel model = null;
-//		try {
-//			model = transformer.transform();
-//		} catch (Exception e) {
-//			LogUtils.error(logger, e.toString());
-//			return;
-//		}
-//		GipsAPIData apiData = new GipsAPIData(model);
-//		GipsCodeGenerator generator = new GipsCodeGenerator(apiData);
-//		generator.generate();
-//		generator.saveModel();
+		GipsToIntermediate transformer = new GipsToIntermediate((EditorFile) editorFile, gtModel);
+		GipsIntermediateModel model = null;
+		try {
+			model = transformer.transform();
+		} catch (Exception e) {
+			LogUtils.error(logger, e.toString());
+			return;
+		}
+		GipsAPIData apiData = new GipsAPIData(project, model);
+		GipsCodeGenerator generator = new GipsCodeGenerator(model, apiData);
+		generator.generate();
+		generator.saveModel();
 	}
 
 }

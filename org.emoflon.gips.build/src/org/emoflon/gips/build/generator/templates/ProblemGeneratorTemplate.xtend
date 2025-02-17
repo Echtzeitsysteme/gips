@@ -391,7 +391,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 			instruction = '''engine.getMapper("«expression.mapping.name»").getMappings().values().parallelStream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
 		} else if(expression instanceof TypeReference) {
-			imports.add(data.getPackageFQN(expression.type));
+			imports.add(data.getFQN(expression.type));
 			instruction = '''indexer.getObjectsOfType("«expression.type.name»").parallelStream()
 						.map(type -> («expression.type.name») type)'''
 		} else if(expression instanceof PatternReference) {
@@ -402,7 +402,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 			instruction = '''engine.getEMoflonAPI().«expression.rule.name»().findMatches(false).parallelStream()'''
 		} else if(expression instanceof NodeReference) {
 			instruction = getIterator(expression)
-			instruction = '''«instruction».get«expression.node.name.toFirstUpper»()'''
+			instruction = '''«instruction».«expression.node.name»()'''
 			if(expression.attribute !== null) {
 				instruction = '''«instruction».«generateAttributeExpression(expression.attribute)»'''
 			}
@@ -473,7 +473,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		if(expression instanceof SetFilter) {
 			instruction = '''.filter(elt -> «generateConstantExpression(expression.expression)»)'''
 		} else if(expression instanceof SetTypeSelect) {
-			imports.add(data.getPackageFQN(expression.type));
+			imports.add(data.getFQN(expression.type));
 			instruction = '''.filter(elt -> (elt instanceof «expression.type.name»))
 			.map(elt -> («expression.type.name») elt)'''
 		} else if(expression instanceof SetSort) {
@@ -712,7 +712,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 			objectType = data.mapping2mappingClassName.get(expression.mapping);
 		} else if (expression instanceof TypeReference) {
 			imports.add("java.util.stream.Stream");
-			imports.add(data.getPackageFQN(expression.type));
+			imports.add(data.getFQN(expression.type));
 			expressionType = '''Stream<«expression.type.name»>''';
 			objectType = expression.type.name;
 		} else if (expression instanceof PatternReference) {
@@ -775,7 +775,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		if(expression instanceof SetFilter) {
 			currentType = previousType;
 		} else if(expression instanceof SetTypeSelect) {
-			imports.add(data.getPackageFQN(expression.type));
+			imports.add(data.getFQN(expression.type));
 			currentType = expression.type.name;
 		} else if(expression instanceof SetSort) {
 			currentType = previousType;
@@ -802,7 +802,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 
 	def String extractReturnType(NodeReference expression) {
 		if (expression.attribute === null) {
-			imports.add(data.getPackageFQN(expression.node.type));
+			imports.add(data.getFQN(expression.node.type));
 			return expression.node.type.name;
 		} else {
 			return extractReturnType(expression.attribute);
@@ -832,10 +832,10 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 			} else if (expression.getFeature().getEType() == EcorePackage.Literals.ESTRING) {
 				return '''String''';
 			} else if (expression.getFeature().getEType() instanceof EClass) {
-				imports.add(data.getPackageFQN(expression.getFeature().getEType()));
+				imports.add(data.getFQN(expression.getFeature().getEType()));
 				return expression.feature.EType.name;
 			} else if (expression.feature.EType instanceof EEnum) {
-				imports.add(data.getPackageFQN(expression.feature.EType));
+				imports.add(data.getFQN(expression.feature.EType));
 				return expression.feature.EType.name;
 			} else {
 				throw new IllegalArgumentException("Unsupported data type: " + expression.getFeature().getEType());

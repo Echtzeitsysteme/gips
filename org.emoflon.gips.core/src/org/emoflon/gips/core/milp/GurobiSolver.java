@@ -61,7 +61,7 @@ public class GurobiSolver extends Solver {
 	/**
 	 * ILP solver configuration.
 	 */
-	final private SolverConfig config;
+	private SolverConfig config;
 
 	public GurobiSolver(final GipsEngine engine, final SolverConfig config) throws Exception {
 		super(engine);
@@ -149,6 +149,29 @@ public class GurobiSolver extends Solver {
 
 	@Override
 	public SolverOutput solve() {
+		// If necessary, overwrite time limit with:
+		// new_time_limit = old_time_limit - init_time_consumed
+		if (this.config.timeLimitIncludeInitTime() && this.engine.getInitTimeInSeconds() != 0) {
+			// If the new_time_limit is not >0, the whole solver must not be started at all
+			final double oldTimeLimit = this.config.timeLimit();
+			final double newTimeLimit = oldTimeLimit - this.engine.getInitTimeInSeconds();
+			if (newTimeLimit <= 0) {
+				return new SolverOutput(SolverStatus.TIME_OUT, 0, null, 0, null);
+			}
+			this.config = this.config.withNewTimeLimit(newTimeLimit);
+			try {
+				if (config.timeLimitEnabled()) {
+					if (this.config.enableOutput()) {
+						System.out.println(
+								"=> Debug output: Overwrite specified Gurobi time limit with: " + config.timeLimit());
+					}
+					env.set(DoubleParam.TimeLimit, config.timeLimit());
+				}
+			} catch (final Exception e) {
+				return new SolverOutput(SolverStatus.TIME_OUT, 0, null, 0, null);
+			}
+		}
+
 		SolverStatus status = null;
 		double objVal = -1;
 		int solCount = -1;

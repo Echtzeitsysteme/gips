@@ -25,6 +25,18 @@ public abstract class GipsEngine {
 	protected GipsObjective objective;
 	protected Solver solver;
 
+	/**
+	 * Time tick of the initialization point in time, i.e., the point in time when
+	 * the `api.init(...)` was called.
+	 */
+	protected long tickInit = -1;
+
+	/**
+	 * Time tick of the end of the initialization phase in time, i.e., the time
+	 * point right before the (M)ILP solver starts solving the problem.
+	 */
+	protected long tockInit = -1;
+
 	public abstract void update();
 
 	public abstract void saveResult() throws IOException;
@@ -118,6 +130,7 @@ public abstract class GipsEngine {
 				solver.reset();
 				return output;
 			}
+			this.tockInit();
 			SolverOutput output = solver.solve();
 			if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0)
 				solver.updateValuesFromSolution();
@@ -134,6 +147,7 @@ public abstract class GipsEngine {
 			solver.reset();
 			return output;
 		}
+		this.tockInit();
 		SolverOutput output = solver.solve();
 		if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0)
 			solver.updateValuesFromSolution();
@@ -233,4 +247,28 @@ public abstract class GipsEngine {
 	public void setSolver(final Solver solver) {
 		this.solver = solver;
 	}
+
+	/**
+	 * Registers the time point when the initialization tick was executed.
+	 */
+	protected void tickInit() {
+		this.tickInit = System.nanoTime();
+	}
+
+	/**
+	 * Registers the time point when the initialization tock was executed.
+	 */
+	protected void tockInit() {
+		this.tockInit = System.nanoTime();
+	}
+
+	/**
+	 * Returns the complete initialization time in seconds.
+	 * 
+	 * @return Complete initialization time in seconds.
+	 */
+	public double getInitTimeInSeconds() {
+		return 1.0 * (tockInit - tickInit) / 1_000_000_000;
+	}
+
 }

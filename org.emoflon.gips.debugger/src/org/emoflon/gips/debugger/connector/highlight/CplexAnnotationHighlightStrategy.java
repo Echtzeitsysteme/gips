@@ -1,20 +1,19 @@
 package org.emoflon.gips.debugger.connector.highlight;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.text.Position;
-import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
+import org.emoflon.gips.debugger.annotation.AnnotationAndPosition;
 import org.emoflon.gips.debugger.api.ILPTraceKeywords;
 import org.emoflon.gips.debugger.cplexLp.Variable;
 import org.emoflon.gips.debugger.cplexLp.VariableDecleration;
@@ -23,19 +22,19 @@ import org.emoflon.gips.debugger.cplexLp.VariableRef;
 public class CplexAnnotationHighlightStrategy extends AnnotationBasedHighlightStrategy {
 
 	@Override
-	protected Map<Annotation, Position> computeAnnotationMapping(SubMonitor monitor, XtextEditor editor,
+	protected List<AnnotationAndPosition> computeNewAnnotations(SubMonitor monitor, XtextEditor editor,
 			Collection<String> elementIds) {
 
 		IXtextDocument document = editor.getDocument();
 		if (document == null)
-			return Collections.emptyMap();
+			return Collections.emptyList();
 
-		IUnitOfWork<Map<Annotation, Position>, XtextResource> work = resource -> {
+		IUnitOfWork<List<AnnotationAndPosition>, XtextResource> work = resource -> {
 
 			var workRemaining = elementIds.size();
 			monitor.setWorkRemaining(workRemaining);
 
-			Map<Annotation, Position> result = new HashMap<>(elementIds.size() + 1);
+			List<AnnotationAndPosition> result = new ArrayList<>(elementIds.size() + 1);
 
 			for (var elementId : elementIds) {
 				if (monitor.isCanceled()) {
@@ -53,7 +52,7 @@ public class CplexAnnotationHighlightStrategy extends AnnotationBasedHighlightSt
 				}
 				case ILPTraceKeywords.TYPE_FUNCTION: {
 					String variables = elementIds.stream() //
-							.filter(e -> e.startsWith(ILPTraceKeywords.TYPE_FUNCTION)) //
+							.filter(e -> e.startsWith(ILPTraceKeywords.TYPE_FUNCTION_VAR)) //
 							.map(e -> e.substring(ILPTraceKeywords.TYPE_FUNCTION_VAR.length()
 									+ ILPTraceKeywords.TYPE_VALUE_DELIMITER.length())) //
 							.collect(Collectors.joining(", "));
@@ -66,7 +65,12 @@ public class CplexAnnotationHighlightStrategy extends AnnotationBasedHighlightSt
 					addAnnotation(result, eObject, null);
 					break;
 				}
-				case ILPTraceKeywords.TYPE_MAPPING: {
+//				case ILPTraceKeywords.TYPE_MAPPING: {
+//					var eObjects = getMappings(resource, typeAndValue.value());
+//					addAnnotations(result, eObjects, "Created by: " + typeAndValue.value());
+//					break;
+//				}
+				default: {
 					var eObjects = getMappings(resource, typeAndValue.value());
 					addAnnotations(result, eObjects, "Created by: " + typeAndValue.value());
 					break;

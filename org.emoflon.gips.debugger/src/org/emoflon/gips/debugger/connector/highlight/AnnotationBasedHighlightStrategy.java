@@ -4,9 +4,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -23,6 +24,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.ui.editor.XtextEditor;
+import org.emoflon.gips.debugger.annotation.AnnotationAndPosition;
 import org.emoflon.gips.debugger.annotation.HelperTraceAnnotation;
 import org.emoflon.gips.debugger.api.ITraceContext;
 import org.emoflon.gips.debugger.connector.IHighlightStrategy;
@@ -32,44 +34,45 @@ public abstract class AnnotationBasedHighlightStrategy implements IHighlightStra
 	@Override
 	public IStatus computeEditorHighlights(XtextEditor editor, ITraceContext context, String localModelId,
 			String remoteModelId, Collection<String> remoteElementIds, SubMonitor monitor) {
-		final var jobRuntime = System.nanoTime();
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
 
-		subMonitor.split(1);
+		monitor = SubMonitor.convert(monitor, 3);
+
+		monitor.split(1);
 		Collection<String> elementIds = context.getModelChain(remoteModelId, localModelId)
 				.resolveElementsFromSrcToDst(remoteElementIds);
 
-		Map<Annotation, Position> annotationsToAdd = computeAnnotationMapping(subMonitor.split(1), editor, elementIds);
-		Annotation[] annotationsToRemove = getExistingAnnotations(getAnnotationModel(editor));
+		Collection<AnnotationAndPosition> annotationsToAdd = computeNewAnnotations(monitor.split(1), editor,
+				elementIds);
 
-		if (subMonitor.isCanceled())
-			return Status.CANCEL_STATUS;
+		Collection<Annotation> annotationsToRemove = getExistingAnnotations(getAnnotationModel(editor));
 
-		if (!subMonitor.isCanceled()) {
-			updateEditorUI(monitor, editor, annotationsToAdd, annotationsToRemove);
+		updateEditorUI(monitor.split(1), editor, annotationsToAdd, annotationsToRemove);
 
-			System.out.println(
-					"JOB DONE in: " + String.format("%.4g Seconds", (System.nanoTime() - jobRuntime) / 100_000_000d));
-
-			return subMonitor.isCanceled() ? Status.CANCEL_STATUS : Status.OK_STATUS;
-		}
-
-		return Status.OK_STATUS;
+		return monitor.isCanceled() ? Status.CANCEL_STATUS : Status.OK_STATUS;
 	}
 
 	@Override
 	public IStatus removeEditorHighlights(XtextEditor editor, SubMonitor monitor) {
-		Annotation[] annotationsToRemove = getExistingAnnotations(getAnnotationModel(editor));
-		updateEditorUI(monitor, editor, Collections.emptyMap(), annotationsToRemove);
+		monitor = SubMonitor.convert(monitor, 2);
+
+		monitor.split(1);
+		Collection<Annotation> annotationsToRemove = getExistingAnnotations(getAnnotationModel(editor));
+
+		updateEditorUI(monitor.split(1), editor, Collections.emptyList(), annotationsToRemove);
 		return monitor.isCanceled() ? Status.CANCEL_STATUS : Status.OK_STATUS;
 	}
 
 	private static void updateEditorUI(SubMonitor monitor, ITextEditor editor,
-			Map<Annotation, Position> annotationsToAdd, Annotation[] annotationsToRemove) {
+			Collection<AnnotationAndPosition> annotationsToAdd, Collection<Annotation> annotationsToRemove) {
+
+		Position revealPosition = findFirstPosition(annotationsToAdd);
 
 		Display.getDefault().syncExec(() -> {
 			if (monitor.isCanceled())
 				return;
+
+			if (revealPosition != null && editor instanceof XtextEditor xtextEditor)
+				xtextEditor.reveal(revealPosition.offset, revealPosition.length);
 
 			IAnnotationModel annotationModel = getAnnotationModel(editor);
 			if (annotationModel == null) {
@@ -78,7 +81,12 @@ public abstract class AnnotationBasedHighlightStrategy implements IHighlightStra
 			}
 
 			if (annotationModel instanceof IAnnotationModelExtension annotationModelExtension) {
-				annotationModelExtension.replaceAnnotations(annotationsToRemove, annotationsToAdd);
+
+				Map<Annotation, Position> add = annotationsToAdd.parallelStream()
+						.collect(Collectors.toMap(e -> e.annotation, e -> e.position));
+				Annotation[] remove = annotationsToRemove.toArray(s -> new Annotation[s]);
+
+				annotationModelExtension.replaceAnnotations(remove, add);
 			} else {
 				for (Annotation annotation : annotationsToRemove) {
 					if (monitor.isCanceled())
@@ -86,17 +94,25 @@ public abstract class AnnotationBasedHighlightStrategy implements IHighlightStra
 					annotationModel.removeAnnotation(annotation);
 				}
 
-				for (Entry<Annotation, Position> annotation : annotationsToAdd.entrySet()) {
+				for (AnnotationAndPosition annotation : annotationsToAdd) {
 					if (monitor.isCanceled())
 						return;
-					annotationModel.addAnnotation(annotation.getKey(), annotation.getValue());
+					annotationModel.addAnnotation(annotation.annotation, annotation.position);
 				}
 			}
 		});
 
 	}
 
-	private static Annotation[] getExistingAnnotations(IAnnotationModel annotationModel) {
+	private static Position findFirstPosition(Collection<AnnotationAndPosition> annotations) {
+		if (annotations.isEmpty())
+			return null;
+
+		return annotations.parallelStream().min((a, b) -> a.position.offset - b.position.offset).map(e -> e.position)
+				.orElse(null);
+	}
+
+	private static Collection<Annotation> getExistingAnnotations(IAnnotationModel annotationModel) {
 		Set<Annotation> result = new HashSet<>();
 		Iterator<Annotation> annotationIter = annotationModel.getAnnotationIterator();
 
@@ -106,7 +122,7 @@ public abstract class AnnotationBasedHighlightStrategy implements IHighlightStra
 				result.add(annotation);
 		}
 
-		return result.toArray(s -> new Annotation[s]);
+		return result;
 	}
 
 	private static IAnnotationModel getAnnotationModel(ITextEditor editor) {
@@ -125,20 +141,20 @@ public abstract class AnnotationBasedHighlightStrategy implements IHighlightStra
 		return HelperTraceAnnotation.TRACE_MARKER_ID.equals(annotationType);
 	}
 
-	protected static void addAnnotations(Map<Annotation, Position> annotations, Collection<EObject> addThese,
+	protected static void addAnnotations(List<AnnotationAndPosition> annotations, Collection<EObject> addThese,
 			String comment) {
 		for (EObject eObject : addThese)
 			addAnnotation(annotations, eObject, comment);
 	}
 
-	protected static void addAnnotation(Map<Annotation, Position> annotations, EObject eObject, String comment) {
+	protected static void addAnnotation(List<AnnotationAndPosition> annotations, EObject eObject, String comment) {
 		ICompositeNode textNode = NodeModelUtils.findActualNodeFor(eObject);
 		Annotation annotation = new Annotation(HelperTraceAnnotation.TRACE_MARKER_ID, false, comment);
 		Position position = new Position(textNode.getOffset(), textNode.getLength());
-		annotations.put(annotation, position);
+		annotations.add(new AnnotationAndPosition(annotation, position));
 	}
 
-	protected abstract Map<Annotation, Position> computeAnnotationMapping(SubMonitor monitor, XtextEditor editor,
+	protected abstract List<AnnotationAndPosition> computeNewAnnotations(SubMonitor monitor, XtextEditor editor,
 			Collection<String> elementIds);
 
 }

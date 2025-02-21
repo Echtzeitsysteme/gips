@@ -76,28 +76,25 @@ public class CplexLpEditorTraceConnectionFactory extends XtextEditorTraceConnect
 						elementIds.add(buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT_VAR, variableName));
 					} else if (parent instanceof ObjectiveExpression) {
 						elementIds.add(buildElementId(ILPTraceKeywords.TYPE_FUNCTION_VAR, variableName));
+						elementIds.add(buildElementId(ILPTraceKeywords.TYPE_OBJECTIVE, ""));
 					} else {
 						elementIds.add(buildElementId(ILPTraceKeywords.TYPE_VARIABLE, variableName));
 					}
 
-					var delimiter = variableName.indexOf("#");
+					var delimiter = variableName.lastIndexOf("#");
 					var shortVariableName = delimiter < 0 ? variableName : variableName.substring(0, delimiter);
 					elementIds.add(buildElementId(ILPTraceKeywords.TYPE_MAPPING, shortVariableName));
 
-					continue;
-				}
-
-				if (eObject instanceof ConstraintExpression constraint) {
+				} else if (eObject instanceof ConstraintExpression constraint) {
 					String name = constraint.getName();
-					var delimiter = name.indexOf("_");
+					var delimiter = name.lastIndexOf("_");
 					if (delimiter >= 0) {
 						name = name.substring(0, delimiter);
 					}
 					name = buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT, name);
 					elementIds.add(name);
-				}
 
-				if (eObject instanceof SectionObjective) {
+				} else if (eObject instanceof SectionObjective) {
 					elementIds.add(buildElementId(ILPTraceKeywords.TYPE_OBJECTIVE, ""));
 					continue;
 				}

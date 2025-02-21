@@ -86,6 +86,17 @@ public final class ProjectTraceContext implements ITraceContext {
 		this.contextId = Objects.requireNonNull(contextId, "contextId");
 	}
 
+	/**
+	 * Returns the {@link IProject} associated with this context. The name of the
+	 * project is the same as the {@link #getContextId() id} of this context. The
+	 * project may be null or inaccessible.
+	 * 
+	 * @return the project or null
+	 */
+	public IProject getAssociatedProject() {
+		return HelperEclipse.tryAndGetProject(contextId);
+	}
+
 //	public void initialize() {
 //
 //	}
@@ -94,20 +105,34 @@ public final class ProjectTraceContext implements ITraceContext {
 //
 //	}
 
+	/**
+	 * 
+	 * @param createParentFolders
+	 * @return a path to the cache file or null if this context does not have one
+	 * @throws CoreException if folder creation failed
+	 */
+	private Path tryAndgetCacheLocation(boolean createParentFolders) throws CoreException {
+		IProject project = getAssociatedProject();
+		if (project == null || !project.isAccessible())
+			return null;
+
+		IFolder cacheFolder = getCacheLocation(PluginPreferences.getPreferenceStore(), project);
+		if (createParentFolders && !cacheFolder.exists())
+			cacheFolder.create(true, true, null);
+
+		Path cacheFilePath = cacheFolder.getFile(CACHE_FILE_NAME).getLocation().toPath();
+
+		return cacheFilePath;
+	}
+
 	public void saveCache() throws CoreException {
 		synchronized (syncLock) {
 			if (!graphDirty)
 				return;
 
-			IProject assignedProject = HelperEclipse.tryAndGetProject(contextId);
-			if (assignedProject == null || !assignedProject.isAccessible())
+			Path cacheFilePath = tryAndgetCacheLocation(true);
+			if (cacheFilePath == null)
 				return;
-
-			IFolder cacheFolder = getCacheLocation(PluginPreferences.getPreferenceStore(), assignedProject);
-			if (!cacheFolder.exists())
-				cacheFolder.create(true, true, null);
-
-			Path cacheFilePath = cacheFolder.getFile(CACHE_FILE_NAME).getLocation().toPath();
 
 			try (var outputStream = Files.newOutputStream(cacheFilePath, StandardOpenOption.CREATE,
 					StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
@@ -122,20 +147,27 @@ public final class ProjectTraceContext implements ITraceContext {
 		}
 	}
 
+	public void deleteCache() {
+		try {
+			Path cacheFilePath = tryAndgetCacheLocation(false);
+			if (cacheFilePath != null)
+				Files.delete(cacheFilePath);
+		} catch (IOException | CoreException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void loadCacheIfAvailable() {
 		synchronized (syncLock) {
-			IProject assignedProject = HelperEclipse.tryAndGetProject(contextId);
-			if (assignedProject == null || !assignedProject.isAccessible())
-				return;
 
-			IFile cacheFile = getCacheLocation(PluginPreferences.getPreferenceStore(), assignedProject)
-					.getFile(CACHE_FILE_NAME);
-//			if (!cacheFile.exists()) // not reliable
-//				return;
+			Path cacheFilePath = null;
+			try {
+				cacheFilePath = tryAndgetCacheLocation(false);
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
 
-			Path cacheFilePath = cacheFile.getLocation().toPath();
-
-			if (!Files.exists(cacheFilePath))
+			if (cacheFilePath == null || !Files.exists(cacheFilePath))
 				return;
 
 			try (var inputStream = Files.newInputStream(cacheFilePath, StandardOpenOption.READ);
@@ -192,6 +224,7 @@ public final class ProjectTraceContext implements ITraceContext {
 
 	}
 
+	@Override
 	public TraceManager getTraceManager() {
 		return this.service;
 	}

@@ -12,6 +12,11 @@ public interface ITraceContext {
 
 	public ITraceManager getTraceManager();
 
+	/**
+	 * Returns the id of this context
+	 * 
+	 * @return the id of this context
+	 */
 	String getContextId();
 
 	void addListener(ITraceSelectionListener listener);

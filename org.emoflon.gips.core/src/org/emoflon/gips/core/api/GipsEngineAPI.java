@@ -1,7 +1,6 @@
 package org.emoflon.gips.core.api;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +15,6 @@ import org.emoflon.gips.core.TypeIndexer;
 import org.emoflon.gips.core.milp.Solver;
 import org.emoflon.gips.core.milp.SolverConfig;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
-import org.emoflon.gips.debugger.api.Gips2IlpTraceHelper;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
@@ -332,11 +330,8 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	}
 
 	protected void initTracer() {
-		var tracer = new Gips2IlpTraceHelper();
-		tracer.setOutputLocation(Path.of("").resolve("traces").resolve("gips2ilp-trace.xmi"));
 		tracer.computeGipsModelId(gipsModel.eResource().getURI());
 		tracer.computeLpModelId(gipsModel.getConfig().getLpPath());
-		setTracer(tracer);
 	}
 
 	protected abstract void createMappers();

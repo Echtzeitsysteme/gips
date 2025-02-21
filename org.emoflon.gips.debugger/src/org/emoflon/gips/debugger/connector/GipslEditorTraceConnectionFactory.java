@@ -7,7 +7,7 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.xtext.ui.editor.XtextEditor;
-import org.emoflon.gips.debugger.connector.highlight.MarkerBasedHighlightStrategy;
+import org.emoflon.gips.debugger.connector.highlight.URIAnotationHighlightStrategy;
 import org.emoflon.gips.debugger.trace.resolver.ResolveEcore2Id;
 import org.emoflon.gips.debugger.utility.HelperEcoreSelection;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
@@ -31,7 +31,7 @@ public final class GipslEditorTraceConnectionFactory extends XtextEditorTraceCon
 	private static final class GipslEditorTraceConnection extends XtextEditorTraceConnection {
 
 		public GipslEditorTraceConnection(XtextEditor editor) {
-			super(editor, new MarkerBasedHighlightStrategy());
+			super(editor, new URIAnotationHighlightStrategy());
 		}
 
 		@Override

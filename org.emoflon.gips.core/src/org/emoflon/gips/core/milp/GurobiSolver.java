@@ -130,7 +130,6 @@ public class GurobiSolver extends Solver {
 		} else {
 			model.set(IntParam.Threads, SystemUtil.getSystemThreads());
 		}
-
 		// Reset local lookup data structure for the Gurobi variables in case this is
 		// not the first initialization.
 		grbVars.clear();
@@ -165,7 +164,7 @@ public class GurobiSolver extends Solver {
 						System.out.println(
 								"=> Debug output: Overwrite specified Gurobi time limit with: " + config.timeLimit());
 					}
-					env.set(DoubleParam.TimeLimit, config.timeLimit());
+					model.set(DoubleParam.TimeLimit, config.timeLimit());
 				}
 			} catch (final Exception e) {
 				return new SolverOutput(SolverStatus.TIME_OUT, 0, null, 0, null);

@@ -167,6 +167,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 * Terminates the GipsEngine (super class) and the eMoflon::IBeX engine
 	 * (including the pattern matcher).
 	 */
+	@Override
 	public void terminate() {
 		// Terminate the GipsEngine
 		super.terminate();
@@ -292,6 +293,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		initTypeIndexer();
 		validationLog = new GipsConstraintValidationLog();
 		setSolverConfig(gipsModel.getConfig());
+		initTracer();
 		initMapperFactory();
 		createMappers();
 		initConstraintFactory();
@@ -325,6 +327,11 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		gipsModel = (GipsIntermediateModel) model.getContents().get(0);
 
 		gipsModel.getMappings().forEach(mapping -> name2Mapping.put(mapping.getName(), mapping));
+	}
+
+	protected void initTracer() {
+		tracer.computeGipsModelId(gipsModel.eResource().getURI());
+		tracer.computeLpModelId(gipsModel.getConfig().getLpPath());
 	}
 
 	protected abstract void createMappers();

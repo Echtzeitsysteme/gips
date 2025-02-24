@@ -47,7 +47,6 @@ public class PluginPreferencePage extends FieldEditorPreferencePage implements I
 
 			var editorRMIPort = new IntegerFieldEditor(PluginPreferences.PREF_TRACE_RMI_PORT, "RMI &port", configGroup);
 			editorRMIPort.setValidRange(1023, 65535);
-			editorRMIPort.setEnabled(false, configGroup);
 			addField(editorRMIPort);
 		}
 

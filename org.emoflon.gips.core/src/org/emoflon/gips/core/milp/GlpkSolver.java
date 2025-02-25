@@ -80,20 +80,14 @@ public class GlpkSolver extends Solver {
 	 */
 	private String lpPath = null;
 
-	/**
-	 * ILP solver configuration.
-	 */
-	final private SolverConfig config;
-
 	public GlpkSolver(final GipsEngine engine, final SolverConfig config) {
-		super(engine);
+		super(engine, config);
 		constraints = new HashMap<>();
 		ilpVars = new HashMap<>();
-		this.config = config;
 		init();
 	}
 
-	private void init() {
+	protected void init() {
 		constraints.clear();
 		ilpVars.clear();
 
@@ -138,6 +132,25 @@ public class GlpkSolver extends Solver {
 		// Save LP file if configured
 		if (this.lpPath != null) {
 			GLPK.glp_write_lp(model, null, this.lpPath);
+		}
+
+		// If necessary, overwrite time limit with:
+		// new_time_limit = old_time_limit - init_time_consumed
+		if (this.config.timeLimitIncludeInitTime() && this.engine.getInitTimeInSeconds() != 0) {
+			// If the new_time_limit is not >0, the whole solver must not be started at all
+			final double oldTimeLimit = this.config.timeLimit();
+			final double newTimeLimit = oldTimeLimit - this.engine.getInitTimeInSeconds();
+			if (newTimeLimit <= 0) {
+				return new SolverOutput(SolverStatus.TIME_OUT, 0, null, 0, null);
+			}
+			this.config = this.config.withNewTimeLimit(newTimeLimit);
+			if (config.timeLimitEnabled()) {
+				if (this.config.enableOutput()) {
+					System.out.println(
+							"=> Debug output: Overwrite specified GLPK time limit with: " + config.timeLimit());
+				}
+				iocp.setTm_lim((int) config.timeLimit() * 1000); // seconds to milliseconds
+			}
 		}
 
 		// Solving

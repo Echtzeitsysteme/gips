@@ -14,9 +14,37 @@ import org.emoflon.gips.core.gt.GipsRuleConstraint;
 public abstract class Solver {
 	final protected GipsEngine engine;
 
-	public Solver(final GipsEngine engine) {
+	/**
+	 * ILP solver configuration.
+	 */
+	protected SolverConfig config;
+
+	public Solver(final GipsEngine engine, final SolverConfig config) {
 		this.engine = engine;
+		this.config = config;
 	}
+
+	/**
+	 * Returns the solver configuration.
+	 * 
+	 * @return Solver configuration.
+	 */
+	public SolverConfig getSolverConfig() {
+		return this.config;
+	}
+
+	/**
+	 * Sets a new solver configuration and re-initializes the (M)ILP solver.
+	 * 
+	 * @param config New solver configuration to set.
+	 * @throws Exception Throws an exception if the re-initialization fails.
+	 */
+	public void setSolverConfig(final SolverConfig config) throws Exception {
+		this.config = config;
+		init();
+	}
+
+	protected abstract void init() throws Exception;
 
 	public void buildILPProblem() {
 		engine.getMappers().values().stream().flatMap(mapper -> mapper.getMappings().values().stream())

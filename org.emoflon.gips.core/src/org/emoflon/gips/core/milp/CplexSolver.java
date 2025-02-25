@@ -64,18 +64,12 @@ public class CplexSolver extends Solver {
 	 */
 	private String lpPath = null;
 
-	/**
-	 * ILP solver configuration.
-	 */
-	final private SolverConfig config;
-
 	public CplexSolver(final GipsEngine engine, final SolverConfig config) {
-		super(engine);
-		this.config = config;
+		super(engine, config);
 		init();
 	}
 
-	private void init() {
+	protected void init() {
 		try {
 			cplex = new IloCplex();
 			if (config.timeLimitEnabled()) {

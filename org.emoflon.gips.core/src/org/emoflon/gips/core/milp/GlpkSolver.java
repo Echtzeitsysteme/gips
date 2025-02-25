@@ -80,20 +80,14 @@ public class GlpkSolver extends Solver {
 	 */
 	private String lpPath = null;
 
-	/**
-	 * ILP solver configuration.
-	 */
-	final private SolverConfig config;
-
 	public GlpkSolver(final GipsEngine engine, final SolverConfig config) {
-		super(engine);
+		super(engine, config);
 		constraints = new HashMap<>();
 		ilpVars = new HashMap<>();
-		this.config = config;
 		init();
 	}
 
-	private void init() {
+	protected void init() {
 		constraints.clear();
 		ilpVars.clear();
 

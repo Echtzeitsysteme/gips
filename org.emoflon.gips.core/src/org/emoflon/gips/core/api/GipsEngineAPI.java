@@ -40,6 +40,11 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	}
 
 	public void setSolverConfig(final SolverConfig solverConfig) {
+		try {
+			this.solver.setSolverConfig(solverConfig);
+		} catch (final Exception e) {
+			throw new InternalError("Solver re-initialization failed: " + e);
+		}
 		this.solverConfig = solverConfig;
 	}
 

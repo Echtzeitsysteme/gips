@@ -140,6 +140,29 @@ public class CplexSolver extends Solver {
 			}
 		}
 
+		// If necessary, overwrite time limit with:
+		// new_time_limit = old_time_limit - init_time_consumed
+		if (this.config.timeLimitIncludeInitTime() && this.engine.getInitTimeInSeconds() != 0) {
+			// If the new_time_limit is not >0, the whole solver must not be started at all
+			final double oldTimeLimit = this.config.timeLimit();
+			final double newTimeLimit = oldTimeLimit - this.engine.getInitTimeInSeconds();
+			if (newTimeLimit <= 0) {
+				return new SolverOutput(SolverStatus.TIME_OUT, 0, null, 0, null);
+			}
+			this.config = this.config.withNewTimeLimit(newTimeLimit);
+			try {
+				if (config.timeLimitEnabled()) {
+					if (this.config.enableOutput()) {
+						System.out.println(
+								"=> Debug output: Overwrite specified CPLEX time limit with: " + config.timeLimit());
+					}
+					cplex.setParam(IloCplex.Param.TimeLimit, config.timeLimit());
+				}
+			} catch (final Exception e) {
+				return new SolverOutput(SolverStatus.TIME_OUT, 0, null, 0, null);
+			}
+		}
+
 		try {
 			// Solving
 			final boolean solve = cplex.solve();

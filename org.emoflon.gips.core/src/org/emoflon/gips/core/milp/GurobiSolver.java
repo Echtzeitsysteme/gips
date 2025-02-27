@@ -66,34 +66,41 @@ public class GurobiSolver extends Solver {
 	@Override
 	protected void init() {
 		try {
-			final var out = System.out;
-			final var err = System.err;
-			System.setOut(new PrintStream(OutputStream.nullOutputStream()));
-			System.setErr(new PrintStream(OutputStream.nullOutputStream()));
-			// Keep Gurobi init exception or error to throw it later
-			GRBException gurobiInitException = null;
-			Error gurobiInitError = null;
-			// TODO: Gurobi log output redirect from stdout to ILPSolverOutput
-			try {
-				env = new GRBEnv("Gurobi_ILP.log");
-			} catch (final GRBException e) {
-				gurobiInitException = e;
-			} catch (final Error e) {
-				gurobiInitError = e;
+			// When running multiple instances in parallel,
+			// the last instance to finish might otherwise
+			// overwrite the default out and err streams with
+			// the Null stream of other instances
+			synchronized (GurobiSolver.class) {
+				final var out = System.out;
+				final var err = System.err;
+				System.setOut(new PrintStream(OutputStream.nullOutputStream()));
+				System.setErr(new PrintStream(OutputStream.nullOutputStream()));
+				// Keep Gurobi init exception or error to throw it later
+				GRBException gurobiInitException = null;
+				Error gurobiInitError = null;
+				// TODO: Gurobi log output redirect from stdout to ILPSolverOutput
+				try {
+					env = new GRBEnv("Gurobi_ILP.log");
+				} catch (final GRBException e) {
+					gurobiInitException = e;
+				} catch (final Error e) {
+					gurobiInitError = e;
+				}
+				if (!config.enableOutput() && env != null) {
+					env.set(IntParam.OutputFlag, 0);
+					env.set(IntParam.LogToConsole, 0);
+				}
+				System.setOut(out);
+				System.setErr(err);
+				// If an exception/error occurred during Gurobi initialization, throw it now
+				if (gurobiInitException != null) {
+					throw gurobiInitException;
+				}
+				if (gurobiInitError != null) {
+					throw gurobiInitError;
+				}
 			}
-			if (!config.enableOutput() && env != null) {
-				env.set(IntParam.OutputFlag, 0);
-				env.set(IntParam.LogToConsole, 0);
-			}
-			System.setOut(out);
-			System.setErr(err);
-			// If an exception/error occurred during Gurobi initialization, throw it now
-			if (gurobiInitException != null) {
-				throw gurobiInitException;
-			}
-			if (gurobiInitError != null) {
-				throw gurobiInitError;
-			}
+
 			env.set(IntParam.Presolve, config.enablePresolve() ? 1 : 0);
 			if (config.rndSeedEnabled()) {
 				env.set(IntParam.Seed, config.randomSeed());

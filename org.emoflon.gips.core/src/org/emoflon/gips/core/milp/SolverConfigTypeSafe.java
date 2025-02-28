@@ -15,6 +15,17 @@ public class SolverConfigTypeSafe {
 	// Set Key<T> to private and we'll only be able to use these 'public keys' here.
 	public static final Key<Boolean> KEY_TIME_LIMIT_ENABLED = new Key<>();
 	public static final Key<Double> KEY_TIME_LIMIT = new Key<>();
+	public static final Key<Boolean> KEY_TIME_LMIMIT_INCLUDES_INIT_TIME = new Key<>();
+	public static final Key<Boolean> KEY_IS_RANDOM_SEED_ENABLED = new Key<>();
+	public static final Key<Integer> KEY_RANDOM_SEED = new Key<>();
+	public static final Key<Boolean> KEY_PRESOLVE_ENABLED = new Key<>();
+	public static final Key<Boolean> KEY_OUTPUT_ENABLED = new Key<>();
+	public static final Key<Boolean> KEY_TOLERANCE_ENABLED = new Key<>();
+	public static final Key<Double> KEY_TOLERANCE = new Key<>();
+	public static final Key<Boolean> KEY_LP_OUTPUT_ENABLED = new Key<>();
+	public static final Key<String> KEY_LP_OUTPUT = new Key<>();
+	public static final Key<Boolean> KEY_THREAD_COUNT_ENABLED = new Key<>();
+	public static final Key<Integer> KEY_THREAD_COUNT = new Key<>();
 
 	/**
 	 * A key with Type T
@@ -69,7 +80,7 @@ public class SolverConfigTypeSafe {
 	public <T> void addListener(Key<T> key, ConfigChangeListener<T> listener, boolean runListenerImmediately) {
 		Objects.requireNonNull(listener, "listener");
 		Objects.requireNonNull(key, "key");
-		listenersByKey.computeIfAbsent(key, (k) -> new HashSet<>()).add(listener);
+		listenersByKey.computeIfAbsent(key, k -> new HashSet<>()).add(listener);
 
 		if (runListenerImmediately) {
 			var property = getProperty(key);
@@ -122,6 +133,7 @@ public class SolverConfigTypeSafe {
 	}
 
 	// region for specific properties
+	//
 
 	public boolean isTimeLimitEnabled() {
 		return getProperty(KEY_TIME_LIMIT_ENABLED, Boolean.FALSE);

@@ -30,7 +30,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	protected ResourceSet model;
 	protected GipsIntermediateModel gipsModel;
 	final protected Map<String, Mapping> name2Mapping = new HashMap<>();
-	protected SolverConfig solverConfig;
+	final protected SolverConfig solverConfig = new SolverConfig();
 	protected GipsMapperFactory<EMOFLON_API> mapperFactory;
 	protected GipsConstraintFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> constraintFactory;
 	protected GipsLinearFunctionFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> functionFactory;
@@ -39,13 +39,12 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		this.eMoflonApp = eMoflonApp;
 	}
 
-	public void setSolverConfig(final SolverConfig solverConfig) {
+	public void reinitializeSolver() {
 		try {
-			this.solver.setSolverConfig(solverConfig);
+			solver.reinitialize();
 		} catch (final Exception e) {
 			throw new InternalError("Solver re-initialization failed: " + e);
 		}
-		this.solverConfig = solverConfig;
 	}
 
 	public SolverConfig getSolverConfig() {
@@ -59,7 +58,8 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 * @param numberOfThreads Number of ILP solver threads to set.
 	 */
 	public void setIlpSolverThreads(final int numberOfThreads) {
-		setSolverConfig(solverConfig.withThreadCount(numberOfThreads));
+		solverConfig.setThreadCount(numberOfThreads);
+		reinitializeSolver();
 	}
 
 	/**
@@ -69,7 +69,8 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 * @param newTimeLimit New time limit to set.
 	 */
 	public void setTimeLimit(final double newTimeLimit) {
-		setSolverConfig(solverConfig.withNewTimeLimit(newTimeLimit));
+		solverConfig.setTimeLimit(newTimeLimit);
+		reinitializeSolver();
 	}
 
 	public EMOFLON_APP getEMoflonApp() {
@@ -192,15 +193,24 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	}
 
 	protected void setSolverConfig(final org.emoflon.gips.intermediate.GipsIntermediate.SolverConfig config) {
-		solverConfig = new SolverConfig(config.isEnableTimeLimit(), config.getTimeLimit(),
-				config.isTimeLimitIncludeInitTime(), //
-				config.isEnableRndSeed(), config.getIlpRndSeed(), //
-				config.isEnablePresolve(), //
-				config.isEnableDebugOutput(), //
-				config.isEnableCustomTolerance(), config.getTolerance(), //
-				config.isEnableLpOutput(), config.getLpPath(), //
-				config.isThreadCountEnabled(), config.getThreadCount() //
-		);
+		solverConfig.setEnableTimeLimit(config.isEnableTimeLimit());
+		solverConfig.setTimeLimit(config.getTimeLimit());
+		solverConfig.setTimeLimitIncludeInitTime(config.isTimeLimitIncludeInitTime());
+
+		solverConfig.setEnabledRandomSeed(config.isEnableRndSeed());
+		solverConfig.setRandomSeed(config.getIlpRndSeed());
+
+		solverConfig.setEnablePresolve(config.isEnablePresolve());
+		solverConfig.setEnableOutput(config.isEnableDebugOutput());
+
+		solverConfig.setEnableTolerance(config.isEnableCustomTolerance());
+		solverConfig.setTolerance(config.getTolerance());
+
+		solverConfig.setLpOutput(config.isEnableLpOutput());
+		solverConfig.setLpPath(config.getLpPath());
+
+		solverConfig.setEnableThreadCount(config.isThreadCountEnabled());
+		solverConfig.setThreadCount(config.getThreadCount());
 	}
 
 	/**

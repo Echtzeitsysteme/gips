@@ -2,6 +2,7 @@ package org.emoflon.gips.core.milp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Mutable container to hold some config specific properties. Provides basic
@@ -18,6 +19,12 @@ public class SolverConfig {
 	// basic listener support
 	private List<ConfigChangeListener> listeners = new ArrayList<>(10);
 
+	/**
+	 * Enables/Disables {@link #notifyListeners()} method
+	 */
+	private boolean enableNotifier = true;
+	private boolean aValueChanged = false;
+
 	private boolean timeLimitEnabled;
 	private double timeLimit;
 	private boolean timeLimitIncludeInitTime;
@@ -32,9 +39,29 @@ public class SolverConfig {
 	private boolean threadCountEnabled;
 	private int threadCount;
 
+	/**
+	 * To be called after any changes have been made via the setters. This method
+	 * will notify listeners if any config setting has changed since it's last call.
+	 */
 	private void notifyListeners() {
-		for (var listener : this.listeners)
-			listener.onChange();
+		if (enableNotifier && aValueChanged) {
+			for (var listener : this.listeners)
+				listener.onChange();
+			aValueChanged = false;
+		}
+	}
+
+	/**
+	 * Allows multiple setters to be called without triggering all listeners for
+	 * each setter. This method will notify all listeners afterwards.
+	 * 
+	 * @param batch
+	 */
+	public void batchSetter(Consumer<SolverConfig> batch) {
+		enableNotifier = false;
+		batch.accept(this);
+		enableNotifier = true;
+		notifyListeners();
 	}
 
 	public boolean isTimeLimitEnabled() {
@@ -56,8 +83,9 @@ public class SolverConfig {
 
 		var oldValue = this.timeLimit;
 		this.timeLimit = newValue;
-		if (oldValue != newValue) // if(this.timeLimit != (this.timeLimit = newValue))
-			notifyListeners();
+
+		aValueChanged |= oldValue != newValue;
+		notifyListeners();
 	}
 
 	public boolean isTimeLimitIncludeInitTime() {
@@ -67,8 +95,9 @@ public class SolverConfig {
 	public void setTimeLimitIncludeInitTime(boolean newValue) {
 		var oldValue = this.timeLimitIncludeInitTime;
 		this.timeLimitIncludeInitTime = newValue;
-		if (oldValue != newValue)
-			notifyListeners();
+
+		aValueChanged |= oldValue != newValue;
+		notifyListeners();
 	}
 
 	public boolean isRndSeedEnabled() {
@@ -78,8 +107,9 @@ public class SolverConfig {
 	public void setEnabledRandomSeed(boolean newValue) {
 		var oldValue = this.rndSeedEnabled;
 		this.rndSeedEnabled = newValue;
-		if (oldValue != newValue)
-			notifyListeners();
+
+		aValueChanged |= oldValue != newValue;
+		notifyListeners();
 	}
 
 	public int getRandomSeed() {
@@ -89,8 +119,9 @@ public class SolverConfig {
 	public void setRandomSeed(int newValue) {
 		var oldValue = this.randomSeed;
 		this.randomSeed = newValue;
-		if (oldValue != newValue)
-			notifyListeners();
+
+		aValueChanged |= oldValue != newValue;
+		notifyListeners();
 	}
 
 	public boolean isEnablePresolve() {
@@ -100,8 +131,9 @@ public class SolverConfig {
 	public void setEnablePresolve(boolean newValue) {
 		var oldValue = this.enablePresolve;
 		this.enablePresolve = newValue;
-		if (oldValue != newValue)
-			notifyListeners();
+
+		aValueChanged |= oldValue != newValue;
+		notifyListeners();
 	}
 
 	public boolean isEnableOutput() {
@@ -111,8 +143,9 @@ public class SolverConfig {
 	public void setEnableOutput(boolean newValue) {
 		var oldValue = this.enableOutput;
 		this.enableOutput = newValue;
-		if (oldValue != newValue)
-			notifyListeners();
+
+		aValueChanged |= oldValue != newValue;
+		notifyListeners();
 	}
 
 	public boolean isEnableTolerance() {
@@ -122,8 +155,9 @@ public class SolverConfig {
 	public void setEnableTolerance(boolean newValue) {
 		var oldValue = this.enableTolerance;
 		this.enableTolerance = newValue;
-		if (oldValue != newValue)
-			notifyListeners();
+
+		aValueChanged |= oldValue != newValue;
+		notifyListeners();
 	}
 
 	public double getTolerance() {
@@ -133,8 +167,9 @@ public class SolverConfig {
 	public void setTolerance(double newValue) {
 		var oldValue = this.tolerance;
 		this.tolerance = newValue;
-		if (oldValue != newValue)
-			notifyListeners();
+
+		aValueChanged |= oldValue != newValue;
+		notifyListeners();
 	}
 
 	public boolean isLpOutput() {
@@ -144,8 +179,9 @@ public class SolverConfig {
 	public void setLpOutput(boolean newValue) {
 		var oldValue = this.lpOutput;
 		this.lpOutput = newValue;
-		if (oldValue != newValue)
-			notifyListeners();
+
+		aValueChanged |= oldValue != newValue;
+		notifyListeners();
 	}
 
 	public String getLpPath() {
@@ -155,8 +191,9 @@ public class SolverConfig {
 	public void setLpPath(String newValue) {
 		var oldValue = this.lpPath;
 		this.lpPath = newValue;
-		if (oldValue != newValue)
-			notifyListeners();
+
+		aValueChanged |= oldValue != newValue;
+		notifyListeners();
 	}
 
 	public int getThreadCount() {
@@ -169,15 +206,17 @@ public class SolverConfig {
 
 		var oldValue = this.threadCount;
 		this.threadCount = newValue;
-		if (oldValue != newValue)
-			notifyListeners();
+
+		aValueChanged |= oldValue != newValue;
+		notifyListeners();
 	}
 
 	public void setEnableThreadCount(boolean newValue) {
 		var oldValue = this.threadCountEnabled;
 		this.threadCountEnabled = newValue;
-		if (oldValue != newValue)
-			notifyListeners();
+
+		aValueChanged |= oldValue != newValue;
+		notifyListeners();
 	}
 
 	public boolean isEnableThreadCount() {

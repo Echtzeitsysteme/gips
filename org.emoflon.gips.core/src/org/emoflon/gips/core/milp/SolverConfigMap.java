@@ -1,10 +1,14 @@
 package org.emoflon.gips.core.milp;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * Replaces fields with a map. A property is now accessed via a string key. It's
@@ -25,19 +29,31 @@ public class SolverConfigMap {
 
 	public static class ConfigChangeEvent {
 		private final SolverConfigMap source;
-		private final Object oldValue;
-		private final Object newValue;
-		private final String propertyKey;
+		private final Set<ConfigModification> modifications;
 
-		public ConfigChangeEvent(SolverConfigMap source, String propertyKey, Object oldValue, Object newValue) {
+		public ConfigChangeEvent(SolverConfigMap source, Set<ConfigModification> modifications) {
 			this.source = Objects.requireNonNull(source, "source");
-			this.propertyKey = Objects.requireNonNull(propertyKey, "propertyKey");
-			this.oldValue = oldValue;
-			this.newValue = newValue;
+			this.modifications = Objects.requireNonNull(modifications, "modifications");
 		}
 
 		public SolverConfigMap getSource() {
 			return source;
+		}
+
+		public Set<ConfigModification> getModifications() {
+			return modifications;
+		}
+	}
+
+	public static class ConfigModification {
+		private final Object oldValue;
+		private final Object newValue;
+		private final String propertyKey;
+
+		public ConfigModification(String propertyKey, Object oldValue, Object newValue) {
+			this.propertyKey = Objects.requireNonNull(propertyKey, "propertyKey");
+			this.oldValue = oldValue;
+			this.newValue = newValue;
 		}
 
 		public String getPropertyKey() {
@@ -55,6 +71,12 @@ public class SolverConfigMap {
 
 	private List<ConfigChangeListener> listeners = new ArrayList<>(10);
 	private Map<String, Object> mappings = new HashMap<>();
+
+	/**
+	 * Enables/Disables {@link #notifyListeners()} method
+	 */
+	private boolean enableNotifier = true;
+	private Map<String, ConfigModification> rememberedModifications = new HashMap<>();
 
 	public void addListener(ConfigChangeListener listener) {
 		Objects.requireNonNull(listener, "listener");
@@ -82,14 +104,40 @@ public class SolverConfigMap {
 		Object oldValue = mappings.get(key);
 
 		if (oldValue == value || oldValue != null && oldValue.equals(value))
-			return;
+			return; // Only continue if the value changes
 
 		mappings.put(key, value);
 		notifyListeners(key, oldValue, value);
 	}
 
+	/**
+	 * Allows multiple setters to be called without triggering all listeners for
+	 * each setter. This method will notify all listeners afterwards.
+	 * 
+	 * @param batch
+	 */
+	public void setPropertiesBatch(Consumer<SolverConfigMap> batch) {
+		enableNotifier = false;
+		batch.accept(this);
+		enableNotifier = true;
+		notifyListeners();
+	}
+
 	private void notifyListeners(String key, Object oldValue, Object value) {
-		ConfigChangeEvent event = new ConfigChangeEvent(this, key, oldValue, value);
+		ConfigModification mod = new ConfigModification(key, oldValue, value);
+		rememberedModifications.put(key, mod);
+		notifyListeners();
+	}
+
+	private void notifyListeners() {
+		if (!enableNotifier || rememberedModifications.isEmpty())
+			return;
+
+		Set<ConfigModification> allModifications = Collections
+				.unmodifiableSet(new HashSet<>(rememberedModifications.values()));
+		rememberedModifications.clear();
+
+		ConfigChangeEvent event = new ConfigChangeEvent(this, allModifications);
 		for (var listener : this.listeners)
 			listener.onChange(event);
 	}

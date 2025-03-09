@@ -17,7 +17,7 @@ public class SolverConfigTypeSafe {
 
 	// Set Key<T> to private and we'll only be able to use these 'public keys' here.
 	public static final Key<Boolean> KEY_TIME_LIMIT_ENABLED = new Key<>();
-	public static final Key<Double> KEY_TIME_LIMIT = new Key<>();
+	public static final Key<Double> KEY_TIME_LIMIT = new Key<>(new GreaterThan<>(0d));
 	public static final Key<Boolean> KEY_TIME_LMIMIT_INCLUDES_INIT_TIME = new Key<>();
 	public static final Key<Boolean> KEY_IS_RANDOM_SEED_ENABLED = new Key<>();
 	public static final Key<Integer> KEY_RANDOM_SEED = new Key<>();
@@ -37,6 +37,33 @@ public class SolverConfigTypeSafe {
 	 */
 	private static class Key<T> {
 
+		Validator<T> validator;
+
+		public Key() {
+
+		}
+
+		public Key(Validator<T> validator) {
+			this.validator = validator;
+		}
+	}
+
+	public static interface Validator<T> {
+		void validate(T value);
+	}
+
+	public static class GreaterThan<T extends Number & Comparable<T>> implements Validator<T> {
+		private final T base;
+
+		public GreaterThan(T base) {
+			this.base = Objects.requireNonNull(base);
+		}
+
+		@Override
+		public void validate(T value) {
+			if (base.compareTo(value) <= 0)
+				throw new IllegalArgumentException("Value must be greater than " + base);
+		}
 	}
 
 	public static interface ConfigChangeListener {
@@ -141,7 +168,9 @@ public class SolverConfigTypeSafe {
 
 	@SuppressWarnings("unchecked")
 	public <T> void setProperty(Key<T> key, T value) {
-		Objects.requireNonNull(key, "key");
+		if (key.validator != null)
+			key.validator.validate(value);
+
 		T oldValue = (T) mappings.get(key);
 
 		if (oldValue == value || oldValue != null && oldValue.equals(value))

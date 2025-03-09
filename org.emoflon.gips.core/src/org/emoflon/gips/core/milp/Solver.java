@@ -17,7 +17,7 @@ public abstract class Solver {
 	/**
 	 * ILP solver configuration.
 	 */
-	protected SolverConfig config;
+	protected final SolverConfig config;
 
 	public Solver(final GipsEngine engine, final SolverConfig config) {
 		this.engine = engine;
@@ -34,13 +34,12 @@ public abstract class Solver {
 	}
 
 	/**
-	 * Sets a new solver configuration and re-initializes the (M)ILP solver.
+	 * Re-initializes the (M)ILP solver. May be necessary after changing solver
+	 * specific configurations in the given {@link SolverConfig}.
 	 * 
-	 * @param config New solver configuration to set.
 	 * @throws Exception Throws an exception if the re-initialization fails.
 	 */
-	public void setSolverConfig(final SolverConfig config) throws Exception {
-		this.config = config;
+	public void reinitialize() throws Exception {
 		init();
 	}
 

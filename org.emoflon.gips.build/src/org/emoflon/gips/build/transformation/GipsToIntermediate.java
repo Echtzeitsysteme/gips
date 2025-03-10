@@ -205,7 +205,8 @@ public class GipsToIntermediate {
 
 		config.setEnableTimeLimit(eConfig.isEnableLimit());
 		if (eConfig.isEnableLimit()) {
-			config.setIlpTimeLimit(eConfig.getTimeLimit());
+			config.setTimeLimit(eConfig.getTimeLimit());
+			config.setTimeLimitIncludeInitTime(eConfig.isIncludeInitTime());
 		}
 
 		config.setEnableCustomTolerance(eConfig.isEnableTolerance());

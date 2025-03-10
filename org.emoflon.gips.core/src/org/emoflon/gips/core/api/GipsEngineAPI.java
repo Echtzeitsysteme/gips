@@ -40,6 +40,11 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	}
 
 	public void setSolverConfig(final SolverConfig solverConfig) {
+		try {
+			this.solver.setSolverConfig(solverConfig);
+		} catch (final Exception e) {
+			throw new InternalError("Solver re-initialization failed: " + e);
+		}
 		this.solverConfig = solverConfig;
 	}
 
@@ -54,7 +59,17 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 * @param numberOfThreads Number of ILP solver threads to set.
 	 */
 	public void setIlpSolverThreads(final int numberOfThreads) {
-		this.solverConfig = solverConfig.withThreadCount(numberOfThreads);
+		setSolverConfig(solverConfig.withThreadCount(numberOfThreads));
+	}
+
+	/**
+	 * Overwrite the previously configured time limit with the given parameter's
+	 * value.
+	 * 
+	 * @param newTimeLimit New time limit to set.
+	 */
+	public void setTimeLimit(final double newTimeLimit) {
+		setSolverConfig(solverConfig.withNewTimeLimit(newTimeLimit));
 	}
 
 	public EMOFLON_APP getEMoflonApp() {
@@ -178,7 +193,8 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	}
 
 	protected void setSolverConfig(final org.emoflon.gips.intermediate.GipsIntermediate.SolverConfig config) {
-		solverConfig = new SolverConfig(config.isEnableTimeLimit(), config.getIlpTimeLimit(), //
+		solverConfig = new SolverConfig(config.isEnableTimeLimit(), config.getTimeLimit(),
+				config.isTimeLimitIncludeInitTime(), //
 				config.isEnableRndSeed(), config.getIlpRndSeed(), //
 				config.isEnablePresolve(), //
 				config.isEnableDebugOutput(), //
@@ -196,6 +212,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 * @param modelUri     Model URI to load.
 	 */
 	protected void initInternal(final URI gipsModelURI, final URI modelUri) {
+		tickInit();
 		loadIntermediateModel(gipsModelURI);
 		eMoflonApp.registerMetaModels();
 		eMoflonApp.loadModel(modelUri);
@@ -220,6 +237,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 * @param ibexPatternPath IBeX pattern path to load.
 	 */
 	protected void initInternal(final URI gipsModelURI, final URI modelUri, final URI ibexPatternPath) {
+		tickInit();
 		loadIntermediateModel(gipsModelURI);
 		eMoflonApp.registerMetaModels();
 		eMoflonApp.loadModel(modelUri);
@@ -243,6 +261,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 *                     instance.
 	 */
 	protected void initInternal(final URI gipsModelURI, final ResourceSet model) {
+		tickInit();
 		loadIntermediateModel(gipsModelURI);
 		eMoflonApp.registerMetaModels();
 		eMoflonApp.setModel(model);
@@ -268,6 +287,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 * @param ibexPatternPath IBeX pattern path to load.
 	 */
 	protected void initInternal(final URI gipsModelURI, final ResourceSet model, final URI ibexPatternPath) {
+		tickInit();
 		loadIntermediateModel(gipsModelURI);
 		eMoflonApp.registerMetaModels();
 		eMoflonApp.setModel(model);

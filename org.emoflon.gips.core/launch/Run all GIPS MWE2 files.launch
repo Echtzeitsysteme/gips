@@ -10,4 +10,9 @@
     <booleanAttribute key="org.eclipse.debug.core.launchGroup.1.enabled" value="true"/>
     <stringAttribute key="org.eclipse.debug.core.launchGroup.1.mode" value="inherit"/>
     <stringAttribute key="org.eclipse.debug.core.launchGroup.1.name" value="GenerateGipsl.mwe2"/>
+    <stringAttribute key="org.eclipse.debug.core.launchGroup.2.action" value="WAIT_FOR_TERMINATION"/>
+    <booleanAttribute key="org.eclipse.debug.core.launchGroup.2.adoptIfRunning" value="false"/>
+    <booleanAttribute key="org.eclipse.debug.core.launchGroup.2.enabled" value="true"/>
+    <stringAttribute key="org.eclipse.debug.core.launchGroup.2.mode" value="inherit"/>
+    <stringAttribute key="org.eclipse.debug.core.launchGroup.2.name" value="GenerateCplexLp.mwe2"/>
 </launchConfiguration>

@@ -1,7 +1,6 @@
 package org.emoflon.gips.core.trace;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -65,9 +64,8 @@ public class Intermediate2IlpTracer {
 	}
 
 	private void sendTraceToRMIService() {
-		Path workingDirectory = Paths.get("").toAbsolutePath();
 		// this should, in theory, be the eclipse project name
-		String contextId = workingDirectory.getFileName().toString();
+		String contextId = getWorkingDirectory().getFileName().toString();
 
 		TraceMap<String, String> mapping = TraceMap.normalize(mappings, ResolveEcore2Id.INSTANCE,
 				ResolveIdentity2Id.INSTANCE);
@@ -81,6 +79,10 @@ public class Intermediate2IlpTracer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private Path getWorkingDirectory() {
+		return Path.of("").toAbsolutePath();
 	}
 
 	/**
@@ -137,7 +139,7 @@ public class Intermediate2IlpTracer {
 	}
 
 	private String computeModelIdFromPath(Path modelPath) {
-		return computeModelIdFromPath(Paths.get("").toAbsolutePath(), modelPath);
+		return computeModelIdFromPath(getWorkingDirectory(), modelPath);
 	}
 
 	private String computeModelIdFromPath(Path root, Path modelPath) {

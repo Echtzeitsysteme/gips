@@ -1,15 +1,18 @@
-package org.emoflon.gips.debugger.api;
+package org.emoflon.gips.core.trace;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.emoflon.gips.core.milp.SolverConfig;
+import org.emoflon.gips.debugger.api.ITraceRemoteService;
 import org.emoflon.gips.debugger.trace.EcoreWriter;
 import org.emoflon.gips.debugger.trace.TraceGraph;
 import org.emoflon.gips.debugger.trace.TraceMap;
@@ -21,15 +24,27 @@ import org.emoflon.gips.debugger.trace.resolver.ResolveIdentity2Id;
 public class Intermediate2IlpTracer {
 
 	private final TraceMap<EObject, String> mappings = new TraceMap<>();
+	private final SolverConfig config;
 
 	private int rmiServicePort = 2842;
-
 	private String intermediateModelId;
 	private String lpModelId;
+
+	/**
+	 * Needs to be enabled via api call
+	 */
 	private boolean tracingEnabled;
 
-	public Intermediate2IlpTracer() {
+	public Intermediate2IlpTracer(SolverConfig config) {
+		this.config = Objects.requireNonNull(config, "config");
+	}
 
+	public String getIntermediateModelId() {
+		return intermediateModelId;
+	}
+
+	public String getLPModelId() {
+		return lpModelId;
 	}
 
 	public TraceMap<EObject, String> getMapping() {
@@ -63,18 +78,61 @@ public class Intermediate2IlpTracer {
 		}
 	}
 
+	/**
+	 * Computes the model id for the intermediate model.
+	 * 
+	 * @param modelUri to the intermediate xmi file
+	 */
 	public void computeGipsModelId(URI modelUri) {
+		Objects.requireNonNull(modelUri, "Intermediate model URI is null");
+
 		Path intermediatePath;
 		if (modelUri.isPlatform())
 			intermediatePath = Path.of(modelUri.toPlatformString(true));
 		else
 			intermediatePath = Path.of(modelUri.toFileString());
 
-		intermediateModelId = computeModelIdFromPath(intermediatePath);
+		setIntermediateModelId(computeModelIdFromPath(intermediatePath));
 	}
 
-	public void computeLpModelId(String lpPath) {
-		lpModelId = computeModelIdFromPath(Path.of(lpPath));
+	public boolean isTracingPossible() {
+		if (!config.lpOutput() || config.lpPath() == null) {
+			System.err.println(
+					"Unable to create trace for lp file. LP output is disabled or lp path is null. A valid LP output path is required");
+			return false;
+		}
+
+		computeLpModelId(config.lpPath());
+
+		return true;
+	}
+
+	/**
+	 * Computes the model id for the lp model.
+	 * 
+	 * @param path to the lp file
+	 */
+	private void computeLpModelId(String path) {
+		Objects.requireNonNull(path, "lp file path is null");
+		setLpModelId(computeModelIdFromPath(Path.of(path)));
+	}
+
+	/**
+	 * Sets the lp model id
+	 * 
+	 * @param modelId
+	 */
+	private void setLpModelId(String modelId) {
+		lpModelId = modelId;
+	}
+
+	/**
+	 * Sets the intermediate model id.
+	 * 
+	 * @param modelId
+	 */
+	private void setIntermediateModelId(String modelId) {
+		intermediateModelId = modelId;
 	}
 
 	public void enableTracing(boolean enableTracing) {
@@ -83,13 +141,6 @@ public class Intermediate2IlpTracer {
 
 	public boolean isTracingEnabled() {
 		return this.tracingEnabled;
-	}
-
-	public void saveTraceAsGraph(Path filePath) {
-		var graph = buildGraph();
-		var root = TransformGraph2Ecore.buildModelFromGraph(graph);
-		var uri = URI.createFileURI(filePath.toAbsolutePath().toString());
-		EcoreWriter.saveModel(root, uri);
 	}
 
 	private String computeModelIdFromPath(Path modelPath) {
@@ -104,6 +155,13 @@ public class Intermediate2IlpTracer {
 		String id = StreamSupport.stream(relativePath.spliterator(), false).map(Path::toString)
 				.collect(Collectors.joining("/")); // use '/' like IPath.toString
 		return id;
+	}
+
+	public void saveTraceAsGraph(Path filePath) {
+		var graph = buildGraph();
+		var root = TransformGraph2Ecore.buildModelFromGraph(graph);
+		var uri = URI.createFileURI(filePath.toAbsolutePath().toString());
+		EcoreWriter.saveModel(root, uri);
 	}
 
 	private TraceGraph buildGraph() {

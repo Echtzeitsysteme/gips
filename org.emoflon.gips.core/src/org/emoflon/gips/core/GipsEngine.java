@@ -11,10 +11,10 @@ import org.emoflon.gips.core.milp.SolverStatus;
 import org.emoflon.gips.core.milp.model.Constraint;
 import org.emoflon.gips.core.milp.model.Term;
 import org.emoflon.gips.core.milp.model.Variable;
+import org.emoflon.gips.core.trace.Intermediate2IlpTracer;
 import org.emoflon.gips.core.util.Observer;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 import org.emoflon.gips.debugger.api.ILPTraceKeywords;
-import org.emoflon.gips.debugger.api.Intermediate2IlpTracer;
 
 public abstract class GipsEngine {
 
@@ -28,7 +28,7 @@ public abstract class GipsEngine {
 	final protected Map<String, GipsLinearFunction<?, ?, ?>> functions = Collections.synchronizedMap(new HashMap<>());
 	protected GipsObjective objective;
 	protected Solver solver;
-	final protected Intermediate2IlpTracer tracer = new Intermediate2IlpTracer();
+	protected Intermediate2IlpTracer tracer;
 
 	/**
 	 * Time tick of the initialization point in time, i.e., the point in time when
@@ -129,8 +129,7 @@ public abstract class GipsEngine {
 	}
 
 	protected void buildTracingTree() {
-		Intermediate2IlpTracer tracer = getTracer();
-		if (!tracer.isTracingEnabled())
+		if (!(tracer.isTracingEnabled() && tracer.isTracingPossible()))
 			return;
 
 		// try to build a bridge between ILP model and ILP text file

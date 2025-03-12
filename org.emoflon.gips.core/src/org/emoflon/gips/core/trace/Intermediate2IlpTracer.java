@@ -11,7 +11,15 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.emoflon.gips.core.GipsConstraint;
+import org.emoflon.gips.core.GipsEngine;
+import org.emoflon.gips.core.GipsLinearFunction;
+import org.emoflon.gips.core.GipsMapper;
 import org.emoflon.gips.core.milp.SolverConfig;
+import org.emoflon.gips.core.milp.model.Constraint;
+import org.emoflon.gips.core.milp.model.Term;
+import org.emoflon.gips.core.milp.model.Variable;
+import org.emoflon.gips.debugger.api.ILPTraceKeywords;
 import org.emoflon.gips.debugger.api.ITraceRemoteService;
 import org.emoflon.gips.debugger.trace.TraceMap;
 import org.emoflon.gips.debugger.trace.TraceModelLink;
@@ -56,7 +64,7 @@ public class Intermediate2IlpTracer {
 		this.rmiServicePort = port;
 	}
 
-	public void postTraceToRMIService() {
+	private void sendTraceToRMIService() {
 		Path workingDirectory = Paths.get("").toAbsolutePath();
 		// this should, in theory, be the eclipse project name
 		String contextId = workingDirectory.getFileName().toString();
@@ -90,18 +98,6 @@ public class Intermediate2IlpTracer {
 			intermediatePath = Path.of(modelUri.toFileString());
 
 		setIntermediateModelId(computeModelIdFromPath(intermediatePath));
-	}
-
-	public boolean isTracingPossible() {
-		if (!config.lpOutput() || config.lpPath() == null) {
-			System.err.println(
-					"Unable to create trace for lp file. LP output is disabled or lp path is null. A valid LP output path is required");
-			return false;
-		}
-
-		computeLpModelId(config.lpPath());
-
-		return true;
 	}
 
 	/**
@@ -152,6 +148,54 @@ public class Intermediate2IlpTracer {
 		String id = StreamSupport.stream(relativePath.spliterator(), false).map(Path::toString)
 				.collect(Collectors.joining("/")); // use '/' like IPath.toString
 		return id;
+	}
+
+	public void buildTraceGraphAndSendToIDE(GipsEngine gipsEngine) {
+		if (!config.lpOutput() || config.lpPath() == null) {
+			System.err.println(
+					"Unable to create trace for lp file. LP output is disabled or lp path is null. A valid LP output path is required");
+			return;
+		}
+
+		computeLpModelId(config.lpPath());
+
+		// try to build a bridge between ILP model and ILP text file
+
+		for (GipsMapper<?> mapper : gipsEngine.getMappers().values()) {
+			map(mapper.getMapping(), ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_MAPPING, mapper.getName()));
+		}
+
+		for (GipsConstraint<?, ?, ?> constraint : gipsEngine.getConstraints().values()) {
+			map(constraint.getIntermediateConstraint(),
+					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT, constraint.getName()));
+			for (Constraint ilpConstraint : constraint.getConstraints()) {
+				for (Term ilpTerm : ilpConstraint.lhsTerms()) {
+					map(constraint.getIntermediateConstraint().getExpression(), ILPTraceKeywords
+							.buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT_VAR, ilpTerm.variable().getName()));
+				}
+			}
+
+			for (Variable<?> variables : constraint.getAdditionalVariables()) {
+				map(constraint.getIntermediateConstraint().getExpression(),
+						ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT_VAR, variables.getName()));
+			}
+		}
+
+		for (GipsLinearFunction<?, ?, ?> function : gipsEngine.getLinearFunctions().values()) {
+			map(function.getIntermediateLinearFunction(),
+					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_FUNCTION, function.getName()));
+			for (Term term : function.getLinearFunctionFunction().terms()) {
+				map(function.getIntermediateLinearFunction(),
+						ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_FUNCTION_VAR, term.variable().getName()));
+			}
+		}
+
+		if (gipsEngine.getObjective() != null) {
+			map(gipsEngine.getObjective().getIntermediateObjective(),
+					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_OBJECTIVE, ""));
+		}
+
+		sendTraceToRMIService();
 	}
 
 }

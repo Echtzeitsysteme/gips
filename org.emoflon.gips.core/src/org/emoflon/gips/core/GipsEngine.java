@@ -8,13 +8,10 @@ import java.util.Map;
 import org.emoflon.gips.core.milp.Solver;
 import org.emoflon.gips.core.milp.SolverOutput;
 import org.emoflon.gips.core.milp.SolverStatus;
-import org.emoflon.gips.core.milp.model.Constraint;
-import org.emoflon.gips.core.milp.model.Term;
 import org.emoflon.gips.core.milp.model.Variable;
 import org.emoflon.gips.core.trace.Intermediate2IlpTracer;
 import org.emoflon.gips.core.util.Observer;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
-import org.emoflon.gips.debugger.api.ILPTraceKeywords;
 
 public abstract class GipsEngine {
 
@@ -125,51 +122,12 @@ public abstract class GipsEngine {
 			objective.buildObjectiveFunction();
 
 		solver.buildILPProblem();
-		buildTracingTree();
+		buildTraceGraph();
 	}
 
-	protected void buildTracingTree() {
-		if (!(tracer.isTracingEnabled() && tracer.isTracingPossible()))
-			return;
-
-		// try to build a bridge between ILP model and ILP text file
-
-		for (GipsMapper<?> mapper : this.mappers.values()) {
-			tracer.map(mapper.mapping,
-					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_MAPPING, mapper.getName()));
-//			final var fragmentPath = EcoreUtil.getURI(mapper.mapping);
-		}
-
-		for (GipsConstraint<?, ?, ?> constraint : this.constraints.values()) {
-			tracer.map(constraint.constraint,
-					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT, constraint.getName()));
-			for (Constraint ilpConstraint : constraint.getConstraints()) {
-				for (Term ilpTerm : ilpConstraint.lhsTerms()) {
-					tracer.map(constraint.constraint.getExpression(), ILPTraceKeywords
-							.buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT_VAR, ilpTerm.variable().getName()));
-				}
-			}
-
-			for (Variable<?> variables : constraint.getAdditionalVariables()) {
-				tracer.map(constraint.constraint.getExpression(),
-						ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT_VAR, variables.getName()));
-			}
-		}
-
-		for (GipsLinearFunction<?, ?, ?> function : this.functions.values()) {
-			tracer.map(function.linearFunction,
-					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_FUNCTION, function.getName()));
-			for (Term term : function.terms) {
-				tracer.map(function.linearFunction,
-						ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_FUNCTION_VAR, term.variable().getName()));
-			}
-		}
-
-		if (objective != null) {
-			tracer.map(objective.objective, ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_OBJECTIVE, ""));
-		}
-
-		tracer.postTraceToRMIService();
+	protected void buildTraceGraph() {
+		if (tracer.isTracingEnabled())
+			tracer.buildTraceGraphAndSendToIDE(this);
 	}
 
 	public SolverOutput solveProblemTimed() {

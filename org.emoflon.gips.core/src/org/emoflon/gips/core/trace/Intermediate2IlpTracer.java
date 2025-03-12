@@ -13,11 +13,8 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.milp.SolverConfig;
 import org.emoflon.gips.debugger.api.ITraceRemoteService;
-import org.emoflon.gips.debugger.trace.EcoreWriter;
-import org.emoflon.gips.debugger.trace.TraceGraph;
 import org.emoflon.gips.debugger.trace.TraceMap;
 import org.emoflon.gips.debugger.trace.TraceModelLink;
-import org.emoflon.gips.debugger.trace.TransformGraph2Ecore;
 import org.emoflon.gips.debugger.trace.resolver.ResolveEcore2Id;
 import org.emoflon.gips.debugger.trace.resolver.ResolveIdentity2Id;
 
@@ -155,21 +152,6 @@ public class Intermediate2IlpTracer {
 		String id = StreamSupport.stream(relativePath.spliterator(), false).map(Path::toString)
 				.collect(Collectors.joining("/")); // use '/' like IPath.toString
 		return id;
-	}
-
-	public void saveTraceAsGraph(Path filePath) {
-		var graph = buildGraph();
-		var root = TransformGraph2Ecore.buildModelFromGraph(graph);
-		var uri = URI.createFileURI(filePath.toAbsolutePath().toString());
-		EcoreWriter.saveModel(root, uri);
-	}
-
-	private TraceGraph buildGraph() {
-		var graph = new TraceGraph();
-		var mapping = TraceMap.normalize(mappings, ResolveEcore2Id.INSTANCE, ResolveIdentity2Id.INSTANCE);
-		var link = new TraceModelLink(intermediateModelId, lpModelId, mapping);
-		graph.addOrReplaceTraceLink(link);
-		return graph;
 	}
 
 }

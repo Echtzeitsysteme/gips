@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import org.emoflon.gips.intermediate.GipsIntermediate.SolverType;
+
 /**
  * Basically {@link SolverConfigMap} but with static type check via typed
  * {@link Key keys}
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 public class SolverConfigTypeSafe {
 
 	// Set Key<T> to private and we'll only be able to use these 'public keys' here.
+	public static final Key<SolverType> KEY_SOLVER_TYPE = new Key<>(SolverType.GUROBI);
 	public static final Key<Boolean> KEY_TIME_LIMIT_ENABLED = new Key<>(false);
 	public static final Key<Double> KEY_TIME_LIMIT = new Key<>(1d, new GreaterThan<>(0d));
 	public static final Key<Boolean> KEY_TIME_LMIMIT_INCLUDES_INIT_TIME = new Key<>();
@@ -26,35 +29,37 @@ public class SolverConfigTypeSafe {
 	public static final Key<Boolean> KEY_OUTPUT_ENABLED = new Key<>();
 	public static final Key<Boolean> KEY_TOLERANCE_ENABLED = new Key<>();
 	public static final Key<Double> KEY_TOLERANCE = new Key<>();
-	public static final Key<Boolean> KEY_LP_OUTPUT_ENABLED = new Key<>(false);
-	public static final Key<String> KEY_LP_OUTPUT = new Key<>();
-	public static final Key<Boolean> KEY_THREAD_COUNT_ENABLED = new Key<>(false);
-	public static final Key<Integer> KEY_THREAD_COUNT = new Key<>();
 
 	/**
 	 * A key with Type T
 	 * 
 	 * @param <T> type of property
 	 */
-	private static class Key<T> {
+	public static class Key<T> {
+
+		// Or like this?
+		public static final Key<Boolean> LP_OUTPUT_ENABLED = new Key<>(false);
+		public static final Key<String> LP_OUTPUT = new Key<>();
+		public static final Key<Boolean> THREAD_COUNT_ENABLED = new Key<>(false);
+		public static final Key<Integer> THREAD_COUNT = new Key<>();
 
 		private final Validator<T> validator;
 		private final T defaultValue;
 
-		public Key(T defaultValue, Validator<T> validator) {
+		private Key(T defaultValue, Validator<T> validator) {
 			this.defaultValue = defaultValue;
 			this.validator = validator;
 		}
 
-		public Key() {
+		private Key() {
 			this(null, null);
 		}
 
-		public Key(T defaultValue) {
+		private Key(T defaultValue) {
 			this(defaultValue, null);
 		}
 
-		public Key(Validator<T> validator) {
+		private Key(Validator<T> validator) {
 			this(null, validator);
 		}
 	}
@@ -255,6 +260,15 @@ public class SolverConfigTypeSafe {
 		notifyListeners();
 	}
 
+	public void setFromConfig(org.emoflon.gips.intermediate.GipsIntermediate.SolverConfig solverConfig) {
+		setPropertiesBatch(config -> {
+			if (solverConfig.isEnableLpOutput()) {
+				config.setProperty(Key.LP_OUTPUT_ENABLED, true);
+				config.setProperty(Key.LP_OUTPUT, solverConfig.getLpPath());
+			}
+		});
+	}
+
 //	private <T> void addOrOverwriteConfigModification(Key<T> key, T oldValue, T value) {
 //		ConfigModification<T> mod = new ConfigModification<>(key, oldValue, value);
 //		rememberedModifications.put(key, mod);
@@ -316,6 +330,10 @@ public class SolverConfigTypeSafe {
 		if (value <= 0)
 			throw new IllegalArgumentException("Given new time limit is smaller or equal to 0.");
 		setProperty(KEY_TIME_LIMIT, value);
+	}
+
+	public String getLpOutput() {
+		return getProperty(Key.LP_OUTPUT);
 	}
 
 }

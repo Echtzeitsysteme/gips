@@ -15,69 +15,69 @@ import org.emoflon.gips.debugger.view.model.ModelNode;
 
 final class TraceLabelProvider extends LabelProvider implements ILabelProvider, IToolTipProvider {
 
-		private Image projectImage;
-		private Image rightImage;
-		private Image leftImage;
+	private Image projectImage;
+	private Image rightImage;
+	private Image leftImage;
 
-		public TraceLabelProvider() {
-			ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-			this.projectImage = sharedImages.getImage(org.eclipse.ui.ide.IDE.SharedImages.IMG_OBJ_PROJECT);
-			this.rightImage = sharedImages.getImage(ISharedImages.IMG_TOOL_FORWARD);
-			this.leftImage = sharedImages.getImage(ISharedImages.IMG_TOOL_BACK);
+	public TraceLabelProvider() {
+		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+		this.projectImage = sharedImages.getImage(org.eclipse.ui.ide.IDE.SharedImages.IMG_OBJ_PROJECT);
+		this.rightImage = sharedImages.getImage(ISharedImages.IMG_TOOL_FORWARD);
+		this.leftImage = sharedImages.getImage(ISharedImages.IMG_TOOL_BACK);
+	}
+
+	@Override
+	public Image getImage(Object element) {
+		if (element instanceof ContextNode)
+			return projectImage;
+
+		if (element instanceof LinkModelNode node) {
+			return switch (node.direction) {
+			case FORWARD -> rightImage;
+			case BACKWARD -> leftImage;
+			default -> null;
+			};
 		}
 
-		@Override
-		public Image getImage(Object element) {
-			if (element instanceof ContextNode)
-				return projectImage;
+		return null;
+	}
 
-			if (element instanceof LinkModelNode node) {
-				return switch (node.direction) {
-				case FORWARD -> rightImage;
-				case BACKWARD -> leftImage;
-				default -> null;
-				};
+	@Override
+	public String getText(Object element) {
+		String name = element != null ? element.toString() : "???";
+
+		if (element instanceof ModelNode node) {
+
+		} else if (element instanceof LinkModelNode node) {
+			ProjectTraceContext context = TracePlugin.getInstance().getTraceManager().getContext(node.getContextId());
+			switch (node.direction) {
+			case FORWARD: {
+				TraceModelLink link = context.getModelLink(node.parent.modelId, node.modelId);
+				name = "Creates '" + name + " (maps " + link.getSourceNodeIds().size() + " to "
+						+ link.getTargetNodeIds().size() + " nodes)";
+				break;
 			}
-
-			return null;
-		}
-
-		@Override
-		public String getText(Object element) {
-			String name = element != null ? element.toString() : "???";
-			
-			if (element instanceof ModelNode node) {
-				
-			}else if(element instanceof LinkModelNode node) {				
-				ProjectTraceContext context = TracePlugin.getInstance().getTraceManager().getContext(node.getContextId());
-				switch(node.direction) {
-				case FORWARD:
-				{
-					TraceModelLink link = context.getModelLink(node.parent.modelId, node.modelId);
-					name = "Creates '" + name + " (maps " + link.getSourceNodeIds().size() + " to " + link.getTargetNodeIds().size() + " nodes)";
-					break;
-				}
-				case BACKWARD:
-				{
-					TraceModelLink link = context.getModelLink(node.modelId, node.parent.modelId);
-					name = "Created by '" + name + " (maps " + link.getSourceNodeIds().size() + " to " + link.getTargetNodeIds().size() + " nodes)";
-					break;
-				}
-				}
+			case BACKWARD: {
+				TraceModelLink link = context.getModelLink(node.modelId, node.parent.modelId);
+				name = "Created by '" + name + " (maps " + link.getSourceNodeIds().size() + " to "
+						+ link.getTargetNodeIds().size() + " nodes)";
+				break;
 			}
-			
-			return name;
+			}
 		}
 
-		@Override
-		public void dispose() {
-			super.dispose();
-		}
+		return name;
+	}
 
-		@Override
-		public String getToolTipText(Object element) {
-			return "Tooltip (" + element + ")";
-		}
+	@Override
+	public void dispose() {
+		super.dispose();
+	}
+
+	@Override
+	public String getToolTipText(Object element) {
+		return "Tooltip (" + element + ")";
+	}
 
 //		@Override
 //		public Point getToolTipShift(Object object) {
@@ -99,4 +99,4 @@ final class TraceLabelProvider extends LabelProvider implements ILabelProvider, 
 //			cell.setText(cell.getElement().toString());
 //		}
 
-	}
+}

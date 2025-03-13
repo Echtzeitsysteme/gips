@@ -3,9 +3,9 @@
  */
 package org.emoflon.gips.debugger;
 
-
 /**
- * Initialization support for running Xtext languages without Equinox extension registry.
+ * Initialization support for running Xtext languages without Equinox extension
+ * registry.
  */
 public class CplexLpStandaloneSetup extends CplexLpStandaloneSetupGenerated {
 

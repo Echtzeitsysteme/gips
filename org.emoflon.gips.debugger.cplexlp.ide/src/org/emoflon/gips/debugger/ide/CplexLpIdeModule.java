@@ -3,7 +3,6 @@
  */
 package org.emoflon.gips.debugger.ide;
 
-
 /**
  * Use this class to register ide components.
  */

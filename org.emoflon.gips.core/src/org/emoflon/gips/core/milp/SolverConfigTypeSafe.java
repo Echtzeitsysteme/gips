@@ -1,5 +1,6 @@
 package org.emoflon.gips.core.milp;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,8 +17,8 @@ import java.util.stream.Collectors;
 public class SolverConfigTypeSafe {
 
 	// Set Key<T> to private and we'll only be able to use these 'public keys' here.
-	public static final Key<Boolean> KEY_TIME_LIMIT_ENABLED = new Key<>();
-	public static final Key<Double> KEY_TIME_LIMIT = new Key<>(new GreaterThan<>(0d));
+	public static final Key<Boolean> KEY_TIME_LIMIT_ENABLED = new Key<>(false);
+	public static final Key<Double> KEY_TIME_LIMIT = new Key<>(1d, new GreaterThan<>(0d));
 	public static final Key<Boolean> KEY_TIME_LMIMIT_INCLUDES_INIT_TIME = new Key<>();
 	public static final Key<Boolean> KEY_IS_RANDOM_SEED_ENABLED = new Key<>();
 	public static final Key<Integer> KEY_RANDOM_SEED = new Key<>();
@@ -25,9 +26,9 @@ public class SolverConfigTypeSafe {
 	public static final Key<Boolean> KEY_OUTPUT_ENABLED = new Key<>();
 	public static final Key<Boolean> KEY_TOLERANCE_ENABLED = new Key<>();
 	public static final Key<Double> KEY_TOLERANCE = new Key<>();
-	public static final Key<Boolean> KEY_LP_OUTPUT_ENABLED = new Key<>();
+	public static final Key<Boolean> KEY_LP_OUTPUT_ENABLED = new Key<>(false);
 	public static final Key<String> KEY_LP_OUTPUT = new Key<>();
-	public static final Key<Boolean> KEY_THREAD_COUNT_ENABLED = new Key<>();
+	public static final Key<Boolean> KEY_THREAD_COUNT_ENABLED = new Key<>(false);
 	public static final Key<Integer> KEY_THREAD_COUNT = new Key<>();
 
 	/**
@@ -37,21 +38,40 @@ public class SolverConfigTypeSafe {
 	 */
 	private static class Key<T> {
 
-		Validator<T> validator;
+		private final Validator<T> validator;
+		private final T defaultValue;
+
+		public Key(T defaultValue, Validator<T> validator) {
+			this.defaultValue = defaultValue;
+			this.validator = validator;
+		}
 
 		public Key() {
+			this(null, null);
+		}
 
+		public Key(T defaultValue) {
+			this(defaultValue, null);
 		}
 
 		public Key(Validator<T> validator) {
-			this.validator = validator;
+			this(null, validator);
 		}
 	}
 
 	public static interface Validator<T> {
+		/**
+		 * Validates the given value.
+		 * 
+		 * @param value to be validated
+		 * @throws IllegalArgumentException if the given value is not valid
+		 */
 		void validate(T value);
 	}
 
+	/**
+	 * Validates that a given value is greater than a selected number.
+	 */
 	public static class GreaterThan<T extends Number & Comparable<T>> implements Validator<T> {
 		private final T base;
 
@@ -116,6 +136,16 @@ public class SolverConfigTypeSafe {
 		}
 	}
 
+	public static enum CopyMode {
+		/**
+		 * Only copy values that are not set in the target config. Useful for merging
+		 * configs without overwriting any settings on the target config.
+		 * 
+		 * @see SolverConfigTypeSafe#hasProperty(Key)
+		 */
+		ONLY_NOT_SET, COPY_ALL
+	}
+
 	private Map<Key<?>, Set<ConfigChangeListener>> listenersByKey = new HashMap<>();
 	private Map<Key<?>, Object> mappings = new HashMap<>();
 
@@ -124,6 +154,30 @@ public class SolverConfigTypeSafe {
 	 */
 	private boolean enableNotifier = true;
 	private Map<Key<?>, ConfigModification<?>> rememberedModifications = new HashMap<>();
+
+	/**
+	 * Depending on the selected copy mode, adds the entries of the given config to
+	 * this config.
+	 * 
+	 * @param other config which should be added to this one
+	 * @param mode  copy mode
+	 */
+	public void addConfig(SolverConfigTypeSafe other, CopyMode mode) {
+		Collection<Key<?>> entriesToAdd = switch (mode) {
+		case COPY_ALL -> other.mappings.keySet();
+		case ONLY_NOT_SET -> other.mappings.keySet().stream().filter(key -> !mappings.containsKey(key)).toList();
+		default -> throw new IllegalArgumentException("Unexpected value: " + mode);
+		};
+
+		for (Key<?> key : entriesToAdd) {
+			Object newValue = other.mappings.get(key);
+			Object previousValue = mappings.put(key, newValue);
+			if (!isSameValue(previousValue, newValue))
+				addToNextConfigChangeEvent(key, previousValue, newValue);
+		}
+
+		notifyListeners();
+	}
 
 	public <T> void addListener(Key<T> key, ConfigChangeListener listener) {
 		addListener(key, listener, false);
@@ -156,9 +210,12 @@ public class SolverConfigTypeSafe {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T> T getProperty(Key<T> key) {
-		return (T) mappings.get(key);
+		return getProperty(key, key.defaultValue);
+	}
+
+	public <T> boolean hasProperty(Key<T> key) {
+		return mappings.containsKey(key);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -173,11 +230,16 @@ public class SolverConfigTypeSafe {
 
 		T oldValue = (T) mappings.get(key);
 
-		if (oldValue == value || oldValue != null && oldValue.equals(value))
+		if (isSameValue(oldValue, value))
 			return; // Only continue if the value changes
 
 		mappings.put(key, value);
-		notifyListeners(key, oldValue, value);
+		addToNextConfigChangeEvent(key, oldValue, value);
+		notifyListeners();
+	}
+
+	private boolean isSameValue(Object currentValue, Object newValue) {
+		return currentValue == newValue || currentValue != null && currentValue.equals(newValue);
 	}
 
 	/**
@@ -193,10 +255,23 @@ public class SolverConfigTypeSafe {
 		notifyListeners();
 	}
 
-	private <T> void notifyListeners(Key<T> key, T oldValue, T value) {
-		ConfigModification<T> mod = new ConfigModification<>(key, oldValue, value);
+//	private <T> void addOrOverwriteConfigModification(Key<T> key, T oldValue, T value) {
+//		ConfigModification<T> mod = new ConfigModification<>(key, oldValue, value);
+//		rememberedModifications.put(key, mod);
+//	}
+
+	/**
+	 * Internal only. Type of {@code oldValue} and {@code newValue} already checked
+	 * by {@link #setProperty(Key, Object)}.
+	 * 
+	 * @param key
+	 * @param oldValue
+	 * @param newValue
+	 */
+	@SuppressWarnings("rawtypes")
+	private void addToNextConfigChangeEvent(Key<?> key, Object oldValue, Object newValue) {
+		ConfigModification<?> mod = new ConfigModification(key, oldValue, newValue);
 		rememberedModifications.put(key, mod);
-		notifyListeners();
 	}
 
 	private void notifyListeners() {

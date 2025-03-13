@@ -15,6 +15,7 @@ Export-Package: org.emoflon.gips.core,
  org.emoflon.gips.core.gt,
  org.emoflon.gips.core.milp,
  org.emoflon.gips.core.milp.model,
+ org.emoflon.gips.core.trace,
  org.emoflon.gips.core.util,
  org.emoflon.gips.core.validation
 Bundle-Vendor: Real-Time Systems Lab - TU Darmstadt

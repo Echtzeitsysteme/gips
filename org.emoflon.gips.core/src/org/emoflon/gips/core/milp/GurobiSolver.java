@@ -131,7 +131,8 @@ public class GurobiSolver extends Solver {
 			if (config.threadCount()) {
 				model.set(IntParam.Threads, config.threads());
 			} else {
-				model.set(IntParam.Threads, SystemUtil.getSystemThreads());
+//				model.set(IntParam.Threads, SystemUtil.getSystemThreads());
+				// TODO: temporarily allow Gurobi to determine number of threads
 			}
 			// Reset local lookup data structure for the Gurobi variables in case this is
 			// not the first initialization.

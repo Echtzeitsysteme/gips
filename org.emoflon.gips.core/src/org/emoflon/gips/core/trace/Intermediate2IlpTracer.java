@@ -18,12 +18,12 @@ import org.emoflon.gips.core.milp.SolverConfig;
 import org.emoflon.gips.core.milp.model.Constraint;
 import org.emoflon.gips.core.milp.model.Term;
 import org.emoflon.gips.core.milp.model.Variable;
-import org.emoflon.gips.debugger.api.ILPTraceKeywords;
-import org.emoflon.gips.debugger.api.ITraceRemoteService;
-import org.emoflon.gips.debugger.trace.TraceMap;
-import org.emoflon.gips.debugger.trace.TraceModelLink;
-import org.emoflon.gips.debugger.trace.resolver.ResolveEcore2Id;
-import org.emoflon.gips.debugger.trace.resolver.ResolveIdentity2Id;
+import org.emoflon.gips.eclipse.api.ILPTraceKeywords;
+import org.emoflon.gips.eclipse.api.ITraceRemoteService;
+import org.emoflon.gips.eclipse.trace.TraceMap;
+import org.emoflon.gips.eclipse.trace.TraceModelLink;
+import org.emoflon.gips.eclipse.trace.resolver.ResolveEcore2Id;
+import org.emoflon.gips.eclipse.trace.resolver.ResolveIdentity2Id;
 
 public class Intermediate2IlpTracer {
 
@@ -77,6 +77,7 @@ public class Intermediate2IlpTracer {
 			service.updateTraceModel(contextId, link);
 		} catch (RemoteException | NotBoundException e) {
 			// TODO Auto-generated catch block
+			System.err.println("Unable to send trace to IDE. Reason:\n");
 			e.printStackTrace();
 		}
 	}

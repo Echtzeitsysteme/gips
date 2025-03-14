@@ -9,7 +9,7 @@ Require-Bundle: org.emoflon.ibex.gt;visibility:=reexport,
  org.emoflon.gips.intermediate;visibility:=reexport,
  org.emoflon.gips.core.dependencies;bundle-version="1.0.0";visibility:=reexport,
  org.emoflon.gips.build,
- org.emoflon.gips.debugger;bundle-version="[1.0.0,2.0.0)";visibility:=reexport
+ org.emoflon.gips.eclipse;bundle-version="[1.0.0,2.0.0)";visibility:=reexport
 Export-Package: org.emoflon.gips.core,
  org.emoflon.gips.core.api,
  org.emoflon.gips.core.gt,

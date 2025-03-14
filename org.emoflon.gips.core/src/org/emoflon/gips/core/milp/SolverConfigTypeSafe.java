@@ -14,52 +14,52 @@ import org.emoflon.gips.intermediate.GipsIntermediate.SolverType;
 
 /**
  * Basically {@link SolverConfigMap} but with static type check via typed
- * {@link Key keys}
+ * {@link ConfigKey keys}
  */
 public class SolverConfigTypeSafe {
 
 	// Set Key<T> to private and we'll only be able to use these 'public keys' here.
-	public static final Key<SolverType> KEY_SOLVER_TYPE = new Key<>(SolverType.GUROBI);
-	public static final Key<Boolean> KEY_TIME_LIMIT_ENABLED = new Key<>(false);
-	public static final Key<Double> KEY_TIME_LIMIT = new Key<>(1d, new GreaterThan<>(0d));
-	public static final Key<Boolean> KEY_TIME_LMIMIT_INCLUDES_INIT_TIME = new Key<>();
-	public static final Key<Boolean> KEY_IS_RANDOM_SEED_ENABLED = new Key<>();
-	public static final Key<Integer> KEY_RANDOM_SEED = new Key<>();
-	public static final Key<Boolean> KEY_PRESOLVE_ENABLED = new Key<>();
-	public static final Key<Boolean> KEY_OUTPUT_ENABLED = new Key<>();
-	public static final Key<Boolean> KEY_TOLERANCE_ENABLED = new Key<>();
-	public static final Key<Double> KEY_TOLERANCE = new Key<>();
+	public static final ConfigKey<SolverType> KEY_SOLVER_TYPE = new ConfigKey<>(SolverType.GUROBI);
+	public static final ConfigKey<Boolean> KEY_TIME_LIMIT_ENABLED = new ConfigKey<>(false);
+	public static final ConfigKey<Double> KEY_TIME_LIMIT = new ConfigKey<>(1d, new GreaterThan<>(0d));
+	public static final ConfigKey<Boolean> KEY_TIME_LMIMIT_INCLUDES_INIT_TIME = new ConfigKey<>();
+	public static final ConfigKey<Boolean> KEY_IS_RANDOM_SEED_ENABLED = new ConfigKey<>();
+	public static final ConfigKey<Integer> KEY_RANDOM_SEED = new ConfigKey<>();
+	public static final ConfigKey<Boolean> KEY_PRESOLVE_ENABLED = new ConfigKey<>();
+	public static final ConfigKey<Boolean> KEY_OUTPUT_ENABLED = new ConfigKey<>();
+	public static final ConfigKey<Boolean> KEY_TOLERANCE_ENABLED = new ConfigKey<>();
+	public static final ConfigKey<Double> KEY_TOLERANCE = new ConfigKey<>();
 
 	/**
 	 * A key with Type T
 	 * 
 	 * @param <T> type of property
 	 */
-	public static class Key<T> {
+	public static class ConfigKey<T> {
 
 		// Or like this?
-		public static final Key<Boolean> LP_OUTPUT_ENABLED = new Key<>(false);
-		public static final Key<String> LP_OUTPUT = new Key<>();
-		public static final Key<Boolean> THREAD_COUNT_ENABLED = new Key<>(false);
-		public static final Key<Integer> THREAD_COUNT = new Key<>();
+		public static final ConfigKey<Boolean> LP_OUTPUT_ENABLED = new ConfigKey<>(false);
+		public static final ConfigKey<String> LP_OUTPUT = new ConfigKey<>();
+		public static final ConfigKey<Boolean> THREAD_COUNT_ENABLED = new ConfigKey<>(false);
+		public static final ConfigKey<Integer> THREAD_COUNT = new ConfigKey<>();
 
 		private final Validator<T> validator;
 		private final T defaultValue;
 
-		private Key(T defaultValue, Validator<T> validator) {
+		private ConfigKey(T defaultValue, Validator<T> validator) {
 			this.defaultValue = defaultValue;
 			this.validator = validator;
 		}
 
-		private Key() {
+		private ConfigKey() {
 			this(null, null);
 		}
 
-		private Key(T defaultValue) {
+		private ConfigKey(T defaultValue) {
 			this(defaultValue, null);
 		}
 
-		private Key(Validator<T> validator) {
+		private ConfigKey(Validator<T> validator) {
 			this(null, validator);
 		}
 	}
@@ -97,9 +97,9 @@ public class SolverConfigTypeSafe {
 
 	public static class ConfigChangeEvent {
 		private final SolverConfigTypeSafe source;
-		private final Map<Key<?>, ConfigModification<?>> modifications;
+		private final Map<ConfigKey<?>, ConfigModification<?>> modifications;
 
-		public ConfigChangeEvent(SolverConfigTypeSafe source, Map<Key<?>, ConfigModification<?>> modifications) {
+		public ConfigChangeEvent(SolverConfigTypeSafe source, Map<ConfigKey<?>, ConfigModification<?>> modifications) {
 			this.source = Objects.requireNonNull(source, "source");
 			this.modifications = Objects.requireNonNull(modifications, "modifications");
 		}
@@ -108,11 +108,11 @@ public class SolverConfigTypeSafe {
 			return source;
 		}
 
-		public boolean hasModification(Key<?> key) {
+		public boolean hasModification(ConfigKey<?> key) {
 			return modifications.containsKey(key);
 		}
 
-		public <T> ConfigModification<T> getModification(Key<T> key) {
+		public <T> ConfigModification<T> getModification(ConfigKey<T> key) {
 			return (ConfigModification<T>) modifications.get(key);
 		}
 	}
@@ -120,15 +120,15 @@ public class SolverConfigTypeSafe {
 	public static class ConfigModification<T> {
 		private final T oldValue;
 		private final T newValue;
-		private final Key<T> propertyKey;
+		private final ConfigKey<T> propertyKey;
 
-		public ConfigModification(Key<T> propertyKey, T oldValue, T newValue) {
+		public ConfigModification(ConfigKey<T> propertyKey, T oldValue, T newValue) {
 			this.propertyKey = Objects.requireNonNull(propertyKey, "propertyKey");
 			this.oldValue = oldValue;
 			this.newValue = newValue;
 		}
 
-		public Key<T> getPropertyKey() {
+		public ConfigKey<T> getPropertyKey() {
 			return propertyKey;
 		}
 
@@ -151,14 +151,14 @@ public class SolverConfigTypeSafe {
 		ONLY_NOT_SET, COPY_ALL
 	}
 
-	private Map<Key<?>, Set<ConfigChangeListener>> listenersByKey = new HashMap<>();
-	private Map<Key<?>, Object> mappings = new HashMap<>();
+	private Map<ConfigKey<?>, Set<ConfigChangeListener>> listenersByKey = new HashMap<>();
+	private Map<ConfigKey<?>, Object> mappings = new HashMap<>();
 
 	/**
 	 * Enables/Disables {@link #notifyListeners()} method
 	 */
 	private boolean enableNotifier = true;
-	private Map<Key<?>, ConfigModification<?>> rememberedModifications = new HashMap<>();
+	private Map<ConfigKey<?>, ConfigModification<?>> rememberedModifications = new HashMap<>();
 
 	/**
 	 * Depending on the selected copy mode, adds the entries of the given config to
@@ -168,13 +168,13 @@ public class SolverConfigTypeSafe {
 	 * @param mode  copy mode
 	 */
 	public void addConfig(SolverConfigTypeSafe other, CopyMode mode) {
-		Collection<Key<?>> entriesToAdd = switch (mode) {
+		Collection<ConfigKey<?>> entriesToAdd = switch (mode) {
 		case COPY_ALL -> other.mappings.keySet();
 		case ONLY_NOT_SET -> other.mappings.keySet().stream().filter(key -> !mappings.containsKey(key)).toList();
 		default -> throw new IllegalArgumentException("Unexpected value: " + mode);
 		};
 
-		for (Key<?> key : entriesToAdd) {
+		for (ConfigKey<?> key : entriesToAdd) {
 			Object newValue = other.mappings.get(key);
 			Object previousValue = mappings.put(key, newValue);
 			if (!isSameValue(previousValue, newValue))
@@ -184,18 +184,18 @@ public class SolverConfigTypeSafe {
 		notifyListeners();
 	}
 
-	public <T> void addListener(Key<T> key, ConfigChangeListener listener) {
+	public <T> void addListener(ConfigKey<T> key, ConfigChangeListener listener) {
 		addListener(key, listener, false);
 	}
 
-	public <T> void addListener(Key<T> key, ConfigChangeListener listener, boolean runListenerImmediately) {
+	public <T> void addListener(ConfigKey<T> key, ConfigChangeListener listener, boolean runListenerImmediately) {
 		Objects.requireNonNull(listener, "listener");
 		Objects.requireNonNull(key, "key");
 		listenersByKey.computeIfAbsent(key, k -> new HashSet<>()).add(listener);
 
 		if (runListenerImmediately) {
 			T property = getProperty(key);
-			Map<Key<?>, ConfigModification<?>> modifications = Collections.singletonMap(key,
+			Map<ConfigKey<?>, ConfigModification<?>> modifications = Collections.singletonMap(key,
 					new ConfigModification<T>(key, property, property));
 			listener.onChange(new ConfigChangeEvent(this, modifications));
 		}
@@ -206,7 +206,7 @@ public class SolverConfigTypeSafe {
 			listeners.remove(listener);
 	}
 
-	public void removeListener(Key<?> key, ConfigChangeListener listener) {
+	public void removeListener(ConfigKey<?> key, ConfigChangeListener listener) {
 		var listeners = listenersByKey.get(key);
 		if (listeners != null) {
 			listeners.remove(listener);
@@ -215,21 +215,21 @@ public class SolverConfigTypeSafe {
 		}
 	}
 
-	public <T> T getProperty(Key<T> key) {
+	public <T> T getProperty(ConfigKey<T> key) {
 		return getProperty(key, key.defaultValue);
 	}
 
-	public <T> boolean hasProperty(Key<T> key) {
+	public <T> boolean hasProperty(ConfigKey<T> key) {
 		return mappings.containsKey(key);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T getProperty(Key<T> key, T defaultValue) {
+	public <T> T getProperty(ConfigKey<T> key, T defaultValue) {
 		return (T) mappings.getOrDefault(key, defaultValue);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> void setProperty(Key<T> key, T value) {
+	public <T> void setProperty(ConfigKey<T> key, T value) {
 		if (key.validator != null)
 			key.validator.validate(value);
 
@@ -263,8 +263,8 @@ public class SolverConfigTypeSafe {
 	public void setFromConfig(org.emoflon.gips.intermediate.GipsIntermediate.SolverConfig solverConfig) {
 		setPropertiesBatch(config -> {
 			if (solverConfig.isEnableLpOutput()) {
-				config.setProperty(Key.LP_OUTPUT_ENABLED, true);
-				config.setProperty(Key.LP_OUTPUT, solverConfig.getLpPath());
+				config.setProperty(ConfigKey.LP_OUTPUT_ENABLED, true);
+				config.setProperty(ConfigKey.LP_OUTPUT, solverConfig.getLpPath());
 			}
 		});
 	}
@@ -276,14 +276,14 @@ public class SolverConfigTypeSafe {
 
 	/**
 	 * Internal only. Type of {@code oldValue} and {@code newValue} already checked
-	 * by {@link #setProperty(Key, Object)}.
+	 * by {@link #setProperty(ConfigKey, Object)}.
 	 * 
 	 * @param key
 	 * @param oldValue
 	 * @param newValue
 	 */
 	@SuppressWarnings("rawtypes")
-	private void addToNextConfigChangeEvent(Key<?> key, Object oldValue, Object newValue) {
+	private void addToNextConfigChangeEvent(ConfigKey<?> key, Object oldValue, Object newValue) {
 		ConfigModification<?> mod = new ConfigModification(key, oldValue, newValue);
 		rememberedModifications.put(key, mod);
 	}
@@ -301,13 +301,13 @@ public class SolverConfigTypeSafe {
 		if (listeners.isEmpty())
 			return;
 
-		Map<Key<?>, ConfigModification<?>> modifications = Collections
+		Map<ConfigKey<?>, ConfigModification<?>> modifications = Collections
 				.unmodifiableMap(new HashMap<>(rememberedModifications));
 		rememberedModifications.clear();
 
 		ConfigChangeEvent event = new ConfigChangeEvent(this, modifications);
 
-		for (var listener : listeners)
+		for (ConfigChangeListener listener : listeners)
 			listener.onChange(event);
 	}
 
@@ -333,7 +333,7 @@ public class SolverConfigTypeSafe {
 	}
 
 	public String getLpOutput() {
-		return getProperty(Key.LP_OUTPUT);
+		return getProperty(ConfigKey.LP_OUTPUT);
 	}
 
 }

@@ -155,7 +155,7 @@ public class SolverConfigTypeSafe {
 	private Map<ConfigKey<?>, Object> mappings = new HashMap<>();
 
 	/**
-	 * Enables/Disables {@link #notifyListeners()} method
+	 * Enables/Disables {@link #fireConfigChangeEvent()} method
 	 */
 	private boolean enableNotifier = true;
 	private Map<ConfigKey<?>, ConfigModification<?>> rememberedModifications = new HashMap<>();
@@ -181,7 +181,7 @@ public class SolverConfigTypeSafe {
 				addToNextConfigChangeEvent(key, previousValue, newValue);
 		}
 
-		notifyListeners();
+		fireConfigChangeEvent();
 	}
 
 	public <T> void addListener(ConfigKey<T> key, ConfigChangeListener listener) {
@@ -240,7 +240,7 @@ public class SolverConfigTypeSafe {
 
 		mappings.put(key, value);
 		addToNextConfigChangeEvent(key, oldValue, value);
-		notifyListeners();
+		fireConfigChangeEvent();
 	}
 
 	private boolean isSameValue(Object currentValue, Object newValue) {
@@ -257,7 +257,7 @@ public class SolverConfigTypeSafe {
 		enableNotifier = false;
 		batch.accept(this);
 		enableNotifier = true;
-		notifyListeners();
+		fireConfigChangeEvent();
 	}
 
 	public void setFromConfig(org.emoflon.gips.intermediate.GipsIntermediate.SolverConfig solverConfig) {
@@ -288,8 +288,8 @@ public class SolverConfigTypeSafe {
 		rememberedModifications.put(key, mod);
 	}
 
-	private void notifyListeners() {
-		if (!enableNotifier || rememberedModifications.isEmpty() || listenersByKey.isEmpty())
+	private void fireConfigChangeEvent() {
+		if (!enableNotifier || rememberedModifications.isEmpty())
 			return;
 
 		Set<ConfigChangeListener> listeners = rememberedModifications.keySet().stream() //
@@ -297,9 +297,6 @@ public class SolverConfigTypeSafe {
 				.filter(e -> e != null) //
 				.flatMap(Set::stream) //
 				.collect(Collectors.toCollection(HashSet::new)); // try to remove duplicates
-
-		if (listeners.isEmpty())
-			return;
 
 		Map<ConfigKey<?>, ConfigModification<?>> modifications = Collections
 				.unmodifiableMap(new HashMap<>(rememberedModifications));

@@ -86,7 +86,7 @@ public class GurobiSolver extends Solver {
 				} catch (final Error e) {
 					gurobiInitError = e;
 				}
-				if (!config.enableOutput() && env != null) {
+				if (!config.isEnableOutput() && env != null) {
 					env.set(IntParam.OutputFlag, 0);
 					env.set(IntParam.LogToConsole, 0);
 				}
@@ -101,35 +101,35 @@ public class GurobiSolver extends Solver {
 				}
 			}
 
-			env.set(IntParam.Presolve, config.enablePresolve() ? 1 : 0);
-			if (config.rndSeedEnabled()) {
-				env.set(IntParam.Seed, config.randomSeed());
+			env.set(IntParam.Presolve, config.isEnablePresolve() ? 1 : 0);
+			if (config.isRndSeedEnabled()) {
+				env.set(IntParam.Seed, config.getRandomSeed());
 			}
 			// TODO: Check specific tolerances later on
-			if (config.enableTolerance()) {
-				env.set(DoubleParam.OptimalityTol, config.tolerance());
-				env.set(DoubleParam.IntFeasTol, config.tolerance());
+			if (config.isEnableTolerance()) {
+				env.set(DoubleParam.OptimalityTol, config.getTolerance());
+				env.set(DoubleParam.IntFeasTol, config.getTolerance());
 			}
-			if (config.timeLimitEnabled()) {
-				env.set(DoubleParam.TimeLimit, config.timeLimit());
+			if (config.isTimeLimitEnabled()) {
+				env.set(DoubleParam.TimeLimit, config.getTimeLimit());
 			}
 			model = new GRBModel(env);
 			// Double all settings to model (is this even necessary?)
-			model.set(IntParam.Presolve, config.enablePresolve() ? 1 : 0);
-			if (config.timeLimitEnabled()) {
-				model.set(DoubleParam.TimeLimit, config.timeLimit());
+			model.set(IntParam.Presolve, config.isEnablePresolve() ? 1 : 0);
+			if (config.isTimeLimitEnabled()) {
+				model.set(DoubleParam.TimeLimit, config.getTimeLimit());
 			}
-			if (config.rndSeedEnabled()) {
-				model.set(IntParam.Seed, config.randomSeed());
+			if (config.isRndSeedEnabled()) {
+				model.set(IntParam.Seed, config.getRandomSeed());
 			}
-			if (config.lpOutput()) {
-				this.lpPath = config.lpPath();
+			if (config.isLpOutput()) {
+				this.lpPath = config.getLpPath();
 			}
 			// Set number of threads to use
 			// If configuration option is disabled, use the maximum number of threads the
 			// system provides
-			if (config.threadCount()) {
-				model.set(IntParam.Threads, config.threads());
+			if (config.isEnableThreadCount()) {
+				model.set(IntParam.Threads, config.getThreadCount());
 			} else {
 				model.set(IntParam.Threads, SystemUtil.getSystemThreads());
 			}
@@ -156,21 +156,21 @@ public class GurobiSolver extends Solver {
 	public SolverOutput solve() {
 		// If necessary, overwrite time limit with:
 		// new_time_limit = old_time_limit - init_time_consumed
-		if (this.config.timeLimitIncludeInitTime() && this.engine.getInitTimeInSeconds() != 0) {
+		if (this.config.isTimeLimitIncludeInitTime() && this.engine.getInitTimeInSeconds() != 0) {
 			// If the new_time_limit is not >0, the whole solver must not be started at all
-			final double oldTimeLimit = this.config.timeLimit();
+			final double oldTimeLimit = this.config.getTimeLimit();
 			final double newTimeLimit = oldTimeLimit - this.engine.getInitTimeInSeconds();
 			if (newTimeLimit <= 0) {
 				return new SolverOutput(SolverStatus.TIME_OUT, 0, null, 0, null);
 			}
-			this.config = this.config.withNewTimeLimit(newTimeLimit);
+			this.config.setTimeLimit(newTimeLimit);
 			try {
-				if (config.timeLimitEnabled()) {
-					if (this.config.enableOutput()) {
-						System.out.println(
-								"=> Debug output: Overwrite specified Gurobi time limit with: " + config.timeLimit());
+				if (config.isTimeLimitEnabled()) {
+					if (this.config.isEnableOutput()) {
+						System.out.println("=> Debug output: Overwrite specified Gurobi time limit with: "
+								+ config.getTimeLimit());
 					}
-					model.set(DoubleParam.TimeLimit, config.timeLimit());
+					model.set(DoubleParam.TimeLimit, config.getTimeLimit());
 				}
 			} catch (final Exception e) {
 				return new SolverOutput(SolverStatus.TIME_OUT, 0, null, 0, null);

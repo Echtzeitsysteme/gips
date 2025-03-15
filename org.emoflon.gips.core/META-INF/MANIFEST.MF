@@ -7,13 +7,15 @@ Automatic-Module-Name: org.emoflon.gips.core
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: org.emoflon.ibex.gt;visibility:=reexport,
  org.emoflon.gips.intermediate;visibility:=reexport,
- org.emoflon.gips.core.dependencies;visibility:=reexport,
- org.emoflon.gips.build
+ org.emoflon.gips.core.dependencies;bundle-version="1.0.0";visibility:=reexport,
+ org.emoflon.gips.build,
+ org.emoflon.gips.eclipse;bundle-version="[1.0.0,2.0.0)";visibility:=reexport
 Export-Package: org.emoflon.gips.core,
  org.emoflon.gips.core.api,
  org.emoflon.gips.core.gt,
  org.emoflon.gips.core.milp,
  org.emoflon.gips.core.milp.model,
+ org.emoflon.gips.core.trace,
  org.emoflon.gips.core.util,
  org.emoflon.gips.core.validation
 Bundle-Vendor: Real-Time Systems Lab - TU Darmstadt

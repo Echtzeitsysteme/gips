@@ -14,6 +14,7 @@ import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.TypeIndexer;
 import org.emoflon.gips.core.milp.Solver;
 import org.emoflon.gips.core.milp.SolverConfig;
+import org.emoflon.gips.core.trace.Intermediate2IlpTracer;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
@@ -182,6 +183,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 * Terminates the GipsEngine (super class) and the eMoflon::IBeX engine
 	 * (including the pattern matcher).
 	 */
+	@Override
 	public void terminate() {
 		// Terminate the GipsEngine
 		super.terminate();
@@ -312,6 +314,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		initTypeIndexer();
 		validationLog = new GipsConstraintValidationLog();
 		setSolverConfig(gipsModel.getConfig());
+		initTracer();
 		initMapperFactory();
 		createMappers();
 		initConstraintFactory();
@@ -345,6 +348,11 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		gipsModel = (GipsIntermediateModel) model.getContents().get(0);
 
 		gipsModel.getMappings().forEach(mapping -> name2Mapping.put(mapping.getName(), mapping));
+	}
+
+	protected void initTracer() {
+		tracer = new Intermediate2IlpTracer(getSolverConfig());
+		tracer.computeGipsModelId(gipsModel.eResource().getURI());
 	}
 
 	protected abstract void createMappers();

@@ -9,6 +9,7 @@ import org.emoflon.gips.core.milp.Solver;
 import org.emoflon.gips.core.milp.SolverOutput;
 import org.emoflon.gips.core.milp.SolverStatus;
 import org.emoflon.gips.core.milp.model.Variable;
+import org.emoflon.gips.core.trace.Intermediate2IlpTracer;
 import org.emoflon.gips.core.util.Observer;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 
@@ -24,6 +25,7 @@ public abstract class GipsEngine {
 	final protected Map<String, GipsLinearFunction<?, ?, ?>> functions = Collections.synchronizedMap(new HashMap<>());
 	protected GipsObjective objective;
 	protected Solver solver;
+	protected Intermediate2IlpTracer tracer;
 
 	/**
 	 * Time tick of the initialization point in time, i.e., the point in time when
@@ -120,6 +122,12 @@ public abstract class GipsEngine {
 			objective.buildObjectiveFunction();
 
 		solver.buildILPProblem();
+		buildTraceGraph();
+	}
+
+	protected void buildTraceGraph() {
+		if (tracer.isTracingEnabled())
+			tracer.buildTraceGraphAndSendToIDE(this);
 	}
 
 	public SolverOutput solveProblemTimed() {
@@ -246,6 +254,10 @@ public abstract class GipsEngine {
 
 	public void setSolver(final Solver solver) {
 		this.solver = solver;
+	}
+
+	public Intermediate2IlpTracer getTracer() {
+		return this.tracer;
 	}
 
 	/**

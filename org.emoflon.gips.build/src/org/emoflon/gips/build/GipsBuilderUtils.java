@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -29,6 +30,13 @@ import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.emoflon.gips.build.generator.GipsImportManager;
+import org.emoflon.gips.build.transformation.GipsToIntermediate;
+import org.emoflon.gips.eclipse.api.ITraceContext;
+import org.emoflon.gips.eclipse.api.ITraceManager;
+import org.emoflon.gips.eclipse.trace.TraceMap;
+import org.emoflon.gips.eclipse.trace.TraceModelLink;
+import org.emoflon.gips.eclipse.trace.resolver.ResolveEcore2Id;
+import org.emoflon.gips.eclipse.utility.HelperEclipse;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.ibex.gt.codegen.EClassifiersManager;
@@ -151,7 +159,7 @@ public final class GipsBuilderUtils {
 		saveOptions.put(XMLResource.OPTION_SAVE_TYPE_INFORMATION, Boolean.TRUE);
 		saveOptions.put(XMLResource.OPTION_SCHEMA_LOCATION_IMPLEMENTATION, Boolean.TRUE);
 		try {
-			((XMIResource) output).save(saveOptions);
+			output.save(saveOptions);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -290,6 +298,49 @@ public final class GipsBuilderUtils {
 			apiData.engineAppClasses.put(engineExt.getEngineName(),
 					getClassNamePrefix(project) + engineExt.getEngineName() + "App");
 		});
+	}
+
+	/**
+	 * Updates the project specific model transformation trace
+	 * 
+	 * @param project              used to determine the project to be update
+	 * @param gipslModelURI        used to generate an id for the gipsl model
+	 * @param intermediateModelURI used to generate an id the intermediate model
+	 * @param transformer          Provides the gipsl-intermediate trace
+	 */
+	public static void updateTrace(final IProject project, final URI gipslModelURI, final URI intermediateModelURI,
+			final GipsToIntermediate transformer) {
+
+		// each project has it's own trace.
+		ITraceContext traceContext = ITraceManager.getInstance().getContext(project.getName());
+
+		try {
+			// adjust file extension from xmi to gipsl
+			URI gipslURI = HelperEclipse.toPlatformURI(gipslModelURI.trimFileExtension().appendFileExtension("gipsl"));
+			// first segment of an URI is the project name, by removing it we get a
+			// project relative path
+			IPath gipslPath = IPath.fromOSString(gipslURI.toPlatformString(true)).makeRelative().removeFirstSegments(1);
+
+			URI intermediateURI = HelperEclipse.toPlatformURI(intermediateModelURI);
+			// FIXME: the intermediate URI isn't a valid URI. The first segment is not the
+			// project name.
+			IPath intermediatePath = IPath.fromOSString(intermediateURI.toPlatformString(true)).makeRelative();
+
+			String gipslModelId = gipslPath.toString(); // gipslModelURI.trimFileExtension().lastSegment();
+			String intermediateModelId = intermediatePath.toString(); // intermediateModelURI.trimFileExtension().lastSegment();
+
+			if (gipslModelId.equalsIgnoreCase(intermediateModelId))
+				throw new IllegalArgumentException(
+						"GIPSL and Intermediate model id should not be equal: '" + gipslModelId + "'");
+
+			TraceMap<String, String> gipsl2intermediateMppings = TraceMap.normalize(transformer.getTrace(),
+					ResolveEcore2Id.INSTANCE, ResolveEcore2Id.INSTANCE);
+
+			traceContext
+					.updateTraceModel(new TraceModelLink(gipslModelId, intermediateModelId, gipsl2intermediateMppings));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**

@@ -32,6 +32,10 @@ public abstract class GipsObjective {
 		milpObjective = new NestedLinearFunction(weightedFunctions, constantTerms, objective.getGoal());
 	}
 
+	public Objective getIntermediateObjective() {
+		return objective;
+	}
+
 	public NestedLinearFunction getObjectiveFunction() {
 		return milpObjective;
 	}

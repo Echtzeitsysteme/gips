@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.emoflon.gips.eclipse.api.ITraceRemoteService;
 
 public final class PluginPreferenceInitializer extends AbstractPreferenceInitializer {
 
@@ -17,7 +18,7 @@ public final class PluginPreferenceInitializer extends AbstractPreferenceInitial
 
 		// RMI Service
 		node.putBoolean(PluginPreferences.PREF_TRACE_RMI, true);
-		node.putInt(PluginPreferences.PREF_TRACE_RMI_PORT, 2842);
+		node.putInt(PluginPreferences.PREF_TRACE_RMI_PORT, ITraceRemoteService.DEFAULT_PORT);
 
 		// trace storage
 		node.putBoolean(PluginPreferences.PREF_TRACE_CACHE_ENABLED, true);

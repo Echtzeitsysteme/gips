@@ -20,6 +20,7 @@ import org.emoflon.gips.eclipse.trace.TraceModelLink;
 public interface ITraceRemoteService extends Remote {
 
 	public static final String SERVICE_NAME = "ITraceRemoteService";
+	public static final int DEFAULT_PORT = 2842;
 
 	/**
 	 * Updates the trace data of a given Eclipse project.

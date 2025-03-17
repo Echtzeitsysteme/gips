@@ -30,7 +30,7 @@ public class Intermediate2IlpTracer {
 	private final TraceMap<EObject, String> mappings = new TraceMap<>();
 	private final SolverConfig config;
 
-	private int rmiServicePort = 2842;
+	private int rmiServicePort = ITraceRemoteService.DEFAULT_PORT;
 	private String intermediateModelId;
 	private String lpModelId;
 

@@ -43,7 +43,11 @@ public abstract class Solver {
 		init();
 	}
 
-	protected abstract void init() throws Exception;
+	/**
+	 * Initialize this solver. A solver can be initialized multiple times and should
+	 * not fail because it has already been initialized.
+	 */
+	public abstract void init();
 
 	public void buildILPProblem() {
 		engine.getMappers().values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
@@ -87,6 +91,11 @@ public abstract class Solver {
 
 	protected abstract void translateObjective(final GipsObjective objective);
 
+	/**
+	 * Terminates this solver and releases all resources used. A solver can be
+	 * terminated more than once or before it has been initialized. This method
+	 * should not fail for either reason.
+	 */
 	public abstract void terminate();
 
 	public abstract void reset();

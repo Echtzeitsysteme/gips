@@ -66,10 +66,9 @@ public class CplexSolver extends Solver {
 
 	public CplexSolver(final GipsEngine engine, final SolverConfig config) {
 		super(engine, config);
-		init();
 	}
 
-	protected void init() {
+	public void init() {
 		try {
 			cplex = new IloCplex();
 			if (config.isTimeLimitEnabled()) {
@@ -116,14 +115,18 @@ public class CplexSolver extends Solver {
 	public void terminate() {
 		this.constraints.clear();
 		this.vars.clear();
-		try {
-			cplex.setDefaults();
-			cplex.clearModel();
-			cplex.endModel();
-		} catch (final IloException e) {
-			e.printStackTrace();
+
+		if (cplex != null) {
+			try {
+				cplex.setDefaults();
+				cplex.clearModel();
+				cplex.endModel();
+			} catch (final IloException e) {
+				e.printStackTrace();
+			}
+			cplex.end();
+			cplex = null;
 		}
-		cplex.end();
 	}
 
 	@Override

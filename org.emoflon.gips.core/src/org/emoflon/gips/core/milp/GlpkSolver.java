@@ -84,10 +84,9 @@ public class GlpkSolver extends Solver {
 		super(engine, config);
 		constraints = new HashMap<>();
 		ilpVars = new HashMap<>();
-		init();
 	}
 
-	protected void init() {
+	public void init() {
 		constraints.clear();
 		ilpVars.clear();
 
@@ -119,8 +118,15 @@ public class GlpkSolver extends Solver {
 
 	@Override
 	public void terminate() {
-		model.delete();
-		iocp.delete();
+		if (model != null) {
+			model.delete();
+			model = null;
+		}
+
+		if (iocp != null) {
+			iocp.delete();
+			iocp = null;
+		}
 	}
 
 	@Override

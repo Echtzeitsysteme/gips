@@ -60,11 +60,10 @@ public class GurobiSolver extends Solver {
 
 	public GurobiSolver(final GipsEngine engine, final SolverConfig config) throws Exception {
 		super(engine, config);
-		init();
 	}
 
 	@Override
-	protected void init() {
+	public void init() {
 		try {
 			// When running multiple instances in parallel,
 			// the last instance to finish might otherwise
@@ -143,10 +142,17 @@ public class GurobiSolver extends Solver {
 
 	@Override
 	public void terminate() {
-		model.terminate();
-		model.dispose();
+		if (model != null) {
+			model.terminate();
+			model.dispose();
+			model = null;
+		}
+
 		try {
-			env.dispose();
+			if (env != null) {
+				env.dispose();
+				env = null;
+			}
 		} catch (final GRBException e) {
 			e.printStackTrace();
 		}

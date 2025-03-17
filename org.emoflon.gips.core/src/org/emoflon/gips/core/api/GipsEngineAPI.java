@@ -198,7 +198,8 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 
 	protected void setSolverConfig(final org.emoflon.gips.intermediate.GipsIntermediate.SolverConfig config) {
 		solverConfig.setEnableTimeLimit(config.isEnableTimeLimit());
-		solverConfig.setTimeLimit(config.getTimeLimit());
+		if (config.isEnableTimeLimit())
+			solverConfig.setTimeLimit(config.getTimeLimit());
 		solverConfig.setTimeLimitIncludeInitTime(config.isTimeLimitIncludeInitTime());
 
 		solverConfig.setEnabledRandomSeed(config.isEnableRndSeed());
@@ -214,7 +215,8 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		solverConfig.setLpPath(config.getLpPath());
 
 		solverConfig.setEnableThreadCount(config.isThreadCountEnabled());
-		solverConfig.setThreadCount(config.getThreadCount());
+		if (config.isThreadCountEnabled())
+			solverConfig.setThreadCount(config.getThreadCount());
 	}
 
 	/**

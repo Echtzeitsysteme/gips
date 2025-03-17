@@ -126,9 +126,13 @@ NumberLiteral: value = Number;
 InfinityLiteral: value = Infinity;
 //RelationLiteral: value = RelationOperator;
 
-Number :  FLOAT | INTEGER;
-terminal INTEGER returns ecore::EInt: '-'? DIGIT+;
-terminal FLOAT returns ecore::EDouble: INTEGER '.' DIGIT+;
+//Number :  FLOAT | INTEGER;
+//terminal INTEGER returns ecore::EInt: '-'? DIGIT+;
+//terminal FLOAT returns ecore::EDouble: INTEGER '.' DIGIT+;
+Number: FLOAT;
+terminal FLOAT returns ecore::EBigDecimal:
+	'-'? DIGIT+('.'DIGIT+)?(('e'|'E')('-'|'+')DIGIT+)?
+;
 
 enum LinearOperators: 
 	PLUS = '+' |

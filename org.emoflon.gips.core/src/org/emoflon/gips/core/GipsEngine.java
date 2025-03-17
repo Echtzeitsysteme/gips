@@ -119,6 +119,7 @@ public abstract class GipsEngine {
 		if (objective != null)
 			objective.buildObjectiveFunction();
 
+		solver.init();
 		solver.buildILPProblem();
 	}
 

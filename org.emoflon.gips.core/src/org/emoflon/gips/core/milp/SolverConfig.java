@@ -68,8 +68,11 @@ public class SolverConfig {
 		return timeLimitEnabled;
 	}
 
-	public void setEnableTimeLimit(boolean timeLimitEnabled) {
-		this.timeLimitEnabled = timeLimitEnabled;
+	public void setEnableTimeLimit(boolean newValue) {
+		var oldValue = this.timeLimitEnabled;
+		this.timeLimitEnabled = newValue;
+
+		aValueChanged |= oldValue != newValue;
 		notifyListeners();
 	}
 

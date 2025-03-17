@@ -56,10 +56,12 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 * given parameter's value.
 	 * 
 	 * @param numberOfThreads Number of ILP solver threads to set.
+	 * @deprecated Use {@link #getSolverConfig()} and
+	 *             {@link SolverConfig#setThreadCount(int)}
 	 */
+	@Deprecated
 	public void setIlpSolverThreads(final int numberOfThreads) {
-		solverConfig.setThreadCount(numberOfThreads);
-		reinitializeSolver();
+		getSolverConfig().setThreadCount(numberOfThreads);
 	}
 
 	/**
@@ -67,10 +69,12 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 * value.
 	 * 
 	 * @param newTimeLimit New time limit to set.
+	 * @deprecated Use {@link #getSolverConfig()} and
+	 *             {@link SolverConfig#setTimeLimit(double)}
 	 */
+	@Deprecated
 	public void setTimeLimit(final double newTimeLimit) {
-		solverConfig.setTimeLimit(newTimeLimit);
-		reinitializeSolver();
+		getSolverConfig().setTimeLimit(newTimeLimit);
 	}
 
 	public EMOFLON_APP getEMoflonApp() {

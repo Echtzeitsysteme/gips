@@ -20,6 +20,13 @@ Require-Bundle: org.emoflon.gips.eclipse.cplexlp,
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Export-Package: org.emoflon.gips.eclipse.cplexlp.ui.internal,
+ org.emoflon.gips.eclipse.ui,
  org.emoflon.gips.eclipse.ui.contentassist,
- org.emoflon.gips.eclipse.ui.quickfix
+ org.emoflon.gips.eclipse.ui.editor,
+ org.emoflon.gips.eclipse.ui.editor.preferences,
+ org.emoflon.gips.eclipse.ui.highlight,
+ org.emoflon.gips.eclipse.ui.labeling,
+ org.emoflon.gips.eclipse.ui.outline,
+ org.emoflon.gips.eclipse.ui.quickfix,
+ org.emoflon.gips.eclipse.validation
 Bundle-Activator: org.emoflon.gips.eclipse.cplexlp.ui.internal.CplexlpActivator

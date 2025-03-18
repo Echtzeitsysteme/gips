@@ -11,6 +11,7 @@ Require-Bundle: org.emoflon.gips.eclipse.cplexlp,
  org.eclipse.xtext.xbase.ide,
  org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
-Export-Package: org.emoflon.gips.eclipse.ide.contentassist.antlr,
+Export-Package: org.emoflon.gips.eclipse.ide,
+ org.emoflon.gips.eclipse.ide.contentassist.antlr,
  org.emoflon.gips.eclipse.ide.contentassist.antlr.internal,
  org.emoflon.gips.eclipse.ide.contentassist.antlr.lexer

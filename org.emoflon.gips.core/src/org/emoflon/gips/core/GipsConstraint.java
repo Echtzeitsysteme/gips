@@ -58,6 +58,10 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends o
 		return name;
 	}
 
+	public CONSTR getIntermediateConstraint() {
+		return constraint;
+	}
+
 	public Collection<Variable<?>> getAdditionalVariables() {
 		return additionalVariables.values().stream().flatMap(vars -> vars.values().stream())
 				.collect(Collectors.toSet());

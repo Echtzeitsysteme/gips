@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.emoflon.gips.eclipse.cplexlp.ui
+Bundle-ManifestVersion: 2
+Bundle-Name: Gips::Eclipse::CplexLp::UI
+Bundle-Vendor: Real-Time Systems Lab - TU Darmstadt
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: org.emoflon.gips.eclipse.cplexlp.ui;singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.emoflon.gips.eclipse.cplexlp,
+ org.emoflon.gips.eclipse.cplexlp.ide,
+ org.eclipse.xtext.ui,
+ org.eclipse.xtext.ui.shared,
+ org.eclipse.xtext.ui.codetemplates.ui,
+ org.eclipse.ui.editors;bundle-version="3.14.300",
+ org.eclipse.ui.ide;bundle-version="3.18.500",
+ org.eclipse.ui,
+ org.eclipse.compare,
+ org.eclipse.xtext.builder,
+ org.eclipse.xtext.xbase.ui
+Import-Package: org.apache.log4j
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Export-Package: org.emoflon.gips.eclipse.cplexlp.ui.internal,
+ org.emoflon.gips.eclipse.ui.contentassist,
+ org.emoflon.gips.eclipse.ui.quickfix
+Bundle-Activator: org.emoflon.gips.eclipse.cplexlp.ui.internal.CplexlpActivator

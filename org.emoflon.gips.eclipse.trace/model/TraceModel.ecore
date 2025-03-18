@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="trace" nsURI="http://org.emoflon.gips.eclipse/trace" nsPrefix="GipsTrace">
+  <eClassifiers xsi:type="ecore:EClass" name="ModelReference">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="modelId" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transformsTo" upperBound="-1"
+        eType="#//ModelTransformation" containment="true" eOpposite="#//ModelTransformation/source"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="createdBy" upperBound="-1"
+        eType="#//ModelTransformation" eOpposite="#//ModelTransformation/target"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
+        eType="#//ElementReference" containment="true" eOpposite="#//ElementReference/root"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ElementReference">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transformsTo" upperBound="-1"
+        eType="#//ElementTransformation" eOpposite="#//ElementTransformation/source"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="createdBy" upperBound="-1"
+        eType="#//ElementTransformation" eOpposite="#//ElementTransformation/target"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="root" lowerBound="1" eType="#//ModelReference"
+        eOpposite="#//ModelReference/elements"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementId" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ElementTransformation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
+        eType="#//ElementReference" eOpposite="#//ElementReference/transformsTo"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
+        eType="#//ElementReference" eOpposite="#//ElementReference/createdBy"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="root" lowerBound="1" eType="#//ModelTransformation"
+        eOpposite="#//ModelTransformation/transformations"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ModelTransformation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
+        eType="#//ModelReference" eOpposite="#//ModelReference/transformsTo"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
+        eType="#//ModelReference" eOpposite="#//ModelReference/createdBy"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transformations" lowerBound="1"
+        upperBound="-1" eType="#//ElementTransformation" containment="true" eOpposite="#//ElementTransformation/root"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Root">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="models" upperBound="-1"
+        eType="#//ModelReference" containment="true"/>
+  </eClassifiers>
+</ecore:EPackage>

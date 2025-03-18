@@ -34,6 +34,10 @@ public abstract class GipsLinearFunction<ENGINE extends GipsEngine, LF extends o
 		}
 	}
 
+	public LF getIntermediateLinearFunction() {
+		return linearFunction;
+	}
+
 	public abstract void buildLinearFunction();
 
 	public String getName() {

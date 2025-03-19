@@ -101,7 +101,7 @@ public class GurobiSolver extends Solver {
 			}
 
 			env.set(IntParam.Presolve, config.isEnablePresolve() ? 1 : 0);
-			if (config.isRndSeedEnabled()) {
+			if (config.isRandomSeedEnabled()) {
 				env.set(IntParam.Seed, config.getRandomSeed());
 			}
 			// TODO: Check specific tolerances later on
@@ -118,10 +118,10 @@ public class GurobiSolver extends Solver {
 			if (config.isTimeLimitEnabled()) {
 				model.set(DoubleParam.TimeLimit, config.getTimeLimit());
 			}
-			if (config.isRndSeedEnabled()) {
+			if (config.isRandomSeedEnabled()) {
 				model.set(IntParam.Seed, config.getRandomSeed());
 			}
-			if (config.isLpOutput()) {
+			if (config.isEnableLpOutput()) {
 				this.lpPath = config.getLpPath();
 			}
 			// Set number of threads to use

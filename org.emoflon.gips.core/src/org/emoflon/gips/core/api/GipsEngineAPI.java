@@ -213,7 +213,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		solverConfig.setEnableTolerance(config.isEnableCustomTolerance());
 		solverConfig.setTolerance(config.getTolerance());
 
-		solverConfig.setLpOutput(config.isEnableLpOutput());
+		solverConfig.setEnableLpOutput(config.isEnableLpOutput());
 		solverConfig.setLpPath(config.getLpPath());
 
 		solverConfig.setEnableThreadCount(config.isThreadCountEnabled());

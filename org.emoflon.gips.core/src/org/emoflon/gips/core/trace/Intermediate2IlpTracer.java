@@ -154,7 +154,7 @@ public class Intermediate2IlpTracer {
 	}
 
 	public void buildTraceGraphAndSendToIDE(GipsEngine gipsEngine) {
-		if (!config.isLpOutput() || config.getLpPath() == null) {
+		if (!config.isEnableLpOutput() || config.getLpPath() == null) {
 			System.err.println(
 					"Unable to create trace for lp file. LP output is disabled or lp path is null. A valid LP output path is required");
 			return;

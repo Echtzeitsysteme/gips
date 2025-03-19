@@ -75,7 +75,7 @@ public class CplexSolver extends Solver {
 				// TODO: Check if unit (e.g., milliseconds) is correct
 				cplex.setParam(IloCplex.Param.TimeLimit, config.getTimeLimit());
 			}
-			if (config.isRndSeedEnabled()) {
+			if (config.isRandomSeedEnabled()) {
 				cplex.setParam(IloCplex.Param.RandomSeed, config.getRandomSeed());
 			}
 			cplex.setParam(IloCplex.Param.Preprocessing.Presolve, config.isEnablePresolve());
@@ -89,7 +89,7 @@ public class CplexSolver extends Solver {
 				cplex.setOut(null);
 			}
 
-			if (config.isLpOutput()) {
+			if (config.isEnableLpOutput()) {
 				this.lpPath = config.getLpPath();
 			}
 

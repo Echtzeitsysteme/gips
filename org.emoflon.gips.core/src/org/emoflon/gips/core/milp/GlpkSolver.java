@@ -109,7 +109,7 @@ public class GlpkSolver extends Solver {
 		// Random seed not supported by the GLPK Java interface
 		// TODO: Set output flag
 
-		if (config.isLpOutput()) {
+		if (config.isEnableLpOutput()) {
 			this.lpPath = config.getLpPath();
 		}
 

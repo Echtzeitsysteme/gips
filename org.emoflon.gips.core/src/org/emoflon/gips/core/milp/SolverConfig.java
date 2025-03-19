@@ -28,7 +28,7 @@ public class SolverConfig {
 	private boolean timeLimitEnabled;
 	private double timeLimit;
 	private boolean timeLimitIncludeInitTime;
-	private boolean rndSeedEnabled;
+	private boolean randomSeedEnabled;
 	private int randomSeed;
 	private boolean enablePresolve;
 	private boolean enableOutput;
@@ -103,13 +103,13 @@ public class SolverConfig {
 		notifyListeners();
 	}
 
-	public boolean isRndSeedEnabled() {
-		return rndSeedEnabled;
+	public boolean isRandomSeedEnabled() {
+		return randomSeedEnabled;
 	}
 
 	public void setEnabledRandomSeed(boolean newValue) {
-		var oldValue = this.rndSeedEnabled;
-		this.rndSeedEnabled = newValue;
+		var oldValue = this.randomSeedEnabled;
+		this.randomSeedEnabled = newValue;
 
 		aValueChanged |= oldValue != newValue;
 		notifyListeners();
@@ -175,11 +175,11 @@ public class SolverConfig {
 		notifyListeners();
 	}
 
-	public boolean isLpOutput() {
+	public boolean isEnableLpOutput() {
 		return lpOutput;
 	}
 
-	public void setLpOutput(boolean newValue) {
+	public void setEnableLpOutput(boolean newValue) {
 		var oldValue = this.lpOutput;
 		this.lpOutput = newValue;
 

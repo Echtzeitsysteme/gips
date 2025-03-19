@@ -82,6 +82,7 @@ public abstract class GipsEngine {
 			});
 
 			observer.observe("BUILD_SOLVER", () -> {
+				solver.init();
 				solver.buildILPProblem();
 			});
 		});

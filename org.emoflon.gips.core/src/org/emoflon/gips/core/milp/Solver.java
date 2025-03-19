@@ -40,6 +40,7 @@ public abstract class Solver {
 	 * @throws Exception Throws an exception if the re-initialization fails.
 	 */
 	public void reinitialize() throws Exception {
+		terminate();
 		init();
 	}
 

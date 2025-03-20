@@ -82,6 +82,7 @@ public abstract class GipsEngine {
 			});
 
 			observer.observe("BUILD_SOLVER", () -> {
+				solver.init();
 				solver.buildILPProblem();
 			});
 		});
@@ -121,6 +122,7 @@ public abstract class GipsEngine {
 		if (objective != null)
 			objective.buildObjectiveFunction();
 
+		solver.init();
 		solver.buildILPProblem();
 		buildTraceGraph();
 	}

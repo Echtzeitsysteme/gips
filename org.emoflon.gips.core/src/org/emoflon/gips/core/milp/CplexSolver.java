@@ -66,39 +66,38 @@ public class CplexSolver extends Solver {
 
 	public CplexSolver(final GipsEngine engine, final SolverConfig config) {
 		super(engine, config);
-		init();
 	}
 
-	protected void init() {
+	public void init() {
 		try {
 			cplex = new IloCplex();
-			if (config.timeLimitEnabled()) {
+			if (config.isTimeLimitEnabled()) {
 				// TODO: Check if unit (e.g., milliseconds) is correct
-				cplex.setParam(IloCplex.Param.TimeLimit, config.timeLimit());
+				cplex.setParam(IloCplex.Param.TimeLimit, config.getTimeLimit());
 			}
-			if (config.rndSeedEnabled()) {
-				cplex.setParam(IloCplex.Param.RandomSeed, config.randomSeed());
+			if (config.isRandomSeedEnabled()) {
+				cplex.setParam(IloCplex.Param.RandomSeed, config.getRandomSeed());
 			}
-			cplex.setParam(IloCplex.Param.Preprocessing.Presolve, config.enablePresolve());
+			cplex.setParam(IloCplex.Param.Preprocessing.Presolve, config.isEnablePresolve());
 			// TODO: Check specific tolerances later on
-			if (config.enableTolerance()) {
-				cplex.setParam(IloCplex.Param.MIP.Tolerances.Integrality, config.tolerance());
-				cplex.setParam(IloCplex.Param.MIP.Tolerances.AbsMIPGap, config.tolerance());
+			if (config.isEnableTolerance()) {
+				cplex.setParam(IloCplex.Param.MIP.Tolerances.Integrality, config.getTolerance());
+				cplex.setParam(IloCplex.Param.MIP.Tolerances.AbsMIPGap, config.getTolerance());
 			}
 
-			if (!config.enableOutput()) {
+			if (!config.isEnableOutput()) {
 				cplex.setOut(null);
 			}
 
-			if (config.lpOutput()) {
-				this.lpPath = config.lpPath();
+			if (config.isEnableLpOutput()) {
+				this.lpPath = config.getLpPath();
 			}
 
 			// Set number of threads to use
 			// If configuration option is disabled, use the maximum number of threads the
 			// system provides
-			if (config.threadCount()) {
-				cplex.setParam(IloCplex.Param.Threads, config.threads());
+			if (config.isEnableThreadCount()) {
+				cplex.setParam(IloCplex.Param.Threads, config.getThreadCount());
 			} else {
 				cplex.setParam(IloCplex.Param.Threads, SystemUtil.getSystemThreads());
 			}
@@ -116,14 +115,18 @@ public class CplexSolver extends Solver {
 	public void terminate() {
 		this.constraints.clear();
 		this.vars.clear();
-		try {
-			cplex.setDefaults();
-			cplex.clearModel();
-			cplex.endModel();
-		} catch (final IloException e) {
-			e.printStackTrace();
+
+		if (cplex != null) {
+			try {
+				cplex.setDefaults();
+				cplex.clearModel();
+				cplex.endModel();
+			} catch (final IloException e) {
+				e.printStackTrace();
+			}
+			cplex.end();
+			cplex = null;
 		}
-		cplex.end();
 	}
 
 	@Override
@@ -142,21 +145,21 @@ public class CplexSolver extends Solver {
 
 		// If necessary, overwrite time limit with:
 		// new_time_limit = old_time_limit - init_time_consumed
-		if (this.config.timeLimitIncludeInitTime() && this.engine.getInitTimeInSeconds() != 0) {
+		if (this.config.isTimeLimitIncludeInitTime() && this.engine.getInitTimeInSeconds() != 0) {
 			// If the new_time_limit is not >0, the whole solver must not be started at all
-			final double oldTimeLimit = this.config.timeLimit();
+			final double oldTimeLimit = this.config.getTimeLimit();
 			final double newTimeLimit = oldTimeLimit - this.engine.getInitTimeInSeconds();
 			if (newTimeLimit <= 0) {
 				return new SolverOutput(SolverStatus.TIME_OUT, 0, null, 0, null);
 			}
-			this.config = this.config.withNewTimeLimit(newTimeLimit);
+			this.config.setTimeLimit(newTimeLimit);
 			try {
-				if (config.timeLimitEnabled()) {
-					if (this.config.enableOutput()) {
+				if (config.isTimeLimitEnabled()) {
+					if (this.config.isEnableOutput()) {
 						System.out.println(
-								"=> Debug output: Overwrite specified CPLEX time limit with: " + config.timeLimit());
+								"=> Debug output: Overwrite specified CPLEX time limit with: " + config.getTimeLimit());
 					}
-					cplex.setParam(IloCplex.Param.TimeLimit, config.timeLimit());
+					cplex.setParam(IloCplex.Param.TimeLimit, config.getTimeLimit());
 				}
 			} catch (final Exception e) {
 				return new SolverOutput(SolverStatus.TIME_OUT, 0, null, 0, null);

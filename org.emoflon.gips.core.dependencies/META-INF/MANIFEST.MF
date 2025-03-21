@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Gips::Core::Dependencies
 Bundle-SymbolicName: org.emoflon.gips.core.dependencies
 Bundle-Version: 1.5.0
-Bundle-ClassPath: lib/cplex-22.1.1.jar,
+Bundle-ClassPath: lib/cplex-22.1.2.jar,
  lib/glpk-java-1.12.0.jar,
  lib/glpk-java-1.12.0-javadoc.jar,
  lib/logicng-2.6.0.jar,
@@ -46,8 +46,8 @@ Export-Package: com.gurobi.gurobi;version="12.0.1",
  com.sun.jna.platform.wince;version="5.15.0",
  com.sun.jna.ptr;version="5.15.0",
  com.sun.jna.win32;version="5.15.0",
- ilog.concert;version="22.1.1",
- ilog.cplex;version="22.1.1",
+ ilog.concert;version="22.1.2",
+ ilog.cplex;version="22.1.2",
  org.gnu.glpk;version="1.12.0",
  org.logicng;version="2.6.0",
  org.logicng.backbones;version="2.6.0",

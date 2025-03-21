@@ -14,6 +14,7 @@ import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.TypeIndexer;
 import org.emoflon.gips.core.milp.Solver;
 import org.emoflon.gips.core.milp.SolverConfig;
+import org.emoflon.gips.core.trace.Intermediate2IlpTracer;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
@@ -30,7 +31,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	protected ResourceSet model;
 	protected GipsIntermediateModel gipsModel;
 	final protected Map<String, Mapping> name2Mapping = new HashMap<>();
-	protected SolverConfig solverConfig;
+	final protected SolverConfig solverConfig = new SolverConfig();
 	protected GipsMapperFactory<EMOFLON_API> mapperFactory;
 	protected GipsConstraintFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> constraintFactory;
 	protected GipsLinearFunctionFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> functionFactory;
@@ -39,8 +40,12 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		this.eMoflonApp = eMoflonApp;
 	}
 
-	public void setSolverConfig(final SolverConfig solverConfig) {
-		this.solverConfig = solverConfig;
+	public void reinitializeSolver() {
+		try {
+			solver.reinitialize();
+		} catch (final Exception e) {
+			throw new InternalError("Solver re-initialization failed: " + e);
+		}
 	}
 
 	public SolverConfig getSolverConfig() {
@@ -52,9 +57,25 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 * given parameter's value.
 	 * 
 	 * @param numberOfThreads Number of ILP solver threads to set.
+	 * @deprecated Use {@link #getSolverConfig()} and
+	 *             {@link SolverConfig#setThreadCount(int)}
 	 */
+	@Deprecated
 	public void setIlpSolverThreads(final int numberOfThreads) {
-		this.solverConfig = solverConfig.withThreadCount(numberOfThreads);
+		getSolverConfig().setThreadCount(numberOfThreads);
+	}
+
+	/**
+	 * Overwrite the previously configured time limit with the given parameter's
+	 * value.
+	 * 
+	 * @param newTimeLimit New time limit to set.
+	 * @deprecated Use {@link #getSolverConfig()} and
+	 *             {@link SolverConfig#setTimeLimit(double)}
+	 */
+	@Deprecated
+	public void setTimeLimit(final double newTimeLimit) {
+		getSolverConfig().setTimeLimit(newTimeLimit);
 	}
 
 	public EMOFLON_APP getEMoflonApp() {
@@ -167,6 +188,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 * Terminates the GipsEngine (super class) and the eMoflon::IBeX engine
 	 * (including the pattern matcher).
 	 */
+	@Override
 	public void terminate() {
 		// Terminate the GipsEngine
 		super.terminate();
@@ -177,14 +199,26 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	}
 
 	protected void setSolverConfig(final org.emoflon.gips.intermediate.GipsIntermediate.SolverConfig config) {
-		solverConfig = new SolverConfig(config.isEnableTimeLimit(), config.getIlpTimeLimit(), //
-				config.isEnableRndSeed(), config.getIlpRndSeed(), //
-				config.isEnablePresolve(), //
-				config.isEnableDebugOutput(), //
-				config.isEnableCustomTolerance(), config.getTolerance(), //
-				config.isEnableLpOutput(), config.getLpPath(), //
-				config.isThreadCountEnabled(), config.getThreadCount() //
-		);
+		solverConfig.setEnableTimeLimit(config.isEnableTimeLimit());
+		if (config.isEnableTimeLimit())
+			solverConfig.setTimeLimit(config.getTimeLimit());
+		solverConfig.setTimeLimitIncludeInitTime(config.isTimeLimitIncludeInitTime());
+
+		solverConfig.setEnabledRandomSeed(config.isEnableRndSeed());
+		solverConfig.setRandomSeed(config.getIlpRndSeed());
+
+		solverConfig.setEnablePresolve(config.isEnablePresolve());
+		solverConfig.setEnableOutput(config.isEnableDebugOutput());
+
+		solverConfig.setEnableTolerance(config.isEnableCustomTolerance());
+		solverConfig.setTolerance(config.getTolerance());
+
+		solverConfig.setEnableLpOutput(config.isEnableLpOutput());
+		solverConfig.setLpPath(config.getLpPath());
+
+		solverConfig.setEnableThreadCount(config.isThreadCountEnabled());
+		if (config.isThreadCountEnabled())
+			solverConfig.setThreadCount(config.getThreadCount());
 	}
 
 	/**
@@ -195,6 +229,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 * @param modelUri     Model URI to load.
 	 */
 	protected void initInternal(final URI gipsModelURI, final URI modelUri) {
+		tickInit();
 		loadIntermediateModel(gipsModelURI);
 		eMoflonApp.registerMetaModels();
 		eMoflonApp.loadModel(modelUri);
@@ -219,6 +254,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 * @param ibexPatternPath IBeX pattern path to load.
 	 */
 	protected void initInternal(final URI gipsModelURI, final URI modelUri, final URI ibexPatternPath) {
+		tickInit();
 		loadIntermediateModel(gipsModelURI);
 		eMoflonApp.registerMetaModels();
 		eMoflonApp.loadModel(modelUri);
@@ -242,6 +278,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 *                     instance.
 	 */
 	protected void initInternal(final URI gipsModelURI, final ResourceSet model) {
+		tickInit();
 		loadIntermediateModel(gipsModelURI);
 		eMoflonApp.registerMetaModels();
 		eMoflonApp.setModel(model);
@@ -267,6 +304,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	 * @param ibexPatternPath IBeX pattern path to load.
 	 */
 	protected void initInternal(final URI gipsModelURI, final ResourceSet model, final URI ibexPatternPath) {
+		tickInit();
 		loadIntermediateModel(gipsModelURI);
 		eMoflonApp.registerMetaModels();
 		eMoflonApp.setModel(model);
@@ -292,6 +330,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		initTypeIndexer();
 		validationLog = new GipsConstraintValidationLog();
 		setSolverConfig(gipsModel.getConfig());
+		initTracer();
 		initMapperFactory();
 		createMappers();
 		initConstraintFactory();
@@ -325,6 +364,11 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		gipsModel = (GipsIntermediateModel) model.getContents().get(0);
 
 		gipsModel.getMappings().forEach(mapping -> name2Mapping.put(mapping.getName(), mapping));
+	}
+
+	protected void initTracer() {
+		tracer = new Intermediate2IlpTracer(getSolverConfig());
+		tracer.computeGipsModelId(gipsModel.eResource().getURI());
 	}
 
 	protected abstract void createMappers();

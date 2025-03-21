@@ -14,9 +14,41 @@ import org.emoflon.gips.core.gt.GipsRuleConstraint;
 public abstract class Solver {
 	final protected GipsEngine engine;
 
-	public Solver(final GipsEngine engine) {
+	/**
+	 * ILP solver configuration.
+	 */
+	protected final SolverConfig config;
+
+	public Solver(final GipsEngine engine, final SolverConfig config) {
 		this.engine = engine;
+		this.config = config;
 	}
+
+	/**
+	 * Returns the solver configuration.
+	 * 
+	 * @return Solver configuration.
+	 */
+	public SolverConfig getSolverConfig() {
+		return this.config;
+	}
+
+	/**
+	 * Re-initializes the (M)ILP solver. May be necessary after changing solver
+	 * specific configurations in the given {@link SolverConfig}.
+	 * 
+	 * @throws Exception Throws an exception if the re-initialization fails.
+	 */
+	public void reinitialize() throws Exception {
+		terminate();
+		init();
+	}
+
+	/**
+	 * Initialize this solver. A solver can be initialized multiple times and should
+	 * not fail because it has already been initialized.
+	 */
+	public abstract void init();
 
 	public void buildILPProblem() {
 		engine.getMappers().values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
@@ -60,6 +92,11 @@ public abstract class Solver {
 
 	protected abstract void translateObjective(final GipsObjective objective);
 
+	/**
+	 * Terminates this solver and releases all resources used. A solver can be
+	 * terminated more than once or before it has been initialized. This method
+	 * should not fail for either reason.
+	 */
 	public abstract void terminate();
 
 	public abstract void reset();

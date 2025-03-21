@@ -80,20 +80,13 @@ public class GlpkSolver extends Solver {
 	 */
 	private String lpPath = null;
 
-	/**
-	 * ILP solver configuration.
-	 */
-	final private SolverConfig config;
-
 	public GlpkSolver(final GipsEngine engine, final SolverConfig config) {
-		super(engine);
+		super(engine, config);
 		constraints = new HashMap<>();
 		ilpVars = new HashMap<>();
-		this.config = config;
-		init();
 	}
 
-	private void init() {
+	public void init() {
 		constraints.clear();
 		ilpVars.clear();
 
@@ -103,21 +96,21 @@ public class GlpkSolver extends Solver {
 		// GLPK initialization
 		iocp = new glp_iocp();
 		GLPK.glp_init_iocp(iocp);
-		iocp.setPresolve(config.enablePresolve() ? GLPK.GLP_ON : GLPK.GLP_OFF);
-		if (config.timeLimitEnabled()) {
-			iocp.setTm_lim((int) config.timeLimit() * 1000); // seconds to milliseconds
+		iocp.setPresolve(config.isEnablePresolve() ? GLPK.GLP_ON : GLPK.GLP_OFF);
+		if (config.isTimeLimitEnabled()) {
+			iocp.setTm_lim((int) config.getTimeLimit() * 1000); // seconds to milliseconds
 		}
 		// TODO: Check specific tolerances later on
-		if (config.enableTolerance()) {
-			iocp.setTol_obj(config.tolerance());
-			iocp.setTol_int(config.tolerance());
-			iocp.setMip_gap(config.tolerance());
+		if (config.isEnableTolerance()) {
+			iocp.setTol_obj(config.getTolerance());
+			iocp.setTol_int(config.getTolerance());
+			iocp.setMip_gap(config.getTolerance());
 		}
 		// Random seed not supported by the GLPK Java interface
 		// TODO: Set output flag
 
-		if (config.lpOutput()) {
-			this.lpPath = config.lpPath();
+		if (config.isEnableLpOutput()) {
+			this.lpPath = config.getLpPath();
 		}
 
 		GLPK.glp_set_prob_name(model, "GIPS problem");
@@ -125,8 +118,15 @@ public class GlpkSolver extends Solver {
 
 	@Override
 	public void terminate() {
-		model.delete();
-		iocp.delete();
+		if (model != null) {
+			model.delete();
+			model = null;
+		}
+
+		if (iocp != null) {
+			iocp.delete();
+			iocp = null;
+		}
 	}
 
 	@Override
@@ -138,6 +138,25 @@ public class GlpkSolver extends Solver {
 		// Save LP file if configured
 		if (this.lpPath != null) {
 			GLPK.glp_write_lp(model, null, this.lpPath);
+		}
+
+		// If necessary, overwrite time limit with:
+		// new_time_limit = old_time_limit - init_time_consumed
+		if (this.config.isTimeLimitIncludeInitTime() && this.engine.getInitTimeInSeconds() != 0) {
+			// If the new_time_limit is not >0, the whole solver must not be started at all
+			final double oldTimeLimit = this.config.getTimeLimit();
+			final double newTimeLimit = oldTimeLimit - this.engine.getInitTimeInSeconds();
+			if (newTimeLimit <= 0) {
+				return new SolverOutput(SolverStatus.TIME_OUT, 0, null, 0, null);
+			}
+			this.config.setTimeLimit(newTimeLimit);
+			if (config.isTimeLimitEnabled()) {
+				if (this.config.isEnableOutput()) {
+					System.out.println(
+							"=> Debug output: Overwrite specified GLPK time limit with: " + config.getTimeLimit());
+				}
+				iocp.setTm_lim((int) config.getTimeLimit() * 1000); // seconds to milliseconds
+			}
 		}
 
 		// Solving

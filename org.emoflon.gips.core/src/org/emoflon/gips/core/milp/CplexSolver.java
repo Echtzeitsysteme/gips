@@ -248,7 +248,7 @@ public class CplexSolver extends Solver {
 
 	@Override
 	protected void translateMapping(final GipsMapping mapping) {
-		createBinVar(mapping.getName(), mapping.getLowerBound(), mapping.getUpperBound());
+		createBinVarIfNotExists(mapping.getName(), mapping.getLowerBound(), mapping.getUpperBound());
 		if (mapping.hasAdditionalVariables()) {
 			createAdditionalVars(mapping.getAdditionalVariables().values());
 		}
@@ -429,11 +429,11 @@ public class CplexSolver extends Solver {
 	protected void createAdditionalVars(final Collection<Variable<?>> variables) {
 		for (final Variable<?> variable : variables) {
 			if (variable instanceof BinaryVariable binVar) {
-				createBinVar(binVar.name, variable.getLowerBound(), variable.getUpperBound());
+				createBinVarIfNotExists(binVar.name, variable.getLowerBound(), variable.getUpperBound());
 			} else if (variable instanceof IntegerVariable intVar) {
-				createIntVar(intVar.name, variable.getLowerBound(), variable.getUpperBound());
+				createIntVarIfNotExists(intVar.name, variable.getLowerBound(), variable.getUpperBound());
 			} else if (variable instanceof RealVariable realVar) {
-				createDblVar(realVar.name, variable.getLowerBound(), variable.getUpperBound());
+				createDblVarIfNotExists(realVar.name, variable.getLowerBound(), variable.getUpperBound());
 			} else {
 				throw new IllegalArgumentException("Unsupported variable type: " + variable.getClass().getSimpleName());
 			}
@@ -441,19 +441,15 @@ public class CplexSolver extends Solver {
 	}
 
 	/**
-	 * Adds a binary variable with given name to the model.
+	 * Adds a binary variable with given name to the model if there is no variable
+	 * with the same name.
 	 * 
 	 * @param name Variable name.
 	 * @param lb   Lower bound number.
 	 * @param ub   Upper bound number.
 	 */
-	private void createBinVar(final String name, final Number lb, final Number ub) {
+	private void createBinVarIfNotExists(final String name, final Number lb, final Number ub) {
 		if (vars.containsKey(name)) {
-			// TODO: This method should return if a variable with the same name already
-			// exists
-			// TODO: Therefore, this method should have another name, e.g.,
-			// create..VarIfNotExists, etc.
-//			throw new RuntimeException();
 			return;
 		}
 
@@ -469,19 +465,15 @@ public class CplexSolver extends Solver {
 	}
 
 	/**
-	 * Adds an integer variable with given name to the model.
+	 * Adds an integer variable with given name to the model if there is no variable
+	 * with the same name.
 	 * 
 	 * @param name Variable name.
 	 * @param lb   Lower bound number.
 	 * @param ub   Upper bound number.
 	 */
-	private void createIntVar(final String name, final Number lb, final Number ub) {
+	private void createIntVarIfNotExists(final String name, final Number lb, final Number ub) {
 		if (vars.containsKey(name)) {
-			// TODO: This method should return if a variable with the same name already
-			// exists
-			// TODO: Therefore, this method should have another name, e.g.,
-			// create..VarIfNotExists, etc.
-//			throw new RuntimeException();
 			return;
 		}
 
@@ -494,19 +486,15 @@ public class CplexSolver extends Solver {
 	}
 
 	/**
-	 * Adds a double variable with given name to the model.
+	 * Adds a double variable with given name to the model if there is no variable
+	 * with the same name.
 	 * 
 	 * @param name Variable name.
 	 * @param lb   Lower bound number.
 	 * @param ub   Upper bound number.
 	 */
-	private void createDblVar(final String name, final Number lb, final Number ub) {
+	private void createDblVarIfNotExists(final String name, final Number lb, final Number ub) {
 		if (vars.containsKey(name)) {
-			// TODO: This method should return if a variable with the same name already
-			// exists
-			// TODO: Therefore, this method should have another name, e.g.,
-			// create..VarIfNotExists, etc.
-//			throw new RuntimeException();
 			return;
 		}
 

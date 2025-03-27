@@ -1,5 +1,6 @@
 package org.emoflon.gips.core.milp;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -68,38 +69,84 @@ public class GurobiSolver extends Solver {
 
 	/**
 	 * Checks all three necessary system environment variables to match the used
-	 * GUROBI version. Expected is that the configured ENVs contain the exact same
-	 * version number as the Java class(es) provided by the GUROBI JAR.
+	 * GUROBI version. Expected is that the configured ENVs point to the GUROBI
+	 * directory that contains the file `gurobi.jar` with the exact same version
+	 * number as the GUROBI JAR that GIPS uses internally.
 	 */
 	private void checkEnvJarCompatibility() {
-		checkGurobiVersionInJar("LD_LIBRARY_PATH");
+		// Example value: /opt/gurobi1201/linux64/
+		checkGurobiVersionInJar("GUROBI_HOME", "lib");
+
+		// Example value: /opt/gurobi1201/linux64/lib/
+		checkGurobiVersionInJar("LD_LIBRARY_PATH", "");
+
+		// Example value: /opt/gurobi1201/linux64/bin/
+		checkGurobiVersionInJar("PATH", ".." + File.separator + "lib");
 	}
 
 	/**
 	 * Checks if the system environment variable with the name 'envName' contains a
-	 * jar the exact version number of the used GUROBI JAR file.
+	 * JAR the exact version number of the used GUROBI JAR file. The
+	 * 'subFolderToJar' will be concatenated to the value of the ENV.
 	 * 
-	 * @param envName System environment variable to check the GUROBI version in.
+	 * @param envName        System environment variable to check the GUROBI version
+	 *                       in.
+	 * @param subFolderToJar Sub folder to the expected JAR file.
 	 */
-	private void checkGurobiVersionInJar(final String envName) {
+	private void checkGurobiVersionInJar(final String envName, final String subFolderToJar) {
 		if (envName == null || envName.isBlank()) {
 			throw new IllegalArgumentException("Given ENV name was null or empty.");
 		}
 
-		// Get system ENV
+		// Get system ENV value
 		final String envValue = System.getenv(envName);
 		if (envValue == null || envValue.isBlank()) {
 			throw new IllegalStateException("The ENV '" + envName + "' was null or empty.");
 		}
 
-		final String gurobiJar = envValue + "\\gurobi.jar";
+		// We have to split the paths in given ENV and test every path for the
+		// `gurobi.jar` file.
+		// This is necessary, because one ENV can contain multiple paths separated by a
+		// symbol.
+		// Example: /opt/test:/opt/test2:$PATH
+		final String[] segments = envValue.split(File.pathSeparator);
+
+		// Test every path -> the first match will be used (as it will be the case when
+		// running GUROBI)
+		String gurobiJar = null;
+		for (int i = 0; i < segments.length; i++) {
+			String actualPath = segments[i];
+			// If there is no slash at the end, we have to add it
+			if (!segments[i].endsWith(File.separator)) {
+				actualPath += File.separator;
+			}
+			actualPath += subFolderToJar;
+			actualPath += File.separator;
+			actualPath += "gurobi.jar";
+
+			// Test if the `gurobi.jar` file is present
+			final File gurobiJarCandidate = new File(actualPath);
+			if (gurobiJarCandidate.exists() && !gurobiJarCandidate.isDirectory()) {
+				// If the file is found, stop searching
+				gurobiJar = actualPath;
+				break;
+			}
+		}
+
+		// If `gurobi.jar` could not be found in any of the segments, throw an
+		// exception
+		if (gurobiJar == null || gurobiJar.isBlank()) {
+			throw new InternalError(
+					"Gurobi JAR file could not be found using ENV: " + envName + "; ENV value: " + envValue);
+		}
+
 		String versionString = null;
 
 		try {
-			JarFile jarFile = new JarFile(gurobiJar);
+			final JarFile jarFile = new JarFile(gurobiJar);
 			versionString = jarFile.getManifest().getMainAttributes().getValue(Attributes.Name.IMPLEMENTATION_VERSION);
 			jarFile.close();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new InternalError("Unable to retrieve version from JAR: " + gurobiJar);
 		}
 

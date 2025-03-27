@@ -1,6 +1,7 @@
 package org.emoflon.gips.core.milp;
 
-import java.lang.reflect.Field;
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,6 +9,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
 
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsEngine;
@@ -29,8 +32,6 @@ import org.emoflon.gips.core.milp.model.Term;
 import org.emoflon.gips.core.milp.model.Variable;
 import org.emoflon.gips.core.milp.model.WeightedLinearFunction;
 import org.emoflon.gips.core.util.SystemUtil;
-
-import com.gurobi.gurobi.GRB;
 
 import ilog.concert.IloException;
 import ilog.concert.IloIntVar;
@@ -78,96 +79,86 @@ public class CplexSolver extends Solver {
 	 * number as the Java class(es) provided by the CPLEX JAR.
 	 */
 	private void checkEnvJarCompatibility() {
-		checkCplexVersionInEnv("LD_LIBRARY_PATH");
-		checkCplexVersionInEnv("PATH");
+		checkCplexVersionInEnv("LD_LIBRARY_PATH", ".." + File.separator + ".." + File.separator + "lib");
+		checkCplexVersionInEnv("PATH", ".." + File.separator + ".." + File.separator + "lib");
 	}
 
 	/**
-	 * Checks if the system environment variable with the name 'envName' contains
-	 * the exact version number of the used CPLEX JAR file.
+	 * Checks if the system environment variable with the name 'envName' contains a
+	 * JAR the exact version number of the used CPLEX JAR file. The 'subFolderToJar'
+	 * will be concatenated to the value of the ENV.
 	 * 
-	 * @param envName System environment variable to check the CPLEX version in.
+	 * @param envName        System environment variable to check the CPLEX version
+	 *                       in.
+	 * @param subFolderToJar Sub folder to the expected JAR file.
 	 */
-	private void checkCplexVersionInEnv(String envName) {
+	private void checkCplexVersionInEnv(String envName, final String subFolderToJar) {
 		if (envName == null || envName.isBlank()) {
 			throw new IllegalArgumentException("Given ENV name was null or empty.");
 		}
 
 		// Get system ENV
 		final String envValue = System.getenv(envName);
-
 		if (envValue == null || envValue.isBlank()) {
 			throw new IllegalStateException("The ENV '" + envName + "' was null or empty.");
 		}
 
-		// Get version string(s) from folder path
-		String[] folderSegments = null;
-		if (envValue.contains("/")) {
-			folderSegments = envValue.split("/");
-		} else if (envValue.contains("\\")) {
-			folderSegments = envValue.split("\\");
-		}
+		// We have to split the paths in given ENV and test every path for the
+		// `cplex.jar` file.
+		// This is necessary, because one ENV can contain multiple paths separated by a
+		// symbol.
+		// Example: /opt/test:/opt/test2:$PATH
+		final String[] segments = envValue.split(File.pathSeparator);
 
-		if (folderSegments == null) {
-			throw new InternalError();
-		}
+		// Test every path -> the first match will be used (as it will be the case when
+		// running CPLEX)
+		String cplexJar = null;
+		for (int i = 0; i < segments.length; i++) {
+			String actualPath = segments[i];
+			// If there is no slash at the end, we have to add it
+			if (!segments[i].endsWith(File.separator)) {
+				actualPath += File.separator;
+			}
+			actualPath += subFolderToJar;
+			actualPath += File.separator;
+			actualPath += "cplex.jar";
 
-		String cplexSubFolder = "";
-		for (int i = 0; i < folderSegments.length; i++) {
-			if (folderSegments[i] != null && folderSegments[i].contains("CPLEX_Studio")) {
-				cplexSubFolder = folderSegments[i];
+			// Test if the `cplex.jar` file is present
+			final File cplexJarCandidate = new File(actualPath);
+			if (cplexJarCandidate.exists() && !cplexJarCandidate.isDirectory()) {
+				// If the file is found, stop searching
+				cplexJar = actualPath;
 				break;
 			}
 		}
 
-		final String versionString = cplexSubFolder.substring( //
-				cplexSubFolder.lastIndexOf("o") + 1, cplexSubFolder.length());
-
-		// Sanity check
-		if (versionString.length() != 4) {
-			throw new InternalError();
+		// If `cplex.jar` could not be found in any of the segments, throw an
+		// exception
+		if (cplexJar == null || cplexJar.isBlank()) {
+			throw new InternalError(
+					"Cplex JAR file could not be found using ENV: " + envName + "; ENV value: " + envValue);
 		}
 
-		// split version string up into its parts
-		final String envVersion = versionString.substring(0, 4);
-
-		String cplexVersion = "";
+		String versionStringPathJar = null;
 
 		try {
-			// E.g.: 22010100L
-			final Field versionField = IloCplex.class.getDeclaredField("serialVersionUID");
-			versionField.setAccessible(true);
-			cplexVersion = String.valueOf(versionField.getLong(null));
-		} catch (final NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
+			final JarFile jarFile = new JarFile(cplexJar);
+			versionStringPathJar = jarFile.getManifest().getMainAttributes()
+					.getValue(Attributes.Name.IMPLEMENTATION_VERSION);
+			jarFile.close();
+		} catch (final IOException e) {
+			throw new InternalError("Unable to retrieve version from JAR: " + cplexJar);
 		}
 
-		// Sanity check
-		if (versionString.length() != 4) {
-			throw new InternalError();
-		}
-		if (cplexVersion.length() != 8) {
-			throw new InternalError();
-		}
-
-		// Got a string like 22010100, so we have to split it up
-		final String major = cplexVersion.substring(0, 2);
-		final String minor = cplexVersion.substring(2, 4);
-		final String technical = cplexVersion.substring(4, 6);
-		// The remaining string (`00` in this case) does not matter
-
-		// Assemble the CPLEX version string as we expect it
-		// Please notice: this may break if the minor or technical version will be
-		// larger than `9`
-		final String assembledCplexVersion = major + minor.substring(1) + technical.substring(1);
+		final String versionStringGipsJar = IloCplex.class.getPackage().getImplementationVersion();
 
 		// Actual check of the version(s)
-		if (!assembledCplexVersion.equals(envVersion)) {
+		if (!versionStringPathJar.equals(versionStringGipsJar)) {
 			throw new UnsupportedOperationException(
 					"You configured the wrong CPLEX version in your '" + envName + "' ENV. Expected: '" //
-							+ assembledCplexVersion //
+							+ versionStringGipsJar //
 							+ "', configured: '" //
-							+ envVersion //
+							+ versionStringPathJar //
 							+ "'.");
 		}
 	}

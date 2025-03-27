@@ -1,11 +1,14 @@
 package org.emoflon.gips.core.milp;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
 
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsEngine;
@@ -69,61 +72,50 @@ public class GurobiSolver extends Solver {
 	 * version number as the Java class(es) provided by the GUROBI JAR.
 	 */
 	private void checkEnvJarCompatibility() {
-		checkGurobiVersionInEnv("GUROBI_HOME");
-		checkGurobiVersionInEnv("LD_LIBRARY_PATH");
-		checkGurobiVersionInEnv("PATH");
+		checkGurobiVersionInJar("LD_LIBRARY_PATH");
 	}
 
 	/**
-	 * Checks if the system environment variable with the name 'envName' contains
-	 * the exact version number of the used GUROBI JAR file.
+	 * Checks if the system environment variable with the name 'envName' contains a
+	 * jar the exact version number of the used GUROBI JAR file.
 	 * 
 	 * @param envName System environment variable to check the GUROBI version in.
 	 */
-	private void checkGurobiVersionInEnv(final String envName) {
+	private void checkGurobiVersionInJar(final String envName) {
 		if (envName == null || envName.isBlank()) {
 			throw new IllegalArgumentException("Given ENV name was null or empty.");
 		}
 
 		// Get system ENV
 		final String envValue = System.getenv(envName);
-
 		if (envValue == null || envValue.isBlank()) {
 			throw new IllegalStateException("The ENV '" + envName + "' was null or empty.");
 		}
 
-		// Get version string(s) from folder path
-		String[] folderSegments = null;
-		if (envValue.contains("/")) {
-			folderSegments = envValue.split("/");
-		} else if (envValue.contains("\\")) {
-			folderSegments = envValue.split("\\");
+		final String gurobiJar = envValue + "\\gurobi.jar";
+		String versionString = null;
+
+		try {
+			JarFile jarFile = new JarFile(gurobiJar);
+			versionString = jarFile.getManifest().getMainAttributes().getValue(Attributes.Name.IMPLEMENTATION_VERSION);
+			jarFile.close();
+		} catch (IOException e) {
+			throw new InternalError("Unable to retrieve version from JAR: " + gurobiJar);
 		}
 
-		if (folderSegments == null) {
-			throw new InternalError();
+		final int majorDelimiter = versionString.indexOf(".", 0);
+		final int minorDelimiter = versionString.indexOf(".", majorDelimiter + 1);
+		if (majorDelimiter < 0) {
+			throw new InternalError("Unable to find major delimiter in: " + versionString);
 		}
-
-		String gurobiSubFolder = "";
-		for (int i = 0; i < folderSegments.length; i++) {
-			if (folderSegments[i] != null && folderSegments[i].contains("gurobi")) {
-				gurobiSubFolder = folderSegments[i];
-				break;
-			}
-		}
-
-		final String versionString = gurobiSubFolder.substring( //
-				gurobiSubFolder.lastIndexOf("i") + 1, gurobiSubFolder.length());
-
-		// Sanity check
-		if (versionString.length() != 4) {
-			throw new InternalError();
+		if (minorDelimiter < 0) {
+			throw new InternalError("Unable to find minor delimiter in: " + versionString);
 		}
 
 		// split version string up into its parts
-		final int major = Integer.valueOf(versionString.substring(0, 2));
-		final int minor = Integer.valueOf(versionString.substring(2, 3));
-		final int technical = Integer.valueOf(versionString.substring(3, 4));
+		final int major = Integer.valueOf(versionString.substring(0, majorDelimiter));
+		final int minor = Integer.valueOf(versionString.substring(majorDelimiter + 1, minorDelimiter));
+		final int technical = Integer.valueOf(versionString.substring(minorDelimiter + 1));
 
 		// Actual check of the version(s)
 		if (major != GRB.VERSION_MAJOR || minor != GRB.VERSION_MINOR || technical != GRB.VERSION_TECHNICAL) {

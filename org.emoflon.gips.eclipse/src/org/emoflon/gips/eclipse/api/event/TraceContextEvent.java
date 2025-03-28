@@ -4,17 +4,17 @@ import java.util.Objects;
 
 import org.emoflon.gips.eclipse.api.ITraceManager;
 
-public final class TraceManagerEvent {
+public final class TraceContextEvent {
 
 	public static enum EventType {
-		NEW, DELETED
+		CONTEXT_CREATED, CONTEXT_DELETED
 	}
 
 	private final ITraceManager source;
 	private final EventType eventType;
 	private final String contextId;
 
-	public TraceManagerEvent(ITraceManager source, EventType eventType, String contextId) {
+	public TraceContextEvent(ITraceManager source, EventType eventType, String contextId) {
 		this.source = Objects.requireNonNull(source, "source");
 		this.eventType = Objects.requireNonNull(eventType, "eventType");
 		this.contextId = Objects.requireNonNull(contextId, "contextId");

@@ -12,8 +12,8 @@ import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.ViewPart;
 import org.emoflon.gips.eclipse.api.ITraceManager;
-import org.emoflon.gips.eclipse.api.event.ITraceManagerListener;
-import org.emoflon.gips.eclipse.api.event.TraceManagerEvent;
+import org.emoflon.gips.eclipse.api.event.ITraceContextListener;
+import org.emoflon.gips.eclipse.api.event.TraceContextEvent;
 import org.emoflon.gips.eclipse.view.model.INode;
 import org.emoflon.gips.eclipse.view.model.RootNode;
 
@@ -36,7 +36,7 @@ public class GipsTraceView extends ViewPart {
 	 */
 	public static final String ID = "org.emoflon.gips.debugger.view";
 
-	private final ITraceManagerListener traceManagerListener = this::onTraceContextChange;
+	private final ITraceContextListener traceManagerListener = this::onTraceContextChange;
 
 	private TreeViewer viewer;
 	private MenuManager menuManager;
@@ -79,7 +79,7 @@ public class GipsTraceView extends ViewPart {
 //		ColumnViewerToolTipSupport.enableFor(this.viewer);
 
 		ITraceManager traceManager = ITraceManager.getInstance();
-		traceManager.addTraceManagerListener(traceManagerListener);
+		traceManager.addTraceContextListener(traceManagerListener);
 
 		this.viewModelRootNode = new RootNode();
 		this.viewer.setInput(this.viewModelRootNode);
@@ -104,7 +104,7 @@ public class GipsTraceView extends ViewPart {
 	@Override
 	public void dispose() {
 		ITraceManager traceManager = ITraceManager.getInstance();
-		traceManager.removeTraceManagerListener(traceManagerListener);
+		traceManager.removeTraceContextListener(traceManagerListener);
 
 		// dispose viewer model
 		for (var child : this.viewModelRootNode.childs.values()) {
@@ -140,7 +140,7 @@ public class GipsTraceView extends ViewPart {
 		}
 	}
 
-	private void onTraceContextChange(TraceManagerEvent event) {
+	private void onTraceContextChange(TraceContextEvent event) {
 		refreshNode(this.viewModelRootNode);
 	}
 

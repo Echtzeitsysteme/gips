@@ -147,5 +147,20 @@
             name="GIPS Tracing">
       </page>
    </extension>
+   <extension
+         point="org.eclipse.ui.workbench.texteditor.codeMiningProviders">
+      <codeMiningProvider
+            class="org.emoflon.gips.eclipse.codemining.VariableValueCodeMiningProvider"
+            id="org.emoflon.gips.eclipse.codemining.VariableValueCodeMiningProvider">
+         <enabledWhen>
+            <with
+                  variable="editor">
+               <instanceof
+                     value="org.emoflon.gips.eclipse.ui.editor.CplexLpEditor">
+               </instanceof>
+            </with>
+         </enabledWhen>
+      </codeMiningProvider>
+   </extension>
 
 </plugin>

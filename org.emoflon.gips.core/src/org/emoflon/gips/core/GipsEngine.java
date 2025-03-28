@@ -159,8 +159,10 @@ public abstract class GipsEngine {
 		}
 		this.tockInit();
 		SolverOutput output = solver.solve();
-		if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0)
+		if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0) {
 			solver.updateValuesFromSolution();
+			tracer.sendSolutionValuesToIDE(this);
+		}
 
 		solver.reset();
 		return output;

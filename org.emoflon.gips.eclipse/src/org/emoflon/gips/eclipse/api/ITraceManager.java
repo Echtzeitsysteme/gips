@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.emoflon.gips.eclipse.TracePlugin;
-import org.emoflon.gips.eclipse.api.event.ITraceManagerListener;
+import org.emoflon.gips.eclipse.api.event.ITraceContextListener;
 import org.emoflon.gips.eclipse.api.event.ITraceSelectionListener;
 import org.emoflon.gips.eclipse.api.event.ITraceUpdateListener;
 
@@ -23,16 +23,16 @@ public interface ITraceManager {
 	 * run on the UI-Thread.
 	 * 
 	 * @param listener the listener, may not be null
-	 * @see #removeTraceManagerListener(ITraceManagerListener)
+	 * @see #removeTraceContextListener(ITraceContextListener)
 	 */
-	void addTraceManagerListener(ITraceManagerListener listener);
+	void addTraceContextListener(ITraceContextListener listener);
 
 	/**
 	 * Removes the given listener
 	 * 
 	 * @param listener the listener, can be null
 	 */
-	void removeTraceManagerListener(ITraceManagerListener listener);
+	void removeTraceContextListener(ITraceContextListener listener);
 
 	void removeListener(ITraceSelectionListener listener);
 

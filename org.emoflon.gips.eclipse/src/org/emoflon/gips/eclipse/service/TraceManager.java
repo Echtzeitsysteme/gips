@@ -21,11 +21,11 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.emoflon.gips.eclipse.api.ITraceManager;
 import org.emoflon.gips.eclipse.api.TraceModelNotFoundException;
-import org.emoflon.gips.eclipse.api.event.ITraceManagerListener;
+import org.emoflon.gips.eclipse.api.event.ITraceContextListener;
 import org.emoflon.gips.eclipse.api.event.ITraceSelectionListener;
 import org.emoflon.gips.eclipse.api.event.ITraceUpdateListener;
-import org.emoflon.gips.eclipse.api.event.TraceManagerEvent;
-import org.emoflon.gips.eclipse.api.event.TraceManagerEvent.EventType;
+import org.emoflon.gips.eclipse.api.event.TraceContextEvent;
+import org.emoflon.gips.eclipse.api.event.TraceContextEvent.EventType;
 import org.emoflon.gips.eclipse.connector.CplexLpEditorTraceConnectionFactory;
 import org.emoflon.gips.eclipse.connector.EditorTraceConnectionFactory;
 import org.emoflon.gips.eclipse.connector.GenericXmiEditorTraceConnectionFactory;
@@ -39,7 +39,7 @@ public class TraceManager implements ITraceManager {
 	private final IResourceChangeListener workspaceResourceListener = this::onWorkspaceResourceChange;
 	private final IPropertyChangeListener preferenceListener = this::onPreferenceChange;
 
-	private final ListenerList<ITraceManagerListener> contextListener = new ListenerList<>();
+	private final ListenerList<ITraceContextListener> contextListener = new ListenerList<>();
 
 	private final Map<String, ProjectTraceContext> contextById = new HashMap<>();
 
@@ -104,12 +104,12 @@ public class TraceManager implements ITraceManager {
 	}
 
 	@Override
-	public void addTraceManagerListener(ITraceManagerListener listener) {
+	public void addTraceContextListener(ITraceContextListener listener) {
 		contextListener.add(Objects.requireNonNull(listener, "listener"));
 	}
 
 	@Override
-	public void removeTraceManagerListener(ITraceManagerListener listener) {
+	public void removeTraceContextListener(ITraceContextListener listener) {
 		contextListener.remove(listener);
 	}
 
@@ -214,7 +214,7 @@ public class TraceManager implements ITraceManager {
 					context.readCacheIfAvailable();
 			}
 
-			var event = new TraceManagerEvent(this, EventType.NEW, contextId);
+			var event = new TraceContextEvent(this, EventType.CONTEXT_CREATED, contextId);
 			for (var listener : contextListener)
 				listener.contextChanged(event);
 		}
@@ -230,7 +230,7 @@ public class TraceManager implements ITraceManager {
 					context.writeCache();
 //				context.dispose();
 
-				var event = new TraceManagerEvent(this, EventType.DELETED, contextId);
+				var event = new TraceContextEvent(this, EventType.CONTEXT_DELETED, contextId);
 				for (var listener : contextListener)
 					listener.contextChanged(event);
 			}

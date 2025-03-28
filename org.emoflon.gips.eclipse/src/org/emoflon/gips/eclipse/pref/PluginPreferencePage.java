@@ -40,6 +40,17 @@ public class PluginPreferencePage extends FieldEditorPreferencePage implements I
 			var configGroup = new Group(getFieldEditorParent(), SWT.NULL);
 			configGroup.setLayout(new GridLayout());
 			configGroup.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
+			configGroup.setText("Cplex Lp Editor");
+
+			var editorCodeMiningValues = new BooleanFieldEditor(PluginPreferences.PREF_CODE_MINING_ENABLED,
+					"Show solution &values via code mining", configGroup);
+			addField(editorCodeMiningValues);
+		}
+
+		{
+			var configGroup = new Group(getFieldEditorParent(), SWT.NULL);
+			configGroup.setLayout(new GridLayout());
+			configGroup.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
 			configGroup.setText("Trace RMI Service");
 
 			var editorRMI = new BooleanFieldEditor(PluginPreferences.PREF_TRACE_RMI, "&RMI enabled", configGroup);

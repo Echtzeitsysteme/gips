@@ -15,6 +15,15 @@ public final class PluginPreferences {
 	public static final String PREF_TRACE_RMI_PORT = "PREF_TRACE_RMI_PORT";
 
 	/**
+	 * Enables/Disables code mining for cplex editor
+	 * <ul>
+	 * <li><bold>Type:</bold> {@link java.lang.Boolean}
+	 * <li>Can not be null
+	 * </ul>
+	 */
+	public static final String PREF_CODE_MINING_ENABLED = "PREF_CODE_MINING_ENABLED";
+
+	/**
 	 * Enableds/Disables trace caching.
 	 * <ul>
 	 * <li><bold>Type:</bold> {@link java.lang.Boolean}

@@ -16,6 +16,9 @@ public final class PluginPreferenceInitializer extends AbstractPreferenceInitial
 		// trace visualization is deactivated
 		node.putBoolean(PluginPreferences.PREF_TRACE_DISPLAY_ACTIVE, false);
 
+		// code mining is deactivated
+		node.putBoolean(PluginPreferences.PREF_CODE_MINING_ENABLED, false);
+
 		// RMI Service
 		node.putBoolean(PluginPreferences.PREF_TRACE_RMI, true);
 		node.putInt(PluginPreferences.PREF_TRACE_RMI_PORT, ITraceRemoteService.DEFAULT_PORT);

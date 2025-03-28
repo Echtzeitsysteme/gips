@@ -1,11 +1,15 @@
 package org.emoflon.gips.core.milp;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
 
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsEngine;
@@ -60,6 +64,115 @@ public class GurobiSolver extends Solver {
 
 	public GurobiSolver(final GipsEngine engine, final SolverConfig config) throws Exception {
 		super(engine, config);
+		checkEnvJarCompatibility();
+	}
+
+	/**
+	 * Checks all three necessary system environment variables to match the used
+	 * GUROBI version. Expected is that the configured ENVs point to the GUROBI
+	 * directory that contains the file `gurobi.jar` with the exact same version
+	 * number as the GUROBI JAR that GIPS uses internally.
+	 */
+	private void checkEnvJarCompatibility() {
+		// Example value: /opt/gurobi1201/linux64/
+		checkGurobiVersionInJar("GUROBI_HOME", "lib");
+
+		// Example value: /opt/gurobi1201/linux64/lib/
+		checkGurobiVersionInJar("LD_LIBRARY_PATH", "");
+
+		// Example value: /opt/gurobi1201/linux64/bin/
+		checkGurobiVersionInJar("PATH", ".." + File.separator + "lib");
+	}
+
+	/**
+	 * Checks if the system environment variable with the name 'envName' contains a
+	 * JAR the exact version number of the used GUROBI JAR file. The
+	 * 'subFolderToJar' will be concatenated to the value of the ENV.
+	 * 
+	 * @param envName        System environment variable to check the GUROBI version
+	 *                       in.
+	 * @param subFolderToJar Sub folder to the expected JAR file.
+	 */
+	private void checkGurobiVersionInJar(final String envName, final String subFolderToJar) {
+		if (envName == null || envName.isBlank()) {
+			throw new IllegalArgumentException("Given ENV name was null or empty.");
+		}
+
+		// Get system ENV value
+		final String envValue = System.getenv(envName);
+		if (envValue == null || envValue.isBlank()) {
+			throw new IllegalStateException("The ENV '" + envName + "' was null or empty.");
+		}
+
+		// We have to split the paths in given ENV and test every path for the
+		// `gurobi.jar` file.
+		// This is necessary, because one ENV can contain multiple paths separated by a
+		// symbol.
+		// Example: /opt/test:/opt/test2:$PATH
+		final String[] segments = envValue.split(File.pathSeparator);
+
+		// Test every path -> the first match will be used (as it will be the case when
+		// running GUROBI)
+		String gurobiJar = null;
+		for (int i = 0; i < segments.length; i++) {
+			String actualPath = segments[i];
+			// If there is no slash at the end, we have to add it
+			if (!segments[i].endsWith(File.separator)) {
+				actualPath += File.separator;
+			}
+			actualPath += subFolderToJar;
+			actualPath += File.separator;
+			actualPath += "gurobi.jar";
+
+			// Test if the `gurobi.jar` file is present
+			final File gurobiJarCandidate = new File(actualPath);
+			if (gurobiJarCandidate.exists() && !gurobiJarCandidate.isDirectory()) {
+				// If the file is found, stop searching
+				gurobiJar = actualPath;
+				break;
+			}
+		}
+
+		// If `gurobi.jar` could not be found in any of the segments, throw an
+		// exception
+		if (gurobiJar == null || gurobiJar.isBlank()) {
+			throw new InternalError(
+					"Gurobi JAR file could not be found using ENV: " + envName + "; ENV value: " + envValue);
+		}
+
+		String versionString = null;
+
+		try {
+			final JarFile jarFile = new JarFile(gurobiJar);
+			versionString = jarFile.getManifest().getMainAttributes().getValue(Attributes.Name.IMPLEMENTATION_VERSION);
+			jarFile.close();
+		} catch (final IOException e) {
+			throw new InternalError("Unable to retrieve version from JAR: " + gurobiJar);
+		}
+
+		final int majorDelimiter = versionString.indexOf(".", 0);
+		final int minorDelimiter = versionString.indexOf(".", majorDelimiter + 1);
+		if (majorDelimiter < 0) {
+			throw new InternalError("Unable to find major delimiter in: " + versionString);
+		}
+		if (minorDelimiter < 0) {
+			throw new InternalError("Unable to find minor delimiter in: " + versionString);
+		}
+
+		// split version string up into its parts
+		final int major = Integer.valueOf(versionString.substring(0, majorDelimiter));
+		final int minor = Integer.valueOf(versionString.substring(majorDelimiter + 1, minorDelimiter));
+		final int technical = Integer.valueOf(versionString.substring(minorDelimiter + 1));
+
+		// Actual check of the version(s)
+		if (major != GRB.VERSION_MAJOR || minor != GRB.VERSION_MINOR || technical != GRB.VERSION_TECHNICAL) {
+			throw new UnsupportedOperationException(
+					"You configured the wrong GUROBI version in your '" + envName + "' ENV. Expected: '" //
+							+ GRB.VERSION_MAJOR + GRB.VERSION_MINOR + GRB.VERSION_TECHNICAL //
+							+ "', configured: '" //
+							+ major + minor + technical //
+							+ "'.");
+		}
 	}
 
 	@Override

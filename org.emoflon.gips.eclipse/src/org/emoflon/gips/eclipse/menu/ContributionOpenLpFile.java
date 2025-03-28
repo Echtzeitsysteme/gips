@@ -14,6 +14,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.CompoundContributionItem;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.xtext.ui.editor.XtextEditor;
+import org.emoflon.gips.eclipse.ui.editor.CplexLpEditor;
 import org.emoflon.gips.eclipse.utility.HelperErrorDialog;
 import org.emoflon.gips.eclipse.utility.HelperGipsl;
 
@@ -47,8 +48,7 @@ public class ContributionOpenLpFile extends CompoundContributionItem {
 						final var targetFile = ResourcesPlugin.getWorkspace().getRoot().getFile(targetPath);
 
 						try {
-							IDE.openEditor(part.getSite().getPage(), targetFile, "org.emoflon.gips.debugger.CplexLp",
-									true);
+							IDE.openEditor(part.getSite().getPage(), targetFile, CplexLpEditor.EDITOR_ID, true);
 						} catch (final PartInitException ex) {
 							ex.printStackTrace();
 							var error = HelperErrorDialog.createMultiStatus(ex.getLocalizedMessage(), ex);

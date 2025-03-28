@@ -1,8 +1,11 @@
 package org.emoflon.gips.eclipse.ui.editor;
 
 import org.eclipse.xtext.ui.editor.XtextEditor;
+import org.emoflon.gips.eclipse.CplexLpLanguage;
 
 public class CplexLpEditor extends XtextEditor {
+
+	public static final String EDITOR_ID = CplexLpLanguage.LANGUAGE_NAME;
 
 //    @Inject
 //    private XbaseEditorInputRedirector editorInputRedirector;

@@ -8,7 +8,6 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchPartReference;
-import org.emoflon.gips.eclipse.api.IEditorTracker;
 import org.emoflon.gips.eclipse.connector.EditorTraceConnectionFactory;
 import org.emoflon.gips.eclipse.connector.IEditorTraceConnection;
 import org.emoflon.gips.eclipse.connector.IEditorTraceConnectionFactory;

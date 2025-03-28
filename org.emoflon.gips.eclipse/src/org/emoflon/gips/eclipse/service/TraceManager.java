@@ -19,7 +19,6 @@ import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.emoflon.gips.eclipse.api.IEditorTracker;
 import org.emoflon.gips.eclipse.api.ITraceManager;
 import org.emoflon.gips.eclipse.api.TraceModelNotFoundException;
 import org.emoflon.gips.eclipse.api.event.ITraceManagerListener;
@@ -161,7 +160,9 @@ public class TraceManager implements ITraceManager {
 			context.addListener(listener);
 	}
 
-	@Override
+	/**
+	 * Allows to add or remove an editor from this manager
+	 */
 	public IEditorTracker getEditorTracker() {
 		return tracker;
 	}

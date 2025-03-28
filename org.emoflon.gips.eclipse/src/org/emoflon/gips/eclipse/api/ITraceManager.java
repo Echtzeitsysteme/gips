@@ -54,11 +54,6 @@ public interface ITraceManager {
 			throws TraceModelNotFoundException;
 
 	/**
-	 * Allows to add or remove an editor from this manager
-	 */
-	IEditorTracker getEditorTracker();
-
-	/**
 	 * Returns a {@link ITraceContext} for the given id. The id must be the name of
 	 * an accessible Eclipse project.
 	 * 

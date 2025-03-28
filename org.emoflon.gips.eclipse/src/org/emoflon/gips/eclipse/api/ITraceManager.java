@@ -38,18 +38,6 @@ public interface ITraceManager {
 
 	void removeListener(ITraceUpdateListener listener);
 
-	@Deprecated
-	void addListener(String contextId, ITraceSelectionListener listener);
-
-	@Deprecated
-	void removeListener(String contextId, ITraceSelectionListener listener);
-
-	@Deprecated
-	void addListener(String contextId, ITraceUpdateListener listener);
-
-	@Deprecated
-	void removeListener(String contextId, ITraceUpdateListener listener);
-
 	void selectElementsByTraceModel(String contextId, String modelId, Collection<String> selection)
 			throws TraceModelNotFoundException;
 

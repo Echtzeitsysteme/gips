@@ -119,12 +119,6 @@ public class TraceManager implements ITraceManager {
 	}
 
 	@Override
-	public void addListener(String contextId, ITraceSelectionListener listener) {
-		var context = getOrCreateContext(contextId, true);
-		context.addListener(listener);
-	}
-
-	@Override
 	public void removeListener(ITraceSelectionListener listener) {
 		synchronized (syncLock) {
 			for (var context : contextById.values())
@@ -133,31 +127,11 @@ public class TraceManager implements ITraceManager {
 	}
 
 	@Override
-	public void removeListener(String contextId, ITraceSelectionListener listener) {
-		var context = getOrCreateContext(contextId, false);
-		if (context != null)
-			context.addListener(listener);
-	}
-
-	@Override
-	public void addListener(String contextId, ITraceUpdateListener listener) {
-		var context = getOrCreateContext(contextId, true);
-		context.addListener(listener);
-	}
-
-	@Override
 	public void removeListener(ITraceUpdateListener listener) {
 		synchronized (syncLock) {
 			for (var context : contextById.values())
 				context.removeListener(listener);
 		}
-	}
-
-	@Override
-	public void removeListener(String contextId, ITraceUpdateListener listener) {
-		var context = getOrCreateContext(contextId, false);
-		if (context != null)
-			context.addListener(listener);
 	}
 
 	/**

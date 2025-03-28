@@ -4,6 +4,8 @@ import java.nio.file.Path;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -14,6 +16,7 @@ import org.emoflon.gips.core.GipsConstraint;
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsLinearFunction;
 import org.emoflon.gips.core.GipsMapper;
+import org.emoflon.gips.core.GipsMapping;
 import org.emoflon.gips.core.milp.SolverConfig;
 import org.emoflon.gips.core.milp.model.Constraint;
 import org.emoflon.gips.core.milp.model.Term;
@@ -61,6 +64,29 @@ public class Intermediate2IlpTracer {
 
 	public void setRMIPort(int port) {
 		this.rmiServicePort = port;
+	}
+
+	/**
+	 * 
+	 * @param <T>         service type
+	 * @param serviceName
+	 * @return a reference to the service with the given name, or null if no service
+	 *         exists
+	 * @throws RemoteException - if the service could not be created or
+	 *                         communication failed
+	 */
+	@SuppressWarnings("unchecked")
+	private IRemoteEclipseService tryAndGetService() throws RemoteException {
+		try {
+			IRemoteEclipseService service = (IRemoteEclipseService) LocateRegistry.getRegistry(rmiServicePort)
+					.lookup(IRemoteEclipseService.SERVICE_NAME);
+			return service;
+		} catch (NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	private void sendTraceToRMIService() {
@@ -199,6 +225,34 @@ public class Intermediate2IlpTracer {
 		}
 
 		sendTraceToRMIService();
+	}
+
+	public void sendSolutionValuesToIDE(GipsEngine engine) {
+		// TODO Auto-generated method stub
+
+		Map<String, Number> values = new HashMap<>();
+		for (GipsMapper<?> mapper : engine.getMappers().values()) {
+			for (GipsMapping mapping : mapper.getMappings().values()) {
+				values.put(mapping.getName(), mapping.getValue());
+				if (mapping.hasAdditionalVariables()) {
+					for (Variable<?> variable : mapping.getAdditionalVariables().values()) {
+						values.put(variable.getName(), variable.getValue());
+					}
+				}
+			}
+		}
+
+		String contextId = getWorkingDirectory().getFileName().toString();
+
+		try {
+			IRemoteEclipseService service = (IRemoteEclipseService) LocateRegistry.getRegistry(rmiServicePort)
+					.lookup(IRemoteEclipseService.SERVICE_NAME);
+			service.updateMILPVariableValues(contextId, null, values);
+		} catch (RemoteException | NotBoundException e) {
+			// TODO Auto-generated catch block
+			System.err.println("Unable to send trace to IDE. Reason:\n");
+			e.printStackTrace();
+		}
 	}
 
 }

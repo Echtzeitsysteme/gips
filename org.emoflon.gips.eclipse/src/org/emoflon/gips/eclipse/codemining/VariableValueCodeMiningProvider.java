@@ -69,6 +69,9 @@ public class VariableValueCodeMiningProvider implements ICodeMiningProvider {
 
 		ProjectContext context = TracePlugin.getInstance().getContextManager().getContext(project.getName());
 		// TODO: check, when any values are available
+		var map = context.getMILPValues();
+		if (map.isEmpty())
+			return Collections.emptyList();
 
 		List<ICodeMining> result = new LinkedList<>();
 		TreeIterator<EObject> iterator = resource.getAllContents();
@@ -80,7 +83,8 @@ public class VariableValueCodeMiningProvider implements ICodeMiningProvider {
 
 			// TODO
 
-			String value = "(" + "A" + ")"; // TODO
+			Number nValue = map.get(name);
+			String value = nValue != null ? " " + nValue.toString() + "" : null; // "(" + "A" + ")"; // TODO
 			if (value != null && !value.isBlank()) {
 				ICompositeNode textNode = NodeModelUtils.findActualNodeFor(eObject);
 				int position = textNode.getEndOffset();

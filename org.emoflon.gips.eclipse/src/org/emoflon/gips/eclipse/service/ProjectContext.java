@@ -70,6 +70,7 @@ public final class ProjectContext implements ITraceContext {
 	private final ListenerList<ITraceUpdateListener> updateListener = new ListenerList<>();
 
 	private boolean graphDirty = false;
+	private Map<String, Number> milpValues;
 
 	public ProjectContext(ContextManager manager, String contextId) {
 		this.manager = Objects.requireNonNull(manager, "manager");
@@ -334,7 +335,12 @@ public final class ProjectContext implements ITraceContext {
 
 	public void updateMILPVariableValues(String lpModelId, Map<String, Number> values) {
 		// TODO Auto-generated method stub
+		this.milpValues = values;
+	}
 
+	public Map<String, Number> getMILPValues() {
+		// TODO Auto-generated method stub
+		return this.milpValues != null ? this.milpValues : Collections.emptyMap();
 	}
 
 	private void fireModelSelectionNotification(String modelId, Collection<String> elementIds) {

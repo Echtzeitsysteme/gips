@@ -33,7 +33,7 @@ import org.emoflon.gips.eclipse.connector.GipslEditorTraceConnectionFactory;
 import org.emoflon.gips.eclipse.pref.PluginPreferences;
 import org.emoflon.gips.eclipse.utility.HelperEclipse;
 
-public class TraceManager implements ITraceManager {
+public class ContextManager implements ITraceManager {
 
 	private final Object syncLock = new Object();
 	private final IResourceChangeListener workspaceResourceListener = this::onWorkspaceResourceChange;
@@ -41,7 +41,7 @@ public class TraceManager implements ITraceManager {
 
 	private final ListenerList<ITraceContextListener> contextListener = new ListenerList<>();
 
-	private final Map<String, ProjectTraceContext> contextById = new HashMap<>();
+	private final Map<String, ProjectContext> contextById = new HashMap<>();
 
 	private EditorTracker tracker;
 	private boolean visualisationActive;
@@ -63,10 +63,10 @@ public class TraceManager implements ITraceManager {
 			visualisationActive = preferences.getBoolean(PluginPreferences.PREF_TRACE_DISPLAY_ACTIVE);
 
 			// Restore any previously saved context
-			if (ProjectTraceContext.isCachingEnabled()) {
+			if (ProjectContext.isCachingEnabled()) {
 				IProject[] allProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 				for (var project : allProjects) {
-					if (ProjectTraceContext.hasProjectCache(project))
+					if (ProjectContext.hasProjectCache(project))
 						getOrCreateContext(project.getName(), true);
 				}
 			}
@@ -87,7 +87,7 @@ public class TraceManager implements ITraceManager {
 			tracker.dispose();
 			tracker = null;
 
-			if (ProjectTraceContext.isCachingEnabled()) {
+			if (ProjectContext.isCachingEnabled()) {
 				for (var context : contextById.values()) {
 					context.writeCache();
 //					context.dispose();
@@ -142,7 +142,7 @@ public class TraceManager implements ITraceManager {
 	}
 
 	@Override
-	public ProjectTraceContext getContext(String contextId) {
+	public ProjectContext getContext(String contextId) {
 		return getOrCreateContext(contextId, true);
 	}
 
@@ -193,9 +193,9 @@ public class TraceManager implements ITraceManager {
 			removeContext(project.getName());
 	}
 
-	private ProjectTraceContext getOrCreateContext(String contextId, boolean createOnDemand) {
+	private ProjectContext getOrCreateContext(String contextId, boolean createOnDemand) {
 		Objects.requireNonNull(contextId, "contextId");
-		ProjectTraceContext context = contextById.get(contextId);
+		ProjectContext context = contextById.get(contextId);
 
 		if (createOnDemand && context == null) {
 			synchronized (syncLock) {
@@ -207,10 +207,10 @@ public class TraceManager implements ITraceManager {
 				if (project == null)
 					throw new IllegalArgumentException("Unknown project for context id: " + contextId);
 
-				context = new ProjectTraceContext(this, contextId);
+				context = new ProjectContext(this, contextId);
 				contextById.put(contextId, context);
 
-				if (ProjectTraceContext.isCachingEnabled())
+				if (ProjectContext.isCachingEnabled())
 					context.readCacheIfAvailable();
 			}
 
@@ -226,7 +226,7 @@ public class TraceManager implements ITraceManager {
 		synchronized (syncLock) {
 			var context = contextById.remove(contextId);
 			if (context != null) {
-				if (ProjectTraceContext.isCachingEnabled())
+				if (ProjectContext.isCachingEnabled())
 					context.writeCache();
 //				context.dispose();
 

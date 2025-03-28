@@ -14,7 +14,7 @@ public interface ITraceManager {
 	 * Shared singleton instance
 	 */
 	public static ITraceManager getInstance() {
-		return TracePlugin.getInstance().getTraceManager();
+		return TracePlugin.getInstance().getContextManager();
 	}
 
 	/**

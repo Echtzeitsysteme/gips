@@ -15,7 +15,7 @@ import org.emoflon.gips.eclipse.listener.WorkbenchPartWatcher;
 
 /**
  * This class is used to monitor the workbench for any editor, which can be
- * connected to the {@link TraceManager}. To do so it uses an
+ * connected to the {@link ContextManager}. To do so it uses an
  * {@link IEditorTraceConnectionFactory}.
  * 
  * @see EditorTraceConnectionFactory

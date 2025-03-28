@@ -10,8 +10,8 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.PlatformUI;
 import org.emoflon.gips.eclipse.TracePlugin;
-import org.emoflon.gips.eclipse.service.ProjectTraceContext;
-import org.emoflon.gips.eclipse.service.TraceManager;
+import org.emoflon.gips.eclipse.service.ProjectContext;
+import org.emoflon.gips.eclipse.service.ContextManager;
 import org.emoflon.gips.eclipse.view.model.ContextNode;
 import org.emoflon.gips.eclipse.view.model.LinkModelNode;
 import org.emoflon.gips.eclipse.view.model.ModelNode;
@@ -39,7 +39,7 @@ public class DeleteNode extends ContributionItem {
 			item.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					TraceManager manager = TracePlugin.getInstance().getTraceManager();
+					ContextManager manager = TracePlugin.getInstance().getContextManager();
 					manager.getContext(node.getContextId()).deleteAllModels();
 				}
 			});
@@ -51,7 +51,7 @@ public class DeleteNode extends ContributionItem {
 			item.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					TraceManager manager = TracePlugin.getInstance().getTraceManager();
+					ContextManager manager = TracePlugin.getInstance().getContextManager();
 					manager.getContext(node.getContextId()).deleteModel(node.modelId);
 				}
 			});
@@ -63,7 +63,7 @@ public class DeleteNode extends ContributionItem {
 			item.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					ProjectTraceContext context = TracePlugin.getInstance().getTraceManager()
+					ProjectContext context = TracePlugin.getInstance().getContextManager()
 							.getContext(node.getContextId());
 
 					switch (node.direction) {

@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.emf.common.util.URI;
 import org.emoflon.gips.eclipse.api.IModelLink;
 import org.emoflon.gips.eclipse.api.ITraceContext;
+import org.emoflon.gips.eclipse.api.ITraceManager;
 import org.emoflon.gips.eclipse.api.TraceModelNotFoundException;
 import org.emoflon.gips.eclipse.api.event.ITraceSelectionListener;
 import org.emoflon.gips.eclipse.api.event.ITraceUpdateListener;
@@ -37,7 +38,7 @@ import org.emoflon.gips.eclipse.trace.TraceModelLink;
 import org.emoflon.gips.eclipse.trace.TransformEcore2Graph;
 import org.emoflon.gips.eclipse.utility.HelperEclipse;
 
-public final class ProjectTraceContext implements ITraceContext {
+public final class ProjectContext implements ITraceContext {
 
 	private static final String CACHE_FILE_NAME = "trace_cache.bin";
 
@@ -60,7 +61,7 @@ public final class ProjectTraceContext implements ITraceContext {
 	}
 
 	private final Object syncLock = new Object();
-	private final TraceManager service;
+	private final ContextManager manager;
 	private final String contextId;
 	private TraceGraph graph = new TraceGraph();
 
@@ -69,8 +70,8 @@ public final class ProjectTraceContext implements ITraceContext {
 
 	private boolean graphDirty = false;
 
-	public ProjectTraceContext(TraceManager service, String contextId) {
-		this.service = Objects.requireNonNull(service, "service");
+	public ProjectContext(ContextManager manager, String contextId) {
+		this.manager = Objects.requireNonNull(manager, "manager");
 		this.contextId = Objects.requireNonNull(contextId, "contextId");
 	}
 
@@ -208,14 +209,18 @@ public final class ProjectTraceContext implements ITraceContext {
 		if (!graph.hasModelReference(modelId))
 			throw new TraceModelNotFoundException(modelId);
 
-		if (service.isVisualisationActive())
+		if (manager.isVisualisationActive())
 			fireModelSelectionNotification(modelId, elementIds);
 
 	}
 
 	@Override
-	public TraceManager getTraceManager() {
-		return this.service;
+	public ITraceManager getTraceManager() {
+		return getContextManager();
+	}
+
+	public ContextManager getContextManager() {
+		return this.manager;
 	}
 
 	@Override

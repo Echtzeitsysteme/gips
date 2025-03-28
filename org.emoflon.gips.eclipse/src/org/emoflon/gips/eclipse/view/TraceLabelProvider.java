@@ -7,7 +7,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.emoflon.gips.eclipse.TracePlugin;
-import org.emoflon.gips.eclipse.service.ProjectTraceContext;
+import org.emoflon.gips.eclipse.service.ProjectContext;
 import org.emoflon.gips.eclipse.trace.TraceModelLink;
 import org.emoflon.gips.eclipse.view.model.ContextNode;
 import org.emoflon.gips.eclipse.view.model.LinkModelNode;
@@ -49,7 +49,7 @@ final class TraceLabelProvider extends LabelProvider implements ILabelProvider, 
 		if (element instanceof ModelNode node) {
 
 		} else if (element instanceof LinkModelNode node) {
-			ProjectTraceContext context = TracePlugin.getInstance().getTraceManager().getContext(node.getContextId());
+			ProjectContext context = TracePlugin.getInstance().getContextManager().getContext(node.getContextId());
 			switch (node.direction) {
 			case FORWARD: {
 				TraceModelLink link = context.getModelLink(node.parent.modelId, node.modelId);

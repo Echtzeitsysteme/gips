@@ -7,7 +7,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.emoflon.gips.eclipse.api.ITraceManager;
-import org.emoflon.gips.eclipse.service.TraceManager;
+import org.emoflon.gips.eclipse.service.ContextManager;
 import org.emoflon.gips.eclipse.service.TraceRemoteService;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -32,14 +32,14 @@ public final class TracePlugin extends AbstractUIPlugin {
 	 * @return the shared instance
 	 */
 	public static TracePlugin getInstance() {
-		return INSTANCE;
+		return TracePlugin.INSTANCE;
 	}
 
 //	public static void log(IStatus status) {
 //		getInstance().getLog().log(status);
 //	}
 
-	private TraceManager traceManager;
+	private ContextManager contextManager;
 	private ServiceRegistration<ITraceManager> traceManagerRegistration;
 
 	private TraceRemoteService remoteService;
@@ -48,21 +48,21 @@ public final class TracePlugin extends AbstractUIPlugin {
 
 	public TracePlugin() {
 		Assert.isTrue(INSTANCE == null);
-		INSTANCE = this;
+		TracePlugin.INSTANCE = this;
 	}
 
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
 		super.start(bundleContext);
 
-		traceManager = new TraceManager();
-		traceManager.initialize();
+		contextManager = new ContextManager();
+		contextManager.initialize();
 
 //		var eclipseContext = PlatformUI.getWorkbench().getService(IEclipseContext.class);
 //		eclipseContext.set(ITraceManager.class, traceManager); 		
 //		var eclipseContext = EclipseContextFactory.getServiceContext(bundleContext);
 //		eclipseContext.set(ITraceManager.class, traceManager);
-		traceManagerRegistration = getBundle().getBundleContext().registerService(ITraceManager.class, traceManager,
+		traceManagerRegistration = getBundle().getBundleContext().registerService(ITraceManager.class, contextManager,
 				null);
 
 //		if(eclipseContext!=null) {
@@ -85,7 +85,7 @@ public final class TracePlugin extends AbstractUIPlugin {
 		traceManagerRegistration.unregister();
 
 		remoteService.dispose();
-		traceManager.dispose();
+		contextManager.dispose();
 
 		super.stop(context);
 	}
@@ -95,7 +95,7 @@ public final class TracePlugin extends AbstractUIPlugin {
 		if (preferenceStore == null) {
 			synchronized (syncLock) {
 				if (preferenceStore == null) {
-					preferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, PLUGIN_ID);
+					preferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, TracePlugin.PLUGIN_ID);
 					preferenceStore.setSearchContexts(
 							new IScopeContext[] { InstanceScope.INSTANCE, ConfigurationScope.INSTANCE });
 
@@ -107,12 +107,13 @@ public final class TracePlugin extends AbstractUIPlugin {
 
 	/**
 	 * Shareable singleton instance, not intended to be accessible from outside the
-	 * plugin
+	 * plugin. To access the {@link ITraceManager} from outside the plugin see
+	 * {@link ITraceManager#getInstance()}
 	 * 
 	 * @see ITraceManager#getInstance()
 	 */
-	public TraceManager getTraceManager() {
-		return traceManager;
+	public ContextManager getContextManager() {
+		return contextManager;
 	}
 
 }

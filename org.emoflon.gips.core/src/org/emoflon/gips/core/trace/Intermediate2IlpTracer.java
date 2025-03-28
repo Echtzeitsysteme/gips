@@ -19,7 +19,7 @@ import org.emoflon.gips.core.milp.model.Constraint;
 import org.emoflon.gips.core.milp.model.Term;
 import org.emoflon.gips.core.milp.model.Variable;
 import org.emoflon.gips.eclipse.api.ILPTraceKeywords;
-import org.emoflon.gips.eclipse.api.ITraceRemoteService;
+import org.emoflon.gips.eclipse.api.IRemoteEclipseService;
 import org.emoflon.gips.eclipse.trace.TraceMap;
 import org.emoflon.gips.eclipse.trace.TraceModelLink;
 import org.emoflon.gips.eclipse.trace.resolver.ResolveEcore2Id;
@@ -30,7 +30,7 @@ public class Intermediate2IlpTracer {
 	private final TraceMap<EObject, String> mappings = new TraceMap<>();
 	private final SolverConfig config;
 
-	private int rmiServicePort = ITraceRemoteService.DEFAULT_PORT;
+	private int rmiServicePort = IRemoteEclipseService.DEFAULT_PORT;
 	private String intermediateModelId;
 	private String lpModelId;
 
@@ -72,8 +72,8 @@ public class Intermediate2IlpTracer {
 		TraceModelLink link = new TraceModelLink(intermediateModelId, lpModelId, mapping);
 
 		try {
-			ITraceRemoteService service = (ITraceRemoteService) LocateRegistry.getRegistry(rmiServicePort)
-					.lookup(ITraceRemoteService.SERVICE_NAME);
+			IRemoteEclipseService service = (IRemoteEclipseService) LocateRegistry.getRegistry(rmiServicePort)
+					.lookup(IRemoteEclipseService.SERVICE_NAME);
 			service.updateTraceModel(contextId, link);
 		} catch (RemoteException | NotBoundException e) {
 			// TODO Auto-generated catch block

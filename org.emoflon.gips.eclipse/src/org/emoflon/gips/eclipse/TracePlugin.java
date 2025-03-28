@@ -8,7 +8,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.emoflon.gips.eclipse.api.ITraceManager;
 import org.emoflon.gips.eclipse.service.ContextManager;
-import org.emoflon.gips.eclipse.service.TraceRemoteService;
+import org.emoflon.gips.eclipse.service.RemoteEclipseService;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
@@ -42,7 +42,7 @@ public final class TracePlugin extends AbstractUIPlugin {
 	private ContextManager contextManager;
 	private ServiceRegistration<ITraceManager> traceManagerRegistration;
 
-	private TraceRemoteService remoteService;
+	private RemoteEclipseService remoteService;
 
 	private ScopedPreferenceStore preferenceStore;
 
@@ -76,7 +76,7 @@ public final class TracePlugin extends AbstractUIPlugin {
 //		var eclipseContext = EclipseContextHelper.getActiveContext();
 //		this.watcher = ContextInjectionFactory.make(EditorWatcher.class, eclipseContext);
 
-		remoteService = new TraceRemoteService();
+		remoteService = new RemoteEclipseService();
 		remoteService.initialize();
 	}
 

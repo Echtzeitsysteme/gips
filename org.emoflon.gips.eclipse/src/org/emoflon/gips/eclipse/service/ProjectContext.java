@@ -11,6 +11,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -329,6 +330,11 @@ public final class ProjectContext implements ITraceContext {
 			var updatedModels = model.getModels().stream().map(ModelReference::getModelId).collect(Collectors.toSet());
 			fireModelUpdateNotification(updatedModels);
 		}
+	}
+
+	public void updateMILPVariableValues(String lpModelId, Map<String, Number> values) {
+		// TODO Auto-generated method stub
+
 	}
 
 	private void fireModelSelectionNotification(String modelId, Collection<String> elementIds) {

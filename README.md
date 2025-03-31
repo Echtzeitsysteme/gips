@@ -67,11 +67,17 @@ By using this settings, you should be unable to commit unformatted code.
 
 When using GIPS within the Eclipse IDE, the following environment variables may be necessary for your runtime configuration:
 ```
-# Linux/macOS
+# Linux
 GRB_LICENSE_FILE=/home/mkratz/gurobi.lic
 GUROBI_HOME=/opt/gurobi1201/linux64/
 LD_LIBRARY_PATH=/opt/gurobi1201/linux64/lib/:/opt/ibm/ILOG/CPLEX_Studio2212/cplex/bin/x86-64_linux/
 PATH=/opt/gurobi1201/linux64/bin/:/opt/ibm/ILOG/CPLEX_Studio2212/cplex/bin/x86-64_linux/:$PATH
+
+# macOS
+GRB_LICENSE_FILE=/Users/mkratz/gurobi.lic
+GUROBI_HOME=/Library/gurobi1201/macos_universal2/
+LD_LIBRARY_PATH=/Library/gurobi1201/macos_universal2/lib/:/Applications/CPLEX_Studio2212/cplex/bin/arm64_osx/
+PATH=/Library/gurobi1201/macos_universal2/bin/:/Applications/CPLEX_Studio2212/cplex/bin/arm64_osx/:$PATH
 
 # Windows
 GRB_LICENSE_FILE=C:\Users\mkratz\gurobi.lic

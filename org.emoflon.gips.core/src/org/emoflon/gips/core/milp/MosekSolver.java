@@ -147,14 +147,14 @@ public class MosekSolver extends Solver {
 		this.vars.forEach((name, var) -> {
 			// if `ub == lb`, fix the variable
 			if (var.lb.equals(var.ub)) {
-				mosek.putvarbound(var.index, boundkey.fx, (double) var.lb, (double) var.ub);
+				mosek.putvarbound(var.index, boundkey.fx, var.lb.doubleValue(), var.ub.doubleValue());
 			} else {
-				mosek.putvarbound(var.index, boundkey.ra, (double) var.lb, (double) var.ub);
+				mosek.putvarbound(var.index, boundkey.ra, var.lb.doubleValue(), var.ub.doubleValue());
 			}
 
 			if (var.type == VariableType.BIN) {
 				mosek.putvartype(var.index, variabletype.type_int);
-				mosek.putvarbound(var.index, boundkey.ra, (double) 0, (double) 1);
+				mosek.putvarbound(var.index, boundkey.ra, 0.0, 1.0);
 			} else if (var.type == VariableType.INT) {
 				mosek.putvartype(var.index, variabletype.type_int);
 			} else if (var.type == VariableType.DBL) {

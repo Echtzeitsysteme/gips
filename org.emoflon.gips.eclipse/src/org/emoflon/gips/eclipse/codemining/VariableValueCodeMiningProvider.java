@@ -32,6 +32,10 @@ import org.emoflon.gips.eclipse.utility.HelperEclipse;
 
 public class VariableValueCodeMiningProvider implements ICodeMiningProvider {
 
+	public VariableValueCodeMiningProvider() {
+		// created for every editor
+	}
+
 	@Override
 	public CompletableFuture<List<? extends ICodeMining>> provideCodeMinings(ITextViewer viewer,
 			IProgressMonitor progressMonitor) {
@@ -69,7 +73,7 @@ public class VariableValueCodeMiningProvider implements ICodeMiningProvider {
 
 		ProjectContext context = TracePlugin.getInstance().getContextManager().getContext(project.getName());
 		// TODO: check, when any values are available
-		var map = context.getMILPValues();
+		var map = context.getSolutionValues();
 		if (map.isEmpty())
 			return Collections.emptyList();
 

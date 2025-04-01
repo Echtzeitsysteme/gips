@@ -90,7 +90,7 @@ public class EclipseIntegration {
 		if (!modelPath.isAbsolute())
 			modelPath = root.resolve(modelPath).normalize();
 
-		Path relativePath = root.relativize(modelPath); // we use the relative path as id
+		Path relativePath = root.relativize(modelPath); // we use the root (workspae) relative path as id
 		String id = StreamSupport.stream(relativePath.spliterator(), false).map(Path::toString)
 				.collect(Collectors.joining("/")); // use '/' like IPath.toString
 		return id;
@@ -132,13 +132,13 @@ public class EclipseIntegration {
 		if (isLpPathNotValid() || !config.isSolutionValuesCodeMiningEnabled())
 			return;
 
-		Map<String, Number> values = new HashMap<>();
+		Map<String, String> values = new HashMap<>();
 		for (GipsMapper<?> mapper : gipsMappers.values()) {
 			for (GipsMapping mapping : mapper.getMappings().values()) {
-				values.put(mapping.getName(), mapping.getValue());
+				values.put(mapping.getName(), mapping.getValue().toString());
 				if (mapping.hasAdditionalVariables()) {
 					for (Variable<?> variable : mapping.getAdditionalVariables().values()) {
-						values.put(variable.getName(), variable.getValue());
+						values.put(variable.getName(), variable.getValue().toString());
 					}
 				}
 			}
@@ -146,7 +146,7 @@ public class EclipseIntegration {
 
 		try {
 			IRemoteEclipseService service = getRemoteService();
-			service.updateSolutionValues(getContextId(), getModelIdForLpModel(), values);
+			service.updateModelValues(getContextId(), getModelIdForLpModel(), values);
 		} catch (RemoteException e) {
 			System.err.println("Unable to send solution values to IDE. Reason:\n");
 			e.printStackTrace();

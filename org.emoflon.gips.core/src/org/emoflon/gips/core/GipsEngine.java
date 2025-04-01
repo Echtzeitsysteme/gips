@@ -9,6 +9,8 @@ import org.emoflon.gips.core.milp.Solver;
 import org.emoflon.gips.core.milp.SolverOutput;
 import org.emoflon.gips.core.milp.SolverStatus;
 import org.emoflon.gips.core.milp.model.Variable;
+import org.emoflon.gips.core.trace.EclipseIntegration;
+import org.emoflon.gips.core.trace.EclipseIntegrationConfig;
 import org.emoflon.gips.core.trace.Intermediate2IlpTracer;
 import org.emoflon.gips.core.util.Observer;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
@@ -25,6 +27,8 @@ public abstract class GipsEngine {
 	final protected Map<String, GipsLinearFunction<?, ?, ?>> functions = Collections.synchronizedMap(new HashMap<>());
 	protected GipsObjective objective;
 	protected Solver solver;
+
+	protected EclipseIntegration eclipseIntegration;
 	protected Intermediate2IlpTracer tracer;
 
 	/**
@@ -98,6 +102,9 @@ public abstract class GipsEngine {
 		// Constraints are re-build a few lines below
 		constraints.values().stream().forEach(constraint -> constraint.clear());
 
+		// Reset trace
+		getTracer().resetTrace();
+
 		// Objectives will be build by the global objective call below
 //		objectives.values().stream().forEach(objective -> objective.clear());
 		// TODO: It seems to me that this is not necessary for objectives. All tests
@@ -124,12 +131,14 @@ public abstract class GipsEngine {
 
 		solver.init();
 		solver.buildILPProblem();
-		buildTraceGraph();
+		buildTraceGraphAndSendToIDE();
 	}
 
-	protected void buildTraceGraph() {
-		if (tracer.isTracingEnabled())
-			tracer.buildTraceGraphAndSendToIDE(this);
+	protected void buildTraceGraphAndSendToIDE() {
+		if (getTracer().isTracingEnabled()) {
+			getTracer().buildTraceGraph(this);
+			eclipseIntegration.sendTraceToIDE(getTracer());
+		}
 	}
 
 	public SolverOutput solveProblemTimed() {
@@ -152,19 +161,19 @@ public abstract class GipsEngine {
 	}
 
 	public SolverOutput solveProblem() {
+		SolverOutput output;
 		if (validationLog.isNotValid()) {
-			SolverOutput output = new SolverOutput(SolverStatus.INFEASIBLE, Double.NaN, validationLog, 0, null);
-			solver.reset();
-			return output;
-		}
-		this.tockInit();
-		SolverOutput output = solver.solve();
-		if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0) {
-			solver.updateValuesFromSolution();
-			tracer.sendSolutionValuesToIDE(this);
+			output = new SolverOutput(SolverStatus.INFEASIBLE, Double.NaN, validationLog, 0, null);
+		} else {
+			this.tockInit();
+			output = solver.solve();
+
+			if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0)
+				solver.updateValuesFromSolution();
 		}
 
 		solver.reset();
+		eclipseIntegration.sendSolutionValuesToIDE(getMappers());
 		return output;
 	}
 
@@ -261,7 +270,11 @@ public abstract class GipsEngine {
 	}
 
 	public Intermediate2IlpTracer getTracer() {
-		return this.tracer;
+		return tracer;
+	}
+
+	public EclipseIntegrationConfig getEclipseIntegrationConfig() {
+		return eclipseIntegration.getConfig();
 	}
 
 	/**

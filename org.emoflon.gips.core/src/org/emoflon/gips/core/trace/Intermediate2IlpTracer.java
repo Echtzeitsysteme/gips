@@ -1,57 +1,29 @@
 package org.emoflon.gips.core.trace;
 
-import java.nio.file.Path;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsConstraint;
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsLinearFunction;
 import org.emoflon.gips.core.GipsMapper;
-import org.emoflon.gips.core.GipsMapping;
-import org.emoflon.gips.core.milp.SolverConfig;
 import org.emoflon.gips.core.milp.model.Constraint;
 import org.emoflon.gips.core.milp.model.Term;
 import org.emoflon.gips.core.milp.model.Variable;
 import org.emoflon.gips.eclipse.api.ILPTraceKeywords;
-import org.emoflon.gips.eclipse.api.IRemoteEclipseService;
 import org.emoflon.gips.eclipse.trace.TraceMap;
-import org.emoflon.gips.eclipse.trace.TraceModelLink;
-import org.emoflon.gips.eclipse.trace.resolver.ResolveEcore2Id;
-import org.emoflon.gips.eclipse.trace.resolver.ResolveIdentity2Id;
 
 public class Intermediate2IlpTracer {
 
+	private EclipseIntegration integration;
 	private final TraceMap<EObject, String> mappings = new TraceMap<>();
-	private final SolverConfig config;
 
-	private int rmiServicePort = IRemoteEclipseService.DEFAULT_PORT;
-	private String intermediateModelId;
-	private String lpModelId;
-
-	/**
-	 * Needs to be enabled via api call
-	 */
-	private boolean tracingEnabled;
-
-	public Intermediate2IlpTracer(SolverConfig config) {
-		this.config = Objects.requireNonNull(config, "config");
+	public Intermediate2IlpTracer(EclipseIntegration integration) {
+		this.integration = Objects.requireNonNull(integration, "integration");
 	}
 
-	public String getIntermediateModelId() {
-		return intermediateModelId;
-	}
-
-	public String getLPModelId() {
-		return lpModelId;
+	public void resetTrace() {
+		mappings.clear();
 	}
 
 	public TraceMap<EObject, String> getMapping() {
@@ -59,135 +31,41 @@ public class Intermediate2IlpTracer {
 	}
 
 	public void map(final EObject src, final String dst) {
-		mappings.map(src, dst);
+		if (isTracingEnabled())
+			mappings.map(src, dst);
 	}
 
+	public String getIntermediateModelId() {
+		return integration.getModelIdForIntermediateModel();
+	}
+
+	/**
+	 * Returns the lp model id. This model id is only available after the ilp build
+	 * stage.
+	 * 
+	 * @return lp model id
+	 */
+	public String getLpModelId() {
+		return integration.getModelIdForLpModel();
+	}
+
+	/**
+	 * @deprecated Use {@link GipsEngine#getEclipseIntegrationConfig()} instead
+	 */
+	@Deprecated
 	public void setRMIPort(int port) {
-		this.rmiServicePort = port;
-	}
-
-	/**
-	 * 
-	 * @param <T>         service type
-	 * @param serviceName
-	 * @return a reference to the service with the given name, or null if no service
-	 *         exists
-	 * @throws RemoteException - if the service could not be created or
-	 *                         communication failed
-	 */
-	@SuppressWarnings("unchecked")
-	private IRemoteEclipseService tryAndGetService() throws RemoteException {
-		try {
-			IRemoteEclipseService service = (IRemoteEclipseService) LocateRegistry.getRegistry(rmiServicePort)
-					.lookup(IRemoteEclipseService.SERVICE_NAME);
-			return service;
-		} catch (NotBoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	private void sendTraceToRMIService() {
-		// this should, in theory, be the eclipse project name
-		String contextId = getWorkingDirectory().getFileName().toString();
-
-		TraceMap<String, String> mapping = TraceMap.normalize(mappings, ResolveEcore2Id.INSTANCE,
-				ResolveIdentity2Id.INSTANCE);
-		TraceModelLink link = new TraceModelLink(intermediateModelId, lpModelId, mapping);
-
-		try {
-			IRemoteEclipseService service = (IRemoteEclipseService) LocateRegistry.getRegistry(rmiServicePort)
-					.lookup(IRemoteEclipseService.SERVICE_NAME);
-			service.updateTraceModel(contextId, link);
-		} catch (RemoteException | NotBoundException e) {
-			// TODO Auto-generated catch block
-			System.err.println("Unable to send trace to IDE. Reason:\n");
-			e.printStackTrace();
-		}
-	}
-
-	private Path getWorkingDirectory() {
-		return Path.of("").toAbsolutePath();
-	}
-
-	/**
-	 * Computes the model id for the intermediate model.
-	 * 
-	 * @param modelUri to the intermediate xmi file
-	 */
-	public void computeGipsModelId(URI modelUri) {
-		Objects.requireNonNull(modelUri, "Intermediate model URI is null");
-
-		Path intermediatePath;
-		if (modelUri.isPlatform())
-			intermediatePath = Path.of(modelUri.toPlatformString(true));
-		else
-			intermediatePath = Path.of(modelUri.toFileString());
-
-		setIntermediateModelId(computeModelIdFromPath(intermediatePath));
-	}
-
-	/**
-	 * Computes the model id for the lp model.
-	 * 
-	 * @param path to the lp file
-	 */
-	private void computeLpModelId(String path) {
-		Objects.requireNonNull(path, "lp file path is null");
-		setLpModelId(computeModelIdFromPath(Path.of(path)));
-	}
-
-	/**
-	 * Sets the lp model id
-	 * 
-	 * @param modelId
-	 */
-	private void setLpModelId(String modelId) {
-		lpModelId = modelId;
-	}
-
-	/**
-	 * Sets the intermediate model id.
-	 * 
-	 * @param modelId
-	 */
-	private void setIntermediateModelId(String modelId) {
-		intermediateModelId = modelId;
+		integration.getConfig().setServicePort(port);
 	}
 
 	public void enableTracing(boolean enableTracing) {
-		this.tracingEnabled = enableTracing;
+		integration.getConfig().setTracingEnabled(enableTracing);
 	}
 
 	public boolean isTracingEnabled() {
-		return this.tracingEnabled;
+		return integration.getConfig().isTracingEnabled();
 	}
 
-	private String computeModelIdFromPath(Path modelPath) {
-		return computeModelIdFromPath(getWorkingDirectory(), modelPath);
-	}
-
-	private String computeModelIdFromPath(Path root, Path modelPath) {
-		if (!modelPath.isAbsolute())
-			modelPath = root.resolve(modelPath).normalize();
-
-		Path relativePath = root.relativize(modelPath); // we use the relative path as id
-		String id = StreamSupport.stream(relativePath.spliterator(), false).map(Path::toString)
-				.collect(Collectors.joining("/")); // use '/' like IPath.toString
-		return id;
-	}
-
-	public void buildTraceGraphAndSendToIDE(GipsEngine gipsEngine) {
-		if (!config.isEnableLpOutput() || config.getLpPath() == null) {
-			System.err.println(
-					"Unable to create trace for lp file. LP output is disabled or lp path is null. A valid LP output path is required");
-			return;
-		}
-
-		computeLpModelId(config.getLpPath());
-
+	public void buildTraceGraph(GipsEngine gipsEngine) {
 		// try to build a bridge between ILP model and ILP text file
 
 		for (GipsMapper<?> mapper : gipsEngine.getMappers().values()) {
@@ -222,36 +100,6 @@ public class Intermediate2IlpTracer {
 		if (gipsEngine.getObjective() != null) {
 			map(gipsEngine.getObjective().getIntermediateObjective(),
 					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_OBJECTIVE, ""));
-		}
-
-		sendTraceToRMIService();
-	}
-
-	public void sendSolutionValuesToIDE(GipsEngine engine) {
-		// TODO Auto-generated method stub
-
-		Map<String, Number> values = new HashMap<>();
-		for (GipsMapper<?> mapper : engine.getMappers().values()) {
-			for (GipsMapping mapping : mapper.getMappings().values()) {
-				values.put(mapping.getName(), mapping.getValue());
-				if (mapping.hasAdditionalVariables()) {
-					for (Variable<?> variable : mapping.getAdditionalVariables().values()) {
-						values.put(variable.getName(), variable.getValue());
-					}
-				}
-			}
-		}
-
-		String contextId = getWorkingDirectory().getFileName().toString();
-
-		try {
-			IRemoteEclipseService service = (IRemoteEclipseService) LocateRegistry.getRegistry(rmiServicePort)
-					.lookup(IRemoteEclipseService.SERVICE_NAME);
-			service.updateMILPVariableValues(contextId, null, values);
-		} catch (RemoteException | NotBoundException e) {
-			// TODO Auto-generated catch block
-			System.err.println("Unable to send trace to IDE. Reason:\n");
-			e.printStackTrace();
 		}
 	}
 

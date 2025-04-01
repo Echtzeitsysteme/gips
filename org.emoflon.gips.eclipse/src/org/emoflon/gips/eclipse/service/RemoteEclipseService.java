@@ -145,10 +145,10 @@ public final class RemoteEclipseService implements IRemoteEclipseService {
 	}
 
 	@Override
-	public void updateMILPVariableValues(String contextId, String lpModelId, Map<String, Number> values)
+	public void updateSolutionValues(String contextId, String lpModelId, Map<String, Number> values)
 			throws RemoteException {
 		ProjectContext context = TracePlugin.getInstance().getContextManager().getContext(contextId);
-		context.updateMILPVariableValues(lpModelId, values);
+		context.updateSolutionValues(lpModelId, values);
 	}
 
 }

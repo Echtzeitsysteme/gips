@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
@@ -30,6 +31,7 @@ import org.emoflon.gips.eclipse.api.event.ITraceUpdateListener;
 import org.emoflon.gips.eclipse.api.event.TraceSelectionEvent;
 import org.emoflon.gips.eclipse.api.event.TraceUpdateEvent;
 import org.emoflon.gips.eclipse.pref.PluginPreferences;
+import org.emoflon.gips.eclipse.service.event.ISolutionValueListener;
 import org.emoflon.gips.eclipse.trace.EcoreReader;
 import org.emoflon.gips.eclipse.trace.ModelReference;
 import org.emoflon.gips.eclipse.trace.PathFinder.SearchDirection;
@@ -64,13 +66,14 @@ public final class ProjectContext implements ITraceContext {
 	private final Object syncLock = new Object();
 	private final ContextManager manager;
 	private final String contextId;
+
+	private final ListenerList<ITraceSelectionListener> traceSelectionListener = new ListenerList<>();
+	private final ListenerList<ITraceUpdateListener> traceUpdateListener = new ListenerList<>();
+	private final ListenerList<ISolutionValueListener> solutionListener = new ListenerList<>();
+
 	private TraceGraph graph = new TraceGraph();
-
-	private final ListenerList<ITraceSelectionListener> selectionListener = new ListenerList<>();
-	private final ListenerList<ITraceUpdateListener> updateListener = new ListenerList<>();
-
-	private boolean graphDirty = false;
-	private Map<String, Number> milpValues;
+	private Map<String, Number> solutionValues = Collections.emptyMap();
+	private boolean anyDataDirty = false;
 
 	public ProjectContext(ContextManager manager, String contextId) {
 		this.manager = Objects.requireNonNull(manager, "manager");
@@ -115,7 +118,7 @@ public final class ProjectContext implements ITraceContext {
 
 	public void writeCache() {
 		synchronized (syncLock) {
-			if (!graphDirty)
+			if (!anyDataDirty)
 				return;
 
 			try {
@@ -128,7 +131,8 @@ public final class ProjectContext implements ITraceContext {
 						var objectOut = new ObjectOutputStream(outputStream)) {
 
 					objectOut.writeObject(graph);
-					graphDirty = false;
+					objectOut.writeObject(solutionValues);
+					anyDataDirty = false;
 				}
 			} catch (IOException e) {
 				e.printStackTrace(); // log to console, can't do anything else
@@ -148,6 +152,7 @@ public final class ProjectContext implements ITraceContext {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void readCacheIfAvailable() {
 		synchronized (syncLock) {
 			try {
@@ -159,13 +164,16 @@ public final class ProjectContext implements ITraceContext {
 						var objectIn = new ObjectInputStream(inputStream)) {
 
 					graph = (TraceGraph) objectIn.readObject();
-					graphDirty = false;
+					if (inputStream.available() > 0)
+						solutionValues = (Map<String, Number>) objectIn.readObject();
+
+					anyDataDirty = false;
 
 				} catch (NoSuchFileException e) {
 					// ignore
 				} catch (ClassNotFoundException | ObjectStreamException e) { // cache is invalid/corrupted
 					e.printStackTrace();
-					graphDirty = true; // trigger rewrite on close
+					anyDataDirty = true; // trigger rewrite on close
 //					deleteCache();
 				}
 
@@ -183,23 +191,32 @@ public final class ProjectContext implements ITraceContext {
 	@Override
 	public void addListener(ITraceSelectionListener listener) {
 		Objects.requireNonNull(listener, "listener");
-		selectionListener.add(listener);
+		traceSelectionListener.add(listener);
 	}
 
 	@Override
 	public void removeListener(ITraceSelectionListener listener) {
-		selectionListener.remove(listener);
+		traceSelectionListener.remove(listener);
 	}
 
 	@Override
 	public void addListener(ITraceUpdateListener listener) {
 		Objects.requireNonNull(listener, "listener");
-		updateListener.add(listener);
+		traceUpdateListener.add(listener);
 	}
 
 	@Override
 	public void removeListener(ITraceUpdateListener listener) {
-		updateListener.remove(listener);
+		traceUpdateListener.remove(listener);
+	}
+
+	public void addListener(ISolutionValueListener listener) {
+		Objects.requireNonNull(listener, "listener");
+		solutionListener.add(listener);
+	}
+
+	public void removeListener(ISolutionValueListener listener) {
+		solutionListener.remove(listener);
 	}
 
 	@Override
@@ -333,24 +350,27 @@ public final class ProjectContext implements ITraceContext {
 		}
 	}
 
-	public void updateMILPVariableValues(String lpModelId, Map<String, Number> values) {
-		// TODO Auto-generated method stub
-		this.milpValues = values;
+	public void updateSolutionValues(String lpModelId, Map<String, Number> values) {
+		if (values == null)
+			this.solutionValues = Collections.emptyMap();
+		else
+			this.solutionValues = Collections.unmodifiableMap(new HashMap<>(values));
+
+		anyDataDirty = true;
+		for (var listener : solutionListener)
+			listener.onChange();
 	}
 
-	public Map<String, Number> getMILPValues() {
-		// TODO Auto-generated method stub
-		return this.milpValues != null ? this.milpValues : Collections.emptyMap();
+	public Map<String, Number> getSolutionValues() {
+		return this.solutionValues;
 	}
 
 	private void fireModelSelectionNotification(String modelId, Collection<String> elementIds) {
 		Objects.requireNonNull(modelId, "modelId");
 		Objects.requireNonNull(elementIds, "elementIds");
 
-		// TODO: run (each) in a separate thread with a cancellation token
-
 		var event = new TraceSelectionEvent(this, modelId, elementIds);
-		for (var listener : selectionListener)
+		for (var listener : traceSelectionListener)
 			listener.selectedByModel(event);
 	}
 
@@ -361,10 +381,10 @@ public final class ProjectContext implements ITraceContext {
 	 */
 	private void fireModelUpdateNotification(Collection<String> updatedModels) {
 		Objects.requireNonNull(updatedModels, "updatedModels");
-		graphDirty = true;
+		anyDataDirty = true;
 
 		var event = new TraceUpdateEvent(this, updatedModels);
-		for (var listener : this.updateListener)
+		for (var listener : this.traceUpdateListener)
 			listener.updatedModels(event);
 	}
 

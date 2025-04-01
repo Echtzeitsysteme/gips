@@ -32,6 +32,7 @@ class GipsAPITemplate extends ProblemGeneratorTemplate<GipsIntermediateModel> {
 		imports.add("org.emoflon.gips.core.milp.GurobiSolver")
 		imports.add("org.emoflon.gips.core.milp.GlpkSolver")
 		imports.add("org.emoflon.gips.core.milp.CplexSolver")
+		imports.add("org.emoflon.gips.core.milp.MosekSolver")
 		imports.add("org.emoflon.gips.core.milp.SolverConfig")
 		imports.add("org.eclipse.emf.ecore.resource.ResourceSet")
 		imports.add(data.apiData.apiPkg + "." + data.apiData.engineAppClasses.get(GipsAPIData.HIPE_ENGINE_NAME))
@@ -215,6 +216,9 @@ protected void updateConstants() {
 			}
 			case CPLEX: {
 				return '''new CplexSolver(this, solverConfig)'''
+			}
+			case MOSEK: {
+				return '''new MosekSolver(this, solverConfig)'''
 			}
 		}
 	}

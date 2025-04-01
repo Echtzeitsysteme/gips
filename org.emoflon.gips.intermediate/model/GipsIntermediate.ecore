@@ -57,6 +57,7 @@
     <eLiterals name="GUROBI"/>
     <eLiterals name="GLPK" value="1"/>
     <eLiterals name="CPLEX" value="2"/>
+    <eLiterals name="MOSEK" value="3"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Variable" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//VariableType"/>

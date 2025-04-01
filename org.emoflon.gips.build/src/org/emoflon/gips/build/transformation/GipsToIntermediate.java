@@ -172,6 +172,9 @@ public class GipsToIntermediate {
 		case CPLEX -> {
 			config.setSolver(SolverType.CPLEX);
 		}
+		case MOSEK -> {
+			config.setSolver(SolverType.MOSEK);
+		}
 		default -> {
 			throw new IllegalArgumentException("Unsupported solver type: " + eConfig.getSolver());
 		}
@@ -563,7 +566,7 @@ public class GipsToIntermediate {
 			// of products.
 			linearFunction.setExpression(
 					new GipsArithmeticTransformer(factory).normalizeAndExpand(linearFunction.getExpression()));
-					gipsl2gipsTrace.map(eLinearFunction.getExpression(), linearFunction.getExpression());
+			gipsl2gipsTrace.map(eLinearFunction.getExpression(), linearFunction.getExpression());
 		}
 	}
 

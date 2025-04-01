@@ -210,6 +210,7 @@ public class CplexSolver extends Solver {
 	public void terminate() {
 		this.constraints.clear();
 		this.vars.clear();
+		this.objective = null;
 
 		if (cplex != null) {
 			try {

@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -31,7 +32,8 @@ import org.emoflon.gips.eclipse.api.event.ITraceUpdateListener;
 import org.emoflon.gips.eclipse.api.event.TraceSelectionEvent;
 import org.emoflon.gips.eclipse.api.event.TraceUpdateEvent;
 import org.emoflon.gips.eclipse.pref.PluginPreferences;
-import org.emoflon.gips.eclipse.service.event.ISolutionValueListener;
+import org.emoflon.gips.eclipse.service.event.IModelValueListener;
+import org.emoflon.gips.eclipse.service.event.ModelValueEvent;
 import org.emoflon.gips.eclipse.trace.EcoreReader;
 import org.emoflon.gips.eclipse.trace.ModelReference;
 import org.emoflon.gips.eclipse.trace.PathFinder.SearchDirection;
@@ -69,10 +71,10 @@ public final class ProjectContext implements ITraceContext {
 
 	private final ListenerList<ITraceSelectionListener> traceSelectionListener = new ListenerList<>();
 	private final ListenerList<ITraceUpdateListener> traceUpdateListener = new ListenerList<>();
-	private final ListenerList<ISolutionValueListener> solutionListener = new ListenerList<>();
+	private final ListenerList<IModelValueListener> solutionListener = new ListenerList<>();
 
 	private TraceGraph graph = new TraceGraph();
-	private Map<String, Number> solutionValues = Collections.emptyMap();
+	private Map<String, Map<String, String>> modelValues = new HashMap<>();
 	private boolean anyDataDirty = false;
 
 	public ProjectContext(ContextManager manager, String contextId) {
@@ -131,7 +133,7 @@ public final class ProjectContext implements ITraceContext {
 						var objectOut = new ObjectOutputStream(outputStream)) {
 
 					objectOut.writeObject(graph);
-					objectOut.writeObject(solutionValues);
+					objectOut.writeObject(modelValues);
 					anyDataDirty = false;
 				}
 			} catch (IOException e) {
@@ -165,7 +167,7 @@ public final class ProjectContext implements ITraceContext {
 
 					graph = (TraceGraph) objectIn.readObject();
 					if (inputStream.available() > 0)
-						solutionValues = (Map<String, Number>) objectIn.readObject();
+						modelValues = (Map<String, Map<String, String>>) objectIn.readObject();
 
 					anyDataDirty = false;
 
@@ -210,12 +212,12 @@ public final class ProjectContext implements ITraceContext {
 		traceUpdateListener.remove(listener);
 	}
 
-	public void addListener(ISolutionValueListener listener) {
+	public void addListener(IModelValueListener listener) {
 		Objects.requireNonNull(listener, "listener");
 		solutionListener.add(listener);
 	}
 
-	public void removeListener(ISolutionValueListener listener) {
+	public void removeListener(IModelValueListener listener) {
 		solutionListener.remove(listener);
 	}
 
@@ -350,19 +352,34 @@ public final class ProjectContext implements ITraceContext {
 		}
 	}
 
-	public void updateSolutionValues(String lpModelId, Map<String, Number> values) {
-		if (values == null)
-			this.solutionValues = Collections.emptyMap();
-		else
-			this.solutionValues = Collections.unmodifiableMap(new HashMap<>(values));
+	public void updateModelValues(String modelId, Map<String, String> values) {
+		Objects.requireNonNull(modelId, "modelId");
+
+		if (values == null) {
+			values = Collections.emptyMap();
+		} else {
+			// remove any empty key or value
+			values = values.entrySet().stream() //
+					.filter(e -> e.getKey() != null && !e.getKey().isBlank()) //
+					.filter(e -> e.getValue() != null && !e.getValue().isBlank()) //
+					.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+
+			if (values.isEmpty())
+				values = Collections.emptyMap();
+			else
+				values = Collections.unmodifiableMap(values);
+		}
+
+		this.modelValues.put(modelId, values);
 
 		anyDataDirty = true;
+		var event = new ModelValueEvent(modelId);
 		for (var listener : solutionListener)
-			listener.onChange();
+			listener.updateValues(event);
 	}
 
-	public Map<String, Number> getSolutionValues() {
-		return this.solutionValues;
+	public Map<String, String> getModelValues(String modelId) {
+		return this.modelValues.getOrDefault(modelId, Collections.emptyMap());
 	}
 
 	private void fireModelSelectionNotification(String modelId, Collection<String> elementIds) {

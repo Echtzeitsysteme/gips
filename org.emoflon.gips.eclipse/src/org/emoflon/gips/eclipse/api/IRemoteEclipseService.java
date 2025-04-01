@@ -32,6 +32,5 @@ public interface IRemoteEclipseService extends Remote {
 	 */
 	void updateTraceModel(String contextId, TraceModelLink traceLink) throws RemoteException;
 
-	void updateSolutionValues(String contextId, String lpModelId, Map<String, Number> values)
-			throws RemoteException;
+	void updateModelValues(String contextId, String lpModelId, Map<String, String> values) throws RemoteException;
 }

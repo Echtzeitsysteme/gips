@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/mosek-11.0.13.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/gurobi-12.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/gurobi-javadoc-12.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-nop-2.0.16.jar"/>

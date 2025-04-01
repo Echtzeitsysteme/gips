@@ -205,7 +205,7 @@ public class MosekSolver extends Solver {
 
 				// Put the weight for each variable into the matrix A
 				for (final Variable<?> v : cumulatedWeights.keySet()) {
-					mosek.putaij(vars.get(v.getName()).index, globalCnstrCounter, cumulatedWeights.get(v));
+					mosek.putaij(globalCnstrCounter, vars.get(v.getName()).index, cumulatedWeights.get(v));
 				}
 
 				// Specify the operator and bound of the constraint

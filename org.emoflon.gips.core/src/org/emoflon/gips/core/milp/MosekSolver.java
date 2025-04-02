@@ -53,10 +53,24 @@ public class MosekSolver extends Solver {
 	 */
 	private String lpPath = null;
 
+	/**
+	 * Map to collect all variables (name -> {integer (=index), type, lower bound,
+	 * upper bound}).
+	 */
 	private final Map<String, MosekVariable> vars = new HashMap<>();
 
+	/**
+	 * The MOSEK solver model.
+	 */
 	private Task mosek;
 
+	/**
+	 * Initialize a new MOSEK solver object with the given GIPS engine and solver
+	 * configuration.
+	 * 
+	 * @param engine GIPS engine.
+	 * @param config Solver config for the new object.
+	 */
 	public MosekSolver(final GipsEngine engine, final SolverConfig config) {
 		super(engine, config);
 		// TODO: Check JAR env compatibility
@@ -64,6 +78,11 @@ public class MosekSolver extends Solver {
 
 	@Override
 	public void init() {
+		this.lpPath = null;
+		this.vars.clear();
+		this.constraints.clear();
+		this.objective = null;
+
 		try {
 			mosek = new Task();
 			// TODO: finalize initialization
@@ -73,6 +92,9 @@ public class MosekSolver extends Solver {
 			throw new RuntimeException(e);
 		}
 
+		if (config.isEnableLpOutput()) {
+			this.lpPath = config.getLpPath();
+		}
 	}
 
 	@Override
@@ -81,60 +103,73 @@ public class MosekSolver extends Solver {
 		setUpCnstrs();
 		setUpObj();
 
+		// Save LP file if configured
+		if (this.lpPath != null) {
+			mosek.writedata(this.lpPath);
+		}
+
 		// Start solver
 		mosek.optimize();
 
 		// Get solver output status
-		final mosek.solsta solsta = mosek.getsolsta(soltype.itg);
+		mosek.solsta solsta = mosek.getsolsta(soltype.itg);
 
 		// Determine status
 		SolverStatus status = null;
 		int solCounter = -1;
+		double objVal = -1;
 
-		switch (solsta) {
-		case integer_optimal:
-			// Optimal solution
-			status = SolverStatus.OPTIMAL;
-			solCounter = 1;
-			break;
-		case prim_feas:
-			// Feasible solution
-			break;
-		case unknown:
-			mosek.prosta prosta = mosek.getprosta(soltype.itg);
-			switch (prosta) {
-			case prim_infeas_or_unbounded:
-				// Problem status Infeasible or unbounded
-				status = SolverStatus.INF_OR_UNBD;
-				solCounter = 0;
+		if (solsta != null) {
+			switch (solsta) {
+			case integer_optimal:
+				// Optimal solution
+				status = SolverStatus.OPTIMAL;
+				solCounter = 1;
+				objVal = mosek.getprimalobj(soltype.itg);
 				break;
-			case prim_infeas:
-				// Problem status Infeasible
-				status = SolverStatus.INFEASIBLE;
-				solCounter = 0;
+			case prim_feas:
+				// Feasible solution
+				status = SolverStatus.FEASIBLE;
+				solCounter = 1;
+				objVal = mosek.getprimalobj(soltype.itg);
 				break;
 			case unknown:
-				// Problem status unknown
+				mosek.prosta prosta = mosek.getprosta(soltype.itg);
+				switch (prosta) {
+				case prim_infeas_or_unbounded:
+					// Problem status Infeasible or unbounded
+					status = SolverStatus.INF_OR_UNBD;
+					solCounter = 0;
+					break;
+				case prim_infeas:
+					// Problem status Infeasible
+					status = SolverStatus.INFEASIBLE;
+					solCounter = 0;
+					break;
+				case unknown:
+					// Problem status unknown
+					break;
+				default:
+					// Other problem status
+					break;
+				}
 				break;
 			default:
-				// Other problem status
+				// Other solution status
 				break;
 			}
-			break;
-		default:
-			// Other solution status
-			break;
 		}
 
-		return new SolverOutput(status, mosek.getprimalobj(soltype.itg), engine.getValidationLog(), solCounter,
-				new ProblemStatistics( //
-						engine.getMappers().values().stream() //
-								.map(m -> m.getMappings().size()) //
-								.reduce(0, (sum, val) -> sum + val), //
-						vars.size(), //
-						constraints.values().stream() //
-								.map(cons -> cons.size()) //
-								.reduce(0, (sum, val) -> sum + val))); //
+		final ProblemStatistics stats = new ProblemStatistics( //
+				engine.getMappers().values().stream() //
+						.map(m -> m.getMappings().size()) //
+						.reduce(0, (sum, val) -> sum + val), //
+				vars.size(), //
+				constraints.values().stream() //
+						.map(cons -> cons.size()) //
+						.reduce(0, (sum, val) -> sum + val));
+
+		return new SolverOutput(status, objVal, engine.getValidationLog(), solCounter, stats); //
 	}
 
 	private void setUpVars() {

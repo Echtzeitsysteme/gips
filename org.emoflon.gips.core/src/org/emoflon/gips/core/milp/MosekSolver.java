@@ -47,6 +47,11 @@ public class MosekSolver extends Solver {
 	 * Global objective.
 	 */
 	private GipsObjective objective;
+	
+	/**
+	 * Constant sum of the global objective.
+	 */
+	private double objectiveConstantSum = 0;
 
 	/**
 	 * LP file output path.
@@ -108,11 +113,26 @@ public class MosekSolver extends Solver {
 			mosek.writedata(this.lpPath);
 		}
 
+		// Save problem statistics
+		final ProblemStatistics stats = new ProblemStatistics( //
+				engine.getMappers().values().stream() //
+						.map(m -> m.getMappings().size()) //
+						.reduce(0, (sum, val) -> sum + val), //
+				vars.size(), //
+				constraints.values().stream() //
+						.map(cons -> cons.size()) //
+						.reduce(0, (sum, val) -> sum + val));
+
 		// Start solver
 		mosek.optimize();
 
 		// Get solver output status
-		mosek.solsta solsta = mosek.getsolsta(soltype.itg);
+		mosek.solsta solsta = null;
+		try {
+			solsta = mosek.getsolsta(soltype.itg);
+		} catch (final mosek.Exception e) {
+			return new SolverOutput(SolverStatus.OPTIMAL, this.objectiveConstantSum, engine.getValidationLog(), 1, stats);
+		}
 
 		// Determine status
 		SolverStatus status = null;
@@ -160,16 +180,7 @@ public class MosekSolver extends Solver {
 			}
 		}
 
-		final ProblemStatistics stats = new ProblemStatistics( //
-				engine.getMappers().values().stream() //
-						.map(m -> m.getMappings().size()) //
-						.reduce(0, (sum, val) -> sum + val), //
-				vars.size(), //
-				constraints.values().stream() //
-						.map(cons -> cons.size()) //
-						.reduce(0, (sum, val) -> sum + val));
-
-		return new SolverOutput(status, objVal, engine.getValidationLog(), solCounter, stats); //
+		return new SolverOutput(status, objVal, engine.getValidationLog(), solCounter, stats);
 	}
 
 	private void setUpVars() {
@@ -302,13 +313,19 @@ public class MosekSolver extends Solver {
 		}
 
 		// Add global constant sum
+		this.objectiveConstantSum = constSum;
 		mosek.putcfix(constSum);
 	}
 
 	@Override
 	public void updateValuesFromSolution() {
 		// Extract solution from solver
-		final double[] xx = mosek.getxx(soltype.itg);
+		double[] xx;
+		try {
+			 xx = mosek.getxx(soltype.itg);
+		} catch (final mosek.Exception e) {
+			return;
+		}
 
 		// Iterate over all mappers
 		for (final String key : engine.getMappers().keySet()) {

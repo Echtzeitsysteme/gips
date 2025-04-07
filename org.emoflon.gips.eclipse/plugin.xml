@@ -34,6 +34,29 @@
                   icon="assets/toggle-visualisation-icon-on.png"
                   id="org.emoflon.gips.eclipse.visualisation.toggle"
                   style="toggle">
+               <visibleWhen
+                     checkEnabled="false">
+                  <or>
+                     <with
+                           variable="activeEditorId">
+                        <or>
+                           <equals
+                                 value="org.emoflon.gips.eclipse.CplexLp">
+                           </equals>
+                           <equals
+                                 value="org.emoflon.gips.gipsl.Gipsl">
+                           </equals>
+                        </or>
+                     </with>
+                     <with
+                           variable="activeEditor">
+                        <instanceof
+                              value="org.eclipse.emf.ecore.presentation.EcoreEditor">
+                        </instanceof>
+                     </with>
+                  </or>
+               </visibleWhen>
+              
             </command>
          </toolbar>
       </menuContribution>

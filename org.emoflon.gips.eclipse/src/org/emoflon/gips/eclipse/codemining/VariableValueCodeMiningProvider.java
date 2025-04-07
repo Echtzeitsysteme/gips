@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
@@ -15,13 +14,10 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.ITextViewer;
-import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.codemining.ICodeMining;
 import org.eclipse.jface.text.codemining.ICodeMiningProvider;
-import org.eclipse.jface.text.codemining.LineContentCodeMining;
 import org.eclipse.jface.text.source.ISourceViewerExtension5;
 import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.XtextResource;
@@ -139,8 +135,8 @@ public class VariableValueCodeMiningProvider implements ICodeMiningProvider {
 			ICompositeNode textNode = NodeModelUtils.findActualNodeFor(eObject);
 			int position = textNode.getEndOffset();
 
-			String value = " " + map.get(name) + "";
-			result.add(createLineContentCodeMining(position, value, null));
+			String text = String.format(" (%s)", map.get(name));
+			result.add(new VariableValueCodeMining(position, text, this));
 		}
 
 		return result;
@@ -152,18 +148,6 @@ public class VariableValueCodeMiningProvider implements ICodeMiningProvider {
 		case VariableRef vr -> vr.getRef().getName();
 		case ConstraintExpression ce -> ce.getName();
 		default -> null;
-		};
-	}
-
-	private LineContentCodeMining createLineContentCodeMining(int beforeCharacter, String text,
-			Consumer<MouseEvent> action) {
-		return new LineContentCodeMining(new Position(beforeCharacter, text.length()), this, action) {
-			@Override
-			protected CompletableFuture<Void> doResolve(ITextViewer viewer, IProgressMonitor monitor) {
-				return CompletableFuture.runAsync(() -> {
-					super.setLabel(text);
-				});
-			}
 		};
 	}
 

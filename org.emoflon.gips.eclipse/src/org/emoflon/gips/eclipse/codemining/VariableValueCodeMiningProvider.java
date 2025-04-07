@@ -3,6 +3,7 @@ package org.emoflon.gips.eclipse.codemining;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -19,6 +20,7 @@ import org.eclipse.jface.text.codemining.ICodeMining;
 import org.eclipse.jface.text.codemining.ICodeMiningProvider;
 import org.eclipse.jface.text.codemining.LineContentCodeMining;
 import org.eclipse.jface.text.source.ISourceViewerExtension5;
+import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
@@ -37,7 +39,10 @@ import org.emoflon.gips.eclipse.utility.HelperEclipse;
 
 public class VariableValueCodeMiningProvider implements ICodeMiningProvider {
 
-	private IModelValueListener listener;
+	private XtextSourceViewer viewer;
+	private IModelValueListener modelListener;
+	private IPropertyChangeListener propertyListener;
+
 	private String contextId;
 	private String modelId;
 
@@ -49,60 +54,77 @@ public class VariableValueCodeMiningProvider implements ICodeMiningProvider {
 	public CompletableFuture<List<? extends ICodeMining>> provideCodeMinings(ITextViewer viewer,
 			IProgressMonitor progressMonitor) {
 
-		if (!(viewer instanceof ISourceViewerExtension5 codeMiningViewer))
-			throw new IllegalArgumentException("Cannot attach to TextViewer without code mining support"); //$NON-NLS-1$
+		if (!(viewer instanceof ISourceViewerExtension5))
+			throw new IllegalArgumentException("Can only attach to TextViewer with code mining support"); //$NON-NLS-1$
 
 		if (!(viewer instanceof XtextSourceViewer xtextViewer))
 			throw new IllegalArgumentException("Can only attach to XtextSourceViewer"); //$NON-NLS-1$
 
-		if (!isEnabled())
-			return CompletableFuture.completedFuture(Collections.emptyList());
+		if (this.viewer == null)
+			this.viewer = xtextViewer;
 
 		CompletableFuture<List<? extends ICodeMining>> task = CompletableFuture.supplyAsync(() -> {
 			SubMonitor monitor = SubMonitor.convert(progressMonitor);
 
-			if (listener == null) {
-				URI uri = xtextViewer.getXtextDocument().getResourceURI();
-				IProject project = HelperEclipse.tryAndGetProject(uri);
-				if (project == null)
-					return Collections.emptyList(); // no context id, no support
-				IPath relativeFilePath = HelperEclipse.getProjectRelativPath(project, uri);
-
-				contextId = project.getName();
-				modelId = relativeFilePath.toString();
-
-				listener = event -> {
-					if (event.getModelId().equals(modelId))
-						codeMiningViewer.updateCodeMinings();
-				};
-				TracePlugin.getInstance().getContextManager().getContext(contextId).addListener(listener);
-			}
+			registerListeners();
+			if (!isEnabled())
+				return Collections.emptyList();
 
 			List<? extends ICodeMining> result = xtextViewer.getXtextDocument()
 					.readOnly(resource -> provideCodeMinings(xtextViewer.getXtextDocument(), resource, monitor));
 
-			if (result == null)
-				return Collections.emptyList();
-
-			progressMonitor.isCanceled();
-			return result;
+			return result != null ? result : Collections.emptyList();
 		});
 
 		return task;
+	}
+
+	private XtextSourceViewer getXtextSourceViewer() {
+		return viewer;
+	}
+
+	private ISourceViewerExtension5 getCodeMiningViewer() {
+		return viewer;
 	}
 
 	private boolean isEnabled() {
 		return PluginPreferences.getPreferenceStore().getBoolean(PluginPreferences.PREF_CODE_MINING_ENABLED);
 	}
 
-	// TODO: Code minings interact with annotations. They move character and line
-	// positions. It seems that they are also deleted when annotations are deleted?
+	private void registerListeners() {
+		if (modelListener != null)
+			return;
+
+		URI uri = getXtextSourceViewer().getXtextDocument().getResourceURI();
+		IProject project = HelperEclipse.tryAndGetProject(uri);
+		if (project == null)
+			return; // no context id, no support
+		IPath relativeFilePath = HelperEclipse.getProjectRelativPath(project, uri);
+
+		contextId = project.getName();
+		modelId = relativeFilePath.toString();
+
+		modelListener = event -> {
+			if (event.getModelId().equals(modelId) && isEnabled()) {
+				getCodeMiningViewer().updateCodeMinings();
+			}
+		};
+		TracePlugin.getInstance().getContextManager().getContext(contextId).addListener(modelListener);
+
+		propertyListener = event -> {
+			if (PluginPreferences.PREF_CODE_MINING_ENABLED.equals(event.getProperty())) {
+				getCodeMiningViewer().updateCodeMinings();
+			}
+		};
+		PluginPreferences.getPreferenceStore().addPropertyChangeListener(propertyListener);
+	}
+
 	private List<? extends ICodeMining> provideCodeMinings(IXtextDocument document, XtextResource resource,
 			SubMonitor monitor) {
 
 		ContextManager contextManager = TracePlugin.getInstance().getContextManager();
 		ProjectContext context = contextManager.getContext(contextId);
-		var map = context.getModelValues(modelId);
+		Map<String, String> map = context.getModelValues(modelId);
 		if (map.isEmpty())
 			return Collections.emptyList();
 
@@ -147,10 +169,13 @@ public class VariableValueCodeMiningProvider implements ICodeMiningProvider {
 
 	@Override
 	public void dispose() {
+		PluginPreferences.getPreferenceStore().removePropertyChangeListener(propertyListener);
+		propertyListener = null;
+
 		ContextManager contextManager = TracePlugin.getInstance().getContextManager();
-		if (listener != null && contextManager.doesContextExist(contextId))
-			contextManager.getContext(contextId).removeListener(listener);
-		listener = null;
+		if (modelListener != null && contextManager.doesContextExist(contextId))
+			contextManager.getContext(contextId).removeListener(modelListener);
+		modelListener = null;
 	}
 
 }

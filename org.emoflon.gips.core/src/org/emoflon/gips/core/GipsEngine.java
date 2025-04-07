@@ -173,7 +173,7 @@ public abstract class GipsEngine {
 		}
 
 		solver.reset();
-		eclipseIntegration.sendSolutionValuesToIDE(getMappers());
+		eclipseIntegration.sendSolutionValuesToIDE();
 		return output;
 	}
 
@@ -275,6 +275,10 @@ public abstract class GipsEngine {
 
 	public EclipseIntegrationConfig getEclipseIntegrationConfig() {
 		return eclipseIntegration.getConfig();
+	}
+
+	public EclipseIntegration getEclipseIntegration() {
+		return eclipseIntegration;
 	}
 
 	/**

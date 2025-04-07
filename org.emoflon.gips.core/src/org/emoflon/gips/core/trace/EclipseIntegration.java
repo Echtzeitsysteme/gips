@@ -11,10 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.util.URI;
-import org.emoflon.gips.core.GipsMapper;
-import org.emoflon.gips.core.GipsMapping;
 import org.emoflon.gips.core.milp.SolverConfig;
-import org.emoflon.gips.core.milp.model.Variable;
 import org.emoflon.gips.eclipse.api.IRemoteEclipseService;
 import org.emoflon.gips.eclipse.trace.TraceMap;
 import org.emoflon.gips.eclipse.trace.TraceModelLink;
@@ -28,6 +25,8 @@ public class EclipseIntegration {
 
 	private String modelIdIntermediate;
 	private String modelIdLp;
+
+	private final Map<String, String> storedILPValues = new HashMap<>();
 
 	public EclipseIntegration(SolverConfig solverConfig) {
 		this.solverConfig = Objects.requireNonNull(solverConfig, "solverConfig");
@@ -128,28 +127,28 @@ public class EclipseIntegration {
 		}
 	}
 
-	public void sendSolutionValuesToIDE(Map<String, GipsMapper<?>> gipsMappers) {
+	public void sendSolutionValuesToIDE() {
 		if (isLpPathNotValid() || !config.isSolutionValuesCodeMiningEnabled())
 			return;
 
-		Map<String, String> values = new HashMap<>();
-		for (GipsMapper<?> mapper : gipsMappers.values()) {
-			for (GipsMapping mapping : mapper.getMappings().values()) {
-				values.put(mapping.getName(), mapping.getValue().toString());
-				if (mapping.hasAdditionalVariables()) {
-					for (Variable<?> variable : mapping.getAdditionalVariables().values()) {
-						values.put(variable.getName(), variable.getValue().toString());
-					}
-				}
-			}
-		}
-
 		try {
 			IRemoteEclipseService service = getRemoteService();
-			service.updateModelValues(getContextId(), getModelIdForLpModel(), values);
+			service.updateModelValues(getContextId(), getModelIdForLpModel(), storedILPValues);
 		} catch (RemoteException e) {
 			System.err.println("Unable to send solution values to IDE. Reason:\n");
 			e.printStackTrace();
+		}
+	}
+
+	public void storeSolutionValues(Map<String, Number> values) {
+		if (!config.isSolutionValuesCodeMiningEnabled())
+			return;
+
+		storedILPValues.clear();
+		for (var entry : values.entrySet()) {
+			if (entry.getValue() != null) {
+				storedILPValues.put(entry.getKey(), entry.getValue().toString());
+			}
 		}
 	}
 

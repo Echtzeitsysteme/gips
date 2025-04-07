@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsEngine;
@@ -376,6 +377,15 @@ public class GurobiSolver extends Solver {
 			}
 		}
 		// Solver reset will be handled by the GipsEngine afterward
+
+		engine.getEclipseIntegration()
+				.storeSolutionValues(this.grbVars.entrySet().stream().collect(Collectors.toMap(Entry::getKey, e -> {
+					try {
+						return Math.round(getVar(e.getKey()).get(DoubleAttr.X));
+					} catch (GRBException e1) {
+						return 0;
+					}
+				})));
 	}
 
 	@Override

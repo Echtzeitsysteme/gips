@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsEngine;
@@ -242,6 +243,9 @@ public class GlpkSolver extends Solver {
 			}
 		}
 		// Solver reset will be handled by the GipsEngine afterward
+
+		engine.getEclipseIntegration().storeSolutionValues(this.ilpVars.entrySet().stream().collect(
+				Collectors.toMap(Entry::getKey, e -> Math.round(GLPK.glp_mip_col_val(model, e.getValue().index)))));
 	}
 
 	@Override

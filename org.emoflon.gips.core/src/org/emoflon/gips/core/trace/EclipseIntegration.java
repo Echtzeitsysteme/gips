@@ -106,13 +106,13 @@ public class EclipseIntegration {
 	}
 
 	public void sendTraceToIDE(Intermediate2IlpTracer tracer) {
+		if (!config.isTracingEnabled())
+			return;
+
 		if (isLpPathNotValid())
 			return;
 
 		computeLpModelId(solverConfig.getLpPath());
-
-		if (!config.isTracingEnabled())
-			return;
 
 		TraceMap<String, String> mapping = TraceMap.normalize(tracer.getMapping(), ResolveEcore2Id.INSTANCE,
 				ResolveIdentity2Id.INSTANCE);
@@ -128,13 +128,13 @@ public class EclipseIntegration {
 	}
 
 	public void sendSolutionValuesToIDE() {
+		if (!config.isSolutionValuesCodeMiningEnabled())
+			return;
+
 		if (isLpPathNotValid())
 			return;
 
 		computeLpModelId(solverConfig.getLpPath());
-
-		if (!config.isSolutionValuesCodeMiningEnabled())
-			return;
 
 		try {
 			IRemoteEclipseService service = getRemoteService();

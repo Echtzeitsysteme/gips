@@ -200,10 +200,6 @@
                   </enabledWhen>
             </codeMiningProvider>
       </extension>
-
-      </command>
-      </toolbar>
-      </menuContribution>
       <menuContribution
             allPopups="false"
             locationURI="popup:org.emoflon.gips.eclipse.view?befor=additions">
@@ -216,7 +212,6 @@
                   id="org.emoflon.gips.eclipse.view.delete">
             </dynamic>
       </menuContribution>
-      </extension>
       <extension
             point="org.eclipse.ui.commands">
             <command

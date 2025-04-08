@@ -128,7 +128,12 @@ public class EclipseIntegration {
 	}
 
 	public void sendSolutionValuesToIDE() {
-		if (isLpPathNotValid() || !config.isSolutionValuesCodeMiningEnabled())
+		if (isLpPathNotValid())
+			return;
+
+		computeLpModelId(solverConfig.getLpPath());
+
+		if (!config.isSolutionValuesCodeMiningEnabled())
 			return;
 
 		try {
@@ -141,10 +146,11 @@ public class EclipseIntegration {
 	}
 
 	public void storeSolutionValues(Map<String, Number> values) {
+		storedILPValues.clear();
+
 		if (!config.isSolutionValuesCodeMiningEnabled())
 			return;
 
-		storedILPValues.clear();
 		for (var entry : values.entrySet()) {
 			if (entry.getValue() != null) {
 				storedILPValues.put(entry.getKey(), entry.getValue().toString());

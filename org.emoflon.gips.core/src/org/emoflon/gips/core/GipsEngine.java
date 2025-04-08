@@ -144,15 +144,16 @@ public abstract class GipsEngine {
 	public SolverOutput solveProblemTimed() {
 		Observer observer = Observer.getInstance();
 		SolverOutput out = observer.observe("SOLVE_PROBLEM", () -> {
+			SolverOutput output;
 			if (validationLog.isNotValid()) {
-				SolverOutput output = new SolverOutput(SolverStatus.INFEASIBLE, Double.NaN, validationLog, 0, null);
-				solver.reset();
-				return output;
+				output = new SolverOutput(SolverStatus.INFEASIBLE, Double.NaN, validationLog, 0, null);
+			} else {
+				this.tockInit();
+				output = solver.solve();
+
+				if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0)
+					solver.updateValuesFromSolution();
 			}
-			this.tockInit();
-			SolverOutput output = solver.solve();
-			if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0)
-				solver.updateValuesFromSolution();
 
 			solver.reset();
 			return output;

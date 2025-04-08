@@ -105,7 +105,7 @@
       </command>
       <command
             categoryId="org.emoflon.gips.eclipse.category"
-            defaultHandler="org.emoflon.gips.eclipse.handler.ReloadCodeMiningHanler"
+            defaultHandler="org.emoflon.gips.eclipse.handler.ReloadCodeMiningHandler"
             id="org.emoflon.gips.eclipse.command.reloadcodemining"
             name="Reload Code Mining">
       </command>

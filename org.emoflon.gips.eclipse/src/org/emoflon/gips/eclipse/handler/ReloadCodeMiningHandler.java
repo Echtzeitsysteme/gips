@@ -9,7 +9,7 @@ import org.eclipse.jface.text.source.ISourceViewerExtension5;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-public class ReloadCodeMiningHanler extends AbstractHandler implements IHandler {
+public class ReloadCodeMiningHandler extends AbstractHandler implements IHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {

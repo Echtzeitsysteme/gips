@@ -34,6 +34,24 @@
                   icon="assets/toggle-visualisation-icon-on.png"
                   id="org.emoflon.gips.eclipse.visualisation.toggle"
                   style="toggle">
+               <visibleWhen
+                     checkEnabled="false">
+                  <or>
+                     <with
+                           variable="activeEditor">
+                        <instanceof
+                              value="org.eclipse.emf.ecore.presentation.EcoreEditor">
+                        </instanceof>
+                     </with>
+                     <reference
+                           definitionId="isGIPSLEditorActive">
+                     </reference>
+                     <reference
+                           definitionId="isCplexEditorActive">
+                     </reference>
+                  </or>
+               </visibleWhen>
+              
             </command>
          </toolbar>
       </menuContribution>
@@ -146,6 +164,27 @@
             id="org.emoflon.gips.eclipse.page1"
             name="GIPS Tracing">
       </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="isGIPSLEditorActive">
+         <with
+               variable="activePartId">
+            <equals
+                  value="org.emoflon.gips.gipsl.Gipsl">
+            </equals>
+         </with>
+      </definition>
+      <definition
+            id="isCplexEditorActive">
+         <with
+               variable="activePartId">
+            <equals
+                  value="org.emoflon.gips.eclipse.CplexLp">
+            </equals>
+         </with>
+      </definition>
    </extension>
 
 </plugin>

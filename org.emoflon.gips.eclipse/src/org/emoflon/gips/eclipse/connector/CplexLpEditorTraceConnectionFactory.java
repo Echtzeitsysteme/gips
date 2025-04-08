@@ -45,11 +45,11 @@ public class CplexLpEditorTraceConnectionFactory extends XtextEditorTraceConnect
 			var elementIds = new ArrayList<String>(eObjects.size());
 			for (var eObject : eObjects) {
 				if (eObject instanceof NumberLiteral) {
-					var variable = ((LinearTerm) eObject.eContainer()).getVariable();
-					if (variable == null) {
-						// TODO
+					if (eObject.eContainer() instanceof LinearTerm linearTerm) {
+						if (linearTerm.getVariable() != null)
+							eObject = linearTerm.getVariable();
 					} else {
-						eObject = variable;
+						eObject = eObject.eContainer();
 					}
 				}
 

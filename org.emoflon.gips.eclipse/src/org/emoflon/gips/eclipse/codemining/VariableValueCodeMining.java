@@ -15,7 +15,7 @@ public class VariableValueCodeMining extends LineContentCodeMining {
 
 	public VariableValueCodeMining(int offset, String text, ICodeMiningProvider provider) {
 		super(new Position(offset, text.length()), true, provider, null);
-		this.text = Objects.requireNonNull(text);
+		this.text = Objects.requireNonNull(text, "text");
 	}
 
 	@Override

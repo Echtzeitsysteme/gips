@@ -104,12 +104,24 @@ public class ContextManager implements ITraceManager {
 	}
 
 	@Override
+	@Deprecated
 	public void addTraceContextListener(ITraceContextListener listener) {
+		addListener(listener);
+	}
+
+	@Override
+	@Deprecated
+	public void removeTraceContextListener(ITraceContextListener listener) {
+		removeListener(listener);
+	}
+
+	@Override
+	public void addListener(ITraceContextListener listener) {
 		contextListener.add(Objects.requireNonNull(listener, "listener"));
 	}
 
 	@Override
-	public void removeTraceContextListener(ITraceContextListener listener) {
+	public void removeListener(ITraceContextListener listener) {
 		contextListener.remove(listener);
 	}
 

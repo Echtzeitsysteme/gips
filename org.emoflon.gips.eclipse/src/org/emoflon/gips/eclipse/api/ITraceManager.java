@@ -18,6 +18,20 @@ public interface ITraceManager {
 	}
 
 	/**
+	 * 
+	 * @deprecated Use {@link #addListener(ITraceContextListener)}
+	 */
+	@Deprecated
+	void addTraceContextListener(ITraceContextListener listener);
+
+	/**
+	 * 
+	 * @deprecated Use {@link #removeListener(ITraceContextListener)}
+	 */
+	@Deprecated
+	void removeTraceContextListener(ITraceContextListener listener);
+
+	/**
 	 * Adds the given listener for manager related events to this manager. Has no
 	 * effect if the given listener is already registered. Callbacks may or may not
 	 * run on the UI-Thread.
@@ -25,17 +39,27 @@ public interface ITraceManager {
 	 * @param listener the listener, may not be null
 	 * @see #removeTraceContextListener(ITraceContextListener)
 	 */
-	void addTraceContextListener(ITraceContextListener listener);
+	void addListener(ITraceContextListener listener);
 
 	/**
 	 * Removes the given listener
 	 * 
 	 * @param listener the listener, can be null
 	 */
-	void removeTraceContextListener(ITraceContextListener listener);
+	void removeListener(ITraceContextListener listener);
 
+	/**
+	 * Removes the given listener
+	 * 
+	 * @param listener the listener, can be null
+	 */
 	void removeListener(ITraceSelectionListener listener);
 
+	/**
+	 * Removes the given listener
+	 * 
+	 * @param listener the listener, can be null
+	 */
 	void removeListener(ITraceUpdateListener listener);
 
 	void selectElementsByTraceModel(String contextId, String modelId, Collection<String> selection)

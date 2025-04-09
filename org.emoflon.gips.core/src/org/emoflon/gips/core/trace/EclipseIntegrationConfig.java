@@ -6,7 +6,7 @@ public class EclipseIntegrationConfig {
 
 	private int servicePort = IRemoteEclipseService.DEFAULT_PORT;
 	private boolean tracingEnabled = false;
-	private boolean solutionValuesEnabled = false;
+	private boolean valueSynchronizationEnabled = false;
 
 	public int getServicePort() {
 		return servicePort;
@@ -25,12 +25,12 @@ public class EclipseIntegrationConfig {
 		tracingEnabled = value;
 	}
 
-	public boolean isSolutionValuesCodeMiningEnabled() {
-		return solutionValuesEnabled;
+	public boolean isSolutionValuesSynchronizationEnabled() {
+		return valueSynchronizationEnabled;
 	}
 
-	public void isSolutionValuesCodeMiningEnabled(boolean value) {
-		solutionValuesEnabled = value;
+	public void isSolutionValuesSynchronizationEnabled(boolean value) {
+		valueSynchronizationEnabled = value;
 	}
 
 }

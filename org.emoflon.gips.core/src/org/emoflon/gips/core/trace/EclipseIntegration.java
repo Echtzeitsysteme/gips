@@ -128,7 +128,7 @@ public class EclipseIntegration {
 	}
 
 	public void sendSolutionValuesToIDE() {
-		if (!config.isSolutionValuesCodeMiningEnabled())
+		if (!config.isSolutionValuesSynchronizationEnabled())
 			return;
 
 		if (isLpPathNotValid())
@@ -148,7 +148,7 @@ public class EclipseIntegration {
 	public void storeSolutionValues(Map<String, Number> values) {
 		storedILPValues.clear();
 
-		if (!config.isSolutionValuesCodeMiningEnabled())
+		if (!config.isSolutionValuesSynchronizationEnabled())
 			return;
 
 		for (var entry : values.entrySet()) {

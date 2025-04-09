@@ -355,7 +355,7 @@ public final class ProjectContext implements ITraceContext {
 	public void updateModelValues(String modelId, Map<String, String> values) {
 		Objects.requireNonNull(modelId, "modelId");
 
-		if (values == null) {
+		if (values == null || values.isEmpty()) {
 			values = Collections.emptyMap();
 		} else {
 			// remove any empty key or value

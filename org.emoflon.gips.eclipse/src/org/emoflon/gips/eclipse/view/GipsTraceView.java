@@ -11,9 +11,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.ViewPart;
-import org.emoflon.gips.eclipse.api.ITraceManager;
-import org.emoflon.gips.eclipse.api.event.ITraceContextListener;
-import org.emoflon.gips.eclipse.api.event.TraceContextEvent;
 import org.emoflon.gips.eclipse.view.model.INode;
 import org.emoflon.gips.eclipse.view.model.RootNode;
 
@@ -35,8 +32,6 @@ public class GipsTraceView extends ViewPart {
 	 * </ul>
 	 */
 	public static final String ID = "org.emoflon.gips.debugger.view";
-
-	private final ITraceContextListener traceManagerListener = this::onTraceContextChange;
 
 	private TreeViewer viewer;
 	private MenuManager menuManager;
@@ -74,14 +69,12 @@ public class GipsTraceView extends ViewPart {
 		parent.setLayout(layout);
 
 		this.viewer = new TreeViewer(parent);
-		this.viewer.setContentProvider(new TraceContentProvider(this::refreshNode));
+		this.viewer.setContentProvider(new TraceContentProvider());
 		this.viewer.setLabelProvider(new TraceLabelProvider());
 //		ColumnViewerToolTipSupport.enableFor(this.viewer);
 
-		ITraceManager traceManager = ITraceManager.getInstance();
-		traceManager.addTraceContextListener(traceManagerListener);
+		this.viewModelRootNode = new RootNode(this::refreshNode);
 
-		this.viewModelRootNode = new RootNode();
 		this.viewer.setInput(this.viewModelRootNode);
 		getSite().setSelectionProvider(this.viewer);
 
@@ -103,20 +96,7 @@ public class GipsTraceView extends ViewPart {
 
 	@Override
 	public void dispose() {
-		ITraceManager traceManager = ITraceManager.getInstance();
-		traceManager.removeTraceContextListener(traceManagerListener);
-
-		// dispose viewer model
-		for (var child : this.viewModelRootNode.childs.values()) {
-			if (traceManager.doesContextExist(child.contextId)) {
-				try {
-					traceManager.getContext(child.contextId).removeListener(child.listener);
-					child.listener = null;
-				} catch (Exception e) {
-
-				}
-			}
-		}
+		this.viewModelRootNode.dispose();
 		this.viewModelRootNode = null;
 
 		if (menu != null)
@@ -140,11 +120,7 @@ public class GipsTraceView extends ViewPart {
 		}
 	}
 
-	private void onTraceContextChange(TraceContextEvent event) {
-		refreshNode(this.viewModelRootNode);
-	}
-
-	private void refreshNode(INode node) {
+	protected void refreshNode(INode node) {
 		// needs to run on the UI-Thread
 		Display.getDefault().asyncExec(() -> {
 			if (this.viewer != null)

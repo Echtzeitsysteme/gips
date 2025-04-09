@@ -129,14 +129,13 @@ public class VariableValueCodeMiningProvider implements ICodeMiningProvider {
 		while (iterator.hasNext() && !monitor.isCanceled()) {
 			EObject eObject = iterator.next();
 			String name = getNameOf(eObject);
-			if (name == null || !map.containsKey(name))
+			String value = map.get(name);
+			if (value == null || value.isBlank())
 				continue;
 
+			String text = String.format(" (%s)", value);
 			ICompositeNode textNode = NodeModelUtils.findActualNodeFor(eObject);
-			int position = textNode.getEndOffset();
-
-			String text = String.format(" (%s)", map.get(name));
-			result.add(new VariableValueCodeMining(position, text, this));
+			result.add(new VariableValueCodeMining(textNode.getEndOffset(), text, this));
 		}
 
 		return result;

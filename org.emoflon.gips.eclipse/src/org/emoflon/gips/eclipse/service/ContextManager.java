@@ -66,7 +66,7 @@ public class ContextManager implements ITraceManager {
 			if (ProjectContext.isCachingEnabled()) {
 				IProject[] allProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 				for (var project : allProjects) {
-					if (ProjectContext.hasProjectCache(project))
+					if (ProjectContext.hasProjectCache(project) && project.isAccessible())
 						getOrCreateContext(project.getName(), true);
 				}
 			}

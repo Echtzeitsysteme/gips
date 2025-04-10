@@ -99,7 +99,7 @@
       </command>
       <command
             categoryId="org.emoflon.gips.eclipse.category"
-            defaultHandler="org.emoflon.gips.eclipse.handler.OpenLpHandler"
+            defaultHandler="org.emoflon.gips.eclipse.handler.OpenLPFileHandler"
             id="org.emoflon.gips.eclipse.command.openlpfile"
             name="Open LP File">
       </command>

@@ -106,10 +106,22 @@ public class TraceGraph implements Serializable {
 		return storedReferences.containsKey(modelId);
 	}
 
+	/**
+	 * Returns an unmodifiable view of all model ids within this graph. Any changes
+	 * to this graph will be reflected directly in the returned collection.
+	 * 
+	 * @return
+	 */
 	public Set<String> getAllModelReferenceIds() {
 		return Collections.unmodifiableSet(storedReferences.keySet());
 	}
 
+	/**
+	 * Returns an unmodifiable view of all models within this graph. Any changes to
+	 * this graph will be reflected directly in the returned collection.
+	 * 
+	 * @return
+	 */
 	public Collection<TraceModelReference> getAllModelReferences() {
 		return Collections.unmodifiableCollection(storedReferences.values());
 	}
@@ -141,10 +153,9 @@ public class TraceGraph implements Serializable {
 	}
 
 	/**
-	 * 
-	 * 
-	 * Returns a set of target model ids. These models are directly (or partially)
-	 * derived from the given model.
+	 * Returns an unmodifiable view of the (outgoing transformation) target models
+	 * for the given model id. Any changes to this graph may or may not be reflected
+	 * in the returned collections, depending on the type of change.
 	 * 
 	 * @param modelId source model id
 	 * @return a set of, non-null, model ids. The set can be empty.
@@ -158,8 +169,9 @@ public class TraceGraph implements Serializable {
 	}
 
 	/**
-	 * Returns a set of source model ids. These models were directly involved in the
-	 * creation of the given model.
+	 * Returns an unmodifiable view of the (incoming transformation) source models
+	 * for the given model id. Any changes to this graph may or may not be reflected
+	 * in the returned collections, depending on the type of change.
 	 * 
 	 * @param modelId target model id
 	 * @return a set of, non-null, model ids. The set can be empty.

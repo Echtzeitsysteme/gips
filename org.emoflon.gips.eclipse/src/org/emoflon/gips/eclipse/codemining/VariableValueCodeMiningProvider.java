@@ -24,19 +24,20 @@ import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.XtextSourceViewer;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.emoflon.gips.eclipse.TracePlugin;
+import org.emoflon.gips.eclipse.api.event.ITraceUpdateListener;
+import org.emoflon.gips.eclipse.api.event.TraceUpdateEvent.EventType;
 import org.emoflon.gips.eclipse.cplexLp.ConstraintExpression;
 import org.emoflon.gips.eclipse.cplexLp.VariableDecleration;
 import org.emoflon.gips.eclipse.cplexLp.VariableRef;
 import org.emoflon.gips.eclipse.pref.PluginPreferences;
 import org.emoflon.gips.eclipse.service.ContextManager;
 import org.emoflon.gips.eclipse.service.ProjectContext;
-import org.emoflon.gips.eclipse.service.event.IModelValueListener;
 import org.emoflon.gips.eclipse.utility.HelperEclipse;
 
 public class VariableValueCodeMiningProvider implements ICodeMiningProvider {
 
 	private XtextSourceViewer viewer;
-	private IModelValueListener modelListener;
+	private ITraceUpdateListener modelListener;
 	private IPropertyChangeListener propertyListener;
 
 	private String contextId;
@@ -101,7 +102,7 @@ public class VariableValueCodeMiningProvider implements ICodeMiningProvider {
 		modelId = relativeFilePath.toString();
 
 		modelListener = event -> {
-			if (event.getModelIds().contains(modelId) && isEnabled()) {
+			if (event.getEventType() == EventType.VALUES && event.getModelIds().contains(modelId) && isEnabled()) {
 				getCodeMiningViewer().updateCodeMinings();
 			}
 		};

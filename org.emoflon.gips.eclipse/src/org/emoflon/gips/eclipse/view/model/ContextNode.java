@@ -10,15 +10,13 @@ import org.emoflon.gips.eclipse.TracePlugin;
 import org.emoflon.gips.eclipse.api.ITraceManager;
 import org.emoflon.gips.eclipse.api.event.ITraceUpdateListener;
 import org.emoflon.gips.eclipse.api.event.TraceUpdateEvent;
+import org.emoflon.gips.eclipse.api.event.TraceUpdateEvent.EventType;
 import org.emoflon.gips.eclipse.service.ContextManager;
 import org.emoflon.gips.eclipse.service.ProjectContext;
-import org.emoflon.gips.eclipse.service.event.IModelValueListener;
-import org.emoflon.gips.eclipse.service.event.ModelValueEvent;
 
 public class ContextNode implements INode, Comparable<ContextNode> {
 
 	private final ITraceUpdateListener traceUpdateListener = this::onTraceUpdate;
-	private final IModelValueListener modelValueListener = this::onModelValueUpdate;
 
 	private final RootNode parent;
 	private final String contextId;
@@ -31,19 +29,31 @@ public class ContextNode implements INode, Comparable<ContextNode> {
 
 		ProjectContext context = TracePlugin.getInstance().getContextManager().getContext(getContextId());
 		context.addListener(traceUpdateListener);
-		context.addListener(modelValueListener);
 	}
 
 	private void onTraceUpdate(TraceUpdateEvent event) {
-		getParent().refreshNode(this);
-	}
+		boolean refreshNode = false;
 
-	private void onModelValueUpdate(ModelValueEvent event) {
-		for (var modelId : event.getModelIds()) {
-			ModelNode child = childs.get(modelId);
-			if (child != null)
-				getParent().refreshNode(child);
+		if (event.getEventType() == EventType.TRACE) {
+			refreshNode = true;
+		} else if (event.getEventType() == EventType.VALUES) {
+			if (childs.keySet().containsAll(event.getModelIds())) {
+				boolean needsRefresh = event.getModelIds().stream().anyMatch(id -> !childs.get(id).hasChilds());
+				if (needsRefresh) {
+					refreshNode = true;
+				} else {
+					for (var modelId : event.getModelIds()) {
+						ModelNode child = childs.get(modelId);
+						getParent().refreshNode(child);
+					}
+				}
+			} else {
+				refreshNode = true;
+			}
 		}
+
+		if (refreshNode)
+			getParent().refreshNode(this);
 	}
 
 	@Override
@@ -99,7 +109,6 @@ public class ContextNode implements INode, Comparable<ContextNode> {
 			try {
 				ProjectContext context = contextManager.getContext(getContextId());
 				context.removeListener(traceUpdateListener);
-				context.removeListener(modelValueListener);
 			} catch (Exception e) {
 
 			}

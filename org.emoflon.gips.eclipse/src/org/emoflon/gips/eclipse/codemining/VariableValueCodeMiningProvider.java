@@ -101,7 +101,7 @@ public class VariableValueCodeMiningProvider implements ICodeMiningProvider {
 		modelId = relativeFilePath.toString();
 
 		modelListener = event -> {
-			if (event.getModelId().equals(modelId) && isEnabled()) {
+			if (event.getModelIds().contains(modelId) && isEnabled()) {
 				getCodeMiningViewer().updateCodeMinings();
 			}
 		};

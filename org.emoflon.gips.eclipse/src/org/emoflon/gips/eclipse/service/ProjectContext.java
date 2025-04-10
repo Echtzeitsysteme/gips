@@ -10,12 +10,12 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFolder;
@@ -73,8 +73,12 @@ public final class ProjectContext implements ITraceContext {
 	private final ListenerList<ITraceUpdateListener> traceUpdateListener = new ListenerList<>();
 	private final ListenerList<IModelValueListener> solutionListener = new ListenerList<>();
 
+	// TODO: The data structure needs a complete overhaul. For example #getAllModels
+	// doesn't include model values - but it can't, because it's only traces.
+	// TODO: ITraceContext from ProjectContext, they are no longer the same.
+
 	private TraceGraph graph = new TraceGraph();
-	private Map<String, Map<String, String>> modelValues = new HashMap<>();
+	private Map<String, Map<String, String>> modelValues = new ConcurrentHashMap<>();
 	private boolean anyDataDirty = false;
 
 	public ProjectContext(ContextManager manager, String contextId) {
@@ -166,8 +170,10 @@ public final class ProjectContext implements ITraceContext {
 						var objectIn = new ObjectInputStream(inputStream)) {
 
 					graph = (TraceGraph) objectIn.readObject();
-					if (inputStream.available() > 0)
-						modelValues = (Map<String, Map<String, String>>) objectIn.readObject();
+					if (inputStream.available() > 0) {
+						var modelValues = (Map<String, Map<String, String>>) objectIn.readObject();
+						this.modelValues = new ConcurrentHashMap<>(modelValues);
+					}
 
 					anyDataDirty = false;
 
@@ -255,25 +261,49 @@ public final class ProjectContext implements ITraceContext {
 	}
 
 	public void deleteModel(String modelId) {
-		Collection<String> fromIds = graph.getSourceModelIds(modelId);
-		Collection<String> toIds = graph.getTargetModelIds(modelId);
-		if (graph.removeModelReference(modelId)) {
+		boolean modelRemoved;
+		boolean valuesRemoved;
+		Collection<String> fromIds;
+		Collection<String> toIds;
+
+		synchronized (syncLock) {
+			fromIds = graph.getSourceModelIds(modelId);
+			toIds = graph.getTargetModelIds(modelId);
+			modelRemoved = graph.removeModelReference(modelId);
+			valuesRemoved = modelValues.remove(modelId) != null;
+		}
+
+		if (modelRemoved) {
 			Collection<String> updated = new HashSet<>();
 			updated.add(modelId);
 			updated.addAll(fromIds);
 			updated.addAll(toIds);
 			fireModelUpdateNotification(updated);
 		}
+
+		if (valuesRemoved) {
+			fireModelValuesUpdateNotification(modelId);
+		}
+	}
+
+	public void deleteAllModels() {
+		Collection<String> deletedModels;
+		Collection<String> modelsWithValues;
+
+		synchronized (syncLock) {
+			deletedModels = getAllModels();
+			graph.clear();
+
+			modelsWithValues = new HashSet<>(modelValues.keySet());
+			modelValues.clear();
+		}
+
+		fireModelUpdateNotification(deletedModels);
+		fireModelValuesUpdateNotification(modelsWithValues);
 	}
 
 	public TraceModelLink getModelLink(String srcModel, String dstModel) {
 		return graph.getLink(srcModel, dstModel);
-	}
-
-	public void deleteAllModels() {
-		Collection<String> allIds = getAllModels();
-		graph.clear();
-		fireModelUpdateNotification(allIds);
 	}
 
 	public void deleteModelLink(String srcModel, String dstModel) {
@@ -371,21 +401,26 @@ public final class ProjectContext implements ITraceContext {
 		}
 
 		this.modelValues.put(modelId, values);
-
-		anyDataDirty = true;
-		var event = new ModelValueEvent(modelId);
-		for (var listener : solutionListener)
-			listener.updateValues(event);
+		fireModelValuesUpdateNotification(modelId);
 	}
 
 	public Map<String, String> getModelValues(String modelId) {
 		return this.modelValues.getOrDefault(modelId, Collections.emptyMap());
 	}
 
-	private void fireModelSelectionNotification(String modelId, Collection<String> elementIds) {
+	private void fireModelValuesUpdateNotification(String modelId) {
 		Objects.requireNonNull(modelId, "modelId");
-		Objects.requireNonNull(elementIds, "elementIds");
+		fireModelValuesUpdateNotification(Collections.singleton(modelId));
+	}
 
+	private void fireModelValuesUpdateNotification(Collection<String> modelIds) {
+		anyDataDirty = true;
+		var event = new ModelValueEvent(this, modelIds);
+		for (var listener : solutionListener)
+			listener.updateValues(event);
+	}
+
+	private void fireModelSelectionNotification(String modelId, Collection<String> elementIds) {
 		var event = new TraceSelectionEvent(this, modelId, elementIds);
 		for (var listener : traceSelectionListener)
 			listener.selectedByModel(event);
@@ -397,9 +432,7 @@ public final class ProjectContext implements ITraceContext {
 	 * @param updatedModels
 	 */
 	private void fireModelUpdateNotification(Collection<String> updatedModels) {
-		Objects.requireNonNull(updatedModels, "updatedModels");
 		anyDataDirty = true;
-
 		var event = new TraceUpdateEvent(this, updatedModels);
 		for (var listener : this.traceUpdateListener)
 			listener.updatedModels(event);

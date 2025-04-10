@@ -1,25 +1,42 @@
 package org.emoflon.gips.eclipse.service.event;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
+
+import org.emoflon.gips.eclipse.api.ITraceContext;
+import org.emoflon.gips.eclipse.service.ProjectContext;
 
 public final class ModelValueEvent {
 
-	private final String modelId;
+	private final ProjectContext context;
+	private final Collection<String> modelIds;
 
 	/**
-	 * @param modelId the model that triggered the event, may not be null
+	 * @param context  the context in which the event was raised, may not be null
+	 * @param modelIds the models that triggered the event, may not be null
 	 */
-	public ModelValueEvent(String modelId) {
-		this.modelId = Objects.requireNonNull(modelId, "modelId");
+	public ModelValueEvent(ProjectContext context, Collection<String> modelIds) {
+		this.context = Objects.requireNonNull(context, "context");
+		this.modelIds = Collections.unmodifiableCollection(Objects.requireNonNull(modelIds, "modelIds"));
 	}
 
 	/**
-	 * Returns the model that triggered the event
+	 * Returns the context in which the event was raised
 	 * 
-	 * @return a model id, never null
+	 * @return a {@link ITraceContext}, never null
 	 */
-	public String getModelId() {
-		return modelId;
+	public ProjectContext getContext() {
+		return context;
+	}
+
+	/**
+	 * Returns the models that triggered the event
+	 * 
+	 * @return a collection of model ids, never null
+	 */
+	public Collection<String> getModelIds() {
+		return modelIds;
 	}
 
 }

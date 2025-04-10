@@ -39,9 +39,11 @@ public class ContextNode implements INode, Comparable<ContextNode> {
 	}
 
 	private void onModelValueUpdate(ModelValueEvent event) {
-		ModelNode child = childs.get(event.getModelId());
-		if (child != null)
-			getParent().refreshNode(child);
+		for (var modelId : event.getModelIds()) {
+			ModelNode child = childs.get(modelId);
+			if (child != null)
+				getParent().refreshNode(child);
+		}
 	}
 
 	@Override

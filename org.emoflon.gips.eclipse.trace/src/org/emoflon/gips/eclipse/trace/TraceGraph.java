@@ -151,7 +151,7 @@ public class TraceGraph implements Serializable {
 	 */
 	public Set<String> getTargetModelIds(final String modelId) {
 		final var targets = links.get(modelId);
-		if (targets.isEmpty()) {
+		if (targets == null) {
 			return Collections.emptySet();
 		}
 		return Collections.unmodifiableSet(targets.keySet());
@@ -166,7 +166,7 @@ public class TraceGraph implements Serializable {
 	 */
 	public Set<String> getSourceModelIds(final String modelId) {
 		final var sources = reverseLinks.get(modelId);
-		if (sources.isEmpty()) {
+		if (sources == null) {
 			return Collections.emptySet();
 		}
 		return Collections.unmodifiableSet(sources);
@@ -174,6 +174,9 @@ public class TraceGraph implements Serializable {
 
 	public TraceModelLink getLink(final String srcModelId, final String dstModelId) {
 		final var linksByDst = links.get(srcModelId);
+		if (linksByDst == null)
+			return null;
+
 		final var link = linksByDst.get(dstModelId);
 		return link;
 	}

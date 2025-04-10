@@ -1,7 +1,5 @@
 package org.emoflon.gips.eclipse.view.menu;
 
-import java.util.Collections;
-
 import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
@@ -83,7 +81,7 @@ public class DeleteNode extends ContributionItem {
 				public void widgetSelected(SelectionEvent e) {
 					ProjectContext context = TracePlugin.getInstance().getContextManager()
 							.getContext(node.getContextId());
-					context.updateModelValues(node.getModelId(), Collections.emptyMap());
+					context.deleteModelValues(node.getModelId());
 				}
 			});
 		}

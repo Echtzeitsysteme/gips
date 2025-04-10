@@ -389,6 +389,10 @@ public final class ProjectContext implements ITraceContext {
 		fireModelUpdateNotification(TraceUpdateEvent.EventType.VALUES, modelId);
 	}
 
+	public void deleteModelValues(String modelId) {
+		updateModelValues(modelId, null);
+	}
+
 	@Override
 	public Map<String, String> getModelValues(String modelId) {
 		return this.modelValues.getOrDefault(modelId, Collections.emptyMap());

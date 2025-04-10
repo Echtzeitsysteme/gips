@@ -40,10 +40,10 @@ public class Intermediate2IlpTracer {
 	}
 
 	/**
-	 * Returns the lp model id. This model id is only available after the ilp build
+	 * Returns the lp model id. This model id may be available after the ilp build
 	 * stage.
 	 * 
-	 * @return lp model id
+	 * @return lp model id or null, if not available
 	 */
 	public String getLpModelId() {
 		return integration.getModelIdForLpModel();

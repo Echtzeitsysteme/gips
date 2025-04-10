@@ -1,6 +1,7 @@
 package org.emoflon.gips.eclipse.api;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.URI;
@@ -34,6 +35,10 @@ public interface ITraceContext {
 	Set<String> getTargetModels(String modelId);
 
 	Set<String> getAllModels();
+
+	Map<String, String> getModelValues(String modelId);
+
+	boolean hasModelValuesFor(String modelId);
 
 	/**
 	 * 

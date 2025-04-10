@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsEngine;
@@ -339,6 +340,15 @@ public class CplexSolver extends Solver {
 			}
 		}
 		// Solver reset will be handled by the GipsEngine afterward
+
+		engine.getEclipseIntegration()
+				.storeSolutionValues(this.vars.entrySet().stream().collect(Collectors.toMap(Entry::getKey, e -> {
+					try {
+						return Math.round(cplex.getValue(e.getValue()));
+					} catch (IloException e1) {
+						return 0;
+					}
+				})));
 	}
 
 	@Override

@@ -4,17 +4,19 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Map;
 
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
+import org.emoflon.gips.eclipse.TracePlugin;
+import org.emoflon.gips.eclipse.api.IRemoteEclipseService;
 import org.emoflon.gips.eclipse.api.ITraceContext;
 import org.emoflon.gips.eclipse.api.ITraceManager;
-import org.emoflon.gips.eclipse.api.ITraceRemoteService;
 import org.emoflon.gips.eclipse.pref.PluginPreferences;
 import org.emoflon.gips.eclipse.trace.TraceModelLink;
 
-public final class TraceRemoteService implements ITraceRemoteService {
+public final class RemoteEclipseService implements IRemoteEclipseService {
 
 	public static enum ServiceStatus {
 		RUNNING, PAUSED, ERROR
@@ -28,7 +30,7 @@ public final class TraceRemoteService implements ITraceRemoteService {
 	private ServiceStatus status = ServiceStatus.PAUSED;
 	private Exception lastError;
 
-	public TraceRemoteService() throws RemoteException {
+	public RemoteEclipseService() throws RemoteException {
 		super();
 	}
 
@@ -77,7 +79,7 @@ public final class TraceRemoteService implements ITraceRemoteService {
 			// this may fail if someone else is already using that port
 			registry = LocateRegistry.createRegistry(port);
 			UnicastRemoteObject.exportObject(this, 0);
-			registry.bind(ITraceRemoteService.SERVICE_NAME, this);
+			registry.bind(IRemoteEclipseService.SERVICE_NAME, this);
 
 			if (lastError != null)
 				System.out.println("GIPSL Eclipse Integration available.");
@@ -134,10 +136,19 @@ public final class TraceRemoteService implements ITraceRemoteService {
 		}
 	}
 
+	// Remote Service Methods
+
 	@Override
 	public void updateTraceModel(String contextId, TraceModelLink traceLink) {
 		ITraceContext context = ITraceManager.getInstance().getContext(contextId);
 		context.updateTraceModel(traceLink);
+	}
+
+	@Override
+	public void updateModelValues(String contextId, String modelId, Map<String, String> values)
+			throws RemoteException {
+		ProjectContext context = TracePlugin.getInstance().getContextManager().getContext(contextId);
+		context.updateModelValues(modelId, values);
 	}
 
 }

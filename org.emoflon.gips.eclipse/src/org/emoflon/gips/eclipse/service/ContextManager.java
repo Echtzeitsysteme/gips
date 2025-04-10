@@ -19,14 +19,13 @@ import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.emoflon.gips.eclipse.api.IEditorTracker;
 import org.emoflon.gips.eclipse.api.ITraceManager;
 import org.emoflon.gips.eclipse.api.TraceModelNotFoundException;
-import org.emoflon.gips.eclipse.api.event.ITraceManagerListener;
+import org.emoflon.gips.eclipse.api.event.ITraceContextListener;
 import org.emoflon.gips.eclipse.api.event.ITraceSelectionListener;
 import org.emoflon.gips.eclipse.api.event.ITraceUpdateListener;
-import org.emoflon.gips.eclipse.api.event.TraceManagerEvent;
-import org.emoflon.gips.eclipse.api.event.TraceManagerEvent.EventType;
+import org.emoflon.gips.eclipse.api.event.TraceContextEvent;
+import org.emoflon.gips.eclipse.api.event.TraceContextEvent.EventType;
 import org.emoflon.gips.eclipse.connector.CplexLpEditorTraceConnectionFactory;
 import org.emoflon.gips.eclipse.connector.EditorTraceConnectionFactory;
 import org.emoflon.gips.eclipse.connector.GenericXmiEditorTraceConnectionFactory;
@@ -34,15 +33,15 @@ import org.emoflon.gips.eclipse.connector.GipslEditorTraceConnectionFactory;
 import org.emoflon.gips.eclipse.pref.PluginPreferences;
 import org.emoflon.gips.eclipse.utility.HelperEclipse;
 
-public class TraceManager implements ITraceManager {
+public class ContextManager implements ITraceManager {
 
 	private final Object syncLock = new Object();
 	private final IResourceChangeListener workspaceResourceListener = this::onWorkspaceResourceChange;
 	private final IPropertyChangeListener preferenceListener = this::onPreferenceChange;
 
-	private final ListenerList<ITraceManagerListener> contextListener = new ListenerList<>();
+	private final ListenerList<ITraceContextListener> contextListener = new ListenerList<>();
 
-	private final Map<String, ProjectTraceContext> contextById = new HashMap<>();
+	private final Map<String, ProjectContext> contextById = new HashMap<>();
 
 	private EditorTracker tracker;
 	private boolean visualisationActive;
@@ -64,10 +63,10 @@ public class TraceManager implements ITraceManager {
 			visualisationActive = preferences.getBoolean(PluginPreferences.PREF_TRACE_DISPLAY_ACTIVE);
 
 			// Restore any previously saved context
-			if (ProjectTraceContext.isCachingEnabled()) {
+			if (ProjectContext.isCachingEnabled()) {
 				IProject[] allProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 				for (var project : allProjects) {
-					if (ProjectTraceContext.hasProjectCache(project))
+					if (ProjectContext.hasProjectCache(project) && project.isAccessible())
 						getOrCreateContext(project.getName(), true);
 				}
 			}
@@ -88,7 +87,7 @@ public class TraceManager implements ITraceManager {
 			tracker.dispose();
 			tracker = null;
 
-			if (ProjectTraceContext.isCachingEnabled()) {
+			if (ProjectContext.isCachingEnabled()) {
 				for (var context : contextById.values()) {
 					context.writeCache();
 //					context.dispose();
@@ -105,24 +104,30 @@ public class TraceManager implements ITraceManager {
 	}
 
 	@Override
-	public void addTraceManagerListener(ITraceManagerListener listener) {
+	@Deprecated
+	public void addTraceContextListener(ITraceContextListener listener) {
+		addListener(listener);
+	}
+
+	@Override
+	@Deprecated
+	public void removeTraceContextListener(ITraceContextListener listener) {
+		removeListener(listener);
+	}
+
+	@Override
+	public void addListener(ITraceContextListener listener) {
 		contextListener.add(Objects.requireNonNull(listener, "listener"));
 	}
 
 	@Override
-	public void removeTraceManagerListener(ITraceManagerListener listener) {
+	public void removeListener(ITraceContextListener listener) {
 		contextListener.remove(listener);
 	}
 
 	@Override
 	public boolean isVisualisationActive() {
 		return visualisationActive;
-	}
-
-	@Override
-	public void addListener(String contextId, ITraceSelectionListener listener) {
-		var context = getOrCreateContext(contextId, true);
-		context.addListener(listener);
 	}
 
 	@Override
@@ -134,19 +139,6 @@ public class TraceManager implements ITraceManager {
 	}
 
 	@Override
-	public void removeListener(String contextId, ITraceSelectionListener listener) {
-		var context = getOrCreateContext(contextId, false);
-		if (context != null)
-			context.addListener(listener);
-	}
-
-	@Override
-	public void addListener(String contextId, ITraceUpdateListener listener) {
-		var context = getOrCreateContext(contextId, true);
-		context.addListener(listener);
-	}
-
-	@Override
 	public void removeListener(ITraceUpdateListener listener) {
 		synchronized (syncLock) {
 			for (var context : contextById.values())
@@ -154,20 +146,15 @@ public class TraceManager implements ITraceManager {
 		}
 	}
 
-	@Override
-	public void removeListener(String contextId, ITraceUpdateListener listener) {
-		var context = getOrCreateContext(contextId, false);
-		if (context != null)
-			context.addListener(listener);
-	}
-
-	@Override
+	/**
+	 * Allows to add or remove an editor from this manager
+	 */
 	public IEditorTracker getEditorTracker() {
 		return tracker;
 	}
 
 	@Override
-	public ProjectTraceContext getContext(String contextId) {
+	public ProjectContext getContext(String contextId) {
 		return getOrCreateContext(contextId, true);
 	}
 
@@ -218,9 +205,9 @@ public class TraceManager implements ITraceManager {
 			removeContext(project.getName());
 	}
 
-	private ProjectTraceContext getOrCreateContext(String contextId, boolean createOnDemand) {
+	private ProjectContext getOrCreateContext(String contextId, boolean createOnDemand) {
 		Objects.requireNonNull(contextId, "contextId");
-		ProjectTraceContext context = contextById.get(contextId);
+		ProjectContext context = contextById.get(contextId);
 
 		if (createOnDemand && context == null) {
 			synchronized (syncLock) {
@@ -232,14 +219,14 @@ public class TraceManager implements ITraceManager {
 				if (project == null)
 					throw new IllegalArgumentException("Unknown project for context id: " + contextId);
 
-				context = new ProjectTraceContext(this, contextId);
+				context = new ProjectContext(this, contextId);
 				contextById.put(contextId, context);
 
-				if (ProjectTraceContext.isCachingEnabled())
+				if (ProjectContext.isCachingEnabled())
 					context.readCacheIfAvailable();
 			}
 
-			var event = new TraceManagerEvent(this, EventType.NEW, contextId);
+			var event = new TraceContextEvent(this, EventType.CONTEXT_CREATED, contextId);
 			for (var listener : contextListener)
 				listener.contextChanged(event);
 		}
@@ -251,11 +238,11 @@ public class TraceManager implements ITraceManager {
 		synchronized (syncLock) {
 			var context = contextById.remove(contextId);
 			if (context != null) {
-				if (ProjectTraceContext.isCachingEnabled())
+				if (ProjectContext.isCachingEnabled())
 					context.writeCache();
 //				context.dispose();
 
-				var event = new TraceManagerEvent(this, EventType.DELETED, contextId);
+				var event = new TraceContextEvent(this, EventType.CONTEXT_DELETED, contextId);
 				for (var listener : contextListener)
 					listener.contextChanged(event);
 			}

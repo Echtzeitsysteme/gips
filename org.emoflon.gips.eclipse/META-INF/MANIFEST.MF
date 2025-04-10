@@ -36,6 +36,7 @@ Require-Bundle: org.eclipse.ui,
  org.emoflon.gips.gipsl,
  org.eclipse.jface,
  org.eclipse.core.expressions,
+ org.eclipse.ui.workbench.texteditor,
  org.emoflon.gips.eclipse.cplexlp;bundle-version="[1.0.0,2.0.0)",
  org.emoflon.gips.eclipse.cplexlp.ui;bundle-version="[1.0.0,2.0.0)",
  org.emoflon.gips.eclipse.trace;bundle-version="[1.0.0,2.0.0)";visibility:=reexport

@@ -29,7 +29,7 @@ public class EclipseIntegrationConfig {
 		return valueSynchronizationEnabled;
 	}
 
-	public void isSolutionValuesSynchronizationEnabled(boolean value) {
+	public void setSolutionValuesSynchronizationEnabled(boolean value) {
 		valueSynchronizationEnabled = value;
 	}
 

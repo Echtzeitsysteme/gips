@@ -174,6 +174,12 @@ public final class HelperEclipse {
 		return null;
 	}
 
+	public static IPath getProjectRelativPath(IProject project, org.eclipse.emf.common.util.URI uri) {
+		IPath filePath = IPath.fromOSString(HelperEclipse.toFileURI(uri).toFileString());
+		IPath relativeFilePath = filePath.makeRelativeTo(project.getLocation());
+		return relativeFilePath;
+	}
+
 	@Deprecated
 	public static IProject tryAndGetProject(org.eclipse.ui.IEditorInput input) {
 		IProject project = input.getAdapter(IProject.class);

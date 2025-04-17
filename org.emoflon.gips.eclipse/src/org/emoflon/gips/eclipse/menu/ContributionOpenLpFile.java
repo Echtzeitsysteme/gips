@@ -18,6 +18,7 @@ import org.emoflon.gips.eclipse.ui.editor.CplexLpEditor;
 import org.emoflon.gips.eclipse.utility.HelperErrorDialog;
 import org.emoflon.gips.eclipse.utility.HelperGipsl;
 
+@Deprecated
 public class ContributionOpenLpFile extends CompoundContributionItem {
 
 	public ContributionOpenLpFile() {

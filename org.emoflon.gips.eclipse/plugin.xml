@@ -11,16 +11,33 @@
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
-            locationURI="popup:org.emoflon.gips.gipsl.Gipsl.EditorContext">
+            locationURI="popup:org.eclipse.ui.popup.any">
          <menu
+               id="org.emoflon.gips.menu"
                label="GIPS">
-            <dynamic
-                  class="org.emoflon.gips.eclipse.menu.ContributionOpenLpFile"
-                  id="org.emoflon.gips.eclipse.context.openLp">
-            </dynamic>
-            <menu
-                  label="Open XMI files">
-            </menu>
+            <command
+                  commandId="org.emoflon.gips.eclipse.command.openlpfile"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <reference
+                        definitionId="isGIPSLEditorActive">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="org.emoflon.gips.eclipse.command.reloadcodemining"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <reference
+                        definitionId="isCplexEditorActive">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <separator
+                  name="additions">
+            </separator>
          </menu>
       </menuContribution>
       <menuContribution
@@ -29,10 +46,9 @@
          <toolbar
                id="org.emoflon.gips.eclipse.toolbar?after=additions">
             <command
-                  commandId="org.emoflon.gips.eclipse.visualizer.toggle"
+                  commandId="org.emoflon.gips.eclipse.command.togglevisualizer"
                   disabledIcon="assets/toggle-visualisation-icon-disabled.png"
                   icon="assets/toggle-visualisation-icon-on.png"
-                  id="org.emoflon.gips.eclipse.visualisation.toggle"
                   style="toggle">
                <visibleWhen
                      checkEnabled="false">
@@ -70,16 +86,28 @@
    </extension>
    <extension
          point="org.eclipse.ui.commands">
+      <category
+            id="org.emoflon.gips.eclipse.category"
+            name="GIPS">
+      </category>
       <command
-            defaultHandler="org.emoflon.gips.eclipse.handler.OpenLpHandler"
-            id="org.emoflon.gips.eclipse.openLp"
-            name="Open LP">
-      </command>
-      <command
+            categoryId="org.emoflon.gips.eclipse.category"
             defaultHandler="org.emoflon.gips.eclipse.handler.ToggleVisualisationHandler"
             description="Activates or deactivates the visualization of gipsl to ilp model transformations"
-            id="org.emoflon.gips.eclipse.visualizer.toggle"
+            id="org.emoflon.gips.eclipse.command.togglevisualizer"
             name="Toggle GIPSL ILP Visualisation">
+      </command>
+      <command
+            categoryId="org.emoflon.gips.eclipse.category"
+            defaultHandler="org.emoflon.gips.eclipse.handler.OpenLPFileHandler"
+            id="org.emoflon.gips.eclipse.command.openlpfile"
+            name="Open LP File">
+      </command>
+      <command
+            categoryId="org.emoflon.gips.eclipse.category"
+            defaultHandler="org.emoflon.gips.eclipse.handler.ReloadCodeMiningHandler"
+            id="org.emoflon.gips.eclipse.command.reloadcodemining"
+            name="Reload Code Mining">
       </command>
    </extension>
    <extension
@@ -185,6 +213,21 @@
             </equals>
          </with>
       </definition>
+   </extension>
+   <extension
+         point="org.eclipse.ui.workbench.texteditor.codeMiningProviders">
+      <codeMiningProvider
+            class="org.emoflon.gips.eclipse.codemining.VariableValueCodeMiningProvider"
+            id="org.emoflon.gips.eclipse.codemining.VariableValueCodeMiningProvider">
+         <enabledWhen>
+            <with
+                  variable="editor">
+               <instanceof
+                     value="org.emoflon.gips.eclipse.ui.editor.CplexLpEditor">
+               </instanceof>
+            </with>
+         </enabledWhen>
+      </codeMiningProvider>
    </extension>
 
 </plugin>

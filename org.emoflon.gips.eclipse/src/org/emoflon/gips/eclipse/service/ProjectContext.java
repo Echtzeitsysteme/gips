@@ -11,8 +11,11 @@ import java.nio.file.StandardOpenOption;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFolder;
@@ -22,6 +25,7 @@ import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.emf.common.util.URI;
 import org.emoflon.gips.eclipse.api.IModelLink;
 import org.emoflon.gips.eclipse.api.ITraceContext;
+import org.emoflon.gips.eclipse.api.ITraceManager;
 import org.emoflon.gips.eclipse.api.TraceModelNotFoundException;
 import org.emoflon.gips.eclipse.api.event.ITraceSelectionListener;
 import org.emoflon.gips.eclipse.api.event.ITraceUpdateListener;
@@ -37,7 +41,7 @@ import org.emoflon.gips.eclipse.trace.TraceModelLink;
 import org.emoflon.gips.eclipse.trace.TransformEcore2Graph;
 import org.emoflon.gips.eclipse.utility.HelperEclipse;
 
-public final class ProjectTraceContext implements ITraceContext {
+public final class ProjectContext implements ITraceContext {
 
 	private static final String CACHE_FILE_NAME = "trace_cache.bin";
 
@@ -60,17 +64,18 @@ public final class ProjectTraceContext implements ITraceContext {
 	}
 
 	private final Object syncLock = new Object();
-	private final TraceManager service;
+	private final ContextManager manager;
 	private final String contextId;
+
+	private final ListenerList<ITraceSelectionListener> traceSelectionListener = new ListenerList<>();
+	private final ListenerList<ITraceUpdateListener> traceUpdateListener = new ListenerList<>();
+
 	private TraceGraph graph = new TraceGraph();
+	private Map<String, Map<String, String>> modelValues = new ConcurrentHashMap<>();
+	private boolean anyDataDirty = false;
 
-	private final ListenerList<ITraceSelectionListener> selectionListener = new ListenerList<>();
-	private final ListenerList<ITraceUpdateListener> updateListener = new ListenerList<>();
-
-	private boolean graphDirty = false;
-
-	public ProjectTraceContext(TraceManager service, String contextId) {
-		this.service = Objects.requireNonNull(service, "service");
+	public ProjectContext(ContextManager manager, String contextId) {
+		this.manager = Objects.requireNonNull(manager, "manager");
 		this.contextId = Objects.requireNonNull(contextId, "contextId");
 	}
 
@@ -112,7 +117,7 @@ public final class ProjectTraceContext implements ITraceContext {
 
 	public void writeCache() {
 		synchronized (syncLock) {
-			if (!graphDirty)
+			if (!anyDataDirty)
 				return;
 
 			try {
@@ -125,7 +130,8 @@ public final class ProjectTraceContext implements ITraceContext {
 						var objectOut = new ObjectOutputStream(outputStream)) {
 
 					objectOut.writeObject(graph);
-					graphDirty = false;
+					objectOut.writeObject(modelValues);
+					anyDataDirty = false;
 				}
 			} catch (IOException e) {
 				e.printStackTrace(); // log to console, can't do anything else
@@ -145,6 +151,7 @@ public final class ProjectTraceContext implements ITraceContext {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void readCacheIfAvailable() {
 		synchronized (syncLock) {
 			try {
@@ -156,13 +163,18 @@ public final class ProjectTraceContext implements ITraceContext {
 						var objectIn = new ObjectInputStream(inputStream)) {
 
 					graph = (TraceGraph) objectIn.readObject();
-					graphDirty = false;
+					if (inputStream.available() > 0) {
+						var modelValues = (Map<String, Map<String, String>>) objectIn.readObject();
+						this.modelValues = new ConcurrentHashMap<>(modelValues);
+					}
+
+					anyDataDirty = false;
 
 				} catch (NoSuchFileException e) {
 					// ignore
 				} catch (ClassNotFoundException | ObjectStreamException e) { // cache is invalid/corrupted
 					e.printStackTrace();
-					graphDirty = true; // trigger rewrite on close
+					anyDataDirty = true; // trigger rewrite on close
 //					deleteCache();
 				}
 
@@ -174,29 +186,41 @@ public final class ProjectTraceContext implements ITraceContext {
 
 	@Override
 	public Set<String> getAllModels() {
-		return new HashSet<>(graph.getAllModelReferenceIds());
+		Set<String> allModels = new HashSet<>(graph.getAllModelReferenceIds());
+		allModels.addAll(modelValues.keySet());
+		return allModels;
 	}
 
 	@Override
 	public void addListener(ITraceSelectionListener listener) {
 		Objects.requireNonNull(listener, "listener");
-		selectionListener.add(listener);
+		traceSelectionListener.add(listener);
 	}
 
 	@Override
 	public void removeListener(ITraceSelectionListener listener) {
-		selectionListener.remove(listener);
+		traceSelectionListener.remove(listener);
 	}
 
 	@Override
 	public void addListener(ITraceUpdateListener listener) {
 		Objects.requireNonNull(listener, "listener");
-		updateListener.add(listener);
+		traceUpdateListener.add(listener);
 	}
 
 	@Override
 	public void removeListener(ITraceUpdateListener listener) {
-		updateListener.remove(listener);
+		traceUpdateListener.remove(listener);
+	}
+
+	@Override
+	public boolean hasTraceFor(String modelId) {
+		return graph.hasModelReference(modelId);
+	}
+
+	@Override
+	public boolean hasModelValuesFor(String modelId) {
+		return modelValues.containsKey(modelId) && !modelValues.get(modelId).isEmpty();
 	}
 
 	@Override
@@ -208,14 +232,17 @@ public final class ProjectTraceContext implements ITraceContext {
 		if (!graph.hasModelReference(modelId))
 			throw new TraceModelNotFoundException(modelId);
 
-		if (service.isVisualisationActive())
+		if (manager.isVisualisationActive())
 			fireModelSelectionNotification(modelId, elementIds);
-
 	}
 
 	@Override
-	public TraceManager getTraceManager() {
-		return this.service;
+	public ITraceManager getTraceManager() {
+		return getContextManager();
+	}
+
+	public ContextManager getContextManager() {
+		return this.manager;
 	}
 
 	@Override
@@ -223,46 +250,62 @@ public final class ProjectTraceContext implements ITraceContext {
 		return contextId;
 	}
 
-	@Override
-	public boolean hasTraceFor(String modelId) {
-		return graph.hasModelReference(modelId);
+	public void deleteModel(String modelId) {
+		boolean modelRemoved;
+		boolean valuesRemoved;
+
+		Collection<String> updateTraceModels = new HashSet<>();
+		updateTraceModels.add(modelId);
+
+		synchronized (syncLock) {
+			updateTraceModels.addAll(graph.getSourceModelIds(modelId));
+			updateTraceModels.addAll(graph.getTargetModelIds(modelId));
+			modelRemoved = graph.removeModelReference(modelId);
+			valuesRemoved = modelValues.remove(modelId) != null;
+		}
+
+		if (modelRemoved) {
+			fireModelUpdateNotification(TraceUpdateEvent.EventType.TRACE, updateTraceModels);
+		}
+
+		if (valuesRemoved) {
+			fireModelUpdateNotification(TraceUpdateEvent.EventType.VALUES, modelId);
+		}
 	}
 
-	public void deleteModel(String modelId) {
-		Collection<String> fromIds = graph.getSourceModelIds(modelId);
-		Collection<String> toIds = graph.getTargetModelIds(modelId);
-		if (graph.removeModelReference(modelId)) {
-			Collection<String> updated = new HashSet<>();
-			updated.add(modelId);
-			updated.addAll(fromIds);
-			updated.addAll(toIds);
-			fireModelUpdateNotification(updated);
+	public void deleteAllModels() {
+		Collection<String> removedTraces;
+		Collection<String> removedValues;
+
+		synchronized (syncLock) {
+			removedTraces = new HashSet<>(graph.getAllModelReferenceIds());
+			graph.clear();
+
+			removedValues = new HashSet<>(modelValues.keySet());
+			modelValues.clear();
 		}
+
+		fireModelUpdateNotification(TraceUpdateEvent.EventType.TRACE, removedTraces);
+		fireModelUpdateNotification(TraceUpdateEvent.EventType.VALUES, removedValues);
 	}
 
 	public TraceModelLink getModelLink(String srcModel, String dstModel) {
 		return graph.getLink(srcModel, dstModel);
 	}
 
-	public void deleteAllModels() {
-		Collection<String> allIds = getAllModels();
-		graph.clear();
-		fireModelUpdateNotification(allIds);
-	}
-
 	public void deleteModelLink(String srcModel, String dstModel) {
 		if (graph.removeTraceLink(srcModel, dstModel))
-			fireModelUpdateNotification(Set.of(srcModel, dstModel));
+			fireModelUpdateNotification(TraceUpdateEvent.EventType.TRACE, Set.of(srcModel, dstModel));
 	}
 
 	@Override
 	public Set<String> getSourceModels(String modelId) {
-		return graph.getSourceModelIds(modelId);
+		return new HashSet<>(graph.getSourceModelIds(modelId));
 	}
 
 	@Override
 	public Set<String> getTargetModels(String modelId) {
-		return graph.getTargetModelIds(modelId);
+		return new HashSet<>(graph.getTargetModelIds(modelId));
 	}
 
 	@Override
@@ -311,7 +354,7 @@ public final class ProjectTraceContext implements ITraceContext {
 		graph.addOrReplaceTraceLink(traceLink);
 
 		var updatedModels = Set.of(traceLink.getSourceModel(), traceLink.getTargetModel());
-		fireModelUpdateNotification(updatedModels);
+		fireModelUpdateNotification(TraceUpdateEvent.EventType.TRACE, updatedModels);
 	}
 
 	@Override
@@ -322,32 +365,57 @@ public final class ProjectTraceContext implements ITraceContext {
 			TransformEcore2Graph.addModelToGraph(model, graph);
 
 			var updatedModels = model.getModels().stream().map(ModelReference::getModelId).collect(Collectors.toSet());
-			fireModelUpdateNotification(updatedModels);
+			fireModelUpdateNotification(TraceUpdateEvent.EventType.TRACE, updatedModels);
 		}
 	}
 
-	private void fireModelSelectionNotification(String modelId, Collection<String> elementIds) {
+	public void updateModelValues(String modelId, Map<String, String> values) {
 		Objects.requireNonNull(modelId, "modelId");
-		Objects.requireNonNull(elementIds, "elementIds");
 
-		// TODO: run (each) in a separate thread with a cancellation token
+		if (values != null) {
+			// remove any empty key or value
+			values = values.entrySet().stream() //
+					.filter(e -> e.getKey() != null && !e.getKey().isBlank()) //
+					.filter(e -> e.getValue() != null && !e.getValue().isBlank()) //
+					.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+		}
 
+		if (values == null || values.isEmpty()) {
+			this.modelValues.remove(modelId);
+		} else {
+			this.modelValues.put(modelId, Collections.unmodifiableMap(values));
+		}
+
+		fireModelUpdateNotification(TraceUpdateEvent.EventType.VALUES, modelId);
+	}
+
+	public void deleteModelValues(String modelId) {
+		updateModelValues(modelId, null);
+	}
+
+	@Override
+	public Map<String, String> getModelValues(String modelId) {
+		return this.modelValues.getOrDefault(modelId, Collections.emptyMap());
+	}
+
+	private void fireModelSelectionNotification(String modelId, Collection<String> elementIds) {
 		var event = new TraceSelectionEvent(this, modelId, elementIds);
-		for (var listener : selectionListener)
+		for (var listener : traceSelectionListener)
 			listener.selectedByModel(event);
 	}
 
-	/**
-	 * TODO: Should only be fired if something has really changed
-	 * 
-	 * @param updatedModels
-	 */
-	private void fireModelUpdateNotification(Collection<String> updatedModels) {
-		Objects.requireNonNull(updatedModels, "updatedModels");
-		graphDirty = true;
+	private void fireModelUpdateNotification(TraceUpdateEvent.EventType eventType, String modelId) {
+		Objects.requireNonNull(modelId, "modelId");
+		fireModelUpdateNotification(eventType, Collections.singleton(modelId));
+	}
 
-		var event = new TraceUpdateEvent(this, updatedModels);
-		for (var listener : this.updateListener)
+	private void fireModelUpdateNotification(TraceUpdateEvent.EventType eventType, Collection<String> modelIds) {
+		if (modelIds.isEmpty())
+			return;
+
+		anyDataDirty = true;
+		var event = new TraceUpdateEvent(this, eventType, modelIds);
+		for (var listener : this.traceUpdateListener)
 			listener.updatedModels(event);
 	}
 

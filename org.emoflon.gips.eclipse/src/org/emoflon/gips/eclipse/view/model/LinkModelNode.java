@@ -8,9 +8,9 @@ public class LinkModelNode implements INode {
 		FORWARD, BACKWARD
 	}
 
-	public final ModelNode parent;
-	public final String modelId;
-	public final Direction direction;
+	private final ModelNode parent;
+	private final String modelId;
+	private final Direction direction;
 
 	public LinkModelNode(ModelNode parent, String modelId, Direction direction) {
 		this.parent = Objects.requireNonNull(parent, "parent");
@@ -25,5 +25,34 @@ public class LinkModelNode implements INode {
 
 	public String getContextId() {
 		return parent.getContextId();
+	}
+
+	@Override
+	public ModelNode getParent() {
+		return parent;
+	}
+
+	public String getModelId() {
+		return modelId;
+	}
+
+	public Direction getDirection() {
+		return direction;
+	}
+
+	@Override
+	public boolean hasChilds() {
+		return false;
+	}
+
+	@Override
+	public INode[] getChilds() {
+		return null;
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+
 	}
 }

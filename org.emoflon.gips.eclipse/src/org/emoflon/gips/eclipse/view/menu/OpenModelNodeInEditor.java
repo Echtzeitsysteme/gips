@@ -49,7 +49,7 @@ public class OpenModelNodeInEditor extends ContributionItem {
 					return;
 
 				IPath filePath = IPath.EMPTY;
-				for (String segment : modelNode.modelId.split("/"))
+				for (String segment : modelNode.getModelId().split("/"))
 					filePath = filePath.append(segment);
 
 				IFile modelFile = project.getFile(filePath);

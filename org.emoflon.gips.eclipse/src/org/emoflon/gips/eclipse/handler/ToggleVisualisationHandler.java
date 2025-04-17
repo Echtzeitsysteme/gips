@@ -22,7 +22,7 @@ import org.emoflon.gips.eclipse.pref.PluginPreferences;
 
 public final class ToggleVisualisationHandler extends AbstractHandler implements IHandler, IElementUpdater {
 
-	private final static String CMD_ID = "org.emoflon.gips.debugger.visualizer.toggle";
+	private final static String CMD_ID = "org.emoflon.gips.eclipse.command.togglevisualizer";
 
 	private final IPropertyChangeListener listener = this::onPreferenceChange;
 

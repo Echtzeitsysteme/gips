@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.emoflon.gips.eclipse.TracePlugin;
-import org.emoflon.gips.eclipse.api.event.ITraceManagerListener;
+import org.emoflon.gips.eclipse.api.event.ITraceContextListener;
 import org.emoflon.gips.eclipse.api.event.ITraceSelectionListener;
 import org.emoflon.gips.eclipse.api.event.ITraceUpdateListener;
 
@@ -14,8 +14,22 @@ public interface ITraceManager {
 	 * Shared singleton instance
 	 */
 	public static ITraceManager getInstance() {
-		return TracePlugin.getInstance().getTraceManager();
+		return TracePlugin.getInstance().getContextManager();
 	}
+
+	/**
+	 * 
+	 * @deprecated Use {@link #addListener(ITraceContextListener)}
+	 */
+	@Deprecated
+	void addTraceContextListener(ITraceContextListener listener);
+
+	/**
+	 * 
+	 * @deprecated Use {@link #removeListener(ITraceContextListener)}
+	 */
+	@Deprecated
+	void removeTraceContextListener(ITraceContextListener listener);
 
 	/**
 	 * Adds the given listener for manager related events to this manager. Has no
@@ -23,40 +37,33 @@ public interface ITraceManager {
 	 * run on the UI-Thread.
 	 * 
 	 * @param listener the listener, may not be null
-	 * @see #removeTraceManagerListener(ITraceManagerListener)
+	 * @see #removeTraceContextListener(ITraceContextListener)
 	 */
-	void addTraceManagerListener(ITraceManagerListener listener);
+	void addListener(ITraceContextListener listener);
 
 	/**
 	 * Removes the given listener
 	 * 
 	 * @param listener the listener, can be null
 	 */
-	void removeTraceManagerListener(ITraceManagerListener listener);
+	void removeListener(ITraceContextListener listener);
 
+	/**
+	 * Removes the given listener
+	 * 
+	 * @param listener the listener, can be null
+	 */
 	void removeListener(ITraceSelectionListener listener);
 
+	/**
+	 * Removes the given listener
+	 * 
+	 * @param listener the listener, can be null
+	 */
 	void removeListener(ITraceUpdateListener listener);
-
-	@Deprecated
-	void addListener(String contextId, ITraceSelectionListener listener);
-
-	@Deprecated
-	void removeListener(String contextId, ITraceSelectionListener listener);
-
-	@Deprecated
-	void addListener(String contextId, ITraceUpdateListener listener);
-
-	@Deprecated
-	void removeListener(String contextId, ITraceUpdateListener listener);
 
 	void selectElementsByTraceModel(String contextId, String modelId, Collection<String> selection)
 			throws TraceModelNotFoundException;
-
-	/**
-	 * Allows to add or remove an editor from this manager
-	 */
-	IEditorTracker getEditorTracker();
 
 	/**
 	 * Returns a {@link ITraceContext} for the given id. The id must be the name of

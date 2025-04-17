@@ -8,7 +8,6 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchPartReference;
-import org.emoflon.gips.eclipse.api.IEditorTracker;
 import org.emoflon.gips.eclipse.connector.EditorTraceConnectionFactory;
 import org.emoflon.gips.eclipse.connector.IEditorTraceConnection;
 import org.emoflon.gips.eclipse.connector.IEditorTraceConnectionFactory;
@@ -16,7 +15,7 @@ import org.emoflon.gips.eclipse.listener.WorkbenchPartWatcher;
 
 /**
  * This class is used to monitor the workbench for any editor, which can be
- * connected to the {@link TraceManager}. To do so it uses an
+ * connected to the {@link ContextManager}. To do so it uses an
  * {@link IEditorTraceConnectionFactory}.
  * 
  * @see EditorTraceConnectionFactory

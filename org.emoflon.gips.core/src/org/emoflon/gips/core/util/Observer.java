@@ -7,15 +7,12 @@ import java.util.function.Supplier;
 
 public class Observer {
 
-	private static Observer instance;
+	private static ThreadLocal<Observer> instance = ThreadLocal.withInitial(() -> new Observer());
 	protected Map<String, Map<String, IMeasurement>> measurements = Collections.synchronizedMap(new LinkedHashMap<>());
 	private String currentSeries;
 
 	public static synchronized Observer getInstance() {
-		if (instance == null) {
-			instance = new Observer();
-		}
-		return instance;
+		return instance.get();
 	}
 
 	public synchronized void setCurrentSeries(final String currentSeries) {
@@ -61,11 +58,6 @@ public class Observer {
 			mSeries = Collections.synchronizedMap(new LinkedHashMap<>());
 			measurements.put(series, mSeries);
 		}
-		IMeasurement old = mSeries.get(entry);
-		if (old == null) {
-			mSeries.put(entry, m);
-		} else {
-			mSeries.put(entry, old.merge(m));
-		}
+		mSeries.compute(entry, (key, old) -> old == null ? m : old.merge(m));
 	}
 }

@@ -1,4 +1,4 @@
-package org.emoflon.gips.eclipse.api;
+package org.emoflon.gips.eclipse.service;
 
 import org.eclipse.ui.IEditorPart;
 

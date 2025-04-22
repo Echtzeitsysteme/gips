@@ -113,6 +113,9 @@ public abstract class AnnotationBasedHighlightStrategy implements IHighlightStra
 	}
 
 	private static Collection<Annotation> getExistingAnnotations(IAnnotationModel annotationModel) {
+		if (annotationModel == null)
+			return Collections.emptySet();
+
 		Set<Annotation> result = new HashSet<>();
 		Iterator<Annotation> annotationIter = annotationModel.getAnnotationIterator();
 

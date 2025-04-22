@@ -152,7 +152,7 @@ public abstract class EditorTraceConnection<T extends IEditorPart> implements IE
 	 * @param selection editor selection, may be null
 	 */
 	private void onEditorSelection(ISelection selection) {
-		ITraceManager service = TracePlugin.getInstance().getTraceManager();
+		ITraceManager service = TracePlugin.getInstance().getContextManager();
 		if (!service.isVisualisationActive())
 			return;
 

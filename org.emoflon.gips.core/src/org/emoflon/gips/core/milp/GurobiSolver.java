@@ -378,14 +378,16 @@ public class GurobiSolver extends Solver {
 		}
 		// Solver reset will be handled by the GipsEngine afterward
 
-		engine.getEclipseIntegration()
-				.storeSolutionValues(this.grbVars.entrySet().stream().collect(Collectors.toMap(Entry::getKey, e -> {
-					try {
-						return Math.round(getVar(e.getKey()).get(DoubleAttr.X));
-					} catch (GRBException e1) {
-						return 0;
-					}
-				})));
+		if (engine.getEclipseIntegration().getConfig().isSolutionValuesSynchronizationEnabled()) {
+			engine.getEclipseIntegration()
+					.storeSolutionValues(this.grbVars.entrySet().stream().collect(Collectors.toMap(Entry::getKey, e -> {
+						try {
+							return Math.round(getVar(e.getKey()).get(DoubleAttr.X));
+						} catch (GRBException e1) {
+							return 0;
+						}
+					})));
+		}
 	}
 
 	@Override

@@ -310,6 +310,10 @@ public final class GipsBuilderUtils {
 	 */
 	public static void updateTrace(final IProject project, final URI gipslModelURI, final URI intermediateModelURI,
 			final GipsToIntermediate transformer) {
+		
+		ITraceManager manager = ITraceManager.getInstance();
+		if(!manager.isGIPSLTracingEnabled())
+			return;
 
 		// each project has it's own trace.
 		ITraceContext traceContext = ITraceManager.getInstance().getContext(project.getName());
@@ -333,7 +337,7 @@ public final class GipsBuilderUtils {
 				throw new IllegalArgumentException(
 						"GIPSL and Intermediate model id should not be equal: '" + gipslModelId + "'");
 
-			TraceMap<String, String> gipsl2intermediateMppings = TraceMap.normalize(transformer.getTrace(),
+			TraceMap<String, String> gipsl2intermediateMppings = TraceMap.normalize(transformer.getTracer().getMap(),
 					ResolveEcore2Id.INSTANCE, ResolveEcore2Id.INSTANCE);
 
 			traceContext

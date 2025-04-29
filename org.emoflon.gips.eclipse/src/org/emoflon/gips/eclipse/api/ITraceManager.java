@@ -87,6 +87,8 @@ public interface ITraceManager {
 	boolean doesContextExist(String contextId);
 
 	boolean isVisualisationActive();
+	
+	boolean isGIPSLTracingEnabled();
 
 	/**
 	 * 

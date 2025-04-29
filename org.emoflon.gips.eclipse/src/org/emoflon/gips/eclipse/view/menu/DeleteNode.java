@@ -10,11 +10,12 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.PlatformUI;
 import org.emoflon.gips.eclipse.TracePlugin;
-import org.emoflon.gips.eclipse.service.ProjectTraceContext;
-import org.emoflon.gips.eclipse.service.TraceManager;
+import org.emoflon.gips.eclipse.service.ContextManager;
+import org.emoflon.gips.eclipse.service.ProjectContext;
 import org.emoflon.gips.eclipse.view.model.ContextNode;
 import org.emoflon.gips.eclipse.view.model.LinkModelNode;
 import org.emoflon.gips.eclipse.view.model.ModelNode;
+import org.emoflon.gips.eclipse.view.model.ValueNode;
 
 public class DeleteNode extends ContributionItem {
 
@@ -39,41 +40,48 @@ public class DeleteNode extends ContributionItem {
 			item.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					TraceManager manager = TracePlugin.getInstance().getTraceManager();
+					ContextManager manager = TracePlugin.getInstance().getContextManager();
 					manager.getContext(node.getContextId()).deleteAllModels();
 				}
 			});
-		}
-
-		else if (selectedElement instanceof ModelNode node) {
+		} else if (selectedElement instanceof ModelNode node) {
 			MenuItem item = new MenuItem(menu, SWT.CHECK, index);
 			item.setText("Delete entry");
 			item.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					TraceManager manager = TracePlugin.getInstance().getTraceManager();
-					manager.getContext(node.getContextId()).deleteModel(node.modelId);
+					ContextManager manager = TracePlugin.getInstance().getContextManager();
+					manager.getContext(node.getContextId()).deleteModel(node.getModelId());
 				}
 			});
-		}
-
-		else if (selectedElement instanceof LinkModelNode node) {
+		} else if (selectedElement instanceof LinkModelNode node) {
 			MenuItem item = new MenuItem(menu, SWT.CHECK, index);
 			item.setText("Delete trace");
 			item.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					ProjectTraceContext context = TracePlugin.getInstance().getTraceManager()
+					ProjectContext context = TracePlugin.getInstance().getContextManager()
 							.getContext(node.getContextId());
 
-					switch (node.direction) {
+					switch (node.getDirection()) {
 					case FORWARD:
-						context.deleteModelLink(node.parent.modelId, node.modelId);
+						context.deleteModelLink(node.getParent().getModelId(), node.getModelId());
 						break;
 					case BACKWARD:
-						context.deleteModelLink(node.modelId, node.parent.modelId);
+						context.deleteModelLink(node.getModelId(), node.getParent().getModelId());
 						break;
 					}
+				}
+			});
+		} else if (selectedElement instanceof ValueNode node) {
+			MenuItem item = new MenuItem(menu, SWT.CHECK, index);
+			item.setText("Delete values");
+			item.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					ProjectContext context = TracePlugin.getInstance().getContextManager()
+							.getContext(node.getContextId());
+					context.deleteModelValues(node.getModelId());
 				}
 			});
 		}

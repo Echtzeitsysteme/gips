@@ -23,8 +23,7 @@ public abstract class XtextEditorTraceConnection extends EditorTraceConnection<X
 			return;
 		}
 
-		IPath filePath = IPath.fromOSString(HelperEclipse.toFileURI(uri).toFileString());
-		IPath relativeFilePath = filePath.makeRelativeTo(project.getLocation());
+		IPath relativeFilePath = HelperEclipse.getProjectRelativPath(project, uri);
 
 		setContextId(project.getName());
 		setModelId(relativeFilePath.toString());

@@ -100,6 +100,8 @@ public abstract class GipsRuleMapper<GTM extends GipsGTMapping<M, R>, M extends 
 		GTM mapping = convertMatch(this.mapping.getName() + "#" + mappingCounter++, match);
 		match2Mappings.put(match, mapping);
 		super.putMapping(mapping);
+
+		engine.getTracer().mapMapper2LpVariable(match.toIMatch(), getMapping(), mapping.getName());
 	}
 
 	protected void removeMapping(final M match) {
@@ -109,6 +111,8 @@ public abstract class GipsRuleMapper<GTM extends GipsGTMapping<M, R>, M extends 
 
 		match2Mappings.remove(match);
 		super.removeMapping(mapping);
+
+		engine.getTracer().removeMapper2LpVariable(match.toIMatch(), getMapping(), mapping.getName());
 	}
 
 	protected void init() {

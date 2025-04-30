@@ -59,9 +59,7 @@ public class CplexLpEditorTraceConnectionFactory extends XtextEditorTraceConnect
 
 					if (variable instanceof VariableDecleration variableDecleration) {
 						variableName = variableDecleration.getName();
-					}
-
-					if (variable instanceof VariableRef variableRef) {
+					} else if (variable instanceof VariableRef variableRef) {
 						variableName = variableRef.getRef().getName();
 						parent = HelperEObjects.getParentOfType(variableRef, ConstraintExpression.class,
 								ObjectiveExpression.class);
@@ -76,9 +74,9 @@ public class CplexLpEditorTraceConnectionFactory extends XtextEditorTraceConnect
 					} else if (parent instanceof ObjectiveExpression) {
 						elementIds.add(buildElementId(ILPTraceKeywords.TYPE_FUNCTION_VAR, variableName));
 						elementIds.add(buildElementId(ILPTraceKeywords.TYPE_OBJECTIVE, ""));
-					} else {
-						elementIds.add(buildElementId(ILPTraceKeywords.TYPE_VARIABLE, variableName));
 					}
+
+					elementIds.add(buildElementId(ILPTraceKeywords.TYPE_VARIABLE, variableName));
 
 					var delimiter = variableName.lastIndexOf("#");
 					var shortVariableName = delimiter < 0 ? variableName : variableName.substring(0, delimiter);

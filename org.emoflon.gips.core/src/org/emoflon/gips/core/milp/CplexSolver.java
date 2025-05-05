@@ -347,7 +347,7 @@ public class CplexSolver extends Solver {
 						try {
 							return Math.round(cplex.getValue(e.getValue()));
 						} catch (IloException e1) {
-							return 0;
+							return null;
 						}
 					})));
 		}

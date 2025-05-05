@@ -384,7 +384,7 @@ public class GurobiSolver extends Solver {
 						try {
 							return Math.round(getVar(e.getKey()).get(DoubleAttr.X));
 						} catch (GRBException e1) {
-							return 0;
+							return null;
 						}
 					})));
 		}

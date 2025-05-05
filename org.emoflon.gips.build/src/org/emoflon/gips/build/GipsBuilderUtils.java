@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.emoflon.gips.build.generator.GipsImportManager;
 import org.emoflon.gips.build.transformation.GipsToIntermediate;
+import org.emoflon.gips.build.transformation.GipsTracer;
 import org.emoflon.gips.eclipse.api.ITraceContext;
 import org.emoflon.gips.eclipse.api.ITraceManager;
 import org.emoflon.gips.eclipse.trace.TraceMap;
@@ -310,9 +311,9 @@ public final class GipsBuilderUtils {
 	 */
 	public static void updateTrace(final IProject project, final URI gipslModelURI, final URI intermediateModelURI,
 			final GipsToIntermediate transformer) {
-		
-		ITraceManager manager = ITraceManager.getInstance();
-		if(!manager.isGIPSLTracingEnabled())
+
+		GipsTracer gipsTracer = transformer.getTracer();
+		if (!gipsTracer.isTracingEnabled())
 			return;
 
 		// each project has it's own trace.

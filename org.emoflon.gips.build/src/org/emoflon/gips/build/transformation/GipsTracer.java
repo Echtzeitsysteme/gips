@@ -27,4 +27,8 @@ public class GipsTracer {
 		}
 	}
 
+	public boolean isTracingEnabled() {
+		return isTracingEnabled;
+	}
+
 }

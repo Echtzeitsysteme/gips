@@ -321,14 +321,13 @@ public final class GipsBuilderUtils {
 
 		try {
 			// adjust file extension from xmi to gipsl
-			URI gipslURI = HelperEclipse.toPlatformURI(gipslModelURI.trimFileExtension().appendFileExtension("gipsl"));
+
 			// first segment of an URI is the project name, by removing it we get a
 			// project relative path
+			URI gipslURI = HelperEclipse.toPlatformURI(gipslModelURI.trimFileExtension().appendFileExtension("gipsl"));
 			IPath gipslPath = IPath.fromOSString(gipslURI.toPlatformString(true)).makeRelative().removeFirstSegments(1);
 
 			URI intermediateURI = HelperEclipse.toPlatformURI(intermediateModelURI);
-			// FIXME: the intermediate URI isn't a valid URI. The first segment is not the
-			// project name.
 			IPath intermediatePath = IPath.fromOSString(intermediateURI.toPlatformString(true)).makeRelative();
 
 			String gipslModelId = gipslPath.toString(); // gipslModelURI.trimFileExtension().lastSegment();

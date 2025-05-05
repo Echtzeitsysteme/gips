@@ -320,28 +320,29 @@ public final class GipsBuilderUtils {
 		ITraceContext traceContext = ITraceManager.getInstance().getContext(project.getName());
 
 		try {
-			// adjust file extension from xmi to gipsl
+			// The first segment of a URI is the project name, by removing this segment we
+			// get a project relative path. The intermediateModelURI, although 'stored' as a
+			// platform URI, is not a valid platform URI because the first segment is not
+			// the project name.
 
-			// first segment of an URI is the project name, by removing it we get a
-			// project relative path
+			// adjust file extension from xmi to gipsl
 			URI gipslURI = HelperEclipse.toPlatformURI(gipslModelURI.trimFileExtension().appendFileExtension("gipsl"));
 			IPath gipslPath = IPath.fromOSString(gipslURI.toPlatformString(true)).makeRelative().removeFirstSegments(1);
+			String gipslModelId = gipslPath.toString();
 
 			URI intermediateURI = HelperEclipse.toPlatformURI(intermediateModelURI);
 			IPath intermediatePath = IPath.fromOSString(intermediateURI.toPlatformString(true)).makeRelative();
-
-			String gipslModelId = gipslPath.toString(); // gipslModelURI.trimFileExtension().lastSegment();
-			String intermediateModelId = intermediatePath.toString(); // intermediateModelURI.trimFileExtension().lastSegment();
+			String intermediateModelId = intermediatePath.toString();
 
 			if (gipslModelId.equalsIgnoreCase(intermediateModelId))
 				throw new IllegalArgumentException(
 						"GIPSL and Intermediate model id should not be equal: '" + gipslModelId + "'");
 
-			TraceMap<String, String> gipsl2intermediateMppings = TraceMap.normalize(gipsTracer.getMap(),
+			TraceMap<String, String> gipsl2intermediateMappings = TraceMap.normalize(gipsTracer.getMap(),
 					ResolveEcore2Id.INSTANCE, ResolveEcore2Id.INSTANCE);
 
-			traceContext
-					.updateTraceModel(new TraceModelLink(gipslModelId, intermediateModelId, gipsl2intermediateMppings));
+			traceContext.updateTraceModel(
+					new TraceModelLink(gipslModelId, intermediateModelId, gipsl2intermediateMappings));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

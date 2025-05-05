@@ -338,7 +338,7 @@ public final class GipsBuilderUtils {
 				throw new IllegalArgumentException(
 						"GIPSL and Intermediate model id should not be equal: '" + gipslModelId + "'");
 
-			TraceMap<String, String> gipsl2intermediateMppings = TraceMap.normalize(transformer.getTracer().getMap(),
+			TraceMap<String, String> gipsl2intermediateMppings = TraceMap.normalize(gipsTracer.getMap(),
 					ResolveEcore2Id.INSTANCE, ResolveEcore2Id.INSTANCE);
 
 			traceContext

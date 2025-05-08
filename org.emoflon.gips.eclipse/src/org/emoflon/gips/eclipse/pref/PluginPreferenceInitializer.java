@@ -13,17 +13,20 @@ public final class PluginPreferenceInitializer extends AbstractPreferenceInitial
 	public void initializeDefaultPreferences() {
 		var node = DefaultScope.INSTANCE.getNode(PluginPreferences.STORE_KEY);
 
-		// trace visualization is deactivated
+		// gipsl->intermediate tracing is enabled
+		node.putBoolean(PluginPreferences.PREF_GIPSL_TRACING_ENABLED, true);
+
+		// trace visualization is disabled
 		node.putBoolean(PluginPreferences.PREF_TRACE_DISPLAY_ACTIVE, false);
 
-		// code mining is deactivated
+		// code mining is disabled
 		node.putBoolean(PluginPreferences.PREF_CODE_MINING_ENABLED, false);
 
-		// RMI Service
+		// RMI Service is running
 		node.putBoolean(PluginPreferences.PREF_TRACE_RMI, true);
 		node.putInt(PluginPreferences.PREF_TRACE_RMI_PORT, IRemoteEclipseService.DEFAULT_PORT);
 
-		// trace storage
+		// trace caching is enabled
 		node.putBoolean(PluginPreferences.PREF_TRACE_CACHE_ENABLED, true);
 		node.put(PluginPreferences.PREF_TRACE_CACHE_LOCATION,
 				IPath.fromPath(Path.of("trace")).makeRelative().toPortableString());

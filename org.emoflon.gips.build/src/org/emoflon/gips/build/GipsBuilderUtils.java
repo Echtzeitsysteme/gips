@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.emoflon.gips.build.generator.GipsImportManager;
 import org.emoflon.gips.build.transformation.GipsToIntermediate;
+import org.emoflon.gips.build.transformation.GipsTracer;
 import org.emoflon.gips.eclipse.api.ITraceContext;
 import org.emoflon.gips.eclipse.api.ITraceManager;
 import org.emoflon.gips.eclipse.trace.TraceMap;
@@ -311,33 +312,37 @@ public final class GipsBuilderUtils {
 	public static void updateTrace(final IProject project, final URI gipslModelURI, final URI intermediateModelURI,
 			final GipsToIntermediate transformer) {
 
+		GipsTracer gipsTracer = transformer.getTracer();
+		if (!gipsTracer.isTracingEnabled())
+			return;
+
 		// each project has it's own trace.
 		ITraceContext traceContext = ITraceManager.getInstance().getContext(project.getName());
 
 		try {
+			// The first segment of a URI is the project name, by removing this segment we
+			// get a project relative path. The intermediateModelURI, although 'stored' as a
+			// platform URI, is not a valid platform URI because the first segment is not
+			// the project name.
+
 			// adjust file extension from xmi to gipsl
 			URI gipslURI = HelperEclipse.toPlatformURI(gipslModelURI.trimFileExtension().appendFileExtension("gipsl"));
-			// first segment of an URI is the project name, by removing it we get a
-			// project relative path
 			IPath gipslPath = IPath.fromOSString(gipslURI.toPlatformString(true)).makeRelative().removeFirstSegments(1);
+			String gipslModelId = gipslPath.toString();
 
 			URI intermediateURI = HelperEclipse.toPlatformURI(intermediateModelURI);
-			// FIXME: the intermediate URI isn't a valid URI. The first segment is not the
-			// project name.
 			IPath intermediatePath = IPath.fromOSString(intermediateURI.toPlatformString(true)).makeRelative();
-
-			String gipslModelId = gipslPath.toString(); // gipslModelURI.trimFileExtension().lastSegment();
-			String intermediateModelId = intermediatePath.toString(); // intermediateModelURI.trimFileExtension().lastSegment();
+			String intermediateModelId = intermediatePath.toString();
 
 			if (gipslModelId.equalsIgnoreCase(intermediateModelId))
 				throw new IllegalArgumentException(
 						"GIPSL and Intermediate model id should not be equal: '" + gipslModelId + "'");
 
-			TraceMap<String, String> gipsl2intermediateMppings = TraceMap.normalize(transformer.getTrace(),
+			TraceMap<String, String> gipsl2intermediateMappings = TraceMap.normalize(gipsTracer.getMap(),
 					ResolveEcore2Id.INSTANCE, ResolveEcore2Id.INSTANCE);
 
-			traceContext
-					.updateTraceModel(new TraceModelLink(gipslModelId, intermediateModelId, gipsl2intermediateMppings));
+			traceContext.updateTraceModel(
+					new TraceModelLink(gipslModelId, intermediateModelId, gipsl2intermediateMappings));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

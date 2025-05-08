@@ -129,6 +129,10 @@ public class ContextManager implements ITraceManager {
 	public boolean isVisualisationActive() {
 		return visualisationActive;
 	}
+	
+	public boolean isGIPSLTracingEnabled() {
+		return PluginPreferences.getPreferenceStore().getBoolean(PluginPreferences.PREF_GIPSL_TRACING_ENABLED);
+	}
 
 	@Override
 	public void removeListener(ITraceSelectionListener listener) {

@@ -41,7 +41,7 @@
         eType="#//BoundExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BoundExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="variable" eType="#//VariableRef"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variable" eType="#//Variable"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UpperAndLowerBoundExpression" eSuperTypes="#//BoundExpression">
@@ -65,11 +65,11 @@
   <eClassifiers xsi:type="ecore:EClass" name="FreeBoundExpression" eSuperTypes="#//BoundExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="SectionIntegerValue">
     <eStructuralFeatures xsi:type="ecore:EReference" name="variables" upperBound="-1"
-        eType="#//VariableDecleration" containment="true"/>
+        eType="#//Variable" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SectionBinaryValue">
     <eStructuralFeatures xsi:type="ecore:EReference" name="variables" upperBound="-1"
-        eType="#//VariableDecleration" containment="true"/>
+        eType="#//Variable" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LinearExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="terms" upperBound="-1"
@@ -79,15 +79,12 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//LinearOperators"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="coefficient" eType="#//NumberLiteral"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="variable" eType="#//VariableRef"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variable" eType="#//Variable"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LinearConstant"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Variable"/>
-  <eClassifiers xsi:type="ecore:EClass" name="VariableRef" eSuperTypes="#//Variable">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//VariableDecleration"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="VariableDecleration" eSuperTypes="#//Variable">
+  <eClassifiers xsi:type="ecore:EClass" name="Variable">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//Variable"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NumberLiteral" eSuperTypes="#//LinearConstant">

@@ -341,14 +341,16 @@ public class CplexSolver extends Solver {
 		}
 		// Solver reset will be handled by the GipsEngine afterward
 
-		engine.getEclipseIntegration()
-				.storeSolutionValues(this.vars.entrySet().stream().collect(Collectors.toMap(Entry::getKey, e -> {
-					try {
-						return Math.round(cplex.getValue(e.getValue()));
-					} catch (IloException e1) {
-						return 0;
-					}
-				})));
+		if (engine.getEclipseIntegration().getConfig().isSolutionValuesSynchronizationEnabled()) {
+			engine.getEclipseIntegration()
+					.storeSolutionValues(this.vars.entrySet().stream().collect(Collectors.toMap(Entry::getKey, e -> {
+						try {
+							return Math.round(cplex.getValue(e.getValue()));
+						} catch (IloException e1) {
+							return null;
+						}
+					})));
+		}
 	}
 
 	@Override

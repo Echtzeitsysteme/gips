@@ -148,9 +148,6 @@ public class EclipseIntegration {
 	public void storeSolutionValues(Map<String, Number> values) {
 		storedILPValues.clear();
 
-		if (!config.isSolutionValuesSynchronizationEnabled())
-			return;
-
 		for (var entry : values.entrySet()) {
 			if (entry.getValue() != null) {
 				storedILPValues.put(entry.getKey(), entry.getValue().toString());

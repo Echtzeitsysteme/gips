@@ -693,7 +693,6 @@ Public License instead of this License.  But first, please read
    <requires>
       <import feature="org.emoflon.ibex.ide.feature" version="1.0.0.qualifier"/>
       <import feature="org.emoflon.ibex.ide.hipe.feature" version="1.0.0.qualifier"/>
-      <import feature="org.emoflon.ibex.tgg.editor.feature" version="1.0.0.qualifier"/>
       <import feature="org.emoflon.jar.feature" version="1.0.0.qualifier"/>
       <import feature="org.emoflon.site.feature" version="1.0.0.qualifier"/>
       <import feature="org.moflon.core.feature" version="1.7.0.qualifier"/>

@@ -27,8 +27,7 @@ import org.emoflon.gips.eclipse.TracePlugin;
 import org.emoflon.gips.eclipse.api.event.ITraceUpdateListener;
 import org.emoflon.gips.eclipse.api.event.TraceUpdateEvent.EventType;
 import org.emoflon.gips.eclipse.cplexLp.ConstraintExpression;
-import org.emoflon.gips.eclipse.cplexLp.VariableDecleration;
-import org.emoflon.gips.eclipse.cplexLp.VariableRef;
+import org.emoflon.gips.eclipse.cplexLp.Variable;
 import org.emoflon.gips.eclipse.pref.PluginPreferences;
 import org.emoflon.gips.eclipse.service.ContextManager;
 import org.emoflon.gips.eclipse.service.ProjectContext;
@@ -144,8 +143,7 @@ public class VariableValueCodeMiningProvider implements ICodeMiningProvider {
 
 	private String getNameOf(EObject eObject) {
 		return switch (eObject) {
-		case VariableDecleration vd -> vd.getName();
-		case VariableRef vr -> vr.getRef().getName();
+		case Variable vr -> vr.getRef().getName();
 		case ConstraintExpression ce -> ce.getName();
 		default -> null;
 		};

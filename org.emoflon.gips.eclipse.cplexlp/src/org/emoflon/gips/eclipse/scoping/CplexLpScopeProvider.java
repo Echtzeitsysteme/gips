@@ -16,111 +16,17 @@ import org.eclipse.xtext.scoping.IScope;
  */
 public class CplexLpScopeProvider extends AbstractCplexLpScopeProvider {
 
+//	@Inject
+//	private DynamicVariableDeclarationLocator varResolver;
+
 	@Override
 	public IScope getScope(EObject context, EReference reference) {
-//		if (reference == CplexLpPackage.Literals.VARIABLE__REF) {
-//
+//		if (context instanceof Variable) {
+//			IEObjectDescription description = varResolver.findDeclarationForReference(context, reference);
+//			if (description != null)
+//				return new SimpleScope(super.getScope(context, reference), Collections.singleton(description));
 //		}
 		return super.getScope(context, reference);
 	}
-
-//	   @override
-//	   public getScope(EObject context, EReference reference) {
-//		      if (reference === MyDslPackage.Literals.USE__REFERENCE) {
-//		         val model = EcoreUtil2.getContainerOfType(context, Model)
-//		         if (model !== null) {
-//		            val result = newArrayList
-//		            for (i : model.instances) {
-//		               result.add( EObjectDescription.create(
-//		                  QualifiedName.create( i.variable.name ), i.variable ))
-//		               for (v : i.type.variables) {
-//		                  result.add( EObjectDescription.create(
-//		                     QualifiedName.create( i.variable.name, v.variable.name ),
-//		                     v.variable ))
-//		               }
-//		            }
-//		            println(result)
-//		            return new SimpleScope(IScope.NULLSCOPE, result)
-//		         }
-//		      }
-//		      super.getScope(context, reference)
-//		   }
-
-//	protected Map<String, VariableIdentifier> variableLookup = new HashMap<>();
-//
-//	IScope scope_Call_op(VariableIdentifier variable, EReference ref) {
-//		// return Scopes.scopeFor(call.getVar().getType().getOps());
-//
-//		var rootElement = EcoreUtil2.getRootContainer(variable);
-//		var possibleRefs = EcoreUtil2.getAllContentsOfType(rootElement, VariableIdentifier.class);
-//
-//		return Scopes.scopeFor(possibleRefs);
-//
-////	    	var result = new LinkedList<IEObjectDescription>();
-////	    	result.addAll(possibleRefs);
-////
-////	        return new SimpleScope(IScope.NULLSCOPE, result);
-//	}
-
-//	protected Map<String, VariableIdentifier> variableRefLookup = new HashMap<>();
-
-//	@Override
-//	public IScope getScope(EObject context, EReference reference) {
-//		System.out.println("Do some work?");
-//		if (context instanceof VariableIdentifier) {
-//			var variable = (VariableIdentifier) context;
-//			System.out.println("Check for reference: " + variable.getName());
-//			if (reference == CplexLpPackage.Literals.VARIABLE_IDENTIFIER__REF) {
-//				var ref = variableRefLookup.putIfAbsent(variable.getName(), variable);
-//				if (Objects.equal(ref, context))
-//					return IScope.NULLSCOPE;
-//
-//				return Scopes.scopeFor(List.of(ref));
-//			}
-////
-////			System.out.println("Check for reference: " + ((VariableIdentifier) context).getName());
-////			System.out.println("Ref type: " + (reference == CplexLpPackage.Literals.VARIABLE_IDENTIFIER__REF));
-////			System.out.println("Ref type: " + (reference == CplexLpPackage.Literals.VARIABLE_IDENTIFIER__NAME));
-//		}
-//		return super.getScope(context, reference);
-//	}
-
-//		@Override
-//		public IScope getScope(EObject context, EReference reference) {
-//			if(context instanceof Variable) {
-//		    	var rootElement = EcoreUtil2.getRootContainer(context);
-//				var possibleRefs = EcoreUtil2.getAllContentsOfType(rootElement, Variable.class);
-//				return Scopes.scopeFor(possibleRefs);
-//			}
-//
-//			if(context instanceof Variable && reference == CplexLpPackage.Literals.VARIABLE__NAME) {
-//				Variable variable = (Variable)context;
-//				Variable refVariable = variableLookup.putIfAbsent(variable.getName(), variable);
-//				if(!Objects.equal(variable, refVariable))
-//					return Scopes.scopeFor(List.of(refVariable));
-////
-////				if(refVariable == null) {
-////					var rootElement = EcoreUtil2.getRootContainer(context);
-////					var possibleRefs = EcoreUtil2.getAllContentsOfType(rootElement, Variable.class);
-////
-////					for(var possibleRef : possibleRefs) {
-////						if(!Objects.equal(possibleRef, variable)) {
-////							if(possibleRef.getName().equals(variable.getName())){
-////								refVariable = possibleRef;
-////								variableLookup.put(refVariable.getName(), refVariable);
-////								break;
-////							}
-////						}
-////					}
-////				}else if(Objects.equal(refVariable, variable)) {
-////					refVariable = null;
-////				}
-////
-////				if(refVariable != null)
-////					return Scopes.scopeFor(List.of(refVariable));
-//			}
-//
-//			return super.getScope(context, reference);
-//		}
 
 }

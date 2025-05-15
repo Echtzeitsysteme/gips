@@ -3,11 +3,20 @@
  */
 package org.emoflon.gips.eclipse.validation;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.linking.impl.LinkingHelper;
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
 import org.emoflon.gips.eclipse.cplexLp.CplexLpPackage;
-import org.emoflon.gips.eclipse.cplexLp.VariableDecleration;
-import org.emoflon.gips.eclipse.services.CplexLpGrammarAccess;
+import org.emoflon.gips.eclipse.cplexLp.Model;
+import org.emoflon.gips.eclipse.cplexLp.Variable;
 
 import com.google.inject.Inject;
 
@@ -19,81 +28,55 @@ import com.google.inject.Inject;
  */
 public class CplexLpValidator extends AbstractCplexLpValidator {
 
+//	@Inject
+//	private CplexLpGrammarAccess grammarAccess;
+
 	@Inject
-	private CplexLpGrammarAccess grammarAccess;
+	private LinkingHelper linkHelper;
 
-	@Check
-	public void checkGreetingStartsWithCapital(VariableDecleration variable) {
-		if (variable.getName() == null) {
-			return;
-		}
-
-		var firstLetter = variable.getName().charAt(0);
-		if (!(firstLetter == 'e' || firstLetter == 'E')) {
-			return;
-		}
-
-		warning("Name should not start with the letter 'e'", CplexLpPackage.Literals.VARIABLE_DECLERATION__NAME,
-				ValidationMessageAcceptor.INSIGNIFICANT_INDEX, "InvalidTypeName", variable.getName());
-
-//		var node = NodeModelUtils.findActualNodeFor(greeting);
-
-//        if (!Character.isUpperCase(greeting.name.charAt(0))) {
-//            val node = NodeModelUtils.findActualNodeFor(greeting)
-//
-//            for (n : node.asTreeIterable) {
-//                val ge = n.grammarElement
-//                if (ge instanceof Keyword && ge == greetingAccess.helloKeyword_0) {
-//                    messageAcceptor.acceptWarning(
-//                        'Name should start with a capital',
-//                        greeting,
-//                        n.offset,
-//                        n.length,
-//                        INVALID_NAME
-//                    )
-//                }
-//            }
-//
-//        }
+	public CplexLpValidator() {
+		System.out.println("STARTED VAL");
 	}
 
-//	@Check
-//	public void checkVariableIsBound(Variable variable) {
-//		var model = (Model) EcoreUtil2.getRootContainer(variable);
-//		var boundSection = model.getBound();
-//		if(boundSection != null) {
-//
-//		}
-//		warning("Variable is not bound", CplexLpPackage.Literals.VARIABLE__NAME, ValidationMessageAcceptor.INSIGNIFICANT_INDEX, "NotBound", variable.getName());
-//	}
+	@Check
+	public void checkVariableDoesNotStartWithE(Variable variable) {
+		String name = variable.getName();
+		if (name == null)
+			return;
 
-//	@Check
-//	public void checkVariableIsCorrectlyBound(BoundExpression variable) {
-//		var model = (Model) EcoreUtil2.getRootContainer(variable);
-//		var boundSection = model.getBound();
-//		if(boundSection != null) {
-//			variable.g
-//		}
-//		warning("It's bound!", CplexLpPackage.Literals.BOUND_EXPRESSION__VARIABLE, ValidationMessageAcceptor.INSIGNIFICANT_INDEX, "NotBound");
-//	}
+		if (Character.toLowerCase(name.charAt(0)) == 'e')
+			warning("Names should not start with the letter 'e'", CplexLpPackage.Literals.VARIABLE__NAME,
+					ValidationMessageAcceptor.INSIGNIFICANT_INDEX, "InvalidName", name);
+	}
 
-//	@Check
-//	public void checkTypeNameStartsWithCapital(ObjectiveExpression equation) {
-//		if(equation.getName() != null) {
-//			if(equation.getName().charAt(0) == 'e') {
-//				warning("Name should not start with the letter 'e'", CplexLpPackage.Literals.OBJECTIVE_EXPRESSION__NAME,
-//						ValidationMessageAcceptor.INSIGNIFICANT_INDEX, "InvalidTypeName", equation.getName());
-//			}
-//		}
-//	}
-//
-//	public void checkTypeNameStartsWithCapital(ConstrainExpression equation) {
-//		if(equation.getName() != null) {
-//			if(equation.getName().charAt(0) == 'e') {
-//				warning("Name should not start with the letter 'e'", CplexLpPackage.Literals.CONSTRAIN_EXPRESSION__NAME,
-//						ValidationMessageAcceptor.INSIGNIFICANT_INDEX, "InvalidTypeName", equation.getName());
-//			}
-//		}
-//	}
+	@Check
+	public void checkForUnusedVariables(Model model) {
+		Map<String, EObject> variableDeclarations = new HashMap<>();
+		Set<String> variableReferences = new HashSet<>();
+
+		TreeIterator<EObject> iterator = model.eAllContents();
+		while (iterator.hasNext()) {
+			EObject next = iterator.next();
+			if (next instanceof Variable variable) {
+				if (variable.getName() == null) {
+					String crossReference = linkHelper.getCrossRefNodeAsString(NodeModelUtils.getNode(variable), true);
+					variableReferences.add(crossReference);
+				} else {
+					variableDeclarations.put(variable.getName(), variable);
+				}
+			}
+		}
+
+		for (String declaredVariable : variableDeclarations.keySet()) {
+			if (!variableReferences.contains(declaredVariable)) {
+				EObject eObject = variableDeclarations.get(declaredVariable);
+				warning("Variable is never used elsewhere", eObject, CplexLpPackage.Literals.VARIABLE__NAME,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX, "OnlyUsedOnce");
+			}
+		}
+
+		variableDeclarations.clear();
+		variableReferences.clear();
+	}
 
 }

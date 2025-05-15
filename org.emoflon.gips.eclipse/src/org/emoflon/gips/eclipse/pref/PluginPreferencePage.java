@@ -33,6 +33,9 @@ public class PluginPreferencePage extends FieldEditorPreferencePage implements I
 
 	@Override
 	protected void createFieldEditors() {
+		addField(new BooleanFieldEditor(PluginPreferences.PREF_GIPSL_TRACING_ENABLED, "&GIPSL Tracing",
+				getFieldEditorParent()));
+
 		addField(new BooleanFieldEditor(PluginPreferences.PREF_TRACE_DISPLAY_ACTIVE, "Trace &visualisation",
 				getFieldEditorParent()));
 
@@ -43,7 +46,7 @@ public class PluginPreferencePage extends FieldEditorPreferencePage implements I
 			configGroup.setText("CPLEX LP Editor");
 
 			var editorCodeMiningValues = new BooleanFieldEditor(PluginPreferences.PREF_CODE_MINING_ENABLED,
-					"Show solution &values via code mining", configGroup);
+					"Sho&w solution values via code mining", configGroup);
 			addField(editorCodeMiningValues);
 		}
 
@@ -56,7 +59,7 @@ public class PluginPreferencePage extends FieldEditorPreferencePage implements I
 			var editorRMI = new BooleanFieldEditor(PluginPreferences.PREF_TRACE_RMI, "&RMI enabled", configGroup);
 			addField(editorRMI);
 
-			var editorRMIPort = new IntegerFieldEditor(PluginPreferences.PREF_TRACE_RMI_PORT, "RMI &port", configGroup);
+			var editorRMIPort = new IntegerFieldEditor(PluginPreferences.PREF_TRACE_RMI_PORT, "RMI p&ort", configGroup);
 			editorRMIPort.setValidRange(1023, 65535);
 			addField(editorRMIPort);
 		}
@@ -77,7 +80,7 @@ public class PluginPreferencePage extends FieldEditorPreferencePage implements I
 			addField(editorTraceStore);
 
 			var editorTraceStorePath = new StringFieldEditor(PluginPreferences.PREF_TRACE_CACHE_LOCATION,
-					"Project &relative path:", configGroup);
+					"&Project relative path:", configGroup);
 			editorTraceStorePath.setEmptyStringAllowed(false);
 			editorTraceStorePath.setPropertyChangeListener(null);
 			addField(editorTraceStorePath);

@@ -17,7 +17,6 @@ import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
 import org.emoflon.gips.build.transformation.transformer.ArithmeticExpressionTransformer;
 import org.emoflon.gips.build.transformation.transformer.BooleanExpressionTransformer;
 import org.emoflon.gips.build.transformation.transformer.TransformerFactory;
-import org.emoflon.gips.eclipse.trace.TraceMap;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanExpression;
@@ -77,7 +76,7 @@ public class GipsToIntermediate {
 	protected GipsIntermediateFactory factory = GipsIntermediateFactory.eINSTANCE;
 	final protected GipsTransformationData data;
 	final protected TransformerFactory transformationFactory;
-	final private TraceMap<EObject, EObject> gipsl2gipsTrace = new TraceMap<>();
+	final private GipsTracer gipsl2gipsTrace = new GipsTracer();
 	protected int constraintCounter = 0;
 
 	public GipsToIntermediate(final EditorGTFile gipslFile) {
@@ -133,7 +132,7 @@ public class GipsToIntermediate {
 		return data.model();
 	}
 
-	public TraceMap<EObject, EObject> getTrace() {
+	public GipsTracer getTracer() {
 		return gipsl2gipsTrace;
 	}
 

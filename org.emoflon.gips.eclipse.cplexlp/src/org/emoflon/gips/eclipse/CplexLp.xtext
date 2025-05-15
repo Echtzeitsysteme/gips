@@ -48,7 +48,7 @@ BoundExpression:
 UpperAndLowerBoundExpression:
 	lowerBound = LinearConstant
 	'<='
-	variable = VariableRef
+	variable = Variable
 	'<='
 	upperBound = LinearConstant
 ;
@@ -56,33 +56,33 @@ UpperAndLowerBoundExpression:
 LowerBoundExpression:
 	lowerBound = LinearConstant
 	'<='
-	variable = VariableRef
+	variable = Variable
 ;
 
 UpperBoundExpression:
-	variable = VariableRef
+	variable = Variable
 	'<='
 	upperBound = LinearConstant
 ;
 
 EqualsToBoundExpression:
-	variable = VariableRef
+	variable = Variable
 	'='
 	bound = LinearConstant
 ;
 
 FreeBoundExpression:
-	variable = VariableRef 'free'
+	variable = Variable 'free'
 ;
 
 SectionIntegerValue: {SectionIntegerValue}
 	('general' | 'generals' | 'gen')
-	variables += VariableDecleration*
+	variables += Variable*
 ;
 
 SectionBinaryValue: {SectionBinaryValue}
 	('binary' | 'binaries' | 'bin')
-	variables += VariableDecleration*
+	variables += Variable*
 ;
 
 LinearExpression:
@@ -92,17 +92,17 @@ LinearExpression:
 
 LinearTerm:
 	operator=LinearOperators (
-		coefficient=NumberLiteral variable=VariableRef |
+		coefficient=NumberLiteral variable=Variable |
 		coefficient=NumberLiteral |
-		variable=VariableRef
+		variable=Variable
 	)
 ;
 
 FirstLinearTerm returns LinearTerm:
 	operator=LinearOperators? (
-		coefficient=NumberLiteral variable=VariableRef |
+		coefficient=NumberLiteral variable=Variable |
 		coefficient=NumberLiteral |
-		variable=VariableRef
+		variable=Variable
 	)
 ;
 
@@ -110,13 +110,11 @@ LinearConstant:
 	NumberLiteral | InfinityLiteral 
 ;
 
-Variable: VariableDecleration | VariableRef;
-
-VariableRef: // returns Variable:
-	ref=[VariableDecleration|ValidID]
+Variable:
+	 ref=[Variable|ValidID]
 ;
 
-VariableDecleration:  //returns Variable:
+VariableDecleration returns Variable:
 	name = ValidID
 ;
 

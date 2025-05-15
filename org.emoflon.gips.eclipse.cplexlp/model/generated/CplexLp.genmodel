@@ -80,12 +80,9 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference CplexLp.ecore#//LinearTerm/variable"/>
     </genClasses>
     <genClasses ecoreClass="CplexLp.ecore#//LinearConstant"/>
-    <genClasses ecoreClass="CplexLp.ecore#//Variable"/>
-    <genClasses ecoreClass="CplexLp.ecore#//VariableRef">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference CplexLp.ecore#//VariableRef/ref"/>
-    </genClasses>
-    <genClasses ecoreClass="CplexLp.ecore#//VariableDecleration">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CplexLp.ecore#//VariableDecleration/name"/>
+    <genClasses ecoreClass="CplexLp.ecore#//Variable">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference CplexLp.ecore#//Variable/ref"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CplexLp.ecore#//Variable/name"/>
     </genClasses>
     <genClasses ecoreClass="CplexLp.ecore#//NumberLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CplexLp.ecore#//NumberLiteral/value"/>

@@ -3,9 +3,20 @@
    <feature url="features/org.emoflon.gips.feature_1.5.0.qualifier.jar" id="org.emoflon.gips.feature" version="1.5.0.qualifier">
       <category name="gips"/>
    </feature>
+   <feature url="features/org.emoflon.ibex.ide.hipe.feature_1.0.0.qualifier.jar" id="org.emoflon.ibex.ide.hipe.feature" version="1.0.0.qualifier">
+      <category name="emoflon-ibex"/>
+   </feature>
+   <feature url="features/org.emoflon.jar.feature_1.0.0.qualifier.jar" id="org.emoflon.jar.feature" version="1.0.0.qualifier">
+      <category name="emoflon-headless"/>
+   </feature>
+   <feature url="features/org.emoflon.site.feature_1.0.0.qualifier.jar" id="org.emoflon.site.feature" version="1.0.0.qualifier">
+      <category name="emoflon-headless"/>
+   </feature>
    <category-def name="gips" label="GIPS">
       <description>
          Graph-Based (M)ILP Problem Specification Tool
       </description>
    </category-def>
+   <category-def name="emoflon-ibex" label="emoflon-ibex"/>
+   <category-def name="emoflon-headless" label="emoflon-headless"/>
 </site>

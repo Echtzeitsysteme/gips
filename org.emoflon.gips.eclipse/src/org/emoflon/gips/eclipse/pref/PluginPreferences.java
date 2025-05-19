@@ -15,6 +15,15 @@ public final class PluginPreferences {
 	public static final String PREF_TRACE_RMI_PORT = "PREF_TRACE_RMI_PORT";
 
 	/**
+	 * Enabled/Disables tracing in GIPSL
+	 * <ul>
+	 * <li><bold>Type:</bold> {@link java.lang.Boolean}
+	 * <li>Can not be null
+	 * </ul>
+	 */
+	public static final String PREF_GIPSL_TRACING_ENABLED = "PREF_GIPSL_TRACING_ENABLED";
+
+	/**
 	 * Enables/Disables code mining for cplex editor
 	 * <ul>
 	 * <li><bold>Type:</bold> {@link java.lang.Boolean}

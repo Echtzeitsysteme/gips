@@ -17,8 +17,6 @@ import org.emoflon.gips.eclipse.cplexLp.NumberLiteral;
 import org.emoflon.gips.eclipse.cplexLp.ObjectiveExpression;
 import org.emoflon.gips.eclipse.cplexLp.SectionObjective;
 import org.emoflon.gips.eclipse.cplexLp.Variable;
-import org.emoflon.gips.eclipse.cplexLp.VariableDecleration;
-import org.emoflon.gips.eclipse.cplexLp.VariableRef;
 import org.emoflon.gips.eclipse.utility.HelperEObjects;
 import org.emoflon.gips.eclipse.utility.HelperEcoreSelection;
 
@@ -54,16 +52,9 @@ public class CplexLpEditorTraceConnectionFactory extends XtextEditorTraceConnect
 				}
 
 				if (eObject instanceof Variable variable) {
-					String variableName = null;
-					EObject parent = null;
-
-					if (variable instanceof VariableDecleration variableDecleration) {
-						variableName = variableDecleration.getName();
-					} else if (variable instanceof VariableRef variableRef) {
-						variableName = variableRef.getRef().getName();
-						parent = HelperEObjects.getParentOfType(variableRef, ConstraintExpression.class,
-								ObjectiveExpression.class);
-					}
+					String variableName = variable.getRef().getName();
+					EObject parent = HelperEObjects.getParentOfType(variable, ConstraintExpression.class,
+							ObjectiveExpression.class);
 
 					if (variableName == null) {
 						continue;
@@ -84,6 +75,9 @@ public class CplexLpEditorTraceConnectionFactory extends XtextEditorTraceConnect
 
 				} else if (eObject instanceof ConstraintExpression constraint) {
 					String name = constraint.getName();
+					if (name == null)
+						continue;
+
 					var delimiter = name.lastIndexOf("_");
 					if (delimiter >= 0) {
 						name = name.substring(0, delimiter);

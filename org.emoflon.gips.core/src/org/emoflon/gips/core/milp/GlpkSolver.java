@@ -244,8 +244,10 @@ public class GlpkSolver extends Solver {
 		}
 		// Solver reset will be handled by the GipsEngine afterward
 
-		engine.getEclipseIntegration().storeSolutionValues(this.ilpVars.entrySet().stream().collect(
-				Collectors.toMap(Entry::getKey, e -> Math.round(GLPK.glp_mip_col_val(model, e.getValue().index)))));
+		if (engine.getEclipseIntegration().getConfig().isSolutionValuesSynchronizationEnabled()) {
+			engine.getEclipseIntegration().storeSolutionValues(this.ilpVars.entrySet().stream().collect(
+					Collectors.toMap(Entry::getKey, e -> Math.round(GLPK.glp_mip_col_val(model, e.getValue().index)))));
+		}
 	}
 
 	@Override

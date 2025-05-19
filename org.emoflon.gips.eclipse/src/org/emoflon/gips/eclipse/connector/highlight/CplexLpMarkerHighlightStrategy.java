@@ -13,8 +13,6 @@ import org.emoflon.gips.eclipse.annotation.AnnotationMarkerData;
 import org.emoflon.gips.eclipse.api.ILPTraceKeywords;
 import org.emoflon.gips.eclipse.cplexLp.Model;
 import org.emoflon.gips.eclipse.cplexLp.Variable;
-import org.emoflon.gips.eclipse.cplexLp.VariableDecleration;
-import org.emoflon.gips.eclipse.cplexLp.VariableRef;
 
 public class CplexLpMarkerHighlightStrategy extends MarkerBasedHighlightStrategy {
 
@@ -66,15 +64,9 @@ public class CplexLpMarkerHighlightStrategy extends MarkerBasedHighlightStrategy
 					var iterator = resource.getAllContents();
 					while (iterator.hasNext()) {
 						var eObject = iterator.next();
-						if (eObject instanceof Variable) {
-							if (eObject instanceof VariableDecleration vd) {
-								if (vd.getName().startsWith(typeAndValue.value())) {
-									result.add(vd);
-								}
-							} else if (eObject instanceof VariableRef vr) {
-								if (vr.getRef().getName().startsWith(typeAndValue.value())) {
-									result.add(vr);
-								}
+						if (eObject instanceof Variable variable) {
+							if (variable.getRef().getName().startsWith(typeAndValue.value())) {
+								result.add(variable);
 							}
 						}
 					}

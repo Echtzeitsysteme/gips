@@ -3,6 +3,15 @@
  */
 package org.emoflon.gips.eclipse;
 
+import org.eclipse.xtext.naming.IQualifiedNameProvider;
+import org.eclipse.xtext.resource.DerivedStateAwareResource;
+import org.eclipse.xtext.resource.DerivedStateAwareResourceDescriptionManager;
+import org.eclipse.xtext.resource.IDerivedStateComputer;
+import org.eclipse.xtext.resource.IResourceDescription;
+import org.eclipse.xtext.resource.XtextResource;
+import org.emoflon.gips.eclipse.scoping.CplexQualifiedNameProvider;
+import org.emoflon.gips.eclipse.state.DynamicVariableDeclarationComputer;
+
 /**
  * Use this class to register components to be used at runtime / without the
  * Equinox extension registry.
@@ -12,15 +21,48 @@ public class CplexLpRuntimeModule extends AbstractCplexLpRuntimeModule {
 //	Class<? extends IStratumBreakpointSupport> bindIStratumBreakpointSupport() {
 //		return StratumBreakpointSupport.class;
 //	}
-//
+
 //	@Override
 //	public Class<? extends org.eclipse.xtext.linking.ILinker> bindILinker() {
 //		return LazyLinker.class;
 //	}
-//
+
 //	@Override
 //	public Class<? extends ILinkingService> bindILinkingService() {
 //		return CplexLpLinker.class;
 //	}
 
+//	public Class<? extends IValueConverterService> bindIValueConverterService() {
+//		return ConverterService.class;
+//	}
+
+	// Overwrite generated parser with an extended version to handle dynamic
+	// variable declerations
+//	public Class<? extends IParser> bindIParser() {
+//		return CplexLpParser.class;
+//	}
+
+//	public Class<? extends org.eclipse.xtext.parser.IAstFactory> bindIAstFactory() {
+//		return CustomEcoreElementFactory.class;
+//	}
+
+	// contributed by
+	// org.eclipse.xtext.xtext.generator.exporting.QualifiedNamesFragment2
+	@Override
+	public Class<? extends IQualifiedNameProvider> bindIQualifiedNameProvider() {
+		return CplexQualifiedNameProvider.class;
+	}
+
+	public Class<? extends IDerivedStateComputer> bindIDerivedStateComputer() {
+		return DynamicVariableDeclarationComputer.class;
+	}
+
+	@Override
+	public Class<? extends XtextResource> bindXtextResource() {
+		return DerivedStateAwareResource.class;
+	}
+
+	public Class<? extends IResourceDescription.Manager> bindIResourceDescriptionManager() {
+		return DerivedStateAwareResourceDescriptionManager.class;
+	}
 }

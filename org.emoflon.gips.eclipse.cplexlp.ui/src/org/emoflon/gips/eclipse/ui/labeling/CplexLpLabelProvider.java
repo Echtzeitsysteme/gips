@@ -22,8 +22,7 @@ import org.emoflon.gips.eclipse.cplexLp.SectionIntegerValue;
 import org.emoflon.gips.eclipse.cplexLp.SectionObjective;
 import org.emoflon.gips.eclipse.cplexLp.UpperAndLowerBoundExpression;
 import org.emoflon.gips.eclipse.cplexLp.UpperBoundExpression;
-import org.emoflon.gips.eclipse.cplexLp.VariableDecleration;
-import org.emoflon.gips.eclipse.cplexLp.VariableRef;
+import org.emoflon.gips.eclipse.cplexLp.Variable;
 
 import com.google.inject.Inject;
 
@@ -149,11 +148,13 @@ public class CplexLpLabelProvider extends DefaultEObjectLabelProvider {
 		return text(element.getValue());
 	}
 
-	String text(VariableDecleration element) {
-		return element.getName();
-	}
+//	String text(VariableDecleration element) {
+//		return element.getName();
+//	}
 
-	String text(VariableRef element) {
+	String text(Variable element) {
+		if (element.getName() != null)
+			return element.getName();
 		return element.getRef().getName();
 	}
 

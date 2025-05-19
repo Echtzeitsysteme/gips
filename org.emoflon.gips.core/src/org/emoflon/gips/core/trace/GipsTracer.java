@@ -14,7 +14,6 @@ import org.emoflon.gips.core.milp.model.Term;
 import org.emoflon.gips.core.milp.model.Variable;
 import org.emoflon.gips.eclipse.api.ILPTraceKeywords;
 import org.emoflon.gips.eclipse.trace.TraceMap;
-import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.ibex.common.operational.IMatch;
 
 public class GipsTracer {
@@ -22,7 +21,6 @@ public class GipsTracer {
 	private EclipseIntegration integration;
 	private final TraceMap<EObject, String> intermediateMappings = new TraceMap<>();
 	private final TraceMap<EObject, String> inputMappings = new TraceMap<>();
-	private final TraceMap<EObject, Object> secondaryMapping = new TraceMap<>();
 
 	public GipsTracer(EclipseIntegration integration) {
 		this.integration = Objects.requireNonNull(integration, "integration");
@@ -39,34 +37,6 @@ public class GipsTracer {
 
 	public TraceMap<EObject, String> getInput2LpMapping() {
 		return inputMappings;
-	}
-
-	public void mapInput2Secondary(GipsGTMapping src, Object dst) {
-
-	}
-
-	public void mapMapper2LpVariable(IMatch inputMatch, Mapping intermediateMapping, String name) {
-//		if (!isTracingEnabled())
-//			return;
-//
-//		String id = ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_VARIABLE, name);
-//		intermediateMappings.map(intermediateMapping, id);
-//		for (Object matchedObject : inputMatch.getObjects()) {
-//			if (matchedObject instanceof EObject eObject)
-//				inputMappings.map(eObject, id);
-//		}
-	}
-
-	public void removeMapper2LpVariable(IMatch inputMatch, Mapping intermediateMapping, String name) {
-//		if (!isTracingEnabled())
-//			return;
-//
-//		String id = ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_VARIABLE, name);
-//		intermediateMappings.removeMapping(intermediateMapping, id);
-//		for (Object matchedObject : inputMatch.getObjects()) {
-//			if (matchedObject instanceof EObject eObject)
-//				inputMappings.removeMapping(eObject, id);
-//		}
 	}
 
 	protected void mapInput2LpVariable(IMatch inputMatch, String dst) {
@@ -142,9 +112,11 @@ public class GipsTracer {
 			for (GipsMapping gipsMapping : mapper.getMappings().values()) {
 				String variableId = ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_VARIABLE,
 						gipsMapping.getName());
+
 				mapIntermediate2Lp(mapper.getMapping(), variableId);
-				if (gipsMapping instanceof GipsGTMapping<?, ?> gipsGTmapping) {
-					mapInput2LpVariable(gipsGTmapping.getMatch().toIMatch(), variableId);
+
+				if (gipsMapping instanceof GipsGTMapping<?, ?> gipsGTMapping) {
+					mapInput2LpVariable(gipsGTMapping.getMatch().toIMatch(), variableId);
 				}
 			}
 		}

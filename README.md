@@ -17,7 +17,7 @@
             * Extract the archive, e.g., to `C:\Program Files\GLPK\glpk-4.65`.
             * Add `C:\Program Files\GLPK\glpk-4.65\w64` to the system-wide environment variable `path`.
             * Restart your Eclipse IDE.
-    * Install [CPLEX](https://www.ibm.com/analytics/cplex-optimizer) in version `22.1.2` and activate a license for your computer (if neccessary).
+    * Install [CPLEX](https://www.ibm.com/analytics/cplex-optimizer) in version `22.1.2` and activate a license for your computer (if necessary).
         * CPLEX is a commercial alternative to the other (M)ILP solvers implemented in GIPS.
 * Clone this Git repository to your local machine and import it into your Eclipse development workspace: *File -> Import -> General -> Existing Projects into Workspace*. Import all projects. You can use your eMoflon::IBeX development workspace for this, i.e., there is no need to start a runtime workspace for the GIPS development projects.
     * As an alternative, you can use this [PSF file](https://raw.githubusercontent.com/Echtzeitsysteme/gips/master/devProjectSet.psf) for the import.
@@ -57,7 +57,7 @@ By using this settings, you should be unable to commit unformatted code.
         * Currently, Gurobi is the default (M)ILP solver used in GIPS because of the great performance.
     * Install [GLPK](https://www.gnu.org/software/glpk/) in the newest version (`4.6.5`) and add it to your path.
         * GLPK is an open-source (M)ILP solver that can be used without a charge.
-    * Install [CPLEX](https://www.ibm.com/analytics/cplex-optimizer) in version `22.1.2` and activate a license for your computer (if neccessary).
+    * Install [CPLEX](https://www.ibm.com/analytics/cplex-optimizer) in version `22.1.2` and activate a license for your computer (if necessary).
         * CPLEX is a commercial alternative to the other (M)ILP solvers implemented in GIPS.
 * Install GIPS from the public Eclipse update site: https://echtzeitsysteme.github.io/gips-updatesite/snapshot/updatesite/
 * Launch a runtime workspace (while using a runtime Eclipse) as stated in the eMoflon::IBeX installation steps to start using GIPS.
@@ -89,7 +89,7 @@ PATH=C:\gurobi1202\win64\bin;C:\Program Files\IBM\ILOG\CPLEX_Studio2212\cplex\bi
 
 ## Usage (running simulations)
 
-Please refer to the [GIPS examples reposiory](https://github.com/Echtzeitsysteme/gips-examples).
+Please refer to the [GIPS examples repository](https://github.com/Echtzeitsysteme/gips-examples).
 
 
 ## Tests

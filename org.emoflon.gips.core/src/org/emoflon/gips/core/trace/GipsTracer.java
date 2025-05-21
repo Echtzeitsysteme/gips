@@ -47,9 +47,6 @@ public class GipsTracer {
 	}
 
 	public void mapIntermediate2Lp(final EObject src, final String dst) {
-		if (!isTracingEnabled())
-			return;
-
 		intermediateMappings.map(src, dst);
 	}
 
@@ -106,9 +103,6 @@ public class GipsTracer {
 		// try to build a bridge between ILP model and ILP text file
 
 		for (GipsMapper<? extends GipsMapping> mapper : gipsEngine.getMappers().values()) {
-			mapIntermediate2Lp(mapper.getMapping(),
-					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_MAPPING, mapper.getName()));
-
 			for (GipsMapping gipsMapping : mapper.getMappings().values()) {
 				String variableId = ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_VARIABLE,
 						gipsMapping.getName());
@@ -117,6 +111,14 @@ public class GipsTracer {
 
 				if (gipsMapping instanceof GipsGTMapping<?, ?> gipsGTMapping) {
 					mapInput2LpVariable(gipsGTMapping.getMatch().toIMatch(), variableId);
+				}
+
+				if (gipsMapping.hasAdditionalVariables()) {
+					for (String varNames : gipsMapping.getAdditionalVariableNames()) {
+						String addVariableId = ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_VARIABLE,
+								varNames);
+						mapIntermediate2Lp(mapper.getMapping(), addVariableId);
+					}
 				}
 			}
 		}
@@ -150,14 +152,6 @@ public class GipsTracer {
 		if (gipsEngine.getObjective() != null) {
 			mapIntermediate2Lp(gipsEngine.getObjective().getIntermediateObjective(),
 					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_OBJECTIVE, ""));
-		}
-	}
-
-	public void buildInput2LpTraceGraph(GipsEngine gipsEngine) {
-		for (GipsMapper<?> mapper : gipsEngine.getMappers().values()) {
-			for (var matchMapper : mapper.getMappings().values()) {
-
-			}
 		}
 	}
 

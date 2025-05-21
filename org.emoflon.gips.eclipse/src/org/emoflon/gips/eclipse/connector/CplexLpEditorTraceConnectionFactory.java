@@ -69,10 +69,6 @@ public class CplexLpEditorTraceConnectionFactory extends XtextEditorTraceConnect
 
 					elementIds.add(buildElementId(ILPTraceKeywords.TYPE_VARIABLE, variableName));
 
-					var delimiter = variableName.lastIndexOf("#");
-					var shortVariableName = delimiter < 0 ? variableName : variableName.substring(0, delimiter);
-					elementIds.add(buildElementId(ILPTraceKeywords.TYPE_MAPPING, shortVariableName));
-
 				} else if (eObject instanceof ConstraintExpression constraint) {
 					String name = constraint.getName();
 					if (name == null)

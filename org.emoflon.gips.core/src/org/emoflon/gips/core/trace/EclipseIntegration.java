@@ -16,6 +16,7 @@ import org.emoflon.gips.eclipse.api.IRemoteEclipseService;
 import org.emoflon.gips.eclipse.trace.TraceMap;
 import org.emoflon.gips.eclipse.trace.TraceModelLink;
 import org.emoflon.gips.eclipse.trace.resolver.ResolveEcore2Id;
+import org.emoflon.gips.eclipse.trace.resolver.ResolveElement2Id;
 import org.emoflon.gips.eclipse.trace.resolver.ResolveIdentity2Id;
 
 public class EclipseIntegration {
@@ -26,6 +27,7 @@ public class EclipseIntegration {
 	private String modelIdIntermediate;
 	private String modelIdLp;
 	private String modelIdInput;
+	private String modelIdOutput;
 
 	private final Map<String, String> storedILPValues = new HashMap<>();
 
@@ -63,6 +65,17 @@ public class EclipseIntegration {
 		setInputModelId(modelId);
 	}
 
+	public void computeOutputModelId(String path) {
+		Path modelPath = Path.of(path);
+		String modelId = computeModelIdFromPath(modelPath);
+		setOutputModelId(modelId);
+	}
+
+	public void computeOutputModelId(URI modelUri) {
+		String modelId = computeModelIdFromURI(modelUri);
+		setOutputModelId(modelId);
+	}
+
 	/**
 	 * Sets the lp model id
 	 * 
@@ -90,6 +103,15 @@ public class EclipseIntegration {
 		modelIdInput = modelId;
 	}
 
+	/**
+	 * Sets the output model id.
+	 * 
+	 * @param modelId
+	 */
+	public void setOutputModelId(String modelId) {
+		modelIdOutput = modelId;
+	}
+
 	private String computeModelIdFromURI(URI modelUri) {
 		Path modelPath;
 		if (modelUri.isPlatform())
@@ -108,7 +130,7 @@ public class EclipseIntegration {
 		if (!modelPath.isAbsolute())
 			modelPath = root.resolve(modelPath).normalize();
 
-		Path relativePath = root.relativize(modelPath); // we use the root (workspae) relative path as id
+		Path relativePath = root.relativize(modelPath); // we use the root (workspace) relative path as id
 		String id = StreamSupport.stream(relativePath.spliterator(), false).map(Path::toString)
 				.collect(Collectors.joining("/")); // use '/' like IPath.toString
 		return id;
@@ -124,7 +146,7 @@ public class EclipseIntegration {
 		return false;
 	}
 
-	public void sendTraceToIDE(GipsTracer tracer) {
+	public void sendLpTraceToIDE(GipsTracer tracer) {
 		if (!config.isTracingEnabled())
 			return;
 
@@ -133,37 +155,63 @@ public class EclipseIntegration {
 
 		computeLpModelId(solverConfig.getLpPath());
 
-		TraceModelLink linkIntermediate = buildModelLinkForIntermediate(tracer);
-		TraceModelLink linkInput = buildModelLinkForInput(tracer);
+		TraceModelLink linkIntermediate = buildModelLink(getModelIdForIntermediateModel(), getModelIdForLpModel(),
+				tracer.getIntermediate2LpMapping(), ResolveEcore2Id.INSTANCE, ResolveIdentity2Id.INSTANCE);
+
+		TraceModelLink linkInput = buildModelLink(getModelIdForInputModel(), getModelIdForLpModel(),
+				tracer.getInput2LpMapping(), ResolveEcore2Id.INSTANCE, ResolveIdentity2Id.INSTANCE);
+
+		tracer.resetIntermediate2LpMapping();
+		tracer.resetInput2LpMapping();
+
+		updateTraceModel(linkIntermediate, linkInput);
+	}
+
+	public void sendOutputTraceToIde(GipsTracer tracer) {
+		if (!config.isTracingEnabled())
+			return;
+
+		if (isLpPathNotValid())
+			return;
+
+		computeLpModelId(solverConfig.getLpPath());
+
+		TraceModelLink linkOutput = buildModelLink(getModelIdForLpModel(), getModelIdForOutputModel(),
+				tracer.getLp2OutputMapping(), ResolveIdentity2Id.INSTANCE, ResolveEcore2Id.INSTANCE);
+
+		tracer.resetLp2OutputMapping();
+
+		updateTraceModel(linkOutput);
+	}
+
+	private <S, D> TraceModelLink buildModelLink(String srcModelId, String dstModelId, TraceMap<S, D> mapping,
+			ResolveElement2Id<? super S> srcResolver, ResolveElement2Id<? super D> dstResolver) {
+
+		if (srcModelId == null || dstModelId == null)
+			return null;
+
+		TraceMap<String, String> normalizedMapping = TraceMap.normalize(mapping, srcResolver, dstResolver);
+
+		return new TraceModelLink(srcModelId, dstModelId, normalizedMapping);
+	}
+
+	private void updateTraceModel(TraceModelLink... links) {
+		if (links == null || links.length == 0)
+			return;
 
 		try {
 			IRemoteEclipseService service = getRemoteService();
+			String contextId = getContextId();
 
-			if (linkIntermediate != null)
-				service.updateTraceModel(getContextId(), linkIntermediate);
+			for (TraceModelLink link : links) {
+				if (link != null)
+					service.updateTraceModel(contextId, link);
+			}
 
-			if (linkInput != null)
-				service.updateTraceModel(getContextId(), linkInput);
 		} catch (RemoteException e) {
 			System.err.println("Unable to send trace to IDE. Reason:\n");
 			e.printStackTrace();
 		}
-	}
-
-	private TraceModelLink buildModelLinkForIntermediate(GipsTracer tracer) {
-		TraceMap<String, String> mapping = TraceMap.normalize(tracer.getIntermediate2LpMapping(),
-				ResolveEcore2Id.INSTANCE, ResolveIdentity2Id.INSTANCE);
-		return new TraceModelLink(getModelIdForIntermediateModel(), getModelIdForLpModel(), mapping);
-	}
-
-	private TraceModelLink buildModelLinkForInput(GipsTracer tracer) {
-		if (getModelIdForInputModel() == null)
-			return null;
-
-		TraceMap<String, String> mapping = TraceMap.normalize(tracer.getInput2LpMapping(), ResolveEcore2Id.INSTANCE,
-				ResolveIdentity2Id.INSTANCE);
-
-		return new TraceModelLink(getModelIdForInputModel(), getModelIdForLpModel(), mapping);
 	}
 
 	public void sendSolutionValuesToIDE() {
@@ -213,6 +261,12 @@ public class EclipseIntegration {
 		}
 	}
 
+	/**
+	 * Returns the intermediate model id. This model id may be available after the
+	 * initialization stage.
+	 * 
+	 * @return intermediate model id or null, if not available
+	 */
 	public String getModelIdForIntermediateModel() {
 		return modelIdIntermediate;
 	}
@@ -228,13 +282,23 @@ public class EclipseIntegration {
 	}
 
 	/**
-	 * Returns the input model id. This model id may be available after the ilp
-	 * build stage.
+	 * Returns the input model id. This model id may be available after the
+	 * initialization stage.
 	 * 
 	 * @return input model id or null, if not available
 	 */
 	public String getModelIdForInputModel() {
 		return modelIdInput;
+	}
+
+	/**
+	 * Returns the output model id. This model id may be available after the model
+	 * is saved
+	 * 
+	 * @return input model id or null, if not available
+	 */
+	public String getModelIdForOutputModel() {
+		return modelIdOutput;
 	}
 
 }

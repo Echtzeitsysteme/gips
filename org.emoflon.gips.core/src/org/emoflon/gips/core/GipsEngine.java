@@ -137,7 +137,7 @@ public abstract class GipsEngine {
 	protected void buildTraceGraphAndSendToIDE() {
 		if (getTracer().isTracingEnabled()) {
 			getTracer().buildIntermediate2LpTraceGraph(this);
-			eclipseIntegration.sendTraceToIDE(getTracer());
+			eclipseIntegration.sendLpTraceToIDE(getTracer());
 		}
 	}
 

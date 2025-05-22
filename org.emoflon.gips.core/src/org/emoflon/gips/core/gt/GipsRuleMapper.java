@@ -85,7 +85,7 @@ public abstract class GipsRuleMapper<GTM extends GipsGTMapping<M, R>, M extends 
 		return mapping -> {
 			Optional<M> matchAfterRule = ruleApplication.apply(mapping);
 			if (matchAfterRule.isPresent())
-				engine.getTracer().mapLp2Output(mapping.getName(), matchAfterRule.get().toIMatch());
+				engine.getTracer().mapLpVariable2Output(mapping.getName(), matchAfterRule.get().toIMatch());
 			return matchAfterRule;
 		};
 	}

@@ -101,7 +101,13 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 
 	@Override
 	public void saveResult() throws IOException {
-		eMoflonApp.getModel().getResources().get(0).save(null);
+		Resource r = eMoflonApp.getModel().getResources().get(0);
+		r.save(null);
+
+		if (getEclipseIntegration().getConfig().isTracingEnabled()) {
+			getEclipseIntegration().computeOutputModelId(r.getURI());
+			getEclipseIntegration().sendOutputTraceToIde(getTracer());
+		}
 	}
 
 	@Override
@@ -114,6 +120,12 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		// Fetch model contents from eMoflon
 		r.getContents().addAll(eMoflonApp.getModel().getResources().get(0).getContents());
 		r.save(null);
+
+		if (getEclipseIntegration().getConfig().isTracingEnabled()) {
+			getEclipseIntegration().computeOutputModelId(path);
+			getEclipseIntegration().sendOutputTraceToIde(getTracer());
+		}
+
 		// Hand model back to owner
 		eMoflonApp.getModel().getResources().get(0).getContents().addAll(r.getContents());
 	}

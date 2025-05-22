@@ -62,6 +62,9 @@ public abstract class GipsRuleMapper<GTM extends GipsGTMapping<M, R>, M extends 
 	private Collection<Optional<M>> applyMappings(Collection<GTM> selectedMappings,
 			Function<GTM, Optional<M>> ruleApplication) {
 
+		if (engine.getTracer().isTracingEnabled())
+			ruleApplication = wrapRuleApplicationForTracing(ruleApplication);
+
 		return selectedMappings.stream() //
 				.map(this::updateRuleParametersForMapping) //
 				.map(ruleApplication) //
@@ -76,6 +79,15 @@ public abstract class GipsRuleMapper<GTM extends GipsGTMapping<M, R>, M extends 
 			});
 		}
 		return mapping;
+	}
+
+	private Function<GTM, Optional<M>> wrapRuleApplicationForTracing(Function<GTM, Optional<M>> ruleApplication) {
+		return mapping -> {
+			Optional<M> matchAfterRule = ruleApplication.apply(mapping);
+			if (matchAfterRule.isPresent())
+				engine.getTracer().mapLp2Output(mapping.getName(), matchAfterRule.get().toIMatch());
+			return matchAfterRule;
+		};
 	}
 
 	protected abstract GTM convertMatch(final String ilpVariable, final M match);

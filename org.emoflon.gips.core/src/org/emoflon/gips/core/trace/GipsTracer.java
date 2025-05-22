@@ -21,6 +21,7 @@ public class GipsTracer {
 	private EclipseIntegration integration;
 	private final TraceMap<EObject, String> intermediateMappings = new TraceMap<>();
 	private final TraceMap<EObject, String> inputMappings = new TraceMap<>();
+	private final TraceMap<String, EObject> outputMappings = new TraceMap<>();
 
 	public GipsTracer(EclipseIntegration integration) {
 		this.integration = Objects.requireNonNull(integration, "integration");
@@ -39,15 +40,26 @@ public class GipsTracer {
 		return inputMappings;
 	}
 
-	protected void mapInput2LpVariable(IMatch inputMatch, String dst) {
+	public TraceMap<String, EObject> getLp2OutputMapping() {
+		return outputMappings;
+	}
+
+	private void mapInput2LpVariable(IMatch inputMatch, String dst) {
 		for (Object matchedObject : inputMatch.getObjects()) {
 			if (matchedObject instanceof EObject eObject)
 				inputMappings.map(eObject, dst);
 		}
 	}
 
-	public void mapIntermediate2Lp(final EObject src, final String dst) {
+	private void mapIntermediate2Lp(final EObject src, final String dst) {
 		intermediateMappings.map(src, dst);
+	}
+
+	public void mapLp2Output(String src, IMatch outputMatch) {
+		for (Object matchedObject : outputMatch.getObjects()) {
+			if (matchedObject instanceof EObject eObject)
+				outputMappings.map(src, eObject);
+		}
 	}
 
 	/**

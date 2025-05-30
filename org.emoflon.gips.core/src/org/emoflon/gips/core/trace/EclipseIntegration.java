@@ -11,12 +11,17 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.milp.SolverConfig;
 import org.emoflon.gips.eclipse.api.IRemoteEclipseService;
 import org.emoflon.gips.eclipse.trace.TraceMap;
 import org.emoflon.gips.eclipse.trace.TraceModelLink;
 import org.emoflon.gips.eclipse.trace.resolver.ResolveEcore2Id;
+import org.emoflon.gips.eclipse.trace.resolver.ResolveEcoreByRoot2Id;
+import org.emoflon.gips.eclipse.trace.resolver.ResolveElement2Id;
 import org.emoflon.gips.eclipse.trace.resolver.ResolveIdentity2Id;
+import org.emoflon.smartemf.persistence.SmartEMFResource;
+import org.emoflon.smartemf.runtime.SmartObject;
 
 public class EclipseIntegration {
 
@@ -160,7 +165,15 @@ public class EclipseIntegration {
 		if (getModelIdForInputModel() == null)
 			return null;
 
-		TraceMap<String, String> mapping = TraceMap.normalize(tracer.getInput2LpMapping(), ResolveEcore2Id.INSTANCE,
+		ResolveElement2Id<EObject> inputResolver = ResolveEcore2Id.INSTANCE;
+
+		boolean isSmartEMF = tracer.getInput2LpMapping().getAllSources().stream()
+				.anyMatch(e -> e instanceof SmartObject || e.eResource() instanceof SmartEMFResource);
+		if (isSmartEMF) { // enforce relative uri paths
+			inputResolver = new ResolveEcoreByRoot2Id(null);
+		}
+
+		TraceMap<String, String> mapping = TraceMap.normalize(tracer.getInput2LpMapping(), inputResolver,
 				ResolveIdentity2Id.INSTANCE);
 
 		return new TraceModelLink(getModelIdForInputModel(), getModelIdForLpModel(), mapping);

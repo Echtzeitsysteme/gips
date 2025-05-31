@@ -77,7 +77,7 @@ public final class GipsTransformationUtils {
 			expr.setOperator(RelationalOperator.GREATER);
 		}
 		case LESS_OR_EQUAL -> {
-			expr.setOperator(RelationalOperator.LESS_OR_EQUAL);
+			expr.setOperator(RelationalOperator.GREATER_OR_EQUAL);
 		}
 		case NOT_EQUAL -> {
 		}

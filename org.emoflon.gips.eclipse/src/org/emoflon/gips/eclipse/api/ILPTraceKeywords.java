@@ -9,6 +9,7 @@ public final class ILPTraceKeywords {
 
 	public static final String TYPE_VALUE_DELIMITER = "::";
 	public static final String TYPE_CONSTRAINT = "constraint";
+	@Deprecated
 	public static final String TYPE_MAPPING = "mapping";
 	public static final String TYPE_CONSTRAINT_VAR = "constraint-var";
 	public static final String TYPE_FUNCTION = "function";

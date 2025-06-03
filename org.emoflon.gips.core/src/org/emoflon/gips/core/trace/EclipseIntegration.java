@@ -19,7 +19,6 @@ import org.emoflon.gips.eclipse.trace.TraceModelLink;
 import org.emoflon.gips.eclipse.trace.resolver.ResolveEcore2Id;
 import org.emoflon.gips.eclipse.trace.resolver.ResolveElement2Id;
 import org.emoflon.gips.eclipse.trace.resolver.ResolveIdentity2Id;
-import org.emoflon.smartemf.persistence.SmartEMFResource;
 import org.emoflon.smartemf.runtime.SmartObject;
 
 public class EclipseIntegration {
@@ -166,12 +165,12 @@ public class EclipseIntegration {
 
 		ResolveElement2Id<EObject> inputResolver = ResolveEcore2Id.INSTANCE;
 
-		boolean isSmartEMF = tracer.getInput2LpMapping().getAllSources().stream()
-				.anyMatch(e -> e instanceof SmartObject || e.eResource() instanceof SmartEMFResource);
-		if (isSmartEMF) {
+		boolean usesSmartEMFObjects = tracer.getInput2LpMapping().getAllSources().stream()
+				.anyMatch(SmartObject.class::isInstance);
+		if (usesSmartEMFObjects) {
 			// It seems that it is not possible to create meaningful element URIs using
 			// SmartEMF.
-			System.err.println("Input model could not be traced. SmartEMF is not supported.");
+			System.err.println("Input model could not be traced. SmartEMF based metamodels are not supported.");
 			return new TraceModelLink(getModelIdForInputModel(), getModelIdForLpModel(), new TraceMap<>());
 		}
 

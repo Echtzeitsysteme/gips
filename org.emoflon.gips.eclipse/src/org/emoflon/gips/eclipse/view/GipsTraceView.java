@@ -3,6 +3,7 @@ package org.emoflon.gips.eclipse.view;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -70,7 +71,7 @@ public class GipsTraceView extends ViewPart {
 
 		this.viewer = new TreeViewer(parent);
 		this.viewer.setContentProvider(new TraceContentProvider());
-		this.viewer.setLabelProvider(new TraceLabelProvider());
+		this.viewer.setLabelProvider(new DelegatingStyledCellLabelProvider(new TraceLabelProvider()));
 //		ColumnViewerToolTipSupport.enableFor(this.viewer);
 
 		this.viewModelRootNode = new RootNode(this::refreshNode);

@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import org.emoflon.gips.eclipse.trace.resolver.ResolveElement2Id;
@@ -142,8 +143,8 @@ public class TraceMap<S, T> implements Serializable {
 	 * @param target end element of a transformation
 	 */
 	public void map(final S source, final T target) {
-		forward.computeIfAbsent(source, key -> new HashSet<T>()).add(target);
-		backward.computeIfAbsent(target, key -> new HashSet<S>()).add(source);
+		forward.computeIfAbsent(Objects.requireNonNull(source, "source"), key -> new HashSet<T>()).add(target);
+		backward.computeIfAbsent(Objects.requireNonNull(target, "target"), key -> new HashSet<S>()).add(source);
 	}
 
 	/**
@@ -191,6 +192,12 @@ public class TraceMap<S, T> implements Serializable {
 		}
 	}
 
+	/**
+	 * Returns an unmodifiable view of sources for the given target. Any changes to
+	 * this map will be reflected directly in the returned collection.
+	 * 
+	 * @return
+	 */
 	public Set<S> getSources(final T target) {
 		final Set<S> sources = backward.get(target);
 		if (sources == null) {
@@ -199,6 +206,12 @@ public class TraceMap<S, T> implements Serializable {
 		return Collections.unmodifiableSet(sources);
 	}
 
+	/**
+	 * Returns an unmodifiable view of targets for the given source. Any changes to
+	 * this map will be reflected directly in the returned collection.
+	 * 
+	 * @return
+	 */
 	public Set<T> getTargets(final S source) {
 		final Set<T> targets = forward.get(source);
 		if (targets == null) {
@@ -215,10 +228,22 @@ public class TraceMap<S, T> implements Serializable {
 		return getSources(target).isEmpty();
 	}
 
+	/**
+	 * Returns an unmodifiable view of all sources within this map. Any changes to
+	 * this map will be reflected directly in the returned collection.
+	 * 
+	 * @return
+	 */
 	public Set<S> getAllSources() {
 		return Collections.unmodifiableSet(forward.keySet());
 	}
 
+	/**
+	 * Returns an unmodifiable view of all targets within this map. Any changes to
+	 * this map will be reflected directly in the returned collection.
+	 * 
+	 * @return
+	 */
 	public Set<T> getAllTargets() {
 		return Collections.unmodifiableSet(backward.keySet());
 	}

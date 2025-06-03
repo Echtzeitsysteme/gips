@@ -1,8 +1,10 @@
 package org.emoflon.gips.eclipse.view;
 
+import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.IToolTipProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -11,9 +13,10 @@ import org.emoflon.gips.eclipse.service.ProjectContext;
 import org.emoflon.gips.eclipse.trace.TraceModelLink;
 import org.emoflon.gips.eclipse.view.model.ContextNode;
 import org.emoflon.gips.eclipse.view.model.LinkModelNode;
+import org.emoflon.gips.eclipse.view.model.ModelNode;
 import org.emoflon.gips.eclipse.view.model.ValueNode;
 
-final class TraceLabelProvider extends LabelProvider implements ILabelProvider, IToolTipProvider {
+final class TraceLabelProvider extends LabelProvider implements IStyledLabelProvider, ILabelProvider, IToolTipProvider {
 
 	private Image projectImage;
 	private Image projectClosedImage;
@@ -45,6 +48,32 @@ final class TraceLabelProvider extends LabelProvider implements ILabelProvider, 
 	}
 
 	@Override
+	public StyledString getStyledText(Object element) {
+		StyledString label;
+
+		label = switch (element) {
+		case LinkModelNode node -> {
+			yield buildLabel(node);
+		}
+		case ValueNode node -> {
+			yield buildLabel(node);
+		}
+		case ModelNode node -> {
+			yield buildLabel(node);
+		}
+		default -> {
+			yield null;
+		}
+		};
+
+		if (label != null)
+			return label;
+
+		String defaultLabel = element != null ? element.toString() : "???";
+		return new StyledString(defaultLabel);
+	}
+
+	@Override
 	public String getText(Object element) {
 		String name = element != null ? element.toString() : "???";
 
@@ -53,22 +82,56 @@ final class TraceLabelProvider extends LabelProvider implements ILabelProvider, 
 			return switch (node.getDirection()) {
 			case FORWARD -> {
 				TraceModelLink link = context.getModelLink(node.getParent().getModelId(), node.getModelId());
-				yield "Creates '" + name + " (maps " + link.getSourceNodeIds().size() + " to "
+				yield "Creates '" + name + "' (maps " + link.getSourceNodeIds().size() + " to "
 						+ link.getTargetNodeIds().size() + " nodes)";
 			}
 			case BACKWARD -> {
 				TraceModelLink link = context.getModelLink(node.getModelId(), node.getParent().getModelId());
-				yield "Created by '" + name + " (maps " + link.getSourceNodeIds().size() + " to "
+				yield "Created by '" + name + "' (maps " + link.getSourceNodeIds().size() + " to "
 						+ link.getTargetNodeIds().size() + " nodes)";
 			}
 			};
+
 		} else if (element instanceof ValueNode node) {
 			ProjectContext context = TracePlugin.getInstance().getContextManager().getContext(node.getContextId());
 			var values = context.getModelValues(node.getModelId());
 			return "Stored values: " + values.size();
+
+		} else if (element instanceof ModelNode node) {
+			return node.getModelId() + (hasIncomingOrOutgoingEdges(node) ? "" : " (empty)");
 		}
 
 		return name;
+	}
+
+	private StyledString buildLabel(LinkModelNode node) {
+
+	}
+
+	private StyledString buildLabel(ValueNode node) {
+
+	}
+
+	private StyledString buildLabel(ModelNode node) {
+
+	}
+
+	private boolean hasIncomingOrOutgoingEdges(ModelNode node) {
+		ProjectContext context = TracePlugin.getInstance().getContextManager().getContext(node.getContextId());
+
+		for (String targetId : context.getTargetModels(node.getModelId())) {
+			boolean edgeFound = !context.getModelLink(node.getModelId(), targetId).getSourceNodeIds().isEmpty();
+			if (edgeFound)
+				return true;
+		}
+
+		for (String sourceIds : context.getSourceModels(node.getModelId())) {
+			boolean edgeFound = !context.getModelLink(sourceIds, node.getModelId()).getTargetNodeIds().isEmpty();
+			if (edgeFound)
+				return true;
+		}
+
+		return false;
 	}
 
 	@Override

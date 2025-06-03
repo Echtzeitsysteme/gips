@@ -144,8 +144,8 @@ public class TraceGraph implements Serializable {
 	public void addOrReplaceTraceLink(TraceModelLink link) {
 		Objects.requireNonNull(link, "link");
 		synchronized (lock) {
-			final var srcRef = getOrCreateModelReference(link.srcModelId);
-			final var dstRef = getOrCreateModelReference(link.dstModelId);
+			final var srcRef = getOrCreateModelReference(link.getSourceModel());
+			final var dstRef = getOrCreateModelReference(link.getTargetModel());
 			final var linksByDst = links.get(srcRef.getModelId());
 			linksByDst.put(dstRef.getModelId(), link);
 			reverseLinks.get(dstRef.getModelId()).add(srcRef.getModelId());

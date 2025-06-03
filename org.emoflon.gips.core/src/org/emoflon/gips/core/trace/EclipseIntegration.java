@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.milp.SolverConfig;
 import org.emoflon.gips.eclipse.api.IRemoteEclipseService;
 import org.emoflon.gips.eclipse.trace.TraceMap;
@@ -18,6 +19,7 @@ import org.emoflon.gips.eclipse.trace.TraceModelLink;
 import org.emoflon.gips.eclipse.trace.resolver.ResolveEcore2Id;
 import org.emoflon.gips.eclipse.trace.resolver.ResolveElement2Id;
 import org.emoflon.gips.eclipse.trace.resolver.ResolveIdentity2Id;
+import org.emoflon.smartemf.runtime.SmartObject;
 
 public class EclipseIntegration {
 
@@ -212,6 +214,33 @@ public class EclipseIntegration {
 			System.err.println("Unable to send trace to IDE. Reason:\n");
 			e.printStackTrace();
 		}
+	}
+
+	private TraceModelLink buildModelLinkForIntermediate(GipsTracer tracer) {
+		TraceMap<String, String> mapping = TraceMap.normalize(tracer.getIntermediate2LpMapping(),
+				ResolveEcore2Id.INSTANCE, ResolveIdentity2Id.INSTANCE);
+		return new TraceModelLink(getModelIdForIntermediateModel(), getModelIdForLpModel(), mapping);
+	}
+
+	private TraceModelLink buildModelLinkForInput(GipsTracer tracer) {
+		if (getModelIdForInputModel() == null)
+			return null;
+
+		ResolveElement2Id<EObject> inputResolver = ResolveEcore2Id.INSTANCE;
+
+		boolean usesSmartEMFObjects = tracer.getInput2LpMapping().getAllSources().stream()
+				.anyMatch(SmartObject.class::isInstance);
+		if (usesSmartEMFObjects) {
+			// It seems that it is not possible to create meaningful element URIs using
+			// SmartEMF.
+			System.err.println("Input model could not be traced. SmartEMF based metamodels are not supported.");
+			return new TraceModelLink(getModelIdForInputModel(), getModelIdForLpModel(), new TraceMap<>());
+		}
+
+		TraceMap<String, String> mapping = TraceMap.normalize(tracer.getInput2LpMapping(), inputResolver,
+				ResolveIdentity2Id.INSTANCE);
+
+		return new TraceModelLink(getModelIdForInputModel(), getModelIdForLpModel(), mapping);
 	}
 
 	public void sendSolutionValuesToIDE() {

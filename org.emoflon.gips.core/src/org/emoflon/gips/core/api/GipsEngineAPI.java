@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.TypeIndexer;
+import org.emoflon.gips.core.gt.GipsRuleMapper;
 import org.emoflon.gips.core.milp.Solver;
 import org.emoflon.gips.core.milp.SolverConfig;
 import org.emoflon.gips.core.trace.EclipseIntegration;
@@ -407,5 +408,19 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	protected abstract GipsObjective createObjective();
 
 	protected abstract Solver createSolver();
+
+	/**
+	 * Applies all non-zero mappings across all defined (GT rule) mappers. Calling
+	 * this method is equivalent to running
+	 * `api.getXMapping().applyNonZeroMappings()` for all mappings defined on GT
+	 * rules.
+	 */
+	public void applyAllNonZeroMappings() {
+		this.mappers.values().forEach(m -> {
+			if (m instanceof GipsRuleMapper ruleMapper) {
+				ruleMapper.applyNonZeroMappings();
+			}
+		});
+	}
 
 }

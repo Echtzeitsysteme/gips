@@ -17,7 +17,6 @@ import org.emoflon.gips.eclipse.api.IRemoteEclipseService;
 import org.emoflon.gips.eclipse.trace.TraceMap;
 import org.emoflon.gips.eclipse.trace.TraceModelLink;
 import org.emoflon.gips.eclipse.trace.resolver.ResolveEcore2Id;
-import org.emoflon.gips.eclipse.trace.resolver.ResolveEcoreByRoot2Id;
 import org.emoflon.gips.eclipse.trace.resolver.ResolveElement2Id;
 import org.emoflon.gips.eclipse.trace.resolver.ResolveIdentity2Id;
 import org.emoflon.smartemf.persistence.SmartEMFResource;
@@ -169,8 +168,11 @@ public class EclipseIntegration {
 
 		boolean isSmartEMF = tracer.getInput2LpMapping().getAllSources().stream()
 				.anyMatch(e -> e instanceof SmartObject || e.eResource() instanceof SmartEMFResource);
-		if (isSmartEMF) { // enforce relative uri paths
-			inputResolver = new ResolveEcoreByRoot2Id(null);
+		if (isSmartEMF) {
+			// It seems that it is not possible to create meaningful element URIs using
+			// SmartEMF.
+			System.err.println("Input model could not be traced. SmartEMF is not supported.");
+			return new TraceModelLink(getModelIdForInputModel(), getModelIdForLpModel(), new TraceMap<>());
 		}
 
 		TraceMap<String, String> mapping = TraceMap.normalize(tracer.getInput2LpMapping(), inputResolver,

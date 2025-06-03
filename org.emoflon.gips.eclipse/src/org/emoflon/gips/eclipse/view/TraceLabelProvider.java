@@ -5,6 +5,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.IToolTipProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.jface.viewers.StyledString.Styler;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -31,6 +32,10 @@ final class TraceLabelProvider extends LabelProvider implements IStyledLabelProv
 		this.leftImage = sharedImages.getImage(ISharedImages.IMG_TOOL_BACK);
 	}
 
+	private Styler getValueStyler() {
+		return StyledString.DECORATIONS_STYLER;
+	}
+
 	@Override
 	public Image getImage(Object element) {
 		if (element instanceof ContextNode node)
@@ -52,6 +57,9 @@ final class TraceLabelProvider extends LabelProvider implements IStyledLabelProv
 		StyledString label;
 
 		label = switch (element) {
+		case ContextNode node -> {
+			yield buildLabel(node);
+		}
 		case LinkModelNode node -> {
 			yield buildLabel(node);
 		}
@@ -73,47 +81,63 @@ final class TraceLabelProvider extends LabelProvider implements IStyledLabelProv
 		return new StyledString(defaultLabel);
 	}
 
-	@Override
-	public String getText(Object element) {
-		String name = element != null ? element.toString() : "???";
+	private StyledString buildLabel(LinkModelNode node) {
+		ProjectContext context = TracePlugin.getInstance().getContextManager().getContext(node.getContextId());
+		TraceModelLink link = null;
+		StyledString label = null;
 
-		if (element instanceof LinkModelNode node) {
-			ProjectContext context = TracePlugin.getInstance().getContextManager().getContext(node.getContextId());
-			return switch (node.getDirection()) {
-			case FORWARD -> {
-				TraceModelLink link = context.getModelLink(node.getParent().getModelId(), node.getModelId());
-				yield "Creates '" + name + "' (maps " + link.getSourceNodeIds().size() + " to "
-						+ link.getTargetNodeIds().size() + " nodes)";
-			}
-			case BACKWARD -> {
-				TraceModelLink link = context.getModelLink(node.getModelId(), node.getParent().getModelId());
-				yield "Created by '" + name + "' (maps " + link.getSourceNodeIds().size() + " to "
-						+ link.getTargetNodeIds().size() + " nodes)";
-			}
-			};
+		switch (node.getDirection()) {
+		case FORWARD -> {
+			label = new StyledString("Creates ");
+			label.append(node.getModelId(), getValueStyler());
 
-		} else if (element instanceof ValueNode node) {
-			ProjectContext context = TracePlugin.getInstance().getContextManager().getContext(node.getContextId());
-			var values = context.getModelValues(node.getModelId());
-			return "Stored values: " + values.size();
+			link = context.getModelLink(node.getParent().getModelId(), node.getModelId());
+		}
+		case BACKWARD -> {
+			label = new StyledString("Created by ");
+			label.append(node.getModelId(), getValueStyler());
 
-		} else if (element instanceof ModelNode node) {
-			return node.getModelId() + (hasIncomingOrOutgoingEdges(node) ? "" : " (empty)");
+			link = context.getModelLink(node.getModelId(), node.getParent().getModelId());
+		}
 		}
 
-		return name;
-	}
+		if (link != null && label != null) {
+			StringBuilder counter = new StringBuilder();
+			counter.append(" maps ");
+			counter.append(String.valueOf(link.getSourceNodeIds().size()));
+			counter.append(" to ");
+			counter.append(String.valueOf(link.getTargetNodeIds().size()));
+			counter.append(" nodes");
+			label.append(counter.toString(), StyledString.COUNTER_STYLER);
+		}
 
-	private StyledString buildLabel(LinkModelNode node) {
-
+		return label;
 	}
 
 	private StyledString buildLabel(ValueNode node) {
+		ProjectContext context = TracePlugin.getInstance().getContextManager().getContext(node.getContextId());
+		var values = context.getModelValues(node.getModelId());
 
+		StyledString label = new StyledString("Stored values: ");
+		label.append(String.valueOf(values.size()), StyledString.COUNTER_STYLER);
+
+		return label;
 	}
 
 	private StyledString buildLabel(ModelNode node) {
+		StyledString label = new StyledString("Model: ");
+		label.append(node.getModelId(), StyledString.DECORATIONS_STYLER);
 
+		if (!hasIncomingOrOutgoingEdges(node))
+			label.append(" (empty)", StyledString.QUALIFIER_STYLER);
+
+		return label;
+	}
+
+	private StyledString buildLabel(ContextNode node) {
+		StyledString label = new StyledString("Context: ");
+		label.append(node.getContextId(), StyledString.DECORATIONS_STYLER);
+		return label;
 	}
 
 	private boolean hasIncomingOrOutgoingEdges(ModelNode node) {

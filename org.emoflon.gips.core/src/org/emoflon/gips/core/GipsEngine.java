@@ -11,7 +11,7 @@ import org.emoflon.gips.core.milp.SolverStatus;
 import org.emoflon.gips.core.milp.model.Variable;
 import org.emoflon.gips.core.trace.EclipseIntegration;
 import org.emoflon.gips.core.trace.EclipseIntegrationConfig;
-import org.emoflon.gips.core.trace.Intermediate2IlpTracer;
+import org.emoflon.gips.core.trace.GipsTracer;
 import org.emoflon.gips.core.util.Observer;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 
@@ -29,7 +29,7 @@ public abstract class GipsEngine {
 	protected Solver solver;
 
 	protected EclipseIntegration eclipseIntegration;
-	protected Intermediate2IlpTracer tracer;
+	protected GipsTracer tracer;
 
 	/**
 	 * Time tick of the initialization point in time, i.e., the point in time when
@@ -136,8 +136,8 @@ public abstract class GipsEngine {
 
 	protected void buildTraceGraphAndSendToIDE() {
 		if (getTracer().isTracingEnabled()) {
-			getTracer().buildTraceGraph(this);
-			eclipseIntegration.sendTraceToIDE(getTracer());
+			getTracer().buildIntermediate2LpTraceGraph(this);
+			eclipseIntegration.sendLpTraceToIDE(getTracer());
 		}
 	}
 
@@ -270,7 +270,7 @@ public abstract class GipsEngine {
 		this.solver = solver;
 	}
 
-	public Intermediate2IlpTracer getTracer() {
+	public GipsTracer getTracer() {
 		return tracer;
 	}
 

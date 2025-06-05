@@ -44,51 +44,50 @@ public abstract class GipsRuleMapper<GTM extends GipsGTMapping<M, R>, M extends 
 	}
 
 	public Collection<Optional<M>> applyNonZeroMappings() {
-		return getNonZeroVariableMappings().stream().map(m -> {
-			if (m.hasBoundVariables()) {
-				Map<String, Object> parameters = rule.getParameters();
-				m.getBoundVariables().forEach((name, var) -> {
-					parameters.put(internalVarToParamName.get(name), var.getValue());
-				});
-			}
-			return m;
-		}).map(m -> rule.apply(m.match)).collect(Collectors.toSet());
+		return applyMappings(getNonZeroVariableMappings(), m -> rule.apply(m.match));
 	}
 
 	public Collection<Optional<M>> applyMappings(Function<Integer, Boolean> predicate) {
-		return getMappings(predicate).stream().map(m -> {
-			if (m.hasBoundVariables()) {
-				Map<String, Object> parameters = rule.getParameters();
-				m.getBoundVariables().forEach((name, var) -> {
-					parameters.put(internalVarToParamName.get(name), var.getValue());
-				});
-			}
-			return m;
-		}).map(m -> rule.apply(m.match)).collect(Collectors.toSet());
+		return applyMappings(getMappings(predicate), m -> rule.apply(m.match));
 	}
 
 	public Collection<Optional<M>> applyNonZeroMappings(final boolean doUpdate) {
-		return getNonZeroVariableMappings().stream().map(m -> {
-			if (m.hasBoundVariables()) {
-				final Map<String, Object> parameters = rule.getParameters();
-				m.getBoundVariables().forEach((name, var) -> {
-					parameters.put(internalVarToParamName.get(name), var.getValue());
-				});
-			}
-			return m;
-		}).map(m -> rule.apply(m.match, doUpdate)).collect(Collectors.toSet());
+		return applyMappings(getNonZeroVariableMappings(), m -> rule.apply(m.match, doUpdate));
 	}
 
 	public Collection<Optional<M>> applyMappings(final Function<Integer, Boolean> predicate, final boolean doUpdate) {
-		return getMappings(predicate).stream().map(m -> {
-			if (m.hasBoundVariables()) {
-				final Map<String, Object> parameters = rule.getParameters();
-				m.getBoundVariables().forEach((name, var) -> {
-					parameters.put(internalVarToParamName.get(name), var.getValue());
-				});
-			}
-			return m;
-		}).map(m -> rule.apply(m.match, doUpdate)).collect(Collectors.toSet());
+		return applyMappings(getMappings(predicate), m -> rule.apply(m.match, doUpdate));
+	}
+
+	private Collection<Optional<M>> applyMappings(Collection<GTM> selectedMappings,
+			Function<GTM, Optional<M>> ruleApplication) {
+
+		if (engine.getTracer().isTracingEnabled())
+			ruleApplication = wrapRuleApplicationForTracing(ruleApplication);
+
+		return selectedMappings.stream() //
+				.map(this::updateRuleParametersForMapping) //
+				.map(ruleApplication) //
+				.collect(Collectors.toSet());
+	}
+
+	private GTM updateRuleParametersForMapping(GTM mapping) {
+		if (mapping.hasBoundVariables()) {
+			final Map<String, Object> parameters = rule.getParameters();
+			mapping.getBoundVariables().forEach((name, var) -> {
+				parameters.put(internalVarToParamName.get(name), var.getValue());
+			});
+		}
+		return mapping;
+	}
+
+	private Function<GTM, Optional<M>> wrapRuleApplicationForTracing(Function<GTM, Optional<M>> ruleApplication) {
+		return mapping -> {
+			Optional<M> matchAfterRule = ruleApplication.apply(mapping);
+			if (matchAfterRule.isPresent())
+				engine.getTracer().mapLpVariable2Output(mapping.getName(), matchAfterRule.get().toIMatch());
+			return matchAfterRule;
+		};
 	}
 
 	protected abstract GTM convertMatch(final String ilpVariable, final M match);

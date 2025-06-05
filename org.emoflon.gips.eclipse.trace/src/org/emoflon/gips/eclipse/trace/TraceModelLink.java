@@ -13,9 +13,9 @@ import java.util.Set;
 public class TraceModelLink implements Serializable {
 
 	private static final long serialVersionUID = 4324514417881650135L;
-	public final String srcModelId;
-	public final String dstModelId;
-	public final TraceMap<String, String> mappings;
+	private final String srcModelId;
+	private final String dstModelId;
+	private final TraceMap<String, String> mappings;
 
 	public TraceModelLink(String srcModelId, String dstModelId, TraceMap<String, String> mappings) {
 		this.srcModelId = Objects.requireNonNull(srcModelId, "srcModelId");
@@ -31,10 +31,26 @@ public class TraceModelLink implements Serializable {
 		return dstModelId;
 	}
 
+	public TraceMap<String, String> getMappings() {
+		return mappings;
+	}
+
+	/**
+	 * Returns an unmodifiable view of all sources within this link. Any changes to
+	 * this link will be reflected directly in the returned collection.
+	 * 
+	 * @return
+	 */
 	public Set<String> getSourceNodeIds() {
 		return mappings.getAllSources();
 	}
 
+	/**
+	 * Returns an unmodifiable view of all targets within this link. Any changes to
+	 * this map link be reflected directly in the returned collection.
+	 * 
+	 * @return
+	 */
 	public Set<String> getTargetNodeIds() {
 		return mappings.getAllTargets();
 	}

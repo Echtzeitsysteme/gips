@@ -10,14 +10,12 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.StyledString.Styler;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider;
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode;
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode;
 import org.eclipse.xtext.ui.label.StylerFactory;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
-import org.emoflon.gips.gipsl.ui.labeling.GipslLabelProvider;
 
 import com.google.inject.Inject;
 
@@ -34,10 +32,6 @@ public class GipslOutlineTreeProvider extends DefaultOutlineTreeProvider {
 
 	private Styler getValueStyler() {
 		return StyledString.DECORATIONS_STYLER;
-	}
-
-	private GipslLabelProvider getGipsLabelProvider() {
-		return (GipslLabelProvider) this.labelProvider;
 	}
 
 	private EStructuralFeatureNode createEAttributeNode(IOutlineNode parentNode, EObject modelElement,
@@ -67,7 +61,8 @@ public class GipslOutlineTreeProvider extends DefaultOutlineTreeProvider {
 			styledText.append(ss);
 		}
 
-		return createEStructuralFeatureNode(parentNode, modelElement, eAttribute, (Image) null, styledText, isLeaf);
+		return createEStructuralFeatureNode(parentNode, modelElement, eAttribute, _image(eAttribute), styledText,
+				isLeaf);
 	}
 
 	private EStructuralFeatureNode createEAttributeNode(IOutlineNode parentNode, EObject modelElement,
@@ -80,13 +75,7 @@ public class GipslOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return node;
 	}
 
-	// default fallback
-	@Override
-	protected void _createChildren(IOutlineNode parentNode, EObject modelElement) {
-		createChildren(parentNode, modelElement, null);
-	}
-
-	protected void createChildren(IOutlineNode parentNode, EObject modelElement, Set<EAttribute> excludedAttributes) {
+	private void createChildren(IOutlineNode parentNode, EObject modelElement, Set<EAttribute> excludedAttributes) {
 		for (var feature : modelElement.eClass().getEAllStructuralFeatures()) {
 			if (!(feature instanceof EAttribute eAttribute))
 				continue;
@@ -101,6 +90,12 @@ public class GipslOutlineTreeProvider extends DefaultOutlineTreeProvider {
 
 	// default fallback
 	@Override
+	protected void _createChildren(IOutlineNode parentNode, EObject modelElement) {
+		createChildren(parentNode, modelElement, null);
+	}
+
+	// default fallback
+	@Override
 	protected boolean _isLeaf(EObject modelElement) {
 		for (var feature : modelElement.eClass().getEAllStructuralFeatures()) {
 			if (modelElement.eIsSet(feature)) {
@@ -110,7 +105,6 @@ public class GipslOutlineTreeProvider extends DefaultOutlineTreeProvider {
 
 		if (modelElement.eContents().isEmpty())
 			return true;
-
 		return true;
 	}
 
@@ -122,74 +116,109 @@ public class GipslOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		}
 	}
 
-	// handling: package
-	protected boolean _isLeaf(org.emoflon.gips.gipsl.gipsl.Package modelElement) {
+	// subtree handler
+
+	protected boolean _isLeaf(org.emoflon.ibex.gt.editor.gT.EditorCondition modelElement) {
+		return modelElement.getConditions().isEmpty();
+	}
+
+	protected void _createChildren(IOutlineNode parentNode,
+			org.emoflon.ibex.gt.editor.gT.EditorCondition modelElement) {
+
+		for (org.emoflon.ibex.gt.editor.gT.EditorSimpleCondition child : modelElement.getConditions()) {
+			switch (child) {
+			case org.emoflon.ibex.gt.editor.gT.EditorApplicationCondition appCondition:
+				createNode(parentNode, appCondition.getPattern());
+				break;
+			case org.emoflon.ibex.gt.editor.gT.EditorConditionReference appCondition:
+				createNode(parentNode, appCondition.getCondition());
+				break;
+			default:
+				createNode(parentNode, child);
+				break;
+			}
+		}
+	}
+
+	protected boolean _isLeaf(org.emoflon.ibex.gt.editor.gT.EditorPattern modelElement) {
 		return true;
 	}
 
-	protected Object _text(org.emoflon.gips.gipsl.gipsl.Package modelElement) {
-		StyledString styledText = new StyledString();
-		styledText.append("Package");
-		styledText.append(" : " + TextFormatHelper.removeQuotationMarksAtStartAndEnd(modelElement.getName()),
-				getValueStyler());
-		return styledText;
-	}
-
-	// handling: imports
 	protected boolean _isLeaf(org.emoflon.ibex.gt.editor.gT.EditorImport modelElement) {
 		return true;
 	}
 
-	protected Object _text(org.emoflon.ibex.gt.editor.gT.EditorImport modelElement) {
-		StyledString styledText = new StyledString();
-		styledText.append("Import");
-		styledText.append(" : " + TextFormatHelper.removeQuotationMarksAtStartAndEnd(modelElement.getName()),
-				getValueStyler());
-		return styledText;
+	protected boolean _isLeaf(org.emoflon.gips.gipsl.gipsl.Package modelElement) {
+		return true;
 	}
 
-	// handling: config
-	protected Object _text(org.emoflon.gips.gipsl.gipsl.GipsConfig modelElement) {
-		return "Config";
+	protected boolean _isLeaf(org.emoflon.gips.gipsl.gipsl.ImportedPattern modelElement) {
+		return modelElement.getPattern() == null;
+	}
+
+	protected void _createChildren(IOutlineNode parentNode, org.emoflon.gips.gipsl.gipsl.ImportedPattern modelElement) {
+		createNode(parentNode, modelElement.getPattern());
+		createEAttributeNode(parentNode, modelElement, GipslPackage.Literals.IMPORTED_PATTERN__FILE, null, true, null);
+	}
+
+	protected boolean _isLeaf(org.emoflon.gips.gipsl.gipsl.GipsObjective modelElement) {
+		return true;
+	}
+
+	protected boolean _isLeaf(org.emoflon.gips.gipsl.gipsl.GipsLinearFunction modelElement) {
+		return true;
+	}
+
+	protected boolean _isLeaf(org.emoflon.gips.gipsl.gipsl.GipsConstraint modelElement) {
+		return modelElement.getContext() == null && modelElement.getConstants().isEmpty();
+	}
+
+	protected void _createChildren(IOutlineNode parentNode, org.emoflon.gips.gipsl.gipsl.GipsConstraint modelElement) {
+		createNode(parentNode, modelElement.getContext());
+		for (var child : modelElement.getConstants())
+			createNode(parentNode, child);
 	}
 
 	protected void _createChildren(IOutlineNode parentNode, org.emoflon.gips.gipsl.gipsl.GipsConfig modelElement) {
 
 		Set<EAttribute> handledFeatures = new HashSet<>();
 
-		EStructuralFeatureNode solverAttribute = createEAttributeNode(parentNode, modelElement,
-				GipslPackage.Literals.GIPS_CONFIG__SOLVER, null, false, handledFeatures);
-		if (solverAttribute != null) {
-			createEAttributeNode(solverAttribute, modelElement, GipslPackage.Literals.GIPS_CONFIG__HOME, null, true,
-					handledFeatures);
-			createEAttributeNode(solverAttribute, modelElement, GipslPackage.Literals.GIPS_CONFIG__LICENSE, null, true,
-					handledFeatures);
-		}
-
-		EStructuralFeatureNode launchConfig = createEAttributeNode(parentNode, modelElement,
-				GipslPackage.Literals.GIPS_CONFIG__ENABLE_LAUNCH_CONFIG, "launch config", false, handledFeatures);
-		if (launchConfig != null) {
-			createEAttributeNode(launchConfig, modelElement, GipslPackage.Literals.GIPS_CONFIG__MAIN_LOC, "main", true,
-					handledFeatures);
-		}
+//		EStructuralFeatureNode solverAttribute = createEAttributeNode(parentNode, modelElement,
+//				GipslPackage.Literals.GIPS_CONFIG__SOLVER, null, false, handledFeatures);
+//		if (solverAttribute != null) {
+//			createEAttributeNode(solverAttribute, modelElement, GipslPackage.Literals.GIPS_CONFIG__HOME, null, true,
+//					handledFeatures);
+//			createEAttributeNode(solverAttribute, modelElement, GipslPackage.Literals.GIPS_CONFIG__LICENSE, null, true,
+//					handledFeatures);
+//		}
+//
+//		EStructuralFeatureNode launchConfig = createEAttributeNode(parentNode, modelElement,
+//				GipslPackage.Literals.GIPS_CONFIG__ENABLE_LAUNCH_CONFIG, "launch config", false, handledFeatures);
+//		if (launchConfig != null) {
+//			createEAttributeNode(launchConfig, modelElement, GipslPackage.Literals.GIPS_CONFIG__MAIN_LOC, "main", true,
+//					handledFeatures);
+//		}
 
 		createChildren(parentNode, modelElement, handledFeatures);
 	}
 
-	// handling: constraints
-	protected Object _text(org.emoflon.gips.gipsl.gipsl.GipsConstraint modelElement) {
-		return "Constraint";
+	protected boolean _isLeaf(org.emoflon.gips.gipsl.gipsl.GipsMapping modelElement) {
+		return modelElement.getPattern() == null && modelElement.getVariables().isEmpty();
 	}
 
-	// handling: pattern
-	protected Object _text(org.emoflon.ibex.gt.editor.gT.EditorPattern modelElement) {
-		String type = switch (modelElement.getType()) {
-		case PATTERN -> "Pattern";
-		case RULE -> "Rule";
-		default -> modelElement.getType().toString();
-		};
+	protected void _createChildren(IOutlineNode parentNode, org.emoflon.gips.gipsl.gipsl.GipsMapping modelElement) {
+		createNode(parentNode, modelElement.getPattern());
+		for (org.emoflon.gips.gipsl.gipsl.GipsMappingVariable child : modelElement.getVariables())
+			createNode(parentNode, child);
+	}
 
-		return type;
+	protected boolean _isLeaf(org.emoflon.gips.gipsl.gipsl.GipsMappingVariable modelElement) {
+		return !modelElement.isBound();
+	}
+
+	protected void _createChildren(IOutlineNode parentNode,
+			org.emoflon.gips.gipsl.gipsl.GipsMappingVariable modelElement) {
+		createNode(parentNode, modelElement.getParameter());
 	}
 
 }

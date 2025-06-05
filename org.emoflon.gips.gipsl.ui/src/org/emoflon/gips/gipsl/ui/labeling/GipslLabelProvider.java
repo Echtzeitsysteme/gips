@@ -3,8 +3,15 @@
  */
 package org.emoflon.gips.gipsl.ui.labeling;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceLocator;
+import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.jface.viewers.StyledString.Styler;
 import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider;
+import org.emoflon.gips.gipsl.ui.outline.TextFormatHelper;
 
 import com.google.inject.Inject;
 
@@ -16,9 +23,223 @@ import com.google.inject.Inject;
  */
 public class GipslLabelProvider extends DefaultEObjectLabelProvider {
 
+	private final ImageDescriptor imagePackage;
+	private final ImageDescriptor imagePattern;
+	private final ImageDescriptor imageCondition;
+	private final ImageDescriptor imageConfig;
+	private final ImageDescriptor imageImport;
+	private final ImageDescriptor imageConstraint;
+	private final ImageDescriptor imageMapping;
+	private final ImageDescriptor imageObjective;
+	private final ImageDescriptor imageVariable;
+
 	@Inject
 	public GipslLabelProvider(AdapterFactoryLabelProvider delegate) {
 		super(delegate);
+
+		imagePackage = createImageDescriptor("org.eclipse.jdt.ui", "icons/full/obj16/package_obj.png");
+		imageImport = createImageDescriptor("org.eclipse.jdt.ui", "icons/full/obj16/library_obj.png");
+		imagePattern = createImageDescriptor("org.eclipse.jdt.ui", "icons/full/eview16/class_hi.png");
+		imageCondition = createImageDescriptor("org.eclipse.jdt.ui", "icons/full/obj16/search_decl_obj.png");
+		imageConfig = createImageDescriptor("org.eclipse.jdt.ui", "icons/full/obj16/settings_obj.png");
+		imageConstraint = createImageDescriptor("org.eclipse.jdt.ui", "icons/full/obj16/methpri_obj.png");
+		imageMapping = createImageDescriptor("org.eclipse.jdt.ui", "icons/full/obj16/methpro_obj.png");
+		imageObjective = createImageDescriptor("org.eclipse.jdt.ui", "icons/full/obj16/methpub_obj.png");
+		imageVariable = createImageDescriptor("org.eclipse.jdt.ui", "icons/full/obj16/methdef_obj.png");
+	}
+
+	private ImageDescriptor createImageDescriptor(String bundle, String path) {
+		return ResourceLocator.imageDescriptorFromBundle(bundle, path).orElse(null);
+	}
+
+	private Styler getValueStyler() {
+		return StyledString.DECORATIONS_STYLER;
+	}
+
+	private Styler getCountStyler() {
+		return StyledString.COUNTER_STYLER;
+	}
+
+	private Styler getInfoStyler() {
+		return StyledString.QUALIFIER_STYLER;
+	}
+
+	protected Object text(org.emoflon.ibex.gt.editor.gT.EditorImport modelElement) {
+		StyledString styledText = new StyledString();
+		styledText.append("Import");
+		styledText.append(" : " + TextFormatHelper.removeQuotationMarksAtStartAndEnd(modelElement.getName()),
+				getValueStyler());
+		return styledText;
+	}
+
+	protected Object image(org.emoflon.ibex.gt.editor.gT.EditorImport modelElement) {
+		return imageImport;
+	}
+
+	protected Object text(org.emoflon.gips.gipsl.gipsl.ImportedPattern modelElement) {
+		StyledString styledText = new StyledString();
+		styledText.append("Import");
+		if (modelElement.getPattern() != null)
+			styledText.append(" : " + modelElement.getPattern().getName(), getValueStyler());
+		styledText.append(" [" + TextFormatHelper.removeQuotationMarksAtStartAndEnd(modelElement.getFile()) + "]",
+				getInfoStyler());
+
+		return styledText;
+	}
+
+	protected Object image(org.emoflon.gips.gipsl.gipsl.ImportedPattern modelElement) {
+		return imageImport;
+	}
+
+	protected Object text(org.emoflon.gips.gipsl.gipsl.GipsConfig modelElement) {
+		return new StyledString("Config");
+	}
+
+	protected Object image(org.emoflon.gips.gipsl.gipsl.GipsConfig modelElement) {
+		return imageConfig;
+	}
+
+	protected Object text(org.emoflon.gips.gipsl.gipsl.Package modelElement) {
+		StyledString styledText = new StyledString();
+		styledText.append("Package");
+		styledText.append(" : " + TextFormatHelper.removeQuotationMarksAtStartAndEnd(modelElement.getName()),
+				getValueStyler());
+		return styledText;
+	}
+
+	protected Object image(org.emoflon.gips.gipsl.gipsl.Package modelElement) {
+//		DecorationOverlayIcon x = new DecorationOverlayIcon(imagePackage, imageCondition, IDecoration.BOTTOM_LEFT);
+		return imagePackage;
+	}
+
+	protected Object text(org.emoflon.gips.gipsl.gipsl.GipsConstraint modelElement) {
+		StyledString styledText = new StyledString("Constraint");
+		EObject context = modelElement.getContext();
+		if (context != null) {
+			EStructuralFeature labelFeature = getLabelFeature(context.eClass());
+			if (labelFeature != null) {
+				styledText.append(" with " + context.eGet(labelFeature, true), getValueStyler());
+			}
+		}
+
+		return styledText;
+	}
+
+	protected Object image(org.emoflon.gips.gipsl.gipsl.GipsConstraint modelElement) {
+		return imageConstraint;
+	}
+
+	protected Object text(org.emoflon.ibex.gt.editor.gT.EditorPattern modelElement) {
+		StyledString styledText = new StyledString();
+		switch (modelElement.getType()) {
+		case PATTERN:
+			styledText.append("Pattern");
+			break;
+		case RULE:
+			styledText.append("Rule");
+			break;
+		default:
+			styledText.append(modelElement.getType().toString());
+
+		}
+
+		styledText.append(" : " + modelElement.getName(), getValueStyler());
+
+		return styledText;
+	}
+
+	protected Object image(org.emoflon.ibex.gt.editor.gT.EditorPattern modelElement) {
+		return imagePattern;
+	}
+
+	protected Object text(org.emoflon.ibex.gt.editor.gT.EditorCondition modelElement) {
+		StyledString styledText = new StyledString("Condition");
+		styledText.append(" : " + modelElement.getName(), getValueStyler());
+		return styledText;
+	}
+
+	protected Object image(org.emoflon.ibex.gt.editor.gT.EditorCondition modelElement) {
+		return imageCondition;
+	}
+
+	protected Object text(org.emoflon.ibex.gt.editor.gT.EditorSimpleCondition modelElement) {
+		return new StyledString("linked to ->");
+	}
+
+	protected Object text(org.emoflon.ibex.gt.editor.gT.EditorApplicationCondition modelElement) {
+		StyledString styledText = new StyledString("Condition");
+		if (modelElement.getPattern() != null)
+			styledText.append(" : " + modelElement.getPattern().getName(), getValueStyler());
+		return styledText;
+	}
+
+	protected Object text(org.emoflon.ibex.gt.editor.gT.EditorConditionReference modelElement) {
+		StyledString styledText = new StyledString("Condition");
+		if (modelElement.getCondition() != null)
+			styledText.append(" : " + modelElement.getCondition().getName(), getValueStyler());
+		return styledText;
+	}
+
+	protected Object image(org.emoflon.ibex.gt.editor.gT.EditorSimpleCondition modelElement) {
+		return imageCondition;
+	}
+
+	protected Object text(org.emoflon.gips.gipsl.gipsl.GipsMapping modelElement) {
+		StyledString styledText = new StyledString("Mapping");
+		styledText.append(" : " + modelElement.getName(), getValueStyler());
+		return styledText;
+	}
+
+	protected Object image(org.emoflon.gips.gipsl.gipsl.GipsMapping modelElement) {
+		return imageMapping;
+	}
+
+	protected Object text(org.emoflon.gips.gipsl.gipsl.GipsLinearFunction modelElement) {
+		StyledString styledText = new StyledString("Function");
+		styledText.append(" : " + modelElement.getName(), getValueStyler());
+		return styledText;
+	}
+
+	protected Object image(org.emoflon.gips.gipsl.gipsl.GipsLinearFunction modelElement) {
+		return imageObjective;
+	}
+
+	protected Object text(org.emoflon.gips.gipsl.gipsl.GipsObjective modelElement) {
+		StyledString styledText = new StyledString("Objective");
+		if (modelElement.getGoal() != null)
+			styledText.append(" : " + modelElement.getGoal().getName(), getValueStyler());
+		return styledText;
+	}
+
+	protected Object image(org.emoflon.gips.gipsl.gipsl.GipsObjective modelElement) {
+		return imageObjective;
+	}
+
+	protected Object text(org.emoflon.gips.gipsl.gipsl.GipsMappingVariable modelElement) {
+		StyledString styledText = new StyledString();
+		styledText.append(modelElement.getName());
+
+		if (modelElement.getType() != null)
+			styledText.append(" : " + modelElement.getType().getName(), getValueStyler());
+
+		if (modelElement.isBound())
+			styledText.append(" (bound)", getInfoStyler());
+
+		return styledText;
+	}
+
+	protected Object image(org.emoflon.gips.gipsl.gipsl.GipsMappingVariable modelElement) {
+		return imageVariable;
+	}
+
+	protected Object text(org.emoflon.gips.gipsl.gipsl.GipsConstant modelElement) {
+		StyledString styledText = new StyledString();
+		styledText.append(modelElement.getName());
+		return styledText;
+	}
+
+	protected Object image(org.emoflon.gips.gipsl.gipsl.GipsConstant modelElement) {
+		return imageVariable;
 	}
 
 	// Labels and icons can be computed like this:

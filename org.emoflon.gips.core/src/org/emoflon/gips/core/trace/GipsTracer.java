@@ -21,14 +21,16 @@ public class GipsTracer {
 	private EclipseIntegration integration;
 	private final TraceMap<EObject, String> intermediateMappings = new TraceMap<>();
 	private final TraceMap<EObject, String> inputMappings = new TraceMap<>();
+	private final TraceMap<String, EObject> outputMappings = new TraceMap<>();
 
 	public GipsTracer(EclipseIntegration integration) {
 		this.integration = Objects.requireNonNull(integration, "integration");
 	}
 
 	public void resetTrace() {
-		intermediateMappings.clear();
-		inputMappings.clear();
+		resetIntermediate2LpMapping();
+		resetInput2LpMapping();
+		resetLp2OutputMapping();
 	}
 
 	public TraceMap<EObject, String> getIntermediate2LpMapping() {
@@ -39,15 +41,42 @@ public class GipsTracer {
 		return inputMappings;
 	}
 
-	protected void mapInput2LpVariable(IMatch inputMatch, String dst) {
+	public TraceMap<String, EObject> getLp2OutputMapping() {
+		return outputMappings;
+	}
+
+	public void resetIntermediate2LpMapping() {
+		intermediateMappings.clear();
+	}
+
+	public void resetInput2LpMapping() {
+		inputMappings.clear();
+	}
+
+	public void resetLp2OutputMapping() {
+		outputMappings.clear();
+	}
+
+	private void mapInput2LpVariable(IMatch inputMatch, String dst) {
 		for (Object matchedObject : inputMatch.getObjects()) {
 			if (matchedObject instanceof EObject eObject)
 				inputMappings.map(eObject, dst);
 		}
 	}
 
-	public void mapIntermediate2Lp(final EObject src, final String dst) {
+	private void mapIntermediate2Lp(final EObject src, final String dst) {
 		intermediateMappings.map(src, dst);
+	}
+
+	public void mapLpVariable2Output(String mapName, IMatch outputMatch) {
+		// method is called from the outside, it is necessary to convert mapName into a
+		// valid type-value pair for our graph.
+		String variableId = ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_VARIABLE, mapName);
+
+		for (Object matchedObject : outputMatch.getObjects()) {
+			if (matchedObject instanceof EObject eObject)
+				outputMappings.map(variableId, eObject);
+		}
 	}
 
 	/**
@@ -69,6 +98,13 @@ public class GipsTracer {
 	 */
 	public String getLpModelId() {
 		return integration.getModelIdForLpModel();
+	}
+
+	/**
+	 * @see EclipseIntegration#getModelIdForOutputModel()
+	 */
+	public String getOutputModelId() {
+		return integration.getModelIdForOutputModel();
 	}
 
 	/**

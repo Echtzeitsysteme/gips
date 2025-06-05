@@ -34,10 +34,6 @@ public class CplexLpValidator extends AbstractCplexLpValidator {
 	@Inject
 	private LinkingHelper linkHelper;
 
-	public CplexLpValidator() {
-		System.out.println("STARTED VAL");
-	}
-
 	@Check
 	public void checkVariableDoesNotStartWithE(Variable variable) {
 		String name = variable.getName();

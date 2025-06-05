@@ -4,9 +4,11 @@ import java.nio.file.Path;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -17,7 +19,6 @@ import org.emoflon.gips.eclipse.api.IRemoteEclipseService;
 import org.emoflon.gips.eclipse.trace.TraceMap;
 import org.emoflon.gips.eclipse.trace.TraceModelLink;
 import org.emoflon.gips.eclipse.trace.resolver.ResolveEcore2Id;
-import org.emoflon.gips.eclipse.trace.resolver.ResolveElement2Id;
 import org.emoflon.gips.eclipse.trace.resolver.ResolveIdentity2Id;
 import org.emoflon.smartemf.runtime.SmartObject;
 
@@ -29,6 +30,7 @@ public class EclipseIntegration {
 	private String modelIdIntermediate;
 	private String modelIdLp;
 	private String modelIdInput;
+	private String modelIdOutput;
 
 	private final Map<String, String> storedILPValues = new HashMap<>();
 
@@ -61,9 +63,35 @@ public class EclipseIntegration {
 		setLpModelId(modelId);
 	}
 
+	/**
+	 * Computes the model id for the input model.
+	 * 
+	 * @param modelUri to the input xmi file
+	 */
 	public void computeInputModelId(URI modelUri) {
 		String modelId = computeModelIdFromURI(modelUri);
 		setInputModelId(modelId);
+	}
+
+	/**
+	 * Computes the model id for the output model.
+	 * 
+	 * @param path to the output xmi file
+	 */
+	public void computeOutputModelId(String path) {
+		Path modelPath = Path.of(path);
+		String modelId = computeModelIdFromPath(modelPath);
+		setOutputModelId(modelId);
+	}
+
+	/**
+	 * Computes the model id for the output model.
+	 * 
+	 * @param modelUri to the output xmi file
+	 */
+	public void computeOutputModelId(URI modelUri) {
+		String modelId = computeModelIdFromURI(modelUri);
+		setOutputModelId(modelId);
 	}
 
 	/**
@@ -93,6 +121,15 @@ public class EclipseIntegration {
 		modelIdInput = modelId;
 	}
 
+	/**
+	 * Sets the output model id.
+	 * 
+	 * @param modelId
+	 */
+	public void setOutputModelId(String modelId) {
+		modelIdOutput = modelId;
+	}
+
 	private String computeModelIdFromURI(URI modelUri) {
 		Path modelPath;
 		if (modelUri.isPlatform())
@@ -111,7 +148,7 @@ public class EclipseIntegration {
 		if (!modelPath.isAbsolute())
 			modelPath = root.resolve(modelPath).normalize();
 
-		Path relativePath = root.relativize(modelPath); // we use the root (workspae) relative path as id
+		Path relativePath = root.relativize(modelPath); // we use the root (workspace) relative path as id
 		String id = StreamSupport.stream(relativePath.spliterator(), false).map(Path::toString)
 				.collect(Collectors.joining("/")); // use '/' like IPath.toString
 		return id;
@@ -127,7 +164,7 @@ public class EclipseIntegration {
 		return false;
 	}
 
-	public void sendTraceToIDE(GipsTracer tracer) {
+	public void sendLpTraceToIDE(GipsTracer tracer) {
 		if (!config.isTracingEnabled())
 			return;
 
@@ -136,48 +173,81 @@ public class EclipseIntegration {
 
 		computeLpModelId(solverConfig.getLpPath());
 
-		TraceModelLink linkIntermediate = buildModelLinkForIntermediate(tracer);
-		TraceModelLink linkInput = buildModelLinkForInput(tracer);
+		TraceModelLink linkIntermediate = buildModelLink(getModelIdForIntermediateModel(), getModelIdForLpModel(),
+				tracer.getIntermediate2LpMapping(),
+				mapping -> TraceMap.normalize(mapping, ResolveEcore2Id.INSTANCE, ResolveIdentity2Id.INSTANCE));
+
+		// It seems that it is not possible to create meaningful element URIs using
+		// SmartEMF.
+		TraceModelLink linkInput = buildModelLink(getModelIdForInputModel(), getModelIdForLpModel(),
+				tracer.getInput2LpMapping(), mapping -> {
+					if (basedOnSmartEMF(mapping.getAllSources())) {
+						System.err.println(
+								"Input model could not be traced. SmartEMF based metamodels are not supported.");
+						return new TraceMap<String, String>();
+					}
+					return TraceMap.normalize(mapping, ResolveEcore2Id.INSTANCE, ResolveIdentity2Id.INSTANCE);
+				});
+
+		updateTraceModel(linkIntermediate, linkInput);
+	}
+
+	public void sendOutputTraceToIde(GipsTracer tracer) {
+		if (!config.isTracingEnabled())
+			return;
+
+		if (isLpPathNotValid())
+			return;
+
+		computeLpModelId(solverConfig.getLpPath());
+
+		TraceModelLink linkOutput = buildModelLink(getModelIdForLpModel(), getModelIdForOutputModel(),
+				tracer.getLp2OutputMapping(), mapping -> {
+					if (basedOnSmartEMF(mapping.getAllTargets())) {
+						System.err.println(
+								"Output model could not be traced. SmartEMF based metamodels are not supported.");
+						return new TraceMap<String, String>();
+					}
+					return TraceMap.normalize(mapping, ResolveIdentity2Id.INSTANCE, ResolveEcore2Id.INSTANCE);
+				});
+
+		updateTraceModel(linkOutput);
+	}
+
+	private void updateTraceModel(TraceModelLink... links) {
+		if (links == null || links.length == 0)
+			return;
 
 		try {
 			IRemoteEclipseService service = getRemoteService();
+			String contextId = getContextId();
 
-			if (linkIntermediate != null)
-				service.updateTraceModel(getContextId(), linkIntermediate);
+			for (TraceModelLink link : links) {
+				if (link != null)
+					service.updateTraceModel(contextId, link);
+			}
 
-			if (linkInput != null)
-				service.updateTraceModel(getContextId(), linkInput);
 		} catch (RemoteException e) {
 			System.err.println("Unable to send trace to IDE. Reason:\n");
 			e.printStackTrace();
 		}
 	}
 
-	private TraceModelLink buildModelLinkForIntermediate(GipsTracer tracer) {
-		TraceMap<String, String> mapping = TraceMap.normalize(tracer.getIntermediate2LpMapping(),
-				ResolveEcore2Id.INSTANCE, ResolveIdentity2Id.INSTANCE);
-		return new TraceModelLink(getModelIdForIntermediateModel(), getModelIdForLpModel(), mapping);
+	private boolean basedOnSmartEMF(Collection<EObject> eObjects) {
+		return eObjects != null && eObjects.stream().anyMatch(SmartObject.class::isInstance);
 	}
 
-	private TraceModelLink buildModelLinkForInput(GipsTracer tracer) {
-		if (getModelIdForInputModel() == null)
+	private <S, D> TraceModelLink buildModelLink(String srcModelId, String dstModelId, TraceMap<S, D> mapping,
+			Function<TraceMap<S, D>, TraceMap<String, String>> processor) {
+
+		if (srcModelId == null || dstModelId == null)
 			return null;
 
-		ResolveElement2Id<EObject> inputResolver = ResolveEcore2Id.INSTANCE;
+		TraceMap<String, String> processedMap = processor.apply(mapping);
+		if (processedMap == null)
+			return null;
 
-		boolean usesSmartEMFObjects = tracer.getInput2LpMapping().getAllSources().stream()
-				.anyMatch(SmartObject.class::isInstance);
-		if (usesSmartEMFObjects) {
-			// It seems that it is not possible to create meaningful element URIs using
-			// SmartEMF.
-			System.err.println("Input model could not be traced. SmartEMF based metamodels are not supported.");
-			return new TraceModelLink(getModelIdForInputModel(), getModelIdForLpModel(), new TraceMap<>());
-		}
-
-		TraceMap<String, String> mapping = TraceMap.normalize(tracer.getInput2LpMapping(), inputResolver,
-				ResolveIdentity2Id.INSTANCE);
-
-		return new TraceModelLink(getModelIdForInputModel(), getModelIdForLpModel(), mapping);
+		return new TraceModelLink(srcModelId, dstModelId, processedMap);
 	}
 
 	public void sendSolutionValuesToIDE() {
@@ -227,6 +297,12 @@ public class EclipseIntegration {
 		}
 	}
 
+	/**
+	 * Returns the intermediate model id. This model id may be available after the
+	 * initialization stage.
+	 * 
+	 * @return intermediate model id or null, if not available
+	 */
 	public String getModelIdForIntermediateModel() {
 		return modelIdIntermediate;
 	}
@@ -242,13 +318,23 @@ public class EclipseIntegration {
 	}
 
 	/**
-	 * Returns the input model id. This model id may be available after the ilp
-	 * build stage.
+	 * Returns the input model id. This model id may be available after the
+	 * initialization stage.
 	 * 
 	 * @return input model id or null, if not available
 	 */
 	public String getModelIdForInputModel() {
 		return modelIdInput;
+	}
+
+	/**
+	 * Returns the output model id. This model id may be available after the model
+	 * is saved
+	 * 
+	 * @return input model id or null, if not available
+	 */
+	public String getModelIdForOutputModel() {
+		return modelIdOutput;
 	}
 
 }

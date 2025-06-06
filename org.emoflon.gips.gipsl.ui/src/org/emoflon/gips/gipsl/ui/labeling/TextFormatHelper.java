@@ -10,7 +10,7 @@ public abstract class TextFormatHelper {
 			return null;
 
 		if (in.charAt(0) == '"' && in.charAt(in.length() - 1) == '"')
-			return in.substring(1, in.length() - 2);
+			return in.substring(1, in.length() - 1);
 
 		return in;
 	}

@@ -14,10 +14,7 @@ import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider;
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode;
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode;
-import org.eclipse.xtext.ui.label.StylerFactory;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
-
-import com.google.inject.Inject;
 
 /**
  * Customization of the default outline structure.
@@ -27,8 +24,8 @@ import com.google.inject.Inject;
  */
 public class GipslOutlineTreeProvider extends DefaultOutlineTreeProvider {
 
-	@Inject
-	private StylerFactory stylerFactory;
+//	@Inject
+//	private StylerFactory stylerFactory;
 
 	private Styler getValueStyler() {
 		return StyledString.DECORATIONS_STYLER;
@@ -98,9 +95,8 @@ public class GipslOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	@Override
 	protected boolean _isLeaf(EObject modelElement) {
 		for (var feature : modelElement.eClass().getEAllStructuralFeatures()) {
-			if (modelElement.eIsSet(feature)) {
+			if (modelElement.eIsSet(feature))
 				return false;
-			}
 		}
 
 		if (modelElement.eContents().isEmpty())

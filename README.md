@@ -97,6 +97,16 @@ Please refer to the [GIPS examples repository](https://github.com/Echtzeitsystem
 Please refer to the [GIPS tests repository](https://github.com/Echtzeitsysteme/gips-tests).
 
 
+## Counting GIPSL lines of code
+
+[gipsl-cloc.txt](./gipsl-cloc.txt) is a language configuration file for [cloc](https://github.com/AlDanial/cloc) which can help to count lines of code (without comments, empty lines, etc.).
+After installing cloc on your system, run the following command to count the lines of a file `Model.gipsl`:
+
+```
+$ cloc --read-lang-def=gipsl-cloc.txt Model.gipsl
+```
+
+
 ## License
 
 This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for more details.

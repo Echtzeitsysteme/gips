@@ -1,4 +1,4 @@
-package org.emoflon.gips.gipsl.ui.outline;
+package org.emoflon.gips.gipsl.ui.labeling;
 
 public abstract class TextFormatHelper {
 	private TextFormatHelper() {

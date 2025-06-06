@@ -11,7 +11,6 @@ import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.StyledString.Styler;
 import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider;
-import org.emoflon.gips.gipsl.ui.outline.TextFormatHelper;
 
 import com.google.inject.Inject;
 
@@ -242,13 +241,4 @@ public class GipslLabelProvider extends DefaultEObjectLabelProvider {
 		return imageVariable;
 	}
 
-	// Labels and icons can be computed like this:
-
-//	String text(Greeting ele) {
-//		return "A greeting to " + ele.getName();
-//	}
-//
-//	String image(Greeting ele) {
-//		return "Greeting.gif";
-//	}
 }

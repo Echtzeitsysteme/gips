@@ -3,7 +3,18 @@
  */
 package org.emoflon.gips.gipsl.ui.outline;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.jface.viewers.StyledString.Styler;
+import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider;
+import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode;
+import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode;
+import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 
 /**
  * Customization of the default outline structure.
@@ -12,21 +23,198 @@ import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider;
  * https://www.eclipse.org/Xtext/documentation/310_eclipse_support.html#outline
  */
 public class GipslOutlineTreeProvider extends DefaultOutlineTreeProvider {
-//	@Override
-//	public void createChildren(IOutlineNode parent, EObject modelElement) {
-//		try {
-//			internalCreateChildren(parent, modelElement);
-//		} catch(Exception e) {
-//			e.printStackTrace();
-//			super.createChildren(parent, modelElement);
+
+//	@Inject
+//	private StylerFactory stylerFactory;
+
+	private Styler getValueStyler() {
+		return StyledString.DECORATIONS_STYLER;
+	}
+
+	private EStructuralFeatureNode createEAttributeNode(IOutlineNode parentNode, EObject modelElement,
+			EAttribute eAttribute, String name, boolean isLeaf) {
+
+		Object value = modelElement.eGet(eAttribute);
+		if (value == null && !modelElement.eIsSet(eAttribute))
+			return null;
+
+		Object text = _text(value);
+		if (text == null) {
+			if (value == null) {
+				text = "<null>";
+			} else {
+				text = value.toString();
+			}
+		}
+
+		if (name == null)
+			name = eAttribute.getName();
+
+		StyledString styledText = new StyledString(name);
+		if (text instanceof String s) {
+			styledText.append(" : " + s, getValueStyler());
+		} else if (text instanceof StyledString ss) {
+			styledText.append(" : ", getValueStyler());
+			styledText.append(ss);
+		}
+
+		return createEStructuralFeatureNode(parentNode, modelElement, eAttribute, _image(eAttribute), styledText,
+				isLeaf);
+	}
+
+	private EStructuralFeatureNode createEAttributeNode(IOutlineNode parentNode, EObject modelElement,
+			EAttribute eAttribute, String name, boolean isLeaf, Set<EAttribute> handledFeatures) {
+
+		EStructuralFeatureNode node = createEAttributeNode(parentNode, modelElement, eAttribute, name, isLeaf);
+
+		if (handledFeatures != null)
+			handledFeatures.add(eAttribute);
+		return node;
+	}
+
+	private void createChildren(IOutlineNode parentNode, EObject modelElement, Set<EAttribute> excludedAttributes) {
+		for (var feature : modelElement.eClass().getEAllStructuralFeatures()) {
+			if (!(feature instanceof EAttribute eAttribute))
+				continue;
+
+			if (excludedAttributes != null && !excludedAttributes.contains(eAttribute))
+				createEAttributeNode(parentNode, modelElement, eAttribute, null, true, null);
+		}
+
+		for (EObject childElement : modelElement.eContents())
+			createNode(parentNode, childElement);
+	}
+
+	// default fallback
+	@Override
+	protected void _createChildren(IOutlineNode parentNode, EObject modelElement) {
+		createChildren(parentNode, modelElement, null);
+	}
+
+	// default fallback
+	@Override
+	protected boolean _isLeaf(EObject modelElement) {
+		for (var feature : modelElement.eClass().getEAllStructuralFeatures()) {
+			if (modelElement.eIsSet(feature))
+				return false;
+		}
+
+		if (modelElement.eContents().isEmpty())
+			return true;
+		return true;
+	}
+
+	// skip root element
+	protected void _createChildren(DocumentRootNode parentNode,
+			org.emoflon.gips.gipsl.gipsl.EditorGTFile modelElement) {
+		for (EObject child : modelElement.eContents()) {
+			createNode(parentNode, child);
+		}
+	}
+
+	// subtree handler
+
+	protected boolean _isLeaf(org.emoflon.ibex.gt.editor.gT.EditorCondition modelElement) {
+		return modelElement.getConditions().isEmpty();
+	}
+
+	protected void _createChildren(IOutlineNode parentNode,
+			org.emoflon.ibex.gt.editor.gT.EditorCondition modelElement) {
+
+		for (org.emoflon.ibex.gt.editor.gT.EditorSimpleCondition child : modelElement.getConditions()) {
+			switch (child) {
+			case org.emoflon.ibex.gt.editor.gT.EditorApplicationCondition appCondition:
+				createNode(parentNode, appCondition.getPattern());
+				break;
+			case org.emoflon.ibex.gt.editor.gT.EditorConditionReference appCondition:
+				createNode(parentNode, appCondition.getCondition());
+				break;
+			default:
+				createNode(parentNode, child);
+				break;
+			}
+		}
+	}
+
+	protected boolean _isLeaf(org.emoflon.ibex.gt.editor.gT.EditorPattern modelElement) {
+		return true;
+	}
+
+	protected boolean _isLeaf(org.emoflon.ibex.gt.editor.gT.EditorImport modelElement) {
+		return true;
+	}
+
+	protected boolean _isLeaf(org.emoflon.gips.gipsl.gipsl.Package modelElement) {
+		return true;
+	}
+
+	protected boolean _isLeaf(org.emoflon.gips.gipsl.gipsl.ImportedPattern modelElement) {
+		return modelElement.getPattern() == null;
+	}
+
+	protected void _createChildren(IOutlineNode parentNode, org.emoflon.gips.gipsl.gipsl.ImportedPattern modelElement) {
+		createNode(parentNode, modelElement.getPattern());
+		createEAttributeNode(parentNode, modelElement, GipslPackage.Literals.IMPORTED_PATTERN__FILE, null, true, null);
+	}
+
+	protected boolean _isLeaf(org.emoflon.gips.gipsl.gipsl.GipsObjective modelElement) {
+		return true;
+	}
+
+	protected boolean _isLeaf(org.emoflon.gips.gipsl.gipsl.GipsLinearFunction modelElement) {
+		return true;
+	}
+
+	protected boolean _isLeaf(org.emoflon.gips.gipsl.gipsl.GipsConstraint modelElement) {
+		return modelElement.getContext() == null && modelElement.getConstants().isEmpty();
+	}
+
+	protected void _createChildren(IOutlineNode parentNode, org.emoflon.gips.gipsl.gipsl.GipsConstraint modelElement) {
+		createNode(parentNode, modelElement.getContext());
+		for (var child : modelElement.getConstants())
+			createNode(parentNode, child);
+	}
+
+	protected void _createChildren(IOutlineNode parentNode, org.emoflon.gips.gipsl.gipsl.GipsConfig modelElement) {
+
+		Set<EAttribute> handledFeatures = new HashSet<>();
+
+//		EStructuralFeatureNode solverAttribute = createEAttributeNode(parentNode, modelElement,
+//				GipslPackage.Literals.GIPS_CONFIG__SOLVER, null, false, handledFeatures);
+//		if (solverAttribute != null) {
+//			createEAttributeNode(solverAttribute, modelElement, GipslPackage.Literals.GIPS_CONFIG__HOME, null, true,
+//					handledFeatures);
+//			createEAttributeNode(solverAttribute, modelElement, GipslPackage.Literals.GIPS_CONFIG__LICENSE, null, true,
+//					handledFeatures);
 //		}
-//	}
 //
-//	public void internalCreateChildren(IOutlineNode parent, EObject modelElement) throws Exception{
-//		if(modelElement instanceof GipsConstraint constr) {
-//			createEObjectNode(parent, constr, null, "Constraint", false);
-//		} else {
-//			super.createChildren(parent, modelElement);
+//		EStructuralFeatureNode launchConfig = createEAttributeNode(parentNode, modelElement,
+//				GipslPackage.Literals.GIPS_CONFIG__ENABLE_LAUNCH_CONFIG, "launch config", false, handledFeatures);
+//		if (launchConfig != null) {
+//			createEAttributeNode(launchConfig, modelElement, GipslPackage.Literals.GIPS_CONFIG__MAIN_LOC, "main", true,
+//					handledFeatures);
 //		}
-//	}
+
+		createChildren(parentNode, modelElement, handledFeatures);
+	}
+
+	protected boolean _isLeaf(org.emoflon.gips.gipsl.gipsl.GipsMapping modelElement) {
+		return modelElement.getPattern() == null && modelElement.getVariables().isEmpty();
+	}
+
+	protected void _createChildren(IOutlineNode parentNode, org.emoflon.gips.gipsl.gipsl.GipsMapping modelElement) {
+		createNode(parentNode, modelElement.getPattern());
+		for (org.emoflon.gips.gipsl.gipsl.GipsMappingVariable child : modelElement.getVariables())
+			createNode(parentNode, child);
+	}
+
+	protected boolean _isLeaf(org.emoflon.gips.gipsl.gipsl.GipsMappingVariable modelElement) {
+		return !modelElement.isBound();
+	}
+
+	protected void _createChildren(IOutlineNode parentNode,
+			org.emoflon.gips.gipsl.gipsl.GipsMappingVariable modelElement) {
+		createNode(parentNode, modelElement.getParameter());
+	}
+
 }

@@ -4,6 +4,8 @@
 package org.emoflon.gips.gipsl.ui;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.xtext.ui.editor.outline.impl.OutlineFilterAndSorter.IComparator;
+import org.emoflon.gips.gipsl.ui.outline.DefaultOutlineComparator;
 
 /**
  * Use this class to register components to be used within the Eclipse IDE.
@@ -13,4 +15,9 @@ public class GipslUiModule extends AbstractGipslUiModule {
 	public GipslUiModule(AbstractUIPlugin plugin) {
 		super(plugin);
 	}
+
+	public Class<? extends IComparator> bindOutlineFilterAndSorter$IComparator() {
+		return DefaultOutlineComparator.class;
+	}
+
 }

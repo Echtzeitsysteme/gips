@@ -62,10 +62,10 @@ public abstract class GipsEngine {
 				validationLog = new GipsConstraintValidationLog();
 
 				// Constraints are re-build a few lines below
-				constraints.values().stream().forEach(constraint -> constraint.clear());
+				constraints.values().parallelStream().forEach(constraint -> constraint.clear());
 
 				nonMappingVariables.clear();
-				mappers.values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
+				mappers.values().parallelStream().flatMap(mapper -> mapper.getMappings().values().parallelStream())
 						.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
 							Map<String, Variable<?>> variables = nonMappingVariables.get(m);
 							if (variables == null) {
@@ -75,11 +75,11 @@ public abstract class GipsEngine {
 							variables.putAll(m.getAdditionalVariables());
 						});
 
-				constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());
+				constraints.values().parallelStream().forEach(constraint -> constraint.calcAdditionalVariables());
 
 				updateConstants();
 
-				constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
+				constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints());
 
 				if (objective != null)
 					objective.buildObjectiveFunction();
@@ -100,18 +100,18 @@ public abstract class GipsEngine {
 		validationLog = new GipsConstraintValidationLog();
 
 		// Constraints are re-build a few lines below
-		constraints.values().stream().forEach(constraint -> constraint.clear());
+		constraints.values().parallelStream().forEach(constraint -> constraint.clear());
 
 		// Reset trace
 		getTracer().resetTrace();
 
 		// Objectives will be build by the global objective call below
-//		objectives.values().stream().forEach(objective -> objective.clear());
+//		objectives.values().parallelStream().forEach(objective -> objective.clear());
 		// TODO: It seems to me that this is not necessary for objectives. All tests
 		// (and also the dedicated tests for checking this!) are happy with it.
 
 		nonMappingVariables.clear();
-		mappers.values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
+		mappers.values().parallelStream().flatMap(mapper -> mapper.getMappings().values().parallelStream())
 				.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
 					Map<String, Variable<?>> variables = nonMappingVariables.get(m);
 					if (variables == null) {
@@ -121,11 +121,11 @@ public abstract class GipsEngine {
 					variables.putAll(m.getAdditionalVariables());
 				});
 
-		constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());
+		constraints.values().parallelStream().forEach(constraint -> constraint.calcAdditionalVariables());
 
 		updateConstants();
 
-		constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
+		constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints());
 		if (objective != null)
 			objective.buildObjectiveFunction();
 

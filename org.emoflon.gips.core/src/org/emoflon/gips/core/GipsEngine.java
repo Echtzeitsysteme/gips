@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ForkJoinPool;
 
 import org.emoflon.gips.core.milp.Solver;
 import org.emoflon.gips.core.milp.SolverOutput;
@@ -13,6 +14,7 @@ import org.emoflon.gips.core.trace.EclipseIntegration;
 import org.emoflon.gips.core.trace.EclipseIntegrationConfig;
 import org.emoflon.gips.core.trace.GipsTracer;
 import org.emoflon.gips.core.util.Observer;
+import org.emoflon.gips.core.util.SystemUtil;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 
 public abstract class GipsEngine {
@@ -51,18 +53,107 @@ public abstract class GipsEngine {
 
 	protected abstract void updateConstants();
 
-	public void buildProblemTimed(boolean doUpdate) {
-		Observer observer = Observer.getInstance();
-		observer.observe("BUILD", () -> {
-			if (doUpdate)
-				observer.observe("PM", () -> update());
+	public void buildProblemTimed(final boolean doUpdate) {
+		buildProblemTimed(doUpdate, false);
+	}
 
-			observer.observe("BUILD_GIPS", () -> {
+	public void buildProblemTimed(final boolean doUpdate, final boolean parallel) {
+		ForkJoinPool fjp = null;
+		try {
+			// Default number of threads is 1, so no parallel execution
+			int defaultNumberOfThreads = 1;
+			// If the boolean parameter is set, use the default number of parallel threads
+			// for the fork join pool
+			if (parallel) {
+				defaultNumberOfThreads = SystemUtil.getSystemThreads() - 1;
+			}
+
+			final Observer observer = Observer.getInstance();
+
+			fjp = new ForkJoinPool(defaultNumberOfThreads);
+			fjp.submit(() -> {
+				observer.observe("BUILD", () -> {
+					if (doUpdate)
+						observer.observe("PM", () -> update());
+
+					observer.observe("BUILD_GIPS", () -> {
+						// Reset validation log
+						validationLog = new GipsConstraintValidationLog();
+
+						// Constraints are re-build a few lines below
+						constraints.values().parallelStream().forEach(constraint -> constraint.clear());
+
+						nonMappingVariables.clear();
+						mappers.values().parallelStream()
+								.flatMap(mapper -> mapper.getMappings().values().parallelStream())
+								.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
+									Map<String, Variable<?>> variables = nonMappingVariables.get(m);
+									if (variables == null) {
+										variables = Collections.synchronizedMap(new HashMap<>());
+										nonMappingVariables.put(m, variables);
+									}
+									variables.putAll(m.getAdditionalVariables());
+								});
+
+						constraints.values().parallelStream()
+								.forEach(constraint -> constraint.calcAdditionalVariables());
+
+						updateConstants();
+
+						constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints());
+
+						if (objective != null)
+							objective.buildObjectiveFunction();
+					});
+
+					observer.observe("BUILD_SOLVER", () -> {
+						solver.init();
+						solver.buildILPProblem();
+					});
+				});
+			});
+		} finally {
+			if (fjp != null) {
+				fjp.close();
+				fjp.shutdown();
+			}
+		}
+	}
+
+	public void buildProblem(final boolean doUpdate) {
+		buildProblem(doUpdate, false);
+	}
+
+	public void buildProblem(final boolean doUpdate, final boolean parallel) {
+		ForkJoinPool fjp = null;
+		try {
+			// Default number of threads is 1, so no parallel execution
+			int defaultNumberOfThreads = 1;
+			// If the boolean parameter is set, use the default number of parallel threads
+			// for the fork join pool
+			if (parallel) {
+				defaultNumberOfThreads = Integer
+						.valueOf(System.getProperty("java.util.concurrent.ForkJoinPool.common.parallelism"));
+			}
+
+			fjp = new ForkJoinPool(defaultNumberOfThreads);
+			fjp.submit(() -> {
+				if (doUpdate)
+					update();
+
 				// Reset validation log
 				validationLog = new GipsConstraintValidationLog();
 
 				// Constraints are re-build a few lines below
 				constraints.values().parallelStream().forEach(constraint -> constraint.clear());
+
+				// Reset trace
+				getTracer().resetTrace();
+
+				// Objectives will be build by the global objective call below
+//				objectives.values().parallelStream().forEach(objective -> objective.clear());
+				// TODO: It seems to me that this is not necessary for objectives. All tests
+				// (and also the dedicated tests for checking this!) are happy with it.
 
 				nonMappingVariables.clear();
 				mappers.values().parallelStream().flatMap(mapper -> mapper.getMappings().values().parallelStream())
@@ -80,58 +171,19 @@ public abstract class GipsEngine {
 				updateConstants();
 
 				constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints());
-
 				if (objective != null)
 					objective.buildObjectiveFunction();
-			});
 
-			observer.observe("BUILD_SOLVER", () -> {
 				solver.init();
 				solver.buildILPProblem();
+				buildTraceGraphAndSendToIDE();
 			});
-		});
-	}
-
-	public void buildProblem(boolean doUpdate) {
-		if (doUpdate)
-			update();
-
-		// Reset validation log
-		validationLog = new GipsConstraintValidationLog();
-
-		// Constraints are re-build a few lines below
-		constraints.values().parallelStream().forEach(constraint -> constraint.clear());
-
-		// Reset trace
-		getTracer().resetTrace();
-
-		// Objectives will be build by the global objective call below
-//		objectives.values().parallelStream().forEach(objective -> objective.clear());
-		// TODO: It seems to me that this is not necessary for objectives. All tests
-		// (and also the dedicated tests for checking this!) are happy with it.
-
-		nonMappingVariables.clear();
-		mappers.values().parallelStream().flatMap(mapper -> mapper.getMappings().values().parallelStream())
-				.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
-					Map<String, Variable<?>> variables = nonMappingVariables.get(m);
-					if (variables == null) {
-						variables = Collections.synchronizedMap(new HashMap<>());
-						nonMappingVariables.put(m, variables);
-					}
-					variables.putAll(m.getAdditionalVariables());
-				});
-
-		constraints.values().parallelStream().forEach(constraint -> constraint.calcAdditionalVariables());
-
-		updateConstants();
-
-		constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints());
-		if (objective != null)
-			objective.buildObjectiveFunction();
-
-		solver.init();
-		solver.buildILPProblem();
-		buildTraceGraphAndSendToIDE();
+		} finally {
+			if (fjp != null) {
+				fjp.close();
+				fjp.shutdown();
+			}
+		}
 	}
 
 	protected void buildTraceGraphAndSendToIDE() {

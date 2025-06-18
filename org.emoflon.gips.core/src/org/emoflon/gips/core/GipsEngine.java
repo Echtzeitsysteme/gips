@@ -63,6 +63,9 @@ public abstract class GipsEngine {
 
 				// Constraints are re-build a few lines below
 				constraints.values().stream().forEach(constraint -> constraint.clear());
+				
+				// Reset trace
+				getTracer().resetTrace();
 
 				nonMappingVariables.clear();
 				mappers.values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
@@ -89,6 +92,8 @@ public abstract class GipsEngine {
 				solver.init();
 				solver.buildILPProblem();
 			});
+			
+			buildTraceGraphAndSendToIDE();
 		});
 	}
 

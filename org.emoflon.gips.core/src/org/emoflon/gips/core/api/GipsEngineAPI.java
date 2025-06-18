@@ -410,15 +410,29 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	protected abstract Solver createSolver();
 
 	/**
-	 * Applies all non-zero mappings across all defined (GT rule) mappers. Calling
-	 * this method is equivalent to running
-	 * `api.getXMapping().applyNonZeroMappings()` for all mappings defined on GT
+	 * Applies all non-zero mappings across all defined (GT rule) mappers while
+	 * updating the pattern matcher. Calling this method is equivalent to running
+	 * `api.getXMapping().applyNonZeroMappings(true)` for all mappings defined on GT
 	 * rules.
 	 */
 	public void applyAllNonZeroMappings() {
+		applyAllNonZeroMappings(true);
+	}
+
+	/**
+	 * Applies all non-zero mappings across all defined (GT rule) mappers while
+	 * updating the pattern matcher according to the given parameter `doUpdate`.
+	 * Calling this method is equivalent to running
+	 * `api.getXMapping().applyNonZeroMappings(doUpdate)` for all mappings defined
+	 * on GT rules.
+	 * 
+	 * @param doUpdate If true, the pattern matcher should be updated throughout the
+	 *                 mapper application.
+	 */
+	public void applyAllNonZeroMappings(final boolean doUpdate) {
 		this.mappers.values().forEach(m -> {
 			if (m instanceof GipsRuleMapper ruleMapper) {
-				ruleMapper.applyNonZeroMappings();
+				ruleMapper.applyNonZeroMappings(doUpdate);
 			}
 		});
 	}

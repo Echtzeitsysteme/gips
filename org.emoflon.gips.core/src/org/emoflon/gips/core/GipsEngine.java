@@ -161,6 +161,7 @@ public abstract class GipsEngine {
 			}
 
 			solver.reset();
+			eclipseIntegration.sendSolutionValuesToIDE();
 			return output;
 		});
 		return out;

@@ -57,19 +57,36 @@ import org.emoflon.gips.gipsl.gipsl.GipsElementQuery
 import org.emoflon.gips.gipsl.gipsl.GipsSimpleQuery
 import org.emoflon.gips.gipsl.gipsl.GipsSimpleSelect
 import org.emoflon.gips.gipsl.gipsl.GipsSumOperation
+import org.eclipse.xtext.formatting2.FormatterPreferenceValuesProvider
+import org.eclipse.xtext.preferences.IPreferenceValuesProvider
+import org.eclipse.xtext.formatting2.FormatterPreferences
+import org.eclipse.xtext.formatting2.regionaccess.ITextRegionAccess
+import org.eclipse.xtext.formatting2.regionaccess.IEObjectRegion
+
+import static org.emoflon.gips.gipsl.gipsl.GipslPackage.Literals.*
+import org.eclipse.xtext.Keyword
+import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.xtext.formatting2.regionaccess.ISemanticRegion
+import org.eclipse.xtext.formatting2.regionaccess.IAstRegion
+import org.emoflon.ibex.gt.editor.gT.EditorPattern
+import org.emoflon.ibex.gt.editor.gT.GTPackage
+import org.eclipse.xtext.formatting2.FormatterPreferenceKeys
+import org.emoflon.ibex.gt.editor.gT.EditorNode
+import org.emoflon.ibex.gt.editor.gT.EditorAttributeAssignment
+import org.eclipse.ui.internal.EditorReference
+import org.eclipse.xtext.formatting2.regionaccess.ITextSegment
+import org.eclipse.xtext.formatting2.IHiddenRegionFormatter
 
 class GipslFormatter extends GTFormatter {
 
 	@Inject extension GipslGrammarAccess
-
-	@Accessors
-	var int maxLineLength = 80;
-
+	
 	def dispatch void format(EditorGTFile editorGTFile, extension IFormattableDocument document) {
+		editorGTFile.prepend[setNewLines(0,0,1); noSpace]
+		
 		// _format(editorGTFile as org.emoflon.ibex.gt.editor.gT.EditorGTFile, document);
 		// because EditorGTFile extends EditorGTFile, we need to call explicitly the method on EditorGTFile 
 		// (if we want the gt formatting on the whole file)
-		editorGTFile.package.prepend[noSpace]
 		editorGTFile.package.format
 
 		formatList(editorGTFile.imports, document, 1, 1, -1)
@@ -115,76 +132,70 @@ class GipslFormatter extends GTFormatter {
 		editorGTFile.objective.format
 		editorGTFile.objective.groupElementWithPrevElement(document, 1, 2, GipsLinearFunction)
 	}
-
-	def dispatch void format(org.emoflon.gips.gipsl.gipsl.Package element, extension IFormattableDocument document) {
-		element.regionFor.keyword(packageAccess.packageKeyword_0).append[oneSpace]
+			
+	def dispatch void format(org.emoflon.gips.gipsl.gipsl.Package gipsPackage, extension IFormattableDocument document) {
+		gipsPackage.regionFor.keyword(packageAccess.packageKeyword_0).append[oneSpace]
 	}
 
-	def dispatch void format(ImportedPattern element, extension IFormattableDocument document) {
-		element.regionFor.keyword(importedPatternAccess.fromKeyword_0).append[oneSpace]
-		element.regionFor.keyword(importedPatternAccess.importKeyword_2).prepend[oneSpace].append[oneSpace]
+	def dispatch void format(ImportedPattern importedPattern, extension IFormattableDocument document) {
+		importedPattern.regionFor.keyword(importedPatternAccess.fromKeyword_0).append[oneSpace]
+		importedPattern.regionFor.keyword(importedPatternAccess.importKeyword_2).prepend[oneSpace].append[oneSpace]
 	}
 
-	def dispatch void format(GipsConfig element, extension IFormattableDocument document) {
-		element.regionFor.keyword(gipsConfigAccess.configKeyword_1).append[oneSpace]
+	def dispatch void format(GipsConfig gipsConfig, extension IFormattableDocument document) {
+		gipsConfig.regionFor.keyword(gipsConfigAccess.configKeyword_1).append[oneSpace]
+		gipsConfig.regionFor.keyword(gipsConfigAccess.leftCurlyBracketKeyword_2).append[noSpace; newLine]
 
-		val body = element.regionFor.keywordPairs(gipsConfigAccess.leftCurlyBracketKeyword_2,
+		val body = gipsConfig.regionFor.keywordPairs(gipsConfigAccess.leftCurlyBracketKeyword_2,
 			gipsConfigAccess.rightCurlyBracketKeyword_16)
 		if (body.size > 0)
 			body.get(0).interior[indent]
 
-		element.regionFor.keywords(":=").forEach [
+		gipsConfig.regionFor.keywords(":=").forEach [
 			it.surround[oneSpace]
 		]
 
-		val hasEntries = element.regionFor.keywords(":=").size > 0
-
-		element.regionFor.keywords("[").forEach [
+		gipsConfig.regionFor.keywords("[").forEach [
 			it.prepend[oneSpace].append[noSpace]
 		]
 
-		element.regionFor.keywords(",").forEach [
+		gipsConfig.regionFor.keywords(",").forEach [
 			it.prepend[noSpace].append[oneSpace]
 		]
 
-		element.regionFor.keywords("]").forEach [
+		gipsConfig.regionFor.keywords("]").forEach [
 			it.prepend[noSpace]
 		]
 
-		element.regionFor.keywords(";").forEach [
+		gipsConfig.regionFor.keywords(";").forEach [
 			it.prepend[noSpace].append[newLine]
 		]
-
-		if (!hasEntries)
-			element.regionFor.keyword(gipsConfigAccess.rightCurlyBracketKeyword_16).prepend[newLine]
-
-		// Each of these should be their own semantic elements
-		element.regionFor.keyword(gipsConfigAccess.solverKeyword_3).prepend[newLine]
-		element.regionFor.keyword(gipsConfigAccess.launchConfigKeyword_8_0).prepend[newLine]
-		element.regionFor.keyword(gipsConfigAccess.timeLimitKeyword_9_0).prepend[newLine]
-		element.regionFor.keyword(gipsConfigAccess.randomSeedKeyword_10_0).prepend[newLine]
-		element.regionFor.keyword(gipsConfigAccess.presolveKeyword_11_0).prepend[newLine]
-		element.regionFor.keyword(gipsConfigAccess.debugOutputKeyword_12_0).prepend[newLine]
-		element.regionFor.keyword(gipsConfigAccess.toleranceKeyword_13_0).prepend[newLine]
-		element.regionFor.keyword(gipsConfigAccess.lpOutputKeyword_14_0).prepend[newLine]
-		element.regionFor.keyword(gipsConfigAccess.threadCountKeyword_15_0).prepend[newLine]
+		
+		gipsConfig.regionFor.keyword(gipsConfigAccess.rightCurlyBracketKeyword_16).prepend[newLine]
 	}
 
 	def dispatch void format(GipsMapping gipsMapping, extension IFormattableDocument document) {
 		gipsMapping.regionFor.keyword(gipsMappingAccess.mappingKeyword_0).append[oneSpace]
-		gipsMapping.regionFor.keyword(gipsMappingAccess.toKeyword_2).surround[oneSpace]
+		gipsMapping.regionFor.keyword(gipsMappingAccess.toKeyword_2).surround[oneSpace]		
 
-		// parameters
-		gipsMapping.regionFor.keyword(gipsMappingAccess.leftCurlyBracketKeyword_4_0).prepend[oneSpace]
-		val body = gipsMapping.regionFor.keywordPairs(gipsMappingAccess.leftCurlyBracketKeyword_4_0,
-			gipsMappingAccess.rightCurlyBracketKeyword_4_2)
-		if (body.length > 0)
-			body.get(0).interior[indent]
+		val moreThanOneVariable = gipsMapping.variables.length > 1
+		if(moreThanOneVariable){
+			gipsMapping.regionFor.keyword(gipsMappingAccess.leftCurlyBracketKeyword_4_0).prepend[oneSpace]
+				
+			val body = gipsMapping.regionFor.keywordPairs(gipsMappingAccess.leftCurlyBracketKeyword_4_0, gipsMappingAccess.rightCurlyBracketKeyword_4_2)
+			if (body.length > 0)
+				body.get(0).interior[indent]
+				
+			for (gipsMappingVariable : gipsMapping.variables)
+				gipsMappingVariable.format.surround[newLine]
 
-		for (gipsMappingVariable : gipsMapping.variables) {
-			gipsMappingVariable.format.surround[newLine]
+			gipsMapping.regionFor.keyword(gipsMappingAccess.rightCurlyBracketKeyword_4_2).prepend[noSpace]
+		}else{
+			gipsMapping.regionFor.keyword(gipsMappingAccess.leftCurlyBracketKeyword_4_0).surround[oneSpace]
+			for (gipsMappingVariable : gipsMapping.variables)
+					gipsMappingVariable.format.append[oneSpace]
 		}
-
+		
 		gipsMapping.regionFor.keyword(gipsMappingAccess.semicolonKeyword_5).prepend[noSpace]
 	}
 
@@ -258,65 +269,77 @@ class GipslFormatter extends GTFormatter {
 
 	//	def dispatch void format(GipsBooleanExpression gipsBooleanExpression, extension IFormattableDocument document) {}
 
-	def dispatch void format(GipsBooleanImplication gipsBooleanImplication, extension IFormattableDocument document) {
-		gipsBooleanImplication.regionFor.feature(GipslPackage.Literals.GIPS_BOOLEAN_IMPLICATION__OPERATOR).surround[oneSpace]		
-		gipsBooleanImplication.formatChilds(document)
+	def dispatch void format(GipsBooleanImplication expr, extension IFormattableDocument document) {				
+		expr.formatOperatorOrRelation(GIPS_BOOLEAN_IMPLICATION__OPERATOR, document)
+		expr.formatChilds(document)
 	}
 
-	def dispatch void format(GipsBooleanDisjunction gipsBooleanDisjunction, extension IFormattableDocument document) {
-		gipsBooleanDisjunction.regionFor.feature(GipslPackage.Literals.GIPS_BOOLEAN_DISJUNCTION__OPERATOR).surround[oneSpace]		
-		gipsBooleanDisjunction.formatChilds(document)
+	def dispatch void format(GipsBooleanDisjunction expr, extension IFormattableDocument document) {
+		expr.formatOperatorOrRelation(GIPS_BOOLEAN_DISJUNCTION__OPERATOR, document)	
+		expr.formatChilds(document)
 	}
 
-	def dispatch void format(GipsBooleanConjunction gipsBooleanConjunction, extension IFormattableDocument document) {
-		gipsBooleanConjunction.regionFor.feature(GipslPackage.Literals.GIPS_BOOLEAN_CONJUNCTION__OPERATOR).surround[oneSpace]		
-		gipsBooleanConjunction.formatChilds(document)
+	def dispatch void format(GipsBooleanConjunction expr, extension IFormattableDocument document) {
+		expr.formatOperatorOrRelation(GIPS_BOOLEAN_CONJUNCTION__OPERATOR, document)	
+		expr.formatChilds(document)
 	}
 
-	def dispatch void format(GipsBooleanNegation gipsBooleanNegation, extension IFormattableDocument document) {
+	def dispatch void format(GipsBooleanNegation expr, extension IFormattableDocument document) {
 		// no space between '!' and operand
-		gipsBooleanNegation.operand.format.prepend[noSpace]
+		expr.operand.format.prepend[noSpace; noAutowrap]
 	}
 
-	def dispatch void format(GipsBooleanBracket gipsBooleanBracket, extension IFormattableDocument document) {
+	def dispatch void format(GipsBooleanBracket expr, extension IFormattableDocument document) {
 		// no space between operand and brackets
-		gipsBooleanBracket.operand.format.surround[noSpace]
+		expr.operand.format.surround[noSpace]
 	}
 
-	def dispatch void format(GipsRelationalExpression gipsRelationalExpression, extension IFormattableDocument document) {
-		gipsRelationalExpression.regionFor.feature(GipslPackage.Literals.GIPS_RELATIONAL_EXPRESSION__OPERATOR).surround[oneSpace]		
-		gipsRelationalExpression.formatChilds(document)
+	def dispatch void format(GipsRelationalExpression expr, extension IFormattableDocument document) {				
+		expr.formatOperatorOrRelation(GIPS_RELATIONAL_EXPRESSION__OPERATOR, document)
+		expr.formatChilds(document)	
 	}
 
 //	def dispatch void format(GipsArithmeticExpression gipsArithmeticExpression, extension IFormattableDocument document) {}
 
-	def dispatch void format(GipsArithmeticSum gipsArithmeticSum, extension IFormattableDocument document) {
-		gipsArithmeticSum.regionFor.feature(GipslPackage.Literals.GIPS_ARITHMETIC_SUM__OPERATOR).surround[oneSpace]		
-		gipsArithmeticSum.formatChilds(document)
+	def dispatch void format(GipsArithmeticSum expr, extension IFormattableDocument document) {			
+		expr.formatOperatorOrRelation(GIPS_ARITHMETIC_SUM__OPERATOR, document)
+		expr.formatChilds(document)
 	}
 
-	def dispatch void format(GipsArithmeticProduct gipsArithmeticProduct, extension IFormattableDocument document) {
-		gipsArithmeticProduct.regionFor.feature(GipslPackage.Literals.GIPS_ARITHMETIC_PRODUCT__OPERATOR).surround[oneSpace]		
-		gipsArithmeticProduct.formatChilds(document)
+	def dispatch void format(GipsArithmeticProduct expr, extension IFormattableDocument document) {
+		expr.formatOperatorOrRelation(GIPS_ARITHMETIC_PRODUCT__OPERATOR, document)		
+		expr.formatChilds(document)
 	}
 
-	def dispatch void format(GipsArithmeticExponential gipsArithmeticExponential, extension IFormattableDocument document) {
-		gipsArithmeticExponential.regionFor.feature(GipslPackage.Literals.GIPS_ARITHMETIC_EXPONENTIAL__OPERATOR).surround[oneSpace]		
-		gipsArithmeticExponential.formatChilds(document)
+	def dispatch void format(GipsArithmeticExponential expr, extension IFormattableDocument document) {
+//		gipsArithmeticExponential.append[autowrap]
+		expr.formatOperatorOrRelation(GIPS_ARITHMETIC_EXPONENTIAL__OPERATOR, document)		
+		expr.formatChilds(document)
 	}
 
-	def dispatch void format(GipsArithmeticUnary gipsArithmeticUnary, extension IFormattableDocument document) {
-		gipsArithmeticUnary.regionFor.feature(GipslPackage.Literals.GIPS_ARITHMETIC_UNARY__OPERATOR).append[noSpace]
-		gipsArithmeticUnary.operand.format.surround[noSpace]
+	def dispatch void format(GipsArithmeticUnary expr, extension IFormattableDocument document) {
+//		gipsArithmeticUnary.append[autowrap]
+		expr.regionFor.feature(GIPS_ARITHMETIC_UNARY__OPERATOR).append[noSpace; noAutowrap]
+		expr.operand.format.surround[noSpace]
 	}
 
-	def dispatch void format(GipsArithmeticBracket gipsArithmeticBracket, extension IFormattableDocument document) {
-		// no space between operand and parenthesis
-		gipsArithmeticBracket.operand.format.surround[noSpace]
+	def dispatch void format(GipsArithmeticBracket expr, extension IFormattableDocument document) {
+		expr.operand.format
+		
+		val isMultiLine = expr.operand.previousHiddenRegion.isMultiline		
+		if(isMultiLine){
+			expr.interior[indent]
+			expr.operand.surround[newLine]			
+		}else{
+			expr.operand.interior[indent]
+			expr.operand.surround[noSpace]
+		}
+		
 	}
 
 	def dispatch void format(GipsArithmeticOperand gipsArithmeticOperand, extension IFormattableDocument document) {
 		// deals with all subclasses of GipsArithmeticOperand
+//		gipsArithmeticOperand.append[autowrap]
 		gipsArithmeticOperand.regionFor.keyword(".").surround[noSpace]
 		gipsArithmeticOperand.formatChilds(document)
 	}
@@ -374,95 +397,162 @@ class GipslFormatter extends GTFormatter {
 		gipsAttributeExpression.right.format.prepend[noSpace] // attribute chaining, remove space before '.'
 	}
 
-	def dispatch void format(GipsSetExpression gipsSetExpression, extension IFormattableDocument document) {
-		gipsSetExpression.regionFor.keyword(gipsSetExpressionAccess.hyphenMinusGreaterThanSignKeyword_1).append[noSpace]
-		gipsSetExpression.operation.format
-		gipsSetExpression.right.format.prepend[noSpace] // set chaining, remove space before '->'
+	def dispatch void format(GipsSetExpression expr, extension IFormattableDocument document) {
+		val arrowOperator = expr.regionFor.keyword(gipsSetExpressionAccess.hyphenMinusGreaterThanSignKeyword_1)
+		if(arrowOperator.nextHiddenRegion.isMultiline){
+			arrowOperator.append[newLine]
+			document.set(arrowOperator.nextHiddenRegion, expr.nextHiddenRegion, [indent]);
+		}else{
+			arrowOperator.append[noSpace]
+		}
+		
+		expr.operation.format
+		expr.right.format.prepend[noSpace] // arrow chaining, remove space before '->'
 	}
 	
 	// def dispatch void format(GipsSetOperation gipsSetOperation, extension IFormattableDocument document){}
 	
-	def dispatch void format(GipsFilterOperation gipsFilterOperation, extension IFormattableDocument document) {
-		// remove all spaces between keywords
-		gipsFilterOperation.regionFor.keyword(gipsFilterOperationAccess.filterKeyword_0).append[noSpace]
-		gipsFilterOperation.regionFor.keyword(gipsFilterOperationAccess.leftParenthesisKeyword_1).append[noSpace]
-		gipsFilterOperation.regionFor.keyword(gipsFilterOperationAccess.rightParenthesisKeyword_3).prepend[noSpace]
-		gipsFilterOperation.expression.format
+	def dispatch void format(GipsFilterOperation operation, extension IFormattableDocument document) {
+//		operation.regionFor.keyword(gipsFilterOperationAccess.filterKeyword_0).append[noSpace]
+//		operation.expression.format.surround[noSpace]		
+		operation.formatMethodCall(document, gipsFilterOperationAccess.filterKeyword_0, operation.expression)
 	}
 
 	// def dispatch void format(GipsSelectOperation gipsSelectOperation, extension IFormattableDocument document){}
 	
-	def dispatch void format(GipsTypeSelect gipsTypeSelect, extension IFormattableDocument document) {
-		// remove all spaces between keywords
-		gipsTypeSelect.regionFor.keyword(gipsTypeSelectAccess.selectTypeKeyword_0).append[noSpace]
-		gipsTypeSelect.regionFor.keyword(gipsTypeSelectAccess.leftParenthesisKeyword_1).append[noSpace]
-		gipsTypeSelect.regionFor.keyword(gipsTypeSelectAccess.rightParenthesisKeyword_3).prepend[noSpace]
-		gipsTypeSelect.type.format
+	def dispatch void format(GipsTypeSelect operation, extension IFormattableDocument document) {
+//		operation.regionFor.keyword(gipsTypeSelectAccess.selectTypeKeyword_0).append[noSpace]
+//		operation.type.format.surround[noSpace]
+		operation.formatMethodCall(document, gipsTypeSelectAccess.selectTypeKeyword_0, operation.type)
 	}
 
 	// def dispatch void format(GipsAlgorithmOperation gipsAlgorithmOperation, extension IFormattableDocument document){}
 	
-	def dispatch void format(GipsSortOperation gipsSortOperation, extension IFormattableDocument document) {
-		// remove all spaces between keywords
-		gipsSortOperation.regionFor.keyword(gipsSortOperationAccess.sortKeyword_0).append[noSpace]
-		gipsSortOperation.regionFor.keyword(gipsSortOperationAccess.leftParenthesisKeyword_1).append[noSpace]
-		gipsSortOperation.regionFor.keyword(gipsSortOperationAccess.rightParenthesisKeyword_3).prepend[noSpace]
-		gipsSortOperation.predicate.format
+	def dispatch void format(GipsSortOperation operation, extension IFormattableDocument document) {
+//		operation.regionFor.keyword(gipsSortOperationAccess.sortKeyword_0).append[noSpace]
+//		operation.predicate.format.surround[noSpace]
+		operation.formatMethodCall(document, gipsSortOperationAccess.sortKeyword_0, operation.predicate)
 	}
 
-	def dispatch void format(GipsSortPredicate gipsSortPredicate, extension IFormattableDocument document) {
-		gipsSortPredicate.regionFor.keyword(gipsSortPredicateAccess.e1Keyword_0).append[oneSpace]
-		gipsSortPredicate.e1.format
-		gipsSortPredicate.regionFor.feature(GipslPackage.Literals.GIPS_SORT_PREDICATE__RELATION).surround[oneSpace]
-		gipsSortPredicate.regionFor.keyword(gipsSortPredicateAccess.e2Keyword_3).append[oneSpace]
-		gipsSortPredicate.e2.format
+	def dispatch void format(GipsSortPredicate gipsSortpredicate, extension IFormattableDocument document) {
+		gipsSortpredicate.e1.format.prepend[noSpace]
+		gipsSortpredicate.regionFor.feature(GIPS_SORT_PREDICATE__RELATION).surround[oneSpace]
+		gipsSortpredicate.e2.format.prepend[noSpace]
 	}
 
-	def dispatch void format(GipsSimpleAlgorithm gipsSimpleAlgorithm, extension IFormattableDocument document) {
-		gipsSimpleAlgorithm.regionFor.keyword(gipsSimpleAlgorithmAccess.leftParenthesisRightParenthesisKeyword_1).prepend[noSpace]
+	def dispatch void format(GipsSimpleAlgorithm operation, extension IFormattableDocument document) {
+//		operation.regionFor.feature(GIPS_SIMPLE_ALGORITHM__OPERATOR).append[noSpace]
+		operation.formatMethodCall(document, GIPS_SIMPLE_ALGORITHM__OPERATOR)
 	}
 
-	def dispatch void format(GipsConcatenationOperation gipsConcatenationOperation, extension IFormattableDocument document) {
-		gipsConcatenationOperation.operator.format
-		gipsConcatenationOperation.regionFor.keyword(gipsConcatenationOperationAccess.leftParenthesisKeyword_1).prepend[noSpace]		
-		gipsConcatenationOperation.value.format.surround[noSpace]
+	def dispatch void format(GipsConcatenationOperation operation, extension IFormattableDocument document) {
+//		operation.regionFor.feature(GIPS_CONCATENATION_OPERATION__OPERATOR).append[noSpace]	
+//		operation.value.format.surround[noSpace]		
+		operation.formatMethodCall(document, GIPS_CONCATENATION_OPERATION__OPERATOR, operation.value)
 	}
 	
-	def dispatch void format(GipsTransformOperation gipsTransformOperation, extension IFormattableDocument document) {
-		gipsTransformOperation.regionFor.keyword(gipsTransformOperationAccess.transformKeyword_0).append[noSpace]
-		gipsTransformOperation.expression.format.surround[noSpace]
+	def dispatch void format(GipsTransformOperation operation, extension IFormattableDocument document) {
+		operation.formatMethodCall(document, gipsTransformOperationAccess.transformKeyword_0, operation.expression)
 	}
 	
 //	def dispatch void format(GipsReduceOperation gipsReduceOperation, extension IFormattableDocument document) {}
 
-	def dispatch void format(GipsSumOperation gipsSumOperation, extension IFormattableDocument document) {
-		gipsSumOperation.regionFor.keyword(gipsSumOperationAccess.sumKeyword_0).append[noSpace]
-		gipsSumOperation.expression.format.surround[noSpace]
+	def dispatch void format(GipsSumOperation operation, extension IFormattableDocument document) {
+		operation.formatMethodCall(document, gipsSumOperationAccess.sumKeyword_0, operation.expression)
 	}
 	
-	def dispatch void format(GipsSimpleSelect gipsSimpleSelect, extension IFormattableDocument document) {
-		gipsSimpleSelect.operator.format
-		gipsSimpleSelect.regionFor.keyword(gipsSimpleSelectAccess.leftParenthesisRightParenthesisKeyword_1).prepend[noSpace]		
+	def dispatch void format(GipsSimpleSelect operation, extension IFormattableDocument document) {
+//		operation.regionFor.feature(GIPS_SIMPLE_SELECT__OPERATOR).append[noSpace]	
+		operation.formatMethodCall(document, GIPS_SIMPLE_SELECT__OPERATOR)
 	}
 
 //	def dispatch void format(GipsQueryOperation gipsQueryOperation, extension IFormattableDocument document) {}
 	
-	def dispatch void format(GipsTypeQuery gipsTypeQuery, extension IFormattableDocument document) {
-		gipsTypeQuery.regionFor.keyword(gipsTypeQueryAccess.containsTypeKeyword_0).append[noSpace]
-		gipsTypeQuery.type.format.surround[noSpace]
+	def dispatch void format(GipsTypeQuery operation, extension IFormattableDocument document) {
+//		operation.regionFor.keyword(gipsTypeQueryAccess.containsTypeKeyword_0).append[noSpace]
+//		operation.type.format.surround[noSpace]
+		operation.formatMethodCall(document, gipsTypeQueryAccess.containsTypeKeyword_0, operation.type)
 	}
 	
-	def dispatch void format(GipsElementQuery gipsElementQuery, extension IFormattableDocument document) {
-		gipsElementQuery.regionFor.keyword(gipsElementQueryAccess.containsElementKeyword_0).append[noSpace]
-		gipsElementQuery.element.format.surround[noSpace]
+	def dispatch void format(GipsElementQuery operation, extension IFormattableDocument document) {
+//		operation.regionFor.keyword(gipsElementQueryAccess.containsElementKeyword_0).append[noSpace]
+//		operation.element.format.surround[noSpace]
+		operation.formatMethodCall(document, gipsElementQueryAccess.containsElementKeyword_0, operation.element)
 	}
 	
-	def dispatch void format(GipsSimpleQuery gipsSimpleQuery, extension IFormattableDocument document) {
-		gipsSimpleQuery.operator.format
-		gipsSimpleQuery.regionFor.keyword(gipsSimpleQueryAccess.leftParenthesisRightParenthesisKeyword_1).prepend[noSpace]		
+	def dispatch void format(GipsSimpleQuery operation, extension IFormattableDocument document) {
+//		operation.operator.format
+//		operation.regionFor.keyword(gipsSimpleQueryAccess.leftParenthesisRightParenthesisKeyword_1).prepend[noSpace]	
+		operation.formatMethodCall(document, gipsSimpleQueryAccess.leftParenthesisRightParenthesisKeyword_1)	
 	}
-	
+		
 	// Helper
+	protected def int getMaxLineWidth(){
+		this.request.preferences.getPreference(FormatterPreferenceKeys.maxLineWidth);
+	}
+	
+	protected def int getLength(ITextSegment first, ITextSegment last){
+		return last.endOffset - first.offset;
+	}
+	
+	protected def EObject formatMethodCall(EObject owner, extension IFormattableDocument document,  EStructuralFeature methodName, EObject...parameters){
+		val mId =  owner.regionFor.feature(methodName)
+		return owner.formatMethodCall(document, mId, parameters);
+	}
+	
+	protected def EObject formatMethodCall(EObject owner, extension IFormattableDocument document,  Keyword methodName, EObject...parameters){
+		val mId = owner.regionFor.keyword(methodName)
+		return owner.formatMethodCall(document, mId, parameters);
+	}
+	
+	protected def EObject formatMethodCall(EObject owner, extension IFormattableDocument document,  ISemanticRegion methodName, EObject...parameters){
+		methodName.append[noSpace]
+					
+		val open = owner.regionFor.keyword("(") 
+		val close = owner.regionFor.keyword(")")
+		
+		if(open === null || close === null)
+			return owner;
+		
+		if(parameters === null || parameters.length === 0){
+			open.append[noSpace]
+			return owner
+		}
+		
+		if(open.nextHiddenRegion.multiline){
+			open.append[newLine]
+			for(parameter : parameters)
+				parameter.format.immediatelyFollowing.keyword(",").prepend[noSpace].append[newLine]
+			parameters.lastOrNull.append[newLine]
+			interior(open,close, [indent])
+			return owner
+		}
+		
+		open.append[noSpace]
+		for(parameter : parameters)
+			parameter.format.immediatelyFollowing.keyword(",").prepend[noSpace].append[oneSpace]
+		parameters.lastOrNull.append[noSpace]
+		return owner
+	}
+	
+	protected def ISemanticRegion formatOperatorOrRelation(EObject owner, EStructuralFeature opFeature, extension IFormattableDocument document){
+		val operatorRegion = owner.regionFor.feature(opFeature);
+		
+		if(!operatorRegion.previousHiddenRegion.isMultiline)
+			operatorRegion.prepend[oneSpace]
+		else
+			operatorRegion.prepend[setNewLines(0,0,1)]	
+			
+		if(!operatorRegion.nextHiddenRegion.isMultiline)
+			operatorRegion.append[oneSpace]
+		else
+			operatorRegion.append[setNewLines(0,0,1)]
+			
+		return operatorRegion
+	}
+	
+
+			
 	protected static def EObject groupElementWithPrevElement(EObject element, extension IFormattableDocument document,
 		int newLinesOnMatch, int newLinesOnMiss, Class<?>... groupies) {
 		if (groupies === null || groupies.length === 0)
@@ -544,6 +634,17 @@ class GipslFormatter extends GTFormatter {
 
 	protected static def formatChilds(EObject parent, extension IFormattableDocument document) {
 		parent.eContents.forEach[it.format]
+	}
+	
+	// GTFormater fixes
+		
+	override dispatch void format(org.emoflon.ibex.gt.editor.gT.EditorAttributeAssignment attribute, extension IFormattableDocument document) {
+		// No space before and after ".".
+		attribute.regionFor.keyword(".").surround[noSpace]
+
+		// One space before and after the relation.
+		// Fixed: correct feature selection
+		attribute.regionFor.feature(GTPackage.Literals.EDITOR_ATTRIBUTE_CONSTRAINT__RELATION).surround[oneSpace]
 	}
 
 }

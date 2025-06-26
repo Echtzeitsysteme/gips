@@ -56,6 +56,9 @@ Workflow {
 				generateXtendStub = true
 			}
 			formatter = {
+				// needed to generate the formatter bindings
+				generateStub=true
+				// this also suppresses the generation of a Java formatter stub
 				generateXtendStub = true
 			}
 			junitSupport = {

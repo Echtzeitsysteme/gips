@@ -12,6 +12,7 @@ import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
+import org.emoflon.ibex.gt.editor.gT.EditorPatternType;
 import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
 
 public class GipslMappingValidator {
@@ -138,18 +139,25 @@ public class GipslMappingValidator {
 			return;
 		}
 
-		final EditorGTFile container = (EditorGTFile) mapping.eContainer();
-		final Set<EditorPattern> foundPatterns = new HashSet<>();
+		// Only check if context of the given mapping is a rule (and not a pattern)
+		if (mapping.getPattern().getType() == EditorPatternType.PATTERN) {
+			return;
+		}
 
-		container.getMappings().stream().filter(m -> m.getPattern() != null).forEach(m -> {
-			final boolean alreadyUsed = !foundPatterns.add(m.getPattern());
-			if (alreadyUsed) {
-				GipslValidator.err( //
-						String.format(GipslValidatorUtil.RULE_HAS_MULTIPLE_MAPPINGS, m.getPattern().getName()), //
-						GipslPackage.Literals.GIPS_MAPPING__PATTERN //
-				);
-			}
-		});
+		final EditorGTFile container = (EditorGTFile) mapping.eContainer();
+		final Set<EditorPattern> foundRules = new HashSet<>();
+
+		container.getMappings().stream()
+				.filter(m -> m.getPattern() != null && m.getPattern().getType() == EditorPatternType.RULE)
+				.forEach(m -> {
+					final boolean alreadyUsed = !foundRules.add(m.getPattern());
+					if (alreadyUsed) {
+						GipslValidator.err( //
+								String.format(GipslValidatorUtil.RULE_HAS_MULTIPLE_MAPPINGS, m.getPattern().getName()), //
+								GipslPackage.Literals.GIPS_MAPPING__PATTERN //
+						);
+					}
+				});
 	}
 
 	/**

@@ -3,6 +3,8 @@
  */
 package org.emoflon.gips.gipsl.formatting2
 
+import static org.emoflon.gips.gipsl.gipsl.GipslPackage.Literals.*
+
 import com.google.inject.Inject
 import org.eclipse.xtext.formatting2.IFormattableDocument
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile
@@ -64,8 +66,21 @@ import org.eclipse.xtext.formatting2.regionaccess.ITextSegment
 import org.eclipse.xtext.formatting2.IFormatter2
 import java.util.LinkedList
 import java.util.Collections
+import org.eclipse.xtext.formatting2.regionaccess.IComment
+import org.eclipse.xtext.formatting2.ITextReplacer
+import org.eclipse.xtext.AbstractRule
+import org.eclipse.xtext.formatting2.regionaccess.ISemanticRegionsFinder
 
-import static org.emoflon.gips.gipsl.gipsl.GipslPackage.Literals.*
+import org.eclipse.xtext.formatting2.regionaccess.ISemanticRegionFinder
+import org.eclipse.xtext.formatting2.regionaccess.internal.SemanticRegionNullFinder
+import org.eclipse.xtext.formatting2.regionaccess.internal.SemanticRegionInIterableFinder
+import org.eclipse.xtext.formatting2.regionaccess.internal.SemanticRegionIterable
+import org.eclipse.xtext.formatting2.internal.SinglelineDocCommentReplacer
+import org.eclipse.xtext.grammaranalysis.impl.GrammarElementTitleSwitch
+import org.eclipse.xtext.formatting2.internal.MultilineCommentReplacer
+import org.eclipse.xtext.formatting2.internal.SinglelineCodeCommentReplacer
+import org.eclipse.xtext.formatting2.internal.WhitespaceReplacer
+import org.eclipse.xtext.formatting2.IHiddenRegionFormatting
 
 class GipslFormatter extends GTFormatter implements IFormatter2  {
 
@@ -148,7 +163,7 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 		
 		val details = gipsConfig.regionFor.keywordPairs("[","]")
 		for(detail : details){
-			val separators = detail.regionsFor.keyword(",")
+			val separators = detail.regionFor.keywords(",")
 			
 			val start = detail.key.previousHiddenRegion.offset
 			val length = detail.value.endOffset - start
@@ -620,7 +635,8 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 		return last.endOffset - first.offset;
 	}
 	
-	protected def <T1 extends ISemanticRegion, T2 extends ISemanticRegion> Iterable<ISemanticRegion> regionsFor(Pair<T1, T2> pair){
+	@Deprecated
+	protected def <T1 extends ISemanticRegion, T2 extends ISemanticRegion> Iterable<ISemanticRegion> regionsBetweenPair(Pair<T1, T2> pair){
 		if(pair === null)
 			return Collections.emptyList
 		
@@ -633,6 +649,14 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 		return regions
 	}
 	
+	protected def <T1 extends ISemanticRegion, T2 extends ISemanticRegion> ISemanticRegionsFinder regionFor(Pair<T1, T2> pair){
+		if(pair === null)
+			return SemanticRegionNullFinder.INSTANCE
+		val regions = new SemanticRegionIterable(pair.key, pair.value)
+		return new SemanticRegionInIterableFinder(regions)
+	}
+	
+	@Deprecated
 	protected def Iterable<ISemanticRegion> keyword(Iterable<ISemanticRegion> regions, String keyword){
 		val results = new LinkedList<ISemanticRegion>
 		for(region : regions){
@@ -653,6 +677,38 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 		// One space before and after the relation.
 		// Fixed: correct feature selection
 		attribute.regionFor.feature(GTPackage.Literals.EDITOR_ATTRIBUTE_CONSTRAINT__RELATION).surround[oneSpace]
+	}
+	
+	// Keep at most one line between comments intact
+	override ITextReplacer createCommentReplacer(IComment comment){
+		val EObject grammarElement = comment.getGrammarElement()
+		
+		if (grammarElement instanceof AbstractRule) {
+			val String ruleName = (grammarElement as AbstractRule).getName()
+			if (ruleName.startsWith("ML"))
+				return createMultiLineCommentReplacer(comment)
+			if (ruleName.startsWith("SL")) {
+				return createSingleLineCommentReplacer(comment)
+			}
+		}
+		
+		val String elementName = new GrammarElementTitleSwitch().showQualified().showRule().doSwitch(grammarElement);
+		throw new IllegalStateException("No " + typeof(ITextReplacer).getSimpleName() + " configured for " + elementName);
+	}
+	
+	def ITextReplacer createSingleLineCommentReplacer(IComment comment) {
+		if (comment.getLineRegions().get(0).getIndentation().getLength() > 0)
+			return new SinglelineDocCommentReplacer(comment, "//")
+		else
+			return new GipslSinglelineCodeCommentReplacer(comment, "//")
+	}
+	
+	def ITextReplacer createMultiLineCommentReplacer(IComment comment) {
+		return new GipslMultilineCommentReplacer(comment, '*')
+	}
+		
+	override ITextReplacer createWhitespaceReplacer(ITextSegment hiddens, IHiddenRegionFormatting formatting) {
+		return new GipslWhitespaceReplacer(hiddens, formatting);
 	}
 	
 }

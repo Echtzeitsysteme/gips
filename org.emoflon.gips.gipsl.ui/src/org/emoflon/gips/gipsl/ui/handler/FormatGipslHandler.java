@@ -27,14 +27,22 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.Region;
+import org.eclipse.jface.text.formatter.IContentFormatter;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.ui.editor.XtextEditor;
+import org.eclipse.xtext.ui.editor.formatting.IContentFormatterFactory;
+import org.eclipse.xtext.ui.editor.model.XtextDocumentProvider;
+import org.eclipse.xtext.ui.editor.model.XtextDocumentUtil;
 import org.emoflon.gips.gipsl.ui.internal.GipslActivator;
 
 import com.google.inject.Inject;
@@ -46,11 +54,16 @@ public class FormatGipslHandler extends AbstractHandler implements IHandler2 {
 	@Named(Constants.FILE_EXTENSIONS)
 	private String fileExtension;
 
-//	@Inject(optional = true)
-//	private IContentFormatterFactory contentFormatterFactory;
-//
-//	@Inject(optional = true)
-//	private Provider<ContentFormatter> formatter;
+	@Inject(optional = true)
+	private IContentFormatterFactory contentFormatterFactory;
+
+	@Inject(optional = true)
+	private XtextDocumentUtil xtextDocumentUtil;
+
+	@Inject(optional = true)
+	private XtextDocumentProvider provider;
+
+	private IContentFormatter formatter;
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -64,13 +77,17 @@ public class FormatGipslHandler extends AbstractHandler implements IHandler2 {
 				.filter(this::isGipslFile) //
 				.distinct();
 
-		IWorkbenchPage workbenchPage = getWorkbenchPage();
-
 		Job job = new Job("Format") {
 			@Override
 			protected IStatus run(IProgressMonitor pMonitor) {
 				List<IFile> files = filesToBeFormatted.toList();
 				SubMonitor monitor = SubMonitor.convert(pMonitor, files.size());
+
+				if (formatter == null && contentFormatterFactory != null) {
+					formatter = contentFormatterFactory != null
+							? contentFormatterFactory.createConfiguredFormatter(null, null)
+							: null;
+				}
 
 				List<Exception> aggregatedExceptions = new LinkedList<>();
 				for (IFile file : files) {
@@ -78,23 +95,11 @@ public class FormatGipslHandler extends AbstractHandler implements IHandler2 {
 
 					Display.getDefault().syncExec(() -> {
 						try {
-							var editor = IDE.openEditor(workbenchPage, file, true);
-							if (editor instanceof XtextEditor textEditor) {
-								var formatAction = textEditor.getAction("Format");
-								if (formatAction != null) {
-									formatAction.run();
-								} else {
-									throw new ExecutionException("No Formatter found");
-								}
-							} else {
-								throw new ExecutionException("No XtextEditor found");
-							}
+							formatFile(monitor.slice(1), file);
 						} catch (Exception e) {
 							aggregatedExceptions.add(new Exception(file.getFullPath().toOSString(), e));
 						}
 					});
-
-					monitor.worked(1);
 				}
 
 				if (aggregatedExceptions.isEmpty())
@@ -122,6 +127,49 @@ public class FormatGipslHandler extends AbstractHandler implements IHandler2 {
 	@Override
 	public void setEnabled(Object evaluationContext) {
 //		this.setBaseEnabled(formatter != null);
+	}
+
+	private void formatFile(IProgressMonitor monitor, IFile file) throws CoreException, ExecutionException {
+		if (formatter != null) {
+			if (xtextDocumentUtil != null) { // check if it's already loaded somewhere
+				IDocument document = xtextDocumentUtil.getXtextDocument(file);
+				if (document != null) {
+					formatter.format(document, new Region(0, document.getLength()));
+					return; // done!
+				}
+			}
+
+			if (provider != null) { // we need to load it ourselves
+				IEditorInput fileInput = new FileEditorInput(file);
+				try {
+					provider.connect(fileInput);
+					IDocument document = provider.getDocument(fileInput);
+
+					if (document != null) {
+						formatter.format(document, new Region(0, document.getLength()));
+						provider.aboutToChange(fileInput);
+						provider.saveDocument(monitor, fileInput, document, true);
+						provider.changed(fileInput);
+						return; // done!
+					}
+				} finally {
+					provider.disconnect(fileInput);
+				}
+			}
+		}
+
+		// alternative
+		var editor = IDE.openEditor(getWorkbenchPage(), file, true);
+		if (editor instanceof XtextEditor textEditor) {
+			var formatAction = textEditor.getAction("Format");
+			if (formatAction != null) {
+				formatAction.run();
+			} else {
+				throw new ExecutionException("No Formatter found");
+			}
+		} else {
+			throw new ExecutionException("No XtextEditor found");
+		}
 	}
 
 	private IWorkbenchPage getWorkbenchPage() {

@@ -79,41 +79,8 @@ public class FormatGipslHandler extends AbstractHandler implements IHandler2 {
 
 		Job job = new Job("Format") {
 			@Override
-			protected IStatus run(IProgressMonitor pMonitor) {
-				List<IFile> files = filesToBeFormatted.toList();
-				SubMonitor monitor = SubMonitor.convert(pMonitor, files.size());
-
-				if (formatter == null && contentFormatterFactory != null) {
-					formatter = contentFormatterFactory != null
-							? contentFormatterFactory.createConfiguredFormatter(null, null)
-							: null;
-				}
-
-				List<Exception> aggregatedExceptions = new LinkedList<>();
-				for (IFile file : files) {
-					monitor.checkCanceled();
-
-					Display.getDefault().syncExec(() -> {
-						try {
-							formatFile(monitor.slice(1), file);
-						} catch (Exception e) {
-							aggregatedExceptions.add(new Exception(file.getFullPath().toOSString(), e));
-						}
-					});
-				}
-
-				if (aggregatedExceptions.isEmpty())
-					return Status.OK_STATUS;
-
-				String errorMessage = String.format("Unable to format %d file(s)", aggregatedExceptions.size());
-				MultiStatus status = new MultiStatus(GipslActivator.PLUGIN_ID, IStatus.ERROR, errorMessage);
-
-				for (Exception e : aggregatedExceptions) {
-					IStatus childStatus = Status.error(e.getMessage(), e.getCause());
-					status.add(childStatus);
-				}
-
-				return status;
+			protected IStatus run(IProgressMonitor monitor) {
+				return formatJob(monitor, filesToBeFormatted.toList());
 			}
 		};
 		job.setPriority(Job.SHORT);
@@ -127,6 +94,41 @@ public class FormatGipslHandler extends AbstractHandler implements IHandler2 {
 	@Override
 	public void setEnabled(Object evaluationContext) {
 //		this.setBaseEnabled(formatter != null);
+	}
+
+	private IStatus formatJob(IProgressMonitor pMonitor, List<IFile> files) {
+		SubMonitor monitor = SubMonitor.convert(pMonitor, files.size());
+
+		if (formatter == null && contentFormatterFactory != null) {
+			formatter = contentFormatterFactory != null ? contentFormatterFactory.createConfiguredFormatter(null, null)
+					: null;
+		}
+
+		List<Exception> aggregatedExceptions = new LinkedList<>();
+		for (IFile file : files) {
+			monitor.checkCanceled();
+
+			Display.getDefault().syncExec(() -> {
+				try {
+					formatFile(monitor.slice(1), file);
+				} catch (Exception e) {
+					aggregatedExceptions.add(new Exception(file.getFullPath().toOSString(), e));
+				}
+			});
+		}
+
+		if (aggregatedExceptions.isEmpty())
+			return Status.OK_STATUS;
+
+		String errorMessage = String.format("Unable to format %d file(s)", aggregatedExceptions.size());
+		MultiStatus status = new MultiStatus(GipslActivator.PLUGIN_ID, IStatus.ERROR, errorMessage);
+
+		for (Exception e : aggregatedExceptions) {
+			IStatus childStatus = Status.error(e.getMessage(), e.getCause());
+			status.add(childStatus);
+		}
+
+		return status;
 	}
 
 	private void formatFile(IProgressMonitor monitor, IFile file) throws CoreException, ExecutionException {
@@ -147,10 +149,13 @@ public class FormatGipslHandler extends AbstractHandler implements IHandler2 {
 
 					if (document != null) {
 						formatter.format(document, new Region(0, document.getLength()));
-						provider.aboutToChange(fileInput);
-						provider.saveDocument(monitor, fileInput, document, true);
-						provider.changed(fileInput);
-						return; // done!
+						try {
+							provider.aboutToChange(fileInput);
+							provider.saveDocument(monitor, fileInput, document, true);
+							return; // done!
+						} finally {
+							provider.changed(fileInput);
+						}
 					}
 				} finally {
 					provider.disconnect(fileInput);

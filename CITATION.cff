@@ -9,8 +9,8 @@ authors:
     given-names: Maximilian
     orcid: https://orcid.org/0000-0001-7396-7763
 title: Graph-Based (M)ILP Problem Specification Tool
-version: 1.0.0
-date-released: 2022-05-03
+version: 1.5.0
+date-released: 2025-07-04
 repository-code: "https://github.com/Echtzeitsysteme/gips"
 keywords:
   - "virtual network embedding"
@@ -19,8 +19,10 @@ keywords:
   - "eclipse modeling framework"
   - pattern-matching
   - model
+  - metamodel
   - "integer linear programming"
   - "mixed integer linear programming"
   - emoflon
   - "graph transformation"
+  - "optimization"
 license: "GPL-3.0"

@@ -33,6 +33,8 @@ abstract class GeneratorTemplate <CONTEXT extends EObject>{
 		val path = data.apiData.project.getLocation().toPortableString() + "/" + filePath;
 		val file = new File(path);
 		Files.write(file.toPath(), code.getBytes());
+		
+		data.traceMap.map(context, filePath);
 	}
 
 	def boolean isMappingVariable(Variable variable) {

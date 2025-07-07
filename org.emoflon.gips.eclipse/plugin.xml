@@ -35,6 +35,16 @@
 						</reference>
 					</visibleWhen>
 				</command>
+				<command
+					commandId="org.eclipse.xtext.ui.OpenGeneratedFileCommand"
+					style="push">
+					<visibleWhen
+						checkEnabled="false">
+						<reference
+							definitionId="isGIPSLEditorActive">
+						</reference>
+					</visibleWhen>
+				</command>
 				<separator
 					name="additions">
 				</separator>
@@ -108,6 +118,12 @@
 			defaultHandler="org.emoflon.gips.eclipse.handler.ReloadCodeMiningHandler"
 			id="org.emoflon.gips.eclipse.command.reloadcodemining"
 			name="Reload Code Mining">
+		</command>
+		<command
+			categoryId="org.emoflon.gips.eclipse.category"
+			defaultHandler="org.emoflon.gips.eclipse.handler.OpenGeneratedJavaFileHandler"
+			id="org.emoflon.gips.eclipse.command.openjavafile"
+			name="Open generated Java code">
 		</command>
 	</extension>
 	<extension
@@ -228,6 +244,18 @@
 				</with>
 			</enabledWhen>
 		</codeMiningProvider>
+	</extension>
+	<extension
+		point="org.eclipse.ui.handlers">
+		<handler
+			class="org.emoflon.gips.eclipse.handler.OpenGeneratedJavaFileHandler"
+			commandId="org.eclipse.xtext.ui.OpenGeneratedFileCommand">
+			<activeWhen>
+				<reference
+					definitionId="isGIPSLEditorActive">
+				</reference>
+			</activeWhen>
+		</handler>
 	</extension>
 
 </plugin>

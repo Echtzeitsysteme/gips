@@ -45,6 +45,31 @@
 						</reference>
 					</visibleWhen>
 				</command>
+				<command
+					commandId="org.emoflon.gips.eclipse.command.opengipsl4java"
+					style="push">
+					<visibleWhen
+						checkEnabled="false">
+						<or>
+							<reference
+								definitionId="isJavaEditorActive">
+							</reference>
+							<with
+								variable="activeMenuSelection">
+								<iterate
+									ifEmpty="false">
+									<adapt
+										type="org.eclipse.core.resources.IResource">
+										<test
+											property="org.eclipse.core.resources.extension"
+											value="java">
+										</test>
+									</adapt>
+								</iterate>
+							</with>
+						</or>
+					</visibleWhen>
+				</command>
 				<separator
 					name="additions">
 				</separator>
@@ -93,6 +118,20 @@
 				id="org.emoflon.gips.eclipse.view.delete">
 			</dynamic>
 		</menuContribution>
+		<menuContribution
+			allPopups="false"
+			locationURI="popup:#CompilationUnitEditorContext?after=OpenEditor">
+			<command
+				commandId="org.emoflon.gips.eclipse.command.opengipsl4java"
+				style="push">
+				<visibleWhen
+					checkEnabled="false">
+					<instanceof
+						value="placeholder">
+					</instanceof>
+				</visibleWhen>
+			</command>
+		</menuContribution>
 	</extension>
 	<extension
 		point="org.eclipse.ui.commands">
@@ -121,9 +160,9 @@
 		</command>
 		<command
 			categoryId="org.emoflon.gips.eclipse.category"
-			defaultHandler="org.emoflon.gips.eclipse.handler.OpenGeneratedJavaFileHandler"
-			id="org.emoflon.gips.eclipse.command.openjavafile"
-			name="Open generated Java code">
+			defaultHandler="org.emoflon.gips.eclipse.handler.OpenGIPSLElementHandler"
+			id="org.emoflon.gips.eclipse.command.opengipsl4java"
+			name="Open GIPSL">
 		</command>
 	</extension>
 	<extension
@@ -226,6 +265,15 @@
 				variable="activePartId">
 				<equals
 					value="org.emoflon.gips.eclipse.CplexLp">
+				</equals>
+			</with>
+		</definition>
+		<definition
+			id="isJavaEditorActive">
+			<with
+				variable="activePartId">
+				<equals
+					value="org.eclipse.jdt.ui.CompilationUnitEditor">
 				</equals>
 			</with>
 		</definition>

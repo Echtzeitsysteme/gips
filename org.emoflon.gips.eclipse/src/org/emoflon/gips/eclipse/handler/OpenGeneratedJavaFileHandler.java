@@ -32,16 +32,19 @@ import org.emoflon.gips.eclipse.api.ITraceSelection;
 
 public class OpenGeneratedJavaFileHandler extends AbstractHandler {
 
+	public static final String JAVA_MODEL_ID = "java";
+
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchPage page = HandlerUtil.getActiveWorkbenchWindowChecked(event).getActivePage();
 		IProject project = getProject(event);
-		if (project == null)
-			return new ExecutionException("Unable to identify eclipse project for given editor");
 
 		Job job = new Job("Open generated file") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
+				if (project == null)
+					return Status.error("Unable to identify eclipse project for given editor.");
+
 				return openFiles(page, project, monitor);
 			}
 		};
@@ -54,16 +57,13 @@ public class OpenGeneratedJavaFileHandler extends AbstractHandler {
 	}
 
 	private IStatus openFiles(IWorkbenchPage page, IProject project, IProgressMonitor monitor) {
-		if (project == null)
-			return Status.error("Unable to identify eclipse project for given editor.");
-
 		if (!ITraceManager.getInstance().doesContextExist(project.getName()))
 			return Status.error(
 					"No generated files were found. Ensure that tracing is enabled and re-save the GIPSL specification.");
 
 		ITraceContext context = ITraceManager.getInstance().getContext(project.getName());
 		ITraceSelection traceSelection = context.getSelectedElements();
-		IModelLink link = context.getModelChain(traceSelection.getModelId(), "java");
+		IModelLink link = context.getModelChain(traceSelection.getModelId(), JAVA_MODEL_ID);
 
 		Collection<IStatus> aggregatedStatuses = new LinkedList<>();
 		for (String selectedElement : traceSelection.getElementIds()) {

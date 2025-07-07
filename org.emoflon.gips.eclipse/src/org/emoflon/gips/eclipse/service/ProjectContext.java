@@ -232,8 +232,7 @@ public final class ProjectContext implements ITraceContext {
 		if (!graph.hasModelReference(modelId))
 			throw new TraceModelNotFoundException(modelId);
 
-		if (manager.isVisualisationActive())
-			fireModelSelectionNotification(modelId, elementIds);
+		fireModelSelectionNotification(modelId, elementIds);
 	}
 
 	@Override

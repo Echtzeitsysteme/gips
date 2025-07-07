@@ -40,6 +40,8 @@ public interface ITraceContext {
 
 	boolean hasModelValuesFor(String modelId);
 
+	ITraceSelection getSelectedElements();
+
 	/**
 	 * 
 	 * 

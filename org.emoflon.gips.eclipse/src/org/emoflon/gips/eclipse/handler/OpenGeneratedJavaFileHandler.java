@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -39,7 +40,7 @@ public class OpenGeneratedJavaFileHandler extends AbstractHandler {
 		IWorkbenchPage page = HandlerUtil.getActiveWorkbenchWindowChecked(event).getActivePage();
 		IProject project = getProject(event);
 
-		Job job = new Job("Open generated file") {
+		Job job = new Job(getJobName(event, "Open generated file")) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				if (project == null)
@@ -99,6 +100,14 @@ public class OpenGeneratedJavaFileHandler extends AbstractHandler {
 		for (IStatus e : aggregatedStatuses)
 			status.add(e);
 		return status;
+	}
+
+	private String getJobName(ExecutionEvent event, String defaultName) {
+		try {
+			return event.getCommand().getName();
+		} catch (NotDefinedException e) {
+			return defaultName;
+		}
 	}
 
 	private IProject getProject(ExecutionEvent event) throws ExecutionException {

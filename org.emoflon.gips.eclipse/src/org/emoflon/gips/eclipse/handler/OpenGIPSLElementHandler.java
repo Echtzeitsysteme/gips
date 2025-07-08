@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -39,7 +40,7 @@ public class OpenGIPSLElementHandler extends AbstractHandler {
 		IResource resource = getResource(event);
 		IWorkbenchPage page = HandlerUtil.getActiveWorkbenchWindowChecked(event).getActivePage();
 
-		Job job = new Job("Show GIPSL Element") {
+		Job job = new Job(getJobName(event, "Show GIPS")) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				if (resource == null)
@@ -54,7 +55,6 @@ public class OpenGIPSLElementHandler extends AbstractHandler {
 		job.setUser(true);
 		job.schedule();
 
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -81,6 +81,14 @@ public class OpenGIPSLElementHandler extends AbstractHandler {
 		}
 
 		return null;
+	}
+
+	private String getJobName(ExecutionEvent event, String defaultName) {
+		try {
+			return event.getCommand().getName();
+		} catch (NotDefinedException e) {
+			return defaultName;
+		}
 	}
 
 	private IStatus showGIPSLElement(IWorkbenchPage page, IProject project, IPath javaFile, IProgressMonitor monitor) {

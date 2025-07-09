@@ -484,13 +484,6 @@
     <handler
           class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.emoflon.gips.gipsl.ui.handler.FormatGipslHandler"
           commandId="org.eclipse.xtext.ui.FormatAction">
-       <activeWhen>
-          <with
-                variable="activePartId">
-             <equals
-                   value="org.eclipse.ui.navigator.ProjectExplorer">
-             </equals>
-          </with></activeWhen>
     </handler>
  </extension>
  <extension

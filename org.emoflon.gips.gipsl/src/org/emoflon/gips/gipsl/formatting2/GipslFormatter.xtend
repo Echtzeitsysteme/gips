@@ -82,7 +82,7 @@ import org.eclipse.xtext.formatting2.internal.SinglelineCodeCommentReplacer
 import org.eclipse.xtext.formatting2.internal.WhitespaceReplacer
 import org.eclipse.xtext.formatting2.IHiddenRegionFormatting
 
-class GipslFormatter extends GTFormatter implements IFormatter2  {
+class GipslFormatter extends GTFormatter implements IFormatter2 {
 
 	@Inject extension GipslGrammarAccess
 
@@ -105,30 +105,31 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 		// Each element needs to be checked on a case-by-case basis.
 		// To make this work, each element can only modify the hidden region 'in front' of itself; 
 		// otherwise, a ConflictingRegionsException might be triggered.
-		for (editorPattern : editorGTFile.patterns) 
+		for (editorPattern : editorGTFile.patterns)
 			editorPattern.format.prepend[newLines = 2]
-		
+
 		for (editorCondition : editorGTFile.conditions)
 			editorCondition.format.prepend[newLines = 2]
-		
-		for (gipsMapping : editorGTFile.mappings) 
-			gipsMapping.format.prepend[newLines = 2]	
-		
-		for (gipsConstraint : editorGTFile.constraints) 
-			gipsConstraint.format.prepend[newLines = 2]	
-		
+
+		for (gipsMapping : editorGTFile.mappings)
+			gipsMapping.format.prepend[newLines = 2]
+
+		for (gipsConstraint : editorGTFile.constraints)
+			gipsConstraint.format.prepend[newLines = 2]
+
 		for (gipsConstant : editorGTFile.constants)
-			gipsConstant.format.prepend[newLines = 2]	
-		
+			gipsConstant.format.prepend[newLines = 2]
+
 		for (gipsLinearFunction : editorGTFile.functions)
-			gipsLinearFunction.format.prepend[newLines = 2]			
-		
+			gipsLinearFunction.format.prepend[newLines = 2]
+
 		editorGTFile.objective.format.prepend[newLines = 2]
 
 		editorGTFile.append[newLine]
 	}
 
-	def dispatch void format(org.emoflon.gips.gipsl.gipsl.Package gipsPackage, extension IFormattableDocument document) {
+	def dispatch void format(org.emoflon.gips.gipsl.gipsl.Package gipsPackage,
+		extension IFormattableDocument document) {
 		gipsPackage.regionFor.keyword(packageAccess.packageKeyword_0).append[oneSpace]
 	}
 
@@ -141,42 +142,45 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 		gipsConfig.regionFor.keyword(gipsConfigAccess.configKeyword_1).append[oneSpace]
 		gipsConfig.regionFor.keyword(gipsConfigAccess.leftCurlyBracketKeyword_2).append[noSpace; newLine]
 
-		val body = gipsConfig.regionFor.keywordPairs(gipsConfigAccess.leftCurlyBracketKeyword_2, gipsConfigAccess.rightCurlyBracketKeyword_16)
-		if (body.size > 0)
+		val body = gipsConfig.regionFor.keywordPairs(gipsConfigAccess.leftCurlyBracketKeyword_2,
+			gipsConfigAccess.rightCurlyBracketKeyword_16)
+		if(body.size > 0)
 			body.get(0).interior[indent]
 
 		gipsConfig.regionFor.keywords(":=").forEach[surround[oneSpace]]
 
 		gipsConfig.regionFor.keyword(gipsConfigAccess.rightCurlyBracketKeyword_16).prepend[newLine]
-		
-		val details = gipsConfig.regionFor.keywordPairs("[","]")
-		for(detail : details){
+
+		val details = gipsConfig.regionFor.keywordPairs("[", "]")
+		for (detail : details) {
 			val separators = detail.regionFor.keywords(",")
-			
+
 			val start = detail.key.previousHiddenRegion.offset
 			val length = detail.value.endOffset - start
-							
-			document.formatConditionally(start, length,
-				[doc |
+
+			document.formatConditionally(
+				start,
+				length,
+				[ doc |
 					val extension subdoc = doc.requireFitsInLine
-					
-					detail.key.prepend[oneSpace].append[noSpace]		
+
+					detail.key.prepend[oneSpace].append[noSpace]
 					detail.value.prepend[noSpace]
-					
-					for(separator : separators)
+
+					for (separator : separators)
 						separator.prepend[noSpace].append[oneSpace]
 				],
-				[extension subdoc |
-					detail.key.prepend[oneSpace].append[newLine]		
+				[ extension subdoc |
+					detail.key.prepend[oneSpace].append[newLine]
 					detail.value.prepend[newLine]
 					detail.interior([indent])
-					
-					for(separator : separators)
+
+					for (separator : separators)
 						separator.prepend[noSpace].append[newLine]
 				]
 			)
 		}
-		
+
 		gipsConfig.regionFor.keywords(";").forEach[prepend[noSpace].append[newLine]]
 	}
 
@@ -185,11 +189,12 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 		gipsMapping.regionFor.keyword(gipsMappingAccess.toKeyword_2).surround[oneSpace]
 
 		val moreThanOneVariable = gipsMapping.variables.length > 1
-		if (moreThanOneVariable) {
+		if(moreThanOneVariable) {
 			gipsMapping.regionFor.keyword(gipsMappingAccess.leftCurlyBracketKeyword_4_0).prepend[oneSpace]
 
-			val body = gipsMapping.regionFor.keywordPairs(gipsMappingAccess.leftCurlyBracketKeyword_4_0, gipsMappingAccess.rightCurlyBracketKeyword_4_2)
-			if (body.length > 0)
+			val body = gipsMapping.regionFor.keywordPairs(gipsMappingAccess.leftCurlyBracketKeyword_4_0,
+				gipsMappingAccess.rightCurlyBracketKeyword_4_2)
+			if(body.length > 0)
 				body.get(0).interior[indent]
 
 			for (gipsMappingVariable : gipsMapping.variables)
@@ -230,7 +235,7 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 
 		val body = gipsConstraint.regionFor.keywordPairs(gipsConstraintAccess.leftCurlyBracketKeyword_2,
 			gipsConstraintAccess.rightCurlyBracketKeyword_5)
-		if (body.size > 0)
+		if(body.size > 0)
 			body.get(0).interior[indent]
 
 		for (gipsConstant : gipsConstraint.constants)
@@ -244,8 +249,9 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 		gipsLinearFunction.regionFor.keyword(gipsLinearFunctionAccess.withKeyword_2).surround[oneSpace]
 		gipsLinearFunction.regionFor.keyword(gipsLinearFunctionAccess.leftCurlyBracketKeyword_4).prepend[oneSpace]
 
-		val body = gipsLinearFunction.regionFor.keywordPairs(gipsLinearFunctionAccess.leftCurlyBracketKeyword_4, gipsLinearFunctionAccess.rightCurlyBracketKeyword_7)
-		if (body.size > 0)
+		val body = gipsLinearFunction.regionFor.keywordPairs(gipsLinearFunctionAccess.leftCurlyBracketKeyword_4,
+			gipsLinearFunctionAccess.rightCurlyBracketKeyword_7)
+		if(body.size > 0)
 			body.get(0).interior[indent]
 
 		for (gipsConstant : gipsLinearFunction.constants)
@@ -261,8 +267,9 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 		gipsObjective.regionFor.keyword(gipsObjectiveAccess.colonKeyword_1).surround[oneSpace]
 		gipsObjective.regionFor.keyword(gipsObjectiveAccess.leftCurlyBracketKeyword_3).prepend[oneSpace]
 
-		val body = gipsObjective.regionFor.keywordPairs(gipsObjectiveAccess.leftCurlyBracketKeyword_3, gipsObjectiveAccess.rightCurlyBracketKeyword_6)
-		if (body.size > 0)
+		val body = gipsObjective.regionFor.keywordPairs(gipsObjectiveAccess.leftCurlyBracketKeyword_3,
+			gipsObjectiveAccess.rightCurlyBracketKeyword_6)
+		if(body.size > 0)
 			body.get(0).interior[indent]
 
 		for (gipsConstant : gipsObjective.constants)
@@ -329,7 +336,7 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 		expr.operand.format
 
 		val isMultiLine = expr.operand.previousHiddenRegion.isMultiline
-		if (isMultiLine) {
+		if(isMultiLine) {
 			expr.interior[indent]
 			expr.operand.surround[newLine]
 		} else {
@@ -372,7 +379,7 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 		expr.expression.format
 	}
 
-	def dispatch void format(GipsSetElementExpression expr,	extension IFormattableDocument document) {
+	def dispatch void format(GipsSetElementExpression expr, extension IFormattableDocument document) {
 		expr.regionFor.keyword(gipsSetElementExpressionAccess.elementKeyword_1).append[noSpace]
 		expr.expression.format
 	}
@@ -400,7 +407,7 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 
 	def dispatch void format(GipsSetExpression expr, extension IFormattableDocument document) {
 		val arrowOperator = expr.regionFor.keyword(gipsSetExpressionAccess.hyphenMinusGreaterThanSignKeyword_1)
-		if (arrowOperator.nextHiddenRegion.isMultiline) {
+		if(arrowOperator.nextHiddenRegion.isMultiline) {
 			arrowOperator.append[newLine]
 			document.set(arrowOperator.nextHiddenRegion, expr.nextHiddenRegion, [indent]);
 		} else {
@@ -491,15 +498,15 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 		val open = owner.regionFor.keyword("(")
 		val close = owner.regionFor.keyword(")")
 
-		if (open === null || close === null)
+		if(open === null || close === null)
 			return owner;
 
-		if (parameters === null || parameters.length === 0) {
+		if(parameters === null || parameters.length === 0) {
 			open.append[noSpace]
 			return owner
 		}
 
-		if (open.nextHiddenRegion.multiline) {
+		if(open.nextHiddenRegion.multiline) {
 			open.append[newLine]
 			for (parameter : parameters)
 				parameter.format.immediatelyFollowing.keyword(",").prepend[noSpace].append[newLine]
@@ -519,12 +526,12 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 		extension IFormattableDocument document) {
 		val operatorRegion = owner.regionFor.feature(opFeature);
 
-		if (!operatorRegion.previousHiddenRegion.isMultiline)
+		if(!operatorRegion.previousHiddenRegion.isMultiline)
 			operatorRegion.prepend[oneSpace]
 		else
 			operatorRegion.prepend[newLine]
 
-		if (!operatorRegion.nextHiddenRegion.isMultiline)
+		if(!operatorRegion.nextHiddenRegion.isMultiline)
 			operatorRegion.append[oneSpace]
 		else
 			operatorRegion.append[newLine]
@@ -534,16 +541,16 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 
 	protected static def EObject groupElementWithPrevElement(EObject element, extension IFormattableDocument document,
 		int newLinesOnMatch, int newLinesOnMiss, Class<?>... groupies) {
-		if (groupies === null || groupies.length === 0)
+		if(groupies === null || groupies.length === 0)
 			return element
 
-		if (element.previousSibling.instanceOf(groupies))
+		if(element.previousSibling.instanceOf(groupies))
 			element.prepend[newLines = newLinesOnMatch]
 		else
 			element.prepend[newLines = newLinesOnMiss]
 
 		return element
-	}	
+	}
 
 	/**
 	 * Stolen from {@link GTFormatter#formatList}
@@ -555,20 +562,20 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 	protected static def void formatList(List<? extends EObject> items, extension IFormattableDocument document,
 		int newLinesBeforeFirst, int newLinesBetweenItems, int newLinesAfterLastItem) {
 
-		if (items.size() == 0)
+		if(items.size() == 0)
 			return;
 
-		if (newLinesBeforeFirst >= 0)
+		if(newLinesBeforeFirst >= 0)
 			items.get(0).prepend[newLines = newLinesBeforeFirst]
 
 		for (var index = 0; index < items.size(); index++)
 			items.get(index).format
 
-		if (newLinesBetweenItems >= 0)
+		if(newLinesBetweenItems >= 0)
 			for (var index = 0; index < items.size() - 1; index++)
 				items.get(index).append[newLines = newLinesBetweenItems]
 
-		if (newLinesAfterLastItem >= 0)
+		if(newLinesAfterLastItem >= 0)
 			items.get(items.size() - 1).append[newLines = newLinesAfterLastItem]
 	}
 
@@ -577,44 +584,44 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 	}
 
 	protected static def EObject getPreviousSibling(EObject element) {
-		if (element === null)
+		if(element === null)
 			return null;
 
 		val elementTextNode = NodeModelUtils.findActualNodeFor(element)
 		val previousTextNode = elementTextNode.previousSibling
-		if (previousTextNode === null)
+		if(previousTextNode === null)
 			return null;
 
 		return NodeModelUtils.findActualSemanticObjectFor(previousTextNode)
 	}
 
 	protected static def EObject getNextSibling(EObject element) {
-		if (element === null)
+		if(element === null)
 			return null;
 
 		val elementTextNode = NodeModelUtils.findActualNodeFor(element)
 		val previousTextNode = elementTextNode.nextSibling
-		if (previousTextNode === null)
+		if(previousTextNode === null)
 			return null;
 
 		return NodeModelUtils.findActualSemanticObjectFor(previousTextNode)
 	}
 
 	protected static def boolean instanceOf(EObject element, Class<?>... types) {
-		if (element === null)
+		if(element === null)
 			return false
 
-		if (types === null || types.length === 0)
+		if(types === null || types.length === 0)
 			return true
 
 		for (Class<?> type : types) {
-			if (type.isInstance(element))
+			if(type.isInstance(element))
 				return true;
 		}
 
 		return false
 	}
-	
+
 	protected def int getMaxLineWidth() {
 		this.request.preferences.getPreference(FormatterPreferenceKeys.maxLineWidth);
 	}
@@ -622,32 +629,34 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 	protected def int getLength(ITextSegment first, ITextSegment last) {
 		return last.endOffset - first.offset;
 	}
-	
+
 	@Deprecated
-	protected def <T1 extends ISemanticRegion, T2 extends ISemanticRegion> Iterable<ISemanticRegion> regionsBetweenPair(Pair<T1, T2> pair){
+	protected def <T1 extends ISemanticRegion, T2 extends ISemanticRegion> Iterable<ISemanticRegion> regionsBetweenPair(
+		Pair<T1, T2> pair) {
 		if(pair === null)
 			return Collections.emptyList
-		
-		val regions = new LinkedList<ISemanticRegion>		
+
+		val regions = new LinkedList<ISemanticRegion>
 		var currentRegion = pair.key.nextSemanticRegion
-		while(currentRegion !== null && currentRegion.endOffset < pair.value.offset){
+		while(currentRegion !== null && currentRegion.endOffset < pair.value.offset) {
 			regions.add(currentRegion)
 			currentRegion = currentRegion.nextSemanticRegion
-		}		
+		}
 		return regions
 	}
-	
-	protected def <T1 extends ISemanticRegion, T2 extends ISemanticRegion> ISemanticRegionsFinder regionFor(Pair<T1, T2> pair){
+
+	protected def <T1 extends ISemanticRegion, T2 extends ISemanticRegion> ISemanticRegionsFinder regionFor(
+		Pair<T1, T2> pair) {
 		if(pair === null)
 			return SemanticRegionNullFinder.INSTANCE
 		val regions = new SemanticRegionIterable(pair.key, pair.value)
 		return new SemanticRegionInIterableFinder(regions)
 	}
-	
+
 	@Deprecated
-	protected def Iterable<ISemanticRegion> keyword(Iterable<ISemanticRegion> regions, String keyword){
+	protected def Iterable<ISemanticRegion> keyword(Iterable<ISemanticRegion> regions, String keyword) {
 		val results = new LinkedList<ISemanticRegion>
-		for(region : regions){
+		for (region : regions) {
 			val grammarElement = region.grammarElement
 			if(grammarElement instanceof Keyword)
 				if(keyword.equals(grammarElement.value))
@@ -655,7 +664,7 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 		}
 		return results
 	}
-	
+
 	// GTFormater fixes
 	override dispatch void format(org.emoflon.ibex.gt.editor.gT.EditorAttributeAssignment attribute,
 		extension IFormattableDocument document) {
@@ -666,37 +675,38 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 		// Fixed: correct feature selection
 		attribute.regionFor.feature(GTPackage.Literals.EDITOR_ATTRIBUTE_CONSTRAINT__RELATION).surround[oneSpace]
 	}
-	
+
 	// Keep at most one line between comments intact
-	override ITextReplacer createCommentReplacer(IComment comment){
+	override ITextReplacer createCommentReplacer(IComment comment) {
 		val EObject grammarElement = comment.getGrammarElement()
-		
-		if (grammarElement instanceof AbstractRule) {
+
+		if(grammarElement instanceof AbstractRule) {
 			val String ruleName = (grammarElement as AbstractRule).getName()
-			if (ruleName.startsWith("ML"))
+			if(ruleName.startsWith("ML"))
 				return createMultiLineCommentReplacer(comment)
-			if (ruleName.startsWith("SL")) {
+			if(ruleName.startsWith("SL")) {
 				return createSingleLineCommentReplacer(comment)
 			}
 		}
-		
+
 		val String elementName = new GrammarElementTitleSwitch().showQualified().showRule().doSwitch(grammarElement);
-		throw new IllegalStateException("No " + typeof(ITextReplacer).getSimpleName() + " configured for " + elementName);
+		throw new IllegalStateException("No " + typeof(ITextReplacer).getSimpleName() + " configured for " +
+			elementName);
 	}
-	
+
 	def ITextReplacer createSingleLineCommentReplacer(IComment comment) {
-		if (comment.getLineRegions().get(0).getIndentation().getLength() > 0)
+		if(comment.getLineRegions().get(0).getIndentation().getLength() > 0)
 			return new SinglelineDocCommentReplacer(comment, "//")
 		else
 			return new GipslSinglelineCodeCommentReplacer(comment, "//")
 	}
-	
+
 	def ITextReplacer createMultiLineCommentReplacer(IComment comment) {
 		return new GipslMultilineCommentReplacer(comment, '*')
 	}
-		
+
 	override ITextReplacer createWhitespaceReplacer(ITextSegment hiddens, IHiddenRegionFormatting formatting) {
 		return new GipslWhitespaceReplacer(hiddens, formatting);
 	}
-	
+
 }

@@ -696,7 +696,7 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 
 	def ITextReplacer createSingleLineCommentReplacer(IComment comment) {
 		if(comment.getLineRegions().get(0).getIndentation().getLength() > 0)
-			return new SinglelineDocCommentReplacer(comment, "//")
+			return new GipslSinglelineDocCommentReplacer(comment, "//")
 		else
 			return new GipslSinglelineCodeCommentReplacer(comment, "//")
 	}

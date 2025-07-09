@@ -127,15 +127,14 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 
 		for (gipsConstant : editorGTFile.constants) {
 			gipsConstant.format
+			gipsConstant.groupElementWithPrevElement(document, 1, 2, GipsConstant)
 		}
 
 		for (gipsLinearFunction : editorGTFile.functions) {
-			gipsLinearFunction.format
-			gipsLinearFunction.groupElementWithPrevElement(document, 1, 2, GipsLinearFunction, GipsObjective)
+			gipsLinearFunction.format.prepend[newLines = 2]			
 		}
 
-		editorGTFile.objective.format
-		editorGTFile.objective.groupElementWithPrevElement(document, 1, 2, GipsLinearFunction)
+		editorGTFile.objective.format.prepend[newLines = 2]
 
 		editorGTFile.append[newLine]
 	}

@@ -105,35 +105,24 @@ class GipslFormatter extends GTFormatter implements IFormatter2  {
 		// Each element needs to be checked on a case-by-case basis.
 		// To make this work, each element can only modify the hidden region 'in front' of itself; 
 		// otherwise, a ConflictingRegionsException might be triggered.
-		for (editorPattern : editorGTFile.patterns) {
-			editorPattern.format
-			editorPattern.groupElementWithPrevElement(document, 1, 2, EditorCondition)
-		}
-
-		for (editorCondition : editorGTFile.conditions) {
-			editorCondition.format
-			editorCondition.groupElementWithPrevElement(document, 1, 2, EditorCondition)
-		}
-
-		for (gipsMapping : editorGTFile.mappings) {
-			gipsMapping.format
-			gipsMapping.groupElementWithPrevElement(document, 1, 2, GipsMapping)
-		}
-
-		for (gipsConstraint : editorGTFile.constraints) {
-			gipsConstraint.format
-			gipsConstraint.groupElementWithPrevElement(document, 1, 2, GipsMapping)
-		}
-
-		for (gipsConstant : editorGTFile.constants) {
-			gipsConstant.format
-			gipsConstant.groupElementWithPrevElement(document, 1, 2, GipsConstant)
-		}
-
-		for (gipsLinearFunction : editorGTFile.functions) {
+		for (editorPattern : editorGTFile.patterns) 
+			editorPattern.format.prepend[newLines = 2]
+		
+		for (editorCondition : editorGTFile.conditions)
+			editorCondition.format.prepend[newLines = 2]
+		
+		for (gipsMapping : editorGTFile.mappings) 
+			gipsMapping.format.prepend[newLines = 2]	
+		
+		for (gipsConstraint : editorGTFile.constraints) 
+			gipsConstraint.format.prepend[newLines = 2]	
+		
+		for (gipsConstant : editorGTFile.constants)
+			gipsConstant.format.prepend[newLines = 2]	
+		
+		for (gipsLinearFunction : editorGTFile.functions)
 			gipsLinearFunction.format.prepend[newLines = 2]			
-		}
-
+		
 		editorGTFile.objective.format.prepend[newLines = 2]
 
 		editorGTFile.append[newLine]

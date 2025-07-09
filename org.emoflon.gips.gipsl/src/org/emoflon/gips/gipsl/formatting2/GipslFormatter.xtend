@@ -188,8 +188,8 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 		gipsMapping.regionFor.keyword(gipsMappingAccess.mappingKeyword_0).append[oneSpace]
 		gipsMapping.regionFor.keyword(gipsMappingAccess.toKeyword_2).surround[oneSpace]
 
-		val moreThanOneVariable = gipsMapping.variables.length > 1
-		if(moreThanOneVariable) {
+//		val moreThanOneVariable = gipsMapping.variables.length > 1
+//		if(moreThanOneVariable) {
 			gipsMapping.regionFor.keyword(gipsMappingAccess.leftCurlyBracketKeyword_4_0).prepend[oneSpace]
 
 			val body = gipsMapping.regionFor.keywordPairs(gipsMappingAccess.leftCurlyBracketKeyword_4_0,
@@ -201,11 +201,11 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 				gipsMappingVariable.format.surround[newLine]
 
 			gipsMapping.regionFor.keyword(gipsMappingAccess.rightCurlyBracketKeyword_4_2).prepend[noSpace]
-		} else {
-			gipsMapping.regionFor.keyword(gipsMappingAccess.leftCurlyBracketKeyword_4_0).surround[oneSpace]
-			for (gipsMappingVariable : gipsMapping.variables)
-				gipsMappingVariable.format.append[oneSpace]
-		}
+//		} else {
+//			gipsMapping.regionFor.keyword(gipsMappingAccess.leftCurlyBracketKeyword_4_0).surround[oneSpace]
+//			for (gipsMappingVariable : gipsMapping.variables)
+//				gipsMappingVariable.format.append[oneSpace]
+//		}
 
 		gipsMapping.regionFor.keyword(gipsMappingAccess.semicolonKeyword_5).prepend[noSpace]
 	}

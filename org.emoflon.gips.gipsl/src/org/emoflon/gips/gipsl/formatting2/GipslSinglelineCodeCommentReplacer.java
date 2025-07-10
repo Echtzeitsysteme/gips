@@ -5,8 +5,11 @@ import org.eclipse.xtext.formatting2.internal.SinglelineCodeCommentReplacer;
 import org.eclipse.xtext.formatting2.internal.WhitespaceReplacer;
 import org.eclipse.xtext.formatting2.regionaccess.IComment;
 import org.eclipse.xtext.formatting2.regionaccess.ITextSegment;
+import org.eclipse.xtext.formatting2.regionaccess.internal.TextSegment;
 
 public class GipslSinglelineCodeCommentReplacer extends SinglelineCodeCommentReplacer {
+
+//	private Integer addIndentation;
 
 	public GipslSinglelineCodeCommentReplacer(IComment comment, String prefix) {
 		super(comment, prefix);
@@ -14,6 +17,11 @@ public class GipslSinglelineCodeCommentReplacer extends SinglelineCodeCommentRep
 
 	@Override
 	public ITextReplacerContext createReplacements(ITextReplacerContext context) {
+//		if (addIndentation != null) {
+//			String indentation = context.getIndentationString(addIndentation);
+//			context.addReplacement(getTextSegmentBeforePrefix().replaceWith(indentation));
+//		}
+
 		ITextSegment firstSpace = getFirstSpace();
 		if (firstSpace != null) {
 			if (hasEmptyBody())
@@ -21,19 +29,28 @@ public class GipslSinglelineCodeCommentReplacer extends SinglelineCodeCommentRep
 			else
 				context.addReplacement(firstSpace.replaceWith(" "));
 		}
+
 		return context;
 	}
 
 	@Override
 	public void configureWhitespace(WhitespaceReplacer leading, WhitespaceReplacer trailing) {
-		leading.getFormatting().setNoIndentation(true);
-		leading.getFormatting().setNewLinesMin(1);
+		leading.getFormatting().setNewLinesDefault(0);
+		leading.getFormatting().setNewLinesMin(0);
 		leading.getFormatting().setNewLinesMax(2);
-		leading.getFormatting().setNewLinesDefault(1);
 
+		trailing.getFormatting().setNewLinesDefault(1);
 		trailing.getFormatting().setNewLinesMin(1);
 		trailing.getFormatting().setNewLinesMax(2);
-		trailing.getFormatting().setNewLinesDefault(1);
+
+//		var leadingIndentation = leading.getFormatting().getIndentationDecrease();
+//		var trailingIndentation = trailing.getFormatting().getIndentationIncrease();
+//		this.addIndentation = trailingIndentation != null ? trailingIndentation : leadingIndentation;
+	}
+
+	protected ITextSegment getTextSegmentBeforePrefix() {
+		IComment comment = getComment();
+		return new TextSegment(comment.getTextRegionAccess(), comment.getOffset(), 0);
 	}
 
 }

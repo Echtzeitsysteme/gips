@@ -12,8 +12,7 @@ public class GipslMultilineCommentReplacer extends MultilineCommentReplacer {
 
 	@Override
 	public void configureWhitespace(WhitespaceReplacer leading, WhitespaceReplacer trailing) {
-		leading.getFormatting().setNoIndentation(true);
-		leading.getFormatting().setNewLinesMin(1);
+		leading.getFormatting().setNewLinesMin(0);
 		leading.getFormatting().setNewLinesMax(2);
 		leading.getFormatting().setNewLinesDefault(1);
 

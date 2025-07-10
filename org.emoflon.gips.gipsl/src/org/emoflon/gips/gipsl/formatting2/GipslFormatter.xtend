@@ -190,23 +190,22 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 
 //		val moreThanOneVariable = gipsMapping.variables.length > 1
 //		if(moreThanOneVariable) {
-			gipsMapping.regionFor.keyword(gipsMappingAccess.leftCurlyBracketKeyword_4_0).prepend[oneSpace]
+		gipsMapping.regionFor.keyword(gipsMappingAccess.leftCurlyBracketKeyword_4_0).prepend[oneSpace]
 
-			val body = gipsMapping.regionFor.keywordPairs(gipsMappingAccess.leftCurlyBracketKeyword_4_0,
-				gipsMappingAccess.rightCurlyBracketKeyword_4_2)
-			if(body.length > 0)
-				body.get(0).interior[indent]
+		val body = gipsMapping.regionFor.keywordPairs(gipsMappingAccess.leftCurlyBracketKeyword_4_0,
+			gipsMappingAccess.rightCurlyBracketKeyword_4_2)
+		if(body.length > 0)
+			body.get(0).interior[indent]
 
-			for (gipsMappingVariable : gipsMapping.variables)
-				gipsMappingVariable.format.surround[newLine]
+		for (gipsMappingVariable : gipsMapping.variables)
+			gipsMappingVariable.format.surround[newLine]
 
-			gipsMapping.regionFor.keyword(gipsMappingAccess.rightCurlyBracketKeyword_4_2).prepend[noSpace]
+		gipsMapping.regionFor.keyword(gipsMappingAccess.rightCurlyBracketKeyword_4_2).prepend[noSpace]
 //		} else {
 //			gipsMapping.regionFor.keyword(gipsMappingAccess.leftCurlyBracketKeyword_4_0).surround[oneSpace]
 //			for (gipsMappingVariable : gipsMapping.variables)
 //				gipsMappingVariable.format.append[oneSpace]
 //		}
-
 		gipsMapping.regionFor.keyword(gipsMappingAccess.semicolonKeyword_5).prepend[noSpace]
 	}
 
@@ -695,10 +694,7 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 	}
 
 	def ITextReplacer createSingleLineCommentReplacer(IComment comment) {
-		if(comment.getLineRegions().get(0).getIndentation().getLength() > 0)
-			return new GipslSinglelineDocCommentReplacer(comment, "//")
-		else
-			return new GipslSinglelineCodeCommentReplacer(comment, "//")
+		return new GipslSinglelineCodeCommentReplacer(comment, "//")
 	}
 
 	def ITextReplacer createMultiLineCommentReplacer(IComment comment) {

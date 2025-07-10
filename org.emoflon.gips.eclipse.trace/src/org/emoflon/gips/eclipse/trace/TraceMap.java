@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.emoflon.gips.eclipse.trace.resolver.ResolveElement2Id;
 
@@ -124,8 +125,8 @@ public class TraceMap<S, T> implements Serializable {
 		return newMap;
 	}
 
-	private final Map<S, Set<T>> forward = new HashMap<>();
-	private final Map<T, Set<S>> backward = new HashMap<>();
+	private final Map<S, Set<T>> forward = new ConcurrentHashMap<>();
+	private final Map<T, Set<S>> backward = new ConcurrentHashMap<>();
 	private S sourceDefault;
 
 	public void setDefaultSource(final S source) {
@@ -143,8 +144,10 @@ public class TraceMap<S, T> implements Serializable {
 	 * @param target end element of a transformation
 	 */
 	public void map(final S source, final T target) {
-		forward.computeIfAbsent(Objects.requireNonNull(source, "source"), key -> new HashSet<T>()).add(target);
-		backward.computeIfAbsent(Objects.requireNonNull(target, "target"), key -> new HashSet<S>()).add(source);
+		forward.computeIfAbsent(Objects.requireNonNull(source, "source"), key -> ConcurrentHashMap.newKeySet())
+				.add(target);
+		backward.computeIfAbsent(Objects.requireNonNull(target, "target"), key -> ConcurrentHashMap.newKeySet())
+				.add(source);
 	}
 
 	/**

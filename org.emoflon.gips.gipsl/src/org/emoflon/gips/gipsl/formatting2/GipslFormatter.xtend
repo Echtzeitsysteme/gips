@@ -300,8 +300,16 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 	}
 
 	def dispatch void format(GipsBooleanBracket expr, extension IFormattableDocument document) {
-		// no space between operand and brackets
-		expr.operand.format.surround[noSpace]
+		expr.operand.format
+
+		val isMultiLine = expr.operand.previousHiddenRegion.isMultiline
+		if(isMultiLine) {
+			expr.interior[indent]
+			expr.operand.surround[newLine]
+		} else {
+			expr.operand.interior[indent]
+			expr.operand.surround[noSpace]
+		}
 	}
 
 	def dispatch void format(GipsRelationalExpression expr, extension IFormattableDocument document) {
@@ -342,7 +350,6 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 			expr.operand.interior[indent]
 			expr.operand.surround[noSpace]
 		}
-
 	}
 
 	def dispatch void format(GipsArithmeticOperand gipsArithmeticOperand, extension IFormattableDocument document) {

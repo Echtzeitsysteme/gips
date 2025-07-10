@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.build.GipsAPIData;
+import org.emoflon.gips.eclipse.trace.TraceMap;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constant;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
@@ -20,6 +22,7 @@ public class TemplateData {
 	final public GipsIntermediateModel model;
 	final public GipsAPIData apiData;
 	final public GipsImportManager classToPackage;
+	final public TraceMap<EObject, String> traceMap = new TraceMap<>();
 
 	public String gipsApiClassName;
 	public String mapperFactoryClassName;

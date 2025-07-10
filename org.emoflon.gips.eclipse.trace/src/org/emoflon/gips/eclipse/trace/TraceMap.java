@@ -143,7 +143,7 @@ public class TraceMap<S, T> implements Serializable {
 		this.sourceDefault = Objects.requireNonNull(source, "source");
 	}
 
-	public synchronized void clearDefaultSource() {
+	public void clearDefaultSource() {
 		this.sourceDefault = null;
 	}
 

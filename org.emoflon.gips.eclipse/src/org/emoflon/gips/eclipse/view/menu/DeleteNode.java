@@ -36,7 +36,7 @@ public class DeleteNode extends ContributionItem {
 
 		if (selectedElement instanceof ContextNode node) {
 			MenuItem item = new MenuItem(menu, SWT.CHECK, index);
-			item.setText("Delete all");
+			item.setText("Delete context");
 			item.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
@@ -46,7 +46,7 @@ public class DeleteNode extends ContributionItem {
 			});
 		} else if (selectedElement instanceof ModelNode node) {
 			MenuItem item = new MenuItem(menu, SWT.CHECK, index);
-			item.setText("Delete entry");
+			item.setText("Delete model");
 			item.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {

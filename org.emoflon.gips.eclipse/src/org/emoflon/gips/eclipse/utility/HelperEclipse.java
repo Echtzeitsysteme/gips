@@ -116,7 +116,11 @@ public final class HelperEclipse {
 				return project;
 		}
 
-		var path = IPath.fromOSString(uri.toFileString());
+		var fileString = uri.toFileString();
+		if (fileString == null)
+			return null;
+
+		var path = IPath.fromOSString(fileString);
 		return tryAndGetProject(path);
 	}
 

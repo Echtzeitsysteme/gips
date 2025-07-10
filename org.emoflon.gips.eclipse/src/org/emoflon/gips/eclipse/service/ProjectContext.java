@@ -26,6 +26,7 @@ import org.eclipse.emf.common.util.URI;
 import org.emoflon.gips.eclipse.api.IModelLink;
 import org.emoflon.gips.eclipse.api.ITraceContext;
 import org.emoflon.gips.eclipse.api.ITraceManager;
+import org.emoflon.gips.eclipse.api.ITraceSelection;
 import org.emoflon.gips.eclipse.api.TraceModelNotFoundException;
 import org.emoflon.gips.eclipse.api.event.ITraceSelectionListener;
 import org.emoflon.gips.eclipse.api.event.ITraceUpdateListener;
@@ -72,6 +73,8 @@ public final class ProjectContext implements ITraceContext {
 
 	private TraceGraph graph = new TraceGraph();
 	private Map<String, Map<String, String>> modelValues = new ConcurrentHashMap<>();
+
+	private TraceSelectionEvent currentTraceSelection;
 	private boolean anyDataDirty = false;
 
 	public ProjectContext(ContextManager manager, String contextId) {
@@ -232,8 +235,7 @@ public final class ProjectContext implements ITraceContext {
 		if (!graph.hasModelReference(modelId))
 			throw new TraceModelNotFoundException(modelId);
 
-		if (manager.isVisualisationActive())
-			fireModelSelectionNotification(modelId, elementIds);
+		fireModelSelectionNotification(modelId, elementIds);
 	}
 
 	@Override
@@ -400,6 +402,8 @@ public final class ProjectContext implements ITraceContext {
 
 	private void fireModelSelectionNotification(String modelId, Collection<String> elementIds) {
 		var event = new TraceSelectionEvent(this, modelId, elementIds);
+		currentTraceSelection = event;
+
 		for (var listener : traceSelectionListener)
 			listener.selectedByModel(event);
 	}
@@ -417,6 +421,11 @@ public final class ProjectContext implements ITraceContext {
 		var event = new TraceUpdateEvent(this, eventType, modelIds);
 		for (var listener : this.traceUpdateListener)
 			listener.updatedModels(event);
+	}
+
+	@Override
+	public ITraceSelection getSelectedElements() {
+		return currentTraceSelection;
 	}
 
 }

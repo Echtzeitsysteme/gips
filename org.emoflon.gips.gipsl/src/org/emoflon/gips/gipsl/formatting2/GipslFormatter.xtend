@@ -481,7 +481,7 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 	}
 
 	def dispatch void format(GipsSimpleQuery operation, extension IFormattableDocument document) {
-		operation.formatMethodCall(document, gipsSimpleQueryAccess.leftParenthesisRightParenthesisKeyword_1)
+		operation.formatMethodCall(document, GIPS_SIMPLE_QUERY__OPERATOR)
 	}
 
 	// Helper
@@ -677,9 +677,9 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 		// No space before and after ".".
 		attribute.regionFor.keyword(".").surround[noSpace]
 
-		// One space before and after the relation.
-		// Fixed: correct feature selection
-		attribute.regionFor.feature(GTPackage.Literals.EDITOR_ATTRIBUTE_CONSTRAINT__RELATION).surround[oneSpace]
+		// One space before and after the assignment.
+		// Fixed: correct keyword selection
+		attribute.regionFor.keyword(editorAttributeAssignmentAccess.colonEqualsSignKeyword_2).surround[oneSpace]
 	}
 
 	// Keep at most one line between comments intact

@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.emf.common.util.URI;
 import org.emoflon.gips.build.GipsAPIData;
 import org.emoflon.gips.build.generator.templates.GeneratorTemplate;
 import org.emoflon.gips.build.generator.templates.GipsAPITemplate;
@@ -25,6 +27,13 @@ import org.emoflon.gips.build.generator.templates.function.MappingFunctionTempla
 import org.emoflon.gips.build.generator.templates.function.PatternFunctionTemplate;
 import org.emoflon.gips.build.generator.templates.function.RuleFunctionTemplate;
 import org.emoflon.gips.build.generator.templates.function.TypeFunctionTemplate;
+import org.emoflon.gips.eclipse.api.ITraceContext;
+import org.emoflon.gips.eclipse.api.ITraceManager;
+import org.emoflon.gips.eclipse.trace.TraceMap;
+import org.emoflon.gips.eclipse.trace.TraceModelLink;
+import org.emoflon.gips.eclipse.trace.resolver.ResolveEcore2Id;
+import org.emoflon.gips.eclipse.trace.resolver.ResolveIdentity2Id;
+import org.emoflon.gips.eclipse.utility.HelperEclipse;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingFunction;
@@ -109,7 +118,18 @@ public class GipsCodeGenerator {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+		if (ITraceManager.getInstance().isGIPSLTracingEnabled()) {
+			TraceMap<String, String> intermediate2code = TraceMap.normalize(data.traceMap, ResolveEcore2Id.INSTANCE,
+					ResolveIdentity2Id.INSTANCE);
 
+			URI intermediateURI = HelperEclipse.toPlatformURI(data.apiData.intermediateModelURI);
+			IPath intermediatePath = IPath.fromOSString(intermediateURI.toPlatformString(true)).makeRelative();
+			String intermediateModelId = intermediatePath.toString();
+
+			ITraceContext traceContext = ITraceManager.getInstance().getContext(data.apiData.project.getName());
+
+			traceContext.updateTraceModel(new TraceModelLink(intermediateModelId, "java", intermediate2code));
 		}
 	}
 }

@@ -1,20 +1,34 @@
 package org.emoflon.gips.gipsl.ui.visualization;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
+import org.eclipse.xtext.resource.EObjectAtOffsetHelper;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.GipsConfig;
+import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
+import org.emoflon.gips.gipsl.gipsl.GipsMapping;
+import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 import org.emoflon.ibex.gt.editor.ui.visualization.GTPlantUMLGenerator;
 import org.emoflon.ibex.gt.editor.ui.visualization.GTVisualizer;
-import org.moflon.core.ui.visualisation.EMoflonPlantUMLGenerator;
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 /**
  * The GTVisualizer provides a PlantUML visualization of graph transformation
@@ -22,13 +36,95 @@ import org.moflon.core.ui.visualisation.EMoflonPlantUMLGenerator;
  */
 public class GipsVisualizer extends GTVisualizer {
 
+	@Inject
+	@Named(Constants.LANGUAGE_NAME)
+	private String languageName;
+
+	@Inject
+	private EObjectAtOffsetHelper offsetHelper;
+
 	@Override
 	public String getDiagramBody(final IEditorPart editor, final ISelection selection) {
 		Optional<EditorGTFile> file = this.loadFileFromEditor(editor);
-		if (!file.isPresent()) {
-			return EMoflonPlantUMLGenerator.emptyDiagram();
-		}
-		return visualizeSelection(selection, file.get().getPatterns());
+		if (!file.isPresent())
+			return GipsPlantUMLGenerator.visualizeNothing();
+
+//		if (true)
+//			return visualizeSelection(selection, file.get().getPatterns());
+
+		Collection<EObject> selectedEObjects = selectionToEObjects((XtextEditor) editor, (ITextSelection) selection);
+		return visualizeSelection(selectedEObjects);
+	}
+
+	private Collection<EObject> selectionToEObjects(XtextEditor editor, ITextSelection selection) {
+		if (selection.isEmpty())
+			return Collections.emptyList();
+
+		return editor.getDocument().readOnly(res -> {
+			Collection<EObject> selectedObjects = new HashSet<>();
+
+			int currentOffset = selection.getOffset();
+			int endOffset = selection.getOffset() + selection.getLength();
+
+			while (currentOffset <= endOffset) {
+				EObject objectAtOffset = offsetHelper.resolveContainedElementAt(res, currentOffset);
+				if (objectAtOffset == null)
+					break;
+
+				EObject objectOfInterest = getObjectOfInterest(objectAtOffset);
+				if (objectOfInterest != null)
+					selectedObjects.add(objectOfInterest);
+
+				EObject objectForNextOffset = objectOfInterest != null ? objectOfInterest : objectAtOffset;
+				ICompositeNode textNode = NodeModelUtils.findActualNodeFor(objectForNextOffset);
+				int newOffset = textNode.getEndOffset() + 1;
+
+				if (newOffset <= currentOffset)
+					break; // This can happen if a cross-reference is resolved, taking us to a different
+							// part of the document
+				currentOffset = newOffset;
+			}
+
+			return selectedObjects;
+		});
+	}
+
+	// Not all objects are suitable for a UML presentation. This method returns the
+	// 'best' container of a given object or the object itself, if there is none
+	private EObject getObjectOfInterest(EObject base) {
+		if (base == null)
+			return null;
+
+		EObject element = base;
+		do {
+			switch (base) {
+			case EditorPattern e:
+				return base;
+			case GipsConstraint e:
+				return base;
+			case GipsMapping e:
+				return base;
+			case GipsConfig e:
+				return base;
+			case GipsLinearFunction e:
+				return base;
+			case GipsObjective e:
+				return base;
+			default:
+				break;
+			}
+
+			element = element.eContainer();
+		} while (element != null);
+
+		return base;
+	}
+
+	private String visualizeSelection(Collection<EObject> selectedEObjects) {
+		if (selectedEObjects.isEmpty())
+			return GipsPlantUMLGenerator.visualizeOverview();
+
+		return GipsPlantUMLGenerator.visualizeCollection(selectedEObjects);
 	}
 
 	/**
@@ -76,8 +172,7 @@ public class GipsVisualizer extends GTVisualizer {
 	 */
 	private static Optional<EditorPattern> determineSelectedRule(final ISelection selection,
 			final EList<EditorPattern> patterns) {
-		if (selection instanceof TextSelection) {
-			TextSelection textSelection = (TextSelection) selection;
+		if (selection instanceof ITextSelection textSelection) {
 			// For the TextSelection documents start with line 0.
 			int selectionStart = textSelection.getStartLine() + 1;
 			int selectionEnd = textSelection.getEndLine() + 1;
@@ -99,8 +194,7 @@ public class GipsVisualizer extends GTVisualizer {
 
 	@Override
 	public boolean supportsSelection(ISelection selection) {
-		// Note: If the editor is detected correctly, this must be true anyways!
-		return true;
+		return selection instanceof TextSelection;
 	}
 
 	/**

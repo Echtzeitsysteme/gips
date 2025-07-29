@@ -463,7 +463,7 @@
  <extension
        point="org.moflon.core.ui.DiagramTextProvider">
     <diagram_text_provider
-          class="org.emoflon.gips.gipsl.ui.visualization.GipsVisualizer">
+          class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.emoflon.gips.gipsl.ui.visualization.GipsVisualizer">
     </diagram_text_provider>
  </extension>
  <extension

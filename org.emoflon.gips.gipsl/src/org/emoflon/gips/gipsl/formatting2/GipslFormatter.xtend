@@ -381,13 +381,17 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 	}
 
 	def dispatch void format(GipsLocalContextExpression expr, extension IFormattableDocument document) {
-		expr.regionFor.keyword(gipsLocalContextExpressionAccess.contextKeyword_1).append[noSpace]
-		expr.expression.format
+		if(expr.expression !== null){
+			expr.regionFor.keyword(gipsLocalContextExpressionAccess.contextKeyword_1).append[noSpace]
+			expr.expression.format
+		}
 	}
 
 	def dispatch void format(GipsSetElementExpression expr, extension IFormattableDocument document) {
-		expr.regionFor.keyword(gipsSetElementExpressionAccess.elementKeyword_1).append[noSpace]
-		expr.expression.format
+		if(expr.expression !== null){
+			expr.regionFor.keyword(gipsSetElementExpressionAccess.elementKeyword_1).append[noSpace]
+			expr.expression.format		
+		}
 	}
 
 	def dispatch void format(GipsVariableReferenceExpression expr, extension IFormattableDocument document) {
@@ -406,8 +410,8 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 	}
 
 	def dispatch void format(GipsAttributeExpression expr, extension IFormattableDocument document) {
-		expr.regionFor.keyword(gipsAttributeExpressionAccess.fullStopKeyword_1).append[noSpace]
-		expr.attribute.format
+		//expr.regionFor.keyword(gipsAttributeExpressionAccess.fullStopKeyword_1).append[noSpace]
+		expr.attribute.format.prepend[noSpace]
 		expr.right.format.prepend[noSpace] // attribute chaining, remove space before next '.'
 	}
 

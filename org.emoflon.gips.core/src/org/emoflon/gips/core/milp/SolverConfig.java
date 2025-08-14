@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.emoflon.gips.intermediate.GipsIntermediate.SolverPresolve;
+
 /**
  * Mutable container to hold some config specific properties. Provides basic
  * listener support to notify listeners about 'something changed'
@@ -30,7 +32,7 @@ public class SolverConfig {
 	private boolean timeLimitIncludeInitTime;
 	private boolean randomSeedEnabled;
 	private int randomSeed;
-	private boolean enablePresolve;
+	private SolverPresolve presolve;
 	private boolean enableOutput;
 	private boolean enableTolerance;
 	private double tolerance;
@@ -128,15 +130,31 @@ public class SolverConfig {
 	}
 
 	public boolean isEnablePresolve() {
-		return enablePresolve;
+		return !presolve.equals(SolverPresolve.NONE);
 	}
 
-	public void setEnablePresolve(boolean newValue) {
-		var oldValue = this.enablePresolve;
-		this.enablePresolve = newValue;
+	public void setPresolveAuto() {
+		setPresolve(SolverPresolve.AUTO);
+	}
 
-		aValueChanged |= oldValue != newValue;
-		notifyListeners();
+	public void setPresolveNone() {
+		setPresolve(SolverPresolve.NONE);
+	}
+
+	public void setPresolve(final SolverPresolve newValue) {
+		if (newValue.equals(SolverPresolve.NOT_CONFIGURED)) {
+			setPresolve(SolverPresolve.AUTO);
+		} else {
+			var oldValue = this.presolve;
+			this.presolve = newValue;
+
+			aValueChanged |= oldValue != newValue;
+			notifyListeners();
+		}
+	}
+	
+	public SolverPresolve getPresolve() {
+		return presolve;
 	}
 
 	public boolean isEnableOutput() {

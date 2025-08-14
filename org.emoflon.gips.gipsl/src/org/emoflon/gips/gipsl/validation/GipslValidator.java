@@ -37,6 +37,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsSetExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
 import org.emoflon.gips.gipsl.gipsl.Package;
+import org.emoflon.gips.gipsl.gipsl.PresolveType;
 import org.emoflon.gips.gipsl.gipsl.SolverType;
 import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsConstantImpl;
@@ -406,10 +407,10 @@ public class GipslValidator extends AbstractGipslValidator {
 
 		// Special case: If solver is GLPK and pre-solving is disabled, generate a
 		// warning
-		if (config.getSolver() == SolverType.GLPK && !config.isEnablePresolve()) {
+		if (config.getSolver() == SolverType.GLPK && !config.getPresolve().equals(PresolveType.NONE)) {
 			warn("GLPK needs enabled pre-solving for some problems. "
 					+ "It is highly reccommend to enable pre-solving if using the GLPK solver in GIPS.",
-					GipslPackage.Literals.GIPS_CONFIG__ENABLE_PRESOLVE);
+					GipslPackage.Literals.GIPS_CONFIG__PRESOLVE);
 		}
 	}
 

@@ -221,7 +221,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		solverConfig.setEnabledRandomSeed(config.isEnableRndSeed());
 		solverConfig.setRandomSeed(config.getIlpRndSeed());
 
-		solverConfig.setEnablePresolve(config.isEnablePresolve());
+		solverConfig.setPresolve(config.getPresolve());
 		solverConfig.setEnableOutput(config.isEnableDebugOutput());
 
 		solverConfig.setEnableTolerance(config.isEnableCustomTolerance());

@@ -11,6 +11,12 @@
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//SolverType/GLPK"/>
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//SolverType/CPLEX"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//PresolveType">
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//PresolveType/NONE"/>
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//PresolveType/AUTO"/>
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//PresolveType/CONSERVATIVE"/>
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//PresolveType/AGGRESSIVE"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//OptimizationGoal">
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//OptimizationGoal/MIN"/>
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//OptimizationGoal/MAX"/>
@@ -103,7 +109,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/includeInitTime"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/enableSeed"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/rndSeed"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/enablePresolve"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/presolve"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/enableDebugOutput"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/enableTolerance"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/tolerance"/>

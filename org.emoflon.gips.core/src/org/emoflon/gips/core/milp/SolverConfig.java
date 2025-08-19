@@ -203,9 +203,9 @@ public class SolverConfig {
 		return threadCount;
 	}
 
-	public void setThreadCount(int newValue) {
-		if (newValue <= 0)
-			throw new IllegalArgumentException("Given number of ILP solver threads is smaller or equal to 0.");
+	public void setThreadCount(final int newValue) {
+		if (newValue < 0)
+			throw new IllegalArgumentException("Given number of MILP solver threads is smaller than 0.");
 
 		var oldValue = this.threadCount;
 		this.threadCount = newValue;

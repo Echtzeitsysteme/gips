@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.emoflon.gips.intermediate.GipsIntermediate.SolverPresolve;
-
 /**
  * Mutable container to hold some config specific properties. Provides basic
  * listener support to notify listeners about 'something changed'
@@ -152,7 +150,29 @@ public class SolverConfig {
 			notifyListeners();
 		}
 	}
-	
+
+	public void setPresolve(final org.emoflon.gips.intermediate.GipsIntermediate.SolverPresolve solverPresolve) {
+		setPresolve(convertPresolve(solverPresolve));
+	}
+
+	public SolverPresolve convertPresolve(
+			final org.emoflon.gips.intermediate.GipsIntermediate.SolverPresolve intermediatePresolve) {
+		switch (intermediatePresolve) {
+		case NOT_CONFIGURED:
+			return SolverPresolve.NOT_CONFIGURED;
+		case AUTO:
+			return SolverPresolve.AUTO;
+		case NONE:
+			return SolverPresolve.NONE;
+		case CONSERVATIVE:
+			return SolverPresolve.CONSERVATIVE;
+		case AGGRESSIVE:
+			return SolverPresolve.AGGRESSIVE;
+		default:
+			throw new IllegalArgumentException();
+		}
+	}
+
 	public SolverPresolve getPresolve() {
 		return presolve;
 	}
@@ -242,6 +262,10 @@ public class SolverConfig {
 
 	public boolean isEnableThreadCount() {
 		return threadCountEnabled;
+	}
+
+	public enum SolverPresolve {
+		AUTO, NONE, CONSERVATIVE, AGGRESSIVE, NOT_CONFIGURED;
 	}
 
 }

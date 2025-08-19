@@ -23,6 +23,7 @@ import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.GipsTypeConstraint;
 import org.emoflon.gips.core.gt.GipsPatternConstraint;
 import org.emoflon.gips.core.gt.GipsRuleConstraint;
+import org.emoflon.gips.core.milp.SolverConfig.SolverPresolve;
 import org.emoflon.gips.core.milp.model.BinaryVariable;
 import org.emoflon.gips.core.milp.model.Constraint;
 import org.emoflon.gips.core.milp.model.IntegerVariable;
@@ -31,7 +32,6 @@ import org.emoflon.gips.core.milp.model.RealVariable;
 import org.emoflon.gips.core.milp.model.Variable;
 import org.emoflon.gips.core.util.SystemUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
-import org.emoflon.gips.intermediate.GipsIntermediate.SolverPresolve;
 
 import com.gurobi.gurobi.GRB;
 import com.gurobi.gurobi.GRB.DoubleAttr;

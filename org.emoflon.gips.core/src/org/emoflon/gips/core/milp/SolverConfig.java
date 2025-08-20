@@ -30,7 +30,7 @@ public class SolverConfig {
 	private boolean timeLimitIncludeInitTime;
 	private boolean randomSeedEnabled;
 	private int randomSeed;
-	private boolean enablePresolve;
+	private SolverPresolve presolve;
 	private boolean enableOutput;
 	private boolean enableTolerance;
 	private double tolerance;
@@ -128,15 +128,53 @@ public class SolverConfig {
 	}
 
 	public boolean isEnablePresolve() {
-		return enablePresolve;
+		return !presolve.equals(SolverPresolve.NONE);
 	}
 
-	public void setEnablePresolve(boolean newValue) {
-		var oldValue = this.enablePresolve;
-		this.enablePresolve = newValue;
+	public void setPresolveAuto() {
+		setPresolve(SolverPresolve.AUTO);
+	}
 
-		aValueChanged |= oldValue != newValue;
-		notifyListeners();
+	public void setPresolveNone() {
+		setPresolve(SolverPresolve.NONE);
+	}
+
+	public void setPresolve(final SolverPresolve newValue) {
+		if (newValue.equals(SolverPresolve.NOT_CONFIGURED)) {
+			setPresolve(SolverPresolve.AUTO);
+		} else {
+			var oldValue = this.presolve;
+			this.presolve = newValue;
+
+			aValueChanged |= oldValue != newValue;
+			notifyListeners();
+		}
+	}
+
+	public void setPresolve(final org.emoflon.gips.intermediate.GipsIntermediate.SolverPresolve solverPresolve) {
+		setPresolve(convertPresolve(solverPresolve));
+	}
+
+	public SolverPresolve convertPresolve(
+			final org.emoflon.gips.intermediate.GipsIntermediate.SolverPresolve intermediatePresolve) {
+		switch (intermediatePresolve) {
+		case NOT_CONFIGURED:
+			return SolverPresolve.NOT_CONFIGURED;
+		case AUTO:
+			return SolverPresolve.AUTO;
+		case NONE:
+			return SolverPresolve.NONE;
+		case CONSERVATIVE:
+			return SolverPresolve.CONSERVATIVE;
+		case AGGRESSIVE:
+			return SolverPresolve.AGGRESSIVE;
+		default:
+			throw new IllegalArgumentException();
+		}
+	}
+
+	public SolverPresolve getPresolve() {
+		return presolve;
 	}
 
 	public boolean isEnableOutput() {
@@ -203,9 +241,9 @@ public class SolverConfig {
 		return threadCount;
 	}
 
-	public void setThreadCount(int newValue) {
-		if (newValue <= 0)
-			throw new IllegalArgumentException("Given number of ILP solver threads is smaller or equal to 0.");
+	public void setThreadCount(final int newValue) {
+		if (newValue < 0)
+			throw new IllegalArgumentException("Given number of MILP solver threads is smaller than 0.");
 
 		var oldValue = this.threadCount;
 		this.threadCount = newValue;
@@ -224,6 +262,10 @@ public class SolverConfig {
 
 	public boolean isEnableThreadCount() {
 		return threadCountEnabled;
+	}
+
+	public enum SolverPresolve {
+		AUTO, NONE, CONSERVATIVE, AGGRESSIVE, NOT_CONFIGURED;
 	}
 
 }

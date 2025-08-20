@@ -192,6 +192,9 @@ public abstract class EditorTraceConnection<T extends IEditorPart> implements IE
 		}
 	}
 
+	/*
+	 * Called by the trace manager
+	 */
 	private void onTraceSelection(TraceSelectionEvent event) {
 		if (getModelId().equals(event.getModelId()))
 			return;
@@ -200,6 +203,9 @@ public abstract class EditorTraceConnection<T extends IEditorPart> implements IE
 			return;
 
 		if (!event.getContext().hasTraceFor(getModelId()))
+			return;
+
+		if (!TracePlugin.getInstance().getContextManager().isVisualisationActive())
 			return;
 
 		if (event.getElementIds().isEmpty()) {

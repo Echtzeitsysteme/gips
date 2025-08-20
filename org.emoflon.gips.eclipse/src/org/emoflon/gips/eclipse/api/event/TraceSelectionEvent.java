@@ -5,8 +5,9 @@ import java.util.Collections;
 import java.util.Objects;
 
 import org.emoflon.gips.eclipse.api.ITraceContext;
+import org.emoflon.gips.eclipse.api.ITraceSelection;
 
-public final class TraceSelectionEvent {
+public final class TraceSelectionEvent implements ITraceSelection {
 
 	private final ITraceContext context;
 	private final String modelId;
@@ -25,29 +26,17 @@ public final class TraceSelectionEvent {
 		this.elementIds = Collections.unmodifiableCollection(Objects.requireNonNull(elementIds, "elementIds"));
 	}
 
-	/**
-	 * Returns the context in which the event was raised
-	 * 
-	 * @return a {@link ITraceContext}, never null
-	 */
+	@Override
 	public ITraceContext getContext() {
 		return context;
 	}
 
-	/**
-	 * Returns the model that triggered the event
-	 * 
-	 * @return a model id, never null
-	 */
+	@Override
 	public String getModelId() {
 		return modelId;
 	}
 
-	/**
-	 * Returns the elements that have been selected on {@link #getElementIds()}
-	 * 
-	 * @return a collection of ids, never null
-	 */
+	@Override
 	public Collection<String> getElementIds() {
 		return elementIds;
 	}

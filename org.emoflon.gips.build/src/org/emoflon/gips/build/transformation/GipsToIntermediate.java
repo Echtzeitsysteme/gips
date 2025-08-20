@@ -52,6 +52,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.RuleFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleMapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleParameterVariable;
 import org.emoflon.gips.intermediate.GipsIntermediate.SolverConfig;
+import org.emoflon.gips.intermediate.GipsIntermediate.SolverPresolve;
 import org.emoflon.gips.intermediate.GipsIntermediate.SolverType;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeFunction;
@@ -195,7 +196,25 @@ public class GipsToIntermediate {
 			config.setMainFile(eConfig.getMainLoc().replace("\"", ""));
 
 		config.setEnableDebugOutput(eConfig.isEnableDebugOutput());
-		config.setEnablePresolve(eConfig.isEnablePresolve());
+
+		// Presolve configuration
+		switch (eConfig.getPresolve()) {
+		case NONE:
+			config.setPresolve(SolverPresolve.NONE);
+			break;
+		case AUTO:
+			config.setPresolve(SolverPresolve.AUTO);
+			break;
+		case CONSERVATIVE:
+			config.setPresolve(SolverPresolve.CONSERVATIVE);
+			break;
+		case AGGRESSIVE:
+			config.setPresolve(SolverPresolve.AGGRESSIVE);
+			break;
+		// default also captures NOT_CONFIGURED
+		default:
+			config.setPresolve(SolverPresolve.AUTO);
+		}
 
 		config.setEnableRndSeed(eConfig.isEnableSeed());
 		if (eConfig.isEnableSeed()) {

@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.GipsTypeConstraint;
 import org.emoflon.gips.core.gt.GipsPatternConstraint;
 import org.emoflon.gips.core.gt.GipsRuleConstraint;
+import org.emoflon.gips.core.milp.SolverConfig.SolverPresolve;
 import org.emoflon.gips.core.milp.model.BinaryVariable;
 import org.emoflon.gips.core.milp.model.Constraint;
 import org.emoflon.gips.core.milp.model.IntegerVariable;
@@ -214,7 +216,7 @@ public class GurobiSolver extends Solver {
 				}
 			}
 
-			env.set(IntParam.Presolve, config.isEnablePresolve() ? 1 : 0);
+			env.set(IntParam.Presolve, convertPresolve(config.getPresolve()));
 			if (config.isRandomSeedEnabled()) {
 				env.set(IntParam.Seed, config.getRandomSeed());
 			}
@@ -228,7 +230,7 @@ public class GurobiSolver extends Solver {
 			}
 			model = new GRBModel(env);
 			// Double all settings to model (is this even necessary?)
-			model.set(IntParam.Presolve, config.isEnablePresolve() ? 1 : 0);
+			model.set(IntParam.Presolve, convertPresolve(config.getPresolve()));
 			if (config.isTimeLimitEnabled()) {
 				model.set(DoubleParam.TimeLimit, config.getTimeLimit());
 			}
@@ -768,6 +770,30 @@ public class GurobiSolver extends Solver {
 			init();
 		} catch (final Exception e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * Converts the given presolve enum to integer values that Gurobi can
+	 * understand.
+	 * 
+	 * @param presolve Enum value.
+	 * @return Gurobi integer value corresponding to the given presolve enum.
+	 */
+	private int convertPresolve(final SolverPresolve presolve) {
+		Objects.requireNonNull(presolve);
+
+		switch (presolve) {
+		case AUTO:
+			return -1;
+		case NONE:
+			return 0;
+		case CONSERVATIVE:
+			return 1;
+		case AGGRESSIVE:
+			return 2;
+		default:
+			throw new IllegalArgumentException("Given presolve config cannot be converted.");
 		}
 	}
 

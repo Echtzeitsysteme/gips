@@ -42,8 +42,7 @@
         ordered="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="enableRndSeed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="ilpRndSeed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="presolve" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enablePresolve" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="presolve" eType="#//SolverPresolve"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="enableDebugOutput" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="enableCustomTolerance"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -380,5 +379,12 @@
     <eLiterals name="EMPTY"/>
     <eLiterals name="NOT_EMPTY" value="1"/>
     <eLiterals name="COUNT" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="SolverPresolve">
+    <eLiterals name="NOT_CONFIGURED" value="-1"/>
+    <eLiterals name="NONE"/>
+    <eLiterals name="AUTO" value="1"/>
+    <eLiterals name="CONSERVATIVE" value="1"/>
+    <eLiterals name="AGGRESSIVE" value="2"/>
   </eClassifiers>
 </ecore:EPackage>

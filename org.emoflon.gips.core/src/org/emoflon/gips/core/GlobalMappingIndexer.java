@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.emoflon.gips.core.gt.GipsGTMapping;
-
 public class GlobalMappingIndexer {
 
 	private static GlobalMappingIndexer instance;
@@ -20,7 +18,7 @@ public class GlobalMappingIndexer {
 		return instance;
 	}
 
-	final protected Map<GipsMapper<?>, MappingIndexer<? extends GipsGTMapping<?, ?>>> mapper2indexer = Collections
+	final protected Map<GipsMapper<?>, MappingIndexer> mapper2indexer = Collections
 			.synchronizedMap(new LinkedHashMap<>());
 
 	public void terminate() {
@@ -30,13 +28,13 @@ public class GlobalMappingIndexer {
 		mapper2indexer.clear();
 	}
 
-	public MappingIndexer<? extends GipsGTMapping<?, ?>> getIndexer(final GipsMapper<?> mapper) {
+	public MappingIndexer getIndexer(final GipsMapper<?> mapper) {
 		return mapper2indexer.get(mapper);
 	}
 
 	public void createIndexer(final GipsMapper<?> mapper) {
 		if (!mapper2indexer.containsKey(mapper)) {
-			mapper2indexer.put(mapper, new MappingIndexer<GipsGTMapping<?, ?>>());
+			mapper2indexer.put(mapper, new MappingIndexer());
 		}
 	}
 

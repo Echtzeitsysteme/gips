@@ -63,7 +63,7 @@ public class MappingIndexer {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public void putMapping(final EObject node, final GipsGTMapping mapping) {
+	public synchronized void putMapping(final EObject node, final GipsGTMapping mapping) {
 		if (!node2mappings.containsKey(node)) {
 			node2mappings.put(node, Collections.synchronizedSet(new LinkedHashSet<>()));
 		}

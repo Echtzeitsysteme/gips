@@ -11,7 +11,7 @@ public class GlobalMappingIndexer {
 	private GlobalMappingIndexer() {
 	}
 
-	public static GlobalMappingIndexer getInstance() {
+	public static synchronized GlobalMappingIndexer getInstance() {
 		if (instance == null) {
 			instance = new GlobalMappingIndexer();
 		}

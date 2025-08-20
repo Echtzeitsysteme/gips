@@ -31,7 +31,10 @@ public class MappingIndexer {
 	@SuppressWarnings("rawtypes")
 	public Set<GipsGTMapping> getMappingsOfNode(final EObject node) {
 		final Set<GipsGTMapping> query = Collections.synchronizedSet(new LinkedHashSet<>());
-		query.addAll(node2mappings.get(node));
+		final Set<GipsGTMapping> candidates = node2mappings.get(node);
+		if (candidates != null) {
+			query.addAll(candidates);
+		}
 		return query;
 	}
 

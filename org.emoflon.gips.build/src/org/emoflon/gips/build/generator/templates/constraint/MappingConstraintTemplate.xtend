@@ -30,6 +30,12 @@ class MappingConstraintTemplate extends ConstraintTemplate<MappingConstraint> {
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint")
 		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
 		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(context.mapping))
+		
+		// Mapping indexer
+//		imports.add("org.emoflon.gips.core.MappingIndexer")
+//		imports.add("org.emoflon.gips.core.GlobalMappingIndexer")
+//		imports.add("org.emoflon.gips.core.GipsMapper")
+//		imports.add("java.util.Set")
 	}
 	
 	override String generatePackageDeclaration() {

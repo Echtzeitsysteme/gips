@@ -281,6 +281,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		val method = '''
 	protected void «builderMethodName»(«parametersForVoidBuilder»«IF !getConstants().empty», «ENDIF»«getParametersForConstants(getConstants())») {
 		«generateValueAccess(expr)»
+		// test
 		«IF expr.setExpression.setOperation !== null»«generateConstantExpression(expr.setExpression.setOperation)»«ENDIF»
 		.forEach(elt -> {
 			«IF variable.local» terms.add(new Term(«getVariable(variable.variable)», (double)«generateConstantExpression(sumExpression.expression)»));
@@ -388,12 +389,51 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		var instruction = "";
 		if(expression instanceof MappingReference) {
 			imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expression.mapping))
-			instruction = '''engine.getMapper("«expression.mapping.name»").getMappings().values().parallelStream()
+			// Mapping indexer
+			imports.add("org.emoflon.gips.core.MappingIndexer")
+			imports.add("org.emoflon.gips.core.GlobalMappingIndexer")
+			imports.add("org.emoflon.gips.core.GipsMapper")
+			imports.add("java.util.Set")
+			imports.add("org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode")
+			imports.add("org.apache.commons.lang3.StringUtils")
+			imports.add("java.lang.reflect.Method")
+			imports.add("java.lang.reflect.InvocationTargetException")
+			var indexer = "";
+			indexer = '''
+final GipsMapper<?> mapper = engine.getMapper("«expression.mapping.name»");
+final GlobalMappingIndexer globalIndexer = GlobalMappingIndexer.getInstance();
+globalIndexer.createIndexer(mapper);
+final MappingIndexer indexer = globalIndexer.getIndexer(mapper);
+if (!indexer.isInitialized()) {
+	mapper.getMappings().values().parallelStream()
+		.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping).forEach(elt -> {
+			final List<IBeXNode> allNodesOfPattern = mapper.getMapping().getContextPattern().getSignatureNodes();
+			for (final IBeXNode ibexNode : allNodesOfPattern) {
+				final String methodName = "get" + StringUtils.capitalize(ibexNode.getName());
+				final Class<?> c = elt.getClass();
+				try {
+					final Method m = c.getDeclaredMethod(methodName);
+					final Object object = m.invoke(elt);
+					final EObject node = (EObject) object;
+					indexer.putMapping(node, elt);
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException
+						| InvocationTargetException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+}
+			'''
+			instruction += indexer
+			// Original implementation
+//			instruction += '''engine.getMapper("«expression.mapping.name»").getMappings().values().parallelStream()
+//			.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
+			instruction += '''indexer.getMappingsOfNodes(Set.of(null)).parallelStream()
 			.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
 		} else if(expression instanceof TypeReference) {
 			imports.add(data.classToPackage.getImportsForType(expression.type))
 			instruction = '''indexer.getObjectsOfType("«expression.type.name»").parallelStream()
-						.map(type -> («expression.type.name») type)'''
+			.map(type -> («expression.type.name») type)'''
 		} else if(expression instanceof PatternReference) {
 			imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(expression.pattern))
 			instruction = '''engine.getEMoflonAPI().«expression.pattern.name»().findMatches(false).parallelStream()'''

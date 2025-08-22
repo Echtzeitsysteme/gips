@@ -52,6 +52,16 @@ import org.emoflon.gips.intermediate.GipsIntermediate.QueryOperator
 import org.eclipse.emf.ecore.EEnum
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference
 import org.eclipse.emf.ecore.EClass
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint
+import org.emoflon.gips.build.generator.templates.constraint.TypeConstraintTemplate
+import org.emoflon.gips.build.generator.templates.constraint.RuleConstraintTemplate
+import java.util.Set
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode
+import javax.management.relation.RelationException
+import java.util.List
+import org.emoflon.gips.build.generator.templates.constraint.MappingConstraintTemplate
+import org.emoflon.gips.build.generator.templates.constraint.PatternConstraintTemplate
 
 abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends GeneratorTemplate<CONTEXT> {
 	
@@ -281,7 +291,6 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		val method = '''
 	protected void «builderMethodName»(«parametersForVoidBuilder»«IF !getConstants().empty», «ENDIF»«getParametersForConstants(getConstants())») {
 		«generateValueAccess(expr)»
-		// test
 		«IF expr.setExpression.setOperation !== null»«generateConstantExpression(expr.setExpression.setOperation)»«ENDIF»
 		.forEach(elt -> {
 			«IF variable.local» terms.add(new Term(«getVariable(variable.variable)», (double)«generateConstantExpression(sumExpression.expression)»));
@@ -291,6 +300,83 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	}
 		'''
 		builderMethodDefinitions.put(expr, method)
+	}
+	
+	def List<String> getContextNodeAccess(BooleanExpression expr) {	
+		// Single relational expression only
+		if(expr instanceof RelationalExpression) {
+			return getContextNodeAccess(expr)
+		}
+		// Composition of multiple boolean expressions
+		else if (expr instanceof BooleanBinaryExpression) {
+			return getContextNodeAccess(expr)
+		}
+	}
+	
+	def List<String> getContextNodeAccess(BooleanBinaryExpression expr) {
+		var foundNodes = new LinkedList<String>
+		switch(expr.operator) {
+			case AND: {
+				foundNodes.addAll(getContextNodeAccess(expr.lhs))
+				foundNodes.addAll(getContextNodeAccess(expr.rhs))
+			}
+			default: {
+				// Do nothing
+			}
+		}	
+		return foundNodes
+	}
+	
+	def List<String> getContextNodeAccess(RelationalExpression expr) {
+		var foundNodes = new LinkedList<String>
+		
+		// Only if the operator is `EQUAL`
+		if (expr.operator.equals(RelationalOperator.EQUAL)) {
+			// One side must be local and one must not be local
+			if(expr.lhs instanceof NodeReference && expr.rhs instanceof NodeReference) {
+				var lhsnode = expr.lhs as NodeReference
+				var rhsnode = expr.rhs as NodeReference
+				// Both sides must not have an attribute access
+				if(lhsnode.attribute === null && rhsnode.attribute === null) {
+					if(lhsnode.local && !rhsnode.local || !lhsnode.local && rhsnode.local) {
+						if(lhsnode.local) {
+							foundNodes.add(lhsnode.node.name)
+						} else if(rhsnode.local) {
+							foundNodes.add(rhsnode.node.name)
+						}
+					}
+				}
+			}
+		}
+		
+		return foundNodes
+	}
+	
+	def String getContextNodeAccess(SetOperation expr) {
+		var foundNodes = new LinkedList<String>
+		
+		if(expr instanceof SetFilter) {
+			// Single relational expression
+			if(expr.expression instanceof RelationalExpression) {
+				var relExpr = expr.expression as RelationalExpression
+				foundNodes.addAll(getContextNodeAccess(relExpr))
+			}
+			// Multiple expressions composed
+			else if(expr.expression instanceof BooleanBinaryExpression) {
+				var boolBinExpr = expr.expression as BooleanBinaryExpression
+				foundNodes.addAll(getContextNodeAccess(boolBinExpr))
+			}
+		}
+		
+		var foundGetters = ''''''
+		for(var i = 0; i < foundNodes.size; i++) {
+			var candidate = foundNodes.get(i).toFirstUpper
+			foundGetters += '''context.get«candidate»()'''
+			if(i < foundNodes.size - 1) {
+				foundGetters += ''', '''
+			}
+		}
+		return foundGetters
 	}
 	
 	def String generateConstantExpression(ArithmeticExpression expression) {
@@ -389,18 +475,34 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		var instruction = "";
 		if(expression instanceof MappingReference) {
 			imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expression.mapping))
-			// Mapping indexer
-			imports.add("org.emoflon.gips.core.MappingIndexer")
-			imports.add("org.emoflon.gips.core.GlobalMappingIndexer")
-			imports.add("org.emoflon.gips.core.GipsMapper")
-			imports.add("java.util.Set")
-			imports.add("org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode")
-			imports.add("org.apache.commons.lang3.StringUtils")
-			imports.add("java.lang.reflect.Method")
-			imports.add("java.lang.reflect.InvocationTargetException")
-			imports.add("org.eclipse.emf.ecore.EObject")
-			var indexer = "";
-			indexer = '''
+			
+			// What to search for with the indexer
+			// If the resulting string is empty, there is nothing to index
+			var searchFor = '''«IF this instanceof TypeConstraintTemplate»context«ENDIF»'''
+			if(this instanceof RuleConstraintTemplate || this instanceof MappingConstraintTemplate || this instanceof PatternConstraintTemplate) {
+				searchFor += '''«IF (expression instanceof MappingReference && expression.setExpression.setOperation !== null)»«getContextNodeAccess(expression.setExpression.setOperation)»«ENDIF»'''
+			}
+			
+			// If nothing can be indexed, use the original implementation
+			if(searchFor.isBlank) {
+				instruction += '''engine.getMapper("«expression.mapping.name»").getMappings().values().parallelStream()
+				.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
+			}
+			// If there can be at least one node indexed, use the adapted implementation
+			else {
+				// Mapping indexer
+				imports.add("org.emoflon.gips.core.MappingIndexer")
+				imports.add("org.emoflon.gips.core.GlobalMappingIndexer")
+				imports.add("org.emoflon.gips.core.GipsMapper")
+				imports.add("java.util.Set")
+				imports.add("org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode")
+				imports.add("org.apache.commons.lang3.StringUtils")
+				imports.add("java.lang.reflect.Method")
+				imports.add("java.lang.reflect.InvocationTargetException")
+				imports.add("org.eclipse.emf.ecore.EObject")
+				imports.add("java.util.HashSet")
+				var indexer = "";
+				indexer = '''
 final GipsMapper<?> mapper = engine.getMapper("«expression.mapping.name»");
 final GlobalMappingIndexer globalIndexer = GlobalMappingIndexer.getInstance();
 globalIndexer.createIndexer(mapper);
@@ -424,13 +526,11 @@ if (!indexer.isInitialized()) {
 			}
 		});
 }
-			'''
-			instruction += indexer
-			// Original implementation
-//			instruction += '''engine.getMapper("«expression.mapping.name»").getMappings().values().parallelStream()
-//			.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
-			instruction += '''indexer.getMappingsOfNodes(Set.of(null)).parallelStream()
-			.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
+				'''
+				instruction += indexer
+				instruction += '''indexer.getMappingsOfNodes(Set.of(«searchFor»)).parallelStream()
+				.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
+			}
 		} else if(expression instanceof TypeReference) {
 			imports.add(data.classToPackage.getImportsForType(expression.type))
 			instruction = '''indexer.getObjectsOfType("«expression.type.name»").parallelStream()

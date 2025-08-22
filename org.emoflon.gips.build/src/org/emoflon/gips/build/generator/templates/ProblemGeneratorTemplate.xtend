@@ -398,6 +398,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 			imports.add("org.apache.commons.lang3.StringUtils")
 			imports.add("java.lang.reflect.Method")
 			imports.add("java.lang.reflect.InvocationTargetException")
+			imports.add("org.eclipse.emf.ecore.EObject")
 			var indexer = "";
 			indexer = '''
 final GipsMapper<?> mapper = engine.getMapper("«expression.mapping.name»");

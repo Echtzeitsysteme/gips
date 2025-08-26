@@ -23,6 +23,9 @@ public class GurobiTerminateCallback extends GRBCallback {
 
 	private boolean abortCall = false;
 
+	private double gapLimit = 0;
+	private boolean gapEnabled = false;
+
 	public GurobiTerminateCallback(final String callbackFilePath) {
 		Objects.requireNonNull(callbackFilePath);
 		this.callbackFilePath = callbackFilePath;
@@ -84,6 +87,25 @@ public class GurobiTerminateCallback extends GRBCallback {
 					// TODO
 				}
 			}
+
+			// Check if gap should trigger the abortion
+			if (gapEnabled) {
+				try {
+					// Calculate the MIP gap
+					// Reference:
+					// https://support.gurobi.com/hc/en-us/articles/8265539575953-What-is-the-MIPGap
+					final double bestBound = getDoubleInfo(GRB.CB_MIPSOL_OBJBND);
+					final double bestObj = getDoubleInfo(GRB.CB_MIPSOL_OBJBST);
+					final double gap = Math.abs(bestObj - bestBound) / Math.abs(bestObj);
+
+					if (gap <= gapLimit) {
+						abort();
+					}
+				} catch (final GRBException e) {
+					e.printStackTrace();
+					// TODO
+				}
+			}
 		}
 
 	}
@@ -116,6 +138,12 @@ public class GurobiTerminateCallback extends GRBCallback {
 		if (json.has("bestObjective")) {
 			this.bestObjectiveLimit = json.getAsJsonPrimitive("bestObjective").getAsDouble();
 			this.bestObjectiveEnabled = true;
+		}
+
+		// Gap
+		if (json.has("gap")) {
+			this.gapLimit = json.getAsJsonPrimitive("gap").getAsDouble();
+			this.gapEnabled = true;
 		}
 	}
 

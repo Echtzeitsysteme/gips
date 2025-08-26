@@ -258,7 +258,7 @@ import «imp»;
 		return '''getNonMappingVariable(context, "«varRef.variable.name»").getName()'''
 	}
 	
-	override String generateValueAccess(ValueExpression expression) {
+	override String generateValueAccess(ValueExpression expression, boolean returnNecessary) {
 		var instruction = "";
 		if(expression instanceof MappingReference) {
 			imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expression.mapping))

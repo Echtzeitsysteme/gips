@@ -290,7 +290,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		
 		val method = '''
 	protected void «builderMethodName»(«parametersForVoidBuilder»«IF !getConstants().empty», «ENDIF»«getParametersForConstants(getConstants())») {
-		«generateValueAccess(expr)»
+		«generateValueAccess(expr, false)»
 		«IF expr.setExpression.setOperation !== null»«generateConstantExpression(expr.setExpression.setOperation)»«ENDIF»
 		.forEach(elt -> {
 			«IF variable.local» terms.add(new Term(«getVariable(variable.variable)», (double)«generateConstantExpression(sumExpression.expression)»));
@@ -456,7 +456,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	}
 	
 	def String generateConstantExpression(ValueExpression expression) {
-		var instruction = generateValueAccess(expression)
+		var instruction = generateValueAccess(expression, true)
 		if(expression.setExpression !== null) {
 			instruction += generateConstantExpression(expression.setExpression)
 		}
@@ -464,45 +464,49 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	}
 	
 	def String generateConstantExpression(ValueExpression expression, boolean ignoreReduce) {
-		var instruction = generateValueAccess(expression)
+		var instruction = generateValueAccess(expression, true)
 		if(expression.setExpression !== null) {
 			instruction += generateConstantExpression(expression.setExpression, ignoreReduce)
 		}
 		return instruction;
 	}
 	
-	def String generateValueAccess(ValueExpression expression) {
+	def String generateValueAccess(ValueExpression expression, boolean returnNecessary) {
 		var instruction = "";
 		if(expression instanceof MappingReference) {
 			imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expression.mapping))
 			
-			// What to search for with the indexer
-			// If the resulting string is empty, there is nothing to index
-			var searchFor = '''«IF this instanceof TypeConstraintTemplate»context«ENDIF»'''
-			if(this instanceof RuleConstraintTemplate || this instanceof MappingConstraintTemplate || this instanceof PatternConstraintTemplate) {
-				searchFor += '''«IF (expression instanceof MappingReference && expression.setExpression.setOperation !== null)»«getContextNodeAccess(expression.setExpression.setOperation)»«ENDIF»'''
-			}
-			
-			// If nothing can be indexed, use the original implementation
-			if(searchFor.isBlank) {
-				instruction += '''engine.getMapper("«expression.mapping.name»").getMappings().values().parallelStream()
+			if (returnNecessary) {
+				instruction = '''engine.getMapper("«expression.mapping.name»").getMappings().values().parallelStream()
 				.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
-			}
-			// If there can be at least one node indexed, use the adapted implementation
-			else {
-				// Mapping indexer
-				imports.add("org.emoflon.gips.core.MappingIndexer")
-				imports.add("org.emoflon.gips.core.GlobalMappingIndexer")
-				imports.add("org.emoflon.gips.core.GipsMapper")
-				imports.add("java.util.Set")
-				imports.add("org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode")
-				imports.add("org.apache.commons.lang3.StringUtils")
-				imports.add("java.lang.reflect.Method")
-				imports.add("java.lang.reflect.InvocationTargetException")
-				imports.add("org.eclipse.emf.ecore.EObject")
-				imports.add("java.util.HashSet")
-				var indexer = "";
-				indexer = '''
+			} else {
+				// What to search for with the indexer
+				// If the resulting string is empty, there is nothing to index
+				var searchFor = '''«IF this instanceof TypeConstraintTemplate»context«ENDIF»'''
+				if(this instanceof RuleConstraintTemplate || this instanceof MappingConstraintTemplate || this instanceof PatternConstraintTemplate) {
+					searchFor += '''«IF (expression instanceof MappingReference && expression.setExpression.setOperation !== null)»«getContextNodeAccess(expression.setExpression.setOperation)»«ENDIF»'''
+				}
+				
+				// If nothing can be indexed, use the original implementation
+				if(searchFor.isBlank) {
+					instruction += '''engine.getMapper("«expression.mapping.name»").getMappings().values().parallelStream()
+					.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
+				}
+				// If there can be at least one node indexed, use the adapted implementation
+				else {
+					// Mapping indexer
+					imports.add("org.emoflon.gips.core.MappingIndexer")
+					imports.add("org.emoflon.gips.core.GlobalMappingIndexer")
+					imports.add("org.emoflon.gips.core.GipsMapper")
+					imports.add("java.util.Set")
+					imports.add("org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode")
+					imports.add("org.apache.commons.lang3.StringUtils")
+					imports.add("java.lang.reflect.Method")
+					imports.add("java.lang.reflect.InvocationTargetException")
+					imports.add("org.eclipse.emf.ecore.EObject")
+					imports.add("java.util.HashSet")
+					var indexer = "";
+					indexer = '''
 final GipsMapper<?> mapper = engine.getMapper("«expression.mapping.name»");
 final GlobalMappingIndexer globalIndexer = GlobalMappingIndexer.getInstance();
 globalIndexer.createIndexer(mapper);
@@ -526,10 +530,11 @@ if (!indexer.isInitialized()) {
 			}
 		});
 }
-				'''
-				instruction += indexer
-				instruction += '''indexer.getMappingsOfNodes(Set.of(«searchFor»)).parallelStream()
-				.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
+					'''
+					instruction += indexer
+					instruction += '''indexer.getMappingsOfNodes(Set.of(«searchFor»)).parallelStream()
+					.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
+				}
 			}
 		} else if(expression instanceof TypeReference) {
 			imports.add(data.classToPackage.getImportsForType(expression.type))

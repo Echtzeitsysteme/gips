@@ -482,7 +482,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 			} else {
 				// What to search for with the indexer
 				// If the resulting string is empty, there is nothing to index
-				var searchFor = '''«IF this instanceof TypeConstraintTemplate»context«ENDIF»'''
+				var searchFor = '''«IF this instanceof TypeConstraintTemplate && expression.setExpression.setOperation !== null»context«ENDIF»'''
 				if(this instanceof RuleConstraintTemplate || this instanceof MappingConstraintTemplate || this instanceof PatternConstraintTemplate) {
 					searchFor += '''«IF (expression instanceof MappingReference && expression.setExpression.setOperation !== null)»«getContextNodeAccess(expression.setExpression.setOperation)»«ENDIF»'''
 				}

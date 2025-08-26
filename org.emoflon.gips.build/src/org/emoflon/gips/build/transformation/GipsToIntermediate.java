@@ -243,8 +243,9 @@ public class GipsToIntermediate {
 		}
 
 		// Callback configuration
+		config.setEnableSolverCallback(eConfig.isEnableSolverCallback());
 		if(eConfig.isEnableSolverCallback()) {
-			config.setSolverCallbackPath(eConfig.getSolverCallbackPath());
+			config.setSolverCallbackPath(eConfig.getSolverCallbackPath().replace("\"", ""));
 		}
 		
 		data.model().setConfig(config);

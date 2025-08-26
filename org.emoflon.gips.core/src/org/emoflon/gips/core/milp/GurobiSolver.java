@@ -346,6 +346,10 @@ public class GurobiSolver extends Solver {
 				status = SolverStatus.TIME_OUT;
 				objVal = model.get(GRB.DoubleAttr.ObjVal);
 			}
+			case GRB.Status.INTERRUPTED -> {
+				status = SolverStatus.ABORT;
+				objVal = model.get(GRB.DoubleAttr.ObjVal);
+			}
 			}
 		} catch (final GRBException e) {
 			throw new RuntimeException(e);

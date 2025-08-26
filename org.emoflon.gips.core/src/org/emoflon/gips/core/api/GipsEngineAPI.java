@@ -233,6 +233,11 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		solverConfig.setEnableThreadCount(config.isThreadCountEnabled());
 		if (config.isThreadCountEnabled())
 			solverConfig.setThreadCount(config.getThreadCount());
+		
+		if(config.isEnableSolverCallback()) {
+			solverConfig.setEnableCallbackPath(true);
+			solverConfig.setCallbackPath(config.getSolverCallbackPath());
+		}
 	}
 
 	/**

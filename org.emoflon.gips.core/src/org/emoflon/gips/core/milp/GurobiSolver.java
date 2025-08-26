@@ -347,7 +347,7 @@ public class GurobiSolver extends Solver {
 				objVal = model.get(GRB.DoubleAttr.ObjVal);
 			}
 			case GRB.Status.INTERRUPTED -> {
-				status = SolverStatus.ABORT;
+				status = SolverStatus.INTERRUPTED;
 				objVal = model.get(GRB.DoubleAttr.ObjVal);
 			}
 			}

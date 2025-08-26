@@ -9,23 +9,52 @@ import com.gurobi.gurobi.GRB;
 import com.gurobi.gurobi.GRBCallback;
 import com.gurobi.gurobi.GRBException;
 
+/**
+ * This class is a custom Gurobi callback that reads a JSON file from a
+ * pre-defined path and, based on the contents of this file, determines, if the
+ * Gurobi optimization process should be cancelled.
+ * 
+ * JSON file format: { "abort": false, "bestBoundGeq": true, "bestBound":
+ * 1000000, "bestObjectiveLeq": true, "bestObjective": -1, "gap": 0.8 }
+ */
 public class GurobiTerminateCallback extends GRBCallback {
 
+	/**
+	 * File path of the JSON callback file.
+	 */
 	private final String callbackFilePath;
 
+	/*
+	 * Best bound.
+	 */
 	private double bestBoundLimit = -1;
 	private boolean bestBoundGeq = true;
 	private boolean bestBoundEnabled = false;
 
+	/*
+	 * Best objective.
+	 */
 	private double bestObjectiveLimit = -1;
 	private boolean bestObjectiveLeq = true;
 	private boolean bestObjectiveEnabled = false;
 
+	/*
+	 * Abort regardless of state.
+	 */
 	private boolean abortCall = false;
 
+	/*
+	 * MIP gap.
+	 */
 	private double gapLimit = 0;
 	private boolean gapEnabled = false;
 
+	/**
+	 * Creates a new instance of the custom callback. The given file path will be
+	 * used to check for a JSON file.
+	 * 
+	 * @param callbackFilePath Callback file path.
+	 */
 	public GurobiTerminateCallback(final String callbackFilePath) {
 		Objects.requireNonNull(callbackFilePath);
 		this.callbackFilePath = callbackFilePath;
@@ -110,10 +139,19 @@ public class GurobiTerminateCallback extends GRBCallback {
 
 	}
 
+	/**
+	 * Returns true if the configured file path points to a file.
+	 * 
+	 * @return True if the configured file path points to a file.
+	 */
 	private boolean probeFile() {
 		return FileUtils.checkIfFileExists(callbackFilePath);
 	}
 
+	/**
+	 * Loads the JSON file from the configured file path and sets the parameters of
+	 * this callback accordingly.
+	 */
 	private void loadFile() {
 		final JsonObject json = FileUtils.readFileToJson(this.callbackFilePath);
 

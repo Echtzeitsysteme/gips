@@ -81,6 +81,14 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		getSolverConfig().setTimeLimit(newTimeLimit);
 	}
 
+	/**
+	 * Overwrite the previously configured callback file path with the given
+	 * parameter's value.
+	 * 
+	 * @param callbackPath New callback file path to set.
+	 * @deprecated Use {@link #getSolverConfig()} and
+	 *             {@link SolverConfig#setCallbackPath(String)}
+	 */
 	@Deprecated
 	public void setCallbackPath(final String callbackPath) {
 		Objects.requireNonNull(callbackPath);

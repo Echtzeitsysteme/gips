@@ -2,7 +2,7 @@ package org.emoflon.gips.core.milp;
 
 public enum SolverStatus {
 	UNBOUNDED("Unbounded"), INF_OR_UNBD("Infeasible or Unbounded"), INFEASIBLE("Infeasible"),
-	OPTIMAL("Solved and Optimal"), TIME_OUT("Time out"), FEASIBLE("Feasible"), ABORT("Aborted");
+	OPTIMAL("Solved and Optimal"), TIME_OUT("Time out"), FEASIBLE("Feasible"), INTERRUPTED("Interrupted");
 
 	public final String name;
 

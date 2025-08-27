@@ -5,10 +5,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.ITextSelection;
-import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.xtext.Constants;
@@ -18,8 +16,6 @@ import org.eclipse.xtext.resource.EObjectAtOffsetHelper;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
-import org.emoflon.ibex.gt.editor.gT.EditorPattern;
-import org.emoflon.ibex.gt.editor.ui.visualization.GTPlantUMLGenerator;
 import org.emoflon.ibex.gt.editor.ui.visualization.GTVisualizer;
 
 import com.google.inject.Inject;
@@ -39,27 +35,27 @@ public class GipsVisualizer extends GTVisualizer {
 	private EObjectAtOffsetHelper offsetHelper;
 
 	@Inject
-	private PlantUMLTemplateProvider umlGenerator;
+	private GipslPlantUMLProvider umlGenerator;
 
+	public GipsVisualizer() {
+
+	}
+
+	/**
+	 * Returns the visualization of the selection.
+	 *
+	 * @param editor    the editor
+	 * @param selection the selection
+	 * @return the PlantUML code for the visualization
+	 */
 	@Override
 	public String getDiagramBody(final IEditorPart editor, final ISelection selection) {
 		Optional<EditorGTFile> file = this.loadFileFromEditor(editor);
 		if (!file.isPresent())
 			return umlGenerator.visualizeNothing();
 
-//		if (true) {
-//			var f = visualizeSelection(selection, file.get().getPatterns());
-//			System.out.println();
-//			System.out.println(f);
-//			System.out.println();
-//			return f;
-//		}  
-
 		Collection<EObject> selectedEObjects = selectionToEObjects((XtextEditor) editor, (ITextSelection) selection);
-		if (selectedEObjects.isEmpty())
-			return umlGenerator.visualizeOverview(file.get());
 		String out = umlGenerator.visualizeCollection(selectedEObjects);
-		System.out.println(out);
 		return out;
 	}
 
@@ -89,8 +85,8 @@ public class GipsVisualizer extends GTVisualizer {
 				if (newOffset <= currentOffset) {
 					System.err.println(GipsVisualizer.class
 							+ ": offset calculation error - unable to locate all selected objects");
-					break; // This can happen if a cross-reference is resolved, taking us to a different
-					// part of the document
+					break; // This can happen if a cross-reference is resolved and takes us to a different
+							// location within the document
 				}
 
 				currentOffset = newOffset;
@@ -122,67 +118,6 @@ public class GipsVisualizer extends GTVisualizer {
 		return null;
 	}
 
-	/**
-	 * Returns the visualization of the selection.
-	 *
-	 * @param selection the selection
-	 * @param patterns  the editor patterns
-	 * @return the PlantUML code for the visualization
-	 */
-	@Deprecated
-	private static String visualizeSelection(final ISelection selection, final EList<EditorPattern> patterns) {
-		if (patterns.size() == 0) {
-			return GTPlantUMLGenerator.visualizeNothing();
-		}
-		if (patterns.size() == 1) {
-			try {
-				return GTPlantUMLGenerator.visualizeSelectedPattern(patterns.get(0));
-			} catch (Exception e) {
-				return GTPlantUMLGenerator.visualizeNothing();
-			}
-		}
-		Optional<EditorPattern> pattern = determineSelectedRule(selection, patterns);
-		if (pattern.isPresent()) {
-			try {
-				return GTPlantUMLGenerator.visualizeSelectedPattern(pattern.get());
-			} catch (Exception e) {
-				return GTPlantUMLGenerator.visualizeNothing();
-			}
-		}
-
-		try {
-			return GTPlantUMLGenerator.visualizePatternHierarchy(patterns);
-		} catch (Exception e) {
-			return GTPlantUMLGenerator.visualizeNothing();
-		}
-
-	}
-
-	/**
-	 * Checks whether there is a rule with the name being equal to the current
-	 * selected text.
-	 *
-	 * @param selection the current selection
-	 * @param patterns  the patters
-	 * @return an {@link Optional} for a {@link EditorPattern}
-	 */
-	private static Optional<EditorPattern> determineSelectedRule(final ISelection selection,
-			final EList<EditorPattern> patterns) {
-		if (selection instanceof ITextSelection textSelection) {
-			// For the TextSelection documents start with line 0.
-			int selectionStart = textSelection.getStartLine() + 1;
-			int selectionEnd = textSelection.getEndLine() + 1;
-
-			for (final EditorPattern pattern : patterns) {
-				ICompositeNode object = NodeModelUtils.getNode(pattern);
-				if (selectionStart >= object.getStartLine() && selectionEnd <= object.getEndLine()) {
-					return Optional.of(pattern);
-				}
-			}
-		}
-		return Optional.empty();
-	}
-
 	@Override
 	public boolean supportsEditor(final IEditorPart editor) {
 		return this.loadFileFromEditor(editor).isPresent();
@@ -190,7 +125,7 @@ public class GipsVisualizer extends GTVisualizer {
 
 	@Override
 	public boolean supportsSelection(ISelection selection) {
-		return selection instanceof TextSelection;
+		return selection instanceof ITextSelection;
 	}
 
 	/**

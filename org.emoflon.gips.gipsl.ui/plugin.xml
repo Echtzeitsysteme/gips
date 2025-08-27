@@ -97,6 +97,15 @@
 			name="Templates">
 			<keywordReference id="org.emoflon.gips.gipsl.ui.keyword_Gipsl"/>
 		</page>
+  <page
+        category="org.emoflon.gips.gipsl.Gipsl"
+        class="org.emoflon.gips.gipsl.ui.GipslExecutableExtensionFactory:org.emoflon.gips.gipsl.ui.visualization.PlantUMLPreferencePage"
+        id="org.emoflon.gips.gipsl.Gipsl.uml"
+        name="PlantUML">
+     <keywordReference
+           id="org.emoflon.gips.gipsl.ui.keyword_Gipsl">
+     </keywordReference>
+  </page>
 	</extension>
 	<extension
 			point="org.eclipse.ui.propertyPages">

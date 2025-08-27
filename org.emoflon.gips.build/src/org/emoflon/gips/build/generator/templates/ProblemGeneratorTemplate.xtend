@@ -511,9 +511,7 @@ final GipsMapper<?> mapper = engine.getMapper("«expression.mapping.name»");
 final GlobalMappingIndexer globalIndexer = GlobalMappingIndexer.getInstance();
 globalIndexer.createIndexer(mapper);
 final MappingIndexer indexer = globalIndexer.getIndexer(mapper);
-if (!indexer.isInitialized()) {
-	indexer.init(mapper);
-}
+indexer.initIfNecessary(mapper);
 					'''
 					instruction += indexer
 					instruction += '''indexer.getMappingsOfNodes(Set.of(«searchFor»)).parallelStream()

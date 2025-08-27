@@ -16,15 +16,14 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 
 public class MappingIndexer {
 
+	private boolean initialized = false;
+
 	@SuppressWarnings("rawtypes")
 	final protected Map<EObject, Set<GipsGTMapping>> node2mappings = Collections.synchronizedMap(new LinkedHashMap<>());
 
-	public boolean isInitialized() {
-		return !node2mappings.isEmpty();
-	}
-
 	public void terminate() {
 		node2mappings.clear();
+		initialized = false;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -62,8 +61,11 @@ public class MappingIndexer {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public synchronized void init(final GipsMapper<?> mapper) {
-		mapper.getMappings().values().parallelStream() //
+	public synchronized void initIfNecessary(final GipsMapper<?> mapper) {
+		if (initialized) {
+			return;
+		}
+		mapper.getMappings().values().stream() //
 				.map(mapping -> (GipsGTMapping) mapping).forEach(elt -> {
 					final List<IBeXNode> allNodesOfPattern = mapper.getMapping().getContextPattern()
 							.getSignatureNodes();
@@ -80,6 +82,7 @@ public class MappingIndexer {
 						}
 					}
 				});
+		initialized = true;
 	}
 
 }

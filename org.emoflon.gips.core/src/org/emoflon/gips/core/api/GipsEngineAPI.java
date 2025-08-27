@@ -80,6 +80,19 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		getSolverConfig().setTimeLimit(newTimeLimit);
 	}
 
+	/**
+	 * Overwrite the previously configured solver parameter path with the given
+	 * parameter's value.
+	 * 
+	 * @param newParameterPath New parameter path to set.
+	 * @deprecated Use {@link #getSolverConfig()} and
+	 *             {@link SolverConfig#setParameterPath(String)}
+	 */
+	@Deprecated
+	public void setSolverParameterPath(final String newParameterPath) {
+		getSolverConfig().setParameterPath(newParameterPath);
+	}
+
 	public EMOFLON_APP getEMoflonApp() {
 		return eMoflonApp;
 	}

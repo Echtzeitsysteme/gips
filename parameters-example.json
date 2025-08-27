@@ -1,0 +1,9 @@
+{
+    "intparams": [
+        ["OutputFlag", "1"],
+        ["TimeLimit", "30"]
+    ],
+    "doubleparams": [
+        ["NoRelHeurWork", "60"]
+    ]
+}

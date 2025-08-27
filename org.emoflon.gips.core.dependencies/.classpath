@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/gson-2.13.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/gson-2.13.1-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/gson-2.13.1-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/gurobi-12.0.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/gurobi-javadoc-12.0.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-nop-2.0.17.jar"/>

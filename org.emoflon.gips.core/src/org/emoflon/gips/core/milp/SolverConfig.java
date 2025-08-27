@@ -38,6 +38,7 @@ public class SolverConfig {
 	private String lpPath;
 	private boolean threadCountEnabled;
 	private int threadCount;
+	private String parameterPath;
 
 	/**
 	 * To be called after any changes have been made via the setters. This method
@@ -232,6 +233,18 @@ public class SolverConfig {
 	public void setLpPath(String newValue) {
 		var oldValue = this.lpPath;
 		this.lpPath = newValue;
+
+		aValueChanged |= oldValue != newValue;
+		notifyListeners();
+	}
+
+	public String getParameterPath() {
+		return parameterPath;
+	}
+
+	public void setParameterPath(final String newValue) {
+		final var oldValue = this.parameterPath;
+		this.parameterPath = newValue;
 
 		aValueChanged |= oldValue != newValue;
 		notifyListeners();

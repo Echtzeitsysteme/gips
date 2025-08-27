@@ -248,6 +248,13 @@ public class GurobiSolver extends Solver {
 			} else {
 				model.set(IntParam.Threads, SystemUtil.getSystemThreads());
 			}
+
+			// Check if the parameter path is configured. If yes, set up the Gurobi
+			// parameter tuning.s
+			if (config.getParameterPath() != null) {
+				GurobiParameterTuning.getInstance().setParameters(model, config.getParameterPath());
+			}
+
 			// Reset local lookup data structure for the Gurobi variables in case this is
 			// not the first initialization.
 			grbVars.clear();

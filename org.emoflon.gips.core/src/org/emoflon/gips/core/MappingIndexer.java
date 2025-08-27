@@ -1,13 +1,18 @@
 package org.emoflon.gips.core;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.gt.GipsGTMapping;
+import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 
 public class MappingIndexer {
 
@@ -49,11 +54,32 @@ public class MappingIndexer {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public synchronized void putMapping(final EObject node, final GipsGTMapping mapping) {
+	private void putMapping(final EObject node, final GipsGTMapping mapping) {
 		if (!node2mappings.containsKey(node)) {
 			node2mappings.put(node, Collections.synchronizedSet(new LinkedHashSet<>()));
 		}
 		node2mappings.get(node).add(mapping);
+	}
+
+	@SuppressWarnings("rawtypes")
+	public synchronized void init(final GipsMapper<?> mapper) {
+		mapper.getMappings().values().parallelStream() //
+				.map(mapping -> (GipsGTMapping) mapping).forEach(elt -> {
+					final List<IBeXNode> allNodesOfPattern = mapper.getMapping().getContextPattern()
+							.getSignatureNodes();
+					for (final IBeXNode ibexNode : allNodesOfPattern) {
+						final String methodName = "get" + StringUtils.capitalize(ibexNode.getName());
+						final Class<?> c = elt.getClass();
+						try {
+							final Method m = c.getDeclaredMethod(methodName);
+							final Object object = m.invoke(elt);
+							final EObject node = (EObject) object;
+							this.putMapping(node, elt);
+						} catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+							e.printStackTrace();
+						}
+					}
+				});
 	}
 
 }

@@ -512,23 +512,7 @@ final GlobalMappingIndexer globalIndexer = GlobalMappingIndexer.getInstance();
 globalIndexer.createIndexer(mapper);
 final MappingIndexer indexer = globalIndexer.getIndexer(mapper);
 if (!indexer.isInitialized()) {
-	mapper.getMappings().values().parallelStream()
-		.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping).forEach(elt -> {
-			final List<IBeXNode> allNodesOfPattern = mapper.getMapping().getContextPattern().getSignatureNodes();
-			for (final IBeXNode ibexNode : allNodesOfPattern) {
-				final String methodName = "get" + StringUtils.capitalize(ibexNode.getName());
-				final Class<?> c = elt.getClass();
-				try {
-					final Method m = c.getDeclaredMethod(methodName);
-					final Object object = m.invoke(elt);
-					final EObject node = (EObject) object;
-					indexer.putMapping(node, elt);
-				} catch (NoSuchMethodException | SecurityException | IllegalAccessException
-						| InvocationTargetException e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	indexer.init(mapper);
 }
 					'''
 					instruction += indexer

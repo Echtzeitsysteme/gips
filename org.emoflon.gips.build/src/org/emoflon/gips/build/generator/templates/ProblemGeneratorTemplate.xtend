@@ -52,13 +52,9 @@ import org.emoflon.gips.intermediate.GipsIntermediate.QueryOperator
 import org.eclipse.emf.ecore.EEnum
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference
 import org.eclipse.emf.ecore.EClass
-import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint
 import org.emoflon.gips.build.generator.templates.constraint.TypeConstraintTemplate
 import org.emoflon.gips.build.generator.templates.constraint.RuleConstraintTemplate
-import java.util.Set
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator
-import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode
-import javax.management.relation.RelationException
 import java.util.List
 import org.emoflon.gips.build.generator.templates.constraint.MappingConstraintTemplate
 import org.emoflon.gips.build.generator.templates.constraint.PatternConstraintTemplate
@@ -302,9 +298,12 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		builderMethodDefinitions.put(expr, method)
 	}
 	
-	def List<String> getContextNodeAccess(BooleanExpression expr) {	
+	/**
+	 * Returns a list of Strings containing all names of context node accesses of the given Boolean expression.
+	 */
+	def List<String> getContextNodeAccess(BooleanExpression expr) {
 		// Single relational expression only
-		if(expr instanceof RelationalExpression) {
+		if (expr instanceof RelationalExpression) {
 			return getContextNodeAccess(expr)
 		}
 		// Composition of multiple boolean expressions
@@ -312,10 +311,15 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 			return getContextNodeAccess(expr)
 		}
 	}
-	
+
+	/**
+	 * Returns a list of Strings containing all names of context node accesses of the given Boolean binary expression.
+	 * The only implemented type of operator is `AND`. Hence, this method only supports sub expressions concatenated
+	 * via `&`.
+	 */
 	def List<String> getContextNodeAccess(BooleanBinaryExpression expr) {
 		var foundNodes = new LinkedList<String>
-		switch(expr.operator) {
+		switch (expr.operator) {
 			case AND: {
 				foundNodes.addAll(getContextNodeAccess(expr.lhs))
 				foundNodes.addAll(getContextNodeAccess(expr.rhs))
@@ -323,56 +327,85 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 			default: {
 				// Do nothing
 			}
-		}	
+		}
 		return foundNodes
 	}
-	
+
+	/**
+	 * Returns a list of Strings containing all names of context node accesses of the given relational expression.
+	 * The requirements to find the necessary accesses are:
+	 * - the operator must be `EQUAL`
+	 * - one side of the expression must be local and the other side must not be local
+	 * - both sides must not have an attribute access
+	 * 
+	 * Therefore, this method only captures accesses like `element.nodes.a == context.nodes.b`.
+	 */
 	def List<String> getContextNodeAccess(RelationalExpression expr) {
 		var foundNodes = new LinkedList<String>
-		
+
 		// Only if the operator is `EQUAL`
 		if (expr.operator.equals(RelationalOperator.EQUAL)) {
 			// One side must be local and one must not be local
-			if(expr.lhs instanceof NodeReference && expr.rhs instanceof NodeReference) {
+			if (expr.lhs instanceof NodeReference && expr.rhs instanceof NodeReference) {
 				var lhsnode = expr.lhs as NodeReference
 				var rhsnode = expr.rhs as NodeReference
 				// Both sides must not have an attribute access
-				if(lhsnode.attribute === null && rhsnode.attribute === null) {
-					if(lhsnode.local && !rhsnode.local || !lhsnode.local && rhsnode.local) {
-						if(lhsnode.local) {
+				if (lhsnode.attribute === null && rhsnode.attribute === null) {
+					if (lhsnode.local && !rhsnode.local || !lhsnode.local && rhsnode.local) {
+						if (lhsnode.local) {
 							foundNodes.add(lhsnode.node.name)
-						} else if(rhsnode.local) {
+						} else if (rhsnode.local) {
 							foundNodes.add(rhsnode.node.name)
 						}
 					}
 				}
 			}
 		}
-		
+
 		return foundNodes
 	}
-	
-	def String getContextNodeAccess(SetOperation expr) {
+
+	/**
+	 * Returns a list of Strings containing all names of context node accesses of the given set expression.
+	 * The requirements to find the necessary accesses are:
+	 * - the expression must be of type `filter`
+	 * - the operator used within the filter must be `EQUAL`
+	 * - one side of the respective expression must be local and the other side must not be local
+	 * - both respective sides must not have an attribute access
+	 * 
+	 * Therefore, this method only captures accesses like `filter(element.nodes.a == context.nodes.b)`.
+	 */
+	def List<String> getContextNodeAccess(SetOperation expr) {
 		var foundNodes = new LinkedList<String>
-		
-		if(expr instanceof SetFilter) {
+
+		if (expr instanceof SetFilter) {
 			// Single relational expression
-			if(expr.expression instanceof RelationalExpression) {
+			if (expr.expression instanceof RelationalExpression) {
 				var relExpr = expr.expression as RelationalExpression
 				foundNodes.addAll(getContextNodeAccess(relExpr))
 			}
 			// Multiple expressions composed
-			else if(expr.expression instanceof BooleanBinaryExpression) {
+			else if (expr.expression instanceof BooleanBinaryExpression) {
 				var boolBinExpr = expr.expression as BooleanBinaryExpression
 				foundNodes.addAll(getContextNodeAccess(boolBinExpr))
 			}
 		}
-		
+
+		return foundNodes
+	}
+
+	/**
+	 * This method converts a given list of context node names to a getter string.
+	 * 
+	 * Example input: "{a, b, cde}"
+	 * Example output: "getA(), getB(), getCde()"
+	 */
+	def String convertContextNodeAccessToGetterCalls(List<String> contextNodeAccesses) {
 		var foundGetters = ''''''
-		for(var i = 0; i < foundNodes.size; i++) {
-			var candidate = foundNodes.get(i).toFirstUpper
+		for (var i = 0; i < contextNodeAccesses.size; i++) {
+			var candidate = contextNodeAccesses.get(i).toFirstUpper
 			foundGetters += '''context.get«candidate»()'''
-			if(i < foundNodes.size - 1) {
+			if (i < contextNodeAccesses.size - 1) {
 				foundGetters += ''', '''
 			}
 		}
@@ -471,49 +504,64 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		return instruction;
 	}
 	
-	def String generateValueAccess(ValueExpression expression, boolean returnNecessary) {
+	def String generateValueAccess(ValueExpression expression, boolean requiresReturn) {
 		var instruction = "";
 		if(expression instanceof MappingReference) {
 			imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expression.mapping))
 			
-			if (returnNecessary) {
-				instruction = '''engine.getMapper("«expression.mapping.name»").getMappings().values().parallelStream()
+			var original = '''engine.getMapper("«expression.mapping.name»").getMappings().values().parallelStream()
 				.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
-			} else {
-				// What to search for with the indexer
-				// If the resulting string is empty, there is nothing to index
-				var searchFor = '''«IF this instanceof TypeConstraintTemplate && expression.setExpression.setOperation !== null»context«ENDIF»'''
-				if(this instanceof RuleConstraintTemplate || this instanceof MappingConstraintTemplate || this instanceof PatternConstraintTemplate) {
-					searchFor += '''«IF (expression instanceof MappingReference && expression.setExpression.setOperation !== null)»«getContextNodeAccess(expression.setExpression.setOperation)»«ENDIF»'''
+			
+			// If a return is required, use the original implementation
+			if (requiresReturn) {
+				instruction = original
+			}
+			// Else, try to use the mapping indexer implementation
+			else {
+				// Determine what to search for with the indexer
+				// If the resulting string keeps empty, there is nothing to index
+				var searchFor = ""
+				
+				// If this generates a type constraint, use `context`
+				if (this instanceof TypeConstraintTemplate && expression.setExpression.setOperation !== null) {
+					searchFor = '''context'''
+				}
+				// If this generates a rule constraint, mapping constraint, or pattern constraint, search for context node accesses
+				else if (this instanceof RuleConstraintTemplate || this instanceof MappingConstraintTemplate || this instanceof PatternConstraintTemplate) {
+					// If the expression is a mapping reference and there is a set operation, search for context node accesses
+					if (expression instanceof MappingReference && expression.setExpression.setOperation !== null) {
+						searchFor = '''«convertContextNodeAccessToGetterCalls(getContextNodeAccess(expression.setExpression.setOperation))»'''
+					}
+					// Otherwise (i.e., if there is no mapping reference or it has no set (filter) expression,
+					// the indexer implementation cannot be used
 				}
 				
 				// If nothing can be indexed, use the original implementation
-				if(searchFor.isBlank) {
-					instruction += '''engine.getMapper("«expression.mapping.name»").getMappings().values().parallelStream()
-					.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
+				if (searchFor.isBlank) {
+					instruction = original
 				}
-				// If there can be at least one node indexed, use the adapted implementation
+				// If there can be at least one node indexed, use the indexer implementation
 				else {
 					// Mapping indexer
+					imports.add("java.util.Set")
+					imports.add("java.util.HashSet")
+					imports.add("java.lang.reflect.Method")
+					imports.add("java.lang.reflect.InvocationTargetException")
+					imports.add("org.apache.commons.lang3.StringUtils")
+					imports.add("org.eclipse.emf.ecore.EObject")
+					imports.add("org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode")
 					imports.add("org.emoflon.gips.core.MappingIndexer")
 					imports.add("org.emoflon.gips.core.GlobalMappingIndexer")
 					imports.add("org.emoflon.gips.core.GipsMapper")
-					imports.add("java.util.Set")
-					imports.add("org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode")
-					imports.add("org.apache.commons.lang3.StringUtils")
-					imports.add("java.lang.reflect.Method")
-					imports.add("java.lang.reflect.InvocationTargetException")
-					imports.add("org.eclipse.emf.ecore.EObject")
-					imports.add("java.util.HashSet")
-					var indexer = "";
-					indexer = '''
+					
+					var indexer = '''
 final GipsMapper<?> mapper = engine.getMapper("«expression.mapping.name»");
 final GlobalMappingIndexer globalIndexer = GlobalMappingIndexer.getInstance();
 globalIndexer.createIndexer(mapper);
 final MappingIndexer indexer = globalIndexer.getIndexer(mapper);
 indexer.initIfNecessary(mapper);
 					'''
-					instruction += indexer
+					instruction = indexer
 					instruction += '''indexer.getMappingsOfNodes(Set.of(«searchFor»)).parallelStream()
 					.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
 				}

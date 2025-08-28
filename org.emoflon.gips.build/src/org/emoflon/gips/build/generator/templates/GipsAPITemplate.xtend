@@ -258,7 +258,11 @@ import «imp»;
 		return '''getNonMappingVariable(context, "«varRef.variable.name»").getName()'''
 	}
 	
-	override String generateValueAccess(ValueExpression expression, boolean returnNecessary) {
+	/**
+	 * This method overrides the method specified in `ProblemGeneratorTemplate.xtend`.
+	 * The method in this template does not use the parameter `requiresReturn`.
+	 */
+	override String generateValueAccess(ValueExpression expression, boolean requiresReturn) {
 		var instruction = "";
 		if(expression instanceof MappingReference) {
 			imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expression.mapping))

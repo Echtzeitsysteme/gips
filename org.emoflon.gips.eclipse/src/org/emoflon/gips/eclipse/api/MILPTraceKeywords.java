@@ -2,8 +2,8 @@ package org.emoflon.gips.eclipse.api;
 
 import java.util.Objects;
 
-public final class ILPTraceKeywords {
-	private ILPTraceKeywords() {
+public final class MILPTraceKeywords {
+	private MILPTraceKeywords() {
 
 	}
 
@@ -39,13 +39,13 @@ public final class ILPTraceKeywords {
 		String type = null;
 		String value = null;
 
-		var delimiter = text.indexOf(ILPTraceKeywords.TYPE_VALUE_DELIMITER);
+		var delimiter = text.indexOf(MILPTraceKeywords.TYPE_VALUE_DELIMITER);
 		if (delimiter < 0) {
 			type = "";
 			value = text;
 		} else {
 			type = text.substring(0, delimiter);
-			value = text.substring(delimiter + ILPTraceKeywords.TYPE_VALUE_DELIMITER.length());
+			value = text.substring(delimiter + MILPTraceKeywords.TYPE_VALUE_DELIMITER.length());
 		}
 
 		return new TypeValuePair(type, value);

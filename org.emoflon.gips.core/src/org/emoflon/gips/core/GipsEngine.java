@@ -144,7 +144,7 @@ public abstract class GipsEngine {
 
 			observer.observe("BUILD_SOLVER", () -> {
 				solver.init();
-				solver.buildILPProblem();
+				solver.buildMILPProblem();
 			});
 			
 			buildTraceGraphAndSendToIDE();
@@ -252,7 +252,7 @@ public abstract class GipsEngine {
 		}
 
 		solver.init();
-		solver.buildILPProblem();
+		solver.buildMILPProblem();
 		buildTraceGraphAndSendToIDE();
 	}
 
@@ -372,8 +372,8 @@ public abstract class GipsEngine {
 		return globalConstants.get(constant);
 	}
 
-	public synchronized void removeNonMappingVariable(final Variable<?> ilpVar) {
-		nonMappingVariables.remove(ilpVar.getName());
+	public synchronized void removeNonMappingVariable(final Variable<?> milpVar) {
+		nonMappingVariables.remove(milpVar.getName());
 	}
 
 	protected void addMapper(final GipsMapper<?> mapper) {

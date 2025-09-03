@@ -8,8 +8,8 @@ import org.emoflon.gips.core.milp.model.Variable;
 
 public abstract class GipsMapping extends BinaryVariable {
 
-	protected GipsMapping(final String ilpVariable) {
-		super(ilpVariable);
+	protected GipsMapping(final String milpVariable) {
+		super(milpVariable);
 	}
 
 	@Override

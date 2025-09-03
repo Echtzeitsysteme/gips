@@ -19,15 +19,16 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine> extends
 
 	@Override
 	public void buildConstraints() {
-		ilpConstraints.put(constraint, buildConstraint());
+		milpConstraints.put(constraint, buildConstraint());
 		if (constraint.isDepending()) {
-			additionalIlpConstraints.put(constraint, buildAdditionalConstraints());
+			additionalMilpConstraints.put(constraint, buildAdditionalConstraints());
 		}
 	}
 
 	protected Constraint buildConstraint() {
 		if (!isConstant && !(constraint.getExpression() instanceof RelationalExpression))
-			throw new IllegalArgumentException("Boolean values can not be transformed to ilp relational constraints.");
+			throw new IllegalArgumentException(
+					"Boolean values can not be transformed to (M)ILP relational constraints.");
 
 		if (!isConstant) {
 			RelationalOperator operator = ((RelationalExpression) constraint.getExpression()).getOperator();
@@ -139,9 +140,9 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine> extends
 	@Override
 	public void calcAdditionalVariables() {
 		for (org.emoflon.gips.intermediate.GipsIntermediate.Variable variable : constraint.getHelperVariables()) {
-			Variable<?> ilpVar = buildVariable(variable, null);
-			addAdditionalVariable(constraint, variable, ilpVar);
-			engine.addNonMappingVariable(constraint, variable, ilpVar);
+			Variable<?> milpVar = buildVariable(variable, null);
+			addAdditionalVariable(constraint, variable, milpVar);
+			engine.addNonMappingVariable(constraint, variable, milpVar);
 		}
 	}
 

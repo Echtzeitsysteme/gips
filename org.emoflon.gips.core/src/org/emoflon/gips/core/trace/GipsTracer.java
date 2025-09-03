@@ -12,7 +12,7 @@ import org.emoflon.gips.core.gt.GipsGTMapping;
 import org.emoflon.gips.core.milp.model.Constraint;
 import org.emoflon.gips.core.milp.model.Term;
 import org.emoflon.gips.core.milp.model.Variable;
-import org.emoflon.gips.eclipse.api.ILPTraceKeywords;
+import org.emoflon.gips.eclipse.api.MILPTraceKeywords;
 import org.emoflon.gips.eclipse.trace.TraceMap;
 import org.emoflon.ibex.common.operational.IMatch;
 
@@ -71,7 +71,7 @@ public class GipsTracer {
 	public void mapLpVariable2Output(String mapName, IMatch outputMatch) {
 		// method is called from the outside, it is necessary to convert mapName into a
 		// valid type-value pair for our graph.
-		String variableId = ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_VARIABLE, mapName);
+		String variableId = MILPTraceKeywords.buildElementId(MILPTraceKeywords.TYPE_VARIABLE, mapName);
 
 		for (Object matchedObject : outputMatch.getObjects()) {
 			if (matchedObject instanceof EObject eObject)
@@ -136,11 +136,11 @@ public class GipsTracer {
 	 * @param gipsEngine
 	 */
 	public void buildIntermediate2LpTraceGraph(GipsEngine gipsEngine) {
-		// try to build a bridge between ILP model and ILP text file
+		// try to build a bridge between (M)ILP model and (M)ILP text file
 
 		for (GipsMapper<? extends GipsMapping> mapper : gipsEngine.getMappers().values()) {
 			for (GipsMapping gipsMapping : mapper.getMappings().values()) {
-				String variableId = ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_VARIABLE,
+				String variableId = MILPTraceKeywords.buildElementId(MILPTraceKeywords.TYPE_VARIABLE,
 						gipsMapping.getName());
 
 				mapIntermediate2Lp(mapper.getMapping(), variableId);
@@ -151,7 +151,7 @@ public class GipsTracer {
 
 				if (gipsMapping.hasAdditionalVariables()) {
 					for (String varNames : gipsMapping.getAdditionalVariableNames()) {
-						String addVariableId = ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_VARIABLE,
+						String addVariableId = MILPTraceKeywords.buildElementId(MILPTraceKeywords.TYPE_VARIABLE,
 								varNames);
 						mapIntermediate2Lp(mapper.getMapping(), addVariableId);
 					}
@@ -161,33 +161,33 @@ public class GipsTracer {
 
 		for (GipsConstraint<?, ?, ?> constraint : gipsEngine.getConstraints().values()) {
 			mapIntermediate2Lp(constraint.getIntermediateConstraint(),
-					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT, constraint.getName()));
+					MILPTraceKeywords.buildElementId(MILPTraceKeywords.TYPE_CONSTRAINT, constraint.getName()));
 
-			for (Constraint ilpConstraint : constraint.getConstraints()) {
-				for (Term ilpTerm : ilpConstraint.lhsTerms()) {
-					mapIntermediate2Lp(constraint.getIntermediateConstraint().getExpression(), ILPTraceKeywords
-							.buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT_VAR, ilpTerm.variable().getName()));
+			for (Constraint milpConstraint : constraint.getConstraints()) {
+				for (Term milpTerm : milpConstraint.lhsTerms()) {
+					mapIntermediate2Lp(constraint.getIntermediateConstraint().getExpression(), MILPTraceKeywords
+							.buildElementId(MILPTraceKeywords.TYPE_CONSTRAINT_VAR, milpTerm.variable().getName()));
 				}
 			}
 
 			for (Variable<?> variables : constraint.getAdditionalVariables()) {
 				mapIntermediate2Lp(constraint.getIntermediateConstraint().getExpression(),
-						ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT_VAR, variables.getName()));
+						MILPTraceKeywords.buildElementId(MILPTraceKeywords.TYPE_CONSTRAINT_VAR, variables.getName()));
 			}
 		}
 
 		for (GipsLinearFunction<?, ?, ?> function : gipsEngine.getLinearFunctions().values()) {
 			mapIntermediate2Lp(function.getIntermediateLinearFunction(),
-					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_FUNCTION, function.getName()));
+					MILPTraceKeywords.buildElementId(MILPTraceKeywords.TYPE_FUNCTION, function.getName()));
 			for (Term term : function.getLinearFunctionFunction().terms()) {
 				mapIntermediate2Lp(function.getIntermediateLinearFunction(),
-						ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_FUNCTION_VAR, term.variable().getName()));
+						MILPTraceKeywords.buildElementId(MILPTraceKeywords.TYPE_FUNCTION_VAR, term.variable().getName()));
 			}
 		}
 
 		if (gipsEngine.getObjective() != null) {
 			mapIntermediate2Lp(gipsEngine.getObjective().getIntermediateObjective(),
-					ILPTraceKeywords.buildElementId(ILPTraceKeywords.TYPE_OBJECTIVE, ""));
+					MILPTraceKeywords.buildElementId(MILPTraceKeywords.TYPE_OBJECTIVE, ""));
 		}
 	}
 

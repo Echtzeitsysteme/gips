@@ -36,8 +36,8 @@ public class «className» extends GipsPatternMapper<«data.mapping2mappingClass
 	}
 	
 	@Override
-	protected «data.mapping2mappingClassName.get(context)» convertMatch(final String ilpVariable, final «data.mapping2matchClassName.get(context)» match) {
-		return new «data.mapping2mappingClassName.get(context)»(ilpVariable, match);
+	protected «data.mapping2mappingClassName.get(context)» convertMatch(final String milpVariable, final «data.mapping2matchClassName.get(context)» match) {
+		return new «data.mapping2mappingClassName.get(context)»(milpVariable, match);
 	}
 }'''
 	}

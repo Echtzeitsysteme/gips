@@ -15,7 +15,7 @@ public abstract class Solver {
 	final protected GipsEngine engine;
 
 	/**
-	 * ILP solver configuration.
+	 * MILP solver configuration.
 	 */
 	protected final SolverConfig config;
 
@@ -50,7 +50,7 @@ public abstract class Solver {
 	 */
 	public abstract void init();
 
-	public void buildILPProblem() {
+	public void buildMILPProblem() {
 		engine.getMappers().values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
 				.forEach(mapping -> translateMapping(mapping));
 		engine.getConstraints().values().forEach(constraint -> translateConstraint(constraint));

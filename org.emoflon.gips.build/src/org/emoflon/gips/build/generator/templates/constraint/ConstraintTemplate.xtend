@@ -84,7 +84,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGe
 		} else if(expr instanceof ValueExpression) {
 			generateBuilder(expr, methodCalls)
 		} else {
-			throw new IllegalArgumentException("Terms on the lhs of a linear (in-)equality may not be constant")
+			throw new IllegalArgumentException("Terms on the LHS of a linear (in-)equality may not be constant")
 		}
 	}
 	
@@ -108,7 +108,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGe
 	
 	@Override
 	protected double buildConstantLhs(«getContextParameter()») {
-		throw new UnsupportedOperationException("Constraint has an lhs that contains ilp variables.");
+		throw new UnsupportedOperationException("Constraint has an LHS that contains (M)ILP variables.");
 	}
 	
 	@Override
@@ -144,7 +144,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGe
 	
 	@Override
 	protected List<Term> buildVariableLhs(«getContextParameter()») {
-		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
+		throw new UnsupportedOperationException("Constraint has no LHS containing (M)ILP variables.");
 	}
 	
 	@Override
@@ -165,17 +165,17 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGe
 	
 	@Override
 	protected double buildConstantLhs(«getContextParameter()») {
-		throw new UnsupportedOperationException("Constraint has no arithmetic lhs.");
+		throw new UnsupportedOperationException("Constraint has no arithmetic LHS.");
 	}
 	
 	@Override
 	protected double buildConstantRhs(«getContextParameter()») {
-		throw new UnsupportedOperationException("Constraint has no arithmetic lhs.");
+		throw new UnsupportedOperationException("Constraint has no arithmetic LHS.");
 	}
 	
 	@Override
 	protected List<Term> buildVariableLhs(«getContextParameter()») {
-		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
+		throw new UnsupportedOperationException("Constraint has no LHS containing (M)ILP variables.");
 	}
 	
 	@Override
@@ -211,7 +211,7 @@ abstract class ConstraintTemplate <CONTEXT extends Constraint> extends ProblemGe
 	
 	@Override
 	protected List<Term> buildVariableLhs(«getContextParameter()») {
-		throw new UnsupportedOperationException("Constraint has no lhs containing ilp variables.");
+		throw new UnsupportedOperationException("Constraint has no LHS containing (M)ILP variables.");
 	}
 	
 	@Override

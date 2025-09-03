@@ -22,7 +22,7 @@ public class ArithmeticInObjectiveTransformer extends ArithmeticExpressionTransf
 	@Override
 	public ArithmeticExpression transform(final GipsValueExpression value) throws Exception {
 		throw new UnsupportedOperationException(
-				"References to objects, object attributes or ILP variables are not permitted within a global objective function.");
+				"References to objects, object attributes, or (M)ILP variables are not permitted within a global objective function.");
 	}
 
 }

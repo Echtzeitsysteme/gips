@@ -115,6 +115,10 @@ public class GlpkSolver extends Solver {
 		}
 
 		GLPK.glp_set_prob_name(model, "GIPS problem");
+
+		if (config.getParameterPath() != null) {
+			System.out.println("GLPK does not support the parameter path option. It will be ignored.");
+		}
 	}
 
 	@Override

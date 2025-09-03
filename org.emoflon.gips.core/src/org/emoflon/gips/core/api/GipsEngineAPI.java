@@ -56,15 +56,15 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	}
 
 	/**
-	 * Overwrites the previously configured number of ILP solver threads with the
+	 * Overwrites the previously configured number of (M)ILP solver threads with the
 	 * given parameter's value.
 	 * 
-	 * @param numberOfThreads Number of ILP solver threads to set.
+	 * @param numberOfThreads Number of (M)ILP solver threads to set.
 	 * @deprecated Use {@link #getSolverConfig()} and
 	 *             {@link SolverConfig#setThreadCount(int)}
 	 */
 	@Deprecated
-	public void setIlpSolverThreads(final int numberOfThreads) {
+	public void setMIlpSolverThreads(final int numberOfThreads) {
 		getSolverConfig().setThreadCount(numberOfThreads);
 	}
 
@@ -248,7 +248,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		solverConfig.setTimeLimitIncludeInitTime(config.isTimeLimitIncludeInitTime());
 
 		solverConfig.setEnabledRandomSeed(config.isEnableRndSeed());
-		solverConfig.setRandomSeed(config.getIlpRndSeed());
+		solverConfig.setRandomSeed(config.getMilpRndSeed());
 
 		solverConfig.setPresolve(config.getPresolve());
 		solverConfig.setEnableOutput(config.isEnableDebugOutput());

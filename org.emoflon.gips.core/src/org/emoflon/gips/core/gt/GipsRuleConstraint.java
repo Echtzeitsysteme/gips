@@ -32,7 +32,7 @@ public abstract class GipsRuleConstraint<ENGINE extends GipsEngine, M extends Gr
 		rule.findMatches(false).stream().forEach(context -> {
 			final Constraint candidate = buildConstraint(context);
 			if (candidate != null) {
-				ilpConstraints.put(context, buildConstraint(context));
+				milpConstraints.put(context, buildConstraint(context));
 			}
 		});
 
@@ -41,7 +41,7 @@ public abstract class GipsRuleConstraint<ENGINE extends GipsEngine, M extends Gr
 			// language
 			rule.findMatches(false).stream().forEach(context -> {
 				final List<Constraint> constraints = buildAdditionalConstraints(context);
-				additionalIlpConstraints.put(context, constraints);
+				additionalMilpConstraints.put(context, constraints);
 			});
 
 		}
@@ -50,7 +50,7 @@ public abstract class GipsRuleConstraint<ENGINE extends GipsEngine, M extends Gr
 	@Override
 	public Constraint buildConstraint(final M context) {
 		if (!isConstant && !(constraint.getExpression() instanceof RelationalExpression))
-			throw new IllegalArgumentException("Boolean values can not be transformed to ilp relational constraints.");
+			throw new IllegalArgumentException("Boolean values can not be transformed to (M)ILP relational constraints.");
 
 		if (!isConstant) {
 			RelationalOperator operator = ((RelationalExpression) constraint.getExpression()).getOperator();
@@ -161,9 +161,9 @@ public abstract class GipsRuleConstraint<ENGINE extends GipsEngine, M extends Gr
 	public void calcAdditionalVariables() {
 		for (org.emoflon.gips.intermediate.GipsIntermediate.Variable variable : constraint.getHelperVariables()) {
 			for (M context : rule.findMatches(false)) {
-				Variable<?> ilpVar = buildVariable(variable, context);
-				addAdditionalVariable(context, variable, ilpVar);
-				engine.addNonMappingVariable(context, variable, ilpVar);
+				Variable<?> milpVar = buildVariable(variable, context);
+				addAdditionalVariable(context, variable, milpVar);
+				engine.addNonMappingVariable(context, variable, milpVar);
 			}
 		}
 	}

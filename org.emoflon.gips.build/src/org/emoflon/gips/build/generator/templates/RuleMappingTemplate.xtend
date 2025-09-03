@@ -54,8 +54,8 @@ public class «className» extends GipsGTMapping<«data.mapping2matchClassName.g
 	protected «GipsImportManager.variableToJavaDataType(v, imports)» «v.name.toFirstLower»;
 	«ENDFOR»
 	«ENDIF»
-	public «className»(final String ilpVariable, final «data.mapping2matchClassName.get(context)» match) {
-		super(ilpVariable, match);
+	public «className»(final String milpVariable, final «data.mapping2matchClassName.get(context)» match) {
+		super(milpVariable, match);
 		«IF !context.freeVariables.isNullOrEmpty»
 		«FOR v : context.freeVariables»
 		«v.name.toFirstLower» = new «GipsImportManager.variableToJavaDataType(v, imports)»(name + "->«v.name»");

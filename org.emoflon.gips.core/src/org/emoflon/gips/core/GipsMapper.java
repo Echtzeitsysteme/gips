@@ -19,8 +19,8 @@ public abstract class GipsMapper<M extends GipsMapping> {
 		this.mapping = mapping;
 	}
 
-	public M getMapping(final String ilpVariable) {
-		return mappings.get(ilpVariable);
+	public M getMapping(final String milpVariable) {
+		return mappings.get(milpVariable);
 	}
 
 	protected M putMapping(final M mapping) {

@@ -14,7 +14,7 @@ import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 import org.emoflon.gips.eclipse.annotation.AnnotationAndPosition;
-import org.emoflon.gips.eclipse.api.ILPTraceKeywords;
+import org.emoflon.gips.eclipse.api.MILPTraceKeywords;
 import org.emoflon.gips.eclipse.cplexLp.Model;
 import org.emoflon.gips.eclipse.cplexLp.Variable;
 
@@ -41,25 +41,25 @@ public class CplexAnnotationHighlightStrategy extends AnnotationBasedHighlightSt
 					break;
 				}
 
-				ILPTraceKeywords.TypeValuePair typeAndValue = ILPTraceKeywords.getTypeAndValue(elementId);
+				MILPTraceKeywords.TypeValuePair typeAndValue = MILPTraceKeywords.getTypeAndValue(elementId);
 
 				switch (typeAndValue.type()) {
-				case ILPTraceKeywords.TYPE_CONSTRAINT: {
+				case MILPTraceKeywords.TYPE_CONSTRAINT: {
 					var eObjects = getConstraintsWhichStartWith(resource, typeAndValue.value() + "_");
 					addAnnotations(result, eObjects, null);
 					break;
 				}
-				case ILPTraceKeywords.TYPE_FUNCTION: {
+				case MILPTraceKeywords.TYPE_FUNCTION: {
 					String variables = elementIds.stream() //
-							.filter(e -> e.startsWith(ILPTraceKeywords.TYPE_FUNCTION_VAR)) //
-							.map(e -> e.substring(ILPTraceKeywords.TYPE_FUNCTION_VAR.length()
-									+ ILPTraceKeywords.TYPE_VALUE_DELIMITER.length())) //
+							.filter(e -> e.startsWith(MILPTraceKeywords.TYPE_FUNCTION_VAR)) //
+							.map(e -> e.substring(MILPTraceKeywords.TYPE_FUNCTION_VAR.length()
+									+ MILPTraceKeywords.TYPE_VALUE_DELIMITER.length())) //
 							.collect(Collectors.joining(", "));
 					var eObject = getGlobalObjective(resource);
 					addAnnotation(result, eObject, "Variables: " + variables);
 					break;
 				}
-				case ILPTraceKeywords.TYPE_OBJECTIVE: {
+				case MILPTraceKeywords.TYPE_OBJECTIVE: {
 					var eObject = getGlobalObjective(resource);
 					addAnnotation(result, eObject, null);
 					break;

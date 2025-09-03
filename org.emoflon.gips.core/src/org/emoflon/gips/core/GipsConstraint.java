@@ -24,8 +24,8 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends o
 	final protected CONSTR constraint;
 	final protected String name;
 	final protected boolean isConstant;
-	final protected Map<CONTEXT, Constraint> ilpConstraints = Collections.synchronizedMap(new HashMap<>());
-	final protected Map<CONTEXT, List<Constraint>> additionalIlpConstraints = Collections
+	final protected Map<CONTEXT, Constraint> milpConstraints = Collections.synchronizedMap(new HashMap<>());
+	final protected Map<CONTEXT, List<Constraint>> additionalMilpConstraints = Collections
 			.synchronizedMap(new HashMap<>());
 	final protected Map<CONTEXT, Map<String, Variable<?>>> additionalVariables = Collections
 			.synchronizedMap(new HashMap<>());
@@ -46,8 +46,8 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends o
 	 * Clears all maps within the constraint builder.
 	 */
 	public void clear() {
-		this.ilpConstraints.clear();
-		this.additionalIlpConstraints.clear();
+		this.milpConstraints.clear();
+		this.additionalMilpConstraints.clear();
 		this.additionalVariables.clear();
 		this.validationLog = engine.getValidationLog();
 	}
@@ -68,11 +68,11 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends o
 	}
 
 	public Collection<Constraint> getConstraints() {
-		return ilpConstraints.values();
+		return milpConstraints.values();
 	}
 
 	public Collection<Constraint> getAdditionalConstraints() {
-		return additionalIlpConstraints.values().stream().flatMap(constraints -> constraints.stream())
+		return additionalMilpConstraints.values().stream().flatMap(constraints -> constraints.stream())
 				.collect(Collectors.toList());
 	}
 
@@ -129,7 +129,7 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends o
 		}
 
 		default -> {
-			throw new IllegalArgumentException("Unknown ilp variable type: " + variable.getType());
+			throw new IllegalArgumentException("Unknown (M)ILP variable type: " + variable.getType());
 		}
 		};
 	}

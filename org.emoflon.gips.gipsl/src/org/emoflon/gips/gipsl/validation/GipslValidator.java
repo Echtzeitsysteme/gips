@@ -359,7 +359,7 @@ public class GipslValidator extends AbstractGipslValidator {
 
 		// Check all contents for presence
 		if (config.getSolver() == null) {
-			error("You have to specify an ILP solver.", GipslPackage.Literals.GIPS_CONFIG__SOLVER);
+			error("You have to specify an (M)ILP solver.", GipslPackage.Literals.GIPS_CONFIG__SOLVER);
 		}
 		// ^this might be obsolete
 
@@ -371,12 +371,12 @@ public class GipslValidator extends AbstractGipslValidator {
 					GipslPackage.Literals.GIPS_CONFIG__SOLVER);
 		}
 
-		// ILP solver's home folder must not be empty (if set)
+		// (M)ILP solver's home folder must not be empty (if set)
 		if (config.getHome() != null && (config.getHome().isBlank() || config.getHome().equals("\"\""))) {
 			error("Home folder path must not be blank if set.", GipslPackage.Literals.GIPS_CONFIG__HOME);
 		}
 
-		// ILP solver's license path must not be empty (if set)
+		// (M)ILP solver's license path must not be empty (if set)
 		if (config.getLicense() != null && (config.getLicense().isBlank() || config.getLicense().equals("\"\""))) {
 			error("License file path must not be blank if set.", GipslPackage.Literals.GIPS_CONFIG__LICENSE);
 		}

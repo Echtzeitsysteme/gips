@@ -30,7 +30,7 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 		mapper.getMappings().values().stream().forEach(context -> {
 			final Constraint candidate = buildConstraint(context);
 			if (candidate != null) {
-				ilpConstraints.put(context, candidate);
+				milpConstraints.put(context, candidate);
 			}
 		});
 
@@ -39,7 +39,7 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 			// language
 			mapper.getMappings().values().stream().forEach(context -> {
 				final List<Constraint> constraints = buildAdditionalConstraints(context);
-				additionalIlpConstraints.put(context, constraints);
+				additionalMilpConstraints.put(context, constraints);
 			});
 
 		}
@@ -51,7 +51,7 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 			throw new IllegalArgumentException("Mapping constraints must not be constant.");
 
 		if (!(constraint.getExpression() instanceof RelationalExpression))
-			throw new IllegalArgumentException("Boolean values can not be transformed to ilp relational constraints.");
+			throw new IllegalArgumentException("Boolean values can not be transformed to (M)ILP relational constraints.");
 
 		double constTerm = buildConstantRhs(context);
 		List<Term> terms = buildVariableLhs(context);
@@ -106,9 +106,9 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 	public void calcAdditionalVariables() {
 		for (org.emoflon.gips.intermediate.GipsIntermediate.Variable variable : constraint.getHelperVariables()) {
 			for (CONTEXT context : mapper.getMappings().values()) {
-				Variable<?> ilpVar = buildVariable(variable, context);
-				addAdditionalVariable(context, variable, ilpVar);
-				engine.addNonMappingVariable(context, variable, ilpVar);
+				Variable<?> milpVar = buildVariable(variable, context);
+				addAdditionalVariable(context, variable, milpVar);
+				engine.addNonMappingVariable(context, variable, milpVar);
 			}
 		}
 	}

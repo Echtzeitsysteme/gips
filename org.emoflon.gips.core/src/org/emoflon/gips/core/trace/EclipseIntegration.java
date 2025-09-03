@@ -32,7 +32,7 @@ public class EclipseIntegration {
 	private String modelIdInput;
 	private String modelIdOutput;
 
-	private final Map<String, String> storedILPValues = new HashMap<>();
+	private final Map<String, String> storedMilpValues = new HashMap<>();
 
 	public EclipseIntegration(SolverConfig solverConfig) {
 		this.solverConfig = Objects.requireNonNull(solverConfig, "solverConfig");
@@ -261,7 +261,7 @@ public class EclipseIntegration {
 
 		try {
 			IRemoteEclipseService service = getRemoteService();
-			service.updateModelValues(getContextId(), getModelIdForLpModel(), storedILPValues);
+			service.updateModelValues(getContextId(), getModelIdForLpModel(), storedMilpValues);
 		} catch (RemoteException e) {
 			System.err.println("Unable to send solution values to IDE. Reason:\n");
 			e.printStackTrace();
@@ -269,11 +269,11 @@ public class EclipseIntegration {
 	}
 
 	public void storeSolutionValues(Map<String, Number> values) {
-		storedILPValues.clear();
+		storedMilpValues.clear();
 
 		for (var entry : values.entrySet()) {
 			if (entry.getValue() != null) {
-				storedILPValues.put(entry.getKey(), entry.getValue().toString());
+				storedMilpValues.put(entry.getKey(), entry.getValue().toString());
 			}
 		}
 	}
@@ -308,8 +308,8 @@ public class EclipseIntegration {
 	}
 
 	/**
-	 * Returns the lp model id. This model id may be available after the ilp build
-	 * stage.
+	 * Returns the lp model id. This model id may be available after the (M)ILP
+	 * build stage.
 	 * 
 	 * @return lp model id or null, if not available
 	 */

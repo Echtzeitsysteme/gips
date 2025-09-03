@@ -10,7 +10,7 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.emoflon.gips.eclipse.annotation.AnnotationMarkerData;
-import org.emoflon.gips.eclipse.api.ILPTraceKeywords;
+import org.emoflon.gips.eclipse.api.MILPTraceKeywords;
 import org.emoflon.gips.eclipse.cplexLp.Model;
 import org.emoflon.gips.eclipse.cplexLp.Variable;
 
@@ -30,20 +30,20 @@ public class CplexLpMarkerHighlightStrategy extends MarkerBasedHighlightStrategy
 //				continue;
 //			}
 
-			var typeAndValue = ILPTraceKeywords.getTypeAndValue(localElement);
+			var typeAndValue = MILPTraceKeywords.getTypeAndValue(localElement);
 
 			switch (typeAndValue.type()) {
-			case ILPTraceKeywords.TYPE_CONSTRAINT: {
+			case MILPTraceKeywords.TYPE_CONSTRAINT: {
 				var eObjects = getConstraintsWhichStartWith(editor, typeAndValue.value() + "_");
 				var markers = convertEObjectsToMarkers(eObjects, "Created by: " + typeAndValue.value());
 				highlightMarkers.addAll(markers);
 //				traceMap.mapOneToMany(localElement, eObjects);
 				break;
 			}
-			case ILPTraceKeywords.TYPE_FUNCTION: {
-				var variables = localElementIds.stream().filter(e -> e.startsWith(ILPTraceKeywords.TYPE_FUNCTION_VAR))
-						.map(e -> e.substring(ILPTraceKeywords.TYPE_FUNCTION_VAR.length()
-								+ ILPTraceKeywords.TYPE_VALUE_DELIMITER.length()));
+			case MILPTraceKeywords.TYPE_FUNCTION: {
+				var variables = localElementIds.stream().filter(e -> e.startsWith(MILPTraceKeywords.TYPE_FUNCTION_VAR))
+						.map(e -> e.substring(MILPTraceKeywords.TYPE_FUNCTION_VAR.length()
+								+ MILPTraceKeywords.TYPE_VALUE_DELIMITER.length()));
 				var eObject = getGlobalObjective(editor);
 //				traceMap.map(localElement, eObject);
 				var marker = convertEObjectToMarker(eObject);
@@ -51,14 +51,14 @@ public class CplexLpMarkerHighlightStrategy extends MarkerBasedHighlightStrategy
 				highlightMarkers.add(marker);
 				break;
 			}
-			case ILPTraceKeywords.TYPE_OBJECTIVE: {
+			case MILPTraceKeywords.TYPE_OBJECTIVE: {
 				var eObject = getGlobalObjective(editor);
 //				traceMap.map(localElement, eObject);
 				var marker = convertEObjectToMarker(eObject);
 				highlightMarkers.add(marker);
 				break;
 			}
-			case ILPTraceKeywords.TYPE_MAPPING: {
+			case MILPTraceKeywords.TYPE_MAPPING: {
 				var eObjects = editor.getDocument().readOnly(resource -> {
 					var result = new LinkedList<EObject>();
 					var iterator = resource.getAllContents();

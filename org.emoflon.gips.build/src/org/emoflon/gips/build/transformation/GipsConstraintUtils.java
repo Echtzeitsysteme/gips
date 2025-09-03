@@ -27,7 +27,7 @@ public final class GipsConstraintUtils {
 	/*
 	 * This function takes a constraint and normalizes the contained generic
 	 * relational expression modeling a linear equality, such that only relational
-	 * operators are used, which are supported by ILP solvers (>=, <=, ==).
+	 * operators are used, which are supported by (M)ILP solvers (>=, <=, ==).
 	 * 
 	 * This function assumes that the expression in constraint is a relational
 	 * expression, where the lhs is a variable arithmetic expression and the rhs is
@@ -262,7 +262,7 @@ public final class GipsConstraintUtils {
 	 * This function takes a constraint, inserts a symbolic variable that reflects
 	 * the outcome of the constraint and normalizes the contained generic relational
 	 * expression modeling a linear equality, such that only relational operators
-	 * are used, which are supported by ILP solvers (>=, <=, ==).
+	 * are used, which are supported by (M)ILP solvers (>=, <=, ==).
 	 * 
 	 * This function assumes that the expression in constraint is a relational
 	 * expression, where the lhs is a variable arithmetic expression and the rhs is

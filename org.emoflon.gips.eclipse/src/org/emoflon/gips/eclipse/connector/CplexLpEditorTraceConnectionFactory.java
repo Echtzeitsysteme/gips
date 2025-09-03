@@ -1,6 +1,6 @@
 package org.emoflon.gips.eclipse.connector;
 
-import static org.emoflon.gips.eclipse.api.ILPTraceKeywords.buildElementId;
+import static org.emoflon.gips.eclipse.api.MILPTraceKeywords.buildElementId;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,7 +9,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.emoflon.gips.eclipse.CplexLpLanguage;
-import org.emoflon.gips.eclipse.api.ILPTraceKeywords;
+import org.emoflon.gips.eclipse.api.MILPTraceKeywords;
 import org.emoflon.gips.eclipse.connector.highlight.CplexAnnotationHighlightStrategy;
 import org.emoflon.gips.eclipse.cplexLp.ConstraintExpression;
 import org.emoflon.gips.eclipse.cplexLp.LinearTerm;
@@ -61,13 +61,13 @@ public class CplexLpEditorTraceConnectionFactory extends XtextEditorTraceConnect
 					}
 
 					if (parent instanceof ConstraintExpression) {
-						elementIds.add(buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT_VAR, variableName));
+						elementIds.add(buildElementId(MILPTraceKeywords.TYPE_CONSTRAINT_VAR, variableName));
 					} else if (parent instanceof ObjectiveExpression) {
-						elementIds.add(buildElementId(ILPTraceKeywords.TYPE_FUNCTION_VAR, variableName));
-						elementIds.add(buildElementId(ILPTraceKeywords.TYPE_OBJECTIVE, ""));
+						elementIds.add(buildElementId(MILPTraceKeywords.TYPE_FUNCTION_VAR, variableName));
+						elementIds.add(buildElementId(MILPTraceKeywords.TYPE_OBJECTIVE, ""));
 					}
 
-					elementIds.add(buildElementId(ILPTraceKeywords.TYPE_VARIABLE, variableName));
+					elementIds.add(buildElementId(MILPTraceKeywords.TYPE_VARIABLE, variableName));
 
 				} else if (eObject instanceof ConstraintExpression constraint) {
 					String name = constraint.getName();
@@ -78,11 +78,11 @@ public class CplexLpEditorTraceConnectionFactory extends XtextEditorTraceConnect
 					if (delimiter >= 0) {
 						name = name.substring(0, delimiter);
 					}
-					name = buildElementId(ILPTraceKeywords.TYPE_CONSTRAINT, name);
+					name = buildElementId(MILPTraceKeywords.TYPE_CONSTRAINT, name);
 					elementIds.add(name);
 
 				} else if (eObject instanceof SectionObjective) {
-					elementIds.add(buildElementId(ILPTraceKeywords.TYPE_OBJECTIVE, ""));
+					elementIds.add(buildElementId(MILPTraceKeywords.TYPE_OBJECTIVE, ""));
 					continue;
 				}
 			}

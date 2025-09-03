@@ -193,9 +193,9 @@ public class GurobiSolver extends Solver {
 				// Keep Gurobi init exception or error to throw it later
 				GRBException gurobiInitException = null;
 				Error gurobiInitError = null;
-				// TODO: Gurobi log output redirect from stdout to ILPSolverOutput
+				// TODO: Gurobi log output redirect from stdout to MILPSolverOutput
 				try {
-					env = new GRBEnv("Gurobi_ILP.log");
+					env = new GRBEnv("Gurobi_MILP.log");
 				} catch (final GRBException e) {
 					gurobiInitException = e;
 				} catch (final Error e) {
@@ -254,7 +254,6 @@ public class GurobiSolver extends Solver {
 				final GurobiTerminateCallback callback = new GurobiTerminateCallback(config.getCallbackPath());
 				model.setCallback(callback);
 			}
-
 
 			// Check if the parameter path is configured. If yes, set up the Gurobi
 			// parameter tuning.s
@@ -377,11 +376,11 @@ public class GurobiSolver extends Solver {
 			final GipsMapper<?> mapper = engine.getMapper(key);
 			// Iterate over all mappings of each mapper
 			for (final String k : mapper.getMappings().keySet()) {
-				// Get corresponding ILP variable name
+				// Get corresponding (M)ILP variable name
 				GipsMapping mapping = mapper.getMapping(k);
 				final String varName = mapping.getName();
 				try {
-					// Get value of the ILP variable and round it (to eliminate small deltas)
+					// Get value of the (M)ILP variable and round it (to eliminate small deltas)
 					double result = Math.round(getVar(varName).get(DoubleAttr.X));
 					// Save result value in specific mapping
 					mapping.setValue((int) result);
@@ -422,36 +421,36 @@ public class GurobiSolver extends Solver {
 	@Override
 	protected void translateConstraint(final GipsMappingConstraint<?, ? extends EObject> constraint) {
 		createOrGetAdditionalVars(constraint.getAdditionalVariables());
-		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
-		addIlpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
+		int counter = addMilpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
+		addMilpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
 	}
 
 	@Override
 	protected void translateConstraint(final GipsPatternConstraint<?, ?, ?> constraint) {
 		createOrGetAdditionalVars(constraint.getAdditionalVariables());
-		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
-		addIlpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
+		int counter = addMilpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
+		addMilpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
 	}
 
 	@Override
 	protected void translateConstraint(final GipsRuleConstraint<?, ?, ?> constraint) {
 		createOrGetAdditionalVars(constraint.getAdditionalVariables());
-		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
-		addIlpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
+		int counter = addMilpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
+		addMilpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
 	}
 
 	@Override
 	protected void translateConstraint(final GipsTypeConstraint<?, ? extends EObject> constraint) {
 		createOrGetAdditionalVars(constraint.getAdditionalVariables());
-		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
-		addIlpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
+		int counter = addMilpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
+		addMilpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
 	}
 
 	@Override
 	protected void translateConstraint(GipsGlobalConstraint<?> constraint) {
 		createOrGetAdditionalVars(constraint.getAdditionalVariables());
-		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
-		addIlpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
+		int counter = addMilpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
+		addMilpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
 	}
 
 	protected void createOrGetAdditionalVars(final Collection<Variable<?>> variables) {
@@ -535,13 +534,13 @@ public class GurobiSolver extends Solver {
 	//
 
 	/**
-	 * Adds a given collection of ILP constraints and a given constraint name to the
-	 * Gurobi model.
+	 * Adds a given collection of (M)ILP constraints and a given constraint name to
+	 * the Gurobi model.
 	 *
-	 * @param constraints Collection of integer ILP constraints to add.
+	 * @param constraints Collection of integer (M)ILP constraints to add.
 	 * @param name        Name of the overall constraint to add.
 	 */
-	private int addIlpIntegerConstraintsToGrb(final Collection<Constraint> constraints, final String name,
+	private int addMilpIntegerConstraintsToGrb(final Collection<Constraint> constraints, final String name,
 			int counter) {
 		// Have to use an iterator to be able to increment the counter
 		final Iterator<Constraint> cnstrsIt = constraints.iterator();
@@ -556,7 +555,7 @@ public class GurobiSolver extends Solver {
 
 			// Check if constraints of form "<empty> == const" exist and throw an exception
 //			if (curr.lhsTerms().isEmpty()) {
-//				throw new RuntimeException("LHS (variable terms) is empty. This produces an infeasible ILP problem.");
+//				throw new RuntimeException("LHS (variable terms) is empty. This produces an infeasible (M)ILP problem.");
 //			}
 			// TODO: Throw an exception if the collection of LHS terms is empty (and the
 			// presolver functionality is implemented.
@@ -596,13 +595,13 @@ public class GurobiSolver extends Solver {
 	}
 
 	/**
-	 * Adds a given collection of ILP constraints and a given constraint name to the
-	 * Gurobi model.
+	 * Adds a given collection of (M)ILP constraints and a given constraint name to
+	 * the Gurobi model.
 	 *
-	 * @param constraints Collection of integer ILP constraints to add.
+	 * @param constraints Collection of integer (M)ILP constraints to add.
 	 * @param name        Name of the overall constraint to add.
 	 */
-	private int addIlpConstraintsToGrb(final Collection<Constraint> constraints, final String name, int counter) {
+	private int addMilpConstraintsToGrb(final Collection<Constraint> constraints, final String name, int counter) {
 		// Have to use an iterator to be able to increment the counter
 		final Iterator<Constraint> cnstrsIt = constraints.iterator();
 		while (cnstrsIt.hasNext()) {
@@ -616,7 +615,7 @@ public class GurobiSolver extends Solver {
 
 			// Check if constraints of form "<empty> == const" exist and throw an exception
 //			if (curr.lhsTerms().isEmpty()) {
-//				throw new RuntimeException("LHS (variable terms) is empty. This produces an infeasible ILP problem.");
+//				throw new RuntimeException("LHS (variable terms) is empty. This produces an infeasible (M)ILP problem.");
 //			}
 			// TODO: Throw an exception if the collection of LHS terms is empty (and the
 			// presolver functionality is implemented.

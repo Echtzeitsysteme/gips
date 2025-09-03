@@ -201,6 +201,10 @@ public class CplexSolver extends Solver {
 			throw new RuntimeException(e);
 		}
 
+		if (config.getParameterPath() != null) {
+			System.out.println("CPLEX does not support the parameter path option. It will be ignored.");
+		}
+
 		// Reset local lookup data structure for the CPLEX constraints and variables in
 		// case this is not the first initialization.
 		constraints.clear();

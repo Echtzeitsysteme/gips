@@ -1,0 +1,8 @@
+{
+    "abort": false,
+    "bestBoundGeq": true,
+    "bestBound": 123,
+    "bestObjectiveLeq": true,
+    "bestObjective": 4567890,
+    "gap": 0.05
+}

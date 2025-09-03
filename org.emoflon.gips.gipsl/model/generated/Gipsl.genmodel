@@ -102,6 +102,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/solver"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/home"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/license"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/enableSolverCallback"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/solverCallbackPath"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/enableLaunchConfig"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/mainLoc"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConfig/enableLimit"/>

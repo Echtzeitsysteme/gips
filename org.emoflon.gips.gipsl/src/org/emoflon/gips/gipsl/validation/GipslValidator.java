@@ -427,6 +427,14 @@ public class GipslValidator extends AbstractGipslValidator {
 			warn("CPLEX interprets every presolving setting but 'NONE' as 'enabled'.",
 					GipslPackage.Literals.GIPS_CONFIG__PRESOLVE);
 		}
+
+		// Callback cases:
+		// All solvers but Gurobi do not respect the callback setting(s). Hence,
+		// generate a warning.
+		if (config.getSolver() != SolverType.GUROBI && config.isEnableSolverCallback()) {
+			warn("All solvers but Gurobi do not support the custom callback setting.",
+					GipslPackage.Literals.GIPS_CONFIG__ENABLE_SOLVER_CALLBACK);
+		}
 	}
 
 	@Check

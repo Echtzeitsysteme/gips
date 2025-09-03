@@ -66,7 +66,7 @@ final class HelloWorldProject {
 					solver := GUROBI;
 					timeLimit := true [value := 42.0];
 					randomSeed := true [value := 73];
-					presolve := true;
+					presolve := auto;
 					debugOutput := true;
 					tolerance := true [value := 0.000001];
 				}

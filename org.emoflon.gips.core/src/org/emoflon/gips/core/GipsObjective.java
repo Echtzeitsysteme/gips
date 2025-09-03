@@ -24,10 +24,16 @@ public abstract class GipsObjective {
 		initLocalObjectives();
 	}
 
-	public void buildObjectiveFunction() {
+	/**
+	 * Builds the objective function. If the parameter `parallel` is true, the
+	 * process may run in parallel.
+	 * 
+	 * @param parallel If true, the process may run in parallel.
+	 */
+	public void buildObjectiveFunction(final boolean parallel) {
 		weightedFunctions = new LinkedList<>();
 		constantTerms = new LinkedList<>();
-		buildLocalObjectives();
+		buildLocalObjectives(parallel);
 		buildTerms();
 		milpObjective = new NestedLinearFunction(weightedFunctions, constantTerms, objective.getGoal());
 	}
@@ -40,10 +46,18 @@ public abstract class GipsObjective {
 		return milpObjective;
 	}
 
-	protected void buildLocalObjectives() {
-		// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT
-		// language
-		engine.getLinearFunctions().values().stream().forEach(fn -> fn.buildLinearFunction());
+	/**
+	 * Builds all local objectives. If the parameter `parallel` is true, the process
+	 * may run in parallel.
+	 * 
+	 * @param parallel If true, the process may run in parallel.
+	 */
+	protected void buildLocalObjectives(final boolean parallel) {
+		if (parallel) {
+			engine.getLinearFunctions().values().stream().forEach(fn -> fn.buildLinearFunction());
+		} else {
+			engine.getLinearFunctions().values().parallelStream().forEach(fn -> fn.buildLinearFunction());
+		}
 	}
 
 	protected abstract void initLocalObjectives();

@@ -38,6 +38,8 @@ public class SolverConfig {
 	private String lpPath;
 	private boolean threadCountEnabled;
 	private int threadCount;
+	private boolean callbackEnabled;
+	private String callbackPath;
 
 	/**
 	 * To be called after any changes have been made via the setters. This method
@@ -233,6 +235,30 @@ public class SolverConfig {
 		var oldValue = this.lpPath;
 		this.lpPath = newValue;
 
+		aValueChanged |= oldValue != newValue;
+		notifyListeners();
+	}
+	
+	public boolean isEnableCallbackPath() {
+		return callbackEnabled;
+	}
+	
+	public void setEnableCallbackPath(final boolean newValue) {
+		final var oldValue = this.callbackEnabled;
+		this.callbackEnabled = newValue;
+		
+		aValueChanged |= oldValue != newValue;
+		notifyListeners();
+	}
+	
+	public String getCallbackPath() {
+		return callbackPath;
+	}
+	
+	public void setCallbackPath(final String newValue) {
+		final var oldValue = this.callbackPath;
+		this.callbackPath = newValue;
+		
 		aValueChanged |= oldValue != newValue;
 		notifyListeners();
 	}

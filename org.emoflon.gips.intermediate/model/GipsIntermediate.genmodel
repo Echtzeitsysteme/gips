@@ -122,6 +122,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/lpPath"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/threadCountEnabled"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/threadCount"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/enableSolverCallback"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/solverCallbackPath"/>
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//Variable">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Variable/type"/>

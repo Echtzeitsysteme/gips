@@ -3,6 +3,7 @@ package org.emoflon.gips.core.api;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -78,6 +79,21 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	@Deprecated
 	public void setTimeLimit(final double newTimeLimit) {
 		getSolverConfig().setTimeLimit(newTimeLimit);
+	}
+
+	/**
+	 * Overwrite the previously configured callback file path with the given
+	 * parameter's value.
+	 * 
+	 * @param callbackPath New callback file path to set.
+	 * @deprecated Use {@link #getSolverConfig()} and
+	 *             {@link SolverConfig#setCallbackPath(String)}
+	 */
+	@Deprecated
+	public void setCallbackPath(final String callbackPath) {
+		Objects.requireNonNull(callbackPath);
+		getSolverConfig().setEnableCallbackPath(true);
+		getSolverConfig().setCallbackPath(callbackPath);
 	}
 
 	public EMOFLON_APP getEMoflonApp() {
@@ -233,6 +249,11 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		solverConfig.setEnableThreadCount(config.isThreadCountEnabled());
 		if (config.isThreadCountEnabled())
 			solverConfig.setThreadCount(config.getThreadCount());
+
+		if (config.isEnableSolverCallback()) {
+			solverConfig.setEnableCallbackPath(true);
+			solverConfig.setCallbackPath(config.getSolverCallbackPath());
+		}
 	}
 
 	/**

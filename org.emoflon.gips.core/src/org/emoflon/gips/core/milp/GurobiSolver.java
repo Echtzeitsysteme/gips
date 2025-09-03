@@ -248,6 +248,13 @@ public class GurobiSolver extends Solver {
 			} else {
 				model.set(IntParam.Threads, SystemUtil.getSystemThreads());
 			}
+
+			// Set solver callback parameters, if enabled
+			if (config.isEnableCallbackPath()) {
+				final GurobiTerminateCallback callback = new GurobiTerminateCallback(config.getCallbackPath());
+				model.setCallback(callback);
+			}
+
 			// Reset local lookup data structure for the Gurobi variables in case this is
 			// not the first initialization.
 			grbVars.clear();
@@ -337,6 +344,10 @@ public class GurobiSolver extends Solver {
 			}
 			case GRB.TIME_LIMIT -> {
 				status = SolverStatus.TIME_OUT;
+				objVal = model.get(GRB.DoubleAttr.ObjVal);
+			}
+			case GRB.Status.INTERRUPTED -> {
+				status = SolverStatus.INTERRUPTED;
 				objVal = model.get(GRB.DoubleAttr.ObjVal);
 			}
 			}

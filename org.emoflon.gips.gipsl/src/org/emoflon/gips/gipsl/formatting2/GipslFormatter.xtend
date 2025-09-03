@@ -143,13 +143,13 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 		gipsConfig.regionFor.keyword(gipsConfigAccess.leftCurlyBracketKeyword_2).append[noSpace; newLine]
 
 		val body = gipsConfig.regionFor.keywordPairs(gipsConfigAccess.leftCurlyBracketKeyword_2,
-			gipsConfigAccess.rightCurlyBracketKeyword_16)
+			gipsConfigAccess.rightCurlyBracketKeyword_17)
 		if(body.size > 0)
 			body.get(0).interior[indent]
 
 		gipsConfig.regionFor.keywords(":=").forEach[surround[oneSpace]]
 
-		gipsConfig.regionFor.keyword(gipsConfigAccess.rightCurlyBracketKeyword_16).prepend[newLine]
+		gipsConfig.regionFor.keyword(gipsConfigAccess.rightCurlyBracketKeyword_17).prepend[newLine]
 
 		val details = gipsConfig.regionFor.keywordPairs("[", "]")
 		for (detail : details) {

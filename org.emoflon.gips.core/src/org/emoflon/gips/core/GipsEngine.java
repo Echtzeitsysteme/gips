@@ -51,8 +51,37 @@ public abstract class GipsEngine {
 
 	protected abstract void updateConstants();
 
-	public void buildProblemTimed(boolean doUpdate) {
-		Observer observer = Observer.getInstance();
+	/**
+	 * Builds the problem with time measurement included. This method does not
+	 * trigger an update of the pattern matcher and runs everything sequentially.
+	 */
+	public void buildProblemTimed() {
+		buildProblemTimed(false, false);
+	}
+
+	/**
+	 * Builds the problem with time measurement included. This method does trigger
+	 * an update of the pattern matcher depending on the given input parameter and
+	 * runs everything sequentially.
+	 * 
+	 * @param doUpdate If true, the pattern matcher will be updated before building
+	 *                 the problem.
+	 */
+	public void buildProblemTimed(final boolean doUpdate) {
+		buildProblemTimed(doUpdate, false);
+	}
+
+	/**
+	 * Builds the problem with time measurement included. `doUpdate` defines if the
+	 * pattern matcher should be updated and `parallel` decides if the method runs
+	 * everything in parallel or sequentially.
+	 * 
+	 * @param doUpdate If true, the pattern matcher will be updated before building
+	 *                 the problem.
+	 * @param parallel If true, the problem will be built in parallel.
+	 */
+	public void buildProblemTimed(final boolean doUpdate, final boolean parallel) {
+		final Observer observer = Observer.getInstance();
 		observer.observe("BUILD", () -> {
 			if (doUpdate)
 				observer.observe("PM", () -> update());
@@ -61,31 +90,56 @@ public abstract class GipsEngine {
 				// Reset validation log
 				validationLog = new GipsConstraintValidationLog();
 
-				// Constraints are re-build a few lines below
-				constraints.values().stream().forEach(constraint -> constraint.clear());
+				if (parallel) {
+					// Constraints are re-build a few lines below
+					constraints.values().parallelStream().forEach(constraint -> constraint.clear());
 				
-				// Reset trace
-				getTracer().resetTrace();
+				    // Reset trace
+				    getTracer().resetTrace();
 
-				nonMappingVariables.clear();
-				mappers.values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
-						.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
-							Map<String, Variable<?>> variables = nonMappingVariables.get(m);
-							if (variables == null) {
-								variables = Collections.synchronizedMap(new HashMap<>());
-								nonMappingVariables.put(m, variables);
-							}
-							variables.putAll(m.getAdditionalVariables());
-						});
+					nonMappingVariables.clear();
+					mappers.values().parallelStream().flatMap(mapper -> mapper.getMappings().values().parallelStream())
+							.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
+								Map<String, Variable<?>> variables = nonMappingVariables.get(m);
+								if (variables == null) {
+									variables = Collections.synchronizedMap(new HashMap<>());
+									nonMappingVariables.put(m, variables);
+								}
+								variables.putAll(m.getAdditionalVariables());
+							});
 
-				constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());
+					constraints.values().parallelStream().forEach(constraint -> constraint.calcAdditionalVariables());
 
-				updateConstants();
+					updateConstants();
 
-				constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
+					constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints());
 
-				if (objective != null)
-					objective.buildObjectiveFunction();
+					if (objective != null)
+						objective.buildObjectiveFunction(true);
+				} else {
+					// Constraints are re-build a few lines below
+					constraints.values().stream().forEach(constraint -> constraint.clear());
+
+					nonMappingVariables.clear();
+					mappers.values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
+							.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
+								Map<String, Variable<?>> variables = nonMappingVariables.get(m);
+								if (variables == null) {
+									variables = Collections.synchronizedMap(new HashMap<>());
+									nonMappingVariables.put(m, variables);
+								}
+								variables.putAll(m.getAdditionalVariables());
+							});
+
+					constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());
+
+					updateConstants();
+
+					constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
+
+					if (objective != null)
+						objective.buildObjectiveFunction(false);
+				}
 			});
 
 			observer.observe("BUILD_SOLVER", () -> {
@@ -97,42 +151,105 @@ public abstract class GipsEngine {
 		});
 	}
 
-	public void buildProblem(boolean doUpdate) {
+	/**
+	 * Builds the problem with no time measurement included. This method does not
+	 * trigger an update of the pattern matcher and runs everything sequentially.
+	 */
+	public void buildProblem() {
+		buildProblem(false, false);
+	}
+
+	/**
+	 * Builds the problem with time no measurement included. This method does
+	 * trigger an update of the pattern matcher depending on the given input
+	 * parameter and runs everything sequentially.
+	 * 
+	 * @param doUpdate If true, the pattern matcher will be updated before building
+	 *                 the problem.
+	 */
+	public void buildProblem(final boolean doUpdate) {
+		buildProblem(doUpdate, false);
+	}
+
+	/**
+	 * Builds the problem with no time measurement included. `doUpdate` defines if
+	 * the pattern matcher should be updated and `parallel` decides if the method
+	 * runs everything in parallel or sequentially.
+	 * 
+	 * @param doUpdate If true, the pattern matcher will be updated before building
+	 *                 the problem.
+	 * @param parallel If true, the problem will be built in parallel.
+	 */
+	public void buildProblem(final boolean doUpdate, final boolean parallel) {
 		if (doUpdate)
 			update();
 
 		// Reset validation log
 		validationLog = new GipsConstraintValidationLog();
 
-		// Constraints are re-build a few lines below
-		constraints.values().stream().forEach(constraint -> constraint.clear());
+		if (parallel) {
+			// Constraints are re-build a few lines below
+			constraints.values().parallelStream().forEach(constraint -> constraint.clear());
 
-		// Reset trace
-		getTracer().resetTrace();
+			// Reset trace
+			getTracer().resetTrace();
 
-		// Objectives will be build by the global objective call below
-//		objectives.values().stream().forEach(objective -> objective.clear());
-		// TODO: It seems to me that this is not necessary for objectives. All tests
-		// (and also the dedicated tests for checking this!) are happy with it.
+			// Objectives will be build by the global objective call below
+//			objectives.values().parallelStream().forEach(objective -> objective.clear());
+			// TODO: It seems to me that this is not necessary for objectives. All tests
+			// (and also the dedicated tests for checking this!) are happy with it.
 
-		nonMappingVariables.clear();
-		mappers.values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
-				.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
-					Map<String, Variable<?>> variables = nonMappingVariables.get(m);
-					if (variables == null) {
-						variables = Collections.synchronizedMap(new HashMap<>());
-						nonMappingVariables.put(m, variables);
-					}
-					variables.putAll(m.getAdditionalVariables());
-				});
+			nonMappingVariables.clear();
+			mappers.values().parallelStream().flatMap(mapper -> mapper.getMappings().values().parallelStream())
+					.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
+						Map<String, Variable<?>> variables = nonMappingVariables.get(m);
+						if (variables == null) {
+							variables = Collections.synchronizedMap(new HashMap<>());
+							nonMappingVariables.put(m, variables);
+						}
+						variables.putAll(m.getAdditionalVariables());
+					});
 
-		constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());
+			constraints.values().parallelStream().forEach(constraint -> constraint.calcAdditionalVariables());
 
-		updateConstants();
+			updateConstants();
 
-		constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
-		if (objective != null)
-			objective.buildObjectiveFunction();
+			constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints());
+
+			if (objective != null)
+				objective.buildObjectiveFunction(true);
+		} else {
+			// Constraints are re-build a few lines below
+			constraints.values().stream().forEach(constraint -> constraint.clear());
+
+			// Reset trace
+			getTracer().resetTrace();
+
+			// Objectives will be build by the global objective call below
+//						objectives.values().parallelStream().forEach(objective -> objective.clear());
+			// TODO: It seems to me that this is not necessary for objectives. All tests
+			// (and also the dedicated tests for checking this!) are happy with it.
+
+			nonMappingVariables.clear();
+			mappers.values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
+					.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
+						Map<String, Variable<?>> variables = nonMappingVariables.get(m);
+						if (variables == null) {
+							variables = Collections.synchronizedMap(new HashMap<>());
+							nonMappingVariables.put(m, variables);
+						}
+						variables.putAll(m.getAdditionalVariables());
+					});
+
+			constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());
+
+			updateConstants();
+
+			constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
+
+			if (objective != null)
+				objective.buildObjectiveFunction(true);
+		}
 
 		solver.init();
 		solver.buildILPProblem();

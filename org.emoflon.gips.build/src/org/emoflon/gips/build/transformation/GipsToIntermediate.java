@@ -242,6 +242,12 @@ public class GipsToIntermediate {
 			config.setThreadCount(eConfig.getThreads());
 		}
 
+		// Callback configuration
+		config.setEnableSolverCallback(eConfig.isEnableSolverCallback());
+		if(eConfig.isEnableSolverCallback()) {
+			config.setSolverCallbackPath(eConfig.getSolverCallbackPath().replace("\"", ""));
+		}
+		
 		data.model().setConfig(config);
 		gipsl2gipsTrace.map(eConfig, config);
 	}

@@ -278,6 +278,7 @@ public abstract class GipsEngine {
 			}
 
 			solver.reset();
+			GlobalMappingIndexer.getInstance().terminate();
 			eclipseIntegration.sendSolutionValuesToIDE();
 			return output;
 		});
@@ -297,6 +298,7 @@ public abstract class GipsEngine {
 		}
 
 		solver.reset();
+		GlobalMappingIndexer.getInstance().terminate();
 		eclipseIntegration.sendSolutionValuesToIDE();
 		return output;
 	}
@@ -333,6 +335,7 @@ public abstract class GipsEngine {
 		solver.terminate();
 		indexer.terminate();
 		mappers.forEach((name, mapper) -> mapper.terminate());
+		GlobalMappingIndexer.getInstance().terminate();
 	}
 
 	protected abstract void initTypeIndexer();

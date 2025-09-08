@@ -50,12 +50,12 @@ public class CplexSolver extends Solver {
 	private IloCplex cplex;
 
 	/**
-	 * Map to collect all ILP constraints (name -> collection of constraints).
+	 * Map to collect all (M)ILP constraints (name -> collection of constraints).
 	 */
 	private Map<String, Collection<Constraint>> constraints = new HashMap<>();
 
 	/**
-	 * Map to collect all ILP variables (name -> CPLEX numeric vars).
+	 * Map to collect all (M)ILP variables (name -> CPLEX numeric vars).
 	 */
 	private final Map<String, IloNumVar> vars = new HashMap<>();
 
@@ -201,6 +201,10 @@ public class CplexSolver extends Solver {
 			throw new RuntimeException(e);
 		}
 
+		if (config.getParameterPath() != null) {
+			System.out.println("CPLEX does not support the parameter path option. It will be ignored.");
+		}
+
 		// Reset local lookup data structure for the CPLEX constraints and variables in
 		// case this is not the first initialization.
 		constraints.clear();
@@ -313,10 +317,10 @@ public class CplexSolver extends Solver {
 			final GipsMapper<?> mapper = engine.getMapper(key);
 			// Iterate over all mappings of each mapper
 			for (final String k : mapper.getMappings().keySet()) {
-				// Get corresponding ILP variable name
+				// Get corresponding (M)ILP variable name
 				final GipsMapping mapping = mapper.getMapping(k);
 				final String varName = mapping.getName();
-				// Get value of the ILP variable and round it (to eliminate small deltas)
+				// Get value of the (M)ILP variable and round it (to eliminate small deltas)
 				double result = 0;
 				try {
 					result = cplex.getValue(vars.get(varName));

@@ -215,7 +215,7 @@ public class GipsImportManager {
 			imports.add("org.emoflon.gips.core.milp.model.RealVariable");
 			return "RealVariable";
 		default:
-			throw new UnsupportedOperationException("Unsupported ilp variable data type : " + var.getType());
+			throw new UnsupportedOperationException("Unsupported (M)ILP variable data type : " + var.getType());
 
 		}
 	}
@@ -229,7 +229,7 @@ public class GipsImportManager {
 		case REAL:
 			return "double";
 		default:
-			throw new UnsupportedOperationException("Unsupported ilp variable data type : " + var.getType());
+			throw new UnsupportedOperationException("Unsupported (M)ILP variable data type : " + var.getType());
 
 		}
 	}
@@ -243,7 +243,7 @@ public class GipsImportManager {
 		case REAL:
 			return "0.0";
 		default:
-			throw new UnsupportedOperationException("Unsupported ilp variable data type : " + var.getType());
+			throw new UnsupportedOperationException("Unsupported (M)ILP variable data type : " + var.getType());
 
 		}
 	}

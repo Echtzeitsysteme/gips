@@ -59,7 +59,7 @@ public final class GipsTransformationUtils {
 		} else if (type == EcorePackage.Literals.EBOOLEAN) {
 			return VariableType.BINARY;
 		} else {
-			throw new UnsupportedOperationException("Unsupported ilp variable type: " + type);
+			throw new UnsupportedOperationException("Unsupported (M)ILP variable type: " + type);
 		}
 	}
 

@@ -90,7 +90,7 @@ public abstract class GipsRuleMapper<GTM extends GipsGTMapping<M, R>, M extends 
 		};
 	}
 
-	protected abstract GTM convertMatch(final String ilpVariable, final M match);
+	protected abstract GTM convertMatch(final String milpVariable, final M match);
 
 	protected void addMapping(final M match) {
 		if (match2Mappings.containsKey(match))

@@ -30,6 +30,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="solver" eType="#//SolverType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="home" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="license" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enableSolverCallback" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="solverCallbackPath" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="enableLaunchConfig" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mainLoc" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="enableLimit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -37,7 +39,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="includeInitTime" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="enableSeed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="rndSeed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enablePresolve" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="presolve" eType="#//PresolveType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="enableDebugOutput" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="enableTolerance" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="tolerance" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
@@ -50,6 +52,12 @@
     <eLiterals name="GUROBI" literal="GUROBI"/>
     <eLiterals name="GLPK" value="1" literal="GLPK"/>
     <eLiterals name="CPLEX" value="2" literal="CPLEX"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="PresolveType">
+    <eLiterals name="NONE" literal="none"/>
+    <eLiterals name="AUTO" value="1" literal="auto"/>
+    <eLiterals name="CONSERVATIVE" value="2" literal="conservative"/>
+    <eLiterals name="AGGRESSIVE" value="3" literal="aggressive"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

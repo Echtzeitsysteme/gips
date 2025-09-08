@@ -6,7 +6,7 @@ public class RealVariable implements Variable<Double> {
 
 	final public String name;
 	protected double value;
-	// Increased real variable bound to allow larger ILP models
+	// Increased real variable bound to allow larger (M)ILP models
 	protected double upperBound = GipsConstraintUtils.INF * 100;
 	protected double lowerBound = -GipsConstraintUtils.INF * 100;
 

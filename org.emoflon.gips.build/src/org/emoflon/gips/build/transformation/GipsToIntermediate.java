@@ -52,6 +52,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.RuleFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleMapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleParameterVariable;
 import org.emoflon.gips.intermediate.GipsIntermediate.SolverConfig;
+import org.emoflon.gips.intermediate.GipsIntermediate.SolverPresolve;
 import org.emoflon.gips.intermediate.GipsIntermediate.SolverType;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeFunction;
@@ -195,11 +196,29 @@ public class GipsToIntermediate {
 			config.setMainFile(eConfig.getMainLoc().replace("\"", ""));
 
 		config.setEnableDebugOutput(eConfig.isEnableDebugOutput());
-		config.setEnablePresolve(eConfig.isEnablePresolve());
+
+		// Presolve configuration
+		switch (eConfig.getPresolve()) {
+		case NONE:
+			config.setPresolve(SolverPresolve.NONE);
+			break;
+		case AUTO:
+			config.setPresolve(SolverPresolve.AUTO);
+			break;
+		case CONSERVATIVE:
+			config.setPresolve(SolverPresolve.CONSERVATIVE);
+			break;
+		case AGGRESSIVE:
+			config.setPresolve(SolverPresolve.AGGRESSIVE);
+			break;
+		// default also captures NOT_CONFIGURED
+		default:
+			config.setPresolve(SolverPresolve.AUTO);
+		}
 
 		config.setEnableRndSeed(eConfig.isEnableSeed());
 		if (eConfig.isEnableSeed()) {
-			config.setIlpRndSeed(eConfig.getRndSeed());
+			config.setMilpRndSeed(eConfig.getRndSeed());
 		}
 
 		config.setEnableTimeLimit(eConfig.isEnableLimit());
@@ -221,6 +240,12 @@ public class GipsToIntermediate {
 		config.setThreadCountEnabled(eConfig.isEnableThreadCount());
 		if (eConfig.isEnableThreadCount()) {
 			config.setThreadCount(eConfig.getThreads());
+		}
+
+		// Callback configuration
+		config.setEnableSolverCallback(eConfig.isEnableSolverCallback());
+		if (eConfig.isEnableSolverCallback()) {
+			config.setSolverCallbackPath(eConfig.getSolverCallbackPath().replace("\"", ""));
 		}
 
 		data.model().setConfig(config);
@@ -492,8 +517,8 @@ public class GipsToIntermediate {
 
 		if (GipsTransformationUtils
 				.isConstantExpression(constraint.getExpression()) == ArithmeticExpressionType.constant) {
-			// Check whether this constraint is constant at ILP problem build time. If true
-			// -> return
+			// Check whether this constraint is constant at (M)ILP problem build time. If
+			// true -> return
 			constraint.setConstant(true);
 			constraint.setNegated(isNegated);
 			return new LinkedList<>(List.of(constraint));
@@ -508,7 +533,7 @@ public class GipsToIntermediate {
 		constraint.setExpression(arithmeticTransformer.normalize((RelationalExpression) constraint.getExpression()));
 
 		// Normalize the relational expression operator such that it conforms to most
-		// ILP solver's requirements (i.e., no !=, > and < operators allowed).
+		// (M)ILP solver's requirements (i.e., no !=, > and < operators allowed).
 		Collection<Constraint> substitutes = new LinkedList<>();
 		if (symbolicVariable == null) {
 			substitutes = GipsConstraintUtils.normalizeOperator(data, factory, constraint, isNegated);
@@ -558,8 +583,8 @@ public class GipsToIntermediate {
 			ArithmeticExpressionTransformer transformer = transformationFactory
 					.createArithmeticTransformer(linearFunction);
 			linearFunction.setExpression(transformer.transform(eLinearFunction.getExpression()));
-			// Rewrite the expression, which will be translated into ILP-Terms, into a sum
-			// of products.
+			// Rewrite the expression, which will be translated into (M)ILP-Terms, into a
+			// sum of products.
 			linearFunction.setExpression(
 					new GipsArithmeticTransformer(factory).normalizeAndExpand(linearFunction.getExpression()));
 			gipsl2gipsTrace.map(eLinearFunction.getExpression(), linearFunction.getExpression());
@@ -606,8 +631,8 @@ public class GipsToIntermediate {
 
 		ArithmeticExpressionTransformer transformer = transformationFactory.createArithmeticTransformer(objective);
 		objective.setExpression(transformer.transform(eObjective.getExpression()));
-		// Rewrite the expression, which will be translated into ILP-Terms, into a sum
-		// of products.
+		// Rewrite the expression, which will be translated into (M)ILP-Terms, into a
+		// sum of products.
 		objective.setExpression(new GipsArithmeticTransformer(factory).normalizeAndExpand(objective.getExpression()));
 		gipsl2gipsTrace.map(eObjective.getExpression(), objective.getExpression());
 	}

@@ -68,12 +68,12 @@ public class GipsArithmeticTransformer {
 		this.factory = factory;
 	}
 
-	// Transforms a relational expression into a form that is accepted by ilp
+	// Transforms a relational expression into a form that is accepted by (M)ILP
 	// solvers.
-	// (1) Intended normalized ILP-form: lhs := <varExpr> op := <operator> rhs :=
+	// (1) Intended normalized (M)ILP-form: lhs := <varExpr> op := <operator> rhs :=
 	// <constExpr>
 	// (2) If lhs and rhs of the expression are constant, nothing has to be done,
-	// since it will not be used as input for an ilp solver anyways.
+	// since it will not be used as input for an (M)ILP solver anyways.
 	//
 	public RelationalExpression normalize(final RelationalExpression expression) throws ParserException {
 		boolean isLhsConst;

@@ -142,9 +142,9 @@
 		<command
 			categoryId="org.emoflon.gips.eclipse.category"
 			defaultHandler="org.emoflon.gips.eclipse.handler.ToggleVisualisationHandler"
-			description="Activates or deactivates the visualization of gipsl to ilp model transformations"
+			description="Activates or deactivates the visualization of gipsl to (M)ILP model transformations"
 			id="org.emoflon.gips.eclipse.command.togglevisualizer"
-			name="Toggle GIPSL ILP Visualisation">
+			name="Toggle GIPSL (M)ILP Visualisation">
 		</command>
 		<command
 			categoryId="org.emoflon.gips.eclipse.category"

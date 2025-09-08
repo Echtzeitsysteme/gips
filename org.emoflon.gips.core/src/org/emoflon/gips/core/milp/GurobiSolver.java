@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.GipsTypeConstraint;
 import org.emoflon.gips.core.gt.GipsPatternConstraint;
 import org.emoflon.gips.core.gt.GipsRuleConstraint;
+import org.emoflon.gips.core.milp.SolverConfig.SolverPresolve;
 import org.emoflon.gips.core.milp.model.BinaryVariable;
 import org.emoflon.gips.core.milp.model.Constraint;
 import org.emoflon.gips.core.milp.model.IntegerVariable;
@@ -191,9 +193,9 @@ public class GurobiSolver extends Solver {
 				// Keep Gurobi init exception or error to throw it later
 				GRBException gurobiInitException = null;
 				Error gurobiInitError = null;
-				// TODO: Gurobi log output redirect from stdout to ILPSolverOutput
+				// TODO: Gurobi log output redirect from stdout to MILPSolverOutput
 				try {
-					env = new GRBEnv("Gurobi_ILP.log");
+					env = new GRBEnv("Gurobi_MILP.log");
 				} catch (final GRBException e) {
 					gurobiInitException = e;
 				} catch (final Error e) {
@@ -214,7 +216,7 @@ public class GurobiSolver extends Solver {
 				}
 			}
 
-			env.set(IntParam.Presolve, config.isEnablePresolve() ? 1 : 0);
+			env.set(IntParam.Presolve, convertPresolve(config.getPresolve()));
 			if (config.isRandomSeedEnabled()) {
 				env.set(IntParam.Seed, config.getRandomSeed());
 			}
@@ -228,7 +230,7 @@ public class GurobiSolver extends Solver {
 			}
 			model = new GRBModel(env);
 			// Double all settings to model (is this even necessary?)
-			model.set(IntParam.Presolve, config.isEnablePresolve() ? 1 : 0);
+			model.set(IntParam.Presolve, convertPresolve(config.getPresolve()));
 			if (config.isTimeLimitEnabled()) {
 				model.set(DoubleParam.TimeLimit, config.getTimeLimit());
 			}
@@ -246,6 +248,19 @@ public class GurobiSolver extends Solver {
 			} else {
 				model.set(IntParam.Threads, SystemUtil.getSystemThreads());
 			}
+
+			// Set solver callback parameters, if enabled
+			if (config.isEnableCallbackPath()) {
+				final GurobiTerminateCallback callback = new GurobiTerminateCallback(config.getCallbackPath());
+				model.setCallback(callback);
+			}
+
+			// Check if the parameter path is configured. If yes, set up the Gurobi
+			// parameter tuning.s
+			if (config.getParameterPath() != null) {
+				GurobiParameterTuning.getInstance().setParameters(model, config.getParameterPath());
+			}
+
 			// Reset local lookup data structure for the Gurobi variables in case this is
 			// not the first initialization.
 			grbVars.clear();
@@ -337,6 +352,10 @@ public class GurobiSolver extends Solver {
 				status = SolverStatus.TIME_OUT;
 				objVal = model.get(GRB.DoubleAttr.ObjVal);
 			}
+			case GRB.Status.INTERRUPTED -> {
+				status = SolverStatus.INTERRUPTED;
+				objVal = model.get(GRB.DoubleAttr.ObjVal);
+			}
 			}
 		} catch (final GRBException e) {
 			throw new RuntimeException(e);
@@ -357,11 +376,11 @@ public class GurobiSolver extends Solver {
 			final GipsMapper<?> mapper = engine.getMapper(key);
 			// Iterate over all mappings of each mapper
 			for (final String k : mapper.getMappings().keySet()) {
-				// Get corresponding ILP variable name
+				// Get corresponding (M)ILP variable name
 				GipsMapping mapping = mapper.getMapping(k);
 				final String varName = mapping.getName();
 				try {
-					// Get value of the ILP variable and round it (to eliminate small deltas)
+					// Get value of the (M)ILP variable and round it (to eliminate small deltas)
 					double result = Math.round(getVar(varName).get(DoubleAttr.X));
 					// Save result value in specific mapping
 					mapping.setValue((int) result);
@@ -402,36 +421,36 @@ public class GurobiSolver extends Solver {
 	@Override
 	protected void translateConstraint(final GipsMappingConstraint<?, ? extends EObject> constraint) {
 		createOrGetAdditionalVars(constraint.getAdditionalVariables());
-		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
-		addIlpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
+		int counter = addMilpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
+		addMilpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
 	}
 
 	@Override
 	protected void translateConstraint(final GipsPatternConstraint<?, ?, ?> constraint) {
 		createOrGetAdditionalVars(constraint.getAdditionalVariables());
-		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
-		addIlpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
+		int counter = addMilpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
+		addMilpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
 	}
 
 	@Override
 	protected void translateConstraint(final GipsRuleConstraint<?, ?, ?> constraint) {
 		createOrGetAdditionalVars(constraint.getAdditionalVariables());
-		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
-		addIlpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
+		int counter = addMilpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
+		addMilpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
 	}
 
 	@Override
 	protected void translateConstraint(final GipsTypeConstraint<?, ? extends EObject> constraint) {
 		createOrGetAdditionalVars(constraint.getAdditionalVariables());
-		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
-		addIlpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
+		int counter = addMilpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
+		addMilpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
 	}
 
 	@Override
 	protected void translateConstraint(GipsGlobalConstraint<?> constraint) {
 		createOrGetAdditionalVars(constraint.getAdditionalVariables());
-		int counter = addIlpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
-		addIlpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
+		int counter = addMilpIntegerConstraintsToGrb(constraint.getConstraints(), constraint.getName(), 0);
+		addMilpConstraintsToGrb(constraint.getAdditionalConstraints(), constraint.getName(), counter);
 	}
 
 	protected void createOrGetAdditionalVars(final Collection<Variable<?>> variables) {
@@ -515,13 +534,13 @@ public class GurobiSolver extends Solver {
 	//
 
 	/**
-	 * Adds a given collection of ILP constraints and a given constraint name to the
-	 * Gurobi model.
+	 * Adds a given collection of (M)ILP constraints and a given constraint name to
+	 * the Gurobi model.
 	 *
-	 * @param constraints Collection of integer ILP constraints to add.
+	 * @param constraints Collection of integer (M)ILP constraints to add.
 	 * @param name        Name of the overall constraint to add.
 	 */
-	private int addIlpIntegerConstraintsToGrb(final Collection<Constraint> constraints, final String name,
+	private int addMilpIntegerConstraintsToGrb(final Collection<Constraint> constraints, final String name,
 			int counter) {
 		// Have to use an iterator to be able to increment the counter
 		final Iterator<Constraint> cnstrsIt = constraints.iterator();
@@ -536,7 +555,7 @@ public class GurobiSolver extends Solver {
 
 			// Check if constraints of form "<empty> == const" exist and throw an exception
 //			if (curr.lhsTerms().isEmpty()) {
-//				throw new RuntimeException("LHS (variable terms) is empty. This produces an infeasible ILP problem.");
+//				throw new RuntimeException("LHS (variable terms) is empty. This produces an infeasible (M)ILP problem.");
 //			}
 			// TODO: Throw an exception if the collection of LHS terms is empty (and the
 			// presolver functionality is implemented.
@@ -576,13 +595,13 @@ public class GurobiSolver extends Solver {
 	}
 
 	/**
-	 * Adds a given collection of ILP constraints and a given constraint name to the
-	 * Gurobi model.
+	 * Adds a given collection of (M)ILP constraints and a given constraint name to
+	 * the Gurobi model.
 	 *
-	 * @param constraints Collection of integer ILP constraints to add.
+	 * @param constraints Collection of integer (M)ILP constraints to add.
 	 * @param name        Name of the overall constraint to add.
 	 */
-	private int addIlpConstraintsToGrb(final Collection<Constraint> constraints, final String name, int counter) {
+	private int addMilpConstraintsToGrb(final Collection<Constraint> constraints, final String name, int counter) {
 		// Have to use an iterator to be able to increment the counter
 		final Iterator<Constraint> cnstrsIt = constraints.iterator();
 		while (cnstrsIt.hasNext()) {
@@ -596,7 +615,7 @@ public class GurobiSolver extends Solver {
 
 			// Check if constraints of form "<empty> == const" exist and throw an exception
 //			if (curr.lhsTerms().isEmpty()) {
-//				throw new RuntimeException("LHS (variable terms) is empty. This produces an infeasible ILP problem.");
+//				throw new RuntimeException("LHS (variable terms) is empty. This produces an infeasible (M)ILP problem.");
 //			}
 			// TODO: Throw an exception if the collection of LHS terms is empty (and the
 			// presolver functionality is implemented.
@@ -768,6 +787,30 @@ public class GurobiSolver extends Solver {
 			init();
 		} catch (final Exception e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * Converts the given presolve enum to integer values that Gurobi can
+	 * understand.
+	 * 
+	 * @param presolve Enum value.
+	 * @return Gurobi integer value corresponding to the given presolve enum.
+	 */
+	private int convertPresolve(final SolverPresolve presolve) {
+		Objects.requireNonNull(presolve);
+
+		switch (presolve) {
+		case AUTO:
+			return -1;
+		case NONE:
+			return 0;
+		case CONSERVATIVE:
+			return 1;
+		case AGGRESSIVE:
+			return 2;
+		default:
+			throw new IllegalArgumentException("Given presolve config cannot be converted.");
 		}
 	}
 

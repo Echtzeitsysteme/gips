@@ -80,6 +80,13 @@
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//QueryOperator/NOT_EMPTY"/>
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//QueryOperator/COUNT"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="GipsIntermediate.ecore#//SolverPresolve">
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//SolverPresolve/NOT_CONFIGURED"/>
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//SolverPresolve/NONE"/>
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//SolverPresolve/AUTO"/>
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//SolverPresolve/CONSERVATIVE"/>
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//SolverPresolve/AGGRESSIVE"/>
+    </genEnums>
     <genClasses image="false" ecoreClass="GipsIntermediate.ecore#//NamedElement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//NamedElement/name"/>
     </genClasses>
@@ -104,11 +111,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/mainFile"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/enableTimeLimit"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/timeLimit"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/timeLimitSubstractPmTime"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/timeLimitIncludeInitTime"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/enableRndSeed"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/ilpRndSeed"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/milpRndSeed"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/presolve"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/enablePresolve"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/enableDebugOutput"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/enableCustomTolerance"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/tolerance"/>
@@ -116,6 +122,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/lpPath"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/threadCountEnabled"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/threadCount"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/enableSolverCallback"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/solverCallbackPath"/>
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//Variable">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//Variable/type"/>

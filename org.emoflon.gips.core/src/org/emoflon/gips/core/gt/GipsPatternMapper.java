@@ -27,7 +27,7 @@ public abstract class GipsPatternMapper<PM extends GipsGTMapping<M, P>, M extend
 		this.init();
 	}
 
-	protected abstract PM convertMatch(final String ilpVariable, final M match);
+	protected abstract PM convertMatch(final String milpVariable, final M match);
 
 	protected void addMapping(final M match) {
 		if (match2Mappings.containsKey(match))

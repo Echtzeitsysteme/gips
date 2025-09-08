@@ -31,7 +31,7 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 		indexer.getObjectsOfType(type).stream().forEach(context -> {
 			final Constraint candidate = buildConstraint((CONTEXT) context);
 			if (candidate != null) {
-				ilpConstraints.put((CONTEXT) context, candidate);
+				milpConstraints.put((CONTEXT) context, candidate);
 			}
 		});
 
@@ -40,7 +40,7 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 			// language
 			indexer.getObjectsOfType(type).stream().forEach(context -> {
 				final List<Constraint> constraints = buildAdditionalConstraints((CONTEXT) context);
-				additionalIlpConstraints.put((CONTEXT) context, constraints);
+				additionalMilpConstraints.put((CONTEXT) context, constraints);
 			});
 
 		}
@@ -49,7 +49,7 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 	@Override
 	public Constraint buildConstraint(final CONTEXT context) {
 		if (!isConstant && !(constraint.getExpression() instanceof RelationalExpression))
-			throw new IllegalArgumentException("Boolean values can not be transformed to ilp relational constraints.");
+			throw new IllegalArgumentException("Boolean values can not be transformed to (M)ILP relational constraints.");
 
 		if (!isConstant) {
 			RelationalOperator operator = ((RelationalExpression) constraint.getExpression()).getOperator();
@@ -162,9 +162,9 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 	public void calcAdditionalVariables() {
 		for (org.emoflon.gips.intermediate.GipsIntermediate.Variable variable : constraint.getHelperVariables()) {
 			for (EObject context : indexer.getObjectsOfType(type)) {
-				Variable<?> ilpVar = buildVariable(variable, (CONTEXT) context);
-				addAdditionalVariable((CONTEXT) context, variable, ilpVar);
-				engine.addNonMappingVariable((CONTEXT) context, variable, ilpVar);
+				Variable<?> milpVar = buildVariable(variable, (CONTEXT) context);
+				addAdditionalVariable((CONTEXT) context, variable, milpVar);
+				engine.addNonMappingVariable((CONTEXT) context, variable, milpVar);
 			}
 		}
 	}

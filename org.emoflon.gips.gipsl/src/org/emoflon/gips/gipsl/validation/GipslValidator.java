@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
@@ -37,6 +38,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsSetExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
 import org.emoflon.gips.gipsl.gipsl.Package;
+import org.emoflon.gips.gipsl.gipsl.PresolveType;
 import org.emoflon.gips.gipsl.gipsl.SolverType;
 import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsConstantImpl;
@@ -357,7 +359,7 @@ public class GipslValidator extends AbstractGipslValidator {
 
 		// Check all contents for presence
 		if (config.getSolver() == null) {
-			error("You have to specify an ILP solver.", GipslPackage.Literals.GIPS_CONFIG__SOLVER);
+			error("You have to specify an (M)ILP solver.", GipslPackage.Literals.GIPS_CONFIG__SOLVER);
 		}
 		// ^this might be obsolete
 
@@ -369,12 +371,12 @@ public class GipslValidator extends AbstractGipslValidator {
 					GipslPackage.Literals.GIPS_CONFIG__SOLVER);
 		}
 
-		// ILP solver's home folder must not be empty (if set)
+		// (M)ILP solver's home folder must not be empty (if set)
 		if (config.getHome() != null && (config.getHome().isBlank() || config.getHome().equals("\"\""))) {
 			error("Home folder path must not be blank if set.", GipslPackage.Literals.GIPS_CONFIG__HOME);
 		}
 
-		// ILP solver's license path must not be empty (if set)
+		// (M)ILP solver's license path must not be empty (if set)
 		if (config.getLicense() != null && (config.getLicense().isBlank() || config.getLicense().equals("\"\""))) {
 			error("License file path must not be blank if set.", GipslPackage.Literals.GIPS_CONFIG__LICENSE);
 		}
@@ -406,10 +408,32 @@ public class GipslValidator extends AbstractGipslValidator {
 
 		// Special case: If solver is GLPK and pre-solving is disabled, generate a
 		// warning
-		if (config.getSolver() == SolverType.GLPK && !config.isEnablePresolve()) {
+		if (config.getSolver() == SolverType.GLPK
+				&& (!Objects.nonNull(config.getPresolve()) || config.getPresolve().equals(PresolveType.NONE))) {
 			warn("GLPK needs enabled pre-solving for some problems. "
 					+ "It is highly reccommend to enable pre-solving if using the GLPK solver in GIPS.",
-					GipslPackage.Literals.GIPS_CONFIG__ENABLE_PRESOLVE);
+					GipslPackage.Literals.GIPS_CONFIG__SOLVER);
+		}
+
+		// Presolve cases:
+		// GLPK and CPLEX only support "presolve = on" and "presolve = off"
+		if (config.getSolver() == SolverType.GLPK && Objects.nonNull(config.getPresolve())
+				&& !config.getPresolve().equals(PresolveType.NONE)) {
+			warn("GLPK interprets every presolving setting but 'NONE' as 'enabled'.",
+					GipslPackage.Literals.GIPS_CONFIG__PRESOLVE);
+		}
+		if (config.getSolver() == SolverType.CPLEX && Objects.nonNull(config.getPresolve())
+				&& !config.getPresolve().equals(PresolveType.NONE)) {
+			warn("CPLEX interprets every presolving setting but 'NONE' as 'enabled'.",
+					GipslPackage.Literals.GIPS_CONFIG__PRESOLVE);
+		}
+
+		// Callback cases:
+		// All solvers but Gurobi do not respect the callback setting(s). Hence,
+		// generate a warning.
+		if (config.getSolver() != SolverType.GUROBI && config.isEnableSolverCallback()) {
+			warn("All solvers but Gurobi do not support the custom callback setting.",
+					GipslPackage.Literals.GIPS_CONFIG__ENABLE_SOLVER_CALLBACK);
 		}
 	}
 

@@ -31,10 +31,11 @@ ImportedPattern :
 GipsConfig : {GipsConfig}
 	'config' '{'
 	'solver' ':=' solver=SolverType ('[' ('home' ':=' home=GipsStringLiteral ',' 'license' ':=' license=GipsStringLiteral)? ']')? ';'
+	('solverCallback' ':=' enableSolverCallback = GipsBoolean '[' 'path' ':=' solverCallbackPath=GipsStringLiteral ']' ';')?
 	('launchConfig' ':=' enableLaunchConfig = GipsBoolean '[' 'main' ':=' mainLoc=GipsStringLiteral ']' ';')?
 	('timeLimit' ':=' enableLimit = GipsBoolean '[' 'value' ':=' timeLimit=GipsDouble (',' 'includeInitTime' ':=' includeInitTime=GipsBoolean)? ']' ';')?
 	('randomSeed' ':=' enableSeed = GipsBoolean '[' 'value' ':=' rndSeed=GipsInteger ']' ';')?
-	('presolve' ':=' enablePresolve = GipsBoolean ';')?
+	('presolve' ':=' presolve=PresolveType ';')?
 	('debugOutput' ':=' enableDebugOutput = GipsBoolean ';')?
 	('tolerance' ':=' enableTolerance = GipsBoolean '[' 'value' ':=' tolerance=GipsDouble ']' ';')?
 	('lpOutput' ':=' enableLpOutput = GipsBoolean '[' 'path' ':=' path=GipsStringLiteral ']' ';')?
@@ -44,6 +45,10 @@ GipsConfig : {GipsConfig}
 
 enum SolverType:
 	GUROBI='GUROBI' | GLPK='GLPK' | CPLEX='CPLEX'
+;
+
+enum PresolveType:
+	NONE='none' | AUTO='auto' | CONSERVATIVE='conservative' | AGGRESSIVE='aggressive'
 ;
 
 GipsMapping :

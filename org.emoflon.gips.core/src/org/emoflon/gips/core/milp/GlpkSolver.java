@@ -55,15 +55,15 @@ public class GlpkSolver extends Solver {
 	private glp_iocp iocp;
 
 	/**
-	 * Map to collect all ILP constraints (name -> collection of constraints).
+	 * Map to collect all (M)ILP constraints (name -> collection of constraints).
 	 */
 	private Map<String, Collection<Constraint>> constraints;
 
 	/**
-	 * Map to collect all ILP variables (name -> {integer (=index), type, lower
+	 * Map to collect all (M)ILP variables (name -> {integer (=index), type, lower
 	 * bound, upper bound}).
 	 */
-	private Map<String, varInformation> ilpVars;
+	private Map<String, varInformation> milpVars;
 
 	/**
 	 * Record for the variable information: index, type, lower bound, upper bound
@@ -84,12 +84,12 @@ public class GlpkSolver extends Solver {
 	public GlpkSolver(final GipsEngine engine, final SolverConfig config) {
 		super(engine, config);
 		constraints = new HashMap<>();
-		ilpVars = new HashMap<>();
+		milpVars = new HashMap<>();
 	}
 
 	public void init() {
 		constraints.clear();
-		ilpVars.clear();
+		milpVars.clear();
 
 		GLPK.glp_free_env();
 		model = GLPK.glp_create_prob();
@@ -115,6 +115,10 @@ public class GlpkSolver extends Solver {
 		}
 
 		GLPK.glp_set_prob_name(model, "GIPS problem");
+
+		if (config.getParameterPath() != null) {
+			System.out.println("GLPK does not support the parameter path option. It will be ignored.");
+		}
 	}
 
 	@Override
@@ -211,7 +215,7 @@ public class GlpkSolver extends Solver {
 						engine.getMappers().values().stream() //
 								.map(m -> m.getMappings().size()) //
 								.reduce(0, (sum, val) -> sum + val), //
-						ilpVars.size(), //
+						milpVars.size(), //
 						constraints.values().stream() //
 								.map(cons -> cons.size()) //
 								.reduce(0, (sum, val) -> sum + val))); //
@@ -224,11 +228,11 @@ public class GlpkSolver extends Solver {
 			final GipsMapper<?> mapper = engine.getMapper(key);
 			// Iterate over all mappings of each mapper
 			for (final String k : mapper.getMappings().keySet()) {
-				// Get corresponding ILP variable name
+				// Get corresponding (M)ILP variable name
 				final GipsMapping mapping = mapper.getMapping(k);
 				final String varName = mapping.getName();
-				// Get value of the ILP variable and round it (to eliminate small deltas)
-				double result = Math.round(GLPK.glp_mip_col_val(model, ilpVars.get(varName).index));
+				// Get value of the (M)ILP variable and round it (to eliminate small deltas)
+				double result = Math.round(GLPK.glp_mip_col_val(model, milpVars.get(varName).index));
 				// Save result value in specific mapping
 				mapping.setValue((int) result);
 
@@ -236,7 +240,7 @@ public class GlpkSolver extends Solver {
 				if (mapping.hasAdditionalVariables()) {
 					for (Entry<String, Variable<?>> var : mapping.getAdditionalVariables().entrySet()) {
 						double mappingVarResult = GLPK.glp_mip_col_val(model,
-								ilpVars.get(var.getValue().getName()).index);
+								milpVars.get(var.getValue().getName()).index);
 						mapping.setAdditionalVariableValue(var.getKey(), mappingVarResult);
 					}
 				}
@@ -245,7 +249,7 @@ public class GlpkSolver extends Solver {
 		// Solver reset will be handled by the GipsEngine afterward
 
 		if (engine.getEclipseIntegration().getConfig().isSolutionValuesSynchronizationEnabled()) {
-			engine.getEclipseIntegration().storeSolutionValues(this.ilpVars.entrySet().stream().collect(
+			engine.getEclipseIntegration().storeSolutionValues(this.milpVars.entrySet().stream().collect(
 					Collectors.toMap(Entry::getKey, e -> Math.round(GLPK.glp_mip_col_val(model, e.getValue().index)))));
 		}
 	}
@@ -309,33 +313,33 @@ public class GlpkSolver extends Solver {
 	}
 
 	/**
-	 * Sets all ILP variables for GLPK up.
+	 * Sets all (M)ILP variables for GLPK up.
 	 */
 	private void setUpVars() {
 		// In case of 0 variables, simply return
-		if (ilpVars.size() == 0) {
+		if (milpVars.size() == 0) {
 			return;
 		}
 
-		GLPK.glp_add_cols(model, ilpVars.size());
-		for (final String k : ilpVars.keySet()) {
-			final int varCounter = ilpVars.get(k).index;
-			final double lb = ilpVars.get(k).lb.doubleValue();
-			final double ub = ilpVars.get(k).up.doubleValue();
+		GLPK.glp_add_cols(model, milpVars.size());
+		for (final String k : milpVars.keySet()) {
+			final int varCounter = milpVars.get(k).index;
+			final double lb = milpVars.get(k).lb.doubleValue();
+			final double ub = milpVars.get(k).up.doubleValue();
 			GLPK.glp_set_col_name(model, varCounter, k);
 
 			// Type
-			if (ilpVars.get(k).type == VarType.BIN) {
+			if (milpVars.get(k).type == VarType.BIN) {
 				// BV = binary variable
 				setUpGlpkVar(varCounter, GLPKConstants.GLP_BV, lb, ub);
-			} else if (ilpVars.get(k).type == VarType.INT) {
+			} else if (milpVars.get(k).type == VarType.INT) {
 				// IV = integer variable
 				setUpGlpkVar(varCounter, GLPKConstants.GLP_IV, lb, ub);
-			} else if (ilpVars.get(k).type == VarType.DBL) {
+			} else if (milpVars.get(k).type == VarType.DBL) {
 				// CV = continuous variable
 				setUpGlpkVar(varCounter, GLPKConstants.GLP_CV, lb, ub);
 			} else {
-				throw new UnsupportedOperationException("ILP var type not known.");
+				throw new UnsupportedOperationException("(M)ILP var type not known.");
 			}
 		}
 	}
@@ -415,7 +419,7 @@ public class GlpkSolver extends Solver {
 
 				int varIt = 1;
 				for (final Variable<?> v : cumulatedWeights.keySet()) {
-					GLPK.intArray_setitem(vars, varIt, ilpVars.get(v.getName()).index);
+					GLPK.intArray_setitem(vars, varIt, milpVars.get(v.getName()).index);
 					GLPK.doubleArray_setitem(coeffs, varIt, cumulatedWeights.get(v));
 					varIt++;
 				}
@@ -463,7 +467,7 @@ public class GlpkSolver extends Solver {
 		for (final WeightedLinearFunction lf : nestFunc.linearFunctions()) {
 			lf.linearFunction().terms().forEach(t -> {
 				// Get index of current variable
-				final int varIndex = ilpVars.get(t.variable().getName()).index;
+				final int varIndex = milpVars.get(t.variable().getName()).index;
 
 				// Get previous aggregated weight
 				final double prevCoef = GLPK.glp_get_obj_coef(model, varIndex);
@@ -541,11 +545,11 @@ public class GlpkSolver extends Solver {
 	 * @param ub   Upper bound number.
 	 */
 	private void createBinVarIfNotExists(final String name, final Number lb, final Number ub) {
-		if (ilpVars.containsKey(name)) {
+		if (milpVars.containsKey(name)) {
 			return;
 		}
 
-		ilpVars.put(name, new varInformation(ilpVars.size() + 1, VarType.BIN, lb, ub));
+		milpVars.put(name, new varInformation(milpVars.size() + 1, VarType.BIN, lb, ub));
 	}
 
 	/**
@@ -557,11 +561,11 @@ public class GlpkSolver extends Solver {
 	 * @param ub   Upper bound number.
 	 */
 	private void createIntVarIfNotExists(final String name, final Number lb, final Number ub) {
-		if (ilpVars.containsKey(name)) {
+		if (milpVars.containsKey(name)) {
 			return;
 		}
 
-		ilpVars.put(name, new varInformation(ilpVars.size() + 1, VarType.INT, lb, ub));
+		milpVars.put(name, new varInformation(milpVars.size() + 1, VarType.INT, lb, ub));
 	}
 
 	/**
@@ -573,11 +577,11 @@ public class GlpkSolver extends Solver {
 	 * @param ub   Upper bound number.
 	 */
 	private void createDblVarIfNotExists(final String name, final Number lb, final Number ub) {
-		if (ilpVars.containsKey(name)) {
+		if (milpVars.containsKey(name)) {
 			return;
 		}
 
-		ilpVars.put(name, new varInformation(ilpVars.size() + 1, VarType.DBL, lb, ub));
+		milpVars.put(name, new varInformation(milpVars.size() + 1, VarType.DBL, lb, ub));
 	}
 
 	@Override

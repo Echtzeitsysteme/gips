@@ -16,17 +16,18 @@ import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint
 import org.emoflon.gips.gipsl.gipsl.GipsLocalContextExpression
 import com.google.inject.Inject
-import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider
 import java.util.HashSet
 import org.emoflon.ibex.gt.editor.gT.EditorNode
 import org.emoflon.ibex.gt.editor.gT.EditorImport
 import org.emoflon.gips.gipsl.ui.labeling.TextFormatHelper
+import org.eclipse.jface.viewers.ILabelProvider
+import java.util.LinkedList
 
 class GipslPlantUMLProvider implements UMLTemplateProvider {
 		
-	@Inject
+	@Inject(optional=true)
 	@Accessors
-	protected DefaultEObjectLabelProvider labelHelper;
+	protected ILabelProvider labelHelper;
 	
 	@Inject
 	@Accessors
@@ -41,24 +42,26 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 		val context = createUMLContext()
 		collection.forEach[context.addReferencedElement(it)]
 
-		val builder = new StringBuilder();
-
-		builder.append("hide empty members").append('\n')
-		builder.append("hide circle").append('\n')
-//		builder.append("hide stereotype").append('\n')
+		val umlContent = new LinkedList<String>();
 		while(context.hasNonGeneratedElements()) {
 			val object = context.getNextNonGeneratedElement()
 			val elementUML = context.generateUML(object)
 			if(elementUML !== null)
-				builder.append(elementUML).append('\n')
+				umlContent.add(elementUML)
 		}
 
-		for (String additional : context.attachAtEndOfFile) {
-			if(additional !== null)
-				builder.append(additional).append('\n')
+		for (String additionalLines : context.attachAtEndOfFile) {
+			if(additionalLines !== null)
+				umlContent.add(additionalLines)
 		}
 
-		return builder.toString()
+		'''
+			«plantUMLStyle»
+			
+			«FOR element : umlContent»
+				«element»
+			«ENDFOR»			
+		'''
 	}
 	
 	def UMLContext createUMLContext() {
@@ -73,9 +76,11 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 		if(predefinedName !== null && !predefinedName.blank)
 			return predefinedName
 
-		val label = labelHelper.getText(object)
-		if(label !== null && !label.blank)
-			return label		
+		if(labelHelper !== null){
+			val label = labelHelper.getText(object)
+			if(label !== null && !label.blank)
+				return label
+		}	
 
 		return object.eClass.name
 	}
@@ -144,6 +149,13 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 	}
 	
 	// *************************************************************************************** //
+	
+	def String plantUMLStyle(){
+		'''
+			hide empty members
+			hide circle
+		'''
+	}
 	
 	dispatch def String generateUML(EObject eObject, UMLContext generator) {
 		'''

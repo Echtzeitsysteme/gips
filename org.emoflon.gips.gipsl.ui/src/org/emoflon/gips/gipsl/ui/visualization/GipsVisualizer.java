@@ -55,8 +55,10 @@ public class GipsVisualizer extends GTVisualizer {
 			return umlGenerator.visualizeNothing();
 
 		Collection<EObject> selectedEObjects = selectionToEObjects((XtextEditor) editor, (ITextSelection) selection);
-		String out = umlGenerator.visualizeCollection(selectedEObjects);
-		return out;
+		if (selectedEObjects.isEmpty())
+			return umlGenerator.visualizeNothing();
+
+		return umlGenerator.visualizeCollection(selectedEObjects);
 	}
 
 	private Collection<EObject> selectionToEObjects(XtextEditor editor, ITextSelection selection) {
@@ -80,13 +82,14 @@ public class GipsVisualizer extends GTVisualizer {
 
 				EObject objectForNextOffset = objectOfInterest != null ? objectOfInterest : objectAtOffset;
 				ICompositeNode textNode = NodeModelUtils.findActualNodeFor(objectForNextOffset);
+				// textNode either surrounds the current offset or is the element closest to it.
 				int newOffset = textNode.getEndOffset() + 1;
 
 				if (newOffset <= currentOffset) {
-					System.err.println(GipsVisualizer.class
-							+ ": offset calculation error - unable to locate all selected objects");
-					break; // This can happen if a cross-reference is resolved and takes us to a different
-							// location within the document
+					// the new offset didn't move forward
+					// This can happen if a cross-reference takes us to a different location within
+					// the document, or if we have reached the last element.
+					break;
 				}
 
 				currentOffset = newOffset;

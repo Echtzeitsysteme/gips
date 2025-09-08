@@ -23,10 +23,10 @@ public class PlantUMLPreferencePage extends AbstractPreferencePage implements IW
 			detailGroup.setText("Details");
 
 			Composite composite = new Composite(detailGroup, SWT.NONE);
-			addField(new BooleanFieldEditor(PlantUMLPreferences.INCLUDE_CONTEXT_NODES, "Draw context referenced nodes?",
-					composite));
-			addField(new BooleanFieldEditor(PlantUMLPreferences.INCLUDE_BODY_NODES, "Draw mapping referenced nodes?",
-					composite));
+			addField(new BooleanFieldEditor(PlantUMLPreferences.INCLUDE_CONTEXT_NODES,
+					"Show which node references are being used in a given context.", composite));
+			addField(new BooleanFieldEditor(PlantUMLPreferences.INCLUDE_BODY_NODES,
+					"Show which node references are being used in an expression.", composite));
 			detailGroup.pack();
 		}
 

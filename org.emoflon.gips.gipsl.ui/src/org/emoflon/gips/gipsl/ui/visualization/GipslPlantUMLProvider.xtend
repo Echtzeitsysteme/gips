@@ -1,9 +1,6 @@
 package org.emoflon.gips.gipsl.ui.visualization
 
-import java.util.Objects
 import org.eclipse.emf.ecore.EObject
-import java.util.Map
-import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.emoflon.gips.gipsl.ui.visualization.UMLContext.UMLTemplateProvider
 import org.emoflon.ibex.gt.editor.gT.EditorPattern
@@ -18,12 +15,10 @@ import org.emoflon.gips.gipsl.gipsl.GipsLinearFunctionReference
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint
 import org.emoflon.gips.gipsl.gipsl.GipsLocalContextExpression
-import org.emoflon.gips.gipsl.gipsl.GipsConstantReference
 import com.google.inject.Inject
 import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider
 import java.util.HashSet
 import org.emoflon.ibex.gt.editor.gT.EditorNode
-import org.emoflon.gips.gipsl.gipsl.GipsConstant
 import org.emoflon.ibex.gt.editor.gT.EditorImport
 import org.emoflon.gips.gipsl.ui.labeling.TextFormatHelper
 
@@ -231,9 +226,9 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 		]
 		
 		val editorNodes = new HashSet<EditorNode>()
-		if(preferences.addReferencedNodesByContext)
+		if(preferences.includeReferencedNodesByContext)
 			editorNodes.addAll(nodeCollector.contextToEditorNodes);
-		if(preferences.addReferencedNodesByMappingReferences)
+		if(preferences.includedReferencedNodesByBody)
 			editorNodes.addAll(nodeCollector.mappingToEditorNodes.values.flatten);
 		
 		'''
@@ -253,7 +248,7 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 					class "«node.name»" as «ref».«node.name»
 				«ENDFOR»
 				
-				«IF preferences.addReferencedNodesByContext»
+				«IF preferences.includeReferencedNodesByContext»
 					«FOR node : nodeCollector.contextToEditorNodes»					
 						«ref».context --> «ref».«node.name» : uses
 					«ENDFOR»
@@ -263,7 +258,7 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 					class "«mapping.name»" as «ref».«mapping.name» <<«mapping.eClass.name»>>
 					«ref».body --> «ref».«mapping.name» : uses
 					
-					«IF preferences.addReferencedNodesByMappingReferences»		
+					«IF preferences.includedReferencedNodesByBody»		
 						«FOR node : nodeCollector.mappingToEditorNodes.get(mapping)»
 							«ref».«mapping.name» --> «ref».«node.name» : uses
 						«ENDFOR»
@@ -289,9 +284,9 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 		]
 		
 		val editorNodes = new HashSet<EditorNode>()
-		if(preferences.addReferencedNodesByContext)
+		if(preferences.includeReferencedNodesByContext)
 			editorNodes.addAll(nodeCollector.contextToEditorNodes);
-		if(preferences.addReferencedNodesByMappingReferences)
+		if(preferences.includedReferencedNodesByBody)
 			editorNodes.addAll(nodeCollector.mappingToEditorNodes.values.flatten);
 		
 		'''
@@ -311,7 +306,7 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 					class "«node.name»" as «ref».«node.name»
 				«ENDFOR»
 				
-				«IF preferences.addReferencedNodesByContext»
+				«IF preferences.includeReferencedNodesByContext»
 					«FOR node : nodeCollector.contextToEditorNodes»					
 						«ref».context --> «ref».«node.name» : uses
 					«ENDFOR»
@@ -321,7 +316,7 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 					class "«mapping.name»" as «ref».«mapping.name» <<«mapping.eClass.name»>>
 					«ref».body --> «ref».«mapping.name» : uses
 					
-					«IF preferences.addReferencedNodesByMappingReferences»
+					«IF preferences.includedReferencedNodesByBody»
 						«FOR node : nodeCollector.mappingToEditorNodes.get(mapping)»
 							«ref».«mapping.name» --> «ref».«node.name» : uses
 						«ENDFOR»

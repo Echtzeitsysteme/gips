@@ -27,19 +27,19 @@ public class PlantUMLPreferences {
 		this.preferenceStoreAccess = Objects.requireNonNull(preferenceStoreAccess, "preferenceStoreAccess");
 	}
 
-	public boolean addReferencedNodesByContext() {
+	public boolean includeReferencedNodesByContext() {
 		return preferenceStoreAccess.getPreferenceStore().getBoolean(INCLUDE_CONTEXT_NODES);
 	}
 
-	public void setaddReferencedNodesByContext(boolean value) {
+	public void setIncludeReferencedNodesByContext(boolean value) {
 		preferenceStoreAccess.getWritablePreferenceStore().setValue(INCLUDE_CONTEXT_NODES, value);
 	}
 
-	public boolean addReferencedNodesByMappingReferences() {
+	public boolean includedReferencedNodesByBody() {
 		return preferenceStoreAccess.getPreferenceStore().getBoolean(INCLUDE_BODY_NODES);
 	}
 
-	public void setAddReferencedNodesByMappingReferences(boolean value) {
+	public void setIncludedReferencedNodesByBody(boolean value) {
 		preferenceStoreAccess.getWritablePreferenceStore().setValue(INCLUDE_BODY_NODES, value);
 	}
 }

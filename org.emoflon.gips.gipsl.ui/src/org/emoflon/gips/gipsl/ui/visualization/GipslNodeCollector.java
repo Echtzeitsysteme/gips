@@ -95,21 +95,6 @@ public class GipslNodeCollector {
 		return usedConstants;
 	}
 
-//	public static enum Expression {
-//		MappingExpression, ContextExpression
-//	}
-//
-//	public Collection<EditorNode> getEditorNodes(EnumSet<Expression> includeNodesReferencedBy) {
-//		Set<EditorNode> nodes = new HashSet<>();
-//
-//		if (includeNodesReferencedBy.contains(Expression.MappingExpression))
-//			getMappingToEditorNodes().values().forEach(nodes::addAll);
-//		if (includeNodesReferencedBy.contains(Expression.ContextExpression))
-//			nodes.addAll(getContextToEditorNodes());
-//
-//		return nodes;
-//	}
-
 	public Map<GipsMapping, Collection<EditorNode>> getMappingToEditorNodes() {
 		return mapping2Node;
 	}

@@ -16,12 +16,12 @@ public abstract class GipsPatternMapper<PM extends GipsGTMapping<M, P>, M extend
 
 	final protected P pattern;
 	final protected Map<M, PM> match2Mappings = Collections.synchronizedMap(new HashMap<>());
-	private int mappingCounter = 0;
+	protected int mappingCounter = 0;
 
 	final protected Consumer<M> appearConsumer = this::addMapping;
 	final protected Consumer<M> disappearConsumer = this::removeMapping;
 
-	public GipsPatternMapper(final GipsEngine engine, final Mapping mapping, final P pattern) {
+	public GipsPatternMapper(GipsEngine engine, Mapping mapping, P pattern) {
 		super(engine, mapping);
 		this.pattern = pattern;
 		this.init();
@@ -29,7 +29,7 @@ public abstract class GipsPatternMapper<PM extends GipsGTMapping<M, P>, M extend
 
 	protected abstract PM convertMatch(final String milpVariable, final M match);
 
-	protected void addMapping(final M match) {
+	protected void addMapping(M match) {
 		if (match2Mappings.containsKey(match))
 			return;
 
@@ -38,13 +38,10 @@ public abstract class GipsPatternMapper<PM extends GipsGTMapping<M, P>, M extend
 		super.putMapping(mapping);
 	}
 
-	protected void removeMapping(final M match) {
-		PM mapping = match2Mappings.get(match);
-		if (mapping == null)
-			return;
-
-		match2Mappings.remove(match);
-		super.removeMapping(mapping);
+	protected void removeMapping(M match) {
+		PM mapping = match2Mappings.remove(match);
+		if (mapping != null)
+			super.removeMapping(mapping);
 	}
 
 	public P getGTPattern() {

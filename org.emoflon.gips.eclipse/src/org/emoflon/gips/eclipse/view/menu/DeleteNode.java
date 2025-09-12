@@ -74,7 +74,7 @@ public class DeleteNode extends ContributionItem {
 			break;
 
 		case LinkModelNode node:
-			ProjectContext context = TracePlugin.getInstance().getContextManager().getContext(node.getContextId());
+			ProjectContext context = manager.getContext(node.getContextId());
 
 			switch (node.getDirection()) {
 			case FORWARD:

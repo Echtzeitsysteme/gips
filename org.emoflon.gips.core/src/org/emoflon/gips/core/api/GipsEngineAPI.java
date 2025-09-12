@@ -11,8 +11,10 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.emoflon.gips.core.GipsEngine;
+import org.emoflon.gips.core.GipsMapper;
 import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.TypeIndexer;
+import org.emoflon.gips.core.gt.GipsPatternMapper;
 import org.emoflon.gips.core.gt.GipsRuleMapper;
 import org.emoflon.gips.core.milp.Solver;
 import org.emoflon.gips.core.milp.SolverConfig;
@@ -126,6 +128,12 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	public void update() {
 		if (eMoflonAPI != null) {
 			eMoflonAPI.updateMatches();
+		}
+
+		for (GipsMapper<?> mapper : this.mappers.values()) {
+			if (mapper instanceof GipsPatternMapper<?, ?, ?> pm) {
+				pm.addNewMatchesToMappings();
+			}
 		}
 	}
 

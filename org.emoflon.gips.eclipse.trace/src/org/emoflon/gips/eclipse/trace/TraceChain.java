@@ -88,8 +88,8 @@ public class TraceChain {
 
 		TraceGraph graph = getGraph();
 
-		Collection<String> currentNodes = elementIds;
 		for (var pathData : paths) {
+			Collection<String> currentNodes = elementIds;
 			if (forward) {
 				for (var path : pathData.path()) {
 					if (currentNodes.isEmpty()) {

@@ -154,6 +154,13 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 		'''
 			hide empty members
 			hide circle
+			
+			skinparam {
+				«IF preferences.isCustomFontSet»
+					defaultFontName «preferences.fontName»
+					defaultFontSize «preferences.fontSize»
+				«ENDIF»
+			}
 		'''
 	}
 	

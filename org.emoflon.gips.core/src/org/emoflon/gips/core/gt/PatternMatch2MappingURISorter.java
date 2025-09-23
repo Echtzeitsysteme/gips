@@ -15,8 +15,9 @@ import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 public class PatternMatch2MappingURISorter implements PatternMatch2MappingSorter {
 
 	@Override
-	public Collection<GraphTransformationMatch<?, ?>> sort(GipsPatternMapper<?, ?, ?> mapper,
-			List<GraphTransformationMatch<?, ?>> matches) {
+	public <M extends GraphTransformationMatch<M, ?>> Collection<M> sort(GipsPatternMapper<?, M, ?> mapper,
+			List<M> matches) {
+
 		if (matches.isEmpty())
 			return matches;
 

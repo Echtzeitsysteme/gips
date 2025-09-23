@@ -7,7 +7,6 @@ import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 
 public interface PatternMatch2MappingSorter {
 
-	Collection<GraphTransformationMatch<?, ?>> sort(GipsPatternMapper<?, ?, ?> mapper,
-			List<GraphTransformationMatch<?, ?>> matches);
+	<M extends GraphTransformationMatch<M, ?>> Collection<M> sort(GipsPatternMapper<?, M, ?> mapper, List<M> matches);
 
 }

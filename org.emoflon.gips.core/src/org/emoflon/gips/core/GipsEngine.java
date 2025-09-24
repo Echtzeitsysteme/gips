@@ -282,9 +282,8 @@ public abstract class GipsEngine {
 			if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0)
 				solver.updateValuesFromSolution();
 
-			if (output.status() == SolverStatus.INFEASIBLE && solver instanceof GurobiSolver gurobiSolver) {
+			if (output.status() == SolverStatus.INFEASIBLE && solver instanceof GurobiSolver gurobiSolver)
 				gurobiSolver.computeIrreducibleInfeasibleSubsystem();
-			}
 		}
 
 		solver.reset();

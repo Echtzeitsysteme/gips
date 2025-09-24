@@ -11,8 +11,6 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.emoflon.gips.eclipse.TracePlugin;
 import org.emoflon.gips.eclipse.api.IRemoteEclipseService;
-import org.emoflon.gips.eclipse.api.ITraceContext;
-import org.emoflon.gips.eclipse.api.ITraceManager;
 import org.emoflon.gips.eclipse.pref.PluginPreferences;
 import org.emoflon.gips.eclipse.trace.TraceModelLink;
 
@@ -140,15 +138,20 @@ public final class RemoteEclipseService implements IRemoteEclipseService {
 
 	@Override
 	public void updateTraceModel(String contextId, TraceModelLink traceLink) {
-		ITraceContext context = ITraceManager.getInstance().getContext(contextId);
+		ProjectContext context = TracePlugin.getInstance().getContextManager().getContext(contextId);
 		context.updateTraceModel(traceLink);
 	}
 
 	@Override
-	public void updateModelValues(String contextId, String modelId, Map<String, String> values)
-			throws RemoteException {
+	public void updateModelValues(String contextId, String modelId, Map<String, String> values) throws RemoteException {
 		ProjectContext context = TracePlugin.getInstance().getContextManager().getContext(contextId);
 		context.updateModelValues(modelId, values);
+	}
+
+	@Override
+	public TraceModelLink getTraceModel(String contextId, String srcModel, String dstModel) throws RemoteException {
+		ProjectContext context = TracePlugin.getInstance().getContextManager().getContext(contextId);
+		return context.getModelLink(srcModel, dstModel);
 	}
 
 }

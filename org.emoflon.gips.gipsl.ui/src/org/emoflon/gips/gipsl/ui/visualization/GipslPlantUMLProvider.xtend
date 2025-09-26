@@ -144,7 +144,7 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 		}
 
 		'''
-			# «feature.name» : «feature.EType.name» «IF text!==null» := «text» «ENDIF»
+			# «feature.name» : «feature.EType.name»«IF text!==null» := «text»«ENDIF»
 		'''
 	}
 	

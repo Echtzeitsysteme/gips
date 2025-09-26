@@ -15,6 +15,7 @@ public class EclipseIntegrationConfig {
 	public void setServicePort(int port) {
 		if (port < 1023 || 65535 < port)
 			throw new IllegalArgumentException("Port should be between 1023 and 65535");
+		this.servicePort = port;
 	}
 
 	public boolean isTracingEnabled() {

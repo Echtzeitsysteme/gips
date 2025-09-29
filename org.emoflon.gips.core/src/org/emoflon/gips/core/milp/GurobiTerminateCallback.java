@@ -49,6 +49,17 @@ public class GurobiTerminateCallback extends GRBCallback {
 	private double gapLimit = 0;
 	private boolean gapEnabled = false;
 
+	/*
+	 * Time stamp of last callback file read operation in nano seconds.
+	 */
+	private long lastFileReadTimeStamp = Long.MIN_VALUE;
+
+	/*
+	 * Number of seconds to wait before potentially re-reading the callback
+	 * configuration file.
+	 */
+	private static int waitTimeInSeconds = 1;
+
 	/**
 	 * Creates a new instance of the custom callback. The given file path will be
 	 * used to check for a JSON file.
@@ -62,13 +73,21 @@ public class GurobiTerminateCallback extends GRBCallback {
 
 	@Override
 	protected void callback() {
-		// If there is not callback file available, simply return
+		// If there is no callback file available, simply return
 		if (!probeFile()) {
+			return;
+		}
+
+		// If the last callback file read operation was less than the configured amount
+		// of second ago, simply return
+		if (this.lastFileReadTimeStamp >= System.nanoTime()
+				- GurobiTerminateCallback.waitTimeInSeconds * 1_000_000_000) {
 			return;
 		}
 
 		// Load parameters from file
 		loadFile();
+		this.lastFileReadTimeStamp = System.nanoTime();
 
 		// Check if optimization should be aborted
 		if (abortCall) {
@@ -183,6 +202,20 @@ public class GurobiTerminateCallback extends GRBCallback {
 			this.gapLimit = json.getAsJsonPrimitive("gap").getAsDouble();
 			this.gapEnabled = true;
 		}
+	}
+
+	/**
+	 * Sets the number of wait time between callback file read operations in
+	 * seconds.
+	 * 
+	 * @param seconds New value to set.
+	 */
+	public static void setWaitTimeInSeconds(final int seconds) {
+		if (seconds < 0) {
+			throw new IllegalArgumentException(
+					"The given amount of seconds to wait was negative, which is not supported.");
+		}
+		GurobiTerminateCallback.waitTimeInSeconds = seconds;
 	}
 
 }

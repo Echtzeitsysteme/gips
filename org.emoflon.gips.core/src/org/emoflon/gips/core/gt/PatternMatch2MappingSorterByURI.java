@@ -12,7 +12,7 @@ import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 
-public class PatternMatch2MappingURISorter implements PatternMatch2MappingSorter {
+public class PatternMatch2MappingSorterByURI implements PatternMatch2MappingSorter {
 
 	@Override
 	public <M extends GraphTransformationMatch<M, ?>> Collection<M> sort(GipsPatternMapper<?, M, ?> mapper,

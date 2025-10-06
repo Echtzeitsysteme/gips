@@ -88,6 +88,7 @@ public abstract class GipsPatternMapper<PM extends GipsGTMapping<M, P>, M extend
 		this.enableMatchSorting = enableMatchSorting;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void sortMatchesAndCreateMappings() {
 		if (unsortedMatches.isEmpty())
 			return;

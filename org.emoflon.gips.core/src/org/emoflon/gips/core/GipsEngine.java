@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.emoflon.gips.core.milp.ConstraintSorter;
 import org.emoflon.gips.core.milp.Solver;
 import org.emoflon.gips.core.milp.SolverOutput;
 import org.emoflon.gips.core.milp.SolverStatus;
@@ -27,6 +28,8 @@ public abstract class GipsEngine {
 	final protected Map<String, GipsLinearFunction<?, ?, ?>> functions = Collections.synchronizedMap(new HashMap<>());
 	protected GipsObjective objective;
 	protected Solver solver;
+
+	protected ConstraintSorter constraintSorter;
 
 	protected EclipseIntegration eclipseIntegration;
 	protected GipsTracer tracer;
@@ -93,9 +96,9 @@ public abstract class GipsEngine {
 				if (parallel) {
 					// Constraints are re-build a few lines below
 					constraints.values().parallelStream().forEach(constraint -> constraint.clear());
-				
-				    // Reset trace
-				    getTracer().resetTrace();
+
+					// Reset trace
+					getTracer().resetTrace();
 
 					nonMappingVariables.clear();
 					mappers.values().parallelStream().flatMap(mapper -> mapper.getMappings().values().parallelStream())
@@ -146,7 +149,7 @@ public abstract class GipsEngine {
 				solver.init();
 				solver.buildMILPProblem();
 			});
-			
+
 			buildTraceGraphAndSendToIDE();
 		});
 	}
@@ -394,6 +397,14 @@ public abstract class GipsEngine {
 
 	public void setSolver(final Solver solver) {
 		this.solver = solver;
+	}
+
+	public void setConstraintSorter(ConstraintSorter matchSorter) {
+		this.constraintSorter = matchSorter;
+	}
+
+	public ConstraintSorter getConstraintSorter() {
+		return this.constraintSorter;
 	}
 
 	public GipsTracer getTracer() {

@@ -399,8 +399,8 @@ public abstract class GipsEngine {
 		this.solver = solver;
 	}
 
-	public void setConstraintSorter(ConstraintSorter matchSorter) {
-		this.constraintSorter = matchSorter;
+	public void setConstraintSorter(ConstraintSorter constraintSorter) {
+		this.constraintSorter = constraintSorter;
 	}
 
 	public ConstraintSorter getConstraintSorter() {

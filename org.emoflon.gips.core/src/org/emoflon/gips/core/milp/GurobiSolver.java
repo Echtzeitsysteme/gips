@@ -814,7 +814,8 @@ public class GurobiSolver extends Solver {
 		}
 	}
 
-	public void computeIrreducibleInfeasibleSubsystem() {
+	@Override
+	public void computeIrreducibleInconsistentSubsystem() {
 		String iisFilePath = (lpPath == null ? "gurobi-iis" : lpPath) + ".ilp";
 
 		try {

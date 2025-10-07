@@ -246,6 +246,9 @@ public class EclipseIntegration {
 			TraceModelLink intermediateToLp = service.getTraceModel(contextId, getModelIdForIntermediateModel(),
 					getModelIdForLpModel());
 
+			// While not technically 100% correct, the IIS model uses the same identifiers
+			// as the LP model. However, it is not feasible to 'parse' the IIS output and
+			// remove all superfluous elements.
 			TraceModelLink relinkIntermediate = new TraceModelLink(intermediateToLp.getSourceModel(), modelIdIis,
 					intermediateToLp.getMappings().clone());
 

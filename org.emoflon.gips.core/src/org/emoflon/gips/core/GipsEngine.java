@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import org.emoflon.gips.core.milp.GurobiSolver;
 import org.emoflon.gips.core.milp.Solver;
 import org.emoflon.gips.core.milp.SolverOutput;
 import org.emoflon.gips.core.milp.SolverStatus;
@@ -282,8 +281,8 @@ public abstract class GipsEngine {
 			if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0)
 				solver.updateValuesFromSolution();
 
-			if (output.status() == SolverStatus.INFEASIBLE && solver instanceof GurobiSolver gurobiSolver)
-				gurobiSolver.computeIrreducibleInfeasibleSubsystem();
+			if (output.status() == SolverStatus.INFEASIBLE && solver.getSolverConfig().isEnableIIS())
+				solver.computeIrreducibleInconsistentSubsystem();
 		}
 
 		solver.reset();

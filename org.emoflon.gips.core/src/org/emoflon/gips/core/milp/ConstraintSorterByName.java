@@ -5,6 +5,11 @@ import java.util.List;
 
 import org.emoflon.gips.core.GipsConstraint;
 
+/**
+ * Sorts a list of constraints by name.
+ * 
+ * @see String#compareTo(String)
+ */
 public class ConstraintSorterByName implements ConstraintSorter {
 
 	@Override

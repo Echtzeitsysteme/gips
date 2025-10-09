@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.emoflon.ibex.common.operational.IMatch;
 import org.emoflon.ibex.gt.api.GraphTransformationMatch;
+import org.emoflon.ibex.gt.api.GraphTransformationPattern;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 
@@ -51,20 +52,19 @@ public class PatternMatch2MappingSorterByURI implements PatternMatch2MappingSort
 		if (matches.isEmpty())
 			return matches;
 
-		var pattern = mapper.getGTPattern();
-		IBeXContextPattern ibexContext = pattern.getPatternSet().getContextPatterns().stream() //
+		GraphTransformationPattern<M, ?> pattern = mapper.getGTPattern();
+		Collection<String> nodeOrder = pattern.getPatternSet().getContextPatterns().stream() //
 				.filter(p -> pattern.getPatternName().equals(p.getName())) //
 				.filter(IBeXContextPattern.class::isInstance) //
 				.map(p -> (IBeXContextPattern) p) //
-				.findFirst().orElse(null);
-
-		if (ibexContext == null)
-			return matches;
-
-		Collection<String> nodeOrder = ibexContext.getSignatureNodes().stream() //
+				.flatMap(p -> p.getSignatureNodes().stream()) //
 				.map(IBeXNode::getName) //
+				.distinct() //
 				.sorted() //
 				.toList();
+
+		if (nodeOrder.isEmpty())
+			return matches;
 
 		Map<EObject, String> uriCache = new HashMap<>();
 

@@ -10,7 +10,6 @@ import java.util.function.Consumer;
 
 import org.emoflon.gips.core.GipsEngine;
 import org.emoflon.gips.core.GipsMapper;
-import org.emoflon.gips.core.api.GipsEngineAPI;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.ibex.gt.api.GraphTransformationMatch;
 import org.emoflon.ibex.gt.api.GraphTransformationPattern;
@@ -88,12 +87,11 @@ public abstract class GipsPatternMapper<PM extends GipsGTMapping<M, P>, M extend
 		this.enableMatchSorting = enableMatchSorting;
 	}
 
-	@SuppressWarnings("rawtypes")
-	public void sortMatchesAndCreateMappings() {
+	public void sortMatchesAndCreateMappings(PatternMatch2MappingSorter matchSorter) {
 		if (unsortedMatches.isEmpty())
 			return;
 
-		Collection<M> sortedMatches = ((GipsEngineAPI) engine).getMatchSorter().sort(this, unsortedMatches);
+		Collection<M> sortedMatches = matchSorter.sort(this, unsortedMatches);
 		for (M match : sortedMatches)
 			addMapping(match);
 

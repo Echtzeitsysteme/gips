@@ -148,15 +148,13 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 
 	@Override
 	public void update() {
-		if (eMoflonAPI != null) {
-			updateMapperWithSorter();
+		if (eMoflonAPI != null)
 			eMoflonAPI.updateMatches();
-		}
 
 		if (matchSorter != null) {
 			for (GipsMapper<?> mapper : this.mappers.values()) {
 				if (mapper instanceof GipsPatternMapper<?, ?, ?> pm) {
-					pm.sortMatchesAndCreateMappings();
+					pm.sortMatchesAndCreateMappings(matchSorter);
 				}
 			}
 		}

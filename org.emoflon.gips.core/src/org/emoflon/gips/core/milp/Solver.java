@@ -1,5 +1,8 @@
 package org.emoflon.gips.core.milp;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsConstraint;
 import org.emoflon.gips.core.GipsEngine;
@@ -51,9 +54,17 @@ public abstract class Solver {
 	public abstract void init();
 
 	public void buildMILPProblem() {
-		engine.getMappers().values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
-				.forEach(mapping -> translateMapping(mapping));
-		engine.getConstraints().values().forEach(constraint -> translateConstraint(constraint));
+		engine.getMappers().values().stream() //
+				.flatMap(mapper -> mapper.getMappings().values().stream()) //
+				.forEach(this::translateMapping);
+
+		Collection<GipsConstraint<?, ?, ?>> constraints = engine.getConstraints().values();
+		if (engine.getConstraintSorter() != null)
+			// copy view into a sortable list
+			constraints = engine.getConstraintSorter().sort(new ArrayList<>(constraints));
+
+		constraints.forEach(this::translateConstraint);
+
 		GipsObjective go = engine.getObjective();
 		if (go != null)
 			translateObjective(go);

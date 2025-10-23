@@ -41,6 +41,7 @@ public class SolverConfig {
 	private boolean callbackEnabled;
 	private String callbackPath;
 	private String parameterPath;
+	private boolean computeIIS;
 
 	/**
 	 * To be called after any changes have been made via the setters. This method
@@ -239,27 +240,27 @@ public class SolverConfig {
 		aValueChanged |= oldValue != newValue;
 		notifyListeners();
 	}
-	
+
 	public boolean isEnableCallbackPath() {
 		return callbackEnabled;
 	}
-	
+
 	public void setEnableCallbackPath(final boolean newValue) {
 		final var oldValue = this.callbackEnabled;
 		this.callbackEnabled = newValue;
-		
+
 		aValueChanged |= oldValue != newValue;
 		notifyListeners();
 	}
-	
+
 	public String getCallbackPath() {
 		return callbackPath;
 	}
-	
+
 	public void setCallbackPath(final String newValue) {
 		final var oldValue = this.callbackPath;
 		this.callbackPath = newValue;
-		
+
 		aValueChanged |= oldValue != newValue;
 		notifyListeners();
 	}
@@ -305,6 +306,26 @@ public class SolverConfig {
 
 	public enum SolverPresolve {
 		AUTO, NONE, CONSERVATIVE, AGGRESSIVE, NOT_CONFIGURED;
+	}
+
+	/**
+	 * @see SolverConfig#setEnableIIS(boolean)
+	 */
+	public boolean isEnableIIS() {
+		return this.computeIIS;
+	}
+
+	/**
+	 * Enables the computation of an Irreducible Inconsistent Subsystem
+	 * 
+	 * @see Solver#computeIrreducibleInconsistentSubsystem()
+	 */
+	public void setEnableIIS(boolean newValue) {
+		var oldValue = this.computeIIS;
+		this.computeIIS = newValue;
+
+		aValueChanged |= oldValue != newValue;
+		notifyListeners();
 	}
 
 }

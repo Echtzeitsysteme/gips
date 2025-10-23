@@ -814,4 +814,19 @@ public class GurobiSolver extends Solver {
 		}
 	}
 
+	@Override
+	public void computeIrreducibleInconsistentSubsystem() {
+		String iisFilePath = (lpPath == null ? "gurobi-iis" : lpPath) + ".ilp";
+
+		try {
+			model.computeIIS();
+			model.write(iisFilePath);
+			if (engine.getEclipseIntegration().getConfig().isTracingEnabled()) {
+				engine.getEclipseIntegration().sendIISTraceToIde(iisFilePath);
+			}
+		} catch (GRBException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 }

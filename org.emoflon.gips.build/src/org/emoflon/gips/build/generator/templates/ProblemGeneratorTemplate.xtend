@@ -58,6 +58,11 @@ import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator
 import java.util.List
 import org.emoflon.gips.build.generator.templates.constraint.MappingConstraintTemplate
 import org.emoflon.gips.build.generator.templates.constraint.PatternConstraintTemplate
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryOperator
+import java.util.Collections
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
+import java.util.Set
 
 abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends GeneratorTemplate<CONTEXT> {
 	
@@ -301,6 +306,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	/**
 	 * Returns a list of Strings containing all names of context node accesses of the given Boolean expression.
 	 */
+	 @Deprecated
 	def List<String> getContextNodeAccess(BooleanExpression expr) {
 		// Single relational expression only
 		if (expr instanceof RelationalExpression) {
@@ -317,6 +323,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	 * The only implemented type of operator is `AND`. Hence, this method only supports sub expressions concatenated
 	 * via `&`.
 	 */
+	 @Deprecated
 	def List<String> getContextNodeAccess(BooleanBinaryExpression expr) {
 		var foundNodes = new LinkedList<String>
 		switch (expr.operator) {
@@ -340,6 +347,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	 * 
 	 * Therefore, this method only captures accesses like `element.nodes.a == context.nodes.b`.
 	 */
+	 @Deprecated
 	def List<String> getContextNodeAccess(RelationalExpression expr) {
 		var foundNodes = new LinkedList<String>
 
@@ -375,6 +383,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	 * 
 	 * Therefore, this method only captures accesses like `filter(element.nodes.a == context.nodes.b)`.
 	 */
+	 @Deprecated
 	def List<String> getContextNodeAccess(SetOperation expr) {
 		var foundNodes = new LinkedList<String>
 
@@ -394,23 +403,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		return foundNodes
 	}
 
-	/**
-	 * This method converts a given list of context node names to a getter string.
-	 * 
-	 * Example input: "{a, b, cde}"
-	 * Example output: "getA(), getB(), getCde()"
-	 */
-	def String convertContextNodeAccessToGetterCalls(List<String> contextNodeAccesses) {
-		var foundGetters = ''''''
-		for (var i = 0; i < contextNodeAccesses.size; i++) {
-			var candidate = contextNodeAccesses.get(i).toFirstUpper
-			foundGetters += '''context.get«candidate»()'''
-			if (i < contextNodeAccesses.size - 1) {
-				foundGetters += ''', '''
-			}
-		}
-		return foundGetters
-	}
+
 	
 	def String generateConstantExpression(ArithmeticExpression expression) {
 		if(expression instanceof ArithmeticBinaryExpression) {
@@ -496,105 +489,125 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		return instruction;
 	}
 	
-	def String generateConstantExpression(ValueExpression expression, boolean ignoreReduce) {
-		var instruction = generateValueAccess(expression, true)
-		if(expression.setExpression !== null) {
-			instruction += generateConstantExpression(expression.setExpression, ignoreReduce)
-		}
-		return instruction;
-	}
-	
 	def String generateValueAccess(ValueExpression expression, boolean requiresReturn) {
 		var instruction = "";
+		
 		if(expression instanceof MappingReference) {
-			imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(expression.mapping))
-			
-			var original = '''engine.getMapper("«expression.mapping.name»").getMappings().values().parallelStream()
-				.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
-			
-			// If a return is required, use the original implementation
-			if (requiresReturn) {
-				instruction = original
+			instruction = generateValueAccess(expression as MappingReference, requiresReturn)
+		} else if(expression instanceof TypeReference) {
+			instruction = generateValueAccess(expression as TypeReference, requiresReturn)
+		} else if(expression instanceof PatternReference) {
+			instruction = generateValueAccess(expression as PatternReference, requiresReturn)
+		} else if(expression instanceof RuleReference) {
+			instruction = generateValueAccess(expression as RuleReference, requiresReturn)
+		} else if(expression instanceof NodeReference) {
+			instruction = generateValueAccess(expression as NodeReference, requiresReturn)
+		} else if(expression instanceof AttributeReference) {
+			instruction = generateValueAccess(expression as AttributeReference, requiresReturn)
+		} else if(expression instanceof VariableReference) {
+			instruction = generateValueAccess(expression as VariableReference, requiresReturn)
+		} else {
+			instruction = generateValueAccess(expression as ContextReference, requiresReturn)
+		}
+		
+		return instruction;
+	}
+		
+	def String generateValueAccess(ContextReference expression, boolean requiresReturn){
+		// CASE: ContextReference
+		return getIterator(expression as ContextReference)
+	}
+	
+	def String generateValueAccess(VariableReference expression, boolean requiresReturn){
+		// CASE: VariableReference -> return a constant 1 since the variable should have already been extracted.
+		return '''1.0'''
+	}
+	
+	def String generateValueAccess(AttributeReference expression, boolean requiresReturn){
+		return '''«getIterator(expression)».«generateAttributeExpression(expression.attribute)»'''
+	}
+	
+	def String generateValueAccess(NodeReference expression, boolean requiresReturn){
+		var instruction = '''«getIterator(expression)».get«expression.node.name.toFirstUpper»()'''
+		if(expression.attribute !== null) {
+			instruction = '''«instruction».«generateAttributeExpression(expression.attribute)»'''
+		}
+		return instruction
+	}
+	
+	def String generateValueAccess(RuleReference expression, boolean requiresReturn){
+		imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(expression.rule))
+		return '''engine.getEMoflonAPI().«expression.rule.name»().findMatches(false).parallelStream()'''
+	}
+	
+	def String generateValueAccess(PatternReference expression, boolean requiresReturn){
+		imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(expression.pattern))
+		return '''engine.getEMoflonAPI().«expression.pattern.name»().findMatches(false).parallelStream()'''
+	}
+	
+	def String generateValueAccess(TypeReference expression, boolean requiresReturn){
+		imports.add(data.classToPackage.getImportsForType(expression.type))
+		return '''indexer.getObjectsOfType("«expression.type.name»").parallelStream().map(type -> («expression.type.name») type)'''
+	}
+	
+	def String generateValueAccess(MappingReference expression, boolean requiresReturn) {
+		imports.add(data.apiData.gipsMappingPkg + "." + data.mapping2mappingClassName.get(expression.mapping))
+		val original = '''engine.getMapper("«expression.mapping.name»").getMappings().values().parallelStream()
+		.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
+
+		// If a return is required, use the original implementation
+		if(requiresReturn)
+			return original
+
+		// Else, try to use the mapping indexer implementation
+		// Determine what to search for with the indexer
+		// If the resulting string keeps empty, there is nothing to index
+		var searchFor = ""
+
+		// If this generates a type constraint, use `context`
+		if(this instanceof TypeConstraintTemplate && expression.setExpression.setOperation !== null) {
+			searchFor = '''context'''
+		} else if(this instanceof RuleConstraintTemplate || this instanceof MappingConstraintTemplate ||
+			this instanceof PatternConstraintTemplate) {
+			// If this generates a rule constraint, mapping constraint, or pattern constraint, search for context node accesses
+			// If the expression is a mapping reference and there is a set operation, search for context node accesses
+			if(expression.setExpression.setOperation !== null) {
+				val indexableExpressions = findPossibleIndexableRelationalExpressions(expression.setExpression.setOperation)
+				searchFor = '''«convertContextNodeAccessToGetterCalls(getContextNodeAccess(indexableExpressions))»'''
 			}
-			// Else, try to use the mapping indexer implementation
-			else {
-				// Determine what to search for with the indexer
-				// If the resulting string keeps empty, there is nothing to index
-				var searchFor = ""
-				
-				// If this generates a type constraint, use `context`
-				if (this instanceof TypeConstraintTemplate && expression.setExpression.setOperation !== null) {
-					searchFor = '''context'''
-				}
-				// If this generates a rule constraint, mapping constraint, or pattern constraint, search for context node accesses
-				else if (this instanceof RuleConstraintTemplate || this instanceof MappingConstraintTemplate || this instanceof PatternConstraintTemplate) {
-					// If the expression is a mapping reference and there is a set operation, search for context node accesses
-					if (expression instanceof MappingReference && expression.setExpression.setOperation !== null) {
-						searchFor = '''«convertContextNodeAccessToGetterCalls(getContextNodeAccess(expression.setExpression.setOperation))»'''
-					}
-					// Otherwise (i.e., if there is no mapping reference or it has no set (filter) expression,
-					// the indexer implementation cannot be used
-				}
-				
-				// If nothing can be indexed, use the original implementation
-				if (searchFor.isBlank) {
-					instruction = original
-				}
-				// If there can be at least one node indexed, use the indexer implementation
-				else {
-					// Mapping indexer
-					imports.add("java.util.Set")
-					imports.add("java.util.HashSet")
-					imports.add("java.lang.reflect.Method")
-					imports.add("java.lang.reflect.InvocationTargetException")
-					imports.add("org.apache.commons.lang3.StringUtils")
-					imports.add("org.eclipse.emf.ecore.EObject")
-					imports.add("org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode")
-					imports.add("org.emoflon.gips.core.MappingIndexer")
-					imports.add("org.emoflon.gips.core.GlobalMappingIndexer")
-					imports.add("org.emoflon.gips.core.GipsMapper")
-					
-					var indexer = '''
+		// Otherwise (i.e., if there is no mapping reference or it has no set (filter) expression,
+		// the indexer implementation cannot be used
+		}
+
+		// If nothing can be indexed, use the original implementation
+		if(searchFor.isBlank)
+			return original		
+
+		val nodesToBeCached = findIndexableMapperNodes(expression).map['''"«it»"'''].join(', ')
+
+		// If there can be at least one node indexed, use the indexer implementation
+		// Mapping indexer
+		imports.add("java.util.Set")
+		imports.add("java.util.HashSet")
+		imports.add("java.lang.reflect.Method")
+		imports.add("java.lang.reflect.InvocationTargetException")
+		imports.add("org.apache.commons.lang3.StringUtils")
+		imports.add("org.eclipse.emf.ecore.EObject")
+		imports.add("org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode")
+		imports.add("org.emoflon.gips.core.MappingIndexer")
+		imports.add("org.emoflon.gips.core.GlobalMappingIndexer")
+		imports.add("org.emoflon.gips.core.GipsMapper")
+
+		return '''
 final GipsMapper<?> mapper = engine.getMapper("«expression.mapping.name»");
 final GlobalMappingIndexer globalIndexer = GlobalMappingIndexer.getInstance();
 globalIndexer.createIndexer(mapper);
 final MappingIndexer indexer = globalIndexer.getIndexer(mapper);
-indexer.initIfNecessary(mapper);
-					'''
-					instruction = indexer
-					instruction += '''indexer.getMappingsOfNodes(Set.of(«searchFor»)).parallelStream()
-					.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
-				}
-			}
-		} else if(expression instanceof TypeReference) {
-			imports.add(data.classToPackage.getImportsForType(expression.type))
-			instruction = '''indexer.getObjectsOfType("«expression.type.name»").parallelStream()
-			.map(type -> («expression.type.name») type)'''
-		} else if(expression instanceof PatternReference) {
-			imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(expression.pattern))
-			instruction = '''engine.getEMoflonAPI().«expression.pattern.name»().findMatches(false).parallelStream()'''
-		} else if(expression instanceof RuleReference) {
-			imports.add(data.apiData.matchesPkg+"."+data.ibex2matchClassName.get(expression.rule))
-			instruction = '''engine.getEMoflonAPI().«expression.rule.name»().findMatches(false).parallelStream()'''
-		} else if(expression instanceof NodeReference) {
-			instruction = getIterator(expression)
-			instruction = '''«instruction».get«expression.node.name.toFirstUpper»()'''
-			if(expression.attribute !== null) {
-				instruction = '''«instruction».«generateAttributeExpression(expression.attribute)»'''
-			}
-		} else if(expression instanceof AttributeReference) {
-			instruction = getIterator(expression)
-			instruction = '''«instruction».«generateAttributeExpression(expression.attribute)»'''
-		} else if(expression instanceof VariableReference) {
-			// CASE: VariableReference -> return a constant 1 since the variable should have already been extracted.
-			instruction = '''1.0'''
-		} else {
-			// CASE: ContextReference
-			instruction = getIterator(expression as ContextReference)
-		}
-		return instruction;
+indexer.initIfNecessary(mapper, Set.of(«nodesToBeCached»));
+indexer.getMappingsOfNodes(Set.of(«searchFor»)).parallelStream()
+.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
 	}
-	
+				
 	def String generateValueAccess(ConstantReference expression) {
 		var instruction = "";
 		if(expression.constant.expression instanceof ValueExpression) {
@@ -603,6 +616,149 @@ indexer.initIfNecessary(mapper);
 			instruction = generateConstantExpression(expression.constant.expression as SetExpression, true)
 		}
 
+		return instruction;
+	}
+	
+		/**
+	 * Returns a list of {@link RelationalExpression}
+	 */
+	def dispatch List<RelationalExpression> findPossibleIndexableRelationalExpressions(EObject expr) {
+		return Collections.emptyList
+	}
+
+	/**
+	 * Returns a list of Strings containing all names of context node accesses of the given set expression.
+	 * The requirements to find the necessary accesses are:
+	 * - the expression must be of type `filter`
+	 * - the operator used within the filter must be `EQUAL`
+	 * - one side of the respective expression must be local and the other side must not be local
+	 * - both respective sides must not have an attribute access
+	 * 
+	 * Therefore, this method only captures accesses like `filter(element.nodes.a == context.nodes.b)`.
+	 */
+	def dispatch List<RelationalExpression> findPossibleIndexableRelationalExpressions(SetFilter expr) {
+		val results = new LinkedList<RelationalExpression>()
+		
+		results.addAll(findPossibleIndexableRelationalExpressions(expr.expression))
+		if(expr.next !== null)
+			results.addAll(findPossibleIndexableRelationalExpressions(expr.next))		
+		
+		return results
+	}
+	
+	def boolean isOnlyNodeOrContextReference(EObject obj){
+		if(obj instanceof NodeReference)
+			return obj.attribute === null
+		return false// obj instanceof ContextReference
+	}
+
+	def dispatch List<RelationalExpression> findPossibleIndexableRelationalExpressions(RelationalExpression expr) {
+		val results = new LinkedList<RelationalExpression>()
+		
+		if(expr.operator === RelationalOperator.EQUAL) {
+			var isMatch = isOnlyNodeOrContextReference(expr.lhs) && isOnlyNodeOrContextReference(expr.rhs)
+			if(isMatch)
+				results.add(expr)
+		}
+		
+		return results
+	}
+
+	def dispatch List<RelationalExpression> findPossibleIndexableRelationalExpressions(BooleanBinaryExpression expr) {
+		val results = new LinkedList<RelationalExpression>()
+		
+		if(expr.operator == BooleanBinaryOperator.AND) {
+			results.addAll(findPossibleIndexableRelationalExpressions(expr.lhs))
+			results.addAll(findPossibleIndexableRelationalExpressions(expr.rhs))
+		}
+		
+		return results
+	}
+	
+	def List<String> getContextNodeAccess(List<RelationalExpression> expressions) {
+		val results = new LinkedList<String>()
+		
+		for (expr : expressions) {
+			if(!(expr.lhs instanceof ContextReference || expr.rhs instanceof ContextReference)){
+				val lhsnode = expr.lhs as NodeReference
+				val rhsnode = expr.rhs as NodeReference
+	
+				if(lhsnode.local && !rhsnode.local) {
+					results.add(lhsnode.node.name)
+				} else if(!lhsnode.local && rhsnode.local) {
+					results.add(rhsnode.node.name)
+				}
+			}
+		}
+		
+		return results
+	}
+
+	def List<String> getMappingNodeAccess(List<RelationalExpression> expressions) {
+		val results = new LinkedList<String>()
+		
+		for (expr : expressions) {
+			val lhsnode = expr.lhs as NodeReference
+			val rhsnode = expr.rhs as NodeReference
+
+			if(lhsnode.local && !rhsnode.local) {
+				results.add(rhsnode.node.name)
+			} else if(!lhsnode.local && rhsnode.local) {
+				results.add(lhsnode.node.name)
+			}
+		}
+		
+		return results
+	}
+	
+	def Set<String> findIndexableMapperNodes(MappingReference mappingReference) {
+		val results = new HashSet<String>()
+
+		val toBeScanned = new LinkedList<EObject>()
+		val root = EcoreUtil.getRootContainer(mappingReference, true) as GipsIntermediateModel
+		toBeScanned.addAll(root.constraints)
+		toBeScanned.addAll(root.functions)
+		toBeScanned.addAll(root.objective)
+
+		val iterator = EcoreUtil.getAllProperContents(toBeScanned, true)
+		while(iterator.hasNext) {
+			val eObject = iterator.next;
+			if(eObject instanceof MappingReference) {
+				iterator.prune
+
+				if(eObject.mapping === mappingReference.mapping && eObject.setExpression.setOperation !== null) {
+					val references = findPossibleIndexableRelationalExpressions(eObject.setExpression.setOperation)
+					results.addAll(getMappingNodeAccess(references))
+				}
+			}
+		}
+
+		return results
+	}
+	
+	/**
+	 * This method converts a given list of context node names to a getter string.
+	 * 
+	 * Example input: "{a, b, cde}"
+	 * Example output: "getA(), getB(), getCde()"
+	 */
+	def String convertContextNodeAccessToGetterCalls(List<String> contextNodeAccesses) {
+		var foundGetters = ''''''
+		for (var i = 0; i < contextNodeAccesses.size; i++) {
+			var candidate = contextNodeAccesses.get(i).toFirstUpper
+			foundGetters += '''context.get«candidate»()'''
+			if(i < contextNodeAccesses.size - 1) {
+				foundGetters += ''', '''
+			}
+		}
+		return foundGetters
+	}
+	
+	def String generateConstantExpression(ValueExpression expression, boolean ignoreReduce) {
+		var instruction = generateValueAccess(expression, true)
+		if(expression.setExpression !== null) {
+			instruction += generateConstantExpression(expression.setExpression, ignoreReduce)
+		}
 		return instruction;
 	}
 	

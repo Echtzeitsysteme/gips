@@ -1,8 +1,8 @@
 package org.emoflon.gips.core;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -10,9 +10,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.gt.GipsGTMapping;
+import org.emoflon.ibex.common.operational.IMatch;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode;
 
 /**
@@ -103,44 +103,64 @@ public class MappingIndexer {
 		node2mappings.get(node).add(mapping);
 	}
 
+	public synchronized void initIfNecessary(final GipsMapper<?> mapper) {
+		initIfNecessary(mapper, Collections.emptySet());
+	}
+
 	/**
 	 * If not already initialized, this method uses the given GipsMapper `mapper` to
-	 * index all nodes. Therefore, it accesses all mappings of `mapper` and collects
-	 * all signature nodes of the respective match. For every node `n` of all
-	 * matches, the respective `mapper` will be added to the index of `n`.
+	 * index the set of given nodes. Therefore, it accesses all mappings of `mapper`
+	 * and collects all signature nodes of the respective match. For every node `n`
+	 * of all matches, the respective `mapper` will be added to the index of `n`.
 	 * 
 	 * This method is synchronized to ensure that multiple parallel calls to this
 	 * method just lead to exactly one index creation (and all other parallel
 	 * accesses have to wait until the single index creation has finished and,
 	 * afterwards, only return and do nothing).
 	 * 
-	 * @param mapper GipsMapper to create the index for.
+	 * @param mapper GipsMapper to create the index for
+	 * @param nodes  to be indexed, if empty, all nodes will be indexed
 	 */
-	@SuppressWarnings("rawtypes")
-	public synchronized void initIfNecessary(final GipsMapper<?> mapper) {
+	public synchronized void initIfNecessary(final GipsMapper<?> mapper, Collection<String> nodes) {
 		Objects.requireNonNull(mapper);
-		if (initialized) {
+		if (initialized)
 			return;
-		}
-		mapper.getMappings().values().stream() //
-				.map(mapping -> (GipsGTMapping) mapping).forEach(elt -> {
-					final List<IBeXNode> allNodesOfPattern = mapper.getMapping().getContextPattern()
-							.getSignatureNodes();
-					for (final IBeXNode ibexNode : allNodesOfPattern) {
-						final String methodName = "get" + StringUtils.capitalize(ibexNode.getName());
-						final Class<?> c = elt.getClass();
-						try {
-							final Method m = c.getDeclaredMethod(methodName);
-							final Object object = m.invoke(elt);
-							final EObject node = (EObject) object;
+
+		synchronized (this) {
+			if (initialized)
+				return;
+
+			final Collection<String> nodeNames = getMapperNodeNames(mapper, nodes);
+
+			mapper.getMappings().values().stream() //
+					.map(mapping -> (GipsGTMapping<?, ?>) mapping) //
+					.forEach(elt -> {
+						IMatch match = elt.getMatch().toIMatch();
+						for (final String nodeName : nodeNames) {
+							final EObject node = (EObject) match.get(nodeName);
 							this.putMapping(node, elt);
-						} catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-							e.printStackTrace();
-							throw new InternalError("Index creation for mapper <" + mapper.getName() + "> failed.", e);
 						}
-					}
-				});
-		initialized = true;
+					});
+
+			initialized = true;
+		}
+	}
+
+	private Collection<String> getMapperNodeNames(GipsMapper<?> mapper, Collection<String> nodeNames) {
+		if (!nodeNames.isEmpty())
+			return nodeNames;
+
+		// if no nodes are supplied, we assume there might be an error or, for some
+		// reason, we don't know which nodes are needed. To ensure that the indexer
+		// still works, we cache every node of a mapper
+
+		List<IBeXNode> allNodesOfPattern = mapper.getMapping().getContextPattern().getSignatureNodes();
+
+		nodeNames = new HashSet<>();
+		for (final IBeXNode ibexNode : allNodesOfPattern)
+			nodeNames.add(ibexNode.getName());
+
+		return nodeNames;
 	}
 
 }

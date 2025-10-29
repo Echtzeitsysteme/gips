@@ -11,9 +11,12 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.emoflon.gips.core.GipsEngine;
+import org.emoflon.gips.core.GipsMapper;
 import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.TypeIndexer;
+import org.emoflon.gips.core.gt.GipsPatternMapper;
 import org.emoflon.gips.core.gt.GipsRuleMapper;
+import org.emoflon.gips.core.gt.PatternMatch2MappingSorter;
 import org.emoflon.gips.core.milp.Solver;
 import org.emoflon.gips.core.milp.SolverConfig;
 import org.emoflon.gips.core.trace.EclipseIntegration;
@@ -38,6 +41,8 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	protected GipsMapperFactory<EMOFLON_API> mapperFactory;
 	protected GipsConstraintFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> constraintFactory;
 	protected GipsLinearFunctionFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> functionFactory;
+
+	protected PatternMatch2MappingSorter matchSorter;
 
 	protected GipsEngineAPI(final EMOFLON_APP eMoflonApp) {
 		this.eMoflonApp = eMoflonApp;
@@ -109,6 +114,25 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		getSolverConfig().setParameterPath(newParameterPath);
 	}
 
+	public void setMatchSorter(PatternMatch2MappingSorter matchSorter) {
+		this.matchSorter = matchSorter;
+		updateMapperWithSorter();
+	}
+
+	public PatternMatch2MappingSorter getMatchSorter() {
+		return this.matchSorter;
+	}
+
+	private void updateMapperWithSorter() {
+		boolean enableMatchSorting = matchSorter != null;
+
+		for (GipsMapper<?> mapper : this.mappers.values()) {
+			if (mapper instanceof GipsPatternMapper<?, ?, ?> pm) {
+				pm.enableMatchSorting(enableMatchSorting);
+			}
+		}
+	}
+
 	public EMOFLON_APP getEMoflonApp() {
 		return eMoflonApp;
 	}
@@ -124,8 +148,15 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 
 	@Override
 	public void update() {
-		if (eMoflonAPI != null) {
+		if (eMoflonAPI != null)
 			eMoflonAPI.updateMatches();
+
+		if (matchSorter != null) {
+			for (GipsMapper<?> mapper : this.mappers.values()) {
+				if (mapper instanceof GipsPatternMapper<?, ?, ?> pm) {
+					pm.sortMatchesAndCreateMappings(matchSorter);
+				}
+			}
 		}
 	}
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import org.emoflon.gips.core.milp.ConstraintSorter;
 import org.emoflon.gips.core.milp.Solver;
@@ -268,23 +269,7 @@ public abstract class GipsEngine {
 
 	public SolverOutput solveProblemTimed() {
 		Observer observer = Observer.getInstance();
-		SolverOutput out = observer.observe("SOLVE_PROBLEM", () -> {
-			SolverOutput output;
-			if (validationLog.isNotValid()) {
-				output = new SolverOutput(SolverStatus.INFEASIBLE, Double.NaN, validationLog, 0, null);
-			} else {
-				this.tockInit();
-				output = solver.solve();
-
-				if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0)
-					solver.updateValuesFromSolution();
-			}
-
-			solver.reset();
-			GlobalMappingIndexer.getInstance().terminate();
-			eclipseIntegration.sendSolutionValuesToIDE();
-			return output;
-		});
+		SolverOutput out = observer.observe("SOLVE_PROBLEM", (Supplier<SolverOutput>) this::solveProblem);
 		return out;
 	}
 
@@ -298,6 +283,9 @@ public abstract class GipsEngine {
 
 			if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0)
 				solver.updateValuesFromSolution();
+
+			if (output.status() == SolverStatus.INFEASIBLE && solver.getSolverConfig().isEnableIIS())
+				solver.computeIrreducibleInconsistentSubsystem();
 		}
 
 		solver.reset();

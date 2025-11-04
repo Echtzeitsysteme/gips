@@ -81,6 +81,9 @@ import org.eclipse.xtext.formatting2.internal.MultilineCommentReplacer
 import org.eclipse.xtext.formatting2.internal.SinglelineCodeCommentReplacer
 import org.eclipse.xtext.formatting2.internal.WhitespaceReplacer
 import org.eclipse.xtext.formatting2.IHiddenRegionFormatting
+import org.emoflon.gips.gipsl.gipsl.GipsJoinAllOperation
+import org.emoflon.gips.gipsl.gipsl.GipsJoinBySelectionOperation
+import org.emoflon.gips.gipsl.gipsl.GipsJoinPairSelection
 
 class GipslFormatter extends GTFormatter implements IFormatter2 {
 
@@ -479,6 +482,19 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 
 	def dispatch void format(GipsSimpleQuery operation, extension IFormattableDocument document) {
 		operation.formatMethodCall(document, GIPS_SIMPLE_QUERY__OPERATOR)
+	}
+	
+	def dispatch void format(GipsJoinAllOperation operation, extension IFormattableDocument document){
+		operation.regionFor.keyword(gipsJoinAllOperationAccess.joinAllKeyword_1).append[noSpace]
+	}
+	
+	def dispatch void format(GipsJoinBySelectionOperation operation, extension IFormattableDocument document){
+		operation.formatMethodCall(document, gipsJoinBySelectionOperationAccess.joinKeyword_1, operation.selection)
+	}
+	
+	def dispatch void format(GipsJoinPairSelection operation, extension IFormattableDocument document){
+		operation.leftRef.prepend[noSpace].append[oneSpace]
+		operation.rightRef.prepend[noSpace].append[oneSpace]
 	}
 
 	// Helper

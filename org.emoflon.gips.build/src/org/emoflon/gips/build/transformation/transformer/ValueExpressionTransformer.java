@@ -325,14 +325,35 @@ public class ValueExpressionTransformer extends TransformationContext {
 
 	public SetOperation transform(final GipsSetOperation eOperation) throws Exception {
 		if (eOperation instanceof GipsFilterOperation eFilter) {
-			SetFilter filter = factory.createSetFilter();
-			BooleanExpressionTransformer transformer = //
-					transformerFactory.createBooleanTransformer(localContext, filter);
-			filter.setExpression(transformer.transform(eFilter.getExpression()));
-			return filter;
+			return transform(eFilter);
 		} else if (eOperation instanceof GipsJoinOperation eJoin) {
-			SetFilter filter = factory.createSetFilter();
-			// WIP
+			return transform(eJoin);
+		} else if (eOperation instanceof GipsTypeSelect eSelect) {
+			return transform(eSelect);
+		} else if (eOperation instanceof GipsSortOperation eSort) {
+			return transform(eSort);
+		} else if (eOperation instanceof GipsSimpleAlgorithm eAlgo) {
+			return transform(eAlgo);
+		} else if (eOperation instanceof GipsConcatenationOperation eCat) {
+			return transform(eCat);
+		} else if (eOperation instanceof GipsTransformOperation eTransform) {
+			return transform(eTransform);
+		} else {
+			throw new UnsupportedOperationException("Unkown set operation expression type: " + eOperation);
+		}
+	}
+
+	public SetOperation transform(GipsFilterOperation eFilter) throws Exception {
+		SetFilter filter = factory.createSetFilter();
+		BooleanExpressionTransformer transformer = //
+				transformerFactory.createBooleanTransformer(localContext, filter);
+		filter.setExpression(transformer.transform(eFilter.getExpression()));
+		return filter;
+	}
+
+	public SetOperation transform(GipsJoinOperation eJoin) {
+		SetFilter filter = factory.createSetFilter();
+		// WIP
 //			if (eJoin.getSelection().size() == 0) {
 //				BooleanLiteral literal = factory.createBooleanLiteral();
 //				literal.setLiteral(true);
@@ -353,82 +374,87 @@ public class ValueExpressionTransformer extends TransformationContext {
 //
 //				filter.setExpression(conjuncation);
 //			}
-			return filter;
-		} else if (eOperation instanceof GipsTypeSelect eSelect) {
-			SetTypeSelect select = factory.createSetTypeSelect();
-			select.setType((EClass) eSelect.getType());
-			return select;
-		} else if (eOperation instanceof GipsSortOperation eSort) {
-			SetSort sort = factory.createSetSort();
-			RelationalExpression relation = factory.createRelationalExpression();
-			sort.setPredicate(relation);
+		return filter;
+	}
 
-			relation.setOperator(switch (eSort.getPredicate().getRelation()) {
-			case GREATER -> org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator.GREATER;
-			case GREATER_OR_EQUAL -> org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator.GREATER_OR_EQUAL;
-			case SMALLER -> org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator.LESS;
-			case SMALLER_OR_EQUAL -> org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator.LESS_OR_EQUAL;
-			default -> throw new IllegalArgumentException(
-					"Illegal relational operator in sort predicate: " + eSort.getPredicate().getRelation());
+	public SetOperation transform(GipsTypeSelect eSelect) {
+		SetTypeSelect select = factory.createSetTypeSelect();
+		select.setType((EClass) eSelect.getType());
+		return select;
+	}
 
-			});
+	public SetOperation transform(GipsSortOperation eSort) throws Exception {
+		SetSort sort = factory.createSetSort();
+		RelationalExpression relation = factory.createRelationalExpression();
+		sort.setPredicate(relation);
 
-			ValueExpressionTransformer transformer //
-					= transformerFactory.createValueTransformer(localContext, sort);
-			if (eSort.getPredicate().getE1() instanceof GipsNodeExpression node) {
-				relation.setLhs(transformer.transform(node, sort));
-			} else if (eSort.getPredicate().getE1() instanceof GipsAttributeExpression attribute) {
-				relation.setLhs(transformer.transform(attribute, sort));
-			} else {
-				throw new IllegalArgumentException(
-						"Illegal operand type in sort predicate: " + eSort.getPredicate().getE1());
-			}
+		relation.setOperator(switch (eSort.getPredicate().getRelation()) {
+		case GREATER -> org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator.GREATER;
+		case GREATER_OR_EQUAL -> org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator.GREATER_OR_EQUAL;
+		case SMALLER -> org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator.LESS;
+		case SMALLER_OR_EQUAL -> org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator.LESS_OR_EQUAL;
+		default -> throw new IllegalArgumentException(
+				"Illegal relational operator in sort predicate: " + eSort.getPredicate().getRelation());
 
-			if (eSort.getPredicate().getE2() instanceof GipsNodeExpression node) {
-				relation.setRhs(transformer.transform(node, sort));
-			} else if (eSort.getPredicate().getE2() instanceof GipsAttributeExpression attribute) {
-				relation.setRhs(transformer.transform(attribute, sort));
-			} else {
-				throw new IllegalArgumentException(
-						"Illegal operand type in sort predicate: " + eSort.getPredicate().getE2());
-			}
+		});
 
-			ExpressionReturnType lhsType = GipsTransformationUtils
-					.extractReturnType((ValueExpression) relation.getLhs());
-			ExpressionReturnType rhsType = GipsTransformationUtils
-					.extractReturnType((ValueExpression) relation.getRhs());
-
-			if (lhsType == ExpressionReturnType.object || rhsType == ExpressionReturnType.object) {
-				relation.setRequiresComparables(true);
-			} else {
-				relation.setRequiresComparables(false);
-			}
-			return sort;
-		} else if (eOperation instanceof GipsSimpleAlgorithm eAlgo) {
-			SetSimpleOperation operation = factory.createSetSimpleOperation();
-			operation.setOperator(switch (eAlgo.getOperator()) {
-			case UNIQUE -> org.emoflon.gips.intermediate.GipsIntermediate.SetOperator.UNIQUE;
-			});
-			return operation;
-		} else if (eOperation instanceof GipsConcatenationOperation eCat) {
-			SetConcatenation concat = factory.createSetConcatenation();
-			concat.setOperator(switch (eCat.getOperator()) {
-			case PREPEND -> org.emoflon.gips.intermediate.GipsIntermediate.ConcatenationOperator.PREPEND;
-			case APPEND -> org.emoflon.gips.intermediate.GipsIntermediate.ConcatenationOperator.APPEND;
-			});
-			ValueExpressionTransformer transformer //
-					= transformerFactory.createValueTransformer(localContext, concat);
-			concat.setOther(transformer.transform(eCat.getValue()));
-			return concat;
-		} else if (eOperation instanceof GipsTransformOperation eTransform) {
-			SetTransformation transform = factory.createSetTransformation();
-			ValueExpressionTransformer transformer //
-					= transformerFactory.createValueTransformer(localContext, transform);
-			transform.setExpression(transformer.transform(eTransform.getExpression()));
-			return transform;
+		ValueExpressionTransformer transformer //
+				= transformerFactory.createValueTransformer(localContext, sort);
+		if (eSort.getPredicate().getE1() instanceof GipsNodeExpression node) {
+			relation.setLhs(transformer.transform(node, sort));
+		} else if (eSort.getPredicate().getE1() instanceof GipsAttributeExpression attribute) {
+			relation.setLhs(transformer.transform(attribute, sort));
 		} else {
-			throw new UnsupportedOperationException("Unkown set operation expression type: " + eOperation);
+			throw new IllegalArgumentException(
+					"Illegal operand type in sort predicate: " + eSort.getPredicate().getE1());
 		}
+
+		if (eSort.getPredicate().getE2() instanceof GipsNodeExpression node) {
+			relation.setRhs(transformer.transform(node, sort));
+		} else if (eSort.getPredicate().getE2() instanceof GipsAttributeExpression attribute) {
+			relation.setRhs(transformer.transform(attribute, sort));
+		} else {
+			throw new IllegalArgumentException(
+					"Illegal operand type in sort predicate: " + eSort.getPredicate().getE2());
+		}
+
+		ExpressionReturnType lhsType = GipsTransformationUtils.extractReturnType((ValueExpression) relation.getLhs());
+		ExpressionReturnType rhsType = GipsTransformationUtils.extractReturnType((ValueExpression) relation.getRhs());
+
+		if (lhsType == ExpressionReturnType.object || rhsType == ExpressionReturnType.object) {
+			relation.setRequiresComparables(true);
+		} else {
+			relation.setRequiresComparables(false);
+		}
+		return sort;
+	}
+
+	public SetOperation transform(GipsSimpleAlgorithm eAlgo) {
+		SetSimpleOperation operation = factory.createSetSimpleOperation();
+		operation.setOperator(switch (eAlgo.getOperator()) {
+		case UNIQUE -> org.emoflon.gips.intermediate.GipsIntermediate.SetOperator.UNIQUE;
+		});
+		return operation;
+	}
+
+	public SetOperation transform(GipsConcatenationOperation eCat) throws Exception {
+		SetConcatenation concat = factory.createSetConcatenation();
+		concat.setOperator(switch (eCat.getOperator()) {
+		case PREPEND -> org.emoflon.gips.intermediate.GipsIntermediate.ConcatenationOperator.PREPEND;
+		case APPEND -> org.emoflon.gips.intermediate.GipsIntermediate.ConcatenationOperator.APPEND;
+		});
+		ValueExpressionTransformer transformer //
+				= transformerFactory.createValueTransformer(localContext, concat);
+		concat.setOther(transformer.transform(eCat.getValue()));
+		return concat;
+	}
+
+	public SetOperation transform(GipsTransformOperation eTransform) throws Exception {
+		SetTransformation transform = factory.createSetTransformation();
+		ValueExpressionTransformer transformer //
+				= transformerFactory.createValueTransformer(localContext, transform);
+		transform.setExpression(transformer.transform(eTransform.getExpression()));
+		return transform;
 	}
 
 }

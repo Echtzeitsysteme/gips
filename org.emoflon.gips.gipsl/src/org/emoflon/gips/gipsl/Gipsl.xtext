@@ -298,12 +298,44 @@ GipsSetExpression: {GipsSetExpression}
 
 // Operates on a set of 0-N values and produces a set of 0-M values.
 GipsSetOperation:
-	GipsFilterOperation | GipsSelectOperation | GipsAlgorithmOperation | GipsConcatenationOperation | GipsTransformOperation
+	GipsFilterOperation | GipsJoinOperation | GipsSelectOperation | GipsAlgorithmOperation | GipsConcatenationOperation | GipsTransformOperation
 ;
 
 GipsFilterOperation:
  	'filter' '(' expression = GipsBooleanExpression ')'
 ;
+
+GipsJoinOperation:
+	{GipsJoinOperation} 'join' '(' selection += GipsJoinSelection (',' selection += GipsJoinSelection)* ')'
+;
+
+GipsJoinSelection:
+	GipsJoinSelfSelection | GipsJoinPairSelection
+;
+
+GipsJoinSelfSelection:
+	'{' 'element.' ',' 'context.' '}'
+;
+
+GipsJoinPairSelection:
+	'{' 'element.' ',' 'context.' '}'
+;
+
+//GipsJoinOperation:
+//	'join' '(' selection += GipsJoinSelection (',' selection += GipsJoinSelection)* ')'
+//;
+//
+//GipsJoinSelection: 
+//	GipsJoinSelectionSame | GipsJoinSelectionPair
+//;
+//
+//GipsJoinSelectionSame:
+//	node = [GT::EditorNode|ID]
+//;
+//
+//GipsJoinSelectionPair:
+//	'{' ('element.' | leftLocal = 'context.')? left = [GT::EditorNode|ID] ',' (rightNotLocal = 'element.' | 'context.')? right = [GT::EditorNode|ID] '}'
+//;
 
 GipsSelectOperation:
 	GipsTypeSelect

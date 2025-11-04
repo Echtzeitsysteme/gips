@@ -11,6 +11,8 @@ import org.emoflon.gips.gipsl.gipsl.GipsConcatenationOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsElementQuery;
 import org.emoflon.gips.gipsl.gipsl.GipsFilterOperation;
+import org.emoflon.gips.gipsl.gipsl.GipsJoinOperation;
+import org.emoflon.gips.gipsl.gipsl.GipsJoinSelection;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsLocalContextExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
@@ -36,12 +38,15 @@ import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.AttributeReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BooleanLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.Context;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.NodeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetConcatenation;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetElementQuery;
@@ -313,6 +318,30 @@ public class ValueExpressionTransformer extends TransformationContext {
 			BooleanExpressionTransformer transformer = //
 					transformerFactory.createBooleanTransformer(localContext, filter);
 			filter.setExpression(transformer.transform(eFilter.getExpression()));
+			return filter;
+		} else if (eOperation instanceof GipsJoinOperation eJoin) {
+			SetFilter filter = factory.createSetFilter();
+
+			if (eJoin.getSelection().size() == 0) {
+				BooleanLiteral literal = factory.createBooleanLiteral();
+				literal.setLiteral(true);
+				filter.setExpression(literal);
+			} else if (eJoin.getSelection().size() == 1) {
+				RelationalExpression relation = factory.createRelationalExpression();
+				relation.setOperator(RelationalOperator.EQUAL);
+				eJoin.getSelection().get(0).getNode();
+				filter.setExpression(relation);
+			} else {
+				BooleanBinaryExpression conjuncation = factory.createBooleanBinaryExpression();
+
+				for (GipsJoinSelection selection : eJoin.getSelection()) {
+					RelationalExpression relation = factory.createRelationalExpression();
+					relation.setOperator(RelationalOperator.EQUAL);
+
+				}
+
+				filter.setExpression(conjuncation);
+			}
 			return filter;
 		} else if (eOperation instanceof GipsTypeSelect eSelect) {
 			SetTypeSelect select = factory.createSetTypeSelect();

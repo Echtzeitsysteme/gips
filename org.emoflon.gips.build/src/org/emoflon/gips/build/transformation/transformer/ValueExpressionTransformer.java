@@ -324,23 +324,17 @@ public class ValueExpressionTransformer extends TransformationContext {
 	}
 
 	public SetOperation transform(final GipsSetOperation eOperation) throws Exception {
-		if (eOperation instanceof GipsFilterOperation eFilter) {
-			return transform(eFilter);
-		} else if (eOperation instanceof GipsJoinOperation eJoin) {
-			return transform(eJoin);
-		} else if (eOperation instanceof GipsTypeSelect eSelect) {
-			return transform(eSelect);
-		} else if (eOperation instanceof GipsSortOperation eSort) {
-			return transform(eSort);
-		} else if (eOperation instanceof GipsSimpleAlgorithm eAlgo) {
-			return transform(eAlgo);
-		} else if (eOperation instanceof GipsConcatenationOperation eCat) {
-			return transform(eCat);
-		} else if (eOperation instanceof GipsTransformOperation eTransform) {
-			return transform(eTransform);
-		} else {
+		return switch (eOperation) {
+		case GipsFilterOperation eFilter -> transform(eFilter);
+		case GipsJoinOperation eJoin -> transform(eJoin);
+		case GipsTypeSelect eSelect -> transform(eSelect);
+		case GipsSortOperation eSort -> transform(eSort);
+		case GipsSimpleAlgorithm eAlgo -> transform(eAlgo);
+		case GipsConcatenationOperation eCat -> transform(eCat);
+		case GipsTransformOperation eTransform -> transform(eTransform);
+		case null, default ->
 			throw new UnsupportedOperationException("Unkown set operation expression type: " + eOperation);
-		}
+		};
 	}
 
 	public SetOperation transform(GipsFilterOperation eFilter) throws Exception {

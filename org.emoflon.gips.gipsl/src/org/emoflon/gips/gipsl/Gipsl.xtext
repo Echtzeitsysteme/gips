@@ -276,6 +276,10 @@ GipsNodeExpression: {GipsNodeExpression}
 	(attributeExpression = GipsAttributeExpression)?
 ;
 
+GipsNodeReference:
+	node=[GT::EditorNode|ID]
+;
+
 GipsAttributeExpression: {GipsAttributeExpression}
 	'.'
 	(
@@ -306,36 +310,31 @@ GipsFilterOperation:
 ;
 
 GipsJoinOperation:
-	{GipsJoinOperation} 'join' '(' selection += GipsJoinSelection (',' selection += GipsJoinSelection)* ')'
+	 GipsJoinAllOperation | GipsJoinBySelectionOperation
+;
+
+GipsJoinAllOperation:
+	{GipsJoinAllOperation} 'joinAll''()'
+;
+
+GipsJoinBySelectionOperation:
+	{GipsJoinBySelectionOperation} 'join' '(' 
+	(selection += GipsJoinSingleSelection |
+	selection += GipsJoinPairSelection (',' selection += GipsJoinPairSelection)*)
+	 ')'
 ;
 
 GipsJoinSelection:
-	GipsJoinSelfSelection | GipsJoinPairSelection
+	GipsJoinSingleSelection | GipsJoinPairSelection
 ;
 
-GipsJoinSelfSelection:
-	'{' 'element.' ',' 'context.' '}'
+GipsJoinSingleSelection:
+	ref = GipsNodeReference
 ;
 
 GipsJoinPairSelection:
-	'{' 'element.' ',' 'context.' '}'
+	'(' leftRef = GipsNodeReference ',' rightRef = GipsNodeReference ')'
 ;
-
-//GipsJoinOperation:
-//	'join' '(' selection += GipsJoinSelection (',' selection += GipsJoinSelection)* ')'
-//;
-//
-//GipsJoinSelection: 
-//	GipsJoinSelectionSame | GipsJoinSelectionPair
-//;
-//
-//GipsJoinSelectionSame:
-//	node = [GT::EditorNode|ID]
-//;
-//
-//GipsJoinSelectionPair:
-//	'{' ('element.' | leftLocal = 'context.')? left = [GT::EditorNode|ID] ',' (rightNotLocal = 'element.' | 'context.')? right = [GT::EditorNode|ID] '}'
-//;
 
 GipsSelectOperation:
 	GipsTypeSelect

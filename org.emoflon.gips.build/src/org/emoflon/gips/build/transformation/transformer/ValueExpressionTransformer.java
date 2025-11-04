@@ -271,19 +271,14 @@ public class ValueExpressionTransformer extends TransformationContext {
 	}
 
 	public SetReduce transform(final GipsReduceOperation eReduce) throws Exception {
-		if (eReduce instanceof GipsSumOperation eSum) {
-			return transform(eSum);
-		} else if (eReduce instanceof GipsSimpleSelect eSelect) {
-			return transform(eSelect);
-		} else if (eReduce instanceof GipsTypeQuery eTypeQ) {
-			return transform(eTypeQ);
-		} else if (eReduce instanceof GipsElementQuery eElementQ) {
-			return transform(eElementQ);
-		} else if (eReduce instanceof GipsSimpleQuery eSimpleQ) {
-			return transform(eSimpleQ);
-		} else {
-			throw new UnsupportedOperationException("Unkown set reduce expression type: " + eReduce);
-		}
+		return switch (eReduce) {
+		case GipsSumOperation eSum -> transform(eSum);
+		case GipsSimpleSelect eSelect -> transform(eSelect);
+		case GipsTypeQuery eTypeQ -> transform(eTypeQ);
+		case GipsElementQuery eElementQ -> transform(eElementQ);
+		case GipsSimpleQuery eSimpleQ -> transform(eSimpleQ);
+		case null, default -> throw new UnsupportedOperationException("Unkown set reduce expression type: " + eReduce);
+		};
 	}
 
 	public SetReduce transform(final GipsSumOperation eSum) throws Exception {

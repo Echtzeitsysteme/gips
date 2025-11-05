@@ -3,87 +3,81 @@
  */
 package org.emoflon.gips.gipsl.formatting2
 
-import static org.emoflon.gips.gipsl.gipsl.GipslPackage.Literals.*
-
 import com.google.inject.Inject
-import org.eclipse.xtext.formatting2.IFormattableDocument
-import org.emoflon.gips.gipsl.gipsl.EditorGTFile
-import org.emoflon.gips.gipsl.gipsl.GipsMapping
-import org.emoflon.gips.gipsl.services.GipslGrammarAccess
-import org.emoflon.ibex.gt.editor.formatting2.GTFormatter
-import org.emoflon.gips.gipsl.gipsl.GipsConstant
+import java.util.Collections
+import java.util.LinkedList
 import java.util.List
 import org.eclipse.emf.ecore.EObject
-import org.emoflon.gips.gipsl.gipsl.ImportedPattern
-import org.emoflon.ibex.gt.editor.gT.EditorCondition
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils
-import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction
-import org.emoflon.gips.gipsl.gipsl.GipsObjective
-import org.emoflon.gips.gipsl.gipsl.GipsConstraint
-import org.emoflon.gips.gipsl.gipsl.GipsConfig
-import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable
-import org.emoflon.gips.gipsl.gipsl.GipsBooleanImplication
-import org.emoflon.gips.gipsl.gipsl.GipsArithmeticSum
-import org.emoflon.gips.gipsl.gipsl.GipsArithmeticProduct
-import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExponential
-import org.emoflon.gips.gipsl.gipsl.GipsArithmeticUnary
-import org.emoflon.gips.gipsl.gipsl.GipsArithmeticBracket
-import org.emoflon.gips.gipsl.gipsl.GipsConstantReference
-import org.emoflon.gips.gipsl.gipsl.GipsArithmeticOperand
-import org.emoflon.gips.gipsl.gipsl.GipsBooleanDisjunction
-import org.emoflon.gips.gipsl.gipsl.GipsBooleanConjunction
-import org.emoflon.gips.gipsl.gipsl.GipsBooleanNegation
-import org.emoflon.gips.gipsl.gipsl.GipsBooleanBracket
-import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression
-import org.emoflon.gips.gipsl.gipsl.GipsLocalContextExpression
-import org.emoflon.gips.gipsl.gipsl.GipsMappingExpression
-import org.emoflon.gips.gipsl.gipsl.GipsSetElementExpression
-import org.emoflon.gips.gipsl.gipsl.GipsNodeExpression
-import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression
-import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpression
-import org.emoflon.gips.gipsl.gipsl.GipsSetExpression
-import org.emoflon.gips.gipsl.gipsl.GipsFilterOperation
-import org.emoflon.gips.gipsl.gipsl.GipsTypeSelect
-import org.emoflon.gips.gipsl.gipsl.GipsSortOperation
-import org.emoflon.gips.gipsl.gipsl.GipsSortPredicate
-import org.emoflon.gips.gipsl.gipsl.GipsSimpleAlgorithm
-import org.emoflon.gips.gipsl.gipsl.GipsConcatenationOperation
-import org.emoflon.gips.gipsl.gipsl.GipsTypeExpression
-import org.emoflon.gips.gipsl.gipsl.GipsPatternExpression
-import org.emoflon.gips.gipsl.gipsl.GipsRuleExpression
-import org.emoflon.gips.gipsl.gipsl.GipsTransformOperation
-import org.emoflon.gips.gipsl.gipsl.GipsTypeQuery
-import org.emoflon.gips.gipsl.gipsl.GipsElementQuery
-import org.emoflon.gips.gipsl.gipsl.GipsSimpleQuery
-import org.emoflon.gips.gipsl.gipsl.GipsSimpleSelect
-import org.emoflon.gips.gipsl.gipsl.GipsSumOperation
-import org.eclipse.xtext.Keyword
 import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.xtext.formatting2.regionaccess.ISemanticRegion
-import org.emoflon.ibex.gt.editor.gT.GTPackage
-import org.eclipse.xtext.formatting2.FormatterPreferenceKeys
-import org.eclipse.xtext.formatting2.regionaccess.ITextSegment
-import org.eclipse.xtext.formatting2.IFormatter2
-import java.util.LinkedList
-import java.util.Collections
-import org.eclipse.xtext.formatting2.regionaccess.IComment
-import org.eclipse.xtext.formatting2.ITextReplacer
 import org.eclipse.xtext.AbstractRule
+import org.eclipse.xtext.Keyword
+import org.eclipse.xtext.formatting2.FormatterPreferenceKeys
+import org.eclipse.xtext.formatting2.IFormattableDocument
+import org.eclipse.xtext.formatting2.IFormatter2
+import org.eclipse.xtext.formatting2.IHiddenRegionFormatting
+import org.eclipse.xtext.formatting2.ITextReplacer
+import org.eclipse.xtext.formatting2.regionaccess.IComment
+import org.eclipse.xtext.formatting2.regionaccess.ISemanticRegion
 import org.eclipse.xtext.formatting2.regionaccess.ISemanticRegionsFinder
-
-import org.eclipse.xtext.formatting2.regionaccess.ISemanticRegionFinder
-import org.eclipse.xtext.formatting2.regionaccess.internal.SemanticRegionNullFinder
+import org.eclipse.xtext.formatting2.regionaccess.ITextSegment
 import org.eclipse.xtext.formatting2.regionaccess.internal.SemanticRegionInIterableFinder
 import org.eclipse.xtext.formatting2.regionaccess.internal.SemanticRegionIterable
-import org.eclipse.xtext.formatting2.internal.SinglelineDocCommentReplacer
+import org.eclipse.xtext.formatting2.regionaccess.internal.SemanticRegionNullFinder
 import org.eclipse.xtext.grammaranalysis.impl.GrammarElementTitleSwitch
-import org.eclipse.xtext.formatting2.internal.MultilineCommentReplacer
-import org.eclipse.xtext.formatting2.internal.SinglelineCodeCommentReplacer
-import org.eclipse.xtext.formatting2.internal.WhitespaceReplacer
-import org.eclipse.xtext.formatting2.IHiddenRegionFormatting
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils
+import org.emoflon.gips.gipsl.gipsl.EditorGTFile
+import org.emoflon.gips.gipsl.gipsl.GipsArithmeticBracket
+import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExponential
+import org.emoflon.gips.gipsl.gipsl.GipsArithmeticOperand
+import org.emoflon.gips.gipsl.gipsl.GipsArithmeticProduct
+import org.emoflon.gips.gipsl.gipsl.GipsArithmeticSum
+import org.emoflon.gips.gipsl.gipsl.GipsArithmeticUnary
+import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpression
+import org.emoflon.gips.gipsl.gipsl.GipsBooleanBracket
+import org.emoflon.gips.gipsl.gipsl.GipsBooleanConjunction
+import org.emoflon.gips.gipsl.gipsl.GipsBooleanDisjunction
+import org.emoflon.gips.gipsl.gipsl.GipsBooleanImplication
+import org.emoflon.gips.gipsl.gipsl.GipsBooleanNegation
+import org.emoflon.gips.gipsl.gipsl.GipsConcatenationOperation
+import org.emoflon.gips.gipsl.gipsl.GipsConfig
+import org.emoflon.gips.gipsl.gipsl.GipsConstant
+import org.emoflon.gips.gipsl.gipsl.GipsConstantReference
+import org.emoflon.gips.gipsl.gipsl.GipsConstraint
+import org.emoflon.gips.gipsl.gipsl.GipsElementQuery
+import org.emoflon.gips.gipsl.gipsl.GipsFilterOperation
 import org.emoflon.gips.gipsl.gipsl.GipsJoinAllOperation
 import org.emoflon.gips.gipsl.gipsl.GipsJoinBySelectionOperation
 import org.emoflon.gips.gipsl.gipsl.GipsJoinPairSelection
+import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction
+import org.emoflon.gips.gipsl.gipsl.GipsLocalContextExpression
+import org.emoflon.gips.gipsl.gipsl.GipsMapping
+import org.emoflon.gips.gipsl.gipsl.GipsMappingExpression
+import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable
+import org.emoflon.gips.gipsl.gipsl.GipsNodeExpression
+import org.emoflon.gips.gipsl.gipsl.GipsObjective
+import org.emoflon.gips.gipsl.gipsl.GipsPatternExpression
+import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression
+import org.emoflon.gips.gipsl.gipsl.GipsRuleExpression
+import org.emoflon.gips.gipsl.gipsl.GipsSetElementExpression
+import org.emoflon.gips.gipsl.gipsl.GipsSetExpression
+import org.emoflon.gips.gipsl.gipsl.GipsSimpleAlgorithm
+import org.emoflon.gips.gipsl.gipsl.GipsSimpleQuery
+import org.emoflon.gips.gipsl.gipsl.GipsSimpleSelect
+import org.emoflon.gips.gipsl.gipsl.GipsSortOperation
+import org.emoflon.gips.gipsl.gipsl.GipsSortPredicate
+import org.emoflon.gips.gipsl.gipsl.GipsSumOperation
+import org.emoflon.gips.gipsl.gipsl.GipsTransformOperation
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExpression
+import org.emoflon.gips.gipsl.gipsl.GipsTypeQuery
+import org.emoflon.gips.gipsl.gipsl.GipsTypeSelect
+import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression
+import org.emoflon.gips.gipsl.gipsl.ImportedPattern
+import org.emoflon.gips.gipsl.gipsl.Package
+import org.emoflon.gips.gipsl.services.GipslGrammarAccess
+import org.emoflon.ibex.gt.editor.formatting2.GTFormatter
+import org.emoflon.ibex.gt.editor.gT.EditorAttributeAssignment
+
+import static org.emoflon.gips.gipsl.gipsl.GipslPackage.Literals.*
 
 class GipslFormatter extends GTFormatter implements IFormatter2 {
 
@@ -131,7 +125,7 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 		editorGTFile.append[newLine]
 	}
 
-	def dispatch void format(org.emoflon.gips.gipsl.gipsl.Package gipsPackage,
+	def dispatch void format(Package gipsPackage,
 		extension IFormattableDocument document) {
 		gipsPackage.regionFor.keyword(packageAccess.packageKeyword_0).append[oneSpace]
 	}
@@ -491,10 +485,10 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 	def dispatch void format(GipsJoinBySelectionOperation operation, extension IFormattableDocument document){
 		operation.formatMethodCall(document, gipsJoinBySelectionOperationAccess.joinKeyword_1, operation.selection)
 	}
-	
+	  
 	def dispatch void format(GipsJoinPairSelection operation, extension IFormattableDocument document){
-		operation.leftRef.prepend[noSpace].append[oneSpace]
-		operation.rightRef.prepend[noSpace].append[oneSpace]
+		operation.regionFor.feature(GIPS_JOIN_PAIR_SELECTION__LEFT_NODE).prepend[noSpace].append[oneSpace]
+		operation.regionFor.feature(GIPS_JOIN_PAIR_SELECTION__RIGHT_NODE).prepend[noSpace].append[oneSpace]
 	}
 
 	// Helper
@@ -685,7 +679,7 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 	}
 
 	// GTFormater fixes
-	override dispatch void format(org.emoflon.ibex.gt.editor.gT.EditorAttributeAssignment attribute,
+	override dispatch void format(EditorAttributeAssignment attribute,
 		extension IFormattableDocument document) {
 		// No space before and after ".".
 		attribute.regionFor.keyword(".").surround[noSpace]

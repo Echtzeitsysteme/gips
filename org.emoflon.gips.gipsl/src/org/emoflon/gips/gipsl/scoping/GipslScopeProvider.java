@@ -35,6 +35,10 @@ import org.emoflon.gips.gipsl.gipsl.GipsAttributeLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsConstant;
 import org.emoflon.gips.gipsl.gipsl.GipsConstantReference;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsJoinBySelectionOperation;
+import org.emoflon.gips.gipsl.gipsl.GipsJoinOperation;
+import org.emoflon.gips.gipsl.gipsl.GipsJoinPairSelection;
+import org.emoflon.gips.gipsl.gipsl.GipsJoinSingleSelection;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunctionReference;
 import org.emoflon.gips.gipsl.gipsl.GipsLocalContextExpression;
@@ -53,6 +57,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeQuery;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeSelect;
 import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression;
+import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
 import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsAttributeExpressionImpl;
@@ -123,6 +128,12 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			return scopeForGipsRuleExpression((GipsRuleExpression) context, reference);
 		} else if (GipslScopeContextUtil.isGipsNodeExpression(context, reference)) {
 			return scopeForGipsNodeExpression((GipsNodeExpression) context, reference);
+		} else if (GipslScopeContextUtil.isGipsJoin(context, reference)) {
+			return scopeForGipsJoin((GipsJoinOperation) context, reference);
+		} else if (GipslScopeContextUtil.isGipsJoinPairSelection(context, reference)) {
+			return scopeForGipsJoinPair((GipsJoinPairSelection) context, reference);
+		} else if (GipslScopeContextUtil.isGipsJoinSingleSelection(context, reference)) {
+			return scopeForGipsJoinSingle((GipsJoinSingleSelection) context, reference);
 		} else if (GipslScopeContextUtil.isGipsAttributeExpression(context, reference)) {
 			return scopeForGipsAttributeExpression((GipsAttributeExpression) context, reference);
 		} else if (GipslScopeContextUtil.isGipsAttributeLiteral(context, reference)) {
@@ -372,7 +383,6 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 		}
 
 		return Scopes.scopeFor(constants);
-
 	}
 
 	public IScope scopeForGipsConstraintContext(GipsConstraint context, EReference reference) {
@@ -466,6 +476,60 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 
 		return Scopes.scopeFor(editorPattern.getNodes().stream().filter(n -> n.getOperator() != EditorOperator.CREATE)
 				.collect(Collectors.toList()));
+	}
+
+	public IScope scopeForGipsJoin(GipsJoinOperation context, EReference reference) {
+		if (context instanceof GipsJoinBySelectionOperation) {
+			EObject localContext = GipslScopeContextUtil.getLocalContext(context);
+			if (localContext instanceof EClass eClass) {
+				// we can only give suggestions, if the context is based on node type
+				// (not a pattern or mapping)
+
+				// return possible nodes which can match the context (node)
+				EObject setContext = GipslScopeContextUtil.getSetContext(context);
+				EditorPattern editorPattern = GipslScopeContextUtil.getPatternOrRuleOf(setContext);
+				if (editorPattern == null)
+					return IScope.NULLSCOPE;
+
+				return Scopes.scopeFor(editorPattern.getNodes().stream() //
+						.filter(n -> n.getOperator() != EditorOperator.CREATE) //
+						.filter(n -> eClass.isSuperTypeOf(n.getType()) || n.getType().isSuperTypeOf(eClass)) //
+						.toList());
+			}
+
+			// we don't give suggestion for possible tuples
+		}
+
+		return IScope.NULLSCOPE;
+	}
+
+	public IScope scopeForGipsJoinPair(GipsJoinPairSelection context, EReference reference) {
+		EObject patternRef = null;
+		if (reference == GipslPackage.Literals.GIPS_JOIN_PAIR_SELECTION__LEFT_NODE) {
+			patternRef = GipslScopeContextUtil.getSetContext(context);
+		} else if (reference == GipslPackage.Literals.GIPS_JOIN_PAIR_SELECTION__RIGHT_NODE) {
+			patternRef = GipslScopeContextUtil.getLocalContext(context);
+		}
+
+		EditorPattern editorPattern = GipslScopeContextUtil.getPatternOrRuleOf(patternRef);
+		if (editorPattern == null)
+			return IScope.NULLSCOPE;
+
+		return Scopes.scopeFor(editorPattern.getNodes().stream() //
+				.filter(n -> n.getOperator() != EditorOperator.CREATE) //
+				.toList());
+	}
+
+	public IScope scopeForGipsJoinSingle(GipsJoinSingleSelection context, EReference reference) {
+		EObject patternRef = GipslScopeContextUtil.getSetContext(context);
+
+		EditorPattern editorPattern = GipslScopeContextUtil.getPatternOrRuleOf(patternRef);
+		if (editorPattern == null)
+			return IScope.NULLSCOPE;
+
+		return Scopes.scopeFor(editorPattern.getNodes().stream() //
+				.filter(n -> n.getOperator() != EditorOperator.CREATE) //
+				.toList());
 	}
 
 	public IScope scopeForGipsAttributeExpression(GipsAttributeExpression context, EReference reference) {

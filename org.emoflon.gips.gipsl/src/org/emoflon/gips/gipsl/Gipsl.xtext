@@ -276,10 +276,6 @@ GipsNodeExpression: {GipsNodeExpression}
 	(attributeExpression = GipsAttributeExpression)?
 ;
 
-GipsNodeReference:
-	node=[GT::EditorNode|ID]
-;
-
 GipsAttributeExpression: {GipsAttributeExpression}
 	'.'
 	(
@@ -318,10 +314,10 @@ GipsJoinAllOperation:
 ;
 
 GipsJoinBySelectionOperation:
-	{GipsJoinBySelectionOperation} 'join' '(' 
+	{GipsJoinBySelectionOperation} 'join' '('
 	(selection += GipsJoinSingleSelection |
 	selection += GipsJoinPairSelection (',' selection += GipsJoinPairSelection)*)
-	 ')'
+	')'
 ;
 
 GipsJoinSelection:
@@ -329,11 +325,11 @@ GipsJoinSelection:
 ;
 
 GipsJoinSingleSelection:
-	ref = GipsNodeReference
+	node = [GT::EditorNode|ID]
 ;
 
 GipsJoinPairSelection:
-	'(' leftRef = GipsNodeReference ',' rightRef = GipsNodeReference ')'
+	'(' leftNode = [GT::EditorNode|ID] ',' rightNode = [GT::EditorNode|ID] ')'
 ;
 
 GipsSelectOperation:

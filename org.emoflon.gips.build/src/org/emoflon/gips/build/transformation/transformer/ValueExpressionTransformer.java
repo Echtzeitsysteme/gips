@@ -37,6 +37,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.AttributeReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.BooleanLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.Context;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingReference;
@@ -346,28 +347,13 @@ public class ValueExpressionTransformer extends TransformationContext {
 	}
 
 	public SetOperation transform(GipsJoinOperation eJoin) {
+		// WIP, does nothing at the moment
 		SetFilter filter = factory.createSetFilter();
-		// WIP
-//			if (eJoin.getSelection().size() == 0) {
-//				BooleanLiteral literal = factory.createBooleanLiteral();
-//				literal.setLiteral(true);
-//				filter.setExpression(literal);
-//			} else if (eJoin.getSelection().size() == 1) {
-//				RelationalExpression relation = factory.createRelationalExpression();
-//				relation.setOperator(RelationalOperator.EQUAL);
-//				eJoin.getSelection().get(0).getNode();
-//				filter.setExpression(relation);
-//			} else {
-//				BooleanBinaryExpression conjuncation = factory.createBooleanBinaryExpression();
-//
-//				for (GipsJoinSelection selection : eJoin.getSelection()) {
-//					RelationalExpression relation = factory.createRelationalExpression();
-//					relation.setOperator(RelationalOperator.EQUAL);
-//
-//				}
-//
-//				filter.setExpression(conjuncation);
-//			}
+
+		BooleanLiteral literal = factory.createBooleanLiteral();
+		literal.setLiteral(true);
+		filter.setExpression(literal);
+
 		return filter;
 	}
 

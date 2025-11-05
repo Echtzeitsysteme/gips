@@ -155,6 +155,9 @@ public class GipslValidatorUtil {
 	public static final String SET_SORT_PREDICATE_RELATION_ERROR = "Sorting predicate must impose an order, which means == and != are invalid operators.";
 	public static final String SET_FILTER_ERROR = "Filter operations on sets must be performed with Boolean predicates. Furthermore, these must be constant at (M)ILP compilation time, which means that they must never contain variable references.";
 
+	public static final String SET_JOIN_ALL_ERROR = "Operation can only be used if set and context is of the same type.";
+	public static final String SET_JOIN_MISSMATCHING_TYPE_ERROR = "Incompatible operand types. %s seems to be unrelated to %s.";
+
 	public static Set<GipsMapping> extractMappings(final GipsBooleanExpression expression) {
 		Set<GipsMapping> mappings = new HashSet<>();
 

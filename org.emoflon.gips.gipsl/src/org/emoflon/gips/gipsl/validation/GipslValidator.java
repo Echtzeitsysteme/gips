@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -27,8 +28,12 @@ import org.emoflon.gips.gipsl.gipsl.GipsBooleanImplication;
 import org.emoflon.gips.gipsl.gipsl.GipsConfig;
 import org.emoflon.gips.gipsl.gipsl.GipsConstant;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsJoinAllOperation;
+import org.emoflon.gips.gipsl.gipsl.GipsJoinBySelectionOperation;
+import org.emoflon.gips.gipsl.gipsl.GipsJoinSingleSelection;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsReduceOperation;
@@ -43,6 +48,7 @@ import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsLinearFunctionImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
+import org.emoflon.ibex.gt.editor.gT.EditorNode;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 import org.emoflon.ibex.gt.editor.gT.GTPackage;
 import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
@@ -440,6 +446,81 @@ public class GipslValidator extends AbstractGipslValidator {
 					expression, //
 					GipslPackage.Literals.GIPS_SET_EXPRESSION__RIGHT //
 			);
+	}
+
+	@Check
+	public void checkJoinOperation(final GipsJoinSingleSelection selection) {
+		// check if selection type matches context type in any form
+		EObject localContext = GipslScopeContextUtil.getLocalContext(selection);
+		if (!(localContext instanceof EClass localContextClass)) {
+			// TODO
+			GipslValidator.err( //
+					"???", //
+					selection, //
+					GipslPackage.Literals.GIPS_JOIN_SINGLE_SELECTION__NODE //
+			);
+			return;
+		}
+
+		EditorNode matchingNode = selection.getNode();
+		if (matchingNode == null)
+			return;
+
+		EClass nodeType = matchingNode.getType();
+		if (nodeType == null)
+			return;
+
+		if (!(nodeType.isSuperTypeOf(localContextClass) || localContextClass.isSuperTypeOf(nodeType))) {
+			GipslValidator.err( //
+					String.format(GipslValidatorUtil.SET_JOIN_MISSMATCHING_TYPE_ERROR, nodeType.getName(),
+							localContextClass.getName()), //
+					selection, //
+					GipslPackage.Literals.GIPS_JOIN_SINGLE_SELECTION__NODE //
+			);
+		}
+	}
+
+	@Check
+	public void checkJoinOperation(final GipsJoinBySelectionOperation operation) {
+		// TODO
+		if (operation.getSelection().isEmpty()) {
+			GipslValidator.err( //
+					"???", //
+					operation, //
+					GipslPackage.Literals.GIPS_JOIN_BY_SELECTION_OPERATION__SELECTION //
+			);
+			return;
+		}
+
+//		if (operation.getSelection().get(0) instanceof GipsJoinSingleSelection singleSelection) {
+//
+//		} else {
+//
+//		}
+	}
+
+	@Check
+	public void checkJoinOperation(final GipsJoinAllOperation operation) {
+		EObject localContext = GipslScopeContextUtil.getLocalContext(operation);
+		EObject setContext = GipslScopeContextUtil.getSetContext(operation);
+
+		boolean invalid = true;
+		if (localContext instanceof GipsMapping gipsMapping
+				&& setContext instanceof GipsMappingExpression mappingExpression) {
+			invalid = !(gipsMapping == mappingExpression.getMapping());
+		}
+
+		if (invalid) {
+			GipslValidator.err( //
+					String.format(GipslValidatorUtil.SET_JOIN_ALL_ERROR), //
+					// "Operation can only be used if set and context is of the same type.", //
+					operation, //
+					null //
+			);
+		}
+
+		// TODO
+		GipslValidator.warn("Language feature not available. Instruction will be ignored.", operation, null);
 	}
 
 	@Check

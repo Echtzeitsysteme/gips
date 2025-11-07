@@ -544,12 +544,6 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 				else {
 					// Mapping indexer
 					imports.add("java.util.Set")
-					imports.add("java.util.HashSet")
-					imports.add("java.lang.reflect.Method")
-					imports.add("java.lang.reflect.InvocationTargetException")
-					imports.add("org.apache.commons.lang3.StringUtils")
-					imports.add("org.eclipse.emf.ecore.EObject")
-					imports.add("org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode")
 					imports.add("org.emoflon.gips.core.MappingIndexer")
 					imports.add("org.emoflon.gips.core.GlobalMappingIndexer")
 					imports.add("org.emoflon.gips.core.GipsMapper")

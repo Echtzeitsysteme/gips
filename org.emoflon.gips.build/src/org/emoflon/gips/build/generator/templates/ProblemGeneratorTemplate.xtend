@@ -457,8 +457,8 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 			if (relExpr.lhs instanceof NodeReference && relExpr.rhs instanceof ContextReference) {
 				var lhsnode = relExpr.lhs as NodeReference
 				var rhsnode = relExpr.rhs as ContextReference
-				// LHS side must not have an attribute access
-				if (lhsnode.attribute === null) {
+				// Both sides must not have an attribute access
+				if (lhsnode.attribute === null && !(rhsnode instanceof AttributeReference)) {
 					if (lhsnode.local && !rhsnode.local || !lhsnode.local && rhsnode.local) {
 						return true;
 					}
@@ -466,8 +466,8 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 			} else if (relExpr.lhs instanceof ContextReference && relExpr.rhs instanceof NodeReference) {
 				var lhsnode = relExpr.lhs as ContextReference
 				var rhsnode = relExpr.rhs as NodeReference
-				// RHS must not have an attribute access
-				if (rhsnode.attribute === null) {
+				// Both sides must not have an attribute access
+				if (rhsnode.attribute === null && !(lhsnode instanceof AttributeReference)) {
 					if (lhsnode.local && !rhsnode.local || !lhsnode.local && rhsnode.local) {
 						return true;
 					}

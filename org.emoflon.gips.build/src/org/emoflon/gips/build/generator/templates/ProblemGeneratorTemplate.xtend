@@ -395,6 +395,89 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	}
 
 	/**
+	 * Returns `true` if the given set operation fulfills all conditions for the context of the
+	 * respective constraint to be indexed.
+	 */
+	def boolean isContextIndexerApplicable(SetOperation expr) {
+		if (expr instanceof SetFilter) {
+			// Single relational expression
+			if (expr.expression instanceof RelationalExpression) {
+				var relExpr = expr.expression as RelationalExpression
+				return isContextIndexerApplicable(relExpr);
+			} // Multiple expressions composed
+			else if (expr.expression instanceof BooleanBinaryExpression) {
+				var boolBinExpr = expr.expression as BooleanBinaryExpression
+				return isContextIndexerApplicable(boolBinExpr);
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Returns `true` if the given boolean expression fulfills all conditions for the context of
+	 * the respective constraint to be indexed.
+	 */
+	def boolean isContextIndexerApplicable(BooleanExpression expr) {
+		// Single relational expression only
+		if (expr instanceof RelationalExpression) {
+			return isContextIndexerApplicable(expr)
+		} // Composition of multiple boolean expressions
+		else if (expr instanceof BooleanBinaryExpression) {
+			return isContextIndexerApplicable(expr)
+		}
+		return false;
+	}
+
+	/**
+	 * Returns `true` if the given boolean binary expression fulfills all conditions for the context
+	 * of the respective constraint to be indexed.
+	 */
+	def boolean isContextIndexerApplicable(BooleanBinaryExpression expr) {
+		switch (expr.operator) {
+			case AND: {
+				var lhs = isContextIndexerApplicable(expr.lhs)
+				var rhs = isContextIndexerApplicable(expr.rhs)
+				return lhs || rhs
+			}
+			default: {
+				// Do nothing
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Returns `true` if the given relational expression fulfills all conditions for the context of
+	 * the respective constraint to be indexed.
+	 */
+	def boolean isContextIndexerApplicable(RelationalExpression relExpr) {
+		// Only if the operator is `EQUAL`
+		if (relExpr.operator.equals(RelationalOperator.EQUAL)) {
+			// One side must be local and one must not be local
+			if (relExpr.lhs instanceof NodeReference && relExpr.rhs instanceof ContextReference) {
+				var lhsnode = relExpr.lhs as NodeReference
+				var rhsnode = relExpr.rhs as ContextReference
+				// Both sides must not have an attribute access
+				if (lhsnode.attribute === null && !(rhsnode instanceof AttributeReference)) {
+					if (lhsnode.local && !rhsnode.local || !lhsnode.local && rhsnode.local) {
+						return true;
+					}
+				}
+			} else if (relExpr.lhs instanceof ContextReference && relExpr.rhs instanceof NodeReference) {
+				var lhsnode = relExpr.lhs as ContextReference
+				var rhsnode = relExpr.rhs as NodeReference
+				// Both sides must not have an attribute access
+				if (rhsnode.attribute === null && !(lhsnode instanceof AttributeReference)) {
+					if (lhsnode.local && !rhsnode.local || !lhsnode.local && rhsnode.local) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * This method converts a given list of context node names to a getter string.
 	 * 
 	 * Example input: "{a, b, cde}"
@@ -524,10 +607,13 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 				
 				// If this generates a type constraint, use `context`
 				if (this instanceof TypeConstraintTemplate && expression.setExpression.setOperation !== null) {
-					searchFor = '''context'''
-				}
-				// If this generates a rule constraint, mapping constraint, or pattern constraint, search for context node accesses
-				else if (this instanceof RuleConstraintTemplate || this instanceof MappingConstraintTemplate || this instanceof PatternConstraintTemplate) {
+					// `context` can only be used if the expression does not use attribute accesses, etc.
+					if (isContextIndexerApplicable(expression.setExpression.setOperation)) {
+						searchFor = '''context'''
+					}
+				} // If this generates a rule constraint, mapping constraint, or pattern constraint, search for context node accesses
+				else if (this instanceof RuleConstraintTemplate || this instanceof MappingConstraintTemplate ||
+					this instanceof PatternConstraintTemplate) {
 					// If the expression is a mapping reference and there is a set operation, search for context node accesses
 					if (expression instanceof MappingReference && expression.setExpression.setOperation !== null) {
 						searchFor = '''«convertContextNodeAccessToGetterCalls(getContextNodeAccess(expression.setExpression.setOperation))»'''
@@ -544,12 +630,6 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 				else {
 					// Mapping indexer
 					imports.add("java.util.Set")
-					imports.add("java.util.HashSet")
-					imports.add("java.lang.reflect.Method")
-					imports.add("java.lang.reflect.InvocationTargetException")
-					imports.add("org.apache.commons.lang3.StringUtils")
-					imports.add("org.eclipse.emf.ecore.EObject")
-					imports.add("org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode")
 					imports.add("org.emoflon.gips.core.MappingIndexer")
 					imports.add("org.emoflon.gips.core.GlobalMappingIndexer")
 					imports.add("org.emoflon.gips.core.GipsMapper")

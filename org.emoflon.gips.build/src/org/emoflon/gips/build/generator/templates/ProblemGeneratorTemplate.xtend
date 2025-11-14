@@ -596,7 +596,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 				.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
 			
 			// If a return is required, use the original implementation
-			if (requiresReturn) {
+			if (true) {
 				instruction = original
 			}
 			// Else, try to use the mapping indexer implementation

@@ -11,6 +11,8 @@ import org.emoflon.gips.gipsl.gipsl.GipsConcatenationOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsElementQuery;
 import org.emoflon.gips.gipsl.gipsl.GipsFilterOperation;
+import org.emoflon.gips.gipsl.gipsl.GipsJoinAllOperation;
+import org.emoflon.gips.gipsl.gipsl.GipsJoinBySelectionOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsJoinOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsLocalContextExpression;
@@ -37,7 +39,6 @@ import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.AttributeReference;
-import org.emoflon.gips.intermediate.GipsIntermediate.BooleanLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.Context;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingReference;
@@ -63,6 +64,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
+import org.emoflon.ibex.gt.editor.gT.EditorNode;
 
 public class ValueExpressionTransformer extends TransformationContext {
 
@@ -210,16 +212,22 @@ public class ValueExpressionTransformer extends TransformationContext {
 	}
 
 	public ValueExpression transform(final GipsNodeExpression node, final Context context) {
-		NodeReference nValue = factory.createNodeReference();
-		nValue.setNode(data.eNode2Node().get(node.getNode()));
-		if (node.getAttributeExpression() != null) {
+		NodeReference nValue = transform(node.getNode(), context);
+		if (node.getAttributeExpression() != null)
 			nValue.setAttribute(transform(node.getAttributeExpression()));
-		}
+		return nValue;
+	}
+
+	public NodeReference transform(EditorNode node, Context context) {
+		NodeReference nValue = factory.createNodeReference();
+		nValue.setNode(data.eNode2Node().get(node));
+
 		if (context.equals(localContext)) {
 			nValue.setLocal(true);
 		} else {
 			nValue.setLocal(false);
 		}
+
 		return nValue;
 	}
 
@@ -346,14 +354,28 @@ public class ValueExpressionTransformer extends TransformationContext {
 		return filter;
 	}
 
-	public SetOperation transform(GipsJoinOperation eJoin) {
-		// WIP, does nothing at the moment
+	public SetOperation transform(GipsJoinOperation eJoin) throws Exception {
+		return switch (eJoin) {
+		case GipsJoinAllOperation eJoinAll -> transform(eJoinAll);
+		case GipsJoinBySelectionOperation eJoinSelection -> transform(eJoinSelection);
+		case null, default ->
+			throw new UnsupportedOperationException("Unkown join operation expression type: " + eJoin);
+		};
+	}
+
+	public SetOperation transform(GipsJoinAllOperation eJoinAll) throws Exception {
 		SetFilter filter = factory.createSetFilter();
+		BooleanExpressionTransformer transformer = //
+				transformerFactory.createBooleanTransformer(localContext, filter);
+		filter.setExpression(transformer.transform(eJoinAll));
+		return filter;
+	}
 
-		BooleanLiteral literal = factory.createBooleanLiteral();
-		literal.setLiteral(true);
-		filter.setExpression(literal);
-
+	public SetOperation transform(GipsJoinBySelectionOperation eJoinSelection) throws Exception {
+		SetFilter filter = factory.createSetFilter();
+		BooleanExpressionTransformer transformer = //
+				transformerFactory.createBooleanTransformer(localContext, filter);
+		filter.setExpression(transformer.transform(eJoinSelection));
 		return filter;
 	}
 

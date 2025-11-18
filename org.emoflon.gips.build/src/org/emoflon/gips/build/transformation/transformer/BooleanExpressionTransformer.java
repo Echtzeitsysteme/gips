@@ -1,5 +1,7 @@
 package org.emoflon.gips.build.transformation.transformer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
@@ -18,6 +20,9 @@ import org.emoflon.gips.gipsl.gipsl.GipsBooleanNegation;
 import org.emoflon.gips.gipsl.gipsl.GipsConstantLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsConstantReference;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsJoinAllOperation;
+import org.emoflon.gips.gipsl.gipsl.GipsJoinBySelectionOperation;
+import org.emoflon.gips.gipsl.gipsl.GipsJoinPairSelection;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
@@ -28,6 +33,7 @@ import org.emoflon.gips.gipsl.gipsl.impl.GipsLinearFunctionImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanUnaryExpression;
@@ -35,7 +41,11 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ConstantLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Context;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
+import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 
 public class BooleanExpressionTransformer extends TransformationContext {
 	protected BooleanExpressionTransformer(GipsTransformationData data, Context localContext,
@@ -152,5 +162,83 @@ public class BooleanExpressionTransformer extends TransformationContext {
 		RelationalExpressionTransformer transformer = //
 				transformerFactory.createRelationalTransformer(localContext, setContext);
 		return transformer.transform(relation);
+	}
+
+	public BooleanExpression transform(GipsJoinAllOperation eJoinAll) {
+		// TODO: WIP, only works for element == context at the moment
+		ContextReference lhs = factory.createContextReference();
+		lhs.setLocal(false);
+
+		ContextReference rhs = factory.createContextReference();
+		rhs.setLocal(true);
+
+		RelationalExpression relation = factory.createRelationalExpression();
+		relation.setOperator(RelationalOperator.EQUAL);
+		relation.setRequiresComparables(true);
+		relation.setLhs(lhs);
+		relation.setLhs(rhs);
+
+		return relation;
+	}
+
+	public BooleanExpression transform(GipsJoinBySelectionOperation eJoin) throws Exception {
+		ValueExpressionTransformer transformer = //
+				transformerFactory.createValueTransformer(localContext, setContext);
+
+		if (eJoin.getSingleJoin() != null) {
+			// Context needs to be of type EClass
+			ValueExpression lhs = transformer.transform(eJoin.getSingleJoin().getNode(), setContext);
+
+			ContextReference rhs = factory.createContextReference();
+			rhs.setLocal(true);
+
+			RelationalExpression relation = factory.createRelationalExpression();
+			relation.setOperator(RelationalOperator.EQUAL);
+			relation.setRequiresComparables(true);
+			relation.setLhs(lhs);
+			relation.setRhs(rhs);
+
+			// -> element.node.a == context
+			return relation;
+		} else {
+			// build all pairings
+			List<RelationalExpression> comparisons = new ArrayList<>(eJoin.getPairJoin().size());
+			for (GipsJoinPairSelection selection : eJoin.getPairJoin()) {
+				RelationalExpression relation = factory.createRelationalExpression();
+				relation.setOperator(RelationalOperator.EQUAL);
+				relation.setRequiresComparables(true);
+				relation.setLhs(transformer.transform(selection.getLeftNode(), setContext));
+				relation.setRhs(transformer.transform(selection.getRightNode(), localContext));
+				comparisons.add(relation);
+			}
+
+			if (comparisons.size() == 0) {
+				// this seems to be a user mistake, but it's not a real problem for us
+				BooleanLiteral literal = factory.createBooleanLiteral();
+				literal.setLiteral(true);
+				return literal;
+			} else if (comparisons.size() == 1) {
+				return comparisons.getFirst();
+			} else {
+				// join all pairings
+				BooleanBinaryExpression root = factory.createBooleanBinaryExpression();
+				root.setOperator(BooleanBinaryOperator.AND);
+				root.setLhs(comparisons.getFirst());
+
+				BooleanBinaryExpression chain = root;
+				for (int i = 1; i < comparisons.size() - 1; ++i) {
+					BooleanBinaryExpression tmp = factory.createBooleanBinaryExpression();
+					tmp.setOperator(BooleanBinaryOperator.AND);
+					tmp.setLhs(comparisons.get(i));
+
+					chain.setRhs(tmp);
+					chain = tmp;
+				}
+
+				chain.setRhs(comparisons.getLast());
+
+				return root;
+			}
+		}
 	}
 }

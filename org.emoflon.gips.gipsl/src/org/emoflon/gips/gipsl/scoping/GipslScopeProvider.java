@@ -36,7 +36,6 @@ import org.emoflon.gips.gipsl.gipsl.GipsConstant;
 import org.emoflon.gips.gipsl.gipsl.GipsConstantReference;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
 import org.emoflon.gips.gipsl.gipsl.GipsJoinBySelectionOperation;
-import org.emoflon.gips.gipsl.gipsl.GipsJoinOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsJoinPairSelection;
 import org.emoflon.gips.gipsl.gipsl.GipsJoinSingleSelection;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
@@ -128,8 +127,8 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			return scopeForGipsRuleExpression((GipsRuleExpression) context, reference);
 		} else if (GipslScopeContextUtil.isGipsNodeExpression(context, reference)) {
 			return scopeForGipsNodeExpression((GipsNodeExpression) context, reference);
-		} else if (GipslScopeContextUtil.isGipsJoin(context, reference)) {
-			return scopeForGipsJoin((GipsJoinOperation) context, reference);
+		} else if (GipslScopeContextUtil.isGipsJoinBySelection(context, reference)) {
+			return scopeForGipsJoin((GipsJoinBySelectionOperation) context, reference);
 		} else if (GipslScopeContextUtil.isGipsJoinPairSelection(context, reference)) {
 			return scopeForGipsJoinPair((GipsJoinPairSelection) context, reference);
 		} else if (GipslScopeContextUtil.isGipsJoinSingleSelection(context, reference)) {
@@ -478,28 +477,27 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 				.collect(Collectors.toList()));
 	}
 
-	public IScope scopeForGipsJoin(GipsJoinOperation context, EReference reference) {
-		if (context instanceof GipsJoinBySelectionOperation) {
-			// TODO: context can be: EClass, GipsMapping or EditorPattern
-			EObject localContext = GipslScopeContextUtil.getLocalContext(context);
-			if (localContext instanceof EClass eClass) {
-				// we can only give suggestions, if the context is based on node type
-				// (not a pattern or mapping)
+	public IScope scopeForGipsJoin(GipsJoinBySelectionOperation context, EReference reference) {
 
-				// return possible nodes which can match the context (node)
-				EObject setContext = GipslScopeContextUtil.getSetContext(context);
-				EditorPattern editorPattern = GipslScopeContextUtil.getPatternOrRuleOf(setContext);
-				if (editorPattern == null)
-					return IScope.NULLSCOPE;
+		// TODO: context can be: EClass, GipsMapping or EditorPattern
+		EObject localContext = GipslScopeContextUtil.getLocalContext(context);
+		if (localContext instanceof EClass eClass) {
+			// we can only give suggestions, if the context is based on node type
+			// (not a pattern or mapping)
 
-				return Scopes.scopeFor(editorPattern.getNodes().stream() //
-						.filter(n -> n.getOperator() != EditorOperator.CREATE) //
-						.filter(n -> eClass.isSuperTypeOf(n.getType()) || n.getType().isSuperTypeOf(eClass)) //
-						.toList());
-			}
+			// return possible nodes which can match the context (node)
+			EObject setContext = GipslScopeContextUtil.getSetContext(context);
+			EditorPattern editorPattern = GipslScopeContextUtil.getPatternOrRuleOf(setContext);
+			if (editorPattern == null)
+				return IScope.NULLSCOPE;
 
-			// we don't give suggestion for possible tuples
+			return Scopes.scopeFor(editorPattern.getNodes().stream() //
+					.filter(n -> n.getOperator() != EditorOperator.CREATE) //
+					.filter(n -> eClass.isSuperTypeOf(n.getType()) || n.getType().isSuperTypeOf(eClass)) //
+					.toList());
 		}
+
+		// we don't give suggestion for possible tuples
 
 		return IScope.NULLSCOPE;
 	}

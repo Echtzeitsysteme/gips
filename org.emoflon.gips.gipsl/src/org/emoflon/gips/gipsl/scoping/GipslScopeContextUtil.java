@@ -34,7 +34,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsConstantReference;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
-import org.emoflon.gips.gipsl.gipsl.GipsJoinOperation;
+import org.emoflon.gips.gipsl.gipsl.GipsJoinBySelectionOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsJoinPairSelection;
 import org.emoflon.gips.gipsl.gipsl.GipsJoinSingleSelection;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
@@ -149,8 +149,8 @@ public final class GipslScopeContextUtil {
 		return context instanceof GipsTypeQuery && reference == GipslPackage.Literals.GIPS_TYPE_QUERY__TYPE;
 	}
 
-	public static boolean isGipsJoin(final EObject context, final EReference reference) {
-		return context instanceof GipsJoinOperation;
+	public static boolean isGipsJoinBySelection(final EObject context, final EReference reference) {
+		return context instanceof GipsJoinBySelectionOperation;
 	}
 
 	public static boolean isGipsJoinSingleSelection(final EObject context, final EReference reference) {

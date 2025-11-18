@@ -315,13 +315,9 @@ GipsJoinAllOperation:
 
 GipsJoinBySelectionOperation:
 	{GipsJoinBySelectionOperation} 'join' '('
-	(selection += GipsJoinSingleSelection |
-	selection += GipsJoinPairSelection (',' selection += GipsJoinPairSelection)*)
+	(singleJoin = GipsJoinSingleSelection |
+	pairJoin += GipsJoinPairSelection (',' pairJoin += GipsJoinPairSelection)*)
 	')'
-;
-
-GipsJoinSelection:
-	GipsJoinSingleSelection | GipsJoinPairSelection
 ;
 
 GipsJoinSingleSelection:

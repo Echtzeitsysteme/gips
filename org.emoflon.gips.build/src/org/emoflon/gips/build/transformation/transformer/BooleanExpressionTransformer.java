@@ -49,88 +49,108 @@ public class BooleanExpressionTransformer extends TransformationContext {
 	}
 
 	public BooleanExpression transform(GipsBooleanExpression eBool) throws Exception {
-		if (eBool instanceof GipsBooleanImplication implication) {
+		return switch (eBool) {
+		case GipsBooleanImplication implication ->
 			throw new IllegalArgumentException("Illegal boolean operation: " + implication);
-		} else if (eBool instanceof GipsBooleanDisjunction disjunction) {
-			BooleanBinaryExpression binary = factory.createBooleanBinaryExpression();
-			binary.setOperator(switch (disjunction.getOperator()) {
-			case OR -> org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryOperator.OR;
-			case XOR -> org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryOperator.XOR;
-			});
-			binary.setLhs(transform(disjunction.getLeft()));
-			binary.setRhs(transform(disjunction.getRight()));
-			return binary;
-		} else if (eBool instanceof GipsBooleanConjunction conjunction) {
-			BooleanBinaryExpression binary = factory.createBooleanBinaryExpression();
-			binary.setOperator(switch (conjunction.getOperator()) {
-			case AND -> org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryOperator.AND;
-			});
-			binary.setLhs(transform(conjunction.getLeft()));
-			binary.setRhs(transform(conjunction.getRight()));
-			return binary;
-		} else if (eBool instanceof GipsBooleanNegation negation) {
-			BooleanUnaryExpression unary = factory.createBooleanUnaryExpression();
-			unary.setOperator(org.emoflon.gips.intermediate.GipsIntermediate.BooleanUnaryOperator.NOT);
-			unary.setOperand(transform(negation.getOperand()));
-			return unary;
-		} else if (eBool instanceof GipsBooleanBracket bracket) {
-			BooleanUnaryExpression unary = factory.createBooleanUnaryExpression();
-			unary.setOperator(org.emoflon.gips.intermediate.GipsIntermediate.BooleanUnaryOperator.BRACKET);
-			unary.setOperand(transform(bracket.getOperand()));
-			return unary;
-		} else if (eBool instanceof GipsBooleanLiteral eLiteral) {
-			BooleanLiteral literal = factory.createBooleanLiteral();
-			literal.setLiteral(eLiteral.isLiteral());
-			return literal;
-		} else if (eBool instanceof GipsArithmeticExpression arithmetic) {
-			if (arithmetic instanceof GipsValueExpression eValue) {
-				ValueExpressionTransformer transformer = //
-						transformerFactory.createValueTransformer(localContext, setContext);
-				return transformer.transform(eValue);
-			} else if (arithmetic instanceof GipsArithmeticConstant eConstant) {
-				if (eConstant.getValue() != GipsConstantLiteral.NULL) {
-					throw new IllegalArgumentException("Illegal boolean expression type: " + eConstant);
-				}
-				ConstantLiteral constant = factory.createConstantLiteral();
-				constant.setConstant(ConstantValue.NULL);
-				return constant;
-			} else if (arithmetic instanceof GipsConstantReference eReference) {
-				EObject container = (EObject) GipslScopeContextUtil.getContainer(eReference,
-						Set.of(EditorGTFileImpl.class, GipsConstraintImpl.class, GipsLinearFunctionImpl.class,
-								GipsObjectiveImpl.class));
+		case GipsBooleanDisjunction disjunction -> transform(disjunction);
+		case GipsBooleanConjunction conjunction -> transform(conjunction);
+		case GipsBooleanNegation negation -> transform(negation);
+		case GipsBooleanBracket bracket -> transform(bracket);
+		case GipsBooleanLiteral eLiteral -> transform(eLiteral);
+		case GipsArithmeticExpression arithmetic -> transform(arithmetic);
+		case GipsRelationalExpression relation -> transform(relation);
+		case null, default -> throw new IllegalArgumentException("Illegal boolean expression type: " + eBool);
+		};
+	}
 
-				ConstantReference reference = factory.createConstantReference();
-				if (container instanceof GipsConstraint eConstraint) {
-					reference.setConstant(data.getConstant(eConstraint, eReference.getConstant()));
-				} else if (container instanceof GipsLinearFunction eFunction) {
-					reference.setConstant(data.getConstant(eFunction, eReference.getConstant()));
-				} else if (container instanceof GipsObjective eObjective) {
-					reference.setConstant(data.getConstant(eObjective, eReference.getConstant()));
-				} else {
-					// Case: Container instanceof EditorGTFile
-					reference.setConstant(data.getConstant((EditorGTFile) container, eReference.getConstant()));
-				}
+	private BooleanExpression transform(GipsBooleanDisjunction disjunction) throws Exception {
+		BooleanBinaryExpression binary = factory.createBooleanBinaryExpression();
+		binary.setOperator(switch (disjunction.getOperator()) {
+		case OR -> org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryOperator.OR;
+		case XOR -> org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryOperator.XOR;
+		});
+		binary.setLhs(transform(disjunction.getLeft()));
+		binary.setRhs(transform(disjunction.getRight()));
+		return binary;
+	}
 
-				if (eReference.getSetExpression() != null) {
-					ValueExpressionTransformer transformer = null;
-					if (reference.getConstant().getExpression() instanceof SetOperation setOp) {
-						transformer = transformerFactory.createValueTransformer(localContext, setOp);
-					} else {
-						transformer = transformerFactory.createValueTransformer(localContext);
-					}
-					reference.setSetExpression(transformer.transform(eReference.getSetExpression()));
-				}
+	private BooleanExpression transform(GipsBooleanConjunction conjunction) throws Exception {
+		BooleanBinaryExpression binary = factory.createBooleanBinaryExpression();
+		binary.setOperator(switch (conjunction.getOperator()) {
+		case AND -> org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryOperator.AND;
+		});
+		binary.setLhs(transform(conjunction.getLeft()));
+		binary.setRhs(transform(conjunction.getRight()));
+		return binary;
+	}
 
-				return reference;
-			} else {
-				throw new IllegalArgumentException("Illegal boolean expression type: " + arithmetic);
+	private BooleanExpression transform(GipsBooleanNegation negation) throws Exception {
+		BooleanUnaryExpression unary = factory.createBooleanUnaryExpression();
+		unary.setOperator(org.emoflon.gips.intermediate.GipsIntermediate.BooleanUnaryOperator.NOT);
+		unary.setOperand(transform(negation.getOperand()));
+		return unary;
+	}
+
+	private BooleanExpression transform(GipsBooleanBracket bracket) throws Exception {
+		BooleanUnaryExpression unary = factory.createBooleanUnaryExpression();
+		unary.setOperator(org.emoflon.gips.intermediate.GipsIntermediate.BooleanUnaryOperator.BRACKET);
+		unary.setOperand(transform(bracket.getOperand()));
+		return unary;
+	}
+
+	private BooleanExpression transform(GipsBooleanLiteral eLiteral) {
+		BooleanLiteral literal = factory.createBooleanLiteral();
+		literal.setLiteral(eLiteral.isLiteral());
+		return literal;
+	}
+
+	private BooleanExpression transform(GipsArithmeticExpression arithmetic) throws Exception {
+		if (arithmetic instanceof GipsValueExpression eValue) {
+			ValueExpressionTransformer transformer = //
+					transformerFactory.createValueTransformer(localContext, setContext);
+			return transformer.transform(eValue);
+		} else if (arithmetic instanceof GipsArithmeticConstant eConstant) {
+			if (eConstant.getValue() != GipsConstantLiteral.NULL) {
+				throw new IllegalArgumentException("Illegal boolean expression type: " + eConstant);
 			}
-		} else if (eBool instanceof GipsRelationalExpression relation) {
-			RelationalExpressionTransformer transformer = //
-					transformerFactory.createRelationalTransformer(localContext, setContext);
-			return transformer.transform(relation);
+			ConstantLiteral constant = factory.createConstantLiteral();
+			constant.setConstant(ConstantValue.NULL);
+			return constant;
+		} else if (arithmetic instanceof GipsConstantReference eReference) {
+			EObject container = (EObject) GipslScopeContextUtil.getContainer(eReference, Set.of(EditorGTFileImpl.class,
+					GipsConstraintImpl.class, GipsLinearFunctionImpl.class, GipsObjectiveImpl.class));
+
+			ConstantReference reference = factory.createConstantReference();
+			if (container instanceof GipsConstraint eConstraint) {
+				reference.setConstant(data.getConstant(eConstraint, eReference.getConstant()));
+			} else if (container instanceof GipsLinearFunction eFunction) {
+				reference.setConstant(data.getConstant(eFunction, eReference.getConstant()));
+			} else if (container instanceof GipsObjective eObjective) {
+				reference.setConstant(data.getConstant(eObjective, eReference.getConstant()));
+			} else {
+				// Case: Container instanceof EditorGTFile
+				reference.setConstant(data.getConstant((EditorGTFile) container, eReference.getConstant()));
+			}
+
+			if (eReference.getSetExpression() != null) {
+				ValueExpressionTransformer transformer = null;
+				if (reference.getConstant().getExpression() instanceof SetOperation setOp) {
+					transformer = transformerFactory.createValueTransformer(localContext, setOp);
+				} else {
+					transformer = transformerFactory.createValueTransformer(localContext);
+				}
+				reference.setSetExpression(transformer.transform(eReference.getSetExpression()));
+			}
+
+			return reference;
 		} else {
-			throw new IllegalArgumentException("Illegal boolean expression type: " + eBool);
+			throw new IllegalArgumentException("Illegal boolean expression type: " + arithmetic);
 		}
+	}
+
+	private BooleanExpression transform(GipsRelationalExpression relation) throws Exception {
+		RelationalExpressionTransformer transformer = //
+				transformerFactory.createRelationalTransformer(localContext, setContext);
+		return transformer.transform(relation);
 	}
 }

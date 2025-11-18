@@ -157,6 +157,10 @@ public class GipslValidatorUtil {
 
 	public static final String SET_JOIN_ALL_ERROR = "Operation can only be used if set and context is of the same type.";
 	public static final String SET_JOIN_MISSMATCHING_TYPE_ERROR = "Incompatible operand types. %s seems to be unrelated to %s.";
+	public static final String SET_JOIN_EMPTY = "???";
+	public static final String SET_JOIN_NODE_REF_ERROR = "???";
+	public static final String SET_JOIN_LEFT_NODE_REF_ERROR = "???";
+	public static final String SET_JOIN_RIGHT_NODE_REF_ERROR = "???";
 
 	public static Set<GipsMapping> extractMappings(final GipsBooleanExpression expression) {
 		Set<GipsMapping> mappings = new HashSet<>();

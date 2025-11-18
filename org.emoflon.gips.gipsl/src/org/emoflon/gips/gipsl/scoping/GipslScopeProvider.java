@@ -480,6 +480,7 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 
 	public IScope scopeForGipsJoin(GipsJoinOperation context, EReference reference) {
 		if (context instanceof GipsJoinBySelectionOperation) {
+			// TODO: context can be: EClass, GipsMapping or EditorPattern
 			EObject localContext = GipslScopeContextUtil.getLocalContext(context);
 			if (localContext instanceof EClass eClass) {
 				// we can only give suggestions, if the context is based on node type
@@ -505,6 +506,9 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 
 	public IScope scopeForGipsJoinPair(GipsJoinPairSelection context, EReference reference) {
 		EObject patternRef = null;
+
+		// left side relates to the set on which we are operating. The right side
+		// relates to the context.
 		if (reference == GipslPackage.Literals.GIPS_JOIN_PAIR_SELECTION__LEFT_NODE) {
 			patternRef = GipslScopeContextUtil.getSetContext(context);
 		} else if (reference == GipslPackage.Literals.GIPS_JOIN_PAIR_SELECTION__RIGHT_NODE) {

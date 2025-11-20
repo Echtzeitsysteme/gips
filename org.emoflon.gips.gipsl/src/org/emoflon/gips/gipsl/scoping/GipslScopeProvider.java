@@ -478,15 +478,23 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 	}
 
 	public IScope scopeForGipsJoin(GipsJoinBySelectionOperation context, EReference reference) {
-
-		// TODO: context can be: EClass, GipsMapping or EditorPattern
 		EObject localContext = GipslScopeContextUtil.getLocalContext(context);
-		if (localContext instanceof EClass eClass) {
-			// we can only give suggestions, if the context is based on node type
-			// (not a pattern or mapping)
+		EObject setContext = GipslScopeContextUtil.getSetContext(context);
 
-			// return possible nodes which can match the context (node)
-			EObject setContext = GipslScopeContextUtil.getSetContext(context);
+		if (setContext instanceof GipsTypeExpression typeExpression) {
+			// provide context 'nodes' to choose from
+			EditorPattern editorPattern = GipslScopeContextUtil.getPatternOrRuleOf(localContext);
+			if (editorPattern == null)
+				return IScope.NULLSCOPE;
+			return Scopes.scopeFor(editorPattern.getNodes().stream() //
+					.filter(n -> n.getOperator() != EditorOperator.CREATE) //
+					.filter(n -> typeExpression.getType().isSuperTypeOf(n.getType())
+							|| n.getType().isSuperTypeOf(typeExpression.getType())) //
+					.toList());
+		}
+
+		if (localContext instanceof EClass eClass) {
+			// provide set 'nodes' to choose from
 			EditorPattern editorPattern = GipslScopeContextUtil.getPatternOrRuleOf(setContext);
 			if (editorPattern == null)
 				return IScope.NULLSCOPE;
@@ -498,7 +506,6 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 		}
 
 		// we don't give suggestion for possible tuples
-
 		return IScope.NULLSCOPE;
 	}
 
@@ -523,7 +530,15 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 	}
 
 	public IScope scopeForGipsJoinSingle(GipsJoinSingleSelection context, EReference reference) {
-		EObject patternRef = GipslScopeContextUtil.getSetContext(context);
+		EObject localContext = GipslScopeContextUtil.getLocalContext(context);
+		EObject setContext = GipslScopeContextUtil.getSetContext(context);
+		EObject patternRef = null;
+
+		if (setContext instanceof GipsTypeExpression) {
+			patternRef = localContext;
+		} else {
+			patternRef = setContext;
+		}
 
 		EditorPattern editorPattern = GipslScopeContextUtil.getPatternOrRuleOf(patternRef);
 		if (editorPattern == null)

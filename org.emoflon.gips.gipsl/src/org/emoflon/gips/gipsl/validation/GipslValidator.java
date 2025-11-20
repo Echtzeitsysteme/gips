@@ -7,11 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -39,9 +37,12 @@ import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
+import org.emoflon.gips.gipsl.gipsl.GipsPatternExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsReduceOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsRuleExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsSetExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
 import org.emoflon.gips.gipsl.gipsl.Package;
@@ -52,7 +53,6 @@ import org.emoflon.gips.gipsl.gipsl.impl.GipsLinearFunctionImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
-import org.emoflon.ibex.gt.editor.gT.EditorOperator;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 import org.emoflon.ibex.gt.editor.gT.GTPackage;
 import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
@@ -465,42 +465,59 @@ public class GipslValidator extends AbstractGipslValidator {
 
 		EObject setContext = GipslScopeContextUtil.getSetContext(operation);
 		EditorPattern setEditorPattern = GipslScopeContextUtil.getPatternOrRuleOf(setContext);
-		Collection<EditorNode> setNodes = setEditorPattern == null ? Collections.emptySet()
-				: setEditorPattern.getNodes().stream() //
-						.filter(n -> n.getOperator() != EditorOperator.CREATE) //
-						.collect(Collectors.toSet());
+		Collection<EditorNode> setNodes = GipslScopeContextUtil.getNonCreatedEditorNodes(setEditorPattern);
 
 		EObject localContext = GipslScopeContextUtil.getLocalContext(operation);
 		EditorPattern localEditorPattern = GipslScopeContextUtil.getPatternOrRuleOf(localContext);
-		Collection<EditorNode> localNodes = localEditorPattern == null ? Collections.emptySet()
-				: localEditorPattern.getNodes().stream() //
-						.filter(n -> n.getOperator() != EditorOperator.CREATE) //
-						.collect(Collectors.toSet());
+		Collection<EditorNode> localNodes = GipslScopeContextUtil.getNonCreatedEditorNodes(localEditorPattern);
 
 		if (operation.getSingleJoin() != null) {
 			EditorNode node = operation.getSingleJoin().getNode();
+			EClass comparedNodeClass = null;
 
-			if (!setNodes.contains(node)) {
+			if (setContext instanceof GipsTypeExpression eType) {
+				comparedNodeClass = eType.getType();
+				if (!localNodes.contains(node)) {
+					GipslValidator.err( //
+							String.format(GipslValidatorUtil.SET_JOIN_RIGHT_NODE_REF_ERROR), //
+							operation, //
+							GipslPackage.Literals.GIPS_JOIN_BY_SELECTION_OPERATION__SINGLE_JOIN //
+					);
+				}
+			} else if (localContext instanceof EClass eClass) {
+				comparedNodeClass = eClass;
+				if (!setNodes.contains(node)) {
+					GipslValidator.err( //
+							String.format(GipslValidatorUtil.SET_JOIN_LEFT_NODE_REF_ERROR), //
+							operation, //
+							GipslPackage.Literals.GIPS_JOIN_BY_SELECTION_OPERATION__SINGLE_JOIN //
+					);
+				}
+			} else {
 				GipslValidator.err( //
-						String.format(GipslValidatorUtil.SET_JOIN_LEFT_NODE_REF_ERROR), //
+						String.format(
+								"Single node comparison is only applicable for context or set type EClass. Use \"(set node,context node)\" to specify nodes."), //
 						operation, //
 						GipslPackage.Literals.GIPS_JOIN_BY_SELECTION_OPERATION__SINGLE_JOIN //
 				);
+
+				return;
 			}
 
+			// check if nodes are compatible
 			EClass nodeClass = node.getType();
-			EClass contextClass = localContext instanceof EClass ? (EClass) localContext : localContext.eClass();
-
-			if (nodeClass == null //
-					|| !(nodeClass.isSuperTypeOf(contextClass) || contextClass.isSuperTypeOf(nodeClass))) {
-
-				GipslValidator.warn( //
-						String.format(GipslValidatorUtil.SET_JOIN_MISSMATCHING_TYPE_ERROR, //
-								nodeClass.getName(), //
-								contextClass.getName()), //
-						operation, //
-						GipslPackage.Literals.GIPS_JOIN_BY_SELECTION_OPERATION__SINGLE_JOIN //
-				);
+			if (nodeClass == null || comparedNodeClass == null) {
+				// Unable to test compatibility
+			} else {
+				if (!(nodeClass.isSuperTypeOf(comparedNodeClass) || comparedNodeClass.isSuperTypeOf(nodeClass))) {
+					GipslValidator.warn( //
+							String.format(GipslValidatorUtil.SET_JOIN_MISSMATCHING_TYPE_ERROR, //
+									nodeClass.getName(), //
+									comparedNodeClass.getName()), //
+							operation, //
+							GipslPackage.Literals.GIPS_JOIN_BY_SELECTION_OPERATION__SINGLE_JOIN //
+					);
+				}
 			}
 		} else {
 			for (GipsJoinPairSelection selection : operation.getPairJoin()) {
@@ -526,18 +543,18 @@ public class GipslValidator extends AbstractGipslValidator {
 				// check if nodes are compatible
 				EClass leftNodeClass = leftNode.getType();
 				EClass rightNodeClass = rightNode.getType();
-
-				if (leftNodeClass == null || rightNodeClass == null //
-						|| !(leftNodeClass.isSuperTypeOf(rightNodeClass)
-								|| rightNodeClass.isSuperTypeOf(leftNodeClass))) {
-
-					GipslValidator.warn( //
-							String.format(GipslValidatorUtil.SET_JOIN_MISSMATCHING_TYPE_ERROR, //
-									leftNode.getType().getName(), //
-									rightNode.getType().getName()), //
-							selection, //
-							null //
-					);
+				if (leftNodeClass == null || rightNodeClass == null) {
+					// Unable to test compatibility
+				} else {
+					if (!(leftNodeClass.isSuperTypeOf(rightNodeClass) || rightNodeClass.isSuperTypeOf(leftNodeClass))) {
+						GipslValidator.warn( //
+								String.format(GipslValidatorUtil.SET_JOIN_MISSMATCHING_TYPE_ERROR, //
+										leftNode.getType().getName(), //
+										rightNode.getType().getName()), //
+								selection, //
+								null //
+						);
+					}
 				}
 			}
 		}
@@ -548,22 +565,77 @@ public class GipslValidator extends AbstractGipslValidator {
 		EObject localContext = GipslScopeContextUtil.getLocalContext(operation);
 		EObject setContext = GipslScopeContextUtil.getSetContext(operation);
 
-		boolean invalid = true;
-		if (localContext instanceof GipsMapping gipsMapping
-				&& setContext instanceof GipsMappingExpression mappingExpression) {
-			invalid = !(gipsMapping == mappingExpression.getMapping());
+		if (setContext instanceof GipsMappingExpression mappingExpression
+				&& localContext instanceof GipsMapping mapping) {
+			if (mappingExpression.getMapping().equals(mapping)) {
+				return; // okay!
+			} else {
+				GipslValidator.warn( //
+						String.format(GipslValidatorUtil.SET_JOIN_ALL_INVALID_TYPES), //
+						operation, //
+						null //
+				);
+				return;
+			}
+		} else if (setContext instanceof GipsRuleExpression ruleExpression
+				&& localContext instanceof EditorPattern pattern) {
+			if (ruleExpression.getRule().equals(pattern)) {
+				return; // okay!
+			} else {
+				GipslValidator.warn( //
+						String.format(GipslValidatorUtil.SET_JOIN_ALL_INVALID_TYPES), //
+						operation, //
+						null //
+				);
+				return;
+			}
+		} else if (setContext instanceof GipsPatternExpression patternExpression
+				&& localContext instanceof EditorPattern pattern) {
+			if (patternExpression.getPattern().equals(pattern)) {
+				return; // okay!
+			} else {
+				GipslValidator.warn( //
+						String.format(GipslValidatorUtil.SET_JOIN_ALL_INVALID_TYPES), //
+						operation, //
+						null //
+				);
+				return;
+			}
+		} else if (setContext instanceof GipsTypeExpression typeExpression && localContext instanceof EClass type) {
+			if (typeExpression.getType().equals(type)) {
+				return; // okay!
+			} else {
+				GipslValidator.warn( //
+						String.format(GipslValidatorUtil.SET_JOIN_ALL_INVALID_TYPES), //
+						operation, //
+						null //
+				);
+				return;
+			}
 		}
 
-		if (invalid) {
+		EObject localPattern = GipslScopeContextUtil.getPatternOrRuleOf(localContext);
+		EObject setPattern = GipslScopeContextUtil.getPatternOrRuleOf(setContext);
+
+		if (localPattern == null) {
 			GipslValidator.err( //
-					String.format(GipslValidatorUtil.SET_JOIN_ALL_ERROR), //
+					String.format(GipslValidatorUtil.SET_JOIN_ALL_MISSING_PATTERN, "Context"), //
+					operation, //
+					null //
+			);
+		} else if (setPattern == null) {
+			GipslValidator.err( //
+					String.format(GipslValidatorUtil.SET_JOIN_ALL_MISSING_PATTERN, "Set"), //
+					operation, //
+					null //
+			);
+		} else if (!localPattern.equals(setPattern)) {
+			GipslValidator.err( //
+					String.format(GipslValidatorUtil.SET_JOIN_ALL_MISMATCH_PATTERN), //
 					operation, //
 					null //
 			);
 		}
-
-		// TODO
-		GipslValidator.warn("Language feature not available. Instruction will be ignored.", operation, null);
 	}
 
 	@Check

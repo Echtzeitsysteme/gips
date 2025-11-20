@@ -2,6 +2,7 @@ package org.emoflon.gips.gipsl.scoping;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -58,6 +59,8 @@ import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsConstantReferenceImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsLinearFunctionImpl;
+import org.emoflon.ibex.gt.editor.gT.EditorNode;
+import org.emoflon.ibex.gt.editor.gT.EditorOperator;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 import org.emoflon.ibex.gt.editor.utils.GTEditorModelUtils;
 import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
@@ -347,6 +350,14 @@ public final class GipslScopeContextUtil {
 		case GipsRuleExpression rule -> rule.getRule();
 		case null, default -> null;
 		};
+	}
+
+	public static Set<EditorNode> getNonCreatedEditorNodes(final EditorPattern pattern) {
+		if (pattern == null)
+			return Collections.emptySet();
+		return pattern.getNodes().stream() //
+				.filter(n -> n.getOperator() != EditorOperator.CREATE) //
+				.collect(Collectors.toSet());
 	}
 
 	public static EObject getLocalContext(final EObject expression) {

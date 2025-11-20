@@ -483,12 +483,16 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 	}
 	
 	def dispatch void format(GipsJoinBySelectionOperation operation, extension IFormattableDocument document){
-		operation.formatMethodCall(document, gipsJoinBySelectionOperationAccess.joinKeyword_1, operation.selection)
+		if(operation.singleJoin !== null){
+			operation.formatMethodCall(document, gipsJoinBySelectionOperationAccess.joinKeyword_1, operation.singleJoin)
+		}else{
+			operation.formatMethodCall(document, gipsJoinBySelectionOperationAccess.joinKeyword_1, operation.pairJoin)
+		}
 	}
 	  
 	def dispatch void format(GipsJoinPairSelection operation, extension IFormattableDocument document){
-		operation.regionFor.feature(GIPS_JOIN_PAIR_SELECTION__LEFT_NODE).prepend[noSpace].append[oneSpace]
-		operation.regionFor.feature(GIPS_JOIN_PAIR_SELECTION__RIGHT_NODE).prepend[noSpace].append[oneSpace]
+		operation.regionFor.feature(GIPS_JOIN_PAIR_SELECTION__LEFT_NODE).prepend[noSpace].append[noSpace]
+		operation.regionFor.feature(GIPS_JOIN_PAIR_SELECTION__RIGHT_NODE).prepend[oneSpace].append[noSpace]
 	}
 
 	// Helper

@@ -1,9 +1,11 @@
 package org.emoflon.gips.build.transformation.transformer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.TransformationContext;
@@ -24,8 +26,13 @@ import org.emoflon.gips.gipsl.gipsl.GipsJoinAllOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsJoinBySelectionOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsJoinPairSelection;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
+import org.emoflon.gips.gipsl.gipsl.GipsMapping;
+import org.emoflon.gips.gipsl.gipsl.GipsMappingExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
+import org.emoflon.gips.gipsl.gipsl.GipsPatternExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsRuleExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
 import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
@@ -42,10 +49,13 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Context;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.NodeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
+import org.emoflon.ibex.gt.editor.gT.EditorNode;
+import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 
 public class BooleanExpressionTransformer extends TransformationContext {
 	protected BooleanExpressionTransformer(GipsTransformationData data, Context localContext,
@@ -165,30 +175,16 @@ public class BooleanExpressionTransformer extends TransformationContext {
 	}
 
 	public BooleanExpression transform(GipsJoinAllOperation eJoinAll) {
-		// TODO: WIP, only works for element == context at the moment
-		ContextReference lhs = factory.createContextReference();
-		lhs.setLocal(false);
+		EObject localContext = GipslScopeContextUtil.getLocalContext(eJoinAll);
+		EObject setContext = GipslScopeContextUtil.getSetContext(eJoinAll);
 
-		ContextReference rhs = factory.createContextReference();
-		rhs.setLocal(true);
-
-		RelationalExpression relation = factory.createRelationalExpression();
-		relation.setOperator(RelationalOperator.EQUAL);
-		relation.setRequiresComparables(true);
-		relation.setLhs(lhs);
-		relation.setLhs(rhs);
-
-		return relation;
-	}
-
-	public BooleanExpression transform(GipsJoinBySelectionOperation eJoin) throws Exception {
-		ValueExpressionTransformer transformer = //
-				transformerFactory.createValueTransformer(localContext, setContext);
-
-		if (eJoin.getSingleJoin() != null) {
-			// Context needs to be of type EClass
-			ValueExpression lhs = transformer.transform(eJoin.getSingleJoin().getNode(), setContext);
-
+		if (setContext instanceof GipsMappingExpression && localContext instanceof GipsMapping || //
+				setContext instanceof GipsRuleExpression && localContext instanceof EditorPattern || //
+				setContext instanceof GipsPatternExpression && localContext instanceof EditorPattern || //
+				setContext instanceof GipsTypeExpression && localContext instanceof EClass) {
+			// -> element == context
+			ContextReference lhs = factory.createContextReference();
+			lhs.setLocal(false);
 			ContextReference rhs = factory.createContextReference();
 			rhs.setLocal(true);
 
@@ -198,7 +194,63 @@ public class BooleanExpressionTransformer extends TransformationContext {
 			relation.setLhs(lhs);
 			relation.setRhs(rhs);
 
-			// -> element.node.a == context
+			// element == context
+			return relation;
+		}
+
+		EditorPattern patternRef = GipslScopeContextUtil.getPatternOrRuleOf(localContext);
+		Collection<EditorNode> nodes = GipslScopeContextUtil.getNonCreatedEditorNodes(patternRef);
+		List<RelationalExpression> comparisons = new ArrayList<>(nodes.size());
+		for (EditorNode node : nodes) {
+			NodeReference lhs = factory.createNodeReference();
+			lhs.setLocal(false);
+			lhs.setNode(data.eNode2Node().get(node));
+
+			NodeReference rhs = factory.createNodeReference();
+			rhs.setLocal(true);
+			rhs.setNode(data.eNode2Node().get(node));
+
+			RelationalExpression relation = factory.createRelationalExpression();
+			relation.setOperator(RelationalOperator.EQUAL);
+			relation.setRequiresComparables(true);
+			relation.setLhs(lhs);
+			relation.setRhs(rhs);
+			comparisons.add(relation);
+		}
+
+		return concatRelationalExpressions(comparisons, BooleanBinaryOperator.AND);
+	}
+
+	public BooleanExpression transform(GipsJoinBySelectionOperation eJoin) throws Exception {
+		ValueExpressionTransformer transformer = //
+				transformerFactory.createValueTransformer(localContext, setContext);
+
+		if (eJoin.getSingleJoin() != null) {
+			ValueExpression lhs;
+			ValueExpression rhs;
+
+			if (GipslScopeContextUtil.getSetContext(eJoin) instanceof GipsTypeExpression) {
+				// -> element == context.node.x
+				ContextReference contextRef = factory.createContextReference();
+				contextRef.setLocal(false);
+				lhs = contextRef;
+
+				rhs = transformer.transform(eJoin.getSingleJoin().getNode(), localContext);
+			} else {
+				// -> element.node.x == context
+				lhs = transformer.transform(eJoin.getSingleJoin().getNode(), setContext);
+
+				ContextReference contextRef = factory.createContextReference();
+				contextRef.setLocal(true);
+				rhs = contextRef;
+			}
+
+			RelationalExpression relation = factory.createRelationalExpression();
+			relation.setOperator(RelationalOperator.EQUAL);
+			relation.setRequiresComparables(true);
+			relation.setLhs(lhs);
+			relation.setRhs(rhs);
+
 			return relation;
 		} else {
 			// build all pairings
@@ -212,33 +264,37 @@ public class BooleanExpressionTransformer extends TransformationContext {
 				comparisons.add(relation);
 			}
 
-			if (comparisons.size() == 0) {
-				// this seems to be a user mistake, but it's not a real problem for us
-				BooleanLiteral literal = factory.createBooleanLiteral();
-				literal.setLiteral(true);
-				return literal;
-			} else if (comparisons.size() == 1) {
-				return comparisons.getFirst();
-			} else {
-				// join all pairings
-				BooleanBinaryExpression root = factory.createBooleanBinaryExpression();
-				root.setOperator(BooleanBinaryOperator.AND);
-				root.setLhs(comparisons.getFirst());
+			return concatRelationalExpressions(comparisons, BooleanBinaryOperator.AND);
+		}
+	}
 
-				BooleanBinaryExpression chain = root;
-				for (int i = 1; i < comparisons.size() - 1; ++i) {
-					BooleanBinaryExpression tmp = factory.createBooleanBinaryExpression();
-					tmp.setOperator(BooleanBinaryOperator.AND);
-					tmp.setLhs(comparisons.get(i));
+	private BooleanExpression concatRelationalExpressions(List<RelationalExpression> relationals,
+			BooleanBinaryOperator operator) {
+		if (relationals.size() == 0) {
+			BooleanLiteral literal = factory.createBooleanLiteral();
+			literal.setLiteral(true);
+			return literal;
+		} else if (relationals.size() == 1) {
+			return relationals.getFirst();
+		} else {
+			// join all pairings
+			BooleanBinaryExpression root = factory.createBooleanBinaryExpression();
+			root.setOperator(operator);
+			root.setLhs(relationals.getFirst());
 
-					chain.setRhs(tmp);
-					chain = tmp;
-				}
+			BooleanBinaryExpression chain = root;
+			for (int i = 1; i < relationals.size() - 1; ++i) {
+				BooleanBinaryExpression tmp = factory.createBooleanBinaryExpression();
+				tmp.setOperator(operator);
+				tmp.setLhs(relationals.get(i));
 
-				chain.setRhs(comparisons.getLast());
-
-				return root;
+				chain.setRhs(tmp);
+				chain = tmp;
 			}
+
+			chain.setRhs(relationals.getLast());
+
+			return root;
 		}
 	}
 }

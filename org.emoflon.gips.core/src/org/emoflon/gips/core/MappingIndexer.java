@@ -52,12 +52,15 @@ public class MappingIndexer {
 	@SuppressWarnings("rawtypes")
 	public Set<GipsGTMapping> getMappingsOfNode(final EObject node) {
 		Objects.requireNonNull(node);
-		final Set<GipsGTMapping> query = Collections.synchronizedSet(new LinkedHashSet<>());
+//		final Set<GipsGTMapping> query = Collections.synchronizedSet(new LinkedHashSet<>());
 		final Set<GipsGTMapping> candidates = node2mappings.get(node);
 		if (candidates != null) {
-			query.addAll(candidates);
+//			query.addAll(candidates);
+//			return Collections.synchronizedSet(Set.copyOf(candidates));
+			return candidates;
 		}
-		return query;
+//		return query;
+		return Collections.synchronizedSet(new LinkedHashSet<>());
 	}
 
 	/**

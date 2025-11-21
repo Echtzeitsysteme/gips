@@ -44,20 +44,34 @@ public class MappingIndexer {
 
 	/**
 	 * Returns a set of `GipsGTMapping`s for the given `EObject node` is contained
-	 * in.
+	 * in (copy).
 	 * 
 	 * @param node EObject to return the indexed `GipsGTMapping`s for.
-	 * @return Indexed `GipsGTMapping`s for the given `EObject node`.
+	 * @return Indexed `GipsGTMapping`s for the given `EObject node` (copy).
 	 */
 	@SuppressWarnings("rawtypes")
-	public Set<GipsGTMapping> getMappingsOfNode(final EObject node) {
+	private Set<GipsGTMapping> getMappingsOfNode(final EObject node) {
 		Objects.requireNonNull(node);
 		final Set<GipsGTMapping> query = Collections.synchronizedSet(new LinkedHashSet<>());
+		query.addAll(getMappingsOfNodeUnsafe(node));
+		return query;
+	}
+
+	/**
+	 * Returns a set of `GipsGTMapping`s for the given `EObject node` is contained
+	 * in (no copy).
+	 * 
+	 * @param node EObject to return the indexed `GipsGTMapping`s for.
+	 * @return Indexed `GipsGTMapping`s for the given `EObject node` (no copy).
+	 */
+	@SuppressWarnings("rawtypes")
+	private Set<GipsGTMapping> getMappingsOfNodeUnsafe(final EObject node) {
+		Objects.requireNonNull(node);
 		final Set<GipsGTMapping> candidates = node2mappings.get(node);
 		if (candidates != null) {
-			query.addAll(candidates);
+			return candidates;
 		}
-		return query;
+		return Collections.synchronizedSet(new LinkedHashSet<>());
 	}
 
 	/**
@@ -94,7 +108,7 @@ public class MappingIndexer {
 			if (obj.equals(candidateNode)) {
 				continue;
 			} else {
-				query.retainAll(getMappingsOfNode(obj));
+				query.retainAll(getMappingsOfNodeUnsafe(obj));
 			}
 		}
 

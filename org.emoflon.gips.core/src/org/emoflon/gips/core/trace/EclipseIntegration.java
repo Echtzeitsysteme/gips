@@ -29,6 +29,7 @@ public class EclipseIntegration {
 
 	private String modelIdIntermediate;
 	private String modelIdLp;
+	private String modelIdIis;
 	private String modelIdInput;
 	private String modelIdOutput;
 
@@ -61,6 +62,12 @@ public class EclipseIntegration {
 		Path modelPath = Path.of(path);
 		String modelId = computeModelIdFromPath(modelPath);
 		setLpModelId(modelId);
+	}
+
+	private void computeIISModelId(String path) {
+		Path modelPath = Path.of(path);
+		String modelId = computeModelIdFromPath(modelPath);
+		setIISModelId(modelId);
 	}
 
 	/**
@@ -101,6 +108,15 @@ public class EclipseIntegration {
 	 */
 	private void setLpModelId(String modelId) {
 		modelIdLp = modelId;
+	}
+
+	/**
+	 * Sets the IIS model id
+	 * 
+	 * @param modelId
+	 */
+	private void setIISModelId(String modelId) {
+		modelIdIis = modelId;
 	}
 
 	/**
@@ -212,6 +228,36 @@ public class EclipseIntegration {
 				});
 
 		updateTraceModel(linkOutput);
+	}
+
+	public void sendIISTraceToIde(String iisModelPath) {
+		if (!config.isTracingEnabled())
+			return;
+
+		if (isLpPathNotValid())
+			return;
+
+		computeIISModelId(iisModelPath);
+
+		try {
+			IRemoteEclipseService service = getRemoteService();
+			String contextId = getContextId();
+
+			TraceModelLink intermediateToLp = service.getTraceModel(contextId, getModelIdForIntermediateModel(),
+					getModelIdForLpModel());
+
+			// While not technically 100% correct, the IIS model uses the same identifiers
+			// as the LP model. However, it is not feasible to 'parse' the IIS output and
+			// remove all superfluous elements.
+			TraceModelLink relinkIntermediate = new TraceModelLink(intermediateToLp.getSourceModel(), modelIdIis,
+					intermediateToLp.getMappings().clone());
+
+			updateTraceModel(relinkIntermediate);
+
+		} catch (RemoteException e) {
+			System.err.println("Unable to send trace to IDE. Reason:\n");
+			e.printStackTrace();
+		}
 	}
 
 	private void updateTraceModel(TraceModelLink... links) {

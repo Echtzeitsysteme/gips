@@ -32,7 +32,7 @@ Workflow {
 		}
 		language = StandardLanguage {
 			name = "org.emoflon.gips.eclipse.CplexLp"
-			fileExtensions = "lp"
+			fileExtensions = "lp,ilp"
 
 			serializer = {
 				generateStub = false

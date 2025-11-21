@@ -3,8 +3,8 @@
 	<classpathentry exported="true" kind="lib" path="lib/gson-2.13.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/gson-2.13.1-javadoc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/gson-2.13.1-sources.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/gurobi-12.0.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/gurobi-javadoc-12.0.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/gurobi-13.0.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/gurobi-javadoc-13.0.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-nop-2.0.17.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-nop-2.0.17-javadoc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-nop-2.0.17-sources.jar"/>
@@ -14,9 +14,9 @@
 	<classpathentry exported="true" kind="lib" path="lib/jna-platform-5.17.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jna-platform-5.17.0-javadoc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jna-platform-5.17.0-sources.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/oshi-core-6.9.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/oshi-core-6.9.0-javadoc.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/oshi-core-6.9.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/oshi-core-6.9.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/oshi-core-6.9.1-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/oshi-core-6.9.1-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-2.0.17.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-2.0.17-javadoc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-2.0.17-sources.jar"/>

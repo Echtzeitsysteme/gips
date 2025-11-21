@@ -72,11 +72,27 @@ public class MappingIndexer {
 	public Set<GipsGTMapping> getMappingsOfNodes(final Set<EObject> nodes) {
 		Objects.requireNonNull(nodes);
 		final Set<GipsGTMapping> query = Collections.synchronizedSet(new LinkedHashSet<>());
-		boolean first = true;
+
+		// Find smallest set of nodes
+		EObject candidateNode = null;
+		int candidateSize = Integer.MAX_VALUE;
 		for (final EObject obj : nodes) {
-			if (first) {
-				query.addAll(getMappingsOfNode(obj));
-				first = false;
+			if (candidateNode == null) {
+				candidateNode = obj;
+			} else {
+				if (candidateSize > node2mappings.get(obj).size()) {
+					candidateNode = obj;
+					candidateSize = node2mappings.get(obj).size();
+				}
+			}
+		}
+
+		// Start with smallest set of nodes
+		query.addAll(getMappingsOfNode(candidateNode));
+		for (final EObject obj : nodes) {
+			// Skip candidate node
+			if (obj.equals(candidateNode)) {
+				continue;
 			} else {
 				query.retainAll(getMappingsOfNode(obj));
 			}

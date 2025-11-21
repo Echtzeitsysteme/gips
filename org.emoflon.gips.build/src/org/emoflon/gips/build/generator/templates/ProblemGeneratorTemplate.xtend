@@ -503,7 +503,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		}
 		return foundGetters
 	}
-	
+
 	def String generateConstantExpression(ArithmeticExpression expression) {
 		if(expression instanceof ArithmeticBinaryExpression) {
 			switch(expression.operator) {
@@ -665,78 +665,37 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 
 		// If this generates a type constraint, use `context`
 		if(this instanceof TypeConstraintTemplate && expression.setExpression.setOperation !== null) {
-			searchFor = '''context'''
+			// `context` can only be used if the expression does not use attribute accesses, etc.
+			if(isContextIndexerApplicable(expression.setExpression.setOperation)) {
+				searchFor = '''context'''
+			}
 		} else if(this instanceof RuleConstraintTemplate || this instanceof MappingConstraintTemplate ||
 			this instanceof PatternConstraintTemplate) {
 			// If this generates a rule constraint, mapping constraint, or pattern constraint, search for context node accesses
 			// If the expression is a mapping reference and there is a set operation, search for context node accesses
 			if(expression.setExpression.setOperation !== null) {
-				val indexableExpressions = findPossibleIndexableRelationalExpressions(expression.setExpression.setOperation)
+				val indexableExpressions = findPossibleIndexableRelationalExpressions(
+					expression.setExpression.setOperation)
 				searchFor = '''«convertContextNodeAccessToGetterCalls(getContextNodeAccess(indexableExpressions))»'''
 			}
-// prev
-//		// Otherwise (i.e., if there is no mapping reference or it has no set (filter) expression,
-//		// the indexer implementation cannot be used
-//		}
-//
-//		// If nothing can be indexed, use the original implementation
-//		if(searchFor.isBlank)
-//			return original		
-//
-//		val nodesToBeCached = findIndexableMapperNodes(expression).map['''"«it»"'''].join(', ')
-//
-//		// If there can be at least one node indexed, use the indexer implementation
-//		// Mapping indexer
-//		imports.add("java.util.Set")
-//		imports.add("java.util.HashSet")
-//		imports.add("java.lang.reflect.Method")
-//		imports.add("java.lang.reflect.InvocationTargetException")
-//		imports.add("org.apache.commons.lang3.StringUtils")
-//		imports.add("org.eclipse.emf.ecore.EObject")
-//		imports.add("org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNode")
-//		imports.add("org.emoflon.gips.core.MappingIndexer")
-//		imports.add("org.emoflon.gips.core.GlobalMappingIndexer")
-//		imports.add("org.emoflon.gips.core.GipsMapper")
-//
-//		return '''
+		// Otherwise (i.e., if there is no mapping reference or it has no set (filter) expression,
+		// the indexer implementation cannot be used
+		}
 
-			// Else, try to use the mapping indexer implementation
-			else {
-				// Determine what to search for with the indexer
-				// If the resulting string keeps empty, there is nothing to index
-				var searchFor = ""
-				
-				// If this generates a type constraint, use `context`
-				if (this instanceof TypeConstraintTemplate && expression.setExpression.setOperation !== null) {
-					// `context` can only be used if the expression does not use attribute accesses, etc.
-					if (isContextIndexerApplicable(expression.setExpression.setOperation)) {
-						searchFor = '''context'''
-					}
-				} // If this generates a rule constraint, mapping constraint, or pattern constraint, search for context node accesses
-				else if (this instanceof RuleConstraintTemplate || this instanceof MappingConstraintTemplate ||
-					this instanceof PatternConstraintTemplate) {
-					// If the expression is a mapping reference and there is a set operation, search for context node accesses
-					if (expression instanceof MappingReference && expression.setExpression.setOperation !== null) {
-						searchFor = '''«convertContextNodeAccessToGetterCalls(getContextNodeAccess(expression.setExpression.setOperation))»'''
-					}
-					// Otherwise (i.e., if there is no mapping reference or it has no set (filter) expression,
-					// the indexer implementation cannot be used
-				}
-				
-				// If nothing can be indexed, use the original implementation
-				if (searchFor.isBlank) {
-					instruction = original
-				}
-				// If there can be at least one node indexed, use the indexer implementation
-				else {
-					// Mapping indexer
-					imports.add("java.util.Set")
-					imports.add("org.emoflon.gips.core.MappingIndexer")
-					imports.add("org.emoflon.gips.core.GlobalMappingIndexer")
-					imports.add("org.emoflon.gips.core.GipsMapper")
-					
-					var indexer = '''
+		// If nothing can be indexed, use the original implementation
+		if(searchFor.isBlank)
+			return original
 
+		val nodesToBeCached = findIndexableMapperNodes(expression).map['''"«it»"'''].join(', ')
+
+		// If there can be at least one node indexed, use the indexer implementation
+		// Mapping indexer
+		imports.add("java.util.Set")
+		imports.add("org.emoflon.gips.core.MappingIndexer")
+		imports.add("org.emoflon.gips.core.GlobalMappingIndexer")
+		imports.add("org.emoflon.gips.core.GipsMapper")
+
+		return '''
 final GipsMapper<?> mapper = engine.getMapper("«expression.mapping.name»");
 final GlobalMappingIndexer globalIndexer = GlobalMappingIndexer.getInstance();
 globalIndexer.createIndexer(mapper);
@@ -873,25 +832,7 @@ indexer.getMappingsOfNodes(Set.of(«searchFor»)).parallelStream()
 
 		return results
 	}
-	
-	/**
-	 * This method converts a given list of context node names to a getter string.
-	 * 
-	 * Example input: "{a, b, cde}"
-	 * Example output: "getA(), getB(), getCde()"
-	 */
-	def String convertContextNodeAccessToGetterCalls(List<String> contextNodeAccesses) {
-		var foundGetters = ''''''
-		for (var i = 0; i < contextNodeAccesses.size; i++) {
-			var candidate = contextNodeAccesses.get(i).toFirstUpper
-			foundGetters += '''context.get«candidate»()'''
-			if(i < contextNodeAccesses.size - 1) {
-				foundGetters += ''', '''
-			}
-		}
-		return foundGetters
-	}
-	
+		
 	def String generateConstantExpression(ValueExpression expression, boolean ignoreReduce) {
 		var instruction = generateValueAccess(expression, true)
 		if(expression.setExpression !== null) {

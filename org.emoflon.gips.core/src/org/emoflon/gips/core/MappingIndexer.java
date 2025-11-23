@@ -90,6 +90,13 @@ public class MappingIndexer {
 		EObject candidateNode = null;
 		int candidateSize = Integer.MAX_VALUE;
 		for (final EObject obj : nodes) {
+			// If a node is not contained at all, return an empty collection immediately. In
+			// this case, all other calculations can be skipped since the final intersection
+			// will be empty.
+			if (!node2mappings.containsKey(obj)) {
+				return Collections.synchronizedSet(new LinkedHashSet<>());
+			}
+
 			if (candidateNode == null) {
 				candidateNode = obj;
 				candidateSize = node2mappings.get(obj).size();

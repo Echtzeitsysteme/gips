@@ -93,6 +93,7 @@ public class MappingIndexer {
 		for (final EObject obj : nodes) {
 			if (candidateNode == null) {
 				candidateNode = obj;
+				candidateSize = node2mappings.get(obj).size();
 			} else {
 				if (candidateSize > node2mappings.get(obj).size()) {
 					candidateNode = obj;

@@ -113,7 +113,10 @@ public abstract class GipsEngine {
 
 					updateConstants();
 
-					constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints());
+//					constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints());
+					for(final var cnstr : constraints.values()) {
+						cnstr.buildConstraints();
+					}
 
 					if (objective != null)
 						objective.buildObjectiveFunction(true);

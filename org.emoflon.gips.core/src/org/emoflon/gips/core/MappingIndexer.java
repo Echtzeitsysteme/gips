@@ -110,8 +110,7 @@ public class MappingIndexer {
 		}
 
 		// Start with smallest set of nodes
-		final Set<GipsGTMapping> query = Collections.synchronizedSet(new LinkedHashSet<>());
-		query.addAll(getMappingsOfNodeSafe(candidateNode));
+		final Set<GipsGTMapping> query = getMappingsOfNodeSafe(candidateNode);
 		for (final EObject obj : nodes) {
 			// Skip candidate node
 			if (!obj.equals(candidateNode)) {

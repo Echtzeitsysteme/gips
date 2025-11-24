@@ -670,13 +670,13 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 				searchFor = '''context'''
 			}
 		} else if(this instanceof RuleConstraintTemplate || this instanceof MappingConstraintTemplate ||
-			this instanceof PatternConstraintTemplate) {
+			this instanceof PatternConstraintTemplate || this instanceof ObjectiveTemplate) {
 			// If this generates a rule constraint, mapping constraint, or pattern constraint, search for context node accesses
 			// If the expression is a mapping reference and there is a set operation, search for context node accesses
 			if(expression.setExpression.setOperation !== null) {
-				val indexableExpressions = findPossibleIndexableRelationalExpressions(
-					expression.setExpression.setOperation)
-				searchFor = '''«convertContextNodeAccessToGetterCalls(getContextNodeAccess(indexableExpressions))»'''
+				val indexableExpressions = findPossibleIndexableRelationalExpressions(expression.setExpression.setOperation)
+				val contextNodeAccess = getContextNodeAccess(indexableExpressions)				
+				searchFor = convertContextNodeAccessToGetterCalls(contextNodeAccess)
 			}
 		// Otherwise (i.e., if there is no mapping reference or it has no set (filter) expression,
 		// the indexer implementation cannot be used
@@ -686,7 +686,7 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 		if(searchFor.isBlank)
 			return original
 
-		val nodesToBeCached = findIndexableMapperNodes(expression).map['''"«it»"'''].join(', ')
+		var nodesToBeCached = findIndexableSetNodes(expression).map['''"«it»"'''].join(', ')
 
 		// If there can be at least one node indexed, use the indexer implementation
 		// Mapping indexer
@@ -724,12 +724,14 @@ indexer.getMappingsOfNodes(Set.of(«searchFor»)).parallelStream()
 	}
 
 	/**
-	 * Returns a list of Strings containing all names of context node accesses of the given set expression.
-	 * The requirements to find the necessary accesses are:
-	 * - the expression must be of type `filter`
-	 * - the operator used within the filter must be `EQUAL`
-	 * - one side of the respective expression must be local and the other side must not be local
-	 * - both respective sides must not have an attribute access
+	 * Returns a list of RelationalExpressions which can be indexed.
+	 * The requirements to be included are:
+	 * <ul>
+	 * <li> the expression must be a conjunction
+	 * <li> the relational operator must be `EQUAL`
+	 * <li> both sides must either be a node reference or a context reference
+	 * <li> both respective sides must not have an attribute access
+	 * </ul>
 	 * 
 	 * Therefore, this method only captures accesses like `filter(element.nodes.a == context.nodes.b)`.
 	 */
@@ -743,17 +745,17 @@ indexer.getMappingsOfNodes(Set.of(«searchFor»)).parallelStream()
 		return results
 	}
 	
-	def boolean isOnlyNodeOrContextReference(EObject obj){
+	def boolean isNodeOrContextReference(EObject obj){
 		if(obj instanceof NodeReference)
 			return obj.attribute === null
-		return false// obj instanceof ContextReference
+		return obj instanceof ContextReference
 	}
 
 	def dispatch List<RelationalExpression> findPossibleIndexableRelationalExpressions(RelationalExpression expr) {
 		val results = new LinkedList<RelationalExpression>()
 		
 		if(expr.operator === RelationalOperator.EQUAL) {
-			var isMatch = isOnlyNodeOrContextReference(expr.lhs) && isOnlyNodeOrContextReference(expr.rhs)
+			var isMatch = isNodeOrContextReference(expr.lhs) && isNodeOrContextReference(expr.rhs)
 			if(isMatch)
 				results.add(expr)
 		}
@@ -772,14 +774,15 @@ indexer.getMappingsOfNodes(Set.of(«searchFor»)).parallelStream()
 		return results
 	}
 	
-	def List<String> getContextNodeAccess(List<RelationalExpression> expressions) {
+	def List<String> getContextNodeAccess(List<RelationalExpression> possibleIndexableExpressions) {
 		val results = new LinkedList<String>()
-		
-		for (expr : expressions) {
-			if(!(expr.lhs instanceof ContextReference || expr.rhs instanceof ContextReference)){
+
+		// we only care for local nodes (-> context.node.x) when the other side is not local! (-> element.node.y)
+		for (expr : possibleIndexableExpressions) {
+			if(expr.lhs instanceof NodeReference && expr.rhs instanceof NodeReference) {
 				val lhsnode = expr.lhs as NodeReference
 				val rhsnode = expr.rhs as NodeReference
-	
+
 				if(lhsnode.local && !rhsnode.local) {
 					results.add(lhsnode.node.name)
 				} else if(!lhsnode.local && rhsnode.local) {
@@ -787,28 +790,31 @@ indexer.getMappingsOfNodes(Set.of(«searchFor»)).parallelStream()
 				}
 			}
 		}
-		
+
 		return results
 	}
 
-	def List<String> getMappingNodeAccess(List<RelationalExpression> expressions) {
+	def List<String> getSetNodeAccess(List<RelationalExpression> possibleIndexableExpressions) {
 		val results = new LinkedList<String>()
-		
-		for (expr : expressions) {
-			val lhsnode = expr.lhs as NodeReference
-			val rhsnode = expr.rhs as NodeReference
+
+		// we only care for non-local nodes (-> element.node.x) when the other side is  local! (-> context.node.y)
+		for (expr : possibleIndexableExpressions) {
+			val lhsnode = expr.lhs as ContextReference
+			val rhsnode = expr.rhs as ContextReference
 
 			if(lhsnode.local && !rhsnode.local) {
-				results.add(rhsnode.node.name)
+				if(rhsnode instanceof NodeReference)
+					results.add(rhsnode.node.name)
 			} else if(!lhsnode.local && rhsnode.local) {
-				results.add(lhsnode.node.name)
+				if(lhsnode instanceof NodeReference)
+					results.add(lhsnode.node.name)
 			}
 		}
-		
+
 		return results
 	}
 	
-	def Set<String> findIndexableMapperNodes(MappingReference mappingReference) {
+	def Set<String> findIndexableSetNodes(MappingReference mappingReference) {
 		val results = new HashSet<String>()
 
 		val toBeScanned = new LinkedList<EObject>()
@@ -825,7 +831,7 @@ indexer.getMappingsOfNodes(Set.of(«searchFor»)).parallelStream()
 
 				if(eObject.mapping === mappingReference.mapping && eObject.setExpression.setOperation !== null) {
 					val references = findPossibleIndexableRelationalExpressions(eObject.setExpression.setOperation)
-					results.addAll(getMappingNodeAccess(references))
+					results.addAll(getSetNodeAccess(references))
 				}
 			}
 		}

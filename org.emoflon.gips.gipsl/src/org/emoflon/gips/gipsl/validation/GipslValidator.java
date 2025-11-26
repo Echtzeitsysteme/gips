@@ -504,19 +504,21 @@ public class GipslValidator extends AbstractGipslValidator {
 				return;
 			}
 
-			// check if nodes are compatible
-			EClass nodeClass = node.getType();
-			if (nodeClass == null || comparedNodeClass == null) {
-				// Unable to test compatibility
-			} else {
-				if (!(nodeClass.isSuperTypeOf(comparedNodeClass) || comparedNodeClass.isSuperTypeOf(nodeClass))) {
-					GipslValidator.warn( //
-							String.format(GipslValidatorUtil.SET_JOIN_MISSMATCHING_TYPE_ERROR, //
-									nodeClass.getName(), //
-									comparedNodeClass.getName()), //
-							operation, //
-							GipslPackage.Literals.GIPS_JOIN_BY_SELECTION_OPERATION__SINGLE_JOIN //
-					);
+			if (node != null) {
+				// check if nodes are compatible
+				EClass nodeClass = node.getType();
+				if (nodeClass == null || comparedNodeClass == null) {
+					// Unable to test compatibility
+				} else {
+					if (!(nodeClass.isSuperTypeOf(comparedNodeClass) || comparedNodeClass.isSuperTypeOf(nodeClass))) {
+						GipslValidator.warn( //
+								String.format(GipslValidatorUtil.SET_JOIN_MISSMATCHING_TYPE_ERROR, //
+										nodeClass.getName(), //
+										comparedNodeClass.getName()), //
+								operation, //
+								GipslPackage.Literals.GIPS_JOIN_BY_SELECTION_OPERATION__SINGLE_JOIN //
+						);
+					}
 				}
 			}
 		} else {
@@ -530,6 +532,7 @@ public class GipslValidator extends AbstractGipslValidator {
 							selection, //
 							GipslPackage.Literals.GIPS_JOIN_PAIR_SELECTION__LEFT_NODE //
 					);
+
 				}
 
 				if (!localNodes.contains(rightNode)) {
@@ -540,20 +543,23 @@ public class GipslValidator extends AbstractGipslValidator {
 					);
 				}
 
-				// check if nodes are compatible
-				EClass leftNodeClass = leftNode.getType();
-				EClass rightNodeClass = rightNode.getType();
-				if (leftNodeClass == null || rightNodeClass == null) {
-					// Unable to test compatibility
-				} else {
-					if (!(leftNodeClass.isSuperTypeOf(rightNodeClass) || rightNodeClass.isSuperTypeOf(leftNodeClass))) {
-						GipslValidator.warn( //
-								String.format(GipslValidatorUtil.SET_JOIN_MISSMATCHING_TYPE_ERROR, //
-										leftNode.getType().getName(), //
-										rightNode.getType().getName()), //
-								selection, //
-								null //
-						);
+				if (leftNode != null && rightNode != null) {
+					// check if nodes are compatible
+					EClass leftNodeClass = leftNode.getType();
+					EClass rightNodeClass = rightNode.getType();
+					if (leftNodeClass == null || rightNodeClass == null) {
+						// Unable to test compatibility
+					} else {
+						if (!(leftNodeClass.isSuperTypeOf(rightNodeClass)
+								|| rightNodeClass.isSuperTypeOf(leftNodeClass))) {
+							GipslValidator.warn( //
+									String.format(GipslValidatorUtil.SET_JOIN_MISSMATCHING_TYPE_ERROR, //
+											leftNode.getType().getName(), //
+											rightNode.getType().getName()), //
+									selection, //
+									null //
+							);
+						}
 					}
 				}
 			}

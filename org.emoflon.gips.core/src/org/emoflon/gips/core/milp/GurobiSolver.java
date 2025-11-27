@@ -37,6 +37,7 @@ import com.gurobi.gurobi.GRB;
 import com.gurobi.gurobi.GRB.DoubleAttr;
 import com.gurobi.gurobi.GRB.DoubleParam;
 import com.gurobi.gurobi.GRB.IntParam;
+import com.gurobi.gurobi.GRB.StringParam;
 import com.gurobi.gurobi.GRBEnv;
 import com.gurobi.gurobi.GRBException;
 import com.gurobi.gurobi.GRBLinExpr;
@@ -204,6 +205,8 @@ public class GurobiSolver extends Solver {
 				if (!config.isEnableOutput() && env != null) {
 					env.set(IntParam.OutputFlag, 0);
 					env.set(IntParam.LogToConsole, 0);
+					// Empty log file name for no log file
+					env.set(StringParam.LogFile, "");
 				}
 				System.setOut(out);
 				System.setErr(err);
@@ -284,6 +287,11 @@ public class GurobiSolver extends Solver {
 			}
 		} catch (final GRBException e) {
 			e.printStackTrace();
+		}
+
+		// Delete Gurobi log file if configured
+		if (!config.isEnableOutput()) {
+			new File("Gurobi_MILP.log").delete();
 		}
 	}
 

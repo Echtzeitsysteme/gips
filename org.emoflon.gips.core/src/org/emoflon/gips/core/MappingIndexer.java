@@ -44,7 +44,8 @@ public class MappingIndexer {
 
 	/**
 	 * Returns a set of `GipsGTMapping`s for the given `EObject node` is contained
-	 * in (copy).
+	 * in (copy). Since this method copies the set, it is slower than the unsafe
+	 * variant.
 	 * 
 	 * @param node EObject to return the indexed `GipsGTMapping`s for.
 	 * @return Indexed `GipsGTMapping`s for the given `EObject node` (copy).
@@ -59,7 +60,11 @@ public class MappingIndexer {
 
 	/**
 	 * Returns a set of `GipsGTMapping`s for the given `EObject node` is contained
-	 * in (no copy).
+	 * in (no copy). Since this method does not copy the set, it is faster than the
+	 * safe variant.
+	 * 
+	 * Use with caution: manipulating the returned set of mappings will corrupt the
+	 * index of the respective mapping.
 	 * 
 	 * @param node EObject to return the indexed `GipsGTMapping`s for.
 	 * @return Indexed `GipsGTMapping`s for the given `EObject node` (no copy).
@@ -97,11 +102,14 @@ public class MappingIndexer {
 				return Collections.synchronizedSet(new LinkedHashSet<>());
 			}
 
+			final int size = node2mappings.get(obj).size();
+			// First node must be added as candidate regardless of its set size
 			if (candidateNode == null) {
 				candidateNode = obj;
-				candidateSize = node2mappings.get(obj).size();
+				candidateSize = size;
 			} else {
-				final int size = node2mappings.get(obj).size();
+				// If the current node has a smaller size than the previously found candidate
+				// node, replace it
 				if (candidateSize > size) {
 					candidateNode = obj;
 					candidateSize = size;

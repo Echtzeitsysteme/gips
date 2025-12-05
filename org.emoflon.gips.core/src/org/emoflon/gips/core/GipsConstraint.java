@@ -52,7 +52,7 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends o
 		this.validationLog = engine.getValidationLog();
 	}
 
-	public abstract void buildConstraints();
+	public abstract void buildConstraints(final boolean parallel);
 
 	public String getName() {
 		return name;

@@ -18,7 +18,7 @@ public abstract class GipsGlobalConstraint<ENGINE extends GipsEngine> extends
 	}
 
 	@Override
-	public void buildConstraints() {
+	public void buildConstraints(final boolean parallel) {
 		milpConstraints.put(constraint, buildConstraint());
 		if (constraint.isDepending()) {
 			additionalMilpConstraints.put(constraint, buildAdditionalConstraints());

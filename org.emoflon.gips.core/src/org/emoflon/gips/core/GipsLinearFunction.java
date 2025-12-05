@@ -38,7 +38,7 @@ public abstract class GipsLinearFunction<ENGINE extends GipsEngine, LF extends o
 		return linearFunction;
 	}
 
-	public abstract void buildLinearFunction();
+	public abstract void buildLinearFunction(final boolean parallel);
 
 	public String getName() {
 		return name;

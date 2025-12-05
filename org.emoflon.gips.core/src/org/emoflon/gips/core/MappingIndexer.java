@@ -44,20 +44,39 @@ public class MappingIndexer {
 
 	/**
 	 * Returns a set of `GipsGTMapping`s for the given `EObject node` is contained
-	 * in.
+	 * in (copy). Since this method copies the set, it is slower than the unsafe
+	 * variant.
 	 * 
 	 * @param node EObject to return the indexed `GipsGTMapping`s for.
-	 * @return Indexed `GipsGTMapping`s for the given `EObject node`.
+	 * @return Indexed `GipsGTMapping`s for the given `EObject node` (copy).
 	 */
 	@SuppressWarnings("rawtypes")
-	public Set<GipsGTMapping> getMappingsOfNode(final EObject node) {
+	private Set<GipsGTMapping> getMappingsOfNodeSafe(final EObject node) {
 		Objects.requireNonNull(node);
 		final Set<GipsGTMapping> query = Collections.synchronizedSet(new LinkedHashSet<>());
+		query.addAll(getMappingsOfNodeUnsafe(node));
+		return query;
+	}
+
+	/**
+	 * Returns a set of `GipsGTMapping`s for the given `EObject node` is contained
+	 * in (no copy). Since this method does not copy the set, it is faster than the
+	 * safe variant.
+	 * 
+	 * Use with caution: manipulating the returned set of mappings will corrupt the
+	 * index of the respective mapping.
+	 * 
+	 * @param node EObject to return the indexed `GipsGTMapping`s for.
+	 * @return Indexed `GipsGTMapping`s for the given `EObject node` (no copy).
+	 */
+	@SuppressWarnings("rawtypes")
+	private Set<GipsGTMapping> getMappingsOfNodeUnsafe(final EObject node) {
+		Objects.requireNonNull(node);
 		final Set<GipsGTMapping> candidates = node2mappings.get(node);
 		if (candidates != null) {
-			query.addAll(candidates);
+			return candidates;
 		}
-		return query;
+		return Collections.synchronizedSet(new LinkedHashSet<>());
 	}
 
 	/**
@@ -71,14 +90,39 @@ public class MappingIndexer {
 	@SuppressWarnings("rawtypes")
 	public Set<GipsGTMapping> getMappingsOfNodes(final Set<EObject> nodes) {
 		Objects.requireNonNull(nodes);
-		final Set<GipsGTMapping> query = Collections.synchronizedSet(new LinkedHashSet<>());
-		boolean first = true;
+
+		// Find smallest set of nodes
+		EObject candidateNode = null;
+		int candidateSize = Integer.MAX_VALUE;
 		for (final EObject obj : nodes) {
-			if (first) {
-				query.addAll(getMappingsOfNode(obj));
-				first = false;
+			// If a node is not contained at all, return an empty collection immediately. In
+			// this case, all other calculations can be skipped since the final intersection
+			// will be empty.
+			if (!node2mappings.containsKey(obj)) {
+				return Collections.synchronizedSet(new LinkedHashSet<>());
+			}
+
+			final int size = node2mappings.get(obj).size();
+			// First node must be added as candidate regardless of its set size
+			if (candidateNode == null) {
+				candidateNode = obj;
+				candidateSize = size;
 			} else {
-				query.retainAll(getMappingsOfNode(obj));
+				// If the current node has a smaller size than the previously found candidate
+				// node, replace it
+				if (candidateSize > size) {
+					candidateNode = obj;
+					candidateSize = size;
+				}
+			}
+		}
+
+		// Start with smallest set of nodes
+		final Set<GipsGTMapping> query = getMappingsOfNodeSafe(candidateNode);
+		for (final EObject obj : nodes) {
+			// Skip candidate node
+			if (!obj.equals(candidateNode)) {
+				query.retainAll(getMappingsOfNodeUnsafe(obj));
 			}
 		}
 

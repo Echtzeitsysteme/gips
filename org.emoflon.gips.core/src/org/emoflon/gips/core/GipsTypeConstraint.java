@@ -25,31 +25,41 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void buildConstraints() {
-		// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT
-		// language
-		indexer.getObjectsOfType(type).stream().forEach(context -> {
-			final Constraint candidate = buildConstraint((CONTEXT) context);
-			if (candidate != null) {
-				milpConstraints.put((CONTEXT) context, candidate);
-			}
-		});
-
-		if (constraint.isDepending()) {
-			// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT
-			// language
-			indexer.getObjectsOfType(type).stream().forEach(context -> {
-				final List<Constraint> constraints = buildAdditionalConstraints((CONTEXT) context);
-				additionalMilpConstraints.put((CONTEXT) context, constraints);
+	public void buildConstraints(final boolean parallel) {
+		if (parallel) {
+			indexer.getObjectsOfType(type).parallelStream().forEach(context -> {
+				final Constraint candidate = buildConstraint((CONTEXT) context);
+				if (candidate != null) {
+					milpConstraints.put((CONTEXT) context, candidate);
+				}
 			});
-
+			if (constraint.isDepending()) {
+				indexer.getObjectsOfType(type).parallelStream().forEach(context -> {
+					final List<Constraint> constraints = buildAdditionalConstraints((CONTEXT) context);
+					additionalMilpConstraints.put((CONTEXT) context, constraints);
+				});
+			}
+		} else {
+			indexer.getObjectsOfType(type).stream().forEach(context -> {
+				final Constraint candidate = buildConstraint((CONTEXT) context);
+				if (candidate != null) {
+					milpConstraints.put((CONTEXT) context, candidate);
+				}
+			});
+			if (constraint.isDepending()) {
+				indexer.getObjectsOfType(type).stream().forEach(context -> {
+					final List<Constraint> constraints = buildAdditionalConstraints((CONTEXT) context);
+					additionalMilpConstraints.put((CONTEXT) context, constraints);
+				});
+			}
 		}
 	}
 
 	@Override
 	public Constraint buildConstraint(final CONTEXT context) {
 		if (!isConstant && !(constraint.getExpression() instanceof RelationalExpression))
-			throw new IllegalArgumentException("Boolean values can not be transformed to (M)ILP relational constraints.");
+			throw new IllegalArgumentException(
+					"Boolean values can not be transformed to (M)ILP relational constraints.");
 
 		if (!isConstant) {
 			RelationalOperator operator = ((RelationalExpression) constraint.getExpression()).getOperator();

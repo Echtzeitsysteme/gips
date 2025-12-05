@@ -75,7 +75,7 @@ public class GlobalMappingIndexer {
 	 * 
 	 * @param mapper `GipsMapper` to create a new `MappingIndexer` for.
 	 */
-	public void createIndexer(final GipsMapper<?> mapper) {
+	public synchronized void createIndexer(final GipsMapper<?> mapper) {
 		Objects.requireNonNull(mapper);
 		if (!mapper2indexer.containsKey(mapper)) {
 			mapper2indexer.put(mapper, new MappingIndexer());

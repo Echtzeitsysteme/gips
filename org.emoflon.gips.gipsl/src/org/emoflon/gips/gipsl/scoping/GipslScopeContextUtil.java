@@ -2,6 +2,7 @@ package org.emoflon.gips.gipsl.scoping;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -34,6 +35,9 @@ import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsConstantReference;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsJoinBySelectionOperation;
+import org.emoflon.gips.gipsl.gipsl.GipsJoinPairSelection;
+import org.emoflon.gips.gipsl.gipsl.GipsJoinSingleSelection;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunctionReference;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
@@ -55,6 +59,8 @@ import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsConstantReferenceImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsLinearFunctionImpl;
+import org.emoflon.ibex.gt.editor.gT.EditorNode;
+import org.emoflon.ibex.gt.editor.gT.EditorOperator;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 import org.emoflon.ibex.gt.editor.utils.GTEditorModelUtils;
 import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
@@ -144,6 +150,21 @@ public final class GipslScopeContextUtil {
 
 	public static boolean isGipsTypeQuery(final EObject context, final EReference reference) {
 		return context instanceof GipsTypeQuery && reference == GipslPackage.Literals.GIPS_TYPE_QUERY__TYPE;
+	}
+
+	public static boolean isGipsJoinBySelection(final EObject context, final EReference reference) {
+		return context instanceof GipsJoinBySelectionOperation;
+	}
+
+	public static boolean isGipsJoinSingleSelection(final EObject context, final EReference reference) {
+		return context instanceof GipsJoinSingleSelection
+				&& reference == org.emoflon.gips.gipsl.gipsl.GipslPackage.Literals.GIPS_JOIN_SINGLE_SELECTION__NODE;
+	}
+
+	public static boolean isGipsJoinPairSelection(final EObject context, final EReference reference) {
+		return context instanceof GipsJoinPairSelection
+				&& (reference == GipslPackage.Literals.GIPS_JOIN_PAIR_SELECTION__LEFT_NODE
+						|| reference == GipslPackage.Literals.GIPS_JOIN_PAIR_SELECTION__RIGHT_NODE);
 	}
 
 	public static Object getContainer(EObject node, Set<Class<?>> classes) {
@@ -318,6 +339,25 @@ public final class GipslScopeContextUtil {
 		gtFile.getImportedPattern().forEach(p -> patterns.add(p.getPattern()));
 		return patterns.stream().filter(p -> GTEditorPatternUtils.containsCreatedOrDeletedElements(p))
 				.collect(Collectors.toList());
+	}
+
+	public static EditorPattern getPatternOrRuleOf(final EObject context) {
+		return switch (context) {
+		case EditorPattern pattern -> pattern;
+		case GipsPatternExpression pattern -> pattern.getPattern();
+		case GipsMapping mapping -> mapping.getPattern();
+		case GipsMappingExpression mapping when mapping.getMapping() != null -> mapping.getMapping().getPattern();
+		case GipsRuleExpression rule -> rule.getRule();
+		case null, default -> null;
+		};
+	}
+
+	public static Set<EditorNode> getNonCreatedEditorNodes(final EditorPattern pattern) {
+		if (pattern == null)
+			return Collections.emptySet();
+		return pattern.getNodes().stream() //
+				.filter(n -> n.getOperator() != EditorOperator.CREATE) //
+				.collect(Collectors.toSet());
 	}
 
 	public static EObject getLocalContext(final EObject expression) {

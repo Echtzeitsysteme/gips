@@ -155,6 +155,15 @@ public class GipslValidatorUtil {
 	public static final String SET_SORT_PREDICATE_RELATION_ERROR = "Sorting predicate must impose an order, which means == and != are invalid operators.";
 	public static final String SET_FILTER_ERROR = "Filter operations on sets must be performed with Boolean predicates. Furthermore, these must be constant at (M)ILP compilation time, which means that they must never contain variable references.";
 
+	public static final String SET_JOIN_ALL_MISMATCH_PATTERN = "Set and Context do not share same Pattern or Rule, use join() instead.";
+	public static final String SET_JOIN_ALL_INVALID_TYPES = "Set and context type do not match, use join().";
+	public static final String SET_JOIN_ALL_MISSING_PATTERN = "%s has no Pattern or Rule.";
+	public static final String SET_JOIN_MISSMATCHING_TYPE_ERROR = "Incompatible operand types. %s seems to be unrelated to %s.";
+	public static final String SET_JOIN_EMPTY = "Join is empty.";
+	public static final String SET_JOIN_MISSUSE_SINGLE = "Single node comparison is only applicable for Context or Set type EClass. Use '(set node, context node)' to specify which nodes to compare.";
+	public static final String SET_JOIN_LEFT_NODE_REF_ERROR = "Node reference was not found in Set";
+	public static final String SET_JOIN_RIGHT_NODE_REF_ERROR = "Node reference was not found in Context";
+
 	public static Set<GipsMapping> extractMappings(final GipsBooleanExpression expression) {
 		Set<GipsMapping> mappings = new HashSet<>();
 

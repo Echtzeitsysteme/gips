@@ -298,11 +298,36 @@ GipsSetExpression: {GipsSetExpression}
 
 // Operates on a set of 0-N values and produces a set of 0-M values.
 GipsSetOperation:
-	GipsFilterOperation | GipsSelectOperation | GipsAlgorithmOperation | GipsConcatenationOperation | GipsTransformOperation
+	GipsFilterOperation | GipsJoinOperation | GipsSelectOperation | GipsAlgorithmOperation | GipsConcatenationOperation | GipsTransformOperation
 ;
 
 GipsFilterOperation:
  	'filter' '(' expression = GipsBooleanExpression ')'
+;
+
+GipsJoinOperation:
+	 GipsJoinAllOperation | GipsJoinBySelectionOperation
+;
+
+GipsJoinAllOperation:
+	{GipsJoinAllOperation} 'joinAll''()'
+;
+
+GipsJoinBySelectionOperation:
+	{GipsJoinBySelectionOperation} 'join' '('
+	(
+		singleJoin = GipsJoinSingleSelection |
+		pairJoin += GipsJoinPairSelection (',' pairJoin += GipsJoinPairSelection)*
+	)
+	')'
+;
+
+GipsJoinSingleSelection:
+	node = [GT::EditorNode|ID]
+;
+
+GipsJoinPairSelection:
+	'(' leftNode = [GT::EditorNode|ID] ',' rightNode = [GT::EditorNode|ID] ')'
 ;
 
 GipsSelectOperation:

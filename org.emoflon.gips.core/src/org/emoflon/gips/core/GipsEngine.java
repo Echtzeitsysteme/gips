@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
+import org.emoflon.gips.core.milp.ConstraintSorter;
 import org.emoflon.gips.core.milp.Solver;
 import org.emoflon.gips.core.milp.SolverOutput;
 import org.emoflon.gips.core.milp.SolverStatus;
@@ -27,6 +29,8 @@ public abstract class GipsEngine {
 	final protected Map<String, GipsLinearFunction<?, ?, ?>> functions = Collections.synchronizedMap(new HashMap<>());
 	protected GipsObjective objective;
 	protected Solver solver;
+
+	protected ConstraintSorter constraintSorter;
 
 	protected EclipseIntegration eclipseIntegration;
 	protected GipsTracer tracer;
@@ -93,9 +97,9 @@ public abstract class GipsEngine {
 				if (parallel) {
 					// Constraints are re-build a few lines below
 					constraints.values().parallelStream().forEach(constraint -> constraint.clear());
-				
-				    // Reset trace
-				    getTracer().resetTrace();
+
+					// Reset trace
+					getTracer().resetTrace();
 
 					nonMappingVariables.clear();
 					mappers.values().parallelStream().flatMap(mapper -> mapper.getMappings().values().parallelStream())
@@ -112,7 +116,7 @@ public abstract class GipsEngine {
 
 					updateConstants();
 
-					constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints());
+					constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints(parallel));
 
 					if (objective != null)
 						objective.buildObjectiveFunction(true);
@@ -135,7 +139,7 @@ public abstract class GipsEngine {
 
 					updateConstants();
 
-					constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
+					constraints.values().stream().forEach(constraint -> constraint.buildConstraints(parallel));
 
 					if (objective != null)
 						objective.buildObjectiveFunction(false);
@@ -146,7 +150,7 @@ public abstract class GipsEngine {
 				solver.init();
 				solver.buildMILPProblem();
 			});
-			
+
 			buildTraceGraphAndSendToIDE();
 		});
 	}
@@ -214,7 +218,7 @@ public abstract class GipsEngine {
 
 			updateConstants();
 
-			constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints());
+			constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints(parallel));
 
 			if (objective != null)
 				objective.buildObjectiveFunction(true);
@@ -245,7 +249,7 @@ public abstract class GipsEngine {
 
 			updateConstants();
 
-			constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
+			constraints.values().stream().forEach(constraint -> constraint.buildConstraints(parallel));
 
 			if (objective != null)
 				objective.buildObjectiveFunction(true);
@@ -265,23 +269,7 @@ public abstract class GipsEngine {
 
 	public SolverOutput solveProblemTimed() {
 		Observer observer = Observer.getInstance();
-		SolverOutput out = observer.observe("SOLVE_PROBLEM", () -> {
-			SolverOutput output;
-			if (validationLog.isNotValid()) {
-				output = new SolverOutput(SolverStatus.INFEASIBLE, Double.NaN, validationLog, 0, null);
-			} else {
-				this.tockInit();
-				output = solver.solve();
-
-				if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0)
-					solver.updateValuesFromSolution();
-			}
-
-			solver.reset();
-			GlobalMappingIndexer.getInstance().terminate();
-			eclipseIntegration.sendSolutionValuesToIDE();
-			return output;
-		});
+		SolverOutput out = observer.observe("SOLVE_PROBLEM", (Supplier<SolverOutput>) this::solveProblem);
 		return out;
 	}
 
@@ -295,6 +283,9 @@ public abstract class GipsEngine {
 
 			if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0)
 				solver.updateValuesFromSolution();
+
+			if (output.status() == SolverStatus.INFEASIBLE && solver.getSolverConfig().isEnableIIS())
+				solver.computeIrreducibleInconsistentSubsystem();
 		}
 
 		solver.reset();
@@ -394,6 +385,14 @@ public abstract class GipsEngine {
 
 	public void setSolver(final Solver solver) {
 		this.solver = solver;
+	}
+
+	public void setConstraintSorter(ConstraintSorter constraintSorter) {
+		this.constraintSorter = constraintSorter;
+	}
+
+	public ConstraintSorter getConstraintSorter() {
+		return this.constraintSorter;
 	}
 
 	public GipsTracer getTracer() {

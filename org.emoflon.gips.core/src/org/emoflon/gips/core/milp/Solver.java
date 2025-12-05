@@ -1,5 +1,8 @@
 package org.emoflon.gips.core.milp;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.GipsConstraint;
 import org.emoflon.gips.core.GipsEngine;
@@ -51,12 +54,38 @@ public abstract class Solver {
 	public abstract void init();
 
 	public void buildMILPProblem() {
-		engine.getMappers().values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
-				.forEach(mapping -> translateMapping(mapping));
-		engine.getConstraints().values().forEach(constraint -> translateConstraint(constraint));
+		engine.getMappers().values().stream() //
+				.flatMap(mapper -> mapper.getMappings().values().stream()) //
+				.forEach(this::translateMapping);
+
+		Collection<GipsConstraint<?, ?, ?>> constraints = engine.getConstraints().values();
+		if (engine.getConstraintSorter() != null)
+			// copy view into a sortable list
+			constraints = engine.getConstraintSorter().sort(new ArrayList<>(constraints));
+
+		constraints.forEach(this::translateConstraint);
+
 		GipsObjective go = engine.getObjective();
 		if (go != null)
 			translateObjective(go);
+	}
+
+	/**
+	 * An Irreducible Inconsistent Subsystem (IIS) is a minimal subset of
+	 * constraints and/or variable bounds that cause infeasibility in a given model.
+	 * An IIS has two properties:
+	 * <ul>
+	 * <li>it is infeasible
+	 * <li>it is irreducible; removing any constraint or variable bound would make
+	 * the subsystem feasible
+	 * </ul>
+	 * 
+	 * Note that an infeasible model may have multiple IISs and not every solver can
+	 * compute an IIS. The computed model will be written to
+	 * {@link SolverConfig#getLpPath()} with the added file extension 'ilp'
+	 */
+	public void computeIrreducibleInconsistentSubsystem() {
+		System.err.println("The chosen solver does not support the computation of an IIS.");
 	}
 
 	public abstract SolverOutput solve();

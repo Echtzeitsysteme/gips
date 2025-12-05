@@ -21,12 +21,15 @@ public abstract class GipsRuleLinearFunction<ENGINE extends GipsEngine, M extend
 	}
 
 	@Override
-	public void buildLinearFunction() {
+	public void buildLinearFunction(final boolean parallel) {
 		terms = Collections.synchronizedList(new LinkedList<>());
 		constantTerms = Collections.synchronizedList(new LinkedList<>());
-		// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT
-		// language
-		rule.findMatches(false).stream().forEach(context -> buildTerms(context));
+		if (parallel) {
+			rule.findMatches(false).parallelStream().forEach(context -> buildTerms(context));
+		} else {
+			rule.findMatches(false).stream().forEach(context -> buildTerms(context));
+		}
+
 		milpLinearFunction = new LinearFunction(terms, constantTerms);
 	}
 

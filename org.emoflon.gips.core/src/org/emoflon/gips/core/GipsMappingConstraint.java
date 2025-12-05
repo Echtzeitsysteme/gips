@@ -24,25 +24,37 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 	}
 
 	@Override
-	public void buildConstraints() {
-		// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT
-		// language
-		mapper.getMappings().values().stream().forEach(context -> {
-			final Constraint candidate = buildConstraint(context);
-			if (candidate != null) {
-				milpConstraints.put(context, candidate);
-			}
-		});
-
-		if (constraint.isDepending()) {
-			// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT
-			// language
-			mapper.getMappings().values().stream().forEach(context -> {
-				final List<Constraint> constraints = buildAdditionalConstraints(context);
-				additionalMilpConstraints.put(context, constraints);
+	public void buildConstraints(final boolean parallel) {
+		if (parallel) {
+			mapper.getMappings().values().parallelStream().forEach(context -> {
+				final Constraint candidate = buildConstraint(context);
+				if (candidate != null) {
+					milpConstraints.put(context, candidate);
+				}
 			});
+			if (constraint.isDepending()) {
+				mapper.getMappings().values().parallelStream().forEach(context -> {
+					final List<Constraint> constraints = buildAdditionalConstraints(context);
+					additionalMilpConstraints.put(context, constraints);
+				});
 
+			}
+		} else {
+			mapper.getMappings().values().stream().forEach(context -> {
+				final Constraint candidate = buildConstraint(context);
+				if (candidate != null) {
+					milpConstraints.put(context, candidate);
+				}
+			});
+			if (constraint.isDepending()) {
+				mapper.getMappings().values().stream().forEach(context -> {
+					final List<Constraint> constraints = buildAdditionalConstraints(context);
+					additionalMilpConstraints.put(context, constraints);
+				});
+
+			}
 		}
+
 	}
 
 	@Override
@@ -51,7 +63,8 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 			throw new IllegalArgumentException("Mapping constraints must not be constant.");
 
 		if (!(constraint.getExpression() instanceof RelationalExpression))
-			throw new IllegalArgumentException("Boolean values can not be transformed to (M)ILP relational constraints.");
+			throw new IllegalArgumentException(
+					"Boolean values can not be transformed to (M)ILP relational constraints.");
 
 		double constTerm = buildConstantRhs(context);
 		List<Term> terms = buildVariableLhs(context);

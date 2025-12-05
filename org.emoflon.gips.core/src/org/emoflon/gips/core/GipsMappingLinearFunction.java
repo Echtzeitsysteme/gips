@@ -18,12 +18,14 @@ public abstract class GipsMappingLinearFunction<ENGINE extends GipsEngine, CONTE
 	}
 
 	@Override
-	public void buildLinearFunction() {
+	public void buildLinearFunction(final boolean parallel) {
 		terms = Collections.synchronizedList(new LinkedList<>());
 		constantTerms = Collections.synchronizedList(new LinkedList<>());
-		// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT
-		// language
-		mapper.getMappings().values().stream().forEach(context -> buildTerms(context));
+		if (parallel) {
+			mapper.getMappings().values().parallelStream().forEach(context -> buildTerms(context));
+		} else {
+			mapper.getMappings().values().stream().forEach(context -> buildTerms(context));
+		}
 		milpLinearFunction = new LinearFunction(terms, constantTerms);
 	}
 

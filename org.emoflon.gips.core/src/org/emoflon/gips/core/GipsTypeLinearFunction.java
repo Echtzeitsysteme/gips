@@ -20,12 +20,15 @@ public abstract class GipsTypeLinearFunction<ENGINE extends GipsEngine, CONTEXT 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void buildLinearFunction() {
+	public void buildLinearFunction(final boolean parallel) {
 		terms = Collections.synchronizedList(new LinkedList<>());
 		constantTerms = Collections.synchronizedList(new LinkedList<>());
-		// TODO: stream() -> parallelStream() once GIPS is based on the new shiny GT
-		// language
-		indexer.getObjectsOfType(type).stream().forEach(context -> buildTerms((CONTEXT) context));
+		if (parallel) {
+			indexer.getObjectsOfType(type).parallelStream().forEach(context -> buildTerms((CONTEXT) context));
+		} else {
+			indexer.getObjectsOfType(type).stream().forEach(context -> buildTerms((CONTEXT) context));
+		}
+
 		milpLinearFunction = new LinearFunction(terms, constantTerms);
 	}
 

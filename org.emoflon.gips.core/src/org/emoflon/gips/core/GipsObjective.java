@@ -54,9 +54,9 @@ public abstract class GipsObjective {
 	 */
 	protected void buildLocalObjectives(final boolean parallel) {
 		if (parallel) {
-			engine.getLinearFunctions().values().stream().forEach(fn -> fn.buildLinearFunction());
+			engine.getLinearFunctions().values().stream().forEach(fn -> fn.buildLinearFunction(parallel));
 		} else {
-			engine.getLinearFunctions().values().parallelStream().forEach(fn -> fn.buildLinearFunction());
+			engine.getLinearFunctions().values().parallelStream().forEach(fn -> fn.buildLinearFunction(parallel));
 		}
 	}
 

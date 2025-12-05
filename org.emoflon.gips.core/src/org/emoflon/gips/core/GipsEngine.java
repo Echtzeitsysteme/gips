@@ -113,7 +113,7 @@ public abstract class GipsEngine {
 
 					updateConstants();
 
-					constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints());
+					constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints(parallel));
 
 					if (objective != null)
 						objective.buildObjectiveFunction(true);
@@ -136,7 +136,7 @@ public abstract class GipsEngine {
 
 					updateConstants();
 
-					constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
+					constraints.values().stream().forEach(constraint -> constraint.buildConstraints(parallel));
 
 					if (objective != null)
 						objective.buildObjectiveFunction(false);
@@ -215,7 +215,7 @@ public abstract class GipsEngine {
 
 			updateConstants();
 
-			constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints());
+			constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints(parallel));
 
 			if (objective != null)
 				objective.buildObjectiveFunction(true);
@@ -246,7 +246,7 @@ public abstract class GipsEngine {
 
 			updateConstants();
 
-			constraints.values().stream().forEach(constraint -> constraint.buildConstraints());
+			constraints.values().stream().forEach(constraint -> constraint.buildConstraints(parallel));
 
 			if (objective != null)
 				objective.buildObjectiveFunction(true);

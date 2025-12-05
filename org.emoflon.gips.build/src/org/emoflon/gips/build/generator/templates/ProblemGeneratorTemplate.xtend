@@ -58,6 +58,10 @@ import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator
 import java.util.List
 import org.emoflon.gips.build.generator.templates.constraint.MappingConstraintTemplate
 import org.emoflon.gips.build.generator.templates.constraint.PatternConstraintTemplate
+import org.emoflon.gips.build.generator.templates.function.PatternFunctionTemplate
+import org.emoflon.gips.build.generator.templates.function.MappingFunctionTemplate
+import org.emoflon.gips.build.generator.templates.function.RuleFunctionTemplate
+import org.emoflon.gips.build.generator.templates.function.TypeFunctionTemplate
 
 abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends GeneratorTemplate<CONTEXT> {
 	
@@ -605,15 +609,17 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 				// If the resulting string keeps empty, there is nothing to index
 				var searchFor = ""
 				
-				// If this generates a type constraint, use `context`
-				if (this instanceof TypeConstraintTemplate && expression.setExpression.setOperation !== null) {
+				// If this generates a type constraint or a type function, use `context`
+				if ((this instanceof TypeConstraintTemplate || this instanceof TypeFunctionTemplate)
+					&& expression.setExpression.setOperation !== null) {
 					// `context` can only be used if the expression does not use attribute accesses, etc.
 					if (isContextIndexerApplicable(expression.setExpression.setOperation)) {
 						searchFor = '''context'''
 					}
-				} // If this generates a rule constraint, mapping constraint, or pattern constraint, search for context node accesses
+				} // If this generates a {rule, mapping, pattern} constraint or a {rule, mapping, pattern} function, search for context node accesses
 				else if (this instanceof RuleConstraintTemplate || this instanceof MappingConstraintTemplate ||
-					this instanceof PatternConstraintTemplate) {
+					this instanceof PatternConstraintTemplate || this instanceof RuleFunctionTemplate ||
+					this instanceof MappingFunctionTemplate || this instanceof PatternFunctionTemplate) {
 					// If the expression is a mapping reference and there is a set operation, search for context node accesses
 					if (expression instanceof MappingReference && expression.setExpression.setOperation !== null) {
 						searchFor = '''«convertContextNodeAccessToGetterCalls(getContextNodeAccess(expression.setExpression.setOperation))»'''

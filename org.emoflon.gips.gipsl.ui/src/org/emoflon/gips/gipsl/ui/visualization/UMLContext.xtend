@@ -76,14 +76,21 @@ class UMLContext {
 	 * @return true If the element has not yet been generated
 	 */
 	def boolean addReferencedElement(EObject eObject) {
+		if(eObject === null)
+			return false;
+		
 		if(!generatedObjects.contains(eObject)){
 			referencedButNotGenerated.add(eObject)
 			return true	
 		}
+		
 		return false
 	}
 	
 	def void addGeneratedElement(EObject eObject){
+		if(eObject === null)
+			return;
+		
 		referencedButNotGenerated.remove(eObject)
 		generatedObjects.add(eObject)
 	}

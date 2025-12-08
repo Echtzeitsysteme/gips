@@ -217,6 +217,19 @@
     <genClasses ecoreClass="Gipsl.ecore#//GipsFilterOperation">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsFilterOperation/expression"/>
     </genClasses>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsJoinOperation"/>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsJoinAllOperation"/>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsJoinBySelectionOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsJoinBySelectionOperation/singleJoin"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsJoinBySelectionOperation/pairJoin"/>
+    </genClasses>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsJoinSingleSelection">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsJoinSingleSelection/node"/>
+    </genClasses>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsJoinPairSelection">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsJoinPairSelection/leftNode"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsJoinPairSelection/rightNode"/>
+    </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsSelectOperation"/>
     <genClasses ecoreClass="Gipsl.ecore#//GipsTypeSelect">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsTypeSelect/type"/>

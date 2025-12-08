@@ -222,6 +222,21 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//GipsBooleanExpression"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsJoinOperation" eSuperTypes="#//GipsSetOperation"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsJoinAllOperation" eSuperTypes="#//GipsJoinOperation"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsJoinBySelectionOperation" eSuperTypes="#//GipsJoinOperation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="singleJoin" eType="#//GipsJoinSingleSelection"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pairJoin" upperBound="-1"
+        eType="#//GipsJoinPairSelection" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsJoinSingleSelection">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorNode"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsJoinPairSelection">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="leftNode" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorNode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rightNode" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorNode"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsSelectOperation" eSuperTypes="#//GipsSetOperation"/>
   <eClassifiers xsi:type="ecore:EClass" name="GipsTypeSelect" eSuperTypes="#//GipsSelectOperation">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>

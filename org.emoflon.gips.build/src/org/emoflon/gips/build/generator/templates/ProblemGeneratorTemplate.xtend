@@ -308,106 +308,6 @@ abstract class ProblemGeneratorTemplate <CONTEXT extends EObject> extends Genera
 	}
 	
 	/**
-	 * Returns a list of Strings containing all names of context node accesses of the given Boolean expression.
-	 */
-	 @Deprecated
-	def List<String> getContextNodeAccess(BooleanExpression expr) {
-		// Single relational expression only
-		if (expr instanceof RelationalExpression) {
-			return getContextNodeAccess(expr)
-		}
-		// Composition of multiple boolean expressions
-		else if (expr instanceof BooleanBinaryExpression) {
-			return getContextNodeAccess(expr)
-		}
-	}
-
-	/**
-	 * Returns a list of Strings containing all names of context node accesses of the given Boolean binary expression.
-	 * The only implemented type of operator is `AND`. Hence, this method only supports sub expressions concatenated
-	 * via `&`.
-	 */
-	 @Deprecated
-	def List<String> getContextNodeAccess(BooleanBinaryExpression expr) {
-		var foundNodes = new LinkedList<String>
-		switch (expr.operator) {
-			case AND: {
-				foundNodes.addAll(getContextNodeAccess(expr.lhs))
-				foundNodes.addAll(getContextNodeAccess(expr.rhs))
-			}
-			default: {
-				// Do nothing
-			}
-		}
-		return foundNodes
-	}
-
-	/**
-	 * Returns a list of Strings containing all names of context node accesses of the given relational expression.
-	 * The requirements to find the necessary accesses are:
-	 * - the operator must be `EQUAL`
-	 * - one side of the expression must be local and the other side must not be local
-	 * - both sides must not have an attribute access
-	 * 
-	 * Therefore, this method only captures accesses like `element.nodes.a == context.nodes.b`.
-	 */
-	 @Deprecated
-	def List<String> getContextNodeAccess(RelationalExpression expr) {
-		var foundNodes = new LinkedList<String>
-
-		// Only if the operator is `EQUAL`
-		if (expr.operator.equals(RelationalOperator.EQUAL)) {
-			// One side must be local and one must not be local
-			if (expr.lhs instanceof NodeReference && expr.rhs instanceof NodeReference) {
-				var lhsnode = expr.lhs as NodeReference
-				var rhsnode = expr.rhs as NodeReference
-				// Both sides must not have an attribute access
-				if (lhsnode.attribute === null && rhsnode.attribute === null) {
-					if (lhsnode.local && !rhsnode.local || !lhsnode.local && rhsnode.local) {
-						if (lhsnode.local) {
-							foundNodes.add(lhsnode.node.name)
-						} else if (rhsnode.local) {
-							foundNodes.add(rhsnode.node.name)
-						}
-					}
-				}
-			}
-		}
-
-		return foundNodes
-	}
-
-	/**
-	 * Returns a list of Strings containing all names of context node accesses of the given set expression.
-	 * The requirements to find the necessary accesses are:
-	 * - the expression must be of type `filter`
-	 * - the operator used within the filter must be `EQUAL`
-	 * - one side of the respective expression must be local and the other side must not be local
-	 * - both respective sides must not have an attribute access
-	 * 
-	 * Therefore, this method only captures accesses like `filter(element.nodes.a == context.nodes.b)`.
-	 */
-	 @Deprecated
-	def List<String> getContextNodeAccess(SetOperation expr) {
-		var foundNodes = new LinkedList<String>
-
-		if (expr instanceof SetFilter) {
-			// Single relational expression
-			if (expr.expression instanceof RelationalExpression) {
-				var relExpr = expr.expression as RelationalExpression
-				foundNodes.addAll(getContextNodeAccess(relExpr))
-			}
-			// Multiple expressions composed
-			else if (expr.expression instanceof BooleanBinaryExpression) {
-				var boolBinExpr = expr.expression as BooleanBinaryExpression
-				foundNodes.addAll(getContextNodeAccess(boolBinExpr))
-			}
-		}
-
-		return foundNodes
-	}
-
-	/**
 	 * Returns `true` if the given set operation fulfills all conditions for the context of the
 	 * respective constraint to be indexed.
 	 */
@@ -724,13 +624,6 @@ indexer.getMappingsOfNodes(Set.of(«searchFor»)).parallelStream()
 		return instruction;
 	}
 	
-		/**
-	 * Returns a list of {@link RelationalExpression}
-	 */
-	def dispatch List<RelationalExpression> findPossibleIndexableRelationalExpressions(EObject expr) {
-		return Collections.emptyList
-	}
-
 	/**
 	 * Returns a list of RelationalExpressions which can be indexed.
 	 * The requirements to be included are:
@@ -741,8 +634,13 @@ indexer.getMappingsOfNodes(Set.of(«searchFor»)).parallelStream()
 	 * <li> both respective sides must not have an attribute access
 	 * </ul>
 	 * 
-	 * Therefore, this method only captures accesses like `filter(element.nodes.a == context.nodes.b)`.
+	 * Therefore, this method only captures expressions like `filter(element.nodes.a == context.nodes.b)`.
+	 * 
 	 */
+	def dispatch List<RelationalExpression> findPossibleIndexableRelationalExpressions(EObject expr) {
+		return Collections.emptyList
+	}
+
 	def dispatch List<RelationalExpression> findPossibleIndexableRelationalExpressions(SetFilter expr) {
 		val results = new LinkedList<RelationalExpression>()
 		
@@ -753,12 +651,6 @@ indexer.getMappingsOfNodes(Set.of(«searchFor»)).parallelStream()
 		return results
 	}
 	
-	def boolean isNodeOrContextReference(EObject obj){
-		if(obj instanceof NodeReference)
-			return obj.attribute === null
-		return obj instanceof ContextReference
-	}
-
 	def dispatch List<RelationalExpression> findPossibleIndexableRelationalExpressions(RelationalExpression expr) {
 		val results = new LinkedList<RelationalExpression>()
 		
@@ -780,6 +672,12 @@ indexer.getMappingsOfNodes(Set.of(«searchFor»)).parallelStream()
 		}
 		
 		return results
+	}
+	
+	def boolean isNodeOrContextReference(EObject obj){
+		if(obj instanceof NodeReference)
+			return obj.attribute === null
+		return obj instanceof ContextReference
 	}
 	
 	def List<String> getContextNodeAccess(List<RelationalExpression> possibleIndexableExpressions) {

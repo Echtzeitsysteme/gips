@@ -791,10 +791,12 @@ indexer.getMappingsOfNodes(Set.of(«searchFor»)).parallelStream()
 				val lhsnode = expr.lhs as NodeReference
 				val rhsnode = expr.rhs as NodeReference
 
-				if(lhsnode.local && !rhsnode.local) {
-					results.add(lhsnode.node.name)
-				} else if(!lhsnode.local && rhsnode.local) {
-					results.add(rhsnode.node.name)
+				if(lhsnode.attribute === null && rhsnode.attribute === null) {
+					if(lhsnode.local && !rhsnode.local) {
+						results.add(lhsnode.node.name)
+					} else if(!lhsnode.local && rhsnode.local) {
+						results.add(rhsnode.node.name)
+					}
 				}
 			}
 		}
@@ -812,10 +814,12 @@ indexer.getMappingsOfNodes(Set.of(«searchFor»)).parallelStream()
 
 			if(lhsnode.local && !rhsnode.local) {
 				if(rhsnode instanceof NodeReference)
-					results.add(rhsnode.node.name)
+					if(rhsnode.attribute === null)
+						results.add(rhsnode.node.name)
 			} else if(!lhsnode.local && rhsnode.local) {
 				if(lhsnode instanceof NodeReference)
-					results.add(lhsnode.node.name)
+					if(lhsnode.attribute === null)
+						results.add(lhsnode.node.name)
 			}
 		}
 

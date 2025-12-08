@@ -170,24 +170,19 @@ public class MappingIndexer {
 		if (initialized)
 			return;
 
-		synchronized (this) {
-			if (initialized)
-				return;
+		final Collection<String> nodeNames = getMapperNodeNames(mapper, nodes);
 
-			final Collection<String> nodeNames = getMapperNodeNames(mapper, nodes);
+		mapper.getMappings().values().stream() //
+				.map(mapping -> (GipsGTMapping<?, ?>) mapping) //
+				.forEach(elt -> {
+					IMatch match = elt.getMatch().toIMatch();
+					for (final String nodeName : nodeNames) {
+						final EObject node = (EObject) match.get(nodeName);
+						this.putMapping(node, elt);
+					}
+				});
 
-			mapper.getMappings().values().stream() //
-					.map(mapping -> (GipsGTMapping<?, ?>) mapping) //
-					.forEach(elt -> {
-						IMatch match = elt.getMatch().toIMatch();
-						for (final String nodeName : nodeNames) {
-							final EObject node = (EObject) match.get(nodeName);
-							this.putMapping(node, elt);
-						}
-					});
-
-			initialized = true;
-		}
+		initialized = true;
 	}
 
 	private Collection<String> getMapperNodeNames(GipsMapper<?> mapper, Collection<String> nodeNames) {

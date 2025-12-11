@@ -68,6 +68,10 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 		return new UMLContext(this)
 	}
 	
+	protected def boolean isNullOrEmpty(String str){
+		return str === null ? true : str.blank
+	}
+	
 	protected def String getNameOf(EObject object) {
 		if(object === null)
 			return ""
@@ -203,7 +207,8 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 	dispatch def String generateUML(GipsMapping mapping, UMLContext generator) {
 		val ref = generator.getOrCreateUMLReference(mapping)
 
-		generator.attachAtEndOfFile.add('''«ref» --> «generator.getOrCreateUMLReference(mapping.pattern)» : pattern''')
+		if(mapping.pattern !== null)
+			generator.attachAtEndOfFile.add('''«ref» --> «generator.getOrCreateUMLReference(mapping.pattern)» : pattern''')
 		
 		'''
 			class "«getNameOf(mapping)»" as «ref» <<«mapping.eClass.name»>> {
@@ -239,9 +244,11 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 		val nodeCollector = new GipslNodeCollector(linearFunction)
 		val ref = generator.getOrCreateUMLReference(linearFunction)
 		
-		generator.attachAtEndOfFile.add('''«ref».context --> «generator.getOrCreateUMLReference(linearFunction.context)» : context''')
+		if(linearFunction.context !== null)
+			generator.attachAtEndOfFile.add('''«ref».context --> «generator.getOrCreateUMLReference(linearFunction.context)» : context''')
 		nodeCollector.mappings.forEach[mapping |
-			generator.attachAtEndOfFile.add('''«ref».«mapping.name» --> «generator.getOrCreateUMLReference(mapping)» : mapping''')
+			if(!isNullOrEmpty(mapping.name))
+				generator.attachAtEndOfFile.add('''«ref».«mapping.name» --> «generator.getOrCreateUMLReference(mapping)» : mapping''')
 		]
 		
 		val editorNodes = new HashSet<EditorNode>()
@@ -264,23 +271,31 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 				«ENDIF»
 				
 				«FOR node : editorNodes»
-					class "«node.name»" as «ref».«node.name»
+					«IF !isNullOrEmpty(node.name)»
+						class "«node.name»" as «ref».«node.name»
+					«ENDIF»
 				«ENDFOR»
 				
 				«IF preferences.includeReferencedNodesByContext»
-					«FOR node : nodeCollector.contextToEditorNodes»					
-						«ref».context --> «ref».«node.name» : uses
+					«FOR node : nodeCollector.contextToEditorNodes»	
+						«IF !isNullOrEmpty(node.name)»
+							«ref».context --> «ref».«node.name» : uses
+						«ENDIF»
 					«ENDFOR»
 				«ENDIF»
 				
 				«FOR mapping : nodeCollector.mappings»
-					class "«mapping.name»" as «ref».«mapping.name» <<«mapping.eClass.name»>>
-					«ref».body --> «ref».«mapping.name» : uses
-					
-					«IF preferences.includedReferencedNodesByBody»		
-						«FOR node : nodeCollector.mappingToEditorNodes.get(mapping)»
-							«ref».«mapping.name» --> «ref».«node.name» : uses
-						«ENDFOR»
+					«IF !isNullOrEmpty(mapping.name)»
+						class "«mapping.name»" as «ref».«mapping.name» <<«mapping.eClass.name»>>
+						«ref».body --> «ref».«mapping.name» : uses
+						
+						«IF preferences.includedReferencedNodesByBody»
+							«FOR node : nodeCollector.mappingToEditorNodes.get(mapping)»
+								«IF !isNullOrEmpty(node.name)»
+									«ref».«mapping.name» --> «ref».«node.name» : uses
+								«ENDIF»
+							«ENDFOR»
+						«ENDIF»
 					«ENDIF»
 				«ENDFOR»
 				
@@ -296,10 +311,12 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 	dispatch def String generateUML(GipsConstraint constraint, UMLContext generator) {
 		val nodeCollector = new GipslNodeCollector(constraint)		 
 		val ref = generator.getOrCreateUMLReference(constraint)
-				
-		generator.attachAtEndOfFile.add('''«ref».context --> «generator.getOrCreateUMLReference(constraint.context)» : context''')
+		
+		if(constraint.context !== null)
+			generator.attachAtEndOfFile.add('''«ref».context --> «generator.getOrCreateUMLReference(constraint.context)» : context''')
 		nodeCollector.mappings.forEach[mapping |
-			generator.attachAtEndOfFile.add('''«ref».«mapping.name» --> «generator.getOrCreateUMLReference(mapping)» : mapping''')
+			if(!isNullOrEmpty(mapping.name))
+				generator.attachAtEndOfFile.add('''«ref».«mapping.name» --> «generator.getOrCreateUMLReference(mapping)» : mapping''')
 		]
 		
 		val editorNodes = new HashSet<EditorNode>()
@@ -322,23 +339,31 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 				«ENDIF»
 				
 				«FOR node : editorNodes»
-					class "«node.name»" as «ref».«node.name»
+					«IF !isNullOrEmpty(node.name)»
+						class "«node.name»" as «ref».«node.name»
+					«ENDIF»
 				«ENDFOR»
 				
 				«IF preferences.includeReferencedNodesByContext»
-					«FOR node : nodeCollector.contextToEditorNodes»					
-						«ref».context --> «ref».«node.name» : uses
+					«FOR node : nodeCollector.contextToEditorNodes»	
+						«IF !isNullOrEmpty(node.name)»
+							«ref».context --> «ref».«node.name» : uses
+						«ENDIF»
 					«ENDFOR»
 				«ENDIF»
 				
 				«FOR mapping : nodeCollector.mappings»
-					class "«mapping.name»" as «ref».«mapping.name» <<«mapping.eClass.name»>>
-					«ref».body --> «ref».«mapping.name» : uses
-					
-					«IF preferences.includedReferencedNodesByBody»
-						«FOR node : nodeCollector.mappingToEditorNodes.get(mapping)»
-							«ref».«mapping.name» --> «ref».«node.name» : uses
-						«ENDFOR»
+					«IF !isNullOrEmpty(mapping.name)»
+						class "«mapping.name»" as «ref».«mapping.name» <<«mapping.eClass.name»>>
+						«ref».body --> «ref».«mapping.name» : uses
+						
+						«IF preferences.includedReferencedNodesByBody»
+							«FOR node : nodeCollector.mappingToEditorNodes.get(mapping)»
+								«IF !isNullOrEmpty(node.name)»
+									«ref».«mapping.name» --> «ref».«node.name» : uses
+								«ENDIF»
+							«ENDFOR»
+						«ENDIF»
 					«ENDIF»
 				«ENDFOR»
 				

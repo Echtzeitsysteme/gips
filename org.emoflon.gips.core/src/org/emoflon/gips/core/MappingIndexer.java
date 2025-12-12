@@ -195,11 +195,10 @@ public class MappingIndexer {
 
 		List<IBeXNode> allNodesOfPattern = mapper.getMapping().getContextPattern().getSignatureNodes();
 
-		nodeNames = new HashSet<>();
+		Collection<String> allNodeNames = new HashSet<>();
 		for (final IBeXNode ibexNode : allNodesOfPattern)
-			nodeNames.add(ibexNode.getName());
-
-		return nodeNames;
+			allNodeNames.add(ibexNode.getName());
+		return allNodeNames;
 	}
 
 }

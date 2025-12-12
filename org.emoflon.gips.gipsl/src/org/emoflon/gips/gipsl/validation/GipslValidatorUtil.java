@@ -106,6 +106,7 @@ public class GipslValidatorUtil {
 	public static final String MAPPING_W_O_CONSTRAINTS_MESSAGE = "Mapping '%s' is not subject to any constraints.";
 	public static final String MAPPING_W_O_CONSTRAINTS_AND_OBJECTIVE_MESSAGE = "Mapping '%s' is not subject to any constraints and not part of any objective function.";
 	public static final String MAPPING_VARIABLE_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Mapping variable name '%s' must not be declared more than once.";
+	public static final String MAPPING_NO_IMPLICIT_BINARY_VARIABLES = "Mapping '%s' .value is never used. No implicit binary variable will be created for this mapping.";
 	public static final String RULE_HAS_MULTIPLE_MAPPINGS = "Multiple mappings on rule: <'%s'>";
 	public static final String RULE_IS_ABSTRACT = "Mapping '%s' uses an abstract rule which is not possible.";
 

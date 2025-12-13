@@ -38,7 +38,7 @@ abstract class GeneratorTemplate <CONTEXT extends EObject>{
 	}
 
 	def boolean isMappingVariable(Variable variable) {
-		return data.mapping2mappingClassName.keySet().stream().filter[m | m.getMappingVariable().equals(variable)]
+		return data.mapping2mappingClassName.keySet().stream().filter[m | m.getMappingVariable() !== null && m.getMappingVariable().equals(variable)]
 				.findAny().isPresent();
 	}
 }

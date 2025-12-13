@@ -14,8 +14,8 @@ public abstract class GipsGTMapping<M extends GraphTransformationMatch<M, P>, P 
 
 	final protected M match;
 
-	protected GipsGTMapping(final String milpVariable, final M match) {
-		super(milpVariable);
+	protected GipsGTMapping(final String milpVariable, final boolean hasBinaryVariable, final M match) {
+		super(milpVariable, hasBinaryVariable);
 		this.match = match;
 	}
 

@@ -19,6 +19,10 @@ public abstract class GipsMapper<M extends GipsMapping> {
 		this.mapping = mapping;
 	}
 
+	public boolean hasBinaryVariable() {
+		return mapping.getMappingVariable() != null;
+	}
+
 	public M getMapping(final String milpVariable) {
 		return mappings.get(milpVariable);
 	}

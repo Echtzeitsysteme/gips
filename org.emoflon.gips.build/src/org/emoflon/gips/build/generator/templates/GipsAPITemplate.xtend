@@ -51,7 +51,11 @@ class GipsAPITemplate extends ProblemGeneratorTemplate<GipsIntermediateModel> {
 	
 	override generate() {
 		val codeForConstants = generateCodeForConstants();
-		code = '''«generatePackageDeclaration()»
+		code = '''
+/*
+* Generated org.emoflon.gips.build.generator.templates.GipsAPITemplate
+*/ 
+«generatePackageDeclaration()»
 		
 «generateImports()»
 		

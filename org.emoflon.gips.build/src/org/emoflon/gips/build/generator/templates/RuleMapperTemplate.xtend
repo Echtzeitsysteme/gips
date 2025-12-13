@@ -24,7 +24,11 @@ class RuleMapperTemplate extends GeneratorTemplate<RuleMapping> {
 	}
 	
 	override generate() {
-		code = '''package «packageName»;
+		code = '''
+/*
+* Generated org.emoflon.gips.build.generator.templates.RuleMapperTemplate
+*/ 			
+package «packageName»;
 		
 «FOR imp : imports»
 import «imp»;
@@ -37,7 +41,7 @@ public class «className» extends GipsRuleMapper<«data.mapping2mappingClassNam
 	
 	@Override
 	protected «data.mapping2mappingClassName.get(context)» convertMatch(final String milpVariable, final «data.mapping2matchClassName.get(context)» match) {
-		return new «data.mapping2mappingClassName.get(context)»(milpVariable, match);
+		return new «data.mapping2mappingClassName.get(context)»(milpVariable, this.hasBinaryVariable(), match);
 	}
 }'''
 	}

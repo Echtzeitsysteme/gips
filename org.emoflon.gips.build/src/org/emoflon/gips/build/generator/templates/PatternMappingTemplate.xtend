@@ -36,7 +36,11 @@ class PatternMappingTemplate extends GeneratorTemplate<PatternMapping> {
 	}
 	
 	override generate() {
-		code = '''package «packageName»;
+		code = '''
+/*
+* Generated org.emoflon.gips.build.generator.templates.PatternMappingTemplate
+*/ 			
+package «packageName»;
 		
 «FOR imp : imports»
 import «imp»;
@@ -48,8 +52,8 @@ public class «className» extends GipsGTMapping<«data.mapping2matchClassName.g
 	protected «GipsImportManager.variableToJavaDataType(v, imports)» «v.name.toFirstLower»;
 	«ENDFOR»
 	«ENDIF»
-	public «className»(final String milpVariable, final «data.mapping2matchClassName.get(context)» match) {
-		super(milpVariable, match);
+	public «className»(final String milpVariable, final boolean hasBinaryVariable, final «data.mapping2matchClassName.get(context)» match) {
+		super(milpVariable, hasBinaryVariable, match);
 		«IF !context.freeVariables.isNullOrEmpty»
 		«FOR v : context.freeVariables»
 		«v.name.toFirstLower» = new «GipsImportManager.variableToJavaDataType(v, imports)»(name + "->«v.name»");

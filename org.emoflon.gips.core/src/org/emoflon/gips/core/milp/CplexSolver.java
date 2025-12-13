@@ -320,15 +320,18 @@ public class CplexSolver extends Solver {
 				// Get corresponding (M)ILP variable name
 				final GipsMapping mapping = mapper.getMapping(k);
 				final String varName = mapping.getName();
-				// Get value of the (M)ILP variable and round it (to eliminate small deltas)
-				double result = 0;
-				try {
-					result = cplex.getValue(vars.get(varName));
-				} catch (final IloException ex) {
-					throw new RuntimeException(ex);
+
+				if (mapping.hasBinaryVariable()) {
+					// Get value of the (M)ILP variable and round it (to eliminate small deltas)
+					double result = 0;
+					try {
+						result = cplex.getValue(vars.get(varName));
+					} catch (final IloException ex) {
+						throw new RuntimeException(ex);
+					}
+					// Save result value in specific mapping
+					mapping.setValue((int) result);
 				}
-				// Save result value in specific mapping
-				mapping.setValue((int) result);
 
 				// Save all values of additional variables if any
 				if (mapping.hasAdditionalVariables()) {
@@ -359,7 +362,9 @@ public class CplexSolver extends Solver {
 
 	@Override
 	protected void translateMapping(final GipsMapping mapping) {
-		createBinVarIfNotExists(mapping.getName(), mapping.getLowerBound(), mapping.getUpperBound());
+		if (mapping.hasBinaryVariable())
+			createBinVarIfNotExists(mapping.getName(), mapping.getLowerBound(), mapping.getUpperBound());
+
 		if (mapping.hasAdditionalVariables()) {
 			createAdditionalVars(mapping.getAdditionalVariables().values());
 		}

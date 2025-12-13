@@ -1,21 +1,13 @@
 package org.emoflon.gips.gipsl.validation;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
-import org.emoflon.gips.gipsl.gipsl.GipsLocalContextExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
-import org.emoflon.gips.gipsl.gipsl.GipsMappingExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
-import org.emoflon.gips.gipsl.gipsl.GipsSetElementExpression;
-import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
@@ -210,45 +202,11 @@ public class GipslMappingValidator {
 	 * @param mapping
 	 */
 	public static void checkMappingNoBinaryVariable(final GipsMapping mapping) {
-		final EditorGTFile container = GTEditorPatternUtils.getContainer(mapping, EditorGTFileImpl.class);
-
-		final Collection<EObject> toBeScanned = new HashSet<>();
-		toBeScanned.addAll(container.getConstraints());
-		toBeScanned.addAll(container.getFunctions());
-		toBeScanned.add(container.getObjective());
-		toBeScanned.remove(null);
-
-		TreeIterator<EObject> iterator = EcoreUtil.getAllProperContents(toBeScanned, true);
-		while (iterator.hasNext()) {
-			EObject next = iterator.next();
-			if (next instanceof GipsSetElementExpression expression) {
-				if (expression.getExpression() instanceof GipsVariableReferenceExpression varReferenceExpression) {
-					if (varReferenceExpression.isIsMappingValue()) {
-						EObject setContext = GipslScopeContextUtil.getSetContext(expression);
-						if (setContext instanceof GipsMappingExpression mappingExpression) {
-							if (mapping.equals(mappingExpression.getMapping())) {
-								return; // mapping.value is used at least once (as element.value)
-							}
-						}
-					}
-				}
-			} else if (next instanceof GipsLocalContextExpression expression) {
-				if (expression.getExpression() instanceof GipsVariableReferenceExpression varReferenceExpression) {
-					if (varReferenceExpression.isIsMappingValue()) {
-						EObject localContext = GipslScopeContextUtil.getLocalContext(expression);
-						if (localContext instanceof GipsMapping localMapping) {
-							if (mapping.equals(localMapping)) {
-								return; // mapping.value is used at least once (as context.value)
-							}
-						}
-					}
-				}
-			}
+		if (!GipslScopeContextUtil.isMappingValueReferenced(mapping)) {
+			GipslValidator.warn( //
+					String.format(GipslValidatorUtil.MAPPING_NO_IMPLICIT_BINARY_VARIABLES, mapping.getName()), //
+					GipslPackage.Literals.GIPS_MAPPING__NAME);
 		}
-
-		GipslValidator.warn( //
-				String.format(GipslValidatorUtil.MAPPING_NO_IMPLICIT_BINARY_VARIABLES, mapping.getName()), //
-				GipslPackage.Literals.GIPS_MAPPING__NAME);
 	}
 
 	public static void checkMappingVariableNameUnique(final GipsMappingVariable mappingVariable) {

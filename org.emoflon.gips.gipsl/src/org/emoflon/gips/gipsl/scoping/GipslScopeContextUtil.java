@@ -457,6 +457,29 @@ public final class GipslScopeContextUtil {
 		return false;
 	}
 
+	public static boolean isMappingVariableReferenced(final GipsMappingVariable mappingVariable) {
+		final EditorGTFile gtFile = GTEditorPatternUtils.getContainer(mappingVariable, EditorGTFileImpl.class);
+		final Collection<EObject> toBeScanned = new HashSet<>();
+		toBeScanned.addAll(gtFile.getConstraints());
+		toBeScanned.addAll(gtFile.getFunctions());
+		toBeScanned.add(gtFile.getObjective());
+		toBeScanned.remove(null);
+
+		TreeIterator<EObject> iterator = EcoreUtil.getAllProperContents(toBeScanned, true);
+
+		while (iterator.hasNext()) {
+			EObject next = iterator.next();
+			if (next instanceof GipsVariableReferenceExpression varReferenceExpression) {
+				if (varReferenceExpression.isIsGenericValue()) {
+					if (mappingVariable.equals(varReferenceExpression.getVariable()))
+						return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	public static void gatherFilesWithEnding(Collection<File> gtFiles, File root, String ending, boolean ignoreBin) {
 		if (root.isDirectory() && root.exists()) {
 			if (ignoreBin && root.getName().equals("bin"))

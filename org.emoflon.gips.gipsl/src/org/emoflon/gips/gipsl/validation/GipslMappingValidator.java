@@ -39,7 +39,7 @@ public class GipslMappingValidator {
 		checkRuleNotAbstract(mapping);
 		checkAtMostOneMappingPerRule(mapping);
 		checkMappingUnused(mapping);
-		checkMappingNoBinaryVariable(mapping);
+		checkMappingValueInUse(mapping);
 	}
 
 	/**
@@ -201,11 +201,19 @@ public class GipslMappingValidator {
 	 * 
 	 * @param mapping
 	 */
-	public static void checkMappingNoBinaryVariable(final GipsMapping mapping) {
+	public static void checkMappingValueInUse(final GipsMapping mapping) {
 		if (!GipslScopeContextUtil.isMappingValueReferenced(mapping)) {
 			GipslValidator.warn( //
-					String.format(GipslValidatorUtil.MAPPING_NO_IMPLICIT_BINARY_VARIABLES, mapping.getName()), //
+					String.format(GipslValidatorUtil.MAPPING_VALUE_NOT_USED, mapping.getName()), //
 					GipslPackage.Literals.GIPS_MAPPING__NAME);
+		}
+	}
+
+	public static void checkMappingVariableInUse(final GipsMappingVariable mappingVariable) {
+		if (!GipslScopeContextUtil.isMappingVariableReferenced(mappingVariable)) {
+			GipslValidator.warn( //
+					String.format(GipslValidatorUtil.MAPPING_VARIABLE_NOT_USED, mappingVariable.getName()), //
+					GipslPackage.Literals.GIPS_MAPPING_VARIABLE__NAME);
 		}
 	}
 

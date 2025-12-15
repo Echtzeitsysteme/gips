@@ -310,6 +310,9 @@ public class GipsToIntermediate {
 			return;
 
 		for (GipsMappingVariable gipsVar : mapping.getVariables()) {
+			if (!GipslScopeContextUtil.isMappingVariableReferenced(gipsVar))
+				continue;
+
 			if (gipsVar.isBound()) {
 				RuleParameterVariable var = factory.createRuleParameterVariable();
 				var.setType(GipsTransformationUtils.typeToVariableType(gipsVar.getType()));
@@ -343,6 +346,9 @@ public class GipsToIntermediate {
 			return;
 
 		for (GipsMappingVariable gipsVar : mapping.getVariables()) {
+			if (!GipslScopeContextUtil.isMappingVariableReferenced(gipsVar))
+				continue;
+
 			Variable var = factory.createVariable();
 			var.setType(GipsTransformationUtils.typeToVariableType(gipsVar.getType()));
 			var.setName(gipsVar.getName());

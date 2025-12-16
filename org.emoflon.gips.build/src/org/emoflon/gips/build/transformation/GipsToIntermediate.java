@@ -27,6 +27,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
+import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
@@ -280,9 +281,12 @@ public class GipsToIntermediate {
 			}
 
 			mapping.setName(eMapping.getName());
-			Variable mappingVariable = GipsConstraintUtils.createBinaryVariable(data, factory, eMapping.getName());
-			mapping.setMappingVariable(mappingVariable);
-			data.eVariable2Variable().put(eMapping, mappingVariable);
+
+			if (GipslScopeContextUtil.isMappingValueReferenced(eMapping)) {
+				Variable mappingVariable = GipsConstraintUtils.createBinaryVariable(data, factory, eMapping.getName());
+				mapping.setMappingVariable(mappingVariable);
+				data.eVariable2Variable().put(eMapping, mappingVariable);
+			}
 
 			data.model().getMappings().add(mapping);
 			data.eMapping2Mapping().put(eMapping, mapping);
@@ -306,6 +310,9 @@ public class GipsToIntermediate {
 			return;
 
 		for (GipsMappingVariable gipsVar : mapping.getVariables()) {
+			if (!GipslScopeContextUtil.isMappingVariableReferenced(gipsVar))
+				continue;
+
 			if (gipsVar.isBound()) {
 				RuleParameterVariable var = factory.createRuleParameterVariable();
 				var.setType(GipsTransformationUtils.typeToVariableType(gipsVar.getType()));
@@ -339,6 +346,9 @@ public class GipsToIntermediate {
 			return;
 
 		for (GipsMappingVariable gipsVar : mapping.getVariables()) {
+			if (!GipslScopeContextUtil.isMappingVariableReferenced(gipsVar))
+				continue;
+
 			Variable var = factory.createVariable();
 			var.setType(GipsTransformationUtils.typeToVariableType(gipsVar.getType()));
 			var.setName(gipsVar.getName());

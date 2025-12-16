@@ -39,7 +39,11 @@ class MapperFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 	}
 	
 	override generate() {
-		code = '''package «packageName»;
+		code = '''
+/*
+* Generated org.emoflon.gips.build.generator.templates.MapperFactoryTemplate
+*/ 	
+package «packageName»;
 
 «FOR imp : imports»
 import «imp»;

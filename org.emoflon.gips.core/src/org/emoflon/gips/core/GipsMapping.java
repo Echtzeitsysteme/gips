@@ -8,8 +8,11 @@ import org.emoflon.gips.core.milp.model.Variable;
 
 public abstract class GipsMapping extends BinaryVariable {
 
-	protected GipsMapping(final String milpVariable) {
+	private final boolean hasBinaryVariable;
+
+	protected GipsMapping(final String milpVariable, final boolean hasBinaryVariable) {
 		super(milpVariable);
+		this.hasBinaryVariable = hasBinaryVariable;
 	}
 
 	@Override
@@ -24,6 +27,10 @@ public abstract class GipsMapping extends BinaryVariable {
 		} else {
 			return false;
 		}
+	}
+
+	public boolean hasBinaryVariable() {
+		return hasBinaryVariable;
 	}
 
 	public abstract boolean hasAdditionalVariables();

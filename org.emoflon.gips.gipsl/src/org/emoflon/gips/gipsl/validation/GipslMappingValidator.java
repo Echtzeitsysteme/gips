@@ -39,6 +39,7 @@ public class GipslMappingValidator {
 		checkRuleNotAbstract(mapping);
 		checkAtMostOneMappingPerRule(mapping);
 		checkMappingUnused(mapping);
+		checkMappingValueInUse(mapping);
 	}
 
 	/**
@@ -190,6 +191,29 @@ public class GipslMappingValidator {
 			GipslValidator.warn( //
 					String.format(GipslValidatorUtil.MAPPING_W_O_CONSTRAINTS_AND_OBJECTIVE_MESSAGE, mapping.getName()), //
 					GipslPackage.Literals.GIPS_MAPPING__NAME);
+		}
+	}
+
+	/**
+	 * Displays a warning to inform the user that no binary variables will be
+	 * generated for the given mapping.This occurs if the 'value' attribute of the
+	 * mapping is not evaluated.
+	 * 
+	 * @param mapping
+	 */
+	public static void checkMappingValueInUse(final GipsMapping mapping) {
+		if (!GipslScopeContextUtil.isMappingValueReferenced(mapping)) {
+			GipslValidator.warn( //
+					String.format(GipslValidatorUtil.MAPPING_VALUE_NOT_USED, mapping.getName()), //
+					GipslPackage.Literals.GIPS_MAPPING__NAME);
+		}
+	}
+
+	public static void checkMappingVariableInUse(final GipsMappingVariable mappingVariable) {
+		if (!GipslScopeContextUtil.isMappingVariableReferenced(mappingVariable)) {
+			GipslValidator.warn( //
+					String.format(GipslValidatorUtil.MAPPING_VARIABLE_NOT_USED, mappingVariable.getName()), //
+					GipslPackage.Literals.GIPS_MAPPING_VARIABLE__NAME);
 		}
 	}
 

@@ -373,7 +373,7 @@ public class GipslValidator extends AbstractGipslValidator {
 			return;
 		}
 		GipslMappingValidator.checkMappingVariableNameUnique(variable);
-
+		GipslMappingValidator.checkMappingVariableInUse(variable);
 	}
 
 	@Check

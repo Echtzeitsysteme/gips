@@ -10,6 +10,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappings" upperBound="-1"
         eType="#//GipsMapping" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="types" upperBound="-1"
+        eType="#//GipsTypeExtension" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="constants" upperBound="-1"
         eType="#//GipsConstant" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="constraints" upperBound="-1"
@@ -70,6 +72,15 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EDataType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="bound" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameter" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorParameter"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsTypeExtension">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variables" upperBound="-1"
+        eType="#//GipsTypeExtensionVariable" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsTypeExtensionVariable">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EDataType"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsConstant">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

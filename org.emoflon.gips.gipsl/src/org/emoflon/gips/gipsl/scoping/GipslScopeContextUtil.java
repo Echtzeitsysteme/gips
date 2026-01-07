@@ -52,6 +52,8 @@ import org.emoflon.gips.gipsl.gipsl.GipsRuleExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsSetElementExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsTransformOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExtension;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExtensionVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeQuery;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeSelect;
 import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
@@ -99,6 +101,15 @@ public final class GipslScopeContextUtil {
 	public static boolean isGipsVariableReferenceExpression(final EObject context, final EReference reference) {
 		return context instanceof GipsVariableReferenceExpression
 				&& reference == GipslPackage.Literals.GIPS_VARIABLE_REFERENCE_EXPRESSION__VARIABLE;
+	}
+
+	public static boolean isGipsTypeExtension(final EObject context, final EReference reference) {
+		return context instanceof GipsTypeExtension;
+	}
+
+	public static boolean isGipsTypeExtensionVariableType(final EObject context, final EReference reference) {
+		return context instanceof GipsTypeExtensionVariable
+				&& reference == GipslPackage.Literals.GIPS_TYPE_EXTENSION_VARIABLE__TYPE;
 	}
 
 	public static boolean isGipsConstraintContext(final EObject context, final EReference reference) {

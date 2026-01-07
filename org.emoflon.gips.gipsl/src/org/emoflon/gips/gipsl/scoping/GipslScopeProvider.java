@@ -52,6 +52,8 @@ import org.emoflon.gips.gipsl.gipsl.GipsSetElementExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsSortPredicate;
 import org.emoflon.gips.gipsl.gipsl.GipsTransformOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExtension;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExtensionVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeQuery;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeSelect;
 import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
@@ -105,6 +107,10 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			return scopeForGipsMapping((GipsMapping) context, reference);
 		} else if (GipslScopeContextUtil.isGipsMappingVariableType(context, reference)) {
 			return scopeForGipsMappingVariableType((GipsMappingVariable) context, reference);
+		} else if (GipslScopeContextUtil.isGipsTypeExtension(context, reference)) {
+			return scopeForGipsTypeExtension((GipsTypeExtension) context, reference);
+		} else if (GipslScopeContextUtil.isGipsTypeExtensionVariableType(context, reference)) {
+			return scopeForGipsTypeExtensionVariableType((GipsTypeExtensionVariable) context, reference);
 		} else if (GipslScopeContextUtil.isGipsMappingVariableParameter(context, reference)) {
 			return scopeForGipsMappingVariableParameter((GipsMappingVariable) context, reference);
 		} else if (GipslScopeContextUtil.isGipsConstantReference(context, reference)) {
@@ -364,6 +370,14 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			return IScope.NULLSCOPE;
 		}
 
+	}
+
+	private IScope scopeForGipsTypeExtension(GipsTypeExtension context, EReference reference) {
+		return Scopes.scopeFor(GipslScopeContextUtil.getClasses(context));
+	}
+
+	public IScope scopeForGipsTypeExtensionVariableType(GipsTypeExtensionVariable context, EReference reference) {
+		return Scopes.scopeFor(variableDataTypes);
 	}
 
 	public IScope scopeForGipsConstantReference(GipsConstantReference context, EReference reference) {

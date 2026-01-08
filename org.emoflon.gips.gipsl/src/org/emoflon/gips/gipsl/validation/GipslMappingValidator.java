@@ -210,10 +210,10 @@ public class GipslMappingValidator {
 	}
 
 	public static void checkMappingVariableInUse(final GipsMappingVariable mappingVariable) {
-		if (!GipslScopeContextUtil.isMappingVariableReferenced(mappingVariable)) {
+		if (!GipslScopeContextUtil.isVariableReferenced(mappingVariable)) {
 			GipslValidator.warn( //
 					String.format(GipslValidatorUtil.MAPPING_VARIABLE_NOT_USED, mappingVariable.getName()), //
-					GipslPackage.Literals.GIPS_MAPPING_VARIABLE__NAME);
+					GipslPackage.Literals.GIPS_VARIABLE__NAME);
 		}
 	}
 
@@ -233,7 +233,7 @@ public class GipslMappingValidator {
 			GipslValidator.err( //
 					String.format(GipslValidatorUtil.MAPPING_VARIABLE_NAME_MULTIPLE_DECLARATIONS_MESSAGE,
 							mappingVariable.getName()), //
-					GipslPackage.Literals.GIPS_MAPPING_VARIABLE__NAME, //
+					GipslPackage.Literals.GIPS_VARIABLE__NAME, //
 					GipslValidator.NAME_EXPECT_UNIQUE //
 			);
 		}

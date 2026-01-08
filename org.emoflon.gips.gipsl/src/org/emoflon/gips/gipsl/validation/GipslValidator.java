@@ -9,7 +9,6 @@ import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
@@ -17,7 +16,6 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -381,43 +379,13 @@ public class GipslValidator extends AbstractGipslValidator {
 	}
 
 	@Check
+	public void checkTypeExtension(final GipsTypeExtension typeExtension) {
+		GipslTypeExtensionValidator.checkTypeExtensionIsUniqueForType(typeExtension);
+	}
+
+	@Check
 	public void checkTypeExtensionVariable(final GipsTypeExtensionVariable variable) {
-		if (variable.getName() == null)
-			return;
-
-		final GipsTypeExtension typeExtension = (GipsTypeExtension) variable.eContainer();
-		if (typeExtension == null || typeExtension.getVariables() == null || typeExtension.getVariables().isEmpty())
-			return;
-
-		Optional<GipsTypeExtensionVariable> otherExtensionVariable = typeExtension.getVariables().stream() //
-				.filter(var -> !var.equals(variable)) //
-				.filter(var -> var.getName() != null) //
-				.filter(var -> var.getName().equals(variable.getName())) //
-				.findAny();
-
-		if (otherExtensionVariable.isPresent()) { // TODO
-			GipslValidator.err( //
-					String.format("Variable name '%s' must not be declared more than once.", variable.getName()), //
-					GipslPackage.Literals.GIPS_TYPE_EXTENSION_VARIABLE__NAME, //
-					GipslValidator.NAME_EXPECT_UNIQUE //
-			);
-		}
-
-		if (typeExtension.getRef() == null)
-			return;
-
-		Optional<EAttribute> otherOriginalVariable = ((EClass) typeExtension.getRef()).getEAllAttributes().stream() //
-				.filter(var -> var.getName() != null) //
-				.filter(var -> var.getName().equalsIgnoreCase(variable.getName())) //
-				.findAny();
-
-		if (otherOriginalVariable.isPresent()) { // TODO
-			GipslValidator.err( //
-					String.format("Variable name '%s' already declared on type.", variable.getName()), //
-					GipslPackage.Literals.GIPS_TYPE_EXTENSION_VARIABLE__NAME, //
-					GipslValidator.NAME_EXPECT_UNIQUE //
-			);
-		}
+		GipslTypeExtensionValidator.checkTypeExtensionVariableHasUniqueName(variable);
 	}
 
 	@Check

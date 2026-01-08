@@ -27,6 +27,8 @@ import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExtension;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExtensionVariable;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryOperator;
@@ -56,6 +58,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.SolverConfig;
 import org.emoflon.gips.intermediate.GipsIntermediate.SolverPresolve;
 import org.emoflon.gips.intermediate.GipsIntermediate.SolverType;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeExtension;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
@@ -93,6 +96,7 @@ public class GipsToIntermediate {
 		// transform Gips components
 		transformConfig();
 		transformMappings();
+		transformTypeExtensions();
 		transformGlobalConstants();
 
 		transformConstraints();
@@ -294,6 +298,46 @@ public class GipsToIntermediate {
 		});
 	}
 
+	protected void transformTypeExtensions() {
+		for (GipsTypeExtension eTypeExtension : data.gipslFile().getTypes()) {
+			if (eTypeExtension.getRef() == null)
+				continue;
+
+//			boolean isUsed = eTypeExtension.getVariables().stream()
+//					.anyMatch(var -> GipslScopeContextUtil.isVariableReferenced(var));
+//			if (!isUsed)
+//				continue;
+
+			TypeExtension typeExtension = factory.createTypeExtension();
+			typeExtension.setExtendedType((EClass) eTypeExtension.getRef());
+			transformVariables(eTypeExtension, typeExtension);
+
+			data.model().getExtendedTypes().add(typeExtension);
+			gipsl2gipsTrace.map(eTypeExtension, typeExtension);
+		}
+	}
+
+	private void transformVariables(GipsTypeExtension eTypeExtension, TypeExtension typeExtension) {
+		if (eTypeExtension.getVariables() == null || eTypeExtension.getVariables().isEmpty())
+			return;
+
+		for (GipsTypeExtensionVariable eVariable : eTypeExtension.getVariables()) {
+			if (!GipslScopeContextUtil.isVariableReferenced(eVariable))
+				continue;
+
+			Variable variable = factory.createVariable();
+			variable.setType(GipsTransformationUtils.typeToVariableType(eVariable.getType()));
+			variable.setName(eVariable.getName());
+			variable.setLowerBound(GipsTransformationUtils.getLowerBound(eVariable, variable.getType()));
+			variable.setUpperBound(GipsTransformationUtils.getUpperBound(eVariable, variable.getType()));
+
+			typeExtension.getAddedVariables().add(variable);
+			data.model().getVariables().add(variable);
+			data.eVariable2Variable().put(eVariable, variable);
+			gipsl2gipsTrace.map(eVariable, variable);
+		}
+	}
+
 	protected void transformGlobalConstants() throws Exception {
 		if (data.gipslFile().getConstants() == null)
 			return;
@@ -310,7 +354,7 @@ public class GipsToIntermediate {
 			return;
 
 		for (GipsMappingVariable gipsVar : mapping.getVariables()) {
-			if (!GipslScopeContextUtil.isMappingVariableReferenced(gipsVar))
+			if (!GipslScopeContextUtil.isVariableReferenced(gipsVar))
 				continue;
 
 			if (gipsVar.isBound()) {
@@ -346,7 +390,7 @@ public class GipsToIntermediate {
 			return;
 
 		for (GipsMappingVariable gipsVar : mapping.getVariables()) {
-			if (!GipslScopeContextUtil.isMappingVariableReferenced(gipsVar))
+			if (!GipslScopeContextUtil.isVariableReferenced(gipsVar))
 				continue;
 
 			Variable var = factory.createVariable();

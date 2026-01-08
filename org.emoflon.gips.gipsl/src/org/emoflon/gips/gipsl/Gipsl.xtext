@@ -52,6 +52,11 @@ enum PresolveType:
 	NONE='none' | AUTO='auto' | CONSERVATIVE='conservative' | AGGRESSIVE='aggressive'
 ;
 
+
+GipsVariable :
+	GipsMappingVariable | GipsTypeExtensionVariable
+;
+
 GipsMapping :
 	'mapping' name=ID 'to' pattern=[GT::EditorPattern|ID] ('{'
 		(variables += GipsMappingVariable)+
@@ -278,7 +283,8 @@ GipsVariableReferenceExpression returns GipsVariableReferenceExpression:
 	'.' 
 	(
 		(isMappingValue ?= 'value') |
- 		(isGenericValue ?= 'variables') '.' variable = [GipsMappingVariable|ID]
+ 		(isGenericValue ?= 'variables') '.' variable = [GipsVariable|ID] |
+ 		(isAttribute ?= 'attributes') '.' attribute = [ecore::EAttribute|ID]
 	)
 ;
 

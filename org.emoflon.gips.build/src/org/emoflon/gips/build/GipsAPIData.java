@@ -40,6 +40,8 @@ public class GipsAPIData {
 	public String gipsConstraintPkgPath;
 	public String gipsObjectivePkg;
 	public String gipsObjectivePkgPath;
+	public String gipsTypeExtensionPkg;
+	public String gipsTypeExtensionPkgPath;
 
 	public GipsAPIData(final IFolder apiPackageFolder) {
 		this.apiPackageFolder = apiPackageFolder;
@@ -85,5 +87,10 @@ public class GipsAPIData {
 	public void setGipsObjectivePackage(final IFolder gipsObjectiveFolder) {
 		gipsObjectivePkgPath = gipsObjectiveFolder.getProjectRelativePath().toPortableString();
 		gipsObjectivePkg = gipsObjectivePkgPath.replace("/", ".").replace("src-gen.", "");
+	}
+
+	public void setGipsTypeExtensionPkg(final IFolder gipsTypeExtensionFolder) {
+		gipsTypeExtensionPkgPath = gipsTypeExtensionFolder.getProjectRelativePath().toPortableString();
+		gipsTypeExtensionPkg = gipsTypeExtensionPkgPath.replace("/", ".").replace("src-gen.", "");
 	}
 }

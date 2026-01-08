@@ -97,6 +97,9 @@ public class GipsProjectBuilder implements GipsBuilderExtension {
 				GipsBuilderUtils.getGeneratedProjectFolder(project, GipsBuilderUtils.CONSTRAINT_FOLDER));
 		gipsApiData.setGipsObjectivePackage(
 				GipsBuilderUtils.getGeneratedProjectFolder(project, GipsBuilderUtils.OBJECTIVE_FOLDER));
+		gipsApiData.setGipsTypeExtensionPkg(
+				GipsBuilderUtils.getGeneratedProjectFolder(project, GipsBuilderUtils.TYPE_EXTENSION_FOLDER));
+
 		// get package dependencies
 		GipsImportManager manager = GipsBuilderUtils
 				.createGipsImportManager(GipsBuilderUtils.createEPackageRegistry(model));

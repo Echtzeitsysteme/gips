@@ -140,7 +140,7 @@ public class GipslValidatorUtil {
 	public static final String ARITH_EXPR_NONLINEAR_ERROR_MESSAGE = "Combination of operands leads to non-linear expression.";
 	public static final String ARITH_EXPR_MISMATCH_ERROR_MESSAGE = "Operands cannot be combined since their types do not match.";
 	public static final String ARITH_EXPR_LFR_ERROR_MESSAGE = "Linear function references not allowed in set expressions and outside of the objective.";
-	public static final String ARITH_EXPR_VAR_REF_ERROR_MESSAGE = "Variable references can only be used in combination with a mapping context.";
+	public static final String ARITH_EXPR_VAR_REF_ERROR_MESSAGE = "Variable references can only be used in combination with a mapping or EClass context.";
 	public static final String ARITH_EXPR_VAR_USE_ERROR_MESSAGE = "Variable references can only be used \"plain\" arithmetic expressions or non-nested sum operations of sets.";
 
 	public static final String VALUE_EXPR_CONTAINS_ERRORS = "Value expression contains errors.";

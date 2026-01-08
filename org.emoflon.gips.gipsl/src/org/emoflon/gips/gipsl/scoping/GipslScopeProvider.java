@@ -314,62 +314,72 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 
 	public IScope scopeForGipsVariableReferenceExpression(GipsVariableReferenceExpression context,
 			EReference reference) {
+
 		EObject container = (EObject) GipslScopeContextUtil.getContainer(context,
 				Set.of(GipsValueExpressionImpl.class, GipsTransformOperationImpl.class));
 
 		if (container instanceof GipsValueExpression root) {
+
 			if (root.getValue() instanceof GipsMappingExpression mapping) {
+
 				if (mapping.getMapping() != null && mapping.getMapping().getVariables() != null
 						&& !mapping.getMapping().getVariables().isEmpty()) {
 					return Scopes.scopeFor(mapping.getMapping().getVariables());
-				} else {
-					return IScope.NULLSCOPE;
 				}
+
 			} else if (root.getValue() instanceof GipsLocalContextExpression local) {
-				if (!GipslScopeContextUtil.hasLocalContext(local)) {
-					return IScope.NULLSCOPE;
-				}
+
 				EObject localContext = GipslScopeContextUtil.getLocalContext(local);
 				if (localContext instanceof GipsMapping mapping) {
-					if (mapping.getVariables() != null && !mapping.getVariables().isEmpty()) {
+					if (mapping.getVariables() != null)
 						return Scopes.scopeFor(mapping.getVariables());
-					} else {
-						return IScope.NULLSCOPE;
-					}
-				} else {
-					return IScope.NULLSCOPE;
+
+				} else if (localContext instanceof EClass type) {
+					if (reference == GipslPackage.Literals.GIPS_VARIABLE_REFERENCE_EXPRESSION__ATTRIBUTE)
+						return Scopes.scopeFor(type.getEAllAttributes().stream() //
+								.filter(e -> e.isChangeable() && !e.isMany() && !e.isDerived()) //
+								.toList());
+
+					GipsTypeExtension typeExtension = GipslScopeContextUtil.getTypeExtensionForType(context, type);
+					if (typeExtension != null)
+						return Scopes.scopeFor(typeExtension.getVariables());
 				}
+
 			} else if (root.getValue() instanceof GipsSetElementExpression setElement) {
+
 				EObject setContext = GipslScopeContextUtil.getSetContext(setElement);
 				if (setContext instanceof GipsMappingExpression mapping) {
 					if (mapping.getMapping() != null && mapping.getMapping().getVariables() != null
 							&& !mapping.getMapping().getVariables().isEmpty()) {
 						return Scopes.scopeFor(mapping.getMapping().getVariables());
-					} else {
-						return IScope.NULLSCOPE;
 					}
-				} else {
-					return IScope.NULLSCOPE;
+				} else if (setContext instanceof GipsTypeExpression typeExpression) {
+					if (reference == GipslPackage.Literals.GIPS_VARIABLE_REFERENCE_EXPRESSION__ATTRIBUTE)
+						return Scopes.scopeFor(typeExpression.getType().getEAllAttributes().stream() //
+								.filter(e -> e.isChangeable() && !e.isMany() && !e.isDerived()) //
+								.toList());
+
+					GipsTypeExtension typeExtension = GipslScopeContextUtil.getTypeExtensionForType(context,
+							typeExpression.getType());
+					if (typeExtension != null)
+						return Scopes.scopeFor(typeExtension.getVariables());
 				}
-			} else {
-				return IScope.NULLSCOPE;
+
 			}
+
 		} else if (container instanceof GipsTransformOperation root) {
+
 			EObject setContext = GipslScopeContextUtil.getSetContext(root);
 			if (setContext instanceof GipsMappingExpression mapping) {
 				if (mapping.getMapping() != null && mapping.getMapping().getVariables() != null
 						&& !mapping.getMapping().getVariables().isEmpty()) {
 					return Scopes.scopeFor(mapping.getMapping().getVariables());
-				} else {
-					return IScope.NULLSCOPE;
 				}
-			} else {
-				return IScope.NULLSCOPE;
 			}
-		} else {
-			return IScope.NULLSCOPE;
+
 		}
 
+		return IScope.NULLSCOPE;
 	}
 
 	private IScope scopeForGipsTypeExtension(GipsTypeExtension context, EReference reference) {

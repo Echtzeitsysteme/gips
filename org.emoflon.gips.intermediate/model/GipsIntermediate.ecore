@@ -391,7 +391,7 @@
     <eLiterals name="CONSERVATIVE" value="1"/>
     <eLiterals name="AGGRESSIVE" value="2"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TypeExtension">
+  <eClassifiers xsi:type="ecore:EClass" name="TypeExtension" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="extendedType" lowerBound="1"
         eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="addedVariables" upperBound="-1"

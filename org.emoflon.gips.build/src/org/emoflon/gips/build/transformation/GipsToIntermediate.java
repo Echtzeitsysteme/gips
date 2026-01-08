@@ -310,6 +310,8 @@ public class GipsToIntermediate {
 
 			TypeExtension typeExtension = factory.createTypeExtension();
 			typeExtension.setExtendedType((EClass) eTypeExtension.getRef());
+			typeExtension.setName(typeExtension.getExtendedType().getEPackage().getNsURI() + "/"
+					+ typeExtension.getExtendedType().getName());
 			transformVariables(eTypeExtension, typeExtension);
 
 			data.model().getExtendedTypes().add(typeExtension);

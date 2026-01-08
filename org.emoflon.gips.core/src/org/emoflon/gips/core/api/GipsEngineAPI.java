@@ -25,6 +25,7 @@ import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeExtension;
 import org.emoflon.ibex.gt.api.GraphTransformationAPI;
 import org.emoflon.ibex.gt.api.GraphTransformationApp;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPatternModelPackage;
@@ -37,10 +38,12 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	protected ResourceSet model;
 	protected GipsIntermediateModel gipsModel;
 	final protected Map<String, Mapping> name2Mapping = new HashMap<>();
+	final protected Map<Class<?>, TypeExtension> type2Extension = new HashMap<>();
 	final protected SolverConfig solverConfig = new SolverConfig();
 	protected GipsMapperFactory<EMOFLON_API> mapperFactory;
 	protected GipsConstraintFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> constraintFactory;
 	protected GipsLinearFunctionFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> functionFactory;
+	protected GipsTypeExtenderFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> typeExtensionFactory;
 
 	protected PatternMatch2MappingSorter matchSorter;
 
@@ -414,6 +417,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		initEclipseIntegration();
 		initMapperFactory();
 		createMappers();
+		createTypeExtensions();
 		initConstraintFactory();
 		createConstraints();
 		initLinearFunctionFactory();
@@ -445,6 +449,9 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		gipsModel = (GipsIntermediateModel) model.getContents().get(0);
 
 		gipsModel.getMappings().forEach(mapping -> name2Mapping.put(mapping.getName(), mapping));
+		gipsModel.getExtendedTypes() // TODO: remove
+				.forEach(
+						typeExtension -> type2Extension.put(typeExtension.getExtendedType().getClass(), typeExtension));
 	}
 
 	protected void initEclipseIntegration() {
@@ -454,6 +461,11 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	}
 
 	protected abstract void createMappers();
+
+	protected void createTypeExtensions() {
+		gipsModel.getExtendedTypes().stream()
+				.forEach(typeExtension -> addTypeExtension(typeExtensionFactory.createTypeExtender(typeExtension)));
+	}
 
 	protected void createConstraints() {
 		gipsModel.getConstraints().stream()
@@ -469,6 +481,8 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	protected abstract void initConstraintFactory();
 
 	protected abstract void initLinearFunctionFactory();
+
+	protected abstract void initTypeExtensionFactory();
 
 	protected abstract GipsObjective createObjective();
 

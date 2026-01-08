@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -29,6 +30,7 @@ public abstract class GipsEngine {
 	final protected Map<String, Object> globalConstants = Collections.synchronizedMap(new HashMap<>());
 	final protected Map<String, GipsConstraint<?, ?, ?>> constraints = Collections.synchronizedMap(new HashMap<>());
 	final protected Map<String, GipsLinearFunction<?, ?, ?>> functions = Collections.synchronizedMap(new HashMap<>());
+	final protected Map<String, GipsTypeExtender<?, ?>> typeExtensions = Collections.synchronizedMap(new HashMap<>());
 	protected GipsObjective objective;
 	protected Solver solver;
 
@@ -195,6 +197,7 @@ public abstract class GipsEngine {
 
 		// Constraints are re-build a few lines below
 		toStream(constraints.values(), parallel).forEach(constraint -> constraint.clear());
+		toStream(typeExtensions.values(), parallel).forEach(typeExtension -> typeExtension.clear());
 
 		// Reset trace
 		getTracer().resetTrace();
@@ -216,6 +219,7 @@ public abstract class GipsEngine {
 				});
 
 		toStream(constraints.values(), parallel).forEach(constraint -> constraint.calcAdditionalVariables());
+		toStream(typeExtensions.values(), parallel).forEach(typeExtension -> typeExtension.calculateExtensions());
 
 		updateConstants();
 
@@ -281,6 +285,10 @@ public abstract class GipsEngine {
 
 	public Map<String, GipsLinearFunction<?, ?, ?>> getLinearFunctions() {
 		return functions;
+	}
+
+	public Map<String, GipsTypeExtender<?, ?>> getTypeExtensions() {
+		return typeExtensions;
 	}
 
 	public TypeIndexer getIndexer() {
@@ -350,6 +358,10 @@ public abstract class GipsEngine {
 
 	protected void addLinearFunction(final GipsLinearFunction<?, ?, ?> function) {
 		functions.put(function.getName(), function);
+	}
+
+	protected void addTypeExtension(final GipsTypeExtender<?, ?> typeExtension) {
+		typeExtensions.put(typeExtension.getName(), Objects.requireNonNull(typeExtension));
 	}
 
 	protected void setObjective(final GipsObjective objective) {

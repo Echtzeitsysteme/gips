@@ -4,6 +4,7 @@ import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeExtension
 import org.emoflon.gips.build.generator.GipsImportManager
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableType
+import org.emoflon.gips.intermediate.GipsIntermediate.BoundAttributeVariable
 
 class TypeExtensionTemplate extends GeneratorTemplate<TypeExtension> {
 
@@ -77,6 +78,15 @@ public class «className» extends GipsTypeExtension<«context.extendedType.name
 				default: throw new IllegalArgumentException("Extension does not have a variable with the symbolic name <" + valName + ">.");
 			}
 		«ENDIF»
+	}
+	
+	@Override
+	public void applyBoundVariablesToModel(){
+		«FOR variable : context.addedVariables»
+			«IF variable instanceof BoundAttributeVariable»
+				getContext().eSet(getContext().eClass().getEStructuralFeature("«variable.boundToFeature»"), getVariable("«variable.name»").getValue());
+			«ENDIF»
+		«ENDFOR»
 	}
 	
 }

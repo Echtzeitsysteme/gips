@@ -55,6 +55,11 @@ public abstract class GipsTypeExtender<CONTEXT extends EObject, EXTENSION extend
 		this.extendedContexts.clear();
 	}
 
+	public void applyAllBoundVariablesToModel() {
+		for (var extension : extendedContexts.values())
+			extension.applyBoundVariablesToModel();
+	}
+
 	@SuppressWarnings("unchecked")
 	public void calculateExtensions() {
 		for (EObject context : indexer.getObjectsOfType(getExtendedClass())) {
@@ -70,7 +75,7 @@ public abstract class GipsTypeExtender<CONTEXT extends EObject, EXTENSION extend
 
 	protected abstract EXTENSION buildTypeExtension(CONTEXT context, Map<String, Variable<?>> milpVariables);
 
-	public Variable<?> buildVariable(final org.emoflon.gips.intermediate.GipsIntermediate.Variable variable,
+	private Variable<?> buildVariable(final org.emoflon.gips.intermediate.GipsIntermediate.Variable variable,
 			final CONTEXT context) {
 
 		return switch (variable.getType()) {
@@ -102,7 +107,7 @@ public abstract class GipsTypeExtender<CONTEXT extends EObject, EXTENSION extend
 		};
 	}
 
-	public String buildVariableName(final org.emoflon.gips.intermediate.GipsIntermediate.Variable variable,
+	private String buildVariableName(final org.emoflon.gips.intermediate.GipsIntermediate.Variable variable,
 			final CONTEXT context) {
 		return context.eClass().getName() + "->" + variable.getName() + "#" + variableIdx++;
 	}

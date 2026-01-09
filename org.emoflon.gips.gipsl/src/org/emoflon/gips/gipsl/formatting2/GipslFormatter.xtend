@@ -237,6 +237,9 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 	def dispatch void format(GipsTypeExtensionVariable gipsTypeExtensionVariable, extension IFormattableDocument document) {
 		gipsTypeExtensionVariable.regionFor.keyword(gipsTypeExtensionVariableAccess.varKeyword_0).append[oneSpace]
 		gipsTypeExtensionVariable.regionFor.keyword(gipsTypeExtensionVariableAccess.colonKeyword_2).surround[oneSpace]
+		gipsTypeExtensionVariable.regionFor.keyword(gipsTypeExtensionVariableAccess.boundBindKeyword_4_0_0).surround[oneSpace]
+		gipsTypeExtensionVariable.regionFor.keyword(gipsTypeExtensionVariableAccess.toKeyword_4_1).append[oneSpace]
+		
 		gipsTypeExtensionVariable.formatChilds(document)
 	}
 

@@ -1,7 +1,5 @@
 package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
-import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeExtension
 import org.emoflon.gips.build.generator.GipsImportManager
@@ -18,11 +16,7 @@ class TypeExtensionTemplate extends GeneratorTemplate<TypeExtension> {
 		fqn = packageName + "." + className
 		filePath = data.apiData.gipsTypeExtensionPkgPath + "/" + className + ".java"
 		
-		imports.add(data.apiData.apiPkg+"."+data.apiData.apiClass)
-		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
-		imports.add("org.emoflon.gips.core.GipsEngine")
 		imports.add("org.emoflon.gips.core.GipsTypeExtension")
-		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.TypeExtension")
 		imports.add("org.emoflon.gips.core.milp.model.Variable")
 		imports.add("org.emoflon.gips.core.milp.model.IntegerVariable")
 		imports.add("org.emoflon.gips.core.milp.model.RealVariable")

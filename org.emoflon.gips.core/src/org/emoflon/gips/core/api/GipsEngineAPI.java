@@ -416,6 +416,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		setSolverConfig(gipsModel.getConfig());
 		initEclipseIntegration();
 		initMapperFactory();
+		initTypeExtensionFactory();
 		createMappers();
 		createTypeExtensions();
 		initConstraintFactory();
@@ -449,9 +450,6 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		gipsModel = (GipsIntermediateModel) model.getContents().get(0);
 
 		gipsModel.getMappings().forEach(mapping -> name2Mapping.put(mapping.getName(), mapping));
-		gipsModel.getExtendedTypes() // TODO: remove
-				.forEach(
-						typeExtension -> type2Extension.put(typeExtension.getExtendedType().getClass(), typeExtension));
 	}
 
 	protected void initEclipseIntegration() {

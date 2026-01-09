@@ -84,7 +84,13 @@ public class «className» extends GipsTypeExtension<«context.extendedType.name
 	public void applyBoundVariablesToModel(){
 		«FOR variable : context.addedVariables»
 			«IF variable instanceof BoundAttributeVariable»
-				getContext().eSet(getContext().eClass().getEStructuralFeature("«variable.boundToFeature»"), getVariable("«variable.name»").getValue());
+				getContext().set«variable.boundToFeature.toFirstUpper»(
+					«IF variable.type == VariableType.BINARY»
+						((int) getVariable("«variable.name»").getValue()) != 0
+					«ELSE»
+						(«GipsImportManager.variableToSimpleJavaDataType(variable, imports)») getVariable("«variable.name»").getValue()
+					«ENDIF»
+				);
 			«ENDIF»
 		«ENDFOR»
 	}

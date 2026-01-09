@@ -205,8 +205,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsVariableReferenceExpression/isMappingValue"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsVariableReferenceExpression/isGenericValue"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsVariableReferenceExpression/variable"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsVariableReferenceExpression/isAttribute"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsVariableReferenceExpression/attribute"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsNodeExpression">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsNodeExpression/node"/>

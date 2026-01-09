@@ -283,8 +283,7 @@ GipsVariableReferenceExpression returns GipsVariableReferenceExpression:
 	'.' 
 	(
 		(isMappingValue ?= 'value') |
- 		(isGenericValue ?= 'variables') '.' variable = [GipsVariable|ID] |
- 		(isAttribute ?= 'attributes') '.' attribute = [ecore::EAttribute|ID]
+ 		(isGenericValue ?= 'variables') '.' variable = [GipsVariable|ID]
 	)
 ;
 

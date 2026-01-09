@@ -335,11 +335,6 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 						return Scopes.scopeFor(mapping.getVariables());
 
 				} else if (localContext instanceof EClass type) {
-					if (reference == GipslPackage.Literals.GIPS_VARIABLE_REFERENCE_EXPRESSION__ATTRIBUTE)
-						return Scopes.scopeFor(type.getEAllAttributes().stream() //
-								.filter(e -> e.isChangeable() && !e.isMany() && !e.isDerived()) //
-								.toList());
-
 					GipsTypeExtension typeExtension = GipslScopeContextUtil.getTypeExtensionForType(context, type);
 					if (typeExtension != null)
 						return Scopes.scopeFor(typeExtension.getVariables());
@@ -354,11 +349,6 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 						return Scopes.scopeFor(mapping.getMapping().getVariables());
 					}
 				} else if (setContext instanceof GipsTypeExpression typeExpression) {
-					if (reference == GipslPackage.Literals.GIPS_VARIABLE_REFERENCE_EXPRESSION__ATTRIBUTE)
-						return Scopes.scopeFor(typeExpression.getType().getEAllAttributes().stream() //
-								.filter(e -> e.isChangeable() && !e.isMany() && !e.isDerived()) //
-								.toList());
-
 					GipsTypeExtension typeExtension = GipslScopeContextUtil.getTypeExtensionForType(context,
 							typeExpression.getType());
 					if (typeExtension != null)

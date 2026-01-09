@@ -104,7 +104,7 @@ public abstract class GipsTypeExtender<CONTEXT extends EObject, EXTENSION extend
 
 	public String buildVariableName(final org.emoflon.gips.intermediate.GipsIntermediate.Variable variable,
 			final CONTEXT context) {
-		return context + "->" + variable.getName() + "#" + variableIdx++;
+		return context.eClass().getName() + "->" + variable.getName() + "#" + variableIdx++;
 	}
 
 }

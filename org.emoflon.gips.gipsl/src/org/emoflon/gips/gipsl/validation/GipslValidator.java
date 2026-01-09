@@ -380,12 +380,12 @@ public class GipslValidator extends AbstractGipslValidator {
 
 	@Check
 	public void checkTypeExtension(final GipsTypeExtension typeExtension) {
-		GipslTypeExtensionValidator.checkTypeExtensionIsUniqueForType(typeExtension);
+		GipslTypeExtensionValidator.checkTypeExtension(typeExtension);
 	}
 
 	@Check
 	public void checkTypeExtensionVariable(final GipsTypeExtensionVariable variable) {
-		GipslTypeExtensionValidator.checkTypeExtensionVariableHasUniqueName(variable);
+		GipslTypeExtensionValidator.checkTypeExtensionVariable(variable);
 	}
 
 	@Check

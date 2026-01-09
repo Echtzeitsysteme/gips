@@ -15,6 +15,10 @@ public final class GipslTypeExtensionValidator {
 	private GipslTypeExtensionValidator() {
 	}
 
+	public static void checkTypeExtension(GipsTypeExtension typeExtension) {
+		checkTypeExtensionIsUniqueForType(typeExtension);
+	}
+
 	public static void checkTypeExtensionIsUniqueForType(final GipsTypeExtension typeExtension) {
 		if (typeExtension == null || typeExtension.getRef() == null)
 			return;
@@ -27,12 +31,17 @@ public final class GipslTypeExtensionValidator {
 
 		if (count != 1) {
 			GipslValidator.err( //
-					String.format("Type '%s' already declared '%s'.", ((EClass) typeExtension.getRef()).getName(),
-							GipslValidator.getTimes((int) count)), //
-					GipslPackage.Literals.GIPS_TYPE_EXTENSION__REF, //
-					GipslValidator.NAME_EXPECT_UNIQUE //
+					String.format(GipslValidatorUtil.TYPE_EXTENSION_ALREADY_DECLARED,
+							((EClass) typeExtension.getRef()).getName(), GipslValidator.getTimes((int) count)), //
+					GipslPackage.Literals.GIPS_TYPE_EXTENSION__REF //
 			);
 		}
+	}
+
+	public static void checkTypeExtensionVariable(GipsTypeExtensionVariable variable) {
+		checkTypeExtensionVariableHasUniqueName(variable);
+		checkTypeExtensionVariableValidAttribute(variable);
+		checkTypeExtensionVariableSingleBind(variable);
 	}
 
 	public static void checkTypeExtensionVariableHasUniqueName(final GipsTypeExtensionVariable variable) {
@@ -45,32 +54,57 @@ public final class GipslTypeExtensionValidator {
 
 		Optional<GipsTypeExtensionVariable> otherExtensionVariable = typeExtension.getVariables().stream() //
 				.filter(var -> !var.equals(variable)) //
-				.filter(var -> var.getName() != null) //
-				.filter(var -> var.getName().equals(variable.getName())) //
+				.filter(var -> variable.getName().equals(var.getName())) //
 				.findAny();
 
-		if (otherExtensionVariable.isPresent()) { // TODO
+		if (otherExtensionVariable.isPresent()) {
 			GipslValidator.err( //
-					String.format("Variable name '%s' must not be declared more than once.", variable.getName()), //
+					String.format(GipslValidatorUtil.TYPE_EXTENSION_VARIABLE_ALREADY_DECLARED, variable.getName()), //
 					GipslPackage.Literals.GIPS_VARIABLE__NAME, //
 					GipslValidator.NAME_EXPECT_UNIQUE //
 			);
 		}
+	}
 
-		if (typeExtension.getRef() == null)
+	public static void checkTypeExtensionVariableValidAttribute(final GipsTypeExtensionVariable variable) {
+		if (!variable.isBound() || variable.getAttribute() == null)
 			return;
 
-		Optional<EAttribute> otherOriginalVariable = ((EClass) typeExtension.getRef()).getEAllAttributes().stream() //
+		final GipsTypeExtension typeExtension = (GipsTypeExtension) variable.eContainer();
+		if (typeExtension == null || typeExtension.getRef() == null)
+			return;
+
+		if (!(variable.getAttribute() instanceof EAttribute))
+			GipslValidator.err(GipslValidatorUtil.TYPE_EXTENSION_VARIABLE_ATTRIBUTE_INVALID, //
+					GipslPackage.Literals.GIPS_TYPE_EXTENSION_VARIABLE__ATTRIBUTE);
+
+		EAttribute attribute = (EAttribute) variable.getAttribute();
+		if (!attribute.getEAttributeType().equals(variable.getType()))
+			GipslValidator.err(GipslValidatorUtil.TYPE_EXTENSION_VARIABLE_ATTRIBUTE_TYPE_MISSMATCH, //
+					GipslPackage.Literals.GIPS_TYPE_EXTENSION_VARIABLE__ATTRIBUTE);
+	}
+
+	public static void checkTypeExtensionVariableSingleBind(final GipsTypeExtensionVariable variable) {
+		if (!variable.isBound() || variable.getAttribute() == null)
+			return;
+
+		final GipsTypeExtension typeExtension = (GipsTypeExtension) variable.eContainer();
+		if (typeExtension == null || typeExtension.getVariables() == null || typeExtension.getVariables().isEmpty())
+			return;
+
+		Optional<GipsTypeExtensionVariable> otherVariable = typeExtension.getVariables().stream() //
+				.filter(var -> !var.equals(variable)) //
 				.filter(var -> var.getName() != null) //
-				.filter(var -> var.getName().equalsIgnoreCase(variable.getName())) //
+				.filter(var -> var.isBound()) //
+				.filter(var -> var.getAttribute() != null) //
+				.filter(var -> var.getAttribute().equals(variable.getAttribute())) //
 				.findAny();
 
-		if (otherOriginalVariable.isPresent()) { // TODO
+		if (otherVariable.isPresent()) {
 			GipslValidator.err( //
-					String.format("Variable name '%s' already declared on type.", variable.getName()), //
-					GipslPackage.Literals.GIPS_VARIABLE__NAME, //
-					GipslValidator.NAME_EXPECT_UNIQUE //
-			);
+					String.format(GipslValidatorUtil.TYPE_EXTENSION_VARIABLE_ATTRIBUTE_ALREADY_BOUND,
+							otherVariable.get().getName()), //
+					GipslPackage.Literals.GIPS_TYPE_EXTENSION_VARIABLE__ATTRIBUTE);
 		}
 	}
 

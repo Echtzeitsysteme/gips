@@ -3,6 +3,7 @@ package org.emoflon.gips.build.generator.templates
 import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeExtension
 import org.emoflon.gips.build.generator.GipsImportManager
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableType
 
 class TypeExtensionTemplate extends GeneratorTemplate<TypeExtension> {
 
@@ -53,6 +54,30 @@ public class «className» extends GipsTypeExtension<«context.extendedType.name
 			«ENDIF»
 		}
 	«ENDFOR»
+	
+	@Override
+	public void setVariableValue(final String valName, final double value) {
+		«IF context.addedVariables.isNullOrEmpty»
+			throw new UnsupportedOperationException("Extension does not have any additonal variables.");
+		«ELSE»
+			switch(valName) {
+				«FOR variable : context.addedVariables»
+					case "«variable.name»" : {
+						«GipsImportManager.variableToJavaDataType(variable, imports)» variable = getVariable("«variable.name»");
+						«IF variable.type == VariableType.BINARY»
+							variable.setValue((int) value);
+						«ELSEIF variable.type == VariableType.INTEGER»
+							variable.setValue(Math.round((«GipsImportManager.variableToSimpleJavaDataType(variable, imports)») value));
+						«ELSE»
+							variable.setValue((«GipsImportManager.variableToSimpleJavaDataType(variable, imports)») value);
+						«ENDIF»
+						break;
+					}
+				«ENDFOR»
+				default: throw new IllegalArgumentException("Extension does not have a variable with the symbolic name <" + valName + ">.");
+			}
+		«ENDIF»
+	}
 	
 }
 

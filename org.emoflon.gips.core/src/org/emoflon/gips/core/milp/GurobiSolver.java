@@ -21,6 +21,8 @@ import org.emoflon.gips.core.GipsMapping;
 import org.emoflon.gips.core.GipsMappingConstraint;
 import org.emoflon.gips.core.GipsObjective;
 import org.emoflon.gips.core.GipsTypeConstraint;
+import org.emoflon.gips.core.GipsTypeExtender;
+import org.emoflon.gips.core.GipsTypeExtension;
 import org.emoflon.gips.core.gt.GipsPatternConstraint;
 import org.emoflon.gips.core.gt.GipsRuleConstraint;
 import org.emoflon.gips.core.milp.SolverConfig.SolverPresolve;
@@ -407,6 +409,20 @@ public class GurobiSolver extends Solver {
 				}
 			}
 		}
+
+		for (GipsTypeExtender<?, ?> extender : engine.getTypeExtensions().values()) {
+			for (GipsTypeExtension<?> extension : extender.getExtensions()) {
+				for (Entry<String, Variable<?>> variable : extension.getVariables().entrySet()) {
+					try {
+						double result = getVar(variable.getValue().getName()).get(DoubleAttr.X);
+						extension.setVariableValue(variable.getKey(), result);
+					} catch (final GRBException e) {
+						throw new RuntimeException(e);
+					}
+				}
+			}
+		}
+
 		// Solver reset will be handled by the GipsEngine afterward
 
 		if (engine.getEclipseIntegration().getConfig().isSolutionValuesSynchronizationEnabled()) {

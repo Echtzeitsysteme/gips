@@ -29,4 +29,6 @@ public abstract class GipsTypeExtension<CONTEXT extends EObject> {
 		return (T) milpVariables.get(name);
 	}
 
+	public abstract void setVariableValue(final String valName, final double value);
+
 }

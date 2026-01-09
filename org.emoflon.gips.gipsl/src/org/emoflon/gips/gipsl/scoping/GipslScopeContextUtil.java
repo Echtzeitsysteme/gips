@@ -110,7 +110,8 @@ public final class GipslScopeContextUtil {
 	}
 
 	public static boolean isGipsTypeExtensionVariableType(final EObject context, final EReference reference) {
-		return context instanceof GipsTypeExtensionVariable && reference == GipslPackage.Literals.GIPS_VARIABLE__TYPE;
+		return context instanceof GipsTypeExtensionVariable && (reference == GipslPackage.Literals.GIPS_VARIABLE__TYPE
+				|| reference == GipslPackage.Literals.GIPS_TYPE_EXTENSION_VARIABLE__ATTRIBUTE);
 	}
 
 	public static boolean isGipsConstraintContext(final EObject context, final EReference reference) {

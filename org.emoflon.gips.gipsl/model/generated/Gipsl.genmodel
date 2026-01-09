@@ -124,6 +124,7 @@
     <genClasses ecoreClass="Gipsl.ecore#//GipsVariable">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsVariable/name"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsVariable/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsVariable/bound"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsMapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsMapping/name"/>
@@ -131,14 +132,15 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsMapping/variables"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsMappingVariable">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsMappingVariable/bound"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsMappingVariable/parameter"/>
     </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsTypeExtension">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsTypeExtension/ref"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsTypeExtension/variables"/>
     </genClasses>
-    <genClasses ecoreClass="Gipsl.ecore#//GipsTypeExtensionVariable"/>
+    <genClasses ecoreClass="Gipsl.ecore#//GipsTypeExtensionVariable">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsTypeExtensionVariable/attribute"/>
+    </genClasses>
     <genClasses ecoreClass="Gipsl.ecore#//GipsConstant">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Gipsl.ecore#//GipsConstant/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Gipsl.ecore#//GipsConstant/expression"/>

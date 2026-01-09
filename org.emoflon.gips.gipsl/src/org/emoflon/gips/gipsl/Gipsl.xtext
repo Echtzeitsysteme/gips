@@ -74,7 +74,7 @@ GipsTypeExtension :
 ;
 
 GipsTypeExtensionVariable :
-	'var' name=ID ':' type=[ecore::EDataType]
+	'var' name=ID ':' type=[ecore::EDataType] (bound ?= 'bind' 'to' attribute=[ecore::EStructuralFeature])?
 ;
 
 GipsConstant:

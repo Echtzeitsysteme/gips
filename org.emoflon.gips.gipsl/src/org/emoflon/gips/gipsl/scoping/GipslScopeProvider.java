@@ -71,6 +71,7 @@ import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsSetElementExpressionImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsSortPredicateImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsTransformOperationImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsTypeExtensionImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsValueExpressionImpl;
 import org.emoflon.ibex.gt.editor.gT.EditorOperator;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
@@ -377,7 +378,22 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 	}
 
 	public IScope scopeForGipsTypeExtensionVariableType(GipsTypeExtensionVariable context, EReference reference) {
-		return Scopes.scopeFor(variableDataTypes);
+		if (reference == GipslPackage.Literals.GIPS_VARIABLE__TYPE)
+			return Scopes.scopeFor(variableDataTypes);
+
+		if (reference == GipslPackage.Literals.GIPS_TYPE_EXTENSION_VARIABLE__ATTRIBUTE) {
+			GipsTypeExtension container = (GipsTypeExtension) GipslScopeContextUtil.getContainer(context,
+					Set.of(GipsTypeExtensionImpl.class));
+			if (container.getRef() != null) {
+				EClass eClass = (EClass) container.getRef();
+				return Scopes.scopeFor(eClass.getEAllAttributes().stream() //
+						.filter(e -> e.isChangeable() && !e.isMany() && !e.isDerived()) //
+						.filter(e -> e.getEAttributeType() != null && e.getEAttributeType().equals(context.getType())) //
+						.toList());
+			}
+		}
+
+		return IScope.NULLSCOPE;
 	}
 
 	public IScope scopeForGipsConstantReference(GipsConstantReference context, EReference reference) {

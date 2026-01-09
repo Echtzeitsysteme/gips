@@ -33,6 +33,7 @@ import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.BoundAttributeVariable;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constant;
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.Context;
@@ -327,7 +328,15 @@ public class GipsToIntermediate {
 			if (!GipslScopeContextUtil.isVariableReferenced(eVariable))
 				continue;
 
-			Variable variable = factory.createVariable();
+			Variable variable = null;
+			if (eVariable.isBound() && eVariable.getAttribute() != null) {
+				BoundAttributeVariable attVariable = factory.createBoundAttributeVariable();
+				attVariable.setBoundToFeature(eVariable.getAttribute().getName());
+				variable = attVariable;
+			} else {
+				variable = factory.createVariable();
+			}
+
 			variable.setType(GipsTransformationUtils.typeToVariableType(eVariable.getType()));
 			variable.setName(eVariable.getName());
 			variable.setLowerBound(GipsTransformationUtils.getLowerBound(eVariable, variable.getType()));

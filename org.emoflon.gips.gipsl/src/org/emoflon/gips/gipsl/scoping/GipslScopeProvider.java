@@ -336,9 +336,12 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 						return Scopes.scopeFor(mapping.getVariables());
 
 				} else if (localContext instanceof EClass type) {
-					GipsTypeExtension typeExtension = GipslScopeContextUtil.getTypeExtensionForType(context, type);
-					if (typeExtension != null)
-						return Scopes.scopeFor(typeExtension.getVariables());
+					return Scopes.scopeFor( //
+							GipslScopeContextUtil.getAllTypeExtensionsForType(context, type) //
+									.stream() //
+									.flatMap(e -> e.getVariables().stream()) //
+									.toList() //
+					);
 				}
 
 			} else if (root.getValue() instanceof GipsSetElementExpression setElement) {
@@ -350,10 +353,12 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 						return Scopes.scopeFor(mapping.getMapping().getVariables());
 					}
 				} else if (setContext instanceof GipsTypeExpression typeExpression) {
-					GipsTypeExtension typeExtension = GipslScopeContextUtil.getTypeExtensionForType(context,
-							typeExpression.getType());
-					if (typeExtension != null)
-						return Scopes.scopeFor(typeExtension.getVariables());
+					return Scopes.scopeFor( //
+							GipslScopeContextUtil.getAllTypeExtensionsForType(context, typeExpression.getType()) //
+									.stream() //
+									.flatMap(e -> e.getVariables().stream()) //
+									.toList() //
+					);
 				}
 
 			}

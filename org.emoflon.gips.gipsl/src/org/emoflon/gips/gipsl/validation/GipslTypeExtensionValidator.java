@@ -1,5 +1,6 @@
 package org.emoflon.gips.gipsl.validation;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -50,21 +51,30 @@ public final class GipslTypeExtensionValidator {
 		if (variable.getName() == null)
 			return;
 
-		final GipsTypeExtension typeExtension = (GipsTypeExtension) variable.eContainer();
-		if (typeExtension == null || typeExtension.getVariables() == null || typeExtension.getVariables().isEmpty())
+		final GipsTypeExtension container = (GipsTypeExtension) variable.eContainer();
+		if (container == null || container.getVariables() == null || container.getVariables().isEmpty()
+				|| container.getRef() == null)
 			return;
 
-		Optional<GipsTypeExtensionVariable> otherExtensionVariable = typeExtension.getVariables().stream() //
-				.filter(var -> !var.equals(variable)) //
-				.filter(var -> variable.getName().equals(var.getName())) //
-				.findAny();
+		Collection<GipsTypeExtension> relevantExtensions = GipslScopeContextUtil.getAllTypeExtensionsForType(variable,
+				(EClass) container.getRef());
 
-		if (otherExtensionVariable.isPresent()) {
-			GipslValidator.err( //
-					String.format(GipslValidatorUtil.TYPE_EXTENSION_VARIABLE_ALREADY_DECLARED, variable.getName()), //
-					GipslPackage.Literals.GIPS_VARIABLE__NAME, //
-					GipslValidator.NAME_EXPECT_UNIQUE //
-			);
+		for (GipsTypeExtension typeExtension : relevantExtensions) {
+			boolean variableAlreadyDeclared = typeExtension.getVariables().stream() //
+					.filter(var -> !var.equals(variable)) //
+					.filter(var -> variable.getName().equals(var.getName())) //
+					.findAny() //
+					.isPresent();
+
+			if (variableAlreadyDeclared) {
+				GipslValidator.err( //
+						String.format(GipslValidatorUtil.TYPE_EXTENSION_VARIABLE_ALREADY_DECLARED, //
+								variable.getName(), //
+								((EClass) typeExtension.getRef()).getName()), //
+						GipslPackage.Literals.GIPS_VARIABLE__NAME, //
+						GipslValidator.NAME_EXPECT_UNIQUE //
+				);
+			}
 		}
 	}
 

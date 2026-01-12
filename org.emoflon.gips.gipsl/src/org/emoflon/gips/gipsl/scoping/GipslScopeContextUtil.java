@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -499,6 +500,27 @@ public final class GipslScopeContextUtil {
 				.filter(e -> e.getRef().equals(type)) //
 				.findAny();
 		return extension.isPresent() ? extension.get() : null;
+	}
+
+	public static Collection<GipsTypeExtension> getAllTypeExtensionsForType(EObject expression, EClass type) {
+		final EditorGTFile gtFile = GTEditorPatternUtils.getContainer(expression, EditorGTFileImpl.class);
+		if (gtFile.getTypes().isEmpty())
+			return Collections.emptyList();
+
+		Queue<EClass> fringe = new LinkedList<>();
+		Collection<EClass> discovered = new HashSet<>();
+
+		fringe.add(type);
+
+		while (!fringe.isEmpty()) {
+			EClass eClass = fringe.poll();
+			discovered.add(eClass);
+			for (EClass superType : eClass.getEAllSuperTypes())
+				if (!discovered.contains(superType))
+					fringe.add(superType);
+		}
+
+		return gtFile.getTypes().stream().filter(ext -> discovered.contains(ext.getRef())).toList();
 	}
 
 	public static void gatherFilesWithEnding(Collection<File> gtFiles, File root, String ending, boolean ignoreBin) {

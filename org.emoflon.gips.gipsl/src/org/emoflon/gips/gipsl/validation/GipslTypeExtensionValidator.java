@@ -79,7 +79,7 @@ public final class GipslTypeExtensionValidator {
 					GipslPackage.Literals.GIPS_TYPE_EXTENSION_VARIABLE__ATTRIBUTE);
 
 		EAttribute attribute = (EAttribute) variable.getAttribute();
-		if (!attribute.getEAttributeType().equals(variable.getType()))
+		if (attribute.getEAttributeType() == null || !attribute.getEAttributeType().equals(variable.getType()))
 			GipslValidator.err(GipslValidatorUtil.TYPE_EXTENSION_VARIABLE_ATTRIBUTE_TYPE_MISSMATCH, //
 					GipslPackage.Literals.GIPS_TYPE_EXTENSION_VARIABLE__ATTRIBUTE);
 	}

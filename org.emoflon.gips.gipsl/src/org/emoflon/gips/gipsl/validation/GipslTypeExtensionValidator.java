@@ -1,7 +1,6 @@
 package org.emoflon.gips.gipsl.validation;
 
 import java.util.Collection;
-import java.util.Optional;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -100,23 +99,30 @@ public final class GipslTypeExtensionValidator {
 		if (!variable.isBound() || variable.getAttribute() == null)
 			return;
 
-		final GipsTypeExtension typeExtension = (GipsTypeExtension) variable.eContainer();
-		if (typeExtension == null || typeExtension.getVariables() == null || typeExtension.getVariables().isEmpty())
+		final GipsTypeExtension container = (GipsTypeExtension) variable.eContainer();
+		if (container == null || container.getVariables() == null || container.getVariables().isEmpty())
 			return;
 
-		Optional<GipsTypeExtensionVariable> otherVariable = typeExtension.getVariables().stream() //
-				.filter(var -> !var.equals(variable)) //
-				.filter(var -> var.getName() != null) //
-				.filter(var -> var.isBound()) //
-				.filter(var -> var.getAttribute() != null) //
-				.filter(var -> var.getAttribute().equals(variable.getAttribute())) //
-				.findAny();
+		Collection<GipsTypeExtension> relevantExtensions = GipslScopeContextUtil.getAllTypeExtensionsForType(variable,
+				(EClass) container.getRef());
 
-		if (otherVariable.isPresent()) {
-			GipslValidator.err( //
-					String.format(GipslValidatorUtil.TYPE_EXTENSION_VARIABLE_ATTRIBUTE_ALREADY_BOUND,
-							otherVariable.get().getName()), //
-					GipslPackage.Literals.GIPS_TYPE_EXTENSION_VARIABLE__ATTRIBUTE);
+		for (GipsTypeExtension typeExtension : relevantExtensions) {
+			boolean attributeAlreadyBound = typeExtension.getVariables().stream() //
+					.filter(var -> !var.equals(variable)) //
+					.filter(var -> var.getName() != null) //
+					.filter(var -> var.isBound()) //
+					.filter(var -> var.getAttribute() != null) //
+					.filter(var -> var.getAttribute().equals(variable.getAttribute())) //
+					.findAny() //
+					.isPresent();
+
+			if (attributeAlreadyBound) {
+				GipslValidator.err( //
+						String.format(GipslValidatorUtil.TYPE_EXTENSION_VARIABLE_ATTRIBUTE_ALREADY_BOUND, //
+								variable.getName(), //
+								((EClass) typeExtension.getRef()).getName()), //
+						GipslPackage.Literals.GIPS_TYPE_EXTENSION_VARIABLE__ATTRIBUTE);
+			}
 		}
 	}
 

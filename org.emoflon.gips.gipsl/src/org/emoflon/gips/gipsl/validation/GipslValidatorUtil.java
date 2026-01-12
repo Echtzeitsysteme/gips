@@ -116,6 +116,7 @@ public class GipslValidatorUtil {
 	public static final String TYPE_EXTENSION_VARIABLE_ATTRIBUTE_INVALID = "Variable is bound to an invalid attribute.";
 	public static final String TYPE_EXTENSION_VARIABLE_ATTRIBUTE_TYPE_MISSMATCH = "Variable does not match bound attribute type";
 	public static final String TYPE_EXTENSION_VARIABLE_ATTRIBUTE_ALREADY_BOUND = "Variable '%s' is already bound to this attribute";
+	public static final String TYPE_EXTENSION_VARIABLE_NOT_USED = "Variable '%s' is never used. No (M)ILP variable will be created for this variable.";
 
 	public static final String FUNCTION_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Objective '%s' must not be declared '%s'";
 	public static final String FUNCTION_NAME_FORBIDDEN_MESSAGE = "Objectives cannot be be named '%s'. Use a different name.";

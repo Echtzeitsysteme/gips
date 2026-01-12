@@ -9,6 +9,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeExtension;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeExtensionVariable;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
+import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
 
 public final class GipslTypeExtensionValidator {
@@ -17,6 +18,13 @@ public final class GipslTypeExtensionValidator {
 
 	public static void checkTypeExtension(GipsTypeExtension typeExtension) {
 		checkTypeExtensionIsUniqueForType(typeExtension);
+	}
+
+	public static void checkTypeExtensionVariable(GipsTypeExtensionVariable variable) {
+		checkTypeExtensionVariableHasUniqueName(variable);
+		checkTypeExtensionVariableValidAttribute(variable);
+		checkTypeExtensionVariableSingleBind(variable);
+		checkTypeExtensionVariableInUse(variable);
 	}
 
 	public static void checkTypeExtensionIsUniqueForType(final GipsTypeExtension typeExtension) {
@@ -36,12 +44,6 @@ public final class GipslTypeExtensionValidator {
 					GipslPackage.Literals.GIPS_TYPE_EXTENSION__REF //
 			);
 		}
-	}
-
-	public static void checkTypeExtensionVariable(GipsTypeExtensionVariable variable) {
-		checkTypeExtensionVariableHasUniqueName(variable);
-		checkTypeExtensionVariableValidAttribute(variable);
-		checkTypeExtensionVariableSingleBind(variable);
 	}
 
 	public static void checkTypeExtensionVariableHasUniqueName(final GipsTypeExtensionVariable variable) {
@@ -105,6 +107,14 @@ public final class GipslTypeExtensionValidator {
 					String.format(GipslValidatorUtil.TYPE_EXTENSION_VARIABLE_ATTRIBUTE_ALREADY_BOUND,
 							otherVariable.get().getName()), //
 					GipslPackage.Literals.GIPS_TYPE_EXTENSION_VARIABLE__ATTRIBUTE);
+		}
+	}
+
+	public static void checkTypeExtensionVariableInUse(final GipsTypeExtensionVariable variable) {
+		if (!GipslScopeContextUtil.isVariableReferenced(variable)) {
+			GipslValidator.warn( //
+					String.format(GipslValidatorUtil.TYPE_EXTENSION_VARIABLE_NOT_USED, variable.getName()), //
+					GipslPackage.Literals.GIPS_VARIABLE__NAME);
 		}
 	}
 

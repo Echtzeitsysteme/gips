@@ -25,7 +25,6 @@ import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
-import org.emoflon.gips.intermediate.GipsIntermediate.TypeExtension;
 import org.emoflon.ibex.gt.api.GraphTransformationAPI;
 import org.emoflon.ibex.gt.api.GraphTransformationApp;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXPatternModelPackage;
@@ -38,7 +37,6 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	protected ResourceSet model;
 	protected GipsIntermediateModel gipsModel;
 	final protected Map<String, Mapping> name2Mapping = new HashMap<>();
-	final protected Map<Class<?>, TypeExtension> type2Extension = new HashMap<>();
 	final protected SolverConfig solverConfig = new SolverConfig();
 	protected GipsMapperFactory<EMOFLON_API> mapperFactory;
 	protected GipsConstraintFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> constraintFactory;
@@ -512,6 +510,13 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 				ruleMapper.applyNonZeroMappings(doUpdate);
 			}
 		});
+	}
+
+	/**
+	 * Applies all bound variables across all types with variables.
+	 */
+	public void applyAllBoundVariables() {
+		this.typeExtensions.values().forEach(e -> e.applyAllBoundVariablesToModel());
 	}
 
 }

@@ -183,6 +183,16 @@ public final class GipslScopeContextUtil {
 						|| reference == GipslPackage.Literals.GIPS_JOIN_PAIR_SELECTION__RIGHT_NODE);
 	}
 
+	public static boolean isGipsLocalContextExpressionWithAttribute(final EObject context, final EReference reference) {
+		return context instanceof GipsLocalContextExpression
+				&& reference == GipslPackage.Literals.GIPS_ATTRIBUTE_LITERAL__LITERAL;
+	}
+
+	public static boolean isGipsSetElementExpressionWithAttribute(final EObject context, final EReference reference) {
+		return context instanceof GipsSetElementExpression
+				&& reference == GipslPackage.Literals.GIPS_ATTRIBUTE_LITERAL__LITERAL;
+	}
+
 	public static Object getContainer(EObject node, Set<Class<?>> classes) {
 		if (node == null)
 			return null;

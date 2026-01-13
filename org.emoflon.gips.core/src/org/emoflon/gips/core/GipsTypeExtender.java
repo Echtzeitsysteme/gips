@@ -8,6 +8,7 @@ import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.emoflon.gips.core.milp.model.BinaryVariable;
 import org.emoflon.gips.core.milp.model.IntegerVariable;
 import org.emoflon.gips.core.milp.model.RealVariable;
@@ -24,7 +25,7 @@ public abstract class GipsTypeExtender<CONTEXT extends EObject, EXTENSION extend
 
 	final protected Map<CONTEXT, EXTENSION> extendedContexts = Collections.synchronizedMap(new HashMap<>());
 
-	private long variableIdx = 0;
+	protected long contextIdx = 0;
 
 	public GipsTypeExtender(GipsEngine engine, GraphTransformationAPI eMoflonApi, TypeExtension typeExtension) {
 		this.engine = engine;
@@ -51,8 +52,8 @@ public abstract class GipsTypeExtender<CONTEXT extends EObject, EXTENSION extend
 	}
 
 	public void clear() {
-		this.variableIdx = 0;
-		this.extendedContexts.clear();
+		contextIdx = 0;
+		extendedContexts.clear();
 	}
 
 	public void applyAllBoundVariablesToModel() {
@@ -70,6 +71,7 @@ public abstract class GipsTypeExtender<CONTEXT extends EObject, EXTENSION extend
 				engine.addNonMappingVariable((CONTEXT) context, variable, milpVar);
 			}
 			extendedContexts.put((CONTEXT) context, buildTypeExtension((CONTEXT) context, milpVariables));
+			++contextIdx;
 		}
 	}
 
@@ -107,9 +109,14 @@ public abstract class GipsTypeExtender<CONTEXT extends EObject, EXTENSION extend
 		};
 	}
 
-	private String buildVariableName(final org.emoflon.gips.intermediate.GipsIntermediate.Variable variable,
+	protected String buildVariableName(final org.emoflon.gips.intermediate.GipsIntermediate.Variable variable,
 			final CONTEXT context) {
-		return context.eClass().getName() + "->" + variable.getName() + "#" + variableIdx++;
+
+		String id = EcoreUtil.getID(context);
+		if (id == null)
+			id = context.eClass().getName() + "#" + contextIdx;
+
+		return id + "->" + variable.getName();
 	}
 
 }

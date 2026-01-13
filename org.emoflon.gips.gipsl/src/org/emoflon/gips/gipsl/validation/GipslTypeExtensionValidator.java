@@ -16,19 +16,25 @@ public final class GipslTypeExtensionValidator {
 	private GipslTypeExtensionValidator() {
 	}
 
-	public static void checkTypeExtension(GipsTypeExtension typeExtension) {
+	public static void checkTypeExtension(final GipsTypeExtension typeExtension) {
+		if (typeExtension == null)
+			return;
+
 		checkTypeExtensionIsUniqueForType(typeExtension);
 	}
 
-	public static void checkTypeExtensionVariable(GipsTypeExtensionVariable variable) {
+	public static void checkTypeExtensionVariable(final GipsTypeExtensionVariable variable) {
+		if (variable == null)
+			return;
+
 		checkTypeExtensionVariableHasUniqueName(variable);
 		checkTypeExtensionVariableValidAttribute(variable);
 		checkTypeExtensionVariableSingleBind(variable);
 		checkTypeExtensionVariableInUse(variable);
 	}
 
-	public static void checkTypeExtensionIsUniqueForType(final GipsTypeExtension typeExtension) {
-		if (typeExtension == null || typeExtension.getRef() == null)
+	private static void checkTypeExtensionIsUniqueForType(final GipsTypeExtension typeExtension) {
+		if (typeExtension.getRef() == null)
 			return;
 
 		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(typeExtension, EditorGTFileImpl.class);
@@ -46,11 +52,11 @@ public final class GipslTypeExtensionValidator {
 		}
 	}
 
-	public static void checkTypeExtensionVariableHasUniqueName(final GipsTypeExtensionVariable variable) {
+	private static void checkTypeExtensionVariableHasUniqueName(final GipsTypeExtensionVariable variable) {
 		if (variable.getName() == null)
 			return;
 
-		final GipsTypeExtension container = (GipsTypeExtension) variable.eContainer();
+		GipsTypeExtension container = (GipsTypeExtension) variable.eContainer();
 		if (container == null || container.getVariables() == null || container.getVariables().isEmpty()
 				|| container.getRef() == null)
 			return;
@@ -77,11 +83,11 @@ public final class GipslTypeExtensionValidator {
 		}
 	}
 
-	public static void checkTypeExtensionVariableValidAttribute(final GipsTypeExtensionVariable variable) {
+	private static void checkTypeExtensionVariableValidAttribute(final GipsTypeExtensionVariable variable) {
 		if (!variable.isBound() || variable.getAttribute() == null)
 			return;
 
-		final GipsTypeExtension typeExtension = (GipsTypeExtension) variable.eContainer();
+		GipsTypeExtension typeExtension = (GipsTypeExtension) variable.eContainer();
 		if (typeExtension == null || typeExtension.getRef() == null)
 			return;
 
@@ -95,7 +101,7 @@ public final class GipslTypeExtensionValidator {
 					GipslPackage.Literals.GIPS_TYPE_EXTENSION_VARIABLE__ATTRIBUTE);
 	}
 
-	public static void checkTypeExtensionVariableSingleBind(final GipsTypeExtensionVariable variable) {
+	private static void checkTypeExtensionVariableSingleBind(final GipsTypeExtensionVariable variable) {
 		if (!variable.isBound() || variable.getAttribute() == null)
 			return;
 
@@ -126,7 +132,7 @@ public final class GipslTypeExtensionValidator {
 		}
 	}
 
-	public static void checkTypeExtensionVariableInUse(final GipsTypeExtensionVariable variable) {
+	private static void checkTypeExtensionVariableInUse(final GipsTypeExtensionVariable variable) {
 		if (!GipslScopeContextUtil.isVariableReferenced(variable)) {
 			GipslValidator.warn( //
 					String.format(GipslValidatorUtil.TYPE_EXTENSION_VARIABLE_NOT_USED, variable.getName()), //

@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -492,14 +491,6 @@ public final class GipslScopeContextUtil {
 		}
 
 		return false;
-	}
-
-	public static GipsTypeExtension getTypeExtensionForType(EObject expression, EClass type) {
-		final EditorGTFile gtFile = GTEditorPatternUtils.getContainer(expression, EditorGTFileImpl.class);
-		Optional<GipsTypeExtension> extension = gtFile.getTypes().stream() //
-				.filter(e -> e.getRef().equals(type)) //
-				.findAny();
-		return extension.isPresent() ? extension.get() : null;
 	}
 
 	public static Collection<GipsTypeExtension> getAllTypeExtensionsForType(EObject expression, EClass type) {

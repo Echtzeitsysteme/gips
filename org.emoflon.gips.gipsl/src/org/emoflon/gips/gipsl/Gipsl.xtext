@@ -68,13 +68,13 @@ GipsMappingVariable :
 ;
 
 GipsTypeExtension :
-	'type' ref = [ecore::EObject|ID] '{'
+	'type' ref = [ecore::EClass|ID] '{'
 		(variables += GipsTypeExtensionVariable)*
 	'}'';'
 ;
 
 GipsTypeExtensionVariable :
-	'var' name=ID ':' type=[ecore::EDataType] (bound ?= 'bind' 'to' attribute=[ecore::EStructuralFeature])?
+	'var' name=ID ':' type=[ecore::EDataType] (bound ?= 'bind' 'to' attribute=[ecore::EAttribute])?
 ;
 
 GipsConstant:

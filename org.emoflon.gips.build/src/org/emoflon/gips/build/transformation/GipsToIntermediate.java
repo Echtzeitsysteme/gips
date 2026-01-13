@@ -317,6 +317,8 @@ public class GipsToIntermediate {
 
 			data.model().getExtendedTypes().add(typeExtension);
 			gipsl2gipsTrace.map(eTypeExtension, typeExtension);
+
+			data.requiredTypes().add(eTypeExtension.getRef());
 		}
 	}
 

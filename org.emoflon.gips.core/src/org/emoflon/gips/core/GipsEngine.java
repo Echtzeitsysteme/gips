@@ -226,7 +226,7 @@ public abstract class GipsEngine {
 		toStream(constraints.values(), parallel).forEach(constraint -> constraint.buildConstraints(parallel));
 
 		if (objective != null)
-			objective.buildObjectiveFunction(true);
+			objective.buildObjectiveFunction(parallel);
 
 		solver.init();
 		solver.buildMILPProblem();

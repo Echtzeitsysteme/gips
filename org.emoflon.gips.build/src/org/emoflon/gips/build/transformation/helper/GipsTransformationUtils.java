@@ -7,7 +7,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
+import org.emoflon.gips.gipsl.gipsl.GipsVariable;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral;
@@ -679,7 +679,7 @@ public final class GipsTransformationUtils {
 		}
 	}
 
-	public static double getUpperBound(final GipsMappingVariable gipsVar, final VariableType type) {
+	public static double getUpperBound(final GipsVariable gipsVar, final VariableType type) {
 		if (type == VariableType.BINARY) {
 			return 1;
 		} else if (type == VariableType.INTEGER) {
@@ -691,7 +691,7 @@ public final class GipsTransformationUtils {
 		throw new UnsupportedOperationException();
 	}
 
-	public static double getLowerBound(final GipsMappingVariable gipsVar, final VariableType type) {
+	public static double getLowerBound(final GipsVariable gipsVar, final VariableType type) {
 		if (type == VariableType.BINARY) {
 			return 0;
 		} else if (type == VariableType.INTEGER) {

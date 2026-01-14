@@ -29,6 +29,8 @@
         eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXPattern"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="requiredRules" upperBound="-1"
         eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXRule"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="extendedTypes" upperBound="-1"
+        eType="#//TypeExtension" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SolverConfig">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="solver" eType="#//SolverType"/>
@@ -388,5 +390,14 @@
     <eLiterals name="AUTO" value="1"/>
     <eLiterals name="CONSERVATIVE" value="1"/>
     <eLiterals name="AGGRESSIVE" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TypeExtension" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="extendedType" lowerBound="1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="addedVariables" upperBound="-1"
+        eType="#//Variable"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BoundAttributeVariable" eSuperTypes="#//Variable">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="boundToFeature" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>

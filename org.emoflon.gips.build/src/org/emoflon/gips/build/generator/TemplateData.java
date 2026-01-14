@@ -16,6 +16,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.NamedElement;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternMapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleMapping;
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeExtension;
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXNamedElement;
 
 public class TemplateData {
@@ -29,6 +30,7 @@ public class TemplateData {
 	public String constraintFactoryClassName;
 	public String functionFactoryClassName;
 	public String objectiveClassName;
+	public String typeExtensionFactoryClassName;
 
 	final public Map<Mapping, String> mapping2mappingClassName = new HashMap<>();
 	final public Map<Mapping, String> mapping2mapperClassName = new HashMap<>();
@@ -37,6 +39,8 @@ public class TemplateData {
 	final public Map<Mapping, String> mapping2matchClassName = new HashMap<>();
 	final public Map<IBeXNamedElement, String> ibex2matchClassName = new HashMap<>();
 	final public Map<IBeXNamedElement, String> ibex2ibexClassName = new HashMap<>();
+	final public Map<TypeExtension, String> typeExtension2extensionClassName = new HashMap<>();
+	final public Map<TypeExtension, String> typeExtension2extenderClassName = new HashMap<>();
 	final public Map<NamedElement, Collection<Constant>> context2constants = new HashMap<>();
 
 	final public Map<Constraint, String> constraint2constraintClassName = new HashMap<>();
@@ -55,6 +59,8 @@ public class TemplateData {
 		mapperFactoryClassName = apiData.apiClassNamePrefix + "GipsMapperFactory";
 		constraintFactoryClassName = apiData.apiClassNamePrefix + "GipsConstraintFactory";
 		functionFactoryClassName = apiData.apiClassNamePrefix + "GipsLinearFunctionFactory";
+		typeExtensionFactoryClassName = apiData.apiClassNamePrefix + "GipsTypeExtensionFactory";
+
 		model.getMappings().stream().forEach(mapping -> {
 			mapping2mapperClassName.put(mapping, firstToUpper(mapping.getName()) + "Mapper");
 			mapping2mappingClassName.put(mapping, firstToUpper(mapping.getName()) + "Mapping");
@@ -68,6 +74,13 @@ public class TemplateData {
 			}
 		});
 
+		model.getExtendedTypes().stream().forEach(typeExtension -> {
+			typeExtension2extenderClassName.put(typeExtension,
+					"Type" + firstToUpper(typeExtension.getExtendedType().getName()) + "Extender");
+			typeExtension2extensionClassName.put(typeExtension,
+					"Type" + firstToUpper(typeExtension.getExtendedType().getName()) + "Extension");
+		});
+
 		// Add global constants
 		context2constants.put(model, new LinkedList<>());
 		model.getConstants().stream().filter(c -> c.isGlobal()).forEach(c -> context2constants.get(model).add(c));
@@ -78,11 +91,13 @@ public class TemplateData {
 					context2constants.put(c, new LinkedList<>());
 					context2constants.get(c).addAll(c.getConstants());
 				});
+
 		model.getFunctions().stream().filter(f -> f.getConstants() != null && !f.getConstants().isEmpty())
 				.forEach(f -> {
 					context2constants.put(f, new LinkedList<>());
 					context2constants.get(f).addAll(f.getConstants());
 				});
+
 		if (model.getObjective() != null && model.getObjective().getConstants() != null
 				&& !model.getObjective().getConstants().isEmpty()) {
 			context2constants.put(model.getObjective(), new LinkedList<>());
@@ -93,10 +108,12 @@ public class TemplateData {
 			ibex2ibexClassName.put(pattern, firstToUpper(pattern.getName()) + "Pattern");
 			ibex2matchClassName.put(pattern, firstToUpper(pattern.getName()) + "Match");
 		});
+
 		model.getRequiredRules().forEach(rule -> {
 			ibex2ibexClassName.put(rule, firstToUpper(rule.getName()) + "Rule");
 			ibex2matchClassName.put(rule, firstToUpper(rule.getName()) + "Match");
 		});
+
 		model.getConstraints().stream().forEach(
 				constraint -> constraint2constraintClassName.put(constraint, firstToUpper(constraint.getName())));
 		model.getFunctions().stream().forEach(fn -> function2functionClassName.put(fn, firstToUpper(fn.getName())));

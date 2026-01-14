@@ -111,6 +111,13 @@ public class GipslValidatorUtil {
 	public static final String RULE_HAS_MULTIPLE_MAPPINGS = "Multiple mappings on rule: <'%s'>";
 	public static final String RULE_IS_ABSTRACT = "Mapping '%s' uses an abstract rule which is not possible.";
 
+	public static final String TYPE_EXTENSION_ALREADY_DECLARED = "Type '%s' already declared '%s'.";
+	public static final String TYPE_EXTENSION_VARIABLE_ALREADY_DECLARED = "Variable '%s' is already declared in extension '%s'.";
+	public static final String TYPE_EXTENSION_VARIABLE_ATTRIBUTE_INVALID = "Variable is bound to an invalid attribute.";
+	public static final String TYPE_EXTENSION_VARIABLE_ATTRIBUTE_TYPE_MISSMATCH = "Variable does not match bound attribute type.";
+	public static final String TYPE_EXTENSION_VARIABLE_ATTRIBUTE_ALREADY_BOUND = "Variable '%s' in extension '%s' is already bound to this attribute.";
+	public static final String TYPE_EXTENSION_VARIABLE_NOT_USED = "Variable '%s' is never used. No (M)ILP variable will be created for this variable.";
+
 	public static final String FUNCTION_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Objective '%s' must not be declared '%s'";
 	public static final String FUNCTION_NAME_FORBIDDEN_MESSAGE = "Objectives cannot be be named '%s'. Use a different name.";
 	public static final String FUNCTION_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Objective name '%s' contains underscores. Use camelCase instead.";
@@ -140,7 +147,7 @@ public class GipslValidatorUtil {
 	public static final String ARITH_EXPR_NONLINEAR_ERROR_MESSAGE = "Combination of operands leads to non-linear expression.";
 	public static final String ARITH_EXPR_MISMATCH_ERROR_MESSAGE = "Operands cannot be combined since their types do not match.";
 	public static final String ARITH_EXPR_LFR_ERROR_MESSAGE = "Linear function references not allowed in set expressions and outside of the objective.";
-	public static final String ARITH_EXPR_VAR_REF_ERROR_MESSAGE = "Variable references can only be used in combination with a mapping context.";
+	public static final String ARITH_EXPR_VAR_REF_ERROR_MESSAGE = "Variable references can only be used in combination with a mapping or EClass context.";
 	public static final String ARITH_EXPR_VAR_USE_ERROR_MESSAGE = "Variable references can only be used \"plain\" arithmetic expressions or non-nested sum operations of sets.";
 
 	public static final String VALUE_EXPR_CONTAINS_ERRORS = "Value expression contains errors.";

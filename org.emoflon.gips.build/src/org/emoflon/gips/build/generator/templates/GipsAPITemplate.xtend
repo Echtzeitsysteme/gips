@@ -43,6 +43,9 @@ class GipsAPITemplate extends ProblemGeneratorTemplate<GipsIntermediateModel> {
 		data.model.mappings
 			.map[m | data.mapping2mapperClassName.get(m)]
 			.forEach[m | imports.add(data.apiData.gipsMapperPkg+"."+m)]
+		data.model.extendedTypes
+			.map[m | data.typeExtension2extenderClassName.get(m)]
+			.forEach[m | imports.add(data.apiData.gipsTypeExtensionPkg+"."+m)]
 	}
 	
 	override getConstants() {
@@ -155,6 +158,12 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 		addMapper(«mapping.name.toFirstLower»);
 		«ENDFOR»
 	}
+		
+	«FOR typeExtension : data.model.extendedTypes»
+	public «data.typeExtension2extenderClassName.get(typeExtension)» getType«typeExtension.extendedType.name»(){
+		return («data.typeExtension2extenderClassName.get(typeExtension)»)super.getTypeExtensions().get("«typeExtension.name»");
+	}
+	«ENDFOR»
 	
 	@Override
 	protected void initMapperFactory() {
@@ -169,6 +178,11 @@ public class «className» extends GipsEngineAPI <«data.apiData.engineAppClasse
 	@Override	
 	protected void initLinearFunctionFactory() {
 		functionFactory = new «data.functionFactoryClassName»(this, eMoflonAPI);
+	}
+	
+	@Override
+	protected void initTypeExtensionFactory() {
+		typeExtensionFactory = new «data.typeExtensionFactoryClassName»(this, eMoflonAPI);
 	}
 	
 	@Override

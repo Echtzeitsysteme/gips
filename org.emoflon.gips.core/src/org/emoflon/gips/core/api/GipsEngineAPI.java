@@ -41,6 +41,7 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	protected GipsMapperFactory<EMOFLON_API> mapperFactory;
 	protected GipsConstraintFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> constraintFactory;
 	protected GipsLinearFunctionFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> functionFactory;
+	protected GipsTypeExtenderFactory<? extends GipsEngineAPI<EMOFLON_APP, EMOFLON_API>, EMOFLON_API> typeExtensionFactory;
 
 	protected PatternMatch2MappingSorter matchSorter;
 
@@ -413,7 +414,9 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 		setSolverConfig(gipsModel.getConfig());
 		initEclipseIntegration();
 		initMapperFactory();
+		initTypeExtensionFactory();
 		createMappers();
+		createTypeExtensions();
 		initConstraintFactory();
 		createConstraints();
 		initLinearFunctionFactory();
@@ -455,6 +458,11 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 
 	protected abstract void createMappers();
 
+	protected void createTypeExtensions() {
+		gipsModel.getExtendedTypes().stream()
+				.forEach(typeExtension -> addTypeExtension(typeExtensionFactory.createTypeExtender(typeExtension)));
+	}
+
 	protected void createConstraints() {
 		gipsModel.getConstraints().stream()
 				.forEach(constraint -> addConstraint(constraintFactory.createConstraint(constraint)));
@@ -469,6 +477,8 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 	protected abstract void initConstraintFactory();
 
 	protected abstract void initLinearFunctionFactory();
+
+	protected abstract void initTypeExtensionFactory();
 
 	protected abstract GipsObjective createObjective();
 
@@ -500,6 +510,13 @@ public abstract class GipsEngineAPI<EMOFLON_APP extends GraphTransformationApp<E
 				ruleMapper.applyNonZeroMappings(doUpdate);
 			}
 		});
+	}
+
+	/**
+	 * Applies all bound variables across all types with variables.
+	 */
+	public void applyAllBoundVariables() {
+		this.typeExtensions.values().forEach(e -> e.applyAllBoundVariablesToModel());
 	}
 
 }

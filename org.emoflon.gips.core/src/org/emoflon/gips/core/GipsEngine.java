@@ -1,10 +1,13 @@
 package org.emoflon.gips.core;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import org.emoflon.gips.core.milp.ConstraintSorter;
 import org.emoflon.gips.core.milp.Solver;
@@ -27,6 +30,7 @@ public abstract class GipsEngine {
 	final protected Map<String, Object> globalConstants = Collections.synchronizedMap(new HashMap<>());
 	final protected Map<String, GipsConstraint<?, ?, ?>> constraints = Collections.synchronizedMap(new HashMap<>());
 	final protected Map<String, GipsLinearFunction<?, ?, ?>> functions = Collections.synchronizedMap(new HashMap<>());
+	final protected Map<String, GipsTypeExtender<?, ?>> typeExtensions = Collections.synchronizedMap(new HashMap<>());
 	protected GipsObjective objective;
 	protected Solver solver;
 
@@ -94,56 +98,36 @@ public abstract class GipsEngine {
 				// Reset validation log
 				validationLog = new GipsConstraintValidationLog();
 
-				if (parallel) {
-					// Constraints are re-build a few lines below
-					constraints.values().parallelStream().forEach(constraint -> constraint.clear());
+				// Constraints are re-build a few lines below
+				toStream(constraints.values(), parallel).forEach(constraint -> constraint.clear());
+				toStream(typeExtensions.values(), parallel).forEach(typeExtension -> typeExtension.clear());
 
-					// Reset trace
-					getTracer().resetTrace();
+				// Reset trace
+				getTracer().resetTrace();
 
-					nonMappingVariables.clear();
-					mappers.values().parallelStream().flatMap(mapper -> mapper.getMappings().values().parallelStream())
-							.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
-								Map<String, Variable<?>> variables = nonMappingVariables.get(m);
-								if (variables == null) {
-									variables = Collections.synchronizedMap(new HashMap<>());
-									nonMappingVariables.put(m, variables);
-								}
-								variables.putAll(m.getAdditionalVariables());
-							});
+				nonMappingVariables.clear();
+				toStream(mappers.values(), parallel) //
+						.flatMap(mapper -> toStream(mapper.getMappings().values(), parallel)) //
+						.filter(m -> m.hasAdditionalVariables()) //
+						.forEach(m -> {
+							Map<String, Variable<?>> variables = nonMappingVariables.get(m);
+							if (variables == null) {
+								variables = Collections.synchronizedMap(new HashMap<>());
+								nonMappingVariables.put(m, variables);
+							}
+							variables.putAll(m.getAdditionalVariables());
+						});
 
-					constraints.values().parallelStream().forEach(constraint -> constraint.calcAdditionalVariables());
+				toStream(constraints.values(), parallel).forEach(constraint -> constraint.calcAdditionalVariables());
+				toStream(typeExtensions.values(), parallel)
+						.forEach(typeExtension -> typeExtension.calculateExtensions());
 
-					updateConstants();
+				updateConstants();
 
-					constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints(parallel));
+				toStream(constraints.values(), parallel).forEach(constraint -> constraint.buildConstraints(parallel));
 
-					if (objective != null)
-						objective.buildObjectiveFunction(true);
-				} else {
-					// Constraints are re-build a few lines below
-					constraints.values().stream().forEach(constraint -> constraint.clear());
-
-					nonMappingVariables.clear();
-					mappers.values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
-							.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
-								Map<String, Variable<?>> variables = nonMappingVariables.get(m);
-								if (variables == null) {
-									variables = Collections.synchronizedMap(new HashMap<>());
-									nonMappingVariables.put(m, variables);
-								}
-								variables.putAll(m.getAdditionalVariables());
-							});
-
-					constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());
-
-					updateConstants();
-
-					constraints.values().stream().forEach(constraint -> constraint.buildConstraints(parallel));
-
-					if (objective != null)
-						objective.buildObjectiveFunction(false);
-				}
+				if (objective != null)
+					objective.buildObjectiveFunction(parallel);
 			});
 
 			observer.observe("BUILD_SOLVER", () -> {
@@ -191,73 +175,48 @@ public abstract class GipsEngine {
 		// Reset validation log
 		validationLog = new GipsConstraintValidationLog();
 
-		if (parallel) {
-			// Constraints are re-build a few lines below
-			constraints.values().parallelStream().forEach(constraint -> constraint.clear());
+		// Constraints are re-build a few lines below
+		toStream(constraints.values(), parallel).forEach(constraint -> constraint.clear());
+		toStream(typeExtensions.values(), parallel).forEach(typeExtension -> typeExtension.clear());
 
-			// Reset trace
-			getTracer().resetTrace();
+		// Reset trace
+		getTracer().resetTrace();
 
-			// Objectives will be build by the global objective call below
-//			objectives.values().parallelStream().forEach(objective -> objective.clear());
-			// TODO: It seems to me that this is not necessary for objectives. All tests
-			// (and also the dedicated tests for checking this!) are happy with it.
+		// Objectives will be build by the global objective call below
+//		objectives.values().parallelStream().forEach(objective -> objective.clear());
+		// TODO: It seems to me that this is not necessary for objectives. All tests
+		// (and also the dedicated tests for checking this!) are happy with it.
 
-			nonMappingVariables.clear();
-			mappers.values().parallelStream().flatMap(mapper -> mapper.getMappings().values().parallelStream())
-					.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
-						Map<String, Variable<?>> variables = nonMappingVariables.get(m);
-						if (variables == null) {
-							variables = Collections.synchronizedMap(new HashMap<>());
-							nonMappingVariables.put(m, variables);
-						}
-						variables.putAll(m.getAdditionalVariables());
-					});
+		nonMappingVariables.clear();
+		toStream(mappers.values(), parallel) //
+				.flatMap(mapper -> toStream(mapper.getMappings().values(), parallel)) //
+				.filter(m -> m.hasAdditionalVariables()) //
+				.forEach(m -> {
+					Map<String, Variable<?>> variables = nonMappingVariables.get(m);
+					if (variables == null) {
+						variables = Collections.synchronizedMap(new HashMap<>());
+						nonMappingVariables.put(m, variables);
+					}
+					variables.putAll(m.getAdditionalVariables());
+				});
 
-			constraints.values().parallelStream().forEach(constraint -> constraint.calcAdditionalVariables());
+		toStream(constraints.values(), parallel).forEach(constraint -> constraint.calcAdditionalVariables());
+		toStream(typeExtensions.values(), parallel).forEach(typeExtension -> typeExtension.calculateExtensions());
 
-			updateConstants();
+		updateConstants();
 
-			constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints(parallel));
+		toStream(constraints.values(), parallel).forEach(constraint -> constraint.buildConstraints(parallel));
 
-			if (objective != null)
-				objective.buildObjectiveFunction(true);
-		} else {
-			// Constraints are re-build a few lines below
-			constraints.values().stream().forEach(constraint -> constraint.clear());
-
-			// Reset trace
-			getTracer().resetTrace();
-
-			// Objectives will be build by the global objective call below
-//						objectives.values().parallelStream().forEach(objective -> objective.clear());
-			// TODO: It seems to me that this is not necessary for objectives. All tests
-			// (and also the dedicated tests for checking this!) are happy with it.
-
-			nonMappingVariables.clear();
-			mappers.values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
-					.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
-						Map<String, Variable<?>> variables = nonMappingVariables.get(m);
-						if (variables == null) {
-							variables = Collections.synchronizedMap(new HashMap<>());
-							nonMappingVariables.put(m, variables);
-						}
-						variables.putAll(m.getAdditionalVariables());
-					});
-
-			constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());
-
-			updateConstants();
-
-			constraints.values().stream().forEach(constraint -> constraint.buildConstraints(parallel));
-
-			if (objective != null)
-				objective.buildObjectiveFunction(true);
-		}
+		if (objective != null)
+			objective.buildObjectiveFunction(parallel);
 
 		solver.init();
 		solver.buildMILPProblem();
 		buildTraceGraphAndSendToIDE();
+	}
+
+	private static <T> Stream<T> toStream(Collection<T> collection, boolean parallel) {
+		return parallel ? collection.parallelStream() : collection.stream();
 	}
 
 	protected void buildTraceGraphAndSendToIDE() {
@@ -310,6 +269,10 @@ public abstract class GipsEngine {
 		return functions;
 	}
 
+	public Map<String, GipsTypeExtender<?, ?>> getTypeExtensions() {
+		return typeExtensions;
+	}
+
 	public TypeIndexer getIndexer() {
 		return indexer;
 	}
@@ -334,11 +297,14 @@ public abstract class GipsEngine {
 	public synchronized Variable<?> getNonMappingVariable(final Object context, final String variableTypeName) {
 		Map<String, Variable<?>> variables = nonMappingVariables.get(context);
 		if (variables == null)
+			throw new RuntimeException("No variables found for context <" + context + ">.");
+
+		Variable<?> variable = variables.get(variableTypeName);
+		if (variable == null)
 			throw new RuntimeException(
 					"Variable <" + variableTypeName + "> is not present in the non-mapping variable index.");
 
-		return variables.get(variableTypeName);
-
+		return variable;
 	}
 
 	public synchronized void addNonMappingVariable(final Object context,
@@ -364,7 +330,8 @@ public abstract class GipsEngine {
 	}
 
 	public synchronized void removeNonMappingVariable(final Variable<?> milpVar) {
-		nonMappingVariables.remove(milpVar.getName());
+		for (Map<String, Variable<?>> variables : nonMappingVariables.values())
+			variables.remove(milpVar.getName());
 	}
 
 	protected void addMapper(final GipsMapper<?> mapper) {
@@ -377,6 +344,10 @@ public abstract class GipsEngine {
 
 	protected void addLinearFunction(final GipsLinearFunction<?, ?, ?> function) {
 		functions.put(function.getName(), function);
+	}
+
+	protected void addTypeExtension(final GipsTypeExtender<?, ?> typeExtension) {
+		typeExtensions.put(typeExtension.getName(), Objects.requireNonNull(typeExtension));
 	}
 
 	protected void setObjective(final GipsObjective objective) {

@@ -62,6 +62,7 @@ public final class GipsBuilderUtils {
 	final public static String MAPPER_FOLDER = GIPS_API_FOLDER + "/mapper";
 	final public static String CONSTRAINT_FOLDER = GIPS_API_FOLDER + "/constraint";
 	final public static String OBJECTIVE_FOLDER = GIPS_API_FOLDER + "/objective";
+	final public static String TYPE_EXTENSION_FOLDER = GIPS_API_FOLDER + "/types";
 
 	/**
 	 * Removes generated code in the project matching the deletion pattern
@@ -103,6 +104,8 @@ public final class GipsBuilderUtils {
 		WorkspaceHelper.createFolderIfNotExists(getGeneratedProjectFolder(project, CONSTRAINT_FOLDER),
 				new NullProgressMonitor());
 		WorkspaceHelper.createFolderIfNotExists(getGeneratedProjectFolder(project, OBJECTIVE_FOLDER),
+				new NullProgressMonitor());
+		WorkspaceHelper.createFolderIfNotExists(getGeneratedProjectFolder(project, TYPE_EXTENSION_FOLDER),
 				new NullProgressMonitor());
 	}
 

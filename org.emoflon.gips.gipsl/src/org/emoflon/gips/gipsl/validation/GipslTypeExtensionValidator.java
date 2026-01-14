@@ -1,0 +1,143 @@
+package org.emoflon.gips.gipsl.validation;
+
+import java.util.Collection;
+
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExtension;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExtensionVariable;
+import org.emoflon.gips.gipsl.gipsl.GipslPackage;
+import org.emoflon.gips.gipsl.gipsl.impl.EditorGTFileImpl;
+import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
+import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
+
+public final class GipslTypeExtensionValidator {
+	private GipslTypeExtensionValidator() {
+	}
+
+	public static void checkTypeExtension(final GipsTypeExtension typeExtension) {
+		if (typeExtension == null)
+			return;
+
+		checkTypeExtensionIsUniqueForType(typeExtension);
+	}
+
+	public static void checkTypeExtensionVariable(final GipsTypeExtensionVariable variable) {
+		if (variable == null)
+			return;
+
+		checkTypeExtensionVariableHasUniqueName(variable);
+		checkTypeExtensionVariableValidAttribute(variable);
+		checkTypeExtensionVariableSingleBind(variable);
+		checkTypeExtensionVariableInUse(variable);
+	}
+
+	private static void checkTypeExtensionIsUniqueForType(final GipsTypeExtension typeExtension) {
+		if (typeExtension.getRef() == null)
+			return;
+
+		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(typeExtension, EditorGTFileImpl.class);
+		long count = editorFile.getTypes().stream() //
+				.filter(e -> e.getRef() != null) //
+				.filter(e -> e.getRef().equals(typeExtension.getRef())) //
+				.count();
+
+		if (count != 1) {
+			GipslValidator.err( //
+					String.format(GipslValidatorUtil.TYPE_EXTENSION_ALREADY_DECLARED,
+							((EClass) typeExtension.getRef()).getName(), GipslValidator.getTimes((int) count)), //
+					GipslPackage.Literals.GIPS_TYPE_EXTENSION__REF //
+			);
+		}
+	}
+
+	private static void checkTypeExtensionVariableHasUniqueName(final GipsTypeExtensionVariable variable) {
+		if (variable.getName() == null)
+			return;
+
+		GipsTypeExtension container = (GipsTypeExtension) variable.eContainer();
+		if (container == null || container.getVariables() == null || container.getVariables().isEmpty()
+				|| container.getRef() == null)
+			return;
+
+		Collection<GipsTypeExtension> relevantExtensions = GipslScopeContextUtil.getAllTypeExtensionsForType(variable,
+				(EClass) container.getRef());
+
+		for (GipsTypeExtension typeExtension : relevantExtensions) {
+			boolean variableAlreadyDeclared = typeExtension.getVariables().stream() //
+					.filter(var -> !var.equals(variable)) //
+					.filter(var -> variable.getName().equals(var.getName())) //
+					.findAny() //
+					.isPresent();
+
+			if (variableAlreadyDeclared) {
+				GipslValidator.err( //
+						String.format(GipslValidatorUtil.TYPE_EXTENSION_VARIABLE_ALREADY_DECLARED, //
+								variable.getName(), //
+								((EClass) typeExtension.getRef()).getName()), //
+						GipslPackage.Literals.GIPS_VARIABLE__NAME, //
+						GipslValidator.NAME_EXPECT_UNIQUE //
+				);
+			}
+		}
+	}
+
+	private static void checkTypeExtensionVariableValidAttribute(final GipsTypeExtensionVariable variable) {
+		if (!variable.isBound() || variable.getAttribute() == null)
+			return;
+
+		GipsTypeExtension typeExtension = (GipsTypeExtension) variable.eContainer();
+		if (typeExtension == null || typeExtension.getRef() == null)
+			return;
+
+		if (!(variable.getAttribute() instanceof EAttribute))
+			GipslValidator.err(GipslValidatorUtil.TYPE_EXTENSION_VARIABLE_ATTRIBUTE_INVALID, //
+					GipslPackage.Literals.GIPS_TYPE_EXTENSION_VARIABLE__ATTRIBUTE);
+
+		EAttribute attribute = (EAttribute) variable.getAttribute();
+		if (attribute.getEAttributeType() == null || !attribute.getEAttributeType().equals(variable.getType()))
+			GipslValidator.err(GipslValidatorUtil.TYPE_EXTENSION_VARIABLE_ATTRIBUTE_TYPE_MISSMATCH, //
+					GipslPackage.Literals.GIPS_TYPE_EXTENSION_VARIABLE__ATTRIBUTE);
+	}
+
+	private static void checkTypeExtensionVariableSingleBind(final GipsTypeExtensionVariable variable) {
+		if (!variable.isBound() || variable.getAttribute() == null)
+			return;
+
+		final GipsTypeExtension container = (GipsTypeExtension) variable.eContainer();
+		if (container == null || container.getVariables() == null || container.getVariables().isEmpty())
+			return;
+
+		Collection<GipsTypeExtension> relevantExtensions = GipslScopeContextUtil.getAllTypeExtensionsForType(variable,
+				(EClass) container.getRef());
+
+		for (GipsTypeExtension typeExtension : relevantExtensions) {
+			boolean attributeAlreadyBound = typeExtension.getVariables().stream() //
+					.filter(var -> !var.equals(variable)) //
+					.filter(var -> var.getName() != null) //
+					.filter(var -> var.isBound()) //
+					.filter(var -> var.getAttribute() != null) //
+					.filter(var -> var.getAttribute().equals(variable.getAttribute())) //
+					.findAny() //
+					.isPresent();
+
+			if (attributeAlreadyBound) {
+				GipslValidator.err( //
+						String.format(GipslValidatorUtil.TYPE_EXTENSION_VARIABLE_ATTRIBUTE_ALREADY_BOUND, //
+								variable.getName(), //
+								((EClass) typeExtension.getRef()).getName()), //
+						GipslPackage.Literals.GIPS_TYPE_EXTENSION_VARIABLE__ATTRIBUTE);
+			}
+		}
+	}
+
+	private static void checkTypeExtensionVariableInUse(final GipsTypeExtensionVariable variable) {
+		if (!GipslScopeContextUtil.isVariableReferenced(variable)) {
+			GipslValidator.warn( //
+					String.format(GipslValidatorUtil.TYPE_EXTENSION_VARIABLE_NOT_USED, variable.getName()), //
+					GipslPackage.Literals.GIPS_VARIABLE__NAME);
+		}
+	}
+
+}

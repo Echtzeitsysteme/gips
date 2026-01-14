@@ -43,6 +43,8 @@ import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsRuleExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsSetExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExtension;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExtensionVariable;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
 import org.emoflon.gips.gipsl.gipsl.Package;
@@ -374,6 +376,16 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 		GipslMappingValidator.checkMappingVariableNameUnique(variable);
 		GipslMappingValidator.checkMappingVariableInUse(variable);
+	}
+
+	@Check
+	public void checkTypeExtension(final GipsTypeExtension typeExtension) {
+		GipslTypeExtensionValidator.checkTypeExtension(typeExtension);
+	}
+
+	@Check
+	public void checkTypeExtensionVariable(final GipsTypeExtensionVariable variable) {
+		GipslTypeExtensionValidator.checkTypeExtensionVariable(variable);
 	}
 
 	@Check

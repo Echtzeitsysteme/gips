@@ -52,6 +52,8 @@ import org.emoflon.gips.gipsl.gipsl.GipsSetElementExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsSortPredicate;
 import org.emoflon.gips.gipsl.gipsl.GipsTransformOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExtension;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExtensionVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeQuery;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeSelect;
 import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
@@ -69,6 +71,7 @@ import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsSetElementExpressionImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsSortPredicateImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsTransformOperationImpl;
+import org.emoflon.gips.gipsl.gipsl.impl.GipsTypeExtensionImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsValueExpressionImpl;
 import org.emoflon.ibex.gt.editor.gT.EditorOperator;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
@@ -105,6 +108,10 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			return scopeForGipsMapping((GipsMapping) context, reference);
 		} else if (GipslScopeContextUtil.isGipsMappingVariableType(context, reference)) {
 			return scopeForGipsMappingVariableType((GipsMappingVariable) context, reference);
+		} else if (GipslScopeContextUtil.isGipsTypeExtension(context, reference)) {
+			return scopeForGipsTypeExtension((GipsTypeExtension) context, reference);
+		} else if (GipslScopeContextUtil.isGipsTypeExtensionVariableType(context, reference)) {
+			return scopeForGipsTypeExtensionVariableType((GipsTypeExtensionVariable) context, reference);
 		} else if (GipslScopeContextUtil.isGipsMappingVariableParameter(context, reference)) {
 			return scopeForGipsMappingVariableParameter((GipsMappingVariable) context, reference);
 		} else if (GipslScopeContextUtil.isGipsConstantReference(context, reference)) {
@@ -312,62 +319,90 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 
 	public IScope scopeForGipsVariableReferenceExpression(GipsVariableReferenceExpression context,
 			EReference reference) {
+
 		EObject container = (EObject) GipslScopeContextUtil.getContainer(context,
 				Set.of(GipsValueExpressionImpl.class, GipsTransformOperationImpl.class));
 
 		if (container instanceof GipsValueExpression root) {
+
 			if (root.getValue() instanceof GipsMappingExpression mapping) {
+
 				if (mapping.getMapping() != null && mapping.getMapping().getVariables() != null
 						&& !mapping.getMapping().getVariables().isEmpty()) {
 					return Scopes.scopeFor(mapping.getMapping().getVariables());
-				} else {
-					return IScope.NULLSCOPE;
 				}
+
 			} else if (root.getValue() instanceof GipsLocalContextExpression local) {
-				if (!GipslScopeContextUtil.hasLocalContext(local)) {
-					return IScope.NULLSCOPE;
-				}
+
 				EObject localContext = GipslScopeContextUtil.getLocalContext(local);
 				if (localContext instanceof GipsMapping mapping) {
-					if (mapping.getVariables() != null && !mapping.getVariables().isEmpty()) {
+					if (mapping.getVariables() != null)
 						return Scopes.scopeFor(mapping.getVariables());
-					} else {
-						return IScope.NULLSCOPE;
-					}
-				} else {
-					return IScope.NULLSCOPE;
+
+				} else if (localContext instanceof EClass type) {
+					return Scopes.scopeFor( //
+							GipslScopeContextUtil.getAllTypeExtensionsForType(context, type) //
+									.stream() //
+									.flatMap(e -> e.getVariables().stream()) //
+									.toList() //
+					);
 				}
+
 			} else if (root.getValue() instanceof GipsSetElementExpression setElement) {
+
 				EObject setContext = GipslScopeContextUtil.getSetContext(setElement);
 				if (setContext instanceof GipsMappingExpression mapping) {
 					if (mapping.getMapping() != null && mapping.getMapping().getVariables() != null
 							&& !mapping.getMapping().getVariables().isEmpty()) {
 						return Scopes.scopeFor(mapping.getMapping().getVariables());
-					} else {
-						return IScope.NULLSCOPE;
 					}
-				} else {
-					return IScope.NULLSCOPE;
+				} else if (setContext instanceof GipsTypeExpression typeExpression) {
+					return Scopes.scopeFor( //
+							GipslScopeContextUtil.getAllTypeExtensionsForType(context, typeExpression.getType()) //
+									.stream() //
+									.flatMap(e -> e.getVariables().stream()) //
+									.toList() //
+					);
 				}
-			} else {
-				return IScope.NULLSCOPE;
+
 			}
+
 		} else if (container instanceof GipsTransformOperation root) {
+
 			EObject setContext = GipslScopeContextUtil.getSetContext(root);
 			if (setContext instanceof GipsMappingExpression mapping) {
 				if (mapping.getMapping() != null && mapping.getMapping().getVariables() != null
 						&& !mapping.getMapping().getVariables().isEmpty()) {
 					return Scopes.scopeFor(mapping.getMapping().getVariables());
-				} else {
-					return IScope.NULLSCOPE;
 				}
-			} else {
-				return IScope.NULLSCOPE;
 			}
-		} else {
-			return IScope.NULLSCOPE;
+
 		}
 
+		return IScope.NULLSCOPE;
+	}
+
+	private IScope scopeForGipsTypeExtension(GipsTypeExtension context, EReference reference) {
+		return Scopes.scopeFor(GipslScopeContextUtil.getClasses(context));
+	}
+
+	public IScope scopeForGipsTypeExtensionVariableType(GipsTypeExtensionVariable context, EReference reference) {
+		if (reference == GipslPackage.Literals.GIPS_VARIABLE__TYPE)
+			return Scopes.scopeFor(variableDataTypes);
+
+		if (reference == GipslPackage.Literals.GIPS_TYPE_EXTENSION_VARIABLE__ATTRIBUTE) {
+			GipsTypeExtension container = (GipsTypeExtension) GipslScopeContextUtil.getContainer(context,
+					Set.of(GipsTypeExtensionImpl.class));
+			if (container.getRef() != null) {
+				EClass eClass = (EClass) container.getRef();
+				return Scopes.scopeFor(eClass.getEAllAttributes().stream() //
+						.filter(e -> e.isChangeable() && !e.isMany() && !e.isDerived()) //
+						.filter(e -> e.getEAttributeType() != null && e.getEAttributeType().equals(context.getType())) //
+						.toList());
+			}
+		}
+
+		return IScope.NULLSCOPE;
 	}
 
 	public IScope scopeForGipsConstantReference(GipsConstantReference context, EReference reference) {

@@ -16,6 +16,9 @@ import org.emoflon.gips.build.generator.templates.PatternMapperTemplate;
 import org.emoflon.gips.build.generator.templates.PatternMappingTemplate;
 import org.emoflon.gips.build.generator.templates.RuleMapperTemplate;
 import org.emoflon.gips.build.generator.templates.RuleMappingTemplate;
+import org.emoflon.gips.build.generator.templates.TypeExtenderFactoryTemplate;
+import org.emoflon.gips.build.generator.templates.TypeExtenderTemplate;
+import org.emoflon.gips.build.generator.templates.TypeExtensionTemplate;
 import org.emoflon.gips.build.generator.templates.constraint.ConstraintFactoryTemplate;
 import org.emoflon.gips.build.generator.templates.constraint.GlobalConstraintTemplate;
 import org.emoflon.gips.build.generator.templates.constraint.MappingConstraintTemplate;
@@ -61,6 +64,7 @@ public class GipsCodeGenerator {
 		templates.add(new MapperFactoryTemplate(data, data.model));
 		templates.add(new ConstraintFactoryTemplate(data, data.model));
 		templates.add(new FunctionFactoryTemplate(data, data.model));
+		templates.add(new TypeExtenderFactoryTemplate(data, data.model));
 		data.model.getMappings().parallelStream().forEach(mapping -> {
 			if (mapping instanceof RuleMapping gtMapping) {
 				templates.add(new RuleMappingTemplate(data, gtMapping));
@@ -71,6 +75,10 @@ public class GipsCodeGenerator {
 				templates.add(new PatternMapperTemplate(data, pmMapping));
 			}
 
+		});
+		data.model.getExtendedTypes().parallelStream().forEach(typeExtension -> {
+			templates.add(new TypeExtensionTemplate(data, typeExtension));
+			templates.add(new TypeExtenderTemplate(data, typeExtension));
 		});
 		data.model.getConstraints().parallelStream().forEach(constraint -> {
 			if (constraint instanceof MappingConstraint mappingConstraint) {

@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -52,9 +53,12 @@ import org.emoflon.gips.gipsl.gipsl.GipsRuleExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsSetElementExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsTransformOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExtension;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExtensionVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeQuery;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeSelect;
 import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
@@ -83,7 +87,7 @@ public final class GipslScopeContextUtil {
 	}
 
 	public static boolean isGipsMappingVariableType(final EObject context, final EReference reference) {
-		return context instanceof GipsMappingVariable && reference == GipslPackage.Literals.GIPS_MAPPING_VARIABLE__TYPE;
+		return context instanceof GipsMappingVariable && reference == GipslPackage.Literals.GIPS_VARIABLE__TYPE;
 	}
 
 	public static boolean isGipsMappingVariableParameter(final EObject context, final EReference reference) {
@@ -98,7 +102,16 @@ public final class GipslScopeContextUtil {
 
 	public static boolean isGipsVariableReferenceExpression(final EObject context, final EReference reference) {
 		return context instanceof GipsVariableReferenceExpression
-				&& reference == GipslPackage.Literals.GIPS_VARIABLE_REFERENCE_EXPRESSION__VARIABLE;
+				&& (reference == GipslPackage.Literals.GIPS_VARIABLE_REFERENCE_EXPRESSION__VARIABLE);
+	}
+
+	public static boolean isGipsTypeExtension(final EObject context, final EReference reference) {
+		return context instanceof GipsTypeExtension;
+	}
+
+	public static boolean isGipsTypeExtensionVariableType(final EObject context, final EReference reference) {
+		return context instanceof GipsTypeExtensionVariable && (reference == GipslPackage.Literals.GIPS_VARIABLE__TYPE
+				|| reference == GipslPackage.Literals.GIPS_TYPE_EXTENSION_VARIABLE__ATTRIBUTE);
 	}
 
 	public static boolean isGipsConstraintContext(final EObject context, final EReference reference) {
@@ -467,8 +480,8 @@ public final class GipslScopeContextUtil {
 		return false;
 	}
 
-	public static boolean isMappingVariableReferenced(final GipsMappingVariable mappingVariable) {
-		final EditorGTFile gtFile = GTEditorPatternUtils.getContainer(mappingVariable, EditorGTFileImpl.class);
+	public static boolean isVariableReferenced(final GipsVariable variable) {
+		final EditorGTFile gtFile = GTEditorPatternUtils.getContainer(variable, EditorGTFileImpl.class);
 		final Collection<EObject> toBeScanned = new HashSet<>();
 		toBeScanned.addAll(gtFile.getConstraints());
 		toBeScanned.addAll(gtFile.getFunctions());
@@ -481,13 +494,34 @@ public final class GipslScopeContextUtil {
 			EObject next = iterator.next();
 			if (next instanceof GipsVariableReferenceExpression varReferenceExpression) {
 				if (varReferenceExpression.isIsGenericValue()) {
-					if (mappingVariable.equals(varReferenceExpression.getVariable()))
+					if (variable.equals(varReferenceExpression.getVariable()))
 						return true;
 				}
 			}
 		}
 
 		return false;
+	}
+
+	public static Collection<GipsTypeExtension> getAllTypeExtensionsForType(EObject expression, EClass type) {
+		final EditorGTFile gtFile = GTEditorPatternUtils.getContainer(expression, EditorGTFileImpl.class);
+		if (gtFile.getTypes().isEmpty())
+			return Collections.emptyList();
+
+		Queue<EClass> fringe = new LinkedList<>();
+		Collection<EClass> discovered = new HashSet<>();
+
+		fringe.add(type);
+
+		while (!fringe.isEmpty()) {
+			EClass eClass = fringe.poll();
+			discovered.add(eClass);
+			for (EClass superType : eClass.getEAllSuperTypes())
+				if (!discovered.contains(superType))
+					fringe.add(superType);
+		}
+
+		return gtFile.getTypes().stream().filter(ext -> discovered.contains(ext.getRef())).toList();
 	}
 
 	public static void gatherFilesWithEnding(Collection<File> gtFiles, File root, String ending, boolean ignoreBin) {

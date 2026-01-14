@@ -106,8 +106,10 @@ public abstract class GipsEngine {
 				getTracer().resetTrace();
 
 				nonMappingVariables.clear();
-				toStream(mappers.values(), parallel).flatMap(mapper -> toStream(mapper.getMappings().values(), true))
-						.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
+				toStream(mappers.values(), parallel) //
+						.flatMap(mapper -> toStream(mapper.getMappings().values(), parallel)) //
+						.filter(m -> m.hasAdditionalVariables()) //
+						.forEach(m -> {
 							Map<String, Variable<?>> variables = nonMappingVariables.get(m);
 							if (variables == null) {
 								variables = Collections.synchronizedMap(new HashMap<>());
@@ -186,8 +188,10 @@ public abstract class GipsEngine {
 		// (and also the dedicated tests for checking this!) are happy with it.
 
 		nonMappingVariables.clear();
-		toStream(mappers.values(), parallel).flatMap(mapper -> toStream(mapper.getMappings().values(), true))
-				.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
+		toStream(mappers.values(), parallel) //
+				.flatMap(mapper -> toStream(mapper.getMappings().values(), parallel)) //
+				.filter(m -> m.hasAdditionalVariables()) //
+				.forEach(m -> {
 					Map<String, Variable<?>> variables = nonMappingVariables.get(m);
 					if (variables == null) {
 						variables = Collections.synchronizedMap(new HashMap<>());

@@ -55,7 +55,7 @@ public class «className» extends GipsTypeExtension<«context.extendedType.name
 			«ENDIF»
 		}
 	«ENDFOR»
-	
+
 	@Override
 	public void setVariableValue(final String valName, final double value) {
 		«IF context.addedVariables.isNullOrEmpty»
@@ -79,22 +79,16 @@ public class «className» extends GipsTypeExtension<«context.extendedType.name
 			}
 		«ENDIF»
 	}
-	
+
 	@Override
 	public void applyBoundVariablesToModel(){
 		«FOR variable : context.addedVariables»
 			«IF variable instanceof BoundAttributeVariable»
-				getContext().set«variable.boundToFeature.toFirstUpper»(
-					«IF variable.type == VariableType.BINARY»
-						((int) getVariable("«variable.name»").getValue()) != 0
-					«ELSE»
-						(«GipsImportManager.variableToSimpleJavaDataType(variable, imports)») getVariable("«variable.name»").getValue()
-					«ENDIF»
-				);
+				getContext().set«variable.boundToFeature.toFirstUpper»(getValueOf«variable.name.toFirstUpper»());
 			«ENDIF»
 		«ENDFOR»
 	}
-	
+
 }
 
 '''

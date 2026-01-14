@@ -348,7 +348,8 @@ public abstract class GipsEngine {
 	}
 
 	public synchronized void removeNonMappingVariable(final Variable<?> milpVar) {
-		nonMappingVariables.remove(milpVar.getName());
+		for (Map<String, Variable<?>> variables : nonMappingVariables.values())
+			variables.remove(milpVar.getName());
 	}
 
 	protected void addMapper(final GipsMapper<?> mapper) {

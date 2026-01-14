@@ -259,7 +259,9 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 		
 		'''
 			namespace «getNameOf(linearFunction)» {
-				class "«getNameOf(linearFunction.context)»" as «ref».context <<GipsContext>> {}
+				«IF linearFunction.context !== null»
+					class "«getNameOf(linearFunction.context)»" as «ref».context <<GipsContext>> {}
+				«ENDIF»				
 				class "Function" as «ref».body <<«linearFunction.eClass.name»>> {}
 				
 				«IF !linearFunction.constants.empty»
@@ -299,10 +301,12 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 					«ENDIF»
 				«ENDFOR»
 				
-				«IF !EcoreUtil2.getAllContentsOfType(linearFunction.expression, typeof(GipsLocalContextExpression)).empty»
-					«ref».body --> «ref».context : uses
-				«ELSE»
-					«ref».body --> «ref».context : **unused**
+				«IF linearFunction.context !== null»
+					«IF !EcoreUtil2.getAllContentsOfType(linearFunction.expression, typeof(GipsLocalContextExpression)).empty»
+						«ref».body --> «ref».context : uses
+					«ELSE»
+						«ref».body --> «ref».context : **unused**
+					«ENDIF»
 				«ENDIF»
 			}
 		'''
@@ -327,7 +331,9 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 		
 		'''
 			namespace «ref» {
-				class "«getNameOf(constraint.context)»" as «ref».context <<GipsContext>> {}
+				«IF constraint.context !== null»
+					class "«getNameOf(constraint.context)»" as «ref».context <<GipsContext>> {}
+				«ENDIF»				
 				class "Constraint" as «ref».body <<«constraint.eClass.name»>> {}				
 				
 				«IF !constraint.constants.empty»
@@ -367,10 +373,12 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 					«ENDIF»
 				«ENDFOR»
 				
-				«IF !EcoreUtil2.getAllContentsOfType(constraint.expression, typeof(GipsLocalContextExpression)).empty»
-					«ref».body --> «ref».context : uses
-				«ELSE»
-					«ref».body --> «ref».context : **unused**
+				«IF constraint.context !== null»
+					«IF !EcoreUtil2.getAllContentsOfType(constraint.expression, typeof(GipsLocalContextExpression)).empty»
+						«ref».body --> «ref».context : uses
+					«ELSE»
+						«ref».body --> «ref».context : **unused**
+					«ENDIF»
 				«ENDIF»
 			}
 		'''

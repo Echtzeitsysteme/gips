@@ -98,56 +98,34 @@ public abstract class GipsEngine {
 				// Reset validation log
 				validationLog = new GipsConstraintValidationLog();
 
-				if (parallel) {
-					// Constraints are re-build a few lines below
-					constraints.values().parallelStream().forEach(constraint -> constraint.clear());
+				// Constraints are re-build a few lines below
+				toStream(constraints.values(), parallel).forEach(constraint -> constraint.clear());
+				toStream(typeExtensions.values(), parallel).forEach(typeExtension -> typeExtension.clear());
 
-					// Reset trace
-					getTracer().resetTrace();
+				// Reset trace
+				getTracer().resetTrace();
 
-					nonMappingVariables.clear();
-					mappers.values().parallelStream().flatMap(mapper -> mapper.getMappings().values().parallelStream())
-							.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
-								Map<String, Variable<?>> variables = nonMappingVariables.get(m);
-								if (variables == null) {
-									variables = Collections.synchronizedMap(new HashMap<>());
-									nonMappingVariables.put(m, variables);
-								}
-								variables.putAll(m.getAdditionalVariables());
-							});
+				nonMappingVariables.clear();
+				toStream(mappers.values(), parallel).flatMap(mapper -> toStream(mapper.getMappings().values(), true))
+						.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
+							Map<String, Variable<?>> variables = nonMappingVariables.get(m);
+							if (variables == null) {
+								variables = Collections.synchronizedMap(new HashMap<>());
+								nonMappingVariables.put(m, variables);
+							}
+							variables.putAll(m.getAdditionalVariables());
+						});
 
-					constraints.values().parallelStream().forEach(constraint -> constraint.calcAdditionalVariables());
+				toStream(constraints.values(), parallel).forEach(constraint -> constraint.calcAdditionalVariables());
+				toStream(typeExtensions.values(), parallel)
+						.forEach(typeExtension -> typeExtension.calculateExtensions());
 
-					updateConstants();
+				updateConstants();
 
-					constraints.values().parallelStream().forEach(constraint -> constraint.buildConstraints(parallel));
+				toStream(constraints.values(), parallel).forEach(constraint -> constraint.buildConstraints(parallel));
 
-					if (objective != null)
-						objective.buildObjectiveFunction(true);
-				} else {
-					// Constraints are re-build a few lines below
-					constraints.values().stream().forEach(constraint -> constraint.clear());
-
-					nonMappingVariables.clear();
-					mappers.values().stream().flatMap(mapper -> mapper.getMappings().values().stream())
-							.filter(m -> m.hasAdditionalVariables()).forEach(m -> {
-								Map<String, Variable<?>> variables = nonMappingVariables.get(m);
-								if (variables == null) {
-									variables = Collections.synchronizedMap(new HashMap<>());
-									nonMappingVariables.put(m, variables);
-								}
-								variables.putAll(m.getAdditionalVariables());
-							});
-
-					constraints.values().stream().forEach(constraint -> constraint.calcAdditionalVariables());
-
-					updateConstants();
-
-					constraints.values().stream().forEach(constraint -> constraint.buildConstraints(parallel));
-
-					if (objective != null)
-						objective.buildObjectiveFunction(false);
-				}
+				if (objective != null)
+					objective.buildObjectiveFunction(parallel);
 			});
 
 			observer.observe("BUILD_SOLVER", () -> {

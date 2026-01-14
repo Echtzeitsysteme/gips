@@ -17,7 +17,10 @@ import org.emoflon.gips.gipsl.gipsl.GipsLocalContextExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsNodeExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExtension;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExtensionVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
 
 public class GipslNodeCollector {
@@ -28,6 +31,7 @@ public class GipslNodeCollector {
 	private Map<GipsMapping, Collection<EditorNode>> mapping2Node;
 	private Collection<EditorNode> context2Node;
 	private Collection<GipsConstant> usedConstants;
+	private Collection<GipsTypeExtension> typeExtensions;
 
 	public GipslNodeCollector(EObject node) {
 		this.node = Objects.requireNonNull(node, "node");
@@ -75,6 +79,15 @@ public class GipslNodeCollector {
 
 		allEditorNodes = EcoreUtil2.getAllContentsOfType(node, EditorNode.class).stream() //
 				.collect(Collectors.toSet());
+
+		typeExtensions = EcoreUtil2.getAllContentsOfType(node, GipsVariableReferenceExpression.class).stream() //
+				.map(e -> e.getVariable()) //
+				.filter(e -> e instanceof GipsTypeExtensionVariable) //
+				.map(e -> e.eContainer()) //
+				.filter(e -> e instanceof GipsTypeExtension) //
+				.map(e -> (GipsTypeExtension) e) //
+				.collect(Collectors.toSet());
+
 	}
 
 	private void collectUsedConstants() {
@@ -101,6 +114,10 @@ public class GipslNodeCollector {
 
 	public Collection<EditorNode> getContextToEditorNodes() {
 		return context2Node;
+	}
+
+	public Collection<GipsTypeExtension> getUsedTypeExtensions() {
+		return typeExtensions;
 	}
 
 }

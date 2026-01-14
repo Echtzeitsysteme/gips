@@ -10,6 +10,7 @@ import java.util.Collection
 import org.emoflon.gips.gipsl.gipsl.GipsConfig
 import org.emoflon.gips.gipsl.gipsl.GipsMapping
 import org.emoflon.gips.gipsl.gipsl.GipsObjective
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExtension
 import org.eclipse.xtext.EcoreUtil2
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunctionReference
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction
@@ -22,6 +23,7 @@ import org.emoflon.ibex.gt.editor.gT.EditorImport
 import org.emoflon.gips.gipsl.ui.labeling.TextFormatHelper
 import org.eclipse.jface.viewers.ILabelProvider
 import java.util.LinkedList
+import org.eclipse.emf.ecore.EClass
 
 class GipslPlantUMLProvider implements UMLTemplateProvider {
 		
@@ -114,6 +116,7 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 			org.emoflon.gips.gipsl.gipsl.GipsLinearFunction: eObject.name
 			org.emoflon.gips.gipsl.gipsl.GipsConfig: '''Config'''
 			org.emoflon.gips.gipsl.gipsl.GipsMapping: eObject.name
+			org.emoflon.gips.gipsl.gipsl.GipsTypeExtension: eObject.ref.name
 			org.emoflon.gips.gipsl.gipsl.GipsConstraint: '''Constraint'''
 			org.emoflon.gips.gipsl.gipsl.Package: '''Package'''
 			org.emoflon.ibex.gt.editor.gT.EditorPattern: eObject.name
@@ -128,6 +131,7 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 			org.emoflon.gips.gipsl.gipsl.GipsLinearFunction: true
 			org.emoflon.gips.gipsl.gipsl.GipsConfig: true
 			org.emoflon.gips.gipsl.gipsl.GipsMapping: true
+			org.emoflon.gips.gipsl.gipsl.GipsTypeExtension: true
 			org.emoflon.gips.gipsl.gipsl.GipsConstraint: true
 			org.emoflon.gips.gipsl.gipsl.Package: true
 			org.emoflon.ibex.gt.editor.gT.EditorPattern: true
@@ -171,6 +175,19 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 	dispatch def String generateUML(EObject eObject, UMLContext generator) {
 		'''
 			class "«getNameOf(eObject)»" as «generator.getOrCreateUMLReference(eObject)» <<«eObject.class.simpleName»>>
+		'''
+	}
+	
+	dispatch def String generateUML(EClass eClass, UMLContext generator){
+		'''
+			class "«getNameOf(eClass)»" as «generator.getOrCreateUMLReference(eClass)» <<«eClass.eClass.name»>> {
+				«FOR attribute : eClass.EAllAttributes»
+					+ «attribute.name» : «attribute.EType.name»«IF attribute.many»[]«ENDIF»
+				«ENDFOR»
+				«FOR references : eClass.EAllReferences»
+					+ «references.name» : «references.EType.name»«IF references.many»[]«ENDIF»
+				«ENDFOR»
+			}
 		'''
 	}
 
@@ -219,6 +236,20 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 		'''
 	}
 	
+	dispatch def String generateUML(GipsTypeExtension typeExt, UMLContext generator){
+		val ref = generator.getOrCreateUMLReference(typeExt)
+		
+		generator.attachAtEndOfFile.add('''«ref» --> «generator.getOrCreateUMLReference(typeExt.ref)» : extends''')
+		
+		'''
+			class "«getNameOf(typeExt)»" as «ref» <<«typeExt.eClass.name»>> {
+				«FOR variable : typeExt.variables»
+					+ «variable.name» : «variable.type.name» «IF variable.bound» **boundTo** «variable.attribute.name»«ENDIF» 
+				«ENDFOR»
+			}
+		'''
+	}
+	
 	dispatch def String generateUML(GipsObjective objective, UMLContext generator) {
 		val ref = generator.getOrCreateUMLReference(objective)
 		
@@ -249,6 +280,10 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 		nodeCollector.mappings.forEach[mapping |
 			if(!isNullOrEmpty(mapping.name))
 				generator.attachAtEndOfFile.add('''«ref».«mapping.name» --> «generator.getOrCreateUMLReference(mapping)» : mapping''')
+		]
+		
+		nodeCollector.usedTypeExtensions.forEach[typeExtension |
+			generator.attachAtEndOfFile.add('''«ref».«typeExtension.ref.name» --> «generator.getOrCreateUMLReference(typeExtension)» : type''')
 		]
 		
 		val editorNodes = new HashSet<EditorNode>()
@@ -299,6 +334,11 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 					«ENDIF»
 				«ENDFOR»
 				
+				«FOR typeExtension : nodeCollector.usedTypeExtensions»
+					class "«typeExtension.ref.name»" as «ref».«typeExtension.ref.name» <<«typeExtension.eClass.name»>>
+					«ref».body --> «ref».«typeExtension.ref.name» : uses
+				«ENDFOR»
+				
 				«IF !EcoreUtil2.getAllContentsOfType(linearFunction.expression, typeof(GipsLocalContextExpression)).empty»
 					«ref».body --> «ref».context : uses
 				«ELSE»
@@ -317,6 +357,10 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 		nodeCollector.mappings.forEach[mapping |
 			if(!isNullOrEmpty(mapping.name))
 				generator.attachAtEndOfFile.add('''«ref».«mapping.name» --> «generator.getOrCreateUMLReference(mapping)» : mapping''')
+		]
+		
+		nodeCollector.usedTypeExtensions.forEach[typeExtension |
+			generator.attachAtEndOfFile.add('''«ref».«typeExtension.ref.name» --> «generator.getOrCreateUMLReference(typeExtension)» : type''')
 		]
 		
 		val editorNodes = new HashSet<EditorNode>()
@@ -365,6 +409,11 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 							«ENDFOR»
 						«ENDIF»
 					«ENDIF»
+				«ENDFOR»
+				
+				«FOR typeExtension : nodeCollector.usedTypeExtensions»
+					class "«typeExtension.ref.name»" as «ref».«typeExtension.ref.name» <<«typeExtension.eClass.name»>>
+					«ref».body --> «ref».«typeExtension.ref.name» : uses
 				«ENDFOR»
 				
 				«IF !EcoreUtil2.getAllContentsOfType(constraint.expression, typeof(GipsLocalContextExpression)).empty»

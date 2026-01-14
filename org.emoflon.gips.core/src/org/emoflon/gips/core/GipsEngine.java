@@ -315,11 +315,14 @@ public abstract class GipsEngine {
 	public synchronized Variable<?> getNonMappingVariable(final Object context, final String variableTypeName) {
 		Map<String, Variable<?>> variables = nonMappingVariables.get(context);
 		if (variables == null)
+			throw new RuntimeException("No variables found for context <" + context + ">.");
+
+		Variable<?> variable = variables.get(variableTypeName);
+		if (variable == null)
 			throw new RuntimeException(
 					"Variable <" + variableTypeName + "> is not present in the non-mapping variable index.");
 
-		return variables.get(variableTypeName);
-
+		return variable;
 	}
 
 	public synchronized void addNonMappingVariable(final Object context,

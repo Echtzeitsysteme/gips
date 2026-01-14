@@ -6,6 +6,7 @@ import org.emoflon.gips.core.milp.model.BinaryVariable;
 import org.emoflon.gips.core.milp.model.Constraint;
 import org.emoflon.gips.core.milp.model.Term;
 import org.emoflon.gips.core.milp.model.Variable;
+import org.emoflon.gips.core.util.StreamUtils;
 import org.emoflon.gips.core.validation.GipsValidationEventType;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
@@ -25,36 +26,19 @@ public abstract class GipsMappingConstraint<ENGINE extends GipsEngine, CONTEXT e
 
 	@Override
 	public void buildConstraints(final boolean parallel) {
-		if (parallel) {
-			mapper.getMappings().values().parallelStream().forEach(context -> {
-				final Constraint candidate = buildConstraint(context);
-				if (candidate != null) {
-					milpConstraints.put(context, candidate);
-				}
-			});
-			if (constraint.isDepending()) {
-				mapper.getMappings().values().parallelStream().forEach(context -> {
-					final List<Constraint> constraints = buildAdditionalConstraints(context);
-					additionalMilpConstraints.put(context, constraints);
-				});
-
+		StreamUtils.toStream(mapper.getMappings().values(), parallel).forEach(context -> {
+			final Constraint candidate = buildConstraint(context);
+			if (candidate != null) {
+				milpConstraints.put(context, candidate);
 			}
-		} else {
-			mapper.getMappings().values().stream().forEach(context -> {
-				final Constraint candidate = buildConstraint(context);
-				if (candidate != null) {
-					milpConstraints.put(context, candidate);
-				}
+		});
+		if (constraint.isDepending()) {
+			StreamUtils.toStream(mapper.getMappings().values(), parallel).forEach(context -> {
+				final List<Constraint> constraints = buildAdditionalConstraints(context);
+				additionalMilpConstraints.put(context, constraints);
 			});
-			if (constraint.isDepending()) {
-				mapper.getMappings().values().stream().forEach(context -> {
-					final List<Constraint> constraints = buildAdditionalConstraints(context);
-					additionalMilpConstraints.put(context, constraints);
-				});
 
-			}
 		}
-
 	}
 
 	@Override

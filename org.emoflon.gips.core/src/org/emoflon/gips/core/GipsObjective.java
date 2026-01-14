@@ -6,6 +6,7 @@ import java.util.List;
 import org.emoflon.gips.core.milp.model.Constant;
 import org.emoflon.gips.core.milp.model.NestedLinearFunction;
 import org.emoflon.gips.core.milp.model.WeightedLinearFunction;
+import org.emoflon.gips.core.util.StreamUtils;
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
 
 public abstract class GipsObjective {
@@ -53,11 +54,8 @@ public abstract class GipsObjective {
 	 * @param parallel If true, the process may run in parallel.
 	 */
 	protected void buildLocalObjectives(final boolean parallel) {
-		if (parallel) {
-			engine.getLinearFunctions().values().stream().forEach(fn -> fn.buildLinearFunction(parallel));
-		} else {
-			engine.getLinearFunctions().values().parallelStream().forEach(fn -> fn.buildLinearFunction(parallel));
-		}
+		StreamUtils.toStream(engine.getLinearFunctions().values(), parallel)
+				.forEach(fn -> fn.buildLinearFunction(parallel));
 	}
 
 	protected abstract void initLocalObjectives();

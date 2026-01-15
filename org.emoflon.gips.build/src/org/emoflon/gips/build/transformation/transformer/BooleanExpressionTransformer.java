@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.TransformationContext;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
@@ -39,6 +40,8 @@ import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsLinearFunctionImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
+import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.AttributeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanExpression;
@@ -256,12 +259,39 @@ public class BooleanExpressionTransformer extends TransformationContext {
 			// build all pairings
 			List<RelationalExpression> comparisons = new ArrayList<>(eJoin.getPairJoin().size());
 			for (GipsJoinPairSelection selection : eJoin.getPairJoin()) {
+				ContextReference lhs = switch (selection.getLeftNode()) {
+				case EditorNode node -> transformer.transform(node, setContext);
+				case EReference reference -> {
+					AttributeExpression attribute = factory.createAttributeExpression();
+					attribute.setFeature(reference);
+					AttributeReference attributeRef = factory.createAttributeReference();
+					attributeRef.setAttribute(attribute);
+					attributeRef.setLocal(false);
+					yield attributeRef;
+				}
+				default -> throw new IllegalArgumentException("Unexpected left value: " + selection.getLeftNode());
+				};
+
+				ContextReference rhs = switch (selection.getRightNode()) {
+				case EditorNode node -> transformer.transform(node, localContext);
+				case EReference reference -> {
+					AttributeExpression attribute = factory.createAttributeExpression();
+					attribute.setFeature(reference);
+					AttributeReference attributeRef = factory.createAttributeReference();
+					attributeRef.setAttribute(attribute);
+					attributeRef.setLocal(true);
+					yield attributeRef;
+				}
+				default -> throw new IllegalArgumentException("Unexpected right value: " + selection.getRightNode());
+				};
+
 				RelationalExpression relation = factory.createRelationalExpression();
 				relation.setOperator(RelationalOperator.EQUAL);
 				relation.setRequiresComparables(true);
-				relation.setLhs(transformer.transform(selection.getLeftNode(), setContext));
-				relation.setRhs(transformer.transform(selection.getRightNode(), localContext));
+				relation.setLhs(lhs);
+				relation.setRhs(rhs);
 				comparisons.add(relation);
+
 			}
 
 			return concatRelationalExpressions(comparisons, BooleanBinaryOperator.AND);

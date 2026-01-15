@@ -246,8 +246,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorNode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsJoinPairSelection">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="leftNode" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorNode"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="rightNode" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorNode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="leftNode" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rightNode" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsSelectOperation" eSuperTypes="#//GipsSetOperation"/>
   <eClassifiers xsi:type="ecore:EClass" name="GipsTypeSelect" eSuperTypes="#//GipsSelectOperation">

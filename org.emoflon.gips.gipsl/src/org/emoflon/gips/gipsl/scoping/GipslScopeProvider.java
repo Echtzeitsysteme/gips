@@ -559,6 +559,11 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			patternRef = GipslScopeContextUtil.getLocalContext(context);
 		}
 
+		if (patternRef instanceof GipsTypeExpression typeExpression)
+			return Scopes.scopeFor(typeExpression.getType().getEAllReferences());
+		if (patternRef instanceof EClass eClass)
+			return Scopes.scopeFor(eClass.getEAllReferences());
+
 		EditorPattern editorPattern = GipslScopeContextUtil.getPatternOrRuleOf(patternRef);
 		if (editorPattern == null)
 			return IScope.NULLSCOPE;

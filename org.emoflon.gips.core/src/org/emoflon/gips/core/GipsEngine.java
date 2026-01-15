@@ -1,13 +1,11 @@
 package org.emoflon.gips.core;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 import org.emoflon.gips.core.milp.ConstraintSorter;
 import org.emoflon.gips.core.milp.Solver;
@@ -18,6 +16,7 @@ import org.emoflon.gips.core.trace.EclipseIntegration;
 import org.emoflon.gips.core.trace.EclipseIntegrationConfig;
 import org.emoflon.gips.core.trace.GipsTracer;
 import org.emoflon.gips.core.util.Observer;
+import org.emoflon.gips.core.util.StreamUtils;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 
 public abstract class GipsEngine {
@@ -99,15 +98,15 @@ public abstract class GipsEngine {
 				validationLog = new GipsConstraintValidationLog();
 
 				// Constraints are re-build a few lines below
-				toStream(constraints.values(), parallel).forEach(constraint -> constraint.clear());
-				toStream(typeExtensions.values(), parallel).forEach(typeExtension -> typeExtension.clear());
+				StreamUtils.toStream(constraints.values(), parallel).forEach(constraint -> constraint.clear());
+				StreamUtils.toStream(typeExtensions.values(), parallel).forEach(typeExtension -> typeExtension.clear());
 
 				// Reset trace
 				getTracer().resetTrace();
 
 				nonMappingVariables.clear();
-				toStream(mappers.values(), parallel) //
-						.flatMap(mapper -> toStream(mapper.getMappings().values(), parallel)) //
+				StreamUtils.toStream(mappers.values(), parallel) //
+						.flatMap(mapper -> StreamUtils.toStream(mapper.getMappings().values(), parallel)) //
 						.filter(m -> m.hasAdditionalVariables()) //
 						.forEach(m -> {
 							Map<String, Variable<?>> variables = nonMappingVariables.get(m);
@@ -118,13 +117,15 @@ public abstract class GipsEngine {
 							variables.putAll(m.getAdditionalVariables());
 						});
 
-				toStream(constraints.values(), parallel).forEach(constraint -> constraint.calcAdditionalVariables());
-				toStream(typeExtensions.values(), parallel)
+				StreamUtils.toStream(constraints.values(), parallel)
+						.forEach(constraint -> constraint.calcAdditionalVariables());
+				StreamUtils.toStream(typeExtensions.values(), parallel)
 						.forEach(typeExtension -> typeExtension.calculateExtensions());
 
 				updateConstants();
 
-				toStream(constraints.values(), parallel).forEach(constraint -> constraint.buildConstraints(parallel));
+				StreamUtils.toStream(constraints.values(), parallel)
+						.forEach(constraint -> constraint.buildConstraints(parallel));
 
 				if (objective != null)
 					objective.buildObjectiveFunction(parallel);
@@ -176,8 +177,8 @@ public abstract class GipsEngine {
 		validationLog = new GipsConstraintValidationLog();
 
 		// Constraints are re-build a few lines below
-		toStream(constraints.values(), parallel).forEach(constraint -> constraint.clear());
-		toStream(typeExtensions.values(), parallel).forEach(typeExtension -> typeExtension.clear());
+		StreamUtils.toStream(constraints.values(), parallel).forEach(constraint -> constraint.clear());
+		StreamUtils.toStream(typeExtensions.values(), parallel).forEach(typeExtension -> typeExtension.clear());
 
 		// Reset trace
 		getTracer().resetTrace();
@@ -188,8 +189,8 @@ public abstract class GipsEngine {
 		// (and also the dedicated tests for checking this!) are happy with it.
 
 		nonMappingVariables.clear();
-		toStream(mappers.values(), parallel) //
-				.flatMap(mapper -> toStream(mapper.getMappings().values(), parallel)) //
+		StreamUtils.toStream(mappers.values(), parallel) //
+				.flatMap(mapper -> StreamUtils.toStream(mapper.getMappings().values(), parallel)) //
 				.filter(m -> m.hasAdditionalVariables()) //
 				.forEach(m -> {
 					Map<String, Variable<?>> variables = nonMappingVariables.get(m);
@@ -200,12 +201,15 @@ public abstract class GipsEngine {
 					variables.putAll(m.getAdditionalVariables());
 				});
 
-		toStream(constraints.values(), parallel).forEach(constraint -> constraint.calcAdditionalVariables());
-		toStream(typeExtensions.values(), parallel).forEach(typeExtension -> typeExtension.calculateExtensions());
+		StreamUtils.toStream(constraints.values(), parallel)
+				.forEach(constraint -> constraint.calcAdditionalVariables());
+		StreamUtils.toStream(typeExtensions.values(), parallel)
+				.forEach(typeExtension -> typeExtension.calculateExtensions());
 
 		updateConstants();
 
-		toStream(constraints.values(), parallel).forEach(constraint -> constraint.buildConstraints(parallel));
+		StreamUtils.toStream(constraints.values(), parallel)
+				.forEach(constraint -> constraint.buildConstraints(parallel));
 
 		if (objective != null)
 			objective.buildObjectiveFunction(parallel);
@@ -213,10 +217,6 @@ public abstract class GipsEngine {
 		solver.init();
 		solver.buildMILPProblem();
 		buildTraceGraphAndSendToIDE();
-	}
-
-	private static <T> Stream<T> toStream(Collection<T> collection, boolean parallel) {
-		return parallel ? collection.parallelStream() : collection.stream();
 	}
 
 	protected void buildTraceGraphAndSendToIDE() {

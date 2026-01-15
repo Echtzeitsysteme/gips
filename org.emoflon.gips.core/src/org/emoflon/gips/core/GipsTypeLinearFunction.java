@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.core.milp.model.LinearFunction;
+import org.emoflon.gips.core.util.StreamUtils;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeFunction;
 
 public abstract class GipsTypeLinearFunction<ENGINE extends GipsEngine, CONTEXT extends EObject>
@@ -23,11 +24,9 @@ public abstract class GipsTypeLinearFunction<ENGINE extends GipsEngine, CONTEXT 
 	public void buildLinearFunction(final boolean parallel) {
 		terms = Collections.synchronizedList(new LinkedList<>());
 		constantTerms = Collections.synchronizedList(new LinkedList<>());
-		if (parallel) {
-			indexer.getObjectsOfType(type).parallelStream().forEach(context -> buildTerms((CONTEXT) context));
-		} else {
-			indexer.getObjectsOfType(type).stream().forEach(context -> buildTerms((CONTEXT) context));
-		}
+
+		StreamUtils.toStream(indexer.getObjectsOfType(type), parallel)
+				.forEach(context -> buildTerms((CONTEXT) context));
 
 		milpLinearFunction = new LinearFunction(terms, constantTerms);
 	}

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -145,44 +146,32 @@ public class TypeIndexer {
 	}
 
 	private void initIndex() {
-		Set<EClass> requiredTypes = new HashSet<>(gipsModel.getRequiredTypes());
-		gipsModel.getRequiredTypes().stream().filter(type -> !index.containsKey(type)).forEach(type -> {
+		Queue<EClass> pendingTypes = new ConcurrentLinkedQueue<EClass>(gipsModel.getRequiredTypes());
+		Set<EClass> seenTypes = new HashSet<>(pendingTypes);
+		while (!pendingTypes.isEmpty()) {
+			EClass type = pendingTypes.poll();
+
 			index.put(type, Collections.synchronizedSet(new LinkedHashSet<>()));
 			typeByName.put(type.getName(), type);
 
-			// Add sub-classes
-			Set<EClass> subclasses = type.getEPackage().getEClassifiers().parallelStream()
-					.filter(cls -> (cls instanceof EClass)).map(cls -> (EClass) cls).filter(cls -> !cls.equals(type))
-					.filter(cls -> cls.getEAllSuperTypes().contains(type)).collect(Collectors.toSet());
-			class2subclass.putIfAbsent(type, subclasses);
-			subclasses.stream().filter(cls -> !index.containsKey(cls) && !requiredTypes.contains(cls)).forEach(cls -> {
-				index.put(cls, Collections.synchronizedSet(new LinkedHashSet<>()));
-				typeByName.put(cls.getName(), cls);
-			});
+			Set<EClass> allSubClasses = type.getEPackage().getEClassifiers().parallelStream() //
+					.filter(e -> e instanceof EClass) //
+					.map(e -> (EClass) e) //
+					.filter(e -> !type.equals(e)) //
+					.filter(e -> type.isSuperTypeOf(e)) //
+					.collect(Collectors.toSet());
 
-			// Add super-classes
-			Set<EClass> superclasses = Collections.synchronizedSet(new LinkedHashSet<>());
-			superclasses.addAll(type.getEAllSuperTypes());
-			class2superclass.putIfAbsent(type, subclasses);
-			superclasses.stream().filter(cls -> !index.containsKey(cls)).forEach(cls -> {
-				index.put(cls, Collections.synchronizedSet(new LinkedHashSet<>()));
-				typeByName.put(cls.getName(), cls);
-			});
+			Set<EClass> allSuperClasses = new LinkedHashSet<>(type.getEAllSuperTypes());
 
-			// Add all sub-classes of super-classes
-			superclasses.stream().filter(cls -> !class2subclass.containsKey(cls)).forEach(cls -> {
-				Set<EClass> supersubclasses = cls.getEPackage().getEClassifiers().parallelStream()
-						.filter(cls2 -> (cls2 instanceof EClass)).map(cls2 -> (EClass) cls2)
-						.filter(cls2 -> !cls2.equals(cls)).filter(cls2 -> cls2.getEAllSuperTypes().contains(cls))
-						.collect(Collectors.toSet());
+			class2subclass.put(type, allSubClasses);
+			class2superclass.put(type, allSuperClasses);
 
-				class2subclass.putIfAbsent(cls, supersubclasses);
-				supersubclasses.stream().filter(cls2 -> !index.containsKey(cls2)).forEach(cls2 -> {
-					index.put(cls2, Collections.synchronizedSet(new LinkedHashSet<>()));
-					typeByName.put(cls2.getName(), cls2);
-				});
-			});
-		});
+			allSubClasses.parallelStream().filter(e -> !seenTypes.contains(e)).forEach(e -> pendingTypes.add(e));
+			seenTypes.addAll(allSubClasses);
+
+			allSuperClasses.parallelStream().filter(e -> !seenTypes.contains(e)).forEach(e -> pendingTypes.add(e));
+			seenTypes.addAll(allSuperClasses);
+		}
 
 		model.getResources().parallelStream().filter(r -> !r.getURI().toString().contains("trash.xmi")).forEach(r -> {
 			r.getContents().forEach(node -> {

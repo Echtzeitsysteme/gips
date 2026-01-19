@@ -343,7 +343,7 @@ GipsJoinSingleSelection:
 ;
 
 GipsJoinPairSelection:
-	'(' leftNode = [GT::EditorNode|ID] ',' rightNode = [GT::EditorNode|ID] ')'
+	'(' leftNode = [ecore::EObject|ID] ',' rightNode = [ecore::EObject|ID] ')'
 ;
 
 GipsSelectOperation:

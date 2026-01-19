@@ -8,6 +8,7 @@ import org.emoflon.gips.core.milp.model.BinaryVariable;
 import org.emoflon.gips.core.milp.model.Constraint;
 import org.emoflon.gips.core.milp.model.Term;
 import org.emoflon.gips.core.milp.model.Variable;
+import org.emoflon.gips.core.util.StreamUtils;
 import org.emoflon.gips.core.validation.GipsValidationEventType;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
@@ -26,32 +27,17 @@ public abstract class GipsTypeConstraint<ENGINE extends GipsEngine, CONTEXT exte
 	@SuppressWarnings("unchecked")
 	@Override
 	public void buildConstraints(final boolean parallel) {
-		if (parallel) {
-			indexer.getObjectsOfType(type).parallelStream().forEach(context -> {
-				final Constraint candidate = buildConstraint((CONTEXT) context);
-				if (candidate != null) {
-					milpConstraints.put((CONTEXT) context, candidate);
-				}
-			});
-			if (constraint.isDepending()) {
-				indexer.getObjectsOfType(type).parallelStream().forEach(context -> {
-					final List<Constraint> constraints = buildAdditionalConstraints((CONTEXT) context);
-					additionalMilpConstraints.put((CONTEXT) context, constraints);
-				});
+		StreamUtils.toStream(indexer.getObjectsOfType(type), parallel).forEach(context -> {
+			final Constraint candidate = buildConstraint((CONTEXT) context);
+			if (candidate != null) {
+				milpConstraints.put((CONTEXT) context, candidate);
 			}
-		} else {
-			indexer.getObjectsOfType(type).stream().forEach(context -> {
-				final Constraint candidate = buildConstraint((CONTEXT) context);
-				if (candidate != null) {
-					milpConstraints.put((CONTEXT) context, candidate);
-				}
+		});
+		if (constraint.isDepending()) {
+			StreamUtils.toStream(indexer.getObjectsOfType(type), parallel).forEach(context -> {
+				final List<Constraint> constraints = buildAdditionalConstraints((CONTEXT) context);
+				additionalMilpConstraints.put((CONTEXT) context, constraints);
 			});
-			if (constraint.isDepending()) {
-				indexer.getObjectsOfType(type).stream().forEach(context -> {
-					final List<Constraint> constraints = buildAdditionalConstraints((CONTEXT) context);
-					additionalMilpConstraints.put((CONTEXT) context, constraints);
-				});
-			}
 		}
 	}
 

@@ -341,7 +341,7 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 					«ref».body --> «ref».«typeExtension.ref.name» : uses
 				«ENDFOR»
 				
-				«IF linearFunction.context !== null»
+				«IF linearFunction.context !== null && linearFunction.expression !== null»
 					«IF !EcoreUtil2.getAllContentsOfType(linearFunction.expression, typeof(GipsLocalContextExpression)).empty»
 						«ref».body --> «ref».context : uses
 					«ELSE»
@@ -422,7 +422,7 @@ class GipslPlantUMLProvider implements UMLTemplateProvider {
 					«ref».body --> «ref».«typeExtension.ref.name» : uses
 				«ENDFOR»
 				
-				«IF constraint.context !== null»
+				«IF constraint.context !== null && constraint.expression !== null»
 					«IF !EcoreUtil2.getAllContentsOfType(constraint.expression, typeof(GipsLocalContextExpression)).empty»
 						«ref».body --> «ref».context : uses
 					«ELSE»

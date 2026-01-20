@@ -244,8 +244,8 @@ public class ValueExpressionTransformer extends TransformationContext {
 
 	public AttributeExpression transform(final GipsAttributeExpression eAttribute) {
 		AttributeExpression attribute = factory.createAttributeExpression();
-		if (eAttribute.getRight() != null) {
-			attribute.setNext(transform(eAttribute.getRight()));
+		if (eAttribute.getRight() instanceof GipsAttributeExpression nextExpression) {
+			attribute.setNext(transform(nextExpression));
 		}
 		attribute.setFeature(eAttribute.getAttribute().getLiteral());
 		return attribute;

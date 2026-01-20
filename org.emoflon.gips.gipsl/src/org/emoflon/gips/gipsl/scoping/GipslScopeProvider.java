@@ -749,20 +749,18 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 	}
 
 	public IScope getlastAttributeScope(GipsAttributeExpression attribute) {
-		if (attribute == null) {
+		if (attribute == null)
 			return IScope.NULLSCOPE;
+
+		if (attribute.getRight() instanceof GipsAttributeExpression rightExpression)
+			return getlastAttributeScope(rightExpression);
+
+		if (attribute.getAttribute() != null && attribute.getAttribute().getLiteral() != null
+				&& attribute.getAttribute().getLiteral().getEType() instanceof EClass cls) {
+			return Scopes.scopeFor(cls.getEAllStructuralFeatures());
 		}
 
-		if (attribute.getRight() != null) {
-			return getlastAttributeScope(attribute.getRight());
-		} else {
-			if (attribute.getAttribute() != null && attribute.getAttribute().getLiteral() != null
-					&& attribute.getAttribute().getLiteral().getEType() instanceof EClass cls) {
-				return Scopes.scopeFor(cls.getEAllStructuralFeatures());
-			} else {
-				return IScope.NULLSCOPE;
-			}
-		}
+		return IScope.NULLSCOPE;
 	}
 
 	public IScope scopeForGipsTypeSelect(GipsTypeSelect context, EReference reference) {

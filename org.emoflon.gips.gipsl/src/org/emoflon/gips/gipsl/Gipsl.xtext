@@ -294,10 +294,8 @@ GipsNodeExpression: {GipsNodeExpression}
 
 GipsAttributeExpression: {GipsAttributeExpression}
 	'.'
-	(
-		attribute = GipsAttributeLiteral right = GipsAttributeExpression |
-		attribute = GipsAttributeLiteral
-	)
+	attribute = GipsAttributeLiteral 
+	right = (GipsAttributeExpression | GipsVariableReferenceExpression)?
 ;
 
 GipsAttributeLiteral:

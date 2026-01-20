@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticBracket;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticConstant;
@@ -19,6 +20,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsArithmeticProduct;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticSum;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticUnary;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsAttributeLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanBracket;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanConjunction;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanDisjunction;
@@ -664,7 +666,7 @@ public final class GipslExpressionValidator {
 		ExpressionType valueType = null;
 		EObject localContext = GipslScopeContextUtil.getLocalContext(expression);
 
-		if (expression.getExpression() instanceof GipsVariableReferenceExpression) {
+		if (expression.getExpression() instanceof GipsVariableReferenceExpression variableReferenceExpression) {
 			valueType = ExpressionType.Variable;
 			if (!(localContext instanceof GipsMappingExpression || localContext instanceof GipsMapping
 					|| localContext instanceof GipsTypeExpression || localContext instanceof EClass)) {
@@ -713,6 +715,12 @@ public final class GipslExpressionValidator {
 							GipslPackage.Literals.GIPS_CONSTANT__EXPRESSION //
 					);
 				});
+			}
+
+			if (variableReferenceExpression.getVariable() != null) {
+				ExpressionType variableType = evaluate(variableReferenceExpression.getVariable().getType(), errors);
+				if (variableType != ExpressionType.Unknown)
+					valueType = variableType;
 			}
 
 		} else if (expression.getExpression() instanceof GipsNodeExpression node) {
@@ -891,35 +899,47 @@ public final class GipslExpressionValidator {
 
 	public static ExpressionType evaluate(final GipsAttributeExpression expression, Collection<Runnable> errors) {
 		if (expression.getRight() == null) {
-			if (expression.getAttribute() == null) {
+			if (expression.getAttribute() == null)
 				return ExpressionType.Unknown;
-			}
-			if (expression.getAttribute().getLiteral().isMany()) {
-				return ExpressionType.Set;
-			} else if (!expression.getAttribute().getLiteral().isMany()) {
-				EClassifier type = expression.getAttribute().getLiteral().getEType();
-				if (type == EcorePackage.Literals.EINT || type == EcorePackage.Literals.ESHORT
-						|| type == EcorePackage.Literals.ELONG || type == EcorePackage.Literals.EBYTE) {
-					return ExpressionType.Number;
-				} else if (type == EcorePackage.Literals.EFLOAT || type == EcorePackage.Literals.EDOUBLE) {
-					return ExpressionType.Number;
-				} else if (type == EcorePackage.Literals.EBOOLEAN) {
-					return ExpressionType.Boolean;
-				} else if (type == EcorePackage.Literals.ECHAR || type == EcorePackage.Literals.ESTRING) {
-					return ExpressionType.String;
-				} else if (type instanceof EClass) {
-					return ExpressionType.Object;
-				} else if (type instanceof EEnum) {
-					return ExpressionType.Enum;
-				} else {
-					return ExpressionType.Unknown;
-				}
-			} else {
-				return ExpressionType.Unknown;
-			}
-		} else {
-			return evaluate(expression.getRight(), errors);
+			return evaluate(expression.getAttribute(), errors);
 		}
+
+		if (expression.getRight() instanceof GipsAttributeExpression rightExpression)
+			return evaluate(rightExpression, errors);
+
+		if (expression.getRight() instanceof GipsVariableReferenceExpression)
+			return ExpressionType.Variable;
+
+		return ExpressionType.Unknown;
+	}
+
+	public static ExpressionType evaluate(final GipsAttributeLiteral attribute, Collection<Runnable> errors) {
+		return evaluate(attribute.getLiteral(), errors);
+	}
+
+	public static ExpressionType evaluate(final EStructuralFeature feature, Collection<Runnable> errors) {
+		if (feature.isMany())
+			return ExpressionType.Set;
+		return evaluate(feature.getEType(), errors);
+	}
+
+	public static ExpressionType evaluate(final EClassifier type, Collection<Runnable> errors) {
+		if (type == EcorePackage.Literals.EINT || type == EcorePackage.Literals.ESHORT
+				|| type == EcorePackage.Literals.ELONG || type == EcorePackage.Literals.EBYTE) {
+			return ExpressionType.Number;
+		} else if (type == EcorePackage.Literals.EFLOAT || type == EcorePackage.Literals.EDOUBLE) {
+			return ExpressionType.Number;
+		} else if (type == EcorePackage.Literals.EBOOLEAN) {
+			return ExpressionType.Boolean;
+		} else if (type == EcorePackage.Literals.ECHAR || type == EcorePackage.Literals.ESTRING) {
+			return ExpressionType.String;
+		} else if (type instanceof EClass) {
+			return ExpressionType.Object;
+		} else if (type instanceof EEnum) {
+			return ExpressionType.Enum;
+		}
+
+		return ExpressionType.Unknown;
 	}
 
 	public static Collection<Runnable> checkSetExpression(final GipsValueExpression context,

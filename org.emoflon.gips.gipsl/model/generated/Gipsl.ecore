@@ -217,7 +217,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="GipsAttributeExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attribute" eType="#//GipsAttributeLiteral"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//GipsAttributeExpression"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsAttributeLiteral">

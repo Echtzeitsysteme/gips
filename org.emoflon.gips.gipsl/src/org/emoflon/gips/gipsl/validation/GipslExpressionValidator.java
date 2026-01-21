@@ -67,6 +67,7 @@ import org.emoflon.gips.gipsl.gipsl.impl.GipsSetExpressionImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsSumOperationImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsValueExpressionImpl;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
+import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression;
 
 public final class GipslExpressionValidator {
 
@@ -261,8 +262,14 @@ public final class GipslExpressionValidator {
 			return ExpressionType.Error;
 		}
 
-		if (lhs == ExpressionType.Number && rhs == ExpressionType.Variable
-				|| rhs == ExpressionType.Number && lhs == ExpressionType.Variable) {
+		boolean defaultsToBoolean = switch (lhs) {
+		case Boolean -> rhs == ExpressionType.Number || rhs == ExpressionType.Variable;
+		case Number -> rhs == ExpressionType.Boolean || rhs == ExpressionType.Variable;
+		case Variable -> rhs == ExpressionType.Number || rhs == ExpressionType.Boolean;
+		default -> false;
+		};
+
+		if (defaultsToBoolean) {
 			return ExpressionType.Boolean;
 		}
 
@@ -717,6 +724,19 @@ public final class GipslExpressionValidator {
 				});
 			}
 
+			// mapping values can not be used within an attribute expression
+			if (variableReferenceExpression.isIsMappingValue()) {
+				if (variableReferenceExpression.eContainer() instanceof AttributeExpression) {
+					errors.add(() -> {
+						GipslValidator.err( //
+								"???", // TODO
+								variableReferenceExpression, //
+								GipslPackage.Literals.GIPS_VARIABLE_REFERENCE_EXPRESSION__IS_MAPPING_VALUE //
+						);
+					});
+				}
+			}
+
 			if (variableReferenceExpression.getVariable() != null) {
 				ExpressionType variableType = evaluate(variableReferenceExpression.getVariable().getType(), errors);
 				if (variableType != ExpressionType.Unknown)
@@ -889,6 +909,20 @@ public final class GipslExpressionValidator {
 		return valueType;
 	}
 
+	public static ExpressionType evaluate(final GipsVariableReferenceExpression expression,
+			Collection<Runnable> errors) {
+
+		ExpressionType valueType = ExpressionType.Variable;
+
+		if (expression.getVariable() != null) {
+			ExpressionType variableType = evaluate(expression.getVariable().getType(), errors);
+			if (variableType != ExpressionType.Unknown)
+				valueType = variableType;
+		}
+
+		return valueType;
+	}
+
 	public static ExpressionType evaluate(final GipsNodeExpression expression, Collection<Runnable> errors) {
 		if (expression.getAttributeExpression() == null) {
 			return ExpressionType.Object;
@@ -907,8 +941,8 @@ public final class GipslExpressionValidator {
 		if (expression.getRight() instanceof GipsAttributeExpression rightExpression)
 			return evaluate(rightExpression, errors);
 
-		if (expression.getRight() instanceof GipsVariableReferenceExpression)
-			return ExpressionType.Variable;
+		if (expression.getRight() instanceof GipsVariableReferenceExpression varRefExpression)
+			return evaluate(varRefExpression, errors);
 
 		return ExpressionType.Unknown;
 	}
@@ -918,8 +952,12 @@ public final class GipslExpressionValidator {
 	}
 
 	public static ExpressionType evaluate(final EStructuralFeature feature, Collection<Runnable> errors) {
+		if (feature == null)
+			return ExpressionType.Error;
+
 		if (feature.isMany())
 			return ExpressionType.Set;
+
 		return evaluate(feature.getEType(), errors);
 	}
 

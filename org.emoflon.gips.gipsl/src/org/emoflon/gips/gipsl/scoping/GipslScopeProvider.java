@@ -606,6 +606,11 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 							GipsAttributeExpressionImpl.class));
 		}
 
+		if (reference == GipslPackage.Literals.GIPS_ATTRIBUTE_LITERAL__LITERAL) {
+			// we are asked to provide the 'next' literal
+			root = context;
+		}
+
 		if (root instanceof GipsNodeExpression node) {
 			if (node.getNode() != null && node.getNode().getType() != null) {
 				return Scopes.scopeFor(node.getNode().getType().getEAllStructuralFeatures());
@@ -613,6 +618,9 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 				return IScope.NULLSCOPE;
 			}
 		} else if (root instanceof GipsAttributeExpression attribute) {
+			if (attribute.getAttribute() == null || attribute.getAttribute().getLiteral() == null)
+				return IScope.NULLSCOPE;
+
 			if (attribute.getAttribute().getLiteral().getEType() instanceof EClass cls) {
 				return Scopes.scopeFor(cls.getEAllStructuralFeatures());
 			} else {
@@ -690,6 +698,9 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 				return IScope.NULLSCOPE;
 			}
 		} else if (root instanceof GipsAttributeExpression attribute) {
+			if (attribute.getAttribute() == null || attribute.getAttribute().getLiteral() == null)
+				return IScope.NULLSCOPE;
+
 			if (attribute.getAttribute().getLiteral().getEType() instanceof EClass cls) {
 				return Scopes.scopeFor(cls.getEAllStructuralFeatures());
 			} else {

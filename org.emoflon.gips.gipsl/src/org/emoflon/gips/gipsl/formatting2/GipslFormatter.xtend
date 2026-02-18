@@ -427,12 +427,12 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 		expr.regionFor.keyword(gipsNodeExpressionAccess.fullStopKeyword_1).append[noSpace]
 		expr.regionFor.keyword(gipsNodeExpressionAccess.nodesKeyword_2).append[noSpace]
 		expr.regionFor.keyword(gipsNodeExpressionAccess.fullStopKeyword_3).append[noSpace]
-		expr.attributeExpression.format
+		expr.expression.format
 	}
 
 	def dispatch void format(GipsAttributeExpression expr, extension IFormattableDocument document) {
-		expr.attribute.format.prepend[noSpace]
-		expr.right.format.prepend[noSpace] // attribute chaining, remove space before next '.'
+		expr.regionFor.keyword(gipsAttributeExpressionAccess.fullStopKeyword_1).surround[noSpace]
+		expr.right.format
 	}
 
 	def dispatch void format(GipsSetExpression expr, extension IFormattableDocument document) {

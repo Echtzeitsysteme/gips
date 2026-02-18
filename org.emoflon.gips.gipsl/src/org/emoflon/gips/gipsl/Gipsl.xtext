@@ -289,12 +289,12 @@ GipsVariableReferenceExpression returns GipsVariableReferenceExpression:
 
 GipsNodeExpression: {GipsNodeExpression}
 	'.' 'nodes' '.' node=[GT::EditorNode|ID]
-	(attributeExpression = GipsAttributeExpression)?
+	expression = (GipsAttributeExpression | GipsVariableReferenceExpression)?
 ;
 
 GipsAttributeExpression: {GipsAttributeExpression}
-	'.'
-	attribute = GipsAttributeLiteral 
+	'.'	
+	attribute = GipsAttributeLiteral
 	right = (GipsAttributeExpression | GipsVariableReferenceExpression)?
 ;
 

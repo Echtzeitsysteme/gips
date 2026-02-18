@@ -108,6 +108,7 @@ public class GipslValidatorUtil {
 	public static final String MAPPING_VARIABLE_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Mapping variable name '%s' must not be declared more than once.";
 	public static final String MAPPING_VARIABLE_NOT_USED = "Mapping variable '%s' is never used. No (M)ILP variable will be created for this variable.";
 	public static final String MAPPING_VALUE_NOT_USED = "Mapping '%s' .value is never used. No (M)ILP variable will be created for this mapping.";
+	public static final String MAPPING_VALUE_MISUSE = "'value' can only be used with mappings";
 	public static final String RULE_HAS_MULTIPLE_MAPPINGS = "Multiple mappings on rule: <'%s'>";
 	public static final String RULE_IS_ABSTRACT = "Mapping '%s' uses an abstract rule which is not possible.";
 
@@ -163,6 +164,8 @@ public class GipslValidatorUtil {
 	public static final String SET_CONCAT_ERROR = "Only sets of values can be concatenated.";
 	public static final String SET_SORT_PREDICATE_RELATION_ERROR = "Sorting predicate must impose an order, which means == and != are invalid operators.";
 	public static final String SET_FILTER_ERROR = "Filter operations on sets must be performed with Boolean predicates. Furthermore, these must be constant at (M)ILP compilation time, which means that they must never contain variable references.";
+
+	public static final String ATTRIBUTE_ACCESS_ON_MANY = "Unable to directly access variables or attributes on set '%s'. Use a set expressions '->'.";
 
 	public static final String SET_JOIN_ALL_MISMATCH_PATTERN = "Set and Context do not share same Pattern or Rule, use join() instead.";
 	public static final String SET_JOIN_ALL_INVALID_TYPES = "Set and context type do not match, use join().";

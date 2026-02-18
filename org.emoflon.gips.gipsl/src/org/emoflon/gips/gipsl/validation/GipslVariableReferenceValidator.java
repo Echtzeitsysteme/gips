@@ -1,7 +1,5 @@
 package org.emoflon.gips.gipsl.validation;
 
-import java.util.Set;
-
 import org.eclipse.emf.ecore.EObject;
 import org.emoflon.gips.gipsl.gipsl.GipsLocalContextExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
@@ -9,11 +7,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsMappingExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsSetElementExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
-import org.emoflon.gips.gipsl.gipsl.impl.GipsLocalContextExpressionImpl;
-import org.emoflon.gips.gipsl.gipsl.impl.GipsSetElementExpressionImpl;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
-import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.impl.AttributeExpressionImpl;
 
 public class GipslVariableReferenceValidator {
 	private GipslVariableReferenceValidator() {
@@ -39,26 +33,21 @@ public class GipslVariableReferenceValidator {
 	}
 
 	private static void checkValueIsOnlyUsedWithMappings(GipsVariableReferenceExpression expression) {
-		boolean notUsedWithMapping = false;
+		boolean validUsage = false;
 
-		EObject container = (EObject) GipslScopeContextUtil.getContainer(expression,
-				Set.of(AttributeExpressionImpl.class, GipsLocalContextExpressionImpl.class,
-						GipsSetElementExpressionImpl.class));
+		EObject container = expression.eContainer();
 
-		if (container instanceof AttributeExpression) {
-			notUsedWithMapping = true; // value reference follows an attribute expression
-		} else if (container instanceof GipsLocalContextExpression) {
+		if (container instanceof GipsLocalContextExpression) {
 			EObject localContext = GipslScopeContextUtil.getLocalContext(expression);
-			notUsedWithMapping = !(localContext instanceof GipsMapping);
+			validUsage = (localContext instanceof GipsMapping);
 		} else if (container instanceof GipsSetElementExpression) {
 			EObject setContext = GipslScopeContextUtil.getSetContext(expression);
-			notUsedWithMapping = !(setContext instanceof GipsMappingExpression);
+			validUsage = (setContext instanceof GipsMappingExpression);
 		}
 
-		if (notUsedWithMapping) {
+		if (!validUsage) {
 			GipslValidator.err( //
-					"'value' can only be used with mappings", // TODO
-					expression, //
+					GipslValidatorUtil.MAPPING_VALUE_MISUSE, expression, //
 					GipslPackage.Literals.GIPS_VARIABLE_REFERENCE_EXPRESSION__IS_MAPPING_VALUE //
 			);
 		}
@@ -68,10 +57,5 @@ public class GipslVariableReferenceValidator {
 		if (!expression.isIsGenericValue())
 			return;
 
-		EObject container = (EObject) GipslScopeContextUtil.getContainer(expression,
-				Set.of(AttributeExpressionImpl.class, GipsLocalContextExpressionImpl.class,
-						GipsSetElementExpressionImpl.class));
-
-		// TODO
 	}
 }

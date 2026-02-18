@@ -15,7 +15,7 @@ import com.gurobi.gurobi.GRBModel;
  * and apply the configured parameters to the given Gurobi model object.
  * 
  * JSON file format: { "intparams": [ ["OutputFlag", "1"], ["TimeLimit", "30"]
- * ], "doubleparams": [ ["NoRelHeurWork", "60"] ] }
+ * ], "doubleparams": [ ["NoRelHeurWork", "60"] ], "stringparams": [ [ ... ] ] }
  *
  * @author Maximilian Kratz (maximilian.kratz@es.tu-darmstadt.de)
  */
@@ -119,6 +119,17 @@ public class GurobiParameterTuning {
 			doubleparamsJson.asList().forEach(doubleparam -> {
 				final String key = doubleparam.getAsJsonArray().get(0).getAsString();
 				final String value = doubleparam.getAsJsonArray().get(1).getAsString();
+				parameters.put(key, value);
+			});
+		}
+
+		// String parameters
+		if (json.has("stringparams")) {
+			final var stringparamsJson = json.getAsJsonArray("stringparams");
+
+			stringparamsJson.asList().forEach(stringparam -> {
+				final String key = stringparam.getAsJsonArray().get(0).getAsString();
+				final String value = stringparam.getAsJsonArray().get(1).getAsString();
 				parameters.put(key, value);
 			});
 		}

@@ -11,7 +11,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.emoflon.gips.core.milp.ConstraintSorter;
 import org.emoflon.gips.core.milp.Solver;
 import org.emoflon.gips.core.milp.SolverOutput;
@@ -24,6 +23,7 @@ import org.emoflon.gips.core.trace.GipsTracer;
 import org.emoflon.gips.core.util.Observer;
 import org.emoflon.gips.core.util.StreamUtils;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 
 public abstract class GipsEngine {
 
@@ -140,8 +140,8 @@ public abstract class GipsEngine {
 						.forEach(constraint -> constraint.buildConstraints(parallel));
 
 				// Check if GIPS is configure to remove duplicate constraints
-				if (this.config.removeDuplicateConstraints()) {
-					removeDuplicateConstraints(config.printDuplicateStats());
+				if (this.config.removeUselessConstraints()) {
+					removeUselessConstraints(config.printUselessConstraintsStats());
 				}
 
 				if (objective != null)
@@ -229,8 +229,8 @@ public abstract class GipsEngine {
 				.forEach(constraint -> constraint.buildConstraints(parallel));
 
 		// Check if GIPS is configure to remove duplicate constraints
-		if (this.config.removeDuplicateConstraints()) {
-			removeDuplicateConstraints(config.printDuplicateStats());
+		if (this.config.removeUselessConstraints()) {
+			removeUselessConstraints(config.printUselessConstraintsStats());
 		}
 
 		if (objective != null)
@@ -433,30 +433,33 @@ public abstract class GipsEngine {
 	}
 
 	/**
-	 * Removes all duplicate GIPS constraints per GIPSL constraint (group). This
-	 * means that the method eliminates all duplicate constraints for every
-	 * `constraint` block written in the respective GIPSL specification.
+	 * Removes all duplicate and some trivial GIPS constraints per GIPSL constraint
+	 * (group). This means that the method eliminates all duplicate constraints and
+	 * some trivial constraints for every `constraint` block written in the
+	 * respective GIPSL specification.
 	 * 
 	 * @param print If true, GIPS will print the number of eliminated constraints
 	 *              onto the console.
 	 */
-	private void removeDuplicateConstraints(final boolean print) {
+	private void removeUselessConstraints(final boolean print) {
 		final long tick = System.nanoTime();
 		int constraintsOriginal = 0;
-		int constraintsRemoved = 0;
+		int duplicatesRemoved = 0;
+		int trivialRemoved = 0;
 
 		// For every specified GIPSL constraint
 		for (final GipsConstraint<?, ?, ?> c : getConstraints().values()) {
 			// Normal constraints
-			final ImmutablePair<Integer, Integer> stats = removeDuplicateConstraints(c.getConstraints());
-			constraintsOriginal += stats.left;
-			constraintsRemoved += stats.right;
+			final RemovedConstraintsStats stats = removeUselessConstraints(c.getConstraints());
+			constraintsOriginal += stats.original;
+			duplicatesRemoved += stats.duplicates;
+			trivialRemoved += stats.trivial;
 
 			// Additional constraints
-			final ImmutablePair<Integer, Integer> additionalStats = removeDuplicateConstraints(
-					c.getAdditionalConstraints());
-			constraintsOriginal += additionalStats.left;
-			constraintsRemoved += additionalStats.right;
+			final RemovedConstraintsStats additionalStats = removeUselessConstraints(c.getAdditionalConstraints());
+			constraintsOriginal += additionalStats.original;
+			duplicatesRemoved += additionalStats.duplicates;
+			trivialRemoved += additionalStats.trivial;
 		}
 
 		// If configure, print statistics
@@ -464,41 +467,65 @@ public abstract class GipsEngine {
 			final long tock = System.nanoTime();
 			final double duration = (1.0 * (tock - tick) / 1_000_000_000);
 			final DecimalFormat percFormat = new DecimalFormat("##.##%");
-			System.out.println("Removed " + constraintsRemoved + " redundant constraints out of " + constraintsOriginal
-					+ " total constraints (" + percFormat.format((1.0 * constraintsRemoved / constraintsOriginal))
-					+ ") in " + String.format("%.2f", duration) + "s.");
+			System.out.println("Removed " + duplicatesRemoved + " redundant constraints and " + trivialRemoved
+					+ " trivial constraints out of " + constraintsOriginal + " total constraints ("
+					+ percFormat.format((1.0 * (duplicatesRemoved + trivialRemoved) / constraintsOriginal)) + ") in "
+					+ String.format("%.2f", duration) + "s.");
 		}
 	}
 
 	/**
-	 * This method removes duplicate MILP constraints from the given collection of
-	 * constraints.
+	 * This method removes duplicate and trivial MILP constraints from the given
+	 * collection of constraints.
 	 * 
-	 * @param constraints Collection of constraints to remove duplicates from.
-	 * @return Immutable pair of integers where `left` is the original number of
-	 *         constraints and `right` is the number of removed duplicates.
+	 * @param constraints Collection of constraints to remove duplicates and trivial
+	 *                    constraints from.
+	 * @return Statistics record containing the number of original constraints, the
+	 *         number of removed duplicates, and the number of removed trivial
+	 *         constraints.
 	 */
-	private ImmutablePair<Integer, Integer> removeDuplicateConstraints(final Collection<Constraint> constraints) {
+	private RemovedConstraintsStats removeUselessConstraints(final Collection<Constraint> constraints) {
 		Objects.requireNonNull(constraints);
 
 		final Set<Constraint> contained = new HashSet<Constraint>();
 		int constraintsOriginal = 0;
-		int constraintsRemoved = 0;
+		int duplicatesRemoved = 0;
+		int trivialConstraintsRemoved = 0;
 
-		// Find removal candidates (=constraints that are already present)
+		// Find removal candidates (e.g., constraints that are already present)
 		final Set<Constraint> removalCandidates = new HashSet<>();
 		for (final Constraint milpCnstr : constraints) {
 			constraintsOriginal++;
+			// Check for duplicate constraints
 			if (!contained.add(milpCnstr)) {
 				removalCandidates.add(milpCnstr);
+				duplicatesRemoved++;
+			} else {
+				// Check for trivial constraints: 1 * x <= 1 (x is a Boolean variable)
+				if (milpCnstr.lhsTerms().size() == 1 // only one variable
+						&& milpCnstr.lhsTerms().get(0).variable().getUpperBound().intValue() == 1 // variable's upper
+																									// bound is 1
+						&& milpCnstr.rhsConstantTerm() == 1 // RHS is constant
+						&& milpCnstr.lhsTerms().get(0).weight() == 1 // variable's weight is 1
+						&& milpCnstr.operator() == RelationalOperator.LESS_OR_EQUAL // operator is <=
+				) {
+					removalCandidates.add(milpCnstr);
+					trivialConstraintsRemoved++;
+				}
 			}
 		}
-		// Remove all duplicates
-		final int constraintsOriginalLocal = constraints.size();
-		constraints.removeAll(removalCandidates);
-		constraintsRemoved += (constraintsOriginalLocal - constraints.size());
 
-		return new ImmutablePair<Integer, Integer>(constraintsOriginal, constraintsRemoved);
+		// Remove all duplicates
+		constraints.removeAll(removalCandidates);
+
+		// Return statistics
+		return new RemovedConstraintsStats(constraintsOriginal, duplicatesRemoved, trivialConstraintsRemoved);
+	}
+
+	/**
+	 * Record to store constraint removal statistics (number of constraints).
+	 */
+	private record RemovedConstraintsStats(int original, int duplicates, int trivial) {
 	}
 
 }

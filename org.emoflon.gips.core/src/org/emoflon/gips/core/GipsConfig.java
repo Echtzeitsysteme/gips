@@ -7,56 +7,59 @@ package org.emoflon.gips.core;
 public class GipsConfig {
 
 	/**
-	 * If true, GIPS will remove duplicate constraints per GIPSL constraints (group)
-	 * before translating them to the MILP solver.
+	 * If true, GIPS will remove duplicate constraints and trivial constraints per
+	 * GIPSL constraints (group) before translating them to the MILP solver.
 	 */
-	private boolean removeDuplicateConstraints = true;
+	private boolean removeUselessConstraints = true;
 
 	/**
-	 * If true, GIPS will print the total number of redundant constraints it removed
-	 * and the runtime.
+	 * If true, GIPS will print the total number of redundant and trivial
+	 * constraints it removed and the runtime.
 	 */
-	private boolean printDuplicateStats = true;
+	private boolean printUselessConstraintsStats = true;
 
 	/**
-	 * Sets the "remove duplicate constraint" option to the given parameter.
+	 * Sets the "remove useless constraint" option to the given parameter.
 	 * 
-	 * @param remove If true, GIPS will remove duplicate constraints per GIPSL
-	 *               constraint (group).
+	 * @param remove If true, GIPS will remove duplicate and trivial constraints per
+	 *               GIPSL constraint (group).
 	 */
-	public void setRemoveDuplicateConstraints(final boolean remove) {
-		this.removeDuplicateConstraints = remove;
+	public void setUselessDuplicateConstraints(final boolean remove) {
+		this.removeUselessConstraints = remove;
 	}
 
 	/**
-	 * Returns true if GIPS is configured to remove duplicate constraints per GIPSL
-	 * constraint (group).
+	 * Returns true if GIPS is configured to remove duplicate and trivial
+	 * constraints per GIPSL constraint (group).
 	 * 
-	 * @return True if GIPS is configured to remove duplicate constraints.
+	 * @return True if GIPS is configured to remove duplicate and trivial
+	 *         constraints.
 	 */
-	public boolean removeDuplicateConstraints() {
-		return removeDuplicateConstraints;
+	public boolean removeUselessConstraints() {
+		return removeUselessConstraints;
 	}
 
 	/**
-	 * Sets the print duplicate statistics value to the given value.
+	 * Sets the print duplicate and trivial constraint statistics value to the given
+	 * value.
 	 * 
 	 * @param print If true, the configuration object is configured to enable GIPS
-	 *              to print statistics of the duplicate constraint removal process.
+	 *              to print statistics of the duplicate and trivial constraint
+	 *              removal process.
 	 */
-	public void setPrintDuplicateStats(final boolean print) {
-		this.printDuplicateStats = print;
+	public void setPrintUselessConstraintsStats(final boolean print) {
+		this.printUselessConstraintsStats = print;
 	}
 
 	/**
-	 * Returns true if GIPS is configured to print statistics of the duplicate
-	 * constraint removal process.
+	 * Returns true if GIPS is configured to print statistics of the duplicate and
+	 * trivial constraint removal process.
 	 * 
-	 * @return True if TIPS is configured to print statistics of the duplicate
-	 *         constraint removal process.
+	 * @return True if GIPS is configured to print statistics of the duplicate and
+	 *         trivial constraint removal process.
 	 */
-	public boolean printDuplicateStats() {
-		return printDuplicateStats;
+	public boolean printUselessConstraintsStats() {
+		return printUselessConstraintsStats;
 	}
 
 }

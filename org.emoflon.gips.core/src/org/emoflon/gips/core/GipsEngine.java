@@ -3,14 +3,17 @@ package org.emoflon.gips.core;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Supplier;
 
 import org.emoflon.gips.core.milp.ConstraintSorter;
 import org.emoflon.gips.core.milp.Solver;
 import org.emoflon.gips.core.milp.SolverOutput;
 import org.emoflon.gips.core.milp.SolverStatus;
+import org.emoflon.gips.core.milp.model.Constraint;
 import org.emoflon.gips.core.milp.model.Variable;
 import org.emoflon.gips.core.trace.EclipseIntegration;
 import org.emoflon.gips.core.trace.EclipseIntegrationConfig;
@@ -37,6 +40,12 @@ public abstract class GipsEngine {
 
 	protected EclipseIntegration eclipseIntegration;
 	protected GipsTracer tracer;
+
+	/**
+	 * GIPS configuration parameters that are not specific to the MILP solver nor
+	 * the tracer, etc.
+	 */
+	protected GipsConfig config;
 
 	/**
 	 * Time tick of the initialization point in time, i.e., the point in time when
@@ -127,6 +136,11 @@ public abstract class GipsEngine {
 				StreamUtils.toStream(constraints.values(), parallel)
 						.forEach(constraint -> constraint.buildConstraints(parallel));
 
+				// Check if GIPS is configure to remove duplicate constraints
+				if (this.config.removeDuplicateConstraints()) {
+					removeDuplicateConstraints(config.printDuplicateStats());
+				}
+
 				if (objective != null)
 					objective.buildObjectiveFunction(parallel);
 			});
@@ -210,6 +224,11 @@ public abstract class GipsEngine {
 
 		StreamUtils.toStream(constraints.values(), parallel)
 				.forEach(constraint -> constraint.buildConstraints(parallel));
+
+		// Check if GIPS is configure to remove duplicate constraints
+		if (this.config.removeDuplicateConstraints()) {
+			removeDuplicateConstraints(config.printDuplicateStats());
+		}
 
 		if (objective != null)
 			objective.buildObjectiveFunction(parallel);
@@ -399,6 +418,55 @@ public abstract class GipsEngine {
 	 */
 	public double getInitTimeInSeconds() {
 		return 1.0 * (tockInit - tickInit) / 1_000_000_000;
+	}
+
+	/**
+	 * Returns the GIPS configuration object of this GIPS engine.
+	 * 
+	 * @return GIPS configuration object.
+	 */
+	public GipsConfig getConfig() {
+		return this.config;
+	}
+
+	/**
+	 * Removes all duplicate GIPS constraints per GIPSL constraint (group). This
+	 * means that the method eliminates all duplicate constraints for every
+	 * `constraint` block written in the respective GIPSL specification.
+	 * 
+	 * @param print If true, GIPS will print the number of eliminated constraints
+	 *              onto the console.
+	 */
+	private void removeDuplicateConstraints(final boolean print) {
+		final long tick = System.nanoTime();
+		int constraintsOriginal = 0;
+		int constraintsRemoved = 0;
+
+		// For every specified GIPSL constraint
+		for (final GipsConstraint<?, ?, ?> c : getConstraints().values()) {
+			final Set<Constraint> contained = new HashSet<Constraint>();
+
+			// Find removal candidates (=constraints that are already present)
+			final Set<Constraint> removalCandidates = new HashSet<>();
+			for (final Constraint milpCnstr : c.getConstraints()) {
+				constraintsOriginal++;
+				if (!contained.add(milpCnstr)) {
+					removalCandidates.add(milpCnstr);
+				}
+			}
+			// Remove all duplicates
+			final int constraintsOriginalLocal = c.getConstraints().size();
+			c.getConstraints().removeAll(removalCandidates);
+			constraintsRemoved += (constraintsOriginalLocal - c.getConstraints().size());
+		}
+
+		// If configure, print statistics
+		if (print) {
+			final long tock = System.nanoTime();
+			final double duration = (1.0 * (tock - tick) / 1_000_000_000);
+			System.out.println("Removed " + constraintsRemoved + " redundant constraints out of " + constraintsOriginal
+					+ " total constraints in " + duration + "s.");
+		}
 	}
 
 }

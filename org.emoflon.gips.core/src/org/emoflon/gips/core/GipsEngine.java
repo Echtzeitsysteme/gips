@@ -1,6 +1,8 @@
 package org.emoflon.gips.core;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,6 +11,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Supplier;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.emoflon.gips.core.milp.ConstraintSorter;
 import org.emoflon.gips.core.milp.Solver;
 import org.emoflon.gips.core.milp.SolverOutput;
@@ -444,29 +447,58 @@ public abstract class GipsEngine {
 
 		// For every specified GIPSL constraint
 		for (final GipsConstraint<?, ?, ?> c : getConstraints().values()) {
-			final Set<Constraint> contained = new HashSet<Constraint>();
+			// Normal constraints
+			final ImmutablePair<Integer, Integer> stats = removeDuplicateConstraints(c.getConstraints());
+			constraintsOriginal += stats.left;
+			constraintsRemoved += stats.right;
 
-			// Find removal candidates (=constraints that are already present)
-			final Set<Constraint> removalCandidates = new HashSet<>();
-			for (final Constraint milpCnstr : c.getConstraints()) {
-				constraintsOriginal++;
-				if (!contained.add(milpCnstr)) {
-					removalCandidates.add(milpCnstr);
-				}
-			}
-			// Remove all duplicates
-			final int constraintsOriginalLocal = c.getConstraints().size();
-			c.getConstraints().removeAll(removalCandidates);
-			constraintsRemoved += (constraintsOriginalLocal - c.getConstraints().size());
+			// Additional constraints
+			final ImmutablePair<Integer, Integer> additionalStats = removeDuplicateConstraints(
+					c.getAdditionalConstraints());
+			constraintsOriginal += additionalStats.left;
+			constraintsRemoved += additionalStats.right;
 		}
 
 		// If configure, print statistics
 		if (print) {
 			final long tock = System.nanoTime();
 			final double duration = (1.0 * (tock - tick) / 1_000_000_000);
+			final DecimalFormat percFormat = new DecimalFormat("##.##%");
 			System.out.println("Removed " + constraintsRemoved + " redundant constraints out of " + constraintsOriginal
-					+ " total constraints in " + duration + "s.");
+					+ " total constraints (" + percFormat.format((1.0 * constraintsRemoved / constraintsOriginal))
+					+ ") in " + String.format("%.2f", duration) + "s.");
 		}
+	}
+
+	/**
+	 * This method removes duplicate MILP constraints from the given collection of
+	 * constraints.
+	 * 
+	 * @param constraints Collection of constraints to remove duplicates from.
+	 * @return Immutable pair of integers where `left` is the original number of
+	 *         constraints and `right` is the number of removed duplicates.
+	 */
+	private ImmutablePair<Integer, Integer> removeDuplicateConstraints(final Collection<Constraint> constraints) {
+		Objects.requireNonNull(constraints);
+
+		final Set<Constraint> contained = new HashSet<Constraint>();
+		int constraintsOriginal = 0;
+		int constraintsRemoved = 0;
+
+		// Find removal candidates (=constraints that are already present)
+		final Set<Constraint> removalCandidates = new HashSet<>();
+		for (final Constraint milpCnstr : constraints) {
+			constraintsOriginal++;
+			if (!contained.add(milpCnstr)) {
+				removalCandidates.add(milpCnstr);
+			}
+		}
+		// Remove all duplicates
+		final int constraintsOriginalLocal = constraints.size();
+		constraints.removeAll(removalCandidates);
+		constraintsRemoved += (constraintsOriginalLocal - constraints.size());
+
+		return new ImmutablePair<Integer, Integer>(constraintsOriginal, constraintsRemoved);
 	}
 
 }

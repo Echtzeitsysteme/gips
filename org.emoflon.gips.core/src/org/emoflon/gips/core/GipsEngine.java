@@ -517,7 +517,10 @@ public abstract class GipsEngine {
 		}
 
 		// Remove all duplicates
-		constraints.removeAll(removalCandidates);
+//		constraints.removeAll(removalCandidates);
+		// TODO: The above removes not only all duplicates but also all original
+		// constraints. I have to find a way in which exactly one of all same
+		// constraints stays within the collection.
 
 		// Return statistics
 		return new RemovedConstraintsStats(constraintsOriginal, duplicatesRemoved, trivialConstraintsRemoved);

@@ -502,7 +502,8 @@ public abstract class GipsEngine {
 				duplicatesRemoved++;
 			} else {
 				// Check for trivial constraints: 1 * x <= 1 (x is a Boolean variable)
-				if (milpCnstr.lhsTerms().size() == 1 // only one variable
+				if (milpCnstr != null // null check
+						&& milpCnstr.lhsTerms().size() == 1 // only one variable
 						&& milpCnstr.lhsTerms().get(0).variable().getUpperBound().intValue() == 1 // variable's upper
 																									// bound is 1
 						&& milpCnstr.rhsConstantTerm() == 1 // RHS is constant

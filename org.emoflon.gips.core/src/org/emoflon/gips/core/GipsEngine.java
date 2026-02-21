@@ -2,20 +2,17 @@ package org.emoflon.gips.core;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.function.Supplier;
 
+import org.emoflon.gips.core.GipsConstraint.RemovedConstraintsStats;
 import org.emoflon.gips.core.milp.ConstraintSorter;
 import org.emoflon.gips.core.milp.Solver;
 import org.emoflon.gips.core.milp.SolverOutput;
 import org.emoflon.gips.core.milp.SolverStatus;
-import org.emoflon.gips.core.milp.model.Constraint;
 import org.emoflon.gips.core.milp.model.Variable;
 import org.emoflon.gips.core.trace.EclipseIntegration;
 import org.emoflon.gips.core.trace.EclipseIntegrationConfig;
@@ -23,7 +20,6 @@ import org.emoflon.gips.core.trace.GipsTracer;
 import org.emoflon.gips.core.util.Observer;
 import org.emoflon.gips.core.util.StreamUtils;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
-import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 
 public abstract class GipsEngine {
 
@@ -449,17 +445,10 @@ public abstract class GipsEngine {
 
 		// For every specified GIPSL constraint
 		for (final GipsConstraint<?, ?, ?> c : getConstraints().values()) {
-			// Normal constraints
-			final RemovedConstraintsStats stats = removeUselessConstraints(c.getConstraints());
-			constraintsOriginal += stats.original;
-			duplicatesRemoved += stats.duplicates;
-			trivialRemoved += stats.trivial;
-
-			// Additional constraints
-			final RemovedConstraintsStats additionalStats = removeUselessConstraints(c.getAdditionalConstraints());
-			constraintsOriginal += additionalStats.original;
-			duplicatesRemoved += additionalStats.duplicates;
-			trivialRemoved += additionalStats.trivial;
+			final RemovedConstraintsStats stats = c.removeUselessConstraints();
+			constraintsOriginal += stats.original();
+			duplicatesRemoved += stats.duplicates();
+			trivialRemoved += stats.trivial();
 		}
 
 		// If configure, print statistics
@@ -472,64 +461,6 @@ public abstract class GipsEngine {
 					+ percFormat.format((1.0 * (duplicatesRemoved + trivialRemoved) / constraintsOriginal)) + ") in "
 					+ String.format("%.2f", duration) + "s.");
 		}
-	}
-
-	/**
-	 * This method removes duplicate and trivial MILP constraints from the given
-	 * collection of constraints.
-	 * 
-	 * @param constraints Collection of constraints to remove duplicates and trivial
-	 *                    constraints from.
-	 * @return Statistics record containing the number of original constraints, the
-	 *         number of removed duplicates, and the number of removed trivial
-	 *         constraints.
-	 */
-	private RemovedConstraintsStats removeUselessConstraints(final Collection<Constraint> constraints) {
-		Objects.requireNonNull(constraints);
-
-		final Set<Constraint> contained = new HashSet<Constraint>();
-		int constraintsOriginal = 0;
-		int duplicatesRemoved = 0;
-		int trivialConstraintsRemoved = 0;
-
-		// Find removal candidates (e.g., constraints that are already present)
-		final Set<Constraint> removalCandidates = new HashSet<>();
-		for (final Constraint milpCnstr : constraints) {
-			constraintsOriginal++;
-			// Check for duplicate constraints
-			if (!contained.add(milpCnstr)) {
-				removalCandidates.add(milpCnstr);
-				duplicatesRemoved++;
-			} else {
-				// Check for trivial constraints: 1 * x <= 1 (x is a Boolean variable)
-				if (milpCnstr != null // null check
-						&& milpCnstr.lhsTerms().size() == 1 // only one variable
-						&& milpCnstr.lhsTerms().get(0).variable().getUpperBound().intValue() == 1 // variable's upper
-																									// bound is 1
-						&& milpCnstr.rhsConstantTerm() == 1 // RHS is constant
-						&& milpCnstr.lhsTerms().get(0).weight() == 1 // variable's weight is 1
-						&& milpCnstr.operator() == RelationalOperator.LESS_OR_EQUAL // operator is <=
-				) {
-					removalCandidates.add(milpCnstr);
-					trivialConstraintsRemoved++;
-				}
-			}
-		}
-
-		// Remove all duplicates
-//		constraints.removeAll(removalCandidates);
-		// TODO: The above removes not only all duplicates but also all original
-		// constraints. I have to find a way in which exactly one of all same
-		// constraints stays within the collection.
-
-		// Return statistics
-		return new RemovedConstraintsStats(constraintsOriginal, duplicatesRemoved, trivialConstraintsRemoved);
-	}
-
-	/**
-	 * Record to store constraint removal statistics (number of constraints).
-	 */
-	private record RemovedConstraintsStats(int original, int duplicates, int trivial) {
 	}
 
 }

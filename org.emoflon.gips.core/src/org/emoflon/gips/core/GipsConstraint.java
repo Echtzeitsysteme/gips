@@ -125,12 +125,14 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends o
 		if (constraint != null // null check
 				&& constraint.lhsTerms().size() == 1 // only one variable
 		) {
-			// Case: 1 * x <= 1 (for a variable with an upper bound of 1)
-			// TODO: Replace 1 with n >= 0
+			// Case: n * x <= n (for a variable with an upper bound of 1 and n >= 0)
+			// This also contains the case of 1 * x <= 1 (with x' upper bound of 1)
 			if (constraint.lhsTerms().get(0).variable().getUpperBound().intValue() == 1 // variable's upper
 																						// bound is 1
-					&& constraint.rhsConstantTerm() == 1 // RHS is constant 1
-					&& constraint.lhsTerms().get(0).weight() == 1 // variable's weight is 1
+					&& constraint.rhsConstantTerm() >= 0 // RHS is >= 0
+					&& constraint.lhsTerms().get(0).weight() == constraint.rhsConstantTerm() // variable's weight is
+																								// equal to the RHS'
+																								// constant term
 					&& constraint.operator() == RelationalOperator.LESS_OR_EQUAL // operator is <=
 			) {
 				return true;

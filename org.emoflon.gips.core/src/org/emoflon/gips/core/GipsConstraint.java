@@ -52,17 +52,19 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends o
 	 * is trivial (e.g., 1 * x <= 1 for a variable x with an upper bound of 1).
 	 */
 	public RemovedConstraintsStats removeUselessConstraints() {
+		// Counters for the number of different constraints
 		int constraintsOriginal = 0;
 		int duplicatesRemoved = 0;
 		int trivialConstraintsRemoved = 0;
 
+		// Check every normal constraint
 		final Set<Constraint> contained = new HashSet<Constraint>();
 		final Set<CONTEXT> removalCandidates = new HashSet<CONTEXT>();
 
 		for (final CONTEXT key : milpConstraints.keySet()) {
-			// Normal constraints
 			final Constraint candidate = milpConstraints.get(key);
 			constraintsOriginal++;
+			// Check for duplicates
 			if (!contained.add(candidate)) {
 				removalCandidates.add(key);
 				duplicatesRemoved++;
@@ -75,7 +77,7 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends o
 			}
 		}
 
-		// Additional constraints
+		// Check every additional constraints
 		final Set<Constraint> additionalContained = new HashSet<Constraint>();
 		final Map<CONTEXT, List<Integer>> additionalRemovalCandidates = new HashMap<CONTEXT, List<Integer>>();
 
@@ -84,6 +86,7 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends o
 			for (int i = 0; i < additionalConstraints.size(); i++) {
 				final Constraint candidate = additionalConstraints.get(i);
 				constraintsOriginal++;
+				// Check for duplicates
 				if (!additionalContained.add(candidate)) {
 					if (!additionalRemovalCandidates.containsKey(key)) {
 						additionalRemovalCandidates.put(key, new ArrayList<Integer>());
@@ -100,10 +103,10 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends o
 			}
 		}
 
-		// Remove candidates
+		// Remove all normal candidates
 		removalCandidates.forEach(r -> milpConstraints.remove(r));
 
-		// Remove additional candidates
+		// Remove all additional candidates
 		additionalRemovalCandidates.forEach((k, constraints) -> {
 			constraints.forEach(index -> {
 				additionalMilpConstraints.get(k).remove(index.intValue());
@@ -130,9 +133,20 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends o
 			if (constraint.lhsTerms().get(0).variable().getUpperBound().intValue() == 1 // variable's upper
 																						// bound is 1
 					&& constraint.rhsConstantTerm() >= 0 // RHS is >= 0
-					&& constraint.lhsTerms().get(0).weight() == constraint.rhsConstantTerm() // variable's weight is
-																								// equal to the RHS'
-																								// constant term
+					&& constraint.lhsTerms().get(0).weight() <= constraint.rhsConstantTerm() // variable's weight is
+																								// equal to or less than
+																								// the RHS' constant
+																								// term
+					&& constraint.operator() == RelationalOperator.LESS_OR_EQUAL // operator is <=
+			) {
+				return true;
+			}
+
+			// Case: n * x <= x_ub * n
+			// (for a variable with an upper bound of x_ub and n >= 0)
+			if (constraint.rhsConstantTerm() >= 0 // RHS is >= 0
+					&& constraint.lhsTerms().get(0).weight() * constraint.lhsTerms().get(0).variable().getUpperBound()
+							.doubleValue() <= constraint.rhsConstantTerm() // n * x_ub <= RHS
 					&& constraint.operator() == RelationalOperator.LESS_OR_EQUAL // operator is <=
 			) {
 				return true;

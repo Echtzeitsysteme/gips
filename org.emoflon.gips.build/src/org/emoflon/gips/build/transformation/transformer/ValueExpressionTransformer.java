@@ -42,6 +42,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.AttributeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.Context;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.NodeExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.NodeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
@@ -63,7 +64,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.SetTypeSelect;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
-import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableExpression;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
 
 public class ValueExpressionTransformer extends TransformationContext {
@@ -84,89 +85,116 @@ public class ValueExpressionTransformer extends TransformationContext {
 			MappingReference mValue = factory.createMappingReference();
 			mValue.setMapping(data.eMapping2Mapping().get(eMapping.getMapping()));
 			value = mValue;
+
 		} else if (eValue.getValue() instanceof GipsTypeExpression eType) {
 			TypeReference tValue = factory.createTypeReference();
 			data.requiredTypes().add(eType.getType());
 			tValue.setType(eType.getType());
 			value = tValue;
+
 		} else if (eValue.getValue() instanceof GipsPatternExpression ePattern) {
 			PatternReference pValue = factory.createPatternReference();
 			pValue.setPattern(data.getPattern(ePattern.getPattern()));
 			value = pValue;
+
 		} else if (eValue.getValue() instanceof GipsRuleExpression eRule) {
 			RuleReference rValue = factory.createRuleReference();
 			rValue.setRule(data.getRule(eRule.getRule()));
 			value = rValue;
+
 		} else if (eValue.getValue() instanceof GipsLocalContextExpression eContext) {
 			value = transform(eContext);
+
 		} else if (eValue.getValue() instanceof GipsSetElementExpression eSet) {
 			value = transform(eSet);
+
 		} else {
 			throw new UnsupportedOperationException("Unkown value expression: " + eValue);
+
 		}
 
-		if (eValue.getSetExperession() != null) {
+		if (eValue.getSetExperession() != null)
 			value.setSetExpression(transform(eValue.getSetExperession()));
-		}
+
 		return value;
 	}
 
 	public ValueExpression transform(final GipsLocalContextExpression eValue) throws Exception {
-		ValueExpression value = null;
-		if (eValue.getExpression() instanceof GipsNodeExpression node) {
-			value = transform(node, localContext);
-		} else if (eValue.getExpression() instanceof GipsVariableReferenceExpression variable) {
-			VariableReference vValue = factory.createVariableReference();
-			if (variable.getVariable() != null) {
-				vValue.setVariable(data.eVariable2Variable().get(variable.getVariable()));
-			} else {
-				EObject context = GipslScopeContextUtil.getLocalContext(eValue);
-				if (context instanceof GipsConstraint constraint) {
-					vValue.setVariable(data.eVariable2Variable().get(constraint.getContext()));
-				} else if (context instanceof GipsLinearFunction fun) {
-					vValue.setVariable(data.eVariable2Variable().get(fun.getContext()));
-				} else if (context instanceof GipsMapping map) {
-					vValue.setVariable(data.eVariable2Variable().get(map));
-				} else {
-					vValue.setVariable(null);
-				}
-			}
-			vValue.setLocal(true);
-			value = vValue;
-		} else if (eValue.getExpression() instanceof GipsAttributeExpression eAttribute) {
-			value = transform(eAttribute, localContext);
-		} else if (eValue.getExpression() == null) {
-			ContextReference cValue = factory.createContextReference();
-			cValue.setLocal(true);
-			value = cValue;
+		ContextReference value = null;
+
+		if (eValue.getExpression() == null) {
+			value = factory.createContextReference();
+
 		} else {
-			throw new UnsupportedOperationException("Unkown local value expression: " + eValue.getExpression());
+			AttributeReference vValue = factory.createAttributeReference();
+			value = vValue;
+
+			if (eValue.getExpression() instanceof GipsNodeExpression eNode) {
+				vValue.setAttribute(transform(eNode));
+
+			} else if (eValue.getExpression() instanceof GipsVariableReferenceExpression eVariable) {
+				VariableExpression expression = factory.createVariableExpression();
+				vValue.setAttribute(expression);
+
+				if (eVariable.getVariable() != null) {
+					expression.setVariable(data.eVariable2Variable().get(eVariable.getVariable()));
+				} else {
+					EObject context = GipslScopeContextUtil.getLocalContext(eValue);
+
+					Variable variable = switch (context) {
+					case GipsConstraint constraint -> data.eVariable2Variable().get(constraint.getContext());
+					case GipsLinearFunction fun -> data.eVariable2Variable().get(fun.getContext());
+					case GipsMapping map -> data.eVariable2Variable().get(map);
+					default -> null;
+					};
+
+					expression.setVariable(variable);
+				}
+
+			} else if (eValue.getExpression() instanceof GipsAttributeExpression eAttribute) {
+				vValue.setAttribute(transform(eAttribute));
+
+			} else {
+				throw new UnsupportedOperationException("Unkown local value expression: " + eValue.getExpression());
+			}
 		}
+
+		value.setLocal(true);
 		return value;
 	}
 
 	public ValueExpression transform(final GipsSetElementExpression eValue) throws Exception {
-		ValueExpression value = null;
-		if (eValue.getExpression() instanceof GipsNodeExpression node) {
-			value = transform(node, setContext);
-		} else if (eValue.getExpression() instanceof GipsVariableReferenceExpression variable) {
-			VariableReference vValue = factory.createVariableReference();
-			if (variable.getVariable() != null) {
-				vValue.setVariable(data.eVariable2Variable().get(variable.getVariable()));
-			} else {
-				vValue.setVariable(getMappingVariable(eValue));
-			}
-			vValue.setLocal(false);
-			value = vValue;
-		} else if (eValue.getExpression() instanceof GipsAttributeExpression eAttribute) {
-			value = transform(eAttribute, setContext);
-		} else if (eValue.getExpression() == null) {
-			ContextReference cValue = factory.createContextReference();
-			cValue.setLocal(false);
-			value = cValue;
+		ContextReference value = null;
+
+		if (eValue.getExpression() == null) {
+			value = factory.createContextReference();
+
 		} else {
-			throw new UnsupportedOperationException("Unkown local value expression: " + eValue.getExpression());
+			AttributeReference vValue = factory.createAttributeReference();
+			value = vValue;
+
+			if (eValue.getExpression() instanceof GipsNodeExpression eNode) {
+				vValue.setAttribute(transform(eNode));
+
+			} else if (eValue.getExpression() instanceof GipsVariableReferenceExpression eVariable) {
+				VariableExpression expression = factory.createVariableExpression();
+				vValue.setAttribute(expression);
+
+				if (eVariable.getVariable() != null) {
+					expression.setVariable(data.eVariable2Variable().get(eVariable.getVariable()));
+				} else {
+					expression.setVariable(getMappingVariable(eValue));
+				}
+
+			} else if (eValue.getExpression() instanceof GipsAttributeExpression eAttribute) {
+				vValue.setAttribute(transform(eAttribute));
+
+			} else {
+				throw new UnsupportedOperationException("Unkown local value expression: " + eValue.getExpression());
+			}
 		}
+
+		value.setLocal(false);
 		return value;
 	}
 
@@ -211,13 +239,6 @@ public class ValueExpressionTransformer extends TransformationContext {
 		}
 	}
 
-	public ValueExpression transform(final GipsNodeExpression node, final Context context) {
-		NodeReference nValue = transform(node.getNode(), context);
-		if (node.getAttributeExpression() != null)
-			nValue.setAttribute(transform(node.getAttributeExpression()));
-		return nValue;
-	}
-
 	public NodeReference transform(EditorNode node, Context context) {
 		NodeReference nValue = factory.createNodeReference();
 		nValue.setNode(data.eNode2Node().get(node));
@@ -231,24 +252,64 @@ public class ValueExpressionTransformer extends TransformationContext {
 		return nValue;
 	}
 
-	public ValueExpression transform(final GipsAttributeExpression eAttribute, final Context context) {
-		AttributeReference aValue = factory.createAttributeReference();
-		aValue.setAttribute(transform(eAttribute));
-		if (context.equals(localContext)) {
-			aValue.setLocal(true);
-		} else {
-			aValue.setLocal(false);
+	public NodeExpression transform(GipsNodeExpression eNode) throws Exception {
+		NodeExpression node = factory.createNodeExpression();
+		node.setNode(data.eNode2Node().get(eNode.getNode()));
+
+		switch (eNode.getExpression()) {
+		case GipsAttributeExpression next -> node.setNext(transform(next));
+		case GipsVariableReferenceExpression next -> node.setNext(transform(next));
+		case null -> { // nothing to do
 		}
-		return aValue;
+		default -> throw new IllegalArgumentException("Unexpected value: " + eNode.getExpression());
+		}
+
+		return node;
 	}
 
 	public AttributeExpression transform(final GipsAttributeExpression eAttribute) {
 		AttributeExpression attribute = factory.createAttributeExpression();
-		if (eAttribute.getRight() instanceof GipsAttributeExpression nextExpression) {
-			attribute.setNext(transform(nextExpression));
-		}
 		attribute.setFeature(eAttribute.getAttribute().getLiteral());
+
+		switch (eAttribute.getRight()) {
+		case GipsAttributeExpression next -> attribute.setNext(transform(next));
+		case GipsVariableReferenceExpression next -> attribute.setNext(transform(next));
+		case null -> { // nothing to do
+		}
+		default -> throw new IllegalArgumentException("Unexpected value: " + eAttribute.getRight());
+		}
+
 		return attribute;
+	}
+
+	private VariableExpression transform(GipsVariableReferenceExpression eVariable) {
+		VariableExpression variable = factory.createVariableExpression();
+		Variable varRef = data.eVariable2Variable().get(eVariable.getVariable());
+		variable.setVariable(varRef);
+
+		return variable;
+	}
+
+	public ContextReference transformContextAware(GipsVariableReferenceExpression eVariable, EObject context)
+			throws Exception {
+		AttributeReference value = factory.createAttributeReference();
+		value.setLocal(context.equals(localContext));
+		value.setAttribute(transform(eVariable));
+		return value;
+	}
+
+	public ContextReference transformContextAware(GipsNodeExpression eNode, EObject context) throws Exception {
+		AttributeReference value = factory.createAttributeReference();
+		value.setLocal(context.equals(localContext));
+		value.setAttribute(transform(eNode));
+		return value;
+	}
+
+	public ContextReference transformContextAware(GipsAttributeExpression eAttribute, EObject context) {
+		AttributeReference value = factory.createAttributeReference();
+		value.setLocal(context.equals(localContext));
+		value.setAttribute(transform(eAttribute));
+		return value;
 	}
 
 	public SetExpression transform(final GipsSetExpression eSet) throws Exception {
@@ -403,18 +464,18 @@ public class ValueExpressionTransformer extends TransformationContext {
 		ValueExpressionTransformer transformer //
 				= transformerFactory.createValueTransformer(localContext, sort);
 		if (eSort.getPredicate().getE1() instanceof GipsNodeExpression node) {
-			relation.setLhs(transformer.transform(node, sort));
+			relation.setLhs(transformer.transformContextAware(node, sort));
 		} else if (eSort.getPredicate().getE1() instanceof GipsAttributeExpression attribute) {
-			relation.setLhs(transformer.transform(attribute, sort));
+			relation.setLhs(transformer.transformContextAware(attribute, sort));
 		} else {
 			throw new IllegalArgumentException(
 					"Illegal operand type in sort predicate: " + eSort.getPredicate().getE1());
 		}
 
 		if (eSort.getPredicate().getE2() instanceof GipsNodeExpression node) {
-			relation.setRhs(transformer.transform(node, sort));
+			relation.setRhs(transformer.transformContextAware(node, sort));
 		} else if (eSort.getPredicate().getE2() instanceof GipsAttributeExpression attribute) {
-			relation.setRhs(transformer.transform(attribute, sort));
+			relation.setRhs(transformer.transformContextAware(attribute, sort));
 		} else {
 			throw new IllegalArgumentException(
 					"Illegal operand type in sort predicate: " + eSort.getPredicate().getE2());

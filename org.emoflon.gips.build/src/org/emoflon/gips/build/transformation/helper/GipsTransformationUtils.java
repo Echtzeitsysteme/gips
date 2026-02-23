@@ -3,46 +3,32 @@ package org.emoflon.gips.build.transformation.helper;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.emoflon.gips.gipsl.gipsl.GipsVariable;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.AttributeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanUnaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference;
-import org.emoflon.gips.intermediate.GipsIntermediate.ConstantValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference;
-import org.emoflon.gips.intermediate.GipsIntermediate.MappingReference;
-import org.emoflon.gips.intermediate.GipsIntermediate.NodeReference;
-import org.emoflon.gips.intermediate.GipsIntermediate.PatternReference;
-import org.emoflon.gips.intermediate.GipsIntermediate.QueryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
-import org.emoflon.gips.intermediate.GipsIntermediate.RuleReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetConcatenation;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetElementQuery;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetFilter;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetReduce;
-import org.emoflon.gips.intermediate.GipsIntermediate.SetSimpleQuery;
-import org.emoflon.gips.intermediate.GipsIntermediate.SetSimpleSelect;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetSort;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetSummation;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetTransformation;
-import org.emoflon.gips.intermediate.GipsIntermediate.SetTypeQuery;
-import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
@@ -84,136 +70,6 @@ public final class GipsTransformationUtils {
 		default -> {
 			throw new UnsupportedOperationException("Unknown relational operator: " + expr.getOperator());
 		}
-		}
-	}
-
-	public static ArithmeticExpressionType isConstantExpression(final BooleanExpression expression) {
-		if (expression instanceof BooleanBinaryExpression bin) {
-			ArithmeticExpressionType lhsType = isConstantExpression(bin.getLhs());
-			ArithmeticExpressionType rhsType = isConstantExpression(bin.getRhs());
-			if (lhsType == ArithmeticExpressionType.variableVector
-					|| rhsType == ArithmeticExpressionType.variableVector) {
-				return ArithmeticExpressionType.variableVector;
-			} else if (lhsType == ArithmeticExpressionType.variableValue
-					|| rhsType == ArithmeticExpressionType.variableValue) {
-				return ArithmeticExpressionType.variableValue;
-			} else {
-				return ArithmeticExpressionType.constant;
-			}
-		} else if (expression instanceof BooleanUnaryExpression unary) {
-			return isConstantExpression(unary.getOperand());
-		} else if (expression instanceof BooleanLiteral) {
-			return ArithmeticExpressionType.constant;
-		} else if (expression instanceof ConstantLiteral) {
-			return ArithmeticExpressionType.constant;
-		} else if (expression instanceof ConstantReference reference) {
-			if (reference.getSetExpression() == null) {
-				return isConstantExpression((BooleanExpression) reference.getConstant().getExpression());
-			} else {
-				return isConstantExpression(reference.getSetExpression());
-			}
-		} else if (expression instanceof ArithmeticExpression arithmetic) {
-			return isConstantExpression(arithmetic);
-		} else {
-			return isConstantExpression((RelationalExpression) expression);
-		}
-	}
-
-	public static ArithmeticExpressionType isConstantExpression(final RelationalExpression relational) {
-		ArithmeticExpressionType lhsType = null;
-		ArithmeticExpressionType rhsType = null;
-		if (relational.getLhs() instanceof ArithmeticExpression arithmetic) {
-			lhsType = isConstantExpression(arithmetic);
-		} else {
-			lhsType = isConstantExpression((BooleanExpression) relational.getLhs());
-		}
-		if (relational.getRhs() instanceof ArithmeticExpression arithmetic) {
-			rhsType = isConstantExpression(arithmetic);
-		} else {
-			rhsType = isConstantExpression((BooleanExpression) relational.getRhs());
-		}
-
-		if (lhsType == ArithmeticExpressionType.variableVector || rhsType == ArithmeticExpressionType.variableVector) {
-			return ArithmeticExpressionType.variableVector;
-		} else if (lhsType == ArithmeticExpressionType.variableValue
-				|| rhsType == ArithmeticExpressionType.variableValue) {
-			return ArithmeticExpressionType.variableValue;
-		} else {
-			return ArithmeticExpressionType.constant;
-		}
-	}
-
-	public static ArithmeticExpressionType isConstantExpression(final ArithmeticExpression expression) {
-		if (expression instanceof ArithmeticBinaryExpression bin) {
-			ArithmeticExpressionType lhsType = isConstantExpression(bin.getLhs());
-			ArithmeticExpressionType rhsType = isConstantExpression(bin.getRhs());
-			if (lhsType == ArithmeticExpressionType.variableVector
-					|| rhsType == ArithmeticExpressionType.variableVector) {
-				return ArithmeticExpressionType.variableVector;
-			} else if (lhsType == ArithmeticExpressionType.variableValue
-					|| rhsType == ArithmeticExpressionType.variableValue) {
-				return ArithmeticExpressionType.variableValue;
-			} else {
-				return ArithmeticExpressionType.constant;
-			}
-		} else if (expression instanceof ArithmeticUnaryExpression unary) {
-			return isConstantExpression(unary.getOperand());
-		} else if (expression instanceof ArithmeticLiteral) {
-			return ArithmeticExpressionType.constant;
-		} else if (expression instanceof ConstantLiteral) {
-			return ArithmeticExpressionType.constant;
-		} else if (expression instanceof LinearFunctionReference) {
-			return ArithmeticExpressionType.variableVector;
-		} else if (expression instanceof ConstantReference reference) {
-			if (reference.getSetExpression() == null) {
-				return isConstantExpression((ArithmeticExpression) reference.getConstant().getExpression());
-			} else {
-				return isConstantExpression(reference.getSetExpression());
-			}
-		} else {
-			return isConstantExpression((ValueExpression) expression);
-		}
-	}
-
-	public static ArithmeticExpressionType isConstantExpression(final ValueExpression expression) {
-		ArithmeticExpressionType expressionType = null;
-		if (expression instanceof MappingReference) {
-			expressionType = ArithmeticExpressionType.constant;
-		} else if (expression instanceof TypeReference) {
-			expressionType = ArithmeticExpressionType.constant;
-		} else if (expression instanceof PatternReference) {
-			expressionType = ArithmeticExpressionType.constant;
-		} else if (expression instanceof RuleReference) {
-			expressionType = ArithmeticExpressionType.constant;
-		} else if (expression instanceof NodeReference) {
-			expressionType = ArithmeticExpressionType.constant;
-		} else if (expression instanceof AttributeReference) {
-			expressionType = ArithmeticExpressionType.constant;
-		} else {
-			// Case: VariableReference
-			expressionType = ArithmeticExpressionType.variableValue;
-		}
-
-		if (expression.getSetExpression() != null) {
-			expressionType = isConstantExpression(expression.getSetExpression());
-		}
-		return expressionType;
-	}
-
-	public static ArithmeticExpressionType isConstantExpression(final SetExpression expression) {
-		if (expression != null) {
-			if (expression.getSetReduce() != null && expression.getSetReduce() instanceof SetSummation sum) {
-				ArithmeticExpressionType expressionType = isConstantExpression(sum.getExpression());
-				if (expressionType == ArithmeticExpressionType.variableValue) {
-					return ArithmeticExpressionType.variableVector;
-				} else {
-					return expressionType;
-				}
-			} else {
-				return ArithmeticExpressionType.constant;
-			}
-		} else {
-			return ArithmeticExpressionType.constant;
 		}
 	}
 
@@ -523,162 +379,6 @@ public final class GipsTransformationUtils {
 		return constants;
 	}
 
-	public static ExpressionReturnType extractReturnType(final BooleanExpression expression) {
-		if (expression instanceof BooleanBinaryExpression bin) {
-			ExpressionReturnType lhs = extractReturnType(bin.getLhs());
-			ExpressionReturnType rhs = extractReturnType(bin.getRhs());
-			if (lhs != ExpressionReturnType.bool || rhs != ExpressionReturnType.bool || lhs != rhs)
-				throw new UnsupportedOperationException("Boolean operator types are mismatching.");
-			return lhs;
-		} else if (expression instanceof BooleanUnaryExpression unary) {
-			return extractReturnType(unary.getOperand());
-		} else if (expression instanceof BooleanLiteral) {
-			return ExpressionReturnType.bool;
-		} else if (expression instanceof ConstantLiteral constant) {
-			if (constant.getConstant() == ConstantValue.NULL) {
-				return ExpressionReturnType.object;
-			} else {
-				return ExpressionReturnType.bool;
-			}
-		} else if (expression instanceof ConstantReference reference) {
-			if (reference.getSetExpression() == null) {
-				return extractReturnType((BooleanExpression) reference.getConstant().getExpression());
-			} else {
-				return extractReturnType(reference.getSetExpression());
-			}
-		} else if (expression instanceof ArithmeticExpression arithmetic) {
-			return extractReturnType(arithmetic);
-		} else {
-			return ExpressionReturnType.bool;
-		}
-	}
-
-	public static ExpressionReturnType extractReturnType(final ArithmeticExpression expression) {
-		if (expression instanceof ArithmeticBinaryExpression bin) {
-			ExpressionReturnType lhs = extractReturnType(bin.getLhs());
-			ExpressionReturnType rhs = extractReturnType(bin.getRhs());
-			if (lhs != rhs)
-				throw new UnsupportedOperationException("Arithmetic operator types are mismatching.");
-
-			return lhs;
-		} else if (expression instanceof ArithmeticUnaryExpression unary) {
-			return extractReturnType(unary.getOperand());
-		} else if (expression instanceof ArithmeticLiteral) {
-			return ExpressionReturnType.number;
-		} else if (expression instanceof ConstantLiteral lit) {
-			if (lit.getConstant() == ConstantValue.NULL) {
-				return ExpressionReturnType.object;
-			} else {
-				return ExpressionReturnType.number;
-			}
-		} else if (expression instanceof LinearFunctionReference) {
-			return ExpressionReturnType.number;
-		} else if (expression instanceof ConstantReference reference) {
-			if (reference.getSetExpression() == null) {
-				return extractReturnType((ArithmeticExpression) reference.getConstant().getExpression());
-			} else {
-				return extractReturnType(reference.getSetExpression());
-			}
-
-		} else {
-			return extractReturnType((ValueExpression) expression);
-		}
-	}
-
-	public static ExpressionReturnType extractReturnType(final ValueExpression expression) {
-		ExpressionReturnType expressionType = null;
-		if (expression instanceof MappingReference) {
-			expressionType = ExpressionReturnType.object;
-		} else if (expression instanceof TypeReference) {
-			expressionType = ExpressionReturnType.object;
-		} else if (expression instanceof PatternReference) {
-			expressionType = ExpressionReturnType.object;
-		} else if (expression instanceof RuleReference) {
-			expressionType = ExpressionReturnType.object;
-		} else if (expression instanceof NodeReference node) {
-			expressionType = extractReturnType(node);
-		} else if (expression instanceof AttributeReference attribute) {
-			expressionType = extractReturnType(attribute);
-		} else if (expression instanceof VariableReference) {
-			expressionType = ExpressionReturnType.number;
-		} else {
-			// Case: ContextReference
-			expressionType = ExpressionReturnType.object;
-		}
-
-		if (expression.getSetExpression() != null && expression.getSetExpression().getSetReduce() != null) {
-			expressionType = extractReturnType(expression.getSetExpression());
-		}
-		return expressionType;
-	}
-
-	public static ExpressionReturnType extractReturnType(final SetExpression expression) {
-		if (expression != null && expression.getSetReduce() != null) {
-			if (expression.getSetReduce() instanceof SetSummation) {
-				return ExpressionReturnType.number;
-			} else if (expression.getSetReduce() instanceof SetSimpleSelect) {
-				return ExpressionReturnType.object;
-			} else if (expression.getSetReduce() instanceof SetTypeQuery) {
-				return ExpressionReturnType.bool;
-			} else if (expression.getSetReduce() instanceof SetElementQuery) {
-				return ExpressionReturnType.bool;
-			} else if (expression.getSetReduce() instanceof SetSimpleQuery query) {
-				if (query.getOperator() == QueryOperator.EMPTY || query.getOperator() == QueryOperator.NOT_EMPTY) {
-					return ExpressionReturnType.bool;
-				} else {
-					// Case: Count
-					return ExpressionReturnType.number;
-				}
-			} else {
-				return ExpressionReturnType.object;
-			}
-		} else {
-			return ExpressionReturnType.object;
-		}
-	}
-
-	public static ExpressionReturnType extractReturnType(final NodeReference expression) {
-		if (expression.getAttribute() == null) {
-			return ExpressionReturnType.object;
-		} else {
-			return extractReturnType(expression.getAttribute());
-		}
-	}
-
-	public static ExpressionReturnType extractReturnType(final AttributeReference expression) {
-		return extractReturnType(expression.getAttribute());
-	}
-
-	public static ExpressionReturnType extractReturnType(final AttributeExpression expression) {
-		if (expression.getNext() == null) {
-			if (expression.getFeature().getEType() == EcorePackage.Literals.EBOOLEAN) {
-				return ExpressionReturnType.bool;
-			} else if (expression.getFeature().getEType() == EcorePackage.Literals.EDOUBLE) {
-				return ExpressionReturnType.number;
-			} else if (expression.getFeature().getEType() == EcorePackage.Literals.EFLOAT) {
-				return ExpressionReturnType.number;
-			} else if (expression.getFeature().getEType() == EcorePackage.Literals.EBYTE) {
-				return ExpressionReturnType.number;
-			} else if (expression.getFeature().getEType() == EcorePackage.Literals.ESHORT) {
-				return ExpressionReturnType.number;
-			} else if (expression.getFeature().getEType() == EcorePackage.Literals.EINT) {
-				return ExpressionReturnType.number;
-			} else if (expression.getFeature().getEType() == EcorePackage.Literals.ELONG) {
-				return ExpressionReturnType.number;
-			} else if (expression.getFeature().getEType() == EcorePackage.Literals.ESTRING) {
-				return ExpressionReturnType.object;
-			} else if (expression.getFeature().getEType() instanceof EClass) {
-				return ExpressionReturnType.object;
-			} else if (expression.getFeature().getEType() instanceof EEnum) {
-				return ExpressionReturnType.object;
-			} else {
-				throw new IllegalArgumentException("Unsupported data type: " + expression.getFeature().getEType());
-			}
-		} else {
-			return extractReturnType(expression.getNext());
-		}
-	}
-
 	public static double getUpperBound(final GipsVariable gipsVar, final VariableType type) {
 		if (type == VariableType.BINARY) {
 			return 1;
@@ -701,5 +401,29 @@ public final class GipsTransformationUtils {
 		}
 
 		throw new UnsupportedOperationException();
+	}
+
+	public static ExpressionReturnType extractReturnType(BooleanExpression expression) {
+		return ExpressionReturnTypeResolver.extractReturnType(expression);
+	}
+
+	public static ExpressionReturnType extractReturnType(ArithmeticExpression expression) {
+		return ExpressionReturnTypeResolver.extractReturnType(expression);
+	}
+
+	public static ExpressionReturnType extractReturnType(ValueExpression expression) {
+		return ExpressionReturnTypeResolver.extractReturnType(expression);
+	}
+
+	public static ArithmeticExpressionType isConstantExpression(BooleanExpression expression) {
+		return IsConstantExpressionResolver.isConstantExpression(expression);
+	}
+
+	public static ArithmeticExpressionType isConstantExpression(ArithmeticExpression expression) {
+		return IsConstantExpressionResolver.isConstantExpression(expression);
+	}
+
+	public static ArithmeticExpressionType isConstantExpression(ValueExpression expression) {
+		return IsConstantExpressionResolver.isConstantExpression(expression);
 	}
 }

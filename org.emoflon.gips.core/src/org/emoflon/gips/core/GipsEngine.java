@@ -142,6 +142,10 @@ public abstract class GipsEngine {
 
 				if (objective != null)
 					objective.buildObjectiveFunction(parallel);
+
+				// Sanity check for all variable names: there must not be two different
+				// variables with the same name.
+				checkVariableNameSanity();
 			});
 
 			observer.observe("BUILD_SOLVER", () -> {
@@ -232,9 +236,62 @@ public abstract class GipsEngine {
 		if (objective != null)
 			objective.buildObjectiveFunction(parallel);
 
+		// Sanity check for all variable names: there must not be two different
+		// variables with the same name.
+		checkVariableNameSanity();
+
 		solver.init();
 		solver.buildMILPProblem();
 		buildTraceGraphAndSendToIDE();
+	}
+
+	/**
+	 * This method is a sanity check for all variable names. There must not be the
+	 * case of two different variables with the same name. If that would be the
+	 * case, this method throws an `InternalError`.
+	 */
+	private void checkVariableNameSanity() {
+		// Map for keeping track of "$var_name" -> "$var_object"
+		final Map<String, Variable<?>> variables = new HashMap<String, Variable<?>>();
+
+		this.getMappers().values().stream() //
+				.flatMap(mapper -> mapper.getMappings().values().stream()) //
+				.forEach(mapping -> { //
+					// implicit binary variable
+					if (mapping.hasBinaryVariable()) {
+						checkVariableNameCollision(variables, mapping);
+					}
+
+					// additional variables
+					if (mapping.hasAdditionalVariables()) {
+						mapping.getAdditionalVariables().forEach((k, v) -> {
+							checkVariableNameCollision(variables, v);
+						});
+					}
+				});
+	}
+
+	/**
+	 * Checks the given map of "variable name" -> "variable object" for naming
+	 * collisions with the given variable object `var`. There must not be the case
+	 * of two different variable objects with the same name.
+	 * 
+	 * @param variables Map with key type String and value type `Variable`. This map
+	 *                  will be extended if the given variable was not already dealt
+	 *                  with.
+	 * @param var       Variable object to check collision for.
+	 */
+	private void checkVariableNameCollision(final Map<String, Variable<?>> variables, final Variable<?> var) {
+		Objects.requireNonNull(variables);
+		Objects.requireNonNull(var);
+
+		if (variables.containsKey(var.getName())) {
+			if (!variables.get(var.getName()).equals(var)) {
+				throw new InternalError("There were multiple MILP variables with the name <" + var.getName() + ">.");
+			}
+		} else {
+			variables.put(var.getName(), var);
+		}
 	}
 
 	protected void buildTraceGraphAndSendToIDE() {

@@ -5,7 +5,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.AttributeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanLiteral;
@@ -15,8 +14,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.MemberExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.MemberReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.NodeExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.NodeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleReference;
@@ -25,7 +24,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.SetSummation;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 
 public final class IsConstantExpressionResolver {
 	private IsConstantExpressionResolver() {
@@ -129,15 +127,15 @@ public final class IsConstantExpressionResolver {
 			expressionType = ArithmeticExpressionType.constant;
 		} else if (expression instanceof RuleReference) {
 			expressionType = ArithmeticExpressionType.constant;
-		} else if (expression instanceof NodeReference nodeReference) {
-			if (nodeReference.getNext() != null)
-				expressionType = isConstantExpression(nodeReference.getNext());
-			else
-				expressionType = ArithmeticExpressionType.constant;
-		} else if (expression instanceof AttributeReference attributeRef) {
-			expressionType = isConstantExpression(attributeRef.getAttribute());
-		} else if (expression instanceof VariableReference) {
-			expressionType = ArithmeticExpressionType.variableValue;
+//		} else if (expression instanceof NodeReference nodeReference) {
+//			if (nodeReference.getNext() != null)
+//				expressionType = isConstantExpression(nodeReference.getNext());
+//			else
+//				expressionType = ArithmeticExpressionType.constant;
+		} else if (expression instanceof MemberReference memberRef) {
+			expressionType = isConstantExpression(memberRef.getMember());
+//		} else if (expression instanceof VariableReference) {
+//			expressionType = ArithmeticExpressionType.variableValue;
 		} else {
 			throw new IllegalArgumentException("Unknown expression type: " + expression);
 		}
@@ -149,13 +147,15 @@ public final class IsConstantExpressionResolver {
 	}
 
 	public static ArithmeticExpressionType isConstantExpression(MemberExpression expression) {
-		if (expression.getNext() != null)
-			return isConstantExpression(expression.getNext());
-
 		return switch (expression) {
-		case AttributeExpression attribute -> ArithmeticExpressionType.constant;
-		case NodeExpression node -> ArithmeticExpressionType.constant;
 		case VariableExpression variable -> ArithmeticExpressionType.variableValue;
+
+		case AttributeExpression attribute ->
+			attribute.getNext() == null ? ArithmeticExpressionType.constant : isConstantExpression(attribute.getNext());
+
+		case NodeExpression node ->
+			node.getNext() == null ? ArithmeticExpressionType.constant : isConstantExpression(node.getNext());
+
 		default -> throw new IllegalArgumentException("Unexpected value: " + expression);
 		};
 	}

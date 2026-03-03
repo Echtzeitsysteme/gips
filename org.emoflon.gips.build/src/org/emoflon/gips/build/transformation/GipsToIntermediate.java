@@ -45,6 +45,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.Mapping;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingFunction;
+import org.emoflon.gips.intermediate.GipsIntermediate.MemberReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternFunction;
@@ -62,7 +63,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeExtension;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeFunction;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
-import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableExpression;
 import org.emoflon.ibex.gt.editor.gT.EditorNode;
 import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
@@ -492,19 +493,22 @@ public class GipsToIntermediate {
 						GipsConstraint splitConstraint = eSubConstraint.result().get(subformula);
 						Variable symbolicVariable = constraint2Symbolic.get(splitConstraint);
 
-						VariableReference varRef = factory.createVariableReference();
-						varRef.setVariable(symbolicVariable);
+						MemberReference mRef = factory.createMemberReference();
+						VariableExpression memberExpression = factory.createVariableExpression();
+						memberExpression.setVariable(symbolicVariable);
+						mRef.setMember(memberExpression);
+
 						if (subformula instanceof Literal lit && lit.phase()) {
 							if (currentSum.getLhs() == null && !subformulas.isEmpty()) {
-								currentSum.setLhs(varRef);
+								currentSum.setLhs(mRef);
 							} else if (currentSum.getLhs() != null && !subformulas.isEmpty()) {
 								ArithmeticBinaryExpression subSum = factory.createArithmeticBinaryExpression();
 								subSum.setOperator(ArithmeticBinaryOperator.ADD);
 								currentSum.setRhs(subSum);
 								currentSum = subSum;
-								subSum.setLhs(varRef);
+								subSum.setLhs(mRef);
 							} else if (currentSum.getLhs() != null && subformulas.isEmpty()) {
-								currentSum.setRhs(varRef);
+								currentSum.setRhs(mRef);
 							} else {
 								throw new UnsupportedOperationException(
 										"Disjunction of boolean literals must have more than one literal.");
@@ -523,7 +527,7 @@ public class GipsToIntermediate {
 							DoubleLiteral d3 = factory.createDoubleLiteral();
 							d3.setLiteral(-1.0);
 							negation.setLhs(d3);
-							negation.setRhs(varRef);
+							negation.setRhs(mRef);
 
 							if (currentSum.getLhs() == null && !subformulas.isEmpty()) {
 								currentSum.setLhs(negation);

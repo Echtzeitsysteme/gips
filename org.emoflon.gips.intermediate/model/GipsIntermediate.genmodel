@@ -275,15 +275,15 @@
     <genClasses image="false" ecoreClass="GipsIntermediate.ecore#//ContextReference">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//ContextReference/local"/>
     </genClasses>
-    <genClasses ecoreClass="GipsIntermediate.ecore#//AttributeReference">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//AttributeReference/attribute"/>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//MemberReference">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//MemberReference/member"/>
     </genClasses>
-    <genClasses ecoreClass="GipsIntermediate.ecore#//NodeReference">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//NodeReference/node"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//NodeReference/next"/>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//NodeReferenceX">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//NodeReferenceX/node"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//NodeReferenceX/next"/>
     </genClasses>
-    <genClasses ecoreClass="GipsIntermediate.ecore#//VariableReference">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//VariableReference/variable"/>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//VariableReferenceX">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//VariableReferenceX/variable"/>
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//MemberExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//MemberExpression/next"/>

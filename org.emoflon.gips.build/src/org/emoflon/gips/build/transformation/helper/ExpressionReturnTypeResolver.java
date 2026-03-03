@@ -9,7 +9,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.AttributeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanLiteral;
@@ -20,8 +19,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ConstantValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.MemberExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.MemberReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.NodeExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.NodeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.QueryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleReference;
@@ -35,7 +34,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 
 public final class ExpressionReturnTypeResolver {
 	private ExpressionReturnTypeResolver() {
@@ -113,13 +111,13 @@ public final class ExpressionReturnTypeResolver {
 		case TypeReference typeRef -> ExpressionReturnType.object;
 		case PatternReference patternRef -> ExpressionReturnType.object;
 		case RuleReference ruleRef -> ExpressionReturnType.object;
-		case NodeReference nodeRef -> {
-			if (nodeRef.getNext() != null)
-				yield extractReturnType(nodeRef.getNext());
-			yield ExpressionReturnType.object;
-		}
-		case AttributeReference attRef -> extractReturnType(attRef.getAttribute());
-		case VariableReference varRef -> extractReturnType(varRef.getVariable());
+//		case NodeReference nodeRef -> {
+//			if (nodeRef.getNext() != null)
+//				yield extractReturnType(nodeRef.getNext());
+//			yield ExpressionReturnType.object;
+//		}
+		case MemberReference memRef -> extractReturnType(memRef.getMember());
+//		case VariableReference varRef -> extractReturnType(varRef.getVariable());
 
 		// Case: ContextReference
 		default -> ExpressionReturnType.object;
@@ -152,14 +150,16 @@ public final class ExpressionReturnTypeResolver {
 	}
 
 	private static ExpressionReturnType extractReturnType(MemberExpression expression) {
-		if (expression.getNext() != null)
-			return extractReturnType(expression.getNext());
-
 		return switch (expression) {
-		case AttributeExpression attribute -> extractReturnType(attribute.getFeature());
 		case VariableExpression variable -> extractReturnType(variable.getVariable());
-		case NodeExpression node -> ExpressionReturnType.object;
-		default -> throw new UnsupportedOperationException();
+
+		case AttributeExpression attribute -> attribute.getNext() == null ? extractReturnType(attribute.getFeature())
+				: extractReturnType(attribute.getNext());
+
+		case NodeExpression node ->
+			node.getNext() == null ? ExpressionReturnType.object : extractReturnType(node.getNext());
+
+		default -> throw new IllegalArgumentException("Unexpected value: " + expression);
 		};
 	}
 

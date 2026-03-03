@@ -17,7 +17,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.AttributeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanExpression;
@@ -35,8 +34,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.MemberExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.MemberReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.NodeExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.NodeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.QueryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
@@ -61,7 +60,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.SetTypeSelect;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 import org.logicng.io.parsers.ParserException;
 
 public class GipsArithmeticTransformer {
@@ -247,6 +245,7 @@ public class GipsArithmeticTransformer {
 
 	public void splitIntoConstAndVarTerms(final ConstantReference expression,
 			final Collection<ArithmeticExpression> constTerms, final Collection<ArithmeticExpression> varTerms) {
+
 		if (expression.getSetExpression() == null) {
 			constTerms.add(expression);
 			return;
@@ -271,14 +270,12 @@ public class GipsArithmeticTransformer {
 
 	public void splitIntoConstAndVarTerms(final ValueExpression expression,
 			final Collection<ArithmeticExpression> constTerms, final Collection<ArithmeticExpression> varTerms) {
-		if (expression instanceof VariableReference) {
-			varTerms.add(expression);
-			return;
-		}
 
-		if (expression instanceof NodeReference nodeRef && nodeRef.getNext() != null) {
-			varTerms.add(expression);
-			return;
+		if (expression instanceof MemberReference memberReference) {
+			if (GipsTransformationUtils.isConstantExpression(memberReference) != ArithmeticExpressionType.constant) {
+				varTerms.add(expression);
+				return;
+			}
 		}
 
 		if (expression.getSetExpression() == null) {
@@ -1101,22 +1098,10 @@ public class GipsArithmeticTransformer {
 			ref.setRule(rule.getRule());
 			ref.setContextPattern(rule.getContextPattern());
 			clone = ref;
-		} else if (value instanceof NodeReference node) {
-			NodeReference ref = factory.createNodeReference();
-			ref.setNode(node.getNode());
-			if (node.getNext() != null)
-				ref.setNext(cloneExpression(factory, node.getNext()));
-			ref.setLocal(node.isLocal());
-			clone = ref;
-		} else if (value instanceof AttributeReference attribute) {
-			AttributeReference ref = factory.createAttributeReference();
-			ref.setAttribute(cloneExpression(factory, attribute.getAttribute()));
-			ref.setLocal(attribute.isLocal());
-			clone = ref;
-		} else if (value instanceof VariableReference variable) {
-			VariableReference ref = factory.createVariableReference();
-			ref.setVariable(variable.getVariable());
-			ref.setLocal(variable.isLocal());
+		} else if (value instanceof MemberReference member) {
+			MemberReference ref = factory.createMemberReference();
+			ref.setMember(cloneExpression(factory, member.getMember()));
+			ref.setLocal(member.isLocal());
 			clone = ref;
 		} else if (value instanceof ContextReference context) {
 			ContextReference ref = factory.createContextReference();
@@ -1134,21 +1119,24 @@ public class GipsArithmeticTransformer {
 
 	static public MemberExpression cloneExpression(GipsIntermediateFactory factory, final MemberExpression expression) {
 		MemberExpression clone = switch (expression) {
-		case AttributeExpression attribute -> {
-			AttributeExpression tClone = factory.createAttributeExpression();
-			tClone.setFeature(attribute.getFeature());
-			yield tClone;
-		}
 		case VariableExpression variable -> {
 			VariableExpression tClone = factory.createVariableExpression();
 			tClone.setVariable(variable.getVariable());
 			yield tClone;
 		}
-		case NodeExpression node -> {
-			NodeExpression tClone = factory.createNodeExpression();
-			node.setNode(node.getNode());
+
+		case AttributeExpression attribute -> {
+			AttributeExpression tClone = factory.createAttributeExpression();
+			tClone.setFeature(attribute.getFeature());
 			yield tClone;
 		}
+
+		case NodeExpression node -> {
+			NodeExpression tClone = factory.createNodeExpression();
+			tClone.setNode(node.getNode());
+			yield tClone;
+		}
+
 		default -> throw new IllegalArgumentException("Unexpected value: " + expression);
 		};
 

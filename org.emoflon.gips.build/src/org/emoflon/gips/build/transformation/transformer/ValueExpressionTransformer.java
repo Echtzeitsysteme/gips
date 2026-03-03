@@ -2,6 +2,7 @@ package org.emoflon.gips.build.transformation.transformer;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.emoflon.gips.build.transformation.helper.ExpressionReturnType;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
@@ -38,12 +39,12 @@ import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.AttributeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.Context;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.MemberExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.MemberReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.NodeExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.NodeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleReference;
@@ -113,8 +114,8 @@ public class ValueExpressionTransformer extends TransformationContext {
 
 		}
 
-		if (eValue.getSetExperession() != null)
-			value.setSetExpression(transform(eValue.getSetExperession()));
+		if (eValue.getSetExpression() != null)
+			value.setSetExpression(transform(eValue.getSetExpression()));
 
 		return value;
 	}
@@ -126,33 +127,31 @@ public class ValueExpressionTransformer extends TransformationContext {
 			value = factory.createContextReference();
 
 		} else {
-			AttributeReference vValue = factory.createAttributeReference();
-			value = vValue;
+			MemberReference memRef = factory.createMemberReference();
+			value = memRef;
 
 			if (eValue.getExpression() instanceof GipsNodeExpression eNode) {
-				vValue.setAttribute(transform(eNode));
+				memRef.setMember(transform(eNode));
+
+			} else if (eValue.getExpression() instanceof GipsAttributeExpression eAttribute) {
+				memRef.setMember(transform(eAttribute));
 
 			} else if (eValue.getExpression() instanceof GipsVariableReferenceExpression eVariable) {
 				VariableExpression expression = factory.createVariableExpression();
-				vValue.setAttribute(expression);
+				memRef.setMember(expression);
 
 				if (eVariable.getVariable() != null) {
 					expression.setVariable(data.eVariable2Variable().get(eVariable.getVariable()));
 				} else {
 					EObject context = GipslScopeContextUtil.getLocalContext(eValue);
-
 					Variable variable = switch (context) {
 					case GipsConstraint constraint -> data.eVariable2Variable().get(constraint.getContext());
 					case GipsLinearFunction fun -> data.eVariable2Variable().get(fun.getContext());
 					case GipsMapping map -> data.eVariable2Variable().get(map);
 					default -> null;
 					};
-
 					expression.setVariable(variable);
 				}
-
-			} else if (eValue.getExpression() instanceof GipsAttributeExpression eAttribute) {
-				vValue.setAttribute(transform(eAttribute));
 
 			} else {
 				throw new UnsupportedOperationException("Unkown local value expression: " + eValue.getExpression());
@@ -170,24 +169,24 @@ public class ValueExpressionTransformer extends TransformationContext {
 			value = factory.createContextReference();
 
 		} else {
-			AttributeReference vValue = factory.createAttributeReference();
-			value = vValue;
+			MemberReference memRef = factory.createMemberReference();
+			value = memRef;
 
 			if (eValue.getExpression() instanceof GipsNodeExpression eNode) {
-				vValue.setAttribute(transform(eNode));
+				memRef.setMember(transform(eNode));
+
+			} else if (eValue.getExpression() instanceof GipsAttributeExpression eAttribute) {
+				memRef.setMember(transform(eAttribute));
 
 			} else if (eValue.getExpression() instanceof GipsVariableReferenceExpression eVariable) {
 				VariableExpression expression = factory.createVariableExpression();
-				vValue.setAttribute(expression);
+				memRef.setMember(expression);
 
 				if (eVariable.getVariable() != null) {
 					expression.setVariable(data.eVariable2Variable().get(eVariable.getVariable()));
 				} else {
 					expression.setVariable(getMappingVariable(eValue));
 				}
-
-			} else if (eValue.getExpression() instanceof GipsAttributeExpression eAttribute) {
-				vValue.setAttribute(transform(eAttribute));
 
 			} else {
 				throw new UnsupportedOperationException("Unkown local value expression: " + eValue.getExpression());
@@ -239,76 +238,109 @@ public class ValueExpressionTransformer extends TransformationContext {
 		}
 	}
 
-	public NodeReference transform(EditorNode node, Context context) {
-		NodeReference nValue = factory.createNodeReference();
-		nValue.setNode(data.eNode2Node().get(node));
+//	public NodeReference transform(EditorNode node, Context context) {
+//		NodeReference nValue = factory.createNodeReference();
+//		nValue.setNode(data.eNode2Node().get(node));
+//
+//		if (context.equals(localContext)) {
+//			nValue.setLocal(true);
+//		} else {
+//			nValue.setLocal(false);
+//		}
+//
+//		return nValue;
+//	}
 
-		if (context.equals(localContext)) {
-			nValue.setLocal(true);
+	public MemberExpression transform(GipsNodeExpression eNode) throws Exception {
+		NodeExpression node = transform(eNode.getNode());
+		return transformMemberExpression(node, eNode.getExpression());
+	}
+
+	public MemberExpression transform(final GipsAttributeExpression eAttribute) {
+		AttributeExpression attribute = transform(eAttribute.getAttribute().getLiteral());
+		return transformMemberExpression(attribute, eAttribute.getRight());
+	}
+
+	private MemberExpression transformMemberExpression(MemberExpression parent, EObject nextExpression) {
+		if (nextExpression instanceof GipsAttributeExpression attributeExpression) {
+			MemberExpression next = transform(attributeExpression);
+			if (next instanceof VariableExpression newParent) {
+				newParent.setNext(parent);
+				return newParent;
+			} else {
+				parent.setNext(next);
+				return parent;
+			}
+
+		} else if (nextExpression instanceof GipsVariableReferenceExpression varExpression) {
+			VariableExpression newParent = transform(varExpression);
+			newParent.setNext(parent);
+			return newParent;
+
+		} else if (nextExpression == null) {
+			return parent;
+
 		} else {
-			nValue.setLocal(false);
+			throw new IllegalArgumentException("Unexpected value: " + nextExpression);
+
 		}
-
-		return nValue;
-	}
-
-	public NodeExpression transform(GipsNodeExpression eNode) throws Exception {
-		NodeExpression node = factory.createNodeExpression();
-		node.setNode(data.eNode2Node().get(eNode.getNode()));
-
-		switch (eNode.getExpression()) {
-		case GipsAttributeExpression next -> node.setNext(transform(next));
-		case GipsVariableReferenceExpression next -> node.setNext(transform(next));
-		case null -> { // nothing to do
-		}
-		default -> throw new IllegalArgumentException("Unexpected value: " + eNode.getExpression());
-		}
-
-		return node;
-	}
-
-	public AttributeExpression transform(final GipsAttributeExpression eAttribute) {
-		AttributeExpression attribute = factory.createAttributeExpression();
-		attribute.setFeature(eAttribute.getAttribute().getLiteral());
-
-		switch (eAttribute.getRight()) {
-		case GipsAttributeExpression next -> attribute.setNext(transform(next));
-		case GipsVariableReferenceExpression next -> attribute.setNext(transform(next));
-		case null -> { // nothing to do
-		}
-		default -> throw new IllegalArgumentException("Unexpected value: " + eAttribute.getRight());
-		}
-
-		return attribute;
 	}
 
 	private VariableExpression transform(GipsVariableReferenceExpression eVariable) {
 		VariableExpression variable = factory.createVariableExpression();
 		Variable varRef = data.eVariable2Variable().get(eVariable.getVariable());
 		variable.setVariable(varRef);
-
 		return variable;
+	}
+
+	private NodeExpression transform(EditorNode eNode) {
+		NodeExpression node = factory.createNodeExpression();
+		node.setNode(data.eNode2Node().get(eNode));
+		return node;
+	}
+
+	private AttributeExpression transform(EStructuralFeature feature) {
+		AttributeExpression attribute = factory.createAttributeExpression();
+		attribute.setFeature(feature);
+		return attribute;
 	}
 
 	public ContextReference transformContextAware(GipsVariableReferenceExpression eVariable, EObject context)
 			throws Exception {
-		AttributeReference value = factory.createAttributeReference();
+		MemberReference value = factory.createMemberReference();
 		value.setLocal(context.equals(localContext));
-		value.setAttribute(transform(eVariable));
+		value.setMember(transform(eVariable));
 		return value;
 	}
 
 	public ContextReference transformContextAware(GipsNodeExpression eNode, EObject context) throws Exception {
-		AttributeReference value = factory.createAttributeReference();
+		MemberReference value = factory.createMemberReference();
 		value.setLocal(context.equals(localContext));
-		value.setAttribute(transform(eNode));
+		value.setMember(transform(eNode));
 		return value;
 	}
 
 	public ContextReference transformContextAware(GipsAttributeExpression eAttribute, EObject context) {
-		AttributeReference value = factory.createAttributeReference();
+		MemberReference value = factory.createMemberReference();
 		value.setLocal(context.equals(localContext));
-		value.setAttribute(transform(eAttribute));
+		value.setMember(transform(eAttribute));
+		return value;
+	}
+
+	public MemberReference transformContextAware(EditorNode eNode, Context context) {
+		MemberReference value = factory.createMemberReference();
+		value.setLocal(context.equals(localContext));
+		value.setMember(transform(eNode));
+		return value;
+	}
+
+	public MemberReference transformContextAware(EStructuralFeature feature, Context context) {
+		AttributeExpression attExp = factory.createAttributeExpression();
+		attExp.setFeature(feature);
+
+		MemberReference value = factory.createMemberReference();
+		value.setLocal(context.equals(localContext));
+		value.setMember(transform(feature));
 		return value;
 	}
 

@@ -1,10 +1,13 @@
 package org.emoflon.gips.core;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.emoflon.gips.build.transformation.GipsConstraintUtils;
@@ -40,6 +43,129 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends o
 		this.constraint = constraint;
 		this.name = constraint.getName();
 		isConstant = constraint.isConstant();
+	}
+
+	/**
+	 * This method can be used to remove useless constraints from this
+	 * `GipsConstraint`. A MILP constraint is considered useless if: (1) it is
+	 * redundant with other MILP constraints of this GIPSL constraint or (2) if it
+	 * is trivial (e.g., 1 * x <= 1 for a variable x with an upper bound of 1).
+	 */
+	public RemovedConstraintsStats removeUselessConstraints() {
+		// Counters for the number of different constraints
+		int constraintsOriginal = 0;
+		int duplicatesRemoved = 0;
+		int trivialConstraintsRemoved = 0;
+
+		// Check every normal constraint
+		final Set<Constraint> contained = new HashSet<Constraint>();
+		final Set<CONTEXT> removalCandidates = new HashSet<CONTEXT>();
+
+		for (final CONTEXT key : milpConstraints.keySet()) {
+			final Constraint candidate = milpConstraints.get(key);
+			constraintsOriginal++;
+			// Check for duplicates
+			if (!contained.add(candidate)) {
+				removalCandidates.add(key);
+				duplicatesRemoved++;
+			} else {
+				// Check for trivial constraints
+				if (isConstraintTrivial(candidate)) {
+					removalCandidates.add(key);
+					trivialConstraintsRemoved++;
+				}
+			}
+		}
+
+		// Check every additional constraints
+		final Set<Constraint> additionalContained = new HashSet<Constraint>();
+		final Map<CONTEXT, List<Integer>> additionalRemovalCandidates = new HashMap<CONTEXT, List<Integer>>();
+
+		for (final CONTEXT key : additionalMilpConstraints.keySet()) {
+			final List<Constraint> additionalConstraints = additionalMilpConstraints.get(key);
+			for (int i = 0; i < additionalConstraints.size(); i++) {
+				final Constraint candidate = additionalConstraints.get(i);
+				constraintsOriginal++;
+				// Check for duplicates
+				if (!additionalContained.add(candidate)) {
+					if (!additionalRemovalCandidates.containsKey(key)) {
+						additionalRemovalCandidates.put(key, new ArrayList<Integer>());
+					}
+					additionalRemovalCandidates.get(key).add(i);
+					duplicatesRemoved++;
+				} else {
+					// Check for trivial constraints
+					if (isConstraintTrivial(candidate)) {
+						removalCandidates.add(key);
+						trivialConstraintsRemoved++;
+					}
+				}
+			}
+		}
+
+		// Remove all normal candidates
+		removalCandidates.forEach(r -> milpConstraints.remove(r));
+
+		// Remove all additional candidates
+		additionalRemovalCandidates.forEach((k, constraints) -> {
+			constraints.forEach(index -> {
+				additionalMilpConstraints.get(k).remove(index.intValue());
+			});
+		});
+		return new RemovedConstraintsStats(constraintsOriginal, duplicatesRemoved, trivialConstraintsRemoved);
+	}
+
+	/**
+	 * Checks if a given constraint is trivial (e.g., 1 * x <= 1 for a variable
+	 * thats upper bound is 1 anyway).
+	 * 
+	 * @param constraint Constraint to check triviality for.
+	 * @return True if the given constraint is trivial.
+	 */
+	private boolean isConstraintTrivial(final Constraint constraint) {
+		// Preconditions: constraint must not be null and there must only be one
+		// variable term
+		if (constraint != null // null check
+				&& constraint.lhsTerms().size() == 1 // only one variable
+		) {
+			// Case: n * x <= n (for a variable with an upper bound of 1 and n >= 0)
+			// This also contains the case of 1 * x <= 1 (with x' upper bound of 1)
+			if (constraint.lhsTerms().get(0).variable().getUpperBound().intValue() == 1 // variable's upper
+																						// bound is 1
+					&& constraint.rhsConstantTerm() >= 0 // RHS is >= 0
+					&& constraint.lhsTerms().get(0).weight() <= constraint.rhsConstantTerm() // variable's weight is
+																								// equal to or less than
+																								// the RHS' constant
+																								// term
+					&& constraint.operator() == RelationalOperator.LESS_OR_EQUAL // operator is <=
+			) {
+				return true;
+			}
+
+			// Case: n * x <= x_ub * n
+			// (for a variable with an upper bound of x_ub and n >= 0)
+			if (constraint.rhsConstantTerm() >= 0 // RHS is >= 0
+					&& constraint.lhsTerms().get(0).weight() * constraint.lhsTerms().get(0).variable().getUpperBound()
+							.doubleValue() <= constraint.rhsConstantTerm() // n * x_ub <= RHS
+					&& constraint.operator() == RelationalOperator.LESS_OR_EQUAL // operator is <=
+			) {
+				return true;
+			}
+
+			// Case: n * x >= 0 (for a variable with a lower bound of 0)
+			if (constraint.lhsTerms().get(0).variable().getLowerBound().intValue() == 0 // variable's lower
+					// bound is 0
+					&& constraint.rhsConstantTerm() == 0 // RHS is constant 0
+					&& constraint.lhsTerms().get(0).weight() >= 0 // variable's weight is non-negative
+					&& constraint.operator() == RelationalOperator.GREATER_OR_EQUAL // operator is >=
+			) {
+				return true;
+			}
+		}
+
+		// If no previous condition was triggered, we consider the constraint to be
+		// non-trivial.
+		return false;
 	}
 
 	/**
@@ -171,6 +297,12 @@ public abstract class GipsConstraint<ENGINE extends GipsEngine, CONSTR extends o
 		}
 
 		};
+	}
+
+	/**
+	 * Record to store constraint removal statistics (number of constraints).
+	 */
+	public record RemovedConstraintsStats(int original, int duplicates, int trivial) {
 	}
 
 }

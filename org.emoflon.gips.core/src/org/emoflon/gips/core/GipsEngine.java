@@ -1,12 +1,14 @@
 package org.emoflon.gips.core;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+import org.emoflon.gips.core.GipsConstraint.RemovedConstraintsStats;
 import org.emoflon.gips.core.milp.ConstraintSorter;
 import org.emoflon.gips.core.milp.Solver;
 import org.emoflon.gips.core.milp.SolverOutput;
@@ -37,6 +39,12 @@ public abstract class GipsEngine {
 
 	protected EclipseIntegration eclipseIntegration;
 	protected GipsTracer tracer;
+
+	/**
+	 * GIPS configuration parameters that are not specific to the MILP solver nor
+	 * the tracer, etc.
+	 */
+	protected GipsConfig config;
 
 	/**
 	 * Time tick of the initialization point in time, i.e., the point in time when
@@ -127,8 +135,17 @@ public abstract class GipsEngine {
 				StreamUtils.toStream(constraints.values(), parallel)
 						.forEach(constraint -> constraint.buildConstraints(parallel));
 
+				// Check if GIPS is configure to remove duplicate constraints
+				if (this.config.removeUselessConstraints()) {
+					removeUselessConstraints(config.printUselessConstraintsStats());
+				}
+
 				if (objective != null)
 					objective.buildObjectiveFunction(parallel);
+
+				// Sanity check for all variable names: there must not be two different
+				// variables with the same name.
+				checkVariableNameSanity();
 			});
 
 			observer.observe("BUILD_SOLVER", () -> {
@@ -211,12 +228,70 @@ public abstract class GipsEngine {
 		StreamUtils.toStream(constraints.values(), parallel)
 				.forEach(constraint -> constraint.buildConstraints(parallel));
 
+		// Check if GIPS is configure to remove duplicate constraints
+		if (this.config.removeUselessConstraints()) {
+			removeUselessConstraints(config.printUselessConstraintsStats());
+		}
+
 		if (objective != null)
 			objective.buildObjectiveFunction(parallel);
+
+		// Sanity check for all variable names: there must not be two different
+		// variables with the same name.
+		checkVariableNameSanity();
 
 		solver.init();
 		solver.buildMILPProblem();
 		buildTraceGraphAndSendToIDE();
+	}
+
+	/**
+	 * This method is a sanity check for all variable names. There must not be the
+	 * case of two different variables with the same name. If that would be the
+	 * case, this method throws an `InternalError`.
+	 */
+	private void checkVariableNameSanity() {
+		// Map for keeping track of "$var_name" -> "$var_object"
+		final Map<String, Variable<?>> variables = new HashMap<String, Variable<?>>();
+
+		this.getMappers().values().stream() //
+				.flatMap(mapper -> mapper.getMappings().values().stream()) //
+				.forEach(mapping -> { //
+					// implicit binary variable
+					if (mapping.hasBinaryVariable()) {
+						checkVariableNameCollision(variables, mapping);
+					}
+
+					// additional variables
+					if (mapping.hasAdditionalVariables()) {
+						mapping.getAdditionalVariables().forEach((k, v) -> {
+							checkVariableNameCollision(variables, v);
+						});
+					}
+				});
+	}
+
+	/**
+	 * Checks the given map of "variable name" -> "variable object" for naming
+	 * collisions with the given variable object `var`. There must not be the case
+	 * of two different variable objects with the same name.
+	 * 
+	 * @param variables Map with key type String and value type `Variable`. This map
+	 *                  will be extended if the given variable was not already dealt
+	 *                  with.
+	 * @param var       Variable object to check collision for.
+	 */
+	private void checkVariableNameCollision(final Map<String, Variable<?>> variables, final Variable<?> var) {
+		Objects.requireNonNull(variables);
+		Objects.requireNonNull(var);
+
+		if (variables.containsKey(var.getName())) {
+			if (!variables.get(var.getName()).equals(var)) {
+				throw new InternalError("There were multiple MILP variables with the name <" + var.getName() + ">.");
+			}
+		} else {
+			variables.put(var.getName(), var);
+		}
 	}
 
 	protected void buildTraceGraphAndSendToIDE() {
@@ -399,6 +474,50 @@ public abstract class GipsEngine {
 	 */
 	public double getInitTimeInSeconds() {
 		return 1.0 * (tockInit - tickInit) / 1_000_000_000;
+	}
+
+	/**
+	 * Returns the GIPS configuration object of this GIPS engine.
+	 * 
+	 * @return GIPS configuration object.
+	 */
+	public GipsConfig getConfig() {
+		return this.config;
+	}
+
+	/**
+	 * Removes all duplicate and some trivial GIPS constraints per GIPSL constraint
+	 * (group). This means that the method eliminates all duplicate constraints and
+	 * some trivial constraints for every `constraint` block written in the
+	 * respective GIPSL specification.
+	 * 
+	 * @param print If true, GIPS will print the number of eliminated constraints
+	 *              onto the console.
+	 */
+	private void removeUselessConstraints(final boolean print) {
+		final long tick = System.nanoTime();
+		int constraintsOriginal = 0;
+		int duplicatesRemoved = 0;
+		int trivialRemoved = 0;
+
+		// For every specified GIPSL constraint
+		for (final GipsConstraint<?, ?, ?> c : getConstraints().values()) {
+			final RemovedConstraintsStats stats = c.removeUselessConstraints();
+			constraintsOriginal += stats.original();
+			duplicatesRemoved += stats.duplicates();
+			trivialRemoved += stats.trivial();
+		}
+
+		// If configure, print statistics
+		if (print) {
+			final long tock = System.nanoTime();
+			final double duration = (1.0 * (tock - tick) / 1_000_000_000);
+			final DecimalFormat percFormat = new DecimalFormat("##.##%");
+			System.out.println("Removed " + duplicatesRemoved + " redundant constraints and " + trivialRemoved
+					+ " trivial constraints out of " + constraintsOriginal + " total constraints ("
+					+ percFormat.format((1.0 * (duplicatesRemoved + trivialRemoved) / constraintsOriginal)) + ") in "
+					+ String.format("%.2f", duration) + "s.");
+		}
 	}
 
 }

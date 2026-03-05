@@ -325,7 +325,7 @@ public abstract class GipsEngine {
 		}
 
 		// Set statistics values of the removes constraints
-		if (this.removedConstraintsStats != null) {
+		if (this.removedConstraintsStats != null && output.stats() != null) {
 			output.stats().setRemovedDuplicateConstraints(this.removedConstraintsStats.duplicates());
 			output.stats().setRemovedTrivialConstraints(this.removedConstraintsStats.trivial());
 		}

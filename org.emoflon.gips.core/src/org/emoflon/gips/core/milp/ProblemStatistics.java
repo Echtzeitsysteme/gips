@@ -42,4 +42,37 @@ public class ProblemStatistics {
 		return this.removedTrivialConstraints;
 	}
 
+	/**
+	 * Returns the number of mappings of the problem. (Sustains backwards
+	 * compatibility.)
+	 * 
+	 * @return Number of mappings of the problem.
+	 */
+	@Deprecated
+	public long mappings() {
+		return this.mappings;
+	}
+
+	/**
+	 * Returns the number of variables of the problem. (Sustains backwards
+	 * compatibility.)
+	 * 
+	 * @return Number of variables of the problem.
+	 */
+	@Deprecated
+	public long vars() {
+		return this.vars;
+	}
+
+	/**
+	 * Returns the number of constraints of the problem. (Sustains backwards
+	 * compatibility.)
+	 * 
+	 * @return Number of constraints of the problem.
+	 */
+	@Deprecated
+	public long constraints() {
+		return this.constraints;
+	}
+
 }

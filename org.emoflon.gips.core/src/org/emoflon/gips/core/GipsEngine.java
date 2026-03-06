@@ -324,7 +324,7 @@ public abstract class GipsEngine {
 				solver.computeIrreducibleInconsistentSubsystem();
 		}
 
-		// Set statistics values of the removes constraints
+		// Set statistics values of the removed constraints
 		if (this.removedConstraintsStats != null && output.stats() != null) {
 			output.stats().setRemovedDuplicateConstraints(this.removedConstraintsStats.duplicates());
 			output.stats().setRemovedTrivialConstraints(this.removedConstraintsStats.trivial());

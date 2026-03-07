@@ -308,21 +308,15 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="member" lowerBound="1"
         eType="#//MemberExpression" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NodeReferenceX" eSuperTypes="#//ContextReference #//Context">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXNode"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="next" eType="#//MemberExpression"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="VariableReferenceX" eSuperTypes="#//ContextReference">
+  <eClassifiers xsi:type="ecore:EClass" name="VariableReference" eSuperTypes="#//ContextReference">
     <eStructuralFeatures xsi:type="ecore:EReference" name="variable" lowerBound="1"
         eType="#//Variable"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="previous" eType="#//MemberExpression"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MemberExpression" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="next" eType="#//MemberExpression"
         containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="VariableExpression" eSuperTypes="#//MemberExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="variable" eType="#//Variable"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AttributeExpression" eSuperTypes="#//MemberExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>

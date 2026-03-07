@@ -278,18 +278,12 @@
     <genClasses ecoreClass="GipsIntermediate.ecore#//MemberReference">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//MemberReference/member"/>
     </genClasses>
-    <genClasses ecoreClass="GipsIntermediate.ecore#//NodeReferenceX">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//NodeReferenceX/node"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//NodeReferenceX/next"/>
-    </genClasses>
-    <genClasses ecoreClass="GipsIntermediate.ecore#//VariableReferenceX">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//VariableReferenceX/variable"/>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//VariableReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//VariableReference/variable"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//VariableReference/previous"/>
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//MemberExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//MemberExpression/next"/>
-    </genClasses>
-    <genClasses ecoreClass="GipsIntermediate.ecore#//VariableExpression">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//VariableExpression/variable"/>
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//AttributeExpression">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//AttributeExpression/feature"/>

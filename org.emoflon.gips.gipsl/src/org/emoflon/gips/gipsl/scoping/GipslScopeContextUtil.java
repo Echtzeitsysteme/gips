@@ -189,7 +189,13 @@ public final class GipslScopeContextUtil {
 		return context instanceof GipsSetElementExpression;
 	}
 
-	public static Object getContainer(EObject node, Set<Class<?>> classes) {
+	@SuppressWarnings("unchecked")
+	public static <E> E getContainer(EObject node, Class<E> clazz) {
+		EObject container = getContainer(node, Collections.singleton(clazz));
+		return (E) container;
+	}
+
+	public static EObject getContainer(EObject node, Set<Class<?>> classes) {
 		if (node == null)
 			return null;
 

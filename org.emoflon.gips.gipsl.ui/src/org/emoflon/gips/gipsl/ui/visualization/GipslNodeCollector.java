@@ -51,7 +51,7 @@ public class GipslNodeCollector {
 					key -> new HashSet<EditorNode>());
 
 			if (mappingExpression.eContainer() instanceof GipsValueExpression valueExpression) {
-				TreeIterator<EObject> iterator = EcoreUtil2.eAll(valueExpression.getSetExperession());
+				TreeIterator<EObject> iterator = EcoreUtil2.eAll(valueExpression.getSetExpression());
 				while (iterator.hasNext()) {
 					EObject next = iterator.next();
 					switch (next) {

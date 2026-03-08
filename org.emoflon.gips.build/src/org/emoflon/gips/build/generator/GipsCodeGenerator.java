@@ -7,7 +7,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.URI;
 import org.emoflon.gips.build.GipsAPIData;
-import org.emoflon.gips.build.generator.templates.GeneratorTemplate;
+import org.emoflon.gips.build.generator.templates.FileGeneratorTemplate;
 import org.emoflon.gips.build.generator.templates.GipsAPITemplate;
 import org.emoflon.gips.build.generator.templates.LaunchFileTemplate;
 import org.emoflon.gips.build.generator.templates.MapperFactoryTemplate;
@@ -52,7 +52,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.TypeFunction;
 public class GipsCodeGenerator {
 
 	final protected TemplateData data;
-	protected List<GeneratorTemplate<?>> templates = Collections.synchronizedList(new LinkedList<>());
+	protected List<FileGeneratorTemplate<?>> templates = Collections.synchronizedList(new LinkedList<>());
 
 	public GipsCodeGenerator(final GipsIntermediateModel model, final GipsAPIData apiData,
 			final GipsImportManager classToPackage) {
@@ -118,7 +118,7 @@ public class GipsCodeGenerator {
 			}
 		});
 		if (data.model.getConfig().isBuildLaunchConfig()) {
-			GeneratorTemplate<?> launchTemplate = new LaunchFileTemplate(data, data.model);
+			FileGeneratorTemplate<?> launchTemplate = new LaunchFileTemplate(data, data.model);
 			try {
 				launchTemplate.init();
 				launchTemplate.generate();
@@ -127,6 +127,7 @@ public class GipsCodeGenerator {
 				e.printStackTrace();
 			}
 		}
+
 		if (ITraceManager.getInstance().isGIPSLTracingEnabled()) {
 			TraceMap<String, String> intermediate2code = TraceMap.normalize(data.traceMap, ResolveEcore2Id.INSTANCE,
 					ResolveIdentity2Id.INSTANCE);

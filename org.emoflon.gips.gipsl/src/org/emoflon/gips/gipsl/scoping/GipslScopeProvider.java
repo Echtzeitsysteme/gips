@@ -827,7 +827,7 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 				return IScope.NULLSCOPE;
 			}
 		} else if (root instanceof GipsAttributeExpression attribute) {
-			if (attribute.getAttribute() == null || attribute.getAttribute() == null)
+			if (attribute.getAttribute() == null || attribute.getAttribute().getLiteral() == null)
 				return IScope.NULLSCOPE;
 
 			if (attribute.getAttribute().getLiteral().getEType() instanceof EClass cls) {

@@ -662,8 +662,8 @@ public final class GipslExpressionValidator {
 			valueType = ExpressionType.Unknown;
 		}
 
-		if (expression.getSetExperession() != null) {
-			return evaluate(expression.getSetExperession(), errors);
+		if (expression.getSetExpression() != null) {
+			return evaluate(expression.getSetExpression(), errors);
 		} else {
 			return valueType;
 		}

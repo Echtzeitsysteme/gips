@@ -15,6 +15,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.intermediate.GipsIntermediate.Constant
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 
 class ObjectiveTemplate extends ProblemGeneratorTemplate<Objective> {
 
@@ -23,11 +24,11 @@ class ObjectiveTemplate extends ProblemGeneratorTemplate<Objective> {
 	new(TemplateData data, Objective context) {
 		super(data, context)
 	}
-	
+
 	override init() {
 		packageName = data.apiData.gipsObjectivePkg
 		className = data.objectiveClassName
-		fqn = packageName + "." + className;
+
 		filePath = data.apiData.gipsObjectivePkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
@@ -40,139 +41,135 @@ class ObjectiveTemplate extends ProblemGeneratorTemplate<Objective> {
 		imports.add("org.emoflon.gips.core.milp.model.NestedLinearFunction")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.Objective")
 	}
-	
+
 	override getConstants() {
 		return context.constants;
 	}
-	
-	override generate() {
-		val classContent = generateClassContent()
+
+	override generateClassContent() {
+		val classContent = generateObjective(context.expression)
 		val attributes = generateAttributes();
 		val initAttributes = generateInitAttributes();
-		val importStatements = generateImports();
-		code = '''«generatePackageDeclaration»
 
-«importStatements»
+		'''
+			public class «className» extends GipsObjective{
+				
+				«attributes»
+				
+				public «className»(final GipsEngine engine, final Objective objective) {
+					super(engine, objective);
+				}
+				
+				«initAttributes»
+				
+				«classContent»
+				
+				«FOR methods : builderMethodDefinitions.values»
+					«methods»
+				«ENDFOR»
+			}
+		'''
+	}
 
-public class «className» extends GipsObjective{
-	
-	«attributes»
-	
-	public «className»(final GipsEngine engine, final Objective objective) {
-		super(engine, objective);
-	}
-	
-	«initAttributes»
-	
-	«classContent»
-	
-	«FOR methods : builderMethodDefinitions.values»
-	«methods»
-	«ENDFOR»
-}'''
-	}
-	
-	override String generatePackageDeclaration() {
-		return '''package «packageName»;'''
-	}
-	
-	override String generateImports() {
-		return '''«FOR imp : imports»
-import «imp»;
-«ENDFOR»'''
-	}
-	
 	def String generateAttributes() {
-			referencedObjectives.forEach[o | imports.add(data.apiData.gipsObjectivePkg+"."+data.function2functionClassName.get(o))]
-		return '''«FOR obj : referencedObjectives»
-	protected «data.function2functionClassName.get(obj)» «obj.name.toFirstLower»;
-«ENDFOR»'''
+		referencedObjectives.forEach [ o |
+			imports.add(data.apiData.gipsObjectivePkg + "." + data.function2functionClassName.get(o))
+		]
+		'''
+			«FOR obj : referencedObjectives»
+				protected «data.function2functionClassName.get(obj)» «obj.name.toFirstLower»;
+			«ENDFOR»
+		'''
 	}
-	
+
 	def String generateInitAttributes() {
-		return '''@Override
-protected void initLocalObjectives() {
-	«FOR obj : referencedObjectives»
-	«obj.name.toFirstLower» = («data.function2functionClassName.get(obj)») engine.getLinearFunctions().get("«obj.name»");
-	«ENDFOR»
-}'''
+		'''
+			@Override
+			protected void initLocalObjectives() {
+				«FOR obj : referencedObjectives»
+					«obj.name.toFirstLower» = («data.function2functionClassName.get(obj)») engine.getLinearFunctions().get("«obj.name»");
+				«ENDFOR»
+			}
+		'''
 	}
-	
-	def String generateClassContent() {
-		return '''«generateObjective(context.expression)»'''		
-	}
-	
+
 	def String generateObjective(ArithmeticExpression expr) {
-		generateTermBuilder(expr)
-		return '''@Override
-protected void buildTerms() {
-	«getConstantFields(context.constants)»
-	
-	«FOR instruction : builderMethodCalls2»
-	«instruction»
-	«ENDFOR»
-	
-	«getConstantCalculators(context.constants)»
-}'''
-	}
+		computeTermBuilder(expr)
 		
-	override getVariable(Variable variable) {
+		'''
+			@Override
+			protected void buildTerms() {
+				«generateConstantFields(context.constants)»
+				
+				«FOR instruction : builderMethodCalls2»
+					«instruction»
+				«ENDFOR»
+				
+				«getConstantCalculators(context.constants)»
+			}
+		'''
+	}
+
+	override generateVariableAccess(VariableReference variable) {
 		throw new UnsupportedOperationException("Direct variable access is not possible within the objective context.")
 	}
-	
+
 	override String getContextParameterType() {
 		return ""
 	}
-	
+
 	override String getContextParameter() {
 		return ""
 	}
-	
+
 	override getCallConstantCalculator(Constant constant) {
 		return '''calculate«constant.name.toFirstUpper»()'''
 	}
-	
-	def void generateTermBuilder(ArithmeticExpression expr) {
-		if(GipsTransformationUtils.isConstantExpression(expr)  == ArithmeticExpressionType.constant) {
-			builderMethodCalls2.add('''constantTerms.add(new Constant(«generateConstantExpression(expr)»));''') 
+
+	def void computeTermBuilder(ArithmeticExpression expr) {
+		if(GipsTransformationUtils.isConstantExpression(expr)) {
+			builderMethodCalls2.add('''constantTerms.add(new Constant(«generateConstantExpression(expr)»));''')
 			return
 		}
-		
+
 		if(expr instanceof ArithmeticBinaryExpression) {
 			if(expr.operator == ArithmeticBinaryOperator.ADD) {
-				generateTermBuilder(expr.lhs)
-				generateTermBuilder(expr.rhs)
+				computeTermBuilder(expr.lhs)
+				computeTermBuilder(expr.rhs)
 			} else if(expr.operator == ArithmeticBinaryOperator.SUBTRACT) {
 				throw new UnsupportedOperationException("Code generator does not support subtraction of variables.");
 			} else {
 				val functions = GipsTransformationUtils.extractLinearFunction(expr);
-					if(functions.size != 1)
-						throw new UnsupportedOperationException("Access to multiple different objective functions in the same product is forbidden.");
-					
+				if(functions.size != 1)
+					throw new UnsupportedOperationException(
+						"Access to multiple different objective functions in the same product is forbidden.");
+
 				val function = functions.iterator.next
 				referencedObjectives.add(function)
-				val builderMethodName = generateBuilder(expr, builderMethodCalls2)
+				val builderMethodName = createBuilderMethod(expr, builderMethodCalls2)
 				val instruction = '''weightedFunctions.add(new WeightedLinearFunction(«function.name».getLinearFunctionFunction(), «builderMethodName»(«getCallParametersForConstants(getConstants())»)));'''
 				builderMethodCalls2.add(instruction)
 			}
 		} else if(expr instanceof ArithmeticUnaryExpression) {
-				val functions = GipsTransformationUtils.extractLinearFunction(expr);
-					if(functions.size != 1)
-						throw new UnsupportedOperationException("Access to multiple different objective functions in the same product is forbidden.");
-				
-				val function = functions.iterator.next
-				referencedObjectives.add(function)
-				val builderMethodName = generateBuilder(expr, builderMethodCalls2)
-				val instruction = '''weightedFunctions.add(new WeightedLinearFunction(«function.name».getLinearFunctionFunction(), «builderMethodName»(«getCallParametersForConstants(getConstants())»)));'''
-				builderMethodCalls2.add(instruction)
+			val functions = GipsTransformationUtils.extractLinearFunction(expr);
+			if(functions.size != 1)
+				throw new UnsupportedOperationException(
+					"Access to multiple different objective functions in the same product is forbidden.");
+
+			val function = functions.iterator.next
+			referencedObjectives.add(function)
+			val builderMethodName = createBuilderMethod(expr, builderMethodCalls2)
+			val instruction = '''weightedFunctions.add(new WeightedLinearFunction(«function.name».getLinearFunctionFunction(), «builderMethodName»(«getCallParametersForConstants(getConstants())»)));'''
+			builderMethodCalls2.add(instruction)
 		} else if(expr instanceof LinearFunctionReference) {
 			referencedObjectives.add(expr.function)
-			builderMethodCalls2.add('''weightedFunctions.add(new WeightedLinearFunction(«expr.function.name».getLinearFunctionFunction(), 1.0));''')
-		} else if (expr instanceof ConstantReference) {
-			generateBuilder(expr, builderMethodCalls2)
+			builderMethodCalls2.
+				add('''weightedFunctions.add(new WeightedLinearFunction(«expr.function.name».getLinearFunctionFunction(), 1.0));''')
+		} else if(expr instanceof ConstantReference) {
+			createBuilderMethod(expr, builderMethodCalls2)
 		} else {
-			generateBuilder(expr as ValueExpression, builderMethodCalls2)
+			createBuilderMethod(expr as ValueExpression, builderMethodCalls2)
 		}
 	}
-	
+
 }

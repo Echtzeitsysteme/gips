@@ -1,10 +1,10 @@
 package org.emoflon.gips.build.generator.templates.constraint
 
 import org.emoflon.gips.build.generator.TemplateData
-import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint
 import org.emoflon.gips.intermediate.GipsIntermediate.Constant
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 
 class GlobalConstraintTemplate extends ConstraintTemplate<Constraint> {
 	
@@ -15,7 +15,7 @@ class GlobalConstraintTemplate extends ConstraintTemplate<Constraint> {
 		override init() {
 		packageName = data.apiData.gipsConstraintPkg
 		className = data.constraint2constraintClassName.get(context)
-		fqn = packageName + "." + className;
+
 		filePath = data.apiData.gipsConstraintPkgPath + "/" + className + ".java"
 		imports.add("java.util.List")
 		imports.add("java.util.LinkedList")
@@ -29,32 +29,22 @@ class GlobalConstraintTemplate extends ConstraintTemplate<Constraint> {
 		imports.add("org.emoflon.gips.core.milp.model.Constraint")
 		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
 	}
-	
-	override String generatePackageDeclaration() {
-		return '''package «packageName»;'''
-	}
-	
-	override String generateImports() {
-		return '''«FOR imp : imports»
-import «imp»;
-«ENDFOR»'''
-	}
-	
+		
 	override String generateClassSignature() {
 		return '''public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName»> '''
 	}
 	
-	override String generateClassConstructor() {
-		return '''
-public «className»(final «data.gipsApiClassName» engine, final org.emoflon.gips.intermediate.GipsIntermediate.Constraint constraint) {
-	super(engine, constraint);
-}
-'''
+	override String generateClassConstructors() {
+	'''
+		public «className»(final «data.gipsApiClassName» engine, final org.emoflon.gips.intermediate.GipsIntermediate.Constraint constraint) {
+			super(engine, constraint);
+		}
+	'''
 	}
 	
-	override getVariable(Variable variable) {
-		if(!isMappingVariable(variable)) {
-			return '''engine.getNonMappingVariable(context, "«variable.name»")'''
+	override generateVariableAccess(VariableReference varRef) {
+		if(!isMappingVariable(varRef)) {
+			return '''engine.getNonMappingVariable(context, "«varRef.variable.name»")'''
 		} else {
 			throw new UnsupportedOperationException("Mapping context access is not possible within a global context.")
 		}
@@ -80,7 +70,7 @@ public «className»(final «data.gipsApiClassName» engine, final org.emoflon.g
 		return '''terms'''
 	}
 	
-	override getAdditionalVariableName(VariableReference varRef) {
+	override String getAdditionalVariableName(VariableReference varRef) {
 		return '''engine.getNonMappingVariable(constraint, "«varRef.variable.name»").getName()'''
 	}
 

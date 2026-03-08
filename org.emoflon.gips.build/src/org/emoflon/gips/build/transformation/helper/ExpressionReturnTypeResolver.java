@@ -16,6 +16,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.BooleanUnaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantValue;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.MemberExpression;
@@ -33,7 +34,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.SetTypeQuery;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
-import org.emoflon.gips.intermediate.GipsIntermediate.VariableExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 
 public final class ExpressionReturnTypeResolver {
 	private ExpressionReturnTypeResolver() {
@@ -111,16 +112,10 @@ public final class ExpressionReturnTypeResolver {
 		case TypeReference typeRef -> ExpressionReturnType.object;
 		case PatternReference patternRef -> ExpressionReturnType.object;
 		case RuleReference ruleRef -> ExpressionReturnType.object;
-//		case NodeReference nodeRef -> {
-//			if (nodeRef.getNext() != null)
-//				yield extractReturnType(nodeRef.getNext());
-//			yield ExpressionReturnType.object;
-//		}
+		case VariableReference varRef -> extractReturnType(varRef.getVariable());
 		case MemberReference memRef -> extractReturnType(memRef.getMember());
-//		case VariableReference varRef -> extractReturnType(varRef.getVariable());
-
-		// Case: ContextReference
-		default -> ExpressionReturnType.object;
+		case ContextReference conRef -> ExpressionReturnType.object;
+		default -> throw new IllegalArgumentException("Unexpected value: " + expression);
 		};
 	}
 
@@ -151,8 +146,6 @@ public final class ExpressionReturnTypeResolver {
 
 	private static ExpressionReturnType extractReturnType(MemberExpression expression) {
 		return switch (expression) {
-		case VariableExpression variable -> extractReturnType(variable.getVariable());
-
 		case AttributeExpression attribute -> attribute.getNext() == null ? extractReturnType(attribute.getFeature())
 				: extractReturnType(attribute.getNext());
 

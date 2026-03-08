@@ -11,14 +11,13 @@ import org.emoflon.gips.intermediate.GipsIntermediate.Constraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingConstraint;
-import org.emoflon.gips.intermediate.GipsIntermediate.MemberReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeConstraint;
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable;
-import org.emoflon.gips.intermediate.GipsIntermediate.VariableExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableType;
 
 public final class GipsConstraintUtils {
@@ -1019,14 +1018,9 @@ public final class GipsConstraintUtils {
 		return var;
 	}
 
-	static MemberReference createVariableReference(final GipsIntermediateFactory factory, Variable variable) {
-		VariableExpression var = factory.createVariableExpression();
-		var.setVariable(variable);
-
-		MemberReference ref = factory.createMemberReference();
-		ref.setMember(var);
-		ref.setLocal(true);
-
-		return ref;
+	static VariableReference createVariableReference(final GipsIntermediateFactory factory, Variable variable) {
+		VariableReference varRef = factory.createVariableReference();
+		varRef.setVariable(variable);
+		return varRef;
 	}
 }

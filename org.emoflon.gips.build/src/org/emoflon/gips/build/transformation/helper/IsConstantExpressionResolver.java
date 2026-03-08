@@ -23,16 +23,16 @@ import org.emoflon.gips.intermediate.GipsIntermediate.SetExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetSummation;
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.VariableExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference;
 
 public final class IsConstantExpressionResolver {
 	private IsConstantExpressionResolver() {
 	}
 
-	public static ArithmeticExpressionType isConstantExpression(final BooleanExpression expression) {
+	public static ArithmeticExpressionType getExpressionType(BooleanExpression expression) {
 		if (expression instanceof BooleanBinaryExpression bin) {
-			ArithmeticExpressionType lhsType = isConstantExpression(bin.getLhs());
-			ArithmeticExpressionType rhsType = isConstantExpression(bin.getRhs());
+			ArithmeticExpressionType lhsType = getExpressionType(bin.getLhs());
+			ArithmeticExpressionType rhsType = getExpressionType(bin.getRhs());
 			if (lhsType == ArithmeticExpressionType.variableVector
 					|| rhsType == ArithmeticExpressionType.variableVector) {
 				return ArithmeticExpressionType.variableVector;
@@ -43,36 +43,36 @@ public final class IsConstantExpressionResolver {
 				return ArithmeticExpressionType.constant;
 			}
 		} else if (expression instanceof BooleanUnaryExpression unary) {
-			return isConstantExpression(unary.getOperand());
+			return getExpressionType(unary.getOperand());
 		} else if (expression instanceof BooleanLiteral) {
 			return ArithmeticExpressionType.constant;
 		} else if (expression instanceof ConstantLiteral) {
 			return ArithmeticExpressionType.constant;
 		} else if (expression instanceof ConstantReference reference) {
 			if (reference.getSetExpression() == null) {
-				return isConstantExpression((BooleanExpression) reference.getConstant().getExpression());
+				return getExpressionType((BooleanExpression) reference.getConstant().getExpression());
 			} else {
-				return isConstantExpression(reference.getSetExpression());
+				return getExpressionType(reference.getSetExpression());
 			}
 		} else if (expression instanceof ArithmeticExpression arithmetic) {
-			return isConstantExpression(arithmetic);
+			return getExpressionType(arithmetic);
 		} else {
-			return isConstantExpression((RelationalExpression) expression);
+			return getExpressionType((RelationalExpression) expression);
 		}
 	}
 
-	public static ArithmeticExpressionType isConstantExpression(final RelationalExpression relational) {
+	public static ArithmeticExpressionType getExpressionType(RelationalExpression relational) {
 		ArithmeticExpressionType lhsType = null;
 		ArithmeticExpressionType rhsType = null;
 		if (relational.getLhs() instanceof ArithmeticExpression arithmetic) {
-			lhsType = isConstantExpression(arithmetic);
+			lhsType = getExpressionType(arithmetic);
 		} else {
-			lhsType = isConstantExpression((BooleanExpression) relational.getLhs());
+			lhsType = getExpressionType((BooleanExpression) relational.getLhs());
 		}
 		if (relational.getRhs() instanceof ArithmeticExpression arithmetic) {
-			rhsType = isConstantExpression(arithmetic);
+			rhsType = getExpressionType(arithmetic);
 		} else {
-			rhsType = isConstantExpression((BooleanExpression) relational.getRhs());
+			rhsType = getExpressionType((BooleanExpression) relational.getRhs());
 		}
 
 		if (lhsType == ArithmeticExpressionType.variableVector || rhsType == ArithmeticExpressionType.variableVector) {
@@ -85,10 +85,10 @@ public final class IsConstantExpressionResolver {
 		}
 	}
 
-	public static ArithmeticExpressionType isConstantExpression(final ArithmeticExpression expression) {
+	public static ArithmeticExpressionType getExpressionType(ArithmeticExpression expression) {
 		if (expression instanceof ArithmeticBinaryExpression bin) {
-			ArithmeticExpressionType lhsType = isConstantExpression(bin.getLhs());
-			ArithmeticExpressionType rhsType = isConstantExpression(bin.getRhs());
+			ArithmeticExpressionType lhsType = getExpressionType(bin.getLhs());
+			ArithmeticExpressionType rhsType = getExpressionType(bin.getRhs());
 			if (lhsType == ArithmeticExpressionType.variableVector
 					|| rhsType == ArithmeticExpressionType.variableVector) {
 				return ArithmeticExpressionType.variableVector;
@@ -99,7 +99,7 @@ public final class IsConstantExpressionResolver {
 				return ArithmeticExpressionType.constant;
 			}
 		} else if (expression instanceof ArithmeticUnaryExpression unary) {
-			return isConstantExpression(unary.getOperand());
+			return getExpressionType(unary.getOperand());
 		} else if (expression instanceof ArithmeticLiteral) {
 			return ArithmeticExpressionType.constant;
 		} else if (expression instanceof ConstantLiteral) {
@@ -108,62 +108,48 @@ public final class IsConstantExpressionResolver {
 			return ArithmeticExpressionType.variableVector;
 		} else if (expression instanceof ConstantReference reference) {
 			if (reference.getSetExpression() == null) {
-				return isConstantExpression((ArithmeticExpression) reference.getConstant().getExpression());
+				return getExpressionType((ArithmeticExpression) reference.getConstant().getExpression());
 			} else {
-				return isConstantExpression(reference.getSetExpression());
+				return getExpressionType(reference.getSetExpression());
 			}
 		} else {
-			return isConstantExpression((ValueExpression) expression);
+			return getExpressionType((ValueExpression) expression);
 		}
 	}
 
-	public static ArithmeticExpressionType isConstantExpression(final ValueExpression expression) {
-		ArithmeticExpressionType expressionType = null;
-		if (expression instanceof MappingReference) {
-			expressionType = ArithmeticExpressionType.constant;
-		} else if (expression instanceof TypeReference) {
-			expressionType = ArithmeticExpressionType.constant;
-		} else if (expression instanceof PatternReference) {
-			expressionType = ArithmeticExpressionType.constant;
-		} else if (expression instanceof RuleReference) {
-			expressionType = ArithmeticExpressionType.constant;
-//		} else if (expression instanceof NodeReference nodeReference) {
-//			if (nodeReference.getNext() != null)
-//				expressionType = isConstantExpression(nodeReference.getNext());
-//			else
-//				expressionType = ArithmeticExpressionType.constant;
-		} else if (expression instanceof MemberReference memberRef) {
-			expressionType = isConstantExpression(memberRef.getMember());
-//		} else if (expression instanceof VariableReference) {
-//			expressionType = ArithmeticExpressionType.variableValue;
-		} else {
-			throw new IllegalArgumentException("Unknown expression type: " + expression);
-		}
+	public static ArithmeticExpressionType getExpressionType(ValueExpression expression) {
+		ArithmeticExpressionType expressionType = switch (expression) {
+		case MappingReference mappingRef -> ArithmeticExpressionType.constant;
+		case TypeReference typeRef -> ArithmeticExpressionType.constant;
+		case PatternReference patternRef -> ArithmeticExpressionType.constant;
+		case RuleReference ruleRef -> ArithmeticExpressionType.constant;
+		case VariableReference varRef -> ArithmeticExpressionType.variableValue;
+		case MemberReference memRef -> getExpressionType(memRef.getMember());
+		default -> throw new IllegalArgumentException("Unexpected value: " + expression);
+		};
 
 		if (expression.getSetExpression() != null) {
-			expressionType = isConstantExpression(expression.getSetExpression());
+			expressionType = getExpressionType(expression.getSetExpression());
 		}
 		return expressionType;
 	}
 
-	public static ArithmeticExpressionType isConstantExpression(MemberExpression expression) {
+	public static ArithmeticExpressionType getExpressionType(MemberExpression expression) {
 		return switch (expression) {
-		case VariableExpression variable -> ArithmeticExpressionType.variableValue;
-
 		case AttributeExpression attribute ->
-			attribute.getNext() == null ? ArithmeticExpressionType.constant : isConstantExpression(attribute.getNext());
+			attribute.getNext() == null ? ArithmeticExpressionType.constant : getExpressionType(attribute.getNext());
 
 		case NodeExpression node ->
-			node.getNext() == null ? ArithmeticExpressionType.constant : isConstantExpression(node.getNext());
+			node.getNext() == null ? ArithmeticExpressionType.constant : getExpressionType(node.getNext());
 
 		default -> throw new IllegalArgumentException("Unexpected value: " + expression);
 		};
 	}
 
-	public static ArithmeticExpressionType isConstantExpression(final SetExpression expression) {
+	public static ArithmeticExpressionType getExpressionType(SetExpression expression) {
 		if (expression != null) {
 			if (expression.getSetReduce() != null && expression.getSetReduce() instanceof SetSummation sum) {
-				ArithmeticExpressionType expressionType = isConstantExpression(sum.getExpression());
+				ArithmeticExpressionType expressionType = getExpressionType(sum.getExpression());
 				if (expressionType == ArithmeticExpressionType.variableValue) {
 					return ArithmeticExpressionType.variableVector;
 				} else {

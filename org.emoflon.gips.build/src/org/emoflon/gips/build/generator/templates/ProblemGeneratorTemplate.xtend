@@ -364,7 +364,7 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 	def String generateValueAccess(VariableReference expression, boolean requiresReturn) {
 		var getter = generateIterator(expression)
 		if(expression.previous !== null)
-			getter += '''«generateExpression(expression.previous)»'''
+			getter += generateExpression(expression.previous)
 
 		return '''engine.getNonMappingVariable(«getter», "«expression.variable.name»")'''
 	}
@@ -372,7 +372,7 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 	def String generateValueAccess(MemberReference expression, boolean requiresReturn) {
 		var getter = generateIterator(expression)
 		if(expression.member !== null)
-			getter += '''«generateExpression(expression.member)»'''
+			getter += generateExpression(expression.member)
 
 		return getter
 	}
@@ -427,7 +427,7 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 	def String generateExpression(NodeExpression expression) {
 		var getter = '''.get«expression.node.name.toFirstUpper»()'''
 		if(expression.next !== null)
-			getter += '''.«generateExpression(expression.next)»'''
+			getter += generateExpression(expression.next)
 		return getter
 	}
 
@@ -437,7 +437,7 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 		val scalarOrMany = expression.feature.isMany ? ".parallelStream()" : ""
 		var getter = '''.«getOrIs»«expression.feature.name.toFirstUpper»()«scalarOrMany»'''
 		if(expression.next !== null)
-			getter += '''.«generateExpression(expression.next)»'''
+			getter += generateExpression(expression.next)
 		return getter
 	}
 

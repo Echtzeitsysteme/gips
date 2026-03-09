@@ -7,6 +7,14 @@ import java.util.LinkedList
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EcorePackage
 import org.emoflon.gips.build.generator.TemplateData
+import org.emoflon.gips.build.generator.templates.constraint.MappingConstraintTemplate
+import org.emoflon.gips.build.generator.templates.constraint.PatternConstraintTemplate
+import org.emoflon.gips.build.generator.templates.constraint.RuleConstraintTemplate
+import org.emoflon.gips.build.generator.templates.constraint.TypeConstraintTemplate
+import org.emoflon.gips.build.generator.templates.function.MappingFunctionTemplate
+import org.emoflon.gips.build.generator.templates.function.PatternFunctionTemplate
+import org.emoflon.gips.build.generator.templates.function.RuleFunctionTemplate
+import org.emoflon.gips.build.generator.templates.function.TypeFunctionTemplate
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
@@ -363,7 +371,7 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 		var getter = generateIterator(expression)
 		if(isMappingVariable(expression.variable))
 			return getter;
-		
+
 		if(expression.previous !== null)
 			getter += generateExpression(expression.previous)
 
@@ -395,11 +403,66 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 
 	def String generateValueAccess(MappingReference expression, boolean requiresReturn) {
 		imports.add(data.apiData.gipsMappingPkg + "." + data.mapping2mappingClassName.get(expression.mapping))
-		val original = '''engine.getMapper("«expression.mapping.name»").getMappings().values().parallelStream()
-		.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)'''
+		val original = '''
+			engine.getMapper("«expression.mapping.name»").getMappings()
+				.values()
+				.parallelStream()
+				.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)
+		'''
 
 		// If a return is required, use the original implementation
-		return original
+		if(requiresReturn)
+			return original
+
+		// Else, try to use the mapping indexer implementation
+		// Determine what to search for with the indexer
+		// If the resulting string keeps empty, there is nothing to index
+		var searchFor = ""
+
+		// If this generates a type constraint or a type function, use `context`
+		if((this instanceof TypeConstraintTemplate || this instanceof TypeFunctionTemplate) &&
+			expression.setExpression.setOperation !== null) {
+			// `context` can only be used if the expression does not use attribute accesses, etc.
+			if(MappingIndexerUtil.isContextIndexerApplicable(expression.setExpression.setOperation)) {
+				searchFor = '''context'''
+			}
+
+		} else if(this instanceof RuleConstraintTemplate || this instanceof MappingConstraintTemplate ||
+			this instanceof PatternConstraintTemplate || this instanceof RuleFunctionTemplate ||
+			this instanceof MappingFunctionTemplate || this instanceof PatternFunctionTemplate) {
+			// If this generates a {rule, mapping, pattern} constraint or a {rule, mapping, pattern} function, search for context node accesses
+			// If the expression is a mapping reference and there is a set operation, search for context node accesses
+			if(expression instanceof MappingReference && expression.setExpression.setOperation !== null) {
+				val indexableNodes = MappingIndexerUtil.findIndexablePairs(expression.setExpression.setOperation)				
+				val contextNodeAccess = MappingIndexerUtil.getContextNodeNames(indexableNodes)
+				searchFor = MappingIndexerUtil.generateContextNodeAccessToGetterCalls(contextNodeAccess)
+			}
+		// Otherwise (i.e., if there is no mapping reference or it has no set (filter) expression,
+		// the indexer implementation cannot be used
+		}
+
+		// If nothing can be indexed, use the original implementation
+		if(searchFor.isBlank)
+			return original
+
+		var nodesToBeCached = MappingIndexerUtil.findIndexableSetNodes(expression).map['''"«it»"'''].join(', ')
+
+		// If there can be at least one node indexed, use the indexer implementation
+		// Mapping indexer
+		imports.add("java.util.Set")
+		imports.add("org.emoflon.gips.core.MappingIndexer")
+		imports.add("org.emoflon.gips.core.GlobalMappingIndexer")
+		imports.add("org.emoflon.gips.core.GipsMapper")
+
+		return '''
+			final GipsMapper<?> mapper = engine.getMapper("«expression.mapping.name»");
+			final GlobalMappingIndexer globalIndexer = GlobalMappingIndexer.getInstance();
+			globalIndexer.createIndexer(mapper);
+			final MappingIndexer indexer = globalIndexer.getIndexer(mapper);
+			indexer.initIfNecessary(mapper, Set.of(«nodesToBeCached»));
+			indexer.getMappingsOfNodes(Set.of(«searchFor»)).parallelStream()
+			.map(mapping -> («data.mapping2mappingClassName.get(expression.mapping)») mapping)
+		'''
 	}
 
 	def String generateValueAccess(ConstantReference expression) {

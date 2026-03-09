@@ -181,7 +181,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="GipsValueExpression" eSuperTypes="#//GipsArithmeticOperand">
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="setExperession" eType="#//GipsSetExpression"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="setExpression" eType="#//GipsSetExpression"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsMappingExpression">

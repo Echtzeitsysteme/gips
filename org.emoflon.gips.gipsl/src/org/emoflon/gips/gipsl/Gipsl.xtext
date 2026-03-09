@@ -244,7 +244,7 @@ GipsValueExpression:
 		GipsRuleExpression 				|
 		GipsLocalContextExpression 		|
 		GipsSetElementExpression
-	) (setExperession = GipsSetExpression)?
+	) (setExpression = GipsSetExpression)?
 ;
 
 GipsMappingExpression: {GipsMappingExpression}

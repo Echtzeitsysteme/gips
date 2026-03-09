@@ -40,6 +40,8 @@ public abstract class GipsEngine {
 	protected EclipseIntegration eclipseIntegration;
 	protected GipsTracer tracer;
 
+	private RemovedConstraintsStats removedConstraintsStats;
+
 	/**
 	 * GIPS configuration parameters that are not specific to the MILP solver nor
 	 * the tracer, etc.
@@ -137,7 +139,7 @@ public abstract class GipsEngine {
 
 				// Check if GIPS is configure to remove duplicate constraints
 				if (this.config.removeUselessConstraints()) {
-					removeUselessConstraints(config.printUselessConstraintsStats());
+					this.removedConstraintsStats = removeUselessConstraints(config.printUselessConstraintsStats());
 				}
 
 				if (objective != null)
@@ -230,7 +232,7 @@ public abstract class GipsEngine {
 
 		// Check if GIPS is configure to remove duplicate constraints
 		if (this.config.removeUselessConstraints()) {
-			removeUselessConstraints(config.printUselessConstraintsStats());
+			this.removedConstraintsStats = removeUselessConstraints(config.printUselessConstraintsStats());
 		}
 
 		if (objective != null)
@@ -320,6 +322,12 @@ public abstract class GipsEngine {
 
 			if (output.status() == SolverStatus.INFEASIBLE && solver.getSolverConfig().isEnableIIS())
 				solver.computeIrreducibleInconsistentSubsystem();
+		}
+
+		// Set statistics values of the removed constraints
+		if (this.removedConstraintsStats != null && output.stats() != null) {
+			output.stats().setRemovedDuplicateConstraints(this.removedConstraintsStats.duplicates());
+			output.stats().setRemovedTrivialConstraints(this.removedConstraintsStats.trivial());
 		}
 
 		solver.reset();
@@ -493,8 +501,9 @@ public abstract class GipsEngine {
 	 * 
 	 * @param print If true, GIPS will print the number of eliminated constraints
 	 *              onto the console.
+	 * @return Returns the statistics of the removed constraints.
 	 */
-	private void removeUselessConstraints(final boolean print) {
+	private RemovedConstraintsStats removeUselessConstraints(final boolean print) {
 		final long tick = System.nanoTime();
 		int constraintsOriginal = 0;
 		int duplicatesRemoved = 0;
@@ -518,6 +527,8 @@ public abstract class GipsEngine {
 					+ percFormat.format((1.0 * (duplicatesRemoved + trivialRemoved) / constraintsOriginal)) + ") in "
 					+ String.format("%.2f", duration) + "s.");
 		}
+
+		return new RemovedConstraintsStats(constraintsOriginal, duplicatesRemoved, trivialRemoved);
 	}
 
 }

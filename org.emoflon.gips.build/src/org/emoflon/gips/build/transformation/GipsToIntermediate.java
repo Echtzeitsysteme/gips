@@ -493,6 +493,7 @@ public class GipsToIntermediate {
 
 						VariableReference varRef = factory.createVariableReference();
 						varRef.setVariable(symbolicVariable);
+						varRef.setLocal(true);
 
 						if (subformula instanceof Literal lit && lit.phase()) {
 							if (currentSum.getLhs() == null && !subformulas.isEmpty()) {

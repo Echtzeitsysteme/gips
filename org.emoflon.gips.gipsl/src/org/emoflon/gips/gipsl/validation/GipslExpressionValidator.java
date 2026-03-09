@@ -67,7 +67,6 @@ import org.emoflon.gips.gipsl.gipsl.impl.GipsSetExpressionImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsSumOperationImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsValueExpressionImpl;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
-import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression;
 
 public final class GipslExpressionValidator {
 
@@ -722,25 +721,6 @@ public final class GipslExpressionValidator {
 							GipslPackage.Literals.GIPS_CONSTANT__EXPRESSION //
 					);
 				});
-			}
-
-			// mapping values can not be used within an attribute expression
-			if (variableReferenceExpression.isIsMappingValue()) {
-				if (variableReferenceExpression.eContainer() instanceof AttributeExpression) {
-					errors.add(() -> {
-						GipslValidator.err( //
-								"???", // TODO
-								variableReferenceExpression, //
-								GipslPackage.Literals.GIPS_VARIABLE_REFERENCE_EXPRESSION__IS_MAPPING_VALUE //
-						);
-					});
-				}
-			}
-
-			if (variableReferenceExpression.getVariable() != null) {
-				ExpressionType variableType = evaluate(variableReferenceExpression.getVariable().getType(), errors);
-				if (variableType != ExpressionType.Unknown)
-					valueType = variableType;
 			}
 
 		} else if (expression.getExpression() instanceof GipsNodeExpression node) {

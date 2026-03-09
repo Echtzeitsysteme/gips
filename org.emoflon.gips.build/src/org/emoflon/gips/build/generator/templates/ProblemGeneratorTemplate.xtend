@@ -84,8 +84,6 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 	}
 
 	def String generateVariableAccessInSet(VariableReference varRef) {
-		if(isMappingVariable(varRef))
-			return '''elt'''
 		return generateValueAccess(varRef, false)
 	}
 
@@ -363,6 +361,9 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 
 	def String generateValueAccess(VariableReference expression, boolean requiresReturn) {
 		var getter = generateIterator(expression)
+		if(isMappingVariable(expression.variable))
+			return getter;
+		
 		if(expression.previous !== null)
 			getter += generateExpression(expression.previous)
 

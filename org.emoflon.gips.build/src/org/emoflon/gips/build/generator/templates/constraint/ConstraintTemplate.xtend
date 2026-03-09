@@ -1,21 +1,21 @@
 package org.emoflon.gips.build.generator.templates.constraint
 
+import java.util.HashMap
+import java.util.LinkedList
+import java.util.List
 import org.emoflon.gips.build.generator.TemplateData
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryOperator
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.Constraint
-import org.emoflon.gips.intermediate.GipsIntermediate.BooleanExpression
 import org.emoflon.gips.build.generator.templates.ProblemGeneratorTemplate
 import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils
-import java.util.HashMap
-import java.util.List
-import java.util.LinkedList
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryOperator
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BooleanExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference
+import org.emoflon.gips.intermediate.GipsIntermediate.Constraint
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 
 abstract class ConstraintTemplate<CONTEXT extends Constraint> extends ProblemGeneratorTemplate<CONTEXT> {
 
@@ -29,17 +29,17 @@ abstract class ConstraintTemplate<CONTEXT extends Constraint> extends ProblemGen
 
 	override generateClassMethods() {
 		if(context.isConstant) {
-			if(context.expression instanceof RelationalExpression) 
-				return generateConstantClassMethods(context.expression as RelationalExpression)	
-						
+			if(context.expression instanceof RelationalExpression)
+				return generateConstantClassMethods(context.expression as RelationalExpression)
+
 			return generateConstantClassMethods(context.expression as BooleanExpression)
-			
+
 		} else {
-			if(context.expression instanceof RelationalExpression) 
+			if(context.expression instanceof RelationalExpression)
 				return generateVariableClassMethods(context.expression as RelationalExpression)
-			
+
 			throw new IllegalArgumentException("Boolean values can not be part of linear (in-)equalities.");
-			
+
 		}
 	}
 

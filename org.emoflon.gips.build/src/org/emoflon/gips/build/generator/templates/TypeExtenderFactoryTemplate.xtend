@@ -1,7 +1,7 @@
 package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
 import org.emoflon.gips.build.generator.TemplateData
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
 
 class TypeExtenderFactoryTemplate extends ClassGeneratorTemplate<GipsIntermediateModel> {
 
@@ -22,33 +22,33 @@ class TypeExtenderFactoryTemplate extends ClassGeneratorTemplate<GipsIntermediat
 		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)
 		imports.add(data.apiData.gipsApiPkg + "." + data.gipsApiClassName)
 
-		data.model.extendedTypes
-			.map[m | data.typeExtension2extenderClassName.get(m)]
-			.forEach[m | imports.add(data.apiData.gipsTypeExtensionPkg+"."+m)]
+		data.model.extendedTypes.map[m|data.typeExtension2extenderClassName.get(m)].forEach [ m |
+			imports.add(data.apiData.gipsTypeExtensionPkg + "." + m)
+		]
 	}
-	
+
 	override generateClassContent() {
 		'''
-		public class «className» extends GipsTypeExtenderFactory<«data.gipsApiClassName», «data.apiData.apiClass»> {
-			public «className»(final «data.gipsApiClassName» engine, final «data.apiData.apiClass» eMoflonApi) {
-				super(engine, eMoflonApi);
+			public class «className» extends GipsTypeExtenderFactory<«data.gipsApiClassName», «data.apiData.apiClass»> {
+				public «className»(final «data.gipsApiClassName» engine, final «data.apiData.apiClass» eMoflonApi) {
+					super(engine, eMoflonApi);
+				}
+			
+				@Override
+				public GipsTypeExtender<?, ?> createTypeExtender(final TypeExtension typeExtension) {
+					«IF context.extendedTypes.empty»
+						throw new IllegalArgumentException("Unknown TypeExtension: "+typeExtension);
+					«ELSE»		
+						return switch(typeExtension.getName()){
+							«FOR typeExtension : context.extendedTypes»
+								case "«typeExtension.name»" -> new «data.typeExtension2extenderClassName.get(typeExtension)»(engine, eMoflonApi, typeExtension);
+							«ENDFOR»
+							default -> throw new IllegalArgumentException("Unknown TypeExtension: "+typeExtension);	
+						};		
+					«ENDIF»
+				}
+			
 			}
-		
-			@Override
-			public GipsTypeExtender<?, ?> createTypeExtender(final TypeExtension typeExtension) {
-				«IF context.extendedTypes.empty»
-					throw new IllegalArgumentException("Unknown TypeExtension: "+typeExtension);
-				«ELSE»		
-					return switch(typeExtension.getName()){
-						«FOR typeExtension : context.extendedTypes»
-						case "«typeExtension.name»" -> new «data.typeExtension2extenderClassName.get(typeExtension)»(engine, eMoflonApi, typeExtension);
-						«ENDFOR»
-						default -> throw new IllegalArgumentException("Unknown TypeExtension: "+typeExtension);	
-					};		
-				«ENDIF»
-			}
-		
-		}
 		'''
 	}
 

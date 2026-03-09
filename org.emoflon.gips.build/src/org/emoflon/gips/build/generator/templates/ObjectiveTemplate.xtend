@@ -2,19 +2,17 @@ package org.emoflon.gips.build.generator.templates
 
 import java.util.HashSet
 import org.emoflon.gips.build.generator.TemplateData
-import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.Objective
-import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryOperator
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunction
-import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference
-import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.intermediate.GipsIntermediate.Constant
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference
+import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunction
+import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference
+import org.emoflon.gips.intermediate.GipsIntermediate.Objective
+import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 
 class ObjectiveTemplate extends ProblemGeneratorTemplate<Objective> {
@@ -95,7 +93,7 @@ class ObjectiveTemplate extends ProblemGeneratorTemplate<Objective> {
 
 	def String generateObjective(ArithmeticExpression expr) {
 		computeTermBuilder(expr)
-		
+
 		'''
 			@Override
 			protected void buildTerms() {

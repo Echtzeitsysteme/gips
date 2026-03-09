@@ -44,7 +44,8 @@ class TypeConstraintTemplate extends ConstraintTemplate<TypeConstraint> {
 
 	override generateVariableAccess(VariableReference varRef) {
 		if(isMappingVariable(varRef))
-			throw new UnsupportedOperationException("Mapping context access is not possible within a type context: " + varRef.variable.name)
+			throw new UnsupportedOperationException("Mapping context access is not possible within a type context: " +
+				varRef.variable.name)
 
 		return super.generateVariableAccess(varRef)
 	}

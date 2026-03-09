@@ -1,47 +1,45 @@
 package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression
-import org.eclipse.emf.ecore.EcorePackage
-import java.util.Set
-import java.util.HashSet
+import java.util.Collection
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EEnum
-import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation
-import org.emoflon.gips.intermediate.GipsIntermediate.SetFilter
-import org.emoflon.gips.intermediate.GipsIntermediate.SetTypeSelect
-import org.emoflon.gips.intermediate.GipsIntermediate.SetSort
-import org.emoflon.gips.intermediate.GipsIntermediate.SetConcatenation
-import org.emoflon.gips.intermediate.GipsIntermediate.SetSimpleOperation
-import org.emoflon.gips.intermediate.GipsIntermediate.SetTransformation
-import org.emoflon.gips.build.generator.TemplateData
-import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.MappingReference
-import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference
-import org.emoflon.gips.intermediate.GipsIntermediate.PatternReference
-import org.emoflon.gips.intermediate.GipsIntermediate.RuleReference
-import org.emoflon.gips.intermediate.GipsIntermediate.SetSummation
-import org.emoflon.gips.intermediate.GipsIntermediate.SetSimpleSelect
-import org.emoflon.gips.intermediate.GipsIntermediate.SetTypeQuery
-import org.emoflon.gips.intermediate.GipsIntermediate.SetElementQuery
-import org.emoflon.gips.intermediate.GipsIntermediate.SetSimpleQuery
-import org.emoflon.gips.intermediate.GipsIntermediate.QueryOperator
 import org.eclipse.emf.ecore.EObject
-import org.emoflon.gips.intermediate.GipsIntermediate.BooleanExpression
+import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.EcorePackage
+import org.emoflon.gips.build.generator.TemplateData
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.BooleanUnaryExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BooleanExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanLiteral
+import org.emoflon.gips.intermediate.GipsIntermediate.BooleanUnaryExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantLiteral
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference
-import org.emoflon.gips.intermediate.GipsIntermediate.MemberReference
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingReference
 import org.emoflon.gips.intermediate.GipsIntermediate.MemberExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.MemberReference
 import org.emoflon.gips.intermediate.GipsIntermediate.NodeExpression
-import org.eclipse.emf.ecore.EStructuralFeature
-import java.util.Collection
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternReference
+import org.emoflon.gips.intermediate.GipsIntermediate.QueryOperator
+import org.emoflon.gips.intermediate.GipsIntermediate.RuleReference
+import org.emoflon.gips.intermediate.GipsIntermediate.SetConcatenation
+import org.emoflon.gips.intermediate.GipsIntermediate.SetElementQuery
+import org.emoflon.gips.intermediate.GipsIntermediate.SetFilter
+import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation
+import org.emoflon.gips.intermediate.GipsIntermediate.SetSimpleOperation
+import org.emoflon.gips.intermediate.GipsIntermediate.SetSimpleQuery
+import org.emoflon.gips.intermediate.GipsIntermediate.SetSimpleSelect
+import org.emoflon.gips.intermediate.GipsIntermediate.SetSort
+import org.emoflon.gips.intermediate.GipsIntermediate.SetSummation
+import org.emoflon.gips.intermediate.GipsIntermediate.SetTransformation
+import org.emoflon.gips.intermediate.GipsIntermediate.SetTypeQuery
+import org.emoflon.gips.intermediate.GipsIntermediate.SetTypeSelect
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference
+import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 
 class JavaReturnTypeExtractor {
@@ -125,8 +123,7 @@ class JavaReturnTypeExtractor {
 
 		if(expression instanceof MappingReference) {
 			imports.add("java.util.stream.Stream")
-			imports.add(
-				data.apiData.gipsMappingPkg + "." + data.mapping2mappingClassName.get(expression.mapping))
+			imports.add(data.apiData.gipsMappingPkg + "." + data.mapping2mappingClassName.get(expression.mapping))
 			expressionType = '''Stream<«data.mapping2mappingClassName.get(expression.mapping)»>'''
 			objectType = data.mapping2mappingClassName.get(expression.mapping)
 
@@ -173,16 +170,16 @@ class JavaReturnTypeExtractor {
 				val reduce = expression.getSetExpression().getSetReduce()
 				if(reduce instanceof SetSummation) {
 					return TYPE_DOUBLE
-					
+
 				} else if(reduce instanceof SetSimpleSelect) {
 					return objectType
-					
+
 				} else if(reduce instanceof SetTypeQuery) {
 					return TYPE_BOOL
-					
+
 				} else if(reduce instanceof SetElementQuery) {
 					return TYPE_BOOL
-					
+
 				} else if(reduce instanceof SetSimpleQuery) {
 					if(reduce.operator == QueryOperator.EMPTY || reduce.operator == QueryOperator.NOT_EMPTY) {
 						return TYPE_BOOL
@@ -195,7 +192,7 @@ class JavaReturnTypeExtractor {
 
 		return expressionType
 	}
-	
+
 	def String extractReturnType(VariableReference expression, Collection<String> imports) {
 		return TYPE_DOUBLE
 	}
@@ -216,7 +213,7 @@ class JavaReturnTypeExtractor {
 		if(expression instanceof AttributeExpression)
 			return extractReturnType(expression.feature, imports)
 
-		throw new IllegalArgumentException("Unknown type: " + expression)		
+		throw new IllegalArgumentException("Unknown type: " + expression)
 	}
 
 	def String extractReturnType(EStructuralFeature feature, Collection<String> imports) {
@@ -253,8 +250,8 @@ class JavaReturnTypeExtractor {
 			return feature.EType.name
 
 		}
-		
-		throw new IllegalArgumentException("Unsupported data type: " + feature.EType)		
+
+		throw new IllegalArgumentException("Unsupported data type: " + feature.EType)
 	}
 
 	def String extractReturnType(String previousType, SetOperation expression, Collection<String> imports) {

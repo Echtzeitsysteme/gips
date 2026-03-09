@@ -1,7 +1,7 @@
 package org.emoflon.gips.build.generator.templates
 
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
 import org.emoflon.gips.build.generator.TemplateData
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
 
 class LaunchFileTemplate extends FileGeneratorTemplate<GipsIntermediateModel> {
 	

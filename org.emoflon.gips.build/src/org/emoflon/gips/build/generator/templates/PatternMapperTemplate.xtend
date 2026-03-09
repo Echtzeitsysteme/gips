@@ -4,38 +4,38 @@ import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternMapping
 
 class PatternMapperTemplate extends ClassGeneratorTemplate<PatternMapping> {
-	
+
 	new(TemplateData data, PatternMapping context) {
 		super(data, context)
 	}
-	
+
 	override init() {
 		packageName = data.apiData.gipsMapperPkg
 		className = data.mapping2mapperClassName.get(context)
 
 		filePath = data.apiData.gipsMapperPkgPath + "/" + className + ".java"
-		imports.add(data.apiData.apiPkg+"."+data.apiData.apiClass)
+		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)
 		imports.add("org.emoflon.gips.core.GipsEngine")
 		imports.add("org.emoflon.gips.core.gt.GipsPatternMapper")
-		imports.add(data.apiData.gipsMappingPkg+"."+data.mapping2mappingClassName.get(context))
-		imports.add(data.apiData.rulesPkg+"."+data.mapping2patternClassName.get(context))
-		imports.add(data.apiData.matchesPkg+"."+data.mapping2matchClassName.get(context))
+		imports.add(data.apiData.gipsMappingPkg + "." + data.mapping2mappingClassName.get(context))
+		imports.add(data.apiData.rulesPkg + "." + data.mapping2patternClassName.get(context))
+		imports.add(data.apiData.matchesPkg + "." + data.mapping2matchClassName.get(context))
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.Mapping")
 	}
-		
+
 	override generateClassContent() {
 		'''
-		public class «className» extends GipsPatternMapper<«data.mapping2mappingClassName.get(context)», «data.mapping2matchClassName.get(context)», «data.mapping2patternClassName.get(context)»> {
-			public «className»(final GipsEngine engine, final Mapping mapping, final «data.mapping2patternClassName.get(context)» pattern) {
-				super(engine, mapping, pattern);
+			public class «className» extends GipsPatternMapper<«data.mapping2mappingClassName.get(context)», «data.mapping2matchClassName.get(context)», «data.mapping2patternClassName.get(context)»> {
+				public «className»(final GipsEngine engine, final Mapping mapping, final «data.mapping2patternClassName.get(context)» pattern) {
+					super(engine, mapping, pattern);
+				}
+				
+				@Override
+				protected «data.mapping2mappingClassName.get(context)» convertMatch(final String milpVariable, final «data.mapping2matchClassName.get(context)» match) {
+					return new «data.mapping2mappingClassName.get(context)»(milpVariable, this.hasBinaryVariable(), match);
+				}
 			}
-			
-			@Override
-			protected «data.mapping2mappingClassName.get(context)» convertMatch(final String milpVariable, final «data.mapping2matchClassName.get(context)» match) {
-				return new «data.mapping2mappingClassName.get(context)»(milpVariable, this.hasBinaryVariable(), match);
-			}
-		}
 		'''
 	}
-	
+
 }

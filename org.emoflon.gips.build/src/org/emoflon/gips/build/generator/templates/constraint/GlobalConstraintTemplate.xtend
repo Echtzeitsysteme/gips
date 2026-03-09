@@ -1,18 +1,17 @@
 package org.emoflon.gips.build.generator.templates.constraint
 
 import org.emoflon.gips.build.generator.TemplateData
-import org.emoflon.gips.intermediate.GipsIntermediate.Variable
-import org.emoflon.gips.intermediate.GipsIntermediate.Constraint
 import org.emoflon.gips.intermediate.GipsIntermediate.Constant
+import org.emoflon.gips.intermediate.GipsIntermediate.Constraint
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 
 class GlobalConstraintTemplate extends ConstraintTemplate<Constraint> {
-	
+
 	new(TemplateData data, Constraint context) {
 		super(data, context)
 	}
-	
-		override init() {
+
+	override init() {
 		packageName = data.apiData.gipsConstraintPkg
 		className = data.constraint2constraintClassName.get(context)
 
@@ -27,21 +26,21 @@ class GlobalConstraintTemplate extends ConstraintTemplate<Constraint> {
 		imports.add("org.emoflon.gips.core.GipsGlobalConstraint")
 		imports.add("org.emoflon.gips.core.milp.model.Term")
 		imports.add("org.emoflon.gips.core.milp.model.Constraint")
-		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
+		imports.add(data.apiData.gipsApiPkg + "." + data.gipsApiClassName)
 	}
-		
+
 	override String generateClassSignature() {
 		return '''public class «className» extends GipsGlobalConstraint<«data.gipsApiClassName»> '''
 	}
-	
+
 	override String generateClassConstructors() {
-	'''
-		public «className»(final «data.gipsApiClassName» engine, final org.emoflon.gips.intermediate.GipsIntermediate.Constraint constraint) {
-			super(engine, constraint);
-		}
-	'''
+		'''
+			public «className»(final «data.gipsApiClassName» engine, final org.emoflon.gips.intermediate.GipsIntermediate.Constraint constraint) {
+				super(engine, constraint);
+			}
+		'''
 	}
-	
+
 	override generateVariableAccess(VariableReference varRef) {
 		if(!isMappingVariable(varRef)) {
 			return '''engine.getNonMappingVariable(context, "«varRef.variable.name»")'''
@@ -49,7 +48,7 @@ class GlobalConstraintTemplate extends ConstraintTemplate<Constraint> {
 			throw new UnsupportedOperationException("Mapping context access is not possible within a global context.")
 		}
 	}
-	
+
 	override getCallConstantCalculator(Constant constant) {
 		return '''calculate«constant.name.toFirstUpper»()'''
 	}
@@ -57,19 +56,19 @@ class GlobalConstraintTemplate extends ConstraintTemplate<Constraint> {
 	override String getContextParameterType() {
 		return ""
 	}
-	
+
 	override String getContextParameter() {
 		return ""
 	}
-	
+
 	override String getParametersForVoidBuilder() {
 		return '''final List<Term> terms'''
 	}
-	
+
 	override String getCallParametersForVoidBuilder() {
 		return '''terms'''
 	}
-	
+
 	override String getAdditionalVariableName(VariableReference varRef) {
 		return '''engine.getNonMappingVariable(constraint, "«varRef.variable.name»").getName()'''
 	}

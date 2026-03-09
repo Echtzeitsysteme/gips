@@ -1,56 +1,53 @@
 package org.emoflon.gips.build.generator.templates
 
-import org.eclipse.emf.ecore.EObject
-import org.emoflon.gips.intermediate.GipsIntermediate.Variable
-import org.emoflon.gips.intermediate.GipsIntermediate.ConstantLiteral
-import org.emoflon.gips.intermediate.GipsIntermediate.MappingReference
-import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference
-import org.emoflon.gips.intermediate.GipsIntermediate.PatternReference
-import org.emoflon.gips.intermediate.GipsIntermediate.RuleReference
-import org.emoflon.gips.intermediate.GipsIntermediate.ContextReference
-import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.SetExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.SetReduce
-import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.BooleanUnaryExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.BooleanLiteral
-import org.emoflon.gips.intermediate.GipsIntermediate.SetFilter
-import org.emoflon.gips.intermediate.GipsIntermediate.SetTypeSelect
-import org.emoflon.gips.intermediate.GipsIntermediate.SetSort
-import org.emoflon.gips.intermediate.GipsIntermediate.SetConcatenation
-import org.emoflon.gips.intermediate.GipsIntermediate.SetSimpleOperation
-import org.emoflon.gips.intermediate.GipsIntermediate.SetTransformation
-import org.emoflon.gips.intermediate.GipsIntermediate.SetSummation
-import org.emoflon.gips.intermediate.GipsIntermediate.SetSimpleSelect
-import org.emoflon.gips.intermediate.GipsIntermediate.SetTypeQuery
-import org.emoflon.gips.intermediate.GipsIntermediate.SetElementQuery
-import org.emoflon.gips.intermediate.GipsIntermediate.SetSimpleQuery
-import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage
-import org.eclipse.emf.ecore.EcorePackage
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral
-import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral
-import org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral
-import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
-import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils
-import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
-import org.emoflon.gips.intermediate.GipsIntermediate.BooleanExpression
-import java.util.LinkedList
-import java.util.HashSet
-import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation
-import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
-import java.util.HashMap
-import org.emoflon.gips.build.generator.TemplateData
-import org.emoflon.gips.intermediate.GipsIntermediate.Constant
 import java.util.Collection
+import java.util.HashMap
+import java.util.HashSet
+import java.util.LinkedList
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EcorePackage
+import org.emoflon.gips.build.generator.TemplateData
+import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BooleanExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.BooleanLiteral
+import org.emoflon.gips.intermediate.GipsIntermediate.BooleanUnaryExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.Constant
+import org.emoflon.gips.intermediate.GipsIntermediate.ConstantLiteral
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference
-import java.util.Collections
-import org.emoflon.gips.intermediate.GipsIntermediate.MemberReference
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextReference
+import org.emoflon.gips.intermediate.GipsIntermediate.DoubleLiteral
+import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediatePackage
+import org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral
+import org.emoflon.gips.intermediate.GipsIntermediate.MappingReference
 import org.emoflon.gips.intermediate.GipsIntermediate.MemberExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.MemberReference
 import org.emoflon.gips.intermediate.GipsIntermediate.NodeExpression
-import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil
-import org.emoflon.gips.intermediate.GipsIntermediate.impl.MemberReferenceImpl
+import org.emoflon.gips.intermediate.GipsIntermediate.PatternReference
+import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.RuleReference
+import org.emoflon.gips.intermediate.GipsIntermediate.SetConcatenation
+import org.emoflon.gips.intermediate.GipsIntermediate.SetElementQuery
+import org.emoflon.gips.intermediate.GipsIntermediate.SetExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.SetFilter
+import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation
+import org.emoflon.gips.intermediate.GipsIntermediate.SetReduce
+import org.emoflon.gips.intermediate.GipsIntermediate.SetSimpleOperation
+import org.emoflon.gips.intermediate.GipsIntermediate.SetSimpleQuery
+import org.emoflon.gips.intermediate.GipsIntermediate.SetSimpleSelect
+import org.emoflon.gips.intermediate.GipsIntermediate.SetSort
+import org.emoflon.gips.intermediate.GipsIntermediate.SetSummation
+import org.emoflon.gips.intermediate.GipsIntermediate.SetTransformation
+import org.emoflon.gips.intermediate.GipsIntermediate.SetTypeQuery
+import org.emoflon.gips.intermediate.GipsIntermediate.SetTypeSelect
+import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference
+import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
+import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 
 abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGeneratorTemplate<CONTEXT> {
@@ -68,9 +65,6 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 		returnTypeExtractor = new JavaReturnTypeExtractor(data, this)
 	}
 
-//	@Deprecated
-//	def String generateVariableAccessX(Variable variable);
-
 	def String getContextParameterType();
 
 	def String getContextParameter() {
@@ -85,29 +79,20 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 		return '''terms, context'''
 	}
 
-//	@Deprecated
-//	def String getVariableInSet(Variable variable) {
-//		if(isMappingVariable(variable)) {
-//			return '''elt'''
-//		} else {
-//			return '''engine.getNonMappingVariable(elt, "«variable.name»")'''
-//		}
-//	}
-	
-	def String generateVariableAccess(VariableReference varRef){		
+	def String generateVariableAccess(VariableReference varRef) {
 		return generateValueAccess(varRef, false)
 	}
-	
-	def String generateVariableAccessInSet(VariableReference varRef){
+
+	def String generateVariableAccessInSet(VariableReference varRef) {
 		if(isMappingVariable(varRef))
-			return '''elt'''		
+			return '''elt'''
 		return generateValueAccess(varRef, false)
 	}
-	
+
 	def String getAdditionalVariableName(VariableReference varRef) {
 		return '''engine.getNonMappingVariable(«generateValueAccess(varRef, false)», "«varRef.variable.name»").getName()'''
 	}
-	
+
 	def boolean isMappingVariable(VariableReference varRef) {
 		return isMappingVariable(varRef.variable)
 	}
@@ -203,8 +188,6 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 		return '''«generateConstantExpression(constExpr)»'''
 	}
 
-
-
 	def String createBuilderMethod(ArithmeticBinaryExpression expr, LinkedList<String> methodCalls) {
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
@@ -228,7 +211,7 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 		builderMethodDefinitions.put(expr, method)
 		return methodName
 	}
-	
+
 	def String createBuilderMethod(ConstantReference expr, LinkedList<String> methodCalls) {
 		if(expr.setExpression === null)
 			return null
@@ -263,10 +246,7 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 				«generateValueAccess(expr)»
 				«IF expr.setExpression.setOperation !== null»«generateConstantExpression(expr.setExpression.setOperation)»«ENDIF»
 				.forEach(elt -> {
-«««					«IF isLocal» terms.add(new Term(«generateVariableAccess(variable.variable)», (double)«generateConstantExpression(sumExpression.expression)»));
-«««					«ELSE»terms.add(new Term(«getVariableInSet(variable.variable)», (double)«generateConstantExpression(sumExpression.expression)»));
 					terms.add(new Term(«generateVariableAccessInSet(variable)», (double) «generateConstantExpression(sumExpression.expression)»));
-«««					«ENDIF»
 				});
 			}
 		'''
@@ -317,10 +297,7 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 				«generateValueAccess(expr, false)»
 				«IF expr.setExpression.setOperation !== null»«generateConstantExpression(expr.setExpression.setOperation)»«ENDIF»
 				.forEach(elt -> {
-«««					«IF varContainer.local» terms.add(new Term(«generateVariableAccess(variable.variable)», (double)«generateConstantExpression(sumExpression.expression)»));
-«««					«ELSE»terms.add(new Term(«getVariableInSet(variable.variable)», (double)«generateConstantExpression(sumExpression.expression)»));
 					terms.add(new Term(«generateVariableAccessInSet(variable)», (double) «generateConstantExpression(sumExpression.expression)»));
-«««					«ENDIF»
 				});
 			}
 		'''
@@ -332,13 +309,12 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 
 	def String generateConstantExpression(ValueExpression expression, boolean ignoreReduce) {
 		var instruction = "";
-		
-		if(expression instanceof VariableReference){
+
+		if(expression instanceof VariableReference) {
 			instruction = '''1.0''' // turn a variable into a constant
-			
-		}else{
+		} else {
 			instruction = generateValueAccess(expression, true)
-			
+
 		}
 
 		if(expression.setExpression !== null) {
@@ -374,8 +350,8 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 
 		} else {
 			instruction = generateValueAccess(expression as ContextReference, requiresReturn)
-			
-		} 
+
+		}
 
 		return instruction;
 	}
@@ -384,20 +360,20 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 		// CASE: ContextReference
 		return generateIterator(expression as ContextReference)
 	}
-		
-	def String generateValueAccess(VariableReference expression, boolean requiresReturn) {		
-		var getter = generateIterator(expression)		
+
+	def String generateValueAccess(VariableReference expression, boolean requiresReturn) {
+		var getter = generateIterator(expression)
 		if(expression.previous !== null)
-			getter += '''«generateExpression(expression.previous)»'''		
-				
+			getter += '''«generateExpression(expression.previous)»'''
+
 		return '''engine.getNonMappingVariable(«getter», "«expression.variable.name»")'''
 	}
 
 	def String generateValueAccess(MemberReference expression, boolean requiresReturn) {
 		var getter = generateIterator(expression)
 		if(expression.member !== null)
-			getter += '''«generateExpression(expression.member)»'''		
-		
+			getter += '''«generateExpression(expression.member)»'''
+
 		return getter
 	}
 
@@ -451,7 +427,7 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 	def String generateExpression(NodeExpression expression) {
 		var getter = '''.get«expression.node.name.toFirstUpper»()'''
 		if(expression.next !== null)
-			getter += '''.«generateExpression(expression.next)»'''			
+			getter += '''.«generateExpression(expression.next)»'''
 		return getter
 	}
 

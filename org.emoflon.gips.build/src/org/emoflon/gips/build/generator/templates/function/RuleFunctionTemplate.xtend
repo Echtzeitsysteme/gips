@@ -46,9 +46,9 @@ class RuleFunctionTemplate extends LinearFunctionTemplate<RuleFunction> {
 	}
 
 	override String generateVariableAccess(VariableReference varRef) {
-		if(isMappingVariable(varRef)) 
+		if(isMappingVariable(varRef))
 			throw new UnsupportedOperationException("Mapping context access is not possible within a pattern context.")
-			
+
 		return super.generateVariableAccess(varRef)
 	}
 

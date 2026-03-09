@@ -1,11 +1,9 @@
 package org.emoflon.gips.build.generator.templates
 
-import org.eclipse.emf.ecore.EObject
-import org.emoflon.gips.build.generator.TemplateData
 import java.util.HashSet
 import java.util.Set
-import java.util.Map
-import java.util.HashMap
+import org.eclipse.emf.ecore.EObject
+import org.emoflon.gips.build.generator.TemplateData
 
 abstract class ClassGeneratorTemplate<CONTEXT extends EObject> extends FileGeneratorTemplate<CONTEXT> {
 
@@ -58,9 +56,9 @@ abstract class ClassGeneratorTemplate<CONTEXT extends EObject> extends FileGener
 			}
 		'''
 	}
-	
+
 	def String generateClassBody() {
-		
+
 		'''
 			«generateClassAttributes»
 			
@@ -73,7 +71,7 @@ abstract class ClassGeneratorTemplate<CONTEXT extends EObject> extends FileGener
 	def String generateClassSignature() {
 		'''public «className»'''
 	}
-	
+
 	def String generateClassAttributes() {
 		''''''
 	}

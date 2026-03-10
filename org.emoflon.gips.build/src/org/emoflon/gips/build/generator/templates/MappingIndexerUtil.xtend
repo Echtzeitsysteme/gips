@@ -26,7 +26,7 @@ class MappingIndexerUtil {
 	@org.eclipse.xtend.lib.annotations.Data
 	static class IndexablePair {
 		ContextReference left
-		ContextReference Right
+		ContextReference right
 	}
 
 	private static def boolean isNodeReference(ContextReference reference) {
@@ -173,9 +173,9 @@ class MappingIndexerUtil {
 		// we only care for non-local nodes (-> element.node.x) when the other side is  local! (-> context.node.y)
 		for (pair : indexablePairs) {
 			var IBeXNode node = null
-			if(pair.left.local && !pair.Right.local)
-				node = getNode(pair.Right)
-			else if(!pair.left.local && pair.Right.local)
+			if(pair.left.local && !pair.right.local)
+				node = getNode(pair.right)
+			else if(!pair.left.local && pair.right.local)
 				node = getNode(pair.left)
 
 			if(node !== null)
@@ -191,10 +191,10 @@ class MappingIndexerUtil {
 		// we only care for local nodes (-> context.node.x) when the other side is not local! (-> element.node.y)
 		for (pair : indexablePairs) {
 			var IBeXNode node = null
-			if(pair.left.local && !pair.Right.local)
+			if(pair.left.local && !pair.right.local)
 				node = getNode(pair.left)
-			else if(!pair.left.local && pair.Right.local)
-				node = getNode(pair.Right)
+			else if(!pair.left.local && pair.right.local)
+				node = getNode(pair.right)
 
 			if(node !== null)
 				results.add(node.name)

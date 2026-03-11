@@ -785,7 +785,8 @@ public final class GipslExpressionValidator {
 			valueType = ExpressionType.Variable;
 			if (!(setContext instanceof GipsMappingExpression || setContext instanceof GipsMapping //
 					|| setContext instanceof GipsTypeExpression || setContext instanceof EClass //
-					|| setContext instanceof GipsLocalContextExpression)) {
+					|| setContext instanceof GipsLocalContextExpression
+					|| setContext instanceof GipsAttributeExpression)) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.ARITH_EXPR_VAR_REF_ERROR_MESSAGE, //

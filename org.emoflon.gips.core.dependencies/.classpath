@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/antlr4-runtime-4.9.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/antlr4-runtime-4.9.3-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/antlr4-runtime-4.9.3-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/gson-2.13.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/gson-2.13.1-javadoc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/gson-2.13.1-sources.jar"/>

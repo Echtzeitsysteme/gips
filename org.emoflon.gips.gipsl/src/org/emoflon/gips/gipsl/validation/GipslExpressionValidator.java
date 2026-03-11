@@ -891,13 +891,6 @@ public final class GipslExpressionValidator {
 			Collection<Runnable> errors) {
 
 		ExpressionType valueType = ExpressionType.Variable;
-
-		if (expression.getVariable() != null) {
-			ExpressionType variableType = evaluate(expression.getVariable().getType(), errors);
-			if (variableType != ExpressionType.Unknown)
-				valueType = variableType;
-		}
-
 		return valueType;
 	}
 

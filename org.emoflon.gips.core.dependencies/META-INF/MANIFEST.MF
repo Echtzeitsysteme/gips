@@ -29,7 +29,10 @@ Bundle-ClassPath: lib/cplex-22.1.2.jar,
  lib/gurobi-javadoc-13.0.1.jar,
  lib/gson-2.13.1.jar,
  lib/gson-2.13.1-javadoc.jar,
- lib/gson-2.13.1-sources.jar
+ lib/gson-2.13.1-sources.jar,
+ lib/antlr4-runtime-4.9.3.jar,
+ lib/antlr4-runtime-4.9.3-javadoc.jar,
+ lib/antlr4-runtime-4.9.3-sources.jar
 Export-Package: com.google.gson;version="2.13.1",
  com.google.gson.annotations;version="2.13.1",
  com.google.gson.internal;version="2.13.1",
@@ -61,6 +64,13 @@ Export-Package: com.google.gson;version="2.13.1",
  com.sun.jna.win32;version="5.17.0",
  ilog.concert;version="22.1.2",
  ilog.cplex;version="22.1.2",
+ org.antlr.v4.runtime;version="4.9.3",
+ org.antlr.v4.runtime.atn;version="4.9.3",
+ org.antlr.v4.runtime.dfa;version="4.9.3",
+ org.antlr.v4.runtime.misc;version="4.9.3",
+ org.antlr.v4.runtime.tree;version="4.9.3",
+ org.antlr.v4.runtime.tree.pattern;version="4.9.3",
+ org.antlr.v4.runtime.tree.xpath;version="4.9.3",
  org.gnu.glpk;version="1.12.0",
  org.logicng;version="2.6.0",
  org.logicng.backbones;version="2.6.0",
@@ -173,5 +183,4 @@ Export-Package: com.google.gson;version="2.13.1",
  oshi.util.platform.windows;version="6.10.0",
  oshi.util.tuples;version="6.10.0"
 Automatic-Module-Name: org.emoflon.gips.core.dependencies
-Require-Bundle: org.antlr.runtime;visibility:=reexport
 Bundle-Vendor: Real-Time Systems Lab - TU Darmstadt

@@ -261,10 +261,10 @@ public final class GipslExpressionValidator {
 			return ExpressionType.Error;
 		}
 
-		boolean defaultsToBoolean = switch (lhs) {
-		case Boolean -> rhs == ExpressionType.Number || rhs == ExpressionType.Variable;
-		case Number -> rhs == ExpressionType.Boolean || rhs == ExpressionType.Variable;
-		case Variable -> rhs == ExpressionType.Number || rhs == ExpressionType.Boolean;
+		boolean defaultsToBoolean = switch (lhs) { // todo: restore when code generator supports this
+//		case Boolean -> rhs == ExpressionType.Number || rhs == ExpressionType.Variable;
+		case Number -> rhs == ExpressionType.Variable;// || rhs == ExpressionType.Boolean;
+		case Variable -> rhs == ExpressionType.Number;// || rhs == ExpressionType.Boolean;
 		default -> false;
 		};
 

@@ -414,8 +414,11 @@ public class GurobiSolver extends Solver {
 			for (GipsTypeExtension<?> extension : extender.getExtensions()) {
 				for (Entry<String, Variable<?>> variable : extension.getVariables().entrySet()) {
 					try {
-						double result = getVar(variable.getValue().getName()).get(DoubleAttr.X);
-						extension.setVariableValue(variable.getKey(), result);
+						GRBVar grbVar = getVar(variable.getValue().getName());
+						if (grbVar != null) {
+							double result = grbVar.get(DoubleAttr.X);
+							extension.setVariableValue(variable.getKey(), result);
+						}
 					} catch (final GRBException e) {
 						throw new RuntimeException(e);
 					}

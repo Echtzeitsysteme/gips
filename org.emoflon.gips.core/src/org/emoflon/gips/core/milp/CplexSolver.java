@@ -352,11 +352,14 @@ public class CplexSolver extends Solver {
 		for (GipsTypeExtender<?, ?> extender : engine.getTypeExtensions().values()) {
 			for (GipsTypeExtension<?> extension : extender.getExtensions()) {
 				for (Entry<String, Variable<?>> variable : extension.getVariables().entrySet()) {
-					try {
-						double result = cplex.getValue(vars.get(variable.getValue().getName()));
-						extension.setVariableValue(variable.getKey(), result);
-					} catch (final IloException ex) {
-						throw new RuntimeException(ex);
+					IloNumVar var = vars.get(variable.getValue().getName());
+					if (var != null) {
+						try {
+							double result = cplex.getValue(var);
+							extension.setVariableValue(variable.getKey(), result);
+						} catch (final IloException ex) {
+							throw new RuntimeException(ex);
+						}
 					}
 				}
 			}

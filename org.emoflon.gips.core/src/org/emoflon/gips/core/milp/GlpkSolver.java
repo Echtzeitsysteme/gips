@@ -255,8 +255,11 @@ public class GlpkSolver extends Solver {
 		for (GipsTypeExtender<?, ?> extender : engine.getTypeExtensions().values()) {
 			for (GipsTypeExtension<?> extension : extender.getExtensions()) {
 				for (Entry<String, Variable<?>> variable : extension.getVariables().entrySet()) {
-					double result = GLPK.glp_mip_col_val(model, milpVars.get(variable.getValue().getName()).index);
-					extension.setVariableValue(variable.getKey(), result);
+					varInformation info = milpVars.get(variable.getValue().getName());
+					if (info != null) {
+						double result = GLPK.glp_mip_col_val(model, info.index);
+						extension.setVariableValue(variable.getKey(), result);
+					}
 				}
 			}
 		}

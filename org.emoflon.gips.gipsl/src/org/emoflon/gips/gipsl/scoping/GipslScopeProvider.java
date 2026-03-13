@@ -357,6 +357,7 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 							&& !mapping.getMapping().getVariables().isEmpty()) {
 						return Scopes.scopeFor(mapping.getMapping().getVariables());
 					}
+
 				} else if (setContext instanceof GipsTypeExpression typeExpression) {
 					return Scopes.scopeFor( //
 							GipslScopeContextUtil.getAllTypeExtensionsForType(context, typeExpression.getType()) //
@@ -364,19 +365,19 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 									.flatMap(e -> e.getVariables().stream()) //
 									.toList() //
 					);
-				} else if (setContext instanceof GipsLocalContextExpression contextExpression) {
-					if (contextExpression.getExpression() instanceof GipsAttributeExpression attribute) {
-						if (attribute.getAttribute() != null && attribute.getAttribute().getLiteral() != null) {
-							EStructuralFeature feature = attribute.getAttribute().getLiteral();
-							if (feature.getEType() instanceof EClass eClass)
-								return Scopes.scopeFor( //
-										GipslScopeContextUtil.getAllTypeExtensionsForType(context, eClass) //
-												.stream() //
-												.flatMap(e -> e.getVariables().stream()) //
-												.toList() //
-								);
-						}
+
+				} else if (setContext instanceof GipsAttributeExpression attribute) {
+					if (attribute.getAttribute() != null && attribute.getAttribute().getLiteral() != null) {
+						EStructuralFeature feature = attribute.getAttribute().getLiteral();
+						if (feature.getEType() instanceof EClass eClass)
+							return Scopes.scopeFor( //
+									GipslScopeContextUtil.getAllTypeExtensionsForType(context, eClass) //
+											.stream() //
+											.flatMap(e -> e.getVariables().stream()) //
+											.toList() //
+							);
 					}
+
 				}
 			}
 
@@ -496,6 +497,10 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 		return Scopes.scopeFor(GipslScopeContextUtil.getRules(context));
 	}
 
+	private IScope scopeForEClass(EClass eClass, EReference reference) {
+		return Scopes.scopeFor(eClass.getEAllStructuralFeatures());
+	}
+
 	public IScope scopeForGipsNodeExpression(GipsNodeExpression context, EReference reference) {
 		if (reference == GipslPackage.Literals.GIPS_ATTRIBUTE_LITERAL__LITERAL) {
 			if (context.getNode() != null && context.getNode().getType() != null)
@@ -519,11 +524,15 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 					} else {
 						return IScope.NULLSCOPE;
 					}
+
 				} else if (localContext instanceof EditorPattern) {
 					editorPattern = (EditorPattern) localContext;
+
 				} else {
 					return IScope.NULLSCOPE;
+
 				}
+
 			} else if (container instanceof GipsSetElementExpression || container instanceof GipsSortPredicate) {
 				EObject setContext = GipslScopeContextUtil.getSetContext(container);
 				if (setContext instanceof GipsMappingExpression mapping) {
@@ -602,9 +611,10 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 		}
 
 		if (patternRef instanceof GipsTypeExpression typeExpression)
-			return Scopes.scopeFor(typeExpression.getType().getEAllReferences());
+			return scopeForEClass(typeExpression.getType(), reference);
+
 		if (patternRef instanceof EClass eClass)
-			return Scopes.scopeFor(eClass.getEAllReferences());
+			return scopeForEClass(eClass, reference);
 
 		EditorPattern editorPattern = GipslScopeContextUtil.getPatternOrRuleOf(patternRef);
 		if (editorPattern == null)
@@ -673,19 +683,22 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			if (attribute.getAttribute() != null && attribute.getAttribute().getLiteral() != null) {
 				EStructuralFeature feature = attribute.getAttribute().getLiteral();
 				if (feature.getEType() instanceof EClass eClass)
-					return Scopes.scopeFor(eClass.getEAllStructuralFeatures());
+					return scopeForEClass(eClass, reference);
 			}
 
 		} else if (context instanceof GipsLocalContextExpression) {
 			EObject localContext = GipslScopeContextUtil.getLocalContext(context);
 			if (localContext instanceof EClass eClass)
-				return Scopes.scopeFor(eClass.getEAllStructuralFeatures());
+				return scopeForEClass(eClass, reference);
 
 		} else if (context instanceof GipsSetElementExpression) {
 			EObject setContext = GipslScopeContextUtil.getSetContext(context);
 			if (setContext instanceof GipsTypeExpression type)
 				if (type.getType() != null)
-					return Scopes.scopeFor(type.getType().getEAllStructuralFeatures());
+					return scopeForEClass(type.getType(), reference);
+
+			if (setContext instanceof EClass eClass)
+				return scopeForEClass(eClass, reference);
 
 			if (setContext instanceof GipsAttributeExpression attributeExpression)
 				return scopeForGipsAttribute(attributeExpression, reference);
@@ -694,30 +707,37 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 			EObject setContext = GipslScopeContextUtil.getSetContext(context);
 			if (setContext instanceof GipsTypeExpression type) {
 				if (type.getType() != null)
-					return Scopes.scopeFor(type.getType().getEAllStructuralFeatures());
+					return scopeForEClass(type.getType(), reference);
 
 			} else if (setContext instanceof GipsLocalContextExpression lce
 					&& lce.getExpression() instanceof GipsNodeExpression node && node.getExpression() == null) {
 				if (node.getNode() != null && node.getNode().getType() != null)
-					return Scopes.scopeFor(node.getNode().getType().getEAllStructuralFeatures());
+					return scopeForEClass(node.getNode().getType(), reference);
 
 			} else if (setContext instanceof GipsLocalContextExpression lce
 					&& lce.getExpression() instanceof GipsNodeExpression node && node.getExpression() != null) {
 				return getlastAttributeScope((GipsAttributeExpression) node.getExpression());
+
 			} else if (setContext instanceof GipsLocalContextExpression lce
 					&& lce.getExpression() instanceof GipsAttributeExpression attribute) {
 				return getlastAttributeScope(attribute);
+
 			} else if (setContext instanceof GipsSetElementExpression see
 					&& see.getExpression() instanceof GipsNodeExpression node && node.getExpression() == null) {
 				if (node.getNode() != null && node.getNode().getType() != null)
-					return Scopes.scopeFor(node.getNode().getType().getEAllStructuralFeatures());
+					return scopeForEClass(node.getNode().getType(), reference);
 
 			} else if (setContext instanceof GipsSetElementExpression see
 					&& see.getExpression() instanceof GipsNodeExpression node && node.getExpression() != null) {
 				return getlastAttributeScope((GipsAttributeExpression) node.getExpression());
+
 			} else if (setContext instanceof GipsSetElementExpression see
 					&& see.getExpression() instanceof GipsAttributeExpression attribute) {
 				return getlastAttributeScope(attribute);
+
+			} else if (setContext instanceof EClass eClass) {
+				return scopeForEClass(eClass, reference);
+
 			}
 		}
 
@@ -912,7 +932,7 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 		if (reference == GipslPackage.Literals.GIPS_ATTRIBUTE_LITERAL__LITERAL) {
 			EObject localContext = GipslScopeContextUtil.getLocalContext(context);
 			if (localContext instanceof EClass eClass)
-				return Scopes.scopeFor(eClass.getEAllStructuralFeatures());
+				return scopeForEClass(eClass, reference);
 		}
 
 		return IScope.NULLSCOPE;
@@ -927,6 +947,9 @@ public class GipslScopeProvider extends AbstractGipslScopeProvider {
 
 			if (setContext instanceof GipsAttributeExpression attributeExpression)
 				return scopeForGipsAttribute(attributeExpression, reference);
+
+			if (setContext instanceof EClass eClass)
+				return scopeForEClass(eClass, reference);
 		}
 
 		return IScope.NULLSCOPE;

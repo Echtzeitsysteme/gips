@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
-import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryOperator;
@@ -17,7 +16,6 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.AttributeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanExpression;
@@ -34,7 +32,9 @@ import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateFactory;
 import org.emoflon.gips.intermediate.GipsIntermediate.IntegerLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingReference;
-import org.emoflon.gips.intermediate.GipsIntermediate.NodeReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.MemberExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.MemberReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.NodeExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.QueryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
@@ -79,25 +79,17 @@ public class GipsArithmeticTransformer {
 		boolean isLhsConst;
 		boolean isRhsConst;
 		if (expression.getLhs() instanceof ArithmeticExpression arithmetic) {
-			isLhsConst = (GipsTransformationUtils.isConstantExpression(arithmetic) == ArithmeticExpressionType.constant)
-					? true
-					: false;
+			isLhsConst = GipsTransformationUtils.isConstantExpression(arithmetic) ? true : false;
 		} else {
-			isLhsConst = (GipsTransformationUtils
-					.isConstantExpression((BooleanExpression) expression.getLhs()) == ArithmeticExpressionType.constant)
-							? true
-							: false;
+			isLhsConst = GipsTransformationUtils.isConstantExpression((BooleanExpression) expression.getLhs()) ? true
+					: false;
 		}
 
 		if (expression.getRhs() instanceof ArithmeticExpression arithmetic) {
-			isRhsConst = (GipsTransformationUtils.isConstantExpression(arithmetic) == ArithmeticExpressionType.constant)
-					? true
-					: false;
+			isRhsConst = GipsTransformationUtils.isConstantExpression(arithmetic) ? true : false;
 		} else {
-			isRhsConst = (GipsTransformationUtils
-					.isConstantExpression((BooleanExpression) expression.getRhs()) == ArithmeticExpressionType.constant)
-							? true
-							: false;
+			isRhsConst = GipsTransformationUtils.isConstantExpression((BooleanExpression) expression.getRhs()) ? true
+					: false;
 		}
 
 		RelationalExpression modified = factory.createRelationalExpression();
@@ -188,8 +180,7 @@ public class GipsArithmeticTransformer {
 				constTerms.add(expression);
 			}
 			case MULTIPLY -> {
-				boolean isConst = (GipsTransformationUtils
-						.isConstantExpression(expression) == ArithmeticExpressionType.constant) ? true : false;
+				boolean isConst = GipsTransformationUtils.isConstantExpression(expression) ? true : false;
 				if (isConst) {
 					constTerms.add(expression);
 				} else {
@@ -244,6 +235,7 @@ public class GipsArithmeticTransformer {
 
 	public void splitIntoConstAndVarTerms(final ConstantReference expression,
 			final Collection<ArithmeticExpression> constTerms, final Collection<ArithmeticExpression> varTerms) {
+
 		if (expression.getSetExpression() == null) {
 			constTerms.add(expression);
 			return;
@@ -255,8 +247,7 @@ public class GipsArithmeticTransformer {
 		}
 
 		if (expression.getSetExpression().getSetReduce() instanceof SetSummation sum) {
-			if (GipsTransformationUtils
-					.isConstantExpression(sum.getExpression()) == ArithmeticExpressionType.constant) {
+			if (GipsTransformationUtils.isConstantExpression(sum.getExpression())) {
 				constTerms.add(expression);
 			} else {
 				varTerms.add(expression);
@@ -268,6 +259,7 @@ public class GipsArithmeticTransformer {
 
 	public void splitIntoConstAndVarTerms(final ValueExpression expression,
 			final Collection<ArithmeticExpression> constTerms, final Collection<ArithmeticExpression> varTerms) {
+
 		if (expression instanceof VariableReference) {
 			varTerms.add(expression);
 			return;
@@ -284,8 +276,7 @@ public class GipsArithmeticTransformer {
 		}
 
 		if (expression.getSetExpression().getSetReduce() instanceof SetSummation sum) {
-			if (GipsTransformationUtils
-					.isConstantExpression(sum.getExpression()) == ArithmeticExpressionType.constant) {
+			if (GipsTransformationUtils.isConstantExpression(sum.getExpression())) {
 				constTerms.add(expression);
 			} else {
 				varTerms.add(expression);
@@ -448,11 +439,8 @@ public class GipsArithmeticTransformer {
 			modified = mbe;
 			mbe.setOperator(binaryExpr.getOperator());
 
-			ArithmeticExpressionType lhsType = GipsTransformationUtils.isConstantExpression(binaryExpr.getLhs());
-			ArithmeticExpressionType rhsType = GipsTransformationUtils.isConstantExpression(binaryExpr.getRhs());
-
-			boolean lhsConstant = (lhsType == ArithmeticExpressionType.constant) ? true : false;
-			boolean rhsConstant = (rhsType == ArithmeticExpressionType.constant) ? true : false;
+			boolean lhsConstant = GipsTransformationUtils.isConstantExpression(binaryExpr.getLhs());
+			boolean rhsConstant = GipsTransformationUtils.isConstantExpression(binaryExpr.getRhs());
 
 			switch (binaryExpr.getOperator()) {
 			case ADD -> {
@@ -531,8 +519,7 @@ public class GipsArithmeticTransformer {
 			mue.setOperator(unaryExpr.getOperator());
 			modified = mue;
 
-			boolean constant = GipsTransformationUtils
-					.isConstantExpression(unaryExpr.getOperand()) == ArithmeticExpressionType.constant ? true : false;
+			boolean constant = GipsTransformationUtils.isConstantExpression(unaryExpr.getOperand()) ? true : false;
 			switch (unaryExpr.getOperator()) {
 			case ABSOLUTE -> {
 				if (constant) {
@@ -643,10 +630,8 @@ public class GipsArithmeticTransformer {
 				return expanded;
 			}
 			case MULTIPLY -> {
-				final boolean lhsConst = (GipsTransformationUtils
-						.isConstantExpression(binaryExpr.getLhs()) == ArithmeticExpressionType.constant);
-				final boolean rhsConst = (GipsTransformationUtils
-						.isConstantExpression(binaryExpr.getRhs()) == ArithmeticExpressionType.constant);
+				final boolean lhsConst = GipsTransformationUtils.isConstantExpression(binaryExpr.getLhs());
+				final boolean rhsConst = GipsTransformationUtils.isConstantExpression(binaryExpr.getRhs());
 
 				final boolean lhsSum = isSetSummation(binaryExpr.getLhs());
 				final boolean rhsSum = isSetSummation(binaryExpr.getRhs());
@@ -774,10 +759,8 @@ public class GipsArithmeticTransformer {
 							&& isExpanded(binaryExpr.getRhs(), traversedProduct);
 				}
 			case MULTIPLY:
-				final boolean lhsConst = (GipsTransformationUtils
-						.isConstantExpression(binaryExpr.getLhs()) == ArithmeticExpressionType.constant);
-				final boolean rhsConst = (GipsTransformationUtils
-						.isConstantExpression(binaryExpr.getRhs()) == ArithmeticExpressionType.constant);
+				final boolean lhsConst = GipsTransformationUtils.isConstantExpression(binaryExpr.getLhs());
+				final boolean rhsConst = GipsTransformationUtils.isConstantExpression(binaryExpr.getRhs());
 
 				boolean lhsExpanded = isExpanded(binaryExpr.getLhs(), true);
 				boolean rhsExpanded = isExpanded(binaryExpr.getRhs(), true);
@@ -1029,11 +1012,13 @@ public class GipsArithmeticTransformer {
 			cb.setOperator(binary.getOperator());
 			cb.setLhs(cloneExpression(factory, binary.getLhs()));
 			cb.setRhs(cloneExpression(factory, binary.getRhs()));
+
 		} else if (expr instanceof ArithmeticUnaryExpression unary) {
 			ArithmeticUnaryExpression cu = factory.createArithmeticUnaryExpression();
 			clone = cu;
 			cu.setOperator(unary.getOperator());
 			cu.setOperand(cloneExpression(factory, unary.getOperand()));
+
 		} else if (expr instanceof ArithmeticLiteral literal) {
 			if (literal instanceof IntegerLiteral il) {
 				IntegerLiteral ci = factory.createIntegerLiteral();
@@ -1079,42 +1064,43 @@ public class GipsArithmeticTransformer {
 			MappingReference ref = factory.createMappingReference();
 			ref.setMapping(mapping.getMapping());
 			clone = ref;
+
 		} else if (value instanceof TypeReference type) {
 			TypeReference ref = factory.createTypeReference();
 			ref.setType(type.getType());
 			clone = ref;
+
 		} else if (value instanceof PatternReference pattern) {
 			PatternReference ref = factory.createPatternReference();
 			ref.setPattern(pattern.getPattern());
 			ref.setContextPattern(pattern.getContextPattern());
 			clone = ref;
+
 		} else if (value instanceof RuleReference rule) {
 			RuleReference ref = factory.createRuleReference();
 			ref.setRule(rule.getRule());
 			ref.setContextPattern(rule.getContextPattern());
 			clone = ref;
-		} else if (value instanceof NodeReference node) {
-			NodeReference ref = factory.createNodeReference();
-			ref.setNode(node.getNode());
-			if (node.getAttribute() != null) {
-				ref.setAttribute(cloneExpression(factory, node.getAttribute()));
-			}
-			ref.setLocal(node.isLocal());
-			clone = ref;
-		} else if (value instanceof AttributeReference attribute) {
-			AttributeReference ref = factory.createAttributeReference();
-			ref.setAttribute(cloneExpression(factory, attribute.getAttribute()));
-			ref.setLocal(attribute.isLocal());
-			clone = ref;
+
 		} else if (value instanceof VariableReference variable) {
 			VariableReference ref = factory.createVariableReference();
 			ref.setVariable(variable.getVariable());
 			ref.setLocal(variable.isLocal());
+			if (variable.getPrevious() != null)
+				ref.setPrevious(cloneExpression(factory, variable.getPrevious()));
 			clone = ref;
+
+		} else if (value instanceof MemberReference member) {
+			MemberReference ref = factory.createMemberReference();
+			ref.setMember(cloneExpression(factory, member.getMember()));
+			ref.setLocal(member.isLocal());
+			clone = ref;
+
 		} else if (value instanceof ContextReference context) {
 			ContextReference ref = factory.createContextReference();
 			ref.setLocal(context.isLocal());
 			clone = ref;
+
 		} else {
 			throw new UnsupportedOperationException("Unknown arithmetic expression type: " + value);
 		}
@@ -1122,16 +1108,31 @@ public class GipsArithmeticTransformer {
 		if (value.getSetExpression() != null) {
 			clone.setSetExpression(cloneExpression(factory, value.getSetExpression()));
 		}
+
 		return clone;
 	}
 
-	static public AttributeExpression cloneExpression(GipsIntermediateFactory factory,
-			final AttributeExpression attribute) {
-		AttributeExpression clone = factory.createAttributeExpression();
-		clone.setFeature(attribute.getFeature());
-		if (attribute.getNext() != null) {
-			clone.setNext(cloneExpression(factory, attribute.getNext()));
+	static public MemberExpression cloneExpression(GipsIntermediateFactory factory, final MemberExpression expression) {
+		MemberExpression clone = switch (expression) {
+
+		case AttributeExpression attribute -> {
+			AttributeExpression tClone = factory.createAttributeExpression();
+			tClone.setFeature(attribute.getFeature());
+			yield tClone;
 		}
+
+		case NodeExpression node -> {
+			NodeExpression tClone = factory.createNodeExpression();
+			tClone.setNode(node.getNode());
+			yield tClone;
+		}
+
+		default -> throw new IllegalArgumentException("Unexpected value: " + expression);
+		};
+
+		if (expression.getNext() != null)
+			clone.setNext(cloneExpression(factory, expression.getNext()));
+
 		return clone;
 	}
 

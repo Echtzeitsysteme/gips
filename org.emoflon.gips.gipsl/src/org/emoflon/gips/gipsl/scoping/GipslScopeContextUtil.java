@@ -147,17 +147,15 @@ public final class GipslScopeContextUtil {
 	}
 
 	public static boolean isGipsNodeExpression(final EObject context, final EReference reference) {
-		return context instanceof GipsNodeExpression && reference == GipslPackage.Literals.GIPS_NODE_EXPRESSION__NODE;
+		return context instanceof GipsNodeExpression;
 	}
 
 	public static boolean isGipsAttributeExpression(final EObject context, final EReference reference) {
-		return context instanceof GipsAttributeExpression
-				&& reference == GipslPackage.Literals.GIPS_ATTRIBUTE_LITERAL__LITERAL;
+		return context instanceof GipsAttributeExpression;
 	}
 
 	public static boolean isGipsAttributeLiteral(final EObject context, final EReference reference) {
-		return context instanceof GipsAttributeLiteral
-				&& reference == GipslPackage.Literals.GIPS_ATTRIBUTE_LITERAL__LITERAL;
+		return context instanceof GipsAttributeLiteral;
 	}
 
 	public static boolean isGipsTypeSelect(final EObject context, final EReference reference) {
@@ -183,17 +181,21 @@ public final class GipslScopeContextUtil {
 						|| reference == GipslPackage.Literals.GIPS_JOIN_PAIR_SELECTION__RIGHT_NODE);
 	}
 
-	public static boolean isGipsLocalContextExpressionWithAttribute(final EObject context, final EReference reference) {
-		return context instanceof GipsLocalContextExpression
-				&& reference == GipslPackage.Literals.GIPS_ATTRIBUTE_LITERAL__LITERAL;
+	public static boolean isGipsLocalContextExpression(final EObject context, final EReference reference) {
+		return context instanceof GipsLocalContextExpression;
 	}
 
-	public static boolean isGipsSetElementExpressionWithAttribute(final EObject context, final EReference reference) {
-		return context instanceof GipsSetElementExpression
-				&& reference == GipslPackage.Literals.GIPS_ATTRIBUTE_LITERAL__LITERAL;
+	public static boolean isGipsSetElementExpression(final EObject context, final EReference reference) {
+		return context instanceof GipsSetElementExpression;
 	}
 
-	public static Object getContainer(EObject node, Set<Class<?>> classes) {
+	@SuppressWarnings("unchecked")
+	public static <E> E getContainer(EObject node, Class<E> clazz) {
+		EObject container = getContainer(node, Collections.singleton(clazz));
+		return (E) container;
+	}
+
+	public static EObject getContainer(EObject node, Set<Class<?>> classes) {
 		if (node == null)
 			return null;
 
@@ -403,36 +405,51 @@ public final class GipslScopeContextUtil {
 	}
 
 	public static boolean hasLocalContext(final EObject expression) {
-		EObject root = (EObject) GipslScopeContextUtil.getContainer(expression,
-				Set.of(GipsConstraintImpl.class, GipsLinearFunctionImpl.class));
-
-		if (root instanceof GipsConstraint constraint) {
-			return constraint.getContext() != null;
-		} else if (root instanceof GipsLinearFunction function) {
-			return function.getContext() != null;
-		} else {
-			return false;
-		}
+		return getLocalContext(expression) != null;
 	}
 
 	public static EObject getSetContext(final EObject expression) {
 		if (expression instanceof GipsTypeSelect select && select.getType() != null) {
 			return select.getType();
+
 		} else if (expression instanceof GipsTransformOperation transform && transform.getExpression() != null) {
 			return transform.getExpression();
+
 		} else if (expression.eContainer() instanceof GipsValueExpression root
 				&& !(root.getValue() instanceof GipsSetElementExpression)) {
-			return root.getValue();
+			return getSetContext(expression.eContainer());
+
 		} else if (expression instanceof GipsValueExpression root
 				&& !(root.getValue() instanceof GipsSetElementExpression)) {
+
+			EObject value = root.getValue();
+			if (value instanceof GipsLocalContextExpression localExpression) {
+				EObject right = localExpression.getExpression();
+
+				if (right instanceof GipsNodeExpression nodeExpression)
+					right = nodeExpression.getExpression();
+
+				if (right instanceof GipsAttributeExpression attributeExpression) {
+					GipsAttributeExpression lastAttributeExpression = attributeExpression;
+					while (lastAttributeExpression
+							.getRight() instanceof GipsAttributeExpression nextAttributeExpression) {
+						lastAttributeExpression = nextAttributeExpression;
+					}
+					return lastAttributeExpression;
+				}
+			}
 			return root.getValue();
+
 		} else if (expression.eContainer() instanceof GipsConstantReference reference && reference.getConstant() != null
 				&& reference.getConstant().getExpression() != null) {
 			return getSetContext(reference.getConstant().getExpression());
+
 		} else if (expression.eContainer() == null) {
 			return null;
+
 		} else {
 			return getSetContext(expression.eContainer());
+
 		}
 	}
 

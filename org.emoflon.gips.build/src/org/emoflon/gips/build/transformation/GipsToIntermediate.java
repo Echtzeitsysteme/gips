@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.emoflon.gips.build.transformation.helper.ArithmeticExpressionType;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationUtils;
 import org.emoflon.gips.build.transformation.transformer.ArithmeticExpressionTransformer;
@@ -494,6 +493,8 @@ public class GipsToIntermediate {
 
 						VariableReference varRef = factory.createVariableReference();
 						varRef.setVariable(symbolicVariable);
+						varRef.setLocal(true);
+
 						if (subformula instanceof Literal lit && lit.phase()) {
 							if (currentSum.getLhs() == null && !subformulas.isEmpty()) {
 								currentSum.setLhs(varRef);
@@ -582,8 +583,7 @@ public class GipsToIntermediate {
 		BooleanExpressionTransformer transformer = transformationFactory.createBooleanTransformer(constraint);
 		constraint.setExpression(transformer.transform(subConstraint.getExpression()));
 
-		if (GipsTransformationUtils
-				.isConstantExpression(constraint.getExpression()) == ArithmeticExpressionType.constant) {
+		if (GipsTransformationUtils.isConstantExpression(constraint.getExpression())) {
 			// Check whether this constraint is constant at (M)ILP problem build time. If
 			// true -> return
 			constraint.setConstant(true);

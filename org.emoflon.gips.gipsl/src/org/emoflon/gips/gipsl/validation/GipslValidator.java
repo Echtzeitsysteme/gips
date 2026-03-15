@@ -22,6 +22,7 @@ import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.validation.Check;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
+import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanDisjunction;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanImplication;
 import org.emoflon.gips.gipsl.gipsl.GipsConfig;
@@ -38,6 +39,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsSetExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeExtension;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeExtensionVariable;
+import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
 import org.emoflon.gips.gipsl.gipsl.Package;
@@ -351,6 +353,16 @@ public class GipslValidator extends AbstractGipslValidator {
 	@Check
 	public void validateConfig(final GipsConfig config) {
 		GipslConfigValidator.validateConfig(config);
+	}
+
+	@Check
+	public void checkVariableReference(final GipsVariableReferenceExpression reference) {
+		GipslVariableReferenceValidator.checkVariableReference(reference);
+	}
+
+	@Check
+	public void checkAttributeExpression(final GipsAttributeExpression expression) {
+		GipslAttributeValidator.checkAttributeExpression(expression);
 	}
 
 	@Check

@@ -1019,9 +1019,9 @@ public final class GipsConstraintUtils {
 	}
 
 	static VariableReference createVariableReference(final GipsIntermediateFactory factory, Variable variable) {
-		VariableReference ref = factory.createVariableReference();
-		ref.setVariable(variable);
-		ref.setLocal(true);
-		return ref;
+		VariableReference varRef = factory.createVariableReference();
+		varRef.setVariable(variable);
+		varRef.setLocal(true);
+		return varRef;
 	}
 }

@@ -40,8 +40,6 @@ import org.emoflon.gips.gipsl.gipsl.impl.GipsConstraintImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsLinearFunctionImpl;
 import org.emoflon.gips.gipsl.gipsl.impl.GipsObjectiveImpl;
 import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
-import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression;
-import org.emoflon.gips.intermediate.GipsIntermediate.AttributeReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanExpression;
@@ -52,7 +50,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantValue;
 import org.emoflon.gips.intermediate.GipsIntermediate.Context;
 import org.emoflon.gips.intermediate.GipsIntermediate.ContextReference;
-import org.emoflon.gips.intermediate.GipsIntermediate.NodeReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.MemberReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.RelationalOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.SetOperation;
@@ -177,7 +175,10 @@ public class BooleanExpressionTransformer extends TransformationContext {
 		return transformer.transform(relation);
 	}
 
-	public BooleanExpression transform(GipsJoinAllOperation eJoinAll) {
+	public BooleanExpression transform(GipsJoinAllOperation eJoinAll) throws Exception {
+		ValueExpressionTransformer transformer = //
+				transformerFactory.createValueTransformer(this.localContext, this.setContext);
+
 		EObject localContext = GipslScopeContextUtil.getLocalContext(eJoinAll);
 		EObject setContext = GipslScopeContextUtil.getSetContext(eJoinAll);
 
@@ -205,13 +206,8 @@ public class BooleanExpressionTransformer extends TransformationContext {
 		Collection<EditorNode> nodes = GipslScopeContextUtil.getNonCreatedEditorNodes(patternRef);
 		List<RelationalExpression> comparisons = new ArrayList<>(nodes.size());
 		for (EditorNode node : nodes) {
-			NodeReference lhs = factory.createNodeReference();
-			lhs.setLocal(false);
-			lhs.setNode(data.eNode2Node().get(node));
-
-			NodeReference rhs = factory.createNodeReference();
-			rhs.setLocal(true);
-			rhs.setNode(data.eNode2Node().get(node));
+			MemberReference lhs = transformer.transformContextAware(node, this.setContext);
+			MemberReference rhs = transformer.transformContextAware(node, this.localContext);
 
 			RelationalExpression relation = factory.createRelationalExpression();
 			relation.setOperator(RelationalOperator.EQUAL);
@@ -238,10 +234,10 @@ public class BooleanExpressionTransformer extends TransformationContext {
 				contextRef.setLocal(false);
 				lhs = contextRef;
 
-				rhs = transformer.transform(eJoin.getSingleJoin().getNode(), localContext);
+				rhs = transformer.transformContextAware(eJoin.getSingleJoin().getNode(), localContext);
 			} else {
 				// -> element.node.x == context
-				lhs = transformer.transform(eJoin.getSingleJoin().getNode(), setContext);
+				lhs = transformer.transformContextAware(eJoin.getSingleJoin().getNode(), setContext);
 
 				ContextReference contextRef = factory.createContextReference();
 				contextRef.setLocal(true);
@@ -260,28 +256,14 @@ public class BooleanExpressionTransformer extends TransformationContext {
 			List<RelationalExpression> comparisons = new ArrayList<>(eJoin.getPairJoin().size());
 			for (GipsJoinPairSelection selection : eJoin.getPairJoin()) {
 				ContextReference lhs = switch (selection.getLeftNode()) {
-				case EditorNode node -> transformer.transform(node, setContext);
-				case EReference reference -> {
-					AttributeExpression attribute = factory.createAttributeExpression();
-					attribute.setFeature(reference);
-					AttributeReference attributeRef = factory.createAttributeReference();
-					attributeRef.setAttribute(attribute);
-					attributeRef.setLocal(false);
-					yield attributeRef;
-				}
+				case EditorNode node -> transformer.transformContextAware(node, setContext);
+				case EReference reference -> transformer.transformContextAware(reference, setContext);
 				default -> throw new IllegalArgumentException("Unexpected left value: " + selection.getLeftNode());
 				};
 
 				ContextReference rhs = switch (selection.getRightNode()) {
-				case EditorNode node -> transformer.transform(node, localContext);
-				case EReference reference -> {
-					AttributeExpression attribute = factory.createAttributeExpression();
-					attribute.setFeature(reference);
-					AttributeReference attributeRef = factory.createAttributeReference();
-					attributeRef.setAttribute(attribute);
-					attributeRef.setLocal(true);
-					yield attributeRef;
-				}
+				case EditorNode node -> transformer.transformContextAware(node, localContext);
+				case EReference reference -> transformer.transformContextAware(reference, localContext);
 				default -> throw new IllegalArgumentException("Unexpected right value: " + selection.getRightNode());
 				};
 

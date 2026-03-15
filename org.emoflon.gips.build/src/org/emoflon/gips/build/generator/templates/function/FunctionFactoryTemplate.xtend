@@ -1,13 +1,13 @@
 package org.emoflon.gips.build.generator.templates.function
 
-import org.emoflon.gips.build.generator.templates.GeneratorTemplate
 import org.emoflon.gips.build.generator.TemplateData
+import org.emoflon.gips.build.generator.templates.ClassGeneratorTemplate
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel
 import org.emoflon.gips.intermediate.GipsIntermediate.PatternFunction
 import org.emoflon.gips.intermediate.GipsIntermediate.RuleFunction
 
-class FunctionFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
-	
+class FunctionFactoryTemplate extends ClassGeneratorTemplate<GipsIntermediateModel> {
+
 	new(TemplateData data, GipsIntermediateModel context) {
 		super(data, context)
 	}
@@ -15,7 +15,7 @@ class FunctionFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 	override init() {
 		packageName = data.apiData.gipsApiPkg
 		className = data.functionFactoryClassName
-		fqn = packageName + "." + className;
+
 		filePath = data.apiData.gipsApiPkgPath + "/" + className + ".java"
 		imports.add(data.apiData.apiPkg + "." + data.apiData.apiClass)
 		imports.add("org.emoflon.gips.core.api.GipsLinearFunctionFactory")
@@ -28,48 +28,43 @@ class FunctionFactoryTemplate extends GeneratorTemplate<GipsIntermediateModel> {
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.RuleFunction")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.MappingFunction")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.TypeFunction")
-		imports.add(data.apiData.gipsApiPkg+"."+data.gipsApiClassName)
-		data.function2functionClassName.values.forEach[o | imports.add(data.apiData.gipsObjectivePkg+"."+o)]
+		imports.add(data.apiData.gipsApiPkg + "." + data.gipsApiClassName)
+		data.function2functionClassName.values.forEach[o|imports.add(data.apiData.gipsObjectivePkg + "." + o)]
 	}
-	
-	override generate() {
-		code = '''package «packageName»;
 
-«FOR imp : imports»
-import «imp»;
-«ENDFOR»
-
-public class «className» extends GipsLinearFunctionFactory<«data.gipsApiClassName», «data.apiData.apiClass»> {
-	public «className»(final «data.gipsApiClassName» engine, final «data.apiData.apiClass» eMoflonApi) {
-		super(engine, eMoflonApi);
-	}
-	
-	@Override
-	public GipsLinearFunction<«data.gipsApiClassName», ? extends LinearFunction, ? extends Object> createLinearFunction(final LinearFunction function) {
-		«IF context.functions.isNullOrEmpty»
-		throw new IllegalArgumentException("Unknown linear function type: " + function);
-		«ELSE»
-		switch(function.getName()) {
-			«FOR function : context.functions»
-			case "«function.name»" -> {
-				«IF function instanceof PatternFunction»
-				return new «data.function2functionClassName.get(function)»(engine, («function.eClass.name»)function, eMoflonApi.«function.pattern.name.toFirstLower»());
-				«ELSEIF function instanceof RuleFunction»
-				return new «data.function2functionClassName.get(function)»(engine, («function.eClass.name»)function, eMoflonApi.«function.rule.name.toFirstLower»());
-				«ELSE»
-				return new «data.function2functionClassName.get(function)»(engine, («function.eClass.name»)function);
-				«ENDIF»
+	override generateClassContent() {
+		'''
+			public class «className» extends GipsLinearFunctionFactory<«data.gipsApiClassName», «data.apiData.apiClass»> {
+				public «className»(final «data.gipsApiClassName» engine, final «data.apiData.apiClass» eMoflonApi) {
+					super(engine, eMoflonApi);
+				}
+				
+				@Override
+				public GipsLinearFunction<«data.gipsApiClassName», ? extends LinearFunction, ? extends Object> createLinearFunction(final LinearFunction function) {
+					«IF context.functions.isNullOrEmpty»
+						throw new IllegalArgumentException("Unknown linear function type: " + function);
+					«ELSE»
+						switch(function.getName()) {
+							«FOR function : context.functions»
+								case "«function.name»" -> {
+									«IF function instanceof PatternFunction»
+										return new «data.function2functionClassName.get(function)»(engine, («function.eClass.name»)function, eMoflonApi.«function.pattern.name.toFirstLower»());
+									«ELSEIF function instanceof RuleFunction»
+										return new «data.function2functionClassName.get(function)»(engine, («function.eClass.name»)function, eMoflonApi.«function.rule.name.toFirstLower»());
+									«ELSE»
+										return new «data.function2functionClassName.get(function)»(engine, («function.eClass.name»)function);
+									«ENDIF»
+								}
+							«ENDFOR»
+							default -> {
+								throw new IllegalArgumentException("Unknown linear function type: " + function);	
+							}
+						}
+					«ENDIF»
+					
+				}
 			}
-			«ENDFOR»
-			default -> {
-				throw new IllegalArgumentException("Unknown linear function type: " + function);	
-			}
-		}
-		«ENDIF»
-			
-	}
-}'''
+		'''
 	}
 
-	
 }

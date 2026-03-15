@@ -32,6 +32,12 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="extendedTypes" upperBound="-1"
         eType="#//TypeExtension" containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TypeExtension" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="extendedType" lowerBound="1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="addedVariables" upperBound="-1"
+        eType="#//Variable"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SolverConfig">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="solver" eType="#//SolverType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="solverHomeDir" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -70,6 +76,9 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameter" lowerBound="1"
         eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXParameter"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rule" lowerBound="1" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXRule"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BoundAttributeVariable" eSuperTypes="#//Variable">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="boundToFeature" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="VariableType">
     <eLiterals name="BINARY"/>
@@ -295,23 +304,25 @@
   <eClassifiers xsi:type="ecore:EClass" name="ContextReference" eSuperTypes="#//ValueExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="local" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NodeReference" eSuperTypes="#//ContextReference #//Context">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXNode"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="attribute" eType="#//AttributeExpression"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AttributeReference" eSuperTypes="#//ContextReference">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="attribute" lowerBound="1"
-        eType="#//AttributeExpression" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AttributeExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="next" lowerBound="1" eType="#//AttributeExpression"
-        containment="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="MemberReference" eSuperTypes="#//ContextReference">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="member" lowerBound="1"
+        eType="#//MemberExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VariableReference" eSuperTypes="#//ContextReference">
     <eStructuralFeatures xsi:type="ecore:EReference" name="variable" lowerBound="1"
         eType="#//Variable"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="previous" eType="#//MemberExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MemberExpression" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="next" eType="#//MemberExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AttributeExpression" eSuperTypes="#//MemberExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeExpression" eSuperTypes="#//MemberExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.emoflon.ibex.patternmodel/model/IBeXPatternModel.ecore#//IBeXNode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SetExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="setOperation" eType="#//SetOperation"
@@ -390,14 +401,5 @@
     <eLiterals name="AUTO" value="1"/>
     <eLiterals name="CONSERVATIVE" value="1"/>
     <eLiterals name="AGGRESSIVE" value="2"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TypeExtension" eSuperTypes="#//NamedElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="extendedType" lowerBound="1"
-        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="addedVariables" upperBound="-1"
-        eType="#//Variable"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BoundAttributeVariable" eSuperTypes="#//Variable">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="boundToFeature" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>

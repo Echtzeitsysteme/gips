@@ -102,6 +102,11 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//GipsIntermediateModel/requiredTypes"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//GipsIntermediateModel/requiredPatterns"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//GipsIntermediateModel/requiredRules"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//GipsIntermediateModel/extendedTypes"/>
+    </genClasses>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//TypeExtension">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//TypeExtension/extendedType"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//TypeExtension/addedVariables"/>
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//SolverConfig">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//SolverConfig/solver"/>
@@ -133,6 +138,9 @@
     <genClasses ecoreClass="GipsIntermediate.ecore#//RuleParameterVariable">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//RuleParameterVariable/parameter"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//RuleParameterVariable/rule"/>
+    </genClasses>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//BoundAttributeVariable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//BoundAttributeVariable/boundToFeature"/>
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//Mapping">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//Mapping/contextPattern"/>
@@ -267,19 +275,21 @@
     <genClasses image="false" ecoreClass="GipsIntermediate.ecore#//ContextReference">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GipsIntermediate.ecore#//ContextReference/local"/>
     </genClasses>
-    <genClasses ecoreClass="GipsIntermediate.ecore#//NodeReference">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//NodeReference/node"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//NodeReference/attribute"/>
-    </genClasses>
-    <genClasses ecoreClass="GipsIntermediate.ecore#//AttributeReference">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//AttributeReference/attribute"/>
-    </genClasses>
-    <genClasses ecoreClass="GipsIntermediate.ecore#//AttributeExpression">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//AttributeExpression/feature"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//AttributeExpression/next"/>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//MemberReference">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//MemberReference/member"/>
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//VariableReference">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//VariableReference/variable"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//VariableReference/previous"/>
+    </genClasses>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//MemberExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//MemberExpression/next"/>
+    </genClasses>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//AttributeExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//AttributeExpression/feature"/>
+    </genClasses>
+    <genClasses ecoreClass="GipsIntermediate.ecore#//NodeExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//NodeExpression/node"/>
     </genClasses>
     <genClasses ecoreClass="GipsIntermediate.ecore#//SetExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GipsIntermediate.ecore#//SetExpression/setOperation"/>

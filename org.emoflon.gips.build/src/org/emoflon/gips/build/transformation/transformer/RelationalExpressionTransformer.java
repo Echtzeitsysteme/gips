@@ -71,7 +71,8 @@ public class RelationalExpressionTransformer extends TransformationContext {
 		}
 
 		if (lhsType != rhsType) {
-			throw new IllegalArgumentException("Incompatible relational operand types: " + eRelational);
+			throw new IllegalArgumentException("Incompatible relational operand types (left: " + lhsType + ", right: "
+					+ rhsType + ") for " + eRelational);
 		}
 
 		if (lhsType == ExpressionReturnType.object || rhsType == ExpressionReturnType.object) {

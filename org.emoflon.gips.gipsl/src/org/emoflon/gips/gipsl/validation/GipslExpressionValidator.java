@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticBracket;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticConstant;
@@ -19,6 +20,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsArithmeticProduct;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticSum;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticUnary;
 import org.emoflon.gips.gipsl.gipsl.GipsAttributeExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsAttributeLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanBracket;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanConjunction;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanDisjunction;
@@ -259,8 +261,14 @@ public final class GipslExpressionValidator {
 			return ExpressionType.Error;
 		}
 
-		if (lhs == ExpressionType.Number && rhs == ExpressionType.Variable
-				|| rhs == ExpressionType.Number && lhs == ExpressionType.Variable) {
+		boolean defaultsToBoolean = switch (lhs) { // todo: restore when code generator supports this
+//		case Boolean -> rhs == ExpressionType.Number || rhs == ExpressionType.Variable;
+		case Number -> rhs == ExpressionType.Variable;// || rhs == ExpressionType.Boolean;
+		case Variable -> rhs == ExpressionType.Number;// || rhs == ExpressionType.Boolean;
+		default -> false;
+		};
+
+		if (defaultsToBoolean) {
 			return ExpressionType.Boolean;
 		}
 
@@ -653,8 +661,8 @@ public final class GipslExpressionValidator {
 			valueType = ExpressionType.Unknown;
 		}
 
-		if (expression.getSetExperession() != null) {
-			return evaluate(expression.getSetExperession(), errors);
+		if (expression.getSetExpression() != null) {
+			return evaluate(expression.getSetExpression(), errors);
 		} else {
 			return valueType;
 		}
@@ -664,7 +672,7 @@ public final class GipslExpressionValidator {
 		ExpressionType valueType = null;
 		EObject localContext = GipslScopeContextUtil.getLocalContext(expression);
 
-		if (expression.getExpression() instanceof GipsVariableReferenceExpression) {
+		if (expression.getExpression() instanceof GipsVariableReferenceExpression variableReferenceExpression) {
 			valueType = ExpressionType.Variable;
 			if (!(localContext instanceof GipsMappingExpression || localContext instanceof GipsMapping
 					|| localContext instanceof GipsTypeExpression || localContext instanceof EClass)) {
@@ -739,18 +747,16 @@ public final class GipslExpressionValidator {
 			}
 		} else if (expression.getExpression() instanceof GipsAttributeExpression attribute) {
 			if (!(localContext instanceof EClass || localContext instanceof GipsTypeExpression
-					|| (localContext instanceof GipsNodeExpression ne && ne.getAttributeExpression() != null)
+					|| (localContext instanceof GipsNodeExpression ne && ne.getExpression() != null)
 					|| localContext instanceof GipsAttributeExpression
 					|| (localContext instanceof GipsLocalContextExpression lce
 							&& lce.getExpression() instanceof GipsAttributeExpression)
 					|| (localContext instanceof GipsLocalContextExpression lce
-							&& (lce.getExpression() instanceof GipsNodeExpression ne
-									&& ne.getAttributeExpression() != null))
+							&& (lce.getExpression() instanceof GipsNodeExpression ne && ne.getExpression() != null))
 					|| (localContext instanceof GipsSetElementExpression see
 							&& see.getExpression() instanceof GipsAttributeExpression)
 					|| (localContext instanceof GipsSetElementExpression see
-							&& (see.getExpression() instanceof GipsNodeExpression ne
-									&& ne.getAttributeExpression() != null)))) {
+							&& (see.getExpression() instanceof GipsNodeExpression ne && ne.getExpression() != null)))) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.TYPE_CONTAINS_ATTRIBUTES, //
@@ -777,8 +783,10 @@ public final class GipslExpressionValidator {
 
 		if (expression.getExpression() instanceof GipsVariableReferenceExpression) {
 			valueType = ExpressionType.Variable;
-			if (!(setContext instanceof GipsMappingExpression || setContext instanceof GipsMapping
-					|| setContext instanceof GipsTypeExpression || setContext instanceof EClass)) {
+			if (!(setContext instanceof GipsMappingExpression || setContext instanceof GipsMapping //
+					|| setContext instanceof GipsTypeExpression || setContext instanceof EClass //
+					|| setContext instanceof GipsLocalContextExpression
+					|| setContext instanceof GipsAttributeExpression)) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.ARITH_EXPR_VAR_REF_ERROR_MESSAGE, //
@@ -849,18 +857,16 @@ public final class GipslExpressionValidator {
 			}
 		} else if (expression.getExpression() instanceof GipsAttributeExpression attribute) {
 			if (!(setContext instanceof EClass || setContext instanceof GipsTypeExpression
-					|| (setContext instanceof GipsNodeExpression ne && ne.getAttributeExpression() != null)
+					|| (setContext instanceof GipsNodeExpression ne && ne.getExpression() != null)
 					|| setContext instanceof GipsAttributeExpression
 					|| (setContext instanceof GipsLocalContextExpression lce
 							&& lce.getExpression() instanceof GipsAttributeExpression)
 					|| (setContext instanceof GipsLocalContextExpression lce
-							&& (lce.getExpression() instanceof GipsNodeExpression ne
-									&& ne.getAttributeExpression() != null))
+							&& (lce.getExpression() instanceof GipsNodeExpression ne && ne.getExpression() != null))
 					|| (setContext instanceof GipsSetElementExpression see
 							&& see.getExpression() instanceof GipsAttributeExpression)
 					|| (setContext instanceof GipsSetElementExpression see
-							&& (see.getExpression() instanceof GipsNodeExpression ne
-									&& ne.getAttributeExpression() != null)))) {
+							&& (see.getExpression() instanceof GipsNodeExpression ne && ne.getExpression() != null)))) {
 				errors.add(() -> {
 					GipslValidator.err( //
 							GipslValidatorUtil.TYPE_CONTAINS_ATTRIBUTES, //
@@ -881,45 +887,80 @@ public final class GipslExpressionValidator {
 		return valueType;
 	}
 
+	public static ExpressionType evaluate(final GipsVariableReferenceExpression expression,
+			Collection<Runnable> errors) {
+
+		ExpressionType valueType = ExpressionType.Variable;
+		return valueType;
+	}
+
 	public static ExpressionType evaluate(final GipsNodeExpression expression, Collection<Runnable> errors) {
-		if (expression.getAttributeExpression() == null) {
+		if (expression.getExpression() == null) {
 			return ExpressionType.Object;
 		} else {
-			return evaluate(expression.getAttributeExpression(), errors);
+			if (expression.getExpression() instanceof GipsAttributeExpression attribute) {
+				return evaluate(attribute, errors);
+			} else if (expression.getExpression() instanceof GipsVariableReferenceExpression varRef) {
+				return evaluate(varRef, errors);
+			} else {
+				return ExpressionType.Error;
+			}
 		}
 	}
 
 	public static ExpressionType evaluate(final GipsAttributeExpression expression, Collection<Runnable> errors) {
-		if (expression.getRight() == null) {
-			if (expression.getAttribute() == null) {
-				return ExpressionType.Unknown;
-			}
-			if (expression.getAttribute().getLiteral().isMany()) {
-				return ExpressionType.Set;
-			} else if (!expression.getAttribute().getLiteral().isMany()) {
-				EClassifier type = expression.getAttribute().getLiteral().getEType();
-				if (type == EcorePackage.Literals.EINT || type == EcorePackage.Literals.ESHORT
-						|| type == EcorePackage.Literals.ELONG || type == EcorePackage.Literals.EBYTE) {
-					return ExpressionType.Number;
-				} else if (type == EcorePackage.Literals.EFLOAT || type == EcorePackage.Literals.EDOUBLE) {
-					return ExpressionType.Number;
-				} else if (type == EcorePackage.Literals.EBOOLEAN) {
-					return ExpressionType.Boolean;
-				} else if (type == EcorePackage.Literals.ECHAR || type == EcorePackage.Literals.ESTRING) {
-					return ExpressionType.String;
-				} else if (type instanceof EClass) {
-					return ExpressionType.Object;
-				} else if (type instanceof EEnum) {
-					return ExpressionType.Enum;
-				} else {
-					return ExpressionType.Unknown;
-				}
-			} else {
-				return ExpressionType.Unknown;
-			}
-		} else {
-			return evaluate(expression.getRight(), errors);
+		if (expression.getAttribute() == null || expression.getAttribute().getLiteral() == null)
+			return ExpressionType.Unknown;
+
+		if (expression.getRight() == null)
+			return evaluate(expression.getAttribute(), errors);
+
+		if (expression.getAttribute().getLiteral().isMany()) {
+			if (expression.getRight() != null)
+				return ExpressionType.Error;
+			return ExpressionType.Set;
 		}
+
+		if (expression.getRight() instanceof GipsAttributeExpression rightExpression)
+			return evaluate(rightExpression, errors);
+
+		if (expression.getRight() instanceof GipsVariableReferenceExpression varRefExpression)
+			return evaluate(varRefExpression, errors);
+
+		return ExpressionType.Unknown;
+	}
+
+	public static ExpressionType evaluate(final GipsAttributeLiteral attribute, Collection<Runnable> errors) {
+		return evaluate(attribute.getLiteral(), errors);
+	}
+
+	public static ExpressionType evaluate(final EStructuralFeature feature, Collection<Runnable> errors) {
+		if (feature == null)
+			return ExpressionType.Error;
+
+		if (feature.isMany())
+			return ExpressionType.Set;
+
+		return evaluate(feature.getEType(), errors);
+	}
+
+	public static ExpressionType evaluate(final EClassifier type, Collection<Runnable> errors) {
+		if (type == EcorePackage.Literals.EINT || type == EcorePackage.Literals.ESHORT
+				|| type == EcorePackage.Literals.ELONG || type == EcorePackage.Literals.EBYTE) {
+			return ExpressionType.Number;
+		} else if (type == EcorePackage.Literals.EFLOAT || type == EcorePackage.Literals.EDOUBLE) {
+			return ExpressionType.Number;
+		} else if (type == EcorePackage.Literals.EBOOLEAN) {
+			return ExpressionType.Boolean;
+		} else if (type == EcorePackage.Literals.ECHAR || type == EcorePackage.Literals.ESTRING) {
+			return ExpressionType.String;
+		} else if (type instanceof EClass) {
+			return ExpressionType.Object;
+		} else if (type instanceof EEnum) {
+			return ExpressionType.Enum;
+		}
+
+		return ExpressionType.Unknown;
 	}
 
 	public static Collection<Runnable> checkSetExpression(final GipsValueExpression context,

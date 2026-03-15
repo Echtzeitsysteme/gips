@@ -244,7 +244,7 @@ GipsValueExpression:
 		GipsRuleExpression 				|
 		GipsLocalContextExpression 		|
 		GipsSetElementExpression
-	) (setExperession = GipsSetExpression)?
+	) (setExpression = GipsSetExpression)?
 ;
 
 GipsMappingExpression: {GipsMappingExpression}
@@ -289,15 +289,13 @@ GipsVariableReferenceExpression returns GipsVariableReferenceExpression:
 
 GipsNodeExpression: {GipsNodeExpression}
 	'.' 'nodes' '.' node=[GT::EditorNode|ID]
-	(attributeExpression = GipsAttributeExpression)?
+	expression = (GipsAttributeExpression | GipsVariableReferenceExpression)?
 ;
 
 GipsAttributeExpression: {GipsAttributeExpression}
-	'.'
-	(
-		attribute = GipsAttributeLiteral right = GipsAttributeExpression |
-		attribute = GipsAttributeLiteral
-	)
+	'.'	
+	attribute = GipsAttributeLiteral
+	right = (GipsAttributeExpression | GipsVariableReferenceExpression)?
 ;
 
 GipsAttributeLiteral:

@@ -55,9 +55,9 @@ class ConstraintFactoryTemplate extends ClassGeneratorTemplate<GipsIntermediateM
 							«FOR constraint : context.constraints»
 								case "«constraint.name»" -> {
 								«IF constraint instanceof PatternConstraint»
-									return new «data.constraint2constraintClassName.get(constraint)»(engine, («constraint.eClass.name»)constraint, eMoflonApi.«constraint.pattern.name.toFirstLower»(«FOR param: getPattern(constraint.pattern).parameters SEPARATOR ", "»«GipsImportManager.parameterToJavaDefaultValue(param)»«ENDFOR»));
+									return new «data.constraint2constraintClassName.get(constraint)»(engine, («constraint.eClass.name»)constraint, eMoflonApi.«constraint.pattern.name»(«FOR param: getPattern(constraint.pattern).parameters SEPARATOR ", "»«GipsImportManager.parameterToJavaDefaultValue(param)»«ENDFOR»));
 								«ELSEIF constraint instanceof RuleConstraint»
-									return new «data.constraint2constraintClassName.get(constraint)»(engine, («constraint.eClass.name»)constraint, eMoflonApi.«constraint.rule.name.toFirstLower»(«FOR param: constraint.rule.parameters SEPARATOR ", "»«GipsImportManager.parameterToJavaDefaultValue(param)»«ENDFOR»));
+									return new «data.constraint2constraintClassName.get(constraint)»(engine, («constraint.eClass.name»)constraint, eMoflonApi.«constraint.rule.name»(«FOR param: constraint.rule.parameters SEPARATOR ", "»«GipsImportManager.parameterToJavaDefaultValue(param)»«ENDFOR»));
 								«ELSE»
 									return new «data.constraint2constraintClassName.get(constraint)»(engine, («constraint.eClass.name»)constraint);
 								«ENDIF»

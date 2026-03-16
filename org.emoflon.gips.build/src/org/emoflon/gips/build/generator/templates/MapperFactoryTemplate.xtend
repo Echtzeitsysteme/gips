@@ -70,13 +70,13 @@ class MapperFactoryTemplate extends ClassGeneratorTemplate<GipsIntermediateModel
 						switch(mapping.getName()) {
 							«FOR mapping : mappings.filter[m | m instanceof RuleMapping].map[m | m as RuleMapping]»
 								case "«mapping.name»" -> {
-									return new «data.mapping2mapperClassName.get(mapping)»(engine, mapping, eMoflonApi.«mapping.rule.name.toFirstLower»(«FOR param:mapping.rule.parameters SEPARATOR ", "»«GipsImportManager.parameterToJavaDefaultValue(param)»«ENDFOR»));
+									return new «data.mapping2mapperClassName.get(mapping)»(engine, mapping, eMoflonApi.«mapping.rule.name»(«FOR param:mapping.rule.parameters SEPARATOR ", "»«GipsImportManager.parameterToJavaDefaultValue(param)»«ENDFOR»));
 								}
 							«ENDFOR»
 							
 							«FOR mapping : mappings.filter[m | m instanceof PatternMapping].map[m | m as PatternMapping]»
 								case "«mapping.name»" -> {
-									return new «data.mapping2mapperClassName.get(mapping)»(engine, mapping, eMoflonApi.«mapping.pattern.name.toFirstLower»(«FOR param:contextToParameter(mapping.pattern) SEPARATOR ", "»«GipsImportManager.parameterToJavaDefaultValue(param)»«ENDFOR»));
+									return new «data.mapping2mapperClassName.get(mapping)»(engine, mapping, eMoflonApi.«mapping.pattern.name»(«FOR param:contextToParameter(mapping.pattern) SEPARATOR ", "»«GipsImportManager.parameterToJavaDefaultValue(param)»«ENDFOR»));
 								}
 							«ENDFOR»
 							

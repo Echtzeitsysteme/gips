@@ -62,6 +62,7 @@ import org.emoflon.ibex.gt.editor.utils.GTEditorPatternUtils;
 public class GipslValidator extends AbstractGipslValidator {
 
 	public static String PATTERN_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Pattern, Rule, Mapping or Type  '%s' must not be declared %s.";
+	public static String PATTERN_NAME_CAPITALIZATION_DECLARATIONS_MESSAGE = "Pattern or Rule '%s's name conflicts with another Pattern/Rule's name because of the capitalization of the first letter.";
 
 	/**
 	 * Global switch to turn off the whole validation.
@@ -118,6 +119,34 @@ public class GipslValidator extends AbstractGipslValidator {
 					super.getTimes((int) count)), GTPackage.Literals.EDITOR_PATTERN__NAME, NAME_EXPECT_UNIQUE);
 		}
 
+	}
+
+	/**
+	 * Checks the name capitalization uniqueness for the given eMoflon::IBeX-GT
+	 * EditorPattern. I.e., there must not be another instance whose name only
+	 * differs in the capitalization of the first letter of the names.
+	 * 
+	 * @param pattern eMoflon::IBeX-GT EditorPattern instance to check name
+	 *                capitalization uniqueness for.
+	 */
+	@Check
+	public void checkPatternNameCapitalization(final EditorPattern pattern) {
+		if (pattern == null || pattern.eContainer() == null) {
+			return;
+		}
+
+		final EditorGTFile container = (EditorGTFile) pattern.eContainer();
+
+		final long count = container.getPatterns().stream().filter(o -> o.getName() != null
+				&& GipslValidatorUtil.firstCharCapitalizationDiffers(o.getName(), pattern.getName())).count();
+
+		if (count > 0) {
+			GipslValidator.err( //
+					String.format(PATTERN_NAME_CAPITALIZATION_DECLARATIONS_MESSAGE, pattern.getName()), //
+					GTPackage.Literals.EDITOR_PATTERN__NAME, //
+					NAME_EXPECT_UNIQUE //
+			);
+		}
 	}
 
 	@Check

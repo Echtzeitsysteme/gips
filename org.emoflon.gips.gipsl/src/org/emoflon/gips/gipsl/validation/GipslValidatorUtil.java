@@ -105,7 +105,7 @@ public class GipslValidatorUtil {
 	public static final String MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Mapping '%s' should start with a lower case character.";
 	public static final String MAPPING_W_O_CONSTRAINTS_MESSAGE = "Mapping '%s' is not subject to any constraints.";
 	public static final String MAPPING_W_O_CONSTRAINTS_AND_OBJECTIVE_MESSAGE = "Mapping '%s' is not subject to any constraints and not part of any objective function.";
-	public static final String MAPPING_VARIABLE_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Mapping variable name '%s' must not be declared more than once.";
+	public static final String MAPPING_VARIABLE_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Mapping variable name '%s' must not be declared more than once (case insensitive).";
 	public static final String MAPPING_VARIABLE_NOT_USED = "Mapping variable '%s' is never used. No (M)ILP variable will be created for this variable.";
 	public static final String MAPPING_VALUE_NOT_USED = "Mapping '%s' .value is never used. No (M)ILP variable will be created for this mapping.";
 	public static final String MAPPING_VALUE_MISUSE = "'value' can only be used with mappings";

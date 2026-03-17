@@ -227,7 +227,7 @@ public class GipslMappingValidator {
 
 		Optional<GipsMappingVariable> other = mapping.getVariables().stream()
 				.filter(var -> !var.equals(mappingVariable)).filter(var -> var.getName() != null)
-				.filter(var -> var.getName().equals(mappingVariable.getName())).findAny();
+				.filter(var -> var.getName().toLowerCase().equals(mappingVariable.getName().toLowerCase())).findAny();
 
 		if (other.isPresent()) {
 			GipslValidator.err( //

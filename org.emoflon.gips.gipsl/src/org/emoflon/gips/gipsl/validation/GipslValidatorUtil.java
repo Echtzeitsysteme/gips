@@ -286,39 +286,4 @@ public class GipslValidatorUtil {
 		return mappings;
 	}
 
-	/**
-	 * Checks if to given Strings, s1 and s2, only differ in the capitalization of
-	 * the first letter of their names. Two completely equal Strings will not make
-	 * this method return `true`.
-	 * 
-	 * Examples:
-	 * <ul>
-	 * <li>ab,ab -> false</li>
-	 * <li>ab,Ab -> true</li>
-	 * <li>ab,Abc -> false</li>
-	 * <li>ab,aB -> false</li>
-	 * </ul>
-	 * 
-	 * @param s1 First String to compare.
-	 * @param s2 Second String to compare.
-	 * @return True if the two given strings only differ in the capitalization of
-	 *         the first letter.
-	 */
-	public static boolean firstCharCapitalizationDiffers(final String s1, final String s2) {
-		if (s1 == s2) {
-			return false;
-		}
-
-		if (s1 == null || s2 == null) {
-			return false;
-		}
-
-		if (s1.equals(s2)) {
-			return false;
-		}
-
-		return (Character.toLowerCase(s1.charAt(0)) + s1.substring(1))
-				.equals((Character.toLowerCase(s2.charAt(0)) + s2.substring(1)));
-	}
-
 }

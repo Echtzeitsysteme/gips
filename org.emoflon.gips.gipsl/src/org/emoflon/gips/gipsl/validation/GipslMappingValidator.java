@@ -92,15 +92,15 @@ public class GipslMappingValidator {
 		}
 
 		long count = GipslScopeContextUtil.getAllEditorPatterns(mapping).stream()
-				.filter(p -> p != null && p.getName() != null).filter(p -> p.getName().equals(mapping.getName()))
-				.count();
+				.filter(p -> p != null && p.getName() != null)
+				.filter(p -> p.getName().toLowerCase().equals(mapping.getName().toLowerCase())).count();
 
 		count += GipslScopeContextUtil.getClasses(mapping).stream()
-				.filter(cls -> cls.getName().equals(mapping.getName())).count();
+				.filter(cls -> cls.getName().toLowerCase().equals(mapping.getName().toLowerCase())).count();
 
 		EditorGTFile editorFile = GTEditorPatternUtils.getContainer(mapping, EditorGTFileImpl.class);
 		count += editorFile.getMappings().stream().filter(m -> m != null && m.getName() != null)
-				.filter(m -> m.getName().equals(mapping.getName())).count();
+				.filter(m -> m.getName().toLowerCase().equals(mapping.getName().toLowerCase())).count();
 
 		if (count != 1) {
 			GipslValidator.err( //

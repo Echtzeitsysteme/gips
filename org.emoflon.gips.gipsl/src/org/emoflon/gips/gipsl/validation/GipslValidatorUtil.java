@@ -99,7 +99,7 @@ public class GipslValidatorUtil {
 	public static final String OBJECTIVE_DOES_NOT_CONTAIN_LOCAL_OBJECTIVE_MESSAGE = "Global objective does not contain any reference to a local objective.";
 	public static final String OBJECTIVE_EVAL_NOT_NUMBER_MESSAGE = "Objective does not evaluate to an integer, double or variable.";
 
-	public static final String MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Mapping, Pattern, Rule or Type '%s' must not be declared '%s'.";
+	public static final String MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Mapping, Pattern, Rule or Type '%s' must not be declared '%s' (case insensitive).";
 	public static final String MAPPING_NAME_FORBIDDEN_MESSAGE = "Mappings cannot be be named '%s'. Use a different name.";
 	public static final String MAPPING_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Mapping name '%s' contains underscores. Use camelCase instead.";
 	public static final String MAPPING_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Mapping '%s' should start with a lower case character.";
@@ -113,14 +113,13 @@ public class GipslValidatorUtil {
 	public static final String RULE_IS_ABSTRACT = "Mapping '%s' uses an abstract rule which is not possible.";
 
 	public static final String TYPE_EXTENSION_ALREADY_DECLARED = "Type '%s' already declared '%s'.";
-	public static final String TYPE_EXTENSION_VARIABLE_ALREADY_DECLARED = "Variable '%s' is already declared in extension '%s'.";
+	public static final String TYPE_EXTENSION_VARIABLE_ALREADY_DECLARED = "Variable '%s' is already declared in extension '%s' (case insensitive).";
 	public static final String TYPE_EXTENSION_VARIABLE_ATTRIBUTE_INVALID = "Variable is bound to an invalid attribute.";
 	public static final String TYPE_EXTENSION_VARIABLE_ATTRIBUTE_TYPE_MISSMATCH = "Variable does not match bound attribute type.";
 	public static final String TYPE_EXTENSION_VARIABLE_ATTRIBUTE_ALREADY_BOUND = "Variable '%s' in extension '%s' is already bound to this attribute.";
 	public static final String TYPE_EXTENSION_VARIABLE_NOT_USED = "Variable '%s' is never used. No (M)ILP variable will be created for this variable.";
 
-	public static final String FUNCTION_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Objective '%s' must not be declared '%s'";
-	public static final String FUNCTION_NAME_CAPITALIZATION_DECLARATIONS_MESSAGE = "Linear function '%s's name conflicts with another linear function's name because of the capitalization of the first letter.";
+	public static final String FUNCTION_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Linear function '%s' must not be declared '%s' (case insensitive)";
 	public static final String FUNCTION_NAME_FORBIDDEN_MESSAGE = "Objectives cannot be be named '%s'. Use a different name.";
 	public static final String FUNCTION_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Objective name '%s' contains underscores. Use camelCase instead.";
 	public static final String FUNCTION_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Objective '%s' should start with a lower case character.";

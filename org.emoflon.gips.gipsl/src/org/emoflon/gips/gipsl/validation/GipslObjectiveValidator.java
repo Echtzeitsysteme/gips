@@ -46,9 +46,6 @@ public class GipslObjectiveValidator {
 		// Check uniqueness of name
 		checkObjectiveNameUnique(function);
 
-		// Check capitalization uniqueness of name
-		checkObjectiveNameCapitalizationUnique(function);
-
 		// Check arithmetic expression and spool errors
 		GipslExpressionValidator.checkArithmeticExpression(function.getExpression()).forEach(err -> err.run());
 	}
@@ -102,41 +99,12 @@ public class GipslObjectiveValidator {
 
 		final EditorGTFile container = (EditorGTFile) function.eContainer();
 		final long count = container.getFunctions().stream()
-				.filter(o -> o.getName() != null && o.getName().equals(function.getName())).count();
+				.filter(o -> o.getName() != null && o.getName().toLowerCase().equals(function.getName().toLowerCase()))
+				.count();
 		if (count != 1) {
 			GipslValidator.err( //
 					String.format(GipslValidatorUtil.FUNCTION_NAME_MULTIPLE_DECLARATIONS_MESSAGE, function.getName(),
 							GipslValidator.getTimes((int) count)), //
-					GipslPackage.Literals.GIPS_LINEAR_FUNCTION__NAME, //
-					GipslValidator.NAME_EXPECT_UNIQUE //
-			);
-		}
-	}
-
-	/**
-	 * Checks if there are any other GIPSL linear functions in the specification
-	 * whose name only differs in the capitalization of the first letter. I.e., in a
-	 * given GIPSL specification, there must never be two GIPSL linear functions
-	 * whose names only differs in the capitalization of the first letter of their
-	 * names. If this case is detected, this method will create an error with a
-	 * corresponding message on said GIPSL linear functions.
-	 * 
-	 * @param function GipsLinearFunction to check name conflicts for.
-	 */
-	public static void checkObjectiveNameCapitalizationUnique(final GipsLinearFunction function) {
-		if (function == null || function.eContainer() == null) {
-			return;
-		}
-
-		final EditorGTFile container = (EditorGTFile) function.eContainer();
-
-		final long count = container.getFunctions().stream().filter(o -> o.getName() != null
-				&& GipslValidatorUtil.firstCharCapitalizationDiffers(o.getName(), function.getName())).count();
-
-		if (count > 0) {
-			GipslValidator.err( //
-					String.format(GipslValidatorUtil.FUNCTION_NAME_CAPITALIZATION_DECLARATIONS_MESSAGE,
-							function.getName()), //
 					GipslPackage.Literals.GIPS_LINEAR_FUNCTION__NAME, //
 					GipslValidator.NAME_EXPECT_UNIQUE //
 			);

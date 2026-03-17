@@ -120,6 +120,7 @@ public class GipslValidatorUtil {
 	public static final String TYPE_EXTENSION_VARIABLE_NOT_USED = "Variable '%s' is never used. No (M)ILP variable will be created for this variable.";
 
 	public static final String FUNCTION_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Objective '%s' must not be declared '%s'";
+	public static final String FUNCTION_NAME_CAPITALIZATION_DECLARATIONS_MESSAGE = "Linear function '%s's name conflicts with another linear function's name because of the capitalization of the first letter.";
 	public static final String FUNCTION_NAME_FORBIDDEN_MESSAGE = "Objectives cannot be be named '%s'. Use a different name.";
 	public static final String FUNCTION_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Objective name '%s' contains underscores. Use camelCase instead.";
 	public static final String FUNCTION_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Objective '%s' should start with a lower case character.";
@@ -284,6 +285,41 @@ public class GipslValidatorUtil {
 		}
 
 		return mappings;
+	}
+
+	/**
+	 * Checks if to given Strings, s1 and s2, only differ in the capitalization of
+	 * the first letter of their names. Two completely equal Strings will not make
+	 * this method return `true`.
+	 * 
+	 * Examples:
+	 * <ul>
+	 * <li>ab,ab -> false</li>
+	 * <li>ab,Ab -> true</li>
+	 * <li>ab,Abc -> false</li>
+	 * <li>ab,aB -> false</li>
+	 * </ul>
+	 * 
+	 * @param s1 First String to compare.
+	 * @param s2 Second String to compare.
+	 * @return True if the two given strings only differ in the capitalization of
+	 *         the first letter.
+	 */
+	public static boolean firstCharCapitalizationDiffers(final String s1, final String s2) {
+		if (s1 == s2) {
+			return false;
+		}
+
+		if (s1 == null || s2 == null) {
+			return false;
+		}
+
+		if (s1.equals(s2)) {
+			return false;
+		}
+
+		return (Character.toLowerCase(s1.charAt(0)) + s1.substring(1))
+				.equals((Character.toLowerCase(s2.charAt(0)) + s2.substring(1)));
 	}
 
 }

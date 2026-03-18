@@ -157,6 +157,11 @@ public class GipslValidatorUtil {
 	public static final String TYPE_DOES_NOT_CONTAIN_NODES = "Objects of Types/Classes do not contain nodes.";
 	public static final String TYPE_CONTAINS_ATTRIBUTES = "Only objects of Types/Classes contain attributes.";
 
+	public static final String TYPE_SELECTION_INVALID_COLLECTION = "Type selection is only supported for type collections.";
+	public static final String TYPE_SELECTION_SAME_TYPE = "Collection is already of type '%s'. Type selection can be removed.";
+	public static final String TYPE_SELECTION_IS_SUPERTYPE = "'%s' is a supertype of '%s'. Type selection can be removed.";
+	public static final String TYPE_SELECTION_UNRELATED_TYPE = "Possible incompatible type selection. %s seems to be unrelated to %s.";
+
 	public static final String SET_EXPR_CONTAINS_ERRORS = "Set expression contains errors.";
 	public static final String SET_EXPR_CONTAINS_UNKNOWNS = "Set expression contains unknown/illegal expression types.";
 	public static final String SET_OPERATION_MISSING = "Set expressions must end on an operation that reduces a set to a scalar value such as a sum operation.";
@@ -170,9 +175,9 @@ public class GipslValidatorUtil {
 	public static final String SET_JOIN_ALL_MISMATCH_PATTERN = "Set and Context do not share same Pattern or Rule, use join() instead.";
 	public static final String SET_JOIN_ALL_INVALID_TYPES = "Set and context type do not match, use join().";
 	public static final String SET_JOIN_ALL_MISSING_PATTERN = "%s has no Pattern or Rule.";
-	public static final String SET_JOIN_MISSMATCHING_TYPE_ERROR = "Incompatible operand types. %s seems to be unrelated to %s.";
+	public static final String SET_JOIN_UNRELATED_TYPE = "Incompatible operand types. %s seems to be unrelated to %s.";
 	public static final String SET_JOIN_EMPTY = "Join is empty.";
-	public static final String SET_JOIN_MISSUSE_SINGLE = "Single node comparison is only applicable for Context or Set type EClass. Use '(set node, context node)' to specify which nodes to compare.";
+	public static final String SET_JOIN_MISUSE_SINGLE = "Single node comparison is only applicable for Context or Set type EClass. Use '(set node, context node)' to specify which nodes to compare.";
 	public static final String SET_JOIN_LEFT_NODE_REF_ERROR = "Node reference was not found in Set";
 	public static final String SET_JOIN_RIGHT_NODE_REF_ERROR = "Node reference was not found in Context";
 

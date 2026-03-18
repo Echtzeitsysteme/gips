@@ -67,7 +67,7 @@ public final class GipslTypeExtensionValidator {
 		for (GipsTypeExtension typeExtension : relevantExtensions) {
 			boolean variableAlreadyDeclared = typeExtension.getVariables().stream() //
 					.filter(var -> !var.equals(variable)) //
-					.filter(var -> variable.getName().equals(var.getName())) //
+					.filter(var -> variable.getName().toLowerCase().equals(var.getName().toLowerCase())) //
 					.findAny() //
 					.isPresent();
 

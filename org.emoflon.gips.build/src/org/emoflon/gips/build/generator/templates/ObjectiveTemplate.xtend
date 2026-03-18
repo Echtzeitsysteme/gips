@@ -75,7 +75,7 @@ class ObjectiveTemplate extends ProblemGeneratorTemplate<Objective> {
 		]
 		'''
 			«FOR obj : referencedObjectives»
-				protected «data.function2functionClassName.get(obj)» «obj.name.toFirstLower»;
+				protected «data.function2functionClassName.get(obj)» «obj.name»;
 			«ENDFOR»
 		'''
 	}
@@ -85,7 +85,7 @@ class ObjectiveTemplate extends ProblemGeneratorTemplate<Objective> {
 			@Override
 			protected void initLocalObjectives() {
 				«FOR obj : referencedObjectives»
-					«obj.name.toFirstLower» = («data.function2functionClassName.get(obj)») engine.getLinearFunctions().get("«obj.name»");
+					«obj.name» = («data.function2functionClassName.get(obj)») engine.getLinearFunctions().get("«obj.name»");
 				«ENDFOR»
 			}
 		'''

@@ -99,7 +99,8 @@ public class GipslObjectiveValidator {
 
 		final EditorGTFile container = (EditorGTFile) function.eContainer();
 		final long count = container.getFunctions().stream()
-				.filter(o -> o.getName() != null && o.getName().equals(function.getName())).count();
+				.filter(o -> o.getName() != null && o.getName().toLowerCase().equals(function.getName().toLowerCase()))
+				.count();
 		if (count != 1) {
 			GipslValidator.err( //
 					String.format(GipslValidatorUtil.FUNCTION_NAME_MULTIPLE_DECLARATIONS_MESSAGE, function.getName(),

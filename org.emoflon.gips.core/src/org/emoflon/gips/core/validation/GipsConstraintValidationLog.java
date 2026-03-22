@@ -39,7 +39,7 @@ public class GipsConstraintValidationLog {
 			sb.append(event);
 			sb.append("\n");
 		}
-		return super.toString();
+		return sb.toString();
 	}
 
 }

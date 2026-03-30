@@ -2,8 +2,10 @@ package org.emoflon.gips.core;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -521,11 +523,14 @@ public abstract class GipsEngine {
 		if (print) {
 			final long tock = System.nanoTime();
 			final double duration = (1.0 * (tock - tick) / 1_000_000_000);
-			final DecimalFormat percFormat = new DecimalFormat("##.##%");
+			final DecimalFormat percFormat = new DecimalFormat("##.##%",
+					DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+			final DecimalFormat secFormat = new DecimalFormat("#.##s",
+					DecimalFormatSymbols.getInstance(Locale.ENGLISH));
 			System.out.println("Removed " + duplicatesRemoved + " redundant constraints and " + trivialRemoved
 					+ " trivial constraints out of " + constraintsOriginal + " total constraints ("
 					+ percFormat.format((1.0 * (duplicatesRemoved + trivialRemoved) / constraintsOriginal)) + ") in "
-					+ String.format("%.2f", duration) + "s.");
+					+ secFormat.format(duration) + ".");
 		}
 
 		return new RemovedConstraintsStats(constraintsOriginal, duplicatesRemoved, trivialRemoved);

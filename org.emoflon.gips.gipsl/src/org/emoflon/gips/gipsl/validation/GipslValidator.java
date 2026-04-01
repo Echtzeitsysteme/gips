@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -37,8 +38,10 @@ import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsReduceOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsSetExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeExtension;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeExtensionVariable;
+import org.emoflon.gips.gipsl.gipsl.GipsTypeSelect;
 import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
@@ -465,6 +468,60 @@ public class GipslValidator extends AbstractGipslValidator {
 					expression, //
 					GipslPackage.Literals.GIPS_SET_EXPRESSION__RIGHT //
 			);
+	}
+
+	@Check
+	public void checkTypeSelect(final GipsTypeSelect typeSelect) {
+		if (GipslValidator.DISABLE_VALIDATOR)
+			return;
+
+		if (typeSelect.eContainer() == null || typeSelect.eContainer().eContainer() == null)
+			return;
+
+		if (typeSelect.getType() == null)
+			return;
+
+		EObject setContext = GipslScopeContextUtil.getSetContext(typeSelect.eContainer().eContainer());
+
+		// preprocessing
+		if (setContext instanceof GipsAttributeExpression attributeExpression) {
+			if (attributeExpression.getAttribute() != null && attributeExpression.getAttribute().getLiteral() != null) {
+				EClass attributeType = (EClass) attributeExpression.getAttribute().getLiteral().getEType();
+				if (attributeType != null)
+					setContext = attributeType;
+			}
+		}
+
+		// type select can only be done on types!
+		if (setContext instanceof EClass eClass) {
+			if (typeSelect.getType().equals(eClass)) {
+				GipslValidator.warn( //
+						String.format(GipslValidatorUtil.TYPE_SELECTION_SAME_TYPE, typeSelect.getType().getName()), //
+						typeSelect, //
+						GipslPackage.Literals.GIPS_TYPE_SELECT__TYPE //
+				);
+			} else if (((EClass) typeSelect.getType()).isSuperTypeOf(eClass)) {
+				GipslValidator.warn( //
+						String.format(GipslValidatorUtil.TYPE_SELECTION_IS_SUPERTYPE, typeSelect.getType().getName(),
+								eClass.getName()), //
+						typeSelect, //
+						GipslPackage.Literals.GIPS_TYPE_SELECT__TYPE //
+				);
+			} else if (!eClass.isSuperTypeOf(((EClass) typeSelect.getType()))) {
+				GipslValidator.warn( //
+						String.format(GipslValidatorUtil.TYPE_SELECTION_UNRELATED_TYPE, eClass.getName(),
+								typeSelect.getType().getName()), //
+						typeSelect, //
+						GipslPackage.Literals.GIPS_TYPE_SELECT__TYPE //
+				);
+			}
+		} else if (!(setContext instanceof GipsTypeExpression || setContext instanceof GipsAttributeExpression)) {
+			GipslValidator.err( //
+					GipslValidatorUtil.TYPE_SELECTION_INVALID_COLLECTION, //
+					typeSelect, //
+					null //
+			);
+		}
 	}
 
 	@Check

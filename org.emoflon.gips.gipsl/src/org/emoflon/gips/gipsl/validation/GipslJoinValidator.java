@@ -92,7 +92,7 @@ public class GipslJoinValidator {
 			} else {
 				if (!(nodeClass.isSuperTypeOf(comparedNodeClass) || comparedNodeClass.isSuperTypeOf(nodeClass))) {
 					GipslValidator.warn( //
-							String.format(GipslValidatorUtil.SET_JOIN_MISSMATCHING_TYPE_ERROR, //
+							String.format(GipslValidatorUtil.SET_JOIN_UNRELATED_TYPE, //
 									nodeClass.getName(), //
 									comparedNodeClass.getName()), //
 							operation, //
@@ -117,7 +117,7 @@ public class GipslJoinValidator {
 				} else {
 					if (!(leftNodeClass.isSuperTypeOf(rightNodeClass) || rightNodeClass.isSuperTypeOf(leftNodeClass))) {
 						GipslValidator.warn( //
-								String.format(GipslValidatorUtil.SET_JOIN_MISSMATCHING_TYPE_ERROR, //
+								String.format(GipslValidatorUtil.SET_JOIN_UNRELATED_TYPE, //
 										leftNodeClass.getName(), //
 										rightNodeClass.getName()), //
 								selection, //

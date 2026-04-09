@@ -57,6 +57,8 @@ import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.Variable
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
+import org.emoflon.gips.build.preference.PluginPreferencePage
+import org.emoflon.gips.build.preference.PluginPreferences
 
 abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGeneratorTemplate<CONTEXT> {
 
@@ -411,7 +413,8 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 		'''
 
 		// If a return is required, use the original implementation
-		if(requiresReturn)
+		// or if the mapping indexer is disabled
+		if(requiresReturn || PluginPreferences.isMappingIndexerDisabled)
 			return original
 
 		// Else, try to use the mapping indexer implementation
@@ -455,6 +458,7 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 		imports.add("org.emoflon.gips.core.GipsMapper")
 
 		return '''
+			// Mapping Indexer
 			final GipsMapper<?> mapper = engine.getMapper("«expression.mapping.name»");
 			final GlobalMappingIndexer globalIndexer = GlobalMappingIndexer.getInstance();
 			globalIndexer.createIndexer(mapper);

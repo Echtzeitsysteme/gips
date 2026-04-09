@@ -44,9 +44,9 @@ import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
 
 class JavaReturnTypeExtractor {
 
-	static final String TYPE_DOUBLE = '''double'''
-	static final String TYPE_BOOL = '''boolean'''
-	static final String TYPE_STRING = '''String'''
+	public static final String TYPE_DOUBLE = '''double'''
+	public static final String TYPE_BOOL = '''boolean'''
+	public static final String TYPE_STRING = '''String'''
 
 	final TemplateData data
 	final ProblemGeneratorTemplate<?> genTemplate

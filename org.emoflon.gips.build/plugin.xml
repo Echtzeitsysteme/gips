@@ -13,7 +13,7 @@
             category="org.emoflon.gips.gipsl.Gipsl"
             class="org.emoflon.gips.build.preference.PluginPreferencePage"
             id="org.emoflon.gips.build.page1"
-            name="Code Generation">
+            name="Code Generator">
       </page>
    </extension>
    <extension

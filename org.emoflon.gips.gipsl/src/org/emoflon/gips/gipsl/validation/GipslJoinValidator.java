@@ -152,7 +152,7 @@ public class GipslJoinValidator {
 				&& localContext instanceof GipsMapping mapping) {
 			if (mappingExpression.getMapping().equals(mapping)) {
 				return; // okay!
-			} // Otherwise, check if local and set the pattern match!! (below)
+			} // Otherwise, check if local and set pattern match!! (below)
 
 		} else if (setContext instanceof GipsRuleExpression ruleExpression
 				&& localContext instanceof EditorPattern pattern) {

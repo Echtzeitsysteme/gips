@@ -182,10 +182,21 @@ public class BooleanExpressionTransformer extends TransformationContext {
 		EObject localContext = GipslScopeContextUtil.getLocalContext(eJoinAll);
 		EObject setContext = GipslScopeContextUtil.getSetContext(eJoinAll);
 
-		if (setContext instanceof GipsMappingExpression && localContext instanceof GipsMapping || //
-				setContext instanceof GipsRuleExpression && localContext instanceof EditorPattern || //
+		boolean doEqualCheck = false;
+		if (setContext instanceof GipsRuleExpression && localContext instanceof EditorPattern || //
 				setContext instanceof GipsPatternExpression && localContext instanceof EditorPattern || //
 				setContext instanceof GipsTypeExpression && localContext instanceof EClass) {
+
+			doEqualCheck = true;
+
+		} else if (setContext instanceof GipsMappingExpression mappingExp
+				&& localContext instanceof GipsMapping mapping) {
+
+			doEqualCheck = mappingExp.getMapping().equals(mapping);
+
+		}
+
+		if (doEqualCheck) {
 			// -> element == context
 			ContextReference lhs = factory.createContextReference();
 			lhs.setLocal(false);
@@ -201,6 +212,8 @@ public class BooleanExpressionTransformer extends TransformationContext {
 			// element == context
 			return relation;
 		}
+
+		// Validator ensures that both sides use the same pattern or rule
 
 		EditorPattern patternRef = GipslScopeContextUtil.getPatternOrRuleOf(localContext);
 		Collection<EditorNode> nodes = GipslScopeContextUtil.getNonCreatedEditorNodes(patternRef);

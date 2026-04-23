@@ -14,18 +14,18 @@ import org.emoflon.gips.gipsl.special.AbstractPatternMatcher;
  * 
  * Input:
  * <ul>
- * <li>A <= 1 <-> B == 1
- * <li>1 >= A <-> B == 1
- * <li>A <= 1 <-> 1 == B
- * <li>1 >= A <-> 1 == B
- * <li>B == 1 <-> A <= 1
- * <li>B == 1 <-> 1 >= A
- * <li>1 == B <-> A <= 1
- * <li>1 == B <-> 1 >= A
+ * <li>A == 0 <-> B == 1
+ * <li>A == 0 <-> 1 == B
+ * <li>0 == A <-> B == 1
+ * <li>0 == A <-> 1 == B
+ * <li>B == 1 <-> A == 0
+ * <li>B == 1 <-> 0 == A
+ * <li>1 == B <-> A == 0
+ * <li>1 == B <-> 0 == A
  * </ul>
  * 
  */
-public class EquivalenceShortcutA extends AbstractPatternMatcher {
+public class EquivalenceShortcutC extends AbstractPatternMatcher {
 
 	public GipsArithmeticExpression nodeA;
 	public GipsArithmeticExpression nodeB;
@@ -65,16 +65,14 @@ public class EquivalenceShortcutA extends AbstractPatternMatcher {
 	}
 
 	private void matchNodeA(GipsRelationalExpression relational) {
-		if (relational.getOperator() == RelationalOperator.GREATER_OR_EQUAL) {
+		if (relational.getOperator() == RelationalOperator.EQUAL) {
 			if (skipBrackets(relational.getLeft()) instanceof GipsValueExpression exp
 					&& skipBrackets(relational.getRight()) instanceof GipsArithmeticLiteral literal
-					&& "1".equals(literal.getValue())) {
+					&& "0".equals(literal.getValue())) {
 				nodeA = exp;
-			}
-		} else if (relational.getOperator() == RelationalOperator.SMALLER_OR_EQUAL) {
-			if (skipBrackets(relational.getRight()) instanceof GipsValueExpression exp
+			} else if (skipBrackets(relational.getRight()) instanceof GipsValueExpression exp
 					&& skipBrackets(relational.getLeft()) instanceof GipsArithmeticLiteral literal
-					&& "1".equals(literal.getValue())) {
+					&& "0".equals(literal.getValue())) {
 				nodeA = exp;
 			}
 		}

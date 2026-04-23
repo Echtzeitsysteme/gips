@@ -12,7 +12,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
 import org.emoflon.gips.gipsl.gipsl.ImplicationOperator;
 import org.emoflon.gips.gipsl.gipsl.RelationalOperator;
-import org.emoflon.gips.gipsl.special.AbstractPatternFinder;
+import org.emoflon.gips.gipsl.special.AbstractPatternMatcher;
 import org.emoflon.gips.gipsl.special.MultiPatternHelper;
 import org.emoflon.gips.gipsl.special.MultiPatternHelper.SearchType;
 
@@ -22,13 +22,8 @@ import org.emoflon.gips.gipsl.special.MultiPatternHelper.SearchType;
  * <li>A == 1 <-> B == 1 (& C == 1 & D == 1 & ...)
  * </ul>
  * 
- * With:
- * <ul>
- * <li>A in [0, 1]
- * <li>B in [0, 1]
- * </ul>
  */
-public class EquivalenceShortcutB extends AbstractPatternFinder {
+public class EquivalenceShortcutB extends AbstractPatternMatcher {
 
 	public GipsArithmeticExpression nodeA;
 	public List<GipsArithmeticExpression> otherNodes = new ArrayList<>();;
@@ -43,7 +38,7 @@ public class EquivalenceShortcutB extends AbstractPatternFinder {
 	}
 
 	@Override
-	public void findPattern(GipsBooleanExpression expression) {
+	public void tryMatchPattern(GipsBooleanExpression expression) {
 		if (!(expression instanceof GipsBooleanImplication implication))
 			return;
 

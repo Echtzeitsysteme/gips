@@ -2,8 +2,8 @@ package org.emoflon.gips.gipsl.special;
 
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanExpression;
 
-public interface PatternFinder {
+public interface PatternMatcher {
 
-	boolean tryToFindPattern(GipsBooleanExpression expression);
+	boolean matchPattern(GipsBooleanExpression expression);
 
 }

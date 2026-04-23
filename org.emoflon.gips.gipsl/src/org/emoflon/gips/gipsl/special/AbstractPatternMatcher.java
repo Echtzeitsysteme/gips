@@ -3,7 +3,7 @@ package org.emoflon.gips.gipsl.special;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanBracket;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanExpression;
 
-public abstract class AbstractPatternFinder implements PatternFinder {
+public abstract class AbstractPatternMatcher implements PatternMatcher {
 
 	protected static GipsBooleanExpression skipBrackets(GipsBooleanExpression expression) {
 		if (expression instanceof GipsBooleanBracket bracket)
@@ -11,9 +11,9 @@ public abstract class AbstractPatternFinder implements PatternFinder {
 		return expression;
 	}
 
-	public final boolean tryToFindPattern(GipsBooleanExpression expression) {
+	public final boolean matchPattern(GipsBooleanExpression expression) {
 		resetMatch();
-		findPattern(expression);
+		tryMatchPattern(expression);
 		return hasMatch();
 	}
 
@@ -22,7 +22,7 @@ public abstract class AbstractPatternFinder implements PatternFinder {
 			resetMatch();
 	}
 
-	protected abstract void findPattern(GipsBooleanExpression expression);
+	protected abstract void tryMatchPattern(GipsBooleanExpression expression);
 
 	protected abstract void resetMatch();
 

@@ -24,5 +24,11 @@ public class PluginPreferencePage extends FieldEditorPreferencePage implements I
 				"The indexer can build a look-up table for a trivial filter expression (e.g. node equals another node), which greatly accelerates the build process when such expressions are used with a large model.");
 		addField(mappingIndexer);
 
+		var bigMValue = new DoubleFieldEditor(PluginPreferences.PREF_GIPSL_BIGM, "GIPSL Big M Value",
+				getFieldEditorParent());
+		bigMValue.getLabelControl(getFieldEditorParent()).setToolTipText("TODO");
+		bigMValue.setValidRange(1, Double.MAX_VALUE);
+		addField(bigMValue);
+
 	}
 }

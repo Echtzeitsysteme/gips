@@ -127,6 +127,8 @@
   <eClassifiers xsi:type="ecore:EEnum" name="ImplicationOperator">
     <eLiterals name="IMPLICATION" literal="=>"/>
     <eLiterals name="EQUIVALENCE" value="1" literal="&lt;=>"/>
+    <eLiterals name="SC_IMPLICATION" value="2" literal="==>"/>
+    <eLiterals name="SC_EQUIVALENCE" value="3" literal="&lt;==>"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="DisjunctionOperator">
     <eLiterals name="OR" literal="|"/>

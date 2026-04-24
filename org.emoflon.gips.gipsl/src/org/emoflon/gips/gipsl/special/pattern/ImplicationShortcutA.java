@@ -20,9 +20,6 @@ import org.emoflon.gips.gipsl.special.AbstractPatternMatcher;
  * Input:
  * <ul>
  * <li>A == 1 -> B == 1
- * <li>A == 1 -> 1 == B
- * <li>1 == A -> B == 1
- * <li>1 == A -> 1 == B
  * </ul>
  * 
  */

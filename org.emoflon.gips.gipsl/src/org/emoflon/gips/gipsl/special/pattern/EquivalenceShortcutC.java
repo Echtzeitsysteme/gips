@@ -22,7 +22,7 @@ import org.emoflon.gips.gipsl.special.PatternHelper.JunctionType;
 /**
  * Matches:
  * <ul>
- * <li>A == 1 <-> B == 1 (| C == 1 | D == 1 | ...)
+ * <li>A == 1 <-> B == 1 | C == 1 (| D == 1 | ...)
  * </ul>
  * 
  */
@@ -37,7 +37,7 @@ public class EquivalenceShortcutC extends AbstractPatternMatcher {
 	}
 
 	protected boolean hasMatch() {
-		return nodeA != null && !otherNodes.isEmpty();
+		return nodeA != null && otherNodes.size() >= 2;
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class EquivalenceShortcutC extends AbstractPatternMatcher {
 	}
 
 	private void matchNodeA(GipsBooleanExpression expression, String expectedConstant) {
-		if (!(expression instanceof GipsRelationalExpression relational))
+		if (!(skipBrackets(expression) instanceof GipsRelationalExpression relational))
 			return;
 
 		if (relational.getOperator() == RelationalOperator.EQUAL) {
@@ -108,7 +108,7 @@ public class EquivalenceShortcutC extends AbstractPatternMatcher {
 
 	@Override
 	public Collection<String> patterns() {
-		return Collections.singleton("A == 1 <-> B == 1 (| C == 1 | ...)");
+		return Collections.singleton("A == 1 <-> B == 1 | C == 1 (| ...)");
 	}
 
 }

@@ -52,7 +52,7 @@ public class EquivalenceShortcutA extends AbstractPatternMatcher {
 		if (!hasMatch()) { // A <-> B ...
 			matchNodeA(implication.getLeft(), "1");
 			if (nodeA != null)
-				matchOtherSide(implication.getLeft(), "1");
+				matchOtherSide(implication.getRight(), "1");
 
 			clearPartialMatch();
 		}
@@ -67,7 +67,7 @@ public class EquivalenceShortcutA extends AbstractPatternMatcher {
 	}
 
 	private void matchNodeA(GipsBooleanExpression expression, String expectedConstant) {
-		if (!(expression instanceof GipsRelationalExpression relational))
+		if (!(skipBrackets(expression) instanceof GipsRelationalExpression relational))
 			return;
 
 		if (relational.getOperator() == RelationalOperator.GREATER_OR_EQUAL) {

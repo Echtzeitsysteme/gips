@@ -45,7 +45,7 @@ public class GipslBooleanImplicationValidator {
 			expectedPatterns.addAll(pattern.patterns());
 		String list = String.join("\n", expectedPatterns);
 
-		GipslValidator.warn( //
+		GipslValidator.err( //
 				String.format(GipslValidatorUtil.IMPLICATION_SHORTCUT_NO_MATCH, list), //
 				implication, //
 				null //

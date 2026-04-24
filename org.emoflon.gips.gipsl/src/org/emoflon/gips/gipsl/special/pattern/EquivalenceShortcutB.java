@@ -1,7 +1,11 @@
 package org.emoflon.gips.gipsl.special.pattern;
 
+import static org.emoflon.gips.gipsl.special.PatternHelper.searchBooleanTree;
+import static org.emoflon.gips.gipsl.special.PatternHelper.skipBrackets;
+
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpression;
@@ -13,11 +17,10 @@ import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
 import org.emoflon.gips.gipsl.gipsl.ImplicationOperator;
 import org.emoflon.gips.gipsl.gipsl.RelationalOperator;
 import org.emoflon.gips.gipsl.special.AbstractPatternMatcher;
-import org.emoflon.gips.gipsl.special.MultiPatternHelper;
-import org.emoflon.gips.gipsl.special.MultiPatternHelper.SearchType;
+import org.emoflon.gips.gipsl.special.PatternHelper.JunctionType;
 
 /**
- * Input:
+ * Matches:
  * <ul>
  * <li>A == 1 <-> B == 1 (& C == 1 & D == 1 & ...)
  * </ul>
@@ -45,21 +48,41 @@ public class EquivalenceShortcutB extends AbstractPatternMatcher {
 		if (implication.getOperator() != ImplicationOperator.SC_EQUIVALENCE)
 			return;
 
-		List<GipsArithmeticExpression> matchesLeft = new LinkedList<>();
-		List<GipsArithmeticExpression> matchesRight = new LinkedList<>();
-
-		MultiPatternHelper.searchExpressionTree(implication.getLeft(), SearchType.Conjunction, matchesLeft,
-				(r, m) -> checkForMatch(r, m, "1"));
-		MultiPatternHelper.searchExpressionTree(implication.getRight(), SearchType.Conjunction, matchesRight,
-				(r, m) -> checkForMatch(r, m, "1"));
-
-		if (matchesLeft.size() == 1 && matchesRight.size() >= 1) {
-			nodeA = matchesLeft.get(0);
-			otherNodes.addAll(matchesRight);
-		} else if (matchesRight.size() == 1 && matchesLeft.size() >= 1) {
-			nodeA = matchesRight.get(0);
-			otherNodes.addAll(matchesLeft);
+		if (!hasMatch()) { // A <-> B ...
+			matchNodeA(implication.getLeft(), "1");
+			if (nodeA != null)
+				matchOtherSide(implication.getRight(), "1");
+			clearPartialMatch();
 		}
+
+		if (!hasMatch()) { // B ... <-> A
+			matchNodeA(implication.getRight(), "1");
+			if (nodeA != null)
+				matchOtherSide(implication.getLeft(), "1");
+			clearPartialMatch();
+		}
+	}
+
+	private void matchNodeA(GipsBooleanExpression expression, String expectedConstant) {
+		if (!(expression instanceof GipsRelationalExpression relational))
+			return;
+
+		if (relational.getOperator() == RelationalOperator.EQUAL) {
+			if (skipBrackets(relational.getLeft()) instanceof GipsValueExpression exp
+					&& skipBrackets(relational.getRight()) instanceof GipsArithmeticLiteral literal
+					&& expectedConstant.equals(literal.getValue())) {
+				nodeA = exp;
+			} else if (skipBrackets(relational.getRight()) instanceof GipsValueExpression exp
+					&& skipBrackets(relational.getLeft()) instanceof GipsArithmeticLiteral literal
+					&& expectedConstant.equals(literal.getValue())) {
+				nodeA = exp;
+			}
+		}
+	}
+
+	private void matchOtherSide(GipsBooleanExpression expression, String expectedConstant) {
+		searchBooleanTree(expression, JunctionType.Conjunction, otherNodes,
+				(r, m) -> checkForMatch(r, m, expectedConstant));
 	}
 
 	private void checkForMatch(GipsRelationalExpression expression, List<GipsArithmeticExpression> matches,
@@ -81,6 +104,11 @@ public class EquivalenceShortcutB extends AbstractPatternMatcher {
 			matches.add(exp);
 
 		}
+	}
+
+	@Override
+	public Collection<String> patterns() {
+		return Collections.singleton("A == 1 <-> B == 1 (& C == 1 & ...)");
 	}
 
 }

@@ -525,6 +525,11 @@ public class GipslValidator extends AbstractGipslValidator {
 	}
 
 	@Check
+	public void checkBooleanImplicationShortcut(GipsBooleanImplication implication) {
+		GipslBooleanImplicationValidator.checkBooleanImplicationShortcut(implication);
+	}
+
+	@Check
 	public void checkJoinOperation(final GipsJoinBySelectionOperation operation) {
 		GipslJoinValidator.checkJoinOperation(operation);
 	}

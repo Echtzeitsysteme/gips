@@ -9,8 +9,8 @@ import org.emoflon.gips.gipsl.gipsl.GipsBooleanDisjunction;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
 
-public final class MultiPatternHelper {
-	private MultiPatternHelper() {
+public final class PatternHelper {
+	private PatternHelper() {
 	}
 
 	@FunctionalInterface
@@ -18,26 +18,26 @@ public final class MultiPatternHelper {
 		void checkAndAddMatch(GipsRelationalExpression relational, List<GipsArithmeticExpression> matches);
 	}
 
-	public static enum SearchType {
+	public static enum JunctionType {
 		Conjunction, Disjunction
 	}
 
-	public static void searchExpressionTree(GipsBooleanExpression expression, SearchType searchType,
+	public static void searchBooleanTree(GipsBooleanExpression expression, JunctionType followType,
 			List<GipsArithmeticExpression> matches, CheckForMatch checkForMatch) {
 
 		var prevMatches = matches.size();
 
 		switch (expression) {
 		case GipsBooleanBracket bracket:
-			searchExpressionTree(bracket.getOperand(), searchType, matches, checkForMatch);
+			searchBooleanTree(bracket.getOperand(), followType, matches, checkForMatch);
 			break;
-		case GipsBooleanConjunction conjunction when searchType == SearchType.Conjunction:
-			searchExpressionTree(conjunction.getLeft(), searchType, matches, checkForMatch);
-			searchExpressionTree(conjunction.getRight(), searchType, matches, checkForMatch);
+		case GipsBooleanConjunction conjunction when followType == JunctionType.Conjunction:
+			searchBooleanTree(conjunction.getLeft(), followType, matches, checkForMatch);
+			searchBooleanTree(conjunction.getRight(), followType, matches, checkForMatch);
 			break;
-		case GipsBooleanDisjunction disjunction when searchType == SearchType.Disjunction:
-			searchExpressionTree(disjunction.getLeft(), searchType, matches, checkForMatch);
-			searchExpressionTree(disjunction.getRight(), searchType, matches, checkForMatch);
+		case GipsBooleanDisjunction disjunction when followType == JunctionType.Disjunction:
+			searchBooleanTree(disjunction.getLeft(), followType, matches, checkForMatch);
+			searchBooleanTree(disjunction.getRight(), followType, matches, checkForMatch);
 			break;
 		case GipsRelationalExpression relational:
 			checkForMatch.checkAndAddMatch(relational, matches);
@@ -52,6 +52,12 @@ public final class MultiPatternHelper {
 		if (prevMatches >= matches.size())
 			matches.clear();
 
+	}
+
+	public static GipsBooleanExpression skipBrackets(GipsBooleanExpression expression) {
+		if (expression instanceof GipsBooleanBracket bracket)
+			return skipBrackets(bracket.getOperand());
+		return expression;
 	}
 
 }

@@ -36,7 +36,7 @@ public final class GeneratorUtil {
 		element.setOperator(ConjunctionOperator.AND);
 		element.setLeft(lhs);
 		element.setRight(rhs);
-		return null;
+		return element;
 	}
 
 	public static GipsBooleanExpression conjunction(GipslFactory factory, List<GipsBooleanExpression> expressions) {

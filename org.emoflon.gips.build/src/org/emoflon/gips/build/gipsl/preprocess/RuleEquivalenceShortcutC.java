@@ -61,9 +61,9 @@ public class RuleEquivalenceShortcutC implements PreprocessorRule {
 
 		// B + C (+ D + ...) <= A*n
 		var conjunctTwo = factory.createGipsRelationalExpression();
-		conjunctOne.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
-		conjunctOne.setLeft(EcoreUtil.copy(sum));
-		conjunctOne.setRight(product);
+		conjunctTwo.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
+		conjunctTwo.setLeft(EcoreUtil.copy(sum));
+		conjunctTwo.setRight(product);
 
 		return GeneratorUtil.conjunction(factory, conjunctOne, conjunctTwo);
 	}

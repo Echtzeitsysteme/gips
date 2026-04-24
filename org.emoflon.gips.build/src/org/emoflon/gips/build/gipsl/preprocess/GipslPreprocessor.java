@@ -22,13 +22,8 @@ public class GipslPreprocessor {
 			new RuleEquivalenceShortcutA(), //
 			new RuleEquivalenceShortcutB(), //
 			new RuleEquivalenceShortcutC(), //
-
-			new RuleImplicationShortcutA(), //
-
-			// Replace unresolved shortcuts with their base version
-			new RuleEquivalenceShortcutRemover(), //
-			new RuleImplicationShortcutRemover() //
-	};
+			new RuleEquivalenceShortcutD(), //
+			new RuleImplicationShortcutA() };
 
 	private final GipslFactory factory;
 

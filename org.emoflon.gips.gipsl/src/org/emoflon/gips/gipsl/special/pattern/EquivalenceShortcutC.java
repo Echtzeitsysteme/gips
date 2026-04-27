@@ -29,7 +29,7 @@ import org.emoflon.gips.gipsl.special.PatternHelper.JunctionType;
 public class EquivalenceShortcutC extends AbstractPatternMatcher {
 
 	public GipsArithmeticExpression nodeA;
-	public List<GipsArithmeticExpression> otherNodes = new ArrayList<>();;
+	public List<GipsArithmeticExpression> otherNodes = new ArrayList<>();
 
 	protected void resetMatch() {
 		nodeA = null;

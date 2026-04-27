@@ -24,99 +24,141 @@ public final class GeneratorUtil {
 		return literal;
 	}
 
-	public static GipsBooleanExpression conjunction(GipslFactory factory, GipsBooleanExpression lhs,
-			GipsBooleanExpression rhs) {
+	public static GipsBooleanExpression conjunction(GipslFactory factory, GipsBooleanExpression... conjuncts) {
+		if (conjuncts.length == 0)
+			return null;
 
-		if (lhs == null)
-			return rhs;
-		if (rhs == null)
-			return lhs;
+		if (conjuncts.length == 1)
+			return conjuncts[0];
 
-		GipsBooleanConjunction element = factory.createGipsBooleanConjunction();
-		element.setOperator(ConjunctionOperator.AND);
-		element.setLeft(lhs);
-		element.setRight(rhs);
-		return element;
+		// join all pairings
+		GipsBooleanConjunction root = factory.createGipsBooleanConjunction();
+		root.setOperator(ConjunctionOperator.AND);
+		root.setLeft(conjuncts[0]);
+
+		GipsBooleanConjunction chain = root;
+		for (int i = 1; i < conjuncts.length - 1; ++i) {
+			GipsBooleanConjunction tmp = factory.createGipsBooleanConjunction();
+			tmp.setOperator(ConjunctionOperator.AND);
+			tmp.setLeft(conjuncts[i]);
+			chain.setRight(tmp);
+			chain = tmp;
+		}
+
+		chain.setRight(conjuncts[conjuncts.length - 1]);
+
+		return root;
 	}
 
 	public static GipsBooleanExpression conjunction(GipslFactory factory, List<GipsBooleanExpression> expressions) {
-		if (expressions.size() == 0) {
+		if (expressions.size() == 0)
 			return null;
-		} else if (expressions.size() == 1) {
+
+		if (expressions.size() == 1)
 			return expressions.getFirst();
-		} else {
-			// join all pairings
-			GipsBooleanConjunction root = factory.createGipsBooleanConjunction();
-			root.setOperator(ConjunctionOperator.AND);
-			root.setLeft(expressions.getFirst());
 
-			GipsBooleanConjunction chain = root;
-			for (int i = 1; i < expressions.size() - 1; ++i) {
-				GipsBooleanConjunction tmp = factory.createGipsBooleanConjunction();
-				tmp.setOperator(ConjunctionOperator.AND);
-				tmp.setLeft(expressions.get(i));
-				chain.setRight(tmp);
-				chain = tmp;
-			}
+		// join all pairings
+		GipsBooleanConjunction root = factory.createGipsBooleanConjunction();
+		root.setOperator(ConjunctionOperator.AND);
+		root.setLeft(expressions.getFirst());
 
-			chain.setRight(expressions.getLast());
-
-			return root;
+		GipsBooleanConjunction chain = root;
+		for (int i = 1; i < expressions.size() - 1; ++i) {
+			GipsBooleanConjunction tmp = factory.createGipsBooleanConjunction();
+			tmp.setOperator(ConjunctionOperator.AND);
+			tmp.setLeft(expressions.get(i));
+			chain.setRight(tmp);
+			chain = tmp;
 		}
+
+		chain.setRight(expressions.getLast());
+
+		return root;
+
 	}
 
-	public static GipsBooleanExpression conjunction(GipslFactory factory, DisjunctionOperator operator,
+	public static GipsBooleanExpression disjunction(GipslFactory factory, DisjunctionOperator operator,
 			List<GipsBooleanExpression> expressions) {
-		if (expressions.size() == 0) {
+		if (expressions.size() == 0)
 			return null;
-		} else if (expressions.size() == 1) {
+
+		if (expressions.size() == 1)
 			return expressions.getFirst();
-		} else {
-			// join all pairings
-			GipsBooleanDisjunction root = factory.createGipsBooleanDisjunction();
-			root.setOperator(operator);
-			root.setLeft(expressions.getFirst());
 
-			GipsBooleanDisjunction chain = root;
-			for (int i = 1; i < expressions.size() - 1; ++i) {
-				GipsBooleanDisjunction tmp = factory.createGipsBooleanDisjunction();
-				tmp.setOperator(operator);
-				tmp.setLeft(expressions.get(i));
-				chain.setRight(tmp);
-				chain = tmp;
-			}
+		// join all pairings
+		GipsBooleanDisjunction root = factory.createGipsBooleanDisjunction();
+		root.setOperator(operator);
+		root.setLeft(expressions.getFirst());
 
-			chain.setRight(expressions.getLast());
-
-			return root;
+		GipsBooleanDisjunction chain = root;
+		for (int i = 1; i < expressions.size() - 1; ++i) {
+			GipsBooleanDisjunction tmp = factory.createGipsBooleanDisjunction();
+			tmp.setOperator(operator);
+			tmp.setLeft(expressions.get(i));
+			chain.setRight(tmp);
+			chain = tmp;
 		}
+
+		chain.setRight(expressions.getLast());
+
+		return root;
+
+	}
+
+	public static GipsArithmeticExpression sum(GipslFactory factory, GipsSumOperator operator,
+			GipsArithmeticExpression... expressions) {
+
+		if (expressions.length == 0)
+			return null;
+
+		if (expressions.length == 1)
+			return expressions[0];
+
+		GipsArithmeticSum root = factory.createGipsArithmeticSum();
+		root.setOperator(operator);
+		root.setLeft(expressions[0]);
+
+		GipsArithmeticSum chain = root;
+		for (int i = 1; i < expressions.length - 1; ++i) {
+			GipsArithmeticSum tmp = factory.createGipsArithmeticSum();
+			tmp.setOperator(operator);
+			tmp.setLeft(expressions[i]);
+			chain.setRight(tmp);
+			chain = tmp;
+		}
+
+		chain.setRight(expressions[expressions.length - 1]);
+
+		return root;
+
 	}
 
 	public static GipsArithmeticExpression sum(GipslFactory factory, GipsSumOperator operator,
 			List<GipsArithmeticExpression> expressions) {
-		if (expressions.size() == 0) {
+		if (expressions.size() == 0)
 			return null;
-		} else if (expressions.size() == 1) {
+
+		if (expressions.size() == 1)
 			return expressions.getFirst();
-		} else {
-			// join all pairings
-			GipsArithmeticSum root = factory.createGipsArithmeticSum();
-			root.setOperator(operator);
-			root.setLeft(expressions.getFirst());
 
-			GipsArithmeticSum chain = root;
-			for (int i = 1; i < expressions.size() - 1; ++i) {
-				GipsArithmeticSum tmp = factory.createGipsArithmeticSum();
-				tmp.setOperator(operator);
-				tmp.setLeft(expressions.get(i));
-				chain.setRight(tmp);
-				chain = tmp;
-			}
+		// join all pairings
+		GipsArithmeticSum root = factory.createGipsArithmeticSum();
+		root.setOperator(operator);
+		root.setLeft(expressions.getFirst());
 
-			chain.setRight(expressions.getLast());
-
-			return root;
+		GipsArithmeticSum chain = root;
+		for (int i = 1; i < expressions.size() - 1; ++i) {
+			GipsArithmeticSum tmp = factory.createGipsArithmeticSum();
+			tmp.setOperator(operator);
+			tmp.setLeft(expressions.get(i));
+			chain.setRight(tmp);
+			chain = tmp;
 		}
+
+		chain.setRight(expressions.getLast());
+
+		return root;
+
 	}
 
 }

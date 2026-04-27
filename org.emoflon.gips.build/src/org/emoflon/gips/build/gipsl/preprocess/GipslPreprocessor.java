@@ -53,6 +53,7 @@ public class GipslPreprocessor {
 	}
 
 	private GipsBooleanExpression tryToApplyRules(GipsBooleanExpression expression) {
+		// depth first
 		var newExpression = switch (expression) {
 		case GipsBooleanImplication implication -> tryExpand(implication);
 		case GipsBooleanConjunction conjunction -> tryExpand(conjunction);
@@ -65,8 +66,10 @@ public class GipslPreprocessor {
 		default -> throw new IllegalArgumentException("Unexpected value: " + expression);
 		};
 
-		if (newExpression != null)
-			expression = newExpression;
+		if (newExpression != null) {
+			var replacement = tryAllRules(newExpression);
+			return replacement != null ? replacement : newExpression;
+		}
 
 		return tryAllRules(expression);
 	}
@@ -74,7 +77,7 @@ public class GipslPreprocessor {
 	private GipsBooleanExpression tryExpand(GipsBooleanImplication expression) {
 		var newLeft = tryToApplyRules(expression.getLeft());
 		var newRight = tryToApplyRules(expression.getRight());
-		if (newLeft == null || newRight == null)
+		if (newLeft == null && newRight == null)
 			return null;
 
 		var newExpression = factory.createGipsBooleanImplication();
@@ -87,7 +90,7 @@ public class GipslPreprocessor {
 	private GipsBooleanExpression tryExpand(GipsBooleanConjunction expression) {
 		var newLeft = tryToApplyRules(expression.getLeft());
 		var newRight = tryToApplyRules(expression.getRight());
-		if (newLeft == null || newRight == null)
+		if (newLeft == null && newRight == null)
 			return null;
 
 		var newExpression = factory.createGipsBooleanConjunction();
@@ -99,7 +102,7 @@ public class GipslPreprocessor {
 	private GipsBooleanExpression tryExpand(GipsBooleanDisjunction expression) {
 		var newLeft = tryToApplyRules(expression.getLeft());
 		var newRight = tryToApplyRules(expression.getRight());
-		if (newLeft == null || newRight == null)
+		if (newLeft == null && newRight == null)
 			return null;
 
 		var newExpression = factory.createGipsBooleanDisjunction();

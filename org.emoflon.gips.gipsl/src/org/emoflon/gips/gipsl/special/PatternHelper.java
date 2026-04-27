@@ -42,6 +42,7 @@ public final class PatternHelper {
 		case GipsRelationalExpression relational:
 			checkForMatch.checkAndAddMatch(relational, matches);
 			break;
+		case null: // sometimes the AST is not complete
 		default:
 			// non-matching element
 			matches.clear();

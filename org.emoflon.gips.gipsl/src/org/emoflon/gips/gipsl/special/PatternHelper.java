@@ -2,7 +2,6 @@ package org.emoflon.gips.gipsl.special;
 
 import java.util.List;
 
-import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanBracket;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanConjunction;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanDisjunction;
@@ -14,16 +13,16 @@ public final class PatternHelper {
 	}
 
 	@FunctionalInterface
-	public static interface CheckForMatch {
-		void checkAndAddMatch(GipsRelationalExpression relational, List<GipsArithmeticExpression> matches);
+	public static interface CheckForMatch<M> {
+		void checkAndAddMatch(GipsRelationalExpression relational, List<M> matches);
 	}
 
 	public static enum JunctionType {
 		Conjunction, Disjunction
 	}
 
-	public static void searchBooleanTree(GipsBooleanExpression expression, JunctionType followType,
-			List<GipsArithmeticExpression> matches, CheckForMatch checkForMatch) {
+	public static <M> void searchBooleanTree(GipsBooleanExpression expression, JunctionType followType, List<M> matches,
+			CheckForMatch<M> checkForMatch) {
 
 		var prevMatches = matches.size();
 

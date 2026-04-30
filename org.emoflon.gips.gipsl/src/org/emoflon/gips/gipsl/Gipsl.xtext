@@ -140,7 +140,9 @@ GipsBooleanBracket returns GipsBooleanExpression: {GipsBooleanBracket}
 
 enum ImplicationOperator:
   IMPLICATION='=>' |
-  EQUIVALENCE='<=>'
+  EQUIVALENCE='<=>' |
+  SC_IMPLICATION = '==>' |
+  SC_EQUIVALENCE = '<==>'
 ;
 
 enum DisjunctionOperator:

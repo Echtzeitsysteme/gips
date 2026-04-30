@@ -126,7 +126,7 @@ public class GipslOperatorValidator {
 	 * @return Warning String for the given SolverType and operator name.
 	 */
 	private static String generateWarningString(final SolverType solverType, final String operatorName) {
-		return "The solver " + solverType.getName() + " might lack the necessary precistion to support the operator "
+		return "The solver " + solverType.getName() + " might lack the necessary precision to support the operator "
 				+ operatorName + " correctly. Use with caution.";
 	}
 

@@ -23,6 +23,9 @@ public class GipslJoinValidator {
 	}
 
 	public static void checkJoinOperation(final GipsJoinBySelectionOperation operation) {
+		if (GipslValidator.DISABLE_VALIDATOR)
+			return;
+
 		if (operation == null)
 			return;
 

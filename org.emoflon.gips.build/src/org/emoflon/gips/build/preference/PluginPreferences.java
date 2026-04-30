@@ -37,11 +37,17 @@ public class PluginPreferences {
 	 */
 	public static final String PREF_GIPSL_MAPPING_INDEXER = "PREF_GIPSL_MAPPING_INDEXER";
 
+	public static final String PREF_GIPSL_BIGM = "PREF_GIPSL_BIGM";
+
 	public static boolean isMappingIndexerEnabled() {
 		return getPreferenceStore().getBoolean(PREF_GIPSL_MAPPING_INDEXER);
 	}
 
 	public static boolean isMappingIndexerDisabled() {
 		return !isMappingIndexerEnabled();
+	}
+
+	public static double getBigMValue() {
+		return getPreferenceStore().getDouble(PREF_GIPSL_BIGM);
 	}
 }

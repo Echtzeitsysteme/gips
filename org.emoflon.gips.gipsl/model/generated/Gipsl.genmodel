@@ -24,6 +24,8 @@
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//ImplicationOperator">
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//ImplicationOperator/IMPLICATION"/>
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//ImplicationOperator/EQUIVALENCE"/>
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//ImplicationOperator/SC_IMPLICATION"/>
+      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//ImplicationOperator/SC_EQUIVALENCE"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//DisjunctionOperator">
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//DisjunctionOperator/OR"/>

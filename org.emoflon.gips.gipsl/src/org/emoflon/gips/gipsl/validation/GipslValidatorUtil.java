@@ -162,6 +162,8 @@ public class GipslValidatorUtil {
 	public static final String TYPE_SELECTION_IS_SUPERTYPE = "'%s' is a supertype of '%s'. Type selection can be removed.";
 	public static final String TYPE_SELECTION_UNRELATED_TYPE = "Possible incompatible type selection. %s seems to be unrelated to %s.";
 
+	public static final String IMPLICATION_SHORTCUT_NO_MATCH = "Implication does not match any known shortcut patterns. Try using one of the following patterns:\n%s";
+
 	public static final String SET_EXPR_CONTAINS_ERRORS = "Set expression contains errors.";
 	public static final String SET_EXPR_CONTAINS_UNKNOWNS = "Set expression contains unknown/illegal expression types.";
 	public static final String SET_OPERATION_MISSING = "Set expressions must end on an operation that reduces a set to a scalar value such as a sum operation.";

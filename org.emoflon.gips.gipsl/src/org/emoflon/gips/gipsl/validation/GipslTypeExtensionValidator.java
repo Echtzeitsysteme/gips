@@ -17,6 +17,9 @@ public final class GipslTypeExtensionValidator {
 	}
 
 	public static void checkTypeExtension(final GipsTypeExtension typeExtension) {
+		if (GipslValidator.DISABLE_VALIDATOR)
+			return;
+
 		if (typeExtension == null)
 			return;
 
@@ -24,6 +27,9 @@ public final class GipslTypeExtensionValidator {
 	}
 
 	public static void checkTypeExtensionVariable(final GipsTypeExtensionVariable variable) {
+		if (GipslValidator.DISABLE_VALIDATOR)
+			return;
+
 		if (variable == null)
 			return;
 

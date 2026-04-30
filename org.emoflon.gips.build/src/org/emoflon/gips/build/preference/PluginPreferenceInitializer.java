@@ -10,5 +10,8 @@ public class PluginPreferenceInitializer extends AbstractPreferenceInitializer {
 
 		// gipsl maping indexer is enabled
 		node.putBoolean(PluginPreferences.PREF_GIPSL_MAPPING_INDEXER, true);
+
+		// default big M value
+		node.putDouble(PluginPreferences.PREF_GIPSL_BIGM, 1000d);
 	}
 }

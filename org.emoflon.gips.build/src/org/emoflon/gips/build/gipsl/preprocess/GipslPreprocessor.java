@@ -38,6 +38,9 @@ public class GipslPreprocessor {
 	public GipsBooleanExpression preprocess(GipsConstraint constraint) {
 		GipsBooleanExpression expression = constraint.getExpression();
 
+		// This part can be used for multi-pass rule application (whenever this may
+		// becomes relevant in the future). It is commented out because, at present, no
+		// rule requires multiple passes.
 //		GipsBooleanExpression currentPass = applyRules(expression);
 //		GipsBooleanExpression previousPass = null;
 //

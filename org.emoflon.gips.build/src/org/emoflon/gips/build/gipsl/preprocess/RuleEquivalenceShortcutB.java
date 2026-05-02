@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.emoflon.gips.gipsl.generator.GeneratorUtil;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsProductOperator;
 import org.emoflon.gips.gipsl.gipsl.GipsSumOperator;
 import org.emoflon.gips.gipsl.gipsl.GipslFactory;
 import org.emoflon.gips.gipsl.gipsl.RelationalOperator;
@@ -24,14 +25,14 @@ import org.emoflon.gips.gipsl.special.pattern.EquivalenceShortcutB;
  * <ul>
  * <li>A in [0, 1]
  * <li>B in [0, 1]
+ * <li>C in [0, 1]
+ * <li>... in [0, 1]
  * </ul>
  * 
  * Output:
  * <ul>
  * <li>B (+ C + ...) + (1-n) <= A
- * <li>A <= B
- * <li>A <= C
- * <li>...
+ * <li>n * A <= B + C + ...
  * </ul>
  * 
  */
@@ -75,15 +76,30 @@ public class RuleEquivalenceShortcutB implements PreprocessorRule {
 			conjuncts.add(relational);
 		}
 
-		// A <= B
-		// ...
-		for (var element : pattern.otherNodes) {
-			var relational = factory.createGipsRelationalExpression();
-			relational.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
-			relational.setLeft(EcoreUtil.copy(pattern.nodeA));
-			relational.setRight(EcoreUtil.copy(element));
-			conjuncts.add(relational);
-		}
+		// n * A <= B + C + ...
+
+		// B + C + ...
+		List<GipsArithmeticExpression> summands = new ArrayList<>(conjuncts.size());
+		for (var element : pattern.otherNodes)
+			summands.add(EcoreUtil.copy(element));
+
+		var sum = GeneratorUtil.sum(factory, GipsSumOperator.PLUS, summands);
+
+		// n
+		var n = GeneratorUtil.createArithmeticLiteral(factory, Double.toString(summands.size()));
+
+		// n * A
+		var nProduct = factory.createGipsArithmeticProduct();
+		nProduct.setOperator(GipsProductOperator.MULT);
+		nProduct.setLeft(EcoreUtil.copy(pattern.nodeA));
+		nProduct.setRight(n);
+
+		// n * A <= B + C + ...
+		var relational = factory.createGipsRelationalExpression();
+		relational.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
+		relational.setLeft(nProduct);
+		relational.setRight(sum);
+		conjuncts.add(relational);
 
 		return GeneratorUtil.conjunction(factory, conjuncts);
 	}

@@ -48,27 +48,18 @@ public class RuleEquivalenceShortcutB implements PreprocessorRule {
 		List<GipsBooleanExpression> conjuncts = new LinkedList<>();
 
 		// Most simple case: only one other node
-		// Simplification
+		// Simplification:
 		// B <= A
 		// A >= B
+		// This can further be simplified to:
+		// A = B
 		if (pattern.otherNodes.size() == 1) {
-			// B <= A
-			{
-				var relational = factory.createGipsRelationalExpression();
-				relational.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
-				relational.setLeft(EcoreUtil.copy(pattern.otherNodes.get(0)));
-				relational.setRight(EcoreUtil.copy(pattern.nodeA));
-				conjuncts.add(relational);
-			}
-
-			// A <= B
-			{
-				var relational = factory.createGipsRelationalExpression();
-				relational.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
-				relational.setLeft(EcoreUtil.copy(pattern.nodeA));
-				relational.setRight(EcoreUtil.copy(pattern.otherNodes.get(0)));
-				conjuncts.add(relational);
-			}
+			// A = B
+			var relational = factory.createGipsRelationalExpression();
+			relational.setOperator(RelationalOperator.EQUAL);
+			relational.setLeft(EcoreUtil.copy(pattern.nodeA));
+			relational.setRight(EcoreUtil.copy(pattern.otherNodes.get(0)));
+			conjuncts.add(relational);
 		} else {
 			// Normal case
 

@@ -47,59 +47,79 @@ public class RuleEquivalenceShortcutB implements PreprocessorRule {
 
 		List<GipsBooleanExpression> conjuncts = new LinkedList<>();
 
+		// Most simple case: only one other node
+		// Simplification
+		// B <= A
+		// A >= B
 		if (pattern.otherNodes.size() == 1) {
 			// B <= A
-			var relational = factory.createGipsRelationalExpression();
-			relational.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
-			relational.setLeft(EcoreUtil.copy(pattern.otherNodes.get(0)));
-			relational.setRight(EcoreUtil.copy(pattern.nodeA));
-			conjuncts.add(relational);
+			{
+				var relational = factory.createGipsRelationalExpression();
+				relational.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
+				relational.setLeft(EcoreUtil.copy(pattern.otherNodes.get(0)));
+				relational.setRight(EcoreUtil.copy(pattern.nodeA));
+				conjuncts.add(relational);
+			}
 
+			// A <= B
+			{
+				var relational = factory.createGipsRelationalExpression();
+				relational.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
+				relational.setLeft(EcoreUtil.copy(pattern.nodeA));
+				relational.setRight(EcoreUtil.copy(pattern.otherNodes.get(0)));
+				conjuncts.add(relational);
+			}
 		} else {
-			List<GipsArithmeticExpression> summands = new ArrayList<>(conjuncts.size() + 2);
-
-			for (var element : pattern.otherNodes)
-				summands.add(EcoreUtil.copy(element));
-
-			var minusN = factory.createGipsArithmeticLiteral();
-			minusN.setValue(Integer.toString(1 - pattern.otherNodes.size()));
-			summands.add(minusN);
-
-			// B + C + ... + (1-n)
-			var sum = GeneratorUtil.sum(factory, GipsSumOperator.PLUS, summands);
+			// Normal case
 
 			// B + C + ... + (1-n) <= A
-			var relational = factory.createGipsRelationalExpression();
-			relational.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
-			relational.setLeft(sum);
-			relational.setRight(EcoreUtil.copy(pattern.nodeA));
-			conjuncts.add(relational);
+			{
+				List<GipsArithmeticExpression> summands = new ArrayList<>(conjuncts.size() + 2);
+
+				for (var element : pattern.otherNodes)
+					summands.add(EcoreUtil.copy(element));
+
+				var minusN = factory.createGipsArithmeticLiteral();
+				minusN.setValue(Integer.toString(1 - pattern.otherNodes.size()));
+				summands.add(minusN);
+
+				// B + C + ... + (1-n)
+				var sum = GeneratorUtil.sum(factory, GipsSumOperator.PLUS, summands);
+
+				// B + C + ... + (1-n) <= A
+				var relational = factory.createGipsRelationalExpression();
+				relational.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
+				relational.setLeft(sum);
+				relational.setRight(EcoreUtil.copy(pattern.nodeA));
+				conjuncts.add(relational);
+			}
+
+			// n * A <= B + C + ...
+			{
+				// B + C + ...
+				List<GipsArithmeticExpression> summands = new ArrayList<>(conjuncts.size());
+				for (var element : pattern.otherNodes)
+					summands.add(EcoreUtil.copy(element));
+
+				var sum = GeneratorUtil.sum(factory, GipsSumOperator.PLUS, summands);
+
+				// n
+				var n = GeneratorUtil.createArithmeticLiteral(factory, Double.toString(summands.size()));
+
+				// n * A
+				var nProduct = factory.createGipsArithmeticProduct();
+				nProduct.setOperator(GipsProductOperator.MULT);
+				nProduct.setLeft(EcoreUtil.copy(pattern.nodeA));
+				nProduct.setRight(n);
+
+				// n * A <= B + C + ...
+				var relational = factory.createGipsRelationalExpression();
+				relational.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
+				relational.setLeft(nProduct);
+				relational.setRight(sum);
+				conjuncts.add(relational);
+			}
 		}
-
-		// n * A <= B + C + ...
-
-		// B + C + ...
-		List<GipsArithmeticExpression> summands = new ArrayList<>(conjuncts.size());
-		for (var element : pattern.otherNodes)
-			summands.add(EcoreUtil.copy(element));
-
-		var sum = GeneratorUtil.sum(factory, GipsSumOperator.PLUS, summands);
-
-		// n
-		var n = GeneratorUtil.createArithmeticLiteral(factory, Double.toString(summands.size()));
-
-		// n * A
-		var nProduct = factory.createGipsArithmeticProduct();
-		nProduct.setOperator(GipsProductOperator.MULT);
-		nProduct.setLeft(EcoreUtil.copy(pattern.nodeA));
-		nProduct.setRight(n);
-
-		// n * A <= B + C + ...
-		var relational = factory.createGipsRelationalExpression();
-		relational.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
-		relational.setLeft(nProduct);
-		relational.setRight(sum);
-		conjuncts.add(relational);
 
 		return GeneratorUtil.conjunction(factory, conjuncts);
 	}

@@ -50,14 +50,14 @@ public class EquivalenceShortcutD extends AbstractPatternMatcher {
 			return;
 
 		if (!hasMatch()) {
-			nodeA = matchNode(leftRelational, "1");
-			nodeB = matchNode(rightRelational, "0");
+			nodeA = matchNode(leftRelational, "0");
+			nodeB = matchNode(rightRelational, "1");
 			clearPartialMatch();
 		}
 
 		if (!hasMatch()) {
-			nodeA = matchNode(rightRelational, "1");
-			nodeB = matchNode(leftRelational, "0");
+			nodeA = matchNode(rightRelational, "0");
+			nodeB = matchNode(leftRelational, "1");
 			clearPartialMatch();
 		}
 	}

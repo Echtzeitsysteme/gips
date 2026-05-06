@@ -41,6 +41,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.SetTypeSelect
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryOperator
 
 class JavaReturnTypeExtractor {
 
@@ -98,6 +99,9 @@ class JavaReturnTypeExtractor {
 			return lhs
 
 		} else if(expression instanceof ArithmeticUnaryExpression) {
+			if( expression.operator == ArithmeticUnaryOperator.BOOL2INT)
+				return TYPE_DOUBLE
+			
 			return extractReturnType(expression.getOperand(), imports)
 
 		} else if(expression instanceof ArithmeticLiteral) {

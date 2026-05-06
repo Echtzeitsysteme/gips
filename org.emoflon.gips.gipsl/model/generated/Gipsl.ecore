@@ -179,6 +179,7 @@
     <eLiterals name="SQRT" value="2" literal="sqrt"/>
     <eLiterals name="sin" value="3" literal="sin"/>
     <eLiterals name="cos" value="4" literal="cos"/>
+    <eLiterals name="bool2int" value="5" literal="bool2int"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsValueExpression" eSuperTypes="#//GipsArithmeticOperand">
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"

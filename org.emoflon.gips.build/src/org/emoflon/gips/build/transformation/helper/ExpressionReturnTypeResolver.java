@@ -8,6 +8,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryExpression;
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryOperator;
 import org.emoflon.gips.intermediate.GipsIntermediate.AttributeExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanExpression;
@@ -80,6 +81,8 @@ public final class ExpressionReturnTypeResolver {
 
 			return lhs;
 		} else if (expression instanceof ArithmeticUnaryExpression unary) {
+			if (unary.getOperator() == ArithmeticUnaryOperator.BOOL2INT)
+				return ExpressionReturnType.number;
 			return extractReturnType(unary.getOperand());
 		} else if (expression instanceof ArithmeticLiteral) {
 			return ExpressionReturnType.number;

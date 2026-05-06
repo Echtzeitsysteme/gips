@@ -57,6 +57,7 @@
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//ArithmeticUnaryOperator/SINE"/>
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//ArithmeticUnaryOperator/COSINE"/>
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//ArithmeticUnaryOperator/SQRT"/>
+      <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//ArithmeticUnaryOperator/BOOL2INT"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="GipsIntermediate.ecore#//ConstantValue">
       <genEnumLiterals ecoreEnumLiteral="GipsIntermediate.ecore#//ConstantValue/PI"/>

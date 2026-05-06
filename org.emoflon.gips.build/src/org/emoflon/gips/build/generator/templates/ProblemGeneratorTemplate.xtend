@@ -191,8 +191,8 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 	def String generateConstTermBuilder(ArithmeticExpression constExpr) {
 		var statement = generateConstantExpression(constExpr)		
 		if(extractReturnType(constExpr, imports) == JavaReturnTypeExtractor.TYPE_BOOL){
-			statement = '''«statement» ? 1.0 : 0.0'''
-		}		
+			statement = '''(«statement» ? 1.0 : 0.0)'''
+		}
 		return statement
 	}
 
@@ -706,7 +706,7 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 				case SQRT: {
 					return '''Math.sqrt(«generateConstantExpression(expression.operand)»)'''
 				}
-				case "BOOL2INT": {
+				case BOOL2INT: {
 					return '''(«generateConstantExpression(expression.operand)» ? 1.0 : 0.0)'''
 				}
 			}

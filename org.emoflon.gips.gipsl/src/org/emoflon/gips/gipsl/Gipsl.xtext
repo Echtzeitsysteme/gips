@@ -235,7 +235,8 @@ enum GipsUnaryOperator:
 	ABS='abs'	|
 	SQRT='sqrt' |
 	sin='sin'	|
-	cos='cos'
+	cos='cos'   |
+	bool2int = 'bool2int'
 ;
 
 GipsValueExpression:

@@ -57,6 +57,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsTransformOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsUnaryOperator;
 import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.QueryOperator;
@@ -673,7 +674,8 @@ public final class GipslExpressionValidator {
 		EObject localContext = GipslScopeContextUtil.getLocalContext(expression);
 
 		if (expression.getExpression() instanceof GipsVariableReferenceExpression variableReferenceExpression) {
-			valueType = ExpressionType.Variable;
+			valueType = evaluate(variableReferenceExpression, errors);
+
 			if (!(localContext instanceof GipsMappingExpression || localContext instanceof GipsMapping
 					|| localContext instanceof GipsTypeExpression || localContext instanceof EClass)) {
 				errors.add(() -> {
@@ -781,8 +783,9 @@ public final class GipslExpressionValidator {
 		ExpressionType valueType = null;
 		EObject setContext = GipslScopeContextUtil.getSetContext(expression);
 
-		if (expression.getExpression() instanceof GipsVariableReferenceExpression) {
-			valueType = ExpressionType.Variable;
+		if (expression.getExpression() instanceof GipsVariableReferenceExpression variableReferenceExpression) {
+			valueType = evaluate(variableReferenceExpression, errors);
+
 			if (!(setContext instanceof GipsMappingExpression || setContext instanceof GipsMapping //
 					|| setContext instanceof GipsTypeExpression || setContext instanceof EClass //
 					|| setContext instanceof GipsLocalContextExpression
@@ -889,9 +892,11 @@ public final class GipslExpressionValidator {
 
 	public static ExpressionType evaluate(final GipsVariableReferenceExpression expression,
 			Collection<Runnable> errors) {
+		return evaluate(expression.getVariable(), errors);
+	}
 
-		ExpressionType valueType = ExpressionType.Variable;
-		return valueType;
+	public static ExpressionType evaluate(GipsVariable variable, Collection<Runnable> errors) {
+		return evaluate(variable.getType(), errors);
 	}
 
 	public static ExpressionType evaluate(final GipsNodeExpression expression, Collection<Runnable> errors) {

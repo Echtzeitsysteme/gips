@@ -40,6 +40,10 @@ public interface ITraceContext {
 
 	boolean hasModelValuesFor(String modelId);
 
+	/**
+	 * 
+	 * @return current selection or null
+	 */
 	ITraceSelection getSelectedElements();
 
 	/**

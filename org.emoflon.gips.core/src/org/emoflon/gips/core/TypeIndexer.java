@@ -56,8 +56,8 @@ public class TypeIndexer {
 		}
 
 		Set<EObject> query = Collections.synchronizedSet(new LinkedHashSet<>());
-		// If the given type is not contained in the index, intern an empty collection.
-		if (!index.containsKey(type)) {
+		// If the given type is not contained in the index, return an empty collection.
+		if (!index.containsKey(localType)) {
 			return query;
 		}
 		query.addAll(index.get(localType));

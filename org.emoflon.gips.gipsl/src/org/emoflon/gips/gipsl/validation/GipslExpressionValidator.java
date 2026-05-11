@@ -71,11 +71,76 @@ import org.emoflon.gips.gipsl.scoping.GipslScopeContextUtil;
 
 public final class GipslExpressionValidator {
 
+	public static class ExpressionData {
+		private final ExpressionMutability mutability;
+		private final ExpressionType type;
+		private final boolean isMany;
+
+		public static ExpressionData asUnknown() {
+			return new ExpressionData(ExpressionMutability.Unknown, ExpressionType.Unknown, false);
+		}
+
+		public static ExpressionData asError() {
+			return new ExpressionData(ExpressionMutability.Unknown, ExpressionType.Error, false);
+		}
+
+		public static ExpressionData asSingleConstant(ExpressionType type) {
+			return new ExpressionData(ExpressionMutability.Constant, type, false);
+		}
+
+		public static ExpressionData asSingleVariable(ExpressionType type) {
+			return new ExpressionData(ExpressionMutability.Variable, type, false);
+		}
+
+		public static ExpressionData asManyConstant(ExpressionType type) {
+			return new ExpressionData(ExpressionMutability.Constant, type, true);
+		}
+
+		public ExpressionData(ExpressionMutability mutability, ExpressionType type, boolean isMany) {
+			this.mutability = mutability;
+			this.type = type;
+			this.isMany = isMany;
+		}
+
+		public ExpressionData with(ExpressionMutability mutability) {
+			return new ExpressionData(mutability, type, isMany);
+		}
+
+		public ExpressionMutability getMutability() {
+			return mutability;
+		}
+
+		public ExpressionType getType() {
+			return type;
+		}
+
+		public boolean isVariable() {
+			return mutability == ExpressionMutability.Variable;
+		}
+
+		public boolean isConstant() {
+			return mutability == ExpressionMutability.Constant;
+		}
+
+		public boolean isMany() {
+			return isMany;
+		}
+
+		public boolean isError() {
+			return type == ExpressionType.Error;
+		}
+
+		public boolean isUnknown() {
+			return type == ExpressionType.Unknown || mutability == ExpressionMutability.Unknown;
+		}
+
+	}
+
 	public static Collection<Runnable> checkBooleanExpression(final GipsBooleanExpression expression) {
 		Collection<Runnable> errors = Collections.synchronizedCollection(new LinkedList<>());
-		ExpressionType result = evaluate(expression, errors);
+		ExpressionData result = evaluate(expression, errors);
 
-		if (result == ExpressionType.Unknown) {
+		if (result.isUnknown()) {
 			errors.add(() -> {
 				GipslValidator.err( //
 						GipslValidatorUtil.BOOL_EXPR_CONTAINS_UNKNOWNS, //
@@ -84,7 +149,8 @@ public final class GipslExpressionValidator {
 				);
 			});
 		}
-		if (result == ExpressionType.Error) {
+
+		if (result.isError()) {
 			errors.add(() -> {
 				GipslValidator.err( //
 						GipslValidatorUtil.BOOL_EXPR_CONTAINS_ERRORS, //
@@ -93,11 +159,21 @@ public final class GipslExpressionValidator {
 				);
 			});
 		}
+
 		return errors;
 	}
 
-	public static ExpressionType evaluate(final GipsBooleanExpression expression, Collection<Runnable> errors) {
-		if (expression == null) {
+	public static ExpressionData evaluate(final GipsBooleanExpression expression, Collection<Runnable> errors) {
+		return switch (expression) {
+		case GipsBooleanImplication implication -> evaluate(implication, errors);
+		case GipsBooleanDisjunction disjunction -> evaluate(disjunction, errors);
+		case GipsBooleanConjunction conjunction -> evaluate(conjunction, errors);
+		case GipsBooleanNegation negation -> evaluate(negation, errors);
+		case GipsBooleanBracket bracket -> evaluate(bracket, errors);
+		case GipsBooleanLiteral literal -> evaluate(literal, errors);
+		case GipsRelationalExpression relation -> evaluate(relation, errors);
+		case GipsArithmeticExpression arithmetic -> evaluate(arithmetic, errors);
+		case null, default -> {
 			errors.add(() -> {
 				GipslValidator.err( //
 						GipslValidatorUtil.BOOL_EXPR_EVAL_ERROR_MESSAGE, //
@@ -105,126 +181,127 @@ public final class GipslExpressionValidator {
 						null //
 				);
 			});
-			return ExpressionType.Error;
+			yield ExpressionData.asError();
+		}
+		};
+	}
+
+	public static ExpressionData evaluate(final GipsBooleanLiteral implication, Collection<Runnable> errors) {
+		return ExpressionData.asSingleConstant(ExpressionType.Boolean);
+	}
+
+	public static ExpressionData evaluate(final GipsBooleanImplication implication, Collection<Runnable> errors) {
+		ExpressionData lhs = evaluate(implication.getLeft(), errors);
+		ExpressionData rhs = evaluate(implication.getRight(), errors);
+
+		if (lhs.getType() != ExpressionType.Boolean) {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.BOOL_EXPR_EVAL_ERROR_MESSAGE, //
+						implication, //
+						GipslPackage.Literals.GIPS_BOOLEAN_IMPLICATION__LEFT //
+				);
+			});
 		}
 
-		if (expression instanceof GipsBooleanImplication implication) {
-			ExpressionType lhs = evaluate(implication.getLeft(), errors);
-			ExpressionType rhs = evaluate(implication.getRight(), errors);
-			if (lhs != ExpressionType.Boolean) {
-				errors.add(() -> {
-					GipslValidator.err( //
-							GipslValidatorUtil.BOOL_EXPR_EVAL_ERROR_MESSAGE, //
-							implication, //
-							GipslPackage.Literals.GIPS_BOOLEAN_IMPLICATION__LEFT //
-					);
-				});
-			}
-			if (rhs != ExpressionType.Boolean) {
-				errors.add(() -> {
-					GipslValidator.err( //
-							GipslValidatorUtil.BOOL_EXPR_EVAL_ERROR_MESSAGE, //
-							implication, //
-							GipslPackage.Literals.GIPS_BOOLEAN_IMPLICATION__RIGHT //
-					);
-				});
-			}
-			if (rhs != ExpressionType.Boolean || lhs != ExpressionType.Boolean) {
-				return ExpressionType.Error;
-			} else {
-				return ExpressionType.Boolean;
-			}
-		} else if (expression instanceof GipsBooleanDisjunction disjunction) {
-			ExpressionType lhs = evaluate(disjunction.getLeft(), errors);
-			ExpressionType rhs = evaluate(disjunction.getRight(), errors);
-			if (lhs != ExpressionType.Boolean) {
-				errors.add(() -> {
-					GipslValidator.err( //
-							GipslValidatorUtil.BOOL_EXPR_EVAL_ERROR_MESSAGE, //
-							disjunction, //
-							GipslPackage.Literals.GIPS_BOOLEAN_DISJUNCTION__LEFT //
-					);
-				});
-			}
-			if (rhs != ExpressionType.Boolean) {
-				errors.add(() -> {
-					GipslValidator.err( //
-							GipslValidatorUtil.BOOL_EXPR_EVAL_ERROR_MESSAGE, //
-							disjunction, //
-							GipslPackage.Literals.GIPS_BOOLEAN_DISJUNCTION__RIGHT //
-					);
-				});
-			}
-			if (rhs != ExpressionType.Boolean || lhs != ExpressionType.Boolean) {
-				return ExpressionType.Error;
-			} else {
-				return ExpressionType.Boolean;
-			}
-		} else if (expression instanceof GipsBooleanConjunction conjunction) {
-			ExpressionType lhs = evaluate(conjunction.getLeft(), errors);
-			ExpressionType rhs = evaluate(conjunction.getRight(), errors);
-			if (lhs != ExpressionType.Boolean) {
-				errors.add(() -> {
-					GipslValidator.err( //
-							GipslValidatorUtil.BOOL_EXPR_EVAL_ERROR_MESSAGE, //
-							conjunction, //
-							GipslPackage.Literals.GIPS_BOOLEAN_CONJUNCTION__LEFT //
-					);
-				});
-			}
-			if (rhs != ExpressionType.Boolean) {
-				errors.add(() -> {
-					GipslValidator.err( //
-							GipslValidatorUtil.BOOL_EXPR_EVAL_ERROR_MESSAGE, //
-							conjunction, //
-							GipslPackage.Literals.GIPS_BOOLEAN_CONJUNCTION__RIGHT //
-					);
-				});
-			}
-			if (rhs != ExpressionType.Boolean || lhs != ExpressionType.Boolean) {
-				return ExpressionType.Error;
-			} else {
-				return ExpressionType.Boolean;
-			}
-		} else if (expression instanceof GipsBooleanNegation negation) {
-			ExpressionType operand = evaluate(negation.getOperand(), errors);
-			if (operand != ExpressionType.Boolean) {
-				errors.add(() -> {
-					GipslValidator.err( //
-							GipslValidatorUtil.BOOL_EXPR_EVAL_ERROR_MESSAGE, //
-							negation, //
-							GipslPackage.Literals.GIPS_BOOLEAN_NEGATION__OPERAND //
-					);
-				});
-				return ExpressionType.Error;
-			} else {
-				return ExpressionType.Boolean;
-			}
-		} else if (expression instanceof GipsBooleanBracket bracket) {
-			return evaluate(bracket.getOperand(), errors);
-		} else if (expression instanceof GipsBooleanLiteral) {
-			return ExpressionType.Boolean;
-		} else if (expression instanceof GipsRelationalExpression relation) {
-			return evaluate(relation, errors);
-		} else if (expression instanceof GipsArithmeticExpression arithmetic) {
-			return evaluate(arithmetic, errors);
-		} else {
+		if (rhs.getType() != ExpressionType.Boolean) {
 			errors.add(() -> {
 				GipslValidator.err( //
 						GipslValidatorUtil.BOOL_EXPR_EVAL_ERROR_MESSAGE, //
-						expression, //
-						null //
+						implication, //
+						GipslPackage.Literals.GIPS_BOOLEAN_IMPLICATION__RIGHT //
 				);
 			});
-			return ExpressionType.Unknown;
 		}
+
+		if (lhs.getType() != ExpressionType.Boolean || rhs.getType() != ExpressionType.Boolean)
+			return ExpressionData.asError();
+
+		return ExpressionData.asSingleConstant(ExpressionType.Boolean);
+	}
+
+	public static ExpressionData evaluate(final GipsBooleanDisjunction disjunction, Collection<Runnable> errors) {
+		ExpressionData lhs = evaluate(disjunction.getLeft(), errors);
+		ExpressionData rhs = evaluate(disjunction.getRight(), errors);
+
+		if (lhs.getType() != ExpressionType.Boolean) {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.BOOL_EXPR_EVAL_ERROR_MESSAGE, //
+						disjunction, //
+						GipslPackage.Literals.GIPS_BOOLEAN_DISJUNCTION__LEFT //
+				);
+			});
+		}
+
+		if (rhs.getType() != ExpressionType.Boolean) {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.BOOL_EXPR_EVAL_ERROR_MESSAGE, //
+						disjunction, //
+						GipslPackage.Literals.GIPS_BOOLEAN_DISJUNCTION__RIGHT //
+				);
+			});
+		}
+
+		if (lhs.getType() != ExpressionType.Boolean || rhs.getType() != ExpressionType.Boolean)
+			return ExpressionData.asError();
+
+		return ExpressionData.asSingleConstant(ExpressionType.Boolean);
+	}
+
+	public static ExpressionData evaluate(final GipsBooleanConjunction conjunction, Collection<Runnable> errors) {
+		ExpressionData lhs = evaluate(conjunction.getLeft(), errors);
+		ExpressionData rhs = evaluate(conjunction.getRight(), errors);
+
+		if (lhs.getType() != ExpressionType.Boolean) {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.BOOL_EXPR_EVAL_ERROR_MESSAGE, //
+						conjunction, //
+						GipslPackage.Literals.GIPS_BOOLEAN_CONJUNCTION__LEFT //
+				);
+			});
+		}
+
+		if (rhs.getType() != ExpressionType.Boolean) {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.BOOL_EXPR_EVAL_ERROR_MESSAGE, //
+						conjunction, //
+						GipslPackage.Literals.GIPS_BOOLEAN_CONJUNCTION__RIGHT //
+				);
+			});
+		}
+
+		if (lhs.getType() != ExpressionType.Boolean || rhs.getType() != ExpressionType.Boolean)
+			return ExpressionData.asError();
+
+		return ExpressionData.asSingleConstant(ExpressionType.Boolean);
+	}
+
+	public static ExpressionData evaluate(final GipsBooleanNegation negation, Collection<Runnable> errors) {
+		ExpressionData operand = evaluate(negation.getOperand(), errors);
+
+		if (operand.getType() != ExpressionType.Boolean) {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.BOOL_EXPR_EVAL_ERROR_MESSAGE, //
+						negation, //
+						GipslPackage.Literals.GIPS_BOOLEAN_NEGATION__OPERAND //
+				);
+			});
+			return ExpressionData.asError();
+		}
+
+		return ExpressionData.asSingleConstant(ExpressionType.Boolean);
 	}
 
 	public static Collection<Runnable> checkRelationalExpression(final GipsRelationalExpression expression) {
 		Collection<Runnable> errors = Collections.synchronizedCollection(new LinkedList<>());
-		ExpressionType result = evaluate(expression, errors);
+		ExpressionData result = evaluate(expression, errors);
 
-		if (result == ExpressionType.Unknown) {
+		if (result.isUnknown()) {
 			errors.add(() -> {
 				GipslValidator.err( //
 						GipslValidatorUtil.REL_EXPR_CONTAINS_UNKNOWNS, //
@@ -233,7 +310,8 @@ public final class GipslExpressionValidator {
 				);
 			});
 		}
-		if (result == ExpressionType.Error) {
+
+		if (result.isError()) {
 			errors.add(() -> {
 				GipslValidator.err( //
 						GipslValidatorUtil.REL_EXPR_CONTAINS_ERRORS, //
@@ -246,12 +324,11 @@ public final class GipslExpressionValidator {
 		return errors;
 	}
 
-	public static ExpressionType evaluate(final GipsRelationalExpression expression, Collection<Runnable> errors) {
-		ExpressionType lhs = evaluate(expression.getLeft(), errors);
-		ExpressionType rhs = evaluate(expression.getRight(), errors);
+	public static ExpressionData evaluate(final GipsRelationalExpression expression, Collection<Runnable> errors) {
+		ExpressionData lhs = evaluate(expression.getLeft(), errors);
+		ExpressionData rhs = evaluate(expression.getRight(), errors);
 
-		if (lhs == ExpressionType.Unknown || lhs == ExpressionType.Error || lhs == ExpressionType.Set
-				|| rhs == ExpressionType.Unknown || rhs == ExpressionType.Error || rhs == ExpressionType.Set) {
+		if (lhs.isUnknown() || lhs.isError() || lhs.isMany() || rhs.isUnknown() || rhs.isError() || rhs.isMany()) {
 			errors.add(() -> {
 				GipslValidator.err( //
 						GipslValidatorUtil.REL_EXPR_EVAL_ERROR_MESSAGE, //
@@ -259,39 +336,28 @@ public final class GipslExpressionValidator {
 						GipslPackage.Literals.GIPS_RELATIONAL_EXPRESSION__OPERATOR //
 				);
 			});
-			return ExpressionType.Error;
+			return ExpressionData.asError();
 		}
 
-		boolean defaultsToBoolean = switch (lhs) { // todo: restore when code generator supports this
-//		case Boolean -> rhs == ExpressionType.Number || rhs == ExpressionType.Variable;
-		case Number -> rhs == ExpressionType.Variable;// || rhs == ExpressionType.Boolean;
-		case Variable -> rhs == ExpressionType.Number;// || rhs == ExpressionType.Boolean;
-		default -> false;
-		};
-
-		if (defaultsToBoolean) {
-			return ExpressionType.Boolean;
-		}
-
-		if (lhs != rhs) {
+		if (lhs.getType() != rhs.getType()) {
 			errors.add(() -> {
 				GipslValidator.err( //
-						GipslValidatorUtil.REL_EXPR_MISMATCH_ERROR_MESSAGE, //
+						String.format(GipslValidatorUtil.REL_EXPR_MISMATCH_ERROR_MESSAGE, lhs.getType(), rhs.getType()), //
 						expression, //
 						GipslPackage.Literals.GIPS_RELATIONAL_EXPRESSION__OPERATOR //
 				);
 			});
-			return ExpressionType.Error;
+			return ExpressionData.asError();
 		}
 
-		return ExpressionType.Boolean;
+		return ExpressionData.asSingleConstant(ExpressionType.Boolean);
 	}
 
 	public static Collection<Runnable> checkArithmeticExpression(final GipsArithmeticExpression expression) {
 		Collection<Runnable> errors = Collections.synchronizedCollection(new LinkedList<>());
-		ExpressionType result = evaluate(expression, errors);
+		ExpressionData result = evaluate(expression, errors);
 
-		if (result == ExpressionType.Unknown) {
+		if (result.isUnknown()) {
 			errors.add(() -> {
 				GipslValidator.err( //
 						GipslValidatorUtil.ARITH_EXPR_CONTAINS_UNKNOWNS, //
@@ -300,7 +366,7 @@ public final class GipslExpressionValidator {
 				);
 			});
 		}
-		if (result == ExpressionType.Error) {
+		if (result.isError()) {
 			errors.add(() -> {
 				GipslValidator.err( //
 						GipslValidatorUtil.ARITH_EXPR_CONTAINS_ERRORS, //
@@ -313,8 +379,7 @@ public final class GipslExpressionValidator {
 		if (expression == null || expression.eContainer() == null)
 			return errors;
 
-		if (expression.eContainer() instanceof GipsObjective obj
-				&& !(result == ExpressionType.Variable || result == ExpressionType.Number)) {
+		if (expression.eContainer() instanceof GipsObjective obj && result.getType() != ExpressionType.Number) {
 			errors.add(() -> {
 				GipslValidator.err( //
 						GipslValidatorUtil.OBJECTIVE_EVAL_NOT_NUMBER_MESSAGE, //
@@ -324,8 +389,7 @@ public final class GipslExpressionValidator {
 			});
 		}
 
-		if (expression.eContainer() instanceof GipsLinearFunction fun
-				&& !(result == ExpressionType.Variable || result == ExpressionType.Number)) {
+		if (expression.eContainer() instanceof GipsLinearFunction fun && result.getType() != ExpressionType.Number) {
 			errors.add(() -> {
 				GipslValidator.err( //
 						GipslValidatorUtil.FUNCTION_EVAL_NOT_NUMBER_MESSAGE, //
@@ -340,182 +404,13 @@ public final class GipslExpressionValidator {
 
 	public static ExpressionType evaluate(final GipsArithmeticExpression expression, Collection<Runnable> errors) {
 		if (expression instanceof GipsArithmeticSum sum) {
-			ExpressionType lhs = evaluate(sum.getLeft(), errors);
-			ExpressionType rhs = evaluate(sum.getRight(), errors);
-
-			if (lhs != ExpressionType.String && lhs != ExpressionType.Number && lhs != ExpressionType.Variable) {
-				errors.add(() -> {
-					GipslValidator.err( //
-							GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
-							sum, //
-							GipslPackage.Literals.GIPS_ARITHMETIC_SUM__LEFT //
-					);
-				});
-			}
-			if (rhs != ExpressionType.String && rhs != ExpressionType.Number && rhs != ExpressionType.Variable) {
-				errors.add(() -> {
-					GipslValidator.err( //
-							GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
-							sum, //
-							GipslPackage.Literals.GIPS_ARITHMETIC_SUM__RIGHT //
-					);
-				});
-			}
-
-			if (lhs == rhs && (lhs == ExpressionType.Number || lhs == ExpressionType.Variable)) {
-				return lhs;
-			} else if (lhs == ExpressionType.Number && rhs == ExpressionType.Variable) {
-				return ExpressionType.Variable;
-			} else if (lhs == ExpressionType.Variable && rhs == ExpressionType.Number) {
-				return ExpressionType.Variable;
-			} else {
-				errors.add(() -> {
-					GipslValidator.err( //
-							GipslValidatorUtil.ARITH_EXPR_MISMATCH_ERROR_MESSAGE, //
-							sum, //
-							GipslPackage.Literals.GIPS_ARITHMETIC_SUM__OPERATOR //
-					);
-				});
-				return ExpressionType.Error;
-			}
+			return evaluate(sum, errors);
 		} else if (expression instanceof GipsArithmeticProduct product) {
-			ExpressionType lhs = evaluate(product.getLeft(), errors);
-			ExpressionType rhs = evaluate(product.getRight(), errors);
-
-			if (lhs != ExpressionType.Number && lhs != ExpressionType.Variable) {
-				errors.add(() -> {
-					GipslValidator.err( //
-							GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
-							product, //
-							GipslPackage.Literals.GIPS_ARITHMETIC_PRODUCT__LEFT //
-					);
-				});
-			}
-			if (rhs != ExpressionType.Number && rhs != ExpressionType.Variable) {
-				errors.add(() -> {
-					GipslValidator.err( //
-							GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
-							product, //
-							GipslPackage.Literals.GIPS_ARITHMETIC_PRODUCT__RIGHT //
-					);
-				});
-			}
-
-			// Check for non-linear expressions with variable products.
-			if (lhs == ExpressionType.Variable && rhs == ExpressionType.Variable) {
-				errors.add(() -> {
-					GipslValidator.err( //
-							GipslValidatorUtil.ARITH_EXPR_NONLINEAR_ERROR_MESSAGE, //
-							product, //
-							GipslPackage.Literals.GIPS_ARITHMETIC_PRODUCT__LEFT //
-					);
-				});
-				errors.add(() -> {
-					GipslValidator.err( //
-							GipslValidatorUtil.ARITH_EXPR_NONLINEAR_ERROR_MESSAGE, //
-							product, //
-							GipslPackage.Literals.GIPS_ARITHMETIC_PRODUCT__RIGHT //
-					);
-				});
-				return ExpressionType.Error;
-			}
-
-			// Check for non-linear expressions with variable as divisor.
-			if (product.getOperator() == GipsProductOperator.DIV && rhs == ExpressionType.Variable) {
-				errors.add(() -> {
-					GipslValidator.err( //
-							GipslValidatorUtil.ARITH_EXPR_NONLINEAR_ERROR_MESSAGE, //
-							product, //
-							GipslPackage.Literals.GIPS_ARITHMETIC_PRODUCT__OPERATOR //
-					);
-				});
-				return ExpressionType.Error;
-			}
-
-			if (lhs == rhs && (lhs == ExpressionType.Number || lhs == ExpressionType.Variable)) {
-				return lhs;
-			} else if (lhs == ExpressionType.Number && rhs == ExpressionType.Variable) {
-				return ExpressionType.Variable;
-			} else if (lhs == ExpressionType.Variable && rhs == ExpressionType.Number) {
-				return ExpressionType.Variable;
-			} else {
-				errors.add(() -> {
-					GipslValidator.err( //
-							GipslValidatorUtil.ARITH_EXPR_MISMATCH_ERROR_MESSAGE, //
-							product, //
-							GipslPackage.Literals.GIPS_ARITHMETIC_PRODUCT__OPERATOR //
-					);
-				});
-				return ExpressionType.Error;
-			}
+			return evaluate(product, errors);
 		} else if (expression instanceof GipsArithmeticExponential exponential) {
-			ExpressionType lhs = evaluate(exponential.getLeft(), errors);
-			ExpressionType rhs = evaluate(exponential.getRight(), errors);
-
-			if (lhs != ExpressionType.Number) {
-				errors.add(() -> {
-					GipslValidator.err( //
-							GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
-							exponential, //
-							GipslPackage.Literals.GIPS_ARITHMETIC_EXPONENTIAL__LEFT //
-					);
-				});
-			}
-			if (rhs != ExpressionType.Number) {
-				errors.add(() -> {
-					GipslValidator.err( //
-							GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
-							exponential, //
-							GipslPackage.Literals.GIPS_ARITHMETIC_EXPONENTIAL__RIGHT //
-					);
-				});
-			}
-
-			// Check for non-linear expressions with variables.
-			if (lhs == ExpressionType.Variable || rhs == ExpressionType.Variable) {
-				errors.add(() -> {
-					GipslValidator.err( //
-							GipslValidatorUtil.ARITH_EXPR_NONLINEAR_ERROR_MESSAGE, //
-							exponential, //
-							GipslPackage.Literals.GIPS_ARITHMETIC_EXPONENTIAL__OPERATOR //
-					);
-				});
-				return ExpressionType.Error;
-			}
-
-			if (lhs == rhs && lhs == ExpressionType.Number) {
-				return lhs;
-			} else {
-				errors.add(() -> {
-					GipslValidator.err( //
-							GipslValidatorUtil.ARITH_EXPR_MISMATCH_ERROR_MESSAGE, //
-							exponential, //
-							GipslPackage.Literals.GIPS_ARITHMETIC_EXPONENTIAL__OPERATOR //
-					);
-				});
-				return ExpressionType.Error;
-			}
+			return evaluate(exponential, errors);
 		} else if (expression instanceof GipsArithmeticUnary unary) {
-			ExpressionType operand = evaluate(unary.getOperand(), errors);
-
-			if (operand == ExpressionType.Number) {
-				return ExpressionType.Number;
-			}
-
-			// Only negation is allowed for variables
-			if (operand == ExpressionType.Variable && unary.getOperator() == GipsUnaryOperator.NEG) {
-				return ExpressionType.Variable;
-			}
-
-			errors.add(() -> {
-				GipslValidator.err( //
-						GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
-						unary, //
-						GipslPackage.Literals.GIPS_ARITHMETIC_UNARY__OPERAND //
-				);
-			});
-
-			return ExpressionType.Error;
+			return evaluate(unary, errors);
 		} else if (expression instanceof GipsArithmeticBracket bracket) {
 			return evaluate(bracket.getOperand(), errors);
 		} else if (expression instanceof GipsValueExpression value) {
@@ -618,6 +513,191 @@ public final class GipslExpressionValidator {
 		}
 	}
 
+	private static ExpressionType evaluate(GipsArithmeticUnary unary, Collection<Runnable> errors) {
+		ExpressionType operand = evaluate(unary.getOperand(), errors);
+
+		if (operand == ExpressionType.Number) {
+			return ExpressionType.Number;
+		}
+
+		// Only negation is allowed for variables
+		if (operand == ExpressionType.Variable && unary.getOperator() == GipsUnaryOperator.NEG) {
+			return ExpressionType.Variable;
+		}
+
+		errors.add(() -> {
+			GipslValidator.err( //
+					GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
+					unary, //
+					GipslPackage.Literals.GIPS_ARITHMETIC_UNARY__OPERAND //
+			);
+		});
+
+		return ExpressionType.Error;
+	}
+
+	private static ExpressionType evaluate(GipsArithmeticExponential exponential, Collection<Runnable> errors) {
+		ExpressionType lhs = evaluate(exponential.getLeft(), errors);
+		ExpressionType rhs = evaluate(exponential.getRight(), errors);
+
+		if (lhs != ExpressionType.Number) {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
+						exponential, //
+						GipslPackage.Literals.GIPS_ARITHMETIC_EXPONENTIAL__LEFT //
+				);
+			});
+		}
+		if (rhs != ExpressionType.Number) {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
+						exponential, //
+						GipslPackage.Literals.GIPS_ARITHMETIC_EXPONENTIAL__RIGHT //
+				);
+			});
+		}
+
+		// Check for non-linear expressions with variables.
+		if (lhs == ExpressionType.Variable || rhs == ExpressionType.Variable) {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.ARITH_EXPR_NONLINEAR_ERROR_MESSAGE, //
+						exponential, //
+						GipslPackage.Literals.GIPS_ARITHMETIC_EXPONENTIAL__OPERATOR //
+				);
+			});
+			return ExpressionType.Error;
+		}
+
+		if (lhs == rhs && lhs == ExpressionType.Number) {
+			return lhs;
+		} else {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.ARITH_EXPR_MISMATCH_ERROR_MESSAGE, //
+						exponential, //
+						GipslPackage.Literals.GIPS_ARITHMETIC_EXPONENTIAL__OPERATOR //
+				);
+			});
+			return ExpressionType.Error;
+		}
+	}
+
+	private static ExpressionType evaluate(GipsArithmeticProduct product, Collection<Runnable> errors) {
+		ExpressionType lhs = evaluate(product.getLeft(), errors);
+		ExpressionType rhs = evaluate(product.getRight(), errors);
+
+		if (lhs != ExpressionType.Number && lhs != ExpressionType.Variable) {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
+						product, //
+						GipslPackage.Literals.GIPS_ARITHMETIC_PRODUCT__LEFT //
+				);
+			});
+		}
+		if (rhs != ExpressionType.Number && rhs != ExpressionType.Variable) {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
+						product, //
+						GipslPackage.Literals.GIPS_ARITHMETIC_PRODUCT__RIGHT //
+				);
+			});
+		}
+
+		// Check for non-linear expressions with variable products.
+		if (lhs == ExpressionType.Variable && rhs == ExpressionType.Variable) {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.ARITH_EXPR_NONLINEAR_ERROR_MESSAGE, //
+						product, //
+						GipslPackage.Literals.GIPS_ARITHMETIC_PRODUCT__LEFT //
+				);
+			});
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.ARITH_EXPR_NONLINEAR_ERROR_MESSAGE, //
+						product, //
+						GipslPackage.Literals.GIPS_ARITHMETIC_PRODUCT__RIGHT //
+				);
+			});
+			return ExpressionType.Error;
+		}
+
+		// Check for non-linear expressions with variable as divisor.
+		if (product.getOperator() == GipsProductOperator.DIV && rhs == ExpressionType.Variable) {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.ARITH_EXPR_NONLINEAR_ERROR_MESSAGE, //
+						product, //
+						GipslPackage.Literals.GIPS_ARITHMETIC_PRODUCT__OPERATOR //
+				);
+			});
+			return ExpressionType.Error;
+		}
+
+		if (lhs == rhs && (lhs == ExpressionType.Number || lhs == ExpressionType.Variable)) {
+			return lhs;
+		} else if (lhs == ExpressionType.Number && rhs == ExpressionType.Variable) {
+			return ExpressionType.Variable;
+		} else if (lhs == ExpressionType.Variable && rhs == ExpressionType.Number) {
+			return ExpressionType.Variable;
+		} else {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.ARITH_EXPR_MISMATCH_ERROR_MESSAGE, //
+						product, //
+						GipslPackage.Literals.GIPS_ARITHMETIC_PRODUCT__OPERATOR //
+				);
+			});
+			return ExpressionType.Error;
+		}
+	}
+
+	private static ExpressionType evaluate(GipsArithmeticSum sum, Collection<Runnable> errors) {
+		ExpressionType lhs = evaluate(sum.getLeft(), errors);
+		ExpressionType rhs = evaluate(sum.getRight(), errors);
+
+		if (lhs != ExpressionType.String && lhs != ExpressionType.Number && lhs != ExpressionType.Variable) {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
+						sum, //
+						GipslPackage.Literals.GIPS_ARITHMETIC_SUM__LEFT //
+				);
+			});
+		}
+		if (rhs != ExpressionType.String && rhs != ExpressionType.Number && rhs != ExpressionType.Variable) {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
+						sum, //
+						GipslPackage.Literals.GIPS_ARITHMETIC_SUM__RIGHT //
+				);
+			});
+		}
+
+		if (lhs == rhs && (lhs == ExpressionType.Number || lhs == ExpressionType.Variable)) {
+			return lhs;
+		} else if (lhs == ExpressionType.Number && rhs == ExpressionType.Variable) {
+			return ExpressionType.Variable;
+		} else if (lhs == ExpressionType.Variable && rhs == ExpressionType.Number) {
+			return ExpressionType.Variable;
+		} else {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.ARITH_EXPR_MISMATCH_ERROR_MESSAGE, //
+						sum, //
+						GipslPackage.Literals.GIPS_ARITHMETIC_SUM__OPERATOR //
+				);
+			});
+			return ExpressionType.Error;
+		}
+	}
+
 	public static Collection<Runnable> checkValueExpression(final GipsValueExpression expression) {
 		Collection<Runnable> errors = Collections.synchronizedCollection(new LinkedList<>());
 		ExpressionType result = evaluate(expression, errors);
@@ -644,22 +724,22 @@ public final class GipslExpressionValidator {
 		return errors;
 	}
 
-	public static ExpressionType evaluate(final GipsValueExpression expression, Collection<Runnable> errors) {
-		ExpressionType valueType = null;
+	public static ExpressionData evaluate(final GipsValueExpression expression, Collection<Runnable> errors) {
+		ExpressionData valueType = null;
 		if (expression.getValue() instanceof GipsMappingExpression) {
-			valueType = ExpressionType.Set;
+			valueType = new ExpressionData(ExpressionMutability.Constant, ExpressionType.Object, true);
 		} else if (expression.getValue() instanceof GipsTypeExpression) {
-			valueType = ExpressionType.Set;
+			valueType = new ExpressionData(ExpressionMutability.Constant, ExpressionType.Object, true);
 		} else if (expression.getValue() instanceof GipsPatternExpression) {
-			valueType = ExpressionType.Set;
+			valueType = new ExpressionData(ExpressionMutability.Constant, ExpressionType.Object, true);
 		} else if (expression.getValue() instanceof GipsRuleExpression) {
-			valueType = ExpressionType.Set;
+			valueType = new ExpressionData(ExpressionMutability.Constant, ExpressionType.Object, true);
 		} else if (expression.getValue() instanceof GipsLocalContextExpression local) {
 			valueType = evaluate(local, errors);
 		} else if (expression.getValue() instanceof GipsSetElementExpression set) {
 			valueType = evaluate(set, errors);
 		} else {
-			valueType = ExpressionType.Unknown;
+			valueType = new ExpressionData(ExpressionMutability.Constant, ExpressionType.Unknown, false);
 		}
 
 		if (expression.getSetExpression() != null) {
@@ -669,8 +749,8 @@ public final class GipslExpressionValidator {
 		}
 	}
 
-	public static ExpressionType evaluate(final GipsLocalContextExpression expression, Collection<Runnable> errors) {
-		ExpressionType valueType = null;
+	public static ExpressionData evaluate(final GipsLocalContextExpression expression, Collection<Runnable> errors) {
+		ExpressionData valueType = null;
 		EObject localContext = GipslScopeContextUtil.getLocalContext(expression);
 
 		if (expression.getExpression() instanceof GipsVariableReferenceExpression variableReferenceExpression) {
@@ -743,7 +823,7 @@ public final class GipslExpressionValidator {
 							GipslPackage.Literals.GIPS_NODE_EXPRESSION__NODE //
 					);
 				});
-				valueType = ExpressionType.Unknown;
+				valueType = ExpressionData.asError();
 			} else {
 				valueType = evaluate(node, errors);
 			}
@@ -766,21 +846,22 @@ public final class GipslExpressionValidator {
 							GipslPackage.Literals.GIPS_ATTRIBUTE_EXPRESSION__ATTRIBUTE //
 					);
 				});
-				valueType = ExpressionType.Unknown;
+				valueType = ExpressionData.asError();
 			} else {
 				valueType = evaluate(attribute, errors);
+
 			}
 		} else {
 			// Case: expression.getExpression() == null, which is a reference to the plain
 			// context object
-			valueType = ExpressionType.Object;
+			valueType = new ExpressionData(ExpressionMutability.Constant, ExpressionType.Object, false);
 		}
 
 		return valueType;
 	}
 
-	public static ExpressionType evaluate(final GipsSetElementExpression expression, Collection<Runnable> errors) {
-		ExpressionType valueType = null;
+	public static ExpressionData evaluate(final GipsSetElementExpression expression, Collection<Runnable> errors) {
+		ExpressionData valueType = null;
 		EObject setContext = GipslScopeContextUtil.getSetContext(expression);
 
 		if (expression.getExpression() instanceof GipsVariableReferenceExpression variableReferenceExpression) {
@@ -798,6 +879,7 @@ public final class GipslExpressionValidator {
 					);
 				});
 			}
+
 			// Variable references may only be used in Sum Operations
 			Object container = GipslScopeContextUtil.getContainer(expression, Set.of(GipsSumOperationImpl.class));
 			if (container == null) {
@@ -836,6 +918,7 @@ public final class GipslExpressionValidator {
 					);
 				});
 			}
+
 		} else if (expression.getExpression() instanceof GipsNodeExpression node) {
 			if (setContext instanceof EClass || setContext instanceof GipsTypeExpression
 					|| setContext instanceof GipsAttributeExpression
@@ -854,10 +937,12 @@ public final class GipslExpressionValidator {
 							GipslPackage.Literals.GIPS_NODE_EXPRESSION__NODE //
 					);
 				});
-				valueType = ExpressionType.Unknown;
+				valueType = ExpressionData.asError();
+
 			} else {
 				valueType = evaluate(node, errors);
 			}
+
 		} else if (expression.getExpression() instanceof GipsAttributeExpression attribute) {
 			if (!(setContext instanceof EClass || setContext instanceof GipsTypeExpression
 					|| (setContext instanceof GipsNodeExpression ne && ne.getExpression() != null)
@@ -877,79 +962,68 @@ public final class GipslExpressionValidator {
 							GipslPackage.Literals.GIPS_ATTRIBUTE_EXPRESSION__ATTRIBUTE //
 					);
 				});
-				valueType = ExpressionType.Unknown;
+				valueType = ExpressionData.asError();
+
 			} else {
 				valueType = evaluate(attribute, errors);
 			}
 		} else {
 			// Case: expression.getExpression() == null, which is a reference to the plain
 			// set element
-			valueType = ExpressionType.Object;
+			valueType = new ExpressionData(ExpressionMutability.Constant, ExpressionType.Object, false);
 		}
 
 		return valueType;
 	}
 
-	public static ExpressionType evaluate(final GipsVariableReferenceExpression expression,
+	public static ExpressionData evaluate(final GipsVariableReferenceExpression expression,
 			Collection<Runnable> errors) {
 		return evaluate(expression.getVariable(), errors);
 	}
 
-	public static ExpressionType evaluate(GipsVariable variable, Collection<Runnable> errors) {
-		return evaluate(variable.getType(), errors);
+	public static ExpressionData evaluate(GipsVariable variable, Collection<Runnable> errors) {
+		ExpressionType type = evaluateType(variable.getType(), errors);
+		return new ExpressionData(ExpressionMutability.Variable, type, false);
 	}
 
-	public static ExpressionType evaluate(final GipsNodeExpression expression, Collection<Runnable> errors) {
-		if (expression.getExpression() == null) {
-			return ExpressionType.Object;
-		} else {
-			if (expression.getExpression() instanceof GipsAttributeExpression attribute) {
-				return evaluate(attribute, errors);
-			} else if (expression.getExpression() instanceof GipsVariableReferenceExpression varRef) {
-				return evaluate(varRef, errors);
-			} else {
-				return ExpressionType.Error;
-			}
+	public static ExpressionData evaluate(final GipsNodeExpression expression, Collection<Runnable> errors) {
+		if (expression.getExpression() == null)
+			return new ExpressionData(ExpressionMutability.Constant, ExpressionType.Object, false);
+
+		if (expression.getExpression() instanceof GipsAttributeExpression attribute) {
+			return evaluate(attribute, errors);
+		} else if (expression.getExpression() instanceof GipsVariableReferenceExpression variableReferenceExpression) {
+			return evaluate(variableReferenceExpression, errors);
 		}
+
+		return ExpressionData.asError();
 	}
 
-	public static ExpressionType evaluate(final GipsAttributeExpression expression, Collection<Runnable> errors) {
+	public static ExpressionData evaluate(final GipsAttributeExpression expression, Collection<Runnable> errors) {
 		if (expression.getAttribute() == null || expression.getAttribute().getLiteral() == null)
-			return ExpressionType.Unknown;
+			return ExpressionData.asUnknown();
 
-		if (expression.getRight() == null)
-			return evaluate(expression.getAttribute(), errors);
-
-		if (expression.getAttribute().getLiteral().isMany()) {
-			if (expression.getRight() != null)
-				return ExpressionType.Error;
-			return ExpressionType.Set;
-		}
-
-		if (expression.getRight() instanceof GipsAttributeExpression rightExpression)
-			return evaluate(rightExpression, errors);
-
-		if (expression.getRight() instanceof GipsVariableReferenceExpression varRefExpression)
-			return evaluate(varRefExpression, errors);
-
-		return ExpressionType.Unknown;
+		return switch (expression.getRight()) {
+		case null -> evaluate(expression.getAttribute(), errors);
+		case GipsAttributeExpression attribute -> evaluate(attribute, errors);
+		case GipsVariableReferenceExpression variable -> evaluate(variable, errors);
+		default -> ExpressionData.asUnknown();
+		};
 	}
 
-	public static ExpressionType evaluate(final GipsAttributeLiteral attribute, Collection<Runnable> errors) {
-		return evaluate(attribute.getLiteral(), errors);
+	public static ExpressionData evaluate(final GipsAttributeLiteral attribute, Collection<Runnable> errors) {
+		return evaluate(attribute.getLiteral(), errors).with(ExpressionMutability.Constant);
 	}
 
-	public static ExpressionType evaluate(final EStructuralFeature feature, Collection<Runnable> errors) {
+	public static ExpressionData evaluate(final EStructuralFeature feature, Collection<Runnable> errors) {
 		if (feature == null)
-			return ExpressionType.Error;
+			return ExpressionData.asError();
 
-		if (feature.isMany())
-			return ExpressionType.Set;
-
-		return evaluate(feature.getEType(), errors);
+		ExpressionType type = evaluateType(feature.getEType(), errors);
+		return new ExpressionData(ExpressionMutability.Unknown, type, feature.isMany());
 	}
 
-	public static ExpressionType evaluate(final EClassifier type, Collection<Runnable> errors) {
+	public static ExpressionType evaluateType(final EClassifier type, Collection<Runnable> errors) {
 		if (type == EcorePackage.Literals.EINT || type == EcorePackage.Literals.ESHORT
 				|| type == EcorePackage.Literals.ELONG || type == EcorePackage.Literals.EBYTE) {
 			return ExpressionType.Number;
@@ -971,7 +1045,7 @@ public final class GipslExpressionValidator {
 	public static Collection<Runnable> checkSetExpression(final GipsValueExpression context,
 			final GipsSetExpression expression) {
 		Collection<Runnable> errors = Collections.synchronizedCollection(new LinkedList<>());
-		ExpressionType result = evaluate(expression, errors);
+		ExpressionData result = evaluate(expression, errors);
 
 		if (result == ExpressionType.Unknown) {
 			errors.add(() -> {
@@ -995,7 +1069,7 @@ public final class GipslExpressionValidator {
 		return errors;
 	}
 
-	public static ExpressionType evaluate(final GipsSetExpression expression, Collection<Runnable> errors) {
+	public static ExpressionData evaluate(final GipsSetExpression expression, Collection<Runnable> errors) {
 		if (expression.getOperation() == null && expression.getRight() == null) {
 			errors.add(() -> {
 				GipslValidator.err( //
@@ -1004,7 +1078,7 @@ public final class GipslExpressionValidator {
 						GipslPackage.Literals.GIPS_SET_EXPRESSION__OPERATION //
 				);
 			});
-			return ExpressionType.Error;
+			return ExpressionData.asError();
 		}
 		if (expression.getOperation() instanceof GipsSetOperation && expression.getRight() == null) {
 			GipsConstant container = (GipsConstant) GipslScopeContextUtil.getContainer(expression,
@@ -1017,7 +1091,7 @@ public final class GipslExpressionValidator {
 							GipslPackage.Literals.GIPS_SET_EXPRESSION__OPERATION //
 					);
 				});
-				return ExpressionType.Error;
+				return ExpressionData.asError();
 			}
 
 		}
@@ -1028,33 +1102,33 @@ public final class GipslExpressionValidator {
 			} else if (reduce instanceof GipsSimpleSelect) {
 				EObject setContext = GipslScopeContextUtil.getSetContext(reduce);
 				if (setContext instanceof EClass) {
-					return ExpressionType.Object;
+					return new ExpressionData(ExpressionMutability.Constant, ExpressionType.Object, false);
 				} else if (setContext instanceof GipsSetElementExpression set) {
 					return evaluate(set, errors);
 				} else if (setContext instanceof GipsLocalContextExpression local) {
 					return evaluate(local, errors);
 				} else if (expression instanceof GipsMappingExpression) {
-					return ExpressionType.Set;
+					return new ExpressionData(ExpressionMutability.Constant, ExpressionType.Object, true);
 				} else if (expression instanceof GipsTypeExpression) {
-					return ExpressionType.Set;
+					return new ExpressionData(ExpressionMutability.Constant, ExpressionType.Object, true);
 				} else if (expression instanceof GipsPatternExpression) {
-					return ExpressionType.Set;
+					return new ExpressionData(ExpressionMutability.Constant, ExpressionType.Object, true);
 				} else if (expression instanceof GipsRuleExpression) {
-					return ExpressionType.Set;
+					return new ExpressionData(ExpressionMutability.Constant, ExpressionType.Object, true);
 				} else {
-					return ExpressionType.Unknown;
+					return new ExpressionData(ExpressionMutability.Constant, ExpressionType.Unknown, false);
 				}
 			} else if (reduce instanceof GipsSimpleQuery simple && simple.getOperator() == QueryOperator.COUNT) {
-				return ExpressionType.Number;
+				return new ExpressionData(ExpressionMutability.Constant, ExpressionType.Number, false);
 			} else {
-				return ExpressionType.Boolean;
+				return new ExpressionData(ExpressionMutability.Constant, ExpressionType.Boolean, false);
 			}
 		} else if (expression.getRight() == null && expression.getOperation() instanceof GipsSetOperation) {
-			return ExpressionType.Set;
+			return new ExpressionData(ExpressionMutability.Constant, ExpressionType.Object, true);
 		} else {
 			if (expression.getOperation() instanceof GipsFilterOperation filter) {
-				ExpressionType type = evaluate(filter.getExpression(), errors);
-				if (type != ExpressionType.Boolean) {
+				ExpressionData type = evaluate(filter.getExpression(), errors);
+				if (type.getType() != ExpressionType.Boolean) {
 					errors.add(() -> {
 						GipslValidator.err( //
 								GipslValidatorUtil.SET_FILTER_ERROR, //
@@ -1075,8 +1149,8 @@ public final class GipslExpressionValidator {
 						);
 					});
 				}
-				ExpressionType lhs = null;
-				ExpressionType rhs = null;
+				ExpressionData lhs = null;
+				ExpressionData rhs = null;
 				if (predicate.getE1() instanceof GipsNodeExpression node) {
 					lhs = evaluate(node, errors);
 				} else if (predicate.getE1() instanceof GipsAttributeExpression attribute) {
@@ -1099,17 +1173,18 @@ public final class GipslExpressionValidator {
 					});
 				}
 
-				if (lhs != rhs) {
+				if (lhs.getType() != rhs.getType()) {
 					errors.add(() -> {
 						GipslValidator.err( //
-								GipslValidatorUtil.REL_EXPR_MISMATCH_ERROR_MESSAGE, //
+								String.format(GipslValidatorUtil.REL_EXPR_MISMATCH_ERROR_MESSAGE, lhs.getType(),
+										rhs.getType()), //
 								sort, //
 								GipslPackage.Literals.GIPS_SORT_OPERATION__PREDICATE //
 						);
 					});
 				}
 			} else if (expression.getOperation() instanceof GipsConcatenationOperation cat) {
-				ExpressionType type = evaluate(cat.getValue(), errors);
+				ExpressionData type = evaluate(cat.getValue(), errors);
 				if (type != ExpressionType.Set) {
 					errors.add(() -> {
 						GipslValidator.err( //
@@ -1120,7 +1195,7 @@ public final class GipslExpressionValidator {
 					});
 				}
 			} else if (expression.getOperation() instanceof GipsTransformOperation transform) {
-				ExpressionType type = evaluate(transform.getExpression(), errors);
+				ExpressionData type = evaluate(transform.getExpression(), errors);
 				if (type == ExpressionType.Unknown || type != ExpressionType.Error) {
 					errors.add(() -> {
 						GipslValidator.err( //
@@ -1140,4 +1215,8 @@ public final class GipslExpressionValidator {
 
 enum ExpressionType {
 	Object, String, Boolean, Number, Enum, Set, Variable, Unknown, Error;
+}
+
+enum ExpressionMutability {
+	Variable, Constant, Unknown
 }

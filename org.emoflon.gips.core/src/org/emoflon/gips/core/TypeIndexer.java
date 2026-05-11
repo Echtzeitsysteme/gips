@@ -8,6 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -20,6 +21,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.emoflon.gips.intermediate.GipsIntermediate.GipsIntermediateModel;
 
 public class TypeIndexer {
@@ -45,12 +47,24 @@ public class TypeIndexer {
 	}
 
 	public Set<EObject> getObjectsOfType(final EClass type) {
+		Objects.requireNonNull(type);
+
+		// If the given EClass is (still) a proxy, try to resolve it.
+		EClass localType = type;
+		if (type.eIsProxy()) {
+			localType = (EClass) EcoreUtil.resolve(type, model);
+		}
+
 		Set<EObject> query = Collections.synchronizedSet(new LinkedHashSet<>());
-		query.addAll(index.get(type));
-		if (!class2subclass.containsKey(type))
+		// If the given type is not contained in the index, intern an empty collection.
+		if (!index.containsKey(type)) {
+			return query;
+		}
+		query.addAll(index.get(localType));
+		if (!class2subclass.containsKey(localType))
 			return query;
 
-		for (EClass cls : class2subclass.get(type)) {
+		for (EClass cls : class2subclass.get(localType)) {
 			query.addAll(index.get(cls));
 		}
 		return query;

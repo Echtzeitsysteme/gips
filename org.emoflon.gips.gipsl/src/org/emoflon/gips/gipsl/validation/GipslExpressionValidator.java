@@ -339,7 +339,7 @@ public final class GipslExpressionValidator {
 		case GipsBooleanDisjunction disjunction -> evaluate(disjunction, errors);
 		case GipsBooleanConjunction conjunction -> evaluate(conjunction, errors);
 		case GipsBooleanNegation negation -> evaluate(negation, errors);
-		case GipsBooleanBracket bracket -> evaluate(bracket, errors);
+		case GipsBooleanBracket bracket -> evaluate(bracket.getOperand(), errors);
 		case GipsBooleanLiteral literal -> evaluate(literal, errors);
 		case GipsRelationalExpression relation -> evaluate(relation, errors);
 		case GipsArithmeticExpression arithmetic -> evaluate(arithmetic, errors);
@@ -543,7 +543,7 @@ public final class GipslExpressionValidator {
 		case GipsArithmeticProduct product -> evaluate(product, errors);
 		case GipsArithmeticExponential exponential -> evaluate(exponential, errors);
 		case GipsArithmeticUnary unary -> evaluate(unary, errors);
-		case GipsArithmeticBracket bracket -> evaluate(bracket, errors);
+		case GipsArithmeticBracket bracket -> evaluate(bracket.getOperand(), errors);
 		case GipsValueExpression value -> evaluate(value, errors);
 		case GipsLinearFunctionReference lfr -> evaluate(lfr, errors);
 		case GipsArithmeticLiteral literal -> evaluate(literal, errors);

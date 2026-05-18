@@ -3,7 +3,7 @@ package org.emoflon.gips.core.milp;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
 
 public record SolverOutput(SolverStatus status, double objectiveValue, GipsConstraintValidationLog validationLog,
-		int solutionCount, ProblemStatistics stats) {
+		int solutionCount, ProblemStatistics stats) implements AutoCloseable {
 
 	@Override
 	public String toString() {
@@ -15,6 +15,11 @@ public record SolverOutput(SolverStatus status, double objectiveValue, GipsConst
 		sb.append("\n Pre-solve validation log:\n");
 		sb.append(validationLog.toString());
 		return sb.toString();
+	}
+
+	@Override
+	public void close() {
+		// Nothing to do here.
 	}
 
 }

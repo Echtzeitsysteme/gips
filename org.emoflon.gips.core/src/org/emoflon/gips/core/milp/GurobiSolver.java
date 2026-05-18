@@ -368,6 +368,9 @@ public class GurobiSolver extends Solver {
 			}
 			}
 		} catch (final GRBException e) {
+			if (e.getMessage() != null && e.getMessage().contains("Out of memory")) {
+				throw new OutOfMemoryError("Gurobi");
+			}
 			throw new RuntimeException(e);
 		}
 

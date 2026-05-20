@@ -1307,7 +1307,7 @@ public final class GipslExpressionValidator {
 		} else {
 			if (expression.getOperation() instanceof GipsFilterOperation filter) {
 				ExpressionData type = evaluate(filter.getExpression(), errors);
-				if (type.getType() != ExpressionType.Boolean) {
+				if (type.getType() != ExpressionType.Boolean || !type.isConstant()) {
 					errors.add(() -> {
 						GipslValidator.err( //
 								GipslValidatorUtil.SET_FILTER_ERROR, //

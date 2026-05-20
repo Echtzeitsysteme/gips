@@ -140,11 +140,11 @@ public class GipslValidatorUtil {
 	public static final String REL_EXPR_CONTAINS_ERRORS = "Relational expression contains errors.";
 	public static final String REL_EXPR_CONTAINS_UNKNOWNS = "Relational expression contains unknown/illegal expression types.";
 	public static final String REL_EXPR_EVAL_ERROR_MESSAGE = "Relational expression contains errors or unknown types.";
-	public static final String REL_EXPR_MISMATCH_ERROR_MESSAGE = "Operands cannot be compared since their types do not match.";
+	public static final String REL_EXPR_MISMATCH_ERROR_MESSAGE = "Operands cannot be compared since their types do not match. [%s : %s]";
 
 	public static final String ARITH_EXPR_CONTAINS_ERRORS = "Arithmetic expression contains errors.";
 	public static final String ARITH_EXPR_CONTAINS_UNKNOWNS = "Arithmetic expression contains unknown/illegal expression types.";
-	public static final String ARITH_EXPR_EVAL_ERROR_MESSAGE = "Arithmetic expression does not evaluate to a primitive type.";
+	public static final String ARITH_EXPR_EVAL_ERROR_MESSAGE = "Arithmetic expression does not evaluate to a number.";
 	public static final String ARITH_EXPR_NONLINEAR_ERROR_MESSAGE = "Combination of operands leads to non-linear expression.";
 	public static final String ARITH_EXPR_MISMATCH_ERROR_MESSAGE = "Operands cannot be combined since their types do not match.";
 	public static final String ARITH_EXPR_LFR_ERROR_MESSAGE = "Linear function references not allowed in set expressions and outside of the objective.";

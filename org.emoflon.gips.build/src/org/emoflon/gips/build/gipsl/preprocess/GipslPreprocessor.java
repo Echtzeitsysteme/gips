@@ -18,12 +18,21 @@ import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 
 public class GipslPreprocessor {
 
-	private final static PreprocessorRule[] rules = new PreprocessorRule[] { //
+	private final static PreprocessorRule[] firstPassRules = new PreprocessorRule[] { //
+			new RuleImplicitBooleans() };
+
+	private final static PreprocessorRule[] secondPassRules = new PreprocessorRule[] { //
 			new RuleEquivalenceShortcutA(), //
 			new RuleEquivalenceShortcutB(), //
 			new RuleEquivalenceShortcutC(), //
 			new RuleEquivalenceShortcutD(), //
-			new RuleImplicationShortcutA() };
+			new RuleImplicationShortcutA() //
+	};
+
+	private final static PreprocessorRule[][] ruleOrder = new PreprocessorRule[][] { //
+			firstPassRules, //
+			secondPassRules //
+	};
 
 	private final GipslFactory factory;
 
@@ -41,12 +50,12 @@ public class GipslPreprocessor {
 		// This part can be used for multi-pass rule application (whenever this may
 		// becomes relevant in the future). It is commented out because, at present, no
 		// rule requires multiple passes.
-//		GipsBooleanExpression currentPass = applyRules(expression);
+//		GipsBooleanExpression currentPass = tryToApplyRules(expression);
 //		GipsBooleanExpression previousPass = null;
 //
 //		while (currentPass != null) {
 //			previousPass = currentPass;
-//			currentPass = applyRules(currentPass);
+//			currentPass = tryToApplyRules(currentPass);
 //		}
 //
 //		return previousPass != null ? previousPass : expression;
@@ -135,13 +144,20 @@ public class GipslPreprocessor {
 	}
 
 	private GipsBooleanExpression tryAllRules(GipsBooleanExpression expression) {
-		for (var rule : rules) {
-			GipsBooleanExpression newExpression = rule.tryRule(factory, expression);
-			if (newExpression != null)
-				return newExpression;
+		GipsBooleanExpression currentExpression = expression;
+		for (var ruleSet : ruleOrder) {
+			for (var rule : ruleSet) {
+				var newExpression = rule.tryRule(factory, currentExpression);
+				if (newExpression != null) {
+					currentExpression = newExpression;
+					break; // only one rule per set (can be changed in the future!)
+				}
+			}
 		}
 
-		return null;
+		if (currentExpression == expression)
+			return null; // nothing changed
+		return currentExpression;
 	}
 
 }

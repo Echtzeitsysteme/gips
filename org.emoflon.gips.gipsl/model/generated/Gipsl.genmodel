@@ -65,7 +65,6 @@
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsUnaryOperator/SQRT"/>
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsUnaryOperator/sin"/>
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsUnaryOperator/cos"/>
-      <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//GipsUnaryOperator/bool2int"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Gipsl.ecore#//AlgorithmOperator">
       <genEnumLiterals ecoreEnumLiteral="Gipsl.ecore#//AlgorithmOperator/UNIQUE"/>

@@ -251,7 +251,6 @@
     <eLiterals name="SINE" value="3"/>
     <eLiterals name="COSINE" value="4"/>
     <eLiterals name="SQRT" value="5"/>
-    <eLiterals name="BOOL2INT" value="6"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ArithmeticLiteral" abstract="true" interface="true"
       eSuperTypes="#//ArithmeticExpression"/>

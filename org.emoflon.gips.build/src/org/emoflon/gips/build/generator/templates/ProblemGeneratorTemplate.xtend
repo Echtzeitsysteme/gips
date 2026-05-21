@@ -706,9 +706,6 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 				case SQRT: {
 					return '''Math.sqrt(«generateConstantExpression(expression.operand)»)'''
 				}
-				case BOOL2INT: {
-					return '''(«generateConstantExpression(expression.operand)» ? 1.0 : 0.0)'''
-				}
 			}
 		} else if(expression instanceof ArithmeticLiteral) {
 			if(expression instanceof DoubleLiteral) {

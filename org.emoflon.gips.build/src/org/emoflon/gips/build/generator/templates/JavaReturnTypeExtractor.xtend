@@ -98,10 +98,7 @@ class JavaReturnTypeExtractor {
 
 			return lhs
 
-		} else if(expression instanceof ArithmeticUnaryExpression) {
-			if( expression.operator == ArithmeticUnaryOperator.BOOL2INT)
-				return TYPE_DOUBLE
-			
+		} else if(expression instanceof ArithmeticUnaryExpression) {			
 			return extractReturnType(expression.getOperand(), imports)
 
 		} else if(expression instanceof ArithmeticLiteral) {

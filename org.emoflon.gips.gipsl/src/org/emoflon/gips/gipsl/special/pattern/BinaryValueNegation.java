@@ -30,6 +30,7 @@ import org.emoflon.gips.gipsl.special.PatternHelper;
 public class BinaryValueNegation extends AbstractPatternMatcher {
 
 	private final ValueConstantRelation pattern = new ValueConstantRelation( //
+			true, //
 			RelationalOperator.EQUAL, //
 			this::matchLiteral);
 

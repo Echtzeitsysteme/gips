@@ -12,6 +12,8 @@ import org.emoflon.gips.gipsl.gipsl.GipsBooleanExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanImplication;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanNegation;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
+import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
 import org.emoflon.gips.gipsl.special.AbstractPatternMatcher;
 import org.emoflon.gips.gipsl.special.PatternHelper;
@@ -77,7 +79,9 @@ public class ImplicitBoolean extends AbstractPatternMatcher {
 				container instanceof GipsBooleanDisjunction || //
 				container instanceof GipsBooleanImplication || //
 				container instanceof GipsBooleanBracket || //
-				container instanceof GipsConstraint))
+				container instanceof GipsConstraint || //
+				container instanceof GipsLinearFunction || //
+				container instanceof GipsObjective))
 			return;
 
 		isNegated = container instanceof GipsBooleanNegation;

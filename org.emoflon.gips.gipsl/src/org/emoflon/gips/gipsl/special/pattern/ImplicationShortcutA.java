@@ -27,6 +27,7 @@ public class ImplicationShortcutA extends AbstractPatternMatcher {
 
 	private final ImplicitBoolean isImplicitBool = new ImplicitBoolean();
 	private final ValueConstantRelation isRelationalPair = new ValueConstantRelation( //
+			false, //
 			RelationalOperator.EQUAL, //
 			c -> "1".equals(c));
 

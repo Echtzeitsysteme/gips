@@ -27,6 +27,7 @@ public class EquivalenceShortcutD extends AbstractPatternMatcher {
 
 	private final ImplicitBoolean isImplicitBool = new ImplicitBoolean();
 	private final ValueConstantRelation isRelationalPair = new ValueConstantRelation( //
+			false, //
 			RelationalOperator.EQUAL, //
 			c -> "0".equals(c) || "1".equals(c));
 

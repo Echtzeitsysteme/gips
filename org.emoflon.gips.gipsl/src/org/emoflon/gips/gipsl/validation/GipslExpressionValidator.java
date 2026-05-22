@@ -296,7 +296,8 @@ public final class GipslExpressionValidator {
 		if (expression == null || expression.eContainer() == null)
 			return errors;
 
-		if (expression.eContainer() instanceof GipsObjective obj && result.getType() != ExpressionType.Number
+		if (expression.eContainer() instanceof GipsObjective obj
+				&& !(result.getType() == ExpressionType.Number || result.getType() == ExpressionType.Boolean)
 				&& errors.size() == 0) {
 			errors.add(() -> {
 				GipslValidator.err( //
@@ -307,7 +308,8 @@ public final class GipslExpressionValidator {
 			});
 		}
 
-		if (expression.eContainer() instanceof GipsLinearFunction fun && result.getType() != ExpressionType.Number
+		if (expression.eContainer() instanceof GipsLinearFunction fun
+				&& !(result.getType() == ExpressionType.Number || result.getType() == ExpressionType.Boolean)
 				&& errors.size() == 0) {
 			errors.add(() -> {
 				GipslValidator.err( //

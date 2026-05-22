@@ -30,10 +30,12 @@ public class EquivalenceShortcutA extends AbstractPatternMatcher {
 	private final List<GipsArithmeticExpression> otherNodes = new ArrayList<>();
 
 	private final ValueConstantRelation isGreaterEqualPair = new ValueConstantRelation( //
+			false, //
 			RelationalOperator.GREATER_OR_EQUAL, //
 			c -> "1".equals(c));
 
 	private final ValueConstantRelation isEqualPair = new ValueConstantRelation( //
+			false, //
 			RelationalOperator.EQUAL, //
 			c -> "1".equals(c));
 

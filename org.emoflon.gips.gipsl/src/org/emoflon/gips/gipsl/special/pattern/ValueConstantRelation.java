@@ -21,11 +21,14 @@ public class ValueConstantRelation extends AbstractPatternMatcher {
 	private final RelationalOperator matchOperator;
 	private final RelationalOperator reversedmatchOperator;
 	private final Predicate<String> matchConstant;
+	private final boolean onlyBinaries;
 
 	private GipsValueExpression nodeA;
 	private GipsArithmeticLiteral literal;
 
-	public ValueConstantRelation(RelationalOperator matchOperator, Predicate<String> matchConstant) {
+	public ValueConstantRelation(boolean onlyBinaries, RelationalOperator matchOperator,
+			Predicate<String> matchConstant) {
+		this.onlyBinaries = onlyBinaries;
 		this.matchOperator = Objects.requireNonNull(matchOperator);
 		this.matchConstant = Objects.requireNonNull(matchConstant);
 		this.reversedmatchOperator = switch (matchOperator) {
@@ -91,10 +94,18 @@ public class ValueConstantRelation extends AbstractPatternMatcher {
 
 	protected void matchPair(GipsValueExpression exp, GipsArithmeticLiteral literal) {
 		var type = GipslExpressionValidator.evaluate(exp, new LinkedList<>());
-		if (type.isType(ExpressionType.Boolean) && type.isScalar()) {
-			// A . c
-			this.nodeA = exp;
-			this.literal = literal;
+		if (type.isScalar()) {
+			if (onlyBinaries) {
+				if (type.isType(ExpressionType.Boolean)) {
+					// A . c
+					this.nodeA = exp;
+					this.literal = literal;
+				}
+			} else {
+				// A . c
+				this.nodeA = exp;
+				this.literal = literal;
+			}
 		}
 	}
 

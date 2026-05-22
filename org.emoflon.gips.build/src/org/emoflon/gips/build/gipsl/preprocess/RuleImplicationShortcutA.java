@@ -31,8 +31,8 @@ public class RuleImplicationShortcutA implements PreprocessorRule {
 		// A <= B
 		var relational = factory.createGipsRelationalExpression();
 		relational.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
-		relational.setLeft(EcoreUtil.copy(pattern.nodeA));
-		relational.setRight(EcoreUtil.copy(pattern.nodeB));
+		relational.setLeft(EcoreUtil.copy(pattern.getNodeA()));
+		relational.setRight(EcoreUtil.copy(pattern.getNodeB()));
 
 		return relational;
 	}

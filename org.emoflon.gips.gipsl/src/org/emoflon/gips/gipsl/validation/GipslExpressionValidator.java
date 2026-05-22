@@ -170,6 +170,10 @@ public final class GipslExpressionValidator {
 			return isMany;
 		}
 
+		public boolean isScalar() {
+			return !isMany;
+		}
+
 		public boolean isError() {
 			return type == ExpressionType.Error;
 		}

@@ -47,13 +47,13 @@ public class RuleEquivalenceShortcutD implements PreprocessorRule {
 		var oneMinusB = factory.createGipsArithmeticSum();
 		oneMinusB.setOperator(GipsSumOperator.MINUS);
 		oneMinusB.setLeft(one);
-		oneMinusB.setRight(EcoreUtil.copy(pattern.nodeB));
+		oneMinusB.setRight(EcoreUtil.copy(pattern.getNodeB()));
 
 		// 1-B <= A
 		var conjunctOne = factory.createGipsRelationalExpression();
 		conjunctOne.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
 		conjunctOne.setLeft(EcoreUtil.copy(oneMinusB));
-		conjunctOne.setRight(EcoreUtil.copy(pattern.nodeA));
+		conjunctOne.setRight(EcoreUtil.copy(pattern.getNodeA()));
 
 		var bigM = createArithmeticLiteral(factory, Double.toString(PluginPreferences.getBigMValue()));
 
@@ -66,7 +66,7 @@ public class RuleEquivalenceShortcutD implements PreprocessorRule {
 		// A <= (1-B)*M
 		var conjunctTwo = factory.createGipsRelationalExpression();
 		conjunctTwo.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
-		conjunctTwo.setLeft(EcoreUtil.copy(pattern.nodeA));
+		conjunctTwo.setLeft(EcoreUtil.copy(pattern.getNodeA()));
 		conjunctTwo.setRight(bigMProduct);
 
 		return GeneratorUtil.conjunction(factory, conjunctOne, conjunctTwo);

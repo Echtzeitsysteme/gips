@@ -19,7 +19,9 @@ import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 public class GipslPreprocessor {
 
 	private final static PreprocessorRule[] firstPassRules = new PreprocessorRule[] { //
-			new RuleImplicitBooleans() };
+			new RuleImplicitBooleans(), //
+			new RuleBinaryValueNegation() //
+	};
 
 	private final static PreprocessorRule[] secondPassRules = new PreprocessorRule[] { //
 			new RuleEquivalenceShortcutA(), //

@@ -64,6 +64,9 @@ public class OpenGeneratedJavaFileHandler extends AbstractHandler {
 
 		ITraceContext context = ITraceManager.getInstance().getContext(project.getName());
 		ITraceSelection traceSelection = context.getSelectedElements();
+		if (traceSelection == null)
+			return Status.error("Selection could not be found. Please (re)select the elements and repeat the action.");
+
 		IModelLink link = context.getModelChain(traceSelection.getModelId(), JAVA_MODEL_ID);
 
 		Collection<IStatus> aggregatedStatuses = new LinkedList<>();

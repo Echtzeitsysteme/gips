@@ -2,3 +2,7 @@ src-gen
 xtend-gen
 bin
 !/**/.gitkeep
+
+# macOS
+.DS_Store
+

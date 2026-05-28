@@ -263,7 +263,9 @@ public final class GipslExpressionValidator {
 			});
 		}
 
-		if (errors.size() == 0 && (result.getType() != ExpressionType.Boolean || result.isMany)) {
+		boolean isOfIncorrectType = result.getType() != ExpressionType.Boolean;
+
+		if (errors.size() == 0 && (isOfIncorrectType || result.isMany)) {
 			errors.add(() -> {
 				GipslValidator.err( //
 						GipslValidatorUtil.BOOL_EXPR_EVAL_ERROR_MESSAGE, //
@@ -316,6 +318,7 @@ public final class GipslExpressionValidator {
 				);
 			});
 		}
+
 		if (result.isError() && errors.size() == 0) {
 			errors.add(() -> {
 				GipslValidator.err( //
@@ -329,10 +332,13 @@ public final class GipslExpressionValidator {
 		if (expression == null || expression.eContainer() == null)
 			return errors;
 
+		boolean isOfIncorrectType = !(result.getType() == ExpressionType.Number
+				|| result.getType() == ExpressionType.Boolean);
+
 		if (expression.eContainer() instanceof GipsObjective obj //
-				&& !(result.getType() == ExpressionType.Number || result.getType() == ExpressionType.Boolean) //
-				&& result.isMany //
-				&& errors.size() == 0) {
+				&& errors.size() == 0 //
+				&& (isOfIncorrectType || result.isMany) //
+		) {
 			errors.add(() -> {
 				GipslValidator.err( //
 						GipslValidatorUtil.OBJECTIVE_EVAL_NOT_NUMBER_MESSAGE, //
@@ -343,9 +349,9 @@ public final class GipslExpressionValidator {
 		}
 
 		if (expression.eContainer() instanceof GipsLinearFunction fun //
-				&& !(result.getType() == ExpressionType.Number || result.getType() == ExpressionType.Boolean) //
-				&& result.isMany //
-				&& errors.size() == 0) {
+				&& errors.size() == 0 //
+				&& (isOfIncorrectType || result.isMany) //
+		) {
 			errors.add(() -> {
 				GipslValidator.err( //
 						GipslValidatorUtil.FUNCTION_EVAL_NOT_NUMBER_MESSAGE, //

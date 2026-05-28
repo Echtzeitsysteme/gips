@@ -206,6 +206,39 @@ public final class GipslExpressionValidator {
 
 	}
 
+	/**
+	 * Evaluates an expression and checks for errors by validating return types.
+	 * 
+	 * @return A list of 'error' lambda functions that will highlight erroneous
+	 *         expressions in the resource.
+	 */
+	public static Collection<Runnable> checExpressionForErrors(final GipsBooleanExpression expression) {
+		Collection<Runnable> errors = Collections.synchronizedCollection(new LinkedList<>());
+		ExpressionData result = evaluate(expression, errors);
+
+		if (result.isUnknown() && errors.size() == 0) {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.EXPRESSION_CONTAINS_UNKNOWNS, //
+						expression, //
+						null //
+				);
+			});
+		}
+
+		if (result.isError() && errors.size() == 0) {
+			errors.add(() -> {
+				GipslValidator.err( //
+						GipslValidatorUtil.EXPRESSION_CONTAINS_ERRORS, //
+						expression, //
+						null //
+				);
+			});
+		}
+
+		return errors;
+	}
+
 	public static Collection<Runnable> checkBooleanExpression(final GipsBooleanExpression expression) {
 		Collection<Runnable> errors = Collections.synchronizedCollection(new LinkedList<>());
 		ExpressionData result = evaluate(expression, errors);
@@ -296,8 +329,9 @@ public final class GipslExpressionValidator {
 		if (expression == null || expression.eContainer() == null)
 			return errors;
 
-		if (expression.eContainer() instanceof GipsObjective obj
-				&& !(result.getType() == ExpressionType.Number || result.getType() == ExpressionType.Boolean)
+		if (expression.eContainer() instanceof GipsObjective obj //
+				&& !(result.getType() == ExpressionType.Number || result.getType() == ExpressionType.Boolean) //
+				&& result.isMany //
 				&& errors.size() == 0) {
 			errors.add(() -> {
 				GipslValidator.err( //
@@ -308,8 +342,9 @@ public final class GipslExpressionValidator {
 			});
 		}
 
-		if (expression.eContainer() instanceof GipsLinearFunction fun
-				&& !(result.getType() == ExpressionType.Number || result.getType() == ExpressionType.Boolean)
+		if (expression.eContainer() instanceof GipsLinearFunction fun //
+				&& !(result.getType() == ExpressionType.Number || result.getType() == ExpressionType.Boolean) //
+				&& result.isMany //
 				&& errors.size() == 0) {
 			errors.add(() -> {
 				GipslValidator.err( //

@@ -54,6 +54,7 @@
     <eLiterals name="GUROBI" literal="GUROBI"/>
     <eLiterals name="GLPK" value="1" literal="GLPK"/>
     <eLiterals name="CPLEX" value="2" literal="CPLEX"/>
+    <eLiterals name="OR_TOOLS" value="3" literal="OR_TOOLS"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="PresolveType">
     <eLiterals name="NONE" literal="none"/>

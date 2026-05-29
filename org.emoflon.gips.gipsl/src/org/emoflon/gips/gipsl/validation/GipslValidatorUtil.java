@@ -97,7 +97,7 @@ public class GipslValidatorUtil {
 	public static final String OBJECTIVE_IS_NULL_MESSAGE = "No specification of a global objective found but local objectives are used.";
 	public static final String OBJECTIVE_IS_OPTIONAL_MESSAGE = "The global objective is optional if no local objective is defined.";
 	public static final String OBJECTIVE_DOES_NOT_CONTAIN_LOCAL_OBJECTIVE_MESSAGE = "Global objective does not contain any reference to a local objective.";
-	public static final String OBJECTIVE_EVAL_NOT_NUMBER_MESSAGE = "Objective does not evaluate to an integer, double or variable.";
+	public static final String OBJECTIVE_EVAL_NOT_NUMBER_MESSAGE = "Objective does not evaluate to an integer, double or boolean.";
 
 	public static final String MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Mapping, Pattern, Rule or Type '%s' must not be declared '%s' (case insensitive).";
 	public static final String MAPPING_NAME_FORBIDDEN_MESSAGE = "Mappings cannot be be named '%s'. Use a different name.";
@@ -123,7 +123,7 @@ public class GipslValidatorUtil {
 	public static final String FUNCTION_NAME_FORBIDDEN_MESSAGE = "Objectives cannot be be named '%s'. Use a different name.";
 	public static final String FUNCTION_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Objective name '%s' contains underscores. Use camelCase instead.";
 	public static final String FUNCTION_NAME_STARTS_WITH_LOWER_CASE_MESSAGE = "Objective '%s' should start with a lower case character.";
-	public static final String FUNCTION_EVAL_NOT_NUMBER_MESSAGE = "Linear function does not evaluate to an integer, double or variable.";
+	public static final String FUNCTION_EVAL_NOT_NUMBER_MESSAGE = "Linear function does not evaluate to an integer, double or boolean.";
 
 	// Other errors for types
 	public static final String CONSTANT_NAME_UNIQUE = "Constant name is not unique in the current scope.";
@@ -133,6 +133,9 @@ public class GipslValidatorUtil {
 	public static final String CONSTANT_CONTAINS_ERRORS = "Constant definition contains errors.";
 	public static final String CONSTRAINT_EMPTY_MESSAGE = "Constraint is empty.";
 
+	public static final String EXPRESSION_CONTAINS_ERRORS = "Expression contains errors.";
+	public static final String EXPRESSION_CONTAINS_UNKNOWNS = "Expression contains unknown/illegal expression types..";
+
 	public static final String BOOL_EXPR_CONTAINS_ERRORS = "Boolean expression contains errors.";
 	public static final String BOOL_EXPR_CONTAINS_UNKNOWNS = "Boolean expression contains unknown/illegal expression types.";
 	public static final String BOOL_EXPR_EVAL_ERROR_MESSAGE = "Boolean expression does not evaluate to boolean.";
@@ -140,11 +143,11 @@ public class GipslValidatorUtil {
 	public static final String REL_EXPR_CONTAINS_ERRORS = "Relational expression contains errors.";
 	public static final String REL_EXPR_CONTAINS_UNKNOWNS = "Relational expression contains unknown/illegal expression types.";
 	public static final String REL_EXPR_EVAL_ERROR_MESSAGE = "Relational expression contains errors or unknown types.";
-	public static final String REL_EXPR_MISMATCH_ERROR_MESSAGE = "Operands cannot be compared since their types do not match.";
+	public static final String REL_EXPR_MISMATCH_ERROR_MESSAGE = "Operands cannot be compared since their types do not match. [%s : %s]";
 
 	public static final String ARITH_EXPR_CONTAINS_ERRORS = "Arithmetic expression contains errors.";
 	public static final String ARITH_EXPR_CONTAINS_UNKNOWNS = "Arithmetic expression contains unknown/illegal expression types.";
-	public static final String ARITH_EXPR_EVAL_ERROR_MESSAGE = "Arithmetic expression does not evaluate to a primitive type.";
+	public static final String ARITH_EXPR_EVAL_ERROR_MESSAGE = "Arithmetic expression does not evaluate to a number.";
 	public static final String ARITH_EXPR_NONLINEAR_ERROR_MESSAGE = "Combination of operands leads to non-linear expression.";
 	public static final String ARITH_EXPR_MISMATCH_ERROR_MESSAGE = "Operands cannot be combined since their types do not match.";
 	public static final String ARITH_EXPR_LFR_ERROR_MESSAGE = "Linear function references not allowed in set expressions and outside of the objective.";

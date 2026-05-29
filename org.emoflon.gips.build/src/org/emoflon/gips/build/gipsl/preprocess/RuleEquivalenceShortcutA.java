@@ -49,22 +49,22 @@ public class RuleEquivalenceShortcutA implements PreprocessorRule {
 
 		List<GipsBooleanExpression> conjuncts = new LinkedList<>();
 
-		if (pattern.otherNodes.size() == 1) {
+		if (pattern.getOtherNodes().size() == 1) {
 			// B <= A
 			var relational = factory.createGipsRelationalExpression();
 			relational.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
-			relational.setLeft(EcoreUtil.copy(pattern.otherNodes.get(0)));
-			relational.setRight(EcoreUtil.copy(pattern.nodeA));
+			relational.setLeft(EcoreUtil.copy(pattern.getOtherNodes().getFirst()));
+			relational.setRight(EcoreUtil.copy(pattern.getNodeA()));
 			conjuncts.add(relational);
 
 		} else {
 			List<GipsArithmeticExpression> summands = new ArrayList<>(conjuncts.size() + 2);
 
-			for (var element : pattern.otherNodes)
+			for (var element : pattern.getOtherNodes())
 				summands.add(EcoreUtil.copy(element));
 
 			var minusN = factory.createGipsArithmeticLiteral();
-			minusN.setValue(Integer.toString(1 - pattern.otherNodes.size()));
+			minusN.setValue(Integer.toString(1 - pattern.getOtherNodes().size()));
 			summands.add(minusN);
 
 			// B + C + ... + (1-n)
@@ -74,13 +74,13 @@ public class RuleEquivalenceShortcutA implements PreprocessorRule {
 			var relational = factory.createGipsRelationalExpression();
 			relational.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
 			relational.setLeft(sum);
-			relational.setRight(EcoreUtil.copy(pattern.nodeA));
+			relational.setRight(EcoreUtil.copy(pattern.getNodeA()));
 			conjuncts.add(relational);
 		}
 
 		// A <= B*M
 		// ...
-		for (var element : pattern.otherNodes) {
+		for (var element : pattern.getOtherNodes()) {
 			var bigM = GeneratorUtil.createArithmeticLiteral(factory,
 					Double.toString(PluginPreferences.getBigMValue()));
 
@@ -91,7 +91,7 @@ public class RuleEquivalenceShortcutA implements PreprocessorRule {
 
 			var relational = factory.createGipsRelationalExpression();
 			relational.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
-			relational.setLeft(EcoreUtil.copy(pattern.nodeA));
+			relational.setLeft(EcoreUtil.copy(pattern.getNodeA()));
 			relational.setRight(bigMProduct);
 			conjuncts.add(relational);
 		}

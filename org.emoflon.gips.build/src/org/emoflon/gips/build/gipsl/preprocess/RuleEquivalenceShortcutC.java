@@ -41,8 +41,8 @@ public class RuleEquivalenceShortcutC implements PreprocessorRule {
 		if (!pattern.matchPattern(expression))
 			return null;
 
-		List<GipsArithmeticExpression> summands = new ArrayList<>(pattern.otherNodes.size());
-		for (var element : pattern.otherNodes)
+		List<GipsArithmeticExpression> summands = new ArrayList<>(pattern.getOtherNodes().size());
+		for (var element : pattern.getOtherNodes())
 			summands.add(EcoreUtil.copy(element));
 		// B + C + D + ...
 		var sum = GeneratorUtil.sum(factory, GipsSumOperator.PLUS, summands);
@@ -50,14 +50,15 @@ public class RuleEquivalenceShortcutC implements PreprocessorRule {
 		// A <= B + C (+ D + ...)
 		var conjunctOne = factory.createGipsRelationalExpression();
 		conjunctOne.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
-		conjunctOne.setLeft(EcoreUtil.copy(pattern.nodeA));
+		conjunctOne.setLeft(EcoreUtil.copy(pattern.getNodeA()));
 		conjunctOne.setRight(sum);
 
 		// A * n
 		var product = factory.createGipsArithmeticProduct();
 		product.setOperator(GipsProductOperator.MULT);
-		product.setLeft(EcoreUtil.copy(pattern.nodeA));
-		product.setRight(GeneratorUtil.createArithmeticLiteral(factory, Integer.toString(pattern.otherNodes.size())));
+		product.setLeft(EcoreUtil.copy(pattern.getNodeA()));
+		product.setRight(
+				GeneratorUtil.createArithmeticLiteral(factory, Integer.toString(pattern.getOtherNodes().size())));
 
 		// B + C (+ D + ...) <= A*n
 		var conjunctTwo = factory.createGipsRelationalExpression();

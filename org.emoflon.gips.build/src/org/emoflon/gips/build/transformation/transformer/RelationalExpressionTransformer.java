@@ -70,7 +70,14 @@ public class RelationalExpressionTransformer extends TransformationContext {
 			rhsType = GipsTransformationUtils.extractReturnType(rhs);
 		}
 
-		if (lhsType != rhsType) {
+		boolean typesOkay = switch (lhsType) {
+		case bool -> rhsType == ExpressionReturnType.bool || rhsType == ExpressionReturnType.number;
+		case number -> rhsType == ExpressionReturnType.bool || rhsType == ExpressionReturnType.number;
+		case object -> rhsType == ExpressionReturnType.object;
+		default -> false;
+		};
+
+		if (!(lhsType == rhsType || typesOkay)) {
 			throw new IllegalArgumentException("Incompatible relational operand types (left: " + lhsType + ", right: "
 					+ rhsType + ") for " + eRelational);
 		}

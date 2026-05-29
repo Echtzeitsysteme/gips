@@ -53,12 +53,12 @@ public class RuleEquivalenceShortcutB implements PreprocessorRule {
 		// A >= B
 		// This can further be simplified to:
 		// A = B
-		if (pattern.otherNodes.size() == 1) {
+		if (pattern.getOtherNodes().size() == 1) {
 			// A = B
 			var relational = factory.createGipsRelationalExpression();
 			relational.setOperator(RelationalOperator.EQUAL);
-			relational.setLeft(EcoreUtil.copy(pattern.nodeA));
-			relational.setRight(EcoreUtil.copy(pattern.otherNodes.get(0)));
+			relational.setLeft(EcoreUtil.copy(pattern.getNodeA()));
+			relational.setRight(EcoreUtil.copy(pattern.getOtherNodes().getFirst()));
 			conjuncts.add(relational);
 		} else {
 			// Normal case
@@ -67,11 +67,11 @@ public class RuleEquivalenceShortcutB implements PreprocessorRule {
 			{
 				List<GipsArithmeticExpression> summands = new ArrayList<>(conjuncts.size() + 2);
 
-				for (var element : pattern.otherNodes)
+				for (var element : pattern.getOtherNodes())
 					summands.add(EcoreUtil.copy(element));
 
 				var minusN = factory.createGipsArithmeticLiteral();
-				minusN.setValue(Integer.toString(1 - pattern.otherNodes.size()));
+				minusN.setValue(Integer.toString(1 - pattern.getOtherNodes().size()));
 				summands.add(minusN);
 
 				// B + C + ... + (1-n)
@@ -81,7 +81,7 @@ public class RuleEquivalenceShortcutB implements PreprocessorRule {
 				var relational = factory.createGipsRelationalExpression();
 				relational.setOperator(RelationalOperator.SMALLER_OR_EQUAL);
 				relational.setLeft(sum);
-				relational.setRight(EcoreUtil.copy(pattern.nodeA));
+				relational.setRight(EcoreUtil.copy(pattern.getNodeA()));
 				conjuncts.add(relational);
 			}
 
@@ -89,7 +89,7 @@ public class RuleEquivalenceShortcutB implements PreprocessorRule {
 			{
 				// B + C + ...
 				List<GipsArithmeticExpression> summands = new ArrayList<>(conjuncts.size());
-				for (var element : pattern.otherNodes)
+				for (var element : pattern.getOtherNodes())
 					summands.add(EcoreUtil.copy(element));
 
 				var sum = GeneratorUtil.sum(factory, GipsSumOperator.PLUS, summands);
@@ -100,7 +100,7 @@ public class RuleEquivalenceShortcutB implements PreprocessorRule {
 				// n * A
 				var nProduct = factory.createGipsArithmeticProduct();
 				nProduct.setOperator(GipsProductOperator.MULT);
-				nProduct.setLeft(EcoreUtil.copy(pattern.nodeA));
+				nProduct.setLeft(EcoreUtil.copy(pattern.getNodeA()));
 				nProduct.setRight(n);
 
 				// n * A <= B + C + ...

@@ -442,7 +442,7 @@ public class GipslValidator extends AbstractGipslValidator {
 		}
 
 		// Check boolean expression and spool errors
-		GipslExpressionValidator.checkBooleanExpression(constant.getExpression()).forEach(err -> err.run());
+		GipslExpressionValidator.checExpressionForErrors(constant.getExpression()).forEach(err -> err.run());
 	}
 
 	@Check

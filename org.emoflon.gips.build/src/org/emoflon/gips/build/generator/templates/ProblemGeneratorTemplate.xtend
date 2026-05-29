@@ -189,7 +189,11 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 	}
 
 	def String generateConstTermBuilder(ArithmeticExpression constExpr) {
-		return '''«generateConstantExpression(constExpr)»'''
+		var statement = generateConstantExpression(constExpr)		
+		if(extractReturnType(constExpr, imports) == JavaReturnTypeExtractor.TYPE_BOOL){
+			statement = '''(«statement» ? 1.0 : 0.0)'''
+		}
+		return statement
 	}
 
 	def String generateConstTermBuilder(BooleanExpression constExpr) {

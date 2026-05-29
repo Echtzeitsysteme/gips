@@ -1,7 +1,7 @@
 package org.emoflon.gips.gipsl.special.pattern;
 
+import static org.emoflon.gips.gipsl.special.PatternHelper.peelBrackets;
 import static org.emoflon.gips.gipsl.special.PatternHelper.searchBooleanTree;
-import static org.emoflon.gips.gipsl.special.PatternHelper.skipBrackets;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,11 +9,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpression;
-import org.emoflon.gips.gipsl.gipsl.GipsArithmeticLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanImplication;
-import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
-import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
 import org.emoflon.gips.gipsl.gipsl.ImplicationOperator;
 import org.emoflon.gips.gipsl.gipsl.RelationalOperator;
 import org.emoflon.gips.gipsl.special.AbstractPatternMatcher;
@@ -29,8 +26,28 @@ import org.emoflon.gips.gipsl.special.PatternHelper.JunctionType;
  */
 public class EquivalenceShortcutA extends AbstractPatternMatcher {
 
-	public GipsArithmeticExpression nodeA;
-	public List<GipsArithmeticExpression> otherNodes = new ArrayList<>();;
+	private GipsArithmeticExpression nodeA;
+	private final List<GipsArithmeticExpression> otherNodes = new ArrayList<>();
+
+	private final ValueConstantRelation isGreaterEqualPair = new ValueConstantRelation( //
+			false, //
+			RelationalOperator.GREATER_OR_EQUAL, //
+			c -> "1".equals(c));
+
+	private final ValueConstantRelation isEqualPair = new ValueConstantRelation( //
+			false, //
+			RelationalOperator.EQUAL, //
+			c -> "1".equals(c));
+
+	private final ImplicitBoolean isImplicitBool = new ImplicitBoolean();
+
+	public GipsArithmeticExpression getNodeA() {
+		return nodeA;
+	}
+
+	public List<GipsArithmeticExpression> getOtherNodes() {
+		return otherNodes;
+	}
 
 	protected void resetMatch() {
 		nodeA = null;
@@ -50,67 +67,50 @@ public class EquivalenceShortcutA extends AbstractPatternMatcher {
 			return;
 
 		if (!hasMatch()) { // A <-> B ...
-			matchNodeA(implication.getLeft(), "1");
-			if (nodeA != null)
-				matchOtherSide(implication.getRight(), "1");
-
+			if (matchShortSide(implication.getLeft()))
+				matchLongSide(implication.getRight());
 			clearPartialMatch();
 		}
 
 		if (!hasMatch()) { // B ... <-> A
-			matchNodeA(implication.getRight(), "1");
-			if (nodeA != null)
-				matchOtherSide(implication.getLeft(), "1");
-
+			if (matchShortSide(implication.getRight()))
+				matchLongSide(implication.getLeft());
 			clearPartialMatch();
 		}
 	}
 
-	private void matchNodeA(GipsBooleanExpression expression, String expectedConstant) {
-		if (!(skipBrackets(expression) instanceof GipsRelationalExpression relational))
-			return;
+	private boolean matchShortSide(GipsBooleanExpression expression) {
+		expression = peelBrackets(expression);
+		// A >= 1
+		if (isGreaterEqualPair.matchPattern(expression))
+			this.nodeA = isGreaterEqualPair.getNodeA();
 
-		if (relational.getOperator() == RelationalOperator.GREATER_OR_EQUAL) {
-			if (skipBrackets(relational.getLeft()) instanceof GipsValueExpression exp
-					&& skipBrackets(relational.getRight()) instanceof GipsArithmeticLiteral literal
-					&& expectedConstant.equals(literal.getValue())) {
-				// A >= c
-				nodeA = exp;
-			}
-		} else if (relational.getOperator() == RelationalOperator.SMALLER_OR_EQUAL) {
-			if (skipBrackets(relational.getRight()) instanceof GipsValueExpression exp
-					&& skipBrackets(relational.getLeft()) instanceof GipsArithmeticLiteral literal
-					&& expectedConstant.equals(literal.getValue())) {
-				// c <= A
-				nodeA = exp;
-			}
-		}
+		return this.nodeA != null;
 	}
 
-	private void matchOtherSide(GipsBooleanExpression expression, String expectedConstant) {
-		searchBooleanTree(expression, JunctionType.Conjunction, otherNodes,
-				(r, m) -> checkForMatch(r, m, expectedConstant));
+	private boolean matchLongSide(GipsBooleanExpression expression) {
+		int checkedElements = searchBooleanTree(expression, JunctionType.Conjunction, exp -> {
+			GipsArithmeticExpression pair = matchPair(exp);
+			if (pair != null)
+				otherNodes.add(pair);
+		});
+		// clear partial match
+		if (checkedElements > otherNodes.size())
+			otherNodes.clear();
+
+		return !otherNodes.isEmpty();
 	}
 
-	private void checkForMatch(GipsRelationalExpression expression, List<GipsArithmeticExpression> matches,
-			String expectedConstant) {
+	private GipsArithmeticExpression matchPair(GipsBooleanExpression expression) {
+		// A == 1
+		if (isEqualPair.matchPattern(expression))
+			return isEqualPair.getNodeA();
 
-		if (expression.getOperator() != RelationalOperator.EQUAL)
-			return;
+		// A
+		if (isImplicitBool.matchPattern(expression) && !isImplicitBool.isNegated())
+			return isImplicitBool.getNodeA();
 
-		if (expression.getLeft() instanceof GipsValueExpression exp //
-				&& expression.getRight() instanceof GipsArithmeticLiteral literal //
-				&& expectedConstant.equals(literal.getValue())) {
-			// X == c
-			matches.add(exp);
-
-		} else if (expression.getRight() instanceof GipsValueExpression exp //
-				&& expression.getLeft() instanceof GipsArithmeticLiteral literal //
-				&& expectedConstant.equals(literal.getValue())) {
-			// c == X
-			matches.add(exp);
-
-		}
+		return null;
 	}
 
 	@Override

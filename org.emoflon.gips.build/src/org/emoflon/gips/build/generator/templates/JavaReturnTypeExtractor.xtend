@@ -41,12 +41,13 @@ import org.emoflon.gips.intermediate.GipsIntermediate.SetTypeSelect
 import org.emoflon.gips.intermediate.GipsIntermediate.TypeReference
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
+import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticUnaryOperator
 
 class JavaReturnTypeExtractor {
 
-	static final String TYPE_DOUBLE = '''double'''
-	static final String TYPE_BOOL = '''boolean'''
-	static final String TYPE_STRING = '''String'''
+	public static final String TYPE_DOUBLE = '''double'''
+	public static final String TYPE_BOOL = '''boolean'''
+	public static final String TYPE_STRING = '''String'''
 
 	final TemplateData data
 	final ProblemGeneratorTemplate<?> genTemplate
@@ -97,7 +98,7 @@ class JavaReturnTypeExtractor {
 
 			return lhs
 
-		} else if(expression instanceof ArithmeticUnaryExpression) {
+		} else if(expression instanceof ArithmeticUnaryExpression) {			
 			return extractReturnType(expression.getOperand(), imports)
 
 		} else if(expression instanceof ArithmeticLiteral) {

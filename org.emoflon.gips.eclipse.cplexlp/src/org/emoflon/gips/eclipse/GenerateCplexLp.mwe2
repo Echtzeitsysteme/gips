@@ -52,7 +52,7 @@ Workflow {
 	            debugGrammar = true
        		}
 			junitSupport = {
-				junitVersion = "5"
+				junitVersion = "6"
 			}
 		}
 	}

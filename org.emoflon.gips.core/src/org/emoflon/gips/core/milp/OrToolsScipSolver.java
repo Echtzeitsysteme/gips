@@ -107,7 +107,8 @@ public class OrToolsScipSolver extends Solver {
 			config.setTimeLimit(newTimeLimit);
 			if (config.isTimeLimitEnabled()) {
 				if (config.isEnableOutput()) {
-					System.out.println("=> Debug output: Overwrite specified OR-Tools time limit with: " + config.getTimeLimit());
+					System.out.println(
+							"=> Debug output: Overwrite specified OR-Tools time limit with: " + config.getTimeLimit());
 				}
 				solver.setTimeLimit((long) (config.getTimeLimit() * 1000));
 			}
@@ -143,14 +144,12 @@ public class OrToolsScipSolver extends Solver {
 			solCounter = 0;
 		}
 
-		return new SolverOutput(status, objVal, engine.getValidationLog(), solCounter, new ProblemStatistics(
-				engine.getMappers().values().stream()
-						.map(m -> m.getMappings().size())
-						.reduce(0, (sum, val) -> sum + val),
-				vars.size(),
-				constraints.values().stream()
-						.map(cons -> cons.size())
-						.reduce(0, (sum, val) -> sum + val)));
+		return new SolverOutput(status, objVal, engine.getValidationLog(), solCounter,
+				new ProblemStatistics(
+						engine.getMappers().values().stream().map(m -> m.getMappings().size()).reduce(0,
+								(sum, val) -> sum + val),
+						vars.size(),
+						constraints.values().stream().map(cons -> cons.size()).reduce(0, (sum, val) -> sum + val)));
 	}
 
 	@Override

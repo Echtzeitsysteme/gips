@@ -43,7 +43,9 @@ public class OrToolsScipSolver extends Solver {
 
 	@Override
 	public void init() {
-		Loader.loadNativeLibraries();
+//		Loader.loadNativeLibraries();
+		System.load(
+				"/media/mkratz/1b932157-ff46-4346-a0a2-bb416fff3fb5/fges/gips-or-tools-mini-eval/ortools-linux-x86-64-9.15.6755/ortools-linux-x86-64/libjniortools.so");
 		solver = MPSolver.createSolver("SCIP");
 		if (solver == null) {
 			throw new RuntimeException("Could not create SCIP solver via Google OR-Tools.");

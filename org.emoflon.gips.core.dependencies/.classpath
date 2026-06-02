@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/ortools-darwin-aarch64-9.15.6755-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ortools-darwin-x86-64-9.15.6755-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ortools-java-9.15.6755-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ortools-java-9.15.6755-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ortools-linux-aarch64-9.15.6755-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ortools-linux-x86-64-9.15.6755-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ortools-win32-x86-64-9.15.6755-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/protobuf-java-4.35.0-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/protobuf-java-4.35.0-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/logicng-2.6.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/logicng-2.6.1-javadoc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/logicng-2.6.1-sources.jar"/>

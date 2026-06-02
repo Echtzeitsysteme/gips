@@ -37,7 +37,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/oshi-common-7.2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/oshi-common-7.2.1-javadoc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/oshi-common-7.2.1-sources.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/protobuf-java-4.29.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/protobuf-java-4.35.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ortools-java-9.15.6755.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ortools-win32-x86-64-9.15.6755.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ortools-linux-x86-64-9.15.6755.jar"/>

@@ -177,6 +177,9 @@ public class GipsToIntermediate {
 		case CPLEX -> {
 			config.setSolver(SolverType.CPLEX);
 		}
+		case OR_TOOLS -> {
+			config.setSolver(SolverType.OR_TOOLS);
+		}
 		default -> {
 			throw new IllegalArgumentException("Unsupported solver type: " + eConfig.getSolver());
 		}

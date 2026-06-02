@@ -41,5 +41,8 @@
 	<classpathentry exported="true" kind="lib" path="lib/ortools-java-9.15.6755.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ortools-win32-x86-64-9.15.6755.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ortools-linux-x86-64-9.15.6755.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ortools-darwin-aarch64-9.15.6755.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ortools-darwin-x86-64-9.15.6755.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ortools-linux-aarch64-9.15.6755.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

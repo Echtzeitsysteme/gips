@@ -12,11 +12,11 @@
 	<classpathentry exported="true" kind="lib" path="lib/gson-2.13.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/gson-2.13.1-javadoc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/gson-2.13.1-sources.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/gurobi-13.0.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/gurobi-javadoc-13.0.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-nop-2.0.18.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-nop-2.0.18-javadoc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-nop-2.0.18-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/gurobi-13.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/gurobi-javadoc-13.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jna-5.17.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jna-5.17.0-javadoc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jna-5.17.0-sources.jar"/>

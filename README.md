@@ -29,6 +29,14 @@
 
 A good start point to verify your installation is to run some of the [GIPS examples](https://github.com/Echtzeitsysteme/gips-examples) or the [GIPS tests](https://github.com/Echtzeitsysteme/gips-tests).
 
+### Eclipse on Windows
+
+If your are using the Eclipse IDE on Windows, make sure to exclude it and your workspaces from your anti virus software, e.g., Windows Defender.
+Otherwise, the performance of Eclipse will be much worse, because Windows Defender will keep scanning newly created/changed files constantly.
+
+- Within your Eclipse IDE, click on _Window_ -> _Preferences_ -> _General_ -> _Startup and Shutdown_
+- Follow the instructions in the box "Microsoft Defender Exclusion Check" to let Eclipse exclude itself from Windows Defender scans.
+
 ### Code-Style
 
 This project uses the built-in code-style and code-formatter of Eclipse.

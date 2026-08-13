@@ -74,8 +74,8 @@ public abstract class GipsEngine {
 	 * Builds the problem with time measurement included. This method does not
 	 * trigger an update of the pattern matcher and runs everything sequentially.
 	 */
-	public void buildProblemTimed() {
-		buildProblemTimed(false, false);
+	public void buildProblem() {
+		buildProblem(false, false);
 	}
 
 	/**
@@ -86,8 +86,8 @@ public abstract class GipsEngine {
 	 * @param doUpdate If true, the pattern matcher will be updated before building
 	 *                 the problem.
 	 */
-	public void buildProblemTimed(final boolean doUpdate) {
-		buildProblemTimed(doUpdate, false);
+	public void buildProblem(final boolean doUpdate) {
+		buildProblem(doUpdate, false);
 	}
 
 	/**
@@ -99,7 +99,7 @@ public abstract class GipsEngine {
 	 *                 the problem.
 	 * @param parallel If true, the problem will be built in parallel.
 	 */
-	public void buildProblemTimed(final boolean doUpdate, final boolean parallel) {
+	public void buildProblem(final boolean doUpdate, final boolean parallel) {
 		final Observer observer = Observer.getInstance();
 		observer.observe("BUILD", () -> {
 			if (doUpdate)
@@ -115,6 +115,11 @@ public abstract class GipsEngine {
 
 				// Reset trace
 				getTracer().resetTrace();
+
+				// Objectives will be build by the global objective call below
+//				objectives.values().parallelStream().forEach(objective -> objective.clear());
+				// TODO: It seems to me that this is not necessary for objectives. All tests
+				// (and also the dedicated tests for checking this!) are happy with it.
 
 				nonMappingVariables.clear();
 				StreamUtils.toStream(mappers.values(), parallel) //
@@ -157,96 +162,49 @@ public abstract class GipsEngine {
 				solver.buildMILPProblem();
 			});
 
-			buildTraceGraphAndSendToIDE();
+			observer.observe("BUILD_TRACE", () -> {
+				buildTraceGraphAndSendToIDE();
+			});
 		});
 	}
 
 	/**
-	 * Builds the problem with no time measurement included. This method does not
-	 * trigger an update of the pattern matcher and runs everything sequentially.
+	 * Builds the problem. This method does not trigger an update of the pattern
+	 * matcher and runs everything sequentially.
+	 * 
+	 * @deprecated use {@link #buildProblem()}
 	 */
-	public void buildProblem() {
+	@Deprecated
+	public void buildProblemTimed() {
 		buildProblem(false, false);
 	}
 
 	/**
-	 * Builds the problem with time no measurement included. This method does
-	 * trigger an update of the pattern matcher depending on the given input
-	 * parameter and runs everything sequentially.
+	 * Builds the problem. This method does trigger an update of the pattern matcher
+	 * depending on the given input parameter and runs everything sequentially.
 	 * 
 	 * @param doUpdate If true, the pattern matcher will be updated before building
 	 *                 the problem.
+	 * @deprecated use {@link #buildProblem(boolean)}
 	 */
-	public void buildProblem(final boolean doUpdate) {
+	@Deprecated
+	public void buildProblemTimed(final boolean doUpdate) {
 		buildProblem(doUpdate, false);
 	}
 
 	/**
-	 * Builds the problem with no time measurement included. `doUpdate` defines if
-	 * the pattern matcher should be updated and `parallel` decides if the method
-	 * runs everything in parallel or sequentially.
+	 * Builds the problem. `doUpdate` defines if the pattern matcher should be
+	 * updated and `parallel` decides if the method runs everything in parallel or
+	 * sequentially.
 	 * 
 	 * @param doUpdate If true, the pattern matcher will be updated before building
 	 *                 the problem.
 	 * @param parallel If true, the problem will be built in parallel.
+	 * @deprecated use {@link #buildProblem(boolean, boolean)}
 	 */
-	public void buildProblem(final boolean doUpdate, final boolean parallel) {
-		if (doUpdate)
-			update();
-
-		// Reset validation log
-		validationLog = new GipsConstraintValidationLog();
-
-		// Constraints are re-build a few lines below
-		StreamUtils.toStream(constraints.values(), parallel).forEach(constraint -> constraint.clear());
-		StreamUtils.toStream(typeExtensions.values(), parallel).forEach(typeExtension -> typeExtension.clear());
-
-		// Reset trace
-		getTracer().resetTrace();
-
-		// Objectives will be build by the global objective call below
-//		objectives.values().parallelStream().forEach(objective -> objective.clear());
-		// TODO: It seems to me that this is not necessary for objectives. All tests
-		// (and also the dedicated tests for checking this!) are happy with it.
-
-		nonMappingVariables.clear();
-		StreamUtils.toStream(mappers.values(), parallel) //
-				.flatMap(mapper -> StreamUtils.toStream(mapper.getMappings().values(), parallel)) //
-				.filter(m -> m.hasAdditionalVariables()) //
-				.forEach(m -> {
-					Map<String, Variable<?>> variables = nonMappingVariables.get(m);
-					if (variables == null) {
-						variables = Collections.synchronizedMap(new HashMap<>());
-						nonMappingVariables.put(m, variables);
-					}
-					variables.putAll(m.getAdditionalVariables());
-				});
-
-		StreamUtils.toStream(constraints.values(), parallel)
-				.forEach(constraint -> constraint.calcAdditionalVariables());
-		StreamUtils.toStream(typeExtensions.values(), parallel)
-				.forEach(typeExtension -> typeExtension.calculateExtensions());
-
-		updateConstants();
-
-		StreamUtils.toStream(constraints.values(), parallel)
-				.forEach(constraint -> constraint.buildConstraints(parallel));
-
-		// Check if GIPS is configure to remove duplicate constraints
-		if (this.config.removeUselessConstraints()) {
-			this.removedConstraintsStats = removeUselessConstraints(config.printUselessConstraintsStats());
-		}
-
-		if (objective != null)
-			objective.buildObjectiveFunction(parallel);
-
-		// Sanity check for all variable names: there must not be two different
-		// variables with the same name.
-		checkVariableNameSanity();
-
-		solver.init();
-		solver.buildMILPProblem();
-		buildTraceGraphAndSendToIDE();
+	@Deprecated
+	public void buildProblemTimed(final boolean doUpdate, final boolean parallel) {
+		buildProblem(doUpdate, parallel);
 	}
 
 	/**

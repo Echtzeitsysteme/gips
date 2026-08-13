@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 import org.emoflon.gips.core.GipsConstraint.RemovedConstraintsStats;
 import org.emoflon.gips.core.milp.ConstraintSorter;
@@ -263,37 +262,44 @@ public abstract class GipsEngine {
 		}
 	}
 
+	/**
+	 * 
+	 * @return
+	 * @deprecated use {@link #solveProblem()}
+	 */
 	public SolverOutput solveProblemTimed() {
-		Observer observer = Observer.getInstance();
-		SolverOutput out = observer.observe("SOLVE_PROBLEM", (Supplier<SolverOutput>) this::solveProblem);
-		return out;
+		return solveProblem();
 	}
 
 	public SolverOutput solveProblem() {
-		SolverOutput output;
-		if (validationLog.isNotValid()) {
-			output = new SolverOutput(SolverStatus.INFEASIBLE, Double.NaN, validationLog, 0, null);
-		} else {
-			this.tockInit();
-			output = solver.solve();
+		Observer observer = Observer.getInstance();
+		return observer.observe("SOLVE_PROBLEM", () -> {
+			SolverOutput output;
+			if (validationLog.isNotValid()) {
+				output = new SolverOutput(SolverStatus.INFEASIBLE, Double.NaN, validationLog, 0, null);
+			} else {
+				this.tockInit();
+				output = solver.solve();
 
-			if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0)
-				solver.updateValuesFromSolution();
+				if (output.status() != SolverStatus.INFEASIBLE && output.solutionCount() > 0)
+					solver.updateValuesFromSolution();
 
-			if (output.status() == SolverStatus.INFEASIBLE && solver.getSolverConfig().isEnableIIS())
-				solver.computeIrreducibleInconsistentSubsystem();
-		}
+				if (output.status() == SolverStatus.INFEASIBLE && solver.getSolverConfig().isEnableIIS())
+					solver.computeIrreducibleInconsistentSubsystem();
+			}
 
-		// Set statistics values of the removed constraints
-		if (this.removedConstraintsStats != null && output.stats() != null) {
-			output.stats().setRemovedDuplicateConstraints(this.removedConstraintsStats.duplicates());
-			output.stats().setRemovedTrivialConstraints(this.removedConstraintsStats.trivial());
-		}
+			// Set statistics values of the removed constraints
+			if (this.removedConstraintsStats != null && output.stats() != null) {
+				output.stats().setRemovedDuplicateConstraints(this.removedConstraintsStats.duplicates());
+				output.stats().setRemovedTrivialConstraints(this.removedConstraintsStats.trivial());
+			}
 
-		solver.reset();
-		GlobalMappingIndexer.getInstance().terminate();
-		eclipseIntegration.sendSolutionValuesToIDE();
-		return output;
+			solver.reset();
+			GlobalMappingIndexer.getInstance().terminate();
+
+			observer.observe("TRACE_VALUES", () -> eclipseIntegration.sendSolutionValuesToIDE());
+			return output;
+		});
 	}
 
 	public GipsMapper<?> getMapper(final String mappingName) {

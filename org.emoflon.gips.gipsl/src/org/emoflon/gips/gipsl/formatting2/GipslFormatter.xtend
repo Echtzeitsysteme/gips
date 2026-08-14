@@ -80,6 +80,7 @@ import org.emoflon.ibex.gt.editor.gT.EditorAttributeAssignment
 import static org.emoflon.gips.gipsl.gipsl.GipslPackage.Literals.*
 import org.emoflon.gips.gipsl.gipsl.GipsTypeExtension
 import org.emoflon.gips.gipsl.gipsl.GipsTypeExtensionVariable
+import org.emoflon.gips.gipsl.gipsl.GipsInterval
 
 class GipslFormatter extends GTFormatter implements IFormatter2 {
 
@@ -214,7 +215,7 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 	def dispatch void format(GipsMappingVariable gipsMappingVariable, extension IFormattableDocument document) {
 		gipsMappingVariable.regionFor.keyword(gipsMappingVariableAccess.varKeyword_0).append[oneSpace]
 		gipsMappingVariable.regionFor.keyword(gipsMappingVariableAccess.colonKeyword_2).surround[oneSpace]
-		gipsMappingVariable.regionFor.keyword(gipsMappingVariableAccess.boundBindKeyword_4_0_0).surround[oneSpace]
+		gipsMappingVariable.regionFor.keyword(gipsMappingVariableAccess.boundBindKeyword_5_0_0).surround[oneSpace]
 		gipsMappingVariable.formatChilds(document)
 	}
 	
@@ -237,10 +238,16 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 	def dispatch void format(GipsTypeExtensionVariable gipsTypeExtensionVariable, extension IFormattableDocument document) {
 		gipsTypeExtensionVariable.regionFor.keyword(gipsTypeExtensionVariableAccess.varKeyword_0).append[oneSpace]
 		gipsTypeExtensionVariable.regionFor.keyword(gipsTypeExtensionVariableAccess.colonKeyword_2).surround[oneSpace]
-		gipsTypeExtensionVariable.regionFor.keyword(gipsTypeExtensionVariableAccess.boundBindKeyword_4_0_0).surround[oneSpace]
-		gipsTypeExtensionVariable.regionFor.keyword(gipsTypeExtensionVariableAccess.toKeyword_4_1).append[oneSpace]
-		
+		gipsTypeExtensionVariable.interval.prepend[oneSpace]
+		gipsTypeExtensionVariable.regionFor.keyword(gipsTypeExtensionVariableAccess.boundBindKeyword_5_0_0).surround[oneSpace]
+		gipsTypeExtensionVariable.regionFor.keyword(gipsTypeExtensionVariableAccess.toKeyword_5_1).append[oneSpace]		
 		gipsTypeExtensionVariable.formatChilds(document)
+	}
+	
+	def dispatch void format(GipsInterval gipsInterval, extension IFormattableDocument document) {
+		gipsInterval.regionFor.keyword(gipsIntervalAccess.leftSquareBracketKeyword_0).append[noSpace]
+		gipsInterval.regionFor.keyword(gipsIntervalAccess.commaKeyword_2).prepend[noSpace].append[oneSpace]
+		gipsInterval.regionFor.keyword(gipsIntervalAccess.rightSquareBracketKeyword_4).prepend[noSpace]
 	}
 
 	def dispatch void format(GipsConstant gipsConstant, extension IFormattableDocument document) {

@@ -16,8 +16,10 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.resource.XtextResourceSet;
@@ -29,6 +31,9 @@ import org.emoflon.gips.gipsl.gipsl.GipsBooleanImplication;
 import org.emoflon.gips.gipsl.gipsl.GipsConfig;
 import org.emoflon.gips.gipsl.gipsl.GipsConstant;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsDoubleLiteral;
+import org.emoflon.gips.gipsl.gipsl.GipsIntegerLiteral;
+import org.emoflon.gips.gipsl.gipsl.GipsInterval;
 import org.emoflon.gips.gipsl.gipsl.GipsJoinAllOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsJoinBySelectionOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
@@ -42,6 +47,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeExtension;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeExtensionVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeSelect;
+import org.emoflon.gips.gipsl.gipsl.GipsVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
@@ -374,14 +380,7 @@ public class GipslValidator extends AbstractGipslValidator {
 
 	@Check
 	public void checkMappingVariable(final GipsMappingVariable variable) {
-		if (GipslValidator.DISABLE_VALIDATOR) {
-			return;
-		}
-		if (variable == null) {
-			return;
-		}
-		GipslMappingValidator.checkMappingVariableNameUnique(variable);
-		GipslMappingValidator.checkMappingVariableInUse(variable);
+		GipslMappingValidator.checkMappingVariable(variable);
 	}
 
 	@Check
@@ -392,6 +391,49 @@ public class GipslValidator extends AbstractGipslValidator {
 	@Check
 	public void checkTypeExtensionVariable(final GipsTypeExtensionVariable variable) {
 		GipslTypeExtensionValidator.checkTypeExtensionVariable(variable);
+	}
+
+	@Check
+	public void checkInterval(final GipsInterval interval) {
+		if (GipslValidator.DISABLE_VALIDATOR)
+			return;
+
+		if (!interval.isLowerInfinity() && !interval.isUpperInfinity()) {
+			double lowerBound = switch (interval.getLowerBound()) {
+			case GipsDoubleLiteral val -> val.getValue();
+			case GipsIntegerLiteral val -> val.getValue();
+			default -> throw new IllegalArgumentException("Unexpected value: " + interval.getLowerBound());
+			};
+
+			double upperBound = switch (interval.getUpperBound()) {
+			case GipsDoubleLiteral val -> val.getValue();
+			case GipsIntegerLiteral val -> val.getValue();
+			default -> throw new IllegalArgumentException("Unexpected value: " + interval.getLowerBound());
+			};
+
+			if (Double.compare(lowerBound, upperBound) > 0)
+				GipslValidator.err( //
+						GipslValidatorUtil.VARIABLE_BOUNDS_LIMIT_ERROR, //
+						interval, //
+						GipslPackage.Literals.GIPS_VARIABLE__INTERVAL);
+		}
+
+		// intervals cannot be used with booleans
+
+		EObject container = interval.eContainer();
+		if (container == null)
+			return;
+
+		EDataType type = null;
+		if (container instanceof GipsVariable variable)
+			type = variable.getType();
+
+		if (type == EcorePackage.Literals.EBOOLEAN) {
+			GipslValidator.err(GipslValidatorUtil.VARIABLE_BOUNDS_SUPPORT_ERROR, //
+					interval, //
+					GipslPackage.Literals.GIPS_VARIABLE__INTERVAL);
+		}
+
 	}
 
 	@Check

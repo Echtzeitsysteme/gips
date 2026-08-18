@@ -160,9 +160,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsArithmeticExpression" eSuperTypes="#//GipsBooleanExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="GipsArithmeticOperand" eSuperTypes="#//GipsArithmeticExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="GipsArithmeticLiteral" eSuperTypes="#//GipsArithmeticOperand">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsArithmeticLiteral" eSuperTypes="#//GipsArithmeticOperand"/>
   <eClassifiers xsi:type="ecore:EClass" name="GipsArithmeticConstant" eSuperTypes="#//GipsArithmeticOperand">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="#//GipsConstantLiteral"/>
   </eClassifiers>
@@ -324,6 +322,12 @@
     <eLiterals name="EMPTY" literal="empty"/>
     <eLiterals name="NOT_EMPTY" value="1" literal="notEmpty"/>
     <eLiterals name="COUNT" value="2" literal="count"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsDoubleLiteral" eSuperTypes="#//GipsArithmeticLiteral">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsIntegerLiteral" eSuperTypes="#//GipsArithmeticLiteral">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsBooleanImplication" eSuperTypes="#//GipsBooleanExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//GipsBooleanExpression"

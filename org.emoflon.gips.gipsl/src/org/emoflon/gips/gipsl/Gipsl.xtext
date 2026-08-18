@@ -214,7 +214,7 @@ GipsArithmeticOperand:
 ;
 
 GipsArithmeticLiteral:
-	value = (GipsDoubleLiteral | GipsIntegerLiteral)
+	GipsDoubleLiteral | GipsIntegerLiteral
 ;
 
 GipsArithmeticConstant:
@@ -450,11 +450,11 @@ enum QueryOperator :
 ;
 
 GipsDoubleLiteral:
-	GipsDouble
+	value = GipsDouble
 ;
 
 GipsIntegerLiteral:
-	GipsInteger
+	value = GipsInteger
 ;
 
 GipsDouble returns ecore::EDouble:

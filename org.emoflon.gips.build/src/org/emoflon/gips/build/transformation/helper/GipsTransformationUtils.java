@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.emoflon.gips.gipsl.gipsl.GipsArithmeticLiteral;
+import org.emoflon.gips.gipsl.gipsl.GipsDoubleLiteral;
+import org.emoflon.gips.gipsl.gipsl.GipsIntegerLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsVariable;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticBinaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ArithmeticExpression;
@@ -310,27 +313,47 @@ public final class GipsTransformationUtils {
 	}
 
 	public static double getUpperBound(final GipsVariable gipsVar, final VariableType type) {
-		if (type == VariableType.BINARY) {
+		if (type == VariableType.BINARY)
 			return 1;
+
+		if (gipsVar.getInterval() != null && !gipsVar.getInterval().isUpperInfinity()) {
+			return getValue(gipsVar.getInterval().getUpperBound());
+
 		} else if (type == VariableType.INTEGER) {
 			return Integer.MAX_VALUE;
+
 		} else if (type == VariableType.REAL) {
 			return Double.MAX_VALUE;
+
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
 	public static double getLowerBound(final GipsVariable gipsVar, final VariableType type) {
-		if (type == VariableType.BINARY) {
+		if (type == VariableType.BINARY)
 			return 0;
+
+		if (gipsVar.getInterval() != null && !gipsVar.getInterval().isLowerInfinity()) {
+			return getValue(gipsVar.getInterval().getLowerBound());
+
 		} else if (type == VariableType.INTEGER) {
 			return Integer.MIN_VALUE;
+
 		} else if (type == VariableType.REAL) {
 			return -Double.MAX_VALUE;
+
 		}
 
 		throw new UnsupportedOperationException();
+	}
+
+	private static double getValue(final GipsArithmeticLiteral literal) {
+		return switch (literal) {
+		case GipsIntegerLiteral val -> val.getValue();
+		case GipsDoubleLiteral val -> val.getValue();
+		default -> throw new IllegalArgumentException("Unexpected value: " + literal);
+		};
 	}
 
 	public static ExpressionReturnType extractReturnType(BooleanExpression expression) {

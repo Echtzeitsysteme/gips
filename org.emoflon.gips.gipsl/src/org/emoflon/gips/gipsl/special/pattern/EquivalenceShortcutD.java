@@ -29,7 +29,7 @@ public class EquivalenceShortcutD extends AbstractPatternMatcher {
 	private final ValueConstantRelation isRelationalPair = new ValueConstantRelation( //
 			false, //
 			RelationalOperator.EQUAL, //
-			c -> "0".equals(c) || "1".equals(c));
+			c -> 0 == c || 1 == c);
 
 	public GipsArithmeticExpression getNodeA() {
 		return nodeA;
@@ -57,27 +57,26 @@ public class EquivalenceShortcutD extends AbstractPatternMatcher {
 			return;
 
 		if (!hasMatch()) {
-			nodeA = matchNode(implication.getLeft(), "0");
-			nodeB = matchNode(implication.getRight(), "1");
+			nodeA = matchNode(implication.getLeft(), 0);
+			nodeB = matchNode(implication.getRight(), 1);
 			clearPartialMatch();
 		}
 
 		if (!hasMatch()) {
-			nodeA = matchNode(implication.getRight(), "0");
-			nodeB = matchNode(implication.getLeft(), "1");
+			nodeA = matchNode(implication.getRight(), 0);
+			nodeB = matchNode(implication.getLeft(), 1);
 			clearPartialMatch();
 		}
 	}
 
-	private GipsArithmeticExpression matchNode(GipsBooleanExpression expression, String expectedConstant) {
+	private GipsArithmeticExpression matchNode(GipsBooleanExpression expression, int expectedConstant) {
 		expression = peelBrackets(expression);
 
 		// A == c
-		if (isRelationalPair.matchPattern(expression)
-				&& expectedConstant.equals(isRelationalPair.getLiteral().getValue()))
+		if (isRelationalPair.matchPattern(expression) && expectedConstant == isRelationalPair.getLiteral().getValue())
 			return isRelationalPair.getNodeA();
 
-		boolean mustBeNegated = "0".equals(expectedConstant);
+		boolean mustBeNegated = 0 == expectedConstant;
 
 		// A / !A
 		if (isImplicitBool.matchPattern(expression) && mustBeNegated == isImplicitBool.isNegated())

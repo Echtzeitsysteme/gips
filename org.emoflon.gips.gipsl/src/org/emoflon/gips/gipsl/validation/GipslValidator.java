@@ -43,7 +43,6 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeExtension;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeExtensionVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeSelect;
-import org.emoflon.gips.gipsl.gipsl.GipsVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
@@ -392,11 +391,6 @@ public class GipslValidator extends AbstractGipslValidator {
 	@Check
 	public void checkInterval(final GipsInterval interval) {
 		GipslIntervalValidator.checkInterval(interval);
-	}
-
-	@Check
-	public void checkInterval(final GipsVariable variable) {
-		GipslVariableValidator.checkVariable(variable);
 	}
 
 	@Check

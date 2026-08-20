@@ -52,18 +52,22 @@ class RuleMappingTemplate extends ClassGeneratorTemplate<RuleMapping> {
 				«ENDIF»
 			
 				public «className»(final String milpVariable, final boolean hasBinaryVariable, final «data.mapping2matchClassName.get(context)» match) {
-				super(milpVariable, hasBinaryVariable, match);
+					super(milpVariable, hasBinaryVariable, match);
+					
+					«IF !context.freeVariables.isNullOrEmpty»
+						«FOR v : context.freeVariables»
+							«v.name.toFirstLower» = new «GipsImportManager.variableToJavaDataType(v, imports)»(name + "->«v.name»");
+							«v.name.toFirstLower».setUpperBound(«v.upperBound»);
+							«v.name.toFirstLower».setLowerBound(«v.lowerBound»);
+						«ENDFOR»
+					«ENDIF»
 				
-				«IF !context.freeVariables.isNullOrEmpty»
-					«FOR v : context.freeVariables»
-						«v.name.toFirstLower» = new «GipsImportManager.variableToJavaDataType(v, imports)»(name + "->«v.name»");
-					«ENDFOR»
-				«ENDIF»
-			
 					«IF !context.boundVariables.isNullOrEmpty»
-				«FOR v : context.boundVariables»
-					«v.name.toFirstLower» = new «GipsImportManager.variableToJavaDataType(v, imports)»(name + "->«v.name»");
-				«ENDFOR»
+						«FOR v : context.boundVariables»
+							«v.name.toFirstLower» = new «GipsImportManager.variableToJavaDataType(v, imports)»(name + "->«v.name»");
+							«v.name.toFirstLower».setUpperBound(«v.upperBound»);
+							«v.name.toFirstLower».setLowerBound(«v.lowerBound»);
+						«ENDFOR»
 					«ENDIF»
 				}
 			

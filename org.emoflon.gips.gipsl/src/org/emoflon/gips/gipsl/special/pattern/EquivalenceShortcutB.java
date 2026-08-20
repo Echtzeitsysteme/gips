@@ -32,7 +32,7 @@ public class EquivalenceShortcutB extends AbstractPatternMatcher {
 	private final ValueConstantRelation isRelationalPair = new ValueConstantRelation( //
 			false, //
 			RelationalOperator.EQUAL, //
-			c -> "1".equals(c));
+			c -> 1 == c);
 
 	public GipsArithmeticExpression getNodeA() {
 		return nodeA;

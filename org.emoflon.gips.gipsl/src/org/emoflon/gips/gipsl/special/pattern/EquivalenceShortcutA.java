@@ -32,12 +32,12 @@ public class EquivalenceShortcutA extends AbstractPatternMatcher {
 	private final ValueConstantRelation isGreaterEqualPair = new ValueConstantRelation( //
 			false, //
 			RelationalOperator.GREATER_OR_EQUAL, //
-			c -> "1".equals(c));
+			c -> 1 == c);
 
 	private final ValueConstantRelation isEqualPair = new ValueConstantRelation( //
 			false, //
 			RelationalOperator.EQUAL, //
-			c -> "1".equals(c));
+			c -> 1 == c);
 
 	private final ImplicitBoolean isImplicitBool = new ImplicitBoolean();
 

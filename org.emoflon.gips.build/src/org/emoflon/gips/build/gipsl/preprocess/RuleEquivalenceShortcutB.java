@@ -70,8 +70,7 @@ public class RuleEquivalenceShortcutB implements PreprocessorRule {
 				for (var element : pattern.getOtherNodes())
 					summands.add(EcoreUtil.copy(element));
 
-				var minusN = factory.createGipsArithmeticLiteral();
-				minusN.setValue(Integer.toString(1 - pattern.getOtherNodes().size()));
+				var minusN = GeneratorUtil.createIntegerLiteral(factory, 1 - pattern.getOtherNodes().size());
 				summands.add(minusN);
 
 				// B + C + ... + (1-n)
@@ -95,7 +94,7 @@ public class RuleEquivalenceShortcutB implements PreprocessorRule {
 				var sum = GeneratorUtil.sum(factory, GipsSumOperator.PLUS, summands);
 
 				// n
-				var n = GeneratorUtil.createArithmeticLiteral(factory, Double.toString(summands.size()));
+				var n = GeneratorUtil.createIntegerLiteral(factory, summands.size());
 
 				// n * A
 				var nProduct = factory.createGipsArithmeticProduct();

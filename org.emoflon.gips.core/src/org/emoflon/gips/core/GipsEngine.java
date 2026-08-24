@@ -42,7 +42,7 @@ public abstract class GipsEngine {
 	protected EclipseIntegration eclipseIntegration;
 	protected GipsTracer tracer;
 
-	private Observer observer;
+	private final Observer observer = new Observer();
 	private RemovedConstraintsStats removedConstraintsStats;
 
 	/**

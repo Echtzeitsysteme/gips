@@ -1,19 +1,30 @@
 package org.emoflon.gips.core.util;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
-public class Observer {
+public class Observer implements Cloneable {
 
-	private static ThreadLocal<Observer> instance = ThreadLocal.withInitial(() -> new Observer());
-	protected Map<String, Map<String, IMeasurement>> measurements = Collections.synchronizedMap(new LinkedHashMap<>());
-	private String currentSeries;
+	protected final Map<String, Map<String, IMeasurement>> stageMeasurements = new ConcurrentHashMap<>();
 
-	public static synchronized Observer getInstance() {
-		return instance.get();
+	public Observer() {
+
+	}
+
+	protected Observer(Map<String, Map<String, IMeasurement>> stageMeasurements) {
+		stageMeasurements.forEach((stage, map) -> {
+			this.stageMeasurements.put(stage, new ConcurrentHashMap<>(map));
+		});
+	}
+
+	public void reset() {
+		stageMeasurements.clear();
+	}
+
+	public void resetStage(String stage) {
+		stageMeasurements.remove(stage);
 	}
 
 	/**
@@ -24,56 +35,112 @@ public class Observer {
 	 */
 	public synchronized void merge(final Observer other) {
 		Objects.requireNonNull(other);
-		other.measurements.forEach((measurementName, measurement) -> {
-			measurement.forEach((dataPointName, dataPoint) -> {
-				addMeasurement(measurementName, dataPointName, dataPoint);
+		other.stageMeasurements.forEach((stage, stageMeasurements) -> {
+			this.stageMeasurements.compute(stage, (stageKey, oldStageMeasurements) -> {
+				if (oldStageMeasurements == null)
+					return stageMeasurements;
+
+				stageMeasurements.forEach((entry, measurement) -> {
+					oldStageMeasurements.compute(entry, (entryKey, oldMeasurement) -> {
+						return oldMeasurement == null ? measurement : oldMeasurement.merge(measurement);
+					});
+				});
+
+				return oldStageMeasurements;
 			});
 		});
 	}
 
-	public synchronized void setCurrentSeries(final String currentSeries) {
-		this.currentSeries = currentSeries;
+	public Map<String, Map<String, IMeasurement>> getMeasurements() {
+		return stageMeasurements;
 	}
 
-	public String getCurrentSeries() {
-		return currentSeries;
-	}
+	/**
+	 * Measures the execution of {@code function} and stores the result under the
+	 * {@code entry} key. Any measurement previously created under the same key will
+	 * be overwritten. See {@link SingleMeasurement#start()} for details about what
+	 * is measured.
+	 * 
+	 * @param <T>      return type
+	 * @param entry    under which the measurement is saved
+	 * @param function to be measured
+	 * @return the return value of {@code function}
+	 * @see SingleMeasurement
+	 */
+	public <T> T singleMeasurement(String stage, String entry, Supplier<T> function) {
+		SingleMeasurement measurement = new SingleMeasurement();
+		measurement.start();
 
-	public Map<String, IMeasurement> getMeasurements(String series) {
-		return measurements.get(series);
-	}
-
-	public <T> T observe(final String entry, Supplier<T> function) {
-		return observe(currentSeries, entry, function);
-	}
-
-	public void observe(final String entry, Runnable function) {
-		observe(currentSeries, entry, function);
-	}
-
-	public <T> T observe(final String series, final String entry, Supplier<T> function) {
-		SingleMeasurement m = new SingleMeasurement();
-		m.start();
-		T result = function.get();
-		m.stop();
-		addMeasurement(series, entry, m);
-		return result;
-	}
-
-	public void observe(final String series, final String entry, Runnable function) {
-		SingleMeasurement m = new SingleMeasurement();
-		m.start();
-		function.run();
-		m.stop();
-		addMeasurement(series, entry, m);
-	}
-
-	public void addMeasurement(final String series, final String entry, IMeasurement m) {
-		Map<String, IMeasurement> mSeries = measurements.get(series);
-		if (mSeries == null) {
-			mSeries = Collections.synchronizedMap(new LinkedHashMap<>());
-			measurements.put(series, mSeries);
+		try {
+			return function.get();
+		} finally {
+			measurement.stop();
+			saveSingleMeasurement(stage, entry, measurement);
 		}
-		mSeries.compute(entry, (key, old) -> old == null ? m : old.merge(m));
 	}
+
+	/**
+	 * Measures the execution of {@code function} and stores the result under the
+	 * {@code entry} key. Any measurement previously created under the same key will
+	 * be overwritten. See {@link SingleMeasurement#start()} for details about what
+	 * is measured.
+	 * 
+	 * @param entry    under which the measurement is saved
+	 * @param function to be measured
+	 * @see SingleMeasurement
+	 */
+	public void singleMeasurement(String stage, String entry, Runnable function) {
+		SingleMeasurement measurement = new SingleMeasurement();
+		measurement.start();
+
+		try {
+			function.run();
+		} finally {
+			measurement.stop();
+			saveSingleMeasurement(stage, entry, measurement);
+		}
+	}
+
+	public <T> T multiMeasurement(String stage, String entry, Supplier<T> function) {
+		SingleMeasurement measurement = new SingleMeasurement();
+		measurement.start();
+
+		try {
+			return function.get();
+		} finally {
+			measurement.stop();
+			saveMultiMeasurement(stage, entry, measurement);
+		}
+	}
+
+	public void multiMeasurement(String stage, String entry, Runnable function) {
+		SingleMeasurement measurement = new SingleMeasurement();
+		measurement.start();
+
+		try {
+			function.run();
+		} finally {
+			measurement.stop();
+			saveMultiMeasurement(stage, entry, measurement);
+		}
+	}
+
+	private void saveSingleMeasurement(String phase, String name, IMeasurement measurement) {
+		Map<String, IMeasurement> measurements = stageMeasurements.computeIfAbsent(phase,
+				k -> new ConcurrentHashMap<>());
+
+		measurements.put(name, measurement);
+	}
+
+	private void saveMultiMeasurement(String phase, String name, IMeasurement measurement) {
+		Map<String, IMeasurement> measurements = stageMeasurements.computeIfAbsent(phase,
+				k -> new ConcurrentHashMap<>());
+
+		measurements.compute(name, (key, old) -> old == null ? measurement : old.merge(measurement));
+	}
+
+	public Observer clone() {
+		return new Observer(stageMeasurements);
+	}
+
 }

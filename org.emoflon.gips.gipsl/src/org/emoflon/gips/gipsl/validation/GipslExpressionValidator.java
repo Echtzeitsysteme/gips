@@ -736,7 +736,7 @@ public final class GipslExpressionValidator {
 		if (operand.isMany()) {
 			errors.add(() -> {
 				GipslValidator.err( //
-						GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
+						String.format(GipslValidatorUtil.UNARY_OPERATOR_INCOMPATIBLE_SIZE, unary.getOperator()), //
 						unary, //
 						GipslPackage.Literals.GIPS_ARITHMETIC_UNARY__OPERAND //
 				);
@@ -748,7 +748,7 @@ public final class GipslExpressionValidator {
 			// negation is the only allowed unary operator for variables
 			errors.add(() -> {
 				GipslValidator.err( //
-						GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
+						String.format(GipslValidatorUtil.UNARY_OPERATOR_INCOMPATIBLE_VARIABLE, unary.getOperator()), //
 						unary, //
 						GipslPackage.Literals.GIPS_ARITHMETIC_UNARY__OPERAND //
 				);
@@ -760,7 +760,8 @@ public final class GipslExpressionValidator {
 			// must be a number/bool
 			errors.add(() -> {
 				GipslValidator.err( //
-						GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
+						String.format(GipslValidatorUtil.UNARY_OPERATOR_INCOMPATIBLE_TYPE, unary.getOperator(),
+								operand.getType()), //
 						unary, //
 						GipslPackage.Literals.GIPS_ARITHMETIC_UNARY__OPERAND //
 				);

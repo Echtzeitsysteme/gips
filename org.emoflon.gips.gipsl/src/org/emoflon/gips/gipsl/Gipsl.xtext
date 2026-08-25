@@ -189,12 +189,12 @@ GipsArithmeticExponential returns GipsArithmeticExpression:
 	GipsArithmeticUnary({GipsArithmeticExponential.left = current} operator=GipsExponentialOperator right=GipsArithmeticUnary)*
 ;
 
-GipsArithmeticUnary returns GipsArithmeticExpression: {GipsArithmeticUnary}
-	operator=GipsUnaryOperator '(' operand=GipsArithmeticBracket ')' | GipsArithmeticBracket
+GipsArithmeticUnary returns GipsArithmeticExpression: 
+	{GipsArithmeticUnary} operator=GipsUnaryOperator '(' operand=GipsArithmeticExpression ')' | GipsArithmeticBracket
 ;
 
-GipsArithmeticBracket returns GipsArithmeticExpression: {GipsArithmeticBracket}
-	'(' operand=GipsArithmeticExpression ')' | GipsArithmeticOperand
+GipsArithmeticBracket returns GipsArithmeticExpression:
+	{GipsArithmeticBracket} '(' operand=GipsArithmeticExpression ')' | GipsArithmeticOperand
 ;
 
 GipsArithmeticOperand:

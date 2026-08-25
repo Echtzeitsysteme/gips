@@ -175,12 +175,16 @@ public class GipslValidatorUtil {
 	public static final String SET_SORT_PREDICATE_RELATION_ERROR = "Sorting predicate must impose an order, which means == and != are invalid operators.";
 	public static final String SET_FILTER_ERROR = "Filter operations on sets must be performed with Boolean predicates. Furthermore, these must be constant at (M)ILP compilation time, which means that they must never contain variable references.";
 
+	public static final String UNARY_OPERATOR_INCOMPATIBLE_VARIABLE = "Unary operator '%s' can only be applied to constant expressions, not variables.";
+	public static final String UNARY_OPERATOR_INCOMPATIBLE_SIZE = "Unary operator '%s' can only be applied to scalar expressions, not vectors.";
+	public static final String UNARY_OPERATOR_INCOMPATIBLE_TYPE = "Unary operator '%s' can only be applied to numeric or boolean expressions. Was: '%s'.";
+
 	public static final String ATTRIBUTE_ACCESS_ON_MANY = "Unable to directly access variables or attributes on set '%s'. Use a set expressions '->'.";
 
 	public static final String SET_JOIN_ALL_MISMATCH_PATTERN = "Set and Context do not share same Pattern or Rule, use join() instead.";
 	public static final String SET_JOIN_ALL_INVALID_TYPES = "Set and context type do not match, use join().";
 	public static final String SET_JOIN_ALL_MISSING_PATTERN = "%s has no Pattern or Rule.";
-	public static final String SET_JOIN_UNRELATED_TYPE = "Incompatible operand types. %s seems to be unrelated to %s.";
+	public static final String SET_JOIN_UNRELATED_TYPE = "Incompatible operand types. '%s' seems to be unrelated to '%s'.";
 	public static final String SET_JOIN_EMPTY = "Join is empty.";
 	public static final String SET_JOIN_MISUSE_SINGLE = "Single node comparison is only applicable for Context or Set type EClass. Use '(set node, context node)' to specify which nodes to compare.";
 	public static final String SET_JOIN_LEFT_NODE_REF_ERROR = "Node reference was not found in Set";

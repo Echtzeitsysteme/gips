@@ -324,15 +324,43 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 
 		if(expression instanceof VariableReference) {
 			instruction = '''1.0''' // turn a variable into a constant
+			
 		} else {
 			instruction = generateValueAccess(expression, true)
 
 		}
 
 		if(expression.setExpression !== null) {
+			if(usedSingleAttribute(expression)){
+				imports.add("java.util.stream.Stream")
+				instruction = '''Stream.of(«instruction»)'''				
+			}
+			
 			instruction += generateConstantExpression(expression.setExpression, ignoreReduce)
 		}
+		
 		return instruction;
+	}
+	
+	def boolean usedSingleAttribute(ValueExpression expression){
+		if(!(expression instanceof MemberReference))
+			return false
+			
+		var last = (expression as MemberReference).member
+		if(last !== null){
+			while(last.next !== null)
+				last = last.next
+		}else{
+			return false
+		}
+		
+		if(last instanceof NodeExpression)
+			return true
+		
+		if(last instanceof AttributeExpression)
+			return !last.feature.many		
+		
+		return false
 	}
 
 	def String generateConstantExpression(ValueExpression expression) {

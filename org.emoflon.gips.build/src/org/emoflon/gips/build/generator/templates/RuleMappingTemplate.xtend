@@ -6,6 +6,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.RuleMapping
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableType
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextAlternatives
 import org.emoflon.ibex.patternmodel.IBeXPatternModel.IBeXContextPattern
+import org.eclipse.xtend.core.richstring.EndIf
 
 class RuleMappingTemplate extends ClassGeneratorTemplate<RuleMapping> {
 
@@ -57,16 +58,26 @@ class RuleMappingTemplate extends ClassGeneratorTemplate<RuleMapping> {
 					«IF !context.freeVariables.isNullOrEmpty»
 						«FOR v : context.freeVariables»
 							«v.name.toFirstLower» = new «GipsImportManager.variableToJavaDataType(v, imports)»(name + "->«v.name»");
-							«v.name.toFirstLower».setUpperBound(«v.upperBound»);
-							«v.name.toFirstLower».setLowerBound(«v.lowerBound»);
+							«IF v.type === VariableType.REAL»
+								«v.name.toFirstLower».setUpperBound(«v.upperBound»);
+								«v.name.toFirstLower».setLowerBound(«v.lowerBound»);
+							«ELSE»
+								«v.name.toFirstLower».setUpperBound((int)«v.upperBound»);
+								«v.name.toFirstLower».setLowerBound((int)«v.lowerBound»);
+							«ENDIF»
 						«ENDFOR»
 					«ENDIF»
 				
 					«IF !context.boundVariables.isNullOrEmpty»
 						«FOR v : context.boundVariables»
 							«v.name.toFirstLower» = new «GipsImportManager.variableToJavaDataType(v, imports)»(name + "->«v.name»");
-							«v.name.toFirstLower».setUpperBound(«v.upperBound»);
-							«v.name.toFirstLower».setLowerBound(«v.lowerBound»);
+							«IF v.type === VariableType.REAL»
+								«v.name.toFirstLower».setUpperBound(«v.upperBound»);
+								«v.name.toFirstLower».setLowerBound(«v.lowerBound»);
+							«ELSE»
+								«v.name.toFirstLower».setUpperBound((int)«v.upperBound»);
+								«v.name.toFirstLower».setLowerBound((int)«v.lowerBound»);
+							«ENDIF»
 						«ENDFOR»
 					«ENDIF»
 				}

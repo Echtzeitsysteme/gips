@@ -34,6 +34,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsJoinBySelectionOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsMapping;
 import org.emoflon.gips.gipsl.gipsl.GipsMappingVariable;
+import org.emoflon.gips.gipsl.gipsl.GipsNodeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
 import org.emoflon.gips.gipsl.gipsl.GipsReduceOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
@@ -490,6 +491,14 @@ public class GipslValidator extends AbstractGipslValidator {
 				if (attributeType != null)
 					setContext = attributeType;
 			}
+
+		} else if (setContext instanceof GipsNodeExpression nodeExpression) {
+			if (nodeExpression.getNode() != null && nodeExpression.getNode().getType() != null)
+				setContext = nodeExpression.getNode().getType();
+
+		} else if (setContext instanceof GipsTypeExpression typeExpression) {
+			setContext = typeExpression.getType();
+
 		}
 
 		// type select can only be done on types!
@@ -515,7 +524,9 @@ public class GipslValidator extends AbstractGipslValidator {
 						GipslPackage.Literals.GIPS_TYPE_SELECT__TYPE //
 				);
 			}
-		} else if (!(setContext instanceof GipsTypeExpression || setContext instanceof GipsAttributeExpression)) {
+		} else if (!(setContext instanceof GipsTypeExpression || setContext instanceof GipsAttributeExpression
+				|| setContext instanceof GipsNodeExpression)) {
+			// fallback, maybe no longer necessary
 			GipslValidator.err( //
 					GipslValidatorUtil.TYPE_SELECTION_INVALID_COLLECTION, //
 					typeSelect, //

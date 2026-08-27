@@ -19,7 +19,7 @@ public class RuleImplicitBooleans implements PreprocessorRule {
 		var relational = factory.createGipsRelationalExpression();
 		relational.setOperator(RelationalOperator.EQUAL);
 		relational.setLeft(EcoreUtil.copy(pattern.getNodeA()));
-		relational.setRight(GeneratorUtil.createArithmeticLiteral(factory, "1"));
+		relational.setRight(GeneratorUtil.createIntegerLiteral(factory, 1));
 
 //		if (expression.eContainer() instanceof GipsBooleanNegation) {
 //			var brackets = factory.createGipsBooleanBracket();

@@ -1,7 +1,5 @@
 package org.emoflon.gips.build.gipsl.preprocess;
 
-import static org.emoflon.gips.gipsl.generator.GeneratorUtil.createArithmeticLiteral;
-
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.emoflon.gips.build.preference.PluginPreferences;
 import org.emoflon.gips.gipsl.generator.GeneratorUtil;
@@ -41,7 +39,7 @@ public class RuleEquivalenceShortcutD implements PreprocessorRule {
 		if (!pattern.matchPattern(expression))
 			return null;
 
-		var one = createArithmeticLiteral(factory, "1");
+		var one = GeneratorUtil.createIntegerLiteral(factory, 1);
 
 		// 1-B
 		var oneMinusB = factory.createGipsArithmeticSum();
@@ -55,7 +53,7 @@ public class RuleEquivalenceShortcutD implements PreprocessorRule {
 		conjunctOne.setLeft(EcoreUtil.copy(oneMinusB));
 		conjunctOne.setRight(EcoreUtil.copy(pattern.getNodeA()));
 
-		var bigM = createArithmeticLiteral(factory, Double.toString(PluginPreferences.getBigMValue()));
+		var bigM = GeneratorUtil.createDoubleLiteral(factory, PluginPreferences.getBigMValue());
 
 		// (1-B)*M
 		var bigMProduct = factory.createGipsArithmeticProduct();

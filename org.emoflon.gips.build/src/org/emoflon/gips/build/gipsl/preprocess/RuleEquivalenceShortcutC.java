@@ -57,8 +57,7 @@ public class RuleEquivalenceShortcutC implements PreprocessorRule {
 		var product = factory.createGipsArithmeticProduct();
 		product.setOperator(GipsProductOperator.MULT);
 		product.setLeft(EcoreUtil.copy(pattern.getNodeA()));
-		product.setRight(
-				GeneratorUtil.createArithmeticLiteral(factory, Integer.toString(pattern.getOtherNodes().size())));
+		product.setRight(GeneratorUtil.createIntegerLiteral(factory, pattern.getOtherNodes().size()));
 
 		// B + C (+ D + ...) <= A*n
 		var conjunctTwo = factory.createGipsRelationalExpression();

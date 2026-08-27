@@ -42,6 +42,17 @@ public class GipslMappingValidator {
 		checkMappingValueInUse(mapping);
 	}
 
+	public static void checkMappingVariable(final GipsMappingVariable variable) {
+		if (GipslValidator.DISABLE_VALIDATOR)
+			return;
+
+		if (variable == null)
+			return;
+
+		checkMappingVariableNameUnique(variable);
+		checkMappingVariableInUse(variable);
+	}
+
 	/**
 	 * Checks for validity of a mapping name. The name must not be on the list of
 	 * invalid names, the name should be in lowerCamelCase, and the name should

@@ -313,39 +313,21 @@ public final class GipsTransformationUtils {
 	}
 
 	public static double getUpperBound(final GipsVariable gipsVar, final VariableType type) {
-		if (type == VariableType.BINARY)
-			return 1;
-
 		if (gipsVar.getInterval() != null && !gipsVar.getInterval().isUpperInfinity()) {
-			return getValue(gipsVar.getInterval().getUpperBound());
-
-		} else if (type == VariableType.INTEGER) {
-			return Integer.MAX_VALUE;
-
-		} else if (type == VariableType.REAL) {
-			return Double.MAX_VALUE;
-
+			var upperBound = getValue(gipsVar.getInterval().getUpperBound());
+			return getLeastUpperBound(upperBound, type);
 		}
 
-		throw new UnsupportedOperationException();
+		return getMaxValue(type);
 	}
 
 	public static double getLowerBound(final GipsVariable gipsVar, final VariableType type) {
-		if (type == VariableType.BINARY)
-			return 0;
-
 		if (gipsVar.getInterval() != null && !gipsVar.getInterval().isLowerInfinity()) {
-			return getValue(gipsVar.getInterval().getLowerBound());
-
-		} else if (type == VariableType.INTEGER) {
-			return Integer.MIN_VALUE;
-
-		} else if (type == VariableType.REAL) {
-			return -Double.MAX_VALUE;
-
+			var lowerBound = getValue(gipsVar.getInterval().getLowerBound());
+			return getGreatestLowerBound(lowerBound, type);
 		}
 
-		throw new UnsupportedOperationException();
+		return getMinValue(type);
 	}
 
 	private static double getValue(final GipsArithmeticLiteral literal) {
@@ -353,6 +335,66 @@ public final class GipsTransformationUtils {
 		case GipsIntegerLiteral val -> val.getValue();
 		case GipsDoubleLiteral val -> val.getValue();
 		default -> throw new IllegalArgumentException("Unexpected value: " + literal);
+		};
+	}
+
+	public static double getLeastUpperBound(double upperBound, VariableType type) {
+		if (Double.isNaN(upperBound))
+			throw new IllegalArgumentException("Boundary value cannot be NaN.");
+
+		return switch (type) {
+		case BINARY -> getMaxValue(VariableType.BINARY);
+		case REAL -> upperBound;
+		case INTEGER -> {
+			double floored = Math.floor(upperBound);
+			if (floored <= getMinValue(VariableType.INTEGER))
+				yield getMinValue(VariableType.INTEGER);
+
+			if (floored >= getMaxValue(VariableType.INTEGER))
+				yield getMaxValue(VariableType.INTEGER);
+
+			yield floored;
+		}
+		default -> throw new IllegalArgumentException("Unexpected value: " + type);
+		};
+	}
+
+	public static double getGreatestLowerBound(double lowerBound, VariableType type) {
+		if (Double.isNaN(lowerBound))
+			throw new IllegalArgumentException("Boundary value cannot be NaN.");
+
+		return switch (type) {
+		case BINARY -> getMinValue(VariableType.BINARY);
+		case REAL -> lowerBound;
+		case INTEGER -> {
+			double ceiled = Math.ceil(lowerBound);
+			if (ceiled <= getMinValue(VariableType.INTEGER))
+				yield getMinValue(VariableType.INTEGER);
+
+			if (ceiled >= getMaxValue(VariableType.INTEGER))
+				yield getMaxValue(VariableType.INTEGER);
+
+			yield ceiled;
+		}
+		default -> throw new IllegalArgumentException("Unexpected value: " + type);
+		};
+	}
+
+	public static double getMaxValue(VariableType type) {
+		return switch (type) {
+		case BINARY -> 1.0;
+		case INTEGER -> Integer.MAX_VALUE;
+		case REAL -> Double.MAX_VALUE;
+		default -> throw new IllegalArgumentException("Unexpected value: " + type);
+		};
+	}
+
+	public static double getMinValue(VariableType type) {
+		return switch (type) {
+		case BINARY -> 0.0;
+		case INTEGER -> Integer.MIN_VALUE;
+		case REAL -> -Double.MAX_VALUE;
+		default -> throw new IllegalArgumentException("Unexpected value: " + type);
 		};
 	}
 

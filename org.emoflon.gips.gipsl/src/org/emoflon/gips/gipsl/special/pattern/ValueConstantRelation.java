@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-import org.emoflon.gips.gipsl.gipsl.GipsArithmeticLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsIntegerLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
 import org.emoflon.gips.gipsl.gipsl.RelationalOperator;
@@ -20,14 +20,14 @@ public class ValueConstantRelation extends AbstractPatternMatcher {
 
 	private final RelationalOperator matchOperator;
 	private final RelationalOperator reversedmatchOperator;
-	private final Predicate<String> matchConstant;
+	private final Predicate<Integer> matchConstant;
 	private final boolean onlyBinaries;
 
 	private GipsValueExpression nodeA;
-	private GipsArithmeticLiteral literal;
+	private GipsIntegerLiteral literal;
 
 	public ValueConstantRelation(boolean onlyBinaries, RelationalOperator matchOperator,
-			Predicate<String> matchConstant) {
+			Predicate<Integer> matchConstant) {
 		this.onlyBinaries = onlyBinaries;
 		this.matchOperator = Objects.requireNonNull(matchOperator);
 		this.matchConstant = Objects.requireNonNull(matchConstant);
@@ -41,7 +41,7 @@ public class ValueConstantRelation extends AbstractPatternMatcher {
 		};
 	}
 
-	public GipsArithmeticLiteral getLiteral() {
+	public GipsIntegerLiteral getLiteral() {
 		return literal;
 	}
 
@@ -75,14 +75,14 @@ public class ValueConstantRelation extends AbstractPatternMatcher {
 
 		if (matchOperator == relational.getOperator()) {
 			if (leftNode instanceof GipsValueExpression exp //
-					&& rightNode instanceof GipsArithmeticLiteral literal //
+					&& rightNode instanceof GipsIntegerLiteral literal //
 					&& matchConstant.test(literal.getValue())) {
 
 				matchPair(exp, literal);
 			}
 
 		} else if (reversedmatchOperator == relational.getOperator()) {
-			if (leftNode instanceof GipsArithmeticLiteral literal //
+			if (leftNode instanceof GipsIntegerLiteral literal //
 					&& rightNode instanceof GipsValueExpression exp //
 					&& matchConstant.test(literal.getValue())) {
 
@@ -92,7 +92,7 @@ public class ValueConstantRelation extends AbstractPatternMatcher {
 		}
 	}
 
-	protected void matchPair(GipsValueExpression exp, GipsArithmeticLiteral literal) {
+	protected void matchPair(GipsValueExpression exp, GipsIntegerLiteral literal) {
 		var type = GipslExpressionValidator.evaluate(exp, new LinkedList<>());
 		if (type.isScalar()) {
 			if (onlyBinaries) {

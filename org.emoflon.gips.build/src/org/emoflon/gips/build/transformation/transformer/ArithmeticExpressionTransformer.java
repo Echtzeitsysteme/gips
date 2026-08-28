@@ -16,6 +16,8 @@ import org.emoflon.gips.gipsl.gipsl.GipsArithmeticSum;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticUnary;
 import org.emoflon.gips.gipsl.gipsl.GipsConstantReference;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsDoubleLiteral;
+import org.emoflon.gips.gipsl.gipsl.GipsIntegerLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunctionReference;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
@@ -162,22 +164,20 @@ public class ArithmeticExpressionTransformer extends TransformationContext {
 	}
 
 	public ArithmeticExpression transform(final GipsArithmeticLiteral literal) throws Exception {
-		try {
-			int value = Integer.parseInt(literal.getValue());
-			IntegerLiteral intLit = factory.createIntegerLiteral();
-			intLit.setLiteral(value);
-			return intLit;
-		} catch (Exception e) {
-			try {
-				double dValue = Double.parseDouble(literal.getValue());
-				DoubleLiteral doubleLit = factory.createDoubleLiteral();
-				doubleLit.setLiteral(dValue);
-				return doubleLit;
-			} catch (Exception e2) {
-				throw new IllegalArgumentException(
-						"Value <" + literal.getValue() + "> can't be parsed to neither integer nor double value.");
-			}
+		return switch (literal) {
+		case GipsIntegerLiteral value -> {
+			IntegerLiteral lit = factory.createIntegerLiteral();
+			lit.setLiteral(value.getValue());
+			yield lit;
 		}
+		case GipsDoubleLiteral value -> {
+			DoubleLiteral lit = factory.createDoubleLiteral();
+			lit.setLiteral(value.getValue());
+			yield lit;
+		}
+		default -> throw new IllegalArgumentException(
+				"Value <" + literal + "> can't be parsed to neither integer nor double value.");
+		};
 	}
 
 	public ArithmeticExpression transform(final GipsArithmeticConstant constant) throws Exception {

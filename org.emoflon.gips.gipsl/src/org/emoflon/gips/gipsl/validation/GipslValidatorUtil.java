@@ -119,6 +119,9 @@ public class GipslValidatorUtil {
 	public static final String TYPE_EXTENSION_VARIABLE_ATTRIBUTE_ALREADY_BOUND = "Variable '%s' in extension '%s' is already bound to this attribute.";
 	public static final String TYPE_EXTENSION_VARIABLE_NOT_USED = "Variable '%s' is never used. No (M)ILP variable will be created for this variable.";
 
+	public static final String VARIABLE_BOUNDS_SUPPORT_ERROR = "Boolean does not support lower or upper bounds.";
+	public static final String VARIABLE_BOUNDS_LIMIT_ERROR = "The lower bound cannot be greater than the upper bound.";
+
 	public static final String FUNCTION_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Linear function '%s' must not be declared '%s' (case insensitive)";
 	public static final String FUNCTION_NAME_FORBIDDEN_MESSAGE = "Objectives cannot be be named '%s'. Use a different name.";
 	public static final String FUNCTION_NAME_CONTAINS_UNDERSCORES_MESSAGE = "Objective name '%s' contains underscores. Use camelCase instead.";

@@ -3,9 +3,9 @@ package org.emoflon.gips.gipsl.special.pattern;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.emoflon.gips.gipsl.gipsl.GipsArithmeticLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanNegation;
+import org.emoflon.gips.gipsl.gipsl.GipsIntegerLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
 import org.emoflon.gips.gipsl.gipsl.RelationalOperator;
@@ -34,7 +34,7 @@ public class BinaryValueNegation extends AbstractPatternMatcher {
 			RelationalOperator.EQUAL, //
 			this::matchLiteral);
 
-	public GipsArithmeticLiteral getLiteral() {
+	public GipsIntegerLiteral getLiteral() {
 		return pattern.getLiteral();
 	}
 
@@ -68,8 +68,8 @@ public class BinaryValueNegation extends AbstractPatternMatcher {
 
 	}
 
-	private boolean matchLiteral(String literal) {
-		return "1".equals(literal) || "0".equals(literal);
+	private boolean matchLiteral(Integer literal) {
+		return 1 == literal || 0 == literal;
 	}
 
 	private void matchNodes(GipsRelationalExpression expression) {

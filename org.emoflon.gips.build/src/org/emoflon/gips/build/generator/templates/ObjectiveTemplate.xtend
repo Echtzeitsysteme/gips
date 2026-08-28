@@ -38,6 +38,7 @@ class ObjectiveTemplate extends ProblemGeneratorTemplate<Objective> {
 		imports.add("org.emoflon.gips.core.milp.model.WeightedLinearFunction")
 		imports.add("org.emoflon.gips.core.milp.model.NestedLinearFunction")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.Objective")
+		imports.add(data.apiData.gipsApiPkg + "." + data.gipsApiClassName)
 	}
 
 	override getConstants() {
@@ -50,11 +51,11 @@ class ObjectiveTemplate extends ProblemGeneratorTemplate<Objective> {
 		val initAttributes = generateInitAttributes();
 
 		'''
-			public class «className» extends GipsObjective{
+			public class «className» extends GipsObjective<«data.gipsApiClassName»>{
 				
 				«attributes»
 				
-				public «className»(final GipsEngine engine, final Objective objective) {
+				public «className»(final «data.gipsApiClassName» engine, final Objective objective) {
 					super(engine, objective);
 				}
 				

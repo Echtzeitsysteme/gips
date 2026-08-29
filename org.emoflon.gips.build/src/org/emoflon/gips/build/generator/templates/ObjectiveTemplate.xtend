@@ -14,6 +14,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
+import java.util.LinkedList
 
 class ObjectiveTemplate extends ProblemGeneratorTemplate<Objective> {
 
@@ -99,13 +100,13 @@ class ObjectiveTemplate extends ProblemGeneratorTemplate<Objective> {
 			@Override
 			protected void buildTerms() {
 				«generateConstantFields(context.constants)»
-				
+
 				«FOR instruction : builderMethodCalls2»
 					«instruction»
 				«ENDFOR»
-				
-				«getConstantCalculators(context.constants)»
 			}
+			
+			«getConstantCalculators(context.constants)»
 		'''
 	}
 

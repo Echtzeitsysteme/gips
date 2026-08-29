@@ -98,6 +98,7 @@ public class GipslValidatorUtil {
 	public static final String OBJECTIVE_IS_OPTIONAL_MESSAGE = "The global objective is optional if no local objective is defined.";
 	public static final String OBJECTIVE_DOES_NOT_CONTAIN_LOCAL_OBJECTIVE_MESSAGE = "Global objective does not contain any reference to a local objective.";
 	public static final String OBJECTIVE_EVAL_NOT_NUMBER_MESSAGE = "Objective does not evaluate to an integer, double or boolean.";
+	public static final String OBJECTIVE_NOT_SUPPORTED = "Objective only supports functions and constant terms.";
 
 	public static final String MAPPING_NAME_MULTIPLE_DECLARATIONS_MESSAGE = "Mapping, Pattern, Rule or Type '%s' must not be declared '%s' (case insensitive).";
 	public static final String MAPPING_NAME_FORBIDDEN_MESSAGE = "Mappings cannot be be named '%s'. Use a different name.";

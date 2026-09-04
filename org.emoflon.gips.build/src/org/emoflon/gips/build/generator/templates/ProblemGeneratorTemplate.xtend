@@ -155,10 +155,11 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 	}
 
 	def String getConstantCalculators(Collection<Constant> constants) {
-		return '''«FOR constant : constants»
-		«generateConstantCalculator(constant)»
-		
-		«ENDFOR»
+		'''
+			«FOR constant : constants»
+				«generateConstantCalculator(constant)»
+
+			«ENDFOR»
 		'''
 	}
 

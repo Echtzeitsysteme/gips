@@ -431,8 +431,10 @@ public final class GipslScopeContextUtil {
 			if (value instanceof GipsLocalContextExpression localExpression) {
 				EObject right = localExpression.getExpression();
 
-				if (right instanceof GipsNodeExpression nodeExpression)
-					right = nodeExpression.getExpression();
+				if (right instanceof GipsNodeExpression nodeExpression) {
+					if (nodeExpression.getExpression() != null)
+						right = nodeExpression.getExpression();
+				}
 
 				if (right instanceof GipsAttributeExpression attributeExpression) {
 					GipsAttributeExpression lastAttributeExpression = attributeExpression;
@@ -440,8 +442,10 @@ public final class GipslScopeContextUtil {
 							.getRight() instanceof GipsAttributeExpression nextAttributeExpression) {
 						lastAttributeExpression = nextAttributeExpression;
 					}
-					return lastAttributeExpression;
+					right = lastAttributeExpression;
 				}
+
+				return right;
 			}
 			return root.getValue();
 

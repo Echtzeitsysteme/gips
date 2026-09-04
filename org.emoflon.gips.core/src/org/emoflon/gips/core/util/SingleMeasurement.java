@@ -1,11 +1,10 @@
 package org.emoflon.gips.core.util;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 
 public class SingleMeasurement implements IMeasurement {
 
-	private Runtime runtime = Runtime.getRuntime();
 	private double begin;
 	private double end;
 	private long memory;
@@ -17,6 +16,8 @@ public class SingleMeasurement implements IMeasurement {
 
 	public double stop() {
 		end = System.nanoTime();
+
+		var runtime = Runtime.getRuntime();
 		memory = (runtime.totalMemory() - runtime.freeMemory()) / MB;
 		return end;
 	}
@@ -83,7 +84,7 @@ public class SingleMeasurement implements IMeasurement {
 
 	@Override
 	public Collection<IMeasurement> getMeasurements() {
-		return List.of(this);
+		return Collections.singleton(this);
 	}
 
 }

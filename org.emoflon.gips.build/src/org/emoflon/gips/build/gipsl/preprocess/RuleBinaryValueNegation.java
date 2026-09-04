@@ -20,10 +20,10 @@ public class RuleBinaryValueNegation implements PreprocessorRule {
 		relational.setOperator(RelationalOperator.EQUAL);
 		relational.setLeft(EcoreUtil.copy(pattern.getNodeA()));
 
-		if (pattern.getLiteral().getValue().equals("1")) {
-			relational.setRight(GeneratorUtil.createArithmeticLiteral(factory, "0"));
+		if (pattern.getLiteral().getValue() == 1) {
+			relational.setRight(GeneratorUtil.createIntegerLiteral(factory, 0));
 		} else {
-			relational.setRight(GeneratorUtil.createArithmeticLiteral(factory, "1"));
+			relational.setRight(GeneratorUtil.createIntegerLiteral(factory, 1));
 		}
 
 		return relational;

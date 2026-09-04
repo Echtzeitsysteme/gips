@@ -29,6 +29,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsBooleanImplication;
 import org.emoflon.gips.gipsl.gipsl.GipsConfig;
 import org.emoflon.gips.gipsl.gipsl.GipsConstant;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsInterval;
 import org.emoflon.gips.gipsl.gipsl.GipsJoinAllOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsJoinBySelectionOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
@@ -42,6 +43,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsTypeExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeExtension;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeExtensionVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsTypeSelect;
+import org.emoflon.gips.gipsl.gipsl.GipsVariable;
 import org.emoflon.gips.gipsl.gipsl.GipsVariableReferenceExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 import org.emoflon.gips.gipsl.gipsl.ImportedPattern;
@@ -374,14 +376,7 @@ public class GipslValidator extends AbstractGipslValidator {
 
 	@Check
 	public void checkMappingVariable(final GipsMappingVariable variable) {
-		if (GipslValidator.DISABLE_VALIDATOR) {
-			return;
-		}
-		if (variable == null) {
-			return;
-		}
-		GipslMappingValidator.checkMappingVariableNameUnique(variable);
-		GipslMappingValidator.checkMappingVariableInUse(variable);
+		GipslMappingValidator.checkMappingVariable(variable);
 	}
 
 	@Check
@@ -392,6 +387,16 @@ public class GipslValidator extends AbstractGipslValidator {
 	@Check
 	public void checkTypeExtensionVariable(final GipsTypeExtensionVariable variable) {
 		GipslTypeExtensionValidator.checkTypeExtensionVariable(variable);
+	}
+
+	@Check
+	public void checkInterval(final GipsInterval interval) {
+		GipslIntervalValidator.checkInterval(interval);
+	}
+
+	@Check
+	public void checkInterval(final GipsVariable variable) {
+		GipslVariableValidator.checkVariable(variable);
 	}
 
 	@Check

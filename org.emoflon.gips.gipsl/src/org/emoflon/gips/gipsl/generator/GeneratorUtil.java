@@ -10,6 +10,8 @@ import org.emoflon.gips.gipsl.gipsl.GipsArithmeticSum;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanConjunction;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanDisjunction;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanExpression;
+import org.emoflon.gips.gipsl.gipsl.GipsDoubleLiteral;
+import org.emoflon.gips.gipsl.gipsl.GipsIntegerLiteral;
 import org.emoflon.gips.gipsl.gipsl.GipsSumOperator;
 import org.emoflon.gips.gipsl.gipsl.GipslFactory;
 
@@ -18,8 +20,14 @@ public final class GeneratorUtil {
 
 	}
 
-	public static GipsArithmeticLiteral createArithmeticLiteral(GipslFactory factory, String value) {
-		GipsArithmeticLiteral literal = factory.createGipsArithmeticLiteral();
+	public static GipsArithmeticLiteral createIntegerLiteral(GipslFactory factory, int value) {
+		GipsIntegerLiteral literal = factory.createGipsIntegerLiteral();
+		literal.setValue(value);
+		return literal;
+	}
+
+	public static GipsArithmeticLiteral createDoubleLiteral(GipslFactory factory, double value) {
+		GipsDoubleLiteral literal = factory.createGipsDoubleLiteral();
 		literal.setValue(value);
 		return literal;
 	}

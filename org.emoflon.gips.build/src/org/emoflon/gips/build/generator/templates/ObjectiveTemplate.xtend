@@ -14,6 +14,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective
 import org.emoflon.gips.intermediate.GipsIntermediate.ValueExpression
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
+import java.util.LinkedList
 
 class ObjectiveTemplate extends ProblemGeneratorTemplate<Objective> {
 
@@ -38,6 +39,7 @@ class ObjectiveTemplate extends ProblemGeneratorTemplate<Objective> {
 		imports.add("org.emoflon.gips.core.milp.model.WeightedLinearFunction")
 		imports.add("org.emoflon.gips.core.milp.model.NestedLinearFunction")
 		imports.add("org.emoflon.gips.intermediate.GipsIntermediate.Objective")
+		imports.add(data.apiData.gipsApiPkg + "." + data.gipsApiClassName)
 	}
 
 	override getConstants() {
@@ -50,11 +52,11 @@ class ObjectiveTemplate extends ProblemGeneratorTemplate<Objective> {
 		val initAttributes = generateInitAttributes();
 
 		'''
-			public class «className» extends GipsObjective{
+			public class «className» extends GipsObjective<«data.gipsApiClassName»>{
 				
 				«attributes»
 				
-				public «className»(final GipsEngine engine, final Objective objective) {
+				public «className»(final «data.gipsApiClassName» engine, final Objective objective) {
 					super(engine, objective);
 				}
 				
@@ -98,13 +100,13 @@ class ObjectiveTemplate extends ProblemGeneratorTemplate<Objective> {
 			@Override
 			protected void buildTerms() {
 				«generateConstantFields(context.constants)»
-				
+
 				«FOR instruction : builderMethodCalls2»
 					«instruction»
 				«ENDFOR»
-				
-				«getConstantCalculators(context.constants)»
 			}
+			
+			«getConstantCalculators(context.constants)»
 		'''
 	}
 

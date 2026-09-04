@@ -64,7 +64,9 @@ GipsMapping :
 ;
 
 GipsMappingVariable :
-	'var' name=ID ':' type=[ecore::EDataType] (bound ?= 'bind' parameter=[GT::EditorParameter])?
+	'var' name=ID ':' type=[ecore::EDataType] 
+	(interval=GipsInterval)?
+	(bound ?= 'bind' parameter=[GT::EditorParameter])?
 ;
 
 GipsTypeExtension :
@@ -74,7 +76,17 @@ GipsTypeExtension :
 ;
 
 GipsTypeExtensionVariable :
-	'var' name=ID ':' type=[ecore::EDataType] (bound ?= 'bind' 'to' attribute=[ecore::EAttribute])?
+	'var' name=ID ':' type=[ecore::EDataType]
+	(interval=GipsInterval)?
+	(bound ?= 'bind' 'to' attribute=[ecore::EAttribute])?
+;
+
+GipsInterval:
+	'[' 
+		( (lowerBound=GipsArithmeticLiteral) | lowerInfinity?='*' )
+		',' 
+		( (upperBound=GipsArithmeticLiteral) | upperInfinity?='*' )
+	']'
 ;
 
 GipsConstant:
@@ -189,12 +201,12 @@ GipsArithmeticExponential returns GipsArithmeticExpression:
 	GipsArithmeticUnary({GipsArithmeticExponential.left = current} operator=GipsExponentialOperator right=GipsArithmeticUnary)*
 ;
 
-GipsArithmeticUnary returns GipsArithmeticExpression: {GipsArithmeticUnary}
-	operator=GipsUnaryOperator '(' operand=GipsArithmeticBracket ')' | GipsArithmeticBracket
+GipsArithmeticUnary returns GipsArithmeticExpression: 
+	{GipsArithmeticUnary} operator=GipsUnaryOperator '(' operand=GipsArithmeticExpression ')' | GipsArithmeticBracket
 ;
 
-GipsArithmeticBracket returns GipsArithmeticExpression: {GipsArithmeticBracket}
-	'(' operand=GipsArithmeticExpression ')' | GipsArithmeticOperand
+GipsArithmeticBracket returns GipsArithmeticExpression:
+	{GipsArithmeticBracket} '(' operand=GipsArithmeticExpression ')' | GipsArithmeticOperand
 ;
 
 GipsArithmeticOperand:
@@ -202,7 +214,7 @@ GipsArithmeticOperand:
 ;
 
 GipsArithmeticLiteral:
-	value = (GipsDoubleLiteral | GipsIntegerLiteral)
+	GipsDoubleLiteral | GipsIntegerLiteral
 ;
 
 GipsArithmeticConstant:
@@ -438,11 +450,11 @@ enum QueryOperator :
 ;
 
 GipsDoubleLiteral:
-	GipsDouble
+	value = GipsDouble
 ;
 
 GipsIntegerLiteral:
-	GipsInteger
+	value = GipsInteger
 ;
 
 GipsDouble returns ecore::EDouble:

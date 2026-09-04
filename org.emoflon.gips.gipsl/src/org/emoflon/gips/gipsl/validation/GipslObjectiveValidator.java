@@ -1,9 +1,14 @@
 package org.emoflon.gips.gipsl.validation;
 
+import java.util.LinkedList;
+
+import org.eclipse.xtext.EcoreUtil2;
 import org.emoflon.gips.gipsl.gipsl.EditorGTFile;
 import org.emoflon.gips.gipsl.gipsl.GipsLinearFunction;
 import org.emoflon.gips.gipsl.gipsl.GipsObjective;
+import org.emoflon.gips.gipsl.gipsl.GipsValueExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
+import org.emoflon.gips.gipsl.validation.GipslExpressionValidator.ExpressionData;
 
 public class GipslObjectiveValidator {
 
@@ -21,6 +26,15 @@ public class GipslObjectiveValidator {
 		if (obj == null) {
 			return;
 		}
+
+		EcoreUtil2.eAllOfType(obj.getExpression(), GipsValueExpression.class).stream().forEach(element -> {			
+			ExpressionData valueType = GipslExpressionValidator.evaluate((GipsValueExpression) element, new LinkedList<>());
+			if (!valueType.isConstant())
+				GipslValidator.err( //
+						GipslValidatorUtil.OBJECTIVE_NOT_SUPPORTED, //
+						element, //
+						null);
+		});
 
 		// Check arithmetic expression and spool errors
 		GipslExpressionValidator.checkArithmeticExpression(obj.getExpression()).forEach(err -> err.run());
@@ -41,10 +55,10 @@ public class GipslObjectiveValidator {
 		}
 
 		// Check for bad names
-		checkObjectiveNameValid(function);
+		checkLinearFunctionNameValid(function);
 
 		// Check uniqueness of name
-		checkObjectiveNameUnique(function);
+		checkLinearFunctionNameUnique(function);
 
 		// Check arithmetic expression and spool errors
 		GipslExpressionValidator.checkArithmeticExpression(function.getExpression()).forEach(err -> err.run());
@@ -57,7 +71,7 @@ public class GipslObjectiveValidator {
 	 * 
 	 * @param function Gips linear function to check.
 	 */
-	public static void checkObjectiveNameValid(final GipsLinearFunction function) {
+	private static void checkLinearFunctionNameValid(final GipsLinearFunction function) {
 		if (function == null || function.getName() == null) {
 			return;
 		}
@@ -92,7 +106,7 @@ public class GipslObjectiveValidator {
 	 * 
 	 * @param function Gips linear function to check uniqueness of the name for.
 	 */
-	public static void checkObjectiveNameUnique(final GipsLinearFunction function) {
+	private static void checkLinearFunctionNameUnique(final GipsLinearFunction function) {
 		if (function == null || function.eContainer() == null) {
 			return;
 		}

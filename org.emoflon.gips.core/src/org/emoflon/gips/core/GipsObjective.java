@@ -9,16 +9,16 @@ import org.emoflon.gips.core.milp.model.WeightedLinearFunction;
 import org.emoflon.gips.core.util.StreamUtils;
 import org.emoflon.gips.intermediate.GipsIntermediate.Objective;
 
-public abstract class GipsObjective {
+public abstract class GipsObjective<ENGINE extends GipsEngine> {
 
-	final protected GipsEngine engine;
+	final protected ENGINE engine;
 	final protected TypeIndexer indexer;
 	final protected Objective objective;
 	protected NestedLinearFunction milpObjective;
 	protected List<WeightedLinearFunction> weightedFunctions;
 	protected List<Constant> constantTerms;
 
-	public GipsObjective(final GipsEngine engine, final Objective objective) {
+	public GipsObjective(final ENGINE engine, final Objective objective) {
 		this.engine = engine;
 		this.indexer = engine.getIndexer();
 		this.objective = objective;

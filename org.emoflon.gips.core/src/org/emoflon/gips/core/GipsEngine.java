@@ -19,7 +19,6 @@ import org.emoflon.gips.core.milp.model.Variable;
 import org.emoflon.gips.core.trace.EclipseIntegration;
 import org.emoflon.gips.core.trace.EclipseIntegrationConfig;
 import org.emoflon.gips.core.trace.GipsTracer;
-import org.emoflon.gips.core.util.ObservableStage;
 import org.emoflon.gips.core.util.Observer;
 import org.emoflon.gips.core.util.StreamUtils;
 import org.emoflon.gips.core.validation.GipsConstraintValidationLog;
@@ -102,12 +101,12 @@ public abstract class GipsEngine {
 	 * @param parallel If true, the problem will be built in parallel.
 	 */
 	public void buildProblem(final boolean doUpdate, final boolean parallel) {
-		observer.resetStage(ObservableStage.BUILD);
-		observer.singleMeasurement(ObservableStage.BUILD, "BUILD", () -> {
+		observer.resetStage(Observer.STAGE_BUILD);
+		observer.singleMeasurement(Observer.STAGE_BUILD, "BUILD", () -> {
 			if (doUpdate)
-				observer.singleMeasurement(ObservableStage.BUILD, "PM", () -> update());
+				observer.singleMeasurement(Observer.STAGE_BUILD, "PM", () -> update());
 
-			observer.singleMeasurement(ObservableStage.BUILD, "BUILD_GIPS", () -> {
+			observer.singleMeasurement(Observer.STAGE_BUILD, "BUILD_GIPS", () -> {
 				// Reset validation log
 				validationLog = new GipsConstraintValidationLog();
 
@@ -159,12 +158,12 @@ public abstract class GipsEngine {
 				checkVariableNameSanity();
 			});
 
-			observer.singleMeasurement(ObservableStage.BUILD, "BUILD_SOLVER", () -> {
+			observer.singleMeasurement(Observer.STAGE_BUILD, "BUILD_SOLVER", () -> {
 				solver.init();
 				solver.buildMILPProblem();
 			});
 
-			observer.singleMeasurement(ObservableStage.BUILD, "BUILD_TRACE", () -> {
+			observer.singleMeasurement(Observer.STAGE_BUILD, "BUILD_TRACE", () -> {
 				buildTraceGraphAndSendToIDE();
 			});
 		});
@@ -275,8 +274,8 @@ public abstract class GipsEngine {
 	}
 
 	public SolverOutput solveProblem() {
-		observer.resetStage(ObservableStage.SOLVE);
-		return observer.singleMeasurement(ObservableStage.SOLVE, "SOLVE_PROBLEM", () -> {
+		observer.resetStage(Observer.STAGE_SOLVE);
+		return observer.singleMeasurement(Observer.STAGE_SOLVE, "SOLVE_PROBLEM", () -> {
 			SolverOutput output;
 			if (validationLog.isNotValid()) {
 				output = new SolverOutput(SolverStatus.INFEASIBLE, Double.NaN, validationLog, 0, null);
@@ -300,7 +299,7 @@ public abstract class GipsEngine {
 			solver.reset();
 			GlobalMappingIndexer.getInstance().terminate();
 
-			observer.singleMeasurement(ObservableStage.SOLVE, "TRACE_UPDATE_VALUES",
+			observer.singleMeasurement(Observer.STAGE_SOLVE, "TRACE_UPDATE_VALUES",
 					() -> eclipseIntegration.sendSolutionValuesToIDE());
 			return output;
 		});

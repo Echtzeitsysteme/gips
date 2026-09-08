@@ -9,13 +9,16 @@ import java.util.function.Supplier;
 
 public class Observer implements Cloneable {
 
-	protected final Map<ObservableStage, Map<String, IMeasurement>> stageMeasurements = new ConcurrentHashMap<>();
+	public static final String STAGE_BUILD = "BUILD";
+	public static final String STAGE_SOLVE = "SOLVE";
+
+	protected final Map<String, Map<String, IMeasurement>> stageMeasurements = new ConcurrentHashMap<>();
 
 	public Observer() {
 
 	}
 
-	protected Observer(Map<ObservableStage, Map<String, IMeasurement>> stageMeasurements) {
+	protected Observer(Map<String, Map<String, IMeasurement>> stageMeasurements) {
 		stageMeasurements.forEach((stage, map) -> {
 			this.stageMeasurements.put(stage, new ConcurrentHashMap<>(map));
 		});
@@ -25,7 +28,7 @@ public class Observer implements Cloneable {
 		stageMeasurements.clear();
 	}
 
-	public void resetStage(ObservableStage stage) {
+	public void resetStage(String stage) {
 		stageMeasurements.remove(stage);
 	}
 
@@ -53,20 +56,27 @@ public class Observer implements Cloneable {
 		});
 	}
 
-	public Map<ObservableStage, Map<String, IMeasurement>> getAllMeasurements() {
+	public Map<String, Map<String, IMeasurement>> getAllMeasurements() {
 		return stageMeasurements;
 	}
 
-	public Map<String, IMeasurement> getStageMeasurements(ObservableStage stage) {
+	public Map<String, IMeasurement> getStageMeasurements(String stage) {
 		return stageMeasurements.getOrDefault(stage, Collections.emptyMap());
 	}
 
-	public Map<String, IMeasurement> mergeAllStages() {
-		var result = new HashMap<String, IMeasurement>();
-		for (var key : ObservableStage.values()) {
-			var stage = stageMeasurements.get(key);
-			if (stage != null)
-				result.putAll(stage);
+	public Map<String, IMeasurement> getAllStagesMerged() {
+		Map<String, IMeasurement> result = new HashMap<>();
+		for (String stageName : stageMeasurements.keySet()) {
+			Map<String, IMeasurement> stage = stageMeasurements.get(stageName);
+
+			if (stage != null) {
+				for (String measureName : stage.keySet()) {
+					IMeasurement newMeasurement = stage.get(measureName);
+					result.compute(measureName, (mName, oldMeasurement) -> {
+						return oldMeasurement == null ? newMeasurement : oldMeasurement.merge(newMeasurement);
+					});
+				}
+			}
 		}
 		return result;
 	}
@@ -83,7 +93,7 @@ public class Observer implements Cloneable {
 	 * @return the return value of {@code function}
 	 * @see SingleMeasurement
 	 */
-	public <T> T singleMeasurement(ObservableStage stage, String entry, Supplier<T> function) {
+	public <T> T singleMeasurement(String stage, String entry, Supplier<T> function) {
 		SingleMeasurement measurement = new SingleMeasurement();
 		measurement.start();
 
@@ -105,7 +115,7 @@ public class Observer implements Cloneable {
 	 * @param function to be measured
 	 * @see SingleMeasurement
 	 */
-	public void singleMeasurement(ObservableStage stage, String entry, Runnable function) {
+	public void singleMeasurement(String stage, String entry, Runnable function) {
 		SingleMeasurement measurement = new SingleMeasurement();
 		measurement.start();
 
@@ -117,7 +127,7 @@ public class Observer implements Cloneable {
 		}
 	}
 
-	public <T> T multiMeasurement(ObservableStage stage, String entry, Supplier<T> function) {
+	public <T> T multiMeasurement(String stage, String entry, Supplier<T> function) {
 		SingleMeasurement measurement = new SingleMeasurement();
 		measurement.start();
 
@@ -129,7 +139,7 @@ public class Observer implements Cloneable {
 		}
 	}
 
-	public void multiMeasurement(ObservableStage stage, String entry, Runnable function) {
+	public void multiMeasurement(String stage, String entry, Runnable function) {
 		SingleMeasurement measurement = new SingleMeasurement();
 		measurement.start();
 
@@ -141,15 +151,15 @@ public class Observer implements Cloneable {
 		}
 	}
 
-	private void saveSingleMeasurement(ObservableStage phase, String name, IMeasurement measurement) {
-		Map<String, IMeasurement> measurements = stageMeasurements.computeIfAbsent(phase,
+	private void saveSingleMeasurement(String stage, String name, IMeasurement measurement) {
+		Map<String, IMeasurement> measurements = stageMeasurements.computeIfAbsent(stage,
 				k -> new ConcurrentHashMap<>());
 
 		measurements.put(name, measurement);
 	}
 
-	private void saveMultiMeasurement(ObservableStage phase, String name, IMeasurement measurement) {
-		Map<String, IMeasurement> measurements = stageMeasurements.computeIfAbsent(phase,
+	private void saveMultiMeasurement(String stage, String name, IMeasurement measurement) {
+		Map<String, IMeasurement> measurements = stageMeasurements.computeIfAbsent(stage,
 				k -> new ConcurrentHashMap<>());
 
 		measurements.compute(name, (key, old) -> old == null ? measurement : old.merge(measurement));

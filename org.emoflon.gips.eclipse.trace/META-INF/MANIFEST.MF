@@ -7,7 +7,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-25
 Export-Package: org.emoflon.gips.eclipse.trace,
  org.emoflon.gips.eclipse.trace.impl,
  org.emoflon.gips.eclipse.trace.resolver,

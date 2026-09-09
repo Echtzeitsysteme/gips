@@ -7,7 +7,7 @@
     editorPluginClass="org.emoflon.gips.eclipse.trace.presentation.TraceModelEditorPlugin"
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" codeFormatting="true"
     testSuiteClass="org.emoflon.gips.eclipse.trace.tests.TraceModelAllTests" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="21.0" copyrightFields="false" editPluginID="org.emoflon.gips.eclipse.trace.edit"
+    complianceLevel="25.0" copyrightFields="false" editPluginID="org.emoflon.gips.eclipse.trace.edit"
     editorPluginID="org.emoflon.gips.eclipse.trace.editor" operationReflection="true"
     importOrganizing="true">
   <foreignModel>TraceModel.ecore</foreignModel>

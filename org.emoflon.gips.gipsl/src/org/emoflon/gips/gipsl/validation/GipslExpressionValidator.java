@@ -1205,6 +1205,11 @@ public final class GipslExpressionValidator {
 		} else {
 			// Case: expression.getExpression() == null, which is a reference to the plain
 			// set element
+			if (setContext instanceof GipsAttributeExpression attribute) {
+				valueType = evaluate(attribute, errors);
+				return valueType;
+			}
+
 			valueType = ExpressionData.asConstantScalar(ExpressionType.Object);
 		}
 
@@ -1317,7 +1322,17 @@ public final class GipslExpressionValidator {
 				if (contentType.isError())
 					return ExpressionData.asError();
 
-				// for now we allow everything
+				if (!contentType.isType(ExpressionType.Number, ExpressionType.Boolean)) {
+					errors.add(() -> {
+						GipslValidator.err( //
+								GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
+								sum, //
+								GipslPackage.Literals.GIPS_SUM_OPERATION__EXPRESSION //
+						);
+					});
+					return ExpressionData.asError();
+				}
+
 				if (contentType.isVariable())
 					return ExpressionData.asVariableScalar(ExpressionType.Number);
 				return ExpressionData.asConstantScalar(ExpressionType.Number);

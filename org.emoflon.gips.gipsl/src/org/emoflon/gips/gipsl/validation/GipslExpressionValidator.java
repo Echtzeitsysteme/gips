@@ -99,6 +99,13 @@ public final class GipslExpressionValidator {
 			return UNKNOWN;
 		}
 
+		public static ExpressionData asScalar(ExpressionData data) {
+			if (data.isError() || data.isUnknown())
+				return data;
+
+			return new ExpressionData(data.getMutability(), data.getType(), false);
+		}
+
 		public static ExpressionData asConstantScalar(ExpressionType type) {
 			if (type == ExpressionType.Unknown)
 				return ExpressionData.asUnknown();
@@ -1207,7 +1214,7 @@ public final class GipslExpressionValidator {
 			// set element
 			if (setContext instanceof GipsAttributeExpression attribute) {
 				valueType = evaluate(attribute, errors);
-				return valueType;
+				return ExpressionData.asScalar(valueType);
 			}
 
 			valueType = ExpressionData.asConstantScalar(ExpressionType.Object);

@@ -332,7 +332,7 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 		}
 
 		if(expression.setExpression !== null) {
-			if(usedSingleAttribute(expression)){
+			if(isScalarAttributeAccess(expression)){
 				imports.add("java.util.stream.Stream")
 				instruction = '''Stream.of(«instruction»)'''				
 			}
@@ -343,7 +343,7 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 		return instruction;
 	}
 	
-	def boolean usedSingleAttribute(ValueExpression expression){
+	def boolean isScalarAttributeAccess(ValueExpression expression){
 		if(!(expression instanceof MemberReference))
 			return false
 			

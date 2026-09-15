@@ -11,6 +11,7 @@ import org.emoflon.gips.intermediate.GipsIntermediate.BooleanLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.BooleanUnaryExpression;
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantLiteral;
 import org.emoflon.gips.intermediate.GipsIntermediate.ConstantReference;
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.LinearFunctionReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.MappingReference;
 import org.emoflon.gips.intermediate.GipsIntermediate.MemberExpression;
@@ -125,6 +126,7 @@ public final class IsConstantExpressionResolver {
 		case RuleReference ruleRef -> ArithmeticExpressionType.constant;
 		case VariableReference varRef -> ArithmeticExpressionType.variableValue;
 		case MemberReference memRef -> getExpressionType(memRef.getMember());
+		case ContextReference conRef -> ArithmeticExpressionType.constant;
 		default -> throw new IllegalArgumentException("Unexpected value: " + expression);
 		};
 

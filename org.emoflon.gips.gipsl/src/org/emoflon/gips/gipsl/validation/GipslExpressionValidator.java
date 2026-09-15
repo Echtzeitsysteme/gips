@@ -99,6 +99,13 @@ public final class GipslExpressionValidator {
 			return UNKNOWN;
 		}
 
+		public static ExpressionData asScalar(ExpressionData data) {
+			if (data.isError() || data.isUnknown())
+				return data;
+
+			return new ExpressionData(data.getMutability(), data.getType(), false);
+		}
+
 		public static ExpressionData asConstantScalar(ExpressionType type) {
 			if (type == ExpressionType.Unknown)
 				return ExpressionData.asUnknown();
@@ -1205,6 +1212,11 @@ public final class GipslExpressionValidator {
 		} else {
 			// Case: expression.getExpression() == null, which is a reference to the plain
 			// set element
+			if (setContext instanceof GipsAttributeExpression attribute) {
+				valueType = evaluate(attribute, errors);
+				return ExpressionData.asScalar(valueType);
+			}
+
 			valueType = ExpressionData.asConstantScalar(ExpressionType.Object);
 		}
 
@@ -1317,7 +1329,17 @@ public final class GipslExpressionValidator {
 				if (contentType.isError())
 					return ExpressionData.asError();
 
-				// for now we allow everything
+				if (!contentType.isType(ExpressionType.Number, ExpressionType.Boolean)) {
+					errors.add(() -> {
+						GipslValidator.err( //
+								GipslValidatorUtil.ARITH_EXPR_EVAL_ERROR_MESSAGE, //
+								sum, //
+								GipslPackage.Literals.GIPS_SUM_OPERATION__EXPRESSION //
+						);
+					});
+					return ExpressionData.asError();
+				}
+
 				if (contentType.isVariable())
 					return ExpressionData.asVariableScalar(ExpressionType.Number);
 				return ExpressionData.asConstantScalar(ExpressionType.Number);

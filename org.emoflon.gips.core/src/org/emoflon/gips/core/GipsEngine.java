@@ -5,11 +5,20 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.emoflon.gips.core.GipsConstraint.RemovedConstraintsStats;
+import org.emoflon.gips.core.api.TimeoutException;
 import org.emoflon.gips.core.milp.ConstraintSorter;
 import org.emoflon.gips.core.milp.ExecutionMetrics;
 import org.emoflon.gips.core.milp.Solver;
@@ -74,6 +83,11 @@ public abstract class GipsEngine {
 	/**
 	 * Builds the problem with time measurement included. This method does not
 	 * trigger an update of the pattern matcher and runs everything sequentially.
+	 * 
+	 * @throws TimeoutException if the build time exceeds the time limit configured
+	 *                          in {@link #getConfig()}
+	 * 
+	 * @see GipsConfig#setBuildTimeLimit(java.time.Duration)
 	 */
 	public void buildProblem() {
 		buildProblem(false, false);
@@ -86,6 +100,10 @@ public abstract class GipsEngine {
 	 * 
 	 * @param doUpdate If true, the pattern matcher will be updated before building
 	 *                 the problem.
+	 * @throws TimeoutException if the build time exceeds the time limit configured
+	 *                          in {@link #getConfig()}
+	 * 
+	 * @see GipsConfig#setBuildTimeLimit(java.time.Duration)
 	 */
 	public void buildProblem(final boolean doUpdate) {
 		buildProblem(doUpdate, false);
@@ -99,8 +117,68 @@ public abstract class GipsEngine {
 	 * @param doUpdate If true, the pattern matcher will be updated before building
 	 *                 the problem.
 	 * @param parallel If true, the problem will be built in parallel.
+	 * 
+	 * @throws TimeoutException if the build time exceeds the time limit configured
+	 *                          in {@link #getConfig()}
+	 * 
+	 * @see GipsConfig#setBuildTimeLimit(java.time.Duration)
 	 */
 	public void buildProblem(final boolean doUpdate, final boolean parallel) {
+		if (config.getBuildTimeLimit().isPositive()) {
+
+			// Checking the timeout throughout the entire process is complex and messy,
+			// as it spans multiple classes and algorithms. To keep the core logic clean,
+			// we execute the process in a separate thread and monitor its duration.
+			// If it exceeds the limit, we interrupt the thread and throw a
+			// TimeoutException.
+
+			ExecutorService executor = Executors.newSingleThreadExecutor();
+
+			try {
+				Callable<Void> callable = () -> {
+					buildProblemInternal(doUpdate, parallel);
+					return null;
+				};
+
+				try {
+//					Future<Void> futureBuild = executor.submit(callable);
+//					futureBuild.get(config.getBuildTimeLimit().toMillis(), TimeUnit.MILLISECONDS);
+//					futureBuild.cancel(true);
+
+					List<Future<Void>> futures = executor.invokeAll( //
+							Collections.singleton(callable), //
+							config.getBuildTimeLimit().toMillis(), //
+							TimeUnit.MILLISECONDS //
+					);
+					Future<Void> futureBuild = futures.get(0);
+
+					try {
+						futureBuild.get();
+					} catch (ExecutionException e) {
+						throw new RuntimeException(e);
+					} catch (CancellationException e) {
+						// buildProblemInternal is still running at this time
+						throw new TimeoutException(String.format("Build time exceeds time limit of %.2f seconds.",
+								config.getBuildTimeLimit().toMillis() / 1000d), e);
+					}
+
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+
+				}
+
+			} finally {
+				executor.shutdown();
+			}
+
+		} else {
+			// no timeout, simple
+			buildProblemInternal(doUpdate, parallel);
+
+		}
+	}
+
+	protected void buildProblemInternal(final boolean doUpdate, final boolean parallel) {
 		observer.resetStage(Observer.STAGE_BUILD);
 		observer.singleMeasurement(Observer.STAGE_BUILD, "BUILD", () -> {
 			if (doUpdate)

@@ -48,6 +48,8 @@ public abstract class GipsRuleConstraint<ENGINE extends GipsEngine, M extends Gr
 			throw new IllegalArgumentException(
 					"Boolean values can not be transformed to (M)ILP relational constraints.");
 
+		engine.checkForTaskTimeout();
+
 		if (!isConstant) {
 			RelationalOperator operator = ((RelationalExpression) constraint.getExpression()).getOperator();
 			double constTerm = buildConstantRhs(context);

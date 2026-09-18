@@ -228,23 +228,24 @@ public abstract class GipsEngine {
 						});
 
 				StreamUtils.toStream(constraints.values(), parallel).forEach(constraint -> {
-					constraint.calcAdditionalVariables();
 					checkForTaskTimeout();
+					constraint.calcAdditionalVariables();
 				});
 				StreamUtils.toStream(typeExtensions.values(), parallel).forEach(typeExtension -> {
-					typeExtension.calculateExtensions();
 					checkForTaskTimeout();
+					typeExtension.calculateExtensions();
 				});
 
 				updateConstants();
 
 				StreamUtils.toStream(constraints.values(), parallel).forEach(constraint -> {
-					constraint.buildConstraints(parallel);
 					checkForTaskTimeout();
+					constraint.buildConstraints(parallel);
 				});
 
 				// Check if GIPS is configure to remove duplicate constraints
 				if (this.config.removeUselessConstraints()) {
+					checkForTaskTimeout();
 					this.removedConstraintsStats = removeUselessConstraints(config.printUselessConstraintsStats());
 				}
 
@@ -253,6 +254,7 @@ public abstract class GipsEngine {
 
 				// Sanity check for all variable names: there must not be two different
 				// variables with the same name.
+				checkForTaskTimeout();
 				checkVariableNameSanity();
 			});
 

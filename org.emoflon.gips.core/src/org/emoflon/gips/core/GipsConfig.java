@@ -2,6 +2,7 @@ package org.emoflon.gips.core;
 
 import java.time.Duration;
 
+import org.emoflon.gips.core.api.TimeoutException;
 import org.emoflon.gips.core.milp.SolverConfig;
 
 /**
@@ -75,7 +76,8 @@ public class GipsConfig {
 	/**
 	 * Limits the time allowed to build the (M)ILP problem. <br>
 	 * If the transformation exceeds this duration, the process is aborted and
-	 * throws an exception. A value of {@code 0} or less disables the timeout.
+	 * throws a {@link TimeoutException}.<br>
+	 * A value of {@code 0} or less disables the timeout.
 	 * </p>
 	 * Not to be confused with {@link SolverConfig#setTimeLimit(double)}
 	 *
@@ -84,6 +86,20 @@ public class GipsConfig {
 	 */
 	public void setBuildTimeLimit(Duration buildTimeLimit) {
 		this.buildTimeLimit = buildTimeLimit == null ? Duration.ZERO : buildTimeLimit;
+	}
+
+	/**
+	 * Limits the time allowed to build the (M)ILP problem. <br>
+	 * If the transformation exceeds this duration, the process is aborted and
+	 * throws a {@link TimeoutException}.<br>
+	 * A value of {@code 0} or less disables the timeout.
+	 * </p>
+	 * Not to be confused with {@link SolverConfig#setTimeLimit(double)}
+	 *
+	 * @param seconds the upper time bound in seconds.
+	 */
+	public void setBuildTimeLimit(long seconds) {
+		this.buildTimeLimit = seconds <= 0 ? Duration.ZERO : Duration.ofSeconds(seconds);
 	}
 
 }

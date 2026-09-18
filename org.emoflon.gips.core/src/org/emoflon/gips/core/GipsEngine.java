@@ -105,7 +105,7 @@ public abstract class GipsEngine {
 	 *                          locally by worker threads, allowing them to
 	 *                          terminate <i>immediately and cleanly</i>.
 	 */
-	protected void checkForTaskTimeout() throws TimeoutException {
+	public void checkForTaskTimeout() throws TimeoutException {
 		if (cancelCurrentTask.get())
 			throw new TimeoutException();
 	}

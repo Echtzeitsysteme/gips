@@ -80,13 +80,17 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 	def String getContextParameter() {
 		return '''final «getContextParameterType()» context'''
 	}
+	
+	def String getCallContextParameter(){
+		return '''context'''
+	}
 
 	def String getParametersForVoidBuilder() {
 		return '''final List<Term> terms, «getContextParameter()»'''
 	}
 
 	def String getCallParametersForVoidBuilder() {
-		return '''terms, context'''
+		return '''terms, «getCallContextParameter»'''
 	}
 
 	def String generateVariableAccess(VariableReference varRef) {

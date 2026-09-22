@@ -137,6 +137,12 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 	def String getCallParametersForConstants(Collection<Constant> constants) {
 		return '''«FOR constant : constants SEPARATOR ', '»«getConstantName(constant)»«ENDFOR»'''
 	}
+	
+	def String buildParameterList(String... elements){
+		val filtered = elements.filter[it !== null && !it.blank]
+		val result = filtered.join(", ")
+		return result
+	}
 
 	def String getCallConstantCalculator(Constant constant) {
 		return '''calculate«constant.name.toFirstUpper»(context)'''
@@ -209,7 +215,7 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		val method = '''
-			protected double «methodName»(«getContextParameter()»«IF !getConstants().empty», «ENDIF»«getParametersForConstants(getConstants())») {
+			protected double «methodName»(«buildParameterList(getContextParameter(),getParametersForConstants(getConstants()))») {
 				return «generateConstantExpression(expr)»;
 			}
 		'''
@@ -221,7 +227,7 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 		val methodName = '''builder_«builderMethods.size»'''
 		builderMethods.put(expr, methodName)
 		val method = '''
-			protected double «methodName»(«getContextParameter()»«IF !getConstants().empty», «ENDIF»«getParametersForConstants(getConstants())») {
+			protected double «methodName»(«buildParameterList(getContextParameter(),getParametersForConstants(getConstants()))») {
 				return «generateConstantExpression(expr)»;
 			}
 		'''
@@ -239,7 +245,7 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 		val sumExpression = expr.setExpression.setReduce as SetSummation
 
 		val builderMethodName = '''builder_«builderMethods.size»'''
-		val instruction = '''«builderMethodName»(«callParametersForVoidBuilder»«IF !getConstants().empty», «ENDIF»«getCallParametersForConstants(getConstants())»);'''
+		val instruction = '''«builderMethodName»(«buildParameterList(getCallParametersForVoidBuilder(), getCallParametersForConstants(getConstants()))»);'''
 		methodCalls.add(instruction)
 
 		builderMethods.put(expr, builderMethodName)
@@ -259,7 +265,7 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 		val variable = varRefs.iterator.next
 
 		val method = '''
-			protected void «builderMethodName»(«parametersForVoidBuilder»«IF !getConstants().empty», «ENDIF»«getParametersForConstants(getConstants())») {
+			protected void «builderMethodName»(«buildParameterList(getParametersForVoidBuilder(), getParametersForConstants(getConstants()))») {
 				«generateValueAccess(expr)»
 				«IF expr.setExpression.setOperation !== null»«generateConstantExpression(expr.setExpression.setOperation)»«ENDIF»
 				.forEach(elt -> {
@@ -290,7 +296,7 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 		val sumExpression = expr.setExpression.setReduce as SetSummation
 
 		val builderMethodName = '''builder_«builderMethods.size»'''
-		val instruction = '''«builderMethodName»(«callParametersForVoidBuilder»«IF !getConstants().empty», «ENDIF»«getCallParametersForConstants(getConstants())»);'''
+		val instruction = '''«builderMethodName»(«buildParameterList(getCallParametersForVoidBuilder(), getCallParametersForConstants(getConstants()))»);'''
 		methodCalls.add(instruction)
 
 		builderMethods.put(expr, builderMethodName)
@@ -310,7 +316,7 @@ abstract class ProblemGeneratorTemplate<CONTEXT extends EObject> extends ClassGe
 		val variable = varRefs.iterator.next
 
 		val method = '''
-			protected void «builderMethodName»(«parametersForVoidBuilder»«IF !getConstants().empty», «ENDIF»«getParametersForConstants(getConstants())») {
+			protected void «builderMethodName»(«buildParameterList(getParametersForVoidBuilder(), getParametersForConstants(getConstants()))») {
 				«generateValueAccess(expr, false)»
 				«IF expr.setExpression.setOperation !== null»«generateConstantExpression(expr.setExpression.setOperation)»«ENDIF»
 				.forEach(elt -> {

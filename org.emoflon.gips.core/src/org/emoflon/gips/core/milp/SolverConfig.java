@@ -84,6 +84,15 @@ public class SolverConfig {
 		return timeLimit;
 	}
 
+	/**
+	 * Sets the maximum execution time limit for the solver. This value is passed
+	 * directly to the underlying solver (e.g., Gurobi's {@code TimeLimit}
+	 * parameter). <br>
+	 * To <b>enable / disable</b> the time limit use
+	 * {@link #setEnableTimeLimit(boolean)}
+	 * 
+	 * @param newValue the maximum solving time allowed. Must be greater than 0.
+	 */
 	public void setTimeLimit(double newValue) {
 		if (newValue <= 0)
 			throw new IllegalArgumentException("Given new time limit is smaller or equal to 0.");

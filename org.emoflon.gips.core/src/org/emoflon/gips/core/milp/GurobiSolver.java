@@ -515,6 +515,8 @@ public class GurobiSolver extends Solver {
 
 		// For each linear function
 		nestFunc.linearFunctions().forEach(lf -> {
+			engine.checkForTaskTimeout();
+
 			final GRBLinExpr expr = new GRBLinExpr();
 			// Linear function contains terms
 			lf.linearFunction().terms().forEach(t -> {
@@ -581,6 +583,8 @@ public class GurobiSolver extends Solver {
 		// Have to use an iterator to be able to increment the counter
 		final Iterator<Constraint> cnstrsIt = constraints.iterator();
 		while (cnstrsIt.hasNext()) {
+			engine.checkForTaskTimeout();
+
 			final Constraint curr = cnstrsIt.next();
 
 			if (curr == null) {
@@ -641,6 +645,8 @@ public class GurobiSolver extends Solver {
 		// Have to use an iterator to be able to increment the counter
 		final Iterator<Constraint> cnstrsIt = constraints.iterator();
 		while (cnstrsIt.hasNext()) {
+			engine.checkForTaskTimeout();
+
 			final Constraint curr = cnstrsIt.next();
 
 			if (curr == null) {

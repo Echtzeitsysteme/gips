@@ -25,8 +25,10 @@ public abstract class GipsTypeLinearFunction<ENGINE extends GipsEngine, CONTEXT 
 		terms = Collections.synchronizedList(new LinkedList<>());
 		constantTerms = Collections.synchronizedList(new LinkedList<>());
 
-		StreamUtils.toStream(indexer.getObjectsOfType(type), parallel)
-				.forEach(context -> buildTerms((CONTEXT) context));
+		StreamUtils.toStream(indexer.getObjectsOfType(type), parallel).forEach(context -> {
+			engine.checkForTaskTimeout();
+			buildTerms((CONTEXT) context);
+		});
 
 		milpLinearFunction = new LinearFunction(terms, constantTerms);
 	}

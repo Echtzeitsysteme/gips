@@ -57,7 +57,8 @@ abstract class ConstraintTemplate<CONTEXT extends Constraint> extends ProblemGen
 						"Access to multiple different variables in the same product is forbidden.");
 
 				val builderMethodName = createBuilderMethod(expr, methodCalls)
-				val instruction = '''terms.add(new Term(«generateVariableAccess(variable.iterator.next)», «builderMethodName»(context«IF !getConstants().empty», «ENDIF»«getCallParametersForConstants(getConstants())»)));'''
+				
+				val instruction = '''terms.add(new Term(«generateVariableAccess(variable.iterator.next)», «builderMethodName»(«buildParameterList(getCallContextParameter(), getCallParametersForConstants(getConstants()))»)));'''
 				methodCalls.add(instruction)
 			}
 		} else if(expr instanceof ArithmeticUnaryExpression) {
@@ -67,7 +68,7 @@ abstract class ConstraintTemplate<CONTEXT extends Constraint> extends ProblemGen
 					"Access to multiple different variables in the same product is forbidden.");
 
 			val builderMethodName = createBuilderMethod(expr, methodCalls)
-			val instruction = '''terms.add(new Term(«generateVariableAccess(variable.iterator.next)», «builderMethodName»(context«IF !getConstants().empty», «ENDIF»«getCallParametersForConstants(getConstants())»)));'''
+			val instruction = '''terms.add(new Term(«generateVariableAccess(variable.iterator.next)», «builderMethodName»(«buildParameterList(getCallContextParameter(), getCallParametersForConstants(getConstants()))»)));'''
 			methodCalls.add(instruction)
 		} else if(expr instanceof ConstantReference) {
 			createBuilderMethod(expr, methodCalls)

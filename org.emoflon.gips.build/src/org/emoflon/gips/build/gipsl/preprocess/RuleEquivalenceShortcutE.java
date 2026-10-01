@@ -70,10 +70,12 @@ public class RuleEquivalenceShortcutE implements PreprocessorRule {
 				// Define S
 				GipsHelpVariables helperVariable = factory.createGipsHelpVariables();
 				GipsConstraint constraint = GipslScopeContextUtil.getContainer(expression, GipsConstraintImpl.class);
-				String varName = String.format("_SUBSTITUTION_PLACEHOLDER_%d", constraint.getHelpVariables().size());
+				String varName = String.format("_Substitution_%d", constraint.getHelpVariables().size());
 
 				helperVariable.setName(varName);
 				helperVariable.setType(EcorePackage.Literals.EBOOLEAN);
+
+				// TODO: Changes state of original model and should be avoided
 				constraint.getHelpVariables().add(helperVariable);
 
 				// Use S instead of X
@@ -91,6 +93,8 @@ public class RuleEquivalenceShortcutE implements PreprocessorRule {
 				longSide.add(helperExpression);
 
 				// Now add S == 1 <-> X == 0
+				// which can be linearized as:
+				// (1-S) <= X & X <= (1-S) * M
 
 				// S == 1
 				GipsRelationalExpression subEquals1 = factory.createGipsRelationalExpression();
@@ -106,7 +110,7 @@ public class RuleEquivalenceShortcutE implements PreprocessorRule {
 
 				// S == 1 <-> X == 0
 				GipsBooleanImplication implication = factory.createGipsBooleanImplication();
-				implication.setOperator(ImplicationOperator.EQUIVALENCE);
+				implication.setOperator(ImplicationOperator.SC_EQUIVALENCE);
 				implication.setLeft(subEquals1);
 				implication.setRight(xEquals0);
 

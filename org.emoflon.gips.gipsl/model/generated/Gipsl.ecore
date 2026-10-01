@@ -66,7 +66,6 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EDataType"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="interval" eType="#//GipsInterval"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bound" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -75,6 +74,7 @@
         eType="#//GipsMappingVariable" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsMappingVariable" eSuperTypes="#//GipsVariable">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bound" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameter" eType="ecore:EClass platform:/resource/org.emoflon.ibex.gt.editor/model/generated/GT.ecore#//EditorParameter"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsTypeExtension">
@@ -83,8 +83,10 @@
         eType="#//GipsTypeExtensionVariable" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GipsTypeExtensionVariable" eSuperTypes="#//GipsVariable">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bound" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="attribute" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GipsHelpVariables" eSuperTypes="#//GipsVariable"/>
   <eClassifiers xsi:type="ecore:EClass" name="GipsInterval">
     <eStructuralFeatures xsi:type="ecore:EReference" name="lowerBound" eType="#//GipsArithmeticLiteral"
         containment="true"/>
@@ -106,6 +108,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="GipsConstraint">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isLocal" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="helpVariables" upperBound="-1"
+        eType="#//GipsHelpVariables" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="constants" upperBound="-1"
         eType="#//GipsConstant" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//GipsBooleanExpression"

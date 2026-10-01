@@ -267,7 +267,7 @@ class GipslFormatter extends GTFormatter implements IFormatter2 {
 		gipsConstraint.regionFor.keyword(gipsConstraintAccess.leftCurlyBracketKeyword_2).prepend[oneSpace]
 
 		val body = gipsConstraint.regionFor.keywordPairs(gipsConstraintAccess.leftCurlyBracketKeyword_2,
-			gipsConstraintAccess.rightCurlyBracketKeyword_5)
+			gipsConstraintAccess.rightCurlyBracketKeyword_6)
 		if(body.size > 0)
 			body.get(0).interior[indent]
 

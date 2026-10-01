@@ -10,6 +10,7 @@ import org.emoflon.gips.gipsl.special.pattern.EquivalenceShortcutA;
 import org.emoflon.gips.gipsl.special.pattern.EquivalenceShortcutB;
 import org.emoflon.gips.gipsl.special.pattern.EquivalenceShortcutC;
 import org.emoflon.gips.gipsl.special.pattern.EquivalenceShortcutD;
+import org.emoflon.gips.gipsl.special.pattern.EquivalenceShortcutE;
 import org.emoflon.gips.gipsl.special.pattern.ImplicationShortcutA;
 
 public class GipslBooleanImplicationValidator {
@@ -19,7 +20,7 @@ public class GipslBooleanImplicationValidator {
 
 	private final static PatternMatcher[] IMPLICATION_SHORTCUT_PATTERNS = new PatternMatcher[] {
 			new EquivalenceShortcutA(), new EquivalenceShortcutB(), new EquivalenceShortcutC(),
-			new EquivalenceShortcutD(), new ImplicationShortcutA() };
+			new EquivalenceShortcutD(), new EquivalenceShortcutE(), new ImplicationShortcutA() };
 
 	public static void checkBooleanImplicationShortcut(GipsBooleanImplication implication) {
 		if (GipslValidator.DISABLE_VALIDATOR)

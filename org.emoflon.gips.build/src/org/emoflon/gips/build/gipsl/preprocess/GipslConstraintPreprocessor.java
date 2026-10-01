@@ -16,34 +16,37 @@ import org.emoflon.gips.gipsl.gipsl.GipsRelationalExpression;
 import org.emoflon.gips.gipsl.gipsl.GipslFactory;
 import org.emoflon.gips.gipsl.gipsl.GipslPackage;
 
-public class GipslPreprocessor {
+public class GipslConstraintPreprocessor {
 
-	private final static PreprocessorRule[] firstPassRules = new PreprocessorRule[] { //
-			new RuleImplicitBooleans(), //
-			new RuleBinaryValueNegation() //
-	};
-
-	private final static PreprocessorRule[] secondPassRules = new PreprocessorRule[] { //
-			new RuleEquivalenceShortcutA(), //
-			new RuleEquivalenceShortcutB(), //
-			new RuleEquivalenceShortcutC(), //
-			new RuleEquivalenceShortcutD(), //
-			new RuleImplicationShortcutA() //
-	};
-
-	private final static PreprocessorRule[][] ruleOrder = new PreprocessorRule[][] { //
-			firstPassRules, //
-			secondPassRules //
-	};
+	private final PreprocessorRule[][] preprocessorRules;
 
 	private final GipslFactory factory;
 
-	public GipslPreprocessor() {
+	public GipslConstraintPreprocessor() {
 		this(GipslPackage.eINSTANCE.getGipslFactory());
 	}
 
-	public GipslPreprocessor(GipslFactory factory) {
+	public GipslConstraintPreprocessor(GipslFactory factory) {
 		this.factory = Objects.requireNonNull(factory, "factory");
+
+		PreprocessorRule[] firstPassRules = new PreprocessorRule[] { //
+				new RuleImplicitBooleans(), //
+				new RuleBinaryValueNegation() //
+		};
+
+		PreprocessorRule[] secondPassRules = new PreprocessorRule[] { //
+				new RuleEquivalenceShortcutA(), //
+				new RuleEquivalenceShortcutB(), //
+				new RuleEquivalenceShortcutC(), //
+				new RuleEquivalenceShortcutD(), //
+				new RuleEquivalenceShortcutE(), //
+				new RuleImplicationShortcutA() //
+		};
+
+		preprocessorRules = new PreprocessorRule[][] { //
+				firstPassRules, //
+				secondPassRules //
+		};
 	}
 
 	public GipsBooleanExpression preprocess(GipsConstraint constraint) {
@@ -52,18 +55,18 @@ public class GipslPreprocessor {
 		// This part can be used for multi-pass rule application (whenever this may
 		// becomes relevant in the future). It is commented out because, at present, no
 		// rule requires multiple passes.
-//		GipsBooleanExpression currentPass = tryToApplyRules(expression);
-//		GipsBooleanExpression previousPass = null;
-//
-//		while (currentPass != null) {
-//			previousPass = currentPass;
-//			currentPass = tryToApplyRules(currentPass);
-//		}
-//
-//		return previousPass != null ? previousPass : expression;
+		GipsBooleanExpression currentPass = tryToApplyRules(expression);
+		GipsBooleanExpression previousPass = null;
 
-		GipsBooleanExpression newExpression = tryToApplyRules(expression);
-		return newExpression != null ? newExpression : expression;
+		while (currentPass != null) {
+			previousPass = currentPass;
+			currentPass = tryToApplyRules(currentPass);
+		}
+
+		return previousPass != null ? previousPass : expression;
+
+//		GipsBooleanExpression newExpression = tryToApplyRules(expression);
+//		return newExpression != null ? newExpression : expression;
 	}
 
 	private GipsBooleanExpression tryToApplyRules(GipsBooleanExpression expression) {
@@ -147,7 +150,7 @@ public class GipslPreprocessor {
 
 	private GipsBooleanExpression tryAllRules(GipsBooleanExpression expression) {
 		GipsBooleanExpression currentExpression = expression;
-		for (var ruleSet : ruleOrder) {
+		for (var ruleSet : preprocessorRules) {
 			for (var rule : ruleSet) {
 				var newExpression = rule.tryRule(factory, currentExpression);
 				if (newExpression != null) {

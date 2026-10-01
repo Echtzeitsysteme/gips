@@ -130,6 +130,8 @@ public class GipslValidatorUtil {
 	public static final String FUNCTION_EVAL_NOT_NUMBER_MESSAGE = "Linear function does not evaluate to an integer, double or boolean.";
 
 	// Other errors for types
+	public static final String INTERNAL_USE_ERROR = "Internal use only. Do not use.";
+
 	public static final String CONSTANT_NAME_UNIQUE = "Constant name is not unique in the current scope.";
 	public static final String CONSTANT_NOT_ASSIGNED = "Constant has not been assigned any value.";
 	public static final String CONSTANT_CONTAINS_CONSTANT = "Constant may not contain constant references.";

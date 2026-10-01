@@ -29,6 +29,7 @@ import org.emoflon.gips.gipsl.gipsl.GipsBooleanImplication;
 import org.emoflon.gips.gipsl.gipsl.GipsConfig;
 import org.emoflon.gips.gipsl.gipsl.GipsConstant;
 import org.emoflon.gips.gipsl.gipsl.GipsConstraint;
+import org.emoflon.gips.gipsl.gipsl.GipsHelpVariables;
 import org.emoflon.gips.gipsl.gipsl.GipsInterval;
 import org.emoflon.gips.gipsl.gipsl.GipsJoinAllOperation;
 import org.emoflon.gips.gipsl.gipsl.GipsJoinBySelectionOperation;
@@ -602,6 +603,11 @@ public class GipslValidator extends AbstractGipslValidator {
 	@Check
 	public void checkRelationalExpressionSolverSupport(final GipsRelationalExpression expr) {
 		GipslOperatorValidator.checkRelationalExpression(expr);
+	}
+
+	@Check
+	public void checkNoInternalUseOnly(final GipsHelpVariables variable) {
+		GipslValidator.err(GipslValidatorUtil.INTERNAL_USE_ERROR, variable, null);
 	}
 
 	/*

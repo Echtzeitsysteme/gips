@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.Keyword;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
@@ -34,6 +35,8 @@ import org.emoflon.gips.gipsl.ui.nature.GIPSNature;
  * on how to customize the content assistant.
  */
 public class GipslProposalProvider extends AbstractGipslProposalProvider {
+
+	private static final String IGNORE_KEYWORD = "___INTERNAL_ONLY";
 
 	@Override
 	public void completePackage_Name(EObject model, Assignment assignment, ContentAssistContext context,
@@ -194,5 +197,41 @@ public class GipslProposalProvider extends AbstractGipslProposalProvider {
 			}
 		}
 
+	}
+
+	@Override
+	public void completeGipsHelpVariables_Name(EObject model, Assignment assignment, ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor) {
+		// do not show
+	}
+
+	@Override
+	public void completeGipsHelpVariables_Type(EObject model, Assignment assignment, ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor) {
+		// do not show
+	}
+
+	@Override
+	public void completeGipsHelpVariables_Interval(EObject model, Assignment assignment, ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor) {
+		// do not show
+	}
+
+	@Override
+	public void completeGipsConstraint_HelpVariables(EObject model, Assignment assignment, ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor) {
+		// do not show
+	}
+
+	@Override
+	public void completeKeyword(Keyword keyword, ContentAssistContext contentAssistContext,
+			ICompletionProposalAcceptor acceptor) {
+
+		if (keyword != null && keyword.getValue() != null) {
+			if (keyword.getValue().startsWith(IGNORE_KEYWORD))
+				return;
+		}
+
+		super.completeKeyword(keyword, contentAssistContext, acceptor);
 	}
 }

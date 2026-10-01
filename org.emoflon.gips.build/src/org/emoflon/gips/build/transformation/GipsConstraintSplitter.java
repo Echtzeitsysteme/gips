@@ -6,7 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.emoflon.gips.build.gipsl.preprocess.GipslPreprocessor;
+import org.emoflon.gips.build.gipsl.preprocess.GipslConstraintPreprocessor;
 import org.emoflon.gips.build.transformation.helper.GipsTransformationData;
 import org.emoflon.gips.gipsl.gipsl.GipsArithmeticExpression;
 import org.emoflon.gips.gipsl.gipsl.GipsBooleanBracket;
@@ -41,7 +41,7 @@ public class GipsConstraintSplitter {
 			throw new NullPointerException("Constraint can not be split, since its boolean expression is empty!");
 		}
 
-		GipslPreprocessor specialExpressionTransformer = new GipslPreprocessor();
+		GipslConstraintPreprocessor specialExpressionTransformer = new GipslConstraintPreprocessor();
 		GipsBooleanExpression transformedExpression = specialExpressionTransformer.preprocess(constraint);
 
 		StringBuilder expressionBuilder = new StringBuilder();

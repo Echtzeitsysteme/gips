@@ -54,7 +54,7 @@ enum PresolveType:
 
 
 GipsVariable :
-	GipsMappingVariable | GipsTypeExtensionVariable
+	GipsMappingVariable | GipsTypeExtensionVariable | GipsHelpVariables
 ;
 
 GipsMapping :
@@ -81,6 +81,11 @@ GipsTypeExtensionVariable :
 	(bound ?= 'bind' 'to' attribute=[ecore::EAttribute])?
 ;
 
+GipsHelpVariables:
+	'___INTERNAL_ONLY_VAR___' name=ID ':' type=[ecore::EDataType]
+	(interval=GipsInterval)?
+;
+
 GipsInterval:
 	'[' 
 		( (lowerBound=GipsArithmeticLiteral) | lowerInfinity?='*' )
@@ -99,6 +104,7 @@ GipsConstantReference :
 
 GipsConstraint : 
 	'constraint' (isLocal?='with' context=[ecore::EObject|ID])? '{'
+		(helpVariables += GipsHelpVariables)*
 		(constants += GipsConstant)*
 		expression = GipsBooleanExpression
 	'}'

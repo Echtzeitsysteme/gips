@@ -65,7 +65,7 @@ public class RuleEquivalenceShortcutB implements PreprocessorRule {
 
 			// B + C + ... + (1-n) <= A
 			{
-				List<GipsArithmeticExpression> summands = new ArrayList<>(conjuncts.size() + 2);
+				List<GipsArithmeticExpression> summands = new ArrayList<>(pattern.getOtherNodes().size() + 1);
 
 				for (var element : pattern.getOtherNodes())
 					summands.add(EcoreUtil.copy(element));
@@ -87,7 +87,7 @@ public class RuleEquivalenceShortcutB implements PreprocessorRule {
 			// n * A <= B + C + ...
 			{
 				// B + C + ...
-				List<GipsArithmeticExpression> summands = new ArrayList<>(conjuncts.size());
+				List<GipsArithmeticExpression> summands = new ArrayList<>(pattern.getOtherNodes().size());
 				for (var element : pattern.getOtherNodes())
 					summands.add(EcoreUtil.copy(element));
 

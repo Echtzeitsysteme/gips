@@ -83,6 +83,7 @@ public class GipsToIntermediate {
 	final protected TransformerFactory transformationFactory;
 	final private GipsTracer gipsl2gipsTrace = new GipsTracer();
 	protected int constraintCounter = 0;
+	protected int helpVariableCounter = 0;
 
 	public GipsToIntermediate(final EditorGTFile gipslFile) {
 		data = new GipsTransformationData(factory.createGipsIntermediateModel(), gipslFile);
@@ -443,8 +444,24 @@ public class GipsToIntermediate {
 
 			GipsConstraintSplitter splitter = new GipsConstraintSplitter(data, eConstraint);
 			Collection<GipsAnnotatedConstraint> eConstraints = splitter.split();
+
 			eConstraints.stream().flatMap(eC -> eC.result().values().stream()).forEach(sc -> {
 				constant2constant.forEach((eConstant, constant) -> data.addConstant(sc, eConstant, constant));
+			});
+
+			// initialize helper variables
+			eConstraint.getHelpVariables().stream().forEach(eVariable -> {
+				Variable variable = factory.createVariable();
+
+				variable.setType(GipsTransformationUtils.typeToVariableType(eVariable.getType()));
+				String name = String.format("%s_%d", eVariable.getName(), helpVariableCounter++);
+				variable.setName(name);
+				variable.setLowerBound(GipsTransformationUtils.getLowerBound(eVariable, variable.getType()));
+				variable.setUpperBound(GipsTransformationUtils.getUpperBound(eVariable, variable.getType()));
+
+				data.model().getVariables().add(variable);
+				data.eVariable2Variable().put(eVariable, variable);
+				gipsl2gipsTrace.map(eVariable, variable);
 			});
 
 			for (GipsAnnotatedConstraint eSubConstraint : eConstraints) {
@@ -567,6 +584,7 @@ public class GipsToIntermediate {
 				}
 
 			}
+
 		}
 	}
 

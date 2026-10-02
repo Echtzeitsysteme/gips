@@ -436,6 +436,7 @@ public class GipsToIntermediate {
 					constant2constant.put(eConstant.getName(), constant);
 				}
 			}
+
 			// Add global constants to local scope
 			if (data.eContext2Constants().get(data.gipslFile()) != null) {
 				data.eContext2Constants().get(data.gipslFile())
@@ -450,6 +451,7 @@ public class GipsToIntermediate {
 			});
 
 			// initialize helper variables
+			Collection<Variable> helperVariables = new HashSet<>();
 			eConstraint.getHelpVariables().stream().forEach(eVariable -> {
 				Variable variable = factory.createVariable();
 
@@ -462,6 +464,7 @@ public class GipsToIntermediate {
 				data.model().getVariables().add(variable);
 				data.eVariable2Variable().put(eVariable, variable);
 				gipsl2gipsTrace.map(eVariable, variable);
+				helperVariables.add(variable);
 			});
 
 			for (GipsAnnotatedConstraint eSubConstraint : eConstraints) {
@@ -471,6 +474,8 @@ public class GipsToIntermediate {
 					data.model().getConstraints().add(disjunction);
 					gipsl2gipsTrace.map(eConstraint, disjunction);
 					constraintCounter++;
+
+					disjunction.getHelperVariables().addAll(helperVariables);
 
 					Map<GipsConstraint, Collection<Constraint>> transformed = new HashMap<>();
 					Map<GipsConstraint, Variable> constraint2Symbolic = new HashMap<>();
@@ -570,11 +575,15 @@ public class GipsToIntermediate {
 				case LITERAL -> {
 					Collection<Constraint> constraints = transformConstraint(
 							eSubConstraint.result().values().iterator().next(), false, null);
+					constraints.forEach(c -> c.getHelperVariables().addAll(helperVariables));
+
 					gipsl2gipsTrace.mapOneToMany(eConstraint, constraints);
 				}
 				case NEGATED_LITERAL -> {
 					Collection<Constraint> constraints = transformConstraint(
 							eSubConstraint.result().values().iterator().next(), true, null);
+					constraints.forEach(c -> c.getHelperVariables().addAll(helperVariables));
+
 					gipsl2gipsTrace.mapOneToMany(eConstraint, constraints);
 				}
 				default -> {

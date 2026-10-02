@@ -93,7 +93,7 @@ public class RuleEquivalenceShortcutE implements PreprocessorRule {
 				longSide.add(helperExpression);
 
 				// Now add S == 1 <-> X == 0
-				// which can be linearized as:
+				// which can be simplified as:
 				// (1-S) <= X & X <= (1-S) * M
 
 				// S == 1

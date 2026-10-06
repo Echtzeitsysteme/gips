@@ -4,6 +4,7 @@ import org.emoflon.gips.build.generator.TemplateData
 import org.emoflon.gips.intermediate.GipsIntermediate.Constant
 import org.emoflon.gips.intermediate.GipsIntermediate.Constraint
 import org.emoflon.gips.intermediate.GipsIntermediate.VariableReference
+import org.emoflon.gips.intermediate.GipsIntermediate.ContextReference
 
 class GlobalConstraintTemplate extends ConstraintTemplate<Constraint> {
 
@@ -43,10 +44,17 @@ class GlobalConstraintTemplate extends ConstraintTemplate<Constraint> {
 
 	override generateVariableAccess(VariableReference varRef) {
 		if(!isMappingVariable(varRef)) {
-			return '''engine.getNonMappingVariable(context, "«varRef.variable.name»")'''
+			return '''engine.getNonMappingVariable(constraint, "«varRef.variable.name»")'''
 		} else {
 			throw new UnsupportedOperationException("Mapping context access is not possible within a global context.")
 		}
+	}
+	
+	override String generateIterator(ContextReference reference) {
+		var getter = super.generateIterator(reference);
+		if(getter == 'context') // context -> constraint (for global constraints)
+			getter = 'constraint'
+		return getter;
 	}
 
 	override getCallConstantCalculator(Constant constant) {
@@ -58,6 +66,10 @@ class GlobalConstraintTemplate extends ConstraintTemplate<Constraint> {
 	}
 
 	override String getContextParameter() {
+		return ""
+	}
+	
+	override String getCallContextParameter(){
 		return ""
 	}
 

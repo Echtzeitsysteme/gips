@@ -25,7 +25,11 @@ public abstract class GipsPatternLinearFunction<ENGINE extends GipsEngine, M ext
 	public void buildLinearFunction(final boolean parallel) {
 		terms = Collections.synchronizedList(new LinkedList<>());
 		constantTerms = Collections.synchronizedList(new LinkedList<>());
-		StreamUtils.toStream(pattern.findMatches(false), parallel).forEach(context -> buildTerms(context));
+
+		StreamUtils.toStream(pattern.findMatches(false), parallel).forEach(context -> {
+			engine.checkForTaskTimeout();
+			buildTerms(context);
+		});
 
 		milpLinearFunction = new LinearFunction(terms, constantTerms);
 	}

@@ -8,8 +8,13 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.emoflon.gips.core.GipsConstraint.RemovedConstraintsStats;
+import org.emoflon.gips.core.api.TimeoutException;
 import org.emoflon.gips.core.milp.ConstraintSorter;
 import org.emoflon.gips.core.milp.ExecutionMetrics;
 import org.emoflon.gips.core.milp.Solver;
@@ -34,13 +39,30 @@ public abstract class GipsEngine {
 	final protected Map<String, GipsConstraint<?, ?, ?>> constraints = Collections.synchronizedMap(new HashMap<>());
 	final protected Map<String, GipsLinearFunction<?, ?, ?>> functions = Collections.synchronizedMap(new HashMap<>());
 	final protected Map<String, GipsTypeExtender<?, ?>> typeExtensions = Collections.synchronizedMap(new HashMap<>());
-	protected GipsObjective objective;
+	protected GipsObjective<?> objective;
 	protected Solver solver;
 
 	protected ConstraintSorter constraintSorter;
 
 	protected EclipseIntegration eclipseIntegration;
 	protected GipsTracer tracer;
+
+	/**
+	 * Used to cancel internal tasks, like
+	 * {@link #buildProblemInternal(boolean, boolean)}
+	 */
+
+	/**
+	 * A thread-safe flag indicating whether running process should be prematurely
+	 * cancelled or aborted.
+	 * <p>
+	 * Currently, the flag is used in {@link #buildProblem}. It is set to
+	 * {@code false} at the beginning of each build and can be set to {@code true},
+	 * if a condition, such as a user-defined time limit, is met.
+	 *
+	 * @see #checkForTaskTimeout()
+	 */
+	private final AtomicBoolean cancelCurrentTask = new AtomicBoolean(false);
 
 	private final Observer observer = new Observer();
 	private RemovedConstraintsStats removedConstraintsStats;
@@ -72,8 +94,30 @@ public abstract class GipsEngine {
 	protected abstract void updateConstants();
 
 	/**
+	 * Checks if the current task must be stopped. If so, the method throws an
+	 * unchecked exception.
+	 * <p>
+	 * This method must be invoked periodically to ensure that all parallel tasks
+	 * respond promptly to a timeout.
+	 * 
+	 * @throws TimeoutException If the task must be stopped due to a timeout. This
+	 *                          is an unchecked exception and should not be caught
+	 *                          locally by worker threads, allowing them to
+	 *                          terminate <i>immediately and cleanly</i>.
+	 */
+	public void checkForTaskTimeout() throws TimeoutException {
+		if (cancelCurrentTask.get())
+			throw new TimeoutException();
+	}
+
+	/**
 	 * Builds the problem with time measurement included. This method does not
 	 * trigger an update of the pattern matcher and runs everything sequentially.
+	 * 
+	 * @throws TimeoutException if the build time exceeds the time limit configured
+	 *                          in {@link #getConfig()}
+	 * 
+	 * @see GipsConfig#setBuildTimeLimit(java.time.Duration)
 	 */
 	public void buildProblem() {
 		buildProblem(false, false);
@@ -86,26 +130,71 @@ public abstract class GipsEngine {
 	 * 
 	 * @param doUpdate If true, the pattern matcher will be updated before building
 	 *                 the problem.
+	 * @throws TimeoutException if the build time exceeds the time limit configured
+	 *                          in {@link #getConfig()}
+	 * 
+	 * @see GipsConfig#setBuildTimeLimit(java.time.Duration)
 	 */
 	public void buildProblem(final boolean doUpdate) {
 		buildProblem(doUpdate, false);
 	}
 
 	/**
-	 * Builds the problem with time measurement included. `doUpdate` defines if the
-	 * pattern matcher should be updated and `parallel` decides if the method runs
-	 * everything in parallel or sequentially.
+	 * Builds the (M)ILP problem.
+	 * <p>
+	 * During execution, execution times for various stages of the process are
+	 * recorded. These statistics can be retrieved after the method completes by
+	 * calling {@link #getLatestMetrics()}.
+	 * <p>
+	 * If a time limit is configured via {@link #getConfig()}, the execution time is
+	 * monitored. Exceeding this limit will cause the build process to abort on a
+	 * best-effort basis <b>as soon as possible</b> and throw a timeout exception.
+	 * However, certain steps are atomic and cannot be interrupted mid-execution,
+	 * for example the pattern matching. Once such a step is started, it will run to
+	 * completion before the timeout can be detected and enforced.
 	 * 
-	 * @param doUpdate If true, the pattern matcher will be updated before building
-	 *                 the problem.
-	 * @param parallel If true, the problem will be built in parallel.
+	 * @param doUpdate If {@code true}, the pattern matcher will be updated before
+	 *                 building the problem.
+	 * @param parallel If {@code true}, the problem will be built in parallel.
+	 * 
+	 * @throws TimeoutException If the build process takes longer than the time
+	 *                          limit configured in {@link #getConfig()}.
+	 * 
+	 * @see GipsConfig#setBuildTimeLimit(java.time.Duration)
+	 * @see #getLatestMetrics()
+	 * @see #getConfig()
 	 */
 	public void buildProblem(final boolean doUpdate, final boolean parallel) {
+		cancelCurrentTask.set(false); // reset cancel token
+
+		if (config.getBuildTimeLimit().isPositive()) {
+			ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+			// cancel the current task (build), if it exceeds the time limit.
+			scheduler.schedule(() -> cancelCurrentTask.set(true), //
+					config.getBuildTimeLimit().toMillis(), //
+					TimeUnit.MILLISECONDS //
+			);
+
+			try {
+				buildProblemInternal(doUpdate, parallel);
+			} finally {
+				scheduler.shutdownNow();
+			}
+		} else {
+			// no timeout, simple
+			buildProblemInternal(doUpdate, parallel);
+
+		}
+	}
+
+	protected void buildProblemInternal(final boolean doUpdate, final boolean parallel) {
 		observer.resetStage(Observer.STAGE_BUILD);
 		observer.singleMeasurement(Observer.STAGE_BUILD, "BUILD", () -> {
+			checkForTaskTimeout();
 			if (doUpdate)
 				observer.singleMeasurement(Observer.STAGE_BUILD, "PM", () -> update());
 
+			checkForTaskTimeout();
 			observer.singleMeasurement(Observer.STAGE_BUILD, "BUILD_GIPS", () -> {
 				// Reset validation log
 				validationLog = new GipsConstraintValidationLog();
@@ -123,6 +212,8 @@ public abstract class GipsEngine {
 				// (and also the dedicated tests for checking this!) are happy with it.
 
 				nonMappingVariables.clear();
+				checkForTaskTimeout();
+
 				StreamUtils.toStream(mappers.values(), parallel) //
 						.flatMap(mapper -> StreamUtils.toStream(mapper.getMappings().values(), parallel)) //
 						.filter(m -> m.hasAdditionalVariables()) //
@@ -133,20 +224,28 @@ public abstract class GipsEngine {
 								nonMappingVariables.put(m, variables);
 							}
 							variables.putAll(m.getAdditionalVariables());
+							checkForTaskTimeout();
 						});
 
-				StreamUtils.toStream(constraints.values(), parallel)
-						.forEach(constraint -> constraint.calcAdditionalVariables());
-				StreamUtils.toStream(typeExtensions.values(), parallel)
-						.forEach(typeExtension -> typeExtension.calculateExtensions());
+				StreamUtils.toStream(constraints.values(), parallel).forEach(constraint -> {
+					checkForTaskTimeout();
+					constraint.calcAdditionalVariables();
+				});
+				StreamUtils.toStream(typeExtensions.values(), parallel).forEach(typeExtension -> {
+					checkForTaskTimeout();
+					typeExtension.calculateExtensions();
+				});
 
 				updateConstants();
 
-				StreamUtils.toStream(constraints.values(), parallel)
-						.forEach(constraint -> constraint.buildConstraints(parallel));
+				StreamUtils.toStream(constraints.values(), parallel).forEach(constraint -> {
+					checkForTaskTimeout();
+					constraint.buildConstraints(parallel);
+				});
 
 				// Check if GIPS is configure to remove duplicate constraints
 				if (this.config.removeUselessConstraints()) {
+					checkForTaskTimeout();
 					this.removedConstraintsStats = removeUselessConstraints(config.printUselessConstraintsStats());
 				}
 
@@ -155,14 +254,17 @@ public abstract class GipsEngine {
 
 				// Sanity check for all variable names: there must not be two different
 				// variables with the same name.
+				checkForTaskTimeout();
 				checkVariableNameSanity();
 			});
 
+			checkForTaskTimeout();
 			observer.singleMeasurement(Observer.STAGE_BUILD, "BUILD_SOLVER", () -> {
 				solver.init();
 				solver.buildMILPProblem();
 			});
 
+			checkForTaskTimeout();
 			observer.singleMeasurement(Observer.STAGE_BUILD, "BUILD_TRACE", () -> {
 				buildTraceGraphAndSendToIDE();
 			});
@@ -305,6 +407,22 @@ public abstract class GipsEngine {
 		});
 	}
 
+	/**
+	 * Returns the execution metrics captured during the most recent execution of
+	 * {@link #buildProblem(boolean, boolean)} or {@link #solveProblem()}.
+	 * <p>
+	 * The metrics for {@link #buildProblem(boolean, boolean)} and
+	 * {@link #solveProblem()} are stored independently. However, their respective
+	 * data is overwritten whenever the corresponding method is executed again. To
+	 * preserve these metrics, they should be retrieved before the respective
+	 * process is called again.
+	 * 
+	 * @return A snapshot of the {@link ExecutionMetrics} containing the data from
+	 *         the latest execution.
+	 * 
+	 * @see #buildProblem(boolean, boolean)
+	 * @see #solveProblem()
+	 */
 	public ExecutionMetrics getLatestMetrics() {
 		return new ExecutionMetrics(observer.clone());
 	}
@@ -337,7 +455,7 @@ public abstract class GipsEngine {
 		return validationLog;
 	}
 
-	public GipsObjective getObjective() {
+	public GipsObjective<?> getObjective() {
 		return objective;
 	}
 
@@ -406,7 +524,7 @@ public abstract class GipsEngine {
 		typeExtensions.put(typeExtension.getName(), Objects.requireNonNull(typeExtension));
 	}
 
-	protected void setObjective(final GipsObjective objective) {
+	protected void setObjective(final GipsObjective<?> objective) {
 		this.objective = objective;
 	}
 

@@ -22,7 +22,12 @@ public abstract class GipsMappingLinearFunction<ENGINE extends GipsEngine, CONTE
 	public void buildLinearFunction(final boolean parallel) {
 		terms = Collections.synchronizedList(new LinkedList<>());
 		constantTerms = Collections.synchronizedList(new LinkedList<>());
-		StreamUtils.toStream(mapper.getMappings().values(), parallel).forEach(context -> buildTerms(context));
+
+		StreamUtils.toStream(mapper.getMappings().values(), parallel).forEach(context -> {
+			engine.checkForTaskTimeout();
+			buildTerms(context);
+		});
+
 		milpLinearFunction = new LinearFunction(terms, constantTerms);
 	}
 

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Gips::Build
 Bundle-SymbolicName: org.emoflon.gips.build;singleton:=true
-Bundle-Version: 1.5.0.qualifier
+Bundle-Version: 1.6.0.qualifier
 Automatic-Module-Name: org.emoflon.gips.build
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: org.emoflon.gips.intermediate;bundle-version="1.5.0",

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Gips::Eclipse
 Bundle-SymbolicName: org.emoflon.gips.eclipse;singleton:=true
 Bundle-Vendor: Real-Time Systems Lab - TU Darmstadt
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.6.0.qualifier
 Export-Package: org.emoflon.gips.eclipse,
  org.emoflon.gips.eclipse.annotation,
  org.emoflon.gips.eclipse.api,

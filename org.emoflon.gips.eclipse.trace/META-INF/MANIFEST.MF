@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %pluginName
+Bundle-Name: Gips::Eclipse::Trace
 Bundle-SymbolicName: org.emoflon.gips.eclipse.trace;singleton:=true
 Automatic-Module-Name: org.emoflon.gips.eclipse.trace
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.6.0.qualifier
 Bundle-ClassPath: .
-Bundle-Vendor: %providerName
+Bundle-Vendor: Real-Time Systems Lab - TU Darmstadt
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Export-Package: org.emoflon.gips.eclipse.trace,

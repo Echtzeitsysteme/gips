@@ -36,7 +36,7 @@
 	</target>
 	
 	<!--
-      This task triggers Eclipse's refresh for the update-site project.
+      This task triggers Eclipse's refresh for the update site project.
       This only works if the ant script is run in the JRE of Eclipse.
     -->
 	<target name="refresh" description="Refresh update-site project">

@@ -1,28 +1,35 @@
 cff-version: 1.2.0
-message: "If you use GIPS in your research, please cite it using these metadata."
-abstract: GIPS is an open-source framework for Graph-Based (M)ILP Problem Specification.
+title: Graph-Based (M)ILP Problem Specification Tool
+message: >-
+  If you use GIPS in your research, please cite it using
+  these metadata.
+type: software
 authors:
   - family-names: Ehmes
     given-names: Sebastian
-    orcid: https://orcid.org/0000-0001-8001-6827
+    orcid: 'https://orcid.org/0000-0001-8001-6827'
   - family-names: Kratz
     given-names: Maximilian
-    orcid: https://orcid.org/0000-0001-7396-7763
-title: Graph-Based (M)ILP Problem Specification Tool
-version: 1.5.0
-date-released: 2025-07-04
-repository-code: "https://github.com/Echtzeitsysteme/gips"
+    orcid: 'https://orcid.org/0000-0001-7396-7763'
+repository-code: 'https://github.com/Echtzeitsysteme/gips'
+url: 'https://gips.dev'
+abstract: >-
+  GIPS is an open-source framework for Graph-Based (M)ILP
+  Problem Specification.
 keywords:
-  - "virtual network embedding"
-  - "model-driven software engineering"
-  - simulation
-  - "eclipse modeling framework"
+  - model-driven software engineering
+  - eclipse modeling framework
   - pattern-matching
   - model
   - metamodel
-  - "integer linear programming"
-  - "mixed integer linear programming"
+  - integer linear programming
+  - mixed-integer linear programming
   - emoflon
-  - "graph transformation"
-  - "optimization"
-license: "GPL-3.0"
+  - graph transformation
+  - model-driven optimization
+  - high-level specification
+  - complex integrated optimization problems
+  - graph-based (m)ilp problem specification
+license: GPL-3.0
+version: 1.6.0
+date-released: '2025-10-07'

@@ -18,7 +18,7 @@ Require-Bundle: org.emoflon.gips.eclipse.cplexlp,
  org.eclipse.xtext.builder,
  org.eclipse.xtext.xbase.ui
 Import-Package: org.apache.log4j
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-25
 Export-Package: org.emoflon.gips.eclipse.cplexlp.ui.internal,
  org.emoflon.gips.eclipse.ui,
  org.emoflon.gips.eclipse.ui.contentassist,

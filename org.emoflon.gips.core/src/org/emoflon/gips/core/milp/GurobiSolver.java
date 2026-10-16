@@ -2,8 +2,6 @@ package org.emoflon.gips.core.milp;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -184,41 +182,20 @@ public class GurobiSolver extends Solver {
 	@Override
 	public void init() {
 		try {
-			// When running multiple instances in parallel,
-			// the last instance to finish might otherwise
-			// overwrite the default out and err streams with
-			// the Null stream of other instances
+			// When running multiple instances in parallel, the last instance to finish
+			// might otherwise overwrite some parameters.
 			synchronized (GurobiSolver.class) {
-				final var out = System.out;
-				final var err = System.err;
-				System.setOut(new PrintStream(OutputStream.nullOutputStream()));
-				System.setErr(new PrintStream(OutputStream.nullOutputStream()));
-				// Keep Gurobi init exception or error to throw it later
-				GRBException gurobiInitException = null;
-				Error gurobiInitError = null;
 				// TODO: Gurobi log output redirect from stdout to MILPSolverOutput
-				try {
-					env = new GRBEnv("Gurobi_MILP.log");
-				} catch (final GRBException e) {
-					gurobiInitException = e;
-				} catch (final Error e) {
-					gurobiInitError = e;
+				env = new GRBEnv(true);
+				if (env == null) {
+					throw new InternalError("Gurobi initialization failed.");
 				}
-				if (!config.isEnableOutput() && env != null) {
-					env.set(IntParam.OutputFlag, 0);
-					env.set(IntParam.LogToConsole, 0);
-					// Empty log file name for no log file
-					env.set(StringParam.LogFile, "");
-				}
-				System.setOut(out);
-				System.setErr(err);
-				// If an exception/error occurred during Gurobi initialization, throw it now
-				if (gurobiInitException != null) {
-					throw gurobiInitException;
-				}
-				if (gurobiInitError != null) {
-					throw gurobiInitError;
-				}
+				env.set(IntParam.OutputFlag, config.isEnableOutput() ? 1 : 0);
+				env.set(IntParam.LogToConsole, config.isEnableOutput() ? 1 : 0);
+				// Empty log file name for no log file
+				env.set(StringParam.LogFile, config.isEnableOutput() ? "Gurobi_MILP.log" : "");
+
+				env.start();
 			}
 
 			env.set(IntParam.Presolve, convertPresolve(config.getPresolve()));

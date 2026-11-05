@@ -272,45 +272,6 @@ public abstract class GipsEngine {
 	}
 
 	/**
-	 * Builds the problem. This method does trigger an update of the pattern matcher
-	 * and enables parallel execution.
-	 * 
-	 * @deprecated use {@link #buildProblem()}
-	 */
-	@Deprecated
-	public void buildProblemTimed() {
-		buildProblem(true, true);
-	}
-
-	/**
-	 * Builds the problem. This method does trigger an update of the pattern matcher
-	 * depending on the given input parameter and enables parallel execution.
-	 * 
-	 * @param doUpdate If true, the pattern matcher will be updated before building
-	 *                 the problem.
-	 * @deprecated use {@link #buildProblem(boolean)}
-	 */
-	@Deprecated
-	public void buildProblemTimed(final boolean doUpdate) {
-		buildProblem(doUpdate, true);
-	}
-
-	/**
-	 * Builds the problem. `doUpdate` defines if the pattern matcher should be
-	 * updated and `parallel` decides if the method runs everything in parallel or
-	 * sequentially.
-	 * 
-	 * @param doUpdate If true, the pattern matcher will be updated before building
-	 *                 the problem.
-	 * @param parallel If true, the problem will be built in parallel.
-	 * @deprecated use {@link #buildProblem(boolean, boolean)}
-	 */
-	@Deprecated
-	public void buildProblemTimed(final boolean doUpdate, final boolean parallel) {
-		buildProblem(doUpdate, parallel);
-	}
-
-	/**
 	 * This method is a sanity check for all variable names. There must not be the
 	 * case of two different variables with the same name. If that would be the
 	 * case, this method throws an `InternalError`.
@@ -364,15 +325,6 @@ public abstract class GipsEngine {
 			getTracer().buildIntermediate2LpTraceGraph(this);
 			eclipseIntegration.sendLpTraceToIDE(getTracer());
 		}
-	}
-
-	/**
-	 * 
-	 * @return
-	 * @deprecated use {@link #solveProblem()}
-	 */
-	public SolverOutput solveProblemTimed() {
-		return solveProblem();
 	}
 
 	public SolverOutput solveProblem() {

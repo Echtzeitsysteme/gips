@@ -111,8 +111,8 @@ public abstract class GipsEngine {
 	}
 
 	/**
-	 * Builds the problem with time measurement included. This method does not
-	 * trigger an update of the pattern matcher and runs everything sequentially.
+	 * Builds the problem with time measurement included. This method does trigger
+	 * an update of the pattern matcher and enables parallel execution.
 	 * 
 	 * @throws TimeoutException if the build time exceeds the time limit configured
 	 *                          in {@link #getConfig()}
@@ -120,13 +120,13 @@ public abstract class GipsEngine {
 	 * @see GipsConfig#setBuildTimeLimit(java.time.Duration)
 	 */
 	public void buildProblem() {
-		buildProblem(false, false);
+		buildProblem(true, true);
 	}
 
 	/**
 	 * Builds the problem with time measurement included. This method does trigger
 	 * an update of the pattern matcher depending on the given input parameter and
-	 * runs everything sequentially.
+	 * enables parallel execution.
 	 * 
 	 * @param doUpdate If true, the pattern matcher will be updated before building
 	 *                 the problem.
@@ -136,7 +136,7 @@ public abstract class GipsEngine {
 	 * @see GipsConfig#setBuildTimeLimit(java.time.Duration)
 	 */
 	public void buildProblem(final boolean doUpdate) {
-		buildProblem(doUpdate, false);
+		buildProblem(doUpdate, true);
 	}
 
 	/**
@@ -272,19 +272,19 @@ public abstract class GipsEngine {
 	}
 
 	/**
-	 * Builds the problem. This method does not trigger an update of the pattern
-	 * matcher and runs everything sequentially.
+	 * Builds the problem. This method does trigger an update of the pattern matcher
+	 * and enables parallel execution.
 	 * 
 	 * @deprecated use {@link #buildProblem()}
 	 */
 	@Deprecated
 	public void buildProblemTimed() {
-		buildProblem(false, false);
+		buildProblem(true, true);
 	}
 
 	/**
 	 * Builds the problem. This method does trigger an update of the pattern matcher
-	 * depending on the given input parameter and runs everything sequentially.
+	 * depending on the given input parameter and enables parallel execution.
 	 * 
 	 * @param doUpdate If true, the pattern matcher will be updated before building
 	 *                 the problem.
@@ -292,7 +292,7 @@ public abstract class GipsEngine {
 	 */
 	@Deprecated
 	public void buildProblemTimed(final boolean doUpdate) {
-		buildProblem(doUpdate, false);
+		buildProblem(doUpdate, true);
 	}
 
 	/**
